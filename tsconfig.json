@@ -14,6 +14,7 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
@@ -25,13 +26,13 @@
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
     "types": [
-      "cypress",
       "node",
       "jest"
     ]
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "locales/**/*.json"
   ],
   "include": [
     "next-env.d.ts",
