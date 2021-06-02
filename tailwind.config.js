@@ -21,9 +21,23 @@ module.exports = {
         },
         blue:{
           ...colors.blue,
+          midnightexpress: '#131827', 
+          tangaroa: '#1b2236',
+          spindle: '#b5bddb'
         },
       },
-      width: {},
+      width: {
+
+      },
+      spacing:{
+        '42': '165px',
+      },
+      lineHeight: {
+        '2': '2',
+      },
+      fontFamily: {
+        'roboto' : ['Roboto Mono', 'monospace'],
+      },
       transitionTimingFunction: {
         'ease-out-quint': 'cubic-bezier(0.23, 1, 0.32, 1)'
       },
