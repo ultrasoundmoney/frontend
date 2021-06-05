@@ -1,33 +1,27 @@
 import * as React from "react";
+import Block from "./block";
 
-const EthBlocks: React.FC<{ Data?: Data }> = () => {
+type EthBlocksPros = {
+  Data?: Data;
+  currentBlockNr: number;
+};
+const EthBlocks: React.FC<EthBlocksPros> = ({ currentBlockNr, Data }) => {
+  const remamingBlocks = currentBlockNr - Number(Data.countdownNr);
   return (
     <>
-      <div className="md:flex justify-start content-center w-full">
-        <div className="bg-blue-tangaroa md:mx-4 px-8 rounded-md">
-          <div className="text-xs text-blue-spindle text-left font-light uppercase leading-2 pt-2">
-            Countdown for block
-          </div>
-          <div className="text-base text-white font-light text-left pb-3">
-            #123424313213313
-          </div>
-        </div>
-        <div className="bg-blue-tangaroa md:mx-4 px-8 rounded-md">
-          <div className="text-xs text-blue-spindle text-left font-light uppercase leading-2 pt-2">
-            Countdown for block
-          </div>
-          <div className="text-base text-white font-light text-left pb-3">
-            #123424313213313
-          </div>
-        </div>
-        <div className="bg-blue-tangaroa md:mx-4 px-8 rounded-md">
-          <div className="text-xs text-blue-spindle text-left font-light uppercase leading-2 pt-2">
-            Countdown for block
-          </div>
-          <div className="text-base text-white font-light text-left pb-3">
-            #123424313213313
-          </div>
-        </div>
+      <div className="sm:flex sm:justify-between md:justify-start sm:content-center w-auto">
+        <Block
+          title={Data.title_countdown}
+          currentBlockNr={Number(Data.countdownNr)}
+        />
+        <Block
+          title={Data.title_current_block}
+          currentBlockNr={currentBlockNr}
+        />
+        <Block
+          title={Data.title_remaning_block}
+          currentBlockNr={remamingBlocks}
+        />
       </div>
     </>
   );

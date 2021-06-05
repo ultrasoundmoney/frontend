@@ -1,20 +1,47 @@
 import * as React from "react";
+import useSWR from "swr";
 import EthBlocks from "../Blocks";
 import CountDown from "../CountDown/index";
+import TwitterCommunity from "../TwitterCommunity";
 
-const ComingSoon: React.FC<{ Data?: Data }> = () => {
+const fetcher = (url: string) =>
+  fetch(url, {
+    method: "POST",
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      method: "eth_blockNumber",
+      params: [],
+      id: 0,
+    }),
+  }).then((r) => r.json());
+
+const ComingSoon: React.FC<{ Data?: Data }> = ({ Data }) => {
+  const { data } = useSWR(
+    "https://eth-mainnet.alchemyapi.io/v2/H74MQLJkSLBJDyaDS2kyH7bXIBvjiTVe",
+    fetcher
+  );
+  const result: number = data && data.result;
+  const currentBlockNumber = parseInt("0x" + Number(result), 16);
   return (
     <>
-      <div className="wrapper bg-blue-midnightexpress h-screen ">
+      <div className="wrapper bg-blue-midnightexpress">
         <div className="container m-auto coming-soon">
           <div className="flex">
-            <div className="w-full md:w-3/6 md:m-auto md:pt-52 md:pb-5">
-              <CountDown targetDate="June 03, 2021" targetTime="23:19:00" />
+            <div className="w-full md:w-5/6 lg:w-3/6 md:m-auto md:pt-52 pb-5 pt-16">
+              <CountDown targetDate="July 28, 2021" targetTime="00:00:00" />
             </div>
           </div>
           <div className="flex">
-            <div className="w-full md:w-3/6 md:m-auto">
-              <EthBlocks />
+            <div className="w-full md:w-5/6 lg:w-3/6 md:m-auto px-4 md:px-0">
+              <EthBlocks
+                Data={Data}
+                currentBlockNr={currentBlockNumber && currentBlockNumber}
+              />
+            </div>
+          </div>
+          <div className="flex px-4 md:px-0 py-8 md:py-40">
+            <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto">
+              <TwitterCommunity Data={Data} />
             </div>
           </div>
         </div>

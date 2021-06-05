@@ -53,9 +53,12 @@ const Countdown: React.FC<CountDownProps> = ({ targetDate, targetTime }) => {
           {Object.entries(state).map((el, i) => (
             <div
               key={i}
-              className="entry md:flex-1 md:py-4 mx-1 md:mx-2 w-20 md:w-42 bg-blue-midnightexpress"
+              className="entry md:flex-1 md:py-4 mx-1 md:mx-2 w-20 sm:w-36 md:w-42 bg-blue-midnightexpress"
             >
-              <div key={el[1]} className="entry-value text-2xl md:text-7xl">
+              <div
+                key={el[1]}
+                className="entry-value text-2xl sm:text-6xl md:text-7xl"
+              >
                 <span className="count top curr flipTop">{el[1] + 1}</span>
                 <span className="count top next">{el[1]}</span>
                 <span className="count bottom next flipBottom">{el[1]}</span>

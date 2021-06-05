@@ -1,5 +1,11 @@
 {
     "title" : "Etherum Become Ulra Sound Money",
     "subtitle" : "EIP 1559 going to merge on July 14...",
-    "xzy" : "Test xzy"
+    "title_countdown": "COUNTDOWN FOR BLOCK",
+    "title_current_block": "Current block",
+    "title_remaning_block": "Reaming block",
+    "countdownNr":"12901559",
+    "title_community": "Join The Community",
+    "description_community": "Add 🦇🔊 to your bio and/or Twitter name to join the Ultra Sound gang.",
+    "click_to_join": "Click to Join.."
 }
