@@ -7,11 +7,11 @@ type BlockPros = {
 const Block: React.FC<BlockPros> = ({ title, currentBlockNr }) => {
   return (
     <>
-      <div className="bg-blue-tangaroa md:mx-4 px-8 rounded-md mb-4">
-        <div className="text-xs text-blue-spindle text-left font-light uppercase leading-2 pt-2">
+      <div className="flex-1 bg-blue-tangaroa sm:mx-2 px-5 py-3 rounded-md mb-4 w-full first:ml-0 last:mr-0">
+        <div className="text-xs text-blue-spindle text-left font-light uppercase leading-2">
           {title}
         </div>
-        <div className="text-base text-white font-light text-left pb-3">
+        <div className="text-base text-white font-light text-left">
           #{currentBlockNr}
         </div>
       </div>

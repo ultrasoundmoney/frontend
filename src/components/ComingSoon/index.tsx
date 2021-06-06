@@ -27,7 +27,7 @@ const ComingSoon: React.FC<{ Data?: Data }> = ({ Data }) => {
       <div className="wrapper bg-blue-midnightexpress">
         <div className="container m-auto coming-soon">
           <div className="flex">
-            <div className="w-full md:w-5/6 lg:w-3/6 md:m-auto md:pt-52 pb-5 pt-16">
+            <div className="w-full md:w-5/6 lg:w-3/6 md:m-auto md:pt-52 pb-4 pt-16">
               <CountDown targetDate="July 28, 2021" targetTime="00:00:00" />
             </div>
           </div>

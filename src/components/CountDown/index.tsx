@@ -53,7 +53,7 @@ const Countdown: React.FC<CountDownProps> = ({ targetDate, targetTime }) => {
           {Object.entries(state).map((el, i) => (
             <div
               key={i}
-              className="entry md:flex-1 md:py-4 mx-1 md:mx-2 w-20 sm:w-36 md:w-42 bg-blue-midnightexpress"
+              className="entry md:flex-1 md:py-4 mx-1 md:mx-2 w-20 sm:w-36 md:w-42 bg-blue-midnightexpress first:ml-0 last:mr-0"
             >
               <div
                 key={el[1]}
