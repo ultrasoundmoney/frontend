@@ -24,8 +24,8 @@ const ComingSoon: React.FC<{ Data?: Data }> = ({ Data }) => {
   const currentBlockNumber = parseInt("0x" + Number(result), 16);
   return (
     <>
-      <div className="wrapper bg-blue-midnightexpress">
-        <div className="container m-auto coming-soon">
+      <div className="wrapper bg-blue-midnightexpress coming-soon">
+        <div className="container m-auto">
           <div className="flex">
             <div className="w-full md:w-5/6 lg:w-3/6 md:m-auto md:pt-52 pb-4 pt-16">
               <CountDown targetDate="July 28, 2021" targetTime="00:00:00" />
