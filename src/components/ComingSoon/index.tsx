@@ -3,6 +3,7 @@ import useSWR from "swr";
 import EthBlocks from "../Blocks";
 import CountDown from "../CountDown/index";
 import TwitterCommunity from "../TwitterCommunity";
+import EthLogo from "../../assets/ethereum-ultra-sound-bat.svg";
 
 const fetcher = (url: string) =>
   fetch(url, {
@@ -26,8 +27,18 @@ const ComingSoon: React.FC<{ Data?: Data }> = ({ Data }) => {
     <>
       <div className="wrapper bg-blue-midnightexpress coming-soon">
         <div className="container m-auto">
+          <div className="block w-full text-center pt-14">
+            <img
+              className="text-center m-auto mb-8"
+              src={EthLogo}
+              alt={Data.title}
+            />
+            <h1 className="text-white font-extralight text-2xl md:text-3xl xl:text-41xl text-center mb-16">
+              {Data.main_title}
+            </h1>
+          </div>
           <div className="flex">
-            <div className="w-full md:w-5/6 lg:w-3/6 md:m-auto md:pt-52 pb-4 pt-16">
+            <div className="w-full md:w-5/6 lg:w-3/6 md:m-auto pb-4">
               <CountDown targetDate="July 28, 2021" targetTime="00:00:00" />
             </div>
           </div>

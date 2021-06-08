@@ -44,6 +44,9 @@ module.exports = {
       boxShadow: {
         outline: '0 0 0 1px rgba(229, 103, 86, 0.4)',
       },
+      fontSize:{
+        '41xl': '2.5rem',
+      }
     }
   },
   variants: {

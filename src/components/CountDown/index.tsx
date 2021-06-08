@@ -49,22 +49,22 @@ const Countdown: React.FC<CountDownProps> = ({ targetDate, targetTime }) => {
   return (
     <>
       {!isExpired && targetDate && targetTime ? (
-        <div className="inline-flex justify-center w-full z-20">
+        <div className="inline-flex justify-center w-full z-20 px-4 md:px-0">
           {Object.entries(state).map((el, i) => (
             <div
               key={i}
-              className="entry md:flex-1 md:py-4 mx-1 md:mx-2 w-20 sm:w-36 md:w-42 bg-blue-midnightexpress first:ml-0 last:mr-0"
+              className="entry flex-1 md:py-4 mx-1 md:mx-2 bg-blue-midnightexpress first:ml-0 last:mr-0"
             >
               <div
                 key={el[1]}
-                className="entry-value text-2xl sm:text-6xl md:text-7xl"
+                className="entry-value text-5xl sm:text-6xl md:text-7xl"
               >
                 <span className="count top curr flipTop">{el[1] + 1}</span>
                 <span className="count top next">{el[1]}</span>
                 <span className="count bottom next flipBottom">{el[1]}</span>
                 <span className="count bottom curr">{el[1] + 1}</span>
               </div>
-              <div className="entry-title text-xs md:text-sm md:my-2">
+              <div className="entry-title text-sm my-2">
                 {el[0].toUpperCase()}
               </div>
             </div>
