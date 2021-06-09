@@ -17,11 +17,11 @@ const fetcher = (url: string) =>
   }).then((r) => r.json());
 
 const ComingSoon: React.FC<{ Data?: Data }> = ({ Data }) => {
-  let { data } = useSWR(
+  const { data } = useSWR(
     "https://eth-mainnet.alchemyapi.io/v2/H74MQLJkSLBJDyaDS2kyH7bXIBvjiTVe",
     fetcher
   );
-  const result: number = data && data.result;
+  const result = data && data.result;
   const currentBlockNumber = parseInt(result, 16);
   return (
     <>
