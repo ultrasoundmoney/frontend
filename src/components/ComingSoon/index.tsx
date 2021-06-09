@@ -19,7 +19,10 @@ const fetcher = (url: string) =>
 const ComingSoon: React.FC<{ Data?: Data }> = ({ Data }) => {
   const { data } = useSWR(
     "https://eth-mainnet.alchemyapi.io/v2/H74MQLJkSLBJDyaDS2kyH7bXIBvjiTVe",
-    fetcher
+    fetcher,
+    {
+      refreshInterval: 120000,
+    }
   );
   const result = data && data.result;
   const currentBlockNumber = parseInt(result, 16);
