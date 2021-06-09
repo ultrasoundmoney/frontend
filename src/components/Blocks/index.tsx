@@ -6,7 +6,7 @@ type EthBlocksPros = {
   currentBlockNr: number;
 };
 const EthBlocks: React.FC<EthBlocksPros> = ({ currentBlockNr, Data }) => {
-  const remamingBlocks = currentBlockNr - Number(Data.countdownNr);
+  const remamingBlocks = Number(Data.countdownNr) - currentBlockNr;
   return (
     <>
       <div className="sm:flex sm:justify-between md:justify-start sm:content-center w-auto">
