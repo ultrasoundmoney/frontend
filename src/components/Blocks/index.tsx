@@ -13,14 +13,17 @@ const EthBlocks: React.FC<EthBlocksPros> = ({ currentBlockNr, Data }) => {
         <Block
           title={Data.title_countdown}
           currentBlockNr={Number(Data.countdownNr)}
+          isHas
         />
         <Block
           title={Data.title_current_block}
           currentBlockNr={currentBlockNr}
+          isHas
         />
         <Block
           title={Data.title_remaning_block}
           currentBlockNr={remamingBlocks}
+          isHas={false}
         />
       </div>
     </>
