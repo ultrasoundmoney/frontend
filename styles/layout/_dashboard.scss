@@ -1,0 +1,12 @@
+.tt {
+    &::before {
+        content: '';
+        background-image: linear-gradient(to top, #f85a89, #0037fa);
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: top center;
+        width: 100%;
+        height: 400px;
+        z-index: -1;
+    }
+}

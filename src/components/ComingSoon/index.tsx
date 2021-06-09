@@ -17,12 +17,12 @@ const fetcher = (url: string) =>
   }).then((r) => r.json());
 
 const ComingSoon: React.FC<{ Data?: Data }> = ({ Data }) => {
-  const { data } = useSWR(
+  let { data } = useSWR(
     "https://eth-mainnet.alchemyapi.io/v2/H74MQLJkSLBJDyaDS2kyH7bXIBvjiTVe",
     fetcher
   );
   const result: number = data && data.result;
-  const currentBlockNumber = parseInt("0x" + Number(result), 16);
+  const currentBlockNumber = parseInt(result, 16);
   return (
     <>
       <div className="wrapper bg-blue-midnightexpress coming-soon">
