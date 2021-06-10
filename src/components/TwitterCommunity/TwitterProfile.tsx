@@ -4,8 +4,8 @@ import useSWR from "swr";
 
 type TwitterProfileProps = {
   name: string;
-  profile_image_url: string;
-  username: string;
+  profileImageUrl: string;
+  profileUrl: string;
 };
 const fetcher = (url: string) =>
   fetch(url, {
@@ -17,13 +17,10 @@ const fetcher = (url: string) =>
   }).then((r) => r.json());
 const TwitterProfile: React.FC<{}> = () => {
   const { data, error } = useSWR(
-    "https://mnaus.api.stdlib.com/ultrasound-money@0.0.1/",
-    fetcher,
-    {
-      revalidateOnFocus: true,
-    }
+    "http://serve-fam-1761382800.us-east-2.elb.amazonaws.com/fam",
+    fetcher
   );
-  if (error) return <div>failed to load</div>;
+  if (error) return <div>Data loading...</div>;
   if (!data) return <div>loading...</div>;
   return (
     <>
@@ -33,8 +30,7 @@ const TwitterProfile: React.FC<{}> = () => {
             <div key={index} className="m-2 w-10 h-10">
               <a
                 target="_blank"
-                href="https://twitter.com/"
-                // href={item.url}
+                href={item.profileUrl}
                 rel="noopener noreferrer"
                 role="link"
                 title={item.name}
@@ -42,8 +38,9 @@ const TwitterProfile: React.FC<{}> = () => {
                 <img
                   className="rounded-full w-full"
                   src={
-                    item.profile_image_url !== undefined
-                      ? item.profile_image_url
+                    item.profileImageUrl !== null &&
+                    item.profileImageUrl != undefined
+                      ? item.profileImageUrl
                       : AvatarImg
                   }
                   title={item.name}
