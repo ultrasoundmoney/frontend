@@ -19,7 +19,7 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = ({ Data }) => {
         </a>
       </h1>
       <p
-        className="text-white leading-6 md:leading-none text-center font-light text-base lg:text-lg mb-14 capitalize"
+        className="text-white leading-6 md:leading-none text-center font-light text-base lg:text-lg mb-14 span-bat-sound"
         dangerouslySetInnerHTML={{ __html: Data.description_community }}
       />
       <TwitterProfile />
