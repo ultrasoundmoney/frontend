@@ -107,3 +107,4 @@ dist
 **/.DS_Store
 
 .next/cache
+out
