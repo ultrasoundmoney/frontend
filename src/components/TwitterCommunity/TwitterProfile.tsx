@@ -19,9 +19,9 @@ const TwitterProfile: React.FC<{}> = () => {
   const { data } = useSWR("https://api.ultrasound.money/fam/profiles", fetcher);
   return (
     <>
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap justify-center">
         {data &&
-          data.map((item: TwitterProfileProps, index: number) => (
+          data.slice(0, 60).map((item: TwitterProfileProps, index: number) => (
             <div key={index} className="m-2 w-10 h-10">
               <a
                 target="_blank"

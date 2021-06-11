@@ -10,7 +10,7 @@ const IndexPage: NextPage<IndexPageProps> = () => {
     <>
       <Head>
         <title>{Data.title}</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.webp" />
         <meta name="description" content={Data.title} />
         <meta name="keywords" content={Data.meta_keywords} />
         <meta property="og:title" content={Data.title} />

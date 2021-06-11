@@ -21,7 +21,7 @@ const ComingSoon: React.FC<{ Data?: Data }> = ({ Data }) => {
     "https://eth-mainnet.alchemyapi.io/v2/H74MQLJkSLBJDyaDS2kyH7bXIBvjiTVe",
     fetcher,
     {
-      refreshInterval: 120000,
+      refreshInterval: 5000,
     }
   );
   const result = data && data.result;
