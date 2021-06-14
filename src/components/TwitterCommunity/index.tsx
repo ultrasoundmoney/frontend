@@ -13,7 +13,7 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = ({ Data }) => {
           href="https://twitter.com/i/lists/1376636817089396750/members"
           rel="noopener noreferrer"
           role="link"
-          title="Join The twitter Fam : Ultra Sound Money"
+          title={Data.title_community_hover}
         >
           {Data.title_community}
         </a>
@@ -22,7 +22,7 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = ({ Data }) => {
         className="text-white leading-6 md:leading-none text-center font-light text-base lg:text-lg mb-14 span-bat-sound"
         dangerouslySetInnerHTML={{ __html: Data.description_community }}
       />
-      <TwitterProfile />
+      <TwitterProfile Data={Data} />
     </>
   );
 };

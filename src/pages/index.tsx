@@ -11,6 +11,10 @@ const IndexPage: NextPage<IndexPageProps> = () => {
       <Head>
         <title>{Data.title}</title>
         <link rel="icon" href="/favicon.png" />
+        <meta httpEquiv="cache-control" content="max-age=0" />
+        <meta httpEquiv="cache-control" content="no-cache" />
+        <meta httpEquiv="expires" content="0" />
+        <meta httpEquiv="pragma" content="no-cache" />
         <meta name="description" content={Data.title} />
         <meta name="keywords" content={Data.meta_keywords} />
         <meta property="og:title" content={Data.title} />

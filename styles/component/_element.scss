@@ -1,0 +1,12 @@
+.tooltip{
+    visibility: hidden;
+    position: absolute;
+    @media (max-width: 768px) {
+      left: 25px;
+    }
+  }
+  .has-tooltip:hover .tooltip,
+  .has-tooltip:active .tooltip {
+    visibility: visible;
+    z-index: 100;
+  }
