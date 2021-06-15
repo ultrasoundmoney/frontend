@@ -1,0 +1,53 @@
+// TODO(colors) make these variables or choose different colors
+$track-bg: #293350;
+$thumb-bg: #8194ce;
+
+.slider {
+  -webkit-appearance: none;
+  margin: 6px 0;
+  width: 100%;
+  background: transparent;
+}
+.slider:focus {
+  outline: none;
+}
+
+// We can't combine the vendor selectors into one ruleset due how browsers
+// parse the styles, so instead we use a sass mixin to reuse the styles
+@mixin slider-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  box-shadow: none;
+  background: $track-bg;
+  border-radius: 4px;
+  border: none;
+}
+.slider::-webkit-slider-runnable-track {
+  @include slider-track;
+}
+.slider:focus::-webkit-slider-runnable-track {
+  background: $track-bg;
+}
+.slider::-moz-range-track {
+  @include slider-track;
+}
+
+@mixin slider-thumb {
+  box-shadow: none;
+  border: none;
+  height: 14px;
+  width: 14px;
+  border-radius: 7px;
+  background: $thumb-bg;
+  cursor: pointer;
+}
+.slider::-webkit-slider-thumb {
+  @include slider-thumb;
+  // TODO webkit-only?
+  -webkit-appearance: none;
+  margin-top: -4px;
+}
+.slider::-moz-range-thumb {
+  @include slider-thumb;
+}

@@ -1,0 +1,13 @@
+.charts {
+  width: 800px;
+  flex: 0 1 auto;
+}
+.sidebar {
+  width: 270px;
+}
+
+.chartHeader {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 12px;
+}
