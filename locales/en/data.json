@@ -9,9 +9,9 @@
   "title_current_block": "current block",
   "title_remaning_block": "remaining blocks",
   "countdownNr": "12923000",
-  "title_community": "join the fam",
+  "title_community": "join #XXX fam members",
   "title_community_hover": "Join The twitter Fam : Ultra Sound Money",
-  "description_community": "wear <span>🦇🔊</span> in your Twitter bio or name",
+  "description_community": "wear <span id='bat-sound'>🦇🔊</span> in your Twitter bio or name",
   "click_to_join": "click to join...",
   "profile_follower": "Followers"
 }

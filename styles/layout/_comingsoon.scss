@@ -4,7 +4,6 @@
     background-position: center top;
     background-size: auto;
     width: 100%;
-    height: 100%;
 }
 .entry {
     text-align: center;
@@ -113,5 +112,11 @@
   .span-bat-sound span{
     border-radius: 5px;
     background-color: #343c55;
+    padding: 5px 7px;
+  }
+
+  .span-bat-sound-copied span{
+    border-radius: 5px;
+    background-color: #6EE7B7;
     padding: 5px 7px;
   }
