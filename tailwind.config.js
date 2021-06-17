@@ -23,7 +23,8 @@ module.exports = {
           ...colors.blue,
           midnightexpress: '#131827', 
           tangaroa: '#1b2236',
-          spindle: '#b5bddb'
+          spindle: '#b5bddb',
+          linkwater: '#c8cbd9',
         },
       },
       width: {
