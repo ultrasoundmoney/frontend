@@ -19,7 +19,7 @@ const ProfileTooltip: React.FC<ProfileTooltipProps> = ({
 }) => {
   return (
     <>
-      <div className="has-tooltip">
+      <div className="has-tooltip opacity-50 hover:opacity-100">
         <div className="tooltip max-w-xs shadow-lg rounded-lg bg-blue-tangaroa text-white px-7 py-7">
           <img
             className="rounded-full"
@@ -34,7 +34,7 @@ const ProfileTooltip: React.FC<ProfileTooltipProps> = ({
             alt={item.name}
           />
           <h1 className="text-white my-3 text-base font-medium">{item.name}</h1>
-          <p className="text-blue-linkwater text-left mb-3 font-light text-xs">
+          <p className="text-blue-linkwater text-left mb-3 font-light text-xs break-all">
             {item.bio}
           </p>
           <p className="text-xs text-blue-spindle text-left font-light uppercase mb-0">

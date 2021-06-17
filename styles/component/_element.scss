@@ -1,14 +1,16 @@
 .tooltip{
-    visibility: hidden;
-    display: none;
-    @media (max-width: 768px) {
-      left: 15px;
-    }
+    display: none; 
+    opacity: 0; 
   }
   .has-tooltip:hover .tooltip,
   .has-tooltip:active .tooltip {
     position: absolute;
     display: block;
+    opacity: 1;
     visibility: visible;
     z-index: 100;
+    transform: translate(0%,-105%);
+    @media (min-width: 1024px) { 
+      transform: translate(-40%,-105%);
+    }
   }
