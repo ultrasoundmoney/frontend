@@ -20,7 +20,7 @@ const ProfileTooltip: React.FC<ProfileTooltipProps> = ({
   return (
     <>
       <div className="has-tooltip opacity-50 hover:opacity-100">
-        <div className="tooltip max-w-xs shadow-lg rounded-lg bg-blue-tangaroa text-white px-7 py-7">
+        <div className="tooltip max-w-xs shadow-lg rounded-lg bg-blue-tangaroa text-white px-7 py-7 z-10">
           <img
             className="rounded-full"
             width="80"

@@ -22,7 +22,7 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = ({ Data }) => {
     }
   );
   const [isCopied, setIsCopied] = React.useState<boolean>(false);
-  const getFamCount = data && data.count;
+  const getFamCount = new Intl.NumberFormat().format(data && data.count);
   const getText =
     getFamCount !== undefined
       ? Data.title_community.replace("#XXX", getFamCount)
@@ -43,7 +43,7 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = ({ Data }) => {
 
   return (
     <>
-      <h1 className="text-white text-2xl md:text-3xl text-center font-light mb-8 capitalize">
+      <h1 className="text-white text-2xl md:text-3xl text-center font-light mb-8">
         <a
           target="_blank"
           href="https://twitter.com/i/lists/1376636817089396750/members"
