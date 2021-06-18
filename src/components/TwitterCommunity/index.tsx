@@ -40,7 +40,16 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = ({ Data }) => {
       setIsCopied(false);
     }
   };
-
+  const [tool, setTool] = React.useState(false);
+  const handleMouseEnter = () => {
+    const parent = document.getElementById("bat-sound");
+    parent.onmouseenter = () => {
+      setTool(true);
+    };
+    parent.onmouseleave = () => {
+      setTool(false);
+    };
+  };
   return (
     <>
       <h1 className="text-white text-2xl md:text-3xl text-center font-light mb-8">
@@ -55,12 +64,16 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = ({ Data }) => {
           {getText}
         </a>
       </h1>
+      <div className={`clipboard ${tool ? "block" : "hidden"}`}>
+        {isCopied ? "copied" : "click to copy"}
+      </div>
       <p
         className={`text-white leading-6 md:leading-none text-center font-light text-base lg:text-lg mb-14 ${
           isCopied ? "span-bat-sound-copied" : "span-bat-sound"
         }`}
         dangerouslySetInnerHTML={{ __html: Data.description_community }}
         onClick={handelClickedToCopyText}
+        onMouseEnter={handleMouseEnter}
       />
       <TwitterProfile Data={Data} profileList={data && data.profiles} />
     </>

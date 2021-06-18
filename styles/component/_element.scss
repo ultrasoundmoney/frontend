@@ -14,3 +14,17 @@
       transform: translate(-40%,-105%);
     }
   }
+
+.clipboard{
+  position: absolute;
+  width: fit-content;
+  margin: auto;
+  color: aliceblue;
+  border-radius: 4px;
+  padding: 5px 10px;
+  background-color: #343c55;
+  z-index: 10;
+  font-size: 12px;
+  left: 35%;
+  top: 35px;
+}
