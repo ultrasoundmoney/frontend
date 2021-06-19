@@ -13,6 +13,8 @@ const fetcher = (url: string) =>
     },
   }).then((r) => r.json());
 const TwitterCommunity: React.FC<TwitterCommunityPros> = ({ Data }) => {
+  const [isCopied, setIsCopied] = React.useState<boolean>(false);
+  const [tool, setTool] = React.useState(false);
   const { data } = useSWR(
     "https://api.ultrasound.money/fam/2/profiles",
     fetcher,
@@ -21,8 +23,12 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = ({ Data }) => {
       revalidateOnReconnect: false,
     }
   );
-  const [isCopied, setIsCopied] = React.useState<boolean>(false);
-  const getFamCount = new Intl.NumberFormat().format(data && data.count);
+  if (!data) {
+    return null;
+  }
+  const getFamCount = new Intl.NumberFormat().format(
+    isNaN(data && data.count) ? 0 : data && data.count
+  );
   const getText =
     getFamCount !== undefined
       ? Data.title_community.replace("#XXX", getFamCount)
@@ -40,7 +46,6 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = ({ Data }) => {
       setIsCopied(false);
     }
   };
-  const [tool, setTool] = React.useState(false);
   const handleMouseEnter = () => {
     const parent = document.getElementById("bat-sound");
     parent.onmouseenter = () => {
