@@ -54,7 +54,7 @@ const ComingSoon: React.FC<{ Data?: Data }> = ({ Data }) => {
             </div>
           </div>
           <div className="flex px-4 md:px-0 py-8 md:py-40">
-            <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto">
+            <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
               <TwitterCommunity Data={Data} />
             </div>
           </div>

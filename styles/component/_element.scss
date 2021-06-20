@@ -1,14 +1,102 @@
 .tooltip{
-    visibility: hidden;
-    display: none;
-    @media (max-width: 768px) {
-      left: 15px;
-    }
+  display: none; 
+  opacity: 0; 
+}
+.has-tooltip:hover .tooltip,
+.has-tooltip:active .tooltip {
+  position: absolute;
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  z-index: 100;
+  width: 260px;
+  left: 40px;
+  transform: translate(0%,-100%);
+  animation: fadeIn ease 1700ms;
+  -webkit-animation: fadeIn ease 1700ms;
+  -moz-animation: fadeIn ease 1700ms;
+  -o-animation: fadeIn ease 1700ms;
+  -ms-animation: fadeIn ease 1700ms;
+  @media screen and (min-width: 420px) and (max-width: 1023px) {
+    left: 30%;
   }
-  .has-tooltip:hover .tooltip,
-  .has-tooltip:active .tooltip {
-    position: absolute;
+  @media (min-width: 1024px) { 
+    left: unset;
+    transform: translate(-40%,-100%);
+  }
+}
+
+.clipboard{
+  position: absolute;
+  width: fit-content;
+  margin: auto;
+  color: aliceblue;
+  border-radius: 4px;
+  padding: 3px 6px;
+  background-color: #343c55;
+  z-index: 10;
+  font-size: 12px;
+  left: 25%;
+  top: 30px;
+  @media (min-width: 1024px) {
+    left: 30%;
+    top: 37px;
+  }
+  @media (min-width: 1280px) {
+    left: 35%;
+    top: 32px;
+  }
+  @media (min-width: 1536px) {
+    left: 35%;
+    top: 35px;
+  }
+
+  &::active{
     display: block;
-    visibility: visible;
-    z-index: 100;
   }
+}
+
+@keyframes fadeIn{
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+@-o-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+@-ms-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}

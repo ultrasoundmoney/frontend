@@ -10,7 +10,6 @@ const IndexPage: NextPage<IndexPageProps> = () => {
     <>
       <Head>
         <title>{Data.title}</title>
-        <link rel="icon" href="/favicon.png" />
         <meta httpEquiv="cache-control" content="max-age=0" />
         <meta httpEquiv="cache-control" content="no-cache" />
         <meta httpEquiv="expires" content="0" />
@@ -23,6 +22,10 @@ const IndexPage: NextPage<IndexPageProps> = () => {
         <meta property="og:url" content={Data.og_url} />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:creator" content="@ultrasoundmoney" />
+        <link rel="icon" href="/favicon.png" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/favicon.png"></link>
+        <meta name="theme-color" content="#131827" />
       </Head>
       <ComingSoon Data={Data} />
     </>

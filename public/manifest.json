@@ -1,0 +1,27 @@
+{
+    "name": "Ultra Sound Money",
+    "short_name": "ETH ultra sound money",
+    "icons": [
+      {
+        "src": "/static/Ethereum_Ultra.png",
+        "sizes": "72*56",
+        "type": "image/png",
+        "purpose": "any maskable"
+      },
+      {
+        "src": "/static/Ethereum_Ultra@2x.png",
+        "sizes": "144*112",
+        "type": "image/png"
+      },
+      {
+        "src": "/static/Ethereum_Ultra@3x.png",
+        "sizes": "216*168",
+        "type": "image/png"
+      }
+    ],
+    "theme_color": "#FFFFFF",
+    "background_color": "#FFFFFF",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "portrait"
+  }

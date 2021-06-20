@@ -6,7 +6,7 @@ const LandingPage: React.FC<{ Data?: Data }> = ({ Data }) => {
   return (
     <>
       <div className="wrapper bg-blue-midnightexpress">
-        <div className="container m-auto tt">
+        <div className="container m-auto">
           <Navigation Data={Data} />
           <Intro Data={Data} />
           <div className="flex">
