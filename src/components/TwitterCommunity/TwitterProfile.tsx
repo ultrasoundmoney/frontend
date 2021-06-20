@@ -19,19 +19,43 @@ const TwitterProfile: React.FC<TwitterProfilePros> = ({
             .map((item: TwitterProfile, index: number) => (
               <div key={index} className="m-2 w-10 h-10">
                 <ProfileTooltip item={item} Data={Data}>
-                  <img
-                    className="rounded-full"
-                    width="40"
-                    height="40"
-                    src={
-                      item.profileImageUrl !== null &&
-                      item.profileImageUrl != undefined
-                        ? item.profileImageUrl
-                        : AvatarImg
-                    }
-                    title={item.name}
-                    alt={item.name}
-                  />
+                  {window.matchMedia("(max-width: 1023px)").matches ? (
+                    <img
+                      className="rounded-full"
+                      width="40"
+                      height="40"
+                      src={
+                        item.profileImageUrl !== null &&
+                        item.profileImageUrl != undefined
+                          ? item.profileImageUrl
+                          : AvatarImg
+                      }
+                      title={item.name}
+                      alt={item.name}
+                    />
+                  ) : (
+                    <a
+                      target="_blank"
+                      href={item.profileUrl}
+                      rel="noopener noreferrer"
+                      role="link"
+                      title={`${item.name}`}
+                    >
+                      <img
+                        className="rounded-full"
+                        width="40"
+                        height="40"
+                        src={
+                          item.profileImageUrl !== null &&
+                          item.profileImageUrl != undefined
+                            ? item.profileImageUrl
+                            : AvatarImg
+                        }
+                        title={item.name}
+                        alt={item.name}
+                      />
+                    </a>
+                  )}
                 </ProfileTooltip>
               </div>
             ))}
