@@ -30,7 +30,7 @@ const TwitterProfile: React.FC<TwitterProfilePros> = ({
                           ? item.profileImageUrl
                           : AvatarImg
                       }
-                      title={item.name}
+                      // title={item.name}
                       alt={item.name}
                     />
                   ) : (
@@ -39,7 +39,7 @@ const TwitterProfile: React.FC<TwitterProfilePros> = ({
                       href={item.profileUrl}
                       rel="noopener noreferrer"
                       role="link"
-                      title={`${item.name}`}
+                      // title={`${item.name}`}
                     >
                       <img
                         className="rounded-full"
@@ -51,7 +51,7 @@ const TwitterProfile: React.FC<TwitterProfilePros> = ({
                             ? item.profileImageUrl
                             : AvatarImg
                         }
-                        title={item.name}
+                        // title={item.name}
                         alt={item.name}
                       />
                     </a>
