@@ -27,7 +27,7 @@ const ProfileTooltip: React.FC<ProfileTooltipProps> = ({
               href={item.profileUrl}
               rel="noopener noreferrer"
               role="link"
-              title={`${item.name}`}
+              // title={`${item.name}`}
             >
               <img
                 className="rounded-full"
@@ -39,7 +39,7 @@ const ProfileTooltip: React.FC<ProfileTooltipProps> = ({
                     ? item.profileImageUrl
                     : AvatarImg
                 }
-                title={item.name}
+                // title={item.name}
                 alt={item.name}
               />
             </a>
@@ -54,7 +54,7 @@ const ProfileTooltip: React.FC<ProfileTooltipProps> = ({
                   ? item.profileImageUrl
                   : AvatarImg
               }
-              title={item.name}
+              // title={item.name}
               alt={item.name}
             />
           )}
