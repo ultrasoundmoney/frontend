@@ -64,7 +64,7 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = ({ Data }) => {
           rel="noopener noreferrer"
           role="link"
           title={Data.title_community_hover}
-          className="hover:underline hover:text-blue-spindle"
+          className="hover:underline hover:text-blue-spindle relative h-full"
         >
           {getText}
         </a>
