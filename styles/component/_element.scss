@@ -1,19 +1,30 @@
 .tooltip{
-    display: none; 
-    opacity: 0; 
+  display: none; 
+  opacity: 0; 
+}
+.has-tooltip:hover .tooltip,
+.has-tooltip:active .tooltip {
+  position: absolute;
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  z-index: 100;
+  width: 260px;
+  left: 40px;
+  transform: translate(0%,-100%);
+  animation: fadeIn ease 1700ms;
+  -webkit-animation: fadeIn ease 1700ms;
+  -moz-animation: fadeIn ease 1700ms;
+  -o-animation: fadeIn ease 1700ms;
+  -ms-animation: fadeIn ease 1700ms;
+  @media screen and (min-width: 420px) and (max-width: 1023px) {
+    left: 30%;
   }
-  .has-tooltip:hover .tooltip,
-  .has-tooltip:active .tooltip {
-    position: absolute;
-    display: block;
-    opacity: 1;
-    visibility: visible;
-    z-index: 100;
-    transform: translate(0%,-105%);
-    @media (min-width: 1024px) { 
-      transform: translate(-40%,-105%);
-    }
+  @media (min-width: 1024px) { 
+    left: unset;
+    transform: translate(-40%,-100%);
   }
+}
 
 .clipboard{
   position: absolute;
@@ -42,5 +53,50 @@
 
   &::active{
     display: block;
+  }
+}
+
+@keyframes fadeIn{
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+@-o-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+@-ms-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
   }
 }
