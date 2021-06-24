@@ -5,6 +5,7 @@ import CountDown from "../CountDown/index";
 import TwitterCommunity from "../TwitterCommunity";
 import EthLogo from "../../assets/ethereum-ultra-sound-bat.svg";
 import { useTranslations } from "../../utils/use-translation";
+import FollowingYou from "../FollowingYou";
 
 const fetcher = (url: string) =>
   fetch(url, {
@@ -54,9 +55,14 @@ const ComingSoon: React.FC<{}> = () => {
               />
             </div>
           </div>
-          <div className="flex px-4 md:px-0 py-8 md:py-40">
+          <div className="flex px-4 md:px-0 pt-8 md:pt-40">
             <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
               <TwitterCommunity />
+            </div>
+          </div>
+          <div className="flex px-4 md:px-0 pt-8 md:pt-32 md:pb-40">
+            <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
+              <FollowingYou />
             </div>
           </div>
         </div>

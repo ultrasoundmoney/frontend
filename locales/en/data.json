@@ -13,5 +13,7 @@
   "title_community_hover": "join the ultra sound Twitter fam",
   "description_community": "wear <span id='bat-sound'>🦇🔊</span> on your Twitter name or profile",
   "click_to_join": "click to join...",
-  "profile_follower": "Followers"
+  "profile_follower": "Followers",
+  "title_following_you": "All eyes on you",
+  "teaser_following_you": "find out who of us are already following you"
 }
