@@ -1,7 +1,7 @@
 {
   "title": "ultrasound.money",
   "main_title": "EIP-1559, tentatively™",
-  "meta_description": "ETH is well on it's way to become ultra sound money.",
+  "meta_description": "ETH is well on its way to become ultra sound money.",
   "meta_keywords": "ultra sound money, ethereum, ETH, sound money",
   "og_url": "https://ultrasound.money",
   "og_img": "https://gateway.pinata.cloud/ipfs/QmVpSMAAnWx7vDcL4LxwiBDmmRjC1jiVUheVFTNzcUNxvx",
@@ -10,8 +10,8 @@
   "title_remaning_block": "remaining blocks",
   "countdownNr": "12923000",
   "title_community": "join #XXX fam members",
-  "title_community_hover": "Join The twitter Fam : Ultra Sound Money",
-  "description_community": "wear <span id='bat-sound'>🦇🔊</span> in your Twitter bio or name",
+  "title_community_hover": "join the ultra sound Twitter fam",
+  "description_community": "wear <span id='bat-sound'>🦇🔊</span> on your Twitter name or profile",
   "click_to_join": "click to join...",
   "profile_follower": "Followers"
 }
