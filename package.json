@@ -28,7 +28,8 @@
     "react-loader-spinner": "^4.0.0",
     "react-redux": "^7.2.1",
     "react-transition-group": "1.x",
-    "redux-logger": "^3.0.6"
+    "redux-logger": "^3.0.6",
+    "twemoji": "^13.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
@@ -46,6 +47,7 @@
     "@types/react-redux": "^7.1.9",
     "@types/react-transition-group": "^4.4.0",
     "@types/redux-logger": "^3.0.8",
+    "@types/twemoji": "^12.1.1",
     "@types/uuid": "^8.0.0",
     "@typescript-eslint/eslint-plugin": "^2.21.0",
     "@typescript-eslint/parser": "^2.21.0",

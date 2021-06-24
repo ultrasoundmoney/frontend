@@ -1,6 +1,6 @@
 import * as React from "react";
 import Link from "next/link";
-import EthLogo from "../../assets/Ethereum_logo_2014 2.webp";
+import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 
 const Navigation: React.FC<{ Data?: Data }> = ({ Data }) => {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
@@ -33,17 +33,7 @@ const Navigation: React.FC<{ Data?: Data }> = ({ Data }) => {
               <li className="nav-item">
                 <Link href="/">
                   <a
-                    className="px-3 py-2 flex items-center text-xs leading-snug text-white hover:opacity-75"
-                    href="/"
-                  >
-                    The Process
-                  </a>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link href="/">
-                  <a
-                    className="px-3 py-2 flex items-center text-xs leading-snug text-white hover:opacity-75"
+                    className="px-3 py-2 flex items-center text-xs leading-snug text-blue-shipcove hover:opacity-75"
                     href="/"
                   >
                     The Data
@@ -53,7 +43,7 @@ const Navigation: React.FC<{ Data?: Data }> = ({ Data }) => {
               <li className="nav-item">
                 <Link href="/">
                   <a
-                    className="px-3 py-2 flex items-center text-xs leading-snug text-white hover:opacity-75"
+                    className="px-3 py-2 flex items-center text-xs leading-snug text-blue-shipcove hover:opacity-75"
                     href="/"
                   >
                     Resources
@@ -62,7 +52,7 @@ const Navigation: React.FC<{ Data?: Data }> = ({ Data }) => {
               </li>
               <li className="nav-item">
                 <a
-                  className="px-3 py-2 flex items-center text-xs leading-snug text-white hover:opacity-75"
+                  className="px-3 py-2 flex items-center text-xs leading-snug text-blue-shipcove hover:opacity-75"
                   href="#faqs"
                 >
                   FAQs
@@ -70,7 +60,7 @@ const Navigation: React.FC<{ Data?: Data }> = ({ Data }) => {
               </li>
               <li className="nav-item">
                 <a
-                  className="px-3 py-2 flex items-center text-xs text-white hover:opacity-75 border-gray-100 border-solid border-2 rounded-3xl"
+                  className="px-3 py-2 flex items-center text-xs text-blue-shipcove hover:opacity-75 border-blue-shipcove border-solid border-2 rounded-3xl"
                   href="#join-the-community"
                 >
                   Join The Community
