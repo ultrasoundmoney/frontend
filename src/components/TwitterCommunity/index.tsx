@@ -1,6 +1,8 @@
 import * as React from "react";
 import TwitterProfile from "./TwitterProfile";
 import useSWR from "swr";
+import twemoji from "twemoji";
+
 type TwitterCommunityPros = {
   Data?: Data;
 };
@@ -34,10 +36,9 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = ({ Data }) => {
       ? Data.title_community.replace("#XXX", getFamCount)
       : Data.title_community;
   const handelClickedToCopyText = () => {
-    const getCopyText = document.getElementById("bat-sound").innerHTML;
     if (navigator.clipboard) {
       navigator.clipboard
-        .writeText(getCopyText)
+        .writeText("🦇🔊")
         .then(() => {
           setIsCopied(true);
         })
@@ -76,7 +77,9 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = ({ Data }) => {
         className={`text-white leading-6 md:leading-none text-center font-light text-base lg:text-lg mb-14 ${
           isCopied ? "span-bat-sound-copied" : "span-bat-sound"
         }`}
-        dangerouslySetInnerHTML={{ __html: Data.description_community }}
+        dangerouslySetInnerHTML={{
+          __html: twemoji.parse(Data.description_community),
+        }}
         onClick={handelClickedToCopyText}
         onMouseEnter={handleMouseEnter}
       />

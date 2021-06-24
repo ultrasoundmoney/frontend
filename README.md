@@ -26,13 +26,6 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/zeit/next.js/) - your feedback and contributions are welcome!
 
-## Testing
-
-ALWAYS WRITE TESTS FOR YOU CODE. Define them inside component.test.js, placed alongside your component (or util file). As you develop, always have a terminal open in which you run npm run test to run the test runner in watch mode. We use Jest for unit and snapshot tests and combine it with Enzyme for interaction tests. For easy function mocking and spying, we use Sinon.JS.
-
-## UI Testing
-
-If you are working on a new or existing component, then run `yarn storybook or npm run storybook` to launch Storybook. Here, you can develop your component in isolation first, in a 'visual testing' way. This means you decide on what the component should do, how it should look and which states it can be in, and then define those inside component.stories.js, placed adjacent to the component file in a folder named like the component inside src/components/
 
 ## Coding Style
 
@@ -41,5 +34,5 @@ This repo follows the Eslint Style. To ensure this, a pre-commit hook is run tha
 ## Last But not least
 
 Be happy and spread happiness
-Keep Rocking
-Musa
+Keep Holding 💪
+@ultrasoundmoney
