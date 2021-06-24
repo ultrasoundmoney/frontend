@@ -1,4 +1,5 @@
 import * as React from "react";
+import twemoji from "twemoji";
 import AvatarImg from "../../assets/avatar.webp";
 import { followerCountConvert } from "../Helpers/helper";
 
@@ -49,10 +50,18 @@ const ProfileTooltip: React.FC<ProfileTooltipProps> = ({
               />
             </picture>
           </a>
-          <h1 className="text-white my-3 text-base font-medium">{item.name}</h1>
-          <p className="text-blue-linkwater text-left mb-3 font-light text-xs break-words">
-            {item.bio}
-          </p>
+          <div
+            className="text-white my-3 text-base font-medium tw-profile-text"
+            dangerouslySetInnerHTML={{
+              __html: twemoji.parse(item.name),
+            }}
+          />
+          <p
+            className="text-blue-linkwater text-left mb-3 font-light text-xs break-words tw-profile-text"
+            dangerouslySetInnerHTML={{
+              __html: twemoji.parse(item.bio),
+            }}
+          />
           <p className="text-xs text-blue-spindle text-left font-light uppercase mb-0">
             {Data.profile_follower}
           </p>
