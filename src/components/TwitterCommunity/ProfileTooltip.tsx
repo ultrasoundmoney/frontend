@@ -1,6 +1,7 @@
 import * as React from "react";
 import AvatarImg from "../../assets/avatar.webp";
 import { followerCountConvert } from "../Helpers/helper";
+
 type ProfileTooltipProps = {
   children: React.ReactNode;
   item: {
@@ -17,18 +18,22 @@ const ProfileTooltip: React.FC<ProfileTooltipProps> = ({
   item,
   Data,
 }) => {
+  function imageErrorHandler(e: React.SyntheticEvent<HTMLImageElement, Event>) {
+    const el = e.target as HTMLImageElement;
+    el.onerror = null;
+    el.src = AvatarImg;
+  }
   return (
     <>
       <div className="has-tooltip opacity-50 hover:opacity-100">
         <div className="tooltip shadow-lg rounded-lg bg-blue-tangaroa text-white px-7 py-7 z-10">
-          {window.matchMedia("(max-width: 1023px)").matches ? (
-            <a
-              target="_blank"
-              href={item.profileUrl}
-              rel="noopener noreferrer"
-              role="link"
-              // title={`${item.name}`}
-            >
+          <a
+            target="_blank"
+            href={item.profileUrl}
+            rel="noopener noreferrer"
+            role="link"
+          >
+            <picture>
               <img
                 className="rounded-full"
                 width="80"
@@ -39,25 +44,11 @@ const ProfileTooltip: React.FC<ProfileTooltipProps> = ({
                     ? item.profileImageUrl
                     : AvatarImg
                 }
-                // title={item.name}
                 alt={item.name}
+                onError={imageErrorHandler}
               />
-            </a>
-          ) : (
-            <img
-              className="rounded-full"
-              width="80"
-              height="80"
-              src={
-                item.profileImageUrl !== null &&
-                item.profileImageUrl != undefined
-                  ? item.profileImageUrl
-                  : AvatarImg
-              }
-              // title={item.name}
-              alt={item.name}
-            />
-          )}
+            </picture>
+          </a>
           <h1 className="text-white my-3 text-base font-medium">{item.name}</h1>
           <p className="text-blue-linkwater text-left mb-3 font-light text-xs break-words">
             {item.bio}
