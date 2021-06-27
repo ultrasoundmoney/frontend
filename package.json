@@ -13,7 +13,8 @@
     "test:ci": "jest --ci",
     "commit": "git-cz",
     "prod": "serve out -p 9999",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "format": "prettier --write '{src,styles}/**/*.{ts,tsx,js,jsx}'"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.4.0",
