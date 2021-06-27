@@ -1,8 +1,10 @@
 import * as React from "react";
 import Link from "next/link";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
+import { useTranslations } from "../../utils/use-translation";
 
-const Navigation: React.FC<{ Data?: Data }> = ({ Data }) => {
+const Navigation: React.FC<{}> = () => {
+  const { translations: t } = useTranslations();
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   return (
     <>
@@ -10,7 +12,7 @@ const Navigation: React.FC<{ Data?: Data }> = ({ Data }) => {
         <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
           <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
             <Link href="/">
-              <img src={EthLogo} alt={Data.title} />
+              <img src={EthLogo} alt={t.title} />
             </Link>
             <button
               className="text-white cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-white rounded bg-transparent block lg:hidden outline-none focus:outline-none"

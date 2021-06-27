@@ -3,13 +3,9 @@ import AvatarImg from "../../assets/avatar.webp";
 import ProfileTooltip from "./ProfileTooltip";
 
 type TwitterProfilePros = {
-  Data?: Data;
   profileList: TwitterProfile[];
 };
-const TwitterProfile: React.FC<TwitterProfilePros> = ({
-  Data,
-  profileList,
-}) => {
+const TwitterProfile: React.FC<TwitterProfilePros> = ({ profileList }) => {
   function imageErrorHandler(e: React.SyntheticEvent<HTMLImageElement, Event>) {
     const el = e.target as HTMLImageElement;
     el.onerror = null;
@@ -23,7 +19,7 @@ const TwitterProfile: React.FC<TwitterProfilePros> = ({
             .slice(0, 60)
             .map((item: TwitterProfile, index: number) => (
               <div key={index} className="m-2 w-10 h-10">
-                <ProfileTooltip item={item} Data={Data}>
+                <ProfileTooltip item={item}>
                   {window.matchMedia("(min-width: 1024px)").matches ? (
                     <a
                       target="_blank"

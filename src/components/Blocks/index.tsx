@@ -1,27 +1,28 @@
 import * as React from "react";
+import { useTranslations } from "../../utils/use-translation";
 import Block from "./block";
 
 type EthBlocksPros = {
-  Data?: Data;
   currentBlockNr: number;
 };
-const EthBlocks: React.FC<EthBlocksPros> = ({ currentBlockNr, Data }) => {
-  const remamingBlocks = Number(Data.countdownNr) - currentBlockNr;
+const EthBlocks: React.FC<EthBlocksPros> = ({ currentBlockNr }) => {
+  const { translations: t } = useTranslations();
+  const remamingBlocks = Number(t.countdownNr) - currentBlockNr;
   return (
     <>
       <div className="sm:flex sm:justify-between md:justify-start sm:content-center w-auto">
         <Block
-          title={Data.title_countdown}
-          currentBlockNr={Number(Data.countdownNr)}
+          title={t.title_countdown}
+          currentBlockNr={Number(t.countdownNr)}
           isHas
         />
         <Block
-          title={Data.title_current_block}
+          title={t.title_current_block}
           currentBlockNr={currentBlockNr}
           isHas
         />
         <Block
-          title={Data.title_remaning_block}
+          title={t.title_remaning_block}
           currentBlockNr={remamingBlocks}
           isHas={false}
         />
