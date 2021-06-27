@@ -11,19 +11,19 @@ import FeeBurnedBlcok from "./feeBurn";
 import TheMergeBlock from "./theMerge";
 import EtherTheUltraSound from "./theUltraSound";
 
-const LandingPage: React.FC<{ Data?: Data }> = ({ Data }) => {
+const LandingPage: React.FC<{}> = () => {
   return (
     <>
       <div className="wrapper bg-blue-midnightexpress">
         <div className="container m-auto">
-          <Navigation Data={Data} />
-          <Intro Data={Data} />
-          <BeforeGenesis Data={Data} />
+          <Navigation />
+          <Intro />
+          <BeforeGenesis />
           <GenesisBlock />
           <EIPByzantium />
           <EIPConstantinopole />
           <EIP1559 />
-          <BlockGoal title="It’s Goals?" />
+          <BlockGoal />
           <FeeBurnedBlcok />
           <TheMergeBlock />
           <EtherTheUltraSound />

@@ -1,7 +1,7 @@
 import * as React from "react";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 
-const Timeline: React.FC<{ Data?: Data }> = () => {
+const Timeline: React.FC<{}> = () => {
   return (
     <>
       <div className="timeline_wrapper pl-4 md:pl-0 content-center h-96 mb-12">
@@ -28,27 +28,6 @@ const Timeline: React.FC<{ Data?: Data }> = () => {
         <div className="eclips">
           <div className="eclips-line"></div>
         </div>
-
-        {/* <div className="eclips">
-          <div className="eclips_child"></div>
-        </div>
-        <div className="eclips-line"></div>
-        <div className="eclips">
-          <div className="eclips_child"></div>
-        </div>
-        <div className="eclips-line"></div>
-        <div className="eclips-eth">
-          <img src={EthLogo} alt="ultra sound money" />
-        </div>
-        <div className="eclips-line"></div>
-        <div className="eclips">
-          <div className="eclips_child"></div>
-        </div>
-        <div className="eclips-line"></div>
-        <div className="eclips">
-          <div className="eclips_child"></div>
-        </div>
-        <div className="eclips-line"></div> */}
       </div>
     </>
   );

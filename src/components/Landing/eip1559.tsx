@@ -1,16 +1,16 @@
 import * as React from "react";
 import ContentBlock from "../ContentBlock/ContentBlcok";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
+import { useTranslations } from "../../utils/use-translation";
 
 const EIP1559: React.FC<{}> = () => {
+  const { translations: t } = useTranslations();
   return (
     <>
       <ContentBlock
         img={EthLogo}
-        title={"EIP 1559 aka (The Fee 🔥 Burn)"}
-        text={
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud e "
-        }
+        title={t.landing_eip1559_title}
+        text={t.landing_eip1559_text}
         styles="block-fee-burn"
       />
     </>

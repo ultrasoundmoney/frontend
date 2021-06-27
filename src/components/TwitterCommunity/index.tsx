@@ -1,11 +1,10 @@
 import * as React from "react";
-import TwitterProfile from "./TwitterProfile";
 import useSWR from "swr";
 import twemoji from "twemoji";
+import { useTranslations } from "../../utils/use-translation";
+import TwitterProfile from "./TwitterProfile";
 
-type TwitterCommunityPros = {
-  Data?: Data;
-};
+type TwitterCommunityPros = {};
 const fetcher = (url: string) =>
   fetch(url, {
     method: "GET",
@@ -14,7 +13,9 @@ const fetcher = (url: string) =>
       "Content-Type": "application/json",
     },
   }).then((r) => r.json());
-const TwitterCommunity: React.FC<TwitterCommunityPros> = ({ Data }) => {
+
+const TwitterCommunity: React.FC<TwitterCommunityPros> = () => {
+  const { translations: t } = useTranslations();
   const [isCopied, setIsCopied] = React.useState<boolean>(false);
   const [tool, setTool] = React.useState(false);
   const { data } = useSWR(
@@ -33,8 +34,8 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = ({ Data }) => {
   );
   const getText =
     getFamCount !== undefined
-      ? Data.title_community.replace("#XXX", getFamCount)
-      : Data.title_community;
+      ? t.title_community.replace("#XXX", getFamCount)
+      : t.title_community;
   const handelClickedToCopyText = () => {
     if (navigator.clipboard) {
       navigator.clipboard
@@ -64,7 +65,7 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = ({ Data }) => {
           href="https://twitter.com/i/lists/1376636817089396750/members"
           rel="noopener noreferrer"
           role="link"
-          title={Data.title_community_hover}
+          title={t.title_community_hover}
           className="hover:underline hover:text-blue-spindle relative h-full"
         >
           {getText}
@@ -78,12 +79,12 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = ({ Data }) => {
           isCopied ? "span-bat-sound-copied" : "span-bat-sound"
         }`}
         dangerouslySetInnerHTML={{
-          __html: twemoji.parse(Data.description_community),
+          __html: twemoji.parse(t.description_community),
         }}
         onClick={handelClickedToCopyText}
         onMouseEnter={handleMouseEnter}
       />
-      <TwitterProfile Data={Data} profileList={data && data.profiles} />
+      <TwitterProfile profileList={data && data.profiles} />
     </>
   );
 };

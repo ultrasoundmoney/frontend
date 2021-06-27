@@ -4,10 +4,9 @@ import Navigation from "../Navigation/index";
 type LayoutProps = {
   children: React.ReactNode;
   className?: string;
-  Data?: Data;
 };
 
-const Layout: NextPage<LayoutProps> = ({ children, className, Data }) => {
+const Layout: NextPage<LayoutProps> = ({ children, className }) => {
   const customClass =
     className !== undefined && className.length >= 0
       ? `wrapper bg-blue-midnightexpress ${className}`
@@ -17,7 +16,7 @@ const Layout: NextPage<LayoutProps> = ({ children, className, Data }) => {
     <>
       <div className={customClass}>
         <div className="container m-auto">
-          <Navigation Data={Data} />
+          <Navigation />
           {children}
         </div>
       </div>
