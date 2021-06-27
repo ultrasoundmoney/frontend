@@ -1,0 +1,128 @@
+.emoji_wrapper{
+    display: inline;
+}
+.emoji {
+    display: inline-block;
+    width: 30px;
+    margin: auto 8px;
+}
+.ultra-sound-text {
+    background-image:  linear-gradient(45deg,#ff01e6 0%,#ff5f51 39%,#00ffa3);
+    // font-size: 56px;
+    font-weight: 200;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.59;
+    letter-spacing: normal;
+    text-align: center;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.h-screen-90{
+    height: 90vh;
+}
+.timeline_wrapper{
+    display: flex;
+    width: 100%;
+    padding-top: 120px;
+}
+.eclips{
+    flex: 1 1 0%;
+    position: relative;
+    &::before{
+        content: '';
+        left: 0;
+        top: 0;
+        position: absolute;
+        width: 24px;
+        height:24px;
+        border-radius: 50%;
+        background-color: transparent;
+        border: 2px solid #00ffa3;
+    }
+    &::after{
+        content: '';
+        width: 8px;
+        height:8px;
+        border-radius: 50%;
+        background-color:#00ffa3;
+        position: absolute;
+        top: 8px;
+        left: 8px;
+    }
+    &-line{
+    background-color: transparent;
+    border-top: 1px dashed rgb(112, 112, 112);
+    margin-top: 12px;
+    }
+    &-eth{
+        flex: 1 1 0%;
+        width: 30px;
+        position: relative;
+        bottom: 8px;
+        left: -15px;
+        img{
+            max-width: unset;
+        }
+        &-line-top{
+            background-color: transparent;
+            border-top: 1px dashed rgb(112, 112, 112);
+            transform: rotate(-90deg);
+            width: 100px;
+            position: relative;
+            bottom: 48px;
+            left: -35px;
+        }
+        &-line-right{
+            background-color: transparent;
+            border-top: 1px dashed rgb(112, 112, 112);
+            position: relative;
+            width: calc(100% - 30px);
+            top: -30px;
+            left: 30px;
+        }
+    }
+    &-bottom{
+        position: relative;
+        transform: rotate(270deg);
+        left: -85px;
+        top: 100px;
+        width: 200px;
+        &::before{
+            content: '';
+            left: -25px;
+            top: -11px;
+            position: absolute;
+            width: 24px;
+            height:24px;
+            border-radius: 50%;
+            background-color: transparent;
+            border: 2px solid #00ffa3;
+        }
+        &::after{
+            content: '';
+            width: 8px;
+            height:8px;
+            border-radius: 50%;
+            background-color:#00ffa3;
+            position: absolute;
+            top: -3px;
+            left: -17px;
+        }
+        &__left-0{
+            left: 0;
+            align-self: center;
+        }
+        &-line{
+            background-color: transparent;
+            border-top: 1px dashed rgb(112, 112, 112);
+        }
+    }
+}
+.enther-ultr-sound{
+    background-image: url("../../src/assets/bat-bg/Blurredbg.png");
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: autol
+}
