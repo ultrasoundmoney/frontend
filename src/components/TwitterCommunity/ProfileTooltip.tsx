@@ -1,6 +1,7 @@
 import * as React from "react";
 import twemoji from "twemoji";
 import AvatarImg from "../../assets/avatar.webp";
+import { useTranslations } from "../../utils/use-translation";
 import { followerCountConvert } from "../Helpers/helper";
 
 type ProfileTooltipProps = {
@@ -12,13 +13,9 @@ type ProfileTooltipProps = {
     bio: string;
     followersCount: number;
   };
-  Data?: Data;
 };
-const ProfileTooltip: React.FC<ProfileTooltipProps> = ({
-  children,
-  item,
-  Data,
-}) => {
+const ProfileTooltip: React.FC<ProfileTooltipProps> = ({ children, item }) => {
+  const { translations: t } = useTranslations();
   function imageErrorHandler(e: React.SyntheticEvent<HTMLImageElement, Event>) {
     const el = e.target as HTMLImageElement;
     el.onerror = null;
@@ -63,7 +60,7 @@ const ProfileTooltip: React.FC<ProfileTooltipProps> = ({
             }}
           />
           <p className="text-xs text-blue-spindle text-left font-light uppercase mb-0">
-            {Data.profile_follower}
+            {t.profile_follower}
           </p>
           <p className="text-white text-left font-light text-2xl">
             {followerCountConvert(item.followersCount)}

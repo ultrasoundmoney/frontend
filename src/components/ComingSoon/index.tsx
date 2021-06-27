@@ -4,6 +4,7 @@ import EthBlocks from "../Blocks";
 import CountDown from "../CountDown/index";
 import TwitterCommunity from "../TwitterCommunity";
 import EthLogo from "../../assets/ethereum-ultra-sound-bat.svg";
+import { useTranslations } from "../../utils/use-translation";
 
 const fetcher = (url: string) =>
   fetch(url, {
@@ -16,7 +17,8 @@ const fetcher = (url: string) =>
     }),
   }).then((r) => r.json());
 
-const ComingSoon: React.FC<{ Data?: Data }> = ({ Data }) => {
+const ComingSoon: React.FC<{}> = () => {
+  const { translations: t } = useTranslations();
   const { data } = useSWR(
     "https://eth-mainnet.alchemyapi.io/v2/H74MQLJkSLBJDyaDS2kyH7bXIBvjiTVe",
     fetcher,
@@ -34,10 +36,10 @@ const ComingSoon: React.FC<{ Data?: Data }> = ({ Data }) => {
             <img
               className="text-center m-auto mb-8"
               src={EthLogo}
-              alt={Data.title}
+              alt={t.title}
             />
             <h1 className="text-white font-extralight text-2xl md:text-3xl xl:text-41xl text-center mb-16">
-              {Data.main_title}
+              {t.main_title}
             </h1>
           </div>
           <div className="flex">
@@ -48,14 +50,13 @@ const ComingSoon: React.FC<{ Data?: Data }> = ({ Data }) => {
           <div className="flex">
             <div className="w-full md:w-5/6 lg:w-3/6 md:m-auto px-4 md:px-0">
               <EthBlocks
-                Data={Data}
                 currentBlockNr={currentBlockNumber && currentBlockNumber}
               />
             </div>
           </div>
           <div className="flex px-4 md:px-0 py-8 md:py-40">
             <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
-              <TwitterCommunity Data={Data} />
+              <TwitterCommunity />
             </div>
           </div>
         </div>
