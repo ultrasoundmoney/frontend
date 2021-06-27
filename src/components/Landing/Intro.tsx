@@ -2,7 +2,7 @@ import * as React from "react";
 import Twemoji from "../Twemoji";
 import Timeline from "./timeline";
 
-const Intro: React.FC<{ Data?: Data }> = () => {
+const Intro: React.FC<{}> = () => {
   return (
     <>
       <div className="flex flex-wrap justify-center content-center h-screen-90">

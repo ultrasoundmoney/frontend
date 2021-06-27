@@ -1,6 +1,6 @@
 import * as React from "react";
 
-const Timeline: React.FC<{ Data?: Data }> = () => {
+const Timeline: React.FC<{}> = () => {
   return (
     <>
       <div className="flex flex-wrap justify-center content-end">
