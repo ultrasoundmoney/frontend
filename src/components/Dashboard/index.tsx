@@ -12,7 +12,7 @@ import {
 import { useTranslations } from "../../utils/use-translation";
 import styles from "./Dashboard.module.scss";
 
-const DEFAULT_PROJECTED_ETH_STAKING = 30e6;
+const DEFAULT_PROJECTED_ETH_STAKING = 10e6;
 const DEFAULT_PROJECTED_BASE_GAS_PRICE = 20;
 const DEFAULT_PROJECTED_MERGE_DATE = DateTime.utc(2022, 1, 31);
 const MAX_PROJECTED_MERGE_DATE = DateTime.utc(2022, 12, 31);

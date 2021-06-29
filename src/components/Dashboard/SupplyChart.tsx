@@ -5,8 +5,9 @@ import merge from "lodash/merge";
 import { useDebounce } from "../../utils/use-debounce";
 import { defaultOptions, COLORS } from "./chart-defaults";
 
-import supplyData from "./supply.json";
-import stakingData from "./staking.json";
+import supplyData from "./supply-total.json";
+import stakingData from "./supply-staking.json";
+import contractData from "./supply-in-smart-contracts.json";
 
 interface Props {
   Data?: Data;
@@ -63,43 +64,54 @@ const SupplyChart: React.FC<Props> = ({
 
   const series = React.useMemo((): Highcharts.SeriesOptionsType[] => {
     const stakingByDate = {};
+    stakingData.forEach(({ t, v }) => {
+      stakingByDate[t] = v;
+    });
+
+    const contractByDate = {};
+    contractData.forEach(({ t, v }) => {
+      contractByDate[t] = v;
+    });
+
+    const totalSupplyData: number[][] = [];
+    const contractSeriesData: number[][] = [];
+    const addressSeriesData: number[][] = [];
+    const stakingSeriesData: number[][] = [];
 
     const now = +new Date();
     const oneYearMs = 365 * 24 * 60 * 60 * 1000;
-
-    const stakingChartData: number[][] = [];
-    stakingData.forEach(({ t, v }) => {
-      stakingByDate[t] = v;
-      const date = +new Date(t);
-      if (now - date > oneYearMs) {
-        return;
-      }
-      stakingChartData.push([date, Math.round(v)]);
-    });
-    const totalSupplyData: number[][] = [];
-    const contractData: number[][] = [];
-    const addressData: number[][] = [];
-
     supplyData.forEach(({ t, v }) => {
       // Subtract any staking eth from total supply on that date
       let nonStakingSupply = v;
       if (stakingByDate[t]) {
         nonStakingSupply -= stakingByDate[t];
       }
+      // Only show 1 year of historical data for now
+      // TODO make this dynamic
       const date = +new Date(t);
       if (now - date > oneYearMs) {
         return;
       }
-      // Mock contracts as 12% of supply
-      contractData.push([date, Math.round(nonStakingSupply * 0.12)]);
-      addressData.push([date, Math.round(nonStakingSupply * 0.88)]);
+
+      if (stakingByDate[t]) {
+        stakingSeriesData.push([date, Math.round(stakingByDate[t])]);
+      }
+
+      const inContractsPct = contractByDate[t];
+      let inAddressesValue = nonStakingSupply;
+      if (inContractsPct !== undefined) {
+        const inContractsValue = inContractsPct * v;
+        contractSeriesData.push([date, Math.round(inContractsValue)]);
+        inAddressesValue -= inContractsValue;
+      }
+      addressSeriesData.push([date, Math.round(inAddressesValue)]);
       totalSupplyData.push([date, Math.round(v)]);
     });
 
     // Projections
     const { t: lastDateStr, v: value } = supplyData[supplyData.length - 1];
     const lastDate = new Date(+new Date(lastDateStr) + 1);
-    const lastStakingValue = stakingChartData[stakingChartData.length - 1][1];
+    const lastStakingValue = stakingSeriesData[stakingSeriesData.length - 1][1];
     const stakingDeltaPerDay =
       (variables.projectedStaking - lastStakingValue) / 365;
     const contractProj: number[][] = [];
@@ -135,21 +147,21 @@ const SupplyChart: React.FC<Props> = ({
           type: "area",
           name: Data.supply_chart_series_address,
           color: COLORS.SERIES[0],
-          data: addressData,
+          data: addressSeriesData,
         },
         {
           id: "contracts",
           type: "area",
           name: Data.supply_chart_series_contracts,
           color: COLORS.SERIES[1],
-          data: contractData,
+          data: contractSeriesData,
         },
         {
           id: "staking",
           type: "area",
           name: Data.supply_chart_series_staking,
           color: COLORS.SERIES[2],
-          data: stakingChartData,
+          data: stakingSeriesData,
         },
         {
           id: "addresses_projected",
@@ -234,7 +246,7 @@ const SupplyChart: React.FC<Props> = ({
       },
     };
     return merge({}, defaultOptions, chartOptions);
-  }, [series, Data, handleChartMouseOut, handleChartMouseOver]);
+  }, [series, handleChartMouseOut, handleChartMouseOver]);
 
   return (
     <>
