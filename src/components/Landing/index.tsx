@@ -10,6 +10,8 @@ import BlockGoal from "./goal";
 import FeeBurnedBlcok from "./feeBurn";
 import TheMergeBlock from "./theMerge";
 import EtherTheUltraSound from "./theUltraSound";
+import TwitterCommunity from "../TwitterCommunity";
+import FaqBlock from "./faq";
 
 const LandingPage: React.FC<{}> = () => {
   return (
@@ -27,6 +29,12 @@ const LandingPage: React.FC<{}> = () => {
           <FeeBurnedBlcok />
           <TheMergeBlock />
           <EtherTheUltraSound />
+          <FaqBlock />
+          <div className="flex px-4 md:px-0 py-8 md:py-40">
+            <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
+              <TwitterCommunity />
+            </div>
+          </div>
         </div>
       </div>
     </>

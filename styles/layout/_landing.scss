@@ -117,12 +117,41 @@
         &-line{
             background-color: transparent;
             border-top: 1px dashed rgb(112, 112, 112);
+            &__only{
+                position: relative;
+                transform: rotate(270deg);
+                top: 70px;
+                width: 150px; 
+            }
         }
     }
 }
-.enther-ultr-sound{
-    background-image: url("../../src/assets/bat-bg/Blurredbg.png");
+// .enther-ultr-sound{
+//     background-image: url("../../src/assets/bat-bg/Blurredbg.png");
+//     background-repeat: no-repeat;
+//     background-position: center top;
+//     background-size: auto;
+// }
+.the-merge{
+    background-image: url("../../src/assets/lines-bg.svg");
     background-repeat: no-repeat;
-    background-position: center top;
-    background-size: autol
+    background-position: center center;
+    background-size: auto;
+    height: 100vh;
+    min-height: 100%;
+    z-index: 11;
+    // &::after{
+    //     content: '';
+    //     background-image: url("../../src/assets/bat-bg/Blurredbg.png");
+    //     background-repeat: no-repeat;
+    //     background-position: center 0px;
+    //     background-size: contain;
+    //     height: 100%;
+    //     width: 400px;
+    //     margin: auto;
+    //     position: relative;
+    //     bottom: -100px;
+    //     left: -50px;
+    //     z-index: 0;
+    // }
 }

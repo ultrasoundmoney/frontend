@@ -7,15 +7,15 @@ const TheUltraSound: React.FC<{}> = () => {
     <>
       <div className="flex flex-wrap justify-center content-center enther-ultr-sound h-screen">
         <div className="flex flex-wrap justify-center mb-8">
-          <div className="ultra-sound-text text-2xl md:text-6xl mb-24">
-            Enter The Ultra Sound Money
-          </div>
-          <div className="flex self-center">
+          <div className="flex self-center mb-16">
             <img
               src={BatImg}
               srcSet={`${BatImg2x} 2x,
                     ${BatImg3x} 3x`}
             />
+          </div>
+          <div className="ultra-sound-text text-2xl md:text-6xl mb-24">
+            Enter The Ultra Sound Money
           </div>
         </div>
       </div>
