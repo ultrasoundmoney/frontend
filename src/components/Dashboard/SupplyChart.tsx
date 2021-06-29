@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as Highcharts from "highcharts";
+import { DateTime } from "luxon";
 import HighchartsReact from "highcharts-react-official";
 import merge from "lodash/merge";
 import { useDebounce } from "../../utils/use-debounce";
@@ -8,11 +9,17 @@ import { defaultOptions, COLORS } from "./chart-defaults";
 import supplyData from "./supply-total.json";
 import stakingData from "./supply-staking.json";
 import contractData from "./supply-in-smart-contracts.json";
+import {
+  estimatedDailyFeeBurn,
+  estimatedDailyIssuance,
+  estimatedDailyStakeChange,
+} from "../../utils/metric-utils";
 
 interface Props {
   Data?: Data;
   projectedStaking: number;
   projectedBaseGasPrice: number;
+  projectedMergeDate: DateTime;
 }
 
 let mouseOutTimer: NodeJS.Timeout | null = null;
@@ -26,6 +33,7 @@ const SupplyChart: React.FC<Props> = ({
   Data,
   projectedBaseGasPrice,
   projectedStaking,
+  projectedMergeDate,
 }) => {
   React.useEffect(() => {
     Highcharts.setOptions({
@@ -55,9 +63,10 @@ const SupplyChart: React.FC<Props> = ({
     () => ({
       projectedBaseGasPrice,
       projectedStaking,
+      projectedMergeDate,
       showBreakdown,
     }),
-    [projectedBaseGasPrice, projectedStaking, showBreakdown]
+    [projectedBaseGasPrice, projectedStaking, projectedMergeDate, showBreakdown]
   );
   // Debounce how fast the variables can change to prevent UI from locking up
   const variables = useDebounce(_variables, 50);
@@ -82,10 +91,8 @@ const SupplyChart: React.FC<Props> = ({
     const oneYearMs = 365 * 24 * 60 * 60 * 1000;
     supplyData.forEach(({ t, v }) => {
       // Subtract any staking eth from total supply on that date
-      let nonStakingSupply = v;
-      if (stakingByDate[t]) {
-        nonStakingSupply -= stakingByDate[t];
-      }
+      const stakedSupply = stakingByDate[t] || 0;
+      const unstakedSupply = v - stakedSupply;
       // Only show 1 year of historical data for now
       // TODO make this dynamic
       const date = +new Date(t);
@@ -98,9 +105,10 @@ const SupplyChart: React.FC<Props> = ({
       }
 
       const inContractsPct = contractByDate[t];
-      let inAddressesValue = nonStakingSupply;
+      let inAddressesValue = unstakedSupply;
       if (inContractsPct !== undefined) {
-        const inContractsValue = inContractsPct * v;
+        // In-contract eth includes staked eth
+        const inContractsValue = inContractsPct * v - stakedSupply;
         contractSeriesData.push([date, Math.round(inContractsValue)]);
         inAddressesValue -= inContractsValue;
       }
@@ -112,23 +120,54 @@ const SupplyChart: React.FC<Props> = ({
     const { t: lastDateStr, v: value } = supplyData[supplyData.length - 1];
     const lastDate = new Date(+new Date(lastDateStr) + 1);
     const lastStakingValue = stakingSeriesData[stakingSeriesData.length - 1][1];
-    const stakingDeltaPerDay =
-      (variables.projectedStaking - lastStakingValue) / 365;
+    const lastContractPct = contractData[contractData.length - 1].v;
+
     const contractProj: number[][] = [];
     const addressProj: number[][] = [];
     const stakingProj: number[][] = [];
     const totalSupplyProj: number[][] = [];
+    const mergeDate = variables.projectedMergeDate.toJSDate();
 
-    const supplyValue = value;
+    let supplyValue = value;
     let stakingValue = lastStakingValue;
     for (let i = 0; i < 365; i++) {
-      stakingValue += stakingDeltaPerDay;
-      const nonStakingValue = supplyValue - stakingValue;
-      contractProj.push([+lastDate, Math.round(nonStakingValue * 0.12)]);
-      addressProj.push([+lastDate, Math.round(nonStakingValue * 0.88)]);
+      // Calculate new ETH staking on this day
+      if (stakingValue < variables.projectedStaking) {
+        // Add ETH to approach projected staking value
+        stakingValue = Math.min(
+          variables.projectedStaking,
+          stakingValue + estimatedDailyStakeChange(stakingValue)
+        );
+      } else if (stakingValue > variables.projectedStaking) {
+        // Subtract ETH to approach projected staking value
+        stakingValue = Math.min(
+          variables.projectedStaking,
+          stakingValue - estimatedDailyStakeChange(stakingValue)
+        );
+      }
+
+      // Add in PoS issuance
+      let newIssuance = estimatedDailyIssuance(stakingValue);
+      // If this is berfore the merge, add PoW issuance
+      if (lastDate < mergeDate) {
+        newIssuance += 13500;
+      }
+
+      const burn = estimatedDailyFeeBurn(variables.projectedBaseGasPrice);
+
+      supplyValue = supplyValue + newIssuance - burn;
+
+      const unstakedValue = supplyValue - stakingValue;
+
+      const inContractValue = supplyValue * lastContractPct - stakingValue;
+      const inAddressesValue = unstakedValue - inContractValue;
+
+      contractProj.push([+lastDate, Math.round(inContractValue)]);
+      addressProj.push([+lastDate, Math.round(inAddressesValue)]);
       stakingProj.push([+lastDate, Math.round(stakingValue)]);
       totalSupplyProj.push([+lastDate, supplyValue]);
-      // Reliably round to start of day
+
+      // TODO Reliably round to start of day
       lastDate.setDate(lastDate.getDate() + 1);
       lastDate.setMilliseconds(0);
     }

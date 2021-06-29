@@ -124,6 +124,7 @@ const DashboardPage: React.FC<{ Data?: Data }> = ({ Data }) => {
                 Data={Data}
                 projectedStaking={projectedStaking}
                 projectedBaseGasPrice={projectedBaseGasPrice}
+                projectedMergeDate={projectedMergeDate}
               />
             </div>
 
