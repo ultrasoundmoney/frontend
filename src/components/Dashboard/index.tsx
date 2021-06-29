@@ -1,15 +1,26 @@
 import * as React from "react";
+import { DateTime } from "luxon";
 import Slider from "../Slider/Slider";
 import SupplyChart from "./SupplyChart";
-import styles from "./Dashboard.module.scss";
 import SegmentedControl, {
   Option as SegmentedControlOption,
 } from "../SegmentedControl";
+import {
+  estimatedDailyFeeBurn,
+  estimatedDailyIssuance,
+} from "../../utils/metric-utils";
+import { useTranslations } from "../../utils/use-translation";
+import styles from "./Dashboard.module.scss";
 
 const DEFAULT_PROJECTED_ETH_STAKING = 30e6;
-const DEFAULT_PROJECTED_FEE_BURN_PCT = 70;
+const DEFAULT_PROJECTED_BASE_GAS_PRICE = 20;
+const DEFAULT_PROJECTED_MERGE_DATE = DateTime.utc(2022, 1, 31);
+const MAX_PROJECTED_MERGE_DATE = DateTime.utc(2022, 12, 31);
+
+const intlFormatter = new Intl.NumberFormat();
 
 const DashboardPage: React.FC<{ Data?: Data }> = ({ Data }) => {
+  const { translations: t } = useTranslations();
   const timeRangeOptions = React.useMemo(
     () => [
       {
@@ -36,12 +47,18 @@ const DashboardPage: React.FC<{ Data?: Data }> = ({ Data }) => {
     [Data]
   );
 
+  // TODO Initialize this to current amount of ETH staked
   const [projectedStaking, setProjectedStaking] = React.useState(
     DEFAULT_PROJECTED_ETH_STAKING
   );
-  const [projectedFeeBurn, setProjectedFeeBurn] = React.useState(
-    DEFAULT_PROJECTED_FEE_BURN_PCT
+  // TODO Initialize this to current base gas price
+  const [projectedBaseGasPrice, setProjectedBaseGasPrice] = React.useState(
+    DEFAULT_PROJECTED_BASE_GAS_PRICE
   );
+  const [projectedMergeDate, setProjectedMergeDate] = React.useState(
+    DEFAULT_PROJECTED_MERGE_DATE
+  );
+
   const [timeRange, setTimeRange] = React.useState(timeRangeOptions[1].value);
 
   const handleProjectedStakingChange = React.useCallback(
@@ -51,9 +68,20 @@ const DashboardPage: React.FC<{ Data?: Data }> = ({ Data }) => {
     []
   );
 
-  const handleProjectedFeeBurnChange = React.useCallback(
+  const handleProjectedBaseGasPriceChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setProjectedFeeBurn(parseInt(e.target.value));
+      setProjectedBaseGasPrice(parseInt(e.target.value));
+    },
+    []
+  );
+
+  const handleProjectedMergeDateChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const numDays: number = parseInt(e.target.value);
+      const projectedDate = DateTime.utc()
+        .startOf("day")
+        .plus({ days: numDays });
+      setProjectedMergeDate(projectedDate);
     },
     []
   );
@@ -64,6 +92,15 @@ const DashboardPage: React.FC<{ Data?: Data }> = ({ Data }) => {
     },
     []
   );
+
+  const daysUntilProjectedMerge = projectedMergeDate.diff(
+    DateTime.utc().startOf("day"),
+    "days"
+  ).days;
+  const daysUntilMaxProjectedMerge = MAX_PROJECTED_MERGE_DATE.diff(
+    DateTime.utc().startOf("day"),
+    "days"
+  ).days;
 
   return (
     <>
@@ -86,7 +123,7 @@ const DashboardPage: React.FC<{ Data?: Data }> = ({ Data }) => {
               <SupplyChart
                 Data={Data}
                 projectedStaking={projectedStaking}
-                projectedFeeBurn={projectedFeeBurn}
+                projectedBaseGasPrice={projectedBaseGasPrice}
               />
             </div>
 
@@ -105,29 +142,62 @@ const DashboardPage: React.FC<{ Data?: Data }> = ({ Data }) => {
                     {Data.eth_staked}
                   </div>
                   <div className="text-xl text-white text-left font-light">
-                    {new Intl.NumberFormat().format(projectedStaking)}
+                    {intlFormatter.format(projectedStaking)}
+                  </div>
+                  <div className="text-sm text-blue-spindle font-light">
+                    PoS issuance:{" "}
+                    {intlFormatter.format(
+                      estimatedDailyIssuance(projectedStaking)
+                    )}{" "}
+                    {t.eth_per_day}
                   </div>
                   <Slider
-                    min={5e6}
-                    max={65e6}
+                    min={0}
+                    max={33554432}
                     value={projectedStaking}
                     step={1e6}
                     onChange={handleProjectedStakingChange}
                   />
                 </div>
-                <div className="mt-3">
+                <div className="mt-4">
                   <div className="text-xs text-blue-spindle text-left font-light uppercase leading-2">
-                    {Data.fee_burn_pct}
+                    {Data.base_gas_price}
                   </div>
                   <div className="text-xl text-white text-left font-light">
-                    {new Intl.NumberFormat().format(projectedFeeBurn)}%
+                    {intlFormatter.format(projectedBaseGasPrice)} Gwei
+                  </div>
+                  <div className="text-sm text-blue-spindle font-light">
+                    Fee burn:{" "}
+                    {intlFormatter.format(
+                      estimatedDailyFeeBurn(projectedBaseGasPrice)
+                    )}{" "}
+                    {t.eth_per_day}
                   </div>
                   <Slider
                     min={0}
-                    max={100}
-                    value={projectedFeeBurn}
+                    max={1000}
+                    value={projectedBaseGasPrice}
                     step={1}
-                    onChange={handleProjectedFeeBurnChange}
+                    onChange={handleProjectedBaseGasPriceChange}
+                  />
+                </div>
+                <div className="mt-4">
+                  <div className="text-xs text-blue-spindle font-light uppercase leading-2">
+                    {Data.merge_date}
+                  </div>
+                  <div className="text-xl text-white font-light">
+                    {projectedMergeDate.toLocaleString(DateTime.DATE_MED)}
+                  </div>
+                  <div className="text-sm text-blue-spindle font-light">
+                    Days until merge:{" "}
+                    {intlFormatter.format(daysUntilProjectedMerge)}
+                  </div>
+                  <Slider
+                    min={0}
+                    max={daysUntilMaxProjectedMerge}
+                    value={daysUntilProjectedMerge}
+                    step={1}
+                    onChange={handleProjectedMergeDateChange}
                   />
                 </div>
               </div>

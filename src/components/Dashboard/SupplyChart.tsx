@@ -11,7 +11,7 @@ import stakingData from "./staking.json";
 interface Props {
   Data?: Data;
   projectedStaking: number;
-  projectedFeeBurn: number;
+  projectedBaseGasPrice: number;
 }
 
 let mouseOutTimer: NodeJS.Timeout | null = null;
@@ -23,7 +23,7 @@ interface HighchartsRef {
 
 const SupplyChart: React.FC<Props> = ({
   Data,
-  projectedFeeBurn,
+  projectedBaseGasPrice,
   projectedStaking,
 }) => {
   React.useEffect(() => {
@@ -52,11 +52,11 @@ const SupplyChart: React.FC<Props> = ({
 
   const _variables = React.useMemo(
     () => ({
-      projectedFeeBurn,
+      projectedBaseGasPrice,
       projectedStaking,
       showBreakdown,
     }),
-    [projectedFeeBurn, projectedStaking, showBreakdown]
+    [projectedBaseGasPrice, projectedStaking, showBreakdown]
   );
   // Debounce how fast the variables can change to prevent UI from locking up
   const variables = useDebounce(_variables, 50);
