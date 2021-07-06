@@ -1,6 +1,6 @@
 {
   "title": "ultrasound.money",
-  "main_title": "EIP-1559, tentatively™",
+  "main_title": "EIP-1559 activation",
   "meta_description": "ETH is well on its way to become ultra sound money.",
   "meta_keywords": "ultra sound money, ethereum, ETH, sound money",
   "og_url": "https://ultrasound.money",
@@ -8,7 +8,7 @@
   "title_countdown": "fork block",
   "title_current_block": "current block",
   "title_remaning_block": "remaining blocks",
-  "countdownNr": "12923000",
+  "countdownNr": "12965000",
   "title_community": "join #XXX fam members",
   "title_community_hover": "join the ultra sound Twitter fam",
   "description_community": "wear <span id='bat-sound'>🦇🔊</span> on your Twitter name or profile",
