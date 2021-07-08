@@ -97,7 +97,7 @@ const SupplyChart: React.FC<Props> = ({
       const date = DateTime.fromISO(t, { zone: "utc" });
       const dateMillis = date.toMillis();
       if (stakingByDate[t]) {
-        stakingSeriesData.push([dateMillis, Math.round(stakingByDate[t])]);
+        stakingSeriesData.push([dateMillis, stakingByDate[t]]);
       }
 
       const inContractsPct = contractByDate[t];
@@ -106,11 +106,11 @@ const SupplyChart: React.FC<Props> = ({
         // Glassnode's ETH in contract data includes staked ETH, so we need
         // to subtract it here since we render staked ETH separately
         const inContractsValue = inContractsPct * v - stakedSupply;
-        contractSeriesData.push([dateMillis, Math.round(inContractsValue)]);
+        contractSeriesData.push([dateMillis, inContractsValue]);
         inAddressesValue -= inContractsValue;
       }
-      addressSeriesData.push([dateMillis, Math.round(inAddressesValue)]);
-      totalSupplyData.push([dateMillis, Math.round(v)]);
+      addressSeriesData.push([dateMillis, inAddressesValue]);
+      totalSupplyData.push([dateMillis, v]);
     });
 
     // Projections
@@ -175,10 +175,10 @@ const SupplyChart: React.FC<Props> = ({
       }
 
       const lastDateMillis = lastDate.toMillis();
-      contractProj.push([lastDateMillis, Math.round(inContractValue)]);
-      addressProj.push([lastDateMillis, Math.round(inAddressesValue)]);
-      stakingProj.push([lastDateMillis, Math.round(stakingValue)]);
-      totalSupplyProj.push([lastDateMillis, Math.round(supplyValue)]);
+      contractProj.push([lastDateMillis, inContractValue]);
+      addressProj.push([lastDateMillis, inAddressesValue]);
+      stakingProj.push([lastDateMillis, stakingValue]);
+      totalSupplyProj.push([lastDateMillis, supplyValue]);
 
       lastDate = lastDate.plus({ days: 1 }).startOf("day");
     }
@@ -193,11 +193,23 @@ const SupplyChart: React.FC<Props> = ({
     if (variables.showBreakdown) {
       series = [
         {
+          id: "total_supply_invisible",
+          type: "area",
+          name: t.total_eth_supply,
+          color: COLORS.SERIES[5],
+          data: totalSupplyData,
+          opacity: 0,
+          showInLegend: false,
+          stacking: undefined,
+          stack: "total_supply_invisible",
+        },
+        {
           id: "addresses",
           type: "area",
           name: t.supply_chart_series_address,
           color: COLORS.SERIES[0],
           data: addressSeriesData,
+          marker: { symbol: "circle" },
         },
         {
           id: "contracts",
@@ -205,6 +217,7 @@ const SupplyChart: React.FC<Props> = ({
           name: t.supply_chart_series_contracts,
           color: COLORS.SERIES[1],
           data: contractSeriesData,
+          marker: { symbol: "square" },
         },
         {
           id: "staking",
@@ -212,6 +225,18 @@ const SupplyChart: React.FC<Props> = ({
           name: t.supply_chart_series_staking,
           color: COLORS.SERIES[2],
           data: stakingSeriesData,
+          marker: { symbol: "diamond" },
+        },
+        {
+          id: "total_supply_projected_invisible",
+          type: "area",
+          name: `${t.total_eth_supply} (${t.projected})`,
+          data: totalSupplyProj,
+          color: COLORS.SERIES[5],
+          opacity: 0,
+          showInLegend: false,
+          stacking: undefined,
+          stack: "total_supply_projected_invisible",
         },
         {
           id: "addresses_projected",
@@ -219,6 +244,7 @@ const SupplyChart: React.FC<Props> = ({
           name: `${t.supply_chart_series_address} (${t.projected})`,
           data: addressProj,
           color: COLORS.SERIES[0],
+          marker: { symbol: "circle" },
           ...projSeriesOptions,
         },
         {
@@ -227,6 +253,7 @@ const SupplyChart: React.FC<Props> = ({
           name: `${t.supply_chart_series_contracts} (${t.projected})`,
           data: contractProj,
           color: COLORS.SERIES[1],
+          marker: { symbol: "square" },
           ...projSeriesOptions,
         },
         {
@@ -235,6 +262,7 @@ const SupplyChart: React.FC<Props> = ({
           name: `${t.supply_chart_series_staking} (${t.projected})`,
           data: stakingProj,
           color: COLORS.SERIES[2],
+          marker: { symbol: "diamond" },
           ...projSeriesOptions,
         },
       ];
@@ -292,6 +320,36 @@ const SupplyChart: React.FC<Props> = ({
       series,
       xAxis: {
         type: "datetime",
+        /*
+        plotLines: [
+          {
+            value: DateTime.fromISO("2021-08-04T00:00:00Z").toMillis(),
+            color: COLORS.LABEL,
+            width: 1,
+            label: {
+              text: "EIP 1559",
+              style: {
+                color: COLORS.LABEL,
+              },
+              y: 2,
+            },
+            zIndex: 2,
+          },
+          {
+            value: variables.projectedMergeDate.toMillis(),
+            color: COLORS.LABEL,
+            width: 1,
+            label: {
+              text: "Merge",
+              style: {
+                color: COLORS.LABEL,
+              },
+              y: 2,
+            },
+            zIndex: 2,
+          },
+        ],
+        */
       },
       yAxis: {
         min: 0,
@@ -301,7 +359,11 @@ const SupplyChart: React.FC<Props> = ({
         },
       },
       tooltip: {
-        split: true,
+        shared: true,
+        // split: true,
+        valueDecimals: 0,
+        valueSuffix: " ETH",
+        xDateFormat: "%Y-%m-%d",
       },
     };
     return merge({}, defaultOptions, chartOptions);
