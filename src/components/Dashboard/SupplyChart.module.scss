@@ -9,3 +9,50 @@
   // Match the fill-opacity for projected series
   opacity: 0.4;
 }
+
+.supplyChart :global(.tt-header) {
+  display: flex;
+  align-items: center;
+  line-height: 1;
+  margin-bottom: 5px;
+}
+.supplyChart :global(.tt-header-date) {
+  color: white;
+  font-size: 16px;
+}
+.supplyChart :global(.tt-header-projected) {
+  margin: -2px 0 0 6px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  font-weight: bold;
+  color: white;
+  opacity: 0.7;
+}
+.supplyChart :global(.tt-root td) {
+  padding: 2px 0;
+}
+.supplyChart :global(.tt-root td:last-child) {
+  padding-left: 12px;
+  text-align: right;
+  font-weight: bold;
+}
+.supplyChart :global(.tt-series) {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  line-height: 1;
+}
+.supplyChart :global(.tt-series-color) {
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  margin-right: 6px;
+}
+// Style overrides for "total" row
+.supplyChart :global(.tt-total-row td) {
+  padding-top: 5px;
+}
+.supplyChart :global(.tt-total-row .tt-series-name) {
+  font-weight: bold;
+}

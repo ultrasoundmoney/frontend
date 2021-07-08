@@ -12,7 +12,11 @@ import styles from "./Dashboard.module.scss";
 const MIN_PROJECTED_ETH_STAKING = 1e6;
 const DEFAULT_PROJECTED_ETH_STAKING = 10e6;
 const MAX_PROJECTED_ETH_STAKING = 33554432;
+
+const MIN_PROJECTED_BASE_GAS_PRICE = 0;
 const DEFAULT_PROJECTED_BASE_GAS_PRICE = 20;
+const MAX_PROJECTED_BASE_GAS_PRICE = 200;
+
 const DEFAULT_PROJECTED_MERGE_DATE = DateTime.utc(2022, 1, 31);
 const MAX_PROJECTED_MERGE_DATE = DateTime.utc(2022, 12, 31);
 
@@ -125,8 +129,8 @@ const DashboardPage: React.FC<{}> = () => {
                   {t.eth_per_day} {t.fee_burn}
                 </div>
                 <Slider
-                  min={0}
-                  max={1000}
+                  min={MIN_PROJECTED_BASE_GAS_PRICE}
+                  max={MAX_PROJECTED_BASE_GAS_PRICE}
                   value={projectedBaseGasPrice}
                   step={1}
                   onChange={handleProjectedBaseGasPriceChange}

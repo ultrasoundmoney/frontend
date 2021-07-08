@@ -24,12 +24,14 @@ interface Props {
   projectedMergeDate: DateTime;
 }
 
-let mouseOutTimer: NodeJS.Timeout | null = null;
-
 interface HighchartsRef {
   chart: Highcharts.Chart;
   container: React.RefObject<HTMLDivElement>;
 }
+
+const intlFormatter = new Intl.NumberFormat();
+
+let mouseOutTimer: NodeJS.Timeout | null = null;
 
 const NUM_DAYS_PER_POINT = 7;
 
@@ -79,7 +81,10 @@ const SupplyChart: React.FC<Props> = ({
   // Debounce how fast the variables can change to prevent UI from locking up
   const variables = useDebounce(_variables, 50);
 
-  const series = React.useMemo((): Highcharts.SeriesOptionsType[] => {
+  const [series, totalSupplyByDate] = React.useMemo((): [
+    Highcharts.SeriesOptionsType[],
+    Record<string, number>
+  ] => {
     const stakingByDate = {};
     stakingData.forEach(({ t, v }) => {
       stakingByDate[t] = v;
@@ -89,6 +94,8 @@ const SupplyChart: React.FC<Props> = ({
     contractData.forEach(({ t, v }) => {
       contractByDate[t] = v;
     });
+
+    const supplyByDate: Record<string, number> = {};
 
     const supplySeriesData: number[][] = [];
     const contractSeriesData: number[][] = [];
@@ -125,6 +132,7 @@ const SupplyChart: React.FC<Props> = ({
 
       addressSeriesData.push([dateMillis, inAddressesValue]);
       supplySeriesData.push([dateMillis, v]);
+      supplyByDate[dateMillis] = v;
     });
 
     // Projections
@@ -199,6 +207,7 @@ const SupplyChart: React.FC<Props> = ({
       addressProj.push([projDateMillis, inAddressesValue]);
       stakingProj.push([projDateMillis, stakingValue]);
       supplyProj.push([projDateMillis, adjustedSupplyValue]);
+      supplyByDate[projDateMillis] = adjustedSupplyValue;
     }
 
     const projSeriesOptions: Partial<Highcharts.SeriesAreaOptions> = {
@@ -210,17 +219,6 @@ const SupplyChart: React.FC<Props> = ({
     let series: Highcharts.SeriesAreaOptions[] = [];
     if (variables.showBreakdown) {
       series = [
-        {
-          id: "total_supply_invisible",
-          type: "area",
-          name: t.total_supply,
-          color: COLORS.SERIES[5],
-          data: supplySeriesData,
-          opacity: 0,
-          showInLegend: false,
-          stacking: undefined,
-          stack: "total_supply_invisible",
-        },
         {
           id: "addresses",
           type: "area",
@@ -247,17 +245,6 @@ const SupplyChart: React.FC<Props> = ({
           data: stakingSeriesData,
           marker: { symbol: "diamond" },
           stack: "historical",
-        },
-        {
-          id: "total_supply_projected_invisible",
-          type: "area",
-          name: `${t.total_supply} (${t.projected})`,
-          data: supplyProj,
-          color: COLORS.SERIES[5],
-          opacity: 0,
-          showInLegend: false,
-          stacking: undefined,
-          stack: "total_supply_projected_invisible",
         },
         {
           id: "addresses_projected",
@@ -293,14 +280,14 @@ const SupplyChart: React.FC<Props> = ({
     } else {
       series = [
         {
-          id: "total_supply",
+          id: "supply",
           type: "area",
           name: t.historical_supply,
           color: COLORS.SERIES[0],
           data: supplySeriesData,
         },
         {
-          id: "total_supply_projected",
+          id: "supply_projected",
           type: "area",
           name: `${t.eth_supply} (${t.projected})`,
           data: supplyProj,
@@ -311,7 +298,7 @@ const SupplyChart: React.FC<Props> = ({
       ];
     }
 
-    return series;
+    return [series, supplyByDate];
   }, [variables, t]);
 
   const options = React.useMemo((): Highcharts.Options => {
@@ -330,13 +317,16 @@ const SupplyChart: React.FC<Props> = ({
           events: {
             mouseOut: handleChartMouseOut,
             mouseOver: handleChartMouseOver,
+            legendItemClick: function (e) {
+              e.preventDefault();
+            },
           },
         },
       },
       legend: {
         labelFormatter: function () {
           const s = this as Highcharts.Series;
-          if (s.userOptions.id === "total_supply_projected") {
+          if (s.userOptions.id === "supply_projected") {
             return t.projected_supply;
           }
           return s.name;
@@ -345,6 +335,8 @@ const SupplyChart: React.FC<Props> = ({
       series,
       xAxis: {
         type: "datetime",
+        minPadding: 0,
+        maxPadding: 0,
         /*
         plotLines: [
           {
@@ -378,7 +370,8 @@ const SupplyChart: React.FC<Props> = ({
       },
       yAxis: {
         min: 0,
-        max: 150e6,
+        max: 140e6,
+        tickInterval: 20e6,
         title: {
           text: undefined,
           // text: "ETH",
@@ -388,12 +381,62 @@ const SupplyChart: React.FC<Props> = ({
         shared: true,
         // split: true,
         valueDecimals: 0,
-        valueSuffix: " ETH",
         xDateFormat: "%Y-%m-%d",
+        useHTML: true,
+        formatter: function () {
+          let points = (this.points || []).slice(0);
+
+          // Historical/projected overlap at current date; only show historical on that date
+          if (points.length > 4) {
+            points = points.filter(
+              (p) => !p.series.userOptions.id.includes("projected")
+            );
+          }
+
+          const isProjected = points[0].series.userOptions.id.includes(
+            "projected"
+          );
+
+          const dt = DateTime.fromMillis(this.x, { zone: "utc" });
+          const header = `<div class="tt-header"><div class="tt-header-date">${dt.toISODate()}</div>${
+            isProjected
+              ? `<div class="tt-header-projected">(${t.projected})</div>`
+              : ""
+          }</div>`;
+
+          const rows = points.map(
+            (p) =>
+              `<tr>
+              <td>
+                <div class="tt-series">
+                  <div class="tt-series-color" style="background-color:${
+                    p.series.userOptions.color
+                  }"></div>
+                  <div class="tt-series-name">${
+                    p.series.name.split(" (")[0]
+                  }</div>
+                </div>
+              </td>
+              <td>${intlFormatter.format(Math.round(p.y))} ETH</td>
+              </tr>`
+          );
+
+          // Show total supply last
+          const total = totalSupplyByDate[this.x];
+          rows.push(
+            `<tr class="tt-total-row">
+              <td><div class="tt-series-name">${t.total_supply}</div></td>
+              <td>${intlFormatter.format(Math.round(total))} ETH</td>
+            </tr>`
+          );
+
+          const table = `<table><tbody>${rows.join("")}</tbody></table>`;
+          return `<div class="tt-root">${header}${table}</div>`;
+        },
       },
     };
     return merge({}, defaultOptions, chartOptions);
-  }, [series, handleChartMouseOut, handleChartMouseOver, t]);
+  }, [series, handleChartMouseOut, handleChartMouseOver, t, totalSupplyByDate]);
 
   return (
     <>
