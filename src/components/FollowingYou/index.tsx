@@ -1,31 +1,36 @@
 import * as React from "react";
 import { useTranslations } from "../../utils/use-translation";
+import TwitterProfile from "../TwitterCommunity/TwitterProfile";
 
 type Empty = { type: "empty" };
-type FollowedByCount = { type: "followedByCount"; count: number };
+type FollowedBy = {
+  type: "followedByCount";
+  count: number;
+  followers: TwitterProfile[];
+};
 type HandleNotFound = { type: "handleNotFound" };
 type Searching = { type: "searching" };
 
-type FollowedByResult = FollowedByCount | HandleNotFound | Empty | Searching;
+type FollowedByResult = FollowedBy | HandleNotFound | Empty | Searching;
 
 const FollowingYou: React.FC = () => {
   const { translations: t } = useTranslations();
   const [handle, setHandle] = React.useState<string>("");
-  const [followedByCount, setFollowedByCount] = React.useState<
-    FollowedByResult
-  >({ type: "empty" });
+  const [followers, setFollowers] = React.useState<FollowedByResult>({
+    type: "empty",
+  });
 
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     event.preventDefault();
 
-    setFollowedByCount({ type: "searching" });
+    setFollowers({ type: "searching" });
 
     const cleanHandle = handle.startsWith("@") ? handle.slice(1) : handle;
 
     const res = await fetch(
-      `https://api.ultrasound.money/fam/${cleanHandle}/followed-by-count`,
+      `https://api.ultrasound.money/fam/${cleanHandle}/followed-by`,
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -35,14 +40,15 @@ const FollowingYou: React.FC = () => {
     );
 
     if (res.status === 404) {
-      setFollowedByCount({ type: "handleNotFound" });
+      setFollowers({ type: "handleNotFound" });
       return;
     }
 
     const body = await res.json();
-    setFollowedByCount({
+    setFollowers({
       type: "followedByCount",
-      count: body.followedByCount,
+      count: body.count,
+      followers: body.followers,
     });
   };
 
@@ -71,20 +77,20 @@ const FollowingYou: React.FC = () => {
           Show Me →
         </button>
       </form>
-      {followedByCount.type === "empty" ? null : followedByCount.type ===
+      {followers.type === "empty" ? null : followers.type ===
         "handleNotFound" ? (
         <p className="text-white text-xl p-8 text-center">handle not found</p>
-      ) : followedByCount.type === "searching" ? (
+      ) : followers.type === "searching" ? (
         <p className="text-white text-xl p-8 text-center">searching...</p>
-      ) : followedByCount.type === "followedByCount" ? (
-        <>
-          <p className="text-white text-4xl pt-8 font-bold pb-4 text-center">
-            {followedByCount.count}
-          </p>
-          <p className="text-white text-2xl pb-8 text-center max-w-md mx-auto">
-            {"🦇".repeat(followedByCount.count)}
-          </p>
-        </>
+      ) : followers.type === "followedByCount" ? (
+        <div className="my-8">
+          <TwitterProfile profileList={followers.followers} />
+          {followers.count > followers.followers.length && (
+            <p className="text-white text-xl p-8 text-center">{`+${
+              followers.count - followers.followers.length
+            } more!`}</p>
+          )}
+        </div>
       ) : (
         <p>error</p>
       )}
