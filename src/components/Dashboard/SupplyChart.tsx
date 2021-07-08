@@ -282,6 +282,7 @@ const SupplyChart: React.FC<Props> = ({
           data: totalSupplyProj,
           color: COLORS.SERIES[0],
           ...projSeriesOptions,
+          showInLegend: true,
         },
       ];
     }

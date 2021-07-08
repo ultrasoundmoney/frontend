@@ -2,3 +2,10 @@
   // Start series with a space, instead of a dash
   stroke-dashoffset: 4px;
 }
+
+.supplyChart
+  :global(.highcharts-legend-item.highcharts-series-1:last-child
+    .highcharts-point) {
+  // Match the fill-opacity for projected series
+  opacity: 0.4;
+}
