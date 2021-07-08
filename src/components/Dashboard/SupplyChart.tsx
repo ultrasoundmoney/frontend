@@ -33,6 +33,10 @@ interface HighchartsRef {
 
 const NUM_DAYS_PER_POINT = 7;
 
+function last<T>(arr: T[]): T | undefined {
+  return arr[arr.length - 1];
+}
+
 const SupplyChart: React.FC<Props> = ({
   projectedBaseGasPrice,
   projectedStaking,
@@ -86,7 +90,7 @@ const SupplyChart: React.FC<Props> = ({
       contractByDate[t] = v;
     });
 
-    const totalSupplyData: number[][] = [];
+    const supplySeriesData: number[][] = [];
     const contractSeriesData: number[][] = [];
     const addressSeriesData: number[][] = [];
     const stakingSeriesData: number[][] = [];
@@ -120,31 +124,29 @@ const SupplyChart: React.FC<Props> = ({
       }
 
       addressSeriesData.push([dateMillis, inAddressesValue]);
-      totalSupplyData.push([dateMillis, v]);
+      supplySeriesData.push([dateMillis, v]);
     });
 
     // Projections
-    const { t: firstDateStr } = supplyData[0];
-    const { t: lastDateStr, v: lastSupplyValue } = supplyData[
-      supplyData.length - 1
-    ];
-    const firstDate = DateTime.fromISO(firstDateStr, { zone: "utc" });
-    const lastDate = DateTime.fromISO(lastDateStr, { zone: "utc" });
-    const daysOfData = lastDate.diff(firstDate, "days").days;
-    // Projection should be 1/3 of chart
-    const daysOfProjection = Math.floor(daysOfData / 2);
-    const lastStakingValue = stakingSeriesData[stakingSeriesData.length - 1][1];
-    const lastContractValue =
-      contractSeriesData[contractSeriesData.length - 1][1];
+    const lastSupplyPoint = last(supplySeriesData);
+    const lastStakingPoint = last(stakingSeriesData);
+    const lastAddressPoint = last(addressSeriesData);
+    const lastContractPoint = last(contractSeriesData);
 
-    const contractProj: number[][] = [];
-    const addressProj: number[][] = [];
-    const stakingProj: number[][] = [];
-    const totalSupplyProj: number[][] = [];
+    // Projection should be 1/3 of chart
+    const firstDate = DateTime.fromISO(supplyData[0].t, { zone: "utc" });
+    const lastDate = DateTime.fromISO(last(supplyData).t, { zone: "utc" });
+    const daysOfData = lastDate.diff(firstDate, "days").days;
+    const daysOfProjection = Math.floor(daysOfData / 2);
+
+    const contractProj: number[][] = [lastContractPoint];
+    const addressProj: number[][] = [lastAddressPoint];
+    const stakingProj: number[][] = [lastStakingPoint];
+    const supplyProj: number[][] = [lastSupplyPoint];
     const mergeDate = variables.projectedMergeDate.toSeconds();
 
-    let supplyValue = lastSupplyValue;
-    let stakingValue = lastStakingValue;
+    let supplyValue = lastSupplyPoint[1];
+    let stakingValue = lastStakingPoint[1];
     for (let i = 0; i < daysOfProjection; i++) {
       const projDate = lastDate.plus({ days: i + 1 }).startOf("day");
 
@@ -181,7 +183,7 @@ const SupplyChart: React.FC<Props> = ({
 
       const nonStakingValue = Math.max(supplyValue - stakingValue, 0);
 
-      let inContractValue = Math.min(lastContractValue, nonStakingValue);
+      let inContractValue = Math.min(lastContractPoint[1], nonStakingValue);
       let inAddressesValue = nonStakingValue - inContractValue;
       // Make sure ETH in addresses doesn't dip way below ETH in contracts
       if (inAddressesValue < inContractValue * 0.5) {
@@ -196,7 +198,7 @@ const SupplyChart: React.FC<Props> = ({
       contractProj.push([projDateMillis, inContractValue]);
       addressProj.push([projDateMillis, inAddressesValue]);
       stakingProj.push([projDateMillis, stakingValue]);
-      totalSupplyProj.push([projDateMillis, adjustedSupplyValue]);
+      supplyProj.push([projDateMillis, adjustedSupplyValue]);
     }
 
     const projSeriesOptions: Partial<Highcharts.SeriesAreaOptions> = {
@@ -213,7 +215,7 @@ const SupplyChart: React.FC<Props> = ({
           type: "area",
           name: t.total_supply,
           color: COLORS.SERIES[5],
-          data: totalSupplyData,
+          data: supplySeriesData,
           opacity: 0,
           showInLegend: false,
           stacking: undefined,
@@ -226,6 +228,7 @@ const SupplyChart: React.FC<Props> = ({
           color: COLORS.SERIES[0],
           data: addressSeriesData,
           marker: { symbol: "circle" },
+          stack: "historical",
         },
         {
           id: "contracts",
@@ -234,6 +237,7 @@ const SupplyChart: React.FC<Props> = ({
           color: COLORS.SERIES[1],
           data: contractSeriesData,
           marker: { symbol: "square" },
+          stack: "historical",
         },
         {
           id: "staking",
@@ -242,12 +246,13 @@ const SupplyChart: React.FC<Props> = ({
           color: COLORS.SERIES[2],
           data: stakingSeriesData,
           marker: { symbol: "diamond" },
+          stack: "historical",
         },
         {
           id: "total_supply_projected_invisible",
           type: "area",
           name: `${t.total_supply} (${t.projected})`,
-          data: totalSupplyProj,
+          data: supplyProj,
           color: COLORS.SERIES[5],
           opacity: 0,
           showInLegend: false,
@@ -261,6 +266,7 @@ const SupplyChart: React.FC<Props> = ({
           data: addressProj,
           color: COLORS.SERIES[0],
           marker: { symbol: "circle" },
+          stack: "projected",
           ...projSeriesOptions,
         },
         {
@@ -270,6 +276,7 @@ const SupplyChart: React.FC<Props> = ({
           data: contractProj,
           color: COLORS.SERIES[1],
           marker: { symbol: "square" },
+          stack: "projected",
           ...projSeriesOptions,
         },
         {
@@ -279,6 +286,7 @@ const SupplyChart: React.FC<Props> = ({
           data: stakingProj,
           color: COLORS.SERIES[2],
           marker: { symbol: "diamond" },
+          stack: "projected",
           ...projSeriesOptions,
         },
       ];
@@ -289,13 +297,13 @@ const SupplyChart: React.FC<Props> = ({
           type: "area",
           name: t.historical_supply,
           color: COLORS.SERIES[0],
-          data: totalSupplyData,
+          data: supplySeriesData,
         },
         {
           id: "total_supply_projected",
           type: "area",
           name: `${t.eth_supply} (${t.projected})`,
-          data: totalSupplyProj,
+          data: supplyProj,
           color: COLORS.SERIES[0],
           ...projSeriesOptions,
           showInLegend: true,
