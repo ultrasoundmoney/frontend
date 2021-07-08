@@ -119,9 +119,6 @@ const SupplyChart: React.FC<Props> = ({
         contractSeriesData.push([dateMillis, 0]);
       }
 
-      if (i < 20) {
-        console.log(t, unstakedSupply, inAddressesValue, inContractsPct);
-      }
       addressSeriesData.push([dateMillis, inAddressesValue]);
       totalSupplyData.push([dateMillis, v]);
     });
