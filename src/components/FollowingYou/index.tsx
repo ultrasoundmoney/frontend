@@ -56,19 +56,19 @@ const FollowingYou: React.FC = () => {
       >
         {t.teaser_following_you}
       </p>
-      <form className="flex justify-center space-x-4" onSubmit={handleSubmit}>
+      <form className="flex justify-center" onSubmit={handleSubmit}>
         <input
-          className="text-white p-1 input-locate"
+          className="md:w-96 p-4 pr-32 bg-transparent border border-gray-500 rounded-full text-xs text-white"
           type="text"
-          placeholder="twitter handle"
+          placeholder="@vitalikbuterin"
           value={handle}
           onChange={(event) => setHandle(event.target.value)}
         />
         <button
-          className="text-white hover:bg-gray-700 button-locate"
+          className="md:w-32 -ml-28 md:-ml-32 px-6 text-xs text-white border border-white bg-transparent rounded-full hover:bg-gray-700"
           type="submit"
         >
-          submit
+          Show Me →
         </button>
       </form>
       {followedByCount.type === "empty" ? null : followedByCount.type ===
