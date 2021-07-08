@@ -1,0 +1,4 @@
+.supplyChart :global(.highcharts-series) {
+  // Start series with a space, instead of a dash
+  stroke-dashoffset: 4px;
+}

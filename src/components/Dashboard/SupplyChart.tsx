@@ -5,16 +5,18 @@ import HighchartsReact from "highcharts-react-official";
 import merge from "lodash/merge";
 import { useDebounce } from "../../utils/use-debounce";
 import { useTranslations } from "../../utils/use-translation";
-import { defaultOptions, COLORS } from "./chart-defaults";
-
-import supplyData from "./supply-total.json";
-import stakingData from "./supply-staking.json";
-import contractData from "./supply-in-smart-contracts.json";
 import {
   estimatedDailyFeeBurn,
   estimatedDailyIssuance,
   estimatedDailyStakeChange,
 } from "../../utils/metric-utils";
+import { defaultOptions, COLORS } from "./chart-defaults";
+
+import supplyData from "./supply-total.json";
+import stakingData from "./supply-staking.json";
+import contractData from "./supply-in-smart-contracts.json";
+
+import styles from "./SupplyChart.module.scss";
 
 interface Props {
   projectedStaking: number;
@@ -176,7 +178,7 @@ const SupplyChart: React.FC<Props> = ({
       contractProj.push([lastDateMillis, Math.round(inContractValue)]);
       addressProj.push([lastDateMillis, Math.round(inAddressesValue)]);
       stakingProj.push([lastDateMillis, Math.round(stakingValue)]);
-      totalSupplyProj.push([lastDateMillis, supplyValue]);
+      totalSupplyProj.push([lastDateMillis, Math.round(supplyValue)]);
 
       lastDate = lastDate.plus({ days: 1 }).startOf("day");
     }
@@ -252,7 +254,6 @@ const SupplyChart: React.FC<Props> = ({
           data: totalSupplyProj,
           color: COLORS.SERIES[0],
           ...projSeriesOptions,
-          showInLegend: true,
         },
       ];
     }
@@ -279,6 +280,15 @@ const SupplyChart: React.FC<Props> = ({
           },
         },
       },
+      legend: {
+        labelFormatter: function () {
+          const s = this as Highcharts.Series;
+          if (s.userOptions.id === "total_supply_projected") {
+            return t.projected;
+          }
+          return s.name;
+        },
+      },
       series,
       xAxis: {
         type: "datetime",
@@ -295,11 +305,11 @@ const SupplyChart: React.FC<Props> = ({
       },
     };
     return merge({}, defaultOptions, chartOptions);
-  }, [series, handleChartMouseOut, handleChartMouseOver]);
+  }, [series, handleChartMouseOut, handleChartMouseOver, t]);
 
   return (
     <>
-      <div className="supply-chart">
+      <div className={styles.supplyChart}>
         <HighchartsReact
           options={options}
           highcharts={Highcharts}
