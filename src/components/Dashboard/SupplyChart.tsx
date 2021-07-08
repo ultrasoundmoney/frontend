@@ -92,21 +92,23 @@ const SupplyChart: React.FC<Props> = ({
       const stakedSupply = stakingByDate[t] || 0;
       const unstakedSupply = v - stakedSupply;
 
-      const date = +new Date(t);
+      const date = DateTime.fromISO(t, { zone: "utc" });
+      const dateMillis = date.toMillis();
       if (stakingByDate[t]) {
-        stakingSeriesData.push([date, Math.round(stakingByDate[t])]);
+        stakingSeriesData.push([dateMillis, Math.round(stakingByDate[t])]);
       }
 
       const inContractsPct = contractByDate[t];
       let inAddressesValue = unstakedSupply;
       if (inContractsPct !== undefined) {
-        // In-contract eth includes staked eth
+        // Glassnode's ETH in contract data includes staked ETH, so we need
+        // to subtract it here since we render staked ETH separately
         const inContractsValue = inContractsPct * v - stakedSupply;
-        contractSeriesData.push([date, Math.round(inContractsValue)]);
+        contractSeriesData.push([dateMillis, Math.round(inContractsValue)]);
         inAddressesValue -= inContractsValue;
       }
-      addressSeriesData.push([date, Math.round(inAddressesValue)]);
-      totalSupplyData.push([date, Math.round(v)]);
+      addressSeriesData.push([dateMillis, Math.round(inAddressesValue)]);
+      totalSupplyData.push([dateMillis, Math.round(v)]);
     });
 
     // Projections
@@ -114,13 +116,16 @@ const SupplyChart: React.FC<Props> = ({
     const { t: lastDateStr, v: lastSupplyValue } = supplyData[
       supplyData.length - 1
     ];
-    const firstDate = DateTime.fromISO(firstDateStr);
-    let lastDate = DateTime.fromISO(lastDateStr).plus({ seconds: 1 });
+    const firstDate = DateTime.fromISO(firstDateStr, { zone: "utc" });
+    let lastDate = DateTime.fromISO(lastDateStr, { zone: "utc" }).plus({
+      seconds: 1,
+    });
     const daysOfData = lastDate.diff(firstDate, "days").days;
     // Projection should be 1/3 of chart
     const daysOfProjection = Math.floor(daysOfData / 2);
     const lastStakingValue = stakingSeriesData[stakingSeriesData.length - 1][1];
-    const lastContractPct = contractData[contractData.length - 1].v;
+    const lastContractValue =
+      contractSeriesData[contractSeriesData.length - 1][1];
 
     const contractProj: number[][] = [];
     const addressProj: number[][] = [];
@@ -155,12 +160,17 @@ const SupplyChart: React.FC<Props> = ({
 
       const burn = estimatedDailyFeeBurn(variables.projectedBaseGasPrice);
 
-      supplyValue = supplyValue + newIssuance - burn;
+      supplyValue = Math.max(supplyValue + newIssuance - burn, 0);
 
-      const unstakedValue = supplyValue - stakingValue;
+      const unstakedValue = Math.max(supplyValue - stakingValue, 0);
 
-      const inContractValue = supplyValue * lastContractPct - stakingValue;
-      const inAddressesValue = unstakedValue - inContractValue;
+      let inContractValue = Math.min(lastContractValue, unstakedValue);
+      let inAddressesValue = unstakedValue - inContractValue;
+      // Make sure ETH in addresses doesn't dip way below ETH in contracts
+      if (inAddressesValue < inContractValue * 0.5) {
+        inContractValue = Math.floor((unstakedValue * 2) / 3);
+        inAddressesValue = unstakedValue - inContractValue;
+      }
 
       const lastDateMillis = lastDate.toMillis();
       contractProj.push([lastDateMillis, Math.round(inContractValue)]);
@@ -168,7 +178,7 @@ const SupplyChart: React.FC<Props> = ({
       stakingProj.push([lastDateMillis, Math.round(stakingValue)]);
       totalSupplyProj.push([lastDateMillis, supplyValue]);
 
-      lastDate = lastDate.plus({ days: 1 });
+      lastDate = lastDate.plus({ days: 1 }).startOf("day");
     }
 
     const projSeriesOptions: Partial<Highcharts.SeriesAreaOptions> = {

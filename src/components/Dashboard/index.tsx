@@ -93,7 +93,8 @@ const DashboardPage: React.FC<{}> = () => {
                   {t.eth_staked}
                 </div>
                 <div className="text-xl text-white font-light">
-                  {intlFormatter.format(projectedStaking)}
+                  {projectedStaking / 1e6}
+                  {t.numeric_million_abbrev.toUpperCase()}
                 </div>
                 <div className="text-sm text-blue-spindle font-light">
                   PoS issuance:{" "}
