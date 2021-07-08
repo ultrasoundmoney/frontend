@@ -14,6 +14,7 @@ const FollowingYou: React.FC = () => {
   const [followedByCount, setFollowedByCount] = React.useState<
     FollowedByResult
   >({ type: "empty" });
+
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
@@ -21,8 +22,10 @@ const FollowingYou: React.FC = () => {
 
     setFollowedByCount({ type: "searching" });
 
+    const cleanHandle = handle.startsWith("@") ? handle.slice(1) : handle;
+
     const res = await fetch(
-      `https://api.ultrasound.money/fam/${handle}/followed-by-count`,
+      `https://api.ultrasound.money/fam/${cleanHandle}/followed-by-count`,
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
