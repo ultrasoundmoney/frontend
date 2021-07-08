@@ -129,9 +129,7 @@ const SupplyChart: React.FC<Props> = ({
       supplyData.length - 1
     ];
     const firstDate = DateTime.fromISO(firstDateStr, { zone: "utc" });
-    const lastDate = DateTime.fromISO(lastDateStr, { zone: "utc" }).plus({
-      seconds: 1,
-    });
+    const lastDate = DateTime.fromISO(lastDateStr, { zone: "utc" });
     const daysOfData = lastDate.diff(firstDate, "days").days;
     // Projection should be 1/3 of chart
     const daysOfProjection = Math.floor(daysOfData / 2);
@@ -148,7 +146,7 @@ const SupplyChart: React.FC<Props> = ({
     let supplyValue = lastSupplyValue;
     let stakingValue = lastStakingValue;
     for (let i = 0; i < daysOfProjection; i++) {
-      const projDate = lastDate.plus({ days: i }).startOf("day");
+      const projDate = lastDate.plus({ days: i + 1 }).startOf("day");
 
       // Calculate new ETH staking on this day
       if (stakingValue < variables.projectedStaking) {
