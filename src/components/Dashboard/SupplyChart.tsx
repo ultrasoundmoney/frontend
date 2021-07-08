@@ -287,14 +287,14 @@ const SupplyChart: React.FC<Props> = ({
         {
           id: "total_supply",
           type: "area",
-          name: t.total_eth_supply,
+          name: t.historical_supply,
           color: COLORS.SERIES[0],
           data: totalSupplyData,
         },
         {
           id: "total_supply_projected",
           type: "area",
-          name: `${t.total_eth_supply} (${t.projected})`,
+          name: `${t.eth_supply} (${t.projected})`,
           data: totalSupplyProj,
           color: COLORS.SERIES[0],
           ...projSeriesOptions,
@@ -329,7 +329,7 @@ const SupplyChart: React.FC<Props> = ({
         labelFormatter: function () {
           const s = this as Highcharts.Series;
           if (s.userOptions.id === "total_supply_projected") {
-            return t.projected;
+            return t.projected_supply;
           }
           return s.name;
         },

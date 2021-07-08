@@ -76,7 +76,7 @@ const DashboardPage: React.FC<{}> = () => {
               <div className={styles.chartHeader}>
                 <div>
                   <div className="text-xl text-white text-left font-light leading-2 pl-3 pb-2">
-                    {t.total_eth_supply}
+                    {t.eth_supply}
                   </div>
                 </div>
               </div>
@@ -97,11 +97,10 @@ const DashboardPage: React.FC<{}> = () => {
                   {t.numeric_million_abbrev.toUpperCase()}
                 </div>
                 <div className="text-sm text-blue-spindle font-light">
-                  PoS issuance:{" "}
                   {intlFormatter.format(
                     estimatedDailyIssuance(projectedStaking)
                   )}{" "}
-                  {t.eth_per_day}
+                  {t.eth_per_day} {t.pos_issuance}
                 </div>
                 <Slider
                   min={MIN_PROJECTED_ETH_STAKING}
@@ -120,11 +119,10 @@ const DashboardPage: React.FC<{}> = () => {
                   {intlFormatter.format(projectedBaseGasPrice)} Gwei
                 </div>
                 <div className="text-sm text-blue-spindle font-light">
-                  Fee burn:{" "}
                   {intlFormatter.format(
                     estimatedDailyFeeBurn(projectedBaseGasPrice)
                   )}{" "}
-                  {t.eth_per_day}
+                  {t.eth_per_day} {t.fee_burn}
                 </div>
                 <Slider
                   min={0}
@@ -143,8 +141,8 @@ const DashboardPage: React.FC<{}> = () => {
                   {projectedMergeDate.toLocaleString(DateTime.DATE_MED)}
                 </div>
                 <div className="text-sm text-blue-spindle font-light">
-                  Days until merge:{" "}
-                  {intlFormatter.format(daysUntilProjectedMerge)}
+                  {intlFormatter.format(daysUntilProjectedMerge)}{" "}
+                  {t.days_until_merge}
                 </div>
                 <Slider
                   min={0}
