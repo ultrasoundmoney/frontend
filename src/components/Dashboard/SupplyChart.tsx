@@ -31,6 +31,8 @@ interface HighchartsRef {
   container: React.RefObject<HTMLDivElement>;
 }
 
+const NUM_DAYS_PER_POINT = 7;
+
 const SupplyChart: React.FC<Props> = ({
   projectedBaseGasPrice,
   projectedStaking,
@@ -89,7 +91,12 @@ const SupplyChart: React.FC<Props> = ({
     const addressSeriesData: number[][] = [];
     const stakingSeriesData: number[][] = [];
 
-    supplyData.forEach(({ t, v }) => {
+    const numSupplyDataPoints = supplyData.length;
+    supplyData.forEach(({ t, v }, i) => {
+      // Only render every Nth point for chart performance
+      if (i % NUM_DAYS_PER_POINT !== 0 && i < numSupplyDataPoints - 1) {
+        return;
+      }
       // Subtract any staking eth from total supply on that date
       const stakedSupply = stakingByDate[t] || 0;
       const unstakedSupply = v - stakedSupply;
@@ -108,6 +115,12 @@ const SupplyChart: React.FC<Props> = ({
         const inContractsValue = inContractsPct * v - stakedSupply;
         contractSeriesData.push([dateMillis, inContractsValue]);
         inAddressesValue -= inContractsValue;
+      } else {
+        contractSeriesData.push([dateMillis, 0]);
+      }
+
+      if (i < 20) {
+        console.log(t, unstakedSupply, inAddressesValue, inContractsPct);
       }
       addressSeriesData.push([dateMillis, inAddressesValue]);
       totalSupplyData.push([dateMillis, v]);
@@ -119,7 +132,7 @@ const SupplyChart: React.FC<Props> = ({
       supplyData.length - 1
     ];
     const firstDate = DateTime.fromISO(firstDateStr, { zone: "utc" });
-    let lastDate = DateTime.fromISO(lastDateStr, { zone: "utc" }).plus({
+    const lastDate = DateTime.fromISO(lastDateStr, { zone: "utc" }).plus({
       seconds: 1,
     });
     const daysOfData = lastDate.diff(firstDate, "days").days;
@@ -138,6 +151,8 @@ const SupplyChart: React.FC<Props> = ({
     let supplyValue = lastSupplyValue;
     let stakingValue = lastStakingValue;
     for (let i = 0; i < daysOfProjection; i++) {
+      const projDate = lastDate.plus({ days: i }).startOf("day");
+
       // Calculate new ETH staking on this day
       if (stakingValue < variables.projectedStaking) {
         // Add ETH to approach projected staking value
@@ -156,13 +171,18 @@ const SupplyChart: React.FC<Props> = ({
       // Add in PoS issuance
       let newIssuance = estimatedDailyIssuance(stakingValue);
       // If this is berfore the merge, add PoW issuance
-      if (lastDate.toSeconds() < mergeDate) {
+      if (projDate.toSeconds() < mergeDate) {
         newIssuance += 13500;
       }
 
       const burn = estimatedDailyFeeBurn(variables.projectedBaseGasPrice);
 
       supplyValue = Math.max(supplyValue + newIssuance - burn, 0);
+
+      // Only render every Nth point for chart performance
+      if (i % NUM_DAYS_PER_POINT !== 0) {
+        continue;
+      }
 
       const unstakedValue = Math.max(supplyValue - stakingValue, 0);
 
@@ -174,13 +194,11 @@ const SupplyChart: React.FC<Props> = ({
         inAddressesValue = unstakedValue - inContractValue;
       }
 
-      const lastDateMillis = lastDate.toMillis();
-      contractProj.push([lastDateMillis, inContractValue]);
-      addressProj.push([lastDateMillis, inAddressesValue]);
-      stakingProj.push([lastDateMillis, stakingValue]);
-      totalSupplyProj.push([lastDateMillis, supplyValue]);
-
-      lastDate = lastDate.plus({ days: 1 }).startOf("day");
+      const projDateMillis = projDate.toMillis();
+      contractProj.push([projDateMillis, inContractValue]);
+      addressProj.push([projDateMillis, inAddressesValue]);
+      stakingProj.push([projDateMillis, stakingValue]);
+      totalSupplyProj.push([projDateMillis, supplyValue]);
     }
 
     const projSeriesOptions: Partial<Highcharts.SeriesAreaOptions> = {
@@ -354,6 +372,7 @@ const SupplyChart: React.FC<Props> = ({
       },
       yAxis: {
         min: 0,
+        max: 150e6,
         title: {
           text: undefined,
           // text: "ETH",
