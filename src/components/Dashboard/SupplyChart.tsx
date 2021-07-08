@@ -98,8 +98,8 @@ const SupplyChart: React.FC<Props> = ({
         return;
       }
       // Subtract any staking eth from total supply on that date
-      const stakedSupply = stakingByDate[t] || 0;
-      const unstakedSupply = v - stakedSupply;
+      const stakingSupply = stakingByDate[t] || 0;
+      const nonStakingSupply = v - stakingSupply;
 
       const date = DateTime.fromISO(t, { zone: "utc" });
       const dateMillis = date.toMillis();
@@ -108,11 +108,11 @@ const SupplyChart: React.FC<Props> = ({
       }
 
       const inContractsPct = contractByDate[t];
-      let inAddressesValue = unstakedSupply;
+      let inAddressesValue = nonStakingSupply;
       if (inContractsPct !== undefined) {
         // Glassnode's ETH in contract data includes staked ETH, so we need
         // to subtract it here since we render staked ETH separately
-        const inContractsValue = inContractsPct * v - stakedSupply;
+        const inContractsValue = inContractsPct * v - stakingSupply;
         contractSeriesData.push([dateMillis, inContractsValue]);
         inAddressesValue -= inContractsValue;
       } else {
@@ -179,21 +179,24 @@ const SupplyChart: React.FC<Props> = ({
         continue;
       }
 
-      const unstakedValue = Math.max(supplyValue - stakingValue, 0);
+      const nonStakingValue = Math.max(supplyValue - stakingValue, 0);
 
-      let inContractValue = Math.min(lastContractValue, unstakedValue);
-      let inAddressesValue = unstakedValue - inContractValue;
+      let inContractValue = Math.min(lastContractValue, nonStakingValue);
+      let inAddressesValue = nonStakingValue - inContractValue;
       // Make sure ETH in addresses doesn't dip way below ETH in contracts
       if (inAddressesValue < inContractValue * 0.5) {
-        inContractValue = Math.floor((unstakedValue * 2) / 3);
-        inAddressesValue = unstakedValue - inContractValue;
+        inContractValue = Math.floor((nonStakingValue * 2) / 3);
+        inAddressesValue = nonStakingValue - inContractValue;
       }
+
+      // Make sure our total supply value can't dip below the amount staked
+      const adjustedSupplyValue = Math.max(supplyValue, stakingValue);
 
       const projDateMillis = projDate.toMillis();
       contractProj.push([projDateMillis, inContractValue]);
       addressProj.push([projDateMillis, inAddressesValue]);
       stakingProj.push([projDateMillis, stakingValue]);
-      totalSupplyProj.push([projDateMillis, supplyValue]);
+      totalSupplyProj.push([projDateMillis, adjustedSupplyValue]);
     }
 
     const projSeriesOptions: Partial<Highcharts.SeriesAreaOptions> = {
@@ -208,7 +211,7 @@ const SupplyChart: React.FC<Props> = ({
         {
           id: "total_supply_invisible",
           type: "area",
-          name: t.total_eth_supply,
+          name: t.total_supply,
           color: COLORS.SERIES[5],
           data: totalSupplyData,
           opacity: 0,
@@ -243,7 +246,7 @@ const SupplyChart: React.FC<Props> = ({
         {
           id: "total_supply_projected_invisible",
           type: "area",
-          name: `${t.total_eth_supply} (${t.projected})`,
+          name: `${t.total_supply} (${t.projected})`,
           data: totalSupplyProj,
           color: COLORS.SERIES[5],
           opacity: 0,

@@ -25,6 +25,7 @@
   "supply_chart_series_address": "Held by addresses",
   "supply_chart_series_contracts": "Held in smart contracts",
   "supply_chart_series_staking": "Staking",
+  "total_supply": "Total supply",
   "total_eth_supply": "Total ETH supply",
   "eth_per_day": "ETH/day",
   "numeric_billion_abbrev": "b",
