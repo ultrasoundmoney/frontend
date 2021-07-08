@@ -4,6 +4,7 @@ import { DateTime } from "luxon";
 import HighchartsReact from "highcharts-react-official";
 import merge from "lodash/merge";
 import { useDebounce } from "../../utils/use-debounce";
+import { useTranslations } from "../../utils/use-translation";
 import { defaultOptions, COLORS } from "./chart-defaults";
 
 import supplyData from "./supply-total.json";
@@ -16,7 +17,6 @@ import {
 } from "../../utils/metric-utils";
 
 interface Props {
-  Data?: Data;
   projectedStaking: number;
   projectedBaseGasPrice: number;
   projectedMergeDate: DateTime;
@@ -30,19 +30,19 @@ interface HighchartsRef {
 }
 
 const SupplyChart: React.FC<Props> = ({
-  Data,
   projectedBaseGasPrice,
   projectedStaking,
   projectedMergeDate,
 }) => {
+  const { translations: t } = useTranslations();
   React.useEffect(() => {
     Highcharts.setOptions({
       lang: {
-        thousandsSep: Data.chart_thousands_sep,
-        decimalPoint: Data.chart_decimal_point,
+        thousandsSep: t.chart_thousands_sep,
+        decimalPoint: t.chart_decimal_point,
       },
     });
-  }, [Data]);
+  }, [t]);
 
   const chartRef = React.useRef<HighchartsRef | null>(null);
   const [showBreakdown, setShowBreakdown] = React.useState(false);
@@ -184,28 +184,28 @@ const SupplyChart: React.FC<Props> = ({
         {
           id: "addresses",
           type: "area",
-          name: Data.supply_chart_series_address,
+          name: t.supply_chart_series_address,
           color: COLORS.SERIES[0],
           data: addressSeriesData,
         },
         {
           id: "contracts",
           type: "area",
-          name: Data.supply_chart_series_contracts,
+          name: t.supply_chart_series_contracts,
           color: COLORS.SERIES[1],
           data: contractSeriesData,
         },
         {
           id: "staking",
           type: "area",
-          name: Data.supply_chart_series_staking,
+          name: t.supply_chart_series_staking,
           color: COLORS.SERIES[2],
           data: stakingSeriesData,
         },
         {
           id: "addresses_projected",
           type: "area",
-          name: `${Data.supply_chart_series_address} (${Data.projected})`,
+          name: `${t.supply_chart_series_address} (${t.projected})`,
           data: addressProj,
           color: COLORS.SERIES[0],
           ...projSeriesOptions,
@@ -213,7 +213,7 @@ const SupplyChart: React.FC<Props> = ({
         {
           id: "contracts_projected",
           type: "area",
-          name: `${Data.supply_chart_series_contracts} (${Data.projected})`,
+          name: `${t.supply_chart_series_contracts} (${t.projected})`,
           data: contractProj,
           color: COLORS.SERIES[1],
           ...projSeriesOptions,
@@ -221,7 +221,7 @@ const SupplyChart: React.FC<Props> = ({
         {
           id: "staking_projected",
           type: "area",
-          name: `${Data.supply_chart_series_staking} (${Data.projected})`,
+          name: `${t.supply_chart_series_staking} (${t.projected})`,
           data: stakingProj,
           color: COLORS.SERIES[2],
           ...projSeriesOptions,
@@ -232,14 +232,14 @@ const SupplyChart: React.FC<Props> = ({
         {
           id: "total_supply",
           type: "area",
-          name: Data.total_eth_supply,
+          name: t.total_eth_supply,
           color: COLORS.SERIES[0],
           data: totalSupplyData,
         },
         {
           id: "total_supply_projected",
           type: "area",
-          name: `${Data.total_eth_supply} (${Data.projected})`,
+          name: `${t.total_eth_supply} (${t.projected})`,
           data: totalSupplyProj,
           color: COLORS.SERIES[0],
           ...projSeriesOptions,
@@ -248,7 +248,7 @@ const SupplyChart: React.FC<Props> = ({
     }
 
     return series;
-  }, [variables, Data]);
+  }, [variables, t]);
 
   const options = React.useMemo((): Highcharts.Options => {
     // Animate only if we're changing the underlying data & not the number of series

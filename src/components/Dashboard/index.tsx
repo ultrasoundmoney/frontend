@@ -2,9 +2,6 @@ import * as React from "react";
 import { DateTime } from "luxon";
 import Slider from "../Slider/Slider";
 import SupplyChart from "./SupplyChart";
-import SegmentedControl, {
-  Option as SegmentedControlOption,
-} from "../SegmentedControl";
 import {
   estimatedDailyFeeBurn,
   estimatedDailyIssuance,
@@ -19,33 +16,8 @@ const MAX_PROJECTED_MERGE_DATE = DateTime.utc(2022, 12, 31);
 
 const intlFormatter = new Intl.NumberFormat();
 
-const DashboardPage: React.FC<{ Data?: Data }> = ({ Data }) => {
+const DashboardPage: React.FC<{}> = () => {
   const { translations: t } = useTranslations();
-  const timeRangeOptions = React.useMemo(
-    () => [
-      {
-        value: "all",
-        label: Data.time_range_all,
-      },
-      {
-        value: "1y",
-        label: Data.time_range_1y,
-      },
-      {
-        value: "6mo",
-        label: Data.time_range_6mo,
-      },
-      {
-        value: "30d",
-        label: Data.time_range_30d,
-      },
-      {
-        value: "7d",
-        label: Data.time_range_7d,
-      },
-    ],
-    [Data]
-  );
 
   // TODO Initialize this to current amount of ETH staked
   const [projectedStaking, setProjectedStaking] = React.useState(
@@ -58,8 +30,6 @@ const DashboardPage: React.FC<{ Data?: Data }> = ({ Data }) => {
   const [projectedMergeDate, setProjectedMergeDate] = React.useState(
     DEFAULT_PROJECTED_MERGE_DATE
   );
-
-  const [timeRange, setTimeRange] = React.useState(timeRangeOptions[1].value);
 
   const handleProjectedStakingChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,13 +56,6 @@ const DashboardPage: React.FC<{ Data?: Data }> = ({ Data }) => {
     []
   );
 
-  const handleTimeRangeChange = React.useCallback(
-    (option: SegmentedControlOption) => {
-      setTimeRange(option.value);
-    },
-    []
-  );
-
   const daysUntilProjectedMerge = projectedMergeDate.diff(
     DateTime.utc().startOf("day"),
     "days"
@@ -111,17 +74,11 @@ const DashboardPage: React.FC<{ Data?: Data }> = ({ Data }) => {
               <div className={styles.chartHeader}>
                 <div>
                   <div className="text-xl text-white text-left font-light leading-2 pl-3 pb-2">
-                    {Data.total_eth_supply}
+                    {t.total_eth_supply}
                   </div>
                 </div>
-                <SegmentedControl
-                  options={timeRangeOptions}
-                  value={timeRange}
-                  onChange={handleTimeRangeChange}
-                />
               </div>
               <SupplyChart
-                Data={Data}
                 projectedStaking={projectedStaking}
                 projectedBaseGasPrice={projectedBaseGasPrice}
                 projectedMergeDate={projectedMergeDate}
@@ -131,16 +88,16 @@ const DashboardPage: React.FC<{ Data?: Data }> = ({ Data }) => {
             <div className={`${styles.sidebar} flex-none pl-4`}>
               <div className="">
                 <div className="text-lg text-white text-left font-light leading-2">
-                  {Data.projection}
+                  {t.projection}
                 </div>
                 <div className="text-xs text-blue-spindle text-left font-light leading-relaxed">
-                  {Data.projection_description}
+                  {t.projection_description}
                 </div>
               </div>
               <div className="my-4">
                 <div className="">
                   <div className="text-xs text-blue-spindle text-left font-light uppercase leading-2">
-                    {Data.eth_staked}
+                    {t.eth_staked}
                   </div>
                   <div className="text-xl text-white text-left font-light">
                     {intlFormatter.format(projectedStaking)}
@@ -162,7 +119,7 @@ const DashboardPage: React.FC<{ Data?: Data }> = ({ Data }) => {
                 </div>
                 <div className="mt-4">
                   <div className="text-xs text-blue-spindle text-left font-light uppercase leading-2">
-                    {Data.base_gas_price}
+                    {t.base_gas_price}
                   </div>
                   <div className="text-xl text-white text-left font-light">
                     {intlFormatter.format(projectedBaseGasPrice)} Gwei
@@ -184,7 +141,7 @@ const DashboardPage: React.FC<{ Data?: Data }> = ({ Data }) => {
                 </div>
                 <div className="mt-4">
                   <div className="text-xs text-blue-spindle font-light uppercase leading-2">
-                    {Data.merge_date}
+                    {t.merge_date}
                   </div>
                   <div className="text-xl text-white font-light">
                     {projectedMergeDate.toLocaleString(DateTime.DATE_MED)}
