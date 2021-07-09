@@ -4,14 +4,20 @@ import TwitterProfile from "../TwitterCommunity/TwitterProfile";
 
 type Empty = { type: "empty" };
 type FollowedBy = {
-  type: "followedByCount";
+  type: "followers";
   count: number;
   followers: TwitterProfile[];
 };
 type HandleNotFound = { type: "handleNotFound" };
 type Searching = { type: "searching" };
+type UnknownError = { type: "unknownError" };
 
-type FollowedByResult = FollowedBy | HandleNotFound | Empty | Searching;
+type FollowedByResult =
+  | FollowedBy
+  | HandleNotFound
+  | Empty
+  | Searching
+  | UnknownError;
 
 const FollowingYou: React.FC = () => {
   const { translations: t } = useTranslations();
@@ -44,12 +50,18 @@ const FollowingYou: React.FC = () => {
       return;
     }
 
-    const body = await res.json();
-    setFollowers({
-      type: "followedByCount",
-      count: body.count,
-      followers: body.followers,
-    });
+    if (res.status === 200) {
+      const body = await res.json();
+      console.log(body);
+      setFollowers({
+        type: "followers",
+        count: body.count,
+        followers: body.followers,
+      });
+      return;
+    }
+
+    setFollowers({ type: "unknownError" });
   };
 
   return (
@@ -82,17 +94,31 @@ const FollowingYou: React.FC = () => {
         <p className="text-white text-xl p-8 text-center">handle not found</p>
       ) : followers.type === "searching" ? (
         <p className="text-white text-xl p-8 text-center">searching...</p>
-      ) : followers.type === "followedByCount" ? (
+      ) : followers.type === "unknownError" ? (
+        <p className="text-white text-xl p-8 text-center">
+          error fetching followers
+        </p>
+      ) : followers.type === "followers" ? (
         <div className="my-8">
-          <TwitterProfile profileList={followers.followers} />
-          {followers.count > followers.followers.length && (
-            <p className="text-white text-xl p-8 text-center">{`+${
-              followers.count - followers.followers.length
-            } more!`}</p>
+          {followers.count === 0 ? (
+            <p className="text-white text-xl p-8 text-center">
+              no followers found
+            </p>
+          ) : (
+            <>
+              <TwitterProfile profileList={followers.followers} />
+              {followers.count > followers.followers.length && (
+                <p className="text-white text-xl p-8 text-center">{`+${
+                  followers.count - followers.followers.length
+                } more!`}</p>
+              )}
+            </>
           )}
         </div>
       ) : (
-        <p>error</p>
+        <p className="text-white text-xl p-8 text-center">
+          unknown followers state
+        </p>
       )}
     </>
   );
