@@ -214,6 +214,7 @@ const SupplyChart: React.FC<Props> = ({
       fillOpacity: 0.25,
       dashStyle: "Dash",
       showInLegend: false,
+      marker: { symbol: "circle" },
     };
 
     let series: Highcharts.SeriesAreaOptions[] = [];
@@ -234,7 +235,7 @@ const SupplyChart: React.FC<Props> = ({
           name: t.supply_chart_series_contracts,
           color: COLORS.SERIES[2],
           data: contractSeriesData,
-          marker: { symbol: "square" },
+          marker: { symbol: "circle" },
           stack: "historical",
         },
         {
@@ -243,7 +244,7 @@ const SupplyChart: React.FC<Props> = ({
           name: t.supply_chart_series_staking,
           color: COLORS.SERIES[5],
           data: stakingSeriesData,
-          marker: { symbol: "diamond" },
+          marker: { symbol: "circle" },
           stack: "historical",
         },
         {
@@ -252,7 +253,6 @@ const SupplyChart: React.FC<Props> = ({
           name: `${t.supply_chart_series_address} (${t.projected})`,
           data: addressProj,
           color: COLORS.SERIES[1],
-          marker: { symbol: "circle" },
           stack: "projected",
           ...projSeriesOptions,
         },
@@ -262,7 +262,6 @@ const SupplyChart: React.FC<Props> = ({
           name: `${t.supply_chart_series_contracts} (${t.projected})`,
           data: contractProj,
           color: COLORS.SERIES[2],
-          marker: { symbol: "square" },
           stack: "projected",
           ...projSeriesOptions,
         },
@@ -272,7 +271,6 @@ const SupplyChart: React.FC<Props> = ({
           name: `${t.supply_chart_series_staking} (${t.projected})`,
           data: stakingProj,
           color: COLORS.SERIES[5],
-          marker: { symbol: "diamond" },
           stack: "projected",
           ...projSeriesOptions,
         },
@@ -335,7 +333,6 @@ const SupplyChart: React.FC<Props> = ({
         minPadding: 0,
         maxPadding: 0,
         tickInterval: 365 * 24 * 3600 * 1000, // always use 1 year intervals
-        /*
         plotLines: [
           {
             value: DateTime.fromISO("2021-08-04T00:00:00Z").toMillis(),
@@ -344,11 +341,11 @@ const SupplyChart: React.FC<Props> = ({
             label: {
               text: "EIP 1559",
               style: {
-                color: COLORS.LABEL,
+                color: "#fff",
               },
               y: 2,
             },
-            zIndex: 2,
+            zIndex: 3,
           },
           {
             value: variables.projectedMergeDate.toMillis(),
@@ -357,14 +354,13 @@ const SupplyChart: React.FC<Props> = ({
             label: {
               text: "Merge",
               style: {
-                color: COLORS.LABEL,
+                color: "#fff",
               },
               y: 2,
             },
-            zIndex: 2,
+            zIndex: 3,
           },
         ],
-        */
       },
       yAxis: {
         min: 0,
