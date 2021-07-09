@@ -19,7 +19,7 @@ const fetcher = (url: string) =>
     }),
   }).then((r) => r.json());
 
-const ComingSoon: React.FC<{}> = () => {
+const ComingSoon: React.FC = () => {
   const { translations: t } = useTranslations();
   const { data } = useSWR(
     "https://eth-mainnet.alchemyapi.io/v2/H74MQLJkSLBJDyaDS2kyH7bXIBvjiTVe",
