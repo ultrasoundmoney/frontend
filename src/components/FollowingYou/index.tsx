@@ -85,6 +85,7 @@ const FollowingYou: React.FC = () => {
           type="text"
           placeholder="@vitalikbuterin"
           value={handle}
+          spellCheck="false"
           onChange={(event) => setHandle(event.target.value)}
         />
         <button
