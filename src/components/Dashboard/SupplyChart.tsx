@@ -31,6 +31,8 @@ interface HighchartsRef {
 
 const intlFormatter = new Intl.NumberFormat();
 
+const LONDON_DATE = DateTime.fromISO("2021-08-04T00:00:00Z");
+
 let mouseOutTimer: NodeJS.Timeout | null = null;
 
 const NUM_DAYS_PER_POINT = 7;
@@ -200,8 +202,11 @@ const SupplyChart: React.FC<Props> = ({
       if (projDate.toSeconds() < mergeDate) {
         newIssuance += 13500;
       }
-
-      const burn = estimatedDailyFeeBurn(variables.projectedBaseGasPrice);
+      // If this is after EIP-1559 calculate the fee burn
+      let burn = 0;
+      if (projDate.toSeconds() >= LONDON_DATE.toSeconds()) {
+        burn = estimatedDailyFeeBurn(variables.projectedBaseGasPrice);
+      }
 
       supplyValue = Math.max(supplyValue + newIssuance - burn, 0);
 
@@ -386,10 +391,7 @@ const SupplyChart: React.FC<Props> = ({
             DateTime.fromISO("2020-12-01T00:00:00Z").toMillis(),
             "phase 0<br>PoS"
           ),
-          createPlotline(
-            DateTime.fromISO("2021-08-04T00:00:00Z").toMillis(),
-            "London<br>EIP-1559"
-          ),
+          createPlotline(LONDON_DATE.toMillis(), "London<br>EIP-1559"),
           createPlotline(
             variables.projectedMergeDate.toMillis(),
             "merge<br>PoW removal"
