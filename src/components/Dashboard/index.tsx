@@ -91,21 +91,24 @@ const DashboardPage: React.FC<{}> = () => {
               />
             </div>
 
-            <div className={styles.variables}>
-              <div className="dash-variable">
-                <div className="text-xs text-blue-spindle font-light uppercase leading-2">
-                  {t.eth_staked}
-                </div>
-                <div className="text-xl text-white font-light">
-                  {projectedStaking / 1e6}
-                  {t.numeric_million_abbrev.toUpperCase()}
-                </div>
-                <div className="text-sm text-blue-spindle font-light">
-                  {intlFormatter.format(
-                    estimatedDailyIssuance(projectedStaking)
-                  )}{" "}
-                  {t.eth_per_day} {t.pos_issuance}
-                </div>
+            <div className={styles.params}>
+              <Param
+                title={t.eth_staked}
+                value={
+                  <>
+                    {projectedStaking / 1e6}{" "}
+                    {t.numeric_million_abbrev.toUpperCase()}
+                  </>
+                }
+                subValue={
+                  <>
+                    {intlFormatter.format(
+                      estimatedDailyIssuance(projectedStaking)
+                    )}{" "}
+                    {t.eth_per_day} {t.pos_issuance}
+                  </>
+                }
+              >
                 <Slider
                   min={MIN_PROJECTED_ETH_STAKING}
                   max={MAX_PROJECTED_ETH_STAKING}
@@ -113,21 +116,20 @@ const DashboardPage: React.FC<{}> = () => {
                   step={1e6}
                   onChange={handleProjectedStakingChange}
                 />
-              </div>
+              </Param>
 
-              <div className="dash-variable">
-                <div className="text-xs text-blue-spindle font-light uppercase leading-2">
-                  {t.base_gas_price}
-                </div>
-                <div className="text-xl text-white font-light">
-                  {intlFormatter.format(projectedBaseGasPrice)} Gwei
-                </div>
-                <div className="text-sm text-blue-spindle font-light">
-                  {intlFormatter.format(
-                    estimatedDailyFeeBurn(projectedBaseGasPrice)
-                  )}{" "}
-                  {t.eth_per_day} {t.fee_burn}
-                </div>
+              <Param
+                title={t.base_gas_price}
+                value={<>{intlFormatter.format(projectedBaseGasPrice)} Gwei</>}
+                subValue={
+                  <>
+                    {intlFormatter.format(
+                      estimatedDailyFeeBurn(projectedBaseGasPrice)
+                    )}{" "}
+                    {t.eth_per_day} {t.fee_burn}
+                  </>
+                }
+              >
                 <Slider
                   min={MIN_PROJECTED_BASE_GAS_PRICE}
                   max={MAX_PROJECTED_BASE_GAS_PRICE}
@@ -135,21 +137,20 @@ const DashboardPage: React.FC<{}> = () => {
                   step={1}
                   onChange={handleProjectedBaseGasPriceChange}
                 />
-              </div>
+              </Param>
 
-              <div className="dash-variable">
-                <div className="text-xs text-blue-spindle font-light uppercase leading-2">
-                  {t.merge_date}
-                </div>
-                <div className="text-xl text-white font-light">
-                  {projectedMergeDate.toLocaleString(DateTime.DATE_MED)}
-                </div>
-                <div className="text-sm text-blue-spindle font-light">
-                  {intlFormatter.format(daysUntilProjectedMerge)}{" "}
-                  {daysUntilProjectedMerge === 1
-                    ? t.day_until_merge
-                    : t.days_until_merge}
-                </div>
+              <Param
+                title={t.merge_date}
+                value={projectedMergeDate.toLocaleString(DateTime.DATE_MED)}
+                subValue={
+                  <>
+                    {intlFormatter.format(daysUntilProjectedMerge)}{" "}
+                    {daysUntilProjectedMerge === 1
+                      ? t.day_until_merge
+                      : t.days_until_merge}
+                  </>
+                }
+              >
                 <Slider
                   min={0}
                   max={daysUntilMaxProjectedMerge}
@@ -157,7 +158,7 @@ const DashboardPage: React.FC<{}> = () => {
                   step={1}
                   onChange={handleProjectedMergeDateChange}
                 />
-              </div>
+              </Param>
             </div>
           </div>
         </div>
@@ -165,5 +166,25 @@ const DashboardPage: React.FC<{}> = () => {
     </>
   );
 };
+
+interface ParamProps {
+  title: React.ReactNode;
+  value: React.ReactNode;
+  subValue: React.ReactNode;
+  children: React.ReactNode;
+}
+
+function Param({ title, value, subValue, children }: ParamProps) {
+  return (
+    <div className={styles.param}>
+      <div className={`text-blue-spindle ${styles.paramTitle}`}>{title}</div>
+      <div className={styles.paramValue}>{value}</div>
+      <div className={`text-blue-spindle ${styles.paramSubValue}`}>
+        {subValue}
+      </div>
+      {children}
+    </div>
+  );
+}
 
 export default DashboardPage;

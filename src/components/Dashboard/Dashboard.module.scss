@@ -1,15 +1,64 @@
+@mixin clip-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .chartHeader {
   display: flex;
   justify-content: space-between;
 }
-.variables {
+.params {
   display: grid;
-  grid-template-columns: 300px;
-  grid-gap: 2rem;
-  justify-content: center;
-  text-align: center;
-  @media (min-width: 600px) {
-    grid-template-columns: repeat(auto-fit, 260px);
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1rem;
+  padding: 0 16px;
+  @media (min-width: 640px) {
+    grid-template-columns: 1fr 1fr 1fr;
     text-align: left;
+  }
+}
+.param {
+  min-width: 0;
+  &:first-child {
+    grid-row-start: 2;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    @media (min-width: 640px) {
+      grid-row-start: auto;
+      grid-column-start: auto;
+      grid-column-end: auto;
+    }
+  }
+}
+.paramTitle {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  line-height: 1;
+  font-weight: 300;
+  @include clip-text;
+}
+.paramValue {
+  font-size: 1.125rem;
+  color: white;
+  font-weight: 300;
+  @include clip-text;
+  margin: 2px 0;
+  @media (min-width: 768px) {
+    font-size: 1.25rem;
+    margin: 4px 0;
+  }
+}
+.paramSubValue {
+  font-size: 0.7rem;
+  font-weight: 300;
+  @include clip-text;
+  line-height: 1;
+  @media (min-width: 768px) {
+    font-size: 0.825rem;
+    margin: 0 0 4px;
   }
 }
