@@ -13,7 +13,7 @@
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   grid-gap: 1rem;
   padding: 0 16px;
   @media (min-width: 640px) {
@@ -23,16 +23,6 @@
 }
 .param {
   min-width: 0;
-  &:first-child {
-    grid-row-start: 2;
-    grid-column-start: 1;
-    grid-column-end: 3;
-    @media (min-width: 640px) {
-      grid-row-start: auto;
-      grid-column-start: auto;
-      grid-column-end: auto;
-    }
-  }
 }
 .paramTitle {
   font-size: 0.75rem;
@@ -46,7 +36,8 @@
   color: white;
   font-weight: 300;
   @include clip-text;
-  margin: 2px 0;
+  margin: 6px 0 0;
+  line-height: 1;
   @media (min-width: 768px) {
     font-size: 1.25rem;
     margin: 4px 0;
@@ -55,10 +46,14 @@
 .paramSubValue {
   font-size: 0.7rem;
   font-weight: 300;
-  @include clip-text;
   line-height: 1;
+  @include clip-text;
+  display: none;
+  @media (min-width: 640px) {
+    display: block;
+    margin: 6px 0 0;
+  }
   @media (min-width: 768px) {
     font-size: 0.825rem;
-    margin: 0 0 4px;
   }
 }
