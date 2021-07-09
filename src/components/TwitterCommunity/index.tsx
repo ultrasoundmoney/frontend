@@ -66,7 +66,7 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = () => {
         <span className="mr-2">wear</span>
         <Clipboard data-clipboard-text={"🦇🔊"} onSuccess={onBatSoundCopied}>
           <span
-            className={`border border-gray-700 rounded-full p-2 pr-10 transition duration-500 ease-in-out ${
+            className={`border border-gray-700 rounded-full leading-10 p-2 pr-10 transition duration-500 ease-in-out ${
               isCopiedFeedbackVisible && "bg-gray-800"
             }`}
           >
