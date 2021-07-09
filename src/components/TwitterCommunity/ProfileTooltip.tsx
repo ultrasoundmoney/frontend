@@ -23,7 +23,7 @@ const ProfileTooltip: React.FC<ProfileTooltipProps> = ({ children, item }) => {
   }
   return (
     <>
-      <div className="has-tooltip opacity-50 hover:opacity-100">
+      <div className="has-tooltip opacity-70 hover:opacity-100">
         <div className="tooltip shadow-lg rounded-lg bg-blue-tangaroa text-white px-7 py-7 z-10">
           <a
             target="_blank"
