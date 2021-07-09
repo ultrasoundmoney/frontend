@@ -49,7 +49,7 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = () => {
   };
 
   return (
-    <div className="flex flex-col align-center">
+    <>
       <h1 className="text-white text-2xl md:text-3xl text-center font-light mb-8">
         <a
           target="_blank"
@@ -79,7 +79,7 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = () => {
         on your profile
       </p>
       <TwitterProfile profileList={data && data.profiles} />
-    </div>
+    </>
   );
 };
 
