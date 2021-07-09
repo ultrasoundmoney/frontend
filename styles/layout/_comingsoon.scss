@@ -109,30 +109,17 @@
     }
   }
 
-  .span-bat-sound span{
-    border-radius: 5px;
-    background-color: #343c55;
-    padding: 7px;
-    padding-top: 3px;
-    cursor: pointer;
+  .batsound-emoji img {
+    height: 20px;
+    width: auto;
+    margin: 0 0.3em
   }
 
-  .span-bat-sound-copied span{
-    border-radius: 5px;
-    background-color: #343c55;
-    padding: 7px;
-    padding-top: 3px;
-    cursor: pointer;
+  .clipboard-image {
+    height: 20px;
+    padding-right: 0.4rem
   }
-  #bat-sound {
-    img{
-      width: 20px;
-      margin: auto 5px auto 0;
-      &:last-child{
-        margin-right: 0px;
-      }
-    }
-  }
+
   .tw-profile-text{
     img{
       width: 16px;
