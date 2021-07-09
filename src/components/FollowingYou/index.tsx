@@ -74,7 +74,7 @@ const FollowingYou: React.FC = () => {
           className="md:w-32 -ml-28 md:-ml-32 px-6 text-xs text-white border border-white bg-transparent rounded-full hover:bg-gray-700"
           type="submit"
         >
-          Show Me →
+          show me →
         </button>
       </form>
       {followers.type === "empty" ? null : followers.type ===
