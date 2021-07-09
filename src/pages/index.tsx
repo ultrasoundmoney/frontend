@@ -27,6 +27,11 @@ const IndexPage: NextPage<IndexPageProps> = () => {
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/favicon.png"></link>
         <meta name="theme-color" content="#131827" />
+        <script
+          defer
+          data-domain="ultrasound.money"
+          src="https://plausible.io/js/plausible.js"
+        ></script>
       </Head>
       <ComingSoon />
     </>
