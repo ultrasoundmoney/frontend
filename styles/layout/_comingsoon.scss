@@ -148,3 +148,12 @@
   height: 1em;
   vertical-align: -0.125em;
 }
+
+.show-me {
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
+  margin-left: -6.9rem;
+  @media (min-width: 768px) {
+    margin-left: -8.3rem;
+  }
+}

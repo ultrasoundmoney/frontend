@@ -88,7 +88,7 @@ const FollowingYou: React.FC = () => {
           onChange={(event) => setHandle(event.target.value)}
         />
         <button
-          className="md:w-32 -ml-28 md:-ml-32 px-6 text-xs text-white border border-white bg-transparent rounded-full hover:bg-gray-700"
+          className="show-me md:w-32 -ml-28 px-5 text-xs text-white border border-white bg-transparent rounded-full hover:bg-gray-700"
           type="submit"
         >
           show me →
