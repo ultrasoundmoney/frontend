@@ -360,13 +360,8 @@ const SupplyChart: React.FC<Props> = ({
         },
       },
       legend: {
-        labelFormatter: function () {
-          const s = this as Highcharts.Series;
-          if (s.userOptions.id === "supply_projected") {
-            return t.projected_supply;
-          }
-          return s.name;
-        },
+        // Usinga custom legend for more control over responsiveness
+        enabled: false,
       },
       series,
       xAxis: {
@@ -473,6 +468,8 @@ const SupplyChart: React.FC<Props> = ({
     variables,
   ]);
 
+  const legendItems = series.filter((s) => s.showInLegend);
+
   return (
     <>
       <div className={styles.supplyChart}>
@@ -482,6 +479,25 @@ const SupplyChart: React.FC<Props> = ({
           highcharts={Highcharts}
           ref={chartRef}
         />
+        <div className={styles.legend}>
+          {legendItems.map((s) => (
+            <div key={s.id} className={styles.legendItem}>
+              <div
+                className={styles.legendItemColor}
+                style={{
+                  backgroundColor: String(s.color),
+                  opacity: (s as Highcharts.SeriesAreaOptions).fillOpacity,
+                }}
+              />
+              <div
+                className={styles.legendItemName}
+                style={{ color: COLORS.LABEL }}
+              >
+                {s.id === "supply_projected" ? t.projected_supply : s.name}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </>
   );

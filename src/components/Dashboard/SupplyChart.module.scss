@@ -12,10 +12,6 @@
   .highcharts-legend-item {
     pointer-events: none;
   }
-  .highcharts-legend-item.highcharts-series-1:last-child .highcharts-point {
-    // Match the fill-opacity for projected series
-    opacity: 0.4;
-  }
 
   // Tooltip
   .tt-header {
@@ -85,5 +81,39 @@
   opacity: 0.2;
   @media (min-width: 768px) {
     font-size: 80px;
+  }
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  flex-wrap: nowrap;
+  max-width: 100%;
+  margin: 0 2px 20px;
+}
+.legendItem {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  & + & {
+    margin-left: 16px;
+  }
+}
+.legendItemColor {
+  width: 12px;
+  height: 12px;
+  border-radius: 10px;
+  margin: 2px 5px 0 0;
+  flex: 0 0 auto;
+}
+.legendItemName {
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 1;
+  color: #8490b5;
+  @media (min-width: 400px) {
+    font-size: 12px;
   }
 }
