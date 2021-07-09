@@ -1,134 +1,134 @@
-.coming-soon{
-    background-image: url("../../src/assets/blurred-bg.svg");
-    background-repeat: no-repeat;
-    background-position: center top;
-    background-size: auto;
-    width: 100%;
+.coming-soon {
+  background-image: url("../../src/assets/blurred-bg.svg");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: auto;
+  width: 100%;
 }
 .entry {
-    text-align: center;
-    border-radius: 12px;
-    background-color: #1b2236;
-    .entry-value {
-      position: relative;
-      height: 95px;
-      perspective: 200px;
-      backface-visibility: hidden;
-      transform: translateZ(0);
-      transform: translate3d(0, 0, 0);
-      margin: 0 auto;
-      font-weight: 100;
-      font-stretch: normal;
-      font-style: normal;
-      line-height: 1;
-      letter-spacing: normal;
-      text-align: center;
-      color: #ffffff;
-    }
-    .entry-title {
-      flex-grow: 0;
-      font-weight: normal;
-      font-stretch: normal;
-      font-style: normal;
-      letter-spacing: normal;
-      text-align: center;
-      color: #8490b5;
-    }
-  }
-  
-  .count {
-    background-color: #1b2236;
-    color: #fff;
-    display: block;
-    line-height: 1;
-    overflow: hidden;
-    position: absolute;
-    text-align: center;
-    top: 0;
-    width: 100%;
-    border-radius: 12px;
-  
-    &.top {
-      height: 50%;
-      line-height: 95px;
-      transform-origin: 50% 100%;
-    }
-  
-    &.bottom {
-      line-height: 0;
-      height: 50%;
-      top: 50%;
-      transform-origin: 50% 0;
-    }
-  
-    &.flipTop {
-      animation-name: flipTop;
-      animation-duration: 0.3s;
-      animation-fill-mode: both;
-      z-index: 1;
-    }
-  
-    &.flipBottom {
-      animation-name: flipBottom;
-      animation-duration: 0.3s;
-      animation-delay: 0.3s;
-      animation-fill-mode: both;
-      z-index: 1;
-    }
-  }
-  
-  .alert-danger {
-    color: #721c24;
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
+  text-align: center;
+  border-radius: 12px;
+  background-color: #1b2236;
+  .entry-value {
     position: relative;
-    padding: .75rem 1.25rem;
-    margin-bottom: 1rem;
-    border: 1px solid transparent;
-    border-radius: .25rem;
+    height: 95px;
+    perspective: 200px;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    transform: translate3d(0, 0, 0);
+    margin: 0 auto;
+    font-weight: 100;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
     text-align: center;
+    color: #ffffff;
   }
-  
-  @keyframes flipTop {
-    from {
-      transform: rotateX(0deg);
-    }
-  
-    to {
-      transform: rotateX(-90deg);
-    }
+  .entry-title {
+    flex-grow: 0;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #8490b5;
   }
-  
-  @keyframes flipBottom {
-    from {
-      transform: rotateX(90deg);
-    }
-  
-    to {
-      transform: rotateX(0deg);
-    }
+}
+
+.count {
+  background-color: #1b2236;
+  color: #fff;
+  display: block;
+  line-height: 1;
+  overflow: hidden;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  width: 100%;
+  border-radius: 12px;
+
+  &.top {
+    height: 50%;
+    line-height: 95px;
+    transform-origin: 50% 100%;
   }
 
-  .batsound-emoji img {
-    height: 20px;
-    width: auto;
-    margin: 0 0.3em
+  &.bottom {
+    line-height: 0;
+    height: 50%;
+    top: 50%;
+    transform-origin: 50% 0;
   }
 
-  .clipboard-image {
-    height: 20px;
-    padding-right: 0.4rem
+  &.flipTop {
+    animation-name: flipTop;
+    animation-duration: 0.3s;
+    animation-fill-mode: both;
+    z-index: 1;
   }
 
-  .tw-profile-text{
-    img{
-      width: 16px;
-      margin: auto 2px;
-      &:last-child{
-        margin-right: 0px;
-      }
+  &.flipBottom {
+    animation-name: flipBottom;
+    animation-duration: 0.3s;
+    animation-delay: 0.3s;
+    animation-fill-mode: both;
+    z-index: 1;
+  }
+}
+
+.alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  text-align: center;
+}
+
+@keyframes flipTop {
+  from {
+    transform: rotateX(0deg);
+  }
+
+  to {
+    transform: rotateX(-90deg);
+  }
+}
+
+@keyframes flipBottom {
+  from {
+    transform: rotateX(90deg);
+  }
+
+  to {
+    transform: rotateX(0deg);
+  }
+}
+
+.batsound-emoji img {
+  height: 20px;
+  width: auto;
+  margin: 0 0.3em;
+}
+
+.clipboard-image {
+  height: 20px;
+  padding-right: 0.4rem;
+}
+
+.tw-profile-text {
+  img {
+    width: 16px;
+    margin: auto 2px;
+    &:last-child {
+      margin-right: 0px;
     }
   }
+}
 
 .emoji {
   display: inline-block;
