@@ -75,6 +75,7 @@ const SupplyChart: React.FC<Props> = ({
 
   const chartRef = React.useRef<HighchartsRef | null>(null);
   const [showBreakdown, setShowBreakdown] = React.useState(false);
+  const [isUltraSound, setIsUltraSound] = React.useState(true);
 
   const handleChartMouseOver = React.useCallback(() => {
     clearTimeout(mouseOutTimer);
@@ -327,6 +328,8 @@ const SupplyChart: React.FC<Props> = ({
     const chartOptions: Highcharts.Options = {
       chart: {
         animation: animate,
+        height:
+          typeof window !== "undefined" && window.innerWidth > 640 ? 380 : 300,
       },
       plotOptions: {
         area: {
@@ -446,11 +449,19 @@ const SupplyChart: React.FC<Props> = ({
       },
     };
     return merge({}, defaultOptions, chartOptions);
-  }, [series, handleChartMouseOut, handleChartMouseOver, t, totalSupplyByDate]);
+  }, [
+    handleChartMouseOut,
+    handleChartMouseOver,
+    series,
+    t,
+    totalSupplyByDate,
+    variables,
+  ]);
 
   return (
     <>
       <div className={styles.supplyChart}>
+        {isUltraSound && <div className={styles.ultraSound}>🦇🔉</div>}
         <HighchartsReact
           options={options}
           highcharts={Highcharts}

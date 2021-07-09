@@ -1,3 +1,6 @@
+.supplyChart {
+  position: relative;
+}
 .supplyChart :global {
   // Chart series
   .highcharts-series {
@@ -70,5 +73,18 @@
     @media (min-width: 768px) {
       display: block;
     }
+  }
+}
+
+.ultraSound {
+  position: absolute;
+  top: 50%;
+  right: 4%;
+  font-size: 70px;
+  transform: translateY(-60%);
+  opacity: 0.2;
+  @media (min-width: 768px) {
+    font-size: 80px;
+    right: 13%;
   }
 }
