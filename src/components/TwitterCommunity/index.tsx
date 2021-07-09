@@ -45,7 +45,7 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = () => {
 
   const onBatSoundCopied = () => {
     setIsCopiedFeedbackVisible(true);
-    setTimeout(() => setIsCopiedFeedbackVisible(false), 800);
+    setTimeout(() => setIsCopiedFeedbackVisible(false), 400);
   };
 
   return (
