@@ -317,9 +317,6 @@ const SupplyChart: React.FC<Props> = ({
           events: {
             mouseOut: handleChartMouseOut,
             mouseOver: handleChartMouseOver,
-            legendItemClick: function (e) {
-              e.preventDefault();
-            },
           },
         },
       },
@@ -337,6 +334,7 @@ const SupplyChart: React.FC<Props> = ({
         type: "datetime",
         minPadding: 0,
         maxPadding: 0,
+        tickInterval: 365 * 24 * 3600 * 1000, // always use 1 year intervals
         /*
         plotLines: [
           {

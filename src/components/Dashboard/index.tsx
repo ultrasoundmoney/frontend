@@ -146,7 +146,9 @@ const DashboardPage: React.FC<{}> = () => {
                 </div>
                 <div className="text-sm text-blue-spindle font-light">
                   {intlFormatter.format(daysUntilProjectedMerge)}{" "}
-                  {t.days_until_merge}
+                  {daysUntilProjectedMerge === 1
+                    ? t.day_until_merge
+                    : t.days_until_merge}
                 </div>
                 <Slider
                   min={0}

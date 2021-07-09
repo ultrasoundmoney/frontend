@@ -24,6 +24,7 @@
   "merge_date": "merge date",
   "pos_issuance": "PoS issuance",
   "fee_burn": "fee burn",
+  "day_until_merge": "day to PoW removal",
   "days_until_merge": "days to PoW removal",
   "projected": "projected",
   "projected_supply": "projected supply",
