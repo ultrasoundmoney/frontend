@@ -1,10 +1,10 @@
 import * as React from "react";
 import useSWR from "swr";
-import twemoji from "twemoji";
 import Clipboard from "react-clipboard.js";
 import { useTranslations } from "../../utils/use-translation";
 import TwitterProfile from "./TwitterProfile";
-import { default as clipboardImage } from "../../assets/clipboard.png";
+import SpanMoji from "../SpanMoji";
+import copySrc from "../../assets/copy.svg";
 
 type TwitterCommunityPros = {};
 const fetcher = (url: string) =>
@@ -62,37 +62,22 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = () => {
           {getText}
         </a>
       </h1>
-      {/* Getting these elements to line up was extremely fiddely, beware of changing any padding. Would be great to improve this with absolute asset sizes and padding sizes */}
-      <div className="flex justify-center flex-col md:flex-row text-center mb-14">
-        <p className="my-2 text-white leading-6 md:leading-none font-light text-base lg:text-lg">
-          {t.description_community_1}
-        </p>
-        <Clipboard
-          className="md:mx-4 flex justify-center"
-          data-clipboard-text={"🦇🔊"}
-          onSuccess={onBatSoundCopied}
-        >
+      <p className="text-white text-center mb-8 md:text-lg">
+        <span className="mr-2">wear</span>
+        <Clipboard data-clipboard-text={"🦇🔊"} onSuccess={onBatSoundCopied}>
           <span
-            className={`absolute px-5 pt-1 pb-2 rounded-full border border-gray-700 transition duration-500 ease-in-out ${
-              isCopiedFeedbackVisible
-                ? "bg-gray-700 text-white"
-                : "bg-transparent text-transparent"
+            className={`border border-gray-700 rounded-full p-2 pr-10 transition duration-500 ease-in-out ${
+              isCopiedFeedbackVisible && "bg-gray-800"
             }`}
           >
-            copied!
+            <SpanMoji emoji="🦇🔊" />
           </span>
-          <span
-            className="border border-gray-700 pl-3 pt-1 pb-2 px-12 pr-9 rounded-full batsound-emoji"
-            dangerouslySetInnerHTML={{ __html: twemoji.parse("🦇🔊") }}
-          />
-          <div className="border border-gray-700 -ml-8 pl-1 pt-2 pb-2 rounded-r-full">
-            <img className="clipboard-image" src={clipboardImage} />
-          </div>
+          <span className="copy-container border-gray-700 py-2 -ml-9 mr-4 rounded-r-full">
+            <img className="copy-icon" src={copySrc} />
+          </span>
         </Clipboard>
-        <p className="my-2 text-white leading-6 md:leading-none font-light text-base lg:text-lg">
-          {t.description_community_2}
-        </p>
-      </div>
+        on your profile
+      </p>
       <TwitterProfile profileList={data && data.profiles} />
     </div>
   );

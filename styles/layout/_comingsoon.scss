@@ -136,3 +136,15 @@
   height: 1em;
   vertical-align: -0.125em;
 }
+
+.copy-container {
+  border-left: 1px solid;
+  border-color: rgba(55, 65, 81, var(--tw-border-opacity));
+}
+
+.copy-icon {
+  display: inline-block;
+  width: 2rem;
+  height: 1em;
+  vertical-align: -0.125em;
+}
