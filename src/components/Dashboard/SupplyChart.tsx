@@ -368,37 +368,37 @@ const SupplyChart: React.FC<Props> = ({
         type: "datetime",
         minPadding: 0,
         maxPadding: 0,
-        tickInterval: 365 * 24 * 3600 * 1000, // always use 1 year intervals
+        tickInterval: 365.25 * 24 * 3600 * 1000, // always use 1 year intervals
         plotLines: [
           createPlotline(
             DateTime.fromISO("2015-07-31T00:00:00Z").toMillis(),
-            "genesis<br>(5 ETH/block)"
+            "genesis<br>5 ETH/block</div>"
           ),
           createPlotline(
             DateTime.fromISO("2017-10-16T00:00:00Z").toMillis(),
-            "byzantium<br>(3 ETH/block)"
+            "Byzantium<br>3 ETH/block"
           ),
           createPlotline(
             DateTime.fromISO("2019-02-27T00:00:00Z").toMillis(),
-            "constantinople<br>(2 ETH/block)"
+            "Constantinople<br>2 ETH/block"
           ),
           createPlotline(
             DateTime.fromISO("2020-12-01T00:00:00Z").toMillis(),
-            "beacon<br>chain<br>(PoS)"
+            "phase 0<br>PoS"
           ),
           createPlotline(
             DateTime.fromISO("2021-08-04T00:00:00Z").toMillis(),
-            "EIP<br>1559"
+            "London<br>EIP-1559"
           ),
           createPlotline(
             variables.projectedMergeDate.toMillis(),
-            "merge<br>(PoW removal)"
+            "merge<br>PoW removal"
           ),
         ],
       },
       yAxis: {
         min: 0,
-        max: 140e6,
+        max: 160e6,
         tickInterval: 20e6,
         title: {
           text: undefined,

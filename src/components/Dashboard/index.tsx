@@ -17,6 +17,7 @@ const MIN_PROJECTED_BASE_GAS_PRICE = 0;
 const DEFAULT_PROJECTED_BASE_GAS_PRICE = 20;
 const MAX_PROJECTED_BASE_GAS_PRICE = 200;
 
+const MIN_PROJECTED_MERGE_DATE = DateTime.utc(2021, 12, 1);
 const DEFAULT_PROJECTED_MERGE_DATE = DateTime.utc(2022, 1, 31);
 const MAX_PROJECTED_MERGE_DATE = DateTime.utc(2022, 12, 31);
 
@@ -66,6 +67,10 @@ const DashboardPage: React.FC<{}> = () => {
     DateTime.utc().startOf("day"),
     "days"
   ).days;
+  const daysUntilMinProjectedMerge = MIN_PROJECTED_MERGE_DATE.diff(
+    DateTime.utc().startOf("day"),
+    "days"
+  ).days;
   const daysUntilMaxProjectedMerge = MAX_PROJECTED_MERGE_DATE.diff(
     DateTime.utc().startOf("day"),
     "days"
@@ -96,16 +101,18 @@ const DashboardPage: React.FC<{}> = () => {
                 title={t.eth_staked}
                 value={
                   <>
-                    {projectedStaking / 1e6}{" "}
-                    {t.numeric_million_abbrev.toUpperCase()}
+                    {projectedStaking / 1e6}
+                    {t.numeric_million_abbrev} ETH
                   </>
                 }
                 subValue={
                   <>
+                    {t.pos_issuance}
+                    {": "}
                     {intlFormatter.format(
                       estimatedDailyIssuance(projectedStaking)
                     )}{" "}
-                    {t.eth_per_day} {t.pos_issuance}
+                    {t.eth_per_day}
                   </>
                 }
               >
@@ -123,10 +130,12 @@ const DashboardPage: React.FC<{}> = () => {
                 value={<>{intlFormatter.format(projectedBaseGasPrice)} Gwei</>}
                 subValue={
                   <>
+                    {t.fee_burn}
+                    {": "}
                     {intlFormatter.format(
                       estimatedDailyFeeBurn(projectedBaseGasPrice)
                     )}{" "}
-                    {t.eth_per_day} {t.fee_burn}
+                    {t.eth_per_day}
                   </>
                 }
               >
@@ -144,15 +153,15 @@ const DashboardPage: React.FC<{}> = () => {
                 value={projectedMergeDate.toLocaleString(DateTime.DATE_MED)}
                 subValue={
                   <>
+                    {t.pow_removal}
+                    {": in "}
                     {intlFormatter.format(daysUntilProjectedMerge)}{" "}
-                    {daysUntilProjectedMerge === 1
-                      ? t.day_until_merge
-                      : t.days_until_merge}
+                    {daysUntilProjectedMerge === 1 ? "day" : "days"}
                   </>
                 }
               >
                 <Slider
-                  min={0}
+                  min={daysUntilMinProjectedMerge}
                   max={daysUntilMaxProjectedMerge}
                   value={daysUntilProjectedMerge}
                   step={1}
