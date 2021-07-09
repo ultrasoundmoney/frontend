@@ -40,7 +40,7 @@ const ComingSoon: React.FC = () => {
               src={EthLogo}
               alt={t.title}
             />
-            <h1 className="text-white font-extralight text-2xl md:text-3xl xl:text-41xl text-center mb-16">
+            <h1 className="text-white font-extralight text-xl md:text-3xl xl:text-41xl text-center mb-16">
               <SpanMoji emoji="🔥 " />
               {t.main_title}
               <SpanMoji emoji=" 🔥" />
