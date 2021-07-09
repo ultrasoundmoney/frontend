@@ -6,6 +6,7 @@ import TwitterCommunity from "../TwitterCommunity";
 import EthLogo from "../../assets/ethereum-ultra-sound-bat.svg";
 import { useTranslations } from "../../utils/use-translation";
 import FollowingYou from "../FollowingYou";
+import SpanMoji from "../SpanMoji";
 
 const fetcher = (url: string) =>
   fetch(url, {
@@ -40,7 +41,9 @@ const ComingSoon: React.FC<{}> = () => {
               alt={t.title}
             />
             <h1 className="text-white font-extralight text-2xl md:text-3xl xl:text-41xl text-center mb-16">
+              <SpanMoji emoji="🔥 " />
               {t.main_title}
+              <SpanMoji emoji=" 🔥" />
             </h1>
           </div>
           <div className="flex">

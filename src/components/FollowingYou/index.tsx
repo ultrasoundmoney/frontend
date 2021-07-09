@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useTranslations } from "../../utils/use-translation";
 import TwitterProfile from "../TwitterCommunity/TwitterProfile";
+import SpanMoji from "../SpanMoji";
 
 type Empty = { type: "empty" };
 type FollowedBy = {
@@ -71,6 +72,7 @@ const FollowingYou: React.FC = () => {
     <>
       <h1 className="text-white text-2xl md:text-3xl text-center font-light mb-8">
         {t.title_following_you}
+        <SpanMoji emoji=" 👀" />
       </h1>
       <p
         className={`text-white leading-6 md:leading-none text-center font-light text-base lg:text-lg mb-14`}
