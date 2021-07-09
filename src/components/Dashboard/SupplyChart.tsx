@@ -78,7 +78,7 @@ const SupplyChart: React.FC<Props> = ({
   // TODO enable this if ETH fee burn is currently higher than issuance
   const [isUltraSound, setIsUltraSound] = React.useState(false);
 
-  const handleChartMouseOver = React.useCallback(() => {
+  const handleChartMouseOver = React.useCallback((evt) => {
     clearTimeout(mouseOutTimer);
     setShowBreakdown(true);
   }, []);
@@ -239,83 +239,96 @@ const SupplyChart: React.FC<Props> = ({
     };
 
     let series: Highcharts.SeriesAreaOptions[] = [];
-    if (variables.showBreakdown) {
-      series = [
-        {
-          id: "addresses",
-          type: "area",
-          name: t.supply_chart_series_address,
-          color: COLORS.SERIES[1],
-          data: addressSeriesData,
-          marker: { symbol: "circle" },
-          stack: "historical",
-        },
-        {
-          id: "contracts",
-          type: "area",
-          name: t.supply_chart_series_contracts,
-          color: COLORS.SERIES[2],
-          data: contractSeriesData,
-          marker: { symbol: "circle" },
-          stack: "historical",
-        },
-        {
-          id: "staking",
-          type: "area",
-          name: t.supply_chart_series_staking,
-          color: COLORS.SERIES[5],
-          data: stakingSeriesData,
-          marker: { symbol: "circle" },
-          stack: "historical",
-        },
-        {
-          id: "addresses_projected",
-          type: "area",
-          name: `${t.supply_chart_series_address} (${t.projected})`,
-          data: addressProj,
-          color: COLORS.SERIES[1],
-          stack: "projected",
-          ...projSeriesOptions,
-        },
-        {
-          id: "contracts_projected",
-          type: "area",
-          name: `${t.supply_chart_series_contracts} (${t.projected})`,
-          data: contractProj,
-          color: COLORS.SERIES[2],
-          stack: "projected",
-          ...projSeriesOptions,
-        },
-        {
-          id: "staking_projected",
-          type: "area",
-          name: `${t.supply_chart_series_staking} (${t.projected})`,
-          data: stakingProj,
-          color: COLORS.SERIES[5],
-          stack: "projected",
-          ...projSeriesOptions,
-        },
-      ];
-    } else {
-      series = [
-        {
-          id: "supply",
-          type: "area",
-          name: t.historical_supply,
-          color: COLORS.SERIES[0],
-          data: supplySeriesData,
-        },
-        {
-          id: "supply_projected",
-          type: "area",
-          name: `${t.eth_supply} (${t.projected})`,
-          data: supplyProj,
-          color: COLORS.SERIES[0],
-          ...projSeriesOptions,
-          showInLegend: true,
-        },
-      ];
-    }
+    const hiddenStyles: Partial<Highcharts.SeriesAreaOptions> = {
+      opacity: 0,
+      showInLegend: false,
+    };
+    const visibleStyles: Partial<Highcharts.SeriesAreaOptions> = {
+      opacity: 1,
+      showInLegend: true,
+    };
+    series = [
+      {
+        id: "supply",
+        type: "area",
+        name: t.historical_supply,
+        color: COLORS.SERIES[0],
+        data: supplySeriesData,
+        enableMouseTracking: false,
+        ...(variables.showBreakdown ? hiddenStyles : visibleStyles),
+      },
+      {
+        id: "supply_projected",
+        type: "area",
+        name: `${t.eth_supply} (${t.projected})`,
+        data: supplyProj,
+        color: COLORS.SERIES[0],
+        enableMouseTracking: false,
+        ...projSeriesOptions,
+        showInLegend: true,
+        ...(variables.showBreakdown ? hiddenStyles : visibleStyles),
+      },
+      {
+        id: "addresses",
+        type: "area",
+        name: t.supply_chart_series_address,
+        color: COLORS.SERIES[1],
+        data: addressSeriesData,
+        marker: { symbol: "circle" },
+        stack: "historical",
+        ...(variables.showBreakdown ? visibleStyles : hiddenStyles),
+      },
+      {
+        id: "contracts",
+        type: "area",
+        name: t.supply_chart_series_contracts,
+        color: COLORS.SERIES[2],
+        data: contractSeriesData,
+        marker: { symbol: "circle" },
+        stack: "historical",
+        ...(variables.showBreakdown ? visibleStyles : hiddenStyles),
+      },
+      {
+        id: "staking",
+        type: "area",
+        name: t.supply_chart_series_staking,
+        color: COLORS.SERIES[5],
+        data: stakingSeriesData,
+        marker: { symbol: "circle" },
+        stack: "historical",
+        ...(variables.showBreakdown ? visibleStyles : hiddenStyles),
+      },
+      {
+        id: "addresses_projected",
+        type: "area",
+        name: `${t.supply_chart_series_address} (${t.projected})`,
+        data: addressProj,
+        color: COLORS.SERIES[1],
+        stack: "projected",
+        ...(variables.showBreakdown ? visibleStyles : hiddenStyles),
+        ...projSeriesOptions,
+      },
+      {
+        id: "contracts_projected",
+        type: "area",
+        name: `${t.supply_chart_series_contracts} (${t.projected})`,
+        data: contractProj,
+        color: COLORS.SERIES[2],
+        stack: "projected",
+        ...(variables.showBreakdown ? visibleStyles : hiddenStyles),
+        ...projSeriesOptions,
+      },
+      {
+        id: "staking_projected",
+        type: "area",
+        name: `${t.supply_chart_series_staking} (${t.projected})`,
+        data: stakingProj,
+        color: COLORS.SERIES[5],
+        stack: "projected",
+        ...(variables.showBreakdown ? visibleStyles : hiddenStyles),
+        ...projSeriesOptions,
+      },
+    ];
 
     return [series, supplyByDate];
   }, [variables, t]);
@@ -336,8 +349,8 @@ const SupplyChart: React.FC<Props> = ({
         area: {
           animation: animate,
           events: {
-            mouseOut: handleChartMouseOut,
             mouseOver: handleChartMouseOver,
+            mouseOut: handleChartMouseOut,
           },
         },
       },
@@ -393,7 +406,6 @@ const SupplyChart: React.FC<Props> = ({
       },
       tooltip: {
         shared: true,
-        // split: true,
         valueDecimals: 0,
         xDateFormat: "%Y-%m-%d",
         useHTML: true,
@@ -451,8 +463,8 @@ const SupplyChart: React.FC<Props> = ({
     };
     return merge({}, defaultOptions, chartOptions);
   }, [
-    handleChartMouseOut,
     handleChartMouseOver,
+    handleChartMouseOut,
     series,
     t,
     totalSupplyByDate,
