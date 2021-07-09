@@ -45,11 +45,11 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = () => {
 
   const onBatSoundCopied = () => {
     setIsCopiedFeedbackVisible(true);
-    setTimeout(() => setIsCopiedFeedbackVisible(false), 800);
+    setTimeout(() => setIsCopiedFeedbackVisible(false), 400);
   };
 
   return (
-    <div className="flex flex-col align-center">
+    <>
       <h1 className="text-white text-2xl md:text-3xl text-center font-light mb-8">
         <a
           target="_blank"
@@ -66,7 +66,7 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = () => {
         <span className="mr-2">wear</span>
         <Clipboard data-clipboard-text={"🦇🔊"} onSuccess={onBatSoundCopied}>
           <span
-            className={`border border-gray-700 rounded-full p-2 pr-10 transition duration-500 ease-in-out ${
+            className={`border border-gray-700 rounded-full leading-10 p-2 pr-10 transition duration-500 ease-in-out ${
               isCopiedFeedbackVisible && "bg-gray-800"
             }`}
           >
@@ -79,7 +79,7 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = () => {
         on your profile
       </p>
       <TwitterProfile profileList={data && data.profiles} />
-    </div>
+    </>
   );
 };
 
