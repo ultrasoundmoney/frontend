@@ -79,12 +79,11 @@
 .ultraSound {
   position: absolute;
   top: 50%;
-  right: 4%;
+  left: 50%;
   font-size: 70px;
-  transform: translateY(-60%);
+  transform: translateX(-50%) translateY(-60%);
   opacity: 0.2;
   @media (min-width: 768px) {
     font-size: 80px;
-    right: 13%;
   }
 }

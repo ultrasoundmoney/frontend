@@ -75,7 +75,8 @@ const SupplyChart: React.FC<Props> = ({
 
   const chartRef = React.useRef<HighchartsRef | null>(null);
   const [showBreakdown, setShowBreakdown] = React.useState(false);
-  const [isUltraSound, setIsUltraSound] = React.useState(true);
+  // TODO enable this if ETH fee burn is currently higher than issuance
+  const [isUltraSound, setIsUltraSound] = React.useState(false);
 
   const handleChartMouseOver = React.useCallback(() => {
     clearTimeout(mouseOutTimer);
