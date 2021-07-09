@@ -63,7 +63,7 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = () => {
         </a>
       </h1>
       <p className="text-white text-center mb-8 md:text-lg">
-        <span className="mr-2">wear</span>
+        <span className="mr-2">wear the bat signal on Twitter</span>
         <Clipboard data-clipboard-text={"🦇🔊"} onSuccess={onBatSoundCopied}>
           <span
             className={`border border-gray-700 rounded-full leading-10 p-2 pr-10 transition duration-500 ease-in-out ${
@@ -76,7 +76,6 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = () => {
             <img className="copy-icon" src={copySrc} />
           </span>
         </Clipboard>
-        on your profile
       </p>
       <TwitterProfile profileList={data && data.profiles} />
     </>
