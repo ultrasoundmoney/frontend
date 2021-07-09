@@ -53,12 +53,16 @@ const FollowingYou: React.FC = () => {
     if (res.status === 200) {
       const body = await res.json();
       console.log(body);
-      setFollowers({
-        type: "followers",
-        count: body.count,
-        followers: body.followers,
-      });
-      return;
+      // Somehow clicking show me rapidly can have res 200, but still have body
+      // be undefined on mobile.
+      if (body.followers !== undefined) {
+        setFollowers({
+          type: "followers",
+          count: body.count,
+          followers: body.followers,
+        });
+        return;
+      }
     }
 
     setFollowers({ type: "unknownError" });
