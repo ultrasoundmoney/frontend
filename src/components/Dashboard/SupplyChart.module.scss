@@ -63,4 +63,19 @@
   .tt-total-row .tt-series-name {
     font-weight: bold;
   }
+
+  .highcharts-plot-line-label:nth-of-type(4),
+  .highcharts-plot-line-label:nth-of-type(5) {
+    max-width: 50px;
+    @media (min-width: 1280px) {
+      max-width: 100px;
+    }
+  }
+  .highcharts-plot-line-label,
+  .highcharts-plot-line {
+    display: none;
+    @media (min-width: 768px) {
+      display: block;
+    }
+  }
 }

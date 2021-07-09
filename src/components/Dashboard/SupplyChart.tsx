@@ -39,6 +39,26 @@ function last<T>(arr: T[]): T | undefined {
   return arr[arr.length - 1];
 }
 
+function createPlotline(value: number, text: string) {
+  return {
+    value,
+    color: COLORS.LABEL,
+    width: 1,
+    label: {
+      rotation: 0,
+      text,
+      style: {
+        color: "#fff",
+        whiteSpace: "normal",
+        fontSize: "11px",
+      },
+      y: 12,
+      useHTML: true,
+    },
+    zIndex: 3,
+  };
+}
+
 const SupplyChart: React.FC<Props> = ({
   projectedBaseGasPrice,
   projectedStaking,
@@ -334,32 +354,30 @@ const SupplyChart: React.FC<Props> = ({
         maxPadding: 0,
         tickInterval: 365 * 24 * 3600 * 1000, // always use 1 year intervals
         plotLines: [
-          {
-            value: DateTime.fromISO("2021-08-04T00:00:00Z").toMillis(),
-            color: COLORS.LABEL,
-            width: 1,
-            label: {
-              text: "EIP 1559",
-              style: {
-                color: "#fff",
-              },
-              y: 2,
-            },
-            zIndex: 3,
-          },
-          {
-            value: variables.projectedMergeDate.toMillis(),
-            color: COLORS.LABEL,
-            width: 1,
-            label: {
-              text: "Merge",
-              style: {
-                color: "#fff",
-              },
-              y: 2,
-            },
-            zIndex: 3,
-          },
+          createPlotline(
+            DateTime.fromISO("2015-07-31T00:00:00Z").toMillis(),
+            "genesis<br>(5 ETH/block)"
+          ),
+          createPlotline(
+            DateTime.fromISO("2017-10-16T00:00:00Z").toMillis(),
+            "byzantium<br>(3 ETH/block)"
+          ),
+          createPlotline(
+            DateTime.fromISO("2019-02-27T00:00:00Z").toMillis(),
+            "constantinople<br>(2 ETH/block)"
+          ),
+          createPlotline(
+            DateTime.fromISO("2020-12-01T00:00:00Z").toMillis(),
+            "beacon chain<br>(PoS)"
+          ),
+          createPlotline(
+            DateTime.fromISO("2021-08-04T00:00:00Z").toMillis(),
+            "EIP 1559"
+          ),
+          createPlotline(
+            variables.projectedMergeDate.toMillis(),
+            "merge<br>(PoW removal)"
+          ),
         ],
       },
       yAxis: {
@@ -368,7 +386,6 @@ const SupplyChart: React.FC<Props> = ({
         tickInterval: 20e6,
         title: {
           text: undefined,
-          // text: "ETH",
         },
       },
       tooltip: {
