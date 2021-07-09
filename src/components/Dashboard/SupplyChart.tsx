@@ -53,7 +53,6 @@ function createPlotline(value: number, text: string) {
         fontSize: "11px",
       },
       y: 12,
-      useHTML: true,
     },
     zIndex: 3,
   };
@@ -368,11 +367,11 @@ const SupplyChart: React.FC<Props> = ({
           ),
           createPlotline(
             DateTime.fromISO("2020-12-01T00:00:00Z").toMillis(),
-            "beacon chain<br>(PoS)"
+            "beacon<br>chain<br>(PoS)"
           ),
           createPlotline(
             DateTime.fromISO("2021-08-04T00:00:00Z").toMillis(),
-            "EIP 1559"
+            "EIP<br>1559"
           ),
           createPlotline(
             variables.projectedMergeDate.toMillis(),
