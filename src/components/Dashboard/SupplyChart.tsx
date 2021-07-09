@@ -190,7 +190,7 @@ const SupplyChart: React.FC<Props> = ({
         );
       } else if (stakingValue > variables.projectedStaking) {
         // Subtract ETH to approach projected staking value
-        stakingValue = Math.min(
+        stakingValue = Math.max(
           variables.projectedStaking,
           stakingValue - estimatedDailyStakeChange(stakingValue)
         );
