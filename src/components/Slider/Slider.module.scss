@@ -1,13 +1,20 @@
 $track-bg: #293350;
 $thumb-bg: #8194ce;
 
+$thumb-width: 14px;
+
 .slider {
+  position: relative;
+}
+
+.sliderInput {
   -webkit-appearance: none;
-  padding: 10px 0;
+  padding: 1px 0;
   width: 100%;
   background: transparent;
+  opacity: 0;
 }
-.slider:focus {
+.sliderInput:focus {
   outline: none;
 }
 
@@ -15,37 +22,66 @@ $thumb-bg: #8194ce;
 // parse the styles, so instead we use a sass mixin to reuse the styles
 @mixin slider-track {
   width: 100%;
-  height: 6px;
+  height: 20px;
   cursor: pointer;
   box-shadow: none;
-  background: $track-bg;
+  background: transparent;
   border-radius: 4px;
   border: none;
 }
-.slider::-webkit-slider-runnable-track {
+.sliderInput::-webkit-slider-runnable-track {
   @include slider-track;
 }
-.slider:focus::-webkit-slider-runnable-track {
-  background: $track-bg;
+.sliderInput:focus::-webkit-slider-runnable-track {
+  background: transparent;
 }
-.slider::-moz-range-track {
+.sliderInput::-moz-range-track {
   @include slider-track;
 }
 
 @mixin slider-thumb {
   box-shadow: none;
   border: none;
-  height: 14px;
-  width: 14px;
-  border-radius: 7px;
-  background: $thumb-bg;
+  height: 20px;
+  width: 20px;
+  background: transparent;
   cursor: pointer;
+  @media (max-width: 768px) {
+    // Larger tap target on mobile
+    width: 40px;
+  }
 }
-.slider::-webkit-slider-thumb {
+.sliderInput::-webkit-slider-thumb {
   @include slider-thumb;
   -webkit-appearance: none;
-  margin-top: -4px;
 }
-.slider::-moz-range-thumb {
+.sliderInput::-moz-range-thumb {
   @include slider-thumb;
+}
+
+// Custom visual track/slider (smaller tap area)
+.sliderTrack {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  right: 0;
+  height: 6px;
+  cursor: pointer;
+  box-shadow: none;
+  background: $track-bg;
+  border-radius: 4px;
+  border: none;
+  pointer-events: none;
+}
+
+.sliderThumb {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  height: $thumb-width;
+  width: $thumb-width;
+  border-radius: $thumb-width;
+  cursor: pointer;
+  background: $thumb-bg;
+  pointer-events: none;
 }
