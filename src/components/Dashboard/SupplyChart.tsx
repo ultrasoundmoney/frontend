@@ -10,6 +10,7 @@ import {
   estimatedDailyIssuance,
   estimatedDailyStakeChange,
 } from "../../utils/metric-utils";
+import { useOnResize } from "../../utils/use-on-resize";
 import { defaultOptions, COLORS } from "./chart-defaults";
 
 import supplyData from "./supply-total.json";
@@ -37,27 +38,19 @@ let mouseOutTimer: NodeJS.Timeout | null = null;
 
 const NUM_DAYS_PER_POINT = 7;
 
+const COMPACT_MARKERS_BELOW_WIDTH = 1024;
+
+const MARKERS: [DateTime | null, string, string][] = [
+  [DateTime.fromISO("2015-07-31T00:00:00Z"), "genesis", "5 ETH/block"],
+  [DateTime.fromISO("2017-10-16T00:00:00Z"), "Byzantium", "3 ETH/block"],
+  [DateTime.fromISO("2019-02-27T00:00:00Z"), "Constantinople", "2 ETH/block"],
+  [DateTime.fromISO("2020-12-01T00:00:00Z"), "phase 0", "PoS"],
+  [LONDON_DATE, "London", "EIP-1559"],
+  [null, "merge", "PoW removal"],
+];
+
 function last<T>(arr: T[]): T | undefined {
   return arr[arr.length - 1];
-}
-
-function createPlotline(value: number, text: string) {
-  return {
-    value,
-    color: COLORS.LABEL,
-    width: 1,
-    label: {
-      rotation: 0,
-      text,
-      style: {
-        color: "#fff",
-        whiteSpace: "normal",
-        fontSize: "11px",
-      },
-      y: 12,
-    },
-    zIndex: 3,
-  };
 }
 
 const SupplyChart: React.FC<Props> = ({
@@ -80,6 +73,11 @@ const SupplyChart: React.FC<Props> = ({
   // TODO enable this if ETH fee burn is currently higher than issuance
   const [isUltraSound, setIsUltraSound] = React.useState(false);
 
+  const [useCompactMarkers, setUseCompactMarkers] = React.useState(
+    typeof window !== "undefined" &&
+      window.innerWidth < COMPACT_MARKERS_BELOW_WIDTH
+  );
+
   const handleChartMouseOver = React.useCallback((evt) => {
     clearTimeout(mouseOutTimer);
     setShowBreakdown(true);
@@ -92,14 +90,28 @@ const SupplyChart: React.FC<Props> = ({
     }, 200);
   }, []);
 
+  useOnResize(({ width }) => {
+    const _useCompactMarkers = width < COMPACT_MARKERS_BELOW_WIDTH;
+    if (_useCompactMarkers !== useCompactMarkers) {
+      setUseCompactMarkers(_useCompactMarkers);
+    }
+  });
+
   const _variables = React.useMemo(
     () => ({
       projectedBaseGasPrice,
       projectedStaking,
       projectedMergeDate,
       showBreakdown,
+      useCompactMarkers,
     }),
-    [projectedBaseGasPrice, projectedStaking, projectedMergeDate, showBreakdown]
+    [
+      projectedBaseGasPrice,
+      projectedStaking,
+      projectedMergeDate,
+      showBreakdown,
+      useCompactMarkers,
+    ]
   );
   // Debounce how fast the variables can change to prevent UI from locking up
   const variables = useDebounce(_variables, 50);
@@ -369,29 +381,26 @@ const SupplyChart: React.FC<Props> = ({
         minPadding: 0,
         maxPadding: 0,
         tickInterval: 365.25 * 24 * 3600 * 1000, // always use 1 year intervals
-        plotLines: [
-          createPlotline(
-            DateTime.fromISO("2015-07-31T00:00:00Z").toMillis(),
-            "genesis<br>5 ETH/block</div>"
-          ),
-          createPlotline(
-            DateTime.fromISO("2017-10-16T00:00:00Z").toMillis(),
-            "Byzantium<br>3 ETH/block"
-          ),
-          createPlotline(
-            DateTime.fromISO("2019-02-27T00:00:00Z").toMillis(),
-            "Constantinople<br>2 ETH/block"
-          ),
-          createPlotline(
-            DateTime.fromISO("2020-12-01T00:00:00Z").toMillis(),
-            "phase 0<br>PoS"
-          ),
-          createPlotline(LONDON_DATE.toMillis(), "London<br>EIP-1559"),
-          createPlotline(
-            variables.projectedMergeDate.toMillis(),
-            "merge<br>PoW removal"
-          ),
-        ],
+        plotLines: MARKERS.map(([date, title, subtitle], i) => ({
+          value: date
+            ? date.toMillis()
+            : variables.projectedMergeDate.toMillis(),
+          color: COLORS.LABEL,
+          width: 1,
+          label: {
+            rotation: 0,
+            text: variables.useCompactMarkers
+              ? String.fromCharCode(65 + i)
+              : [title, subtitle].filter(Boolean).join("<br>"),
+            style: {
+              color: "#fff",
+              whiteSpace: "normal",
+              fontSize: "11px",
+            },
+            y: 12,
+          },
+          zIndex: 3,
+        })),
       },
       yAxis: {
         min: 0,
@@ -498,6 +507,21 @@ const SupplyChart: React.FC<Props> = ({
             </div>
           ))}
         </div>
+        {useCompactMarkers && (
+          <div className={styles.markerLegend}>
+            {MARKERS.map(([, title, subtitle], i) => (
+              <div key={title} className={styles.markerLegendItem}>
+                <div className={styles.markerLegendCount}>
+                  {String.fromCharCode(65 + i)}
+                </div>
+                <div>
+                  <div className={styles.markerLegendTitle}>{title}</div>
+                  <div className={styles.markerLegendSubtitle}>{subtitle}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </>
   );
