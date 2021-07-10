@@ -12,7 +12,7 @@ import {
   estimatedDailyStakeChange,
 } from "../../utils/metric-utils";
 import { useOnResize } from "../../utils/use-on-resize";
-import { defaultOptions, COLORS } from "./chart-defaults";
+import { defaultOptions, COLORS } from "../../utils/chart-defaults";
 
 import supplyData from "./supply-total.json";
 import stakingData from "./supply-staking.json";
