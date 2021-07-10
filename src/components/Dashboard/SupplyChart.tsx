@@ -124,8 +124,6 @@ const SupplyChart: React.FC<Props> = ({
     Highcharts.AnnotationsLabelsOptions[],
     Record<string, number>
   ] => {
-    const annotations: Highcharts.AnnotationsLabelsOptions[] = [];
-
     const stakingByDate = {};
     stakingData.forEach(({ t, v }) => {
       stakingByDate[t] = v;
@@ -145,29 +143,16 @@ const SupplyChart: React.FC<Props> = ({
 
     const numSupplyDataPoints = supplyData.length;
 
-    let maxSupply: number;
+    let maxSupply: number | null = null;
+    let peakSupply: [string, number] | null = null;
 
     supplyData.forEach(({ t: timestamp, v }, i) => {
-      // Add ultra-sound annotation if ETH supply starts decreasing
-      if (maxSupply === undefined || v > maxSupply) {
+      // Calculate peak supply
+      if (v > (maxSupply || 0)) {
         maxSupply = v;
-      } else if (v < maxSupply && !annotations.length) {
-        const annotation: Highcharts.AnnotationsLabelsOptions = {
-          point: {
-            xAxis: 0,
-            yAxis: 0,
-            x: DateTime.fromISO(timestamp, { zone: "utc" }).toMillis(),
-            y: maxSupply,
-          },
-          text: `<div class="ann-root">
-          <div class="ann-title">${t.peak_supply} 🦇🔉</div>
-          <div class="ann-value">${Intl.NumberFormat(undefined, {
-            maximumFractionDigits: 1,
-          }).format(Math.round(maxSupply / 1e5) / 10)}M ETH</div>
-          </div>`,
-          useHTML: true,
-        };
-        annotations.push(annotation);
+        peakSupply = null;
+      } else if (v < maxSupply && !peakSupply) {
+        peakSupply = [timestamp, v];
       }
 
       // Only render every Nth point for chart performance
@@ -201,6 +186,26 @@ const SupplyChart: React.FC<Props> = ({
       supplySeriesData.push([dateMillis, v]);
       supplyByDate[dateMillis] = v;
     });
+
+    const annotations: Highcharts.AnnotationsLabelsOptions[] = [];
+    if (peakSupply) {
+      const annotation: Highcharts.AnnotationsLabelsOptions = {
+        point: {
+          xAxis: 0,
+          yAxis: 0,
+          x: DateTime.fromISO(peakSupply[0], { zone: "utc" }).toMillis(),
+          y: maxSupply,
+        },
+        text: `<div class="ann-root">
+        <div class="ann-title">${t.peak_supply} 🦇🔉</div>
+        <div class="ann-value">${Intl.NumberFormat(undefined, {
+          maximumFractionDigits: 1,
+        }).format(Math.round(peakSupply[1] / 1e5) / 10)}M ETH</div>
+        </div>`,
+        useHTML: true,
+      };
+      annotations.push(annotation);
+    }
 
     // Projections
     const lastSupplyPoint = last(supplySeriesData);
