@@ -108,7 +108,7 @@ const FollowingYou: React.FC = () => {
         <div className="my-8">
           {followers.count === 0 ? (
             <p className="text-white text-xl p-8 text-center">
-              no followers found
+              no fam followers found
             </p>
           ) : (
             <>
