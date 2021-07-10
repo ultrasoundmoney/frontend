@@ -182,7 +182,7 @@ function Param({ title, value, subValue, children }: ParamProps) {
           {subValue}
         </div>
       </div>
-      {children}
+      <div className={styles.paramChildren}>{children}</div>
     </div>
   );
 }

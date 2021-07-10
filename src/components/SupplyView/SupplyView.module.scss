@@ -57,11 +57,17 @@
   font-weight: 300;
   line-height: 1;
   @include clip-text;
-  margin: 0 0 0 10px;
+  margin: 0 0 3px 10px;
   @media (min-width: 640px) {
-    margin: 6px 0 0 0;
+    margin: 3px 0 0 0;
   }
   @media (min-width: 768px) {
     font-size: 0.825rem;
+  }
+}
+.paramChildren {
+  margin-top: -2px;
+  @media (min-width: 640px) {
+    margin-top: 2px;
   }
 }
