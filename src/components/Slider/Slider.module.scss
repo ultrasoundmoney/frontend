@@ -1,4 +1,3 @@
-// TODO(colors) make these variables or choose different colors
 $track-bg: #293350;
 $thumb-bg: #8194ce;
 
@@ -44,7 +43,6 @@ $thumb-bg: #8194ce;
 }
 .slider::-webkit-slider-thumb {
   @include slider-thumb;
-  // TODO webkit-only?
   -webkit-appearance: none;
   margin-top: -4px;
 }

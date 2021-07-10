@@ -16,6 +16,7 @@ import {
 import { useOnResize } from "../../utils/use-on-resize";
 import { defaultOptions, COLORS } from "../../utils/chart-defaults";
 
+// TODO load these from API
 import supplyData from "./supply-total.json";
 import stakingData from "./supply-staking.json";
 import contractData from "./supply-in-smart-contracts.json";

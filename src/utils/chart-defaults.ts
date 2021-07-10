@@ -1,11 +1,11 @@
 import * as Highcharts from "highcharts";
 
-// TODO(colors)
 export const COLORS = {
   GRID: "#262e48",
   LABEL: "#8490b5",
   LABEL_HOVER: "#6c7696",
   TOOLTIP_BG: "#1b2135", // mignight-express but lighter
+  ANNOTATION_BG: "#293350",
   // visx
   // SERIES: ["#0b7285", "#66d9e8", "#fcc419", "#ff8787", "#9c36b5", "#cc5de8", "#a61e4d"],
   // chart.js
