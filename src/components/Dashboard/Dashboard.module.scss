@@ -44,12 +44,12 @@
   color: white;
   font-weight: 300;
   @include clip-text;
-  margin: 6px 0 0;
-  line-height: 1;
+  margin: 2px 0 0;
+  line-height: 1.4;
   flex: 0 0 auto;
   @media (min-width: 768px) {
     font-size: 1.25rem;
-    margin: 4px 0;
+    margin: 2px 0;
   }
 }
 .paramSubValue {
