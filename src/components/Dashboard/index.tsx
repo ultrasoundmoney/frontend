@@ -187,9 +187,11 @@ function Param({ title, value, subValue, children }: ParamProps) {
   return (
     <div className={styles.param}>
       <div className={`text-blue-spindle ${styles.paramTitle}`}>{title}</div>
-      <div className={styles.paramValue}>{value}</div>
-      <div className={`text-blue-spindle ${styles.paramSubValue}`}>
-        {subValue}
+      <div className={styles.paramValueContainer}>
+        <div className={styles.paramValue}>{value}</div>
+        <div className={`text-blue-spindle ${styles.paramSubValue}`}>
+          {subValue}
+        </div>
       </div>
       {children}
     </div>

@@ -31,6 +31,14 @@
   font-weight: 300;
   @include clip-text;
 }
+.paramValueContainer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  @media (min-width: 640px) {
+    display: block;
+  }
+}
 .paramValue {
   font-size: 1.125rem;
   color: white;
@@ -38,6 +46,7 @@
   @include clip-text;
   margin: 6px 0 0;
   line-height: 1;
+  flex: 0 0 auto;
   @media (min-width: 768px) {
     font-size: 1.25rem;
     margin: 4px 0;
@@ -48,10 +57,9 @@
   font-weight: 300;
   line-height: 1;
   @include clip-text;
-  display: none;
+  margin: 0 0 0 10px;
   @media (min-width: 640px) {
-    display: block;
-    margin: 6px 0 0;
+    margin: 6px 0 0 0;
   }
   @media (min-width: 768px) {
     font-size: 0.825rem;
