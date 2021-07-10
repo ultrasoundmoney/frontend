@@ -44,6 +44,7 @@ let mouseOutTimer: NodeJS.Timeout | null = null;
 const NUM_DAYS_PER_POINT = 7;
 
 const COMPACT_MARKERS_BELOW_WIDTH = 1024;
+const COMPACT_CHART_BELOW_WIDTH = 640;
 
 function last<T>(arr: T[]): T | undefined {
   return arr[arr.length - 1];
@@ -67,16 +68,6 @@ const SupplyChart: React.FC<Props> = ({
   const chartRef = React.useRef<HighchartsRef | null>(null);
   const [showBreakdown, setShowBreakdown] = React.useState(false);
 
-  const [useCompactMarkers, setUseCompactMarkers] = React.useState(
-    typeof window !== "undefined" &&
-      window.innerWidth < COMPACT_MARKERS_BELOW_WIDTH
-  );
-
-  const handleChartMouseOver = React.useCallback(() => {
-    clearTimeout(mouseOutTimer);
-    setShowBreakdown(true);
-  }, []);
-
   const handleChartMouseOut = React.useCallback(() => {
     clearTimeout(mouseOutTimer);
     mouseOutTimer = setTimeout(() => {
@@ -84,12 +75,33 @@ const SupplyChart: React.FC<Props> = ({
     }, 200);
   }, []);
 
-  useOnResize(({ width }) => {
-    const _useCompactMarkers = width < COMPACT_MARKERS_BELOW_WIDTH;
-    if (_useCompactMarkers !== useCompactMarkers) {
-      setUseCompactMarkers(_useCompactMarkers);
-    }
-  });
+  const handleChartMouseOver = React.useCallback(() => {
+    clearTimeout(mouseOutTimer);
+    setShowBreakdown(true);
+  }, []);
+
+  const [useCompactMarkers, setUseCompactMarkers] = React.useState(
+    typeof window !== "undefined" &&
+      window.innerWidth < COMPACT_MARKERS_BELOW_WIDTH
+  );
+  const [useCompactChart, setUseCompactChart] = React.useState(
+    typeof window !== "undefined" &&
+      window.innerWidth < COMPACT_CHART_BELOW_WIDTH
+  );
+
+  useOnResize(
+    ({ width }) => {
+      const _useCompactMarkers = width < COMPACT_MARKERS_BELOW_WIDTH;
+      if (_useCompactMarkers !== useCompactMarkers) {
+        setUseCompactMarkers(_useCompactMarkers);
+      }
+      const _useCompactChart = width < COMPACT_CHART_BELOW_WIDTH;
+      if (_useCompactChart !== useCompactChart) {
+        setUseCompactChart(_useCompactChart);
+      }
+    },
+    { runOnMount: true }
+  );
 
   const _variables = React.useMemo(
     () => ({
@@ -97,6 +109,7 @@ const SupplyChart: React.FC<Props> = ({
       projectedStaking,
       projectedMergeDate,
       showBreakdown,
+      useCompactChart,
       useCompactMarkers,
     }),
     [
@@ -104,6 +117,7 @@ const SupplyChart: React.FC<Props> = ({
       projectedStaking,
       projectedMergeDate,
       showBreakdown,
+      useCompactChart,
       useCompactMarkers,
     ]
   );
@@ -412,8 +426,7 @@ const SupplyChart: React.FC<Props> = ({
       ],
       chart: {
         animation: animate,
-        height:
-          typeof window !== "undefined" && window.innerWidth > 640 ? 380 : 300,
+        height: variables.useCompactChart ? 300 : 380,
       },
       plotOptions: {
         area: {
