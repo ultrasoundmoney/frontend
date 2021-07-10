@@ -64,18 +64,6 @@
   }
 }
 
-.ultraSound {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  font-size: 70px;
-  transform: translateX(-50%) translateY(-60%);
-  opacity: 0.2;
-  @media (min-width: 768px) {
-    font-size: 80px;
-  }
-}
-
 .legend {
   display: flex;
   align-items: center;
@@ -110,6 +98,7 @@
   }
 }
 
+// Legend describing the line markers on mobile
 .markerLegend {
   margin: 0 20px 16px;
   display: grid;
@@ -137,4 +126,15 @@
   font-weight: bold;
 }
 .markerLegendSubtitle {
+}
+
+// Annotation
+.supplyChart :global {
+  .ann-root {
+    line-height: 1.4;
+  }
+  .ann-value {
+    font-size: 13px;
+    font-weight: bold;
+  }
 }

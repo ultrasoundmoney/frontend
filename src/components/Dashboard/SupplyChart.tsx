@@ -1,6 +1,7 @@
 import * as React from "react";
-import * as Highcharts from "highcharts";
 import { DateTime } from "luxon";
+import Highcharts from "highcharts";
+import highchartsAnnotations from "highcharts/modules/annotations";
 import HighchartsReact from "highcharts-react-official";
 import merge from "lodash/merge";
 import { useDebounce } from "../../utils/use-debounce";
@@ -28,6 +29,10 @@ interface Props {
 interface HighchartsRef {
   chart: Highcharts.Chart;
   container: React.RefObject<HTMLDivElement>;
+}
+
+if (typeof window !== "undefined") {
+  highchartsAnnotations(Highcharts);
 }
 
 const intlFormatter = new Intl.NumberFormat();
@@ -70,15 +75,13 @@ const SupplyChart: React.FC<Props> = ({
 
   const chartRef = React.useRef<HighchartsRef | null>(null);
   const [showBreakdown, setShowBreakdown] = React.useState(false);
-  // TODO enable this if ETH fee burn is currently higher than issuance
-  const [isUltraSound, setIsUltraSound] = React.useState(false);
 
   const [useCompactMarkers, setUseCompactMarkers] = React.useState(
     typeof window !== "undefined" &&
       window.innerWidth < COMPACT_MARKERS_BELOW_WIDTH
   );
 
-  const handleChartMouseOver = React.useCallback((evt) => {
+  const handleChartMouseOver = React.useCallback(() => {
     clearTimeout(mouseOutTimer);
     setShowBreakdown(true);
   }, []);
@@ -116,10 +119,13 @@ const SupplyChart: React.FC<Props> = ({
   // Debounce how fast the variables can change to prevent UI from locking up
   const variables = useDebounce(_variables, 50);
 
-  const [series, totalSupplyByDate] = React.useMemo((): [
+  const [series, annotations, totalSupplyByDate] = React.useMemo((): [
     Highcharts.SeriesOptionsType[],
+    Highcharts.AnnotationsLabelsOptions[],
     Record<string, number>
   ] => {
+    const annotations: Highcharts.AnnotationsLabelsOptions[] = [];
+
     const stakingByDate = {};
     stakingData.forEach(({ t, v }) => {
       stakingByDate[t] = v;
@@ -138,22 +144,48 @@ const SupplyChart: React.FC<Props> = ({
     const stakingSeriesData: number[][] = [];
 
     const numSupplyDataPoints = supplyData.length;
-    supplyData.forEach(({ t, v }, i) => {
+
+    let maxSupply: number;
+
+    supplyData.forEach(({ t: timestamp, v }, i) => {
+      // Add ultra-sound annotation if ETH supply starts decreasing
+      if (maxSupply === undefined || v > maxSupply) {
+        maxSupply = v;
+      } else if (v < maxSupply && !annotations.length) {
+        const annotation: Highcharts.AnnotationsLabelsOptions = {
+          point: {
+            xAxis: 0,
+            yAxis: 0,
+            x: DateTime.fromISO(timestamp, { zone: "utc" }).toMillis(),
+            y: maxSupply,
+          },
+          text: `<div class="ann-root">
+          <div class="ann-title">${t.peak_supply} 🦇🔉</div>
+          <div class="ann-value">${Intl.NumberFormat(undefined, {
+            maximumFractionDigits: 1,
+          }).format(Math.round(maxSupply / 1e5) / 10)}M ETH</div>
+          </div>`,
+          useHTML: true,
+        };
+        annotations.push(annotation);
+      }
+
       // Only render every Nth point for chart performance
       if (i % NUM_DAYS_PER_POINT !== 0 && i < numSupplyDataPoints - 1) {
         return;
       }
+
       // Subtract any staking eth from total supply on that date
-      const stakingSupply = stakingByDate[t] || 0;
+      const stakingSupply = stakingByDate[timestamp] || 0;
       const nonStakingSupply = v - stakingSupply;
 
-      const date = DateTime.fromISO(t, { zone: "utc" });
+      const date = DateTime.fromISO(timestamp, { zone: "utc" });
       const dateMillis = date.toMillis();
-      if (stakingByDate[t]) {
-        stakingSeriesData.push([dateMillis, stakingByDate[t]]);
+      if (stakingByDate[timestamp]) {
+        stakingSeriesData.push([dateMillis, stakingByDate[timestamp]]);
       }
 
-      const inContractsPct = contractByDate[t];
+      const inContractsPct = contractByDate[timestamp];
       let inAddressesValue = nonStakingSupply;
       if (inContractsPct !== undefined) {
         // Glassnode's ETH in contract data includes staked ETH, so we need
@@ -347,7 +379,7 @@ const SupplyChart: React.FC<Props> = ({
       },
     ];
 
-    return [series, supplyByDate];
+    return [series, annotations, supplyByDate];
   }, [variables, t]);
 
   const options = React.useMemo((): Highcharts.Options => {
@@ -357,6 +389,18 @@ const SupplyChart: React.FC<Props> = ({
     );
 
     const chartOptions: Highcharts.Options = {
+      annotations: [
+        {
+          draggable: "",
+          labelOptions: {
+            backgroundColor: "#293350",
+            borderWidth: 0,
+            verticalAlign: "bottom",
+            y: -7,
+          },
+          labels: annotations,
+        },
+      ],
       chart: {
         animation: animate,
         height:
@@ -469,6 +513,7 @@ const SupplyChart: React.FC<Props> = ({
     };
     return merge({}, defaultOptions, chartOptions);
   }, [
+    annotations,
     handleChartMouseOver,
     handleChartMouseOut,
     series,
@@ -482,7 +527,6 @@ const SupplyChart: React.FC<Props> = ({
   return (
     <>
       <div className={styles.supplyChart}>
-        {isUltraSound && <div className={styles.ultraSound}>🦇🔉</div>}
         <HighchartsReact
           options={options}
           highcharts={Highcharts}
