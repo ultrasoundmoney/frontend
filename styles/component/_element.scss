@@ -1,6 +1,6 @@
 .tooltip{
-  display: none; 
-  opacity: 0; 
+  display: none;
+  opacity: 0;
 }
 .has-tooltip:hover .tooltip,
 .has-tooltip:active .tooltip {
@@ -17,10 +17,11 @@
   -moz-animation: fadeIn ease 700ms;
   -o-animation: fadeIn ease 700ms;
   -ms-animation: fadeIn ease 700ms;
+  will-change: transform;
   @media screen and (min-width: 420px) and (max-width: 1023px) {
     left: 20%;
   }
-  @media (min-width: 1024px) { 
+  @media (min-width: 1024px) {
     left: unset;
     transform: translate(-40%,-100%);
   }
