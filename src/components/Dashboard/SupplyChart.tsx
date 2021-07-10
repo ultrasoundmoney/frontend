@@ -100,7 +100,7 @@ const SupplyChart: React.FC<Props> = ({
     }
   });
 
-  const _variables = React.useMemo(
+  const _chartSettings = React.useMemo(
     () => ({
       projectedBaseGasPrice,
       projectedStaking,
@@ -118,8 +118,8 @@ const SupplyChart: React.FC<Props> = ({
       useCompactMarkers,
     ]
   );
-  // Debounce how fast the variables can change to prevent UI from locking up
-  const variables = useDebounce(_variables, 50);
+  // Debounce how fast the chart settings can change to prevent UI from locking up
+  const chartSettings = useDebounce(_chartSettings, 50);
 
   const markers = React.useMemo(
     // prettier-ignore
@@ -129,9 +129,9 @@ const SupplyChart: React.FC<Props> = ({
       [DateTime.fromISO("2019-02-27T00:00:00Z"), "Constantinople", `2 ETH/${t.marker_block}`],
       [DateTime.fromISO("2020-12-01T00:00:00Z"), t.marker_phase_0, t.marker_pos],
       [LONDON_DATE, "London", "EIP-1559"],
-      [variables.projectedMergeDate, t.marker_merge, t.marker_pow_removal],
+      [chartSettings.projectedMergeDate, t.marker_merge, t.marker_pow_removal],
     ]),
-    [variables, t]
+    [chartSettings, t]
   );
 
   const [series, annotations, totalSupplyByDate] = React.useMemo((): [
@@ -238,7 +238,7 @@ const SupplyChart: React.FC<Props> = ({
     const addressProj: number[][] = [lastAddressPoint];
     const stakingProj: number[][] = [lastStakingPoint];
     const supplyProj: number[][] = [lastSupplyPoint];
-    const mergeDate = variables.projectedMergeDate.toSeconds();
+    const mergeDate = chartSettings.projectedMergeDate.toSeconds();
 
     let supplyValue = lastSupplyPoint[1];
     let stakingValue = lastStakingPoint[1];
@@ -246,16 +246,16 @@ const SupplyChart: React.FC<Props> = ({
       const projDate = lastDate.plus({ days: i + 1 }).startOf("day");
 
       // Calculate new ETH staking on this day
-      if (stakingValue < variables.projectedStaking) {
+      if (stakingValue < chartSettings.projectedStaking) {
         // Add ETH to approach projected staking value
         stakingValue = Math.min(
-          variables.projectedStaking,
+          chartSettings.projectedStaking,
           stakingValue + estimatedDailyStakeChange(stakingValue)
         );
-      } else if (stakingValue > variables.projectedStaking) {
+      } else if (stakingValue > chartSettings.projectedStaking) {
         // Subtract ETH to approach projected staking value
         stakingValue = Math.max(
-          variables.projectedStaking,
+          chartSettings.projectedStaking,
           stakingValue - estimatedDailyStakeChange(stakingValue)
         );
       }
@@ -269,7 +269,7 @@ const SupplyChart: React.FC<Props> = ({
       // If this is after EIP-1559 calculate the fee burn
       let burn = 0;
       if (projDate.toSeconds() >= LONDON_DATE.toSeconds()) {
-        burn = estimatedDailyFeeBurn(variables.projectedBaseGasPrice);
+        burn = estimatedDailyFeeBurn(chartSettings.projectedBaseGasPrice);
       }
 
       supplyValue = Math.max(supplyValue + newIssuance - burn, 0);
@@ -324,7 +324,7 @@ const SupplyChart: React.FC<Props> = ({
         color: COLORS.SERIES[0],
         data: supplySeriesData,
         enableMouseTracking: false,
-        ...(variables.showBreakdown ? hiddenStyles : visibleStyles),
+        ...(chartSettings.showBreakdown ? hiddenStyles : visibleStyles),
       },
       {
         id: "supply_projected",
@@ -335,7 +335,7 @@ const SupplyChart: React.FC<Props> = ({
         enableMouseTracking: false,
         ...projSeriesOptions,
         showInLegend: true,
-        ...(variables.showBreakdown ? hiddenStyles : visibleStyles),
+        ...(chartSettings.showBreakdown ? hiddenStyles : visibleStyles),
       },
       {
         id: "addresses",
@@ -345,7 +345,7 @@ const SupplyChart: React.FC<Props> = ({
         data: addressSeriesData,
         marker: { symbol: "circle" },
         stack: "historical",
-        ...(variables.showBreakdown ? visibleStyles : hiddenStyles),
+        ...(chartSettings.showBreakdown ? visibleStyles : hiddenStyles),
       },
       {
         id: "contracts",
@@ -355,7 +355,7 @@ const SupplyChart: React.FC<Props> = ({
         data: contractSeriesData,
         marker: { symbol: "circle" },
         stack: "historical",
-        ...(variables.showBreakdown ? visibleStyles : hiddenStyles),
+        ...(chartSettings.showBreakdown ? visibleStyles : hiddenStyles),
       },
       {
         id: "staking",
@@ -365,7 +365,7 @@ const SupplyChart: React.FC<Props> = ({
         data: stakingSeriesData,
         marker: { symbol: "circle" },
         stack: "historical",
-        ...(variables.showBreakdown ? visibleStyles : hiddenStyles),
+        ...(chartSettings.showBreakdown ? visibleStyles : hiddenStyles),
       },
       {
         id: "addresses_projected",
@@ -374,7 +374,7 @@ const SupplyChart: React.FC<Props> = ({
         data: addressProj,
         color: COLORS.SERIES[1],
         stack: "projected",
-        ...(variables.showBreakdown ? visibleStyles : hiddenStyles),
+        ...(chartSettings.showBreakdown ? visibleStyles : hiddenStyles),
         ...projSeriesOptions,
       },
       {
@@ -384,7 +384,7 @@ const SupplyChart: React.FC<Props> = ({
         data: contractProj,
         color: COLORS.SERIES[2],
         stack: "projected",
-        ...(variables.showBreakdown ? visibleStyles : hiddenStyles),
+        ...(chartSettings.showBreakdown ? visibleStyles : hiddenStyles),
         ...projSeriesOptions,
       },
       {
@@ -394,13 +394,13 @@ const SupplyChart: React.FC<Props> = ({
         data: stakingProj,
         color: COLORS.SERIES[5],
         stack: "projected",
-        ...(variables.showBreakdown ? visibleStyles : hiddenStyles),
+        ...(chartSettings.showBreakdown ? visibleStyles : hiddenStyles),
         ...projSeriesOptions,
       },
     ];
 
     return [series, annotations, supplyByDate];
-  }, [variables, t]);
+  }, [chartSettings, t]);
 
   const options = React.useMemo((): Highcharts.Options => {
     // Animate only if we're changing the underlying data & not the number of series
@@ -423,7 +423,7 @@ const SupplyChart: React.FC<Props> = ({
       ],
       chart: {
         animation: animate,
-        height: variables.useCompactChart ? 300 : 380,
+        height: chartSettings.useCompactChart ? 300 : 380,
       },
       plotOptions: {
         area: {
@@ -450,7 +450,7 @@ const SupplyChart: React.FC<Props> = ({
           width: 1,
           label: {
             rotation: 0,
-            text: variables.useCompactMarkers
+            text: chartSettings.useCompactMarkers
               ? String.fromCharCode(65 + i)
               : `${title}<br><b>${subtitle}</b>`,
             style: {
@@ -537,7 +537,7 @@ const SupplyChart: React.FC<Props> = ({
     series,
     t,
     totalSupplyByDate,
-    variables,
+    chartSettings,
   ]);
 
   const legendItems = series.filter((s) => s.showInLegend);
