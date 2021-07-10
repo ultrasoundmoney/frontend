@@ -1,7 +1,8 @@
-.tooltip{
-  display: none; 
-  opacity: 0; 
+.tooltip {
+  display: none;
+  opacity: 0;
 }
+
 .has-tooltip:hover .tooltip,
 .has-tooltip:active .tooltip {
   position: absolute;
@@ -11,22 +12,24 @@
   z-index: 100;
   width: 260px;
   left: 40px;
-  transform: translate(0%,-100%);
+  transform: translate(0%, -100%);
   animation: fadeIn ease 700ms;
   -webkit-animation: fadeIn ease 700ms;
   -moz-animation: fadeIn ease 700ms;
   -o-animation: fadeIn ease 700ms;
   -ms-animation: fadeIn ease 700ms;
+
   @media screen and (min-width: 420px) and (max-width: 1023px) {
     left: 30%;
   }
-  @media (min-width: 1024px) { 
+
+  @media (min-width: 1024px) {
     left: unset;
-    transform: translate(-40%,-100%);
+    transform: translate(-40%, -100%);
   }
 }
 
-.clipboard{
+.clipboard {
   position: absolute;
   width: fit-content;
   margin: auto;
@@ -38,65 +41,277 @@
   font-size: 12px;
   left: 25%;
   top: 30px;
+
   @media (min-width: 1024px) {
     left: 30%;
     top: 37px;
   }
+
   @media (min-width: 1280px) {
     left: 35%;
     top: 32px;
   }
+
   @media (min-width: 1536px) {
     left: 35%;
     top: 35px;
   }
 
-  &::active{
+  &::active {
     display: block;
   }
 }
 
-@keyframes fadeIn{
+@keyframes fadeIn {
   0% {
-    opacity:0;
+    opacity: 0;
   }
+
   100% {
-    opacity:1;
+    opacity: 1;
   }
 }
 
 @-moz-keyframes fadeIn {
   0% {
-    opacity:0;
+    opacity: 0;
   }
+
   100% {
-    opacity:1;
+    opacity: 1;
   }
 }
 
 @-webkit-keyframes fadeIn {
   0% {
-    opacity:0;
+    opacity: 0;
   }
+
   100% {
-    opacity:1;
+    opacity: 1;
   }
 }
 
 @-o-keyframes fadeIn {
   0% {
-    opacity:0;
+    opacity: 0;
   }
+
   100% {
-    opacity:1;
+    opacity: 1;
   }
 }
 
 @-ms-keyframes fadeIn {
   0% {
-    opacity:0;
+    opacity: 0;
   }
+
   100% {
-    opacity:1;
+    opacity: 1;
+  }
+}
+
+// .accordion-wrapper {
+  
+// }
+
+.accordion-item {
+  overflow: hidden;
+  height: auto;
+}
+@media all {
+  .accordion-item {
+    max-height: 50em;
+    -moz-transition: max-height 1s;
+    -o-transition: max-height 1s;
+    -webkit-transition: max-height 1s;
+    transition: max-height 1s;
+  }
+}
+@media screen and (min-width: 48em) {
+  .accordion-item {
+    max-height: 15em;
+    -moz-transition: max-height 0.5s;
+    -o-transition: max-height 0.5s;
+    -webkit-transition: max-height 0.5s;
+    transition: max-height 0.5s;
+  }
+}
+
+.accordion-item.collapsed {
+  max-height: 0;
+}
+
+.accordion-title {
+  font-weight: 300;
+  cursor: pointer;
+  color: #fff;
+  border-bottom: solid 1px #ccc;
+  padding-left: 40px;
+  position: relative;
+  &::before {
+    content: "+";
+    left: 0px;
+    margin-right: 25px;
+    font-size: 28px;
+    color: #00fffb;
+    position: absolute;
+  }
+
+  &.open {
+    &::before {
+      content: "-";
+      left: 0px;
+      margin-right: 25px;
+      font-size: 28px;
+      color: #00fffb;
+      position: absolute;
+    }
+  }
+}
+
+.accordion-content {
+  padding: 1.5rem 2.5rem;
+}
+
+.eth-price-gass-emoji {
+  img {
+    width: 14px;
+  }
+}
+
+.hamburger-menu {
+  position: absolute;
+  right: 10px;
+  top: 30px;
+  height: 34px;
+  padding: 8px;
+}
+
+
+.animateIn {
+  -webkit-animation-name: accordionIn;
+  -webkit-animation-duration: 0.65s;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-direction: normal;
+  -webkit-animation-timing-function: ease-in-out;
+  -webkit-animation-fill-mode: both;
+  -webkit-animation-delay: 0s;
+  -moz-animation-name: normal;
+  -moz-animation-duration: 0.65s;
+  -moz-animation-iteration-count: 1;
+  -moz-animation-direction: alternate;
+  -moz-animation-timing-function: ease-in-out;
+  -moz-animation-fill-mode: both;
+  -moz-animation-delay: 0s;
+  animation-name: accordionIn;
+  animation-duration: 0.65s;
+  animation-iteration-count: 1;
+  animation-direction: normal;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+  animation-delay: 0s;
+
+}
+
+.animateOut {
+  -webkit-animation-name: accordionOut;
+  -webkit-animation-duration: 0.75s;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-direction: alternate;
+  -webkit-animation-timing-function: ease-in-out;
+  -webkit-animation-fill-mode: both;
+  -webkit-animation-delay: 0s;
+  -moz-animation-name: accordionOut;
+  -moz-animation-duration: 0.75s;
+  -moz-animation-iteration-count: 1;
+  -moz-animation-direction: alternate;
+  -moz-animation-timing-function: ease-in-out;
+  -moz-animation-fill-mode: both;
+  -moz-animation-delay: 0s;
+  animation-name: accordionOut;
+  animation-duration: 0.75s;
+  animation-iteration-count: 1;
+  animation-direction: alternate;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+  animation-delay: 0s;
+}
+
+@-webkit-keyframes accordionIn {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale(0.8);
+
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: scale(1);
+  }
+}
+
+@-moz-keyframes accordionIn {
+  0% {
+    opacity: 0;
+    -moz-transform: scale(0.8);
+
+  }
+
+  100% {
+    opacity: 1;
+    -moz-transform: scale(1);
+  }
+}
+
+@keyframes accordionIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@-webkit-keyframes accordionOut {
+  0% {
+    opacity: 1;
+    -webkit-transform: scale(1);
+
+  }
+
+  100% {
+    opacity: 0;
+    -webkit-transform: scale(0.8);
+  }
+}
+
+@-moz-keyframes accordionOut {
+  0% {
+    opacity: 1;
+    -moz-transform: scale(1);
+
+  }
+
+  100% {
+    opacity: 0;
+    -moz-transform: scale(0.8);
+  }
+}
+
+@keyframes accordionOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0.8);
   }
 }
