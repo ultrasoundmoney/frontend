@@ -458,7 +458,7 @@ const SupplyChart: React.FC<Props> = ({
               whiteSpace: "normal",
               fontSize: "11px",
             },
-            y: 12,
+            y: 18,
           },
           zIndex: 3,
         })),

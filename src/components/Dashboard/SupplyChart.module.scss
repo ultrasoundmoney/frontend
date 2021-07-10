@@ -145,8 +145,10 @@
 .supplyChart :global {
   .ann-root {
     line-height: 1.4;
+    padding: 2px 3px;
   }
   .ann-value {
+    margin-top: 2px;
     font-size: 13px;
     font-weight: bold;
   }
