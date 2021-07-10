@@ -117,6 +117,10 @@
   @media (min-width: 640px) {
     grid-template-columns: auto auto auto auto auto auto;
   }
+  // Keep this breakpoint in sync with COMPACT_MARKERS_BELOW_WIDTH
+  @media (min-width: 1024px) {
+    display: none;
+  }
 }
 .markerLegendItem {
   display: flex;

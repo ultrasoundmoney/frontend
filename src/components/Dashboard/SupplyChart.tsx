@@ -89,19 +89,16 @@ const SupplyChart: React.FC<Props> = ({
       window.innerWidth < COMPACT_CHART_BELOW_WIDTH
   );
 
-  useOnResize(
-    ({ width }) => {
-      const _useCompactMarkers = width < COMPACT_MARKERS_BELOW_WIDTH;
-      if (_useCompactMarkers !== useCompactMarkers) {
-        setUseCompactMarkers(_useCompactMarkers);
-      }
-      const _useCompactChart = width < COMPACT_CHART_BELOW_WIDTH;
-      if (_useCompactChart !== useCompactChart) {
-        setUseCompactChart(_useCompactChart);
-      }
-    },
-    { runOnMount: true }
-  );
+  useOnResize(({ width }) => {
+    const _useCompactMarkers = width < COMPACT_MARKERS_BELOW_WIDTH;
+    if (_useCompactMarkers !== useCompactMarkers) {
+      setUseCompactMarkers(_useCompactMarkers);
+    }
+    const _useCompactChart = width < COMPACT_CHART_BELOW_WIDTH;
+    if (_useCompactChart !== useCompactChart) {
+      setUseCompactChart(_useCompactChart);
+    }
+  });
 
   const _variables = React.useMemo(
     () => ({
@@ -572,21 +569,19 @@ const SupplyChart: React.FC<Props> = ({
             </div>
           ))}
         </div>
-        {useCompactMarkers && (
-          <div className={styles.markerLegend}>
-            {markers.map(([, title, subtitle], i) => (
-              <div key={title} className={styles.markerLegendItem}>
-                <div className={styles.markerLegendCount}>
-                  {String.fromCharCode(65 + i)}
-                </div>
-                <div>
-                  <div className={styles.markerLegendTitle}>{title}</div>
-                  <div className={styles.markerLegendSubtitle}>{subtitle}</div>
-                </div>
+        <div className={styles.markerLegend}>
+          {markers.map(([, title, subtitle], i) => (
+            <div key={title} className={styles.markerLegendItem}>
+              <div className={styles.markerLegendCount}>
+                {String.fromCharCode(65 + i)}
               </div>
-            ))}
-          </div>
-        )}
+              <div>
+                <div className={styles.markerLegendTitle}>{title}</div>
+                <div className={styles.markerLegendSubtitle}>{subtitle}</div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </>
   );
