@@ -405,12 +405,6 @@ const SupplyChart: React.FC<Props> = ({
             maximumFractionDigits: 1,
           }
         ).format(Math.round(peakSupply[1] / 1e5) / 10)}M ETH</b>`,
-        // text: `<div class="ann-root">
-        // <div class="ann-title">${t.peak_supply} 🦇🔉</div>
-        // <div class="ann-value">${Intl.NumberFormat(undefined, {
-        //   maximumFractionDigits: 1,
-        // }).format(Math.round(peakSupply[1] / 1e5) / 10)}M ETH</div>
-        // </div>`,
         padding: 7,
         useHTML: false,
       };
