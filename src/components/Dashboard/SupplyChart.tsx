@@ -45,15 +45,6 @@ const NUM_DAYS_PER_POINT = 7;
 
 const COMPACT_MARKERS_BELOW_WIDTH = 1024;
 
-const MARKERS: [DateTime | null, string, string][] = [
-  [DateTime.fromISO("2015-07-31T00:00:00Z"), "genesis", "5 ETH/block"],
-  [DateTime.fromISO("2017-10-16T00:00:00Z"), "Byzantium", "3 ETH/block"],
-  [DateTime.fromISO("2019-02-27T00:00:00Z"), "Constantinople", "2 ETH/block"],
-  [DateTime.fromISO("2020-12-01T00:00:00Z"), "phase 0", "PoS"],
-  [LONDON_DATE, "London", "EIP-1559"],
-  [null, "merge", "PoW removal"],
-];
-
 function last<T>(arr: T[]): T | undefined {
   return arr[arr.length - 1];
 }
@@ -118,6 +109,19 @@ const SupplyChart: React.FC<Props> = ({
   );
   // Debounce how fast the variables can change to prevent UI from locking up
   const variables = useDebounce(_variables, 50);
+
+  const markers = React.useMemo(
+    // prettier-ignore
+    (): [DateTime | null, string, string][] => ([
+      [DateTime.fromISO("2015-07-31T00:00:00Z"), t.marker_genesis, `5 ETH/${t.marker_block}`],
+      [DateTime.fromISO("2017-10-16T00:00:00Z"), "Byzantium", `3 ETH/${t.marker_block}`],
+      [DateTime.fromISO("2019-02-27T00:00:00Z"), "Constantinople", `2 ETH/${t.marker_block}`],
+      [DateTime.fromISO("2020-12-01T00:00:00Z"), t.marker_phase_0, t.marker_pos],
+      [LONDON_DATE, "London", "EIP-1559"],
+      [variables.projectedMergeDate, t.marker_merge, t.marker_pow_removal],
+    ]),
+    [variables, t]
+  );
 
   const [series, annotations, totalSupplyByDate] = React.useMemo((): [
     Highcharts.SeriesOptionsType[],
@@ -430,10 +434,8 @@ const SupplyChart: React.FC<Props> = ({
         minPadding: 0,
         maxPadding: 0,
         tickInterval: 365.25 * 24 * 3600 * 1000, // always use 1 year intervals
-        plotLines: MARKERS.map(([date, title, subtitle], i) => ({
-          value: date
-            ? date.toMillis()
-            : variables.projectedMergeDate.toMillis(),
+        plotLines: markers.map(([date, title, subtitle], i) => ({
+          value: date.toMillis(),
           color: COLORS.LABEL,
           width: 1,
           label: {
@@ -521,6 +523,7 @@ const SupplyChart: React.FC<Props> = ({
     annotations,
     handleChartMouseOver,
     handleChartMouseOut,
+    markers,
     series,
     t,
     totalSupplyByDate,
@@ -558,7 +561,7 @@ const SupplyChart: React.FC<Props> = ({
         </div>
         {useCompactMarkers && (
           <div className={styles.markerLegend}>
-            {MARKERS.map(([, title, subtitle], i) => (
+            {markers.map(([, title, subtitle], i) => (
               <div key={title} className={styles.markerLegendItem}>
                 <div className={styles.markerLegendCount}>
                   {String.fromCharCode(65 + i)}
