@@ -6,6 +6,8 @@ import HighchartsReact from "highcharts-react-official";
 import merge from "lodash/merge";
 import { useDebounce } from "../../utils/use-debounce";
 import { useTranslations } from "../../utils/use-translation";
+import { last } from "../../utils/array-utils";
+import { intlFormat } from "../../utils/number-utils";
 import {
   estimatedDailyFeeBurn,
   estimatedDailyIssuance,
@@ -20,6 +22,11 @@ import contractData from "./supply-in-smart-contracts.json";
 
 import styles from "./SupplyChart.module.scss";
 
+if (typeof window !== "undefined") {
+  // Initialize highchats annotations module (onlly on browser, doesn't work on server)
+  highchartsAnnotations(Highcharts);
+}
+
 interface Props {
   projectedStaking: number;
   projectedBaseGasPrice: number;
@@ -31,24 +38,12 @@ interface HighchartsRef {
   container: React.RefObject<HTMLDivElement>;
 }
 
-if (typeof window !== "undefined") {
-  highchartsAnnotations(Highcharts);
-}
-
-const intlFormatter = new Intl.NumberFormat();
-
-const LONDON_DATE = DateTime.fromISO("2021-08-04T00:00:00Z");
-
 let mouseOutTimer: NodeJS.Timeout | null = null;
 
+const LONDON_DATE = DateTime.fromISO("2021-08-04T00:00:00Z");
 const NUM_DAYS_PER_POINT = 7;
-
 const COMPACT_MARKERS_BELOW_WIDTH = 1024;
 const COMPACT_CHART_BELOW_WIDTH = 640;
-
-function last<T>(arr: T[]): T | undefined {
-  return arr[arr.length - 1];
-}
 
 const SupplyChart: React.FC<Props> = ({
   projectedBaseGasPrice,
@@ -66,8 +61,9 @@ const SupplyChart: React.FC<Props> = ({
   }, [t]);
 
   const chartRef = React.useRef<HighchartsRef | null>(null);
-  const [showBreakdown, setShowBreakdown] = React.useState(false);
 
+  // Show / hide supply breakdown on hover
+  const [showBreakdown, setShowBreakdown] = React.useState(false);
   const handleChartMouseOut = React.useCallback(() => {
     clearTimeout(mouseOutTimer);
     mouseOutTimer = setTimeout(() => {
@@ -80,6 +76,7 @@ const SupplyChart: React.FC<Props> = ({
     setShowBreakdown(true);
   }, []);
 
+  // Responsive helpers
   const [useCompactMarkers, setUseCompactMarkers] = React.useState(
     typeof window !== "undefined" &&
       window.innerWidth < COMPACT_MARKERS_BELOW_WIDTH
@@ -100,6 +97,8 @@ const SupplyChart: React.FC<Props> = ({
     }
   });
 
+  // Collect chart settings into a object and debounce how fast it can change
+  // (otherwise moving sliders feels very sluggish)
   const _chartSettings = React.useMemo(
     () => ({
       projectedBaseGasPrice,
@@ -118,9 +117,9 @@ const SupplyChart: React.FC<Props> = ({
       useCompactMarkers,
     ]
   );
-  // Debounce how fast the chart settings can change to prevent UI from locking up
   const chartSettings = useDebounce(_chartSettings, 50);
 
+  // Define the event markers that we'll plot on the chart
   const markers = React.useMemo(
     // prettier-ignore
     (): [DateTime | null, string, string][] => ([
@@ -134,6 +133,7 @@ const SupplyChart: React.FC<Props> = ({
     [chartSettings, t]
   );
 
+  // Transform our input data into series that we'll pass to highcharts
   const [series, annotations, totalSupplyByDate] = React.useMemo((): [
     Highcharts.SeriesOptionsType[],
     Highcharts.AnnotationsLabelsOptions[],
@@ -175,21 +175,22 @@ const SupplyChart: React.FC<Props> = ({
         return;
       }
 
+      const date = DateTime.fromISO(timestamp, { zone: "utc" });
+      const dateMillis = date.toMillis();
+
       // Subtract any staking eth from total supply on that date
       const stakingSupply = stakingByDate[timestamp] || 0;
       const nonStakingSupply = v - stakingSupply;
 
-      const date = DateTime.fromISO(timestamp, { zone: "utc" });
-      const dateMillis = date.toMillis();
-      if (stakingByDate[timestamp]) {
-        stakingSeriesData.push([dateMillis, stakingByDate[timestamp]]);
+      if (stakingSupply) {
+        stakingSeriesData.push([dateMillis, stakingSupply]);
       }
 
       const inContractsPct = contractByDate[timestamp];
       let inAddressesValue = nonStakingSupply;
       if (inContractsPct !== undefined) {
         // Glassnode's ETH in contract data includes staked ETH, so we need
-        // to subtract it here since we render staked ETH separately
+        // to subtract staked ETH here since we render it as its own series
         const inContractsValue = inContractsPct * v - stakingSupply;
         contractSeriesData.push([dateMillis, inContractsValue]);
         inAddressesValue -= inContractsValue;
@@ -202,6 +203,7 @@ const SupplyChart: React.FC<Props> = ({
       supplyByDate[dateMillis] = v;
     });
 
+    // If supply is decreasing from peak, render an annotation at the peak
     const annotations: Highcharts.AnnotationsLabelsOptions[] = [];
     if (peakSupply) {
       const annotation: Highcharts.AnnotationsLabelsOptions = {
@@ -222,7 +224,9 @@ const SupplyChart: React.FC<Props> = ({
       annotations.push(annotation);
     }
 
-    // Projections
+    /**
+     * Projection data
+     */
     const lastSupplyPoint = last(supplySeriesData);
     const lastStakingPoint = last(stakingSeriesData);
     const lastAddressPoint = last(addressSeriesData);
@@ -274,11 +278,6 @@ const SupplyChart: React.FC<Props> = ({
 
       supplyValue = Math.max(supplyValue + newIssuance - burn, 0);
 
-      // Only render every Nth point for chart performance
-      if (i % NUM_DAYS_PER_POINT !== 0) {
-        continue;
-      }
-
       const nonStakingValue = Math.max(supplyValue - stakingValue, 0);
 
       let inContractValue = Math.min(lastContractPoint[1], nonStakingValue);
@@ -291,6 +290,11 @@ const SupplyChart: React.FC<Props> = ({
 
       // Make sure our total supply value can't dip below the amount staked
       const adjustedSupplyValue = Math.max(supplyValue, stakingValue);
+
+      // Only render every Nth point for chart performance
+      if (i % NUM_DAYS_PER_POINT !== 0) {
+        continue;
+      }
 
       const projDateMillis = projDate.toMillis();
       contractProj.push([projDateMillis, inContractValue]);
@@ -402,18 +406,17 @@ const SupplyChart: React.FC<Props> = ({
     return [series, annotations, supplyByDate];
   }, [chartSettings, t]);
 
+  // Now build up the Highcharts configuration object
   const options = React.useMemo((): Highcharts.Options => {
-    // Animate only if we're changing the underlying data & not the number of series
-    const animate = Boolean(
-      chartRef.current && series.length === chartRef.current.chart.series.length
-    );
+    // Animate only after mounting
+    const animate = Boolean(chartRef.current);
 
     const chartOptions: Highcharts.Options = {
       annotations: [
         {
           draggable: "",
           labelOptions: {
-            backgroundColor: "#293350",
+            backgroundColor: COLORS.ANNOTATION_BG,
             borderWidth: 0,
             verticalAlign: "bottom",
             y: -7,
@@ -451,7 +454,7 @@ const SupplyChart: React.FC<Props> = ({
           label: {
             rotation: 0,
             text: chartSettings.useCompactMarkers
-              ? String.fromCharCode(65 + i)
+              ? String.fromCharCode(65 + i) // A, B, C, D, etc.
               : `${title}<br><b>${subtitle}</b>`,
             style: {
               color: "#fff",
@@ -479,7 +482,7 @@ const SupplyChart: React.FC<Props> = ({
         formatter: function () {
           let points = (this.points || []).slice(0);
 
-          // Historical/projected overlap at current date; only show historical on that date
+          // Historical & projected overlap at current date; only show historical on that date
           if (points.length > 4) {
             points = points.filter(
               (p) => !p.series.userOptions.id.includes("projected")
@@ -512,7 +515,7 @@ const SupplyChart: React.FC<Props> = ({
                   }</div>
                 </div>
               </td>
-              <td>${intlFormatter.format(Math.round(p.y))} ETH</td>
+              <td>${intlFormat(Math.round(p.y))} ETH</td>
               </tr>`
           );
 
@@ -521,7 +524,7 @@ const SupplyChart: React.FC<Props> = ({
           rows.push(
             `<tr class="tt-total-row">
               <td><div class="tt-series-name">${t.total_supply}</div></td>
-              <td>${intlFormatter.format(Math.round(total))} ETH</td>
+              <td>${intlFormat(Math.round(total))} ETH</td>
             </tr>`
           );
 

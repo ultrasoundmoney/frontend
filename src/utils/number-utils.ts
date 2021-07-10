@@ -17,3 +17,8 @@ export function formatLargeNumber(
   }
   return abbrev ? `${n}${abbrev}` : String(n);
 }
+
+const intlFormatter = new Intl.NumberFormat();
+export function intlFormat(num: number): string {
+  return intlFormatter.format(num);
+}

@@ -2,6 +2,7 @@ import * as React from "react";
 import { DateTime } from "luxon";
 import Slider from "../Slider/Slider";
 import SupplyChart from "./SupplyChart";
+import { intlFormat } from "../../utils/number-utils";
 import {
   estimatedDailyFeeBurn,
   estimatedDailyIssuance,
@@ -20,8 +21,6 @@ const MAX_PROJECTED_BASE_GAS_PRICE = 200;
 const MIN_PROJECTED_MERGE_DATE = DateTime.utc(2021, 12, 1);
 const DEFAULT_PROJECTED_MERGE_DATE = DateTime.utc(2022, 1, 31);
 const MAX_PROJECTED_MERGE_DATE = DateTime.utc(2022, 12, 31);
-
-const intlFormatter = new Intl.NumberFormat();
 
 const SupplyView: React.FC<{}> = () => {
   const { translations: t } = useTranslations();
@@ -106,9 +105,7 @@ const SupplyView: React.FC<{}> = () => {
             <>
               {t.pos_issuance}
               {": "}
-              {intlFormatter.format(
-                estimatedDailyIssuance(projectedStaking)
-              )}{" "}
+              {intlFormat(estimatedDailyIssuance(projectedStaking))}{" "}
               {t.eth_per_day}
             </>
           }
@@ -124,14 +121,12 @@ const SupplyView: React.FC<{}> = () => {
 
         <Param
           title={t.base_gas_price}
-          value={<>{intlFormatter.format(projectedBaseGasPrice)} Gwei</>}
+          value={<>{intlFormat(projectedBaseGasPrice)} Gwei</>}
           subValue={
             <>
               {t.fee_burn}
               {": "}
-              {intlFormatter.format(
-                estimatedDailyFeeBurn(projectedBaseGasPrice)
-              )}{" "}
+              {intlFormat(estimatedDailyFeeBurn(projectedBaseGasPrice))}{" "}
               {t.eth_per_day}
             </>
           }
@@ -152,7 +147,7 @@ const SupplyView: React.FC<{}> = () => {
             <>
               {t.pow_removal}
               {": in "}
-              {intlFormatter.format(daysUntilProjectedMerge)}{" "}
+              {intlFormat(daysUntilProjectedMerge)}{" "}
               {daysUntilProjectedMerge === 1 ? "day" : "days"}
             </>
           }
