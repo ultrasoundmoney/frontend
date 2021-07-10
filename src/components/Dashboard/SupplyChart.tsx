@@ -442,7 +442,7 @@ const SupplyChart: React.FC<Props> = ({
             rotation: 0,
             text: variables.useCompactMarkers
               ? String.fromCharCode(65 + i)
-              : [title, subtitle].filter(Boolean).join("<br>"),
+              : `${title}<br><b>${subtitle}</b>`,
             style: {
               color: "#fff",
               whiteSpace: "normal",

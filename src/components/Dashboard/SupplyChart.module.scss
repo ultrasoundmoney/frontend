@@ -13,6 +13,15 @@
     pointer-events: none;
   }
 
+  // Marker plotlines
+  .highcharts-plot-line-label tspan[style] {
+    // (hacky css selector using style attribute to target
+    //  the subtitle only)
+    // fill: #8490b5;
+    fill: #b5bddb;
+    font-weight: 300 !important;
+  }
+
   // Tooltip
   .tt-header {
     display: flex;
