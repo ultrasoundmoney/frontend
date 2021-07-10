@@ -1,6 +1,6 @@
 .tooltip{
-  display: none; 
-  opacity: 0; 
+  display: none;
+  opacity: 0;
 }
 .has-tooltip:hover .tooltip,
 .has-tooltip:active .tooltip {
@@ -20,7 +20,7 @@
   @media screen and (min-width: 420px) and (max-width: 1023px) {
     left: 20%;
   }
-  @media (min-width: 1024px) { 
+  @media (min-width: 1024px) {
     left: unset;
     transform: translate(-40%,-100%);
   }
