@@ -17,6 +17,7 @@
   -moz-animation: fadeIn ease 700ms;
   -o-animation: fadeIn ease 700ms;
   -ms-animation: fadeIn ease 700ms;
+  will-change: transform;
   @media screen and (min-width: 420px) and (max-width: 1023px) {
     left: 20%;
   }
