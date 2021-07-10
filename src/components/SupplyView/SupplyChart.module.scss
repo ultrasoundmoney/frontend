@@ -17,7 +17,6 @@
   .highcharts-plot-line-label tspan[style] {
     // (hacky css selector using style attribute to target
     //  the subtitle only)
-    // fill: #8490b5;
     fill: #b5bddb;
     font-weight: 300 !important;
   }
@@ -143,13 +142,13 @@
 
 // Annotation
 .supplyChart :global {
-  .ann-root {
-    line-height: 1.4;
-    padding: 2px 3px;
-  }
-  .ann-value {
-    margin-top: 2px;
-    font-size: 13px;
-    font-weight: bold;
+  .highcharts-annotation {
+    pointer-events: none;
+    tspan:first-child {
+      font-weight: 300 !important;
+    }
+    tspan:last-child {
+      font-weight: bold;
+    }
   }
 }

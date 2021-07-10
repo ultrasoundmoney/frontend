@@ -202,27 +202,6 @@ const SupplyChart: React.FC<Props> = ({
       supplyByDate[dateMillis] = v;
     });
 
-    // If supply is decreasing from peak, render an annotation at the peak
-    const annotations: Highcharts.AnnotationsLabelsOptions[] = [];
-    if (peakSupply) {
-      const annotation: Highcharts.AnnotationsLabelsOptions = {
-        point: {
-          xAxis: 0,
-          yAxis: 0,
-          x: DateTime.fromISO(peakSupply[0], { zone: "utc" }).toMillis(),
-          y: maxSupply,
-        },
-        text: `<div class="ann-root">
-        <div class="ann-title">${t.peak_supply} 🦇🔉</div>
-        <div class="ann-value">${Intl.NumberFormat(undefined, {
-          maximumFractionDigits: 1,
-        }).format(Math.round(peakSupply[1] / 1e5) / 10)}M ETH</div>
-        </div>`,
-        useHTML: true,
-      };
-      annotations.push(annotation);
-    }
-
     /**
      * Projection data
      */
@@ -289,6 +268,14 @@ const SupplyChart: React.FC<Props> = ({
 
       // Make sure our total supply value can't dip below the amount staked
       const adjustedSupplyValue = Math.max(supplyValue, stakingValue);
+
+      // Calculate peak supply
+      if (adjustedSupplyValue > (maxSupply || 0)) {
+        maxSupply = adjustedSupplyValue;
+        peakSupply = null;
+      } else if (adjustedSupplyValue < maxSupply && !peakSupply) {
+        peakSupply = [projDate.toISO(), adjustedSupplyValue];
+      }
 
       // Only render every Nth point for chart performance
       if (i % NUM_DAYS_PER_POINT !== 0) {
@@ -402,6 +389,34 @@ const SupplyChart: React.FC<Props> = ({
       },
     ];
 
+    // If we found a peak supply value, render an annotation at the peak
+    const annotations: Highcharts.AnnotationsLabelsOptions[] = [];
+    if (peakSupply) {
+      const annotation: Highcharts.AnnotationsLabelsOptions = {
+        point: {
+          xAxis: 0,
+          yAxis: 0,
+          x: DateTime.fromISO(peakSupply[0], { zone: "utc" }).toMillis(),
+          y: maxSupply,
+        },
+        text: `<b>${t.peak_supply} 🦇🔉</b><br><b>${Intl.NumberFormat(
+          undefined,
+          {
+            maximumFractionDigits: 1,
+          }
+        ).format(Math.round(peakSupply[1] / 1e5) / 10)}M ETH</b>`,
+        // text: `<div class="ann-root">
+        // <div class="ann-title">${t.peak_supply} 🦇🔉</div>
+        // <div class="ann-value">${Intl.NumberFormat(undefined, {
+        //   maximumFractionDigits: 1,
+        // }).format(Math.round(peakSupply[1] / 1e5) / 10)}M ETH</div>
+        // </div>`,
+        padding: 7,
+        useHTML: false,
+      };
+      annotations.push(annotation);
+    }
+
     return [series, annotations, supplyByDate];
   }, [chartSettings, t]);
 
@@ -415,10 +430,13 @@ const SupplyChart: React.FC<Props> = ({
         {
           draggable: "",
           labelOptions: {
-            backgroundColor: COLORS.ANNOTATION_BG,
+            backgroundColor: COLORS.TOOLTIP_BG,
             borderWidth: 0,
-            verticalAlign: "bottom",
-            y: -7,
+            // Display above chart
+            // verticalAlign: "bottom",
+            // y: -7,
+            verticalAlign: "top",
+            y: 7,
           },
           labels: annotations,
         },
