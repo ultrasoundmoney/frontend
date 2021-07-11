@@ -165,13 +165,6 @@ $tooltip-zindex: 2;
   .highcharts-annotation {
     pointer-events: none;
     z-index: $tooltip-zindex - 1;
-    // pointer-events: none;
-    // tspan:first-child {
-    //   font-weight: 300 !important;
-    // }
-    // tspan:last-child {
-    //   font-weight: bold;
-    // }
   }
   .ann-root {
     padding: 6px 7px 8px;
