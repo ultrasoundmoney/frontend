@@ -1,3 +1,20 @@
+// Same as colors in chart-defaults.ts
+$tooltip-bg: #1b2135;
+$chart-label: #8490b5;
+
+$blue-spindle: #b5bddb;
+
+$tooltip-zindex: 2;
+
+@mixin projected-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  font-weight: bold;
+  color: white;
+  opacity: 0.7;
+}
+
 .supplyChart {
   position: relative;
 }
@@ -17,11 +34,19 @@
   .highcharts-plot-line-label tspan[style] {
     // (hacky css selector using style attribute to target
     //  the subtitle only)
-    fill: #b5bddb;
+    fill: $blue-spindle;
     font-weight: 300 !important;
   }
 
   // Tooltip
+  .highcharts-tooltip {
+    z-index: $tooltip-zindex;
+  }
+  .tt-root {
+    background-color: $tooltip-bg;
+    padding: 8px 10px;
+    border-radius: 3px;
+  }
   .tt-header {
     display: flex;
     align-items: center;
@@ -35,12 +60,7 @@
   }
   .tt-header-projected {
     margin: -2px 0 0 6px;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.13em;
-    font-weight: bold;
-    color: white;
-    opacity: 0.7;
+    @include projected-label;
   }
   .tt-root td {
     padding: 2px 0;
@@ -100,7 +120,7 @@
   font-size: 11px;
   font-weight: bold;
   line-height: 1;
-  color: #8490b5;
+  color: $chart-label;
   @media (min-width: 400px) {
     font-size: 12px;
   }
@@ -126,7 +146,7 @@
   align-items: flex-start;
   flex-wrap: nowrap;
   font-size: 11px;
-  color: #8490b5;
+  color: $chart-label;
   white-space: nowrap;
 }
 .markerLegendCount {
@@ -144,11 +164,39 @@
 .supplyChart :global {
   .highcharts-annotation {
     pointer-events: none;
-    tspan:first-child {
-      font-weight: 300 !important;
+    z-index: $tooltip-zindex - 1;
+    // pointer-events: none;
+    // tspan:first-child {
+    //   font-weight: 300 !important;
+    // }
+    // tspan:last-child {
+    //   font-weight: bold;
+    // }
+  }
+  .ann-root {
+    padding: 6px 7px 8px;
+    // twemojis
+    img {
+      margin: 0;
+      width: 14px;
+      height: 14px;
+      max-width: none;
+      &:first-child {
+        margin: 0 3px 0 5px;
+      }
     }
-    tspan:last-child {
-      font-weight: bold;
-    }
+  }
+  .ann-title {
+    font-weight: bold;
+  }
+  .ann-value {
+    color: $chart-label;
+    font-size: 15px;
+    font-weight: 300;
+    margin: 0px 0 2px;
+  }
+  .ann-proj {
+    @include projected-label;
+    font-size: 9px;
   }
 }

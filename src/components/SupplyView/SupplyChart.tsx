@@ -4,6 +4,8 @@ import Highcharts from "highcharts";
 import highchartsAnnotations from "highcharts/modules/annotations";
 import HighchartsReact from "highcharts-react-official";
 import merge from "lodash/merge";
+import twemoji from "twemoji";
+
 import { useDebounce } from "../../utils/use-debounce";
 import { useTranslations } from "../../utils/use-translation";
 import { last } from "../../utils/array-utils";
@@ -392,6 +394,8 @@ const SupplyChart: React.FC<Props> = ({
     // If we found a peak supply value, render an annotation at the peak
     const annotations: Highcharts.AnnotationsLabelsOptions[] = [];
     if (peakSupply) {
+      const peakSupplyDate = DateTime.fromISO(peakSupply[0], { zone: "utc" });
+      const isProjected = peakSupplyDate.toMillis() > DateTime.utc().toMillis();
       const annotation: Highcharts.AnnotationsLabelsOptions = {
         point: {
           xAxis: 0,
@@ -399,14 +403,17 @@ const SupplyChart: React.FC<Props> = ({
           x: DateTime.fromISO(peakSupply[0], { zone: "utc" }).toMillis(),
           y: maxSupply,
         },
-        text: `<b>${t.peak_supply} 🦇🔉</b><br><b>${Intl.NumberFormat(
-          undefined,
-          {
+        text: `<div class="ann-root">
+          <div class="ann-title">${t.peak_supply}${twemoji.parse("🦇🔊")}</div>
+          <div class="ann-value">${Intl.NumberFormat(undefined, {
             maximumFractionDigits: 1,
-          }
-        ).format(Math.round(peakSupply[1] / 1e5) / 10)}M ETH</b>`,
-        padding: 7,
-        useHTML: false,
+          }).format(Math.round(peakSupply[1] / 1e5) / 10)}M ETH</div>
+          ${isProjected ? `<div class="ann-proj">(Projected)</div>` : ""}
+          </div>
+          
+          `,
+        padding: 0,
+        useHTML: true,
       };
       annotations.push(annotation);
     }
@@ -487,6 +494,8 @@ const SupplyChart: React.FC<Props> = ({
       },
       tooltip: {
         shared: true,
+        backgroundColor: "transparent",
+        padding: 0,
         valueDecimals: 0,
         xDateFormat: "%Y-%m-%d",
         useHTML: true,
