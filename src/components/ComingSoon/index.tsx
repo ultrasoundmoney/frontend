@@ -7,6 +7,7 @@ import EthLogo from "../../assets/ethereum-ultra-sound-bat.svg";
 import { useTranslations } from "../../utils/use-translation";
 import FollowingYou from "../FollowingYou";
 import SpanMoji from "../SpanMoji";
+import NftDrop from "../NftDrop";
 
 const fetcher = (url: string) =>
   fetch(url, {
@@ -69,6 +70,7 @@ const ComingSoon: React.FC = () => {
             </div>
           </div>
         </div>
+        <NftDrop />
       </div>
     </>
   );
