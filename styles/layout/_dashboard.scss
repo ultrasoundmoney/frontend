@@ -1,0 +1,58 @@
+.tt {
+    &::before {
+        content: '';
+        background-image: linear-gradient(to top, #f85a89, #0037fa);
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: top center;
+        width: 100%;
+        height: 400px;
+        z-index: -1;
+    }
+}
+.emoji_wrapper{
+    display: inline;
+}
+.emoji {
+    display: inline-block;
+    width: 30px;
+    margin: auto 4px;
+}
+.ultra-sound-text {
+    background-image:  linear-gradient(45deg,#ff01e6 0%,#ff5f51 39%,#00ffa3);
+    font-size: 56px;
+    font-weight: 200;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.59;
+    letter-spacing: normal;
+    text-align: center;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.h-screen-90{
+    height: 90vh;
+}
+.eclips{
+    width: 24px;
+    height:24px;
+    border-radius: 50%;
+    background-color: transparent;
+    border: 2px solid #00ffa3;
+    &_child{
+        width: 8px;
+        height:8px;
+        border-radius: 50%;
+        background-color:#00ffa3;
+        position: relative;
+        left: 6px;
+        top: 6px;
+    }
+    &-line{
+    background-color: transparent;
+    border-top: 2px dashed #00ffa3;
+    margin-top: 11px;
+    width: 300px;
+    }
+}

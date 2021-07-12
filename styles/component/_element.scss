@@ -1,4 +1,4 @@
-.tooltip {
+.tooltip{
   display: none;
   opacity: 0;
 }
@@ -10,17 +10,19 @@
   opacity: 1;
   visibility: visible;
   z-index: 100;
-  width: 260px;
   left: 40px;
   transform: translate(0%, -100%);
+  width: 280px;
+  transform: translate(0%,-100%);
   animation: fadeIn ease 700ms;
   -webkit-animation: fadeIn ease 700ms;
   -moz-animation: fadeIn ease 700ms;
   -o-animation: fadeIn ease 700ms;
   -ms-animation: fadeIn ease 700ms;
 
+  will-change: transform;
   @media screen and (min-width: 420px) and (max-width: 1023px) {
-    left: 30%;
+    left: 20%;
   }
 
   @media (min-width: 1024px) {

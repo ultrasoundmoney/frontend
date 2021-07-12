@@ -1,8 +1,10 @@
 import * as React from "react";
 import useSWR from "swr";
-import twemoji from "twemoji";
+import Clipboard from "react-clipboard.js";
 import { useTranslations } from "../../utils/use-translation";
 import TwitterProfile from "./TwitterProfile";
+import SpanMoji from "../SpanMoji";
+import copySrc from "../../assets/copy.svg";
 
 type TwitterCommunityPros = {};
 const fetcher = (url: string) =>
@@ -16,8 +18,9 @@ const fetcher = (url: string) =>
 
 const TwitterCommunity: React.FC<TwitterCommunityPros> = () => {
   const { translations: t } = useTranslations();
-  const [isCopied, setIsCopied] = React.useState<boolean>(false);
-  const [tool, setTool] = React.useState(false);
+  const [isCopiedFeedbackVisible, setIsCopiedFeedbackVisible] = React.useState<
+    boolean
+  >(false);
   const { data } = useSWR(
     "https://api.ultrasound.money/fam/2/profiles",
     fetcher,
@@ -26,37 +29,25 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = () => {
       revalidateOnReconnect: false,
     }
   );
+
   if (!data) {
     return null;
   }
+
   const getFamCount = new Intl.NumberFormat().format(
     isNaN(data && data.count) ? 0 : data && data.count
   );
+
   const getText =
     getFamCount !== undefined
       ? t.title_community.replace("#XXX", getFamCount)
       : t.title_community;
-  const handelClickedToCopyText = () => {
-    if (navigator.clipboard) {
-      navigator.clipboard
-        .writeText("🦇🔊")
-        .then(() => {
-          setIsCopied(true);
-        })
-        .catch(() => setIsCopied(false));
-    } else {
-      setIsCopied(false);
-    }
+
+  const onBatSoundCopied = () => {
+    setIsCopiedFeedbackVisible(true);
+    setTimeout(() => setIsCopiedFeedbackVisible(false), 400);
   };
-  const handleMouseEnter = () => {
-    const parent = document.getElementById("bat-sound");
-    parent.onmouseenter = () => {
-      setTool(true);
-    };
-    parent.onmouseleave = () => {
-      setTool(false);
-    };
-  };
+
   return (
     <>
       <h1 className="text-white text-2xl md:text-3xl text-center font-light mb-8">
@@ -71,19 +62,21 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = () => {
           {getText}
         </a>
       </h1>
-      <div className={`clipboard ${tool ? "block" : "hidden"}`}>
-        {isCopied ? "copied" : "click to copy"}
-      </div>
-      <p
-        className={`text-white leading-6 md:leading-none text-center font-light text-base lg:text-lg mb-14 ${
-          isCopied ? "span-bat-sound-copied" : "span-bat-sound"
-        }`}
-        dangerouslySetInnerHTML={{
-          __html: twemoji.parse(t.description_community),
-        }}
-        onClick={handelClickedToCopyText}
-        onMouseEnter={handleMouseEnter}
-      />
+      <p className="text-white text-center mb-8 md:text-lg">
+        <span className="mr-2">wear the bat signal</span>
+        <Clipboard data-clipboard-text={"🦇🔊"} onSuccess={onBatSoundCopied}>
+          <span
+            className={`border border-gray-700 rounded-full leading-10 p-2 pr-10 transition duration-500 ease-in-out ${
+              isCopiedFeedbackVisible && "bg-gray-800"
+            }`}
+          >
+            <SpanMoji emoji="🦇🔊" />
+          </span>
+          <span className="copy-container border-gray-700 py-2 -ml-9 mr-4 rounded-r-full">
+            <img className="copy-icon" src={copySrc} />
+          </span>
+        </Clipboard>
+      </p>
       <TwitterProfile profileList={data && data.profiles} />
     </>
   );
