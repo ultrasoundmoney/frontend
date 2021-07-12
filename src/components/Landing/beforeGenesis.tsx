@@ -9,7 +9,7 @@ const BeforeGenesis: React.FC<{}> = () => {
     <>
       <div
         id="before-genesis"
-        className="flex flex-col justify-center w-full md:w-6/12 md:m-auto"
+        className="flex flex-col justify-center w-full lg:w-6/12 md:m-auto px-4 md:px-8 lg:px-0"
       >
         <img
           className="text-center mx-auto mb-8"

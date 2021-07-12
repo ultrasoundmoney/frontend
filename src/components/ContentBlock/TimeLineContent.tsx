@@ -18,8 +18,8 @@ const TimeLineContentBlock: React.FC<TimeLineContentBlockProps> = ({
 }) => {
   const getClassName =
     styles != undefined || styles != null
-      ? `flex flex-col justify-center w-full md:w-6/12 md:mx-auto pt-56 ${styles}`
-      : `flex flex-col justify-center w-full md:w-6/12 md:mx-auto pt-56`;
+      ? `flex flex-col justify-center w-full md:w-6/12 md:mx-auto pt-56 px-4 md:px-0 ${styles}`
+      : `flex flex-col justify-center w-full md:w-6/12 md:mx-auto pt-56 px-4 md:px-0`;
   const getLineHeight =
     lineHeight != undefined || lineHeight != null
       ? `eclips-bottom eclips-bottom__left-0 ${styles}`

@@ -15,8 +15,8 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
 }) => {
   const getClassName =
     styles != undefined || styles != null
-      ? `flex-1 text-left ${styles}`
-      : `flex-1 text-left px-3`;
+      ? `flex-none md:flex-1 text-center md:text-left ${styles}`
+      : `flex-none md:flex-1 text-center md:text-left px-3`;
   return (
     <>
       <div className={getClassName}>

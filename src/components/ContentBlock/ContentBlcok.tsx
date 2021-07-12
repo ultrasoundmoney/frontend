@@ -22,8 +22,8 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
   }
   const getClassName =
     styles != undefined || styles != null
-      ? `flex flex-col justify-center w-full md:w-6/12 md:m-auto ${styles}`
-      : `flex flex-col justify-center w-full md:w-6/12 md:m-auto`;
+      ? `flex flex-col justify-center w-full lg:w-6/12 md:m-auto px-4 md:px-8 lg:px-0 ${styles}`
+      : `flex flex-col justify-center w-full lg:w-6/12 md:m-auto px-4 md:px-8 lg:px-0`;
   return (
     <>
       <div className={getClassName}>

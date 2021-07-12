@@ -10,7 +10,10 @@ import BtcImg from "../../assets/BTC.png";
 const TheUltraSound: React.FC<{}> = () => {
   return (
     <>
-      <div id="enter-ultra-sound" className="enther-ultr-sound py-8">
+      <div
+        id="enter-ultra-sound"
+        className="enther-ultr-sound py-8 px-4 md:px-8 lg:px-0"
+      >
         <div className="block pt-16">
           <img
             title="Enter The Ultra Sound Money"

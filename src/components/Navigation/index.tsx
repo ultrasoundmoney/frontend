@@ -12,14 +12,14 @@ const Navigation: React.FC<{}> = () => {
     <>
       <nav className="relative flex flex-wrap items-center justify-between px-2 py-6 bg-transparent mb-3">
         <div className="container px-1 md:px-4 mx-auto flex flex-wrap items-center justify-between">
-          <div className="w-full md:w-6/12 relative flex justify-start lg:static lg:justify-start">
-            <div className="flex-initial pr-2 md:pr-8">
+          <div className="w-full md:w-5/12 relative flex justify-start lg:static lg:justify-start">
+            <div className="flex-initial pr-2 lg:pr-8">
               <Link href="/">
                 <img className="max-w-max" src={EthLogo} alt={t.title} />
               </Link>
             </div>
             <div
-              className="flex-initial flex text-white self-center bg-blue-tangaroa px-2 md:px-3 py-2 text-sm md:text-base eth-price-gass-emoji"
+              className="flex-initial flex text-white self-center bg-blue-tangaroa px-2 md:px-3 py-2 text-xs lg:text-sm eth-price-gass-emoji"
               dangerouslySetInnerHTML={{
                 __html: twemoji.parse(ethPrice),
               }}
@@ -27,41 +27,41 @@ const Navigation: React.FC<{}> = () => {
           </div>
           <div
             className={
-              "md:w-3/12 lg:flex flex-grow items-center" +
-              (navbarOpen ? " flex" : " hidden")
+              "w-full md:w-7/12 md:flex md:flex-grow items-center" +
+              (navbarOpen ? " md:flex" : " hidden")
             }
             id="menu"
           >
-            <ul className="flex flex-col lg:flex-row  list-none lg:ml-auto">
-              <li className="nav-item md:px-8">
+            <ul className="flex flex-col md:flex-row  list-none lg:ml-auto mt-4 md:mt-0">
+              <li className="nav-item lg:px-4 xl:px-8 justify-center">
                 <Link href="/">
                   <a
-                    className="px-3 py-2 flex items-center text-xs leading-snug text-blue-shipcove hover:opacity-75"
+                    className="px-3 py-2 flex items-center text-xs leading-snug text-blue-shipcove hover:opacity-75 hover:text-white"
                     href="/"
                   >
                     Dashboard
                   </a>
                 </Link>
               </li>
-              <li className="nav-item md:px-8">
+              <li className="nav-item lg:px-4 xl:px-8 justify-center">
                 <Link href="/">
                   <a
-                    className="px-3 py-2 flex items-center text-xs leading-snug text-blue-shipcove hover:opacity-75"
+                    className="px-3 py-2 flex items-center text-xs leading-snug text-blue-shipcove hover:opacity-75 hover:text-white"
                     href="/"
                   >
                     FAQs
                   </a>
                 </Link>
               </li>
-              <li className="nav-item md:px-8">
+              <li className="nav-item lg:px-4 xl:px-8 justify-center">
                 <a
-                  className="px-3 py-2 flex items-center text-xs leading-snug text-blue-shipcove hover:opacity-75"
+                  className="px-3 py-2 flex items-center text-xs leading-snug text-blue-shipcove hover:opacity-75 hover:text-white"
                   href="#faqs"
                 >
                   Resources
                 </a>
               </li>
-              <li className="nav-item md:px-8">
+              <li className="nav-item lg:px-4 xl:px-8 justify-center">
                 <a
                   className="px-3 py-2 flex items-center font-medium text-sm  text-white hover:text-blue-shipcove border-white border-solid border-2 rounded-3xl hover:border-blue-shipcove"
                   href="#join-the-community"
@@ -72,7 +72,7 @@ const Navigation: React.FC<{}> = () => {
             </ul>
           </div>
           <button
-            className="hamburger-menu text-white cursor-pointer text-xl leading-none border border-solid border-white rounded bg-transparent block lg:hidden outline-none focus:outline-none"
+            className="hamburger-menu text-white cursor-pointer text-xl leading-none border border-solid border-white rounded bg-transparent block md:hidden outline-none focus:outline-none"
             type="button"
             onClick={() => setNavbarOpen(!navbarOpen)}
           >
