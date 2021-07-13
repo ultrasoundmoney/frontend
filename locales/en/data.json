@@ -19,7 +19,7 @@
   "landing_hero_title_1": "Ultra Sound Money",
   "landing_before_genesis_title": "Before we get into Ultra Sound Money, let’s talk about how we got here",
   "landing_before_genesis_text":"Section for brief historical events and and current ETH state to set the scene for Ultrasound money. Graphics, Light data and simple carts",
-  
+
   "landing_genesis_date": "Block 0, Jul 31, 2015",
   "landing_genesis_title": "Ethereum Genesis",
   "landing_genesis_text": "Ethereum is open access to digital money and data-friendly services for everyone – no matter your background or location. It's a community-built technology behind the cryptocurrency ether (ETH)",
@@ -55,7 +55,7 @@
 
   "landing_eip1559_title":"EIP 1559 aka (The Fee 🔥 Burn)",
   "landing_eip1559_text":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.",
-  
+
   "landing_goal_title": "It's Goals?",
   "landing_goal_block1_icon": "🔭",
   "landing_goal_block1_title": "Predictable Transaction Fees",
@@ -64,7 +64,7 @@
   "landing_goal_block2_icon": "🚀",
   "landing_goal_block2_title": "Reduced Delays",
   "landing_goal_block2_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
-  
+
   "landing_goal_block3_icon": "😃",
   "landing_goal_block3_title": "Improved User Experience",
   "landing_goal_block3_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
