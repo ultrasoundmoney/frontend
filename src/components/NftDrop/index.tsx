@@ -26,9 +26,10 @@ const NftDrop: React.FC = () => {
               nft drop
             </h2>
             <p className="text-blue-linkwater">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur
-              adipiscing elit, sed do eiusmod tempor incididunt.
+              The activation of EIP-1559 institutes a big change. A change met
+              with excitement by an ever growing number of people. What better
+              way to celebrate this milestone than with a laugh, a cheer, and a
+              gorgeous NFT.
             </p>
           </div>
           <div className="w-full order-1 mb-8 md:order-2 md:ml-12 md:-mr-12 md:-mt-28">
