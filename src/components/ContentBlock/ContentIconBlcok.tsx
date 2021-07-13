@@ -26,7 +26,7 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
       : `flex flex-col justify-center w-full md:w-6/12 md:m-auto`;
   return (
     <>
-      <div className={getClassName}>
+      <section className={getClassName}>
         {img !== null && img != undefined && (
           <picture>
             <img
@@ -51,8 +51,8 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
             __html: text,
           }}
         />
-      </div>
-      {children}
+        {children}
+      </section>
     </>
   );
 };

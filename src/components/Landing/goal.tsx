@@ -13,7 +13,7 @@ const GoalBlcok: React.FC<GoalBlcokProps> = ({ styles }) => {
       : `block w-full lg:w-7/12 lg:m-auto px-4 md:px-8 lg:px-0`;
   return (
     <>
-      <div className={getClassName} id="goal">
+      <section className={getClassName} id="goal">
         <h1
           className="text-white font-light text-base md:text-3xl leading-normal text-center mb-6 leading-title"
           dangerouslySetInnerHTML={{
@@ -37,7 +37,7 @@ const GoalBlcok: React.FC<GoalBlcokProps> = ({ styles }) => {
             text={t.landing_goal_block3_text}
           />
         </div>
-      </div>
+      </section>
     </>
   );
 };

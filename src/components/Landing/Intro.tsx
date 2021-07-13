@@ -6,7 +6,7 @@ const Intro: React.FC<{}> = () => {
   const { translations: t } = useTranslations();
   return (
     <>
-      <div
+      <section
         id="hero"
         className="flex flex-wrap justify-center content-center h-screen-90"
       >
@@ -24,7 +24,7 @@ const Intro: React.FC<{}> = () => {
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 };
