@@ -4,11 +4,11 @@ import Highcharts from "highcharts";
 import highchartsAnnotations from "highcharts/modules/annotations";
 import HighchartsReact from "highcharts-react-official";
 import merge from "lodash/merge";
+import last from "lodash/last";
 import twemoji from "twemoji";
 
 import { useDebounce } from "../../utils/use-debounce";
 import { useTranslations } from "../../utils/use-translation";
-import { last } from "../../utils/array-utils";
 import { intlFormat } from "../../utils/number-utils";
 import {
   estimatedDailyFeeBurn,
