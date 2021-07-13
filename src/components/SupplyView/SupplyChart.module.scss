@@ -1,0 +1,195 @@
+// Same as colors in chart-defaults.ts
+$tooltip-bg: #1b2135;
+$chart-label: #8490b5;
+
+$blue-spindle: #b5bddb;
+
+$tooltip-zindex: 2;
+
+@mixin projected-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  font-weight: bold;
+  color: white;
+  opacity: 0.7;
+}
+
+.supplyChart {
+  position: relative;
+}
+.supplyChart :global {
+  // Chart series
+  .highcharts-series {
+    // Start series with a space, instead of a dash
+    stroke-dashoffset: 4px;
+  }
+
+  // Legend
+  .highcharts-legend-item {
+    pointer-events: none;
+  }
+
+  // Marker plotlines
+  .highcharts-plot-line-label tspan[style] {
+    // (hacky css selector using style attribute to target
+    //  the subtitle only)
+    fill: $blue-spindle;
+    font-weight: 300 !important;
+  }
+
+  // Tooltip
+  .highcharts-tooltip {
+    z-index: $tooltip-zindex;
+  }
+  .tt-root {
+    background-color: $tooltip-bg;
+    padding: 8px 10px;
+    border-radius: 3px;
+  }
+  .tt-header {
+    display: flex;
+    align-items: center;
+    line-height: 1;
+    margin-bottom: 5px;
+  }
+  .tt-header-date {
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .tt-header-projected {
+    margin: -2px 0 0 6px;
+    @include projected-label;
+  }
+  .tt-root td {
+    padding: 2px 0;
+  }
+  .tt-root td:last-child {
+    padding-left: 12px;
+    text-align: right;
+    font-weight: bold;
+  }
+  .tt-series {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    line-height: 1;
+  }
+  .tt-series-color {
+    margin-top: 2px;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    margin-right: 6px;
+  }
+  // Style overrides for "total" row
+  .tt-total-row td {
+    padding-top: 5px;
+  }
+  .tt-total-row .tt-series-name {
+    font-weight: bold;
+  }
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  flex-wrap: nowrap;
+  max-width: 100%;
+  margin: 0 2px 20px;
+}
+.legendItem {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  & + & {
+    margin-left: 16px;
+  }
+}
+.legendItemColor {
+  width: 12px;
+  height: 12px;
+  border-radius: 10px;
+  margin: 2px 5px 0 0;
+  flex: 0 0 auto;
+}
+.legendItemName {
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 1;
+  color: $chart-label;
+  @media (min-width: 400px) {
+    font-size: 12px;
+  }
+}
+
+// Legend describing the line markers on mobile
+.markerLegend {
+  margin: 0 20px 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 10px;
+  align-items: center;
+  @media (min-width: 640px) {
+    grid-template-columns: auto auto auto auto auto auto;
+  }
+  // Keep this breakpoint in sync with COMPACT_MARKERS_BELOW_WIDTH
+  @media (min-width: 1024px) {
+    display: none;
+  }
+}
+.markerLegendItem {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  font-size: 11px;
+  color: $chart-label;
+  white-space: nowrap;
+}
+.markerLegendCount {
+  margin: 1px 8px 0 0;
+  font-size: 10px;
+  color: white;
+}
+.markerLegendTitle {
+  font-weight: bold;
+}
+.markerLegendSubtitle {
+}
+
+// Annotation
+.supplyChart :global {
+  .highcharts-annotation {
+    pointer-events: none;
+    z-index: $tooltip-zindex - 1;
+  }
+  .ann-root {
+    padding: 6px 7px 8px;
+    // twemojis
+    img {
+      margin: 0;
+      width: 14px;
+      height: 14px;
+      max-width: none;
+      &:first-child {
+        margin: 0 3px 0 5px;
+      }
+    }
+  }
+  .ann-title {
+    font-weight: bold;
+  }
+  .ann-value {
+    color: $chart-label;
+    font-size: 15px;
+    font-weight: 300;
+    margin: 0px 0 2px;
+  }
+  .ann-proj {
+    @include projected-label;
+    font-size: 9px;
+  }
+}
