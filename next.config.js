@@ -2,6 +2,13 @@ module.exports = {
   future: {
     webpack5: true,
   },
+  exportTrailingSlash: true,
+  exportPathMap: function () {
+    return {
+      "/": { page: "/" },
+      "/landing": { page: "/landing" },
+    };
+  },
 };
 const withPWA = require("next-pwa");
 module.exports = withPWA({
