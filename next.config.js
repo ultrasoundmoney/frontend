@@ -6,5 +6,6 @@ module.exports = withImages({
   exportPathMap: () => ({
     "/": { page: "/" },
     "/landing": { page: "/landing" },
+    "/dashboard": { page: "/dashboard" },
   }),
 });

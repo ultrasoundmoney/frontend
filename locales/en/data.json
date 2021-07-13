@@ -15,12 +15,11 @@
   "description_community_2": " on your Twitter name or profile",
   "click_to_join": "click to join...",
   "profile_follower": "Followers",
-
   "landing_hero_title": "Ethereum is becoming an",
   "landing_hero_title_1": "Ultra Sound Money",
   "landing_before_genesis_title": "Before we get into Ultra Sound Money, let’s talk about how we got here",
   "landing_before_genesis_text":"Section for brief historical events and and current ETH state to set the scene for Ultrasound money. Graphics, Light data and simple carts",
-  
+
   "landing_genesis_date": "Block 0, Jul 31, 2015",
   "landing_genesis_title": "Ethereum Genesis",
   "landing_genesis_text": "Ethereum is open access to digital money and data-friendly services for everyone – no matter your background or location. It's a community-built technology behind the cryptocurrency ether (ETH)",
@@ -56,7 +55,7 @@
 
   "landing_eip1559_title":"EIP 1559 aka (The Fee 🔥 Burn)",
   "landing_eip1559_text":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.",
-  
+
   "landing_goal_title": "It's Goals?",
   "landing_goal_block1_icon": "🔭",
   "landing_goal_block1_title": "Predictable Transaction Fees",
@@ -65,7 +64,7 @@
   "landing_goal_block2_icon": "🚀",
   "landing_goal_block2_title": "Reduced Delays",
   "landing_goal_block2_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
-  
+
   "landing_goal_block3_icon": "😃",
   "landing_goal_block3_title": "Improved User Experience",
   "landing_goal_block3_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
@@ -97,5 +96,40 @@
   "landing_themerge_title2": "The Merge. Hello PoS, so long PoW",
   "landing_themerge_text2": "\"The Merge\" is an upgrade to Ethereum that swaps out the current proof-of-work (PoW) consensus mechanism with a more eco-friendly, efficient, and secure proof-of-stake (PoS) consensus mechanism",
   "title_following_you": "me & the fam",
-  "teaser_following_you": "do we know each other? find out how many of us follow you."
+  "teaser_following_you": "do we know each other? find out how many of us follow you.",
+  "dashboard_title": "Dashboard",
+  "chart_thousands_sep": ",",
+  "chart_decimal_point": ".",
+  "### ETH supply graph component ###": true,
+  "eth_staked": "staked amount",
+  "base_gas_price": "base gas price (average)",
+  "merge_date": "merge date",
+  "pos_issuance": "PoS issuance",
+  "fee_burn": "fee burn",
+  "pow_removal": "PoW removal",
+  "projected": "projected",
+  "projected_supply": "projected supply",
+  "historical_supply": "historical supply",
+  "peak_supply": "peak supply",
+  "supply_chart_series_address": "in addresses",
+  "supply_chart_series_contracts": "in smart contracts",
+  "supply_chart_series_staking": "staking",
+  "marker_genesis": "genesis",
+  "marker_phase_0": "phase 0",
+  "marker_merge": "merge",
+  "marker_pos": "PoS",
+  "marker_pow_removal": "PoW removal",
+  "marker_block": "block",
+  "total_supply": "total supply",
+  "eth_supply": "ETH supply",
+  "eth_per_day": "ETH/day",
+  "numeric_billion_abbrev": "B",
+  "numeric_million_abbrev": "M",
+  "numeric_thousand_abbrev": "K",
+  "time_range_all": "all",
+  "time_range_1y": "1y",
+  "time_range_6mo": "6mo",
+  "time_range_30d": "30d",
+  "time_range_7d": "7d",
+  "time_range_1d": "1d"
 }

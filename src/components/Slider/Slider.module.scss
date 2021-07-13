@@ -1,0 +1,87 @@
+$track-bg: #293350;
+$thumb-bg: #8194ce;
+
+$thumb-width: 14px;
+
+.slider {
+  position: relative;
+}
+
+.sliderInput {
+  -webkit-appearance: none;
+  padding: 1px 0;
+  width: 100%;
+  background: transparent;
+  opacity: 0;
+}
+.sliderInput:focus {
+  outline: none;
+}
+
+// We can't combine the vendor selectors into one ruleset due how browsers
+// parse the styles, so instead we use a sass mixin to reuse the styles
+@mixin slider-track {
+  width: 100%;
+  height: 20px;
+  cursor: pointer;
+  box-shadow: none;
+  background: transparent;
+  border-radius: 4px;
+  border: none;
+}
+.sliderInput::-webkit-slider-runnable-track {
+  @include slider-track;
+}
+.sliderInput:focus::-webkit-slider-runnable-track {
+  background: transparent;
+}
+.sliderInput::-moz-range-track {
+  @include slider-track;
+}
+
+@mixin slider-thumb {
+  box-shadow: none;
+  border: none;
+  height: 20px;
+  width: 20px;
+  background: transparent;
+  cursor: pointer;
+  @media (max-width: 768px) {
+    // Larger tap target on mobile
+    width: 40px;
+  }
+}
+.sliderInput::-webkit-slider-thumb {
+  @include slider-thumb;
+  -webkit-appearance: none;
+}
+.sliderInput::-moz-range-thumb {
+  @include slider-thumb;
+}
+
+// Custom visual track/slider (smaller tap area)
+.sliderTrack {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  right: 0;
+  height: 6px;
+  cursor: pointer;
+  box-shadow: none;
+  background: $track-bg;
+  border-radius: 4px;
+  border: none;
+  pointer-events: none;
+}
+
+.sliderThumb {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  height: $thumb-width;
+  width: $thumb-width;
+  border-radius: $thumb-width;
+  cursor: pointer;
+  background: $thumb-bg;
+  pointer-events: none;
+}
