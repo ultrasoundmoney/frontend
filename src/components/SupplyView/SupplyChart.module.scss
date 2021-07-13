@@ -167,7 +167,7 @@ $tooltip-zindex: 2;
     z-index: $tooltip-zindex - 1;
   }
   .ann-root {
-    padding: 6px 7px 8px;
+    padding: 0px 7px 8px;
     // twemojis
     img {
       margin: 0;
@@ -181,6 +181,7 @@ $tooltip-zindex: 2;
   }
   .ann-title {
     font-weight: bold;
+    margin-bottom: 8px;
   }
   .ann-value {
     color: $chart-label;

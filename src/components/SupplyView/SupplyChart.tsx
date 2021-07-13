@@ -412,7 +412,7 @@ const SupplyChart: React.FC<Props> = ({
           </div>
           
           `,
-        padding: 0,
+        padding: 16,
         useHTML: true,
       };
       annotations.push(annotation);
