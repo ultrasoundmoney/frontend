@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1147" height="1222" fill="none" viewBox="0 0 1147 1222">
+    <g filter="url(#filter0_f)" opacity=".4">
+        <ellipse cx="306.167" cy="667.585" fill="#DD273B" rx="177.015" ry="105.864"/>
+        <ellipse cx="306.167" cy="667.585" fill="#DD273B" rx="177.015" ry="105.864"/>
+        <ellipse cx="672.195" cy="692.706" fill="#DD273B" rx="177.015" ry="105.864"/>
+        <ellipse cx="672.195" cy="692.706" fill="#0037FA" rx="177.015" ry="105.864"/>
+        <ellipse cx="468.66" cy="818.676" fill="#DD273B" rx="177.015" ry="105.864"/>
+        <ellipse cx="468.66" cy="818.676" fill="#DD27D6" rx="177.015" ry="105.864"/>
+        <ellipse cx="519.183" cy="667.585" fill="#DD273B" rx="177.015" ry="105.864"/>
+        <ellipse cx="519.183" cy="667.585" fill="#F4DF95" rx="177.015" ry="105.864"/>
+        <path fill="#00FFA3" d="M518.316 298l25.555 2.18 25.011 6.493 23.932 10.668 22.345 14.615 20.281 18.251 17.785 21.498 14.909 24.287 11.716 26.558 8.274 28.263 4.654 29.366.936 29.843-2.803 29.683-6.481 28.892-10.021 27.484-13.349 25.49-16.39 22.954-19.084 19.928-21.37 16.477-23.201 12.676-24.537 8.603-25.35 4.348h-25.624l-25.35-4.348-24.538-8.603-23.2-12.676-21.37-16.477-19.084-19.928-16.391-22.954-13.348-25.49-10.022-27.484-6.481-28.892-2.802-29.683.936-29.843 4.654-29.366 8.273-28.263 11.716-26.558 14.91-24.287 17.784-21.498 20.281-18.251 22.345-14.615 23.933-10.668 25.011-6.493 25.555-2.18z"/>
+    </g>
+    <defs>
+        <filter id="filter0_f" width="1314.36" height="1220.84" x="-167.998" y=".85" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+            <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+            <feGaussianBlur result="effect1_foregroundBlur" stdDeviation="148.575"/>
+        </filter>
+    </defs>
+</svg>

@@ -28,6 +28,7 @@
     "next-offline": "^5.0.2",
     "next-pwa": "^5.2.21",
     "react": "^17.0.1",
+    "react-clipboard.js": "^2.0.16",
     "react-dom": "^17.0.1",
     "react-hook-form": "^6.15.4",
     "react-loader-spinner": "^4.0.0",

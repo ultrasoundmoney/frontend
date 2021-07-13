@@ -5,6 +5,9 @@ import CountDown from "../CountDown/index";
 import TwitterCommunity from "../TwitterCommunity";
 import EthLogo from "../../assets/ethereum-ultra-sound-bat.svg";
 import { useTranslations } from "../../utils/use-translation";
+import FollowingYou from "../FollowingYou";
+import SpanMoji from "../SpanMoji";
+import NftDrop from "../NftDrop";
 
 const fetcher = (url: string) =>
   fetch(url, {
@@ -17,7 +20,7 @@ const fetcher = (url: string) =>
     }),
   }).then((r) => r.json());
 
-const ComingSoon: React.FC<{}> = () => {
+const ComingSoon: React.FC = () => {
   const { translations: t } = useTranslations();
   const { data } = useSWR(
     "https://eth-mainnet.alchemyapi.io/v2/H74MQLJkSLBJDyaDS2kyH7bXIBvjiTVe",
@@ -38,13 +41,15 @@ const ComingSoon: React.FC<{}> = () => {
               src={EthLogo}
               alt={t.title}
             />
-            <h1 className="text-white font-extralight text-2xl md:text-3xl xl:text-41xl text-center mb-16">
+            <h1 className="text-white font-extralight text-xl md:text-3xl xl:text-41xl text-center mb-16">
+              <SpanMoji emoji="🔥 " />
               {t.main_title}
+              <SpanMoji emoji=" 🔥" />
             </h1>
           </div>
           <div className="flex">
             <div className="w-full md:w-5/6 lg:w-3/6 md:m-auto pb-4">
-              <CountDown targetDate="July 28, 2021" targetTime="05:42:10" />
+              <CountDown targetDate="August 4, 2021" targetTime="15:00:00" />
             </div>
           </div>
           <div className="flex">
@@ -54,12 +59,18 @@ const ComingSoon: React.FC<{}> = () => {
               />
             </div>
           </div>
-          <div className="flex px-4 md:px-0 py-8 md:py-40">
+          <div className="flex px-4 md:px-0 pt-8 md:pt-40">
             <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
               <TwitterCommunity />
             </div>
           </div>
+          <div className="flex px-4 md:px-0 py-24">
+            <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
+              <FollowingYou />
+            </div>
+          </div>
         </div>
+        <NftDrop />
       </div>
     </>
   );

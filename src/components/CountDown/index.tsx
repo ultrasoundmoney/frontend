@@ -16,7 +16,9 @@ const Countdown: React.FC<CountDownProps> = ({ targetDate, targetTime }) => {
 
   const setDate = () => {
     const now = new Date().getTime();
-    const countDownDate = new Date(targetDate + " " + targetTime).getTime();
+    const countDownDate = new Date(
+      targetDate + " " + targetTime + " UTC"
+    ).getTime();
     distance = countDownDate - now;
     if (distance < 0) {
       clearInterval(timer);

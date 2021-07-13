@@ -1,17 +1,10 @@
-module.exports = {
-  future: {
-    webpack5: true,
-  },
-};
-const withPWA = require('next-pwa')
- module.exports = withPWA({
-  pwa: {
-    dest: 'public'
-  }
- })
-const withImages = require('next-images')
+const withImages = require("next-images");
 module.exports = withImages({
-  webpack(config, options) {
-    return config
-  },
+  future: { webpack5: true },
+  trailingSlash: true,
+  // Without the exportPathMap fleek deployments for /page break.
+  exportPathMap: () => ({
+    "/": { page: "/" },
+    "/landing": { page: "/landing" },
+  }),
 });
