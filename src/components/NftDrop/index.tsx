@@ -1,7 +1,10 @@
 import poapLogo from "../../assets/poap-logo.svg";
+import nftDropPoster from "../../assets/nft-drop.jpg";
 import React from "react";
+import { useTranslations } from "../../utils/use-translation";
 
 const NftDrop: React.FC = () => {
+  const { translations: t } = useTranslations();
   const refVideo = React.useRef(null);
 
   React.useEffect(() => {
@@ -23,13 +26,9 @@ const NftDrop: React.FC = () => {
           <div className="flex flex-col order-2 md:order-1">
             <img className="w-16" src={poapLogo} />
             <h2 className="text-white text-2xl md:text-3xl font-light my-8">
-              nft drop
+              {t.title_nft_drop}
             </h2>
-            <p className="text-blue-linkwater">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur
-              adipiscing elit, sed do eiusmod tempor incididunt.
-            </p>
+            <p className="text-blue-linkwater">{t.description_nft_drop}</p>
           </div>
           <div className="w-full order-1 mb-8 md:order-2 md:ml-12 md:-mr-12 md:-mt-28">
             <video
@@ -39,7 +38,12 @@ const NftDrop: React.FC = () => {
               autoPlay
               muted
               loop
-            ></video>
+              poster={nftDropPoster}
+            >
+              <source src="/public/nft-drop.mp4" type="video/mp4" />
+              <source src="/public/nft-drop.webm" type="video/webm" />
+              <source src="/public/nft-drop.ogv" type="video/ogg" />
+            </video>
           </div>
         </div>
       </div>
