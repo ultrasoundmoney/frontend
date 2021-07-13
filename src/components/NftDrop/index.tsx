@@ -1,4 +1,5 @@
 import poapLogo from "../../assets/poap-logo.svg";
+import nftDropPoster from "../../assets/nft-drop.jpg";
 import React from "react";
 
 const NftDrop: React.FC = () => {
@@ -40,7 +41,12 @@ const NftDrop: React.FC = () => {
               autoPlay
               muted
               loop
-            ></video>
+              poster={nftDropPoster}
+            >
+              <source src="/public/nft-drop.mp4" type="video/mp4" />
+              <source src="/public/nft-drop.webm" type="video/webm" />
+              <source src="/public/nft-drop.ogv" type="video/ogg" />
+            </video>
           </div>
         </div>
       </div>
