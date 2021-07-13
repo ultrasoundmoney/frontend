@@ -17,7 +17,10 @@ $tooltip-zindex: 2;
 
 .supplyChart {
   position: relative;
+  // Fixes opacity flicker caused by countdown.
+  backface-visibility: hidden;
 }
+
 .supplyChart :global {
   // Chart series
   .highcharts-series {
