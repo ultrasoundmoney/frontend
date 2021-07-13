@@ -15,6 +15,87 @@
   "description_community_2": " on your Twitter name or profile",
   "click_to_join": "click to join...",
   "profile_follower": "Followers",
+
+  "landing_hero_title": "Ethereum is becoming an",
+  "landing_hero_title_1": "Ultra Sound Money",
+  "landing_before_genesis_title": "Before we get into Ultra Sound Money, let’s talk about how we got here",
+  "landing_before_genesis_text":"Section for brief historical events and and current ETH state to set the scene for Ultrasound money. Graphics, Light data and simple carts",
+  
+  "landing_genesis_date": "Block 0, Jul 31, 2015",
+  "landing_genesis_title": "Ethereum Genesis",
+  "landing_genesis_text": "Ethereum is open access to digital money and data-friendly services for everyone – no matter your background or location. It's a community-built technology behind the cryptocurrency ether (ETH)",
+  "landing_genesis_card_name":"Status",
+  "landing_genesis_card_title":"Money (Infationary)",
+  "landing_genesis_card2_name":"ETH Supply",
+  "landing_genesis_card2_title":"72M",
+  "landing_genesis_card2_title1":"↑+5.3%",
+  "landing_genesis_card3_name":"Block Reward",
+  "landing_genesis_card3_title":"3 ETH/<span>Block</span>",
+
+  "landing_byzantium_date": "Block 4,370,000, Oct 16, 2017",
+  "landing_byzantium_title": "EIP Byzantium",
+  "landing_byzantium_text": "<span>EIP (Ethereum Imprevement Proposal)</span> is open access to digital money and data-friendly services for everyone – no matter your background or location. It's a community-built technology behind the cryptocurrency ether (ETH)",
+  "landing_byzantium_card_name":"Status",
+  "landing_byzantium_card_title":"Money (Infationary)",
+  "landing_byzantium_card2_name":"ETH Supply",
+  "landing_byzantium_card2_title":"72M",
+  "landing_byzantium_card2_title1":"↑+5.3%",
+  "landing_byzantium_card3_name":"Block Reward",
+  "landing_byzantium_card3_title":"3 ETH/<span>Block</span>",
+
+  "landing_constantinopole_date": "Block 4,370,000, Oct 16, 2017",
+  "landing_constantinopole_title": "EIP Constantinopole",
+  "landing_constantinopole_text": "<span>EIP (Ethereum Imprevement Proposal)</span> is open access to digital money and data-friendly services for everyone – no matter your background or location. It's a community-built technology behind the cryptocurrency ether (ETH)",
+  "landing_constantinopole_card_name":"Status",
+  "landing_constantinopole_card_title":"Money (Infationary)",
+  "landing_constantinopole_card2_name":"ETH Supply",
+  "landing_constantinopole_card2_title":"72M",
+  "landing_constantinopole_card2_title1":"↑+5.3%",
+  "landing_constantinopole_card3_name":"Block Reward",
+  "landing_constantinopole_card3_title":"3 ETH/<span>Block</span>",
+
+  "landing_eip1559_title":"EIP 1559 aka (The Fee 🔥 Burn)",
+  "landing_eip1559_text":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.",
+  
+  "landing_goal_title": "It's Goals?",
+  "landing_goal_block1_icon": "🔭",
+  "landing_goal_block1_title": "Predictable Transaction Fees",
+  "landing_goal_block1_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+
+  "landing_goal_block2_icon": "🚀",
+  "landing_goal_block2_title": "Reduced Delays",
+  "landing_goal_block2_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+  
+  "landing_goal_block3_icon": "😃",
+  "landing_goal_block3_title": "Improved User Experience",
+  "landing_goal_block3_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+
+  "landing_feeburned_card1_name":"Status",
+  "landing_feeburned_card1_title":"Money (Infationary)",
+
+  "landing_feeburned_card2_name":"ETH Supply",
+  "landing_feeburned_card2_title":"72M",
+  "landing_feeburned_card2_title1":"↑+5.3%",
+
+  "landing_feeburned_card3_name":"Block Reward",
+  "landing_feeburned_card3_title":"3 ETH/<span>Block</span>",
+
+  "landing_feeburned_card4_name":"Block Reward 🔥",
+  "landing_feeburned_card4_title":"$314.55",
+
+  "landing_themerge_title": "What's Next?",
+  "landing_themerge_text": "\"The Merge\" is an upgrade to Ethereum that swaps out the current proof-of-work (PoW) consensus mechanism with a more eco-friendly, efficient, and secure proof-of-stake (PoS) consensus mechanism.",
+
+  "landing_themerge_pow_icon": "",
+  "landing_themerge_pow_title": "Proof of Work",
+  "landing_themerge_pow_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+
+  "landing_themerge_pos_icon": "",
+  "landing_themerge_pos_title": "Proof of Stake",
+  "landing_themerge_pos_text":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+
+  "landing_themerge_title2": "The Merge. Hello PoS, so long PoW",
+  "landing_themerge_text2": "\"The Merge\" is an upgrade to Ethereum that swaps out the current proof-of-work (PoW) consensus mechanism with a more eco-friendly, efficient, and secure proof-of-stake (PoS) consensus mechanism",
   "title_following_you": "me & the fam",
   "teaser_following_you": "do we know each other? find out how many of us follow you."
 }
