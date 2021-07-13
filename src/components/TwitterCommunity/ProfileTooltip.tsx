@@ -47,7 +47,7 @@ const ProfileTooltip: React.FC<ProfileTooltipProps> = ({ children, item }) => {
           </picture>
         </a>
         <div
-          className="text-white my-3 text-base font-medium tw-profile-text"
+          className="text-white my-3 text-base font-medium tw-profile-text break-words"
           dangerouslySetInnerHTML={{
             __html: twemoji.parse(item.name),
           }}

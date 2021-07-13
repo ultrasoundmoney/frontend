@@ -582,7 +582,7 @@ const SupplyChart: React.FC<Props> = ({
                 className={styles.legendItemColor}
                 style={{
                   backgroundColor: String(s.color),
-                  opacity: (s as Highcharts.SeriesAreaOptions).fillOpacity,
+                  opacity: s.fillOpacity,
                 }}
               />
               <div

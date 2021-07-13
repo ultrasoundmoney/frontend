@@ -11,6 +11,7 @@ const GenesisBlock: React.FC<{}> = () => {
         blockNrAndTime={t.landing_genesis_date}
         title={t.landing_genesis_title}
         text={t.landing_genesis_text}
+        id="genesis"
       >
         <div className="w-full lg:w-7/12 md:flex md:flex-wrap md:mx-auto mb-8 px-4 md:px-8 lg:px-0">
           <Card

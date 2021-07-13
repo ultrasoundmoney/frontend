@@ -133,6 +133,43 @@
   "time_range_7d": "7d",
   "time_range_1d": "1d",
   "title_nft_drop": "nft drop",
-  "description_nft_drop": "The activation of EIP-1559 institutes a big change. A change met with excitement by an ever growing number of people. What better way to celebrate this milestone than with a laugh, a cheer, and a gorgeous NFT."
+  "description_nft_drop": "The activation of EIP-1559 institutes a big change. A change met with excitement by an ever growing number of people. What better way to celebrate this milestone than with a laugh, a cheer, and a gorgeous NFT.",
+
+  "faq_section_title": "FAQ",
+  "faq_question_1":"If supply is deflationary will price go to infinity as supply goes to zero?",
+  "faq_answer_1":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud e Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.",
+
+  "faq_question_2": "What is sound money?",
+  "faq_answer_2":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud e Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.",
+
+  "faq_question_3":"Whose money is getting destroyed? / Can my ETH get removed from the supply?",
+  "faq_answer_3":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud e Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.",
+
+  "faq_question_4":"Can supply hit zero?",
+  "faq_answer_4":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud e Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.",
+
+  "faq_question_5":"Isn’t deflation bad for economies?",
+  "faq_answer_5":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud e Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.",
+
+  "faq_question_6":"What does deflation mean for price?",
+  "faq_answer_6":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud e Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.",
+
+  "faq_missing_question" : "Can not find what you are looking for?",
+  "faq_btn_text" : "Ask Question",
+
+  "eusm_section_title": "Enter The Ultra Sound Money",
+  "eusm_row_1_left_col_title": "WTF is an Ultra Sound Money and why should I even care",
+  "eusm_row_1_left_col_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate",
+  "eusm_row_1_right_col_title": "ETH - Deflationary",
+  "eusm_row_1_right_col_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+
+  "eusm_row_2_title": "USD - Un-Sound Money - Inflationary",
+  "eusm_row_2_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate ",
+
+  "eusm_row_3_title": "USD - Un-Sound Money - Inflationary",
+  "eusm_row_3_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate ",
+
+  "eusm_row_4_title": "USD - Un-Sound Money - Inflationary",
+  "eusm_row_4_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate "
 }
 

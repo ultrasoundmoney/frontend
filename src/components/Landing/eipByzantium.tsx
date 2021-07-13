@@ -11,6 +11,7 @@ const EIPByzantium: React.FC<{}> = () => {
         blockNrAndTime={t.landing_byzantium_date}
         title={t.landing_byzantium_title}
         text={t.landing_byzantium_text}
+        id="eip-byzantium"
       >
         <div className="flex flex-wrap w-full lg:w-7/12 md:mx-auto mb-8 px-4 md:px-8 lg:px-0">
           <Card

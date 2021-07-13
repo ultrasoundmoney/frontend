@@ -7,6 +7,7 @@ type ContentBlockProps = {
   text: string;
   children?: React.ReactNode;
   styles?: string;
+  id?: string;
 };
 const ContentBlock: React.FC<ContentBlockProps> = ({
   img,
@@ -14,6 +15,7 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
   text,
   children,
   styles,
+  id,
 }) => {
   function imageErrorHandler(e: React.SyntheticEvent<HTMLImageElement, Event>) {
     const el = e.target as HTMLImageElement;
@@ -26,33 +28,35 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
       : `flex flex-col justify-center w-full lg:w-6/12 md:m-auto px-4 md:px-8 lg:px-0`;
   return (
     <>
-      <div className={getClassName}>
-        {img !== null && img != undefined && (
-          <picture>
-            <img
-              className="text-center mx-auto mb-8"
-              width="30"
-              height="48"
-              src={img !== null && img != undefined ? img : AvatarImg}
-              alt={title}
-              onError={imageErrorHandler}
-            />
-          </picture>
-        )}
-        <h1
-          className="text-white font-light text-base md:text-3xl leading-normal text-center mb-6 leading-title"
-          dangerouslySetInnerHTML={{
-            __html: title,
-          }}
-        />
-        <p
-          className="text-blue-shipcove font-light text-sm text-center mb-10"
-          dangerouslySetInnerHTML={{
-            __html: text,
-          }}
-        />
-      </div>
-      {children}
+      <section id={id}>
+        <div className={getClassName}>
+          {img !== null && img != undefined && (
+            <picture>
+              <img
+                className="text-center mx-auto mb-8"
+                width="30"
+                height="48"
+                src={img !== null && img != undefined ? img : AvatarImg}
+                alt={title}
+                onError={imageErrorHandler}
+              />
+            </picture>
+          )}
+          <h1
+            className="text-white font-light text-base md:text-3xl leading-normal text-center mb-6 leading-title"
+            dangerouslySetInnerHTML={{
+              __html: title,
+            }}
+          />
+          <p
+            className="text-blue-shipcove font-light text-sm text-center mb-10"
+            dangerouslySetInnerHTML={{
+              __html: text,
+            }}
+          />
+        </div>
+        {children}
+      </section>
     </>
   );
 };

@@ -7,6 +7,7 @@ type TimeLineContentBlockProps = {
   children?: React.ReactNode;
   styles?: string;
   lineHeight?: string;
+  id?: string;
 };
 const TimeLineContentBlock: React.FC<TimeLineContentBlockProps> = ({
   blockNrAndTime,
@@ -15,6 +16,7 @@ const TimeLineContentBlock: React.FC<TimeLineContentBlockProps> = ({
   children,
   styles,
   lineHeight,
+  id,
 }) => {
   const getClassName =
     styles != undefined || styles != null
@@ -26,26 +28,28 @@ const TimeLineContentBlock: React.FC<TimeLineContentBlockProps> = ({
       : `eclips-bottom eclips-bottom__left-0`;
   return (
     <>
-      <div className={getClassName}>
-        <p className="text-blue-shipcove font-light text-sm text-center mb-6">
-          {blockNrAndTime}
-        </p>
-        <h1 className="text-white font-light text-base md:text-3xl leading-normal text-center mb-6 leading-title">
-          {title}
-        </h1>
-        <p
-          className="text-blue-shipcove font-light text-sm text-center mb-10"
-          dangerouslySetInnerHTML={{
-            __html: text,
-          }}
-        />
-      </div>
-      {children}
-      <div className="flex flex-wrap justify-center w-full md:w-7/12 md:mx-auto mb-8">
-        <div className={getLineHeight}>
-          <div className="eclips-bottom-line" />
+      <section id={id}>
+        <div className={getClassName}>
+          <p className="text-blue-shipcove font-light text-sm text-center mb-6">
+            {blockNrAndTime}
+          </p>
+          <h1 className="text-white font-light text-base md:text-3xl leading-normal text-center mb-6 leading-title">
+            {title}
+          </h1>
+          <p
+            className="text-blue-shipcove font-light text-sm text-center mb-10"
+            dangerouslySetInnerHTML={{
+              __html: text,
+            }}
+          />
         </div>
-      </div>
+        {children}
+        <div className="flex flex-wrap justify-center w-full md:w-7/12 md:mx-auto mb-8">
+          <div className={getLineHeight}>
+            <div className="eclips-bottom-line" />
+          </div>
+        </div>
+      </section>
     </>
   );
 };

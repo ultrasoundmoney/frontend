@@ -32,16 +32,16 @@ const LandingPage: React.FC<{}> = () => {
           <TheMergeBlock />
           <EtherTheUltraSound />
           <FaqBlock />
-          <div className="flex px-4 md:px-8 lg:px-0 py-8 md:py-40">
+          <section className="flex px-4 md:px-8 lg:px-0 py-8 md:py-40">
             <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
               <TwitterCommunity />
             </div>
-          </div>
-          <div className="flex px-4 md:px-8 lg:px-0 py-24">
+          </section>
+          <section className="flex px-4 md:px-8 lg:px-0 py-24">
             <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
               <FollowingYou />
             </div>
-          </div>
+          </section>
           <NftDrop />
         </div>
       </div>
