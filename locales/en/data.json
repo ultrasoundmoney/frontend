@@ -97,5 +97,8 @@
   "landing_themerge_title2": "The Merge. Hello PoS, so long PoW",
   "landing_themerge_text2": "\"The Merge\" is an upgrade to Ethereum that swaps out the current proof-of-work (PoW) consensus mechanism with a more eco-friendly, efficient, and secure proof-of-stake (PoS) consensus mechanism",
   "title_following_you": "me & the fam",
-  "teaser_following_you": "do we know each other? find out how many of us follow you."
+  "teaser_following_you": "do we know each other? find out how many of us follow you.",
+  "title_nft_drop": "nft drop",
+  "description_nft_drop": "The activation of EIP-1559 institutes a big change. A change met with excitement by an ever growing number of people. What better way to celebrate this milestone than with a laugh, a cheer, and a gorgeous NFT."
 }
+
