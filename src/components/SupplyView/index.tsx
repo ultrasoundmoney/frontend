@@ -87,7 +87,7 @@ const SupplyView: React.FC<{}> = () => {
   return (
     <>
       <div className={styles.chartHeader}>
-        <div className="text-xl text-white text-left font-light leading-2 pl-3 pb-2">
+        <div className="text-xl text-white text-left font-light pl-3 pb-4">
           {t.eth_supply}
         </div>
       </div>
