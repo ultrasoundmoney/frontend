@@ -138,7 +138,7 @@ const SupplyChart: React.FC<Props> = ({
 
   // Transform our input data into series that we'll pass to highcharts
   const [series, annotations, totalSupplyByDate] = React.useMemo((): [
-    Highcharts.SeriesOptionsType[],
+    Highcharts.SeriesAreaOptions[],
     Highcharts.AnnotationsLabelsOptions[],
     Record<string, number>
   ] => {
