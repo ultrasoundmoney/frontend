@@ -66,7 +66,7 @@ const ComingSoon: React.FC = () => {
             <p className="text-white text-center font-light text-base lg:text-lg mb-16">
               ready to discover the future of ETH?
             </p>
-            <div className="w-full md:w-5/6 lg:w-5/6 md:m-auto relative bg-blue-tangaroa py-8 md:px-16">
+            <div className="w-full md:w-5/6 lg:w-5/6 md:m-auto relative bg-blue-tangaroa py-8 md:px-16 mb-16">
               <SupplyView />
             </div>
           </div>
