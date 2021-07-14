@@ -16,11 +16,11 @@ const MAX_PROJECTED_ETH_STAKING = 33554432;
 
 const MIN_PROJECTED_BASE_GAS_PRICE = 0;
 const DEFAULT_PROJECTED_BASE_GAS_PRICE = 20;
-const MAX_PROJECTED_BASE_GAS_PRICE = 200;
+const MAX_PROJECTED_BASE_GAS_PRICE = 150;
 
 const MIN_PROJECTED_MERGE_DATE = DateTime.utc(2021, 12, 1);
 const DEFAULT_PROJECTED_MERGE_DATE = DateTime.utc(2022, 1, 31);
-const MAX_PROJECTED_MERGE_DATE = DateTime.utc(2022, 12, 31);
+const MAX_PROJECTED_MERGE_DATE = DateTime.utc(2022, 12, 1);
 
 const SupplyView: React.FC<{}> = () => {
   const { translations: t } = useTranslations();
