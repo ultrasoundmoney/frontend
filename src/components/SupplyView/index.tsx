@@ -6,6 +6,7 @@ import { intlFormat } from "../../utils/number-utils";
 import {
   estimatedDailyFeeBurn,
   estimatedDailyIssuance,
+  formatDate,
 } from "../../utils/metric-utils";
 import { useTranslations } from "../../utils/use-translation";
 import styles from "./SupplyView.module.scss";
@@ -173,7 +174,7 @@ const SupplyView: React.FC<{}> = () => {
 
         <Param
           title={t.merge_date}
-          value={projectedMergeDate.toLocaleString(DateTime.DATE_MED)}
+          value={formatDate(projectedMergeDate)}
           subValue={
             <>
               {t.pow_removal}

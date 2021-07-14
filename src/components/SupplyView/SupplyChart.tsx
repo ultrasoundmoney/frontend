@@ -12,6 +12,7 @@ import {
   estimatedDailyFeeBurn,
   estimatedDailyIssuance,
   estimatedDailyStakeChange,
+  formatDate,
 } from "../../utils/metric-utils";
 import { useOnResize } from "../../utils/use-on-resize";
 import { defaultOptions, COLORS } from "../../utils/chart-defaults";
@@ -523,9 +524,8 @@ const SupplyChart: React.FC<Props> = ({
           );
 
           const dt = DateTime.fromMillis(this.x, { zone: "utc" });
-          const header = `<div class="tt-header"><div class="tt-header-date text-blue-spindle">${dt.toLocaleString(
-            DateTime.DATE_MED
-          )}</div>${
+          const header = `<div class="tt-header"><div class="tt-header-date text-blue-spindle">
+          ${formatDate(dt)}</div>${
             isProjected
               ? `<div class="tt-header-projected">(${t.projected})</div>`
               : ""
