@@ -1,10 +1,10 @@
 import * as React from "react";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
-import { useTranslations } from "../../utils/use-translation";
 import Timeline from "./timeline";
+import { TranslationsContext } from "../../translations-context";
 
 const BeforeGenesis: React.FC<{}> = () => {
-  const { translations: t } = useTranslations();
+  const t = React.useContext(TranslationsContext);
   return (
     <>
       <section id="before-genesis">

@@ -1,10 +1,10 @@
 import * as React from "react";
-import { useTranslations } from "../../utils/use-translation";
 import Card from "../Card/card";
 import TimeLineContentBlock from "../ContentBlock/TimeLineContent";
+import { TranslationsContext } from "../../translations-context";
 
 const EIPByzantium: React.FC<{}> = () => {
-  const { translations: t } = useTranslations();
+  const t = React.useContext(TranslationsContext);
   return (
     <>
       <TimeLineContentBlock

@@ -1,10 +1,10 @@
 import * as React from "react";
 import useSWR from "swr";
 import Clipboard from "react-clipboard.js";
-import { useTranslations } from "../../utils/use-translation";
 import TwitterProfile from "./TwitterProfile";
 import SpanMoji from "../SpanMoji";
 import copySrc from "../../assets/copy.svg";
+import { TranslationsContext } from "../../translations-context";
 
 type TwitterCommunityPros = {};
 const fetcher = (url: string) =>
@@ -17,7 +17,7 @@ const fetcher = (url: string) =>
   }).then((r) => r.json());
 
 const TwitterCommunity: React.FC<TwitterCommunityPros> = () => {
-  const { translations: t } = useTranslations();
+  const t = React.useContext(TranslationsContext);
   const [isCopiedFeedbackVisible, setIsCopiedFeedbackVisible] = React.useState<
     boolean
   >(false);

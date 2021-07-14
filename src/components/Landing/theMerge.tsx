@@ -1,10 +1,10 @@
 import * as React from "react";
-import { useTranslations } from "../../utils/use-translation";
 import ContentBlock from "../ContentBlock/ContentBlcok";
 import IconBlock from "../ContentBlock/IconBlock";
+import { TranslationsContext } from "../../translations-context";
 
 const TheMergeBlock: React.FC<{}> = () => {
-  const { translations: t } = useTranslations();
+  const t = React.useContext(TranslationsContext);
   return (
     <>
       <section id="next-merge">

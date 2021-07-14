@@ -2,11 +2,11 @@ import * as React from "react";
 import { NextPage } from "next";
 import Head from "next/head";
 import ComingSoon from "../components/ComingSoon";
-import { useTranslations } from "../utils/use-translation";
+import { TranslationsContext } from "../translations-context";
 
 type IndexPageProps = {};
 const IndexPage: NextPage<IndexPageProps> = () => {
-  const { translations: t } = useTranslations();
+  const t = React.useContext(TranslationsContext);
   return (
     <>
       <Head>

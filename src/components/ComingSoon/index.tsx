@@ -4,10 +4,10 @@ import EthBlocks from "../Blocks";
 import CountDown from "../CountDown/index";
 import TwitterCommunity from "../TwitterCommunity";
 import EthLogo from "../../assets/ethereum-ultra-sound-bat.svg";
-import { useTranslations } from "../../utils/use-translation";
 import FollowingYou from "../FollowingYou";
 import SpanMoji from "../SpanMoji";
 import NftDrop from "../NftDrop";
+import { TranslationsContext } from "../../translations-context";
 
 const fetcher = (url: string) =>
   fetch(url, {
@@ -21,7 +21,7 @@ const fetcher = (url: string) =>
   }).then((r) => r.json());
 
 const ComingSoon: React.FC = () => {
-  const { translations: t } = useTranslations();
+  const t = React.useContext(TranslationsContext);
   const { data } = useSWR(
     "https://eth-mainnet.alchemyapi.io/v2/H74MQLJkSLBJDyaDS2kyH7bXIBvjiTVe",
     fetcher,

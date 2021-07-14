@@ -1,12 +1,12 @@
 import * as React from "react";
-import { useTranslations } from "../../utils/use-translation";
 import Block from "./block";
+import { TranslationsContext } from "../../translations-context";
 
 type EthBlocksPros = {
   currentBlockNr: number;
 };
 const EthBlocks: React.FC<EthBlocksPros> = ({ currentBlockNr }) => {
-  const { translations: t } = useTranslations();
+  const t = React.useContext(TranslationsContext);
   const remamingBlocks = Number(t.countdownNr) - currentBlockNr;
   return (
     <>

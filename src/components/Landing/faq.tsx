@@ -1,10 +1,10 @@
 import * as React from "react";
-import { useTranslations } from "../../utils/use-translation";
 import Accordion from "../Accordion";
+import { TranslationsContext } from "../../translations-context";
 
 type FaqBlockPros = {};
 const FaqBlock: React.FC<FaqBlockPros> = () => {
-  const { translations: t } = useTranslations();
+  const t = React.useContext(TranslationsContext);
   return (
     <>
       <section id="faq">

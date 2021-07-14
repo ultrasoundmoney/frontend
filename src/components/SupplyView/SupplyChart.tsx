@@ -8,7 +8,6 @@ import last from "lodash/last";
 import twemoji from "twemoji";
 
 import { useDebounce } from "../../utils/use-debounce";
-import { useTranslations } from "../../utils/use-translation";
 import { intlFormat } from "../../utils/number-utils";
 import {
   estimatedDailyFeeBurn,
@@ -24,6 +23,7 @@ import stakingData from "./supply-staking.json";
 import contractData from "./supply-in-smart-contracts.json";
 
 import styles from "./SupplyChart.module.scss";
+import { TranslationsContext } from "../../translations-context";
 
 if (typeof window !== "undefined") {
   // Initialize highchats annotations module (onlly on browser, doesn't work on server)
@@ -53,7 +53,7 @@ const SupplyChart: React.FC<Props> = ({
   projectedStaking,
   projectedMergeDate,
 }) => {
-  const { translations: t } = useTranslations();
+  const t = React.useContext(TranslationsContext);
   React.useEffect(() => {
     Highcharts.setOptions({
       lang: {
