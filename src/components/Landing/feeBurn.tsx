@@ -1,12 +1,12 @@
 import * as React from "react";
-import { useTranslations } from "../../utils/use-translation";
 import Card from "../Card/card";
+import { TranslationsContext } from "../../translations-context";
 
 type FeeBurnedBlcokProps = {
   lineHeight?: string;
 };
 const FeeBurnedBlcok: React.FC<FeeBurnedBlcokProps> = ({ lineHeight }) => {
-  const { translations: t } = useTranslations();
+  const t = React.useContext(TranslationsContext);
   const getLineHeight =
     lineHeight != undefined || lineHeight != null
       ? `eclips-bottom eclips-bottom__left-0 ${lineHeight}`

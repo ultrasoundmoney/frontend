@@ -6,10 +6,10 @@ import ContentBlockMedia from "../ContentBlock/ContentBlockMedia";
 import UsdImg from "../../assets/USD.png";
 import EthImg from "../../assets/ETH.png";
 import BtcImg from "../../assets/BTC.png";
-import { useTranslations } from "../../utils/use-translation";
+import { TranslationsContext } from "../../translations-context";
 
 const TheUltraSound: React.FC<{}> = () => {
-  const { translations: t } = useTranslations();
+  const t = React.useContext(TranslationsContext);
   return (
     <>
       <section

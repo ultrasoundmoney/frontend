@@ -5,7 +5,7 @@ export const followerCountConvert = (num: number) => {
   } else if (num > 1000000) {
     // convert to M for number from > 1 million
     return (num / 1000000).toFixed(1) + "M";
-  } else if (num < 999) {
+  } else if (num <= 999) {
     // if value < 1000, nothing to do
     return num;
   }

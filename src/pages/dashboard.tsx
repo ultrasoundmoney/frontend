@@ -1,12 +1,12 @@
 import * as React from "react";
 import { NextPage } from "next";
 import Head from "next/head";
-import { useTranslations } from "../utils/use-translation";
+import { TranslationsContext } from "../translations-context";
 import Dashboard from "../components/Dashboard";
 
 type DashboardPageProps = {};
 const DashboardPage: NextPage<DashboardPageProps> = () => {
-  const { translations: t } = useTranslations();
+  const t = React.useContext(TranslationsContext);
   return (
     <>
       <Head>

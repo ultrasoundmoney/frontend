@@ -1,8 +1,8 @@
 import * as React from "react";
 import twemoji from "twemoji";
 import AvatarImg from "../../assets/avatar.webp";
-import { useTranslations } from "../../utils/use-translation";
 import { followerCountConvert } from "../Helpers/helper";
+import { TranslationsContext } from "../../translations-context";
 
 type ProfileTooltipProps = {
   children: React.ReactNode;
@@ -15,7 +15,7 @@ type ProfileTooltipProps = {
   };
 };
 const ProfileTooltip: React.FC<ProfileTooltipProps> = ({ children, item }) => {
-  const { translations: t } = useTranslations();
+  const t = React.useContext(TranslationsContext);
   function imageErrorHandler(e: React.SyntheticEvent<HTMLImageElement, Event>) {
     const el = e.target as HTMLImageElement;
     el.onerror = null;

@@ -1,10 +1,10 @@
 import poapLogo from "../../assets/poap-logo.svg";
 import nftDropPoster from "../../assets/nft-drop.jpg";
 import React from "react";
-import { useTranslations } from "../../utils/use-translation";
+import { TranslationsContext } from "../../translations-context";
 
 const NftDrop: React.FC = () => {
-  const { translations: t } = useTranslations();
+  const t = React.useContext(TranslationsContext);
   const refVideo = React.useRef(null);
 
   React.useEffect(() => {

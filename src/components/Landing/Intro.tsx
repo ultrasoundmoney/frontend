@@ -1,9 +1,9 @@
 import * as React from "react";
-import { useTranslations } from "../../utils/use-translation";
+import { TranslationsContext } from "../../translations-context";
 import Twemoji from "../Twemoji";
 
 const Intro: React.FC<{}> = () => {
-  const { translations: t } = useTranslations();
+  const t = React.useContext(TranslationsContext);
   return (
     <>
       <section

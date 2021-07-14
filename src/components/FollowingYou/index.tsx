@@ -1,7 +1,7 @@
 import * as React from "react";
-import { useTranslations } from "../../utils/use-translation";
 import TwitterProfile from "../TwitterCommunity/TwitterProfile";
 import SpanMoji from "../SpanMoji";
+import { TranslationsContext } from "../../translations-context";
 
 type Empty = { type: "empty" };
 type FollowedBy = {
@@ -21,7 +21,7 @@ type FollowedByResult =
   | UnknownError;
 
 const FollowingYou: React.FC = () => {
-  const { translations: t } = useTranslations();
+  const t = React.useContext(TranslationsContext);
   const [handle, setHandle] = React.useState<string>("");
   const [followers, setFollowers] = React.useState<FollowedByResult>({
     type: "empty",

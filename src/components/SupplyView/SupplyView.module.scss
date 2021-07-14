@@ -8,39 +8,42 @@
   display: flex;
   justify-content: space-between;
 }
+
 .params {
   display: grid;
   width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
   grid-template-columns: 1fr;
-  grid-gap: 1rem;
-  padding: 0 16px;
+  grid-gap: 2.5rem;
+  margin-top: 3rem;
+  padding: 0 1rem;
+
   @media (min-width: 640px) {
     grid-template-columns: 1fr 1fr 1fr;
     text-align: left;
+    justify-content: space-between;
+    grid-gap: 1rem;
+  }
+
+  @media (min-width: 1024px) {
+    grid-gap: 4rem;
   }
 }
+
 .param {
   min-width: 0;
 }
+
 .paramTitle {
   font-size: 0.75rem;
   text-transform: uppercase;
   line-height: 1;
   font-weight: 300;
+  margin-bottom: 0.5rem;
   @include clip-text;
 }
-.paramValueContainer {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  @media (min-width: 640px) {
-    display: block;
-  }
-}
+
 .paramValue {
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   color: white;
   font-weight: 300;
   @include clip-text;
@@ -48,23 +51,21 @@
   line-height: 1.4;
   flex: 0 0 auto;
   @media (min-width: 768px) {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     margin: 2px 0;
   }
 }
+
 .paramSubValue {
   font-size: 0.7rem;
   font-weight: 300;
-  line-height: 1;
+  margin-top: -4px;
   @include clip-text;
-  margin: 0 0 3px 10px;
-  @media (min-width: 640px) {
-    margin: 3px 0 0 0;
-  }
   @media (min-width: 768px) {
     font-size: 0.825rem;
   }
 }
+
 .paramChildren {
   margin-top: -2px;
   @media (min-width: 640px) {

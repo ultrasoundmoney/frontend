@@ -1,10 +1,10 @@
 import * as React from "react";
 import ContentBlock from "../ContentBlock/ContentBlcok";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
-import { useTranslations } from "../../utils/use-translation";
+import { TranslationsContext } from "../../translations-context";
 
 const EIP1559: React.FC<{}> = () => {
-  const { translations: t } = useTranslations();
+  const t = React.useContext(TranslationsContext);
   return (
     <>
       <ContentBlock

@@ -2,7 +2,7 @@ import * as React from "react";
 import SegmentedControl, {
   Option as SegmentedControlOption,
 } from "../SegmentedControl";
-import { useTranslations } from "../../utils/use-translation";
+import { TranslationsContext } from "../../translations-context";
 
 interface Props {
   value: string;
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const TimeRangeControl: React.FC<Props> = ({ value, onChange }) => {
-  const { translations: t } = useTranslations();
+  const t = React.useContext(TranslationsContext);
   const options = React.useMemo(
     () => [
       {

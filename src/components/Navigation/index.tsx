@@ -1,11 +1,11 @@
 import * as React from "react";
 import Link from "next/link";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
-import { useTranslations } from "../../utils/use-translation";
 import twemoji from "twemoji";
+import { TranslationsContext } from "../../translations-context";
 
 const Navigation: React.FC<{}> = () => {
-  const { translations: t } = useTranslations();
+  const t = React.useContext(TranslationsContext);
   const ethPrice = `$2,391.94 <span class="text-green-500 px-2">(+2.13%)</span>• ⛽️ 8 Gwei`;
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   return (

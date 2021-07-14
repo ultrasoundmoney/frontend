@@ -17,7 +17,10 @@ $tooltip-zindex: 2;
 
 .supplyChart {
   position: relative;
+  // Fixes opacity flicker caused by countdown.
+  backface-visibility: hidden;
 }
+
 .supplyChart :global {
   // Chart series
   .highcharts-series {
@@ -34,7 +37,7 @@ $tooltip-zindex: 2;
   .highcharts-plot-line-label tspan[style] {
     // (hacky css selector using style attribute to target
     //  the subtitle only)
-    fill: $blue-spindle;
+    fill: white;
     font-weight: 300 !important;
   }
 
@@ -44,17 +47,16 @@ $tooltip-zindex: 2;
   }
   .tt-root {
     background-color: $tooltip-bg;
-    padding: 8px 10px;
+    padding: 24px;
     border-radius: 3px;
   }
   .tt-header {
     display: flex;
     align-items: center;
     line-height: 1;
-    margin-bottom: 5px;
+    margin-bottom: 1rem;
   }
   .tt-header-date {
-    color: white;
     font-size: 14px;
     font-weight: bold;
   }
@@ -74,7 +76,7 @@ $tooltip-zindex: 2;
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
-    line-height: 1;
+    line-height: 1.125rem;
   }
   .tt-series-color {
     margin-top: 2px;
@@ -137,7 +139,7 @@ $tooltip-zindex: 2;
     grid-template-columns: auto auto auto auto auto auto;
   }
   // Keep this breakpoint in sync with COMPACT_MARKERS_BELOW_WIDTH
-  @media (min-width: 1024px) {
+  @media (min-width: 1440px) {
     display: none;
   }
 }
@@ -146,7 +148,7 @@ $tooltip-zindex: 2;
   align-items: flex-start;
   flex-wrap: nowrap;
   font-size: 11px;
-  color: $chart-label;
+  color: white;
   white-space: nowrap;
 }
 .markerLegendCount {
@@ -155,9 +157,7 @@ $tooltip-zindex: 2;
   color: white;
 }
 .markerLegendTitle {
-  font-weight: bold;
-}
-.markerLegendSubtitle {
+  color: $chart-label
 }
 
 // Annotation
@@ -167,29 +167,21 @@ $tooltip-zindex: 2;
     z-index: $tooltip-zindex - 1;
   }
   .ann-root {
-    padding: 6px 7px 8px;
-    // twemojis
-    img {
-      margin: 0;
-      width: 14px;
-      height: 14px;
-      max-width: none;
-      &:first-child {
-        margin: 0 3px 0 5px;
-      }
-    }
+    width: 90px;
+    text-align: center;
   }
   .ann-title {
+    color: $blue-spindle;
     font-weight: bold;
-  }
-  .ann-value {
-    color: $chart-label;
-    font-size: 15px;
-    font-weight: 300;
-    margin: 0px 0 2px;
+    margin-bottom: 2px;
   }
   .ann-proj {
     @include projected-label;
     font-size: 9px;
+    margin-bottom: 6px;
+  }
+  .ann-value {
+    font-size: 12px;
+    font-weight: bold;
   }
 }

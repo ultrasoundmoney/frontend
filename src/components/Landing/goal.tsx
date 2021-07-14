@@ -1,12 +1,12 @@
 import * as React from "react";
-import { useTranslations } from "../../utils/use-translation";
 import IconBlock from "../ContentBlock/IconBlock";
+import { TranslationsContext } from "../../translations-context";
 
 type GoalBlcokProps = {
   styles?: string;
 };
 const GoalBlcok: React.FC<GoalBlcokProps> = ({ styles }) => {
-  const { translations: t } = useTranslations();
+  const t = React.useContext(TranslationsContext);
   const getClassName =
     styles != undefined || styles != null
       ? `block w-full lg:w-7/12 lg:m-auto px-4 md:px-8 lg:px-0 ${styles}`
