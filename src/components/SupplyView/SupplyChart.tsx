@@ -412,7 +412,7 @@ const SupplyChart: React.FC<Props> = ({
           }).format(Math.round(peakSupply[1] / 1e5) / 10)}M ETH</div>
           ${isProjected ? `<div class="ann-proj">(Projected)</div>` : ""}
           </div>`,
-        padding: 16,
+        padding: 8,
         useHTML: true,
       };
       annotations.push(annotation);
