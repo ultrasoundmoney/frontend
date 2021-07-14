@@ -516,7 +516,7 @@ const SupplyChart: React.FC<Props> = ({
           );
 
           const dt = DateTime.fromMillis(this.x, { zone: "utc" });
-          const header = `<div class="tt-header"><div class="tt-header-date">${dt.toLocaleString(
+          const header = `<div class="tt-header"><div class="tt-header-date text-blue-spindle">${dt.toLocaleString(
             DateTime.DATE_MED
           )}</div>${
             isProjected
@@ -537,7 +537,7 @@ const SupplyChart: React.FC<Props> = ({
                   }</div>
                 </div>
               </td>
-              <td>${intlFormat(Math.round(p.y))} ETH</td>
+              <td class="text-white">${intlFormat(Math.round(p.y))} ETH</td>
               </tr>`
           );
 
@@ -546,7 +546,7 @@ const SupplyChart: React.FC<Props> = ({
           rows.push(
             `<tr class="tt-total-row">
               <td><div class="tt-series-name">${t.total_supply}</div></td>
-              <td>${intlFormat(Math.round(total))} ETH</td>
+              <td class="text-white">${intlFormat(Math.round(total))} ETH</td>
             </tr>`
           );
 

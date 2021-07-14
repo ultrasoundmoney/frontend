@@ -54,10 +54,9 @@ $tooltip-zindex: 2;
     display: flex;
     align-items: center;
     line-height: 1;
-    margin-bottom: 5px;
+    margin-bottom: 1rem;
   }
   .tt-header-date {
-    color: white;
     font-size: 14px;
     font-weight: bold;
   }
@@ -77,7 +76,7 @@ $tooltip-zindex: 2;
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
-    line-height: 1;
+    line-height: 1.125rem;
   }
   .tt-series-color {
     margin-top: 2px;
