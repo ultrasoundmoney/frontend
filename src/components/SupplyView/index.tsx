@@ -85,22 +85,18 @@ const SupplyView: React.FC<{}> = () => {
   ).days;
 
   return (
-    <div>
-      <div className="">
-        <div className={styles.chartHeader}>
-          <div>
-            <div className="text-xl text-white text-left font-light leading-2 pl-3 pb-2">
-              {t.eth_supply}
-            </div>
-          </div>
+    <>
+      <div className={styles.chartHeader}>
+        <div className="text-xl text-white text-left font-light leading-2 pl-3 pb-2">
+          {t.eth_supply}
         </div>
-        <SupplyChart
-          projectedStaking={projectedStaking}
-          projectedBaseGasPrice={projectedBaseGasPrice}
-          projectedMergeDate={projectedMergeDate}
-          showBreakdown={showBreakdown}
-        />
       </div>
+      <SupplyChart
+        projectedStaking={projectedStaking}
+        projectedBaseGasPrice={projectedBaseGasPrice}
+        projectedMergeDate={projectedMergeDate}
+        showBreakdown={showBreakdown}
+      />
 
       <div className={styles.params}>
         <Param
@@ -173,7 +169,7 @@ const SupplyView: React.FC<{}> = () => {
           />
         </Param>
       </div>
-    </div>
+    </>
   );
 };
 
