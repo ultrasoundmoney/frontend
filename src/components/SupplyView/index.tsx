@@ -36,6 +36,7 @@ const SupplyView: React.FC<{}> = () => {
   const [projectedMergeDate, setProjectedMergeDate] = React.useState(
     DEFAULT_PROJECTED_MERGE_DATE
   );
+  const [showBreakdown, setShowBreakdown] = React.useState(false);
 
   const handleProjectedStakingChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,6 +62,14 @@ const SupplyView: React.FC<{}> = () => {
     },
     []
   );
+
+  const handleProjectedStakingPointerDown = React.useCallback(() => {
+    setShowBreakdown(true);
+  }, []);
+
+  const handleProjectedStakingPointerUp = React.useCallback(() => {
+    setShowBreakdown(false);
+  }, []);
 
   const daysUntilProjectedMerge = projectedMergeDate.diff(
     DateTime.utc().startOf("day"),
@@ -89,6 +98,7 @@ const SupplyView: React.FC<{}> = () => {
           projectedStaking={projectedStaking}
           projectedBaseGasPrice={projectedBaseGasPrice}
           projectedMergeDate={projectedMergeDate}
+          showBreakdown={showBreakdown}
         />
       </div>
 
@@ -116,6 +126,8 @@ const SupplyView: React.FC<{}> = () => {
             value={projectedStaking}
             step={1e6}
             onChange={handleProjectedStakingChange}
+            onPointerDown={handleProjectedStakingPointerDown}
+            onPointerUp={handleProjectedStakingPointerUp}
           />
         </Param>
 

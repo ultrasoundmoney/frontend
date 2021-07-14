@@ -7,6 +7,8 @@ interface Props {
   value: number;
   step?: number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onPointerDown?: () => void;
+  onPointerUp?: () => void;
 }
 
 const THUMB_WIDTH = 14;
@@ -16,7 +18,15 @@ const THUMB_WIDTH = 14;
  * to very small tap targets on mobile, so instead we render a
  * transparent slider and use a custom UI in front of it.
  */
-const Slider: React.FC<Props> = ({ min, max, value, step, onChange }) => {
+const Slider: React.FC<Props> = ({
+  min,
+  max,
+  value,
+  step,
+  onChange,
+  onPointerDown,
+  onPointerUp,
+}) => {
   const percent = ((value - min) / (max - min)) * 100;
   const offset = Math.floor((percent * THUMB_WIDTH) / 100);
   return (
@@ -29,6 +39,8 @@ const Slider: React.FC<Props> = ({ min, max, value, step, onChange }) => {
         step={step}
         onChange={onChange}
         className={styles.sliderInput}
+        onPointerDown={onPointerDown}
+        onPointerUp={onPointerUp}
       />
       <div className={styles.sliderTrack}></div>
       <div

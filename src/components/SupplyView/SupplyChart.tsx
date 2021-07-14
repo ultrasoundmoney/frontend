@@ -34,6 +34,7 @@ interface Props {
   projectedStaking: number;
   projectedBaseGasPrice: number;
   projectedMergeDate: DateTime;
+  showBreakdown: boolean;
 }
 
 interface HighchartsRef {
@@ -52,6 +53,7 @@ const SupplyChart: React.FC<Props> = ({
   projectedBaseGasPrice,
   projectedStaking,
   projectedMergeDate,
+  showBreakdown: forceShowBreakdown,
 }) => {
   const t = React.useContext(TranslationsContext);
   React.useEffect(() => {
@@ -107,7 +109,7 @@ const SupplyChart: React.FC<Props> = ({
       projectedBaseGasPrice,
       projectedStaking,
       projectedMergeDate,
-      showBreakdown,
+      showBreakdown: showBreakdown || forceShowBreakdown,
       useCompactChart,
       useCompactMarkers,
     }),
@@ -115,7 +117,7 @@ const SupplyChart: React.FC<Props> = ({
       projectedBaseGasPrice,
       projectedStaking,
       projectedMergeDate,
-      showBreakdown,
+      showBreakdown || forceShowBreakdown,
       useCompactChart,
       useCompactMarkers,
     ]
