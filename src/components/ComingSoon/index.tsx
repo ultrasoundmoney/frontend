@@ -6,7 +6,6 @@ import TwitterCommunity from "../TwitterCommunity";
 import EthLogo from "../../assets/ethereum-ultra-sound-bat.svg";
 import FollowingYou from "../FollowingYou";
 import SpanMoji from "../SpanMoji";
-import NftDrop from "../NftDrop";
 import { TranslationsContext } from "../../translations-context";
 
 const fetcher = (url: string) =>
@@ -70,7 +69,6 @@ const ComingSoon: React.FC = () => {
             </div>
           </div>
         </div>
-        <NftDrop />
       </div>
     </>
   );
