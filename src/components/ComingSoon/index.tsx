@@ -74,7 +74,7 @@ const ComingSoon: React.FC = () => {
             <TwitterCommunity />
           </div>
         </div>
-        <div className="flex px-4 md:px-0">
+        <div className="flex px-4 md:px-0 pt-20 pb-60">
           <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
             <FollowingYou />
           </div>
