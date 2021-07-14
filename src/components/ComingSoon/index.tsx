@@ -6,6 +6,7 @@ import TwitterCommunity from "../TwitterCommunity";
 import EthLogo from "../../assets/ethereum-ultra-sound-bat.svg";
 import FollowingYou from "../FollowingYou";
 import SpanMoji from "../SpanMoji";
+import SupplyView from "../SupplyView";
 import { TranslationsContext } from "../../translations-context";
 
 const fetcher = (url: string) =>
@@ -56,6 +57,17 @@ const ComingSoon: React.FC = () => {
               <EthBlocks
                 currentBlockNr={currentBlockNumber && currentBlockNumber}
               />
+            </div>
+          </div>
+          <div className="flex flex-col px-4 md:px-0 pt-8 md:pt-40">
+            <h1 className="text-white font-extralight text-xl md:text-3xl xl:text-41xl text-center mb-8">
+              supply graph
+            </h1>
+            <p className="text-white text-center font-light text-base lg:text-lg mb-16">
+              ready to discover the future of ETH?
+            </p>
+            <div className="w-full md:w-5/6 lg:w-5/6 md:m-auto relative bg-blue-tangaroa py-8 md:px-16">
+              <SupplyView />
             </div>
           </div>
           <div className="flex px-4 md:px-0 pt-8 md:pt-40">
