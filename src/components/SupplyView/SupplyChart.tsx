@@ -5,7 +5,6 @@ import highchartsAnnotations from "highcharts/modules/annotations";
 import HighchartsReact from "highcharts-react-official";
 import merge from "lodash/merge";
 import last from "lodash/last";
-import twemoji from "twemoji";
 
 import { useDebounce } from "../../utils/use-debounce";
 import { intlFormat } from "../../utils/number-utils";
@@ -34,6 +33,9 @@ interface Props {
   projectedStaking: number;
   projectedBaseGasPrice: number;
   projectedMergeDate: DateTime;
+  showBreakdown: boolean;
+  onPeakProjected: () => void;
+  onNoPeakProjected: () => void;
 }
 
 interface HighchartsRef {
@@ -45,13 +47,16 @@ let mouseOutTimer: NodeJS.Timeout | null = null;
 
 const LONDON_DATE = DateTime.fromISO("2021-08-04T00:00:00Z");
 const NUM_DAYS_PER_POINT = 7;
-const COMPACT_MARKERS_BELOW_WIDTH = 1024;
+const COMPACT_MARKERS_BELOW_WIDTH = 1440;
 const COMPACT_CHART_BELOW_WIDTH = 640;
 
 const SupplyChart: React.FC<Props> = ({
   projectedBaseGasPrice,
   projectedStaking,
   projectedMergeDate,
+  showBreakdown: forceShowBreakdown,
+  onPeakProjected,
+  onNoPeakProjected,
 }) => {
   const t = React.useContext(TranslationsContext);
   React.useEffect(() => {
@@ -107,7 +112,7 @@ const SupplyChart: React.FC<Props> = ({
       projectedBaseGasPrice,
       projectedStaking,
       projectedMergeDate,
-      showBreakdown,
+      showBreakdown: showBreakdown || forceShowBreakdown,
       useCompactChart,
       useCompactMarkers,
     }),
@@ -115,22 +120,22 @@ const SupplyChart: React.FC<Props> = ({
       projectedBaseGasPrice,
       projectedStaking,
       projectedMergeDate,
-      showBreakdown,
+      showBreakdown || forceShowBreakdown,
       useCompactChart,
       useCompactMarkers,
     ]
   );
-  const chartSettings = useDebounce(_chartSettings, 50);
+  const chartSettings = useDebounce(_chartSettings, 100);
 
   // Define the event markers that we'll plot on the chart
   const markers = React.useMemo(
     // prettier-ignore
     (): [DateTime | null, string, string][] => ([
       [DateTime.fromISO("2015-07-31T00:00:00Z"), t.marker_genesis, `5 ETH/${t.marker_block}`],
-      [DateTime.fromISO("2017-10-16T00:00:00Z"), "Byzantium", `3 ETH/${t.marker_block}`],
-      [DateTime.fromISO("2019-02-27T00:00:00Z"), "Constantinople", `2 ETH/${t.marker_block}`],
+      [DateTime.fromISO("2017-10-16T00:00:00Z"), "byzantium", `3 ETH/${t.marker_block}`],
+      [DateTime.fromISO("2019-02-27T00:00:00Z"), "constantinople", `2 ETH/${t.marker_block}`],
       [DateTime.fromISO("2020-12-01T00:00:00Z"), t.marker_phase_0, t.marker_pos],
-      [LONDON_DATE, "London", "EIP1559"],
+      [LONDON_DATE, "london", "EIP1559"],
       [chartSettings.projectedMergeDate, t.marker_merge, t.marker_pow_removal],
     ]),
     [chartSettings, t]
@@ -404,18 +409,19 @@ const SupplyChart: React.FC<Props> = ({
           y: maxSupply,
         },
         text: `<div class="ann-root">
-          <div class="ann-title">${t.peak_supply}${twemoji.parse("🦇🔊")}</div>
+          <div class="ann-title">${t.peak_supply}</div>
+          ${isProjected ? `<div class="ann-proj">(Projected)</div>` : ""}
           <div class="ann-value">${Intl.NumberFormat(undefined, {
             maximumFractionDigits: 1,
           }).format(Math.round(peakSupply[1] / 1e5) / 10)}M ETH</div>
-          ${isProjected ? `<div class="ann-proj">(Projected)</div>` : ""}
-          </div>
-          
-          `,
-        padding: 0,
+          </div>`,
+        padding: 8,
         useHTML: true,
       };
       annotations.push(annotation);
+      onPeakProjected();
+    } else {
+      onNoPeakProjected();
     }
 
     return [series, annotations, supplyByDate];
@@ -467,7 +473,7 @@ const SupplyChart: React.FC<Props> = ({
         tickInterval: 365.25 * 24 * 3600 * 1000, // always use 1 year intervals
         plotLines: markers.map(([date, title, subtitle], i) => ({
           value: date.toMillis(),
-          color: COLORS.LABEL,
+          color: COLORS.PLOT_LINE,
           width: 1,
           label: {
             rotation: 0,
@@ -475,11 +481,12 @@ const SupplyChart: React.FC<Props> = ({
               ? String.fromCharCode(65 + i) // A, B, C, D, etc.
               : `${title}<br><b>${subtitle}</b>`,
             style: {
-              color: "#fff",
+              color: "#b5bddb",
               whiteSpace: "normal",
               fontSize: "11px",
             },
             y: 18,
+            x: 6,
           },
           zIndex: 3,
         })),
@@ -514,7 +521,7 @@ const SupplyChart: React.FC<Props> = ({
           );
 
           const dt = DateTime.fromMillis(this.x, { zone: "utc" });
-          const header = `<div class="tt-header"><div class="tt-header-date">${dt.toLocaleString(
+          const header = `<div class="tt-header"><div class="tt-header-date text-blue-spindle">${dt.toLocaleString(
             DateTime.DATE_MED
           )}</div>${
             isProjected
@@ -535,7 +542,7 @@ const SupplyChart: React.FC<Props> = ({
                   }</div>
                 </div>
               </td>
-              <td>${intlFormat(Math.round(p.y))} ETH</td>
+              <td class="text-white">${intlFormat(Math.round(p.y))} ETH</td>
               </tr>`
           );
 
@@ -544,7 +551,7 @@ const SupplyChart: React.FC<Props> = ({
           rows.push(
             `<tr class="tt-total-row">
               <td><div class="tt-series-name">${t.total_supply}</div></td>
-              <td>${intlFormat(Math.round(total))} ETH</td>
+              <td class="text-white">${intlFormat(Math.round(total))} ETH</td>
             </tr>`
           );
 

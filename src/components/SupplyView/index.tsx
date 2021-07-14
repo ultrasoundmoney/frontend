@@ -9,6 +9,7 @@ import {
 } from "../../utils/metric-utils";
 import { useTranslations } from "../../utils/use-translation";
 import styles from "./SupplyView.module.scss";
+import SpanMoji from "../SpanMoji";
 
 const MIN_PROJECTED_ETH_STAKING = 1e6;
 const DEFAULT_PROJECTED_ETH_STAKING = 10e6;
@@ -16,11 +17,11 @@ const MAX_PROJECTED_ETH_STAKING = 33554432;
 
 const MIN_PROJECTED_BASE_GAS_PRICE = 0;
 const DEFAULT_PROJECTED_BASE_GAS_PRICE = 20;
-const MAX_PROJECTED_BASE_GAS_PRICE = 200;
+const MAX_PROJECTED_BASE_GAS_PRICE = 150;
 
 const MIN_PROJECTED_MERGE_DATE = DateTime.utc(2021, 12, 1);
 const DEFAULT_PROJECTED_MERGE_DATE = DateTime.utc(2022, 1, 31);
-const MAX_PROJECTED_MERGE_DATE = DateTime.utc(2022, 12, 31);
+const MAX_PROJECTED_MERGE_DATE = DateTime.utc(2022, 12, 1);
 
 const SupplyView: React.FC<{}> = () => {
   const { translations: t } = useTranslations();
@@ -36,6 +37,8 @@ const SupplyView: React.FC<{}> = () => {
   const [projectedMergeDate, setProjectedMergeDate] = React.useState(
     DEFAULT_PROJECTED_MERGE_DATE
   );
+  const [showBreakdown, setShowBreakdown] = React.useState(false);
+  const [isPeakPresent, setIsPeakPresent] = React.useState(false);
 
   const handleProjectedStakingChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,6 +65,21 @@ const SupplyView: React.FC<{}> = () => {
     []
   );
 
+  const handleProjectedStakingPointerDown = React.useCallback(() => {
+    setShowBreakdown(true);
+  }, []);
+
+  const handleProjectedStakingPointerUp = React.useCallback(() => {
+    setShowBreakdown(false);
+  }, []);
+
+  const handleOnPeakProjected = React.useCallback(() => {
+    setIsPeakPresent(true);
+  }, []);
+  const handleOnNoPeakProjected = React.useCallback(() => {
+    setIsPeakPresent(false);
+  }, []);
+
   const daysUntilProjectedMerge = projectedMergeDate.diff(
     DateTime.utc().startOf("day"),
     "days"
@@ -76,21 +94,26 @@ const SupplyView: React.FC<{}> = () => {
   ).days;
 
   return (
-    <div>
-      <div className="">
-        <div className={styles.chartHeader}>
-          <div>
-            <div className="text-xl text-white text-left font-light leading-2 pl-3 pb-2">
-              {t.eth_supply}
-            </div>
-          </div>
+    <>
+      <div className={styles.chartHeader}>
+        <div className="text-xl text-white text-left font-light pl-3 pb-4">
+          {t.eth_supply}
+          {isPeakPresent && (
+            <>
+              {" "}
+              <SpanMoji emoji="🦇🔊" />
+            </>
+          )}
         </div>
-        <SupplyChart
-          projectedStaking={projectedStaking}
-          projectedBaseGasPrice={projectedBaseGasPrice}
-          projectedMergeDate={projectedMergeDate}
-        />
       </div>
+      <SupplyChart
+        projectedStaking={projectedStaking}
+        projectedBaseGasPrice={projectedBaseGasPrice}
+        projectedMergeDate={projectedMergeDate}
+        showBreakdown={showBreakdown}
+        onPeakProjected={handleOnPeakProjected}
+        onNoPeakProjected={handleOnNoPeakProjected}
+      />
 
       <div className={styles.params}>
         <Param
@@ -116,6 +139,8 @@ const SupplyView: React.FC<{}> = () => {
             value={projectedStaking}
             step={1e6}
             onChange={handleProjectedStakingChange}
+            onPointerDown={handleProjectedStakingPointerDown}
+            onPointerUp={handleProjectedStakingPointerUp}
           />
         </Param>
 
@@ -161,7 +186,7 @@ const SupplyView: React.FC<{}> = () => {
           />
         </Param>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -172,19 +197,15 @@ interface ParamProps {
   children: React.ReactNode;
 }
 
-function Param({ title, value, subValue, children }: ParamProps) {
-  return (
-    <div className={styles.param}>
-      <div className={`text-blue-spindle ${styles.paramTitle}`}>{title}</div>
-      <div className={styles.paramValueContainer}>
-        <div className={styles.paramValue}>{value}</div>
-        <div className={`text-blue-spindle ${styles.paramSubValue}`}>
-          {subValue}
-        </div>
-      </div>
-      <div className={styles.paramChildren}>{children}</div>
+const Param: React.FC<ParamProps> = ({ title, value, subValue, children }) => (
+  <div className={styles.param}>
+    <div className={`text-blue-spindle ${styles.paramTitle}`}>{title}</div>
+    <div className={styles.paramValue}>{value}</div>
+    <div className={styles.paramChildren}>{children}</div>
+    <div className={`text-blue-spindle ${styles.paramSubValue}`}>
+      {subValue}
     </div>
-  );
-}
+  </div>
+);
 
 export default SupplyView;
