@@ -2,6 +2,7 @@ import * as Highcharts from "highcharts";
 
 export const COLORS = {
   GRID: "#262e48",
+  PLOT_LINE: "#6675a3",
   LABEL: "#8490b5",
   LABEL_HOVER: "#6c7696",
   TOOLTIP_BG: "#1b2135", // mignight-express but lighter

@@ -467,7 +467,7 @@ const SupplyChart: React.FC<Props> = ({
         tickInterval: 365.25 * 24 * 3600 * 1000, // always use 1 year intervals
         plotLines: markers.map(([date, title, subtitle], i) => ({
           value: date.toMillis(),
-          color: COLORS.LABEL,
+          color: COLORS.PLOT_LINE,
           width: 1,
           label: {
             rotation: 0,
