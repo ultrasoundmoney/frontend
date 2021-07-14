@@ -544,7 +544,10 @@ const SupplyChart: React.FC<Props> = ({
                   }</div>
                 </div>
               </td>
-              <td class="text-white">${intlFormat(Math.round(p.y))} ETH</td>
+              <td class="text-white">${Intl.NumberFormat(undefined, {
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1,
+              }).format(p.y / 1e6)}M ETH</td>
               </tr>`
           );
 
@@ -553,7 +556,10 @@ const SupplyChart: React.FC<Props> = ({
           rows.push(
             `<tr class="tt-total-row">
               <td><div class="tt-series-name">${t.total_supply}</div></td>
-              <td class="text-white">${intlFormat(Math.round(total))} ETH</td>
+              <td class="text-white">${Intl.NumberFormat(undefined, {
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1,
+              }).format(total / 1e6)}M ETH</td>
             </tr>`
           );
 
