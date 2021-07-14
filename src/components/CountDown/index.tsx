@@ -10,7 +10,6 @@ const Countdown: React.FC<CountDownProps> = ({ targetDate, targetTime }) => {
     minutes: 0,
     seconds: 0,
   });
-  const [isExpired, setIsExpired] = React.useState(false);
   let timer: any;
   let distance;
 
@@ -22,7 +21,6 @@ const Countdown: React.FC<CountDownProps> = ({ targetDate, targetTime }) => {
     distance = countDownDate - now;
     if (distance < 0) {
       clearInterval(timer);
-      setIsExpired(true);
     } else {
       setState({
         days: Math.floor(distance / (1000 * 60 * 60 * 24)),
@@ -32,7 +30,6 @@ const Countdown: React.FC<CountDownProps> = ({ targetDate, targetTime }) => {
         minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
         seconds: Math.floor((distance % (1000 * 60)) / 1000),
       });
-      setIsExpired(false);
     }
   };
 
@@ -50,7 +47,7 @@ const Countdown: React.FC<CountDownProps> = ({ targetDate, targetTime }) => {
 
   return (
     <>
-      {!isExpired && targetDate && targetTime ? (
+      {targetDate && targetTime && (
         <div className="inline-flex justify-center w-full z-20 px-4 md:px-0">
           {Object.entries(state).map((el, i) => (
             <div
@@ -71,10 +68,6 @@ const Countdown: React.FC<CountDownProps> = ({ targetDate, targetTime }) => {
               </div>
             </div>
           ))}
-        </div>
-      ) : (
-        <div className="inline-flex justify-center w-full bg-transparent py-24">
-          <h1>Yey!</h1>
         </div>
       )}
     </>
