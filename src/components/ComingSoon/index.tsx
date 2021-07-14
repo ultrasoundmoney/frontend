@@ -59,7 +59,7 @@ const ComingSoon: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col px-4 md:px-0 md:pt-40 mb-16">
-          <h1 className="text-white font-extralight text-2xl md:text-3xl xl:text-41xl text-center mb-4">
+          <h1 className="text-white font-extralight text-2xl md:text-3xl xl:text-41xl text-center mb-4 mb-8">
             supply graph
           </h1>
           <p className="text-white text-center font-light text-base lg:text-lg mb-8">
