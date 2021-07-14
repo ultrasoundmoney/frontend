@@ -136,7 +136,7 @@ const SupplyChart: React.FC<Props> = ({
       [DateTime.fromISO("2017-10-16T00:00:00Z"), "byzantium", `3 ETH/${t.marker_block}`],
       [DateTime.fromISO("2019-02-27T00:00:00Z"), "constantinople", `2 ETH/${t.marker_block}`],
       [DateTime.fromISO("2020-12-01T00:00:00Z"), t.marker_phase_0, t.marker_pos],
-      [LONDON_DATE, "london", "EIP-1559"],
+      [LONDON_DATE, "london", "burn"],
       [chartSettings.projectedMergeDate, t.marker_merge, t.marker_pow_removal],
     ]),
     [chartSettings, t]
@@ -256,7 +256,7 @@ const SupplyChart: React.FC<Props> = ({
       if (projDate.toSeconds() < mergeDate) {
         newIssuance += 13500;
       }
-      // If this is after EIP1559 calculate the fee burn
+      // If this is after EIP-1559 calculate the fee burn
       let burn = 0;
       if (projDate.toSeconds() >= LONDON_DATE.toSeconds()) {
         burn = estimatedDailyFeeBurn(chartSettings.projectedBaseGasPrice);

@@ -34,6 +34,10 @@ $tooltip-zindex: 2;
   }
 
   // Marker plotlines
+  .highcharts-plot-line-label {
+    font-weight: bold;
+  }
+
   .highcharts-plot-line-label tspan[style] {
     // (hacky css selector using style attribute to target
     //  the subtitle only)
@@ -154,9 +158,11 @@ $tooltip-zindex: 2;
 .markerLegendCount {
   margin: 1px 8px 0 0;
   font-size: 10px;
-  color: white;
+  font-weight: bold;
+  color: $blue-spindle;
 }
 .markerLegendTitle {
+  font-weight: bold;
   color: $chart-label
 }
 
