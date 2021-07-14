@@ -409,9 +409,7 @@ const SupplyChart: React.FC<Props> = ({
             maximumFractionDigits: 1,
           }).format(Math.round(peakSupply[1] / 1e5) / 10)}M ETH</div>
           ${isProjected ? `<div class="ann-proj">(Projected)</div>` : ""}
-          </div>
-          
-          `,
+          </div>`,
         padding: 16,
         useHTML: true,
       };
