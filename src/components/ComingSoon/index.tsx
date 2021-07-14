@@ -80,7 +80,6 @@ const ComingSoon: React.FC = () => {
           </div>
         </div>
       </div>
-      <NftDrop />
     </div>
   );
 };
