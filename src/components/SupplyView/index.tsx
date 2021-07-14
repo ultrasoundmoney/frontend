@@ -9,6 +9,7 @@ import {
 } from "../../utils/metric-utils";
 import { useTranslations } from "../../utils/use-translation";
 import styles from "./SupplyView.module.scss";
+import SpanMoji from "../SpanMoji";
 
 const MIN_PROJECTED_ETH_STAKING = 1e6;
 const DEFAULT_PROJECTED_ETH_STAKING = 10e6;
@@ -37,6 +38,7 @@ const SupplyView: React.FC<{}> = () => {
     DEFAULT_PROJECTED_MERGE_DATE
   );
   const [showBreakdown, setShowBreakdown] = React.useState(false);
+  const [isPeakPresent, setIsPeakPresent] = React.useState(false);
 
   const handleProjectedStakingChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,6 +73,13 @@ const SupplyView: React.FC<{}> = () => {
     setShowBreakdown(false);
   }, []);
 
+  const handleOnPeakProjected = React.useCallback(() => {
+    setIsPeakPresent(true);
+  }, []);
+  const handleOnNoPeakProjected = React.useCallback(() => {
+    setIsPeakPresent(false);
+  }, []);
+
   const daysUntilProjectedMerge = projectedMergeDate.diff(
     DateTime.utc().startOf("day"),
     "days"
@@ -89,6 +98,12 @@ const SupplyView: React.FC<{}> = () => {
       <div className={styles.chartHeader}>
         <div className="text-xl text-white text-left font-light pl-3 pb-4">
           {t.eth_supply}
+          {isPeakPresent && (
+            <>
+              {" "}
+              <SpanMoji emoji="🦇🔊" />
+            </>
+          )}
         </div>
       </div>
       <SupplyChart
@@ -96,6 +111,8 @@ const SupplyView: React.FC<{}> = () => {
         projectedBaseGasPrice={projectedBaseGasPrice}
         projectedMergeDate={projectedMergeDate}
         showBreakdown={showBreakdown}
+        onPeakProjected={handleOnPeakProjected}
+        onNoPeakProjected={handleOnNoPeakProjected}
       />
 
       <div className={styles.params}>

@@ -5,7 +5,6 @@ import highchartsAnnotations from "highcharts/modules/annotations";
 import HighchartsReact from "highcharts-react-official";
 import merge from "lodash/merge";
 import last from "lodash/last";
-import twemoji from "twemoji";
 
 import { useDebounce } from "../../utils/use-debounce";
 import { intlFormat } from "../../utils/number-utils";
@@ -35,6 +34,8 @@ interface Props {
   projectedBaseGasPrice: number;
   projectedMergeDate: DateTime;
   showBreakdown: boolean;
+  onPeakProjected: () => void;
+  onNoPeakProjected: () => void;
 }
 
 interface HighchartsRef {
@@ -54,6 +55,8 @@ const SupplyChart: React.FC<Props> = ({
   projectedStaking,
   projectedMergeDate,
   showBreakdown: forceShowBreakdown,
+  onPeakProjected,
+  onNoPeakProjected,
 }) => {
   const t = React.useContext(TranslationsContext);
   React.useEffect(() => {
@@ -416,6 +419,9 @@ const SupplyChart: React.FC<Props> = ({
         useHTML: true,
       };
       annotations.push(annotation);
+      onPeakProjected();
+    } else {
+      onNoPeakProjected();
     }
 
     return [series, annotations, supplyByDate];
