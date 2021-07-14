@@ -480,6 +480,8 @@ const SupplyChart: React.FC<Props> = ({
               fontSize: "11px",
             },
             y: 18,
+            // London label barely fits
+            x: i === 4 ? 4 : 8,
           },
           zIndex: 3,
         })),
