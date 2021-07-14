@@ -475,7 +475,7 @@ const SupplyChart: React.FC<Props> = ({
               ? String.fromCharCode(65 + i) // A, B, C, D, etc.
               : `${title}<br><b>${subtitle}</b>`,
             style: {
-              color: "#fff",
+              color: "#b5bddb",
               whiteSpace: "normal",
               fontSize: "11px",
             },

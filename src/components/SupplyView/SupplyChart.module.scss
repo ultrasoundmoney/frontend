@@ -37,7 +37,7 @@ $tooltip-zindex: 2;
   .highcharts-plot-line-label tspan[style] {
     // (hacky css selector using style attribute to target
     //  the subtitle only)
-    fill: $blue-spindle;
+    fill: white;
     font-weight: 300 !important;
   }
 
@@ -148,7 +148,7 @@ $tooltip-zindex: 2;
   align-items: flex-start;
   flex-wrap: nowrap;
   font-size: 11px;
-  color: $chart-label;
+  color: white;
   white-space: nowrap;
 }
 .markerLegendCount {
@@ -157,7 +157,7 @@ $tooltip-zindex: 2;
   color: white;
 }
 .markerLegendTitle {
-  font-weight: bold;
+  color: $chart-label
 }
 
 // Annotation
