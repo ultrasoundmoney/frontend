@@ -117,7 +117,7 @@
   "marker_genesis": "genesis",
   "marker_phase_0": "phase 0",
   "marker_merge": "merge",
-  "marker_pos": "PoS",
+  "marker_pos": "staking",
   "marker_pow_removal": "PoW removal",
   "marker_block": "block",
   "total_supply": "total supply",
