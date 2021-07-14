@@ -120,7 +120,7 @@ const SupplyChart: React.FC<Props> = ({
       useCompactMarkers,
     ]
   );
-  const chartSettings = useDebounce(_chartSettings, 50);
+  const chartSettings = useDebounce(_chartSettings, 100);
 
   // Define the event markers that we'll plot on the chart
   const markers = React.useMemo(
