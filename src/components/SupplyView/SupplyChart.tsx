@@ -417,6 +417,7 @@ const SupplyChart: React.FC<Props> = ({
           }).format(peakSupply[1] / 1e6)}M ETH</div>
           </div>`,
         padding: 10,
+        borderRadius: 10,
         useHTML: true,
       };
       annotations.push(annotation);
