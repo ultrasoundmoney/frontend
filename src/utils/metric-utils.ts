@@ -24,7 +24,9 @@ export function estimatedDailyIssuance(ethStaked: number): number {
 export function estimatedDailyFeeBurn(baseGasPrice: number): number {
   const gasLimit = 15000000;
   return (
-    (baseGasPrice * SLOTS_PER_EPOCH * EPOCHS_PER_DAY * gasLimit) / GWEI_PER_ETH
+    ((SECONDS_PER_SLOT / 13) * // pre-merge block time is 13 seconds (conservative)
+      (baseGasPrice * SLOTS_PER_EPOCH * EPOCHS_PER_DAY * gasLimit)) /
+    GWEI_PER_ETH
   );
 }
 
