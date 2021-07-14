@@ -60,10 +60,10 @@ const ComingSoon: React.FC = () => {
         </div>
         <div className="flex flex-col px-4 md:px-0 md:pt-40 mb-16">
           <h1 className="text-white font-extralight text-2xl md:text-3xl xl:text-41xl text-center mb-4 mb-8">
-            supply graph
+            {t.teaser_supply_title}
           </h1>
           <p className="text-white text-center font-light text-base lg:text-lg mb-8">
-            ready to discover the future of ETH?
+            {t.teaser_supply_subtitle}
           </p>
           <div className="w-full md:w-5/6 lg:w-5/6 md:m-auto relative bg-blue-tangaroa md:px-8 py-4 md:py-8 md:py-16 rounded-xl">
             <SupplyView />
