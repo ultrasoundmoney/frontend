@@ -101,7 +101,7 @@
   "chart_thousands_sep": ",",
   "chart_decimal_point": ".",
   "### ETH supply graph component ###": true,
-  "eth_staked": "staked amount",
+  "eth_staked": "staking amount",
   "base_gas_price": "base gas price (average)",
   "merge_date": "merge date",
   "pos_issuance": "PoS issuance",
@@ -171,6 +171,6 @@
 
   "eusm_row_4_title": "USD - Un-Sound Money - Inflationary",
   "eusm_row_4_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate ",
-  "teaser_supply_title": "projected supply",
-  "teaser_supply_subtitle": "will the supply peak and decrease?"
+  "teaser_supply_title": "project the supply",
+  "teaser_supply_subtitle": "based on your assumptions"
 }
