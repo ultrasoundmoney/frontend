@@ -40,10 +40,10 @@ export const defaultOptions: Highcharts.Options = {
       marker: {
         radius: 2,
       },
-      lineWidth: 1,
+      lineWidth: 2,
       states: {
         hover: {
-          lineWidth: 1,
+          lineWidth: 2,
         },
       },
       fillOpacity: 0.4,
