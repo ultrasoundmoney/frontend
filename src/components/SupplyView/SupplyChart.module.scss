@@ -167,30 +167,21 @@ $tooltip-zindex: 2;
     z-index: $tooltip-zindex - 1;
   }
   .ann-root {
-    padding: 2px 7px 8px;
-    // twemojis
-    img {
-      margin: 0;
-      width: 14px;
-      height: 14px;
-      max-width: none;
-      &:first-child {
-        margin: 0 3px 0 5px;
-      }
-    }
+    width: 90px;
+    text-align: center;
   }
   .ann-title {
+    color: $blue-spindle;
     font-weight: bold;
-    margin-bottom: 8px;
-  }
-  .ann-value {
-    color: $chart-label;
-    font-size: 15px;
-    font-weight: 300;
-    margin: 0px 0 2px;
+    margin-bottom: 2px;
   }
   .ann-proj {
     @include projected-label;
     font-size: 9px;
+    margin-bottom: 6px;
+  }
+  .ann-value {
+    font-size: 12px;
+    font-weight: bold;
   }
 }

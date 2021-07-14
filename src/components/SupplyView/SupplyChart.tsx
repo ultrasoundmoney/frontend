@@ -406,11 +406,11 @@ const SupplyChart: React.FC<Props> = ({
           y: maxSupply,
         },
         text: `<div class="ann-root">
-          <div class="ann-title">${t.peak_supply}${twemoji.parse("🦇🔊")}</div>
+          <div class="ann-title">${t.peak_supply}</div>
+          ${isProjected ? `<div class="ann-proj">(Projected)</div>` : ""}
           <div class="ann-value">${Intl.NumberFormat(undefined, {
             maximumFractionDigits: 1,
           }).format(Math.round(peakSupply[1] / 1e5) / 10)}M ETH</div>
-          ${isProjected ? `<div class="ann-proj">(Projected)</div>` : ""}
           </div>`,
         padding: 8,
         useHTML: true,
