@@ -139,7 +139,7 @@ $tooltip-zindex: 2;
     grid-template-columns: auto auto auto auto auto auto;
   }
   // Keep this breakpoint in sync with COMPACT_MARKERS_BELOW_WIDTH
-  @media (min-width: 1024px) {
+  @media (min-width: 1440px) {
     display: none;
   }
 }
