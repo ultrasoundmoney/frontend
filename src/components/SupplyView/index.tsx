@@ -97,7 +97,7 @@ const SupplyView: React.FC<{}> = () => {
   return (
     <>
       <div className={styles.chartHeader}>
-        <div className="text-xl text-white text-left font-light pl-3 pb-6">
+        <div className="text-xl text-white text-left font-light pl-3 pb-8">
           {t.eth_supply}
           {isPeakPresent && (
             <>
