@@ -128,8 +128,11 @@ const SupplyView: React.FC<{}> = () => {
             <>
               {t.pos_issuance}
               {": "}
-              {intlFormat(estimatedDailyIssuance(projectedStaking))}{" "}
-              {t.eth_per_day}
+              {Intl.NumberFormat(undefined, {
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1,
+              }).format(estimatedDailyIssuance(projectedStaking) / 1000)}
+              K {t.eth_per_day}
             </>
           }
         >
@@ -151,8 +154,11 @@ const SupplyView: React.FC<{}> = () => {
             <>
               {t.fee_burn}
               {": "}
-              {intlFormat(estimatedDailyFeeBurn(projectedBaseGasPrice))}{" "}
-              {t.eth_per_day}
+              {Intl.NumberFormat(undefined, {
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1,
+              }).format(estimatedDailyFeeBurn(projectedBaseGasPrice) / 1000)}
+              K {t.eth_per_day}
             </>
           }
         >
