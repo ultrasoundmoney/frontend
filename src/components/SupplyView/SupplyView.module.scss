@@ -16,10 +16,15 @@
   grid-gap: 3rem;
   margin-top: 3rem;
   padding: 0 1rem;
+
   @media (min-width: 640px) {
     grid-template-columns: 1fr 1fr 1fr;
     text-align: left;
     justify-content: space-between;
+    grid-gap: 1rem;
+  }
+
+  @media (min-width: 1024px) {
     grid-gap: 4rem;
   }
 }
