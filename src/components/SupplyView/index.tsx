@@ -39,7 +39,7 @@ const SupplyView: React.FC<{}> = () => {
     DEFAULT_PROJECTED_MERGE_DATE
   );
   const [showBreakdown, setShowBreakdown] = React.useState(false);
-  const [isPeakPresent, setIsPeakPresent] = React.useState(false);
+  const [isPeakPresent, setIsPeakPresent] = React.useState(true);
 
   const handleProjectedStakingChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
