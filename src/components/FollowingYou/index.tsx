@@ -1,7 +1,7 @@
 import * as React from "react";
-import { useTranslations } from "../../utils/use-translation";
 import TwitterProfile from "../TwitterCommunity/TwitterProfile";
 import SpanMoji from "../SpanMoji";
+import { TranslationsContext } from "../../translations-context";
 
 type Empty = { type: "empty" };
 type FollowedBy = {
@@ -21,7 +21,7 @@ type FollowedByResult =
   | UnknownError;
 
 const FollowingYou: React.FC = () => {
-  const { translations: t } = useTranslations();
+  const t = React.useContext(TranslationsContext);
   const [handle, setHandle] = React.useState<string>("");
   const [followers, setFollowers] = React.useState<FollowedByResult>({
     type: "empty",
@@ -70,7 +70,7 @@ const FollowingYou: React.FC = () => {
 
   return (
     <>
-      <h1 className="text-white text-2xl md:text-3xl text-center font-light mb-8">
+      <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8">
         {t.title_following_you}
         <SpanMoji emoji=" 👀" />
       </h1>
@@ -108,7 +108,7 @@ const FollowingYou: React.FC = () => {
         <div className="my-8">
           {followers.count === 0 ? (
             <p className="text-white text-xl p-8 text-center">
-              no followers found
+              no fam followers found
             </p>
           ) : (
             <>

@@ -18,6 +18,7 @@ module.exports = {
         },
         green:{
           ...colors.green,
+          'mediumspring': '#00FFA3',
         },
         blue:{
           ...colors.blue,
@@ -36,6 +37,9 @@ module.exports = {
       },
       lineHeight: {
         '2': '2',
+        'card': '3.3',
+        '18': '1.18',
+        'loose1': '2.95',
       },
       fontFamily: {
         'roboto' : ['Roboto Mono', 'monospace'],
@@ -48,6 +52,7 @@ module.exports = {
       },
       fontSize:{
         '41xl': '2.5rem',
+        '21xl': '1.87rem'
       }
     }
   },

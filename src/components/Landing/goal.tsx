@@ -1,0 +1,45 @@
+import * as React from "react";
+import IconBlock from "../ContentBlock/IconBlock";
+import { TranslationsContext } from "../../translations-context";
+
+type GoalBlcokProps = {
+  styles?: string;
+};
+const GoalBlcok: React.FC<GoalBlcokProps> = ({ styles }) => {
+  const t = React.useContext(TranslationsContext);
+  const getClassName =
+    styles != undefined || styles != null
+      ? `block w-full lg:w-7/12 lg:m-auto px-4 md:px-8 lg:px-0 ${styles}`
+      : `block w-full lg:w-7/12 lg:m-auto px-4 md:px-8 lg:px-0`;
+  return (
+    <>
+      <section className={getClassName} id="goal">
+        <h1
+          className="text-white font-light text-base md:text-3xl leading-normal text-center mb-6 leading-title"
+          dangerouslySetInnerHTML={{
+            __html: t.landing_goal_title,
+          }}
+        />
+        <div className="w-full md:flex md:flex-wrap justify-between py-8">
+          <IconBlock
+            icon={t.landing_goal_block1_icon}
+            title={t.landing_goal_block1_title}
+            text={t.landing_goal_block1_text}
+          />
+          <IconBlock
+            icon={t.landing_goal_block2_icon}
+            title={t.landing_goal_block2_title}
+            text={t.landing_goal_block2_text}
+          />
+          <IconBlock
+            icon={t.landing_goal_block3_icon}
+            title={t.landing_goal_block3_title}
+            text={t.landing_goal_block3_text}
+          />
+        </div>
+      </section>
+    </>
+  );
+};
+
+export default GoalBlcok;

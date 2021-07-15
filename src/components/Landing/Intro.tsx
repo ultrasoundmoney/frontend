@@ -1,25 +1,30 @@
 import * as React from "react";
+import { TranslationsContext } from "../../translations-context";
 import Twemoji from "../Twemoji";
-import Timeline from "./timeline";
 
 const Intro: React.FC<{}> = () => {
+  const t = React.useContext(TranslationsContext);
   return (
     <>
-      <div className="flex flex-wrap justify-center content-center h-screen-90">
+      <section
+        id="hero"
+        className="flex flex-wrap justify-center content-center h-screen-90"
+      >
         <div className="flex flex-wrap flex-col">
-          <h1 className="text-white font-extralight text-center leading-none text-6xl">
-            Ethereum is becoming an
+          <h1 className="text-white font-extralight text-center leading-none text-2xl md:text-6xl">
+            {t.landing_hero_title}
           </h1>
           <div className="flex flex-wrap justify-center mb-8">
-            <div className="ultra-sound-text">Ultra Sound Money</div>
+            <div className="ultra-sound-text text-2xl md:text-6xl">
+              {t.landing_hero_title_1}
+            </div>
             <div className="flex self-center">
               <Twemoji emoji="🦇🔊" />
               <span className="text-red-600 text-2xl">*</span>
             </div>
           </div>
         </div>
-        <Timeline />
-      </div>
+      </section>
     </>
   );
 };

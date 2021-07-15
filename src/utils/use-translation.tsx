@@ -1,21 +1,7 @@
 import * as React from "react";
+import { TranslationsContext } from "../translations-context";
 
-const TranslationContext = React.createContext<Data>({});
-
-export const TranslationProvider: React.FC<{
-  value?: Data;
-  children: React.ReactNode;
-}> = ({ value, children }) => {
-  return (
-    <TranslationContext.Provider value={value}>
-      {children}
-    </TranslationContext.Provider>
-  );
+export const useTranslations = () => {
+  const translations = React.useContext(TranslationsContext);
+  return { translations };
 };
-
-export function useTranslations(): { translations: Data } {
-  const translations = React.useContext(TranslationContext);
-  return {
-    translations: translations,
-  };
-}
