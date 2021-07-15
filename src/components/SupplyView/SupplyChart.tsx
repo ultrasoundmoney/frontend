@@ -7,7 +7,6 @@ import merge from "lodash/merge";
 import last from "lodash/last";
 
 import { useDebounce } from "../../utils/use-debounce";
-import { intlFormat } from "../../utils/number-utils";
 import {
   estimatedDailyFeeBurn,
   estimatedDailyIssuance,
