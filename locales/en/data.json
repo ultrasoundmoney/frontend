@@ -111,8 +111,8 @@
   "projected_supply": "projected supply",
   "historical_supply": "historical supply",
   "peak_supply": "supply peak",
-  "supply_chart_series_address": "in addresses",
-  "supply_chart_series_contracts": "in smart contracts",
+  "supply_chart_series_address": "in accounts",
+  "supply_chart_series_contracts": "in contracts",
   "supply_chart_series_staking": "staking",
   "marker_genesis": "genesis",
   "marker_phase_0": "phase 0",
@@ -172,5 +172,5 @@
   "eusm_row_4_title": "USD - Un-Sound Money - Inflationary",
   "eusm_row_4_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate ",
   "teaser_supply_title": "project the supply",
-  "teaser_supply_subtitle": "based on your assumptions"
+  "teaser_supply_subtitle": "watch ETH become ultra sound"
 }

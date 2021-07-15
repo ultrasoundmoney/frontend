@@ -63,6 +63,7 @@ $tooltip-zindex: 2;
   .tt-header-date {
     font-size: 14px;
     font-weight: bold;
+    white-space: pre;
   }
   .tt-header-projected {
     margin: -2px 0 0 6px;
@@ -163,7 +164,7 @@ $tooltip-zindex: 2;
 }
 .markerLegendTitle {
   font-weight: bold;
-  color: $chart-label
+  color: $chart-label;
 }
 
 // Annotation

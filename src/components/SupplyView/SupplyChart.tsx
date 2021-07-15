@@ -231,6 +231,9 @@ const SupplyChart: React.FC<Props> = ({
 
     let supplyValue = lastSupplyPoint[1];
     let stakingValue = lastStakingPoint[1];
+
+    const maxIssuance = estimatedDailyIssuance(chartSettings.projectedStaking);
+
     for (let i = 0; i < daysOfProjection; i++) {
       const projDate = lastDate.plus({ days: i + 1 }).startOf("day");
 
@@ -276,11 +279,21 @@ const SupplyChart: React.FC<Props> = ({
       // Make sure our total supply value can't dip below the amount staked
       const adjustedSupplyValue = Math.max(supplyValue, stakingValue);
 
+      // Issuance is a function of ETH staked, but delayed over time.
+      // Therefore, we may see a local peak where burn outpaces issuance
+      // temporarily. We want our peak to be non-local, we filter the local
+      // case.
+      const isLongTermContractingSupply = burn > maxIssuance;
+
       // Calculate peak supply
       if (adjustedSupplyValue > (maxSupply || 0)) {
         maxSupply = adjustedSupplyValue;
         peakSupply = null;
-      } else if (adjustedSupplyValue < maxSupply && !peakSupply) {
+      } else if (
+        adjustedSupplyValue < maxSupply &&
+        !peakSupply &&
+        isLongTermContractingSupply
+      ) {
         peakSupply = [projDate.toISO(), adjustedSupplyValue];
       }
 
@@ -523,8 +536,9 @@ const SupplyChart: React.FC<Props> = ({
           );
 
           const dt = DateTime.fromMillis(this.x, { zone: "utc" });
-          const header = `<div class="tt-header"><div class="tt-header-date text-blue-spindle">
-          ${formatDate(dt)}</div>${
+          const header = `<div class="tt-header"><div class="tt-header-date text-blue-spindle">${formatDate(
+            dt.toJSDate()
+          )}</div>${
             isProjected
               ? `<div class="tt-header-projected">(${t.projected})</div>`
               : ""

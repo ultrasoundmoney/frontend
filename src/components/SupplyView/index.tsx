@@ -99,12 +99,14 @@ const SupplyView: React.FC<{}> = () => {
       <div className={styles.chartHeader}>
         <div className="text-xl text-white text-left font-light pl-3 pb-8">
           {t.eth_supply}
-          {isPeakPresent && (
-            <>
-              {" "}
-              <SpanMoji emoji="🦇🔊" />
-            </>
-          )}
+          <span
+            className={`transition-opacity ${
+              isPeakPresent ? "opacity-1" : "opacity-0"
+            }`}
+          >
+            {" "}
+            <SpanMoji emoji="🦇🔊" />
+          </span>
         </div>
       </div>
       <SupplyChart
@@ -174,7 +176,7 @@ const SupplyView: React.FC<{}> = () => {
 
         <Param
           title={t.merge_date}
-          value={formatDate(projectedMergeDate)}
+          value={formatDate(projectedMergeDate.toJSDate())}
           subValue={
             <>
               {t.pow_removal}
