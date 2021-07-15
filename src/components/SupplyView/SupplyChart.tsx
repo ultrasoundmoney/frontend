@@ -536,8 +536,9 @@ const SupplyChart: React.FC<Props> = ({
           );
 
           const dt = DateTime.fromMillis(this.x, { zone: "utc" });
-          const header = `<div class="tt-header"><div class="tt-header-date text-blue-spindle">
-          ${formatDate(dt.toJSDate())}</div>${
+          const header = `<div class="tt-header"><div class="tt-header-date text-blue-spindle">${formatDate(
+            dt.toJSDate()
+          )}</div>${
             isProjected
               ? `<div class="tt-header-projected">(${t.projected})</div>`
               : ""

@@ -56,7 +56,7 @@ export function formatDate(d: Date): string {
     "Dec",
   ];
   return (
-    (date.getDate() < 10 ? "0" : "") +
+    (date.getDate() < 10 ? " " : "") +
     date.getDate() +
     " " +
     months[date.getMonth()] +
