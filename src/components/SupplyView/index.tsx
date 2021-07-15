@@ -174,7 +174,7 @@ const SupplyView: React.FC<{}> = () => {
 
         <Param
           title={t.merge_date}
-          value={formatDate(projectedMergeDate)}
+          value={formatDate(projectedMergeDate.toJSDate())}
           subValue={
             <>
               {t.pow_removal}
