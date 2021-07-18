@@ -28,7 +28,15 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
       : `flex flex-col justify-center w-full lg:w-6/12 md:m-auto px-4 md:px-8 lg:px-0`;
   return (
     <>
-      <section id={id}>
+      <section
+        data-aos="fade-up"
+        data-aos-anchor-placement="top-bottom"
+        data-aos-offset="100"
+        data-aos-delay="50"
+        data-aos-duration="1000"
+        data-aos-easing="ease-in-out"
+        id={id}
+      >
         <div className={getClassName}>
           {img !== null && img != undefined && (
             <picture>

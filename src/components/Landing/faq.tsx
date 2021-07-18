@@ -7,7 +7,14 @@ const FaqBlock: React.FC<FaqBlockPros> = () => {
   const t = React.useContext(TranslationsContext);
   return (
     <>
-      <section id="faq">
+      <section
+        data-aos="fade-up"
+        data-aos-anchor-placement="top-center"
+        data-aos-delay="50"
+        data-aos-duration="1000"
+        data-aos-easing="ease-in-out"
+        id="faq"
+      >
         <div className="block py-8">
           <h1 className="text-white text-center text-2xl">
             {t.faq_section_title}

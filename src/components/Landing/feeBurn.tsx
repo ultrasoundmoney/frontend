@@ -13,8 +13,17 @@ const FeeBurnedBlcok: React.FC<FeeBurnedBlcokProps> = ({ lineHeight }) => {
       : `eclips-bottom eclips-bottom__left-0`;
   return (
     <>
-      <section id="fee-burned">
-        <div className="flex flex-wrap justify-center w-full lg:w-9/12 md:mx-auto mb-8 px-4 md:px-8 lg:px-0">
+      <section
+        data-aos="fade-up"
+        data-aos-anchor-placement="top-bottom"
+        data-aos-offset="100"
+        data-aos-delay="50"
+        data-aos-duration="1000"
+        data-aos-easing="ease-in-out"
+        id="fee-burned"
+        className="fixed-fee-burned"
+      >
+        <div className="flex flex-wrap justify-center w-full lg:w-9/12 md:mx-auto px-4 md:px-8 lg:px-0">
           <Card
             type={1}
             name={t.landing_feeburned_card1_name}

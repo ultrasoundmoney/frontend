@@ -2,12 +2,11 @@ import * as React from "react";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 import Timeline from "./timeline";
 import { TranslationsContext } from "../../translations-context";
-
 const BeforeGenesis: React.FC<{}> = () => {
   const t = React.useContext(TranslationsContext);
   return (
     <>
-      <section id="before-genesis">
+      <section data-aos="fade-up" id="before-genesis">
         <div className="flex flex-col justify-center w-full lg:w-6/12 md:m-auto px-4 md:px-8 lg:px-0">
           <img
             className="text-center mx-auto mb-8"

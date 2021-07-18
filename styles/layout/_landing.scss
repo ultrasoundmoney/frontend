@@ -140,18 +140,50 @@
     height: 100vh;
     min-height: 100%;
     z-index: 11;
-    // &::after{
-    //     content: '';
-    //     background-image: url("../../src/assets/bat-bg/Blurredbg.png");
-    //     background-repeat: no-repeat;
-    //     background-position: center 0px;
-    //     background-size: contain;
-    //     height: 100%;
-    //     width: 400px;
-    //     margin: auto;
-    //     position: relative;
-    //     bottom: -100px;
-    //     left: -50px;
-    //     z-index: 0;
-    // }
+    &::after{
+        content: '';
+        background-image: url("../../src/assets/bat-bg/Blurredbg.png");
+        background-repeat: no-repeat;
+        background-position: center 0px;
+        background-size: contain;
+        height: 100%;
+        width: 400px;
+        margin: auto;
+        position: relative;
+        bottom: -100px;
+        left: -50px;
+        z-index: 0;
+    }
+}
+
+.hero{
+    background-image: url("../../src/assets/hero.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: auto;
+    z-index: 1;
+    width: 100%;
+    transition: all 300ms;
+    &::before{
+        position: absolute;
+        content: '';
+        background-image: url("../../src/assets/glow.svg");
+        background-repeat: no-repeat;
+        background-position: center left;
+        background-size: contain;
+        height: 100%;
+        width: 100%;
+        bottom: 0px;
+        left: 0px;
+        z-index: 0;
+    }
+}
+.fixed-fee-burned{
+    @media (min-width: 1024px) {
+        position: sticky;
+        left: 0;
+        bottom: 10px;
+        width: 100%;
+        z-index: 999;
+    }
 }

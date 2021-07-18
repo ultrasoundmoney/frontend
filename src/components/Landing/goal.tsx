@@ -13,7 +13,16 @@ const GoalBlcok: React.FC<GoalBlcokProps> = ({ styles }) => {
       : `block w-full lg:w-7/12 lg:m-auto px-4 md:px-8 lg:px-0`;
   return (
     <>
-      <section className={getClassName} id="goal">
+      <section
+        data-aos="fade-up"
+        data-aos-anchor-placement="top-bottom"
+        data-aos-offset="100"
+        data-aos-delay="50"
+        data-aos-duration="1000"
+        data-aos-easing="ease-in-out"
+        className={getClassName}
+        id="goal"
+      >
         <h1
           className="text-white font-light text-base md:text-3xl leading-normal text-center mb-6 leading-title"
           dangerouslySetInnerHTML={{
