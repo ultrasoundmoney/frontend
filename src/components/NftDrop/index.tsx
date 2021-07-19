@@ -2,50 +2,72 @@ import poapLogo from "../../assets/poap-logo.svg";
 import nftDropPoster from "../../assets/nft-drop.jpg";
 import React from "react";
 import { TranslationsContext } from "../../translations-context";
+import SpanMoji from "../SpanMoji";
 
 const NftDrop: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   const refVideo = React.useRef(null);
+  const [muted, setMuted] = React.useState(true);
 
-  // React does not set the muted attribute causing video to not autoplay as
-  // most browsers block autoplaying video. We set the attribute manually.
-  // https://github.com/facebook/react/issues/10389
-  React.useEffect(() => {
+  const handleOnToggleMute = React.useCallback(() => {
     if (!refVideo.current) {
       return;
     }
 
-    refVideo.current.defaultMuted = true;
-    refVideo.current.muted = true;
-  });
+    const nextMuted = !muted;
+
+    refVideo.current.muted = nextMuted;
+    console.log("set ", nextMuted);
+    setMuted(nextMuted);
+  }, [muted, refVideo]);
 
   return (
-    <div className="w-full md:w-auto md:flex px-4 md:px-0 pt-32 pb-40">
-      <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
-        <div className="flex flex-col md:flex-row bg-blue-tangaroa px-4 py-8 md:px-24 md:py-16 rounded-xl">
-          <div className="flex flex-col order-2 md:order-1">
-            <img className="w-16" src={poapLogo} />
-            <h2 className="text-white text-2xl md:text-3xl font-light my-8">
-              {t.title_nft_drop}
-            </h2>
-            <p className="text-blue-linkwater">{t.description_nft_drop}</p>
-          </div>
-          <div className="w-full order-1 mb-8 md:order-2 md:ml-12 md:-mr-12 md:-mt-28">
-            <video
-              className="w-full md:w-64 rounded-xl shadow-2xl"
-              src="/nft-drop.mp4"
-              playsInline
-              autoPlay
-              muted
-              loop
-              poster={nftDropPoster}
-            >
-              <source src="/public/nft-drop.mp4" type="video/mp4" />
-              <source src="/public/nft-drop.webm" type="video/webm" />
-              <source src="/public/nft-drop.ogv" type="video/ogg" />
-            </video>
-          </div>
-        </div>
+    <div className="bg-blue-tangaroa md:px-8 md:py-8 rounded-xl md:px-16 md:py-16">
+      <img className="w-16 absolute left-4 top-4 md:static" src={poapLogo} />
+      <div className="flex flex-col md:absolute md:right-10 md:-top-8">
+        <video
+          className="w-full md:w-64 rounded-xl shadow-2xl"
+          src="/nft-drop.mp4"
+          playsInline
+          autoPlay
+          muted
+          loop
+          poster={nftDropPoster}
+          ref={refVideo}
+        >
+          <source src="/public/nft-drop.mp4" type="video/mp4" />
+          <source src="/public/nft-drop.webm" type="video/webm" />
+          <source src="/public/nft-drop.ogv" type="video/ogg" />
+        </video>
+        <button
+          className="bg-blue-tangaroa text-xl rounded-full text-white py-2 px-2 bottom-8 ml-2 mr-auto -mt-14 z-10 hover:opacity-90 opacity-70"
+          onClick={handleOnToggleMute}
+        >
+          {muted ? <SpanMoji emoji="🔇" /> : <SpanMoji emoji="🔊" />}
+        </button>
+      </div>
+      <div className="px-8 py-8">
+        <h2 className="text-white text-2xl md:text-3xl font-light my-8">
+          {t.title_nft_drop}
+        </h2>
+        <ul className="list-disc list-inside">
+          <li className="text-white">
+            <span className="font-bold">{t.description_nft_drop_1_left}</span>
+            {t.description_nft_drop_1_right}
+          </li>
+          <li className="text-white">
+            <span className="font-bold">{t.description_nft_drop_2_left}</span>
+            {t.description_nft_drop_2_right}
+          </li>
+          <li className="text-white">
+            <span className="font-bold">{t.description_nft_drop_3_left}</span>
+            {t.description_nft_drop_3_right}
+          </li>
+          <li className="text-white">
+            <span className="font-bold">{t.description_nft_drop_4_left}</span>
+            {t.description_nft_drop_4_right}
+          </li>
+        </ul>
       </div>
     </div>
   );
