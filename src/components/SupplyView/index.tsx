@@ -6,6 +6,7 @@ import { intlFormat } from "../../utils/number-utils";
 import {
   estimatedDailyFeeBurn,
   estimatedDailyIssuance,
+  formatDate,
 } from "../../utils/metric-utils";
 import { useTranslations } from "../../utils/use-translation";
 import styles from "./SupplyView.module.scss";
@@ -16,7 +17,7 @@ const DEFAULT_PROJECTED_ETH_STAKING = 10e6;
 const MAX_PROJECTED_ETH_STAKING = 33554432;
 
 const MIN_PROJECTED_BASE_GAS_PRICE = 0;
-const DEFAULT_PROJECTED_BASE_GAS_PRICE = 20;
+const DEFAULT_PROJECTED_BASE_GAS_PRICE = 15;
 const MAX_PROJECTED_BASE_GAS_PRICE = 150;
 
 const MIN_PROJECTED_MERGE_DATE = DateTime.utc(2021, 12, 1);
@@ -38,7 +39,7 @@ const SupplyView: React.FC<{}> = () => {
     DEFAULT_PROJECTED_MERGE_DATE
   );
   const [showBreakdown, setShowBreakdown] = React.useState(false);
-  const [isPeakPresent, setIsPeakPresent] = React.useState(false);
+  const [isPeakPresent, setIsPeakPresent] = React.useState(true);
 
   const handleProjectedStakingChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,14 +97,16 @@ const SupplyView: React.FC<{}> = () => {
   return (
     <>
       <div className={styles.chartHeader}>
-        <div className="text-xl text-white text-left font-light pl-3 pb-4">
+        <div className="text-xl text-white text-left font-light pl-3 pb-8">
           {t.eth_supply}
-          {isPeakPresent && (
-            <>
-              {" "}
-              <SpanMoji emoji="🦇🔊" />
-            </>
-          )}
+          <span
+            className={`transition-opacity ${
+              isPeakPresent ? "opacity-1" : "opacity-0"
+            }`}
+          >
+            {" "}
+            <SpanMoji emoji="🦇🔊" />
+          </span>
         </div>
       </div>
       <SupplyChart
@@ -128,8 +131,11 @@ const SupplyView: React.FC<{}> = () => {
             <>
               {t.pos_issuance}
               {": "}
-              {intlFormat(estimatedDailyIssuance(projectedStaking))}{" "}
-              {t.eth_per_day}
+              {Intl.NumberFormat(undefined, {
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1,
+              }).format(estimatedDailyIssuance(projectedStaking) / 1000)}
+              K {t.eth_per_day}
             </>
           }
         >
@@ -151,8 +157,11 @@ const SupplyView: React.FC<{}> = () => {
             <>
               {t.fee_burn}
               {": "}
-              {intlFormat(estimatedDailyFeeBurn(projectedBaseGasPrice))}{" "}
-              {t.eth_per_day}
+              {Intl.NumberFormat(undefined, {
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1,
+              }).format(estimatedDailyFeeBurn(projectedBaseGasPrice) / 1000)}
+              K {t.eth_per_day}
             </>
           }
         >
@@ -167,7 +176,7 @@ const SupplyView: React.FC<{}> = () => {
 
         <Param
           title={t.merge_date}
-          value={projectedMergeDate.toLocaleString(DateTime.DATE_MED)}
+          value={formatDate(projectedMergeDate.toJSDate())}
           subValue={
             <>
               {t.pow_removal}

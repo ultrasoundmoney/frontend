@@ -34,6 +34,10 @@ $tooltip-zindex: 2;
   }
 
   // Marker plotlines
+  .highcharts-plot-line-label {
+    font-weight: bold;
+  }
+
   .highcharts-plot-line-label tspan[style] {
     // (hacky css selector using style attribute to target
     //  the subtitle only)
@@ -48,7 +52,7 @@ $tooltip-zindex: 2;
   .tt-root {
     background-color: $tooltip-bg;
     padding: 24px;
-    border-radius: 3px;
+    border-radius: 10px;
   }
   .tt-header {
     display: flex;
@@ -59,6 +63,7 @@ $tooltip-zindex: 2;
   .tt-header-date {
     font-size: 14px;
     font-weight: bold;
+    white-space: pre;
   }
   .tt-header-projected {
     margin: -2px 0 0 6px;
@@ -154,10 +159,12 @@ $tooltip-zindex: 2;
 .markerLegendCount {
   margin: 1px 8px 0 0;
   font-size: 10px;
-  color: white;
+  font-weight: bold;
+  color: $blue-spindle;
 }
 .markerLegendTitle {
-  color: $chart-label
+  font-weight: bold;
+  color: $chart-label;
 }
 
 // Annotation
@@ -167,7 +174,7 @@ $tooltip-zindex: 2;
     z-index: $tooltip-zindex - 1;
   }
   .ann-root {
-    width: 90px;
+    width: 100px;
     text-align: center;
   }
   .ann-title {
@@ -183,5 +190,6 @@ $tooltip-zindex: 2;
   .ann-value {
     font-size: 12px;
     font-weight: bold;
+    margin-bottom: 2px;
   }
 }

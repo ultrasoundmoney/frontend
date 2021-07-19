@@ -7,11 +7,11 @@ import merge from "lodash/merge";
 import last from "lodash/last";
 
 import { useDebounce } from "../../utils/use-debounce";
-import { intlFormat } from "../../utils/number-utils";
 import {
   estimatedDailyFeeBurn,
   estimatedDailyIssuance,
   estimatedDailyStakeChange,
+  formatDate,
 } from "../../utils/metric-utils";
 import { useOnResize } from "../../utils/use-on-resize";
 import { defaultOptions, COLORS } from "../../utils/chart-defaults";
@@ -135,7 +135,7 @@ const SupplyChart: React.FC<Props> = ({
       [DateTime.fromISO("2017-10-16T00:00:00Z"), "byzantium", `3 ETH/${t.marker_block}`],
       [DateTime.fromISO("2019-02-27T00:00:00Z"), "constantinople", `2 ETH/${t.marker_block}`],
       [DateTime.fromISO("2020-12-01T00:00:00Z"), t.marker_phase_0, t.marker_pos],
-      [LONDON_DATE, "london", "EIP-1559"],
+      [LONDON_DATE, "london", "burn"],
       [chartSettings.projectedMergeDate, t.marker_merge, t.marker_pow_removal],
     ]),
     [chartSettings, t]
@@ -231,6 +231,9 @@ const SupplyChart: React.FC<Props> = ({
 
     let supplyValue = lastSupplyPoint[1];
     let stakingValue = lastStakingPoint[1];
+
+    const maxIssuance = estimatedDailyIssuance(chartSettings.projectedStaking);
+
     for (let i = 0; i < daysOfProjection; i++) {
       const projDate = lastDate.plus({ days: i + 1 }).startOf("day");
 
@@ -255,7 +258,7 @@ const SupplyChart: React.FC<Props> = ({
       if (projDate.toSeconds() < mergeDate) {
         newIssuance += 13500;
       }
-      // If this is after EIP1559 calculate the fee burn
+      // If this is after EIP-1559 calculate the fee burn
       let burn = 0;
       if (projDate.toSeconds() >= LONDON_DATE.toSeconds()) {
         burn = estimatedDailyFeeBurn(chartSettings.projectedBaseGasPrice);
@@ -276,11 +279,21 @@ const SupplyChart: React.FC<Props> = ({
       // Make sure our total supply value can't dip below the amount staked
       const adjustedSupplyValue = Math.max(supplyValue, stakingValue);
 
+      // Issuance is a function of ETH staked, but delayed over time.
+      // Therefore, we may see a local peak where burn outpaces issuance
+      // temporarily. We want our peak to be non-local, we filter the local
+      // case.
+      const isLongTermContractingSupply = burn > maxIssuance;
+
       // Calculate peak supply
       if (adjustedSupplyValue > (maxSupply || 0)) {
         maxSupply = adjustedSupplyValue;
         peakSupply = null;
-      } else if (adjustedSupplyValue < maxSupply && !peakSupply) {
+      } else if (
+        adjustedSupplyValue < maxSupply &&
+        !peakSupply &&
+        isLongTermContractingSupply
+      ) {
         peakSupply = [projDate.toISO(), adjustedSupplyValue];
       }
 
@@ -412,10 +425,12 @@ const SupplyChart: React.FC<Props> = ({
           <div class="ann-title">${t.peak_supply}</div>
           ${isProjected ? `<div class="ann-proj">(Projected)</div>` : ""}
           <div class="ann-value">${Intl.NumberFormat(undefined, {
+            minimumFractionDigits: 1,
             maximumFractionDigits: 1,
-          }).format(Math.round(peakSupply[1] / 1e5) / 10)}M ETH</div>
+          }).format(peakSupply[1] / 1e6)}M ETH</div>
           </div>`,
-        padding: 8,
+        padding: 10,
+        borderRadius: 10,
         useHTML: true,
       };
       annotations.push(annotation);
@@ -521,8 +536,8 @@ const SupplyChart: React.FC<Props> = ({
           );
 
           const dt = DateTime.fromMillis(this.x, { zone: "utc" });
-          const header = `<div class="tt-header"><div class="tt-header-date text-blue-spindle">${dt.toLocaleString(
-            DateTime.DATE_MED
+          const header = `<div class="tt-header"><div class="tt-header-date text-blue-spindle">${formatDate(
+            dt.toJSDate()
           )}</div>${
             isProjected
               ? `<div class="tt-header-projected">(${t.projected})</div>`
@@ -542,7 +557,10 @@ const SupplyChart: React.FC<Props> = ({
                   }</div>
                 </div>
               </td>
-              <td class="text-white">${intlFormat(Math.round(p.y))} ETH</td>
+              <td class="text-white">${Intl.NumberFormat(undefined, {
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1,
+              }).format(p.y / 1e6)}M ETH</td>
               </tr>`
           );
 
@@ -551,7 +569,10 @@ const SupplyChart: React.FC<Props> = ({
           rows.push(
             `<tr class="tt-total-row">
               <td><div class="tt-series-name">${t.total_supply}</div></td>
-              <td class="text-white">${intlFormat(Math.round(total))} ETH</td>
+              <td class="text-white">${Intl.NumberFormat(undefined, {
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1,
+              }).format(total / 1e6)}M ETH</td>
             </tr>`
           );
 

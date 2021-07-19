@@ -50,7 +50,7 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = () => {
 
   return (
     <>
-      <h1 className="text-white text-2xl md:text-3xl text-center font-light mb-8">
+      <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8">
         <a
           target="_blank"
           href="https://twitter.com/i/lists/1376636817089396750/members"

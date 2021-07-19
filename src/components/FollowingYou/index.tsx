@@ -70,7 +70,7 @@ const FollowingYou: React.FC = () => {
 
   return (
     <>
-      <h1 className="text-white text-2xl md:text-3xl text-center font-light mb-8">
+      <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8">
         {t.title_following_you}
         <SpanMoji emoji=" 👀" />
       </h1>

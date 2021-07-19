@@ -1,6 +1,5 @@
 const { colors } = require('tailwindcss/defaultTheme')
 module.exports = {
-  // mode: 'jit',
   darkMood: "media",
   purge: [
     "./public/**/*.html",
