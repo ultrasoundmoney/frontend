@@ -8,6 +8,7 @@ import FollowingYou from "../FollowingYou";
 import SpanMoji from "../SpanMoji";
 import SupplyView from "../SupplyView";
 import { TranslationsContext } from "../../translations-context";
+import NftDrop from "../NftDrop";
 
 const fetcher = (url: string) =>
   fetch(url, {
@@ -78,6 +79,11 @@ const ComingSoon: React.FC = () => {
           <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
             <FollowingYou />
           </div>
+        </div>
+      </div>
+      <div className="flex px-4 md:px-0 pt-8 md:pt-40 mb-16">
+        <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
+          <NftDrop />
         </div>
       </div>
     </div>
