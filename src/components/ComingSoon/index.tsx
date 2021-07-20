@@ -66,7 +66,7 @@ const ComingSoon: React.FC = () => {
           <p className="text-white text-center font-light text-base lg:text-lg mb-8">
             {t.teaser_supply_subtitle}
           </p>
-          <div className="w-full md:w-5/6 md:m-auto relative bg-blue-tangaroa md:px-8 py-4 md:py-8 md:py-16 rounded-xl">
+          <div className="w-full relative bg-blue-tangaroa rounded-xl md:w-5/6 md:m-auto md:px-8 py-4 md:py-8 md:py-16">
             <SupplyView />
           </div>
         </div>
