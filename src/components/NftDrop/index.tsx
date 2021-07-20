@@ -22,11 +22,11 @@ const NftDrop: React.FC = () => {
   }, [muted, refVideo]);
 
   return (
-    <div className="bg-blue-tangaroa md:px-8 md:py-8 rounded-xl md:px-16 md:py-16">
+    <div className="bg-blue-tangaroa rounded-xl relative md:px-8 md:py-12 lg:px-16 lg:py-20 xl:px-20 xl:py-24">
       <img className="w-16 absolute left-4 top-4 md:static" src={poapLogo} />
-      <div className="flex flex-col md:absolute md:right-10 md:-top-8">
+      <div className="flex flex-col md:absolute md:right-10 md:-top-8 lg:right-24 xl:right-20 xl:-top-16">
         <video
-          className="w-full md:w-64 rounded-xl shadow-2xl"
+          className="w-full rounded-xl shadow-2xl md:w-64 lg:w-72 xl:w-96"
           src="/nft-drop.mp4"
           playsInline
           autoPlay
@@ -46,11 +46,11 @@ const NftDrop: React.FC = () => {
           {muted ? <SpanMoji emoji="🔇" /> : <SpanMoji emoji="🔊" />}
         </button>
       </div>
-      <div className="px-8 py-8">
+      <div className="px-8 py-8 md:p-0">
         <h2 className="text-white text-2xl md:text-3xl font-light my-8">
           {t.title_nft_drop}
         </h2>
-        <ul className="list-disc list-inside">
+        <ul className="list-disc list-inside leading-8">
           <li className="text-white">
             <span className="font-bold">{t.description_nft_drop_1_left}</span>
             {t.description_nft_drop_1_right}
