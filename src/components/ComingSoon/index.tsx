@@ -80,10 +80,10 @@ const ComingSoon: React.FC = () => {
             <FollowingYou />
           </div>
         </div>
-      </div>
-      <div className="flex px-4 pt-8 pb-40 md:px-0 md:pt-40">
-        <div className="w-full md:w-5/6 xl:w-2/3 2xl:w-3/6 md:m-auto">
-          <PoapDrop />
+        <div className="flex px-4 pt-8 pb-40 md:px-0 md:pt-40">
+          <div className="w-full md:m-auto md:w-5/6 lg:w-5/6">
+            <PoapDrop />
+          </div>
         </div>
       </div>
     </div>
