@@ -40,15 +40,15 @@ const PoapDrop: React.FC = () => {
       >
         <div className="flex items-center">
           <SpanMoji
-            className={`w-12 absolute mr-2 md:static md:inline ${styles["emoji-bat"]}`}
+            className={`w-12 relative ${styles["emoji-bat"]}`}
             emoji="🦇"
           />
           <SpanMoji
-            className={`w-12 absolute md:static md:inline ${styles["emoji-speaker"]}`}
+            className={`w-12 relative ml-3 ${styles["emoji-speaker"]}`}
             emoji="🔊"
           />
           <img
-            className="w-12 absolute md:static md:inline invisible md:visible"
+            className="w-12 relative ml-3 invisible md:visible"
             src={poapLogoGray}
           />
         </div>
