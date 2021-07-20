@@ -1,8 +1,14 @@
 import twemoji from "twemoji";
 import React from "react";
 
-const SpanMoji = ({ emoji }: { emoji: string }) => (
+type SpanMojiProps = {
+  className?: string;
+  emoji: string;
+};
+
+const SpanMoji: React.FC<SpanMojiProps> = ({ className, emoji }) => (
   <span
+    className={className}
     dangerouslySetInnerHTML={{
       __html: twemoji.parse(emoji, {
         folder: "svg",
