@@ -12,7 +12,7 @@ import TheMergeBlock from "./theMerge";
 import EtherTheUltraSound from "./theUltraSound";
 import TwitterCommunity from "../TwitterCommunity";
 import FaqBlock from "./faq";
-import NftDrop from "../NftDrop/index";
+import PoapDrop from "../PoapDrop/index";
 import FollowingYou from "../FollowingYou";
 
 const LandingPage: React.FC<{}> = () => {
@@ -42,7 +42,7 @@ const LandingPage: React.FC<{}> = () => {
               <FollowingYou />
             </div>
           </section>
-          <NftDrop />
+          <PoapDrop />
         </div>
       </div>
     </>
