@@ -81,7 +81,7 @@ const ComingSoon: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="flex px-4 md:px-0 pt-8 md:pt-40 pb-40">
+      <div className="flex px-4 pt-8 pb-40 md:px-0 md:pt-40">
         <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
           <NftDrop />
         </div>
