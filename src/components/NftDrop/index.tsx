@@ -39,7 +39,7 @@ const NftDrop: React.FC = () => {
           <source src="/public/nft-drop.ogv" type="video/ogg" />
         </video>
         <button
-          className="bg-blue-tangaroa text-xl rounded-full text-white py-2 px-2 bottom-8 ml-2 mr-auto -mt-14 z-10 hover:opacity-90 opacity-70"
+          className="bg-blue-tangaroa text-xl rounded-full text-white py-2 px-2 bottom-8 mr-4 ml-auto -mt-14 z-10 hover:opacity-90 opacity-70"
           onClick={handleOnToggleMute}
         >
           {muted ? <SpanMoji emoji="🔇" /> : <SpanMoji emoji="🔊" />}
