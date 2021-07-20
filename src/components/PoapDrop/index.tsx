@@ -1,8 +1,10 @@
-import poapLogo from "../../assets/poap-logo.svg";
+import poapLogoGray from "../../assets/poap-logo-gray.svg";
 import poapDropPoster from "../../assets/poap-drop.jpg";
 import React from "react";
 import { TranslationsContext } from "../../translations-context";
 import SpanMoji from "../SpanMoji";
+import bgMountains from "../../assets/bg-mountains.jpg";
+import styles from "./PoapDrop.module.scss";
 
 const PoapDrop: React.FC = () => {
   const t = React.useContext(TranslationsContext);
@@ -20,16 +22,36 @@ const PoapDrop: React.FC = () => {
     setMuted(nextMuted);
   }, [muted, refVideo]);
 
+  const slabBackgroundImage = window.matchMedia("(min-width: 768px)").matches
+    ? `url(${bgMountains})`
+    : "none";
+
   return (
     <>
       <h1 className="text-white font-light text-center text-2xl md:text-4xl xl:text-41xl mb-8">
         <SpanMoji emoji="🤝🏅🤝" />
       </h1>
-      <p className="text-white leading-6 md:leading-none text-center font-light text-base lg:text-lg mb-20">
+      <p className="text-white leading-6 md:leading-none text-center font-light text-base lg:text-lg mb-16 md:mb-24">
         {t.poap_drop_subtitle}
       </p>
-      <div className="bg-blue-tangaroa rounded-xl relative md:px-8 md:py-12 lg:px-16 lg:py-20 xl:px-20 xl:py-24">
-        <img className="w-16 absolute left-4 top-4 md:static" src={poapLogo} />
+      <div
+        style={{ backgroundImage: slabBackgroundImage }}
+        className="rounded-xl relative bg-blue-tangaroa md:bg-cover md:border md:border-gray-500 md:px-8 md:py-12 lg:px-16 lg:py-20 xl:px-20 xl:py-24"
+      >
+        <div className="flex items-center">
+          <SpanMoji
+            className={`absolute left-4 top-4 md:static md:inline ${styles["emoji-bat"]}`}
+            emoji="🦇"
+          />
+          <SpanMoji
+            className={`absolute left-8 top-4 md:static md:inline ${styles["emoji-speaker"]}`}
+            emoji="🔊"
+          />
+          <img
+            className="w-16 md:w-12 absolute left-4 top-4 md:static md:inline"
+            src={poapLogoGray}
+          />
+        </div>
         <div className="flex flex-col md:absolute md:right-10 md:-top-8 lg:right-24 xl:right-20 xl:-top-16">
           <video
             className="w-full rounded-xl shadow-2xl md:w-64 lg:w-72 xl:w-96"
