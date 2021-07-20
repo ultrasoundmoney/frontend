@@ -1,17 +1,28 @@
 .emoji-bat,
 .emoji-speaker {
   display: none;
+
   @media (min-width: 768px) {
     display: inline;
   }
+
   img {
     width: 3rem;
     height: auto;
+
+    @media (min-width: 1440px) {
+      width: 4rem;
+    }
   }
 }
 
 .emoji-speaker {
   img {
     width: 2.5rem;
+
+    @media (min-width: 1440px) {
+      width: 3.5rem;
+    }
+
   }
 }

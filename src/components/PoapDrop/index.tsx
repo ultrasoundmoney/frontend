@@ -5,11 +5,13 @@ import { TranslationsContext } from "../../translations-context";
 import SpanMoji from "../SpanMoji";
 import bgMountains from "../../assets/bg-mountains.jpg";
 import styles from "./PoapDrop.module.scss";
+import { useMediaQuery } from "../../use-media-query";
 
 const PoapDrop: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   const refVideo = React.useRef(null);
   const [muted, setMuted] = React.useState(true);
+  const isMd = useMediaQuery(768);
 
   const handleOnToggleMute = React.useCallback(() => {
     if (!refVideo.current) {
@@ -22,21 +24,19 @@ const PoapDrop: React.FC = () => {
     setMuted(nextMuted);
   }, [muted, refVideo]);
 
-  const slabBackgroundImage = window.matchMedia("(min-width: 768px)").matches
-    ? `url(${bgMountains})`
-    : "none";
-
   return (
     <>
-      <h1 className="text-white font-light text-center text-2xl md:text-4xl xl:text-41xl mb-8">
+      <h1 className="text-white font-light text-center text-2xl md:text-4xl xl:text-5xl mb-8">
         <SpanMoji emoji="🤝🏅🤝" />
       </h1>
       <p className="text-white leading-6 md:leading-none text-center font-light text-base lg:text-lg mb-16 md:mb-24">
         {t.poap_drop_subtitle}
       </p>
       <div
-        style={{ backgroundImage: slabBackgroundImage }}
-        className="rounded-xl relative bg-blue-tangaroa md:bg-cover md:border md:border-gray-500 md:px-8 md:py-12 lg:px-16 lg:py-20 xl:px-20 xl:py-24"
+        style={{
+          backgroundImage: isMd ? `url(${bgMountains})` : "none",
+        }}
+        className="rounded-xl relative bg-blue-tangaroa md:bg-cover md:border md:border-gray-500 md:px-8 md:py-12 lg:px-16 lg:py-20 xl:px-24 xl:py-24 2xl:text-xl 2xl:px-32"
       >
         <div className="flex items-center">
           <SpanMoji
@@ -48,13 +48,13 @@ const PoapDrop: React.FC = () => {
             emoji="🔊"
           />
           <img
-            className="w-16 md:w-12 absolute left-4 top-4 md:static md:inline"
+            className="w-16 md:w-12 absolute left-4 top-4 md:static md:inline lg:w-16"
             src={poapLogoGray}
           />
         </div>
         <div className="flex flex-col md:absolute md:right-10 md:-top-8 lg:right-24 xl:right-20 xl:-top-16">
           <video
-            className="w-full rounded-xl shadow-2xl md:w-64 lg:w-72 xl:w-96"
+            className="w-full rounded-xl md:w-64 lg:w-72 xl:w-96"
             src="/poap-drop.mp4"
             playsInline
             autoPlay
@@ -110,4 +110,4 @@ const PoapDrop: React.FC = () => {
   );
 };
 
-export default PoapDrop;
+export default React.memo(PoapDrop);
