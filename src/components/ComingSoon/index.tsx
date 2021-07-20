@@ -8,7 +8,7 @@ import FollowingYou from "../FollowingYou";
 import SpanMoji from "../SpanMoji";
 import SupplyView from "../SupplyView";
 import { TranslationsContext } from "../../translations-context";
-import NftDrop from "../NftDrop";
+import PoapDrop from "../PoapDrop";
 
 const fetcher = (url: string) =>
   fetch(url, {
@@ -83,7 +83,7 @@ const ComingSoon: React.FC = () => {
       </div>
       <div className="flex px-4 pt-8 pb-40 md:px-0 md:pt-40">
         <div className="w-full md:w-5/6 xl:w-2/3 2xl:w-3/6 md:m-auto">
-          <NftDrop />
+          <PoapDrop />
         </div>
       </div>
     </div>
