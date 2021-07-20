@@ -17,7 +17,6 @@ const NftDrop: React.FC = () => {
     const nextMuted = !muted;
 
     refVideo.current.muted = nextMuted;
-    console.log("set ", nextMuted);
     setMuted(nextMuted);
   }, [muted, refVideo]);
 
