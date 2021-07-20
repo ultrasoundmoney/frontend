@@ -14,7 +14,7 @@ const DashboardPage: NextPage<DashboardPageProps> = () => {
           {t.dashboard_title} | {t.title}
         </title>
         <link rel="icon" href="/favicon.png" />
-        <meta name="description" content={t.title} />
+        <meta name="description" content={t.meta_description} />
         <meta name="keywords" content={t.meta_keywords} />
         <meta property="og:title" content={t.title} />
         <meta property="og:description" content={t.meta_description} />
