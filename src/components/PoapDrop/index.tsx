@@ -23,7 +23,7 @@ const PoapDrop: React.FC = () => {
   return (
     <>
       <h1 className="text-white font-light text-center text-2xl md:text-4xl xl:text-41xl mb-8">
-        {t.poap_drop_title}
+        <SpanMoji emoji="🤝🏅🤝" />
       </h1>
       <p className="text-white leading-6 md:leading-none text-center font-light text-base lg:text-lg mb-20">
         {t.poap_drop_subtitle}
