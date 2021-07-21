@@ -7,14 +7,6 @@ import copySrc from "../../assets/copy.svg";
 import { TranslationsContext } from "../../translations-context";
 
 type TwitterCommunityPros = {};
-const fetcher = (url: string) =>
-  fetch(url, {
-    method: "GET",
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json",
-    },
-  }).then((r) => r.json());
 
 const TwitterCommunity: React.FC<TwitterCommunityPros> = () => {
   const t = React.useContext(TranslationsContext);
@@ -23,7 +15,7 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = () => {
   >(false);
   const { data } = useSWR(
     "https://api.ultrasound.money/fam/2/profiles",
-    fetcher,
+    (url: string) => fetch(url).then((r) => r.json()),
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
