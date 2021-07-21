@@ -6,9 +6,7 @@ import SpanMoji from "../SpanMoji";
 import copySrc from "../../assets/copy.svg";
 import { TranslationsContext } from "../../translations-context";
 
-type TwitterCommunityPros = {};
-
-const TwitterCommunity: React.FC<TwitterCommunityPros> = () => {
+const TwitterCommunity: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   const [isCopiedFeedbackVisible, setIsCopiedFeedbackVisible] = React.useState<
     boolean
