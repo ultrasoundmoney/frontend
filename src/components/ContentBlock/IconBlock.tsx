@@ -21,19 +21,21 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
     <>
       <div className={getClassName}>
         <div
-          className="mb-3 icon-emoji"
+          className="icon-emoji text-center"
           dangerouslySetInnerHTML={{
             __html: twemoji.parse(icon),
           }}
         />
-        <h1
-          className="text-white font-light text-base leading-loose1 mb-3"
-          dangerouslySetInnerHTML={{
-            __html: twemoji.parse(title),
-          }}
-        />
+        <h1 className="text-white font-light text-base text-center mb-14 mt-4">
+          <span
+            className=""
+            dangerouslySetInnerHTML={{
+              __html: twemoji.parse(title),
+            }}
+          />
+        </h1>
         <p
-          className="text-blue-shipcove font-light text-sm break-words mb-4"
+          className="text-blue-shipcove font-light text-sm break-words mt-8 whitespace-pre-line leading-relaxed"
           dangerouslySetInnerHTML={{
             __html: twemoji.parse(text),
           }}
