@@ -6,11 +6,8 @@ const Intro: React.FC<{}> = () => {
   const t = React.useContext(TranslationsContext);
   return (
     <>
-      <section
-        id="hero"
-        className="flex flex-wrap justify-center content-center h-screen-90"
-      >
-        <div className="flex flex-wrap flex-col">
+      <section id="hero" className="hero h-screen relative">
+        <div className="flex flex-wrap flex-col md:pt-12">
           <h1 className="text-white font-extralight text-center leading-none text-2xl md:text-6xl">
             {t.landing_hero_title}
           </h1>

@@ -28,7 +28,15 @@ const TimeLineContentBlock: React.FC<TimeLineContentBlockProps> = ({
       : `eclips-bottom eclips-bottom__left-0`;
   return (
     <>
-      <section id={id}>
+      <section
+        data-aos="fade-up"
+        data-aos-anchor-placement="top-bottom"
+        data-aos-offset="300"
+        data-aos-delay="100"
+        data-aos-duration="1000"
+        data-aos-easing="ease-in-out"
+        id={id}
+      >
         <div className={getClassName}>
           <p className="text-blue-shipcove font-light text-sm text-center mb-6">
             {blockNrAndTime}

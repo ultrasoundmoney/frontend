@@ -184,11 +184,12 @@
 }
 
 .hamburger-menu {
-  position: absolute;
+  position: fixed;
   right: 10px;
   top: 30px;
   height: 34px;
   padding: 8px;
+  z-index: 99;
 }
 
 
@@ -315,5 +316,23 @@
   100% {
     opacity: 0;
     transform: scale(0.8);
+  }
+}
+.sidebar{
+  background-color: rgba(27,34,54, 1);
+  position: fixed;
+  top: 0;
+  right: 0px;
+  height: 100%;
+  width: 240px;
+  padding-top: 1.5rem;
+  transition: transform 0.3s ease-in-out 0s;
+  z-index: 9;
+  text-align: center;
+  &-open{
+    transform: translateX(0px);
+  }
+  &-close{
+    transform: translateX(100%);
   }
 }

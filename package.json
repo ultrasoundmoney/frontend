@@ -17,6 +17,7 @@
     "format": "prettier --write '{src,styles}/**/*.{ts,tsx,js,jsx}'"
   },
   "dependencies": {
+    "aos": "^2.3.4",
     "@sentry/react": "^6.9.0",
     "@sentry/tracing": "^6.9.0",
     "highcharts": "^9.1.1",
@@ -29,7 +30,8 @@
     "react": "^17.0.1",
     "react-clipboard.js": "^2.0.16",
     "react-dom": "^17.0.1",
-    "react-hook-form": "^6.15.4",
+    "react-loader-spinner": "^4.0.0",
+    "react-transition-group": "1.x",
     "twemoji": "^13.1.0"
   },
   "devDependencies": {
@@ -41,12 +43,16 @@
     "@tailwindcss/jit": "^0.1.18",
     "@testing-library/jest-dom": "^5.1.1",
     "@testing-library/react": "^10.0.2",
+    "@types/aos": "^3.0.4",
     "@types/lodash": "^4.14.170",
     "@types/luxon": "^1.27.0",
     "@types/node": "^13.7.7",
     "@types/node-fetch": "^2.5.7",
     "@types/react": "^16.9.41",
     "@types/react-dom": "^17.0.2",
+    "@types/react-redux": "^7.1.9",
+    "@types/react-transition-group": "^4.4.0",
+    "@types/styled-components": "^5.1.11",
     "@types/twemoji": "^12.1.1",
     "@typescript-eslint/eslint-plugin": "^2.21.0",
     "@typescript-eslint/parser": "^2.21.0",
