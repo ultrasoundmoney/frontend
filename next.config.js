@@ -7,5 +7,6 @@ module.exports = withImages({
     "/": { page: "/" },
     "/landing": { page: "/landing" },
     "/dashboard": { page: "/dashboard" },
+    "/poap": { page: "/poap" },
   }),
 });
