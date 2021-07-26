@@ -132,8 +132,17 @@ const DashboardPage: NextPage<DashboardPageProps> = () => {
         <meta name="twitter:creator" content="@ultrasoundmoney" />
       </Head>
       <div className="wrapper bg-blue-midnightexpress">
+        <div
+          style={{
+            opacity: 0.2,
+            filter: "blur(50px)",
+            backgroundImage: "linear-gradient(to top, #f85a89, #0037fa)",
+            margin: "-80px 0px 0px -32px;",
+          }}
+          className="absolute border w-2/5 h-1/5 left-1/4 z-0"
+        ></div>
         <Navigation />
-        <div className="container m-auto">
+        <div className="container m-auto relative">
           <h1 className="font-inter font-light text-white text-4xl text-center mb-8">
             Dashboard
           </h1>
