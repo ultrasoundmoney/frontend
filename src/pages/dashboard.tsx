@@ -1,36 +1,94 @@
-import { useState, useContext, FC } from "react";
+import { useState, useContext, FC, memo } from "react";
 import { NextPage } from "next";
 import Head from "next/head";
 import { TranslationsContext } from "../translations-context";
 import Navigation from "../components/Navigation";
-import { intlFormat } from "../utils/number-utils";
-// import useSWR from "swr";
+import useSWR from "swr";
+import dapp1Img from "../assets/dapps/dapp1.png";
+import dapp2Img from "../assets/dapps/dapp2.png";
+import dapp3Img from "../assets/dapps/dapp3.png";
+import dapp4Img from "../assets/dapps/dapp4.png";
+import dapp5Img from "../assets/dapps/dapp5.png";
+import dapp6Img from "../assets/dapps/dapp6.png";
+import dapp7Img from "../assets/dapps/dapp7.png";
+import dapp8Img from "../assets/dapps/dapp8.png";
+import dapp9Img from "../assets/dapps/dapp9.png";
+import dapp10Img from "../assets/dapps/dapp10.png";
+import dapp11Img from "../assets/dapps/dapp11.png";
+import dapp12Img from "../assets/dapps/dapp12.png";
+import dapp13Img from "../assets/dapps/dapp13.png";
 
-type FeePeriod = "24h" | "week" | "month";
+let imgs = [
+  dapp1Img,
+  dapp2Img,
+  dapp3Img,
+  dapp4Img,
+  dapp5Img,
+  dapp6Img,
+  dapp7Img,
+  dapp8Img,
+  dapp9Img,
+  dapp10Img,
+  dapp11Img,
+  dapp12Img,
+  dapp13Img,
+];
+
+type FeePeriod = "24h" | "7d" | "30d" | "all";
 
 type DashboardPageProps = {};
 
-const FeeUser: FC<{ name: string; fees: number; image: string }> = ({
-  name,
-  fees,
-  image,
-}) => {
+const feeFmt = new Intl.NumberFormat("en", { minimumFractionDigits: 2 });
+
+const FeeUser: FC<{
+  name?: string;
+  address?: string;
+  fees: number;
+  image: string;
+}> = memo(({ address, name, fees, image }) => {
+  if (imgs.length === 0) {
+    imgs = [
+      dapp1Img,
+      dapp2Img,
+      dapp3Img,
+      dapp4Img,
+      dapp5Img,
+      dapp6Img,
+      dapp7Img,
+      dapp8Img,
+      dapp9Img,
+      dapp10Img,
+      dapp11Img,
+      dapp12Img,
+      dapp13Img,
+    ];
+  }
+  const rImg = imgs[Math.floor(Math.random() * imgs.length)];
+  imgs = imgs.filter((img) => img !== rImg);
   return (
     <div className="flex flex-row py-4 justify-between items-center">
       <div className="flex flex-row items-center overflow-hidden">
-        <img className="w-8 h-8 bg-white" src={image} alt="" />
-        <p className="font-inter font-light text-sm text-white pl-4 truncate md:text-lg">
-          {name}
+        <img
+          className="w-8 h-8 flex-shrink-0 bg-white rounded-full"
+          src={rImg}
+          alt=""
+        />
+        <p
+          className={`text-sm text-white pl-4 truncate md:text-lg ${
+            typeof name === "string" ? "font-inter font-light" : "font-roboto"
+          }`}
+        >
+          {name || address}
         </p>
       </div>
       <p className="font-inter font-light text-sm text-white ml-8 whitespace-nowrap md:text-lg">
-        {intlFormat(fees)} <span className="text-blue-manatee">ETH</span>
+        {feeFmt.format(fees)} <span className="text-blue-manatee">ETH</span>
       </p>
     </div>
   );
-};
+});
 
-// const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 type FeeUser = {
   name: string | undefined;
@@ -39,78 +97,14 @@ type FeeUser = {
   fees: number;
 };
 
-const data: FeeUser[] = [
-  {
-    fees: 34.327563687930414,
-    name: "contract creation",
-    address: undefined,
-    image: undefined,
-  },
-  {
-    fees: 6.0340657204846035,
-    name: "eth transfers",
-    address: undefined,
-    image: undefined,
-  },
-  {
-    address: "0x4a0c59cccae7b4f0732a4a1b9a7bda49cc1d88f9",
-    fees: 4.7835984269999985,
-    image: undefined,
-    name: undefined,
-  },
-  {
-    address: "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
-    fees: 3.390202023397285,
-    image: undefined,
-    name: undefined,
-  },
-  {
-    address: "0xe592427a0aece92de3edee1f18e0157c05861564",
-    fees: 3.3118619696657725,
-    image: undefined,
-    name: undefined,
-  },
-  {
-    address: "0xa0d797a7f805b2eca06dd5680ee07edbbcdebc94",
-    fees: 1.78495346,
-    image: undefined,
-    name: undefined,
-  },
-  {
-    address: "0x7ed35d2d77ccc6c8c23ddf9d1b03fdd1e6597feb",
-    fees: 1.076164999216379,
-    image: undefined,
-    name: undefined,
-  },
-  {
-    address: "0x83b8a69a49e73a2b40bf62ff38b3ab3958b3b793",
-    fees: 1.0478895599999947,
-    image: undefined,
-    name: undefined,
-  },
-  {
-    address: "0xe0172ecc463ee52e1217d670ae9fa11037c1aef7",
-    fees: 1.0397126,
-    image: undefined,
-    name: undefined,
-  },
-  {
-    address: "0x516de3a7a567d81737e3a46ec4ff9cfd1fcb0136",
-    fees: 0.9767422345962563,
-    image: undefined,
-    name: undefined,
-  },
-];
-const error: undefined = undefined;
-
 const DashboardPage: NextPage<DashboardPageProps> = () => {
   const t = useContext(TranslationsContext);
   const [feePeriod, setFeePeriod] = useState<FeePeriod>("24h");
 
-  // const { data, error } = useSWR<FeeUser[], { msg: string }>(
-  //   "https://api.ultrasound.money/fees/top-fee-users",
-  //   fetcher
-  // );
+  const { data, error } = useSWR<FeeUser[], { msg: string }>(
+    `https://api.ultrasound.money/fees/leaderboard?timeframe=${feePeriod}`,
+    fetcher
+  );
 
   const activeFeePeriodClasses =
     "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg";
@@ -137,7 +131,7 @@ const DashboardPage: NextPage<DashboardPageProps> = () => {
             opacity: 0.2,
             filter: "blur(50px)",
             backgroundImage: "linear-gradient(to top, #f85a89, #0037fa)",
-            margin: "-80px 0px 0px -32px;",
+            margin: "-80px 0px 0px -32px",
           }}
           className="absolute border w-2/5 h-1/5 left-1/4 z-0"
         ></div>
@@ -155,7 +149,7 @@ const DashboardPage: NextPage<DashboardPageProps> = () => {
             <div className="bg-blue-tangaroa w-full rounded-md p-8 md:p-16">
               <div className="flex flex-col md:justify-between md:items-center md:flex-row md:mb-10">
                 <h2 className="font-inter font-light text-white text-xl mb-8 md:mb-0 md:text-2xl">
-                  Burn Leaderboard
+                  burn leaderboard
                 </h2>
                 <div className="flex flex-row items-center mx-auto mb-8 md:m-0">
                   <button
@@ -170,40 +164,55 @@ const DashboardPage: NextPage<DashboardPageProps> = () => {
                   </button>
                   <button
                     className={`font-inter text-sm px-4 py-1 border border-transparent ${
-                      feePeriod === "week"
+                      feePeriod === "7d"
                         ? activeFeePeriodClasses
-                        : "text-blue-manatee "
+                        : "text-blue-manatee"
                     }`}
-                    onClick={() => setFeePeriod("week")}
+                    onClick={() => setFeePeriod("7d")}
                   >
-                    Week
+                    7d
                   </button>
                   <button
                     className={`font-inter text-sm px-4 py-1 border border-transparent ${
-                      feePeriod === "month"
+                      feePeriod === "30d"
                         ? activeFeePeriodClasses
-                        : "text-blue-manatee "
+                        : "text-blue-manatee"
                     }`}
-                    onClick={() => setFeePeriod("month")}
+                    onClick={() => setFeePeriod("30d")}
                   >
-                    Month
+                    30d
+                  </button>
+                  <button
+                    className={`font-inter text-sm px-4 py-1 border border-transparent ${
+                      feePeriod === "all"
+                        ? activeFeePeriodClasses
+                        : "text-blue-manatee"
+                    }`}
+                    onClick={() => setFeePeriod("all")}
+                  >
+                    all
                   </button>
                 </div>
               </div>
-              {error !== undefined && (
-                <p className="text-lg text-center text-gray-500 text-center pt-18 pb-20">
+              {error !== undefined ? (
+                <p className="text-lg text-center text-gray-500 pt-16 pb-20">
                   error loading fees
                 </p>
-              )}
-              {data !== undefined &&
+              ) : data === undefined ? (
+                <p className="text-lg text-center text-gray-500 pt-16 pb-20">
+                  loading...
+                </p>
+              ) : (
                 data.map((feeUser) => (
                   <FeeUser
                     key={feeUser.address || feeUser.name}
-                    name={feeUser.name || feeUser.address}
+                    name={feeUser.name}
+                    address={feeUser.address}
                     image={feeUser.image}
                     fees={feeUser.fees}
                   />
-                ))}
+                ))
+              )}
             </div>
           </div>
         </div>
