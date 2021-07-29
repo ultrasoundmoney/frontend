@@ -42,6 +42,7 @@ module.exports = {
       },
       fontFamily: {
         'roboto' : ['Roboto Mono', 'monospace'],
+        'inter' : [ 'Inter', 'sans-serif']
       },
       transitionTimingFunction: {
         'ease-out-quint': 'cubic-bezier(0.23, 1, 0.32, 1)'
