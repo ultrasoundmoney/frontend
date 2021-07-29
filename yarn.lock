@@ -2506,6 +2506,11 @@ cosmiconfig@^7.0.0:
     path-type "^4.0.0"
     yaml "^1.10.0"
 
+countup.js@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/countup.js/-/countup.js-2.0.8.tgz#eca0c31c9db3f7769cba494d9315cd52dbaaf1b9"
+  integrity sha512-pW3xwwD+hB+xmtI16xFcuLS0D5hSQqPQWkZOdgpKQyzxCquDNo2VCFPkRw12vmvdpnicXVTcjmYiakG6biwINg==
+
 create-ecdh@^4.0.0:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/create-ecdh/-/create-ecdh-4.0.4.tgz#d6e7f4bffa66736085a0762fd3a632684dabcc4e"
@@ -7250,6 +7255,13 @@ react-content-loader@^5.1.0:
   resolved "https://registry.yarnpkg.com/react-content-loader/-/react-content-loader-5.1.4.tgz#854bafe4415dd9de07174621375bc308edd0ebb5"
   integrity sha512-hTq7pZi2GKCK6a9d3u6XStozm0QGCEjw8cSqQReiWnh2up6IwCha5R5TF0o6SY5qUDpByloEZEZtnFxpJyENFw==
 
+react-countup@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/react-countup/-/react-countup-5.2.0.tgz#58be5d97acebf767d5c61df5c3a3417b95c45a16"
+  integrity sha512-R6+FIrW8ypwoAe0Q0CZ16OhrgAntnnnch7HrnRAy9miXFKk8jQzVADjNtGSoNUuJeq/ZFiiXCGJCJIAmRJ5fLg==
+  dependencies:
+    countup.js "^2.0.8"
+
 react-docgen-typescript-loader@^3.7.2:
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/react-docgen-typescript-loader/-/react-docgen-typescript-loader-3.7.2.tgz#45cb2305652c0602767242a8700ad1ebd66bbbbd"
@@ -7325,6 +7337,11 @@ react-transition-group@^4.4.0:
     dom-helpers "^5.0.1"
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
+
+react-use-websocket@^2.7.1:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/react-use-websocket/-/react-use-websocket-2.7.1.tgz#51e4798aa4e328595b86e63b9d667ae2114eed1b"
+  integrity sha512-n0H429jQGaZAnn8BJljCcAgeSezXYzTLO0tb5QvdZnNjhAA8Br3A3GjU5ziNMlxant++Iv/IRQRNMKCfWnsHrQ==
 
 react@^17.0.1:
   version "17.0.2"
@@ -8895,6 +8912,11 @@ use-subscription@1.5.1:
   integrity sha512-Xv2a1P/yReAjAbhylMfFplFKj9GssgTwN7RlcTxBujFQcloStWNDQdc4g4NRWH9xS4i/FDk04vQBptAXoF3VcA==
   dependencies:
     object-assign "^4.1.1"
+
+use-websocket-lite@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/use-websocket-lite/-/use-websocket-lite-1.0.1.tgz#021f762413f43f84864ffb5cb9a9f3e483d48765"
+  integrity sha512-7jhvlQQxQVUUG+umJ7BmFumsIAUZOVvrPKQycjutLiEajSVtAwMAtX0RKImOngbsL1uAQ/sUpBYxIAP7rh3hxg==
 
 use@^3.1.0:
   version "3.1.1"
