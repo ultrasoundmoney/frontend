@@ -27,16 +27,24 @@ const FaqBlock: React.FC<FaqBlockPros> = () => {
           <Accordion title={t.faq_question_4} text={t.faq_answer_4} />
           <Accordion title={t.faq_question_5} text={t.faq_answer_5} />
           <Accordion title={t.faq_question_6} text={t.faq_answer_6} />
+          <Accordion title={t.faq_question_7} text={t.faq_answer_7} />
+          <Accordion title={t.faq_question_8} text={t.faq_answer_8} />
         </div>
-        <div className="w-full lg:w-7/12 mx-auto px-4 md:px-0 md:flex text-center justify-center mt-16">
+        <div className="w-full lg:w-7/12 mx-auto px-4 md:px-0 md:flex justify-center mt-16">
           <h1 className="flex-initial text-white text-lg font-light self-center md:px-4">
             {t.faq_missing_question}
           </h1>
           <button
             type="button"
-            className="flex-none px-3 py-2 text-base text-blue-shipcove hover:opacity-75 border-blue-shipcove border-solid border-2 rounded-3xl"
+            className="flex-none px-3 py-2 text-base text-white hover:opacity-75 border-white border-solid border-2 rounded-3xl"
           >
-            {t.faq_btn_text}
+            <a
+              href="https://twitter.com/intent/tweet?text=.@ultrasoundmoney%20%5Byour%20question%20here%5D"
+              target="_blank"
+              rel="noreferrer"
+            >
+              {t.faq_btn_text}
+            </a>
           </button>
         </div>
       </section>

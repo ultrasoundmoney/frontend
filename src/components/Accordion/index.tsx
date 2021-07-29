@@ -1,4 +1,5 @@
 import * as React from "react";
+import twemoji from "twemoji";
 
 type AccordionProps = {
   title: string;
@@ -10,23 +11,23 @@ const Accordion: React.FC<AccordionProps> = ({ title, text }) => {
     <>
       <div className="accordion-wrapper">
         <div
-          className={`accordion-title text-lg py-5 break-words ${
+          className={`accordion-title text-lg py-3 break-words ${
             isOpen ? "open" : ""
           }`}
           onClick={() => setOpen(!isOpen)}
           dangerouslySetInnerHTML={{
-            __html: title,
+            __html: twemoji.parse(title),
           }}
         />
         <div
-          className={`accordion-item text-white break-words ${
+          className={`accordion-item break-words ${
             !isOpen ? "collapsed animateOut" : "animateIn"
           }`}
         >
           <div
-            className="accordion-content"
+            className="accordion-content leading-relaxed py-2"
             dangerouslySetInnerHTML={{
-              __html: text,
+              __html: twemoji.parse(text),
             }}
           />
         </div>
