@@ -8913,11 +8913,6 @@ use-subscription@1.5.1:
   dependencies:
     object-assign "^4.1.1"
 
-use-websocket-lite@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/use-websocket-lite/-/use-websocket-lite-1.0.1.tgz#021f762413f43f84864ffb5cb9a9f3e483d48765"
-  integrity sha512-7jhvlQQxQVUUG+umJ7BmFumsIAUZOVvrPKQycjutLiEajSVtAwMAtX0RKImOngbsL1uAQ/sUpBYxIAP7rh3hxg==
-
 use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
