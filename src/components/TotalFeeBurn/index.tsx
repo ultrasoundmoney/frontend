@@ -33,7 +33,7 @@ const TotalFeeBurn: FC = () => {
       {typeof totalFeesBurned === "number" ? (
         <p className="text-white text-3xl md:text-4xl lg:text-5xl">
           <CountUp
-            decimals={14}
+            decimals={2}
             duration={4}
             end={weiToEth(totalFeesBurned)}
             suffix=" ETH"
