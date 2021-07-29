@@ -26,7 +26,7 @@ const LandingPage: React.FC<{}> = () => {
 
   const [scrolling, setScrolling] = React.useState(false);
   const [scrollTop, setScrollTop] = React.useState(0);
-  // const [ethSupply, setEthSupply] = React.useState(72);
+  const [ethSupply, setEthSupply] = React.useState(72);
   const [ethSupplyPlus, setEthSupplyPlus] = React.useState(5.3);
   const date = new Date("July 31, 2015").toDateString();
   const dateGenesis = Math.floor(
@@ -38,6 +38,7 @@ const LandingPage: React.FC<{}> = () => {
     const getStatusAndDate = document.querySelector(".burned_1 .eth-date");
     const getStatus = document.querySelector(".burned_1 .eth-status");
     // 2nd Card Eth Supply Increaments
+    const getEthSupply = document.querySelector(".burned_2 .eth-supply");
     const getEthSupplyIncreament = document.querySelector(
       ".burned_2 .eth-supply-incr"
     );
@@ -57,6 +58,8 @@ const LandingPage: React.FC<{}> = () => {
           // downscroll code
           setScrolling(false);
           setEthSupplyPlus(5.3 + Math.floor(scrollTop * 0.001));
+          const ethSupplyFactor = 72 + Math.floor(scrollTop * 0.01);
+          setEthSupply(ethSupplyFactor > 121 ? 121 : Math.abs(ethSupplyFactor));
           const getFactor = Math.floor(currentPosition / 110);
           const genesisToByzDate = Math.floor(1455509940 + getFactor * 5259486);
           setInfationaryDate(
@@ -68,10 +71,13 @@ const LandingPage: React.FC<{}> = () => {
           getEthSupplyIncreament.innerHTML = `&#8593;+ ${ethSupplyPlus.toFixed(
             2
           )}%`;
+          getEthSupply.innerHTML = `${ethSupply}M`;
         } else {
           // upscroll code
           setScrolling(true);
           setInfationaryDate(1438293600);
+          const ethSupplyFactor = 121 - Math.floor(scrollTop * 0.001);
+          setEthSupply(ethSupplyFactor > 72 ? 72 : Math.abs(ethSupplyFactor));
           setEthSupplyPlus(5.3 - Math.floor(scrollTop * 0.001));
           getEthSupplyIncreament.innerHTML = `&#8593;+ ${ethSupplyPlus.toFixed(
             2
@@ -79,6 +85,7 @@ const LandingPage: React.FC<{}> = () => {
           getStatusAndDate.innerHTML = `Status ${new Date(
             infationaryDate * 1000
           ).toDateString()}`;
+          getEthSupply.innerHTML = `${ethSupply}M`;
         }
       }
       //ETH By
@@ -88,6 +95,8 @@ const LandingPage: React.FC<{}> = () => {
           // downscroll code
           setScrolling(false);
           setEthSupplyPlus(11.3 + Math.floor(scrollTop * 0.0001));
+          const ethSupplyFactor = 72 + Math.floor(scrollTop * 0.01);
+          setEthSupply(ethSupplyFactor > 121 ? 121 : Math.abs(ethSupplyFactor));
           getEthSupplyIncreament.innerHTML = `&#8593;+ ${ethSupplyPlus.toFixed(
             2
           )}%`;
@@ -100,10 +109,13 @@ const LandingPage: React.FC<{}> = () => {
           getStatusAndDate.innerHTML = `Status ${new Date(
             infationaryDate * 1000
           ).toDateString()}`;
+          getEthSupply.innerHTML = `${ethSupply}M`;
         } else {
           // upscroll code
           setScrolling(true);
           setEthSupplyPlus(11.3 - Math.floor(scrollTop * 0.0001));
+          const ethSupplyFactor = 121 - Math.floor(scrollTop * 0.001);
+          setEthSupply(ethSupplyFactor > 72 ? Math.abs(ethSupplyFactor) : 72);
           setInfationaryDate(1508104800);
           getEthSupplyIncreament.innerHTML = `&#8593;+ ${ethSupplyPlus.toFixed(
             2
@@ -111,6 +123,7 @@ const LandingPage: React.FC<{}> = () => {
           getStatusAndDate.innerHTML = `Status ${new Date(
             infationaryDate * 1000
           ).toDateString()}`;
+          getEthSupply.innerHTML = `${ethSupply}M`;
         }
       }
 
@@ -122,6 +135,8 @@ const LandingPage: React.FC<{}> = () => {
           // downscroll code
           setScrolling(false);
           setEthSupplyPlus(9.3 - Math.floor(scrollTop * 0.001));
+          const ethSupplyFactor = 72 + Math.floor(scrollTop * 0.01);
+          setEthSupply(ethSupplyFactor > 121 ? 121 : Math.abs(ethSupplyFactor));
           const x = 1508104800 - (infationaryDate + 999 * 10000);
           setInfationaryDate(
             x > 0 ? infationaryDate + 999 * 1000 : infationaryDate
@@ -132,10 +147,13 @@ const LandingPage: React.FC<{}> = () => {
           getEthSupplyIncreament.innerHTML = `&#8593;+ ${ethSupplyPlus.toFixed(
             2
           )}%`;
+          getEthSupply.innerHTML = `${ethSupply}M`;
         } else {
           //upscroll code
           setScrolling(true);
           const x = 1628028000 - (infationaryDate + 999 * 10000);
+          const ethSupplyFactor = 121 - Math.floor(scrollTop * 0.001);
+          setEthSupply(ethSupplyFactor > 72 ? Math.abs(ethSupplyFactor) : 72);
           setInfationaryDate(
             x > 0 ? infationaryDate - 999 * 1000 : infationaryDate
           );
@@ -146,6 +164,7 @@ const LandingPage: React.FC<{}> = () => {
           getEthSupplyIncreament.innerHTML = `&#8593;+ ${ethSupplyPlus.toFixed(
             2
           )}%`;
+          getEthSupply.innerHTML = `${ethSupply}M`;
         }
       }
 
@@ -155,6 +174,8 @@ const LandingPage: React.FC<{}> = () => {
           // downscroll code
           setScrolling(false);
           setEthSupplyPlus(9.3 + Math.floor(scrollTop * 0.001));
+          const ethSupplyFactor = 72 + Math.floor(scrollTop * 0.01);
+          setEthSupply(ethSupplyFactor > 121 ? 121 : Math.abs(ethSupplyFactor));
           const getFactor = Math.floor(currentPosition / 220);
           const genesisToByzDate = Math.floor(1508104800 + getFactor * 5259486);
           setInfationaryDate(
@@ -166,9 +187,12 @@ const LandingPage: React.FC<{}> = () => {
           getEthSupplyIncreament.innerHTML = `&#8593;+ ${ethSupplyPlus.toFixed(
             2
           )}%`;
+          getEthSupply.innerHTML = `${ethSupply}M`;
         } else {
           //upscroll code
           setScrolling(true);
+          const ethSupplyFactor = 121 - Math.floor(scrollTop * 0.001);
+          setEthSupply(ethSupplyFactor > 72 ? Math.abs(ethSupplyFactor) : 72);
           const getFactor = Math.floor(currentPosition / 220);
           const genesisToByzDate = Math.floor(1628028000 - getFactor * 5259486);
           setInfationaryDate(
@@ -181,6 +205,7 @@ const LandingPage: React.FC<{}> = () => {
           getEthSupplyIncreament.innerHTML = `&#8593;+ ${ethSupplyPlus.toFixed(
             2
           )}%`;
+          getEthSupply.innerHTML = `${ethSupply}M`;
         }
       }
 
@@ -189,6 +214,13 @@ const LandingPage: React.FC<{}> = () => {
           // downscroll code
           setScrolling(false);
           getStatus.innerHTML = "Money (Deflationary)";
+          const ethSupplyFactor = 72 + Math.floor(scrollTop * 0.01);
+          setEthSupply(ethSupplyFactor > 119 ? 119 : Math.abs(ethSupplyFactor));
+          getEthSupply.innerHTML = `${ethSupply}M`;
+        } else {
+          const ethSupplyFactor = 119 - Math.floor(scrollTop * 0.01);
+          setEthSupply(ethSupplyFactor > 121 ? Math.abs(ethSupplyFactor) : 119);
+          getEthSupply.innerHTML = `${ethSupply}M`;
         }
       } else {
         getStatus.innerHTML = "Money (Infationary)";
@@ -198,7 +230,7 @@ const LandingPage: React.FC<{}> = () => {
 
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
-  }, [ethSupplyPlus, infationaryDate, scrollTop, scrolling]);
+  }, [ethSupply, ethSupplyPlus, infationaryDate, scrollTop, scrolling]);
   return (
     <>
       <div className="wrapper bg-blue-midnightexpress">

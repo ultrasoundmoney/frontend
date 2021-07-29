@@ -33,7 +33,7 @@ const Nav = () => {
             </Link>
           </div>
           <div
-            className="flex-initial flex text-white self-center bg-blue-tangaroa px-2 md:px-3 py-2 text-xs lg:text-sm eth-price-gass-emoji"
+            className="flex-initial flex text-white self-center bg-blue-tangaroa px-2 md:px-3 py-2 text-xs lg:text-sm eth-price-gass-emoji font-roboto"
             dangerouslySetInnerHTML={{
               __html: twemoji.parse(ethPrice),
             }}
