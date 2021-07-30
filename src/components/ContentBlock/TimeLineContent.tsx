@@ -38,21 +38,21 @@ const TimeLineContentBlock: React.FC<TimeLineContentBlockProps> = ({
         id={id}
       >
         <div className={getClassName}>
-          <p className="text-blue-shipcove font-light text-sm text-center mb-6">
+          <p className="text-blue-shipcove font-light text-sm text-center mb-6 font-inter">
             {blockNrAndTime}
           </p>
-          <h1 className="text-white font-light text-base md:text-3xl leading-normal text-center mb-6 leading-title">
+          <h1 className="text-white font-light text-base md:text-3xl leading-normal text-center mb-6 leading-title font-inter">
             {title}
           </h1>
           <p
-            className="text-blue-shipcove font-light text-sm text-center mb-10"
+            className="text-blue-shipcove font-light text-sm text-center mb-10 font-inter"
             dangerouslySetInnerHTML={{
               __html: text,
             }}
           />
         </div>
         {children}
-        <div className="flex flex-wrap justify-center w-full md:w-7/12 md:mx-auto mb-8">
+        <div className="flex flex-wrap justify-center w-full md:w-7/12 pb-24 md:mx-auto mb-8">
           <div className={getLineHeight}>
             <div className="eclips-bottom-line" />
           </div>

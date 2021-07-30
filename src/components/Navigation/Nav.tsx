@@ -3,11 +3,26 @@ import Link from "next/link";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 import twemoji from "twemoji";
 import { TranslationsContext } from "../../translations-context";
+import useSWR from "swr";
 
 const Nav = () => {
   const [isOpen, setIsOpen] = useState(false);
   const t = React.useContext(TranslationsContext);
-  const ethPrice = `$2,391.94 <span class="text-green-500 px-2">(+2.13%)</span>• ⛽️ 8 Gwei`;
+  const { data } = useSWR(
+    "https://ethgas.watch/api/gas",
+    (url: string) => fetch(url).then((r) => r.json()),
+    {
+      revalidateOnFocus: true,
+      revalidateOnReconnect: true,
+    }
+  );
+  if (!data) {
+    return null;
+  }
+  const gewi = data.sources && data.sources[0];
+  const getEthPrice = new Intl.NumberFormat().format(Math.floor(data.ethPrice));
+  const ethPrice = `$${getEthPrice}  <span class="pl-1">⛽️${gewi.standard} Gwei</span>`;
+
   return (
     <nav className="relative flex flex-wrap items-center justify-between px-2 py-6 bg-transparent mb-3">
       <div className="container px-1 md:px-4 mx-auto flex flex-wrap items-center justify-between">
@@ -18,7 +33,7 @@ const Nav = () => {
             </Link>
           </div>
           <div
-            className="flex-initial flex text-white self-center bg-blue-tangaroa px-2 md:px-3 py-2 text-xs lg:text-sm eth-price-gass-emoji"
+            className="flex-initial flex text-white self-center bg-blue-tangaroa px-2 md:px-3 py-2 text-xs lg:text-sm eth-price-gass-emoji font-roboto"
             dangerouslySetInnerHTML={{
               __html: twemoji.parse(ethPrice),
             }}
