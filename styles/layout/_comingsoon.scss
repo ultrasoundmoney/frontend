@@ -156,3 +156,11 @@
     margin-left: -8.3rem;
   }
 }
+
+.burn-block-update-appear-active {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) 2;
+}
+
+.burn-block-update-enter-active {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
