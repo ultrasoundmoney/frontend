@@ -1,5 +1,6 @@
 import { FC, memo, useState } from "react";
 import useSWR from "swr";
+import useWebSocket from "react-use-websocket";
 
 type FeePeriod = "24h" | "7d" | "30d" | "all";
 
@@ -28,8 +29,6 @@ const FeeUser: FC<{
   </div>
 );
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
 type FeeUser = {
   name: string | undefined;
   address: string | undefined;
@@ -37,13 +36,37 @@ type FeeUser = {
   fees: number;
 };
 
+const feePeriodToUpdateMap: Record<FeePeriod, string> = {
+  "24h": "leaderboard24h",
+  "7d": "leaderboard7d",
+  "30d": "leaderboard30d",
+  all: "leaderboardAll",
+};
 const BurnLeaderboard: FC = () => {
   const [feePeriod, setFeePeriod] = useState<FeePeriod>("24h");
 
-  const { data, error } = useSWR<FeeUser[], { msg: string }>(
-    `https://api.ultrasound.money/fees/leaderboard?timeframe=${feePeriod}`,
-    fetcher
+  const { lastJsonMessage } = useWebSocket(
+    "ws://api.ultrasound.money/fees/base-fee-feed",
+    {
+      share: true,
+      filter: (message) =>
+        JSON.parse(message.data).type === "leaderboard-update",
+    }
   );
+
+  type FeeBurner = { fees: string; id: string; name: string };
+  type LeaderboardUpdate = {
+    leaderboard24h: FeeBurner[];
+    leaderboard7d: FeeBurner[];
+    leaderboard30d: FeeBurner[];
+    leaderboardAll: FeeBurner[];
+  };
+
+  const leaderboard = (lastJsonMessage || undefined) as
+    | LeaderboardUpdate
+    | undefined;
+  const selectedLeaderboard: FeeBurner[] | undefined =
+    leaderboard && leaderboard[feePeriodToUpdateMap[feePeriod]];
 
   const activeFeePeriodClasses =
     "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg";
@@ -90,22 +113,17 @@ const BurnLeaderboard: FC = () => {
           </button>
         </div>
       </div>
-      {error !== undefined ? (
-        <p className="text-lg text-center text-gray-500 pt-16 pb-20">
-          error loading fees
-        </p>
-      ) : data === undefined ? (
+      {selectedLeaderboard === undefined ? (
         <p className="text-lg text-center text-gray-500 pt-16 pb-20">
           loading...
         </p>
       ) : (
-        data.map((feeUser) => (
+        selectedLeaderboard.map((feeUser) => (
           <FeeUser
-            key={feeUser.address || feeUser.name}
+            key={feeUser.name}
             name={feeUser.name}
-            address={feeUser.address}
-            image={feeUser.image}
-            fees={feeUser.fees}
+            image={feeUser.id}
+            fees={Number(feeUser.fees)}
           />
         ))
       )}

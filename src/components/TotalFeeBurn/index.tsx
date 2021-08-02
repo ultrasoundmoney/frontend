@@ -6,14 +6,19 @@ import { CSSTransition } from "react-transition-group";
 
 const weiToEth = (wei: number): number => wei / 10 ** 18;
 const weiToGwei = (wei: number): number => wei / 10 ** 9;
-const socketUrl = "ws://api.ultrasound.money/fees-ropsten/base-fee-feed";
 
 const TotalFeeBurn: FC = () => {
-  const { lastJsonMessage } = useWebSocket(socketUrl, { share: true });
-  const totalFeesBurned = lastJsonMessage?.totalFeesBurned;
+  const { lastJsonMessage } = useWebSocket(
+    "ws://api.ultrasound.money/fees-ropsten/base-fee-feed",
+    {
+      share: true,
+      filter: (message) => JSON.parse(message.data).type === "base-fee-update",
+    }
+  );
+  const totalFeesBurned: number | undefined = lastJsonMessage?.totalFeesBurned;
   const blockNr = lastJsonMessage?.number;
 
-  const prevTotalFeesBurnedRef = useRef(undefined);
+  const prevTotalFeesBurnedRef = useRef<number | undefined>(undefined);
   useEffect(() => {
     if (typeof totalFeesBurned === "number")
       prevTotalFeesBurnedRef.current = totalFeesBurned;
