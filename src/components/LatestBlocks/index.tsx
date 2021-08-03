@@ -19,10 +19,22 @@ const LatestBlocks: FC = () => {
   );
   const messageHistory = useRef([]);
 
-  messageHistory.current = useMemo(
-    () => messageHistory.current.concat(lastJsonMessage),
-    [lastJsonMessage]
-  );
+  messageHistory.current = useMemo(() => {
+    // Initially the message is null. We don't need that one.
+    if (lastJsonMessage === null) {
+      return messageHistory.current;
+    }
+
+    // Sometimes the hook calls us with a message that passes the memo check, yet contains the same values, extra guard here.
+    if (
+      !_.isEmpty(messageHistory.current) &&
+      _.last(messageHistory.current).number === lastJsonMessage.number
+    ) {
+      return messageHistory.current;
+    }
+
+    return messageHistory.current.concat(lastJsonMessage);
+  }, [lastJsonMessage]);
 
   const latestBlocks = _.takeRight(
     messageHistory.current.filter((msg) => msg !== null),
