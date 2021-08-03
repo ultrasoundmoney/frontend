@@ -28,16 +28,12 @@ const TotalFeeBurn: FC = () => {
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8 md:p-16 md:w-2/3 md:mx-auto">
       <div className="flex justify-between">
-        <p className="text-blue-spindle mb-4 md:mb-8 md:text-xl">
-          Fees Burned{" "}
-          <span className="animate-pulse">
-            <SpanMoji emoji="🔥" />
-          </span>
+        <p className="font-inter font-light text-white mb-8 md:mb-8 md:text-xl">
+          total fees burned
         </p>
       </div>
-
       {typeof totalFeesBurned === "number" ? (
-        <p className="text-white text-3xl md:text-4xl lg:text-5xl">
+        <p className="flex justify-between text-white text-3xl mb-4 md:text-4xl lg:text-5xl">
           <CountUp
             decimals={2}
             duration={4}
@@ -45,26 +41,27 @@ const TotalFeeBurn: FC = () => {
             suffix=" ETH"
             preserveValue={true}
           />
+          <SpanMoji emoji="🔥" />
         </p>
       ) : (
         <h1 className="text-white text-3xl md:text-4xl">loading...</h1>
       )}
-      {typeof totalFeesBurned === "number" &&
-        typeof prevTotalFeesBurned === "number" && (
-          <CSSTransition
-            in={prevTotalFeesBurned !== totalFeesBurned}
-            classNames="burn-block-update"
-            timeout={3000}
-            appear={true}
-          >
-            <p className="text-blue-spindle mt-8 md:text-xl">
-              block {blockNr}
-              {`, added ${weiToGwei(
-                totalFeesBurned - prevTotalFeesBurned
-              )} Gwei`}
-            </p>
-          </CSSTransition>
-        )}
+      {/* {typeof totalFeesBurned === "number" && */}
+      {/*   typeof prevTotalFeesBurned === "number" && ( */}
+      {/*     <CSSTransition */}
+      {/*       in={prevTotalFeesBurned !== totalFeesBurned} */}
+      {/*       classNames="burn-block-update" */}
+      {/*       timeout={3000} */}
+      {/*       appear={true} */}
+      {/*     > */}
+      {/*       <p className="text-blue-spindle mt-8 md:text-xl"> */}
+      {/*         block {blockNr} */}
+      {/*         {`, added ${weiToGwei( */}
+      {/*           totalFeesBurned - prevTotalFeesBurned */}
+      {/*         )} Gwei`} */}
+      {/*       </p> */}
+      {/*     </CSSTransition> */}
+      {/*   )} */}
     </div>
   );
 };

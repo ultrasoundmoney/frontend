@@ -7,41 +7,39 @@ import SupplyView from "../SupplyView";
 import { TranslationsContext } from "../../translations-context";
 import BurnLeaderboard from "../BurnLeaderboard";
 import TotalFeeBurn from "../TotalFeeBurn";
+import styles from "./ComingSoon.module.scss";
+import LatestBlocks from "../LatestBlocks";
 
 const ComingSoon: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   return (
     <div className="wrapper bg-blue-midnightexpress coming-soon">
       <div className="container m-auto">
-        <div className="block w-full text-center pt-14">
-          <img
-            className="text-center m-auto mb-8"
-            src={EthLogo}
-            alt={t.title}
-          />
-          <h1 className="text-white font-extralight text-xl md:text-3xl xl:text-41xl text-center mb-16">
-            <SpanMoji emoji="🔥 " />
-            {t.main_title}
-            <SpanMoji emoji=" 🔥" />
+        <div className="w-5/6 mx-auto pt-20 pb-16">
+          <h1
+            className={`ultra-sound-text text-3xl md:text-6xl mb-8 ${styles["resize-emoji"]}`}
+          >
+            Ultra Sound Money Awakening
+            <SpanMoji emoji="🦇🔊" />
           </h1>
-        </div>
-        <div className="flex flex-col px-4 md:px-2 md:pt-40 mb-16">
-          <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8">
-            the biggest Ξ burners
-          </h1>
-          <p className="text-white text-center font-light text-base lg:text-lg mb-8">
-            see who&aposs contracting the supply
+          <p className="font-inter font-extralight text-white text-center text-sm">
+            tracking progress towards ETH becoming ultrasound
           </p>
-          <BurnLeaderboard />
         </div>
-        <div className="flex flex-col px-4 md:px-2 md:pt-40 mb-16">
-          <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8">
-            total fee burn
-          </h1>
-          <p className="text-white text-center font-light text-base lg:text-lg mb-8">
-            fees burned so far
-          </p>
+        {/* <div className="flex flex-col px-4 md:px-2 md:pt-40 mb-16"> */}
+        {/*   <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8"> */}
+        {/*     the biggest Ξ burners */}
+        {/*   </h1> */}
+        {/*   <p className="text-white text-center font-light text-base lg:text-lg mb-8"> */}
+        {/*     see who&aposs contracting the supply */}
+        {/*   </p> */}
+        {/*   <BurnLeaderboard /> */}
+        {/* </div> */}
+        <div className="flex flex-col px-4 md:px-2 md:pt-20 mb-8">
           <TotalFeeBurn />
+        </div>
+        <div className="flex flex-col px-4 md:px-2 md:pt-20 mb-8">
+          <LatestBlocks />
         </div>
         <div className="flex flex-col px-4 md:px-2 md:pt-40 mb-16">
           <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8">
