@@ -1,11 +1,9 @@
-import React, { memo, FC, useRef, useEffect } from "react";
+import React, { memo, FC } from "react";
 import useWebSocket from "react-use-websocket";
 import SpanMoji from "../SpanMoji";
 import CountUp from "react-countup";
-import { CSSTransition } from "react-transition-group";
 
 const weiToEth = (wei: number): number => wei / 10 ** 18;
-const weiToGwei = (wei: number): number => wei / 10 ** 9;
 
 const TotalFeeBurn: FC = () => {
   const { lastJsonMessage } = useWebSocket(
@@ -18,14 +16,6 @@ const TotalFeeBurn: FC = () => {
     }
   );
   const totalFeesBurned: number | undefined = lastJsonMessage?.totalFeesBurned;
-  const blockNr = lastJsonMessage?.number;
-
-  const prevTotalFeesBurnedRef = useRef<number | undefined>(undefined);
-  useEffect(() => {
-    if (typeof totalFeesBurned === "number")
-      prevTotalFeesBurnedRef.current = totalFeesBurned;
-  });
-  const prevTotalFeesBurned = prevTotalFeesBurnedRef.current;
 
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8 md:p-16 md:w-2/3 md:mx-auto">
@@ -51,22 +41,6 @@ const TotalFeeBurn: FC = () => {
           loading...
         </p>
       )}
-      {/* {typeof totalFeesBurned === "number" && */}
-      {/*   typeof prevTotalFeesBurned === "number" && ( */}
-      {/*     <CSSTransition */}
-      {/*       in={prevTotalFeesBurned !== totalFeesBurned} */}
-      {/*       classNames="burn-block-update" */}
-      {/*       timeout={3000} */}
-      {/*       appear={true} */}
-      {/*     > */}
-      {/*       <p className="text-blue-spindle mt-8 md:text-xl"> */}
-      {/*         block {blockNr} */}
-      {/*         {`, added ${weiToGwei( */}
-      {/*           totalFeesBurned - prevTotalFeesBurned */}
-      {/*         )} Gwei`} */}
-      {/*       </p> */}
-      {/*     </CSSTransition> */}
-      {/*   )} */}
     </div>
   );
 };

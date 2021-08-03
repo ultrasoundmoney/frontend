@@ -1,5 +1,4 @@
 import { FC, memo, useState } from "react";
-import useSWR from "swr";
 import useWebSocket from "react-use-websocket";
 
 type FeePeriod = "24h" | "7d" | "30d" | "all";

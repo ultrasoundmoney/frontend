@@ -35,7 +35,7 @@ const LatestBlocks: FC = () => {
       return messageHistory.current;
     }
 
-    return messageHistory.current.concat(lastJsonMessage);
+    return [...messageHistory.current, lastJsonMessage];
   }, [lastJsonMessage]);
 
   const latestBlocks = _.takeRight(
