@@ -61,7 +61,9 @@ const LatestBlocks: FC = () => {
               enter={false}
             >
               <li className="flex justify-between my-8 fee-block">
-                <p className="text-white">Block {number}</p>
+                <p className="text-white">
+                  block #{new Intl.NumberFormat().format(number)}
+                </p>
                 <p className="text-white">
                   {formatFee(fees)}{" "}
                   <span className="text-blue-spindle">Gwei</span>

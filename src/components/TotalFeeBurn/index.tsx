@@ -28,15 +28,16 @@ const TotalFeeBurn: FC = () => {
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8 md:p-16 md:w-2/3 md:mx-auto">
       <div className="flex justify-between">
-        <p className="font-inter font-light text-white mb-8 md:mb-8 md:text-xl">
-          total fees burned
+        <p className="font-inter font-light text-white md:text-xl">
+          cumulative fee burn
         </p>
       </div>
       {typeof totalFeesBurned === "number" ? (
-        <p className="flex justify-between text-white text-3xl mb-4 md:text-4xl lg:text-5xl">
+        <p className="font-roboto flex justify-between text-white text-3xl md:text-4xl lg:text-5xl xl:text-6xl">
           <CountUp
             decimals={2}
-            duration={4}
+            duration={2.5}
+            separator=","
             end={weiToEth(totalFeesBurned)}
             suffix=" ETH"
             preserveValue={true}
@@ -44,7 +45,9 @@ const TotalFeeBurn: FC = () => {
           <SpanMoji emoji="🔥" />
         </p>
       ) : (
-        <h1 className="text-white text-3xl md:text-4xl">loading...</h1>
+        <p className="font-roboto text-white text-3xl md:text-4xl lg:text-5xl xl:text-6xl">
+          loading...
+        </p>
       )}
       {/* {typeof totalFeesBurned === "number" && */}
       {/*   typeof prevTotalFeesBurned === "number" && ( */}
