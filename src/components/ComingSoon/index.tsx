@@ -1,14 +1,12 @@
 import * as React from "react";
 import TwitterCommunity from "../TwitterCommunity";
-import EthLogo from "../../assets/ethereum-ultra-sound-bat.svg";
 import FollowingYou from "../FollowingYou";
-import SpanMoji from "../SpanMoji";
 import SupplyView from "../SupplyView";
 import { TranslationsContext } from "../../translations-context";
-import BurnLeaderboard from "../BurnLeaderboard";
+// import BurnLeaderboard from "../BurnLeaderboard";
 import TotalFeeBurn from "../TotalFeeBurn";
-import styles from "./ComingSoon.module.scss";
 import LatestBlocks from "../LatestBlocks";
+import FaqBlock from "../Landing/faq";
 
 const ComingSoon: React.FC = () => {
   const t = React.useContext(TranslationsContext);
@@ -64,6 +62,11 @@ const ComingSoon: React.FC = () => {
         <div className="flex px-4 md:px-0 pt-20 pb-60">
           <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
             <FollowingYou />
+          </div>
+        </div>
+        <div className="flex px-4 md:px-0 pt-20 pb-60">
+          <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
+            <FaqBlock />
           </div>
         </div>
       </div>
