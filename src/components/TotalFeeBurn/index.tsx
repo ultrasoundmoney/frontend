@@ -28,7 +28,7 @@ const TotalFeeBurn: FC = () => {
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8 md:p-16 md:w-2/3 md:mx-auto">
       <div className="flex justify-between">
-        <p className="font-inter font-light text-white md:text-xl">
+        <p className="font-inter font-light text-white md:text-xl mb-2">
           cumulative fee burn
         </p>
       </div>

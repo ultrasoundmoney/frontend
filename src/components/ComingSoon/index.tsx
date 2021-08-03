@@ -15,15 +15,19 @@ const ComingSoon: React.FC = () => {
   return (
     <div className="wrapper bg-blue-midnightexpress coming-soon">
       <div className="container m-auto">
-        <div className="w-5/6 mx-auto pt-20 pb-16">
-          <h1
-            className={`ultra-sound-text text-3xl md:text-6xl mb-8 ${styles["resize-emoji"]}`}
+        <div className="w-full pt-20 pb-16">
+          <div
+            className={`ultra-sound-text w-full text-6xl md:text-7xl md:w-1/2 m-auto`}
           >
-            Ultra Sound Money Awakening
-            <SpanMoji emoji="🦇🔊" />
-          </h1>
-          <p className="font-inter font-extralight text-white text-center text-sm">
-            tracking progress towards ETH becoming ultrasound
+            ultra sound
+          </div>
+          <div
+            className={`ultra-sound-text w-full text-6xl md:text-7xl md:w-1/2 m-auto mb-8`}
+          >
+            awakening
+          </div>
+          <p className="font-inter text-white text-center">
+            track ETH become ultra sound
           </p>
         </div>
         {/* <div className="flex flex-col px-4 md:px-2 md:pt-40 mb-16"> */}
@@ -35,10 +39,10 @@ const ComingSoon: React.FC = () => {
         {/*   </p> */}
         {/*   <BurnLeaderboard /> */}
         {/* </div> */}
-        <div className="flex flex-col px-4 md:px-2 md:pt-20 mb-8">
+        <div className="flex flex-col px-4 md:px-2 md:pt-20 mb-4">
           <TotalFeeBurn />
         </div>
-        <div className="flex flex-col px-4 md:px-2 md:pt-20 mb-8">
+        <div className="flex flex-col px-4 md:px-2 mb-8">
           <LatestBlocks />
         </div>
         <div className="flex flex-col px-4 md:px-2 md:pt-40 mb-16">

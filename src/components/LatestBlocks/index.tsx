@@ -43,7 +43,7 @@ const LatestBlocks: FC = () => {
 
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8 md:p-16 md:w-2/3 md:mx-auto">
-      <p className="font-inter font-light text-white mb-8 md:mb-8">
+      <p className="font-inter text-blue-spindlefont-light text-white text-xl mb-8 md:mb-8">
         latest blocks
       </p>
       <ul>
