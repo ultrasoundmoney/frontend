@@ -20,19 +20,26 @@ const LatestBlocks: FC = () => {
   );
   const latestBlocks = useRef<FeeBlock[]>([]);
 
-  if (
-    typeof lastJsonMessage?.fees === "number" &&
-    typeof lastJsonMessage?.number === "number"
-  ) {
-    latestBlocks.current.push({
-      number: lastJsonMessage.number,
-      fees: lastJsonMessage.fees,
-    });
-  }
+  const lastBlockUpdateNumber = lastJsonMessage?.number;
+  const lastBlockUpdateFees = lastJsonMessage?.fees;
 
-  if (latestBlocks.current.length > 5) {
-    latestBlocks.current.shift();
-  }
+  useEffect(() => {
+    if (
+      typeof lastBlockUpdateFees !== "number" ||
+      typeof lastBlockUpdateNumber !== "number"
+    ) {
+      return;
+    }
+
+    latestBlocks.current.push({
+      number: lastBlockUpdateNumber,
+      fees: lastBlockUpdateFees,
+    });
+
+    if (latestBlocks.current.length > 5) {
+      latestBlocks.current.shift();
+    }
+  }, [lastBlockUpdateNumber, lastBlockUpdateFees]);
 
   console.log(latestBlocks);
 
@@ -47,7 +54,7 @@ const LatestBlocks: FC = () => {
 
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8 md:p-16 md:w-2/3 md:mx-auto">
-      <p className="font-inter font-light text-blue-spindle mb-8 md:mb-8 md:text-xl">
+      <p className="font-inter font-light text-white mb-8 md:mb-8 md:text-xl">
         latest blocks
       </p>
       <ul>
