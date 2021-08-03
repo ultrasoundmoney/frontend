@@ -164,3 +164,17 @@
 .burn-block-update-enter-active {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
+
+.fee-block {
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 1000ms;
+}
+
+.fee-block-appear {
+  opacity: 0;
+}
+
+.fee-block-appear-active {
+  opacity: 1;
+}
