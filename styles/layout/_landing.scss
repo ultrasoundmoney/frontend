@@ -143,6 +143,52 @@
             }
         }
     }
+    &-hr {
+        position: relative;
+        border-left-width: 1px;
+        border-style: dashed;
+        border-color: rgb(112 112 112);
+
+        &::before {
+            content: '';
+            left: -13px;
+            bottom: -24px;
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: transparent;
+            border: 2px solid #00ffa3;
+        }
+
+        &::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #00ffa3;
+            position: absolute;
+            bottom: -15px;
+            left: -5px;
+        }
+
+        &__left-0 {
+            left: 0;
+            align-self: center;
+        }
+
+        &-line {
+            background-color: transparent;
+            border-top: 1px dashed rgb(112, 112, 112);
+
+            &__only {
+                position: relative;
+                transform: rotate(270deg);
+                top: 70px;
+                width: 150px;
+            }
+        }
+    }
 }
 
 .the-merge {
@@ -191,7 +237,7 @@
 }
 
 .fixed-fee-burned {
-    @media (min-width: 1024px) {
+    @media (min-width: 1023px) {
         position: sticky;
         left: 0;
         bottom: 10px;

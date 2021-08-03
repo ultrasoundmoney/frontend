@@ -42,6 +42,8 @@ const LandingPage: React.FC<{}> = () => {
     const getEthSupplyIncreament = document.querySelector(
       ".burned_2 .eth-supply-incr"
     );
+    //3rd Card
+    const getBlcokReward = document.querySelector(".burned_3 .eth-burn-fee");
     function onScroll() {
       const targetGenesis = document.querySelector("#genesis");
       const targetByzantium = document.querySelector("#eip-byzantium");
@@ -57,6 +59,7 @@ const LandingPage: React.FC<{}> = () => {
         if (currentPosition > scrollTop) {
           // downscroll code
           setScrolling(false);
+          getBlcokReward.innerHTML = "5 ETH/<span>Block</span>";
           setEthSupplyPlus(5.3 + Math.floor(scrollTop * 0.001));
           const ethSupplyFactor = 72 + Math.floor(scrollTop * 0.01);
           setEthSupply(ethSupplyFactor > 121 ? 121 : Math.abs(ethSupplyFactor));
@@ -76,6 +79,7 @@ const LandingPage: React.FC<{}> = () => {
           // upscroll code
           setScrolling(true);
           setInfationaryDate(1438293600);
+          getBlcokReward.innerHTML = "5 ETH/<span>Block</span>";
           const ethSupplyFactor = 121 - Math.floor(scrollTop * 0.001);
           setEthSupply(ethSupplyFactor > 72 ? 72 : Math.abs(ethSupplyFactor));
           setEthSupplyPlus(5.3 - Math.floor(scrollTop * 0.001));
@@ -94,6 +98,7 @@ const LandingPage: React.FC<{}> = () => {
         if (currentPosition > scrollTop) {
           // downscroll code
           setScrolling(false);
+          getBlcokReward.innerHTML = "3 ETH/<span>Block</span>";
           setEthSupplyPlus(11.3 + Math.floor(scrollTop * 0.0001));
           const ethSupplyFactor = 72 + Math.floor(scrollTop * 0.01);
           setEthSupply(ethSupplyFactor > 121 ? 121 : Math.abs(ethSupplyFactor));
@@ -113,6 +118,7 @@ const LandingPage: React.FC<{}> = () => {
         } else {
           // upscroll code
           setScrolling(true);
+          getBlcokReward.innerHTML = "3 ETH/<span>Block</span>";
           setEthSupplyPlus(11.3 - Math.floor(scrollTop * 0.0001));
           const ethSupplyFactor = 121 - Math.floor(scrollTop * 0.001);
           setEthSupply(ethSupplyFactor > 72 ? Math.abs(ethSupplyFactor) : 72);
@@ -134,6 +140,7 @@ const LandingPage: React.FC<{}> = () => {
         if (currentPosition > scrollTop) {
           // downscroll code
           setScrolling(false);
+          getBlcokReward.innerHTML = "2 ETH/<span>Block</span>";
           setEthSupplyPlus(9.3 - Math.floor(scrollTop * 0.001));
           const ethSupplyFactor = 72 + Math.floor(scrollTop * 0.01);
           setEthSupply(ethSupplyFactor > 121 ? 121 : Math.abs(ethSupplyFactor));
@@ -151,6 +158,7 @@ const LandingPage: React.FC<{}> = () => {
         } else {
           //upscroll code
           setScrolling(true);
+          getBlcokReward.innerHTML = "3 ETH/<span>Block</span>";
           const x = 1628028000 - (infationaryDate + 999 * 10000);
           const ethSupplyFactor = 121 - Math.floor(scrollTop * 0.001);
           setEthSupply(ethSupplyFactor > 72 ? Math.abs(ethSupplyFactor) : 72);
@@ -254,11 +262,9 @@ const LandingPage: React.FC<{}> = () => {
           >
             <div className="w-full md:w-5/6 lg:w-5/6 md:m-auto relative bg-blue-tangaroa md:px-8 py-4 md:py-16 rounded-xl">
               <SupplyView />
-              <div className="flex flex-wrap justify-center w-full lg:w-7/12 md:mx-auto mb-8 px-4 md:px-16 lg:px-0">
-                <div className="eclips-bottom eclips-bottom__left-0">
-                  <div className="eclips-bottom-line" />
-                </div>
-              </div>
+            </div>
+            <div className="flex flex-wrap justify-center pt-20">
+              <div className="eclips-hr h-96"></div>
             </div>
           </div>
           <TheMergeBlock />
@@ -271,6 +277,7 @@ const LandingPage: React.FC<{}> = () => {
             data-aos-duration="1000"
             data-aos-easing="ease-in-out"
             className="flex px-4 md:px-8 lg:px-0 py-8 md:py-40"
+            id="join-the-community"
           >
             <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
               <TwitterCommunity />

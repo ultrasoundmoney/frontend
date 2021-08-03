@@ -15,17 +15,12 @@ const TimeLineContentBlock: React.FC<TimeLineContentBlockProps> = ({
   text,
   children,
   styles,
-  lineHeight,
   id,
 }) => {
   const getClassName =
     styles != undefined || styles != null
       ? `flex flex-col justify-center w-full md:w-6/12 md:mx-auto pt-56 px-4 md:px-0 ${styles}`
       : `flex flex-col justify-center w-full md:w-6/12 md:mx-auto pt-56 px-4 md:px-0`;
-  const getLineHeight =
-    lineHeight != undefined || lineHeight != null
-      ? `eclips-bottom eclips-bottom__left-0 ${styles}`
-      : `eclips-bottom eclips-bottom__left-0`;
   return (
     <>
       <section
@@ -45,17 +40,15 @@ const TimeLineContentBlock: React.FC<TimeLineContentBlockProps> = ({
             {title}
           </h1>
           <p
-            className="text-blue-shipcove font-light text-sm text-center mb-10 font-inter"
+            className="text-blue-shipcove font-light text-sm text-center mb-24 font-inter"
             dangerouslySetInnerHTML={{
               __html: text,
             }}
           />
         </div>
         {children}
-        <div className="flex flex-wrap justify-center w-full md:w-7/12 pb-24 md:mx-auto mb-8">
-          <div className={getLineHeight}>
-            <div className="eclips-bottom-line" />
-          </div>
+        <div className="flex flex-wrap justify-center">
+          <div className="eclips-hr h-96"></div>
         </div>
       </section>
     </>

@@ -20,14 +20,14 @@ const Card: React.FC<CardProps> = ({
   const renderType = () => {
     if (type === 1) {
       return (
-        <div className="eth-status text-lg font-light text-white text-left leading-10 font-roboto">
+        <div className="eth-status text-lg font-light text-white text-left xl:leading-10 font-roboto">
           {title}
         </div>
       );
     } else if (type === 2) {
       return (
         <div className="flex flex-wrap justify-between">
-          <div className="eth-supply text-41xl font-light text-white text-left leading-18 font-roboto">
+          <div className="eth-supply text-41xl font-light text-white text-left xl:leading-18 font-roboto">
             {title}
           </div>
           <div className="eth-supply-incr md:pl-8 text-base font-light text-green-mediumspring text-left leading-loose1 font-roboto">
@@ -59,7 +59,7 @@ const Card: React.FC<CardProps> = ({
   return (
     <>
       <div id={id} className={getClass}>
-        <div className="eth-date text-base font-light text-blue-shipcove text-left leading-card font-roboto">
+        <div className="eth-date text-base font-light text-blue-shipcove text-left xl:leading-card font-roboto">
           {name}
         </div>
         {renderType()}

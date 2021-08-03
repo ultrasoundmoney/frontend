@@ -36,76 +36,37 @@ const TheUltraSound: React.FC<{}> = () => {
             {t.eusm_section_title}
           </div>
         </div>
-        <div className="flex flex-wrap justify-center w-full md:w-10/12 mx-auto">
-          <div
-            data-aos="fade-up"
-            data-aos-anchor-placement="top-center"
-            data-aos-delay="50"
-            data-aos-duration="1000"
-            data-aos-easing="ease-in-out"
-            className="w-full md:w-5/12 md:mr-auto self-center"
-          >
-            <ContentBlockMedia
-              title={t.eusm_row_1_left_col_title}
-              text={t.eusm_row_1_left_col_text}
-            />
+        <div
+          id="cc"
+          className="flex flex-wrap justify-center w-full md:w-10/12 mx-auto"
+        >
+          <div className="w-4/12">
+            <div className="ultrasound__content">
+              <h1
+                className="text-white font-light text-base md:text-2xl leading-normal text-left mb-6 leading-title"
+                dangerouslySetInnerHTML={{
+                  __html: t.eusm_row_1_left_col_title,
+                }}
+              />
+              <p
+                className="text-blue-shipcove font-light text-sm text-left mb-10"
+                dangerouslySetInnerHTML={{
+                  __html: t.eusm_row_1_left_col_text,
+                }}
+              />
+            </div>
           </div>
-          <div
-            data-aos="fade-up"
-            data-aos-anchor-placement="top-center"
-            data-aos-delay="50"
-            data-aos-duration="1000"
-            data-aos-easing="ease-in-out"
-            className="w-full md:w-5/12 md:ml-auto"
-          >
-            <ContentBlockMedia
-              img={UsdImg}
-              title={t.eusm_row_1_right_col_title}
-              text={t.eusm_row_1_right_col_text}
-            />
+          <div className="w-6/12">
+            <div className="ultrasound__img">
+              <img
+                title={t.eusm_section_title}
+                alt={t.eusm_section_title}
+                src={BatImg}
+                srcSet={`${BatImg2x} 2x, ${BatImg3x} 3x`}
+                className="mx-auto text-center mb-8"
+              />
+            </div>
           </div>
-        </div>
-        <div
-          data-aos="fade-up"
-          data-aos-anchor-placement="top-center"
-          data-aos-delay="50"
-          data-aos-duration="1000"
-          data-aos-easing="ease-in-out"
-          className="block my-20 w-full md:w-5/12 md:mx-auto"
-        >
-          <ContentBlockMedia
-            img={UsdImg}
-            title={t.eusm_row_2_title}
-            text={t.eusm_row_2_text}
-          />
-        </div>
-        <div
-          data-aos="fade-up"
-          data-aos-anchor-placement="top-center"
-          data-aos-delay="50"
-          data-aos-duration="1000"
-          data-aos-easing="ease-in-out"
-          className="block my-20 w-full md:w-5/12 md:mx-auto"
-        >
-          <ContentBlockMedia
-            img={BtcImg}
-            title={t.eusm_row_3_title}
-            text={t.eusm_row_3_text}
-          />
-        </div>
-        <div
-          data-aos="fade-up"
-          data-aos-anchor-placement="top-center"
-          data-aos-delay="50"
-          data-aos-duration="1000"
-          data-aos-easing="ease-in-out"
-          className="block my-20 w-full md:w-5/12 md:mx-auto"
-        >
-          <ContentBlockMedia
-            img={EthImg}
-            title={t.eusm_row_4_title}
-            text={t.eusm_row_4_text}
-          />
         </div>
       </section>
     </>
