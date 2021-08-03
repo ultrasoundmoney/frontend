@@ -1,7 +1,5 @@
 import React, { memo, FC, useRef, useEffect } from "react";
 import useWebSocket from "react-use-websocket";
-import SpanMoji from "../SpanMoji";
-import CountUp from "react-countup";
 import { CSSTransition } from "react-transition-group";
 
 const weiToGwei = (wei: number): number => wei / 10 ** 9;
@@ -21,28 +19,20 @@ const LatestBlocks: FC = () => {
     }
   );
   const latestBlocks = useRef<FeeBlock[]>([]);
-  const totalFeesBurned: number | undefined = lastJsonMessage?.totalFeesBurned;
 
-  const prevTotalFeesBurnedRef = useRef<number | undefined>(undefined);
+  if (
+    typeof lastJsonMessage?.fees === "number" &&
+    typeof lastJsonMessage?.number === "number"
+  ) {
+    latestBlocks.current.push({
+      number: lastJsonMessage.number,
+      fees: lastJsonMessage.fees,
+    });
+  }
 
-  useEffect(() => {
-    if (typeof totalFeesBurned === "number") {
-      prevTotalFeesBurnedRef.current = totalFeesBurned;
-    }
-    if (
-      typeof totalFeesBurned === "number" &&
-      typeof prevTotalFeesBurnedRef.current === "number"
-    ) {
-      latestBlocks.current.push({
-        number: lastJsonMessage?.number,
-        fees: totalFeesBurned - prevTotalFeesBurnedRef.current,
-      });
-    }
-
-    if (latestBlocks.current.length > 5) {
-      latestBlocks.current.shift();
-    }
-  });
+  if (latestBlocks.current.length > 5) {
+    latestBlocks.current.shift();
+  }
 
   console.log(latestBlocks);
 
