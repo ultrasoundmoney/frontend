@@ -15,6 +15,8 @@ const LatestBlocks: FC = () => {
     {
       share: true,
       filter: (message) => JSON.parse(message.data).type === "base-fee-update",
+      retryOnError: true,
+      shouldReconnect: () => true,
     }
   );
   const messageHistory = useRef([]);

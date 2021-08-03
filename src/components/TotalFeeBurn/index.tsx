@@ -13,6 +13,8 @@ const TotalFeeBurn: FC = () => {
     {
       share: true,
       filter: (message) => JSON.parse(message.data).type === "base-fee-update",
+      retryOnError: true,
+      shouldReconnect: () => true,
     }
   );
   const totalFeesBurned: number | undefined = lastJsonMessage?.totalFeesBurned;

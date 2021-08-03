@@ -51,6 +51,8 @@ const BurnLeaderboard: FC = () => {
       share: true,
       filter: (message) =>
         JSON.parse(message.data).type === "leaderboard-update",
+      retryOnError: true,
+      shouldReconnect: () => true,
     }
   );
 
