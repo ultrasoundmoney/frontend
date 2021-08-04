@@ -11,7 +11,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, text }) => {
     <>
       <div className="accordion-wrapper">
         <div
-          className={`accordion-title text-lg py-3 break-words ${
+          className={`accordion-title text-lg py-4 break-words ${
             isOpen ? "open" : ""
           }`}
           onClick={() => setOpen(!isOpen)}
