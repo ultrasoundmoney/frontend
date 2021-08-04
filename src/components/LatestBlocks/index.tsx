@@ -2,6 +2,7 @@ import React, { memo, FC, useRef, useMemo } from "react";
 import useWebSocket from "react-use-websocket";
 import { CSSTransition } from "react-transition-group";
 import _ from "lodash";
+import styles from "./LatestBlocks.module.scss";
 
 const weiToGwei = (wei: number): number => wei / 10 ** 9;
 const formatter = Intl.NumberFormat("en", {
@@ -45,7 +46,7 @@ export const useBlockHistory = () => {
     return [...messageHistory.current, lastJsonMessage];
   }, [lastJsonMessage]);
 
-  const latestBlocks = _.takeRight(messageHistory.current, 5);
+  const latestBlocks = _.takeRight(messageHistory.current, 7);
   return latestBlocks;
 };
 
@@ -53,7 +54,9 @@ const LatestBlocks: FC = () => {
   const latestBlocks = useBlockHistory();
 
   return (
-    <div className="bg-blue-tangaroa w-full rounded-lg p-8 md:p-16">
+    <div
+      className={`bg-blue-tangaroa w-full rounded-lg p-8 ${styles["balance-padding"]}`}
+    >
       <span className="font-inter text-blue-spindlefont-light text-white text-xl float-left">
         latest blocks
       </span>

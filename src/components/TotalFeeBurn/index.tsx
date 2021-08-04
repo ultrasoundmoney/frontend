@@ -18,14 +18,14 @@ const TotalFeeBurn: FC = () => {
   const totalFeesBurned: number | undefined = lastJsonMessage?.totalFeesBurned;
 
   return (
-    <div className="bg-blue-tangaroa w-full rounded-lg p-8 md:p-16">
+    <div className="bg-blue-tangaroa w-full rounded-lg p-8">
       <div className="flex justify-between">
         <p className="font-inter font-light text-white md:text-xl mb-2">
           cumulative fee burn
         </p>
       </div>
       {typeof totalFeesBurned === "number" ? (
-        <p className="font-roboto flex justify-between text-white text-3xl md:text-4xl lg:text-3xl xl:text-6xl">
+        <p className="font-roboto flex justify-between text-white text-3xl md:text-4xl lg:text-3xl xl:text-5xl">
           <CountUp
             decimals={2}
             duration={2.5}

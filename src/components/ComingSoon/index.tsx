@@ -65,16 +65,16 @@ const ComingSoon: React.FC = () => {
             <source src="/no-full-wings.ogv" type="video/ogg" />
           </video>
         </div>
-        <div className="flex flex-col lg:flex-row lg:px-16">
+        <div className="flex flex-col px-4 md:w-5/6 mx-auto lg:w-full lg:flex-row lg:px-16">
           <div className="lg:w-1/2">
-            <div className="flex flex-col px-4 md:px-2 md:pt-20 mb-4">
+            <div className="md:pt-20 mb-4">
               <TotalFeeBurn />
             </div>
-            <div className="flex flex-col px-4 md:px-2 mb-4">
+            <div className="mb-4">
               <LatestBlocks />
             </div>
           </div>
-          <div className="flex flex-col px-4 md:px-2 mb-16 lg:w-1/2 lg:pt-20">
+          <div className="mb-16 lg:w-1/2 lg:pt-20 lg:pl-4">
             <BurnLeaderboard />
           </div>
         </div>

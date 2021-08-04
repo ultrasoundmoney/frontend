@@ -13,7 +13,7 @@ const FeeUser: FC<{
   fees: number;
   id: string;
 }> = ({ address, detail, name, fees, id }) => (
-  <div className="flex flex-row pt-6 md:pt-8 justify-between items-center hover:opacity-80">
+  <div className="flex flex-row pt-6 md:pt-6 justify-between items-center hover:opacity-80">
     <div className="flex flex-row items-center overflow-hidden">
       {imageIds.includes(id) ? (
         <img
@@ -105,62 +105,60 @@ const BurnLeaderboard: FC = () => {
   const activeFeePeriodClasses =
     "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg";
   return (
-    <div className="bg-blue-tangaroa w-full rounded-lg p-8 md:p-16">
-      <div className="flex flex-col md:justify-between md:items-center md:flex-row md:mb-6">
-        <h2 className="font-inter font-light text-white text-xl mb-8 md:mb-0 md:text-2xl">
-          burn leaderboard
-        </h2>
-        <div className="flex flex-row items-center mx-auto mb-4 md:m-0">
-          <button
-            className={`font-inter text-sm px-4 py-1 border border-transparent ${
-              feePeriod === "24h"
-                ? activeFeePeriodClasses
-                : "text-blue-manatee "
-            }`}
-            onClick={() => setFeePeriod("24h")}
-          >
-            24h
-          </button>
-          <button
-            className={`font-inter text-sm px-4 py-1 border border-transparent ${
-              feePeriod === "7d" ? activeFeePeriodClasses : "text-blue-manatee"
-            }`}
-            onClick={() => setFeePeriod("7d")}
-          >
-            7d
-          </button>
-          <button
-            className={`font-inter text-sm px-4 py-1 border border-transparent ${
-              feePeriod === "30d" ? activeFeePeriodClasses : "text-blue-manatee"
-            }`}
-            onClick={() => setFeePeriod("30d")}
-          >
-            30d
-          </button>
-          <button
-            className={`font-inter text-sm px-4 py-1 border border-transparent ${
-              feePeriod === "all" ? activeFeePeriodClasses : "text-blue-manatee"
-            }`}
-            onClick={() => setFeePeriod("all")}
-          >
-            all
-          </button>
-        </div>
+    <div className="bg-blue-tangaroa w-full rounded-lg p-8">
+      <h2 className="font-inter font-light text-white text-xl mb-4 md:text-xl">
+        burn leaderboard
+      </h2>
+      <div className="flex flex-row items-center mx-auto mb-4 md:m-0">
+        <button
+          className={`font-inter text-sm px-4 py-1 border border-transparent ${
+            feePeriod === "24h" ? activeFeePeriodClasses : "text-blue-manatee "
+          }`}
+          onClick={() => setFeePeriod("24h")}
+        >
+          24h
+        </button>
+        <button
+          className={`font-inter text-sm px-4 py-1 border border-transparent ${
+            feePeriod === "7d" ? activeFeePeriodClasses : "text-blue-manatee"
+          }`}
+          onClick={() => setFeePeriod("7d")}
+        >
+          7d
+        </button>
+        <button
+          className={`font-inter text-sm px-4 py-1 border border-transparent ${
+            feePeriod === "30d" ? activeFeePeriodClasses : "text-blue-manatee"
+          }`}
+          onClick={() => setFeePeriod("30d")}
+        >
+          30d
+        </button>
+        <button
+          className={`font-inter text-sm px-4 py-1 border border-transparent ${
+            feePeriod === "all" ? activeFeePeriodClasses : "text-blue-manatee"
+          }`}
+          onClick={() => setFeePeriod("all")}
+        >
+          all
+        </button>
       </div>
       {selectedLeaderboard === undefined ? (
         <p className="text-lg text-center text-gray-500 pt-16 pb-20">
           loading...
         </p>
       ) : (
-        selectedLeaderboard.map((feeUser) => (
-          <FeeUser
-            key={feeUser.name}
-            name={feeUser.name.split(":")[0]}
-            detail={feeUser.name.split(":")[1]}
-            id={feeUser.id}
-            fees={Number(feeUser.fees)}
-          />
-        ))
+        selectedLeaderboard
+          .slice(0, 8)
+          .map((feeUser) => (
+            <FeeUser
+              key={feeUser.name}
+              name={feeUser.name.split(":")[0]}
+              detail={feeUser.name.split(":")[1]}
+              id={feeUser.id}
+              fees={Number(feeUser.fees)}
+            />
+          ))
       )}
     </div>
   );
