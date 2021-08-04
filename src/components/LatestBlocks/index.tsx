@@ -1,6 +1,6 @@
 import React, { memo, FC, useRef, useMemo } from "react";
 import useWebSocket from "react-use-websocket";
-import { CSSTransition } from "react-transition-group";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import _ from "lodash";
 import styles from "./LatestBlocks.module.scss";
 
@@ -68,28 +68,29 @@ const LatestBlocks: FC = () => {
         {latestBlocks.length === 0 ? (
           <p className="text-white md:text-4xl">loading...</p>
         ) : (
-          latestBlocks.map(({ number, fees }) => (
-            <CSSTransition
-              classNames="fee-block"
-              timeout={500}
-              key={number}
-              appear
-              enter={false}
-            >
-              <li className="flex justify-between mt-5 fee-block">
-                <p className="text-white">
-                  block{" "}
-                  <span className="font-roboto">
-                    #{new Intl.NumberFormat().format(number)}
-                  </span>
-                </p>
-                <p className="text-white">
-                  <span className="font-roboto">{formatFee(fees)} </span>
-                  <span className="text-blue-spindle">Gwei</span>
-                </p>
-              </li>
-            </CSSTransition>
-          ))
+          <TransitionGroup
+            component={null}
+            appear={true}
+            enter={false}
+            exit={false}
+          >
+            {latestBlocks.map(({ number, fees }) => (
+              <CSSTransition classNames="fee-block" timeout={500} key={number}>
+                <li className="flex justify-between mt-5 fee-block">
+                  <p className="text-white">
+                    block{" "}
+                    <span className="font-roboto">
+                      #{new Intl.NumberFormat().format(number)}
+                    </span>
+                  </p>
+                  <p className="text-white">
+                    <span className="font-roboto">{formatFee(fees)} </span>
+                    <span className="text-blue-spindle">Gwei</span>
+                  </p>
+                </li>
+              </CSSTransition>
+            ))}
+          </TransitionGroup>
         )}
       </ul>
     </div>
