@@ -17,7 +17,7 @@ type BaseFeeUpdate = {
   type: "base-fee-update";
 };
 
-const LatestBlocks: FC = () => {
+export const useBlockHistory = () => {
   const { lastJsonMessage } = useWebSocket(
     "ws://api.ultrasound.money/fees-ropsten/base-fee-feed",
     {
@@ -28,7 +28,6 @@ const LatestBlocks: FC = () => {
     }
   );
   const messageHistory = useRef<BaseFeeUpdate[]>([]);
-
   messageHistory.current = useMemo(() => {
     // Initially the message is null. We don't need that one.
     if (lastJsonMessage === null) {
@@ -47,6 +46,11 @@ const LatestBlocks: FC = () => {
   }, [lastJsonMessage]);
 
   const latestBlocks = _.takeRight(messageHistory.current, 5);
+  return latestBlocks;
+};
+
+const LatestBlocks: FC = () => {
+  const latestBlocks = useBlockHistory();
 
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8 md:p-16">
@@ -58,7 +62,7 @@ const LatestBlocks: FC = () => {
       </span>
       <div className="py-6"></div>
       <ul>
-        {messageHistory.current.length === 0 ? (
+        {latestBlocks.length === 0 ? (
           <p className="text-white md:text-4xl">loading...</p>
         ) : (
           latestBlocks.map(({ number, fees }) => (

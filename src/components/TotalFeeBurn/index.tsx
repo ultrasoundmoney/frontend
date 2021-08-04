@@ -25,7 +25,7 @@ const TotalFeeBurn: FC = () => {
         </p>
       </div>
       {typeof totalFeesBurned === "number" ? (
-        <p className="font-roboto flex justify-between text-white text-3xl md:text-4xl lg:text-4xl xl:text-6xl">
+        <p className="font-roboto flex justify-between text-white text-3xl md:text-4xl lg:text-3xl xl:text-6xl">
           <CountUp
             decimals={2}
             duration={2.5}
