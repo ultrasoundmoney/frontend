@@ -1,5 +1,7 @@
-import { FC, memo, useState } from "react";
+import { FC, memo, useState, useRef, useMemo } from "react";
 import useWebSocket from "react-use-websocket";
+import CountUp from "react-countup";
+import _ from "lodash";
 
 type FeePeriod = "24h" | "7d" | "30d" | "all";
 
@@ -23,7 +25,14 @@ const FeeUser: FC<{
       </p>
     </div>
     <p className="font-roboto font-light text-sm text-white ml-8 whitespace-nowrap md:text-lg">
-      {feeFmt.format(fees)} <span className="text-blue-manatee">ETH</span>
+      <CountUp
+        start={0}
+        end={fees}
+        preserveValue={true}
+        decimals={2}
+        duration={1}
+      />{" "}
+      <span className="text-blue-manatee">ETH</span>
     </p>
   </div>
 );
@@ -33,6 +42,16 @@ type FeeUser = {
   address: string | undefined;
   image: string | undefined;
   fees: number;
+};
+
+type FeeBurner = { fees: string; id: string; name: string };
+type LeaderboardUpdate = {
+  number: number;
+  leaderboard24h: FeeBurner[];
+  leaderboard7d: FeeBurner[];
+  leaderboard30d: FeeBurner[];
+  leaderboardAll: FeeBurner[];
+  type: "leaderboard-update";
 };
 
 const feePeriodToUpdateMap: Record<FeePeriod, string> = {
@@ -54,18 +73,26 @@ const BurnLeaderboard: FC = () => {
       shouldReconnect: () => true,
     }
   );
+  const messageHistory = useRef<LeaderboardUpdate[]>([]);
 
-  type FeeBurner = { fees: string; id: string; name: string };
-  type LeaderboardUpdate = {
-    leaderboard24h: FeeBurner[];
-    leaderboard7d: FeeBurner[];
-    leaderboard30d: FeeBurner[];
-    leaderboardAll: FeeBurner[];
-  };
+  messageHistory.current = useMemo(() => {
+    // Initially the message is null. We don't need that one.
+    if (lastJsonMessage === null) {
+      return messageHistory.current;
+    }
 
-  const leaderboard = (lastJsonMessage || undefined) as
-    | LeaderboardUpdate
-    | undefined;
+    // Sometimes the hook calls us with a message that passes the memo check, yet contains the same values, extra guard here.
+    if (
+      !_.isEmpty(messageHistory.current) &&
+      _.last(messageHistory.current).number === lastJsonMessage.number
+    ) {
+      return messageHistory.current;
+    }
+
+    return [...messageHistory.current, lastJsonMessage];
+  }, [lastJsonMessage]);
+
+  const leaderboard = _.last(messageHistory.current);
   const selectedLeaderboard: FeeBurner[] | undefined =
     leaderboard && leaderboard[feePeriodToUpdateMap[feePeriod]];
 
@@ -123,7 +150,7 @@ const BurnLeaderboard: FC = () => {
           <FeeUser
             key={feeUser.name}
             name={feeUser.name}
-            image={feeUser.id}
+            image={`/contract-image/${feeUser.id}.png`}
             fees={Number(feeUser.fees)}
           />
         ))

@@ -3,7 +3,7 @@ import TwitterCommunity from "../TwitterCommunity";
 import FollowingYou from "../FollowingYou";
 import SupplyView from "../SupplyView";
 import { TranslationsContext } from "../../translations-context";
-// import BurnLeaderboard from "../BurnLeaderboard";
+import BurnLeaderboard from "../BurnLeaderboard";
 import TotalFeeBurn from "../TotalFeeBurn";
 import LatestBlocks from "../LatestBlocks";
 import FaqBlock from "../Landing/faq";
@@ -28,20 +28,14 @@ const ComingSoon: React.FC = () => {
             track ETH become ultra sound
           </p>
         </div>
-        {/* <div className="flex flex-col px-4 md:px-2 md:pt-40 mb-16"> */}
-        {/*   <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8"> */}
-        {/*     the biggest Ξ burners */}
-        {/*   </h1> */}
-        {/*   <p className="text-white text-center font-light text-base lg:text-lg mb-8"> */}
-        {/*     see who&aposs contracting the supply */}
-        {/*   </p> */}
-        {/*   <BurnLeaderboard /> */}
-        {/* </div> */}
-        <div className="flex flex-col px-4 md:px-2 md:pt-20 mb-4">
+        <div className="flex flex-col px-4 md:px-2 md:pt-20 mb-8">
           <TotalFeeBurn />
         </div>
         <div className="flex flex-col px-4 md:px-2 mb-8">
           <LatestBlocks />
+        </div>
+        <div className="flex flex-col px-4 md:px-2 md:pt-40 mb-16">
+          <BurnLeaderboard />
         </div>
         <div className="flex flex-col px-4 md:px-2 md:pt-40 mb-16">
           <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8">
