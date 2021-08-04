@@ -1,21 +1,15 @@
 import React, { memo, FC } from "react";
-import useWebSocket from "react-use-websocket";
 import SpanMoji from "../SpanMoji";
 import CountUp from "react-countup";
+import { useBlockHistory } from "../LatestBlocks";
+import _ from "lodash";
 
 const weiToEth = (wei: number): number => wei / 10 ** 18;
 
 const TotalFeeBurn: FC = () => {
-  const { lastJsonMessage } = useWebSocket(
-    "wss://api.ultrasound.money/fees-ropsten/base-fee-feed",
-    {
-      share: true,
-      filter: (message) => JSON.parse(message.data).type === "base-fee-update",
-      retryOnError: true,
-      shouldReconnect: () => true,
-    }
-  );
-  const totalFeesBurned: number | undefined = lastJsonMessage?.totalFeesBurned;
+  const latestBlocks = useBlockHistory();
+  const totalFeesBurned: number | undefined = _.last(latestBlocks)
+    ?.totalFeesBurned;
 
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8">
