@@ -49,7 +49,7 @@ const Navigation: React.FC<{}> = () => {
                     className="px-3 py-2 flex items-center leading-snug text-blue-shipcove hover:opacity-75 hover:text-white"
                     href="/"
                   >
-                    FAQs
+                    q&a
                   </a>
                 </Link>
               </li>
