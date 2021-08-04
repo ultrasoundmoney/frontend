@@ -105,7 +105,7 @@ const BurnLeaderboard: FC = () => {
   const activeFeePeriodClasses =
     "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg";
   return (
-    <div className="bg-blue-tangaroa w-full md:w-5/6 lg:w-2/3 mx-auto rounded-lg p-8 md:p-16">
+    <div className="bg-blue-tangaroa w-full rounded-lg p-8 md:p-16">
       <div className="flex flex-col md:justify-between md:items-center md:flex-row md:mb-6">
         <h2 className="font-inter font-light text-white text-xl mb-8 md:mb-0 md:text-2xl">
           burn leaderboard

@@ -49,7 +49,7 @@ const LatestBlocks: FC = () => {
   const latestBlocks = _.takeRight(messageHistory.current, 5);
 
   return (
-    <div className="bg-blue-tangaroa w-full rounded-lg p-8 md:p-16 md:w-2/3 md:mx-auto">
+    <div className="bg-blue-tangaroa w-full rounded-lg p-8 md:p-16">
       <span className="font-inter text-blue-spindlefont-light text-white text-xl float-left">
         latest blocks
       </span>

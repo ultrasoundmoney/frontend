@@ -13,29 +13,26 @@ const ComingSoon: React.FC = () => {
   return (
     <div className="wrapper bg-blue-midnightexpress coming-soon">
       <div className="container m-auto">
-        <div className="w-full pt-20 pb-16">
-          <div
-            className={`ultra-sound-text w-full text-6xl md:text-7xl md:w-1/2 m-auto`}
-          >
-            ultra sound
+        <div
+          className={`ultra-sound-text w-full pt-16 text-6xl md:text-7xl md:w-1/2 lg:w-5/6 lg:pt-16 m-auto mb-8`}
+        >
+          ultra sound awakening
+        </div>
+        <p className="font-inter text-white text-center mb-16">
+          track ETH become ultra sound
+        </p>
+        <div className="flex flex-col lg:flex-row lg:px-16">
+          <div className="lg:w-1/2">
+            <div className="flex flex-col px-4 md:px-2 md:pt-20 mb-8">
+              <TotalFeeBurn />
+            </div>
+            <div className="flex flex-col px-4 md:px-2 mb-8">
+              <LatestBlocks />
+            </div>
           </div>
-          <div
-            className={`ultra-sound-text w-full text-6xl md:text-7xl md:w-1/2 m-auto mb-8`}
-          >
-            awakening
+          <div className="flex flex-col px-4 md:px-2 md:pt-40 mb-16 lg:w-1/2 lg:pt-20">
+            <BurnLeaderboard />
           </div>
-          <p className="font-inter text-white text-center">
-            track ETH become ultra sound
-          </p>
-        </div>
-        <div className="flex flex-col px-4 md:px-2 md:pt-20 mb-8">
-          <TotalFeeBurn />
-        </div>
-        <div className="flex flex-col px-4 md:px-2 mb-8">
-          <LatestBlocks />
-        </div>
-        <div className="flex flex-col px-4 md:px-2 md:pt-40 mb-16">
-          <BurnLeaderboard />
         </div>
         <div className="flex flex-col px-4 md:px-2 md:pt-40 mb-16">
           <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8">
