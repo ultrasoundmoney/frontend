@@ -27,8 +27,8 @@ const ComingSoon: React.FC = () => {
   console.log(data);
   const ethPrice = `$2,391.94 <span class="text-green-500 px-2">(+2.13%)</span>• ⛽️ 8 Gwei`;
   return (
-    <div className="wrapper bg-blue-midnightexpress coming-soon">
-      <div className="container m-auto">
+    <div className="wrapper bg-blue-midnightexpress">
+      <div className="container m-auto coming-soon">
         <Navigation></Navigation>
         {/* <div className="w-full md:w-5/12 relative flex justify-start lg:static lg:justify-start p-4"> */}
         {/*   <div className="flex-initial pr-2 lg:pr-8"> */}
@@ -53,7 +53,7 @@ const ComingSoon: React.FC = () => {
         </p>
         <div className="w-full">
           <video
-            className="w-full md:w-64 rounded-xl shadow-2xl"
+            className="w-1/2 mx-auto -mt-24 mix-blend-lighten"
             playsInline
             autoPlay
             muted
@@ -88,20 +88,20 @@ const ComingSoon: React.FC = () => {
           <div className="w-full lg:w-5/6 md:m-auto relative bg-blue-tangaroa px-2 md:px-4 xl:px-12 py-4 md:py-8 xl:py-12 rounded-xl">
             <SupplyView />
           </div>
-        </div>
-        <div className="flex px-4 md:px-0 pt-8 md:pt-40 mb-16">
-          <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
-            <TwitterCommunity />
+          <div className="flex px-4 md:px-0 pt-8 md:pt-40 mb-16">
+            <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
+              <TwitterCommunity />
+            </div>
           </div>
-        </div>
-        <div className="flex px-4 md:px-0 pt-20 pb-40">
-          <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
-            <FollowingYou />
+          <div className="flex px-4 md:px-0 pt-20 pb-40">
+            <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
+              <FollowingYou />
+            </div>
           </div>
-        </div>
-        <div className="flex px-4 md:px-0 pt-20 pb-60">
-          <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
-            <FaqBlock />
+          <div className="flex px-4 md:px-0 pt-20 pb-60">
+            <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
+              <FaqBlock />
+            </div>
           </div>
         </div>
       </div>
