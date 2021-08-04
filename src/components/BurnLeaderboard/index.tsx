@@ -14,7 +14,7 @@ const FeeUser: FC<{
   fees: number;
   image: string | undefined;
 }> = ({ address, detail, name, fees, image }) => (
-  <div className="flex flex-row py-4 justify-between items-center hover:opacity-80">
+  <div className="flex flex-row pt-6 md:pt-8 justify-between items-center hover:opacity-80">
     <div className="flex flex-row items-center overflow-hidden">
       <img
         className="w-8 h-8 flex-shrink-0 bg-white rounded-full"
@@ -101,12 +101,12 @@ const BurnLeaderboard: FC = () => {
   const activeFeePeriodClasses =
     "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg";
   return (
-    <div className="bg-blue-tangaroa w-full rounded-lg p-8 md:p-16">
-      <div className="flex flex-col md:justify-between md:items-center md:flex-row md:mb-10">
+    <div className="bg-blue-tangaroa w-full md:w-5/6 lg:w-2/3 mx-auto rounded-lg p-8 md:p-16">
+      <div className="flex flex-col md:justify-between md:items-center md:flex-row md:mb-6">
         <h2 className="font-inter font-light text-white text-xl mb-8 md:mb-0 md:text-2xl">
           burn leaderboard
         </h2>
-        <div className="flex flex-row items-center mx-auto mb-8 md:m-0">
+        <div className="flex flex-row items-center mx-auto mb-4 md:m-0">
           <button
             className={`font-inter text-sm px-4 py-1 border border-transparent ${
               feePeriod === "24h"
