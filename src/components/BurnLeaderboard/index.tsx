@@ -9,10 +9,11 @@ const feeFmt = new Intl.NumberFormat("en", { minimumFractionDigits: 2 });
 
 const FeeUser: FC<{
   name?: string;
+  detail?: string;
   address?: string;
   fees: number;
   image: string | undefined;
-}> = ({ address, name, fees, image }) => (
+}> = ({ address, detail, name, fees, image }) => (
   <div className="flex flex-row py-4 justify-between items-center hover:opacity-80">
     <div className="flex flex-row items-center overflow-hidden">
       <img
@@ -21,14 +22,15 @@ const FeeUser: FC<{
         alt=""
       />
       <p className="font-roboto text-sm text-white pl-4 truncate md:text-lg">
-        {name || address}
+        {name || address} <span className="text-blue-shipcove">{detail}</span>
       </p>
     </div>
     <p className="font-roboto font-light text-sm text-white ml-8 whitespace-nowrap md:text-lg">
       <CountUp
         start={0}
-        end={fees}
+        end={fees / 10000000} // TEMP HACK ASSUMING 10 Gwei base gas price
         preserveValue={true}
+        separator=","
         decimals={2}
         duration={1}
       />{" "}
@@ -149,7 +151,8 @@ const BurnLeaderboard: FC = () => {
         selectedLeaderboard.map((feeUser) => (
           <FeeUser
             key={feeUser.name}
-            name={feeUser.name}
+            name={feeUser.name.split(":")[0]}
+            detail={feeUser.name.split(":")[1]}
             image={`/contract-image/${feeUser.id}.png`}
             fees={Number(feeUser.fees)}
           />
