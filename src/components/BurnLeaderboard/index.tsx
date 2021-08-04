@@ -106,7 +106,7 @@ const BurnLeaderboard: FC = () => {
     "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg";
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8">
-      <h2 className="font-inter font-light text-white text-xl mb-4 md:text-xl">
+      <h2 className="font-inter font-light text-blue-shipcove text-xl mb-4 md:text-xl">
         burn leaderboard
       </h2>
       <div className="flex flex-row items-center mx-auto mb-4 md:m-0">
