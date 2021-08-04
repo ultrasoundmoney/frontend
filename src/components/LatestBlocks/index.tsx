@@ -20,7 +20,7 @@ type BaseFeeUpdate = {
 
 export const useBlockHistory = () => {
   const { lastJsonMessage } = useWebSocket(
-    "ws://api.ultrasound.money/fees-ropsten/base-fee-feed",
+    "wss://api.ultrasound.money/fees-ropsten/base-fee-feed",
     {
       share: true,
       filter: (message) => JSON.parse(message.data).type === "base-fee-update",

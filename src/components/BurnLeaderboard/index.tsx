@@ -70,7 +70,7 @@ const BurnLeaderboard: FC = () => {
   const [feePeriod, setFeePeriod] = useState<FeePeriod>("24h");
 
   const { lastJsonMessage } = useWebSocket(
-    "ws://api.ultrasound.money/fees/base-fee-feed",
+    "wss://api.ultrasound.money/fees/base-fee-feed",
     {
       share: true,
       filter: (message) =>
