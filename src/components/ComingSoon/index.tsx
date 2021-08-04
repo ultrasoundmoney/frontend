@@ -36,7 +36,7 @@ const ComingSoon: React.FC = () => {
         </p>
         <div className="w-full">
           <video
-            className="w-1/2 mx-auto -mt-24 mix-blend-lighten"
+            className="w-full md:w-4/6 lg:w-3/6 mx-auto mb-8 pr-4 -mt-24 mix-blend-lighten"
             playsInline
             autoPlay
             muted
