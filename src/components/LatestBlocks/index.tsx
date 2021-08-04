@@ -45,9 +45,13 @@ const LatestBlocks: FC = () => {
 
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8 md:p-16 md:w-2/3 md:mx-auto">
-      <p className="font-inter text-blue-spindlefont-light text-white text-xl mb-8 md:mb-8">
+      <span className="font-inter text-blue-spindlefont-light text-white text-xl float-left">
         latest blocks
-      </p>
+      </span>
+      <span className="font-inter text-blue-spindlefont-light text-white text-xl float-right">
+        burn
+      </span>
+      <div className="py-6"></div>
       <ul>
         {messageHistory.current.length === 0 ? (
           <p className="text-white md:text-4xl">loading...</p>
@@ -62,12 +66,15 @@ const LatestBlocks: FC = () => {
               unmountOnExit={true}
               enter={false}
             >
-              <li className="flex justify-between my-8 fee-block">
+              <li className="flex justify-between my-5 fee-block">
                 <p className="text-white">
-                  block #{new Intl.NumberFormat().format(number)}
+                  block{" "}
+                  <span className="font-roboto">
+                    #{new Intl.NumberFormat().format(number)}
+                  </span>
                 </p>
                 <p className="text-white">
-                  {formatFee(fees)}{" "}
+                  <span className="font-roboto">{formatFee(fees)} </span>
                   <span className="text-blue-spindle">Gwei</span>
                 </p>
               </li>
