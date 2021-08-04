@@ -9,6 +9,14 @@ const formatter = Intl.NumberFormat("en", {
 });
 const formatFee = (fee: number) => formatter.format(weiToGwei(fee));
 
+type BaseFeeUpdate = {
+  baseFeePerGas: number;
+  fees: number;
+  number: number;
+  totalFeesBurned: number;
+  type: "base-fee-update";
+};
+
 const LatestBlocks: FC = () => {
   const { lastJsonMessage } = useWebSocket(
     "ws://api.ultrasound.money/fees-ropsten/base-fee-feed",
@@ -19,7 +27,7 @@ const LatestBlocks: FC = () => {
       shouldReconnect: () => true,
     }
   );
-  const messageHistory = useRef([]);
+  const messageHistory = useRef<BaseFeeUpdate[]>([]);
 
   messageHistory.current = useMemo(() => {
     // Initially the message is null. We don't need that one.
@@ -38,10 +46,7 @@ const LatestBlocks: FC = () => {
     return [...messageHistory.current, lastJsonMessage];
   }, [lastJsonMessage]);
 
-  const latestBlocks = _.takeRight(
-    messageHistory.current.filter((msg) => msg !== null),
-    5
-  );
+  const latestBlocks = _.takeRight(messageHistory.current, 5);
 
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8 md:p-16 md:w-2/3 md:mx-auto">
@@ -58,12 +63,10 @@ const LatestBlocks: FC = () => {
         ) : (
           latestBlocks.map(({ number, fees }) => (
             <CSSTransition
-              in={latestBlocks.some((block) => block.number === number)}
               classNames="fee-block"
               timeout={500}
-              appear={true}
               key={number}
-              unmountOnExit={true}
+              appear
               enter={false}
             >
               <li className="flex justify-between mt-5 fee-block">
