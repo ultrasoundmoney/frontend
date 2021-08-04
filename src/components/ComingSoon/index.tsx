@@ -5,14 +5,18 @@ import SupplyView from "../SupplyView";
 import { TranslationsContext } from "../../translations-context";
 import BurnLeaderboard from "../BurnLeaderboard";
 import TotalFeeBurn from "../TotalFeeBurn";
-import LatestBlocks from "../LatestBlocks";
+import LatestBlocks, { useBlockHistory } from "../LatestBlocks";
 import FaqBlock from "../Landing/faq";
 import useSWR from "swr";
-import Navigation from "../Navigation";
 import noFullWingsPoster from "../../assets/no-full-wings.jpg";
+import twemoji from "twemoji";
+import Link from "next/link";
+import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
+import _ from "lodash";
 
 const ComingSoon: React.FC = () => {
   const t = React.useContext(TranslationsContext);
+  const latestBlocks = useBlockHistory();
   const { data } = useSWR(
     "https://api.ultrasound.money/fees/eth-price",
     (url: string) => fetch(url).then((r) => r.json()),
@@ -21,11 +25,28 @@ const ComingSoon: React.FC = () => {
       revalidateOnReconnect: true,
     }
   );
-  console.log(data);
+  const ethPrice = `$${
+    data?.usd
+  } <span class="px-1 text-green-400">(+${data?.usd24hChange?.toFixed(
+    2
+  )}%)</span> • ⛽️${_.last(latestBlocks)?.baseFeePerGas} Gwei</span>`;
+
   return (
     <div className="wrapper bg-blue-midnightexpress">
       <div className="container m-auto coming-soon">
-        <Navigation></Navigation>
+        <div className="w-full md:w-5/12 relative flex justify-start lg:static lg:justify-start p-4">
+          <div className="pr-2 lg:pr-8">
+            <Link href="/">
+              <img className="max-w-max" src={EthLogo} alt={t.title} />
+            </Link>
+          </div>
+          <div
+            className="flex-initial flex text-white self-center bg-blue-tangaroa px-2 md:px-3 py-2 text-xs lg:text-sm eth-price-gass-emoji font-roboto"
+            dangerouslySetInnerHTML={{
+              __html: twemoji.parse(ethPrice),
+            }}
+          />
+        </div>
         <div
           className={`ultra-sound-text w-full pt-16 text-6xl md:text-7xl md:w-1/2 lg:w-5/6 lg:pt-16 m-auto mb-8`}
         >
