@@ -22,7 +22,7 @@ const FeeUser: FC<{
           alt=""
         />
       ) : (
-        <div className="w-8 h-8"></div>
+        <div className="p-4"></div>
       )}
       <p className="font-roboto text-sm text-white pl-4 truncate md:text-lg">
         {name || address} <span className="text-blue-shipcove">{detail}</span>
