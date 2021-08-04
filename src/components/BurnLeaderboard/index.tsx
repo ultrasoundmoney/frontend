@@ -2,6 +2,7 @@ import { FC, memo, useState, useRef, useMemo } from "react";
 import useWebSocket from "react-use-websocket";
 import CountUp from "react-countup";
 import _ from "lodash";
+import imageIds from "../../assets/leaderboard-image-ids.json";
 
 type FeePeriod = "24h" | "7d" | "30d" | "all";
 
@@ -10,15 +11,19 @@ const FeeUser: FC<{
   detail?: string;
   address?: string;
   fees: number;
-  image: string | undefined;
-}> = ({ address, detail, name, fees, image }) => (
+  id: string;
+}> = ({ address, detail, name, fees, id }) => (
   <div className="flex flex-row pt-6 md:pt-8 justify-between items-center hover:opacity-80">
     <div className="flex flex-row items-center overflow-hidden">
-      <img
-        className="w-8 h-8 flex-shrink-0 bg-white rounded-full"
-        src={image}
-        alt=""
-      />
+      {imageIds.includes(id) ? (
+        <img
+          className="w-8 h-8 flex-shrink-0 bg-white rounded-full"
+          src={`/leaderboard-images/${id}.png`}
+          alt=""
+        />
+      ) : (
+        <div className="w-8 h-8"></div>
+      )}
       <p className="font-roboto text-sm text-white pl-4 truncate md:text-lg">
         {name || address} <span className="text-blue-shipcove">{detail}</span>
       </p>
@@ -152,7 +157,7 @@ const BurnLeaderboard: FC = () => {
             key={feeUser.name}
             name={feeUser.name.split(":")[0]}
             detail={feeUser.name.split(":")[1]}
-            image={`/contract-image/${feeUser.id}.png`}
+            id={feeUser.id}
             fees={Number(feeUser.fees)}
           />
         ))
