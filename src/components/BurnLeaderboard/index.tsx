@@ -41,6 +41,7 @@ const FeeUser: FC<{
 
 type FeeUser = {
   name: string | undefined;
+  detail: string | undefined;
   address: string | undefined;
   image: string | undefined;
   fees: number;
