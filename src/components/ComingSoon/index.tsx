@@ -25,11 +25,10 @@ const ComingSoon: React.FC = () => {
       revalidateOnReconnect: true,
     }
   );
-  const ethPrice = `$${
-    data?.usd
-  } <span class="px-1 text-green-400">(+${data?.usd24hChange?.toFixed(
-    2
-  )}%)</span> • ⛽️${_.last(latestBlocks)?.baseFeePerGas} Gwei</span>`;
+  const ethUsdPrice = data?.usd;
+  const ethUsd24hChange = data?.usd24hChange?.toFixed(2);
+  const baseFeePerGas = _.last(latestBlocks)?.baseFeePerGas;
+  const ethPrice = `$${ethUsdPrice} <span class="px-1 text-green-400">(+${ethUsd24hChange}%)</span> • ⛽️${baseFeePerGas} Gwei</span>`;
 
   return (
     <div className="wrapper bg-blue-midnightexpress">
@@ -40,13 +39,16 @@ const ComingSoon: React.FC = () => {
               <img className="max-w-max" src={EthLogo} alt={t.title} />
             </Link>
           </div>
-          <div
-            className="flex-initial flex text-white self-center bg-blue-tangaroa px-2 md:px-3 py-2 text-xs lg:text-sm eth-price-gass-emoji font-roboto"
-            dangerouslySetInnerHTML={{
-              __html: twemoji.parse(ethPrice),
-            }}
-          />
+          {ethUsdPrice !== undefined && baseFeePerGas !== undefined && (
+            <div
+              className="flex-initial flex text-white self-center bg-blue-tangaroa px-2 md:px-3 py-2 text-xs lg:text-sm eth-price-gass-emoji font-roboto"
+              dangerouslySetInnerHTML={{
+                __html: twemoji.parse(ethPrice),
+              }}
+            />
+          )}
         </div>
+
         <div
           className={`ultra-sound-text w-full pt-16 text-6xl md:text-7xl md:w-1/2 lg:w-5/6 lg:pt-16 m-auto mb-8`}
         >
