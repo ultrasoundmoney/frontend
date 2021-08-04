@@ -36,17 +36,17 @@ const Navigation: React.FC<{}> = () => {
               <li className="nav-item lg:px-4 xl:px-8 justify-center">
                 <Link href="/">
                   <a
-                    className="px-3 py-2 flex items-center text-xs leading-snug text-blue-shipcove hover:opacity-75 hover:text-white"
+                    className="px-3 py-2 flex items-center leading-snug text-blue-shipcove hover:opacity-75 hover:text-white"
                     href="/"
                   >
-                    Dashboard
+                    dashboard
                   </a>
                 </Link>
               </li>
               <li className="nav-item lg:px-4 xl:px-8 justify-center">
                 <Link href="/">
                   <a
-                    className="px-3 py-2 flex items-center text-xs leading-snug text-blue-shipcove hover:opacity-75 hover:text-white"
+                    className="px-3 py-2 flex items-center leading-snug text-blue-shipcove hover:opacity-75 hover:text-white"
                     href="/"
                   >
                     FAQs
@@ -55,18 +55,18 @@ const Navigation: React.FC<{}> = () => {
               </li>
               <li className="nav-item lg:px-4 xl:px-8 justify-center">
                 <a
-                  className="px-3 py-2 flex items-center text-xs leading-snug text-blue-shipcove hover:opacity-75 hover:text-white"
+                  className="px-3 py-2 flex items-center leading-snug text-blue-shipcove hover:opacity-75 hover:text-white"
                   href="#faqs"
                 >
-                  Resources
+                  resources
                 </a>
               </li>
               <li className="nav-item lg:px-4 xl:px-8 justify-center">
                 <a
-                  className="px-3 py-2 flex items-center font-medium text-sm  text-white hover:text-blue-shipcove border-white border-solid border-2 rounded-3xl hover:border-blue-shipcove"
+                  className="px-3 py-2 flex items-center font-medium text-white hover:text-blue-shipcove border-white border-solid border-2 rounded-3xl hover:border-blue-shipcove"
                   href="#join-the-community"
                 >
-                  Join The Community
+                  join the fam
                 </a>
               </li>
             </ul>
