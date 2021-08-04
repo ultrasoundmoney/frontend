@@ -16,7 +16,7 @@ const FaqBlock: React.FC<FaqBlockPros> = () => {
         id="faq"
       >
         <div className="block py-8">
-          <h1 className="text-white text-center text-2xl">
+          <h1 className="text-white text-center text-2xl md:text-3xl xl:text-41xl">
             {t.faq_section_title}
           </h1>
         </div>
@@ -30,10 +30,10 @@ const FaqBlock: React.FC<FaqBlockPros> = () => {
           <Accordion title={t.faq_question_7} text={t.faq_answer_7} />
           <Accordion title={t.faq_question_8} text={t.faq_answer_8} />
         </div>
-        <div className="w-full lg:w-7/12 mx-auto px-4 md:px-0 md:flex justify-center mt-16">
-          <h1 className="flex-initial text-white text-lg font-light self-center md:px-4">
+        <div className="w-full mx-auto px-0 flex justify-center mt-16">
+          <span className="flex-initial text-white text-lg font-light self-center px-4">
             {t.faq_missing_question}
-          </h1>
+          </span>
           <button
             type="button"
             className="flex-none px-3 py-2 text-base text-white hover:opacity-75 border-white border-solid border-2 rounded-3xl"
