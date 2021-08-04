@@ -5,8 +5,6 @@ import _ from "lodash";
 
 type FeePeriod = "24h" | "7d" | "30d" | "all";
 
-const feeFmt = new Intl.NumberFormat("en", { minimumFractionDigits: 2 });
-
 const FeeUser: FC<{
   name?: string;
   detail?: string;
