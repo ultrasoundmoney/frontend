@@ -17,7 +17,7 @@ const FeeUser: FC<{
     <div className="flex flex-row items-center overflow-hidden">
       {imageIds.includes(id) ? (
         <img
-          className="w-8 h-8 flex-shrink-0 bg-white rounded-full"
+          className="w-8 h-8 flex-shrink-0 leaderboard-image"
           src={`/leaderboard-images/${id}.png`}
           alt=""
         />
