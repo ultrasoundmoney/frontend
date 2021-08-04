@@ -2,6 +2,7 @@ import React, { memo, FC, useRef, useMemo } from "react";
 import useWebSocket from "react-use-websocket";
 import { CSSTransition } from "react-transition-group";
 import _ from "lodash";
+import styles from "./LatestBlocks.module.scss";
 
 const weiToGwei = (wei: number): number => wei / 10 ** 9;
 const formatter = Intl.NumberFormat("en", {
@@ -17,7 +18,7 @@ type BaseFeeUpdate = {
   type: "base-fee-update";
 };
 
-const LatestBlocks: FC = () => {
+export const useBlockHistory = () => {
   const { lastJsonMessage } = useWebSocket(
     "ws://api.ultrasound.money/fees-ropsten/base-fee-feed",
     {
@@ -28,7 +29,6 @@ const LatestBlocks: FC = () => {
     }
   );
   const messageHistory = useRef<BaseFeeUpdate[]>([]);
-
   messageHistory.current = useMemo(() => {
     // Initially the message is null. We don't need that one.
     if (lastJsonMessage === null) {
@@ -46,11 +46,18 @@ const LatestBlocks: FC = () => {
     return [...messageHistory.current, lastJsonMessage];
   }, [lastJsonMessage]);
 
-  const latestBlocks = _.takeRight(messageHistory.current, 5);
+  const latestBlocks = _.takeRight(messageHistory.current, 7);
+  return latestBlocks;
+};
+
+const LatestBlocks: FC = () => {
+  const latestBlocks = useBlockHistory();
 
   return (
-    <div className="bg-blue-tangaroa w-full rounded-lg p-8 md:p-16 md:w-2/3 md:mx-auto">
-      <span className="font-inter text-blue-spindlefont-light text-white text-xl float-left">
+    <div
+      className={`bg-blue-tangaroa w-full rounded-lg p-8 ${styles["balance-padding"]}`}
+    >
+      <span className="font-inter text-blue-spindlefont-light text-blue-shipcove text-xl float-left">
         latest blocks
       </span>
       <span className="font-inter text-blue-spindlefont-light text-white text-xl float-right">
@@ -58,7 +65,7 @@ const LatestBlocks: FC = () => {
       </span>
       <div className="py-6"></div>
       <ul>
-        {messageHistory.current.length === 0 ? (
+        {latestBlocks.length === 0 ? (
           <p className="text-white md:text-4xl">loading...</p>
         ) : (
           latestBlocks.map(({ number, fees }) => (

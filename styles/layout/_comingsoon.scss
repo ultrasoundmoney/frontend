@@ -1,7 +1,7 @@
 .coming-soon {
   background-image: url("../../src/assets/blurred-bg.svg");
   background-repeat: no-repeat;
-  background-position: center top;
+  background-position: center -300px;
   background-size: auto;
   width: 100%;
 }
@@ -177,4 +177,9 @@
 
 .fee-block-appear-active {
   opacity: 1;
+}
+
+.leaderboard-image {
+  border-radius: 50%;
+  border: 1px solid rgb(27, 34, 54);
 }
