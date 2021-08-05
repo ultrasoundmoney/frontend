@@ -68,7 +68,7 @@ const LatestBlocks: FC = () => {
       <div className="py-6"></div>
       <ul>
         {latestBlocks.length === 0 ? (
-          <p className="text-white md:text-4xl">loading...</p>
+          <p className="font-roboto text-white md:text-4xl">loading...</p>
         ) : (
           <TransitionGroup
             component={null}
