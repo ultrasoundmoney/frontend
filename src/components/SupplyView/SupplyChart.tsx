@@ -34,8 +34,7 @@ interface Props {
   projectedBaseGasPrice: number;
   projectedMergeDate: DateTime;
   showBreakdown: boolean;
-  onPeakProjected: () => void;
-  onNoPeakProjected: () => void;
+  onPeakProjectedToggle: (isPeakPresent: boolean) => void;
 }
 
 interface HighchartsRef {
@@ -55,20 +54,21 @@ const SupplyChart: React.FC<Props> = ({
   projectedStaking,
   projectedMergeDate,
   showBreakdown: forceShowBreakdown,
-  onPeakProjected,
-  onNoPeakProjected,
+  onPeakProjectedToggle,
 }) => {
   const t = React.useContext(TranslationsContext);
-  React.useEffect(() => {
-    Highcharts.setOptions({
-      lang: {
-        thousandsSep: t.chart_thousands_sep,
-        decimalPoint: t.chart_decimal_point,
-      },
-    });
-  }, [t]);
-
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
   const chartRef = React.useRef<HighchartsRef | null>(null);
+
+  React.useEffect(() => {
+    // Sometimes the chart container resizes to be smaller after
+    // the page finishes loading. Force a reflow to handle this.
+    const hc = containerRef.current.querySelector(".highcharts-container");
+    if (hc.clientWidth > containerRef.current.clientWidth) {
+      console.log("reflow!");
+      chartRef.current.chart.reflow();
+    }
+  }, [t]);
 
   // Show / hide supply breakdown on hover
   const [showBreakdown, setShowBreakdown] = React.useState(false);
@@ -120,7 +120,8 @@ const SupplyChart: React.FC<Props> = ({
       projectedBaseGasPrice,
       projectedStaking,
       projectedMergeDate,
-      showBreakdown || forceShowBreakdown,
+      showBreakdown,
+      forceShowBreakdown,
       useCompactChart,
       useCompactMarkers,
     ]
@@ -434,18 +435,27 @@ const SupplyChart: React.FC<Props> = ({
         useHTML: true,
       };
       annotations.push(annotation);
-      onPeakProjected();
+      onPeakProjectedToggle(true);
     } else {
-      onNoPeakProjected();
+      onPeakProjectedToggle(false);
     }
 
     return [series, annotations, supplyByDate];
-  }, [chartSettings, t]);
+  }, [chartSettings, onPeakProjectedToggle, t]);
 
   // Now build up the Highcharts configuration object
   const options = React.useMemo((): Highcharts.Options => {
     // Animate only after mounting
     const animate = Boolean(chartRef.current);
+
+    if (typeof window !== "undefined") {
+      Highcharts.setOptions({
+        lang: {
+          thousandsSep: t.chart_thousands_sep,
+          decimalPoint: t.chart_decimal_point,
+        },
+      });
+    }
 
     const chartOptions: Highcharts.Options = {
       annotations: [
@@ -597,7 +607,7 @@ const SupplyChart: React.FC<Props> = ({
 
   return (
     <>
-      <div className={styles.supplyChart}>
+      <div ref={containerRef} className={styles.supplyChart}>
         <HighchartsReact
           options={options}
           highcharts={Highcharts}
