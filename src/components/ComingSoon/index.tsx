@@ -54,7 +54,7 @@ const ComingSoon: React.FC = () => {
           <>
             <div className="flex">
               <div className="w-full md:w-5/6 lg:w-3/6 md:m-auto pb-4">
-                <CountDown targetDate="August 5, 2021" targetTime="12:38:30" />
+                <CountDown targetDate="August 5, 2021" targetTime="12:36:10" />
               </div>
             </div>
             <div className="flex mb-16">
