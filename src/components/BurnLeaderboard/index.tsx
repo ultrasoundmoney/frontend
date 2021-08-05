@@ -3,6 +3,7 @@ import useWebSocket from "react-use-websocket";
 import CountUp from "react-countup";
 import _ from "lodash";
 import imageIds from "../../assets/leaderboard-image-ids.json";
+import { weiToEth } from "../../utils/metric-utils";
 
 type FeePeriod = "24h" | "7d" | "30d" | "all";
 
@@ -31,7 +32,7 @@ const FeeUser: FC<{
     <p className="font-roboto font-light text-sm text-white ml-8 whitespace-nowrap md:text-lg">
       <CountUp
         start={0}
-        end={fees}
+        end={weiToEth(fees)}
         preserveValue={true}
         separator=","
         decimals={2}
