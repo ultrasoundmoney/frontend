@@ -62,12 +62,12 @@ const ComingSoon: React.FC = () => {
         >
           ultra sound awakening
         </div>
-        <p className="font-inter text-xl md:text-2xl lg:text-3xl text-white text-center mb-16">
+        <p className="font-inter text-blue-shipcove text-xl md:text-2xl lg:text-3xl text-white text-center mb-16">
           track ETH become ultra sound
         </p>
         <div className="w-full">
           <video
-            className="w-full md:w-4/6 lg:w-3/6 mx-auto mb-8 pr-4 -mt-24 mix-blend-lighten"
+            className="w-full md:w-4/6 lg:w-3/6 mx-auto pr-4 -mt-32 mix-blend-lighten"
             playsInline
             autoPlay
             muted
@@ -81,25 +81,25 @@ const ComingSoon: React.FC = () => {
         </div>
         <div className="flex flex-col px-4 md:w-5/6 mx-auto lg:w-full lg:flex-row lg:px-16">
           <div className="lg:w-1/2">
-            <div className="md:pt-20 mb-4">
+            <div className="mb-4">
               <TotalFeeBurn />
             </div>
             <div className="mb-4">
               <LatestBlocks />
             </div>
           </div>
-          <div className="lg:w-1/2 lg:pt-20 lg:pl-4">
+          <div className="lg:w-1/2 lg:pl-4">
             <BurnLeaderboard />
           </div>
         </div>
-        <div className="flex flex-col px-4 md:px-2 pt-40 mb-16">
+        <div className="flex flex-col px-4 md:px-16 pt-40 mb-16">
           <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8">
             {t.teaser_supply_title}
           </h1>
           <p className="text-white text-center font-light text-base lg:text-lg mb-8">
             {t.teaser_supply_subtitle}
           </p>
-          <div className="w-full lg:w-5/6 md:m-auto relative bg-blue-tangaroa px-2 md:px-4 xl:px-12 py-4 md:py-8 xl:py-12 rounded-xl">
+          <div className="w-full md:m-auto relative bg-blue-tangaroa px-2 md:px-4 xl:px-12 py-4 md:py-8 xl:py-12 rounded-xl">
             <SupplyView />
           </div>
           <div id="join-the-fam" className="flex px-4 md:px-0 pt-8 pt-40 mb-16">
@@ -107,12 +107,12 @@ const ComingSoon: React.FC = () => {
               <TwitterCommunity />
             </div>
           </div>
-          <div className="flex px-4 md:px-0 pt-20 pb-40">
+          <div className="flex px-4 md:px-0 pt-20 pb-20">
             <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
               <FollowingYou />
             </div>
           </div>
-          <div className="flex px-4 md:px-0 pt-20 pb-60">
+          <div className="flex px-4 md:px-0 pt-8 pb-60">
             <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
               <FaqBlock />
             </div>

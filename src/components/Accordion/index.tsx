@@ -11,7 +11,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, text }) => {
     <>
       <div className="accordion-wrapper">
         <div
-          className={`accordion-title text-lg py-4 break-words ${
+          className={`accordion-title text-lg py-6 break-words ${
             isOpen ? "open" : ""
           }`}
           onClick={() => setOpen(!isOpen)}
@@ -25,7 +25,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, text }) => {
           }`}
         >
           <div
-            className="accordion-content leading-relaxed py-2"
+            className="accordion-content leading-relaxed py-4"
             dangerouslySetInnerHTML={{
               __html: twemoji.parse(text),
             }}
