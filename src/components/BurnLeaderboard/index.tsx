@@ -7,41 +7,48 @@ import { weiToEth } from "../../utils/metric-utils";
 
 type FeePeriod = "24h" | "7d" | "30d" | "all";
 
+const botContracts = ["0xbf0c5d82748ed81b5794e59055725579911e3e4e"];
+const botContractMap = new Set(botContracts);
+
 const FeeUser: FC<{
   name?: string;
   detail?: string;
   address?: string;
   fees: number;
   id: string;
-}> = ({ address, detail, name, fees, id }) => (
-  <div className="flex flex-row pt-6 md:pt-6 justify-between items-center hover:opacity-80">
-    <div className="flex flex-row items-center overflow-hidden">
-      {imageIds.includes(id) ? (
+}> = ({ address, detail, name, fees, id }) => {
+  const imgSrc = botContractMap.has(address)
+    ? "/leaderboard-images/bot.svg"
+    : imageIds.includes(id)
+    ? `/leaderboard-images/${id}.png`
+    : "/leaderboard-images/question-mark.png";
+
+  return (
+    <div className="flex flex-row pt-6 md:pt-6 justify-between items-center hover:opacity-80">
+      <div className="flex flex-row items-center overflow-hidden">
         <img
           className="w-8 h-8 flex-shrink-0 leaderboard-image"
-          src={`/leaderboard-images/${id}.png`}
+          src={imgSrc}
           alt=""
         />
-      ) : (
-        <div className="p-4"></div>
-      )}
-      <p className="font-roboto text-sm text-white pl-4 truncate md:text-lg">
-        {name || address} <span className="text-blue-shipcove">{detail}</span>
+        <p className="font-roboto text-sm text-white pl-4 truncate md:text-lg">
+          {name || address} <span className="text-blue-shipcove">{detail}</span>
+        </p>
+      </div>
+      <p className="font-roboto font-light text-sm text-white ml-8 whitespace-nowrap md:text-lg">
+        <CountUp
+          start={0}
+          end={weiToEth(fees)}
+          preserveValue={true}
+          separator=","
+          decimals={2}
+          duration={1}
+        />{" "}
+        <span className="text-blue-manatee">ETH</span>
       </p>
     </div>
-    <p className="font-roboto font-light text-sm text-white ml-8 whitespace-nowrap md:text-lg">
-      <CountUp
-        start={0}
-        end={weiToEth(fees)}
-        preserveValue={true}
-        separator=","
-        decimals={2}
-        duration={1}
-      />{" "}
-      <span className="text-blue-manatee">ETH</span>
-    </p>
-  </div>
-);
+  );
+};
 
 type FeeUser = {
   name: string | undefined;
@@ -67,6 +74,7 @@ const feePeriodToUpdateMap: Record<FeePeriod, string> = {
   "30d": "leaderboard30d",
   all: "leaderboardAll",
 };
+
 const BurnLeaderboard: FC = () => {
   const [feePeriod, setFeePeriod] = useState<FeePeriod>("24h");
 
