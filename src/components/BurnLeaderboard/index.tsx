@@ -31,7 +31,7 @@ const FeeUser: FC<{
     <p className="font-roboto font-light text-sm text-white ml-8 whitespace-nowrap md:text-lg">
       <CountUp
         start={0}
-        end={fees / 10000000} // TEMP HACK ASSUMING 10 Gwei base gas price
+        end={fees}
         preserveValue={true}
         separator=","
         decimals={2}
