@@ -3,12 +3,12 @@ import useWebSocket from "react-use-websocket";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import _ from "lodash";
 import styles from "./LatestBlocks.module.scss";
+import { weiToEth } from "../../utils/metric-utils";
 
-const weiToGwei = (wei: number): number => wei / 10 ** 9;
 const formatter = Intl.NumberFormat("en", {
-  minimumFractionDigits: 4,
+  minimumFractionDigits: 2,
 });
-const formatFee = (fee: number) => formatter.format(weiToGwei(fee));
+const formatFee = (fee: number) => formatter.format(weiToEth(fee));
 
 type BaseFeeUpdate = {
   baseFeePerGas: number;
@@ -20,7 +20,7 @@ type BaseFeeUpdate = {
 
 export const useBlockHistory = () => {
   const { lastJsonMessage } = useWebSocket(
-    "wss://api.ultrasound.money/fees-ropsten/base-fee-feed",
+    "wss://api.ultrasound.money/fees/base-fee-feed",
     {
       share: true,
       filter: (message) => JSON.parse(message.data).type === "base-fee-update",
@@ -87,7 +87,7 @@ const LatestBlocks: FC = () => {
                   </p>
                   <p className="text-white">
                     <span className="font-roboto">{formatFee(fees)} </span>
-                    <span className="text-blue-spindle">Gwei</span>
+                    <span className="text-blue-spindle">ETH</span>
                   </p>
                 </li>
               </CSSTransition>
