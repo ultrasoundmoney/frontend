@@ -52,7 +52,7 @@ const TwitterCommunity: React.FC = () => {
           {getText}
         </a>
       </h1>
-      <p className="text-white text-center mb-8 md:text-lg">
+      <p className="text-blue-shipcove text-center mb-8 md:text-lg">
         <span className="mr-2">wear the bat signal</span>
         <Clipboard data-clipboard-text={"🦇🔊"} onSuccess={onBatSoundCopied}>
           <span

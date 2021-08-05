@@ -69,7 +69,7 @@ const FollowingYou: React.FC = () => {
         <SpanMoji emoji=" 👀" />
       </h1>
       <p
-        className={`text-white leading-6 md:leading-none text-center font-light text-base lg:text-lg mb-14`}
+        className={`text-blue-shipcove leading-6 md:leading-none text-center font-light text-base lg:text-lg mb-14`}
       >
         {t.teaser_following_you}
       </p>
