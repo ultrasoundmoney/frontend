@@ -36,22 +36,27 @@ const ComingSoon: React.FC = () => {
   return (
     <div className="wrapper bg-blue-midnightexpress">
       <div className="container m-auto coming-soon">
-        <div className="w-full md:w-5/12 relative flex justify-start lg:static lg:justify-start p-4">
-          <div className="pr-2 lg:pr-8">
+        <div className="flex justify-between">
+          <div className="w-full flex justify-between md:justify-start p-4">
             <Link href="/">
-              <img className="max-w-max" src={EthLogo} alt={t.title} />
+              <img className="relative" src={EthLogo} alt={t.title} />
             </Link>
+            {ethUsdPrice !== undefined && baseFeePerGas !== undefined && (
+              <div
+                className="flex text-white self-center bg-blue-tangaroa px-2 py-2 text-xs lg:text-sm eth-price-gass-emoji font-roboto md:ml-4"
+                dangerouslySetInnerHTML={{
+                  __html: twemoji.parse(ethPrice),
+                }}
+              />
+            )}
           </div>
-          {ethUsdPrice !== undefined && baseFeePerGas !== undefined && (
-            <div
-              className="flex-initial flex text-white self-center bg-blue-tangaroa px-2 md:px-3 py-2 text-xs lg:text-sm eth-price-gass-emoji font-roboto"
-              dangerouslySetInnerHTML={{
-                __html: twemoji.parse(ethPrice),
-              }}
-            />
-          )}
+          <a
+            className="hidden md:block flex self-center whitespace-nowrap px-4 py-1 mr-4 font-medium text-white hover:text-blue-shipcove border-white border-solid border-2 rounded-3xl hover:border-blue-shipcove"
+            href="#join-the-fam"
+          >
+            join the fam
+          </a>
         </div>
-
         <div
           className={`ultra-sound-text w-full pt-16 text-6xl md:text-7xl md:w-1/2 lg:w-5/6 lg:pt-16 m-auto mb-8`}
         >
@@ -97,7 +102,7 @@ const ComingSoon: React.FC = () => {
           <div className="w-full lg:w-5/6 md:m-auto relative bg-blue-tangaroa px-2 md:px-4 xl:px-12 py-4 md:py-8 xl:py-12 rounded-xl">
             <SupplyView />
           </div>
-          <div className="flex px-4 md:px-0 pt-8 pt-40 mb-16">
+          <div id="join-the-fam" className="flex px-4 md:px-0 pt-8 pt-40 mb-16">
             <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
               <TwitterCommunity />
             </div>
