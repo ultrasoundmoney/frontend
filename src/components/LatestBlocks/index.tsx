@@ -46,9 +46,9 @@ export const useBlockHistory = () => {
     return [...messageHistory.current, lastJsonMessage];
   }, [lastJsonMessage]);
 
-  const latestBlocks = _.takeRight(messageHistory.current, 7).sort(
-    (a, b) => a.number - b.number
-  );
+  const latestBlocks = _.takeRight(messageHistory.current, 7)
+    .sort((a, b) => a.number - b.number)
+    .reverse();
   return latestBlocks;
 };
 
