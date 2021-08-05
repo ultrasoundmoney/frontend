@@ -13,6 +13,7 @@ import twemoji from "twemoji";
 import Link from "next/link";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 import _ from "lodash";
+import { weiToGwei } from "../../utils/metric-utils";
 
 const ComingSoon: React.FC = () => {
   const t = React.useContext(TranslationsContext);
@@ -28,7 +29,9 @@ const ComingSoon: React.FC = () => {
   const ethUsdPrice = data?.usd;
   const ethUsd24hChange = data?.usd24hChange?.toFixed(2);
   const baseFeePerGas = _.last(latestBlocks)?.baseFeePerGas;
-  const ethPrice = `$${ethUsdPrice} <span class="px-1 text-green-400">(+${ethUsd24hChange}%)</span> • ⛽️${baseFeePerGas} Gwei</span>`;
+  const ethPrice = `$${ethUsdPrice} <span class="px-1 text-green-400">(+${ethUsd24hChange}%)</span> • ⛽️${weiToGwei(
+    baseFeePerGas
+  ).toFixed(1)} Gwei</span>`;
 
   return (
     <div className="wrapper bg-blue-midnightexpress">
