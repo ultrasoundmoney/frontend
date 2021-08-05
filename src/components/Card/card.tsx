@@ -6,6 +6,7 @@ type CardProps = {
   name: string;
   title: string;
   number?: string;
+  id?: string;
 };
 
 const Card: React.FC<CardProps> = ({
@@ -14,21 +15,22 @@ const Card: React.FC<CardProps> = ({
   title,
   number,
   className,
+  id,
 }) => {
   const renderType = () => {
     if (type === 1) {
       return (
-        <div className="text-lg font-light text-white text-left leading-10">
+        <div className="eth-status text-lg font-light text-white text-left leading-10 font-roboto">
           {title}
         </div>
       );
     } else if (type === 2) {
       return (
         <div className="flex flex-wrap justify-between">
-          <div className="text-41xl font-light text-white text-left leading-18">
+          <div className="eth-supply text-41xl font-light text-white text-left leading-18 font-roboto">
             {title}
           </div>
-          <div className="md:pl-8 text-base font-light text-green-mediumspring text-left leading-loose1">
+          <div className="eth-supply-incr md:pl-8 text-base font-light text-green-mediumspring text-left leading-loose1 font-roboto">
             {number}
           </div>
         </div>
@@ -36,7 +38,7 @@ const Card: React.FC<CardProps> = ({
     } else if (type === 3) {
       return (
         <div
-          className="card-text text-21xl font-light text-white text-left leading-10"
+          className="eth-burn-fee card-text text-21xl font-light text-white text-left leading-10 font-roboto"
           dangerouslySetInnerHTML={{
             __html: title,
           }}
@@ -44,7 +46,7 @@ const Card: React.FC<CardProps> = ({
       );
     } else {
       return (
-        <div className="text-lg font-light text-white text-left leading-10">
+        <div className="text-lg font-light text-white text-left leading-10 font-roboto">
           {title}
         </div>
       );
@@ -56,8 +58,8 @@ const Card: React.FC<CardProps> = ({
       : `card bg-blue-tangaroa rounded-lg py-3 md:m-2 px-8`;
   return (
     <>
-      <div className={getClass}>
-        <div className="text-base font-light text-blue-shipcove text-left leading-card">
+      <div id={id} className={getClass}>
+        <div className="eth-date text-base font-light text-blue-shipcove text-left leading-card font-roboto">
           {name}
         </div>
         {renderType()}

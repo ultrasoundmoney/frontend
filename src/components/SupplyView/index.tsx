@@ -74,11 +74,8 @@ const SupplyView: React.FC<{}> = () => {
     setShowBreakdown(false);
   }, []);
 
-  const handleOnPeakProjected = React.useCallback(() => {
-    setIsPeakPresent(true);
-  }, []);
-  const handleOnNoPeakProjected = React.useCallback(() => {
-    setIsPeakPresent(false);
+  const handleOnPeakProjectedToggle = React.useCallback((isPeakPresent) => {
+    setIsPeakPresent(isPeakPresent);
   }, []);
 
   const daysUntilProjectedMerge = projectedMergeDate.diff(
@@ -114,8 +111,7 @@ const SupplyView: React.FC<{}> = () => {
         projectedBaseGasPrice={projectedBaseGasPrice}
         projectedMergeDate={projectedMergeDate}
         showBreakdown={showBreakdown}
-        onPeakProjected={handleOnPeakProjected}
-        onNoPeakProjected={handleOnNoPeakProjected}
+        onPeakProjectedToggle={handleOnPeakProjectedToggle}
       />
 
       <div className={styles.params}>

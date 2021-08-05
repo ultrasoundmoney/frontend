@@ -64,3 +64,7 @@ export function formatDate(d: Date): string {
     date.getFullYear()
   );
 }
+
+export const weiToGwei = (wei: number): number => wei / 10 ** 9;
+
+export const weiToEth = (wei: number): number => wei / 10 ** 18;

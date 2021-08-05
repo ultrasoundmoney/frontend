@@ -37,13 +37,7 @@ const FollowingYou: React.FC = () => {
     const cleanHandle = handle.startsWith("@") ? handle.slice(1) : handle;
 
     const res = await fetch(
-      `https://api.ultrasound.money/fam/${cleanHandle}/followed-by`,
-      {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-        },
-      }
+      `https://api.ultrasound.money/fam/${cleanHandle}/followed-by`
     );
 
     if (res.status === 404) {
@@ -75,7 +69,7 @@ const FollowingYou: React.FC = () => {
         <SpanMoji emoji=" 👀" />
       </h1>
       <p
-        className={`text-white leading-6 md:leading-none text-center font-light text-base lg:text-lg mb-14`}
+        className={`text-blue-shipcove leading-6 md:leading-none text-center font-light text-base lg:text-lg mb-14`}
       >
         {t.teaser_following_you}
       </p>

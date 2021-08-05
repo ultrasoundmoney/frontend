@@ -15,14 +15,28 @@ const TheMergeBlock: React.FC<{}> = () => {
           id="what-next"
         />
         <div className="the-merge flex flex-col w-full sm:w-9/12 mx-auto">
-          <div className="w-full sm:w-4/12 md:mr-auto md:py-16">
+          <div
+            data-aos="fade-up"
+            data-aos-anchor-placement="top-center"
+            data-aos-delay="50"
+            data-aos-duration="1000"
+            data-aos-easing="ease-in-out"
+            className="w-full sm:w-4/12 md:mr-auto md:py-16"
+          >
             <IconBlock
               icon={`${t.landing_goal_block1_icon} ${t.landing_goal_block1_icon}`}
               title={t.landing_themerge_pow_title}
               text={t.landing_themerge_pow_text}
             />
           </div>
-          <div className="w-full sm:w-4/12 md:ml-auto">
+          <div
+            data-aos="fade-up"
+            data-aos-anchor-placement="top-center"
+            data-aos-delay="50"
+            data-aos-duration="1000"
+            data-aos-easing="ease-in-out"
+            className="w-full sm:w-4/12 md:ml-auto"
+          >
             <IconBlock
               icon={t.landing_goal_block1_icon}
               title={t.landing_themerge_pos_title}

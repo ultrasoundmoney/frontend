@@ -1,7 +1,7 @@
 .coming-soon {
   background-image: url("../../src/assets/blurred-bg.svg");
   background-repeat: no-repeat;
-  background-position: center top;
+  background-position: center -300px;
   background-size: auto;
   width: 100%;
 }
@@ -155,4 +155,31 @@
   @media (min-width: 768px) {
     margin-left: -8.3rem;
   }
+}
+
+.burn-block-update-appear-active {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) 2;
+}
+
+.burn-block-update-enter-active {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.fee-block {
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 1000ms;
+}
+
+.fee-block-appear {
+  opacity: 0;
+}
+
+.fee-block-appear-active {
+  opacity: 1;
+}
+
+.leaderboard-image {
+  border-radius: 50%;
+  border: 1px solid rgb(27, 34, 54);
 }

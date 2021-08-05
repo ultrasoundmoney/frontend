@@ -1,4 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;200;300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400&display=swap');
 
 html {
     width: 100%;
@@ -7,14 +10,14 @@ html {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
         'Ubuntu', 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji',
         'Segoe UI Emoji', 'Segoe UI Symbol','Calibri','Candara','Segoe','Optima';
-    font-size: 16px;    
+    font-size: 16px;
 }
 
 body {
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: theme('fontFamily.roboto');
+    font-family: theme('fontFamily.inter');
     font-style: normal;
     font-weight: 300;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.004);

@@ -6,24 +6,14 @@ import SpanMoji from "../SpanMoji";
 import copySrc from "../../assets/copy.svg";
 import { TranslationsContext } from "../../translations-context";
 
-type TwitterCommunityPros = {};
-const fetcher = (url: string) =>
-  fetch(url, {
-    method: "GET",
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json",
-    },
-  }).then((r) => r.json());
-
-const TwitterCommunity: React.FC<TwitterCommunityPros> = () => {
+const TwitterCommunity: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   const [isCopiedFeedbackVisible, setIsCopiedFeedbackVisible] = React.useState<
     boolean
   >(false);
   const { data } = useSWR(
     "https://api.ultrasound.money/fam/2/profiles",
-    fetcher,
+    (url: string) => fetch(url).then((r) => r.json()),
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
@@ -62,7 +52,7 @@ const TwitterCommunity: React.FC<TwitterCommunityPros> = () => {
           {getText}
         </a>
       </h1>
-      <p className="text-white text-center mb-8 md:text-lg">
+      <p className="text-blue-shipcove text-center mb-8 md:text-lg">
         <span className="mr-2">wear the bat signal</span>
         <Clipboard data-clipboard-text={"🦇🔊"} onSuccess={onBatSoundCopied}>
           <span

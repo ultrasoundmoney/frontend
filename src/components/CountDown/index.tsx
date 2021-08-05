@@ -10,7 +10,7 @@ const Countdown: React.FC<CountDownProps> = ({ targetDate, targetTime }) => {
     minutes: 0,
     seconds: 0,
   });
-  let timer: any;
+  let timer: number;
   let distance;
 
   const setDate = () => {
@@ -34,9 +34,9 @@ const Countdown: React.FC<CountDownProps> = ({ targetDate, targetTime }) => {
   };
 
   const counter = () => {
-    timer = setInterval(() => {
+    timer = (setInterval(() => {
       setDate();
-    }, 1000);
+    }, 1000) as unknown) as number;
   };
 
   React.useEffect(() => {

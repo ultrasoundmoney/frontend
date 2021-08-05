@@ -146,14 +146,14 @@
 }
 
 .accordion-title {
-  font-weight: 300;
   cursor: pointer;
   color: #fff;
-  border-bottom: solid 1px #ccc;
-  padding-left: 40px;
+  padding-left: 2.5rem;
   position: relative;
+
   &::before {
-    content: "+";
+    font-weight: 400;
+    content: "＋";
     left: 0px;
     margin-right: 25px;
     font-size: 28px;
@@ -163,7 +163,8 @@
 
   &.open {
     &::before {
-      content: "-";
+      font-weight: 400;
+      content: "－";
       left: 0px;
       margin-right: 25px;
       font-size: 28px;
@@ -173,8 +174,30 @@
   }
 }
 
+.accordion-title .emoji {
+  margin-left: 2px;
+  height: 1.5em;
+  vertical-align: -0.4em;
+}
+
 .accordion-content {
-  padding: 1.5rem 2.5rem;
+  font-family: "Inter";
+  padding-left: 2.5rem;
+  white-space: pre-line;
+  color: #bfc1c9;
+}
+
+.accordion-content a {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+
+.accordion-content a:hover {
+  text-decoration-color: rgba(181, 189, 219, 0.75);
+}
+
+.accordion-content .mono {
+  font-family: "Roboto Mono";
 }
 
 .eth-price-gass-emoji {
@@ -184,31 +207,32 @@
 }
 
 .hamburger-menu {
-  position: absolute;
+  position: fixed;
   right: 10px;
   top: 30px;
   height: 34px;
   padding: 8px;
+  z-index: 99;
 }
 
 
 .animateIn {
   -webkit-animation-name: accordionIn;
-  -webkit-animation-duration: 0.65s;
+  -webkit-animation-duration: 0.5s;
   -webkit-animation-iteration-count: 1;
   -webkit-animation-direction: normal;
   -webkit-animation-timing-function: ease-in-out;
   -webkit-animation-fill-mode: both;
   -webkit-animation-delay: 0s;
   -moz-animation-name: normal;
-  -moz-animation-duration: 0.65s;
+  -moz-animation-duration: 0.5s;
   -moz-animation-iteration-count: 1;
   -moz-animation-direction: alternate;
   -moz-animation-timing-function: ease-in-out;
   -moz-animation-fill-mode: both;
   -moz-animation-delay: 0s;
   animation-name: accordionIn;
-  animation-duration: 0.65s;
+  animation-duration: 0.5s;
   animation-iteration-count: 1;
   animation-direction: normal;
   animation-timing-function: ease-in-out;
@@ -219,21 +243,21 @@
 
 .animateOut {
   -webkit-animation-name: accordionOut;
-  -webkit-animation-duration: 0.75s;
+  -webkit-animation-duration: 0.5s;
   -webkit-animation-iteration-count: 1;
   -webkit-animation-direction: alternate;
   -webkit-animation-timing-function: ease-in-out;
   -webkit-animation-fill-mode: both;
   -webkit-animation-delay: 0s;
   -moz-animation-name: accordionOut;
-  -moz-animation-duration: 0.75s;
+  -moz-animation-duration: 0.5s;
   -moz-animation-iteration-count: 1;
   -moz-animation-direction: alternate;
   -moz-animation-timing-function: ease-in-out;
   -moz-animation-fill-mode: both;
   -moz-animation-delay: 0s;
   animation-name: accordionOut;
-  animation-duration: 0.75s;
+  animation-duration: 0.5s;
   animation-iteration-count: 1;
   animation-direction: alternate;
   animation-timing-function: ease-in-out;
@@ -315,5 +339,23 @@
   100% {
     opacity: 0;
     transform: scale(0.8);
+  }
+}
+.sidebar{
+  background-color: rgba(27,34,54, 1);
+  position: fixed;
+  top: 0;
+  right: 0px;
+  height: 100%;
+  width: 240px;
+  padding-top: 1.5rem;
+  transition: transform 0.3s ease-in-out 0s;
+  z-index: 9;
+  text-align: center;
+  &-open{
+    transform: translateX(0px);
+  }
+  &-close{
+    transform: translateX(100%);
   }
 }
