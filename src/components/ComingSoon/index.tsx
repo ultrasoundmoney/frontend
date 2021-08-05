@@ -46,18 +46,26 @@ const ComingSoon: React.FC = () => {
             <SpanMoji emoji=" 🔥" />
           </h1>
         </div>
-        <div className="flex">
-          <div className="w-full md:w-5/6 lg:w-3/6 md:m-auto pb-4">
-            <CountDown targetDate="August 5, 2021" targetTime="12:32:00" />
-          </div>
-        </div>
-        <div className="flex mb-16">
-          <div className="w-full md:w-5/6 lg:w-3/6 md:m-auto px-4 md:px-0">
-            <EthBlocks
-              currentBlockNr={currentBlockNumber && currentBlockNumber}
-            />
-          </div>
-        </div>
+        {currentBlockNumber >= 12965000 ? (
+          <p className="font-inter font-light text-white text-5xl my-32 flex justify-center">
+            refresh! 🚀
+          </p>
+        ) : (
+          <>
+            <div className="flex">
+              <div className="w-full md:w-5/6 lg:w-3/6 md:m-auto pb-4">
+                <CountDown targetDate="August 5, 2021" targetTime="12:32:00" />
+              </div>
+            </div>
+            <div className="flex mb-16">
+              <div className="w-full md:w-5/6 lg:w-3/6 md:m-auto px-4 md:px-0">
+                <EthBlocks
+                  currentBlockNr={currentBlockNumber && currentBlockNumber}
+                />
+              </div>
+            </div>
+          </>
+        )}
         <div className="flex flex-col px-4 md:px-2 md:pt-40 mb-16">
           <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8">
             {t.teaser_supply_title}
