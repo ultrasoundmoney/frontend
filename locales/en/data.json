@@ -138,9 +138,9 @@
 
   "faq_section_title": "q&a",
   "faq_question_1":"What is ultra sound money?",
-  "faq_answer_1":"Ultra sound money is an Ethereum meme focusing on the likely decrease of the ETH supply.\n\nIf capped-supply gold is sound, decreasing-supply ether is ultra sound.",
+  "faq_answer_1":"Ultra sound money is an Ethereum meme focusing on the likely decrease of the ETH supply.\n\nIf capped-supply gold is sound, decreasing-supply ether is ultra sound money.",
   "faq_question_2":"How can ETH supply decrease?",
-  "faq_answer_2":"The ETH supply decreases whenever more ETH is destroyed via fee burn than ETH is created via issuance.\n\nFee burn is a scarcity engine fuelled by Ethereum's transactional utility.",
+  "faq_answer_2":"The ETH supply decreases whenever more ETH is destroyed via fee burn than ETH is created via issuance.\n\nFee burn is a scarcity engine fueled by Ethereum's transactional utility.",
   "faq_question_3":"What is fee burn?",
   "faq_answer_3":"Fee burn is a mechanism which destroys ETH base fees paid for transaction inclusion on Ethereum.\n\nFee burn started August 5, 2021 with the activation of <a href=\"https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1559.md\">EIP-1559</a>.",
   "faq_question_4":"When will ETH be ultra sound?",
