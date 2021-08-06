@@ -24,7 +24,7 @@ type EthPrice = {
 const ethPriceFormatter = new Intl.NumberFormat("en", {
   style: "currency",
   currency: "usd",
-  minimumFractionDigits: 2,
+  maximumFractionDigits: 0,
 });
 
 const ComingSoon: React.FC = () => {
