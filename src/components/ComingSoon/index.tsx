@@ -26,14 +26,22 @@ const ComingSoon: React.FC = () => {
       revalidateOnReconnect: true,
     }
   );
-  const ethUsdPrice = data?.usd;
-  const ethUsd24hChange = data?.usd24hChange?.toFixed(2);
+  const ethUsdPrice = new Intl.NumberFormat().format(data?.usd?.toFixed(0));
+  const ethUsd24hChange = data?.usd24hChange?.toFixed(1);
   const baseFeePerGas = _.last(latestBlocks)?.baseFeePerGas;
-  const ethPrice = `$${new Intl.NumberFormat().format(
-    ethUsdPrice?.toFixed(0)
-  )} <span class="px-1 text-green-400">(+${ethUsd24hChange}%)</span> • ⛽️${weiToGwei(
-    baseFeePerGas
-  ).toFixed(1)} Gwei</span>`;
+  const ethUsdPriceHTML = `$${ethUsdPrice}`;
+  const ethUsd24hChangeHTML =
+    data?.usd24hChange > 0
+      ? `
+    <span class="px-1 text-green-400">
+      (+${ethUsd24hChange}%)
+    </span>`
+      : `
+    <span class="px-1 text-red-400">
+      (${ethUsd24hChange}%)
+    </span>
+    `;
+  const baseFeePerGasHTML = `⛽️ ${weiToGwei(baseFeePerGas).toFixed(1)} Gwei`;
 
   return (
     <div className="wrapper bg-blue-midnightexpress">
@@ -45,9 +53,14 @@ const ComingSoon: React.FC = () => {
             </Link>
             {ethUsdPrice !== undefined && baseFeePerGas !== undefined && (
               <div
-                className="flex text-white self-center bg-blue-tangaroa px-2 py-2 text-xs lg:text-sm eth-price-gass-emoji font-roboto md:ml-4"
+                className="flex text-white self-center rounded bg-blue-tangaroa px-3 py-2 text-xs lg:text-sm eth-price-gass-emoji font-roboto md:ml-4"
                 dangerouslySetInnerHTML={{
-                  __html: twemoji.parse(ethPrice),
+                  __html: twemoji.parse(
+                    ethUsdPriceHTML +
+                      ethUsd24hChangeHTML +
+                      '<span class="px-1">•</span>' +
+                      baseFeePerGasHTML
+                  ),
                 }}
               />
             )}
