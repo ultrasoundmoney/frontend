@@ -22,7 +22,7 @@ const TotalFeeBurn: FC = () => {
         <p className="font-roboto flex justify-between text-white text-3xl md:text-4xl lg:text-3xl xl:text-5xl">
           <CountUp
             decimals={2}
-            duration={2.5}
+            duration={1.5}
             separator=","
             end={weiToEth(totalFeesBurned)}
             suffix=" ETH"
