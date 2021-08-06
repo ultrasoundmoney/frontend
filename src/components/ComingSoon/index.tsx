@@ -29,7 +29,9 @@ const ComingSoon: React.FC = () => {
   const ethUsdPrice = data?.usd;
   const ethUsd24hChange = data?.usd24hChange?.toFixed(2);
   const baseFeePerGas = _.last(latestBlocks)?.baseFeePerGas;
-  const ethPrice = `$${ethUsdPrice} <span class="px-1 text-green-400">(+${ethUsd24hChange}%)</span> • ⛽️${weiToGwei(
+  const ethPrice = `$${new Intl.NumberFormat().format(
+    ethUsdPrice?.toFixed(0)
+  )} <span class="px-1 text-green-400">(+${ethUsd24hChange}%)</span> • ⛽️${weiToGwei(
     baseFeePerGas
   ).toFixed(1)} Gwei</span>`;
 
