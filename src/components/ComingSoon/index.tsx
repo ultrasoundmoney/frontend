@@ -14,6 +14,13 @@ import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 import _ from "lodash";
 import { weiToGwei } from "../../utils/metric-utils";
 
+type EthPrice = {
+  usd: number;
+  usd24hChange: number;
+  btc: number;
+  btc24hChange: number;
+};
+
 const ethPriceFormatter = new Intl.NumberFormat("en", {
   style: "currency",
   currency: "usd",
@@ -23,14 +30,14 @@ const ethPriceFormatter = new Intl.NumberFormat("en", {
 const ComingSoon: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   const latestBlocks = useBlockHistory();
-  const { data } = useSWR(
+  const { data } = useSWR<EthPrice>(
     "https://api.ultrasound.money/fees/eth-price",
-    (url: string) => fetch(url).then((r) => r.json()),
     {
       revalidateOnFocus: true,
       revalidateOnReconnect: true,
     }
   );
+
   const ethUsdPrice = ethPriceFormatter.format(data?.usd);
   const ethUsd24hChange = data?.usd24hChange?.toFixed(2);
   const baseFeePerGas = _.last(latestBlocks)?.baseFeePerGas;
@@ -52,7 +59,7 @@ const ComingSoon: React.FC = () => {
             <Link href="/">
               <img className="relative" src={EthLogo} alt={t.title} />
             </Link>
-            {ethUsdPrice !== undefined && baseFeePerGas !== undefined && (
+            {data !== undefined && baseFeePerGas !== undefined && (
               <div
                 className="flex text-white self-center bg-blue-tangaroa px-2 py-2 text-xs lg:text-sm eth-price-gass-emoji font-roboto md:ml-4"
                 dangerouslySetInnerHTML={{
