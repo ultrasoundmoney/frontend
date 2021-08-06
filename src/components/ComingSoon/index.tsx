@@ -15,6 +15,12 @@ import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 import _ from "lodash";
 import { weiToGwei } from "../../utils/metric-utils";
 
+const ethPriceFormatter = new Intl.NumberFormat("en", {
+  style: "currency",
+  currency: "usd",
+  minimumFractionDigits: 2,
+});
+
 const ComingSoon: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   const latestBlocks = useBlockHistory();
@@ -26,7 +32,7 @@ const ComingSoon: React.FC = () => {
       revalidateOnReconnect: true,
     }
   );
-  const ethUsdPrice = data?.usd;
+  const ethUsdPrice = ethPriceFormatter.format(data?.usd);
   const ethUsd24hChange = data?.usd24hChange?.toFixed(2);
   const baseFeePerGas = _.last(latestBlocks)?.baseFeePerGas;
   const sign =
@@ -35,7 +41,7 @@ const ComingSoon: React.FC = () => {
     typeof ethUsd24hChange === "number" && ethUsd24hChange < 0
       ? "red"
       : "green";
-  const ethPrice = `$${ethUsdPrice} <span class="px-1 text-${color}-400">(${sign}${ethUsd24hChange}%)</span> • ⛽️${weiToGwei(
+  const ethPrice = `${ethUsdPrice} <span class="px-1 text-${color}-400">(${sign}${ethUsd24hChange}%)</span> • ⛽️${weiToGwei(
     baseFeePerGas
   ).toFixed(1)} Gwei</span>`;
 
