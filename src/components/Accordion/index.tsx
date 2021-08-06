@@ -25,7 +25,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, text }) => {
           }`}
         >
           <div
-            className="accordion-content leading-relaxed py-4"
+            className="accordion-content leading-relaxed pb-4"
             dangerouslySetInnerHTML={{
               __html: twemoji.parse(text),
             }}

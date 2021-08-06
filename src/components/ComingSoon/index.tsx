@@ -38,18 +38,22 @@ const ComingSoon: React.FC = () => {
     }
   );
 
-  const ethUsdPrice = ethPriceFormatter.format(data?.usd);
-  const ethUsd24hChange = data?.usd24hChange?.toFixed(2);
+  const ethUsdPrice = new Intl.NumberFormat().format(data?.usd?.toFixed(0));
+  const ethUsd24hChange = data?.usd24hChange?.toFixed(1);
   const baseFeePerGas = _.last(latestBlocks)?.baseFeePerGas;
-  const sign =
-    typeof ethUsd24hChange === "number" && ethUsd24hChange < 0 ? "-" : "+";
-  const color =
-    typeof ethUsd24hChange === "number" && ethUsd24hChange < 0
-      ? "red"
-      : "green";
-  const ethPrice = `${ethUsdPrice} <span class="px-1 text-${color}-400">(${sign}${ethUsd24hChange}%)</span> • ⛽️${weiToGwei(
-    baseFeePerGas
-  ).toFixed(1)} Gwei</span>`;
+  const ethUsdPriceHTML = `$${ethUsdPrice}`;
+  const ethUsd24hChangeHTML =
+    data?.usd24hChange > 0
+      ? `
+    <span class="px-1 text-green-400">
+      (+${ethUsd24hChange}%)
+    </span>`
+      : `
+    <span class="px-1 text-red-400">
+      (${ethUsd24hChange}%)
+    </span>
+    `;
+  const baseFeePerGasHTML = `⛽️ ${weiToGwei(baseFeePerGas).toFixed(1)} Gwei`;
 
   return (
     <div className="wrapper bg-blue-midnightexpress">
@@ -61,9 +65,14 @@ const ComingSoon: React.FC = () => {
             </Link>
             {data !== undefined && baseFeePerGas !== undefined && (
               <div
-                className="flex text-white self-center bg-blue-tangaroa px-2 py-2 text-xs lg:text-sm eth-price-gass-emoji font-roboto md:ml-4"
+                className="flex text-white self-center rounded bg-blue-tangaroa px-3 py-2 text-xs lg:text-sm eth-price-gass-emoji font-roboto md:ml-4"
                 dangerouslySetInnerHTML={{
-                  __html: twemoji.parse(ethPrice),
+                  __html: twemoji.parse(
+                    ethUsdPriceHTML +
+                      ethUsd24hChangeHTML +
+                      '<span class="px-1">•</span>' +
+                      baseFeePerGasHTML
+                  ),
                 }}
               />
             )}
