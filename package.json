@@ -17,8 +17,8 @@
     "format": "prettier --write '{src,styles}/**/*.{ts,tsx,js,jsx}'"
   },
   "dependencies": {
-    "@sentry/react": "^6.9.0",
-    "@sentry/tracing": "^6.9.0",
+    "@sentry/react": "^6.11.0",
+    "@sentry/tracing": "^6.11.0",
     "aos": "^2.3.4",
     "dayjs": "^1.10.6",
     "highcharts": "^9.1.1",
