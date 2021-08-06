@@ -8,7 +8,6 @@ import TotalFeeBurn from "../TotalFeeBurn";
 import LatestBlocks, { useBlockHistory } from "../LatestBlocks";
 import FaqBlock from "../Landing/faq";
 import useSWR from "swr";
-import noFullWingsPoster from "../../assets/no-full-wings.jpg";
 import twemoji from "twemoji";
 import Link from "next/link";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
@@ -84,7 +83,7 @@ const ComingSoon: React.FC = () => {
             autoPlay
             muted
             loop
-            poster={noFullWingsPoster}
+            poster="/no-full-wings.jpg"
           >
             <source src="/no-full-wings.mp4" type="video/mp4" />
             <source src="/no-full-wings.webm" type="video/webm" />
