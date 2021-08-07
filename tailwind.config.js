@@ -55,6 +55,9 @@ module.exports = {
         "41xl": "2.5rem",
         "21xl": "1.87rem",
       },
+      inset: {
+        "128": "32rem",
+      },
     },
   },
   variants: {},
