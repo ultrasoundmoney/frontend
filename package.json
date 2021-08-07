@@ -17,6 +17,7 @@
     "format": "prettier --write '{src,styles}/**/*.{ts,tsx,js,jsx}'"
   },
   "dependencies": {
+    "@react-hook/media-query": "^1.1.1",
     "@sentry/react": "^6.11.0",
     "@sentry/tracing": "^6.11.0",
     "aos": "^2.3.4",

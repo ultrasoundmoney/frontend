@@ -4,6 +4,7 @@ import CountUp from "react-countup";
 import _ from "lodash";
 import imageIds from "../../assets/leaderboard-image-ids.json";
 import { weiToEth } from "../../utils/metric-utils";
+import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 
 type FeePeriod = "24h" | "7d" | "30d" | "all";
 
@@ -113,8 +114,18 @@ const BurnLeaderboard: FC = () => {
 
   const activeFeePeriodClasses =
     "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg";
+
+  const { md, lg } = useActiveBreakpoint();
+
+  const balancePadding = lg ? "58px" : md ? "46px" : undefined;
+
   return (
-    <div className="bg-blue-tangaroa w-full rounded-lg p-8">
+    <div
+      style={{
+        paddingBottom: balancePadding,
+      }}
+      className="bg-blue-tangaroa w-full rounded-lg p-8"
+    >
       <h2 className="font-inter font-light text-blue-shipcove text-xl mb-4 md:text-xl">
         burn leaderboard
       </h2>

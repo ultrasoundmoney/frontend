@@ -2,7 +2,6 @@ import React, { memo, FC, useRef, useMemo } from "react";
 import useWebSocket from "react-use-websocket";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import _ from "lodash";
-import styles from "./LatestBlocks.module.scss";
 import { weiToEth } from "../../utils/metric-utils";
 
 const formatter = Intl.NumberFormat("en", {
@@ -55,17 +54,16 @@ export const useBlockHistory = () => {
 
 const LatestBlocks: FC = () => {
   const latestBlocks = useBlockHistory();
-
   return (
-    <div
-      className={`bg-blue-tangaroa w-full rounded-lg p-8 ${styles["balance-padding"]}`}
-    >
-      <span className="font-inter text-blue-shipcove text-xl float-left">
-        latest blocks
-      </span>
-      <span className="font-inter text-blue-shipcove text-xl float-right">
-        burn
-      </span>
+    <div className="bg-blue-tangaroa w-full rounded-lg p-8">
+      <div className="flex justify-between">
+        <span className="font-inter text-blue-shipcove text-xl float-left">
+          latest blocks
+        </span>
+        <span className="font-inter text-blue-shipcove text-xl float-right">
+          burn
+        </span>
+      </div>
       <div className="py-6"></div>
       <ul>
         {latestBlocks.length === 0 ? (
