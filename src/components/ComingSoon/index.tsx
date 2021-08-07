@@ -21,12 +21,6 @@ type EthPrice = {
   btc24hChange: number;
 };
 
-const ethPriceFormatter = new Intl.NumberFormat("en", {
-  style: "currency",
-  currency: "usd",
-  maximumFractionDigits: 0,
-});
-
 const ComingSoon: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   const latestBlocks = useBlockHistory();

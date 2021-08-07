@@ -31,7 +31,7 @@ const TotalFeeBurn: FC = () => {
           <SpanMoji emoji="🔥" />
         </p>
       ) : (
-        <p className="font-roboto text-white text-3xl md:text-4xl lg:text-5xl xl:text-6xl">
+        <p className="font-roboto text-white text-white text-3xl md:text-4xl lg:text-3xl xl:text-5xl">
           loading...
         </p>
       )}

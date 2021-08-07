@@ -7,6 +7,7 @@ import { weiToEth } from "../../utils/metric-utils";
 
 const formatter = Intl.NumberFormat("en", {
   minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
 });
 const formatFee = (fee: number) => formatter.format(weiToEth(fee));
 
