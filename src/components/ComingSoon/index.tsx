@@ -57,7 +57,7 @@ const ComingSoon: React.FC = () => {
 
   return (
     <div className="wrapper bg-blue-midnightexpress">
-      <div className="container m-auto">
+      <div className="container m-auto coming-soon">
         <div className="flex justify-between">
           <div className="w-full flex justify-between md:justify-start p-4">
             <Link href="/">
@@ -99,17 +99,17 @@ const ComingSoon: React.FC = () => {
           <source src="/bat-no-wings.webm" type="video/webm; codecs='vp9'" />
           <source src="/bat-no-wings.mp4" type="video/mp4" />
         </video>
-        <video
-          className="absolute left-0 -ml-24 top-8 md:top-128 lg:top-96 opacity-40 mix-blend-lighten"
-          playsInline
-          autoPlay
-          muted
-          loop
-          poster="/moving-orbs.jpg"
-        >
-          <source src="/moving-orbs.mp4" type="video/mp4" />
-          <source src="/moving-orbs.webm" type="video/webm; codecs='vp9'" />
-        </video>
+        {/* <video */}
+        {/*   className="absolute left-0 -ml-24 top-8 md:top-128 lg:top-96 opacity-40 mix-blend-lighten" */}
+        {/*   playsInline */}
+        {/*   autoPlay */}
+        {/*   muted */}
+        {/*   loop */}
+        {/*   poster="/moving-orbs.jpg" */}
+        {/* > */}
+        {/*   <source src="/moving-orbs.mp4" type="video/mp4" /> */}
+        {/*   <source src="/moving-orbs.webm" type="video/webm; codecs='vp9'" /> */}
+        {/* </video> */}
         <div className="flex flex-col px-4 md:w-5/6 mx-auto lg:w-full lg:flex-row lg:px-16 isolate">
           <div className="lg:w-1/2">
             <div className="mb-4">
@@ -137,21 +137,21 @@ const ComingSoon: React.FC = () => {
             id="join-the-fam"
             className="relative flex px-4 md:px-0 pt-8 pt-40 mb-16"
           >
-              <video
-                className="absolute w-1/2 right-0 -mt-16 opacity-40 mix-blend-lighten"
-                playsInline
-                autoPlay
-                muted
-                loop
-                poster="/bat-no-wings.png"
-              >
-                <source
-                  src="/moving-orbs.webm"
-                  type="video/webm; codecs='vp9'"
-                />
-                <source src="/moving-orbs.mp4" type="video/mp4" />
-              </video>
             <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative flex flex-col items-center">
+              {/* <video */}
+              {/*   className="absolute w-1/2 right-0 -mt-16 opacity-40 mix-blend-lighten" */}
+              {/*   playsInline */}
+              {/*   autoPlay */}
+              {/*   muted */}
+              {/*   loop */}
+              {/*   poster="/bat-no-wings.png" */}
+              {/* > */}
+              {/*   <source */}
+              {/*     src="/moving-orbs.webm" */}
+              {/*     type="video/webm; codecs='vp9'" */}
+              {/*   /> */}
+              {/*   <source src="/moving-orbs.mp4" type="video/mp4" /> */}
+              {/* </video> */}
               <TwitterCommunity />
             </div>
           </div>
