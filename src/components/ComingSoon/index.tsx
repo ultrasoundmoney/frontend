@@ -21,6 +21,18 @@ type EthPrice = {
   btc24hChange: number;
 };
 
+const ethPriceFormatter = new Intl.NumberFormat("en-US", {
+  currency: "usd",
+  style: "currency",
+  maximumFractionDigits: 0,
+});
+
+const percentChangeFormatter = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 1,
+  signDisplay: "always",
+  style: "percent",
+});
+
 const ComingSoon: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   const latestBlocks = useBlockHistory();
@@ -32,22 +44,18 @@ const ComingSoon: React.FC = () => {
     }
   );
 
-  const ethUsdPrice = new Intl.NumberFormat().format(data?.usd?.toFixed(0));
-  const ethUsd24hChange = data?.usd24hChange?.toFixed(1);
+  const ethUsdPrice = data?.usd && ethPriceFormatter.format(data?.usd);
+  const ethUsd24hChange =
+    data?.usd24hChange &&
+    percentChangeFormatter.format(data?.usd24hChange / 100);
   const baseFeePerGas = _.last(latestBlocks)?.baseFeePerGas;
-  const ethUsdPriceHTML = `$${ethUsdPrice}`;
-  const ethUsd24hChangeHTML =
-    data?.usd24hChange > 0
-      ? `
-    <span class="px-1 text-green-400">
-      (+${ethUsd24hChange}%)
-    </span>`
-      : `
-    <span class="px-1 text-red-400">
-      (${ethUsd24hChange}%)
-    </span>
-    `;
-  const baseFeePerGasHTML = `⛽️ ${weiToGwei(baseFeePerGas).toFixed(1)} Gwei`;
+  const color =
+    typeof ethUsd24hChange === "number" && ethUsd24hChange < 0
+      ? "red"
+      : "green";
+  const ethPriceChangeHtml = `<span class="px-1 text-${color}-400">(${ethUsd24hChange})</span>`;
+  const baseFeePerGasHtml = `⛽️ ${weiToGwei(baseFeePerGas).toFixed(1)} Gwei`;
+  const ethPriceHtml = `${ethUsdPrice}${ethPriceChangeHtml}<span class="px-1">•</span>${baseFeePerGasHtml}`;
 
   return (
     <div className="wrapper bg-blue-midnightexpress">
@@ -61,12 +69,7 @@ const ComingSoon: React.FC = () => {
               <div
                 className="flex text-white self-center rounded bg-blue-tangaroa px-3 py-2 text-xs lg:text-sm eth-price-gass-emoji font-roboto md:ml-4"
                 dangerouslySetInnerHTML={{
-                  __html: twemoji.parse(
-                    ethUsdPriceHTML +
-                      ethUsd24hChangeHTML +
-                      '<span class="px-1">•</span>' +
-                      baseFeePerGasHTML
-                  ),
+                  __html: twemoji.parse(ethPriceHtml),
                 }}
               />
             )}
