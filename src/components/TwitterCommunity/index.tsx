@@ -40,7 +40,7 @@ const TwitterCommunity: React.FC = () => {
 
   return (
     <>
-      <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8">
+      <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-4">
         <a
           target="_blank"
           href="https://twitter.com/i/lists/1376636817089396750/members"
@@ -52,21 +52,25 @@ const TwitterCommunity: React.FC = () => {
           {getText}
         </a>
       </h1>
-      <p className="text-blue-shipcove text-center mb-8 md:text-lg">
-        <span className="mr-2">wear the bat signal</span>
+      <div className="flex flex-col justify-center">
+        <p className="text-blue-shipcove text-center md:text-lg">
+          wear the bat signal
+        </p>
+        <div className="h-8"></div>
         <Clipboard data-clipboard-text={"🦇🔊"} onSuccess={onBatSoundCopied}>
           <span
-            className={`border border-gray-700 rounded-full leading-10 p-2 pr-10 transition duration-500 ease-in-out ${
-              isCopiedFeedbackVisible && "bg-gray-800"
+            className={`bg-blue-midnightexpress border border-gray-700 rounded-full p-2 pl-4 flex w-48 mx-auto justify-between items-center text-lg transition duration-500 ease-in-out isolate clipboard-emoji ${
+              isCopiedFeedbackVisible ? "bg-gray-800" : ""
             }`}
           >
             <SpanMoji emoji="🦇🔊" />
-          </span>
-          <span className="copy-container border-gray-700 py-2 -ml-9 mr-4 rounded-r-full">
-            <img className="copy-icon" src={copySrc} />
+            <span className="font-light text-base copy-container rounded-full bg-green-mediumspring text-blue-midnightexpress px-4 py-1 isolate">
+              copy
+            </span>
           </span>
         </Clipboard>
-      </p>
+      </div>
+      <div className="h-16"></div>
       <TwitterProfile profileList={data && data.profiles} />
     </>
   );
