@@ -24,6 +24,7 @@ type EthPrice = {
 const ethPriceFormatter = new Intl.NumberFormat("en-US", {
   currency: "usd",
   style: "currency",
+  minimumFractionDigits: 0,
   maximumFractionDigits: 0,
 });
 
@@ -65,9 +66,7 @@ const ComingSoon: React.FC = () => {
             {data !== undefined && baseFeePerGas !== undefined && (
               <div className="flex text-white self-center rounded bg-blue-tangaroa px-3 py-2 text-xs lg:text-sm eth-price-gass-emoji font-roboto md:ml-4">
                 {ethUsdPrice}
-                <span style={{ color }} className={`px-1`}>
-                  ({ethUsd24hChange})
-                </span>
+                <span className={`px-1 ${color}`}>({ethUsd24hChange})</span>
                 <span className="px-1">•</span>
                 <SpanMoji emoji="⛽️"></SpanMoji>
                 {weiToGwei(baseFeePerGas).toFixed(1)} Gwei
