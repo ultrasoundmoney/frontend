@@ -11,6 +11,13 @@ type FeePeriod = "24h" | "7d" | "30d" | "all";
 const botContracts = ["0xbf0c5d82748ed81b5794e59055725579911e3e4e"];
 const botContractMap = new Set(botContracts);
 
+// Ideally we solve this with etags instead.
+const bustcacheAlts = {
+  // Covid Punks
+  "0xe4cfae3aa41115cb94cff39bb5dbae8bd0ea9d41":
+    "/leaderboard-images/0xe4cfae3aa41115cb94cff39bb5dbae8bd0ea9d41-alt.png",
+};
+
 const FeeUser: FC<{
   name?: string;
   detail?: string;
@@ -20,6 +27,8 @@ const FeeUser: FC<{
 }> = ({ address, detail, name, fees, id }) => {
   const imgSrc = botContractMap.has(address)
     ? "/leaderboard-images/bot.svg"
+    : bustcacheAlts[id] !== undefined
+    ? bustcacheAlts[id]
     : imageIds.includes(id)
     ? `/leaderboard-images/${id}.png`
     : "/leaderboard-images/question-mark.png";
