@@ -60,10 +60,10 @@ const LatestBlocks: FC = () => {
     <div
       className={`bg-blue-tangaroa w-full rounded-lg p-8 ${styles["balance-padding"]}`}
     >
-      <span className="font-inter text-blue-spindlefont-light text-blue-shipcove text-xl float-left">
+      <span className="font-inter text-blue-shipcove text-xl float-left">
         latest blocks
       </span>
-      <span className="font-inter text-blue-spindlefont-light text-blue-shipcove text-xl float-right">
+      <span className="font-inter text-blue-shipcove text-xl float-right">
         burn
       </span>
       <div className="py-6"></div>
