@@ -34,18 +34,21 @@ const FeeUser: FC<{
     : "/leaderboard-images/question-mark.png";
 
   return (
-    <div className="flex flex-row pt-6 md:pt-6 justify-between items-center hover:opacity-80">
+    <div className="flex flex-row pt-5 md:pt-6 justify-between items-center hover:opacity-80">
       <div className="flex flex-row items-center overflow-hidden">
         <img
           className="w-8 h-8 flex-shrink-0 leaderboard-image"
           src={imgSrc}
           alt=""
         />
-        <p className="font-roboto text-sm text-white pl-4 truncate md:text-lg">
-          {name || address} <span className="text-blue-shipcove">{detail}</span>
+        <p className="font-inter text-white pl-4 whitespace-nowrap text-base md:text-lg">
+          {name || address}
+        </p>
+        <p className="font-inter font-extralight text-blue-shipcove pl-2 whitespace-nowrap truncate text-base md:text-lg">
+          {detail}
         </p>
       </div>
-      <p className="font-roboto font-light text-sm text-white ml-8 whitespace-nowrap md:text-lg">
+      <p className="font-roboto font-light text-white pl-4 whitespace-nowrap text-base md:text-lg">
         <CountUp
           start={0}
           end={weiToEth(fees)}
@@ -54,7 +57,7 @@ const FeeUser: FC<{
           decimals={2}
           duration={1}
         />{" "}
-        <span className="text-blue-manatee">ETH</span>
+        <span className="text-blue-spindle font-extralight">ETH</span>
       </p>
     </div>
   );
@@ -126,7 +129,7 @@ const BurnLeaderboard: FC = () => {
 
   const { md, lg } = useActiveBreakpoint();
 
-  const balancePadding = lg ? "58px" : md ? "46px" : undefined;
+  const balancePadding = lg ? "1.6rem" : md ? "0.8rem" : undefined;
 
   return (
     <div

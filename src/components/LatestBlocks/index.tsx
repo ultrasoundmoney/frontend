@@ -56,7 +56,7 @@ const LatestBlocks: FC = () => {
   const latestBlocks = useBlockHistory();
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8">
-      <div className="flex justify-between">
+      <div className="flex justify-between pb-2">
         <span className="font-inter text-blue-shipcove text-xl float-left">
           latest blocks
         </span>
@@ -64,7 +64,6 @@ const LatestBlocks: FC = () => {
           burn
         </span>
       </div>
-      <div className="py-6"></div>
       <ul>
         {latestBlocks.length === 0 ? (
           <p className="font-roboto text-white md:text-4xl">loading...</p>
@@ -77,16 +76,18 @@ const LatestBlocks: FC = () => {
           >
             {latestBlocks.map(({ number, fees }) => (
               <CSSTransition classNames="fee-block" timeout={500} key={number}>
-                <li className="flex justify-between mt-5 fee-block">
+                <li className="flex justify-between mt-4 fee-block">
                   <p className="text-white">
                     block{" "}
                     <span className="font-roboto">
                       #{new Intl.NumberFormat().format(number)}
                     </span>
                   </p>
-                  <p className="text-white">
+                  <p className="text-white text-base md:text-lg">
                     <span className="font-roboto">{formatFee(fees)} </span>
-                    <span className="text-blue-spindle">ETH</span>
+                    <span className="text-blue-spindle font-extralight">
+                      ETH
+                    </span>
                   </p>
                 </li>
               </CSSTransition>
