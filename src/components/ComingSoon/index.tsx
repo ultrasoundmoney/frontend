@@ -8,11 +8,12 @@ import TotalFeeBurn from "../TotalFeeBurn";
 import LatestBlocks, { useBlockHistory } from "../LatestBlocks";
 import FaqBlock from "../Landing/faq";
 import useSWR from "swr";
-import twemoji from "twemoji";
 import Link from "next/link";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 import _ from "lodash";
 import { weiToGwei } from "../../utils/metric-utils";
+import SpanMoji from "../SpanMoji";
+import { colors } from "tailwindcss/defaultTheme";
 
 type EthPrice = {
   usd: number;
@@ -51,11 +52,8 @@ const ComingSoon: React.FC = () => {
   const baseFeePerGas = _.last(latestBlocks)?.baseFeePerGas;
   const color =
     typeof ethUsd24hChange === "number" && ethUsd24hChange < 0
-      ? "red"
-      : "green";
-  const ethPriceChangeHtml = `<span class="px-1 text-${color}-400">(${ethUsd24hChange})</span>`;
-  const baseFeePerGasHtml = `⛽️ ${weiToGwei(baseFeePerGas).toFixed(1)} Gwei`;
-  const ethPriceHtml = `${ethUsdPrice}${ethPriceChangeHtml}<span class="px-1">•</span>${baseFeePerGasHtml}`;
+      ? colors.red["400"]
+      : colors.green["400"];
 
   return (
     <div className="wrapper bg-blue-midnightexpress">
@@ -66,12 +64,15 @@ const ComingSoon: React.FC = () => {
               <img className="relative" src={EthLogo} alt={t.title} />
             </Link>
             {data !== undefined && baseFeePerGas !== undefined && (
-              <div
-                className="flex text-white self-center rounded bg-blue-tangaroa px-3 py-2 text-xs lg:text-sm eth-price-gass-emoji font-roboto md:ml-4"
-                dangerouslySetInnerHTML={{
-                  __html: twemoji.parse(ethPriceHtml),
-                }}
-              />
+              <div className="flex text-white self-center rounded bg-blue-tangaroa px-3 py-2 text-xs lg:text-sm eth-price-gass-emoji font-roboto md:ml-4">
+                {ethUsdPrice}
+                <span style={{ color }} className={`px-1`}>
+                  ({ethUsd24hChange})
+                </span>
+                <span className="px-1">•</span>
+                <SpanMoji emoji="⛽️"></SpanMoji>
+                {weiToGwei(baseFeePerGas).toFixed(1)} Gwei
+              </div>
             )}
           </div>
           <a
