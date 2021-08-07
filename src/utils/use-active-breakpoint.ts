@@ -1,11 +1,22 @@
 import { useMediaQuery } from "@react-hook/media-query";
+import { useEffect, useState } from "react";
 
 type Breakpoint = { md: boolean; lg: boolean; xl: boolean };
 
 export const useActiveBreakpoint = (): Breakpoint => {
-  const isXl = useMediaQuery("(min-width: 1536px)");
-  const isLg = useMediaQuery("(min-width: 1280px)");
-  const isMd = useMediaQuery("(min-width: 1024px)");
+  const [activeBreakpoints, setActiveBreakpoints] = useState({
+    md: false,
+    lg: false,
+    xl: false,
+  });
 
-  return { md: isMd, lg: isLg, xl: isXl };
+  const xl = useMediaQuery("(min-width: 1536px)");
+  const lg = useMediaQuery("(min-width: 1280px)");
+  const md = useMediaQuery("(min-width: 1024px)");
+
+  useEffect(() => {
+    setActiveBreakpoints({ md, lg, xl });
+  }, [md, lg, xl]);
+
+  return activeBreakpoints;
 };
