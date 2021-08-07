@@ -57,7 +57,7 @@ const ComingSoon: React.FC = () => {
 
   return (
     <div className="wrapper bg-blue-midnightexpress">
-      <div className="container m-auto coming-soon">
+      <div className="container m-auto">
         <div className="flex justify-between">
           <div className="w-full flex justify-between md:justify-start p-4">
             <Link href="/">
@@ -88,21 +88,29 @@ const ComingSoon: React.FC = () => {
         <p className="font-inter text-blue-shipcove text-xl md:text-2xl lg:text-3xl text-white text-center mb-16">
           track ETH become ultra sound
         </p>
-        <div className="w-full">
-          <video
-            className="w-full md:w-3/6 lg:w-2/6 mx-auto pr-4 -mt-32 mix-blend-lighten"
-            playsInline
-            autoPlay
-            muted
-            loop
-            poster="/no-full-wings.jpg"
-          >
-            <source src="/no-full-wings.mp4" type="video/mp4" />
-            <source src="/no-full-wings.webm" type="video/webm" />
-            <source src="/no-full-wings.ogv" type="video/ogg" />
-          </video>
-        </div>
-        <div className="flex flex-col px-4 md:w-5/6 mx-auto lg:w-full lg:flex-row lg:px-16">
+        <video
+          className="w-full md:w-3/6 lg:w-2/6 mx-auto -mt-32 -mb-4 mix-blend-lighten"
+          playsInline
+          autoPlay
+          muted
+          loop
+          poster="/bat-no-wings.png"
+        >
+          <source src="/bat-no-wings.webm" type="video/webm; codecs='vp9'" />
+          <source src="/bat-no-wings.mp4" type="video/mp4" />
+        </video>
+        <video
+          className="absolute left-0 -ml-24 top-8 md:top-128 lg:top-96 opacity-40 mix-blend-lighten"
+          playsInline
+          autoPlay
+          muted
+          loop
+          poster="/moving-orbs.jpg"
+        >
+          <source src="/moving-orbs.mp4" type="video/mp4" />
+          <source src="/moving-orbs.webm" type="video/webm; codecs='vp9'" />
+        </video>
+        <div className="flex flex-col px-4 md:w-5/6 mx-auto lg:w-full lg:flex-row lg:px-16 isolate">
           <div className="lg:w-1/2">
             <div className="mb-4">
               <TotalFeeBurn />
@@ -125,8 +133,25 @@ const ComingSoon: React.FC = () => {
           <div className="w-full md:m-auto relative bg-blue-tangaroa px-2 md:px-4 xl:px-12 py-4 md:py-8 xl:py-12 rounded-xl">
             <SupplyView />
           </div>
-          <div id="join-the-fam" className="flex px-4 md:px-0 pt-8 pt-40 mb-16">
+          <div
+            id="join-the-fam"
+            className="relative flex px-4 md:px-0 pt-8 pt-40 mb-16"
+          >
             <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
+              <video
+                className="absolute w-1/2 right-0 -mt-16 opacity-40 mix-blend-lighten"
+                playsInline
+                autoPlay
+                muted
+                loop
+                poster="/bat-no-wings.png"
+              >
+                <source
+                  src="/moving-orbs.webm"
+                  type="video/webm; codecs='vp9'"
+                />
+                <source src="/moving-orbs.mp4" type="video/mp4" />
+              </video>
               <TwitterCommunity />
             </div>
           </div>
