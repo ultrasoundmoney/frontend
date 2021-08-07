@@ -44,6 +44,7 @@
     "@hookform/error-message": "^0.0.5",
     "@material-ui/core": "^4.10.1",
     "@material-ui/icons": "^4.9.1",
+    "@next/bundle-analyzer": "^11.0.1",
     "@tailwindcss/jit": "^0.1.18",
     "@testing-library/jest-dom": "^5.1.1",
     "@testing-library/react": "^10.0.2",
