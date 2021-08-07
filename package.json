@@ -58,7 +58,6 @@
     "@types/react-redux": "^7.1.9",
     "@types/react-transition-group": "^4.4.0",
     "@types/styled-components": "^5.1.11",
-    "@types/tailwindcss": "^2.2.1",
     "@types/twemoji": "^12.1.1",
     "@typescript-eslint/eslint-plugin": "^2.21.0",
     "@typescript-eslint/parser": "^2.21.0",

@@ -13,7 +13,6 @@ import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 import _ from "lodash";
 import { weiToGwei } from "../../utils/metric-utils";
 import SpanMoji from "../SpanMoji";
-import { colors } from "tailwindcss/defaultTheme";
 
 type EthPrice = {
   usd: number;
@@ -52,8 +51,8 @@ const ComingSoon: React.FC = () => {
   const baseFeePerGas = _.last(latestBlocks)?.baseFeePerGas;
   const color =
     typeof ethUsd24hChange === "number" && ethUsd24hChange < 0
-      ? colors.red["400"]
-      : colors.green["400"];
+      ? "text-red-400"
+      : "text-green-400";
 
   return (
     <div className="wrapper bg-blue-midnightexpress">
