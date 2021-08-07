@@ -3,7 +3,6 @@ import useSWR from "swr";
 import Clipboard from "react-clipboard.js";
 import TwitterProfile from "./TwitterProfile";
 import SpanMoji from "../SpanMoji";
-import copySrc from "../../assets/copy.svg";
 import { TranslationsContext } from "../../translations-context";
 
 const TwitterCommunity: React.FC = () => {
@@ -40,7 +39,7 @@ const TwitterCommunity: React.FC = () => {
 
   return (
     <>
-      <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-4">
+      <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8">
         <a
           target="_blank"
           href="https://twitter.com/i/lists/1376636817089396750/members"
@@ -52,19 +51,17 @@ const TwitterCommunity: React.FC = () => {
           {getText}
         </a>
       </h1>
-      <div className="flex flex-col justify-center">
-        <p className="text-blue-shipcove text-center md:text-lg">
-          wear the bat signal
-        </p>
-        <div className="h-8"></div>
+      <div className="flex items-center">
+        <p className="text-blue-shipcove md:text-lg">wear the bat signal</p>
+        <div className="w-4"></div>
         <Clipboard data-clipboard-text={"🦇🔊"} onSuccess={onBatSoundCopied}>
           <span
-            className={`bg-blue-midnightexpress border border-gray-700 rounded-full p-2 pl-4 flex w-48 mx-auto justify-between items-center text-lg transition duration-500 ease-in-out isolate clipboard-emoji ${
+            className={`bg-blue-midnightexpress border border-gray-700 rounded-full p-2 pl-5 flex w-48 mx-auto justify-between items-center text-2xl transition duration-500 ease-in-out isolate clipboard-emoji ${
               isCopiedFeedbackVisible ? "bg-gray-800" : ""
             }`}
           >
             <SpanMoji emoji="🦇🔊" />
-            <span className="font-light text-base copy-container rounded-full bg-green-mediumspring text-blue-midnightexpress px-4 py-1 isolate">
+            <span className="font-light text-base copy-container rounded-full bg-green-mediumspring text-blue-midnightexpress px-5 py-1 isolate">
               copy
             </span>
           </span>

@@ -137,7 +137,6 @@ const ComingSoon: React.FC = () => {
             id="join-the-fam"
             className="relative flex px-4 md:px-0 pt-8 pt-40 mb-16"
           >
-            <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
               <video
                 className="absolute w-1/2 right-0 -mt-16 opacity-40 mix-blend-lighten"
                 playsInline
@@ -152,6 +151,7 @@ const ComingSoon: React.FC = () => {
                 />
                 <source src="/moving-orbs.mp4" type="video/mp4" />
               </video>
+            <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative flex flex-col items-center">
               <TwitterCommunity />
             </div>
           </div>
