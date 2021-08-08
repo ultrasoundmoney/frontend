@@ -51,7 +51,7 @@ const ComingSoon: React.FC = () => {
     percentChangeFormatter.format(data?.usd24hChange / 100);
   const baseFeePerGas = _.last(latestBlocks)?.baseFeePerGas;
   const color =
-    typeof ethUsd24hChange === "number" && ethUsd24hChange < 0
+    typeof data?.usd24hChange === "number" && data?.usd24hChange < 0
       ? "text-red-400"
       : "text-green-400";
 
