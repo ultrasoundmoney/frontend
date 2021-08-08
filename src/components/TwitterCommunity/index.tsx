@@ -26,7 +26,7 @@ const TwitterCommunity: React.FC = () => {
 
   React.useEffect(() => {
     if (profiles !== undefined) {
-      setShuffledProfiles(profiles.sort(() => (Math.random() >= 0.5 ? 1 : -1)));
+      setShuffledProfiles(profiles);
     }
   }, [profiles]);
 
