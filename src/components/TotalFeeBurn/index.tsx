@@ -19,17 +19,33 @@ const TotalFeeBurn: FC = () => {
         </p>
       </div>
       {typeof totalFeesBurned === "number" ? (
-        <p className="font-roboto flex justify-between text-white text-3xl md:text-4xl lg:text-3xl xl:text-5xl">
-          <CountUp
-            decimals={2}
-            duration={1.5}
-            separator=","
-            end={weiToEth(totalFeesBurned)}
-            suffix=" ETH"
-            preserveValue={true}
-          />
-          <SpanMoji emoji="🔥" />
-        </p>
+        <div>
+          <p className="font-roboto flex justify-between text-white text-3xl md:text-4xl lg:text-3xl xl:text-5xl">
+            <CountUp
+              decimals={2}
+              duration={1.5}
+              separator=","
+              end={weiToEth(totalFeesBurned)}
+              suffix=" ETH"
+              preserveValue={true}
+            />
+            <SpanMoji emoji="🔥" />
+          </p>
+          <p className="font-roboto text-blue-spindle text-sm mt-3">
+            <CountUp
+              decimals={2}
+              duration={1.5}
+              separator=","
+              end={
+                weiToEth(totalFeesBurned) /
+                ((new Date().getTime() - 1628166822000) / 1000 / 60)
+              }
+              suffix=" ETH/min"
+              preserveValue={true}
+            />{" "}
+            average
+          </p>
+        </div>
       ) : (
         <p className="font-roboto text-white text-white text-3xl md:text-4xl lg:text-3xl xl:text-5xl">
           loading...
