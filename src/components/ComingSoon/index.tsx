@@ -4,13 +4,12 @@ import FollowingYou from "../FollowingYou";
 import SupplyView from "../SupplyView";
 import { TranslationsContext } from "../../translations-context";
 import BurnLeaderboard from "../BurnLeaderboard";
-import TotalFeeBurn from "../TotalFeeBurn";
-import LatestBlocks, { useBlockHistory } from "../LatestBlocks";
+import CumulativeFeeBurn from "../CumulativeFeeBurn";
+import LatestBlocks from "../LatestBlocks";
 import FaqBlock from "../Landing/faq";
 import useSWR from "swr";
 import Link from "next/link";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
-import _ from "lodash";
 import { weiToGwei } from "../../utils/metric-utils";
 import SpanMoji from "../SpanMoji";
 
@@ -34,9 +33,21 @@ const percentChangeFormatter = new Intl.NumberFormat("en-US", {
   style: "percent",
 });
 
+const useBaseFeePerGas = () => {
+  const { data, error } = useSWR<{ baseFeePerGas: number }>(
+    "https://api.ultrasound.money/base-fee-per-gas"
+  );
+
+  return {
+    baseFeePerGas: data?.baseFeePerGas,
+    isLoading: !error && !data,
+    isError: error,
+  };
+};
+
 const ComingSoon: React.FC = () => {
   const t = React.useContext(TranslationsContext);
-  const latestBlocks = useBlockHistory();
+  const { baseFeePerGas } = useBaseFeePerGas();
   const { data } = useSWR<EthPrice>(
     "https://api.ultrasound.money/fees/eth-price",
     {
@@ -49,7 +60,6 @@ const ComingSoon: React.FC = () => {
   const ethUsd24hChange =
     data?.usd24hChange &&
     percentChangeFormatter.format(data?.usd24hChange / 100);
-  const baseFeePerGas = _.last(latestBlocks)?.baseFeePerGas;
   const color =
     typeof data?.usd24hChange === "number" && data?.usd24hChange < 0
       ? "text-red-400"
@@ -113,7 +123,7 @@ const ComingSoon: React.FC = () => {
         <div className="flex flex-col px-4 md:w-5/6 mx-auto lg:w-full lg:flex-row lg:px-16 isolate">
           <div className="lg:w-1/2">
             <div className="mb-4">
-              <TotalFeeBurn />
+              <CumulativeFeeBurn />
             </div>
             <div className="mb-4">
               <LatestBlocks />

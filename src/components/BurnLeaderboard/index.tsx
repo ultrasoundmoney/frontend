@@ -5,6 +5,7 @@ import _ from "lodash";
 import imageIds from "../../assets/leaderboard-image-ids.json";
 import { weiToEth } from "../../utils/metric-utils";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
+import useSWR from "swr";
 
 type FeePeriod = "24h" | "7d" | "30d" | "all";
 
@@ -78,7 +79,6 @@ type LeaderboardUpdate = {
   leaderboard7d: FeeBurner[];
   leaderboard30d: FeeBurner[];
   leaderboardAll: FeeBurner[];
-  type: "leaderboard-update";
 };
 
 const feePeriodToUpdateMap: Record<FeePeriod, string> = {
@@ -88,39 +88,29 @@ const feePeriodToUpdateMap: Record<FeePeriod, string> = {
   all: "leaderboardAll",
 };
 
-const BurnLeaderboard: FC = () => {
-  const [feePeriod, setFeePeriod] = useState<FeePeriod>("24h");
-
-  const { lastJsonMessage } = useWebSocket(
-    "wss://api.ultrasound.money/fees/base-fee-feed",
+const useLeaderboard = () => {
+  const { data, error } = useSWR<LeaderboardUpdate>(
+    `https://api.ultrasound.money/fees/burn-leaderboard`,
     {
-      share: true,
-      filter: (message) =>
-        JSON.parse(message.data).type === "leaderboard-update",
-      retryOnError: true,
-      shouldReconnect: () => true,
+      refreshInterval: 8000,
     }
   );
-  const messageHistory = useRef<LeaderboardUpdate[]>([]);
 
-  messageHistory.current = useMemo(() => {
-    // Initially the message is null. We don't need that one.
-    if (lastJsonMessage === null) {
-      return messageHistory.current;
-    }
+  return {
+    leaderboard: {
+      leaderboard24h: data?.leaderboard24h,
+      leaderboard7d: data?.leaderboard7d,
+      leaderboard30d: data?.leaderboard30d,
+      leaderboardAll: data?.leaderboardAll,
+    },
+    isLoading: !error && !data,
+    isError: error,
+  };
+};
 
-    // Sometimes the hook calls us with a message that passes the memo check, yet contains the same values, extra guard here.
-    if (
-      !_.isEmpty(messageHistory.current) &&
-      _.last(messageHistory.current).number === lastJsonMessage.number
-    ) {
-      return messageHistory.current;
-    }
-
-    return [...messageHistory.current, lastJsonMessage];
-  }, [lastJsonMessage]);
-
-  const leaderboard = _.last(messageHistory.current);
+const BurnLeaderboard: FC = () => {
+  const [feePeriod, setFeePeriod] = useState<FeePeriod>("24h");
+  const { leaderboard } = useLeaderboard();
   const selectedLeaderboard: FeeBurner[] | undefined =
     leaderboard && leaderboard[feePeriodToUpdateMap[feePeriod]];
 
@@ -129,7 +119,7 @@ const BurnLeaderboard: FC = () => {
 
   const { md, lg } = useActiveBreakpoint();
 
-  const balancePadding = lg ? "1.6rem" : md ? "0.8rem" : undefined;
+  const balancePadding = lg ? "2.5rem" : md ? "0.8rem" : undefined;
 
   return (
     <div
@@ -181,7 +171,7 @@ const BurnLeaderboard: FC = () => {
         </p>
       ) : (
         selectedLeaderboard
-          .slice(0, 8)
+          .slice(0, 10)
           .map((feeUser) => (
             <FeeUser
               key={feeUser.name}
