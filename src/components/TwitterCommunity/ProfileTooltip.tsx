@@ -6,13 +6,7 @@ import { TranslationsContext } from "../../translations-context";
 
 type ProfileTooltipProps = {
   children: React.ReactNode;
-  item: {
-    name: string;
-    profileImageUrl: string;
-    profileUrl: string;
-    bio: string;
-    followersCount: number;
-  };
+  item: TwitterProfile;
 };
 const ProfileTooltip: React.FC<ProfileTooltipProps> = ({ children, item }) => {
   const t = React.useContext(TranslationsContext);
@@ -58,12 +52,24 @@ const ProfileTooltip: React.FC<ProfileTooltipProps> = ({ children, item }) => {
             __html: twemoji.parse(item.bio),
           }}
         />
-        <p className="text-xs text-blue-spindle text-left font-light uppercase mb-0">
-          {t.profile_follower}
-        </p>
-        <p className="text-white text-left font-light text-2xl">
-          {followerCountConvert(item.followersCount)}
-        </p>
+        <div className="flex justify-between">
+          <div>
+            <p className="text-xs text-blue-spindle text-left font-light uppercase mb-0">
+              {t.profile_follower}
+            </p>
+            <p className="text-white text-left font-light text-2xl">
+              {followerCountConvert(item.followersCount)}
+            </p>
+          </div>
+          <div>
+            <p className="text-xs text-blue-spindle text-left font-light uppercase mb-0">
+              FAM FOLLOWERS
+            </p>
+            <p className="text-white text-left font-light text-2xl">
+              {followerCountConvert(item.famFollowerCount)}
+            </p>
+          </div>
+        </div>
       </div>
       {children}
     </div>
