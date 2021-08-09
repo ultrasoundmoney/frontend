@@ -10,9 +10,6 @@ const TwitterCommunity: React.FC = () => {
   const [isCopiedFeedbackVisible, setIsCopiedFeedbackVisible] = React.useState<
     boolean
   >(false);
-  const [shuffledProfiles, setShuffledProfiles] = React.useState<
-    TwitterProfile[]
-  >([]);
   const { data } = useSWR(
     "https://api.ultrasound.money/fam/2/profiles",
     (url: string) => fetch(url).then((r) => r.json()),
@@ -23,12 +20,6 @@ const TwitterCommunity: React.FC = () => {
   );
 
   const profiles = data?.profiles;
-
-  React.useEffect(() => {
-    if (profiles !== undefined) {
-      setShuffledProfiles(profiles);
-    }
-  }, [profiles]);
 
   const getFamCount = new Intl.NumberFormat().format(
     isNaN(data && data.count) ? 0 : data && data.count
@@ -80,7 +71,7 @@ const TwitterCommunity: React.FC = () => {
         </Clipboard>
       </div>
       <div className="h-16"></div>
-      <TwitterProfile profileList={shuffledProfiles} />
+      {Array.isArray(profiles) && <TwitterProfile profileList={profiles} />}
     </>
   );
 };
