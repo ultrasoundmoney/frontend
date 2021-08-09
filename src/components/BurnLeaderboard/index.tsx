@@ -1,7 +1,5 @@
-import { FC, memo, useState, useRef, useMemo } from "react";
-import useWebSocket from "react-use-websocket";
+import { FC, memo, useState } from "react";
 import CountUp from "react-countup";
-import _ from "lodash";
 import imageIds from "../../assets/leaderboard-image-ids.json";
 import { weiToEth } from "../../utils/metric-utils";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";

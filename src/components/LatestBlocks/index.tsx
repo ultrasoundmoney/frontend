@@ -1,7 +1,5 @@
-import React, { memo, FC, useRef, useMemo } from "react";
-import useWebSocket from "react-use-websocket";
+import React, { memo, FC } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import _ from "lodash";
 import { weiToEth } from "../../utils/metric-utils";
 import useSWR from "swr";
 
