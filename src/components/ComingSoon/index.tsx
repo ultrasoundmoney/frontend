@@ -35,7 +35,7 @@ const percentChangeFormatter = new Intl.NumberFormat("en-US", {
 
 const useBaseFeePerGas = () => {
   const { data, error } = useSWR<{ baseFeePerGas: number }>(
-    "https://api.ultrasound.money/base-fee-per-gas"
+    "https://api.ultrasound.money/fees/base-fee-per-gas"
   );
 
   return {
