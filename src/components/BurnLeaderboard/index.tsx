@@ -91,9 +91,7 @@ const feePeriodToUpdateMap: Record<FeePeriod, string> = {
 const useLeaderboard = () => {
   const { data, error } = useSWR<LeaderboardUpdate>(
     `https://api.ultrasound.money/fees/burn-leaderboard`,
-    {
-      refreshInterval: 8000,
-    }
+    { refreshInterval: 8000 }
   );
 
   return {

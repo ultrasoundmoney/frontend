@@ -23,9 +23,7 @@ const useTotalBurned = () => {
 const useBurnRates = () => {
   const { data, error } = useSWR<{
     burnRates: { burnRate1h: number; burnRate24h: number };
-  }>(`https://api.ultrasound.money/fees/burn-rate`, {
-    refreshInterval: 8000,
-  });
+  }>(`https://api.ultrasound.money/fees/burn-rate`, { refreshInterval: 8000 });
 
   return {
     burnRate1h: data?.burnRates?.burnRate1h,
