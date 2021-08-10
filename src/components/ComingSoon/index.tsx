@@ -88,7 +88,7 @@ const ComingSoon: React.FC = () => {
           track ETH become ultra sound
         </p>
         <video
-          className="w-full md:w-3/6 lg:w-2/6 mx-auto -mt-32 -mb-4 mix-blend-lighten"
+          className="w-full md:w-3/6 lg:w-2/6 mx-auto -mt-32 -mb-4 pr-7 mix-blend-lighten"
           playsInline
           autoPlay
           muted
