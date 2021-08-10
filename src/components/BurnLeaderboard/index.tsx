@@ -145,7 +145,8 @@ const BurnLeaderboard: FC = () => {
           7d
         </button>
         <button
-          className={`font-inter text-sm px-4 py-1 border border-transparent ${
+          disabled
+          className={`font-inter text-sm px-4 py-1 border border-transparent opacity-50 ${
             feePeriod === "30d" ? activeFeePeriodClasses : "text-blue-manatee"
           }`}
           onClick={() => setFeePeriod("30d")}
