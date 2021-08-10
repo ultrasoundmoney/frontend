@@ -72,6 +72,7 @@ type FeeUser = {
 type FeeBurner = { fees: string; id: string; name: string };
 type LeaderboardUpdate = {
   number: number;
+  leaderboard1h: FeeBurner[];
   leaderboard24h: FeeBurner[];
   leaderboard7d: FeeBurner[];
   leaderboard30d: FeeBurner[];
@@ -94,6 +95,7 @@ const useLeaderboard = () => {
 
   return {
     leaderboard: {
+      leaderboard1h: data?.leaderboard1h,
       leaderboard24h: data?.leaderboard24h,
       leaderboard7d: data?.leaderboard7d,
       leaderboard30d: data?.leaderboard30d,
