@@ -57,6 +57,11 @@ const FaqBlock: React.FC<FaqBlockPros> = () => {
             style={{ height: "1px" }}
           ></div>
           <Accordion title={t.faq_question_8} text={t.faq_answer_8} />
+          <div
+            className="w-full bg-blue-shipcove"
+            style={{ height: "1px" }}
+          ></div>
+          <Accordion title={t.faq_question_9} text={t.faq_answer_9} />
         </div>
         <div className="w-full mx-auto px-0 flex justify-center mt-16">
           <span className="flex-initial text-white text-lg font-light self-center px-4">

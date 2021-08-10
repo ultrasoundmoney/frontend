@@ -4,15 +4,15 @@ import FollowingYou from "../FollowingYou";
 import SupplyView from "../SupplyView";
 import { TranslationsContext } from "../../translations-context";
 import BurnLeaderboard from "../BurnLeaderboard";
-import TotalFeeBurn from "../TotalFeeBurn";
-import LatestBlocks, { useBlockHistory } from "../LatestBlocks";
+import CumulativeFeeBurn from "../CumulativeFeeBurn";
+import LatestBlocks from "../LatestBlocks";
 import FaqBlock from "../Landing/faq";
 import useSWR from "swr";
 import Link from "next/link";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
-import _ from "lodash";
 import { weiToGwei } from "../../utils/metric-utils";
 import SpanMoji from "../SpanMoji";
+import useFeeData from "../../use-fee-data";
 
 type EthPrice = {
   usd: number;
@@ -36,7 +36,7 @@ const percentChangeFormatter = new Intl.NumberFormat("en-US", {
 
 const ComingSoon: React.FC = () => {
   const t = React.useContext(TranslationsContext);
-  const latestBlocks = useBlockHistory();
+  const { baseFeePerGas } = useFeeData();
   const { data } = useSWR<EthPrice>(
     "https://api.ultrasound.money/fees/eth-price",
     {
@@ -49,7 +49,6 @@ const ComingSoon: React.FC = () => {
   const ethUsd24hChange =
     data?.usd24hChange &&
     percentChangeFormatter.format(data?.usd24hChange / 100);
-  const baseFeePerGas = _.last(latestBlocks)?.baseFeePerGas;
   const color =
     typeof data?.usd24hChange === "number" && data?.usd24hChange < 0
       ? "text-red-400"
@@ -85,11 +84,11 @@ const ComingSoon: React.FC = () => {
         >
           ultra sound awakening
         </div>
-        <p className="font-inter text-blue-shipcove text-xl md:text-2xl lg:text-3xl text-white text-center mb-16">
+        <p className="font-inter text-blue-spindle text-xl md:text-2xl lg:text-3xl text-white text-center mb-16">
           track ETH become ultra sound
         </p>
         <video
-          className="w-full md:w-3/6 lg:w-2/6 mx-auto -mt-32 -mb-4 mix-blend-lighten"
+          className="w-full md:w-3/6 lg:w-2/6 mx-auto -mt-32 -mb-4 pr-7 mix-blend-lighten"
           playsInline
           autoPlay
           muted
@@ -112,14 +111,12 @@ const ComingSoon: React.FC = () => {
         {/* </video> */}
         <div className="flex flex-col px-4 md:w-5/6 mx-auto lg:w-full lg:flex-row lg:px-16 isolate">
           <div className="lg:w-1/2">
-            <div className="mb-4">
-              <TotalFeeBurn />
-            </div>
-            <div className="mb-4">
-              <LatestBlocks />
-            </div>
+            <CumulativeFeeBurn />
+            <span className="block w-4 h-4" />
+            <LatestBlocks />
           </div>
-          <div className="lg:w-1/2 lg:pl-4">
+          <span className="block w-4 h-4" />
+          <div className="lg:w-1/2">
             <BurnLeaderboard />
           </div>
         </div>
@@ -127,7 +124,7 @@ const ComingSoon: React.FC = () => {
           <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8">
             {t.teaser_supply_title}
           </h1>
-          <p className="text-white text-center font-light text-base lg:text-lg mb-8">
+          <p className="text-blue-shipcove text-center font-light text-base lg:text-lg mb-8">
             {t.teaser_supply_subtitle}
           </p>
           <div className="w-full md:m-auto relative bg-blue-tangaroa px-2 md:px-4 xl:px-12 py-4 md:py-8 xl:py-12 rounded-xl">

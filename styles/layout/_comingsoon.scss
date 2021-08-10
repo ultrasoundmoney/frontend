@@ -137,10 +137,6 @@
   vertical-align: -0.125em;
 }
 
-.clipboard-emoji img {
-  /* height: 1.5rem; */
-}
-
 .show-me {
   margin-top: 0.3rem;
   margin-bottom: 0.3rem;
@@ -149,12 +145,12 @@
   }
 }
 
-.burn-block-update-appear-active {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) 2;
+.fee-block-enter {
+  opacity: 0;
 }
 
-.burn-block-update-enter-active {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+.fee-block-enter-active {
+  opacity: 1;
 }
 
 .fee-block {
