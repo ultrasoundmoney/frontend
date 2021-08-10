@@ -32,27 +32,27 @@ const FeeUser: FC<{
     : "/leaderboard-images/question-mark.png";
 
   return (
-    <div className="flex flex-row pt-5 md:pt-6 justify-between items-center hover:opacity-60 fee-block">
-      <div className="flex flex-row items-center overflow-hidden">
-        <a
-          className="flex items-center"
-          href={id.startsWith("0x") ? `https://etherscan.io/address/${id}` : ""}
-          target="_blank"
-          rel="noreferrer"
-        >
+    <div className="flex flex-row pt-5 md:pt-6 justify-between items-center">
+      <a
+        className="flex items-center hover:opacity-60 leaderboard-link"
+        href={id.startsWith("0x") ? `https://etherscan.io/address/${id}` : ""}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <div className="flex flex-row items-center overflow-hidden">
           <img
             className="w-8 h-8 flex-shrink-0 leaderboard-image"
             src={imgSrc}
             alt=""
           />
-          <p className="font-inter text-white pl-4 whitespace-nowrap text-base md:text-lg">
+          <p className="font-inter text-white pl-4 whitespace-nowrap truncate text-base md:text-lg">
             {name || id}
           </p>
-        </a>
-        <p className="font-inter font-extralight text-blue-shipcove invisible md:visible pl-2 whitespace-nowrap truncate text-base md:text-lg">
-          {detail}
-        </p>
-      </div>
+          <p className="font-inter font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block pl-2 whitespace-nowrap truncate text-base md:text-lg">
+            {detail}
+          </p>
+        </div>
+      </a>
       <p className="font-roboto font-light text-white pl-4 whitespace-nowrap text-base md:text-lg">
         <CountUp
           start={0}

@@ -46,7 +46,7 @@ const LatestBlocks: FC = () => {
                     timeout={2000}
                     key={number}
                   >
-                    <li className="flex justify-between mt-4 fee-block">
+                    <li className="flex justify-between mt-3 fee-block">
                       <p className="text-white">
                         block{" "}
                         <span className="font-roboto">
