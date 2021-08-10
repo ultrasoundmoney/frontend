@@ -15,7 +15,7 @@ const FeePeriodControl: FC<FeePeriodControlProps> = ({
     "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg";
 
   return (
-    <div className="flex flex-row items-center mx-auto mb-4 md:m-0">
+    <div className="flex flex-row items-center">
       <button
         className={`font-inter text-sm px-4 py-1 border border-transparent ${
           timeframe === "t1h" ? activePeriodClasses : "text-blue-manatee"

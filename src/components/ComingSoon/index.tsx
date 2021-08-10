@@ -111,14 +111,11 @@ const ComingSoon: React.FC = () => {
         {/* </video> */}
         <div className="flex flex-col px-4 md:w-5/6 mx-auto lg:w-full lg:flex-row lg:px-16 isolate">
           <div className="lg:w-1/2">
-            <div className="mb-4">
-              <CumulativeFeeBurn />
-            </div>
-            <div className="mb-4">
-              <LatestBlocks />
-            </div>
+            <CumulativeFeeBurn />
+            <span className="block w-4 h-4" />
+            <LatestBlocks />
           </div>
-          <div className="lg:w-4"></div>
+          <span className="block w-4 h-4" />
           <div className="lg:w-1/2">
             <BurnLeaderboard />
           </div>

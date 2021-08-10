@@ -2,7 +2,6 @@ import { FC, memo, useState, useCallback } from "react";
 import CountUp from "react-countup";
 import imageIds from "../../assets/leaderboard-image-ids.json";
 import { weiToEth } from "../../utils/metric-utils";
-import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import useSWR from "swr";
 import FeePeriodControl, { Timeframe } from "../fee-period-control";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
@@ -122,21 +121,17 @@ const BurnLeaderboard: FC = () => {
   const selectedLeaderboard: FeeBurner[] | undefined =
     leaderboard && leaderboard[feePeriodToUpdateMap[feePeriod]];
 
-  const { md, lg } = useActiveBreakpoint();
-
-  const balancePadding = lg ? "4.2rem" : md ? "3.5rem" : undefined;
-
   return (
-    <div
-      style={{
-        paddingBottom: balancePadding,
-      }}
-      className="bg-blue-tangaroa w-full rounded-lg p-8"
-    >
-      <h2 className="font-inter font-light text-blue-shipcove text-xl mb-4 md:text-xl">
-        burn leaderboard
-      </h2>
-      <FeePeriodControl timeframe={feePeriod} onSetFeePeriod={onSetFeePeriod} />
+    <div className="bg-blue-tangaroa w-full rounded-lg p-8 h-full">
+      <div className="flex justify-between flex-wrap">
+        <p className="font-inter font-light text-blue-shipcove text-xl mb-4 md:mb-0 lg:mb-4 xl:mb-0 md:text-xl">
+          burn leaderboard
+        </p>
+        <FeePeriodControl
+          timeframe={feePeriod}
+          onSetFeePeriod={onSetFeePeriod}
+        />
+      </div>
       {selectedLeaderboard === undefined ? (
         <p className="text-lg text-center text-gray-500 pt-16 pb-20">
           loading...
