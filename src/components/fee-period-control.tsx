@@ -41,9 +41,7 @@ const FeePeriodControl: FC<FeePeriodControlProps> = ({
         7d
       </button>
       <button
-        title="EIP1559 released less than 7d ago, see 7d"
-        disabled
-        className={`font-inter text-sm px-4 py-1 border border-transparent opacity-50 ${
+        className={`font-inter text-sm px-4 py-1 border border-transparent ${
           timeframe === "t30d" ? activePeriodClasses : "text-blue-manatee"
         }`}
         onClick={() => onSetFeePeriod("t30d")}
