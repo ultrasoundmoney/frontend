@@ -19,10 +19,10 @@ const LatestBlocks: FC = () => {
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8">
       <div className="flex justify-between pb-2">
-        <span className="font-inter text-blue-shipcove text-xl float-left">
+        <span className="font-inter text-blue-spindle uppercase text-md float-left">
           latest blocks
         </span>
-        <span className="font-inter text-blue-shipcove text-xl float-right">
+        <span className="font-inter uppercase text-blue-spindle text-md float-right">
           burn
         </span>
       </div>

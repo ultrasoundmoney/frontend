@@ -84,7 +84,7 @@ const ComingSoon: React.FC = () => {
         >
           ultra sound awakening
         </div>
-        <p className="font-inter text-blue-shipcove text-xl md:text-2xl lg:text-3xl text-white text-center mb-16">
+        <p className="font-inter text-blue-spindle text-xl md:text-2xl lg:text-3xl text-white text-center mb-16">
           track ETH become ultra sound
         </p>
         <video

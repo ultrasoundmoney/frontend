@@ -32,10 +32,10 @@ const FeeUser: FC<{
     : "/leaderboard-images/question-mark.png";
 
   return (
-    <div className="flex flex-row pt-5 md:pt-6 justify-between items-center hover:opacity-80 fee-block">
+    <div className="flex flex-row pt-5 md:pt-6 justify-between items-center hover:opacity-60 fee-block">
       <div className="flex flex-row items-center overflow-hidden">
         <a
-          className="flex"
+          className="flex items-center"
           href={id.startsWith("0x") ? `https://etherscan.io/address/${id}` : ""}
           target="_blank"
           rel="noreferrer"
@@ -49,7 +49,7 @@ const FeeUser: FC<{
             {name || id}
           </p>
         </a>
-        <p className="font-inter font-extralight text-blue-shipcove pl-2 whitespace-nowrap truncate text-base md:text-lg">
+        <p className="font-inter font-extralight text-blue-shipcove invisible md:visible pl-2 whitespace-nowrap truncate text-base md:text-lg">
           {detail}
         </p>
       </div>
@@ -124,7 +124,7 @@ const BurnLeaderboard: FC = () => {
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8 h-full">
       <div className="flex justify-between flex-wrap">
-        <p className="font-inter font-light text-blue-shipcove text-xl mb-4 md:mb-0 lg:mb-4 xl:mb-0 md:text-xl">
+        <p className="font-inter font-light uppercase text-blue-spindle text-md mb-4 md:mb-0 lg:mb-4 xl:mb-0">
           burn leaderboard
         </p>
         <FeePeriodControl

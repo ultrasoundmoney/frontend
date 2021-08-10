@@ -35,10 +35,11 @@ const CumulativeFeeBurn: FC = () => {
 
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8">
-      <div className="flex justify-between flex-wrap">
-        <p className="font-inter font-light text-blue-shipcove text-xl mb-4 md:mb-0 lg:mb-4 xl:mb-0 md:text-xl">
-          cumulative fee burn
+      <div className="flex flex-col justify-between flex-wrap md:flex-row">
+        <p className="font-inter font-light text-blue-spindle uppercase text-md md:text-md">
+          fee burn
         </p>
+        <span className="block w-4 h-4"></span>
         <FeePeriodControl
           timeframe={timeframe}
           onSetFeePeriod={onSetFeePeriod}
@@ -47,33 +48,39 @@ const CumulativeFeeBurn: FC = () => {
       <div className="h-8"></div>
       {selectedFeesBurned !== undefined && selectedBurnRate !== undefined ? (
         <>
-          <div>
-            <p className="font-roboto flex justify-between text-white text-3xl md:text-4xl lg:text-3xl xl:text-5xl">
+          <div className="flex justify-between ">
+            <p className="font-roboto text-white text-3xl md:text-4xl lg:text-3xl xl:text-5xl">
               <CountUp
                 decimals={2}
                 duration={1}
                 separator=","
                 end={weiToEth(selectedFeesBurned)}
-                suffix=" ETH"
                 preserveValue={true}
               />
-              <SpanMoji emoji="🔥" />
+              <span className="font-extralight text-blue-spindle pl-4">
+                ETH
+              </span>
             </p>
+            <span className="text-3xl md:text-5xl">
+              <SpanMoji emoji="🔥" />
+            </span>
           </div>
           <div className="flex justify-between mt-8">
             <div>
-              <p className="font-inter font-light text-blue-shipcove md:text-xl mb-2">
-                burn rate
+              <p className="font-inter font-light uppercase text-blue-spindle md:text-md mb-2">
+                rate
               </p>
-              <p className="font-roboto flex justify-between text-white text-xl">
+              <p className="font-roboto flex text-white text-2xl">
                 <CountUp
                   decimals={2}
                   duration={1.5}
                   separator=","
                   end={weiToEth(selectedBurnRate)}
-                  suffix=" ETH/min"
                   preserveValue={true}
                 />
+                <span className="font-extralight text-blue-spindle pl-4">
+                  ETH/min
+                </span>
               </p>
             </div>
           </div>
