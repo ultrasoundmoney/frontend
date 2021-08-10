@@ -5,6 +5,7 @@ import { weiToEth } from "../../utils/metric-utils";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import useSWR from "swr";
 import FeePeriodControl, { Timeframe } from "../fee-period-control";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 const botContracts = ["0xbf0c5d82748ed81b5794e59055725579911e3e4e"];
 const botContractMap = new Set(botContracts);
@@ -33,7 +34,7 @@ const FeeUser: FC<{
     : "/leaderboard-images/question-mark.png";
 
   return (
-    <div className="flex flex-row pt-5 md:pt-6 justify-between items-center hover:opacity-80">
+    <div className="flex flex-row pt-5 md:pt-6 justify-between items-center hover:opacity-80 fee-block">
       <div className="flex flex-row items-center overflow-hidden">
         <img
           className="w-8 h-8 flex-shrink-0 leaderboard-image"
@@ -135,17 +136,28 @@ const BurnLeaderboard: FC = () => {
           loading...
         </p>
       ) : (
-        selectedLeaderboard
-          .slice(0, 10)
-          .map((feeUser) => (
-            <FeeUser
-              key={feeUser.name}
-              name={feeUser.name.split(":")[0]}
-              detail={feeUser.name.split(":")[1]}
-              id={feeUser.id}
-              fees={Number(feeUser.fees)}
-            />
-          ))
+        <TransitionGroup
+          component={null}
+          appear={false}
+          enter={true}
+          exit={false}
+        >
+          {selectedLeaderboard.slice(0, 10).map((feeUser) => (
+            <CSSTransition
+              classNames="fee-block"
+              timeout={500}
+              key={feeUser.id}
+            >
+              <FeeUser
+                key={feeUser.name}
+                name={feeUser.name.split(":")[0]}
+                detail={feeUser.name.split(":")[1]}
+                id={feeUser.id}
+                fees={Number(feeUser.fees)}
+              />
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
       )}
     </div>
   );
