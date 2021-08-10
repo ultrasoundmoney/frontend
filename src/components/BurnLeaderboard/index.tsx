@@ -123,7 +123,7 @@ const BurnLeaderboard: FC = () => {
 
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8 h-full">
-      <div className="flex justify-between flex-wrap items-center">
+      <div className="flex flex-col justify-between items-start md:flex-row lg:flex-col xl:items-center xl:flex-row">
         <p className="font-inter font-light uppercase text-blue-spindle text-md mb-4 md:mb-0 lg:mb-4 xl:mb-0">
           burn leaderboard
         </p>
