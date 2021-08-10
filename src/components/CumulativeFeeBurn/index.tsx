@@ -36,7 +36,7 @@ const CumulativeFeeBurn: FC = () => {
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8">
       <div className="flex flex-col justify-between items-start md:flex-row lg:flex-col xl:items-center xl:flex-row">
-        <p className="font-inter font-light text-blue-spindle uppercase text-md mb-4 md:text-md">
+        <p className="font-inter font-light uppercase text-blue-spindle text-md mb-4 md:mb-0 lg:mb-4 xl:mb-0">
           fee burn
         </p>
         <FeePeriodControl
@@ -44,7 +44,7 @@ const CumulativeFeeBurn: FC = () => {
           onSetFeePeriod={onSetFeePeriod}
         />
       </div>
-      <div className="h-8"></div>
+      <div className="h-6"></div>
       {selectedFeesBurned !== undefined && selectedBurnRate !== undefined ? (
         <>
           <div className="flex justify-between items-center text-3xl md:text-4xl lg:text-3xl xl:text-5xl">
