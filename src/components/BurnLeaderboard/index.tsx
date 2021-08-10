@@ -23,7 +23,8 @@ const FeeUser: FC<{
   fees: number;
   id: string;
 }> = ({ address, detail, name, fees, id }) => {
-  const imgSrc = botContractMap.has(address)
+  const isBot = botContractMap.has(address);
+  const imgSrc = isBot
     ? "/leaderboard-images/bot.svg"
     : bustcacheAlts[id] !== undefined
     ? bustcacheAlts[id]
