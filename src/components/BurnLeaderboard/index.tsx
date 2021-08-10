@@ -20,11 +20,10 @@ const bustcacheAlts = {
 const FeeUser: FC<{
   name?: string;
   detail?: string;
-  address?: string;
   fees: number;
   id: string;
-}> = ({ address, detail, name, fees, id }) => {
-  const isBot = botContractMap.has(address);
+}> = ({ detail, name, fees, id }) => {
+  const isBot = botContractMap.has(id);
   const imgSrc = isBot
     ? "/leaderboard-images/bot.svg"
     : bustcacheAlts[id] !== undefined
@@ -36,14 +35,21 @@ const FeeUser: FC<{
   return (
     <div className="flex flex-row pt-5 md:pt-6 justify-between items-center hover:opacity-80 fee-block">
       <div className="flex flex-row items-center overflow-hidden">
-        <img
-          className="w-8 h-8 flex-shrink-0 leaderboard-image"
-          src={imgSrc}
-          alt=""
-        />
-        <p className="font-inter text-white pl-4 whitespace-nowrap text-base md:text-lg">
-          {name || address}
-        </p>
+        <a
+          className="flex"
+          href={id.startsWith("0x") ? `https://etherscan.io/address/${id}` : ""}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img
+            className="w-8 h-8 flex-shrink-0 leaderboard-image"
+            src={imgSrc}
+            alt=""
+          />
+          <p className="font-inter text-white pl-4 whitespace-nowrap text-base md:text-lg">
+            {name || id}
+          </p>
+        </a>
         <p className="font-inter font-extralight text-blue-shipcove pl-2 whitespace-nowrap truncate text-base md:text-lg">
           {detail}
         </p>
