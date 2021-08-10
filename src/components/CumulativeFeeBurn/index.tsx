@@ -24,7 +24,7 @@ const timeframeBurnRateMap: Record<Timeframe, keyof BurnRates> = {
 
 const CumulativeFeeBurn: FC = () => {
   const { feesBurned, burnRates } = useFeeData();
-  const [timeframe, setFeePeriod] = useState<Timeframe>("t24h");
+  const [timeframe, setFeePeriod] = useState<Timeframe>("tAll");
 
   const onSetFeePeriod = useCallback(setFeePeriod, [setFeePeriod]);
 
@@ -35,8 +35,8 @@ const CumulativeFeeBurn: FC = () => {
 
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8">
-      <div className="flex justify-between flex-wrap items-center">
-        <p className="font-inter font-light text-blue-spindle uppercase text-md mb-4 md:mb-0 md:text-md">
+      <div className="flex flex-col justify-between flex-wrap items-start md:flex-row lg:flex-col xl:items-center xl:flex-row">
+        <p className="font-inter font-light text-blue-spindle uppercase text-md mb-4 md:text-md">
           fee burn
         </p>
         <FeePeriodControl
