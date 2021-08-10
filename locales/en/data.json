@@ -144,7 +144,7 @@
   "faq_question_3":"What is fee burn?",
   "faq_answer_3":"Fee burn is a mechanism which destroys ETH base fees paid for transaction inclusion on Ethereum.\n\nFee burn started August 5, 2021 with the activation of <a href=\"https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1559.md\">EIP-1559</a>.",
   "faq_question_4":"What are base fees?",
-  "faq_answer_4":"Base fee are protocol-quoted minimum fees for transaction inclusion in an Ethereum block.\n\nPriority fees paid in addition to base fees are not burned.",
+  "faq_answer_4":"Base fees are protocol-quoted minimum fees for transaction inclusion in an Ethereum block.\n\nPriority fees paid in addition to base fees are not burned.",
   "faq_question_5":"When will ETH be ultra sound?",
   "faq_answer_5":"The ETH supply will likely decrease when PoW issuance is removed, leaving only PoS issuance.\n\nThe removal of PoW will happen at the merge, likely Q1 2022.",
   "faq_question_6":"What is the merge?",
