@@ -12,6 +12,7 @@ import Link from "next/link";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 import { weiToGwei } from "../../utils/metric-utils";
 import SpanMoji from "../SpanMoji";
+import useFeeData from "../../use-fee-data";
 
 type EthPrice = {
   usd: number;
@@ -33,21 +34,9 @@ const percentChangeFormatter = new Intl.NumberFormat("en-US", {
   style: "percent",
 });
 
-const useBaseFeePerGas = () => {
-  const { data, error } = useSWR<{ baseFeePerGas: number }>(
-    "https://api.ultrasound.money/fees/base-fee-per-gas"
-  );
-
-  return {
-    baseFeePerGas: data?.baseFeePerGas,
-    isLoading: !error && !data,
-    isError: error,
-  };
-};
-
 const ComingSoon: React.FC = () => {
   const t = React.useContext(TranslationsContext);
-  const { baseFeePerGas } = useBaseFeePerGas();
+  const { baseFeePerGas } = useFeeData();
   const { data } = useSWR<EthPrice>(
     "https://api.ultrasound.money/fees/eth-price",
     {
@@ -129,7 +118,8 @@ const ComingSoon: React.FC = () => {
               <LatestBlocks />
             </div>
           </div>
-          <div className="lg:w-1/2 lg:pl-4">
+          <div className="lg:w-4"></div>
+          <div className="lg:w-1/2">
             <BurnLeaderboard />
           </div>
         </div>

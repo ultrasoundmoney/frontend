@@ -1,124 +1,83 @@
-import React, { memo, FC } from "react";
+import React, { memo, FC, useState, useCallback } from "react";
 import SpanMoji from "../SpanMoji";
 import CountUp from "react-countup";
-import useSWR from "swr";
+import useFeeData, { BurnRates, FeesBurned } from "../../use-fee-data";
+import FeePeriodControl, { Timeframe } from "../fee-period-control";
 
 const weiToEth = (wei: number): number => wei / 10 ** 18;
 
-const useTotalBurned = () => {
-  const { data, error } = useSWR<{ totalFeesBurned: number }>(
-    `https://api.ultrasound.money/fees/total-burned`,
-    {
-      refreshInterval: 8000,
-    }
-  );
-
-  return {
-    totalFeesBurned: data?.totalFeesBurned,
-    isLoading: !error && !data,
-    isError: error,
-  };
+const timeframeFeesBurnedMap: Record<Timeframe, keyof FeesBurned> = {
+  t1h: "feesBurned1h",
+  t24h: "feesBurned24h",
+  t7d: "feesBurned7d",
+  t30d: "feesBurned30d",
+  tAll: "feesBurnedAll",
 };
 
-const useBurnRates = () => {
-  const { data, error } = useSWR<{
-    burnRates: { burnRate1h: number; burnRate24h: number };
-  }>(`https://api.ultrasound.money/fees/burn-rate`, { refreshInterval: 8000 });
-
-  return {
-    burnRate1h: data?.burnRates?.burnRate1h,
-    burnRate24h: data?.burnRates?.burnRate24h,
-    isLoading: !error && !data,
-    isError: error,
-  };
+const timeframeBurnRateMap: Record<Timeframe, keyof BurnRates> = {
+  t1h: "burnRate1h",
+  t24h: "burnRate24h",
+  t7d: "burnRate7d",
+  t30d: "burnRate30d",
+  tAll: "burnRateAll",
 };
 
 const CumulativeFeeBurn: FC = () => {
-  const { totalFeesBurned } = useTotalBurned();
-  const { burnRate1h, burnRate24h } = useBurnRates();
+  const { feesBurned, burnRates } = useFeeData();
+  const [timeframe, setFeePeriod] = useState<Timeframe>("t24h");
+
+  const onSetFeePeriod = useCallback(setFeePeriod, [setFeePeriod]);
+
+  const selectedFeesBurned =
+    feesBurned !== undefined && feesBurned[timeframeFeesBurnedMap[timeframe]];
+  const selectedBurnRate =
+    burnRates !== undefined && burnRates[timeframeBurnRateMap[timeframe]];
 
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8">
-      <p className="font-inter font-light text-blue-shipcove md:text-xl mb-2">
+      <h2 className="font-inter font-light text-blue-shipcove text-xl mb-4 md:text-xl">
         cumulative fee burn
-      </p>
-      {typeof totalFeesBurned === "number" ? (
-        <div>
-          <p className="font-roboto flex justify-between text-white text-3xl md:text-4xl lg:text-3xl xl:text-5xl">
-            <CountUp
-              decimals={2}
-              duration={1.5}
-              separator=","
-              end={weiToEth(totalFeesBurned)}
-              suffix=" ETH"
-              preserveValue={true}
-            />
-            <SpanMoji emoji="🔥" />
-          </p>
-          <p className="font-roboto text-blue-spindle text-sm mt-3">
-            <CountUp
-              decimals={2}
-              duration={1.5}
-              separator=","
-              end={
-                weiToEth(totalFeesBurned) /
-                ((new Date().getTime() - 1628166822000) / 1000 / 60)
-              }
-              suffix=" ETH/min"
-              preserveValue={true}
-            />{" "}
-            average
-          </p>
-        </div>
+      </h2>
+      <FeePeriodControl timeframe={timeframe} onSetFeePeriod={onSetFeePeriod} />
+      <div className="h-5"></div>
+      {selectedFeesBurned !== undefined && selectedBurnRate !== undefined ? (
+        <>
+          <div>
+            <p className="font-roboto flex justify-between text-white text-3xl md:text-4xl lg:text-3xl xl:text-5xl">
+              <CountUp
+                decimals={2}
+                duration={1}
+                separator=","
+                end={weiToEth(selectedFeesBurned)}
+                suffix=" ETH"
+                preserveValue={true}
+              />
+              <SpanMoji emoji="🔥" />
+            </p>
+          </div>
+          <div className="flex justify-between mt-8">
+            <div>
+              <p className="font-inter font-light text-blue-shipcove md:text-xl mb-2">
+                burn rate
+              </p>
+              <p className="font-roboto flex justify-between text-white text-xl">
+                <CountUp
+                  decimals={2}
+                  duration={1.5}
+                  separator=","
+                  end={weiToEth(selectedBurnRate)}
+                  suffix=" ETH/min"
+                  preserveValue={true}
+                />
+              </p>
+            </div>
+          </div>
+        </>
       ) : (
         <p className="font-roboto text-white text-white text-3xl md:text-4xl lg:text-3xl xl:text-5xl">
           loading...
         </p>
       )}
-      <div className="flex justify-between mt-8">
-        <div>
-          <p className="font-inter font-light text-blue-shipcove md:text-xl mb-2">
-            burn rate 1h
-          </p>
-          {typeof burnRate1h === "number" ? (
-            <p className="font-roboto flex justify-between text-white text-xl">
-              <CountUp
-                decimals={2}
-                duration={1.5}
-                separator=","
-                end={weiToEth(burnRate1h)}
-                suffix=" ETH/min"
-                preserveValue={true}
-              />
-            </p>
-          ) : (
-            <p className="font-roboto text-white text-white text-base">
-              loading...
-            </p>
-          )}
-        </div>
-        <div>
-          <p className="font-inter font-light text-blue-shipcove md:text-xl mb-2">
-            burn rate 24h
-          </p>
-          {typeof burnRate24h === "number" ? (
-            <p className="font-roboto flex justify-between text-white text-xl">
-              <CountUp
-                decimals={2}
-                duration={1.5}
-                separator=","
-                end={weiToEth(burnRate24h)}
-                suffix=" ETH/min"
-                preserveValue={true}
-              />
-            </p>
-          ) : (
-            <p className="font-roboto text-white text-white text-base">
-              loading...
-            </p>
-          )}
-        </div>
-      </div>
     </div>
   );
 };

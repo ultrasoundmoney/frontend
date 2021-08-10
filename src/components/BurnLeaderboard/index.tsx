@@ -1,16 +1,15 @@
-import { FC, memo, useState } from "react";
+import { FC, memo, useState, useCallback } from "react";
 import CountUp from "react-countup";
 import imageIds from "../../assets/leaderboard-image-ids.json";
 import { weiToEth } from "../../utils/metric-utils";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import useSWR from "swr";
-
-type FeePeriod = "24h" | "7d" | "30d" | "all";
+import FeePeriodControl, { Timeframe } from "../fee-period-control";
 
 const botContracts = ["0xbf0c5d82748ed81b5794e59055725579911e3e4e"];
 const botContractMap = new Set(botContracts);
 
-// Ideally we solve this with etags instead.
+// Ideally we solve this with etags instead. Can be removed once covid punks have left the leaderboard.
 const bustcacheAlts = {
   // Covid Punks
   "0xe4cfae3aa41115cb94cff39bb5dbae8bd0ea9d41":
@@ -79,11 +78,12 @@ type LeaderboardUpdate = {
   leaderboardAll: FeeBurner[];
 };
 
-const feePeriodToUpdateMap: Record<FeePeriod, string> = {
-  "24h": "leaderboard24h",
-  "7d": "leaderboard7d",
-  "30d": "leaderboard30d",
-  all: "leaderboardAll",
+const feePeriodToUpdateMap: Record<Timeframe, string> = {
+  t1h: "leaderboard1h",
+  t24h: "leaderboard24h",
+  t7d: "leaderboard7d",
+  t30d: "leaderboard30d",
+  tAll: "leaderboardAll",
 };
 
 const useLeaderboard = () => {
@@ -105,17 +105,16 @@ const useLeaderboard = () => {
 };
 
 const BurnLeaderboard: FC = () => {
-  const [feePeriod, setFeePeriod] = useState<FeePeriod>("24h");
+  const [feePeriod, setFeePeriod] = useState<Timeframe>("t24h");
+  const onSetFeePeriod = useCallback(setFeePeriod, [setFeePeriod]);
+
   const { leaderboard } = useLeaderboard();
   const selectedLeaderboard: FeeBurner[] | undefined =
     leaderboard && leaderboard[feePeriodToUpdateMap[feePeriod]];
 
-  const activeFeePeriodClasses =
-    "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg";
-
   const { md, lg } = useActiveBreakpoint();
 
-  const balancePadding = lg ? "2.5rem" : md ? "0.8rem" : undefined;
+  const balancePadding = lg ? "4.2rem" : md ? "3.5rem" : undefined;
 
   return (
     <div
@@ -127,41 +126,7 @@ const BurnLeaderboard: FC = () => {
       <h2 className="font-inter font-light text-blue-shipcove text-xl mb-4 md:text-xl">
         burn leaderboard
       </h2>
-      <div className="flex flex-row items-center mx-auto mb-4 md:m-0">
-        <button
-          className={`font-inter text-sm px-4 py-1 border border-transparent ${
-            feePeriod === "24h" ? activeFeePeriodClasses : "text-blue-manatee "
-          }`}
-          onClick={() => setFeePeriod("24h")}
-        >
-          24h
-        </button>
-        <button
-          className={`font-inter text-sm px-4 py-1 border border-transparent ${
-            feePeriod === "7d" ? activeFeePeriodClasses : "text-blue-manatee"
-          }`}
-          onClick={() => setFeePeriod("7d")}
-        >
-          7d
-        </button>
-        <button
-          disabled
-          className={`font-inter text-sm px-4 py-1 border border-transparent opacity-50 ${
-            feePeriod === "30d" ? activeFeePeriodClasses : "text-blue-manatee"
-          }`}
-          onClick={() => setFeePeriod("30d")}
-        >
-          30d
-        </button>
-        <button
-          className={`font-inter text-sm px-4 py-1 border border-transparent ${
-            feePeriod === "all" ? activeFeePeriodClasses : "text-blue-manatee"
-          }`}
-          onClick={() => setFeePeriod("all")}
-        >
-          all
-        </button>
-      </div>
+      <FeePeriodControl timeframe={feePeriod} onSetFeePeriod={onSetFeePeriod} />
       {selectedLeaderboard === undefined ? (
         <p className="text-lg text-center text-gray-500 pt-16 pb-20">
           loading...

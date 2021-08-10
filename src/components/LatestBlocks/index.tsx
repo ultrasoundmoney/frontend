@@ -1,7 +1,7 @@
 import React, { memo, FC } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import useFeeData from "../../use-fee-data";
 import { weiToEth } from "../../utils/metric-utils";
-import useSWR from "swr";
 
 const formatter = Intl.NumberFormat("en", {
   minimumFractionDigits: 2,
@@ -14,23 +14,8 @@ type LatestBlocks = {
   number: number;
 }[];
 
-const useLatestBlocks = () => {
-  const { data, error } = useSWR<LatestBlocks>(
-    `https://api.ultrasound.money/fees/latest-blocks`,
-    {
-      refreshInterval: 8000,
-    }
-  );
-
-  return {
-    latestBlocks: data,
-    isLoading: !error && !data,
-    isError: error,
-  };
-};
-
 const LatestBlocks: FC = () => {
-  const { latestBlocks } = useLatestBlocks();
+  const { latestBlockFees } = useFeeData();
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8">
       <div className="flex justify-between pb-2">
@@ -42,23 +27,23 @@ const LatestBlocks: FC = () => {
         </span>
       </div>
       <ul>
-        {latestBlocks !== undefined && latestBlocks.length === 0 ? (
+        {latestBlockFees !== undefined && latestBlockFees.length === 0 ? (
           <p className="font-roboto text-white md:text-4xl">loading...</p>
         ) : (
           <TransitionGroup
             component={null}
             appear={true}
-            enter={false}
+            enter={true}
             exit={false}
           >
-            {latestBlocks !== undefined &&
-              latestBlocks
+            {latestBlockFees !== undefined &&
+              latestBlockFees
                 .reverse()
                 .slice(0, 7)
                 .map(({ number, fees }) => (
                   <CSSTransition
                     classNames="fee-block"
-                    timeout={500}
+                    timeout={2000}
                     key={number}
                   >
                     <li className="flex justify-between mt-4 fee-block">
