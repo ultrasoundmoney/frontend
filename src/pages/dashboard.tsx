@@ -4,6 +4,7 @@ import Head from "next/head";
 import { TranslationsContext } from "../translations-context";
 import Navigation from "../components/Navigation";
 import BurnLeaderboard from "../components/BurnLeaderboard";
+import Guage from "../components/Guage";
 
 const DashboardPage: NextPage = () => {
   const t = useContext(TranslationsContext);
@@ -44,6 +45,9 @@ const DashboardPage: NextPage = () => {
             the scene for Ultrasound money. Graphics, Light data and simple
             carts
           </p>
+          <div className="w-3/6 p-8">
+            <Guage></Guage>
+          </div>
           <div className="w-full px-4">
             <BurnLeaderboard />
           </div>
