@@ -6,9 +6,6 @@ import useSWR from "swr";
 import FeePeriodControl, { Timeframe } from "../fee-period-control";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
-const botContracts = ["0xbf0c5d82748ed81b5794e59055725579911e3e4e"];
-const botContractMap = new Set(botContracts);
-
 // Ideally we solve this with etags instead. Can be removed once covid punks have left the leaderboard.
 const bustcacheAlts = {
   // Covid Punks
@@ -21,8 +18,8 @@ const FeeUser: FC<{
   detail?: string;
   fees: number;
   id: string;
-}> = ({ detail, name, fees, id }) => {
-  const isBot = botContractMap.has(id);
+  isBot: boolean;
+}> = ({ detail, name, fees, id, isBot }) => {
   const imgSrc = isBot
     ? "/leaderboard-images/bot.svg"
     : bustcacheAlts[id] !== undefined
@@ -76,7 +73,7 @@ type FeeUser = {
   fees: number;
 };
 
-type FeeBurner = { fees: string; id: string; name: string };
+type FeeBurner = { fees: string; id: string; name: string; isBot: boolean };
 type LeaderboardUpdate = {
   number: number;
   leaderboard1h: FeeBurner[];
@@ -155,6 +152,7 @@ const BurnLeaderboard: FC = () => {
                 detail={feeUser.name.split(":")[1]}
                 id={feeUser.id}
                 fees={Number(feeUser.fees)}
+                isBot={feeUser.isBot}
               />
             </CSSTransition>
           ))}
