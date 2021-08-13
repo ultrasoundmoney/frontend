@@ -30,6 +30,10 @@ module.exports = {
           highlightbg: "#2d344a",
           highlightborder: "#8794b8",
         },
+        red: {
+          ...colors.red,
+          pinkish: "#f85a89",
+        },
       },
       width: {},
       spacing: {
