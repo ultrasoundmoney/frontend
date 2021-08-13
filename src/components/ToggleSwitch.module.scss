@@ -1,0 +1,29 @@
+.toggle-switch {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    width: 2em;
+    height: 1em;
+    border-radius: 1em;
+    outline: 0;
+    background-color: #374467;
+    cursor: pointer;
+    transition: background-color 0.09s ease-in-out;
+    position: relative;
+}
+
+.toggle-switch::after {
+    content: '';
+    width: 1em;
+    height: 1em;
+    background-color: white;
+    border-radius: 1em;
+    position: absolute;
+    transform: scale(0.7);
+    left: 0;
+    transition: left 0.09s ease-in-out;
+}
+
+.toggle-switch:checked::after {
+    left: 1em;
+}
