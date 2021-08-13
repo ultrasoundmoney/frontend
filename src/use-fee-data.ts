@@ -36,7 +36,7 @@ type FeeData = {
 
 const useFeeData = (): FeeData => {
   const { data, error } = useSWR(`https://api.ultrasound.money/fees/all`, {
-    refreshInterval: 8000,
+    refreshInterval: 4000,
   });
 
   return {
