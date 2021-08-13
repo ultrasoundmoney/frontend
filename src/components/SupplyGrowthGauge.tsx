@@ -3,9 +3,8 @@ import HighchartsMore from "highcharts/highcharts-more";
 import SolidGauge from "highcharts/modules/solid-gauge.js";
 import HighchartsReact from "highcharts-react-official";
 import _ from "lodash";
-import { FC, useCallback, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { useActiveBreakpoint } from "../utils/use-active-breakpoint";
-import styles from "./ToggleSwitch.module.scss";
 
 if (typeof Highcharts === "object") {
   HighchartsMore(Highcharts);
@@ -22,6 +21,7 @@ const baseOptions: Highcharts.Options = {
     type: "gauge",
     backgroundColor: null,
     margin: 0,
+    marginTop: 24,
   },
 
   credits: { enabled: false },
@@ -39,9 +39,9 @@ const baseOptions: Highcharts.Options = {
   yAxis: {
     minorTicks: false,
     labels: {
-      format: "{value}%",
+      // format: '<span class="font-roboto text-sm">{value}%/year</span>',
       style: { color: "#b5bddb", fontSize: "1rem" },
-      distance: 26,
+      distance: 28,
       step: 2,
     },
     min: -4,
@@ -49,26 +49,32 @@ const baseOptions: Highcharts.Options = {
     plotBands: [
       {
         from: -4,
-        to: -0.3,
-        color: "#f85a89",
-        outerRadius: "96%",
+        to: -4,
+        color: "#00ffa3",
+        outerRadius: "100%",
       },
       {
-        from: -0.3,
-        to: 0.3,
-        color: "#1b2236",
-        outerRadius: "96%",
+        from: -4,
+        to: 0,
+        color: "#0f8a5d",
+        outerRadius: "100%",
       },
       {
-        from: 0.3,
+        from: 0,
+        to: 2.4,
+        color: "#ed1254",
+        outerRadius: "100%",
+      },
+      {
+        from: 2.4,
         to: 4,
-        color: "#00FFA3",
-        outerRadius: "96%",
+        color: "#f85a89",
+        outerRadius: "100%",
       },
     ],
-    lineWidth: 1,
-    tickWidth: 2,
-    tickLength: 4,
+    lineWidth: 0,
+    tickWidth: 3,
+    tickLength: 6,
     tickInterval: 1,
     tickPosition: "outside",
   },
@@ -84,16 +90,21 @@ const baseOptions: Highcharts.Options = {
       },
       pivot: {
         backgroundColor: "white",
-        radius: 3,
+        radius: 4,
       },
       dataLabels: {
-        enabled: false,
+        color: "#FFF",
+        y: 32,
+        borderColor: "none",
+        useHTML: true,
+        format:
+          '<span class="font-roboto font-light text-base">{y:.2f} %/year</span>',
       },
     },
   },
 };
 
-const initialSupplyChangeOptions: Highcharts.Options = {
+const initialSupplyGrowthOptions: Highcharts.Options = {
   series: [
     {
       type: "gauge",
@@ -102,39 +113,23 @@ const initialSupplyChangeOptions: Highcharts.Options = {
   ],
 };
 
-type ToggleSwitchProps = {
-  checked: boolean;
-  className?: string;
-  onToggle: () => void;
+type SupplyGrowthGaugeProps = {
+  includePowIssuance: boolean;
+  toggleIncludePowIssuance: () => void;
 };
-
-const ToggleSwitch: FC<ToggleSwitchProps> = ({
-  checked,
-  className,
-  onToggle,
-}) => (
-  <input
-    checked={checked}
-    onChange={onToggle}
-    className={`${className} ${styles["toggle-switch"]}`}
-    type="checkbox"
-  />
-);
-
-const InflationaryGauge = () => {
-  const [posIssuanceMode, setPosIssuanceMode] = useState(false);
-  const [options, setOptions] = useState(
-    _.merge(baseOptions, initialSupplyChangeOptions)
+const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
+  includePowIssuance: includePowIssuance,
+}) => {
+  const [options, setOptions] = useState<Highcharts.Options>(
+    _.merge(baseOptions, initialSupplyGrowthOptions)
   );
   const chartRef = useRef(null);
   const { md, lg, xl } = useActiveBreakpoint();
-  const height = xl ? "400" : lg ? "320" : md ? "200" : "100";
+  const height = xl ? "400" : lg ? "320" : md ? "244" : "100";
 
-  const issuanceMode = posIssuanceMode ? "PoS" : "PoW";
-
-  console.log(issuanceMode);
+  console.log("includePowIssuance", includePowIssuance);
   console.log(xl, lg, md);
-  console.log(options);
+  console.log("supply opt", options);
   console.log(options?.series && options?.series);
 
   useEffect(() => {
@@ -142,6 +137,17 @@ const InflationaryGauge = () => {
       chart: { height },
     });
   }, [height]);
+
+  useEffect(() => {
+    setOptions({
+      series: [
+        {
+          type: "gauge",
+          data: [!includePowIssuance ? -1.8 : 2.4],
+        },
+      ],
+    });
+  }, [includePowIssuance]);
 
   // useEffect(() => {
   //   if (chartRef.current) {
@@ -156,40 +162,19 @@ const InflationaryGauge = () => {
   // }
   // }, [chartRef]);
 
-  const onTogglePosIssuanceMode = useCallback(() => {
-    setPosIssuanceMode(!posIssuanceMode);
-    setOptions({
-      series: [
-        {
-          type: "gauge",
-          data: [!posIssuanceMode ? -1.8 : 2.4],
-        },
-      ],
-    });
-  }, [posIssuanceMode]);
-
   return (
     <div className="w-full bg-blue-tangaroa px-4 py-4">
-      <div className="flex justify-end">
-        <p className="font-roboto text-blue-spindle flex flex-row items-center">
-          {issuanceMode}
-          <ToggleSwitch
-            className="ml-2"
-            checked={posIssuanceMode}
-            onToggle={onTogglePosIssuanceMode}
-          />
-        </p>
-      </div>
+      <div className="w-4 h-4"></div>
       <HighchartsReact
         highcharts={Highcharts}
         options={options}
         ref={chartRef}
       />
-      <p className="flex justify-center font-roboto font-light text-white text-lg -mt-4 mb-4">
-        supply change
+      <p className="font-inter font-light uppercase text-blue-spindle text-md text-center -mt-8 mb-4 md:mb-0 lg:mb-4 xl:mb-0">
+        supply decrease
       </p>
     </div>
   );
 };
 
-export default InflationaryGauge;
+export default SupplyGrowthGauge;

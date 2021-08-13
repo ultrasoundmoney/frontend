@@ -1,4 +1,6 @@
 import * as React from "react";
+import { FC } from "react";
+import { useState, useContext } from "react";
 import TwitterCommunity from "../TwitterCommunity";
 import FollowingYou from "../FollowingYou";
 import SupplyView from "../SupplyView";
@@ -14,8 +16,9 @@ import { weiToGwei } from "../../utils/metric-utils";
 import SpanMoji from "../SpanMoji";
 import useFeeData from "../../use-fee-data";
 import IssuanceGauge from "../IssuanceGauge";
-import SupplyChangeGauge from "../SupplyChangeGauge";
+import SupplyGrowthGauge from "../SupplyGrowthGauge";
 import BurnGauge from "../BurnGauge";
+import { useCallback } from "react";
 
 type EthPrice = {
   usd: number;
@@ -37,9 +40,11 @@ const percentChangeFormatter = new Intl.NumberFormat("en-US", {
   style: "percent",
 });
 
-const ComingSoon: React.FC = () => {
-  const t = React.useContext(TranslationsContext);
+const ComingSoon: FC = () => {
+  const t = useContext(TranslationsContext);
   const { baseFeePerGas } = useFeeData();
+  const [includePowIssuance, setIncludePowIssuance] = useState(true);
+
   const { data } = useSWR<EthPrice>(
     "https://api.ultrasound.money/fees/eth-price",
     {
@@ -56,6 +61,10 @@ const ComingSoon: React.FC = () => {
     typeof data?.usd24hChange === "number" && data?.usd24hChange < 0
       ? "text-red-400"
       : "text-green-400";
+
+  const toggleIncludePowIssuance = useCallback(() => {
+    setIncludePowIssuance(!includePowIssuance);
+  }, [includePowIssuance]);
 
   return (
     <div className="wrapper bg-blue-midnightexpress">
@@ -114,15 +123,18 @@ const ComingSoon: React.FC = () => {
         {/* </video> */}
         <div className="flex flex-col lg:flex-row w-full px-4 lg:px-16 pb-4 isolate">
           <div className="lg:w-1/3">
-            <IssuanceGauge />
-          </div>
-          <div className="w-4 h-4"></div>
-          <div className="lg:w-1/3">
-            <SupplyChangeGauge />
-          </div>
-          <div className="w-4 h-4"></div>
-          <div className="lg:w-1/3">
             <BurnGauge />
+          </div>
+          <div className="w-4 h-4"></div>
+          <div className="lg:w-1/3">
+            <SupplyGrowthGauge includePowIssuance={includePowIssuance} />
+          </div>
+          <div className="w-4 h-4"></div>
+          <div className="lg:w-1/3">
+            <IssuanceGauge
+              includePowIssuance={includePowIssuance}
+              toggleIncludePowIssuance={toggleIncludePowIssuance}
+            />
           </div>
         </div>
         <div className="flex flex-col px-4 md:px-0 md:w-5/6 mx-auto lg:w-full lg:flex-row lg:px-16 isolate">
