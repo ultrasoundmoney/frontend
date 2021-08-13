@@ -18,63 +18,57 @@ const baseGauge: Highcharts.Options = {
   chart: {
     type: "gauge",
     backgroundColor: null,
-    margin: 10,
+    margin: 20,
     height: 300,
   },
+
+  credits: { enabled: false },
 
   title: { style: { display: "none" } },
 
   pane: {
     // center: ["50%", "85%"],
-    // size: "140%",
+    // size: "90%",
     startAngle: -110,
     endAngle: 110,
-    background: [
-      // {
-      //   backgroundColor: "#b5bddb",
-      //   innerRadius: "90%",
-      //   outerRadius: "100%",
-      //   shape: "arc",
-      // },
-    ],
+    background: [],
   },
 
-  // the value axis
   yAxis: {
-    min: 0,
-    max: 5,
-    stops: [
-      // [0, "#00FFA3"], // green
-      [0, "#00FFA3"], // red
-    ],
+    minorTicks: false,
     labels: {
-      format: '<span class="no-wrap">{value} ETH</span>',
+      format: "{value}%",
       style: { color: "#b5bddb", fontSize: "1rem" },
       distance: 24,
-      step: 5,
+      step: 2,
     },
-    minorTicks: false,
+    min: -4,
+    max: 4,
+    plotBands: [
+      {
+        from: -4,
+        to: 0,
+        color: "#f85a89",
+        outerRadius: "96%",
+      },
+      {
+        from: 0,
+        to: 4,
+        color: "#00FFA3",
+        outerRadius: "96%",
+      },
+    ],
     lineWidth: 1,
     tickWidth: 2,
     tickLength: 4,
     tickInterval: 1,
     tickPosition: "outside",
   },
-
-  credits: {
-    enabled: false,
-  },
-};
-
-const issuancePerDay: Highcharts.Options = {
-  series: [
-    {
-      type: "gauge",
-      data: [3.23],
-      tooltip: { distance: 100 },
+  plotOptions: {
+    gauge: {
       dial: {
         backgroundColor: "white",
-        baseWidth: 5,
+        baseWidth: 6,
         baseLength: "0%",
         topWidth: 1,
         radius: "70%",
@@ -84,38 +78,31 @@ const issuancePerDay: Highcharts.Options = {
         enabled: false,
       },
     },
+  },
+};
+
+const inflationary: Highcharts.Options = {
+  series: [
     {
-      type: "solidgauge",
-      rounded: true,
-      color: "#FF000",
-      name: "Issuance per day",
-      innerRadius: 90,
-      radius: 96,
-      data: [3.23],
-      dataLabels: {
-        color: "#FFF",
-        y: 32,
-        borderColor: "none",
-        useHTML: true,
-        format:
-          '<span class="font-roboto font-light text-lg">{y} ETH / min</span>',
-      },
+      type: "gauge",
+      data: [3],
     },
   ],
 };
 
-const BurnGauge = () => {
+const options = _.merge(baseGauge, inflationary);
+
+const InflationaryGauge = () => {
+  // const [options, setOptions] = useState({});
+
   return (
     <div className="w-full bg-blue-tangaroa px-4 py-4">
-      <HighchartsReact
-        highcharts={Highcharts}
-        options={_.merge(baseGauge, issuancePerDay)}
-      />
+      <HighchartsReact highcharts={Highcharts} options={options} />
       <p className="flex justify-center font-roboto font-light text-white text-xl -mt-16 mb-4">
-        issuance
+        supply change
       </p>
     </div>
   );
 };
 
-export default BurnGauge;
+export default InflationaryGauge;

@@ -30,29 +30,45 @@ const baseGauge: Highcharts.Options = {
     startAngle: -110,
     endAngle: 110,
     background: [
-      {
-        backgroundColor: "#b5bddb",
-        innerRadius: "90%",
-        outerRadius: "100%",
-        shape: "arc",
-      },
+      // {
+      //   backgroundColor: "#b5bddb",
+      //   innerRadius: "90%",
+      //   outerRadius: "100%",
+      //   shape: "arc",
+      // },
     ],
   },
 
   // the value axis
   yAxis: {
+    min: 0,
+    max: 5,
+    stops: [[0, "#00FFA3"]],
     minorTicks: false,
-    lineWidth: 0,
-    tickWidth: 0,
+    lineWidth: 1,
+    tickWidth: 2,
+    tickLength: 4,
+    tickInterval: 1,
+    tickPosition: "outside",
     labels: {
       style: { color: "#b5bddb", fontSize: "1rem" },
       distance: 24,
-      step: 2,
+      step: 5,
+      format: "{value} mach",
     },
   },
 
-  plotOptions: {
-    gauge: {
+  credits: {
+    enabled: false,
+  },
+};
+
+const issuancePerDay: Highcharts.Options = {
+  series: [
+    {
+      type: "gauge",
+      data: [2.4],
+      tooltip: { distance: 100 },
       dial: {
         backgroundColor: "white",
         baseWidth: 5,
@@ -65,68 +81,37 @@ const baseGauge: Highcharts.Options = {
         enabled: false,
       },
     },
-  },
-};
-
-const issuancePerDay: Highcharts.Options = {
-  yAxis: {
-    min: 0,
-    max: 15000,
-    tickAmount: 2,
-    stops: [
-      [0, "#00FFA3"], // green
-      [3000, "#00FFA3"], // red
-    ],
-  },
-
-  credits: {
-    enabled: false,
-  },
-
-  series: [
-    {
-      type: "gauge",
-      data: [13000],
-      tooltip: { distance: 100 },
-    },
     {
       type: "solidgauge",
+      rounded: true,
       color: "#FF000",
-      name: "Issuance per day",
       innerRadius: 90,
-      radius: 100,
-      data: [13000],
+      radius: 96,
+      data: [2.4],
       dataLabels: {
+        color: "#FFF",
         y: 32,
-        formatter: function () {
-          if (this.y > 1000000) {
-            const num = Highcharts.numberFormat(this.y / 1000, 3) + "M";
-            return `<span class="font-roboto font-light text-2xl">${num} ETH</span>`;
-          } else if (this.y > 1000) {
-            const num = Highcharts.numberFormat(this.y / 1000, 0) + "K";
-            return `<span class="font-roboto font-light text-2xl">${num} ETH</span>`;
-          } else {
-            const num = this.y;
-            return `<span class="font-roboto font-light text-2xl">${num} ETH</span>`;
-          }
-        },
+        borderColor: "none",
+        useHTML: true,
+        format:
+          '<span class="font-roboto font-light text-lg">{y} ETH / min</span>',
       },
     },
   ],
 };
 
-const DailyBurnGauge = () => {
+const BurnGauge = () => {
   return (
-    <div className="w-full bg-blue-tangaroa px-8 py-8">
+    <div className="w-full bg-blue-tangaroa px-4 py-4">
       <HighchartsReact
         highcharts={Highcharts}
         options={_.merge(baseGauge, issuancePerDay)}
       />
-      <p className="flex justify-center font-roboto font-light text-white text-xl -mt-20">
+      <p className="flex justify-center font-roboto font-light text-white text-xl -mt-16 mb-4">
         burn
       </p>
     </div>
   );
 };
 
-export default DailyBurnGauge;
+export default BurnGauge;

@@ -13,10 +13,9 @@ import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 import { weiToGwei } from "../../utils/metric-utils";
 import SpanMoji from "../SpanMoji";
 import useFeeData from "../../use-fee-data";
-import FeeBurnChart from "../FeeBurnChart";
 import IssuanceGauge from "../IssuanceGauge";
-import InflationaryGauge from "../InflationaryGauge";
-import DailyBurnGauge from "../DailyBurnGauge";
+import SupplyChangeGauge from "../SupplyChangeGauge";
+import BurnGauge from "../BurnGauge";
 
 type EthPrice = {
   usd: number;
@@ -119,11 +118,11 @@ const ComingSoon: React.FC = () => {
           </div>
           <div className="w-4 h-4"></div>
           <div className="lg:w-1/3">
-            <InflationaryGauge />
+            <SupplyChangeGauge />
           </div>
           <div className="w-4 h-4"></div>
           <div className="lg:w-1/3">
-            <DailyBurnGauge />
+            <BurnGauge />
           </div>
         </div>
         <div className="flex flex-col px-4 md:px-0 md:w-5/6 mx-auto lg:w-full lg:flex-row lg:px-16 isolate">
