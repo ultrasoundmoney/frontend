@@ -2,12 +2,14 @@ import Highcharts from "highcharts";
 import HighchartsMore from "highcharts/highcharts-more";
 import SolidGauge from "highcharts/modules/solid-gauge.js";
 import HighchartsReact from "highcharts-react-official";
+import CountUp from "react-countup";
 import _ from "lodash";
 import { useActiveBreakpoint } from "../utils/use-active-breakpoint";
 import { useEffect, useRef, useState } from "react";
 import useFeeData from "../use-fee-data";
 import { weiToEth } from "../utils/metric-utils";
 import { baseGaugeOptions } from "./BaseGauge";
+import colors from "../colors";
 
 if (typeof Highcharts === "object") {
   HighchartsMore(Highcharts);
@@ -84,34 +86,54 @@ if (typeof Highcharts === "object") {
 const burnGaugeOptions = {
   yAxis: {
     min: 0,
-    max: 5,
-    stops: [[0, "#00ffa3"]],
+    max: 12,
+    stops: [[0, colors.yellow500]],
     labels: {
-      style: { color: "#b5bddb" },
-      distance: 32,
-      step: 5,
-      // format: '<span class="font-roboto text-md">{value} mach</span>',
+      style: { color: "#B5BDDB" },
+      distance: "117%",
+      step: 1,
+      format: '<span class="font-roboto font-light text-base">{value}</span>',
+      useHTML: true,
     },
   },
 };
 
 const BurnGauge = () => {
   const [options, setOptions] = useState<Highcharts.Options>(
-    _.merge(baseGaugeOptions, burnGaugeOptions)
+    _.merge(_.cloneDeep(baseGaugeOptions), burnGaugeOptions)
   );
   const chartRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const { md, lg, xl } = useActiveBreakpoint();
-  const height = xl ? "400" : lg ? "300" : md ? "180" : "200";
+  const height = xl ? 400 : lg ? 300 : md ? 180 : 150;
   const { burnRates } = useFeeData();
 
   const burnRateAll =
     burnRates !== undefined ? weiToEth(burnRates.burnRateAll) : 0;
 
   useEffect(() => {
-    setOptions({
-      chart: { height },
-    });
+    console.log("setting new chart height", height);
+    // setOptions({
+    //   chart: { height },
+    // });
+
+    // const hc = containerRef.current.querySelector(".highcharts-container");
+    // if (hc.clientWidth > containerRef.current.clientWidth) {
+    //   console.log("height reflow");
+    //   chartRef.current.chart.reflow();
+    // }
+    // if (chartRef.current) {
+    //   console.log("height reflow");
+    //   chartRef.current.chart.reflow();
+    // }
   }, [height]);
+
+  useEffect(() => {
+    // if (chartRef.current) {
+    //   console.log("options reflow");
+    //   chartRef.current.chart.reflow();
+    // }
+  }, [options]);
 
   useEffect(() => {
     console.log("setting burnrate", burnRateAll);
@@ -123,36 +145,29 @@ const BurnGauge = () => {
     });
   }, [burnRateAll]);
 
-  useEffect(() => {
-    if (chartRef.current) {
-      // chartRef.current.container.current
-      //   .querySelectorAll(":scope path.highcharts-dial")
-      //   .forEach((dial: SVGPathElement) =>
-      //     dial.setAttribute(
-      //       "d",
-      //       "M -8.19 -2.5 L 0 -2.5 L 81.9 -0.5 L 81.9 0.5 L 0 2.5 L -8.19 2.5 A 1 1 0 0 1 -8.19 -2.5"
-      //     )
-      //   );
-      // chartRef.current.container.current
-      //   .querySelectorAll(":scope .highcharts-plot-band")
-      //   .forEach((el: SVGPathElement) =>
-      //     el.setAttribute(
-      //       "d",
-      //       "M 50.664 187.7932 A 110.5 110.5 0 1 1 258.3738 187.6894 A 1 1 0 0 1 247.9864 183.9204 A 99.45 99.45 0 1 0 61.0476 184.0139 A 1 1 0 0 1 50.664 187.7932"
-      //     )
-      //   );
-    }
-  }, [chartRef]);
-
   return (
-    <div className="w-full bg-blue-tangaroa px-4 py-4">
-      <div className="w-14 h-10"></div>
-      <HighchartsReact
-        highcharts={Highcharts}
-        options={options}
-        ref={chartRef}
-      />
-      <p className="font-inter font-light uppercase text-blue-spindle text-md text-center mt-2 mb-4 md:mb-0 lg:mb-4 xl:mb-0">
+    <div
+      className="bg-blue-tangaroa px-4 md:px-0 py-8 rounded-lg"
+      ref={containerRef}
+    >
+      <div className="transform md:scale-75 md:-mt-16 lg:scale-90 lg:-mt-4">
+        <HighchartsReact
+          highcharts={Highcharts}
+          options={options}
+          ref={chartRef}
+        />
+      </div>
+      <p className="font-roboto font-light text-white text-center text-lg -mt-24">
+        <CountUp
+          decimals={2}
+          duration={1}
+          separator=","
+          end={burnRateAll}
+          preserveValue={true}
+          suffix=" ETH/min"
+        />
+      </p>
+      <p className="font-inter font-light uppercase text-blue-spindle text-md text-center mt-8 md:mt-4">
         burn
       </p>
     </div>

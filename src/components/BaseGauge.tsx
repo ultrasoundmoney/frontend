@@ -1,10 +1,15 @@
 import Highcharts from "highcharts";
+import colors from "../colors";
 
 export const baseGaugeOptions: Highcharts.Options = {
   chart: {
     type: "gauge",
     backgroundColor: null,
-    margin: 0,
+    marginTop: 12,
+    marginLeft: 12,
+    marginRight: 12,
+    spacing: [0, 0, 0, 0],
+    height: 300,
   },
 
   title: { style: { display: "none" } },
@@ -14,7 +19,7 @@ export const baseGaugeOptions: Highcharts.Options = {
     endAngle: 110,
     background: [
       {
-        backgroundColor: "#495069",
+        backgroundColor: colors.dusk,
         innerRadius: "90%",
         outerRadius: "100%",
         shape: "arc",
@@ -32,9 +37,10 @@ export const baseGaugeOptions: Highcharts.Options = {
   yAxis: {
     minorTicks: false,
     lineWidth: 0,
-    tickWidth: 2,
-    tickLength: 6,
-    tickInterval: 1,
+    tickAmount: 0,
+    tickWidth: 0,
+    // tickLength: 10,
+    // tickInterval: 6,
     tickPosition: "outside",
   },
 
@@ -49,12 +55,7 @@ export const baseGaugeOptions: Highcharts.Options = {
         radius: "70%",
       },
       dataLabels: {
-        color: "#FFF",
-        y: 32,
-        borderColor: "none",
-        useHTML: true,
-        format:
-          '<span class="font-roboto font-light text-base">{y:.2f} ETH/min</span>',
+        enabled: false,
       },
       pivot: {
         backgroundColor: "white",
@@ -62,7 +63,7 @@ export const baseGaugeOptions: Highcharts.Options = {
       },
     },
     solidgauge: {
-      rounded: true,
+      rounded: false,
       innerRadius: 90,
       radius: 100,
       dataLabels: { enabled: false },

@@ -34,6 +34,9 @@ module.exports = {
           ...colors.red,
           pinkish: "#f85a89",
         },
+        yellow: {
+          ...colors.yellow,
+        },
       },
       width: {},
       spacing: {

@@ -2,11 +2,12 @@ import Highcharts from "highcharts";
 import HighchartsMore from "highcharts/highcharts-more";
 import SolidGauge from "highcharts/modules/solid-gauge.js";
 import HighchartsReact from "highcharts-react-official";
+import CountUp from "react-countup";
 import _ from "lodash";
 import { FC, useEffect, useRef, useState } from "react";
 import { useActiveBreakpoint } from "../utils/use-active-breakpoint";
 import { baseGaugeOptions } from "./BaseGauge";
-import ToggleSwitch from "./ToggleSwitch";
+import colors from "../colors";
 
 if (typeof Highcharts === "object") {
   HighchartsMore(Highcharts);
@@ -28,12 +29,13 @@ const issuanceGuageOptions: Highcharts.Options = {
   yAxis: {
     min: 0,
     max: 12,
-    stops: [[0, "#f85a89"]],
+    stops: [[0, colors.cloudyblue]],
     labels: {
-      // format: '<span class="font-roboto text-md">{value} ETH/min</span>',
+      format: '<span class="font-roboto text-base">{value}</span>',
       style: { color: "#b5bddb" },
-      distance: 20,
-      step: 2,
+      distance: "117%",
+      step: 1,
+      useHTML: true,
     },
   },
 
@@ -51,79 +53,60 @@ const issuanceGuageOptions: Highcharts.Options = {
 
 type IssuanceGaugeProps = {
   includePowIssuance: boolean;
-  toggleIncludePowIssuance: () => void;
 };
 
-const IssuanceGauge: FC<IssuanceGaugeProps> = ({
-  includePowIssuance,
-  toggleIncludePowIssuance,
-}) => {
+const IssuanceGauge: FC<IssuanceGaugeProps> = ({ includePowIssuance }) => {
   const [options, setOptions] = useState(
-    _.merge(baseGaugeOptions, issuanceGuageOptions)
+    _.merge(_.cloneDeep(baseGaugeOptions), issuanceGuageOptions)
   );
   const chartRef = useRef(null);
   const { md, lg, xl } = useActiveBreakpoint();
-  const height = xl ? "400" : lg ? "300" : md ? "180" : "200";
-
-  useEffect(() => {
-    setOptions({ chart: { height } });
-  }, [height]);
+  const height = xl ? 400 : lg ? 250 : md ? 200 : 150;
 
   useEffect(() => {
     setOptions({
       series: [
         {
           type: "gauge",
-          data: [!includePowIssuance ? 3.14 : 10.98],
+          data: [includePowIssuance ? 10.98 : 3.14],
         },
         {
           type: "solidgauge",
-          data: [!includePowIssuance ? 3.14 : 10.98],
+          data: [includePowIssuance ? 10.98 : 3.14],
         },
       ],
     });
   }, [includePowIssuance]);
 
-  useEffect(() => {
-    if (chartRef.current) {
-      // chartRef.current.container.current
-      //   .querySelectorAll(":scope path.highcharts-dial")
-      //   .forEach((dial: SVGPathElement) =>
-      //     dial.setAttribute(
-      //       "d",
-      //       "M -8.19 -2.5 L 0 -2.5 L 81.9 -0.5 L 81.9 0.5 L 0 2.5 L -8.19 2.5 A 1 1 0 0 1 -8.19 -2.5"
-      //     )
-      //   );
-      // chartRef.current.container.current
-      //   .querySelectorAll(":scope .highcharts-plot-band")
-      //   .forEach((el: SVGPathElement) =>
-      //     el.setAttribute(
-      //       "d",
-      //       "M 50.664 187.7932 A 110.5 110.5 0 1 1 258.3738 187.6894 A 1 1 0 0 1 247.9864 183.9204 A 99.45 99.45 0 1 0 61.0476 184.0139 A 1 1 0 0 1 50.664 187.7932"
-      //     )
-      //   );
-    }
-  }, [chartRef]);
+  // useEffect(() => {
+  //   setOptions({
+  //     chart: { height },
+  //   });
+  //   if (chartRef.current) {
+  //     chartRef.current.chart.reflow();
+  //   }
+  // }, [height]);
 
   return (
-    <div className="w-full bg-blue-tangaroa px-4 py-4">
-      <div className="flex justify-start">
-        <p className="font-roboto text-blue-spindle flex flex-row items-center">
-          <ToggleSwitch
-            className="mr-4"
-            checked={includePowIssuance}
-            onToggle={toggleIncludePowIssuance}
-          />
-          include PoW
-        </p>
+    <div className="bg-blue-tangaroa px-4 md:px-0 py-8 rounded-lg">
+      <div className="transform md:scale-75 md:-mt-16 lg:scale-90 lg:-mt-4">
+        <HighchartsReact
+          highcharts={Highcharts}
+          options={options}
+          ref={chartRef}
+        />
       </div>
-      <div className="w-16 h-4"></div>
-      <HighchartsReact
-        highcharts={Highcharts}
-        options={options}
-        ref={chartRef}
-      />
-      <p className="font-inter font-light uppercase text-blue-spindle text-md text-center mt-2 mb-4 md:mb-0 lg:mb-4 xl:mb-0">
+      <p className="font-roboto font-light text-white text-center text-lg -mt-24">
+        <CountUp
+          decimals={2}
+          duration={1}
+          separator=","
+          end={includePowIssuance ? 10.98 : 3.14}
+          preserveValue={true}
+          suffix=" ETH/min"
+        />
+      </p>
+      <p className="font-inter font-light uppercase text-blue-spindle text-md text-center mt-8 md:mt-4">
         issuance
       </p>
     </div>

@@ -19,6 +19,7 @@ import IssuanceGauge from "../IssuanceGauge";
 import SupplyGrowthGauge from "../SupplyGrowthGauge";
 import BurnGauge from "../BurnGauge";
 import { useCallback } from "react";
+import ToggleSwitch from "../ToggleSwitch";
 
 type EthPrice = {
   usd: number;
@@ -121,23 +122,30 @@ const ComingSoon: FC = () => {
         {/*   <source src="/moving-orbs.mp4" type="video/mp4" /> */}
         {/*   <source src="/moving-orbs.webm" type="video/webm; codecs='vp9'" /> */}
         {/* </video> */}
-        <div className="flex flex-col lg:flex-row w-full px-4 lg:px-16 pb-4 isolate">
-          <div className="lg:w-1/3">
+        <div className="flex justify-end px-4 md:px-16 mb-4">
+          <p className="font-roboto text-blue-spindle flex flex-row items-center">
+            <ToggleSwitch
+              className="mr-4"
+              checked={includePowIssuance}
+              onToggle={toggleIncludePowIssuance}
+            />
+            include PoW issuance
+          </p>
+        </div>
+        <div className="w-full flex flex-col md:flex-row px-4 md:px-16 pb-4 isolate">
+          <div className="md:w-1/3">
             <BurnGauge />
           </div>
-          <div className="w-4 h-4"></div>
-          <div className="lg:w-1/3">
+          <div className="p-2 md:p-2 lg:p-2" />
+          <div className="md:w-1/3">
             <SupplyGrowthGauge includePowIssuance={includePowIssuance} />
           </div>
-          <div className="w-4 h-4"></div>
-          <div className="lg:w-1/3">
-            <IssuanceGauge
-              includePowIssuance={includePowIssuance}
-              toggleIncludePowIssuance={toggleIncludePowIssuance}
-            />
+          <div className="p-2 md:p-2 lg:p-2" />
+          <div className="md:w-1/3">
+            <IssuanceGauge includePowIssuance={includePowIssuance} />
           </div>
         </div>
-        <div className="flex flex-col px-4 md:px-0 md:w-5/6 mx-auto lg:w-full lg:flex-row lg:px-16 isolate">
+        <div className="flex flex-col px-4 lg:w-full lg:flex-row md:px-16 isolate">
           <div className="lg:w-1/2">
             <CumulativeFeeBurn />
             <span className="block w-4 h-4" />
@@ -162,7 +170,7 @@ const ComingSoon: FC = () => {
             id="join-the-fam"
             className="relative flex px-4 md:px-0 pt-8 pt-40 mb-16"
           >
-            <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative flex flex-col items-center">
+            <div className="w-full lg:w-2/3 relative flex flex-col items-center">
               {/* <video */}
               {/*   className="absolute w-1/2 right-0 -mt-16 opacity-40 mix-blend-lighten" */}
               {/*   playsInline */}
@@ -181,12 +189,12 @@ const ComingSoon: FC = () => {
             </div>
           </div>
           <div className="flex px-4 md:px-0 pt-20 pb-20">
-            <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
+            <div className="w-full lg:w-2/3 md:m-auto relative">
               <FollowingYou />
             </div>
           </div>
           <div className="flex px-4 md:px-0 pt-8 pb-60">
-            <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
+            <div className="w-full lg:w-2/3 md:m-auto relative">
               <FaqBlock />
             </div>
           </div>

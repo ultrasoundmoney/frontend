@@ -2,9 +2,11 @@ import Highcharts from "highcharts";
 import HighchartsMore from "highcharts/highcharts-more";
 import SolidGauge from "highcharts/modules/solid-gauge.js";
 import HighchartsReact from "highcharts-react-official";
+import CountUp from "react-countup";
 import _ from "lodash";
 import { FC, useEffect, useRef, useState } from "react";
 import { useActiveBreakpoint } from "../utils/use-active-breakpoint";
+import colors from "../colors";
 
 if (typeof Highcharts === "object") {
   HighchartsMore(Highcharts);
@@ -20,8 +22,9 @@ const baseOptions: Highcharts.Options = {
   chart: {
     type: "gauge",
     backgroundColor: null,
-    margin: 0,
-    marginTop: 24,
+    spacing: [0, 0, 0, 0],
+    marginTop: 12,
+    height: 300,
   },
 
   credits: { enabled: false },
@@ -39,43 +42,18 @@ const baseOptions: Highcharts.Options = {
   yAxis: {
     minorTicks: false,
     labels: {
-      // format: '<span class="font-roboto text-sm">{value}%/year</span>',
-      style: { color: "#b5bddb", fontSize: "1rem" },
-      distance: 28,
-      step: 2,
+      style: { color: colors.spindle },
+      distance: "117%",
+      step: 1,
+      format: '<span class="font-roboto font-light text-base">{value}</span>',
+      useHTML: true,
     },
     min: -4,
     max: 4,
-    plotBands: [
-      {
-        from: -4,
-        to: -4,
-        color: "#00ffa3",
-        outerRadius: "100%",
-      },
-      {
-        from: -4,
-        to: 0,
-        color: "#0f8a5d",
-        outerRadius: "100%",
-      },
-      {
-        from: 0,
-        to: 2.4,
-        color: "#ed1254",
-        outerRadius: "100%",
-      },
-      {
-        from: 2.4,
-        to: 4,
-        color: "#f85a89",
-        outerRadius: "100%",
-      },
-    ],
+    plotBands: [],
     lineWidth: 0,
-    tickWidth: 3,
-    tickLength: 6,
-    tickInterval: 1,
+    tickWidth: 0,
+    tickInterval: 4,
     tickPosition: "outside",
   },
   plotOptions: {
@@ -93,12 +71,7 @@ const baseOptions: Highcharts.Options = {
         radius: 4,
       },
       dataLabels: {
-        color: "#FFF",
-        y: 32,
-        borderColor: "none",
-        useHTML: true,
-        format:
-          '<span class="font-roboto font-light text-base">{y:.2f} %/year</span>',
+        enabled: false,
       },
     },
   },
@@ -113,9 +86,66 @@ const initialSupplyGrowthOptions: Highcharts.Options = {
   ],
 };
 
+const buildPlotBands = (value: number): Highcharts.YAxisPlotBandsOptions[] => {
+  if (value > 0) {
+    return [
+      {
+        from: -4,
+        to: 0,
+        color: colors.dusk,
+        outerRadius: "100%",
+        borderWidth: 0,
+      },
+      {
+        from: 0,
+        to: value,
+        color: colors.cloudyblue,
+        outerRadius: "100%",
+        borderWidth: 0,
+      },
+      {
+        from: value,
+        to: 4,
+        color: colors.dusk,
+        outerRadius: "100%",
+        borderWidth: 0,
+      },
+    ];
+  } else {
+    return [
+      {
+        from: -4,
+        to: value,
+        color: colors.dusk,
+        outerRadius: "100%",
+        borderWidth: 0,
+      },
+      {
+        from: value,
+        to: 0,
+        color: colors.yellow500,
+        outerRadius: "100%",
+        borderWidth: 0,
+      },
+      {
+        from: 0,
+        to: 4,
+        color: colors.dusk,
+        outerRadius: "100%",
+        borderWidth: 0,
+      },
+    ];
+  }
+};
+
+const percentChangeFormatter = new Intl.NumberFormat("en-US", {
+  minimumFractionDigits: 2,
+  signDisplay: "always",
+  style: "percent",
+});
+
 type SupplyGrowthGaugeProps = {
   includePowIssuance: boolean;
-  toggleIncludePowIssuance: () => void;
 };
 const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
   includePowIssuance: includePowIssuance,
@@ -125,53 +155,44 @@ const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
   );
   const chartRef = useRef(null);
   const { md, lg, xl } = useActiveBreakpoint();
-  const height = xl ? "400" : lg ? "320" : md ? "244" : "100";
-
-  console.log("includePowIssuance", includePowIssuance);
-  console.log(xl, lg, md);
-  console.log("supply opt", options);
-  console.log(options?.series && options?.series);
+  const height = xl ? 400 : lg ? 300 : md ? 200 : 220;
 
   useEffect(() => {
     setOptions({
-      chart: { height },
-    });
-  }, [height]);
-
-  useEffect(() => {
-    setOptions({
+      yAxis: {
+        plotBands: buildPlotBands(includePowIssuance ? 2.4 : -1.8),
+      },
       series: [
         {
           type: "gauge",
-          data: [!includePowIssuance ? -1.8 : 2.4],
+          data: [includePowIssuance ? 2.4 : -1.8],
         },
       ],
     });
   }, [includePowIssuance]);
 
-  // useEffect(() => {
-  //   if (chartRef.current) {
-  // chartRef.current.container.current
-  //   .querySelectorAll(":scope .highcharts-plot-band")
-  //   .forEach((el: any) =>
-  //     el.setAttribute(
-  //       "d",
-  //       "M 50.664 187.7932 A 110.5 110.5 0 1 1 258.3738 187.6894 A 1 1 0 0 1 247.9864 183.9204 A 99.45 99.45 0 1 0 61.0476 184.0139 A 1 1 0 0 1 50.664 187.7932"
-  //     )
-  //   );
-  // }
-  // }, [chartRef]);
-
   return (
-    <div className="w-full bg-blue-tangaroa px-4 py-4">
-      <div className="w-4 h-4"></div>
-      <HighchartsReact
-        highcharts={Highcharts}
-        options={options}
-        ref={chartRef}
-      />
-      <p className="font-inter font-light uppercase text-blue-spindle text-md text-center -mt-8 mb-4 md:mb-0 lg:mb-4 xl:mb-0">
-        supply decrease
+    <div className="bg-blue-tangaroa px-4 md:px-0 py-8 rounded-lg">
+      <div className="transform md:scale-75 md:-mt-16 lg:scale-90 lg:-mt-4">
+        <HighchartsReact
+          highcharts={Highcharts}
+          options={options}
+          ref={chartRef}
+        />
+      </div>
+      <p className="font-roboto font-light text-white text-center text-lg -mt-24">
+        <CountUp
+          decimals={4}
+          duration={1}
+          separator=","
+          formattingFn={(num) => `${percentChangeFormatter.format(num)}/year`}
+          end={(includePowIssuance ? 2.4 : -1.8) / 100}
+          preserveValue={true}
+          // suffix="%/year"
+        />
+      </p>
+      <p className="font-inter font-light uppercase text-blue-spindle text-md text-center mt-8 md:mt-4">
+        supply growth
       </p>
     </div>
   );
