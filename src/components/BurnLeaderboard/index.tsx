@@ -29,38 +29,33 @@ const FeeUser: FC<{
     : "/leaderboard-images/question-mark.png";
 
   return (
-    <div className="flex flex-row pt-5 md:pt-6 justify-between items-center">
+    <div className="pt-5 md:pt-6">
       <a
-        className="flex items-center hover:opacity-60 leaderboard-link"
         href={id.startsWith("0x") ? `https://etherscan.io/address/${id}` : ""}
         target="_blank"
         rel="noreferrer"
       >
-        <div className="flex flex-row items-center overflow-hidden">
-          <img
-            className="w-8 h-8 flex-shrink-0 leaderboard-image"
-            src={imgSrc}
-            alt=""
-          />
-          <p className="font-inter text-white pl-4 whitespace-nowrap truncate text-base md:text-lg">
-            {name || id}
+        <div className="hover:opacity-60 leaderboard-link flex flex-row items-center font-inter text-white text-base md:text-lg">
+          <img className="w-8 h-8 leaderboard-image" src={imgSrc} alt="" />
+          <p className="pl-4 truncate">
+            {name || <span className="font-roboto">{id}</span>}
           </p>
-          <p className="font-inter font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block pl-2 whitespace-nowrap truncate text-base md:text-lg">
+          <p className="pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block">
             {detail}
+          </p>
+          <p className="pl-4 whitespace-nowrap ml-auto font-roboto font-light">
+            <CountUp
+              start={0}
+              end={weiToEth(fees)}
+              preserveValue={true}
+              separator=","
+              decimals={2}
+              duration={1}
+            />{" "}
+            <span className="text-blue-spindle font-extralight">ETH</span>
           </p>
         </div>
       </a>
-      <p className="font-roboto font-light text-white pl-4 whitespace-nowrap text-base md:text-lg">
-        <CountUp
-          start={0}
-          end={weiToEth(fees)}
-          preserveValue={true}
-          separator=","
-          decimals={2}
-          duration={1}
-        />{" "}
-        <span className="text-blue-spindle font-extralight">ETH</span>
-      </p>
     </div>
   );
 };
