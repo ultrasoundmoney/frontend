@@ -8,8 +8,6 @@ const Speedometer: FC = () => {
   const svgRef = useRef(null);
 
   useEffect(() => {
-    console.log("svg effect");
-    console.log("updating svg!");
     const tau = 2 * Math.PI;
     const thickness = 8;
     const innerRadius = 80;
