@@ -18,6 +18,7 @@ import useFeeData from "../../use-fee-data";
 import IssuanceGauge from "../IssuanceGauge";
 import SupplyGrowthGauge from "../SupplyGrowthGauge";
 import BurnGauge from "../BurnGauge";
+import Speedometer from "../Speedometer";
 import { useCallback } from "react";
 import ToggleSwitch from "../ToggleSwitch";
 
@@ -134,7 +135,7 @@ const ComingSoon: FC = () => {
         </div>
         <div className="w-full flex flex-col md:flex-row px-4 md:px-16 pb-4 isolate">
           <div className="md:w-1/3">
-            <BurnGauge />
+            <Speedometer />
           </div>
           <div className="p-2 md:p-2 lg:p-2" />
           <div className="md:w-1/3">
