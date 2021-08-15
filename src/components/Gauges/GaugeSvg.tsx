@@ -7,12 +7,14 @@ type GaugeSvgProps = {
   innerRadius?: number;
   progress: number;
   progressFillColor?: string;
+  needleColor?: string;
 };
 
 const GaugeSvg: FC<GaugeSvgProps> = ({
   innerRadius = 80,
   progress = 0,
   progressFillColor = colors.spindle,
+  needleColor = "white",
 }) => {
   const { x } = useSpring({
     from: { x: 0 },
@@ -56,7 +58,7 @@ const GaugeSvg: FC<GaugeSvgProps> = ({
         ></animated.path>
         <animated.path
           transform={x.to((x) => `rotate(${-210 + x * arcFraction * 360})`)}
-          style={{ fill: "white" }}
+          style={{ fill: needleColor }}
           d="M -8.19 -2.5 L 0 -2.5 L 81.9 -0.5 L 81.9 0.5 L 0 2.5 L -8.19 2.5 A 1 1 0 0 1 -8.19 -2.5"
         ></animated.path>
       </g>

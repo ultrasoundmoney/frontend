@@ -7,28 +7,30 @@ type BaseGuageProps = {
   title: string;
   value: number;
   valueFillColor?: string;
+  needleColor?: string;
 };
 
 const BaseGuage: FC<BaseGuageProps> = ({
   title,
   value,
   valueFillColor = colors.spindle,
+  needleColor,
 }) => {
   const min = 0;
   const max = 12;
 
   return (
     <>
-      <div className="md:w-9 md:h-9" />
-      <div className="relative transform md:scale-gauge-md md:-mt-12 lg:-mt-0 lg:scale-100">
-        <span className="absolute left-8 top-44 font-roboto font-light text-blue-spindle">
+      <div className="relative transform md:scale-gauge-md md:-mt-12 lg:-mt-2 lg:scale-100">
+        <span className="absolute left-8 top-44 font-roboto font-light text-white">
           {min}
         </span>
         <GaugeSvg
           progress={value / (max - min)}
           progressFillColor={valueFillColor}
+          needleColor={needleColor}
         />
-        <span className="absolute right-6 top-44 font-roboto font-light text-blue-spindle">
+        <span className="absolute right-6 top-44 font-roboto font-light text-white">
           {max}
         </span>
       </div>

@@ -1,4 +1,4 @@
-import React, { memo, FC, useRef } from "react";
+import React, { memo, FC } from "react";
 import * as d3 from "d3";
 import colors from "../../colors";
 import { animated, config, useSpring } from "react-spring";
@@ -52,12 +52,12 @@ const SplitGaugeSvg: FC<SplitGaugeSvgProps> = ({
       <g transform={`translate(${width / 2},${height / 2})`}>
         <path style={{ fill: colors.dusk }} d={backgroundArc}></path>
         <animated.path
-          style={{ fill: progress > 0 ? colors.spindle : colors.yellow500 }}
+          style={{ fill: progress > 0 ? colors.drop : colors.yellow500 }}
           d={foregroundArc}
         ></animated.path>
         <animated.path
           transform={x.to((x) => `rotate(${-90 + x * 120})`)}
-          style={{ fill: "white" }}
+          style={{ fill: progress > 0 ? colors.drop : colors.yellow500 }}
           d="M -8.19 -2.5 L 0 -2.5 L 81.9 -0.5 L 81.9 0.5 L 0 2.5 L -8.19 2.5 A 1 1 0 0 1 -8.19 -2.5"
         ></animated.path>
       </g>
