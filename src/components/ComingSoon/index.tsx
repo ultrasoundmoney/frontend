@@ -161,7 +161,7 @@ const ComingSoon: FC = () => {
             id="join-the-fam"
             className="relative flex px-4 md:px-0 pt-8 pt-40 mb-16"
           >
-            <div className="w-full lg:w-2/3 relative flex flex-col items-center">
+            <div className="w-full relative flex flex-col items-center">
               {/* <video */}
               {/*   className="absolute w-1/2 right-0 -mt-16 opacity-40 mix-blend-lighten" */}
               {/*   playsInline */}
