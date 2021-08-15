@@ -48,6 +48,8 @@ const GaugeSvg: FC<GaugeSvgProps> = ({
     })
   );
 
+  const needlePath = "M 0 -4 L 64 0 L 64 0 L 0 4 A 1 1 0 0 1 0 -4";
+
   return (
     <svg width={width} height={height}>
       <g transform={`translate(${width / 2},${height / 2})`}>
@@ -59,7 +61,7 @@ const GaugeSvg: FC<GaugeSvgProps> = ({
         <animated.path
           transform={x.to((x) => `rotate(${-210 + x * arcFraction * 360})`)}
           style={{ fill: needleColor }}
-          d="M -8.19 -2.5 L 0 -2.5 L 81.9 -0.5 L 81.9 0.5 L 0 2.5 L -8.19 2.5 A 1 1 0 0 1 -8.19 -2.5"
+          d={needlePath}
         ></animated.path>
       </g>
     </svg>

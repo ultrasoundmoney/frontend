@@ -57,6 +57,8 @@ const SplitGaugeSvg: FC<SplitGaugeSvgProps> = ({
     })
   );
 
+  const needlePath = "M 0 -4 L 64 0 L 64 0 L 0 4 A 1 1 0 0 1 0 -4";
+
   return (
     <svg width={width} height={height}>
       <g transform={`translate(${width / 2},${height / 2})`}>
@@ -75,13 +77,13 @@ const SplitGaugeSvg: FC<SplitGaugeSvgProps> = ({
           transform={x.to((x) => `rotate(${-90 + x * 120})`)}
           opacity={stylesBlue.opacity}
           style={{ fill: colors.drop }}
-          d="M -8.19 -2.5 L 0 -2.5 L 81.9 -0.5 L 81.9 0.5 L 0 2.5 L -8.19 2.5 A 1 1 0 0 1 -8.19 -2.5"
+          d={needlePath}
         ></animated.path>
         <animated.path
           transform={x.to((x) => `rotate(${-90 + x * 120})`)}
           opacity={stylesOrange.opacity}
           style={{ fill: colors.yellow500 }}
-          d="M -8.19 -2.5 L 0 -2.5 L 81.9 -0.5 L 81.9 0.5 L 0 2.5 L -8.19 2.5 A 1 1 0 0 1 -8.19 -2.5"
+          d={needlePath}
         ></animated.path>
       </g>
     </svg>
