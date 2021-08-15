@@ -185,9 +185,9 @@ const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
       : 0;
   const growthRateWithPoWIssuance =
     (powIssuanceYear + posIssuanceYear - feeBurnYear) /
-    EtherStaticData.totalSupply;
+    StaticEtherData.totalSupply;
   const growthRateWithoutPoWIssuance =
-    (posIssuanceYear - feeBurnYear) / EtherStaticData.totalSupply;
+    (posIssuanceYear - feeBurnYear) / StaticEtherData.totalSupply;
   const growthRate = includePowIssuance
     ? growthRateWithPoWIssuance
     : growthRateWithoutPoWIssuance;

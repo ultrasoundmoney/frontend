@@ -7,8 +7,8 @@ type IssuanceGaugeProps = {
 };
 
 const IssuanceGauge: FC<IssuanceGaugeProps> = ({ includePowIssuance }) => {
-  const powIssuancePerMinute = EtherStaticData.powIssuancePerDay / (24 * 60);
-  const posIssuancePerMinute = EtherStaticData.posIssuancePerDay / (24 * 60);
+  const powIssuancePerMinute = StaticEtherData.powIssuancePerDay / (24 * 60);
+  const posIssuancePerMinute = StaticEtherData.posIssuancePerDay / (24 * 60);
   const issuance = includePowIssuance
     ? powIssuancePerMinute + posIssuancePerMinute
     : posIssuancePerMinute;
