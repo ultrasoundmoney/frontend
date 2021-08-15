@@ -10,6 +10,7 @@ import useFeeData from "../use-fee-data";
 import { weiToEth } from "../utils/metric-utils";
 import { baseGaugeOptions } from "./BaseGauge";
 import colors from "../colors";
+import Speedometer from "./Speedometer";
 
 if (typeof Highcharts === "object") {
   HighchartsMore(Highcharts);
@@ -151,11 +152,7 @@ const BurnGauge = () => {
       ref={containerRef}
     >
       <div className="transform md:scale-75 md:-mt-16 lg:scale-90 lg:-mt-4">
-        <HighchartsReact
-          highcharts={Highcharts}
-          options={options}
-          ref={chartRef}
-        />
+        <Speedometer progress={0.5}></Speedometer>
       </div>
       <p className="font-roboto font-light text-white text-center text-lg -mt-24">
         <CountUp

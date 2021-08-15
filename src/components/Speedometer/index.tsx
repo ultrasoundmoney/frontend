@@ -1,10 +1,12 @@
 import React, { memo, FC, useRef, useEffect } from "react";
 import * as d3 from "d3";
+import colors from "../../colors";
 
-const blueManatee = "rbg(136, 136, 175)";
-const blueSpindle = "rgb(181, 189, 219)";
+type SpeedometerProps = {
+  progress: number;
+};
 
-const Speedometer: FC = () => {
+const Speedometer: FC<SpeedometerProps> = ({ progress }) => {
   const svgRef = useRef(null);
 
   useEffect(() => {
@@ -13,7 +15,6 @@ const Speedometer: FC = () => {
     const innerRadius = 80;
     const arcLength = (2 / 3) * tau;
     const arcStartAngle = (-1 / 3) * tau;
-    const progress = 0.7;
     const arc = d3
       .arc()
       .innerRadius(innerRadius)
@@ -31,27 +32,21 @@ const Speedometer: FC = () => {
     // background
     g.append("path")
       .datum({ endAngle: arcStartAngle + arcLength })
-      .style("fill", blueManatee)
+      .style("fill", colors.dusk)
       .attr("d", arc);
 
     // foreground
     g.append("path")
       .datum({ endAngle: arcStartAngle + arcLength * progress })
-      .style("fill", blueSpindle)
+      .style("fill", colors.spindle)
       .attr("d", arc);
-  }, []);
+  }, [progress]);
 
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8">
-      <svg
-        width="300"
-        height="300"
-        style={{ border: "2px solid white" }}
-        ref={svgRef}
-      ></svg>
+      <svg width="300" height="300" ref={svgRef}></svg>
     </div>
   );
 };
 
 export default memo(Speedometer);
-//
