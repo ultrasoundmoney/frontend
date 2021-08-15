@@ -1,51 +1,59 @@
-import React, { memo, FC } from "react";
+import React, { memo, FC, useRef, useEffect } from "react";
 import * as d3 from "d3";
 
-let blueManatee = "rbg(136, 136, 175)";
-let blueSpindle = "rgb(181, 189, 219)";
+const blueManatee = "rbg(136, 136, 175)";
+const blueSpindle = "rgb(181, 189, 219)";
 
 const Speedometer: FC = () => {
-  let tau = 2 * Math.PI
-  let width = 8
-  let innerRadius = 80
-  let arcLength = 2/3*tau
-  let arcStartAngle = -1/3*tau
-  let progress = 0.7
+  const svgRef = useRef(null);
 
-  let arc = d3.arc()
-    .innerRadius(innerRadius)
-    .outerRadius(innerRadius + width)
-    .startAngle(-tau/3)
-    .cornerRadius(width);
+  useEffect(() => {
+    console.log("svg effect");
+    console.log("updating svg!");
+    const tau = 2 * Math.PI;
+    const thickness = 8;
+    const innerRadius = 80;
+    const arcLength = (2 / 3) * tau;
+    const arcStartAngle = (-1 / 3) * tau;
+    const progress = 0.7;
+    const arc = d3
+      .arc()
+      .innerRadius(innerRadius)
+      .outerRadius(innerRadius + thickness)
+      .startAngle(-tau / 3)
+      .cornerRadius(thickness);
 
-  let svg = d3.select("svg"),
-    width = +svg.attr("width"),
-    height = +svg.attr("height"),
-    g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+    const svg = d3.select(svgRef.current);
+    const width = +svg.attr("width");
+    const height = +svg.attr("height");
+    const g = svg
+      .append("g")
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-  let background = g.append("path")
-    .datum({endAngle:arcStartAngle + arcLength})
-    .style("fill", blueManatee)
-    .attr("d", arc)
+    // background
+    g.append("path")
+      .datum({ endAngle: arcStartAngle + arcLength })
+      .style("fill", blueManatee)
+      .attr("d", arc);
 
-  let foreground = g.append("path")
-    .datum({endAngle: arcStartAngle + arcLength * progress})
-    .style("fill", blueSpindle)
-    .attr("d", arc)
+    // foreground
+    g.append("path")
+      .datum({ endAngle: arcStartAngle + arcLength * progress })
+      .style("fill", blueSpindle)
+      .attr("d", arc);
+  }, []);
 
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8">
       <svg
         width="300"
         height="300"
-        style={{border: "2px solid white"}}
+        style={{ border: "2px solid white" }}
+        ref={svgRef}
       ></svg>
     </div>
   );
 };
-
-
-
 
 export default memo(Speedometer);
 //
