@@ -17,7 +17,7 @@ const IssuanceGauge: FC<IssuanceGaugeProps> = ({ includePowIssuance }) => {
 
   return (
     <div className="flex flex-col justify-start items-center bg-blue-tangaroa px-4 md:px-0 py-4 pt-7 rounded-lg md:rounded-l-none lg:rounded-l-lg">
-      <SpanMoji className="text-2xl" emoji="💧" />
+      <SpanMoji className="text-4xl" emoji="💧" />
       <BaseGauge
         title="issuance"
         value={issuance}
