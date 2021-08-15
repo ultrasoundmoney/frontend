@@ -3,13 +3,13 @@ import * as d3 from "d3";
 import { animated, config, useSpring } from "react-spring";
 import colors from "../../colors";
 
-type SpeedometerProps = {
+type GaugeSvgProps = {
   innerRadius: number;
   progress: number;
   progressFillColor?: string;
 };
 
-const Speedometer: FC<SpeedometerProps> = ({
+const GaugeSvg: FC<GaugeSvgProps> = ({
   innerRadius = 100,
   progress = 0,
   progressFillColor = colors.spindle,
