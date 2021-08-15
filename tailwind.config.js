@@ -65,6 +65,9 @@ module.exports = {
       inset: {
         "128": "32rem",
       },
+      scale: {
+        "gauge-md": "0.60",
+      },
     },
   },
   variants: {},

@@ -20,7 +20,6 @@ import SupplyGrowthGauge from "../SupplyGrowthGauge";
 import BurnGauge from "../BurnGauge";
 import Speedometer from "../Speedometer";
 import { useCallback } from "react";
-import ToggleSwitch from "../ToggleSwitch";
 
 type EthPrice = {
   usd: number;
@@ -102,7 +101,7 @@ const ComingSoon: FC = () => {
           track ETH become ultra sound
         </p>
         <video
-          className="w-full md:w-3/6 lg:w-2/6 mx-auto -mt-32 -mb-4 pr-7 mix-blend-lighten"
+          className="w-full md:w-3/6 lg:w-2/6 mx-auto -mt-32 -mb-4 pr-6 mix-blend-lighten"
           playsInline
           autoPlay
           muted
@@ -123,26 +122,19 @@ const ComingSoon: FC = () => {
         {/*   <source src="/moving-orbs.mp4" type="video/mp4" /> */}
         {/*   <source src="/moving-orbs.webm" type="video/webm; codecs='vp9'" /> */}
         {/* </video> */}
-        <div className="flex justify-end px-4 md:px-16 mb-4">
-          <p className="font-roboto text-blue-spindle flex flex-row items-center">
-            <ToggleSwitch
-              className="mr-4"
-              checked={includePowIssuance}
-              onToggle={toggleIncludePowIssuance}
-            />
-            include PoW issuance
-          </p>
-        </div>
         <div className="w-full flex flex-col md:flex-row px-4 md:px-16 pb-4 isolate">
-          <div className="md:w-1/3">
-            <Speedometer />
+          <div className="hidden md:block md:w-1/3">
+            <BurnGauge />
           </div>
           <div className="p-2 md:p-2 lg:p-2" />
           <div className="md:w-1/3">
-            <SupplyGrowthGauge includePowIssuance={includePowIssuance} />
+            <SupplyGrowthGauge
+              includePowIssuance={includePowIssuance}
+              toggleIncludePowIssuance={toggleIncludePowIssuance}
+            />
           </div>
           <div className="p-2 md:p-2 lg:p-2" />
-          <div className="md:w-1/3">
+          <div className="hidden md:block md:w-1/3">
             <IssuanceGauge includePowIssuance={includePowIssuance} />
           </div>
         </div>

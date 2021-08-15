@@ -1,63 +1,55 @@
-import React, { memo, FC, useRef, useEffect } from "react";
+import React, { memo, FC, useRef } from "react";
 import * as d3 from "d3";
 import colors from "../../colors";
 
 type SpeedometerProps = {
+  innerRadius: number;
   progress: number;
+  progressFillColor?: string;
 };
 
-const Speedometer: FC<SpeedometerProps> = ({ progress }) => {
+const Speedometer: FC<SpeedometerProps> = ({
+  innerRadius = 100,
+  progress = 0,
+  progressFillColor = colors.spindle,
+}) => {
   const svgRef = useRef(null);
   const thickness = 8;
-  const innerRadius = 100;
+  const width = innerRadius * 3;
+  const height = innerRadius * 3;
+  const tau = 2 * Math.PI;
+  const arcFraction = 2 / 3;
+  const arcStartAngle = (-1 / 3) * tau;
 
-  useEffect(() => {
-    const tau = 2 * Math.PI;
-    const arcFraction = 2 / 3;
-    const arcStartAngle = (-1 / 3) * tau;
-    const arc = d3
-      .arc()
-      .innerRadius(innerRadius)
-      .outerRadius(innerRadius + thickness)
-      .startAngle(-tau / 3)
-      .cornerRadius(thickness);
+  const arcBase = {
+    innerRadius: innerRadius,
+    outerRadius: innerRadius + thickness,
+    startAngle: -tau / 3,
+  };
 
-    const svg = d3.select(svgRef.current);
-    const width = +svg.attr("width");
-    const height = +svg.attr("height");
-    const g = svg
-      .append("g")
-      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+  // cornerRadius has no effect when passed declaratively.
+  const backgroundArc = d3.arc().cornerRadius(thickness)({
+    ...arcBase,
+    endAngle: arcStartAngle + arcFraction * tau,
+  });
 
-    // background
-    g.append("path")
-      .datum({ endAngle: arcStartAngle + arcFraction * tau })
-      .style("fill", colors.dusk)
-      .attr("d", arc);
-
-    // foreground
-    g.append("path")
-      .datum({ endAngle: arcStartAngle + arcFraction * tau * progress })
-      .style("fill", colors.spindle)
-      .attr("d", arc);
-
-    // needle
-    g.append("path")
-      .attr(
-        "d",
-        "M -8.19 -2.5 L 0 -2.5 L 81.9 -0.5 L 81.9 0.5 L 0 2.5 L -8.19 2.5 A 1 1 0 0 1 -8.19 -2.5"
-      )
-      .style("fill", "white")
-      .attr(
-        "transform",
-        "rotate(" + (-210 + progress * arcFraction * 360) + ")"
-      );
-  }, [progress]);
+  const foregroundArc = d3.arc().cornerRadius(thickness)({
+    ...arcBase,
+    endAngle: arcStartAngle + arcFraction * tau * progress,
+  });
 
   return (
-    <div className="bg-blue-tangaroa w-full rounded-lg p-8">
-      <svg width="300" height="300" ref={svgRef}></svg>
-    </div>
+    <svg width={width} height={height} ref={svgRef}>
+      <g transform={`translate(${width / 2},${height / 2})`}>
+        <path style={{ fill: colors.dusk }} d={backgroundArc}></path>
+        <path style={{ fill: progressFillColor }} d={foregroundArc}></path>
+        <path
+          transform={`rotate(${-210 + progress * arcFraction * 360})`}
+          style={{ fill: "white" }}
+          d="M -8.19 -2.5 L 0 -2.5 L 81.9 -0.5 L 81.9 0.5 L 0 2.5 L -8.19 2.5 A 1 1 0 0 1 -8.19 -2.5"
+        ></path>
+      </g>
+    </svg>
   );
 };
 

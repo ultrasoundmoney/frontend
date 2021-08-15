@@ -50,7 +50,7 @@
     "@testing-library/jest-dom": "^5.1.1",
     "@testing-library/react": "^10.0.2",
     "@types/aos": "^3.0.4",
-    "@types/d3": "^6.0.0",
+    "@types/d3": "^7.0.0",
     "@types/lodash": "^4.14.170",
     "@types/luxon": "^1.27.0",
     "@types/node": "^13.7.7",

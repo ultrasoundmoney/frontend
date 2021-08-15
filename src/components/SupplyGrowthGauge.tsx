@@ -5,8 +5,11 @@ import HighchartsReact from "highcharts-react-official";
 import CountUp from "react-countup";
 import _ from "lodash";
 import { FC, useEffect, useRef, useState } from "react";
-import { useActiveBreakpoint } from "../utils/use-active-breakpoint";
 import colors from "../colors";
+import useFeeData from "../use-fee-data";
+import * as EtherStaticData from "../static-ether-data";
+import { weiToEth } from "../utils/metric-utils";
+import ToggleSwitch from "./ToggleSwitch";
 
 if (typeof Highcharts === "object") {
   HighchartsMore(Highcharts);
@@ -18,18 +21,20 @@ if (typeof Highcharts === "object") {
 //   container: React.RefObject<HTMLDivElement>;
 // }
 
+const signFormatter = Intl.NumberFormat("en-US", { signDisplay: "always" });
 const baseOptions: Highcharts.Options = {
   chart: {
     type: "gauge",
     backgroundColor: null,
-    spacing: [0, 0, 0, 0],
-    marginTop: 12,
+    spacing: [12, 2, 0, 2],
     height: 300,
   },
 
   credits: { enabled: false },
 
   title: { style: { display: "none" } },
+
+  tooltip: { enabled: false },
 
   pane: {
     // center: ["50%", "85%"],
@@ -45,7 +50,19 @@ const baseOptions: Highcharts.Options = {
       style: { color: colors.spindle },
       distance: "117%",
       step: 1,
-      format: '<span class="font-roboto font-light text-base">{value}</span>',
+      // format: '<span class="font-roboto font-light text-base">{value}</span>',
+      formatter: (ctx) => {
+        if (ctx.value === 0) {
+          // we prefer zero signless
+          return `<span class="font-roboto font-light text-base">0</span>`;
+        }
+        return (
+          typeof ctx.value === "number" &&
+          `<span class="font-roboto font-light text-base">${signFormatter.format(
+            ctx.value
+          )}</span>`
+        );
+      },
       useHTML: true,
     },
     min: -4,
@@ -56,6 +73,7 @@ const baseOptions: Highcharts.Options = {
     tickInterval: 4,
     tickPosition: "outside",
   },
+
   plotOptions: {
     gauge: {
       dial: {
@@ -146,33 +164,59 @@ const percentChangeFormatter = new Intl.NumberFormat("en-US", {
 
 type SupplyGrowthGaugeProps = {
   includePowIssuance: boolean;
+  toggleIncludePowIssuance: () => void;
 };
 const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
-  includePowIssuance: includePowIssuance,
+  includePowIssuance,
+  toggleIncludePowIssuance,
 }) => {
   const [options, setOptions] = useState<Highcharts.Options>(
     _.merge(baseOptions, initialSupplyGrowthOptions)
   );
+  const { burnRates } = useFeeData();
   const chartRef = useRef(null);
-  const { md, lg, xl } = useActiveBreakpoint();
-  const height = xl ? 400 : lg ? 300 : md ? 200 : 220;
+
+  const powIssuanceYear = EtherStaticData.powIssuancePerDay * 365;
+  const posIssuanceYear = EtherStaticData.posIssuancePerDay * 365;
+  // Burn rates are per minute.
+  const feeBurnYear =
+    burnRates !== undefined
+      ? weiToEth(burnRates.burnRate30d) * 60 * 24 * 365
+      : 0;
+  const growthRateWithPoWIssuance =
+    (powIssuanceYear + posIssuanceYear - feeBurnYear) /
+    EtherStaticData.totalSupply;
+  const growthRateWithoutPoWIssuance =
+    (posIssuanceYear - feeBurnYear) / EtherStaticData.totalSupply;
+  const growthRate = includePowIssuance
+    ? growthRateWithPoWIssuance
+    : growthRateWithoutPoWIssuance;
 
   useEffect(() => {
     setOptions({
       yAxis: {
-        plotBands: buildPlotBands(includePowIssuance ? 2.4 : -1.8),
+        // Highcharts expects plain numbers, ours is a percent.
+        plotBands: buildPlotBands(growthRate * 100),
       },
       series: [
         {
           type: "gauge",
-          data: [includePowIssuance ? 2.4 : -1.8],
+          data: [growthRate * 100],
         },
       ],
     });
-  }, [includePowIssuance]);
+  }, [growthRate]);
 
   return (
-    <div className="bg-blue-tangaroa px-4 md:px-0 py-8 rounded-lg">
+    <div className="bg-blue-tangaroa px-4 md:px-0 py-4 rounded-lg">
+      <p className="font-roboto text-blue-spindle flex flex-row items-center justify-end px-4 mb-4 md:text-sm">
+        <ToggleSwitch
+          className="mr-4"
+          checked={includePowIssuance}
+          onToggle={toggleIncludePowIssuance}
+        />
+        include PoW
+      </p>
       <div className="transform md:scale-75 md:-mt-16 lg:scale-90 lg:-mt-4">
         <HighchartsReact
           highcharts={Highcharts}
@@ -180,18 +224,22 @@ const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
           ref={chartRef}
         />
       </div>
-      <p className="font-roboto font-light text-white text-center text-lg -mt-24">
-        <CountUp
-          decimals={4}
-          duration={1}
-          separator=","
-          formattingFn={(num) => `${percentChangeFormatter.format(num)}/year`}
-          end={(includePowIssuance ? 2.4 : -1.8) / 100}
-          preserveValue={true}
-          // suffix="%/year"
-        />
-      </p>
-      <p className="font-inter font-light uppercase text-blue-spindle text-md text-center mt-8 md:mt-4">
+      {burnRates !== undefined && (
+        <p className="relative font-roboto font-light text-white text-center text-lg -mt-24 z-10">
+          <CountUp
+            start={0}
+            preserveValue={true}
+            end={growthRate * 100}
+            separator=","
+            decimals={2}
+            duration={1}
+            // breaks preserve value
+            // formattingFn={(num) => percentChangeFormatter.format(num)}
+          />
+          <span className="font-extralight text-blue-spindle pl-2">%/year</span>
+        </p>
+      )}
+      <p className="relative font-inter font-light uppercase text-blue-spindle text-md text-center mt-8 md:mt-4 z-10">
         supply growth
       </p>
     </div>
