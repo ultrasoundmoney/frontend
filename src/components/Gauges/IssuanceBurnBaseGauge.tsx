@@ -28,10 +28,10 @@ const BaseGuage: FC<BaseGuageProps> = ({
           needleColor={needleColor}
         />
         <span className="absolute left-8 top-44 font-roboto font-light text-white">
-          {min}Ξ
+          {min}M
         </span>
         <span className="absolute right-6 top-44 font-roboto font-light text-white">
-          {max}Ξ
+          {max}M
         </span>
       </div>
       <p className="relative font-roboto font-light text-white text-center text-lg -mt-24">
