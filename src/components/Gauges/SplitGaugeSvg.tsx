@@ -19,6 +19,16 @@ const SplitGaugeSvg: FC<SplitGaugeSvgProps> = ({
     delay: 200,
     config: config.gentle,
   });
+  const stylesBlue = useSpring({
+    opacity: progress > 0 ? 1 : 0,
+    delay: 200,
+    config: config.gentle,
+  });
+  const stylesOrange = useSpring({
+    opacity: progress > 0 ? 0 : 1,
+    delay: 200,
+    config: config.gentle,
+  });
 
   const thickness = 8;
   const width = innerRadius * 3;
@@ -52,12 +62,25 @@ const SplitGaugeSvg: FC<SplitGaugeSvgProps> = ({
       <g transform={`translate(${width / 2},${height / 2})`}>
         <path style={{ fill: colors.dusk }} d={backgroundArc}></path>
         <animated.path
-          style={{ fill: progress > 0 ? colors.drop : colors.yellow500 }}
+          style={{ fill: colors.drop }}
+          opacity={stylesBlue.opacity}
+          d={foregroundArc}
+        ></animated.path>
+        <animated.path
+          style={{ fill: colors.yellow500 }}
+          opacity={stylesOrange.opacity}
           d={foregroundArc}
         ></animated.path>
         <animated.path
           transform={x.to((x) => `rotate(${-90 + x * 120})`)}
-          style={{ fill: progress > 0 ? colors.drop : colors.yellow500 }}
+          opacity={stylesBlue.opacity}
+          style={{ fill: colors.drop }}
+          d="M -8.19 -2.5 L 0 -2.5 L 81.9 -0.5 L 81.9 0.5 L 0 2.5 L -8.19 2.5 A 1 1 0 0 1 -8.19 -2.5"
+        ></animated.path>
+        <animated.path
+          transform={x.to((x) => `rotate(${-90 + x * 120})`)}
+          opacity={stylesOrange.opacity}
+          style={{ fill: colors.yellow500 }}
           d="M -8.19 -2.5 L 0 -2.5 L 81.9 -0.5 L 81.9 0.5 L 0 2.5 L -8.19 2.5 A 1 1 0 0 1 -8.19 -2.5"
         ></animated.path>
       </g>
