@@ -8,12 +8,12 @@ type SpeedometerProps = {
 
 const Speedometer: FC<SpeedometerProps> = ({ progress }) => {
   const svgRef = useRef(null);
+  const thickness = 8;
+  const innerRadius = 100;
 
   useEffect(() => {
     const tau = 2 * Math.PI;
-    const thickness = 8;
-    const innerRadius = 80;
-    const arcLength = (2 / 3) * tau;
+    const arcFraction = 2 / 3;
     const arcStartAngle = (-1 / 3) * tau;
     const arc = d3
       .arc()
@@ -31,15 +31,27 @@ const Speedometer: FC<SpeedometerProps> = ({ progress }) => {
 
     // background
     g.append("path")
-      .datum({ endAngle: arcStartAngle + arcLength })
+      .datum({ endAngle: arcStartAngle + arcFraction * tau })
       .style("fill", colors.dusk)
       .attr("d", arc);
 
     // foreground
     g.append("path")
-      .datum({ endAngle: arcStartAngle + arcLength * progress })
+      .datum({ endAngle: arcStartAngle + arcFraction * tau * progress })
       .style("fill", colors.spindle)
       .attr("d", arc);
+
+    // needle
+    g.append("path")
+      .attr(
+        "d",
+        "M -8.19 -2.5 L 0 -2.5 L 81.9 -0.5 L 81.9 0.5 L 0 2.5 L -8.19 2.5 A 1 1 0 0 1 -8.19 -2.5"
+      )
+      .style("fill", "white")
+      .attr(
+        "transform",
+        "rotate(" + (-210 + progress * arcFraction * 360) + ")"
+      );
   }, [progress]);
 
   return (
