@@ -65,7 +65,7 @@ const SupplyChart: React.FC<Props> = ({
     // the page finishes loading. Force a reflow to handle this.
     const hc = containerRef.current.querySelector(".highcharts-container");
     if (hc.clientWidth > containerRef.current.clientWidth) {
-      console.log("reflow!");
+      console.log("reflow supply chart!");
       chartRef.current.chart.reflow();
     }
   }, [t]);

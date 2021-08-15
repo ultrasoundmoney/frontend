@@ -1,4 +1,6 @@
 import * as React from "react";
+import { FC } from "react";
+import { useState, useContext } from "react";
 import TwitterCommunity from "../TwitterCommunity";
 import FollowingYou from "../FollowingYou";
 import SupplyView from "../SupplyView";
@@ -13,6 +15,10 @@ import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 import { weiToGwei } from "../../utils/metric-utils";
 import SpanMoji from "../SpanMoji";
 import useFeeData from "../../use-fee-data";
+import IssuanceGauge from "../Gauges/IssuanceGauge";
+import SupplyGrowthGauge from "../Gauges/SupplyGrowthGauge";
+import BurnGauge from "../Gauges/BurnGauge";
+import { useCallback } from "react";
 
 type EthPrice = {
   usd: number;
@@ -34,9 +40,11 @@ const percentChangeFormatter = new Intl.NumberFormat("en-US", {
   style: "percent",
 });
 
-const ComingSoon: React.FC = () => {
-  const t = React.useContext(TranslationsContext);
+const ComingSoon: FC = () => {
+  const t = useContext(TranslationsContext);
   const { baseFeePerGas } = useFeeData();
+  const [simulateMerge, setSimulateMerge] = useState(false);
+
   const { data } = useSWR<EthPrice>(
     "https://api.ultrasound.money/fees/eth-price",
     {
@@ -53,6 +61,10 @@ const ComingSoon: React.FC = () => {
     typeof data?.usd24hChange === "number" && data?.usd24hChange < 0
       ? "text-red-400"
       : "text-green-400";
+
+  const toggleSimulateMerge = useCallback(() => {
+    setSimulateMerge(!simulateMerge);
+  }, [simulateMerge]);
 
   return (
     <div className="wrapper bg-blue-midnightexpress">
@@ -88,7 +100,7 @@ const ComingSoon: React.FC = () => {
           track ETH become ultra sound
         </p>
         <video
-          className="w-full md:w-3/6 lg:w-2/6 mx-auto -mt-32 -mb-4 pr-7 mix-blend-lighten"
+          className="w-full md:w-3/6 lg:w-2/6 mx-auto -mt-32 -mb-4 pr-6 mix-blend-lighten"
           playsInline
           autoPlay
           muted
@@ -109,7 +121,22 @@ const ComingSoon: React.FC = () => {
         {/*   <source src="/moving-orbs.mp4" type="video/mp4" /> */}
         {/*   <source src="/moving-orbs.webm" type="video/webm; codecs='vp9'" /> */}
         {/* </video> */}
-        <div className="flex flex-col px-4 md:w-5/6 mx-auto lg:w-full lg:flex-row lg:px-16 isolate">
+        <div className="w-full flex flex-col md:flex-row md:gap-0 lg:gap-4 px-4 md:px-16 isolate">
+          <div className="hidden md:block w-1/3">
+            <BurnGauge />
+          </div>
+          <div className="md:w-1/3">
+            <SupplyGrowthGauge
+              simulateMerge={simulateMerge}
+              toggleSimulateMerge={toggleSimulateMerge}
+            />
+          </div>
+          <div className="hidden md:block w-1/3">
+            <IssuanceGauge simulateMerge={simulateMerge} />
+          </div>
+        </div>
+        <div className="w-4 h-4" />
+        <div className="flex flex-col px-4 lg:w-full lg:flex-row md:px-16 isolate">
           <div className="lg:w-1/2">
             <CumulativeFeeBurn />
             <span className="block w-4 h-4" />
@@ -134,7 +161,7 @@ const ComingSoon: React.FC = () => {
             id="join-the-fam"
             className="relative flex px-4 md:px-0 pt-8 pt-40 mb-16"
           >
-            <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative flex flex-col items-center">
+            <div className="w-full lg:w-2/3 relative flex flex-col items-center">
               {/* <video */}
               {/*   className="absolute w-1/2 right-0 -mt-16 opacity-40 mix-blend-lighten" */}
               {/*   playsInline */}
@@ -153,12 +180,12 @@ const ComingSoon: React.FC = () => {
             </div>
           </div>
           <div className="flex px-4 md:px-0 pt-20 pb-20">
-            <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
+            <div className="w-full lg:w-2/3 md:m-auto relative">
               <FollowingYou />
             </div>
           </div>
           <div className="flex px-4 md:px-0 pt-8 pb-60">
-            <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
+            <div className="w-full lg:w-2/3 md:m-auto relative">
               <FaqBlock />
             </div>
           </div>

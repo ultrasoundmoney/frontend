@@ -2,7 +2,7 @@ import React, { memo, FC, useState, useCallback } from "react";
 import SpanMoji from "../SpanMoji";
 import CountUp from "react-countup";
 import useFeeData, { BurnRates, FeesBurned } from "../../use-fee-data";
-import FeePeriodControl, { Timeframe } from "../fee-period-control";
+import FeePeriodControl, { Timeframe } from "../FeePeriodControl";
 
 const weiToEth = (wei: number): number => wei / 10 ** 18;
 
