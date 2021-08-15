@@ -35,29 +35,24 @@ const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
   const max = 4;
 
   return (
-    <div className="flex flex-col items-center bg-blue-tangaroa px-4 md:px-0 lg:px-2 py-4 rounded-lg md:rounded-none lg:rounded-lg">
-      <p className="relative z-10 font-inter text-blue-spindle flex flex-row items-center justify-end px-4 md:text-sm self-center">
-        <ToggleSwitch
-          className="mr-4"
-          checked={simulateMerge}
-          onToggle={toggleSimulateMerge}
-        />
-        simulate merge
-      </p>
-      <div className="w-4 h-4"></div>
-      <div className="relative transform md:scale-gauge-md md:-mx-4 md:-mt-10 lg:-mt-0 lg:scale-100">
-        <span className="absolute transform left-1/2 -translate-x-1/2 text-center -mb-6 font-roboto font-light text-white">
-          0%
-        </span>
+    <div className="flex flex-col items-center bg-blue-tangaroa px-4 md:px-0 lg:px-2 py-4 rounded-lg md:rounded-none lg:rounded-lg pt-8 lg:pt-10">
+      <div className="flex items-center">
+        <ToggleSwitch checked={simulateMerge} onToggle={toggleSimulateMerge} />
+        <p className="relative z-10 font-inter text-blue-spindle flex flex-row items-center justify-end px-4 self-center">
+          simulate merge
+        </p>
+      </div>
+      <div className="w-3 h-3"></div>
+      <div className="relative transform md:scale-gauge-md md:-mx-4 md:-mt-14 lg:-mt-5 lg:scale-100 xl:scale-110">
         <SplitGaugeSvg max={max} progress={(growthRate * 100) / max} />
-        <span className="absolute left-5 top-44 font-roboto font-light text-white">
+        <span className="absolute left-5 top-44 font-roboto font-light text-lg lg:text-base text-white">
           {-max}%
         </span>
-        <span className="absolute right-7 top-44 font-roboto font-light text-white">
+        <span className="absolute right-7 top-44 font-roboto font-light text-lg text-white">
           +{max}%
         </span>
       </div>
-      <p className="relative font-roboto font-light text-white text-center text-lg -mt-24">
+      <p className="relative font-roboto font-light text-white text-center text-lg md:text-base lg:text-lg -mt-24">
         <CountUp
           decimals={2}
           duration={1}
@@ -66,10 +61,10 @@ const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
           preserveValue={true}
         />
       </p>
-      <span className="relative font-extralight text-blue-spindle -mt-1">
+      <span className="relative font-roboto font-extralight text-blue-spindle -mt-1">
         %/year
       </span>
-      <p className="relative font-inter font-light uppercase text-blue-spindle text-md text-center mt-8 md:mt-6">
+      <p className="relative font-inter font-light uppercase text-blue-spindle text-md text-center mt-8 md:mt-6 mb-4 md:mb-0">
         supply growth
       </p>
     </div>

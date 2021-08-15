@@ -21,20 +21,20 @@ const BaseGuage: FC<BaseGuageProps> = ({
 
   return (
     <>
-      <div className="relative transform md:scale-gauge-md md:-mt-12 lg:-mt-2 lg:scale-100">
+      <div className="relative transform md:scale-gauge-md md:-mt-12 lg:-mt-2 lg:scale-100 xl:scale-110">
         <GaugeSvg
           progress={value / (max - min)}
           progressFillColor={valueFillColor}
           needleColor={needleColor}
         />
-        <span className="absolute left-8 top-44 font-roboto font-light text-white">
+        <span className="absolute left-8 top-44 font-roboto font-light text-lg lg:text-base text-white">
           {min}M
         </span>
-        <span className="absolute right-6 top-44 font-roboto font-light text-white">
+        <span className="absolute right-6 top-44 font-roboto font-light text-lg lg:text-base text-white">
           {max}M
         </span>
       </div>
-      <p className="relative font-roboto font-light text-white text-center text-lg -mt-24">
+      <p className="relative font-roboto font-light text-white text-center text-base lg:text-lg -mt-24">
         <CountUp
           decimals={2}
           duration={1}
@@ -44,7 +44,7 @@ const BaseGuage: FC<BaseGuageProps> = ({
           suffix="M"
         />
       </p>
-      <span className="relative font-extralight text-blue-spindle -mt-1">
+      <span className="relative font-roboto font-extralight text-blue-spindle">
         ETH/year
       </span>
       <p className="relative font-inter font-light uppercase text-blue-spindle text-md text-center mt-4">
