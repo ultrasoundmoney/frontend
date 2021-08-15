@@ -22,16 +22,16 @@ const BaseGuage: FC<BaseGuageProps> = ({
   return (
     <>
       <div className="relative transform md:scale-gauge-md md:-mt-12 lg:-mt-2 lg:scale-100">
-        <span className="absolute left-8 top-44 font-roboto font-light text-white">
-          {min}
-        </span>
         <GaugeSvg
           progress={value / (max - min)}
           progressFillColor={valueFillColor}
           needleColor={needleColor}
         />
+        <span className="absolute left-8 top-44 font-roboto font-light text-white">
+          {min}Ξ
+        </span>
         <span className="absolute right-6 top-44 font-roboto font-light text-white">
-          {max}
+          {max}Ξ
         </span>
       </div>
       <p className="relative font-roboto font-light text-white text-center text-lg -mt-24">
@@ -41,6 +41,7 @@ const BaseGuage: FC<BaseGuageProps> = ({
           separator=","
           end={value}
           preserveValue={true}
+          suffix="M"
         />
       </p>
       <span className="relative font-extralight text-blue-spindle">

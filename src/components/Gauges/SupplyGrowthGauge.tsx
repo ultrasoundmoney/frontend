@@ -55,14 +55,14 @@ const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
       <div className="w-4 h-4"></div>
       <div className="relative transform md:scale-gauge-md md:-mx-4 md:-mt-12 lg:-mt-0 lg:scale-100">
         <span className="absolute transform left-1/2 -translate-x-1/2 text-center -mb-6 font-roboto font-light text-white">
-          0
+          0%
         </span>
         <SplitGaugeSvg max={max} progress={(growthRate * 100) / max} />
         <span className="absolute left-5 top-44 font-roboto font-light text-white">
-          {-max}
+          {-max}%
         </span>
         <span className="absolute right-7 top-44 font-roboto font-light text-white">
-          {max}
+          +{max}%
         </span>
       </div>
       <p className="relative font-roboto font-light text-white text-center text-lg -mt-24">
