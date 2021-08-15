@@ -43,7 +43,7 @@ const percentChangeFormatter = new Intl.NumberFormat("en-US", {
 const ComingSoon: FC = () => {
   const t = useContext(TranslationsContext);
   const { baseFeePerGas } = useFeeData();
-  const [includePowIssuance, setIncludePowIssuance] = useState(true);
+  const [simulateMerge, setSimulateMerge] = useState(false);
 
   const { data } = useSWR<EthPrice>(
     "https://api.ultrasound.money/fees/eth-price",
@@ -62,9 +62,9 @@ const ComingSoon: FC = () => {
       ? "text-red-400"
       : "text-green-400";
 
-  const toggleIncludePowIssuance = useCallback(() => {
-    setIncludePowIssuance(!includePowIssuance);
-  }, [includePowIssuance]);
+  const toggleSimulateMerge = useCallback(() => {
+    setSimulateMerge(!simulateMerge);
+  }, [simulateMerge]);
 
   return (
     <div className="wrapper bg-blue-midnightexpress">
@@ -127,12 +127,12 @@ const ComingSoon: FC = () => {
           </div>
           <div className="md:w-1/3">
             <SupplyGrowthGauge
-              includePowIssuance={includePowIssuance}
-              toggleIncludePowIssuance={toggleIncludePowIssuance}
+              simulateMerge={simulateMerge}
+              toggleSimulateMerge={toggleSimulateMerge}
             />
           </div>
           <div className="hidden md:block w-1/3">
-            <IssuanceGauge includePowIssuance={includePowIssuance} />
+            <IssuanceGauge simulateMerge={simulateMerge} />
           </div>
         </div>
         <div className="w-4 h-4" />

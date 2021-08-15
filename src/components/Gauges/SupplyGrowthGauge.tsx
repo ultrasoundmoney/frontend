@@ -1,26 +1,18 @@
 import CountUp from "react-countup";
-import _ from "lodash";
-import { FC, useEffect, useRef, useState } from "react";
-import colors from "../../colors";
+import { FC } from "react";
 import useFeeData from "../../use-fee-data";
 import * as StaticEtherData from "../../static-ether-data";
 import { weiToEth } from "../../utils/metric-utils";
 import ToggleSwitch from "../ToggleSwitch";
 import SplitGaugeSvg from "./SplitGaugeSvg";
 
-const percentChangeFormatter = new Intl.NumberFormat("en-US", {
-  minimumFractionDigits: 2,
-  signDisplay: "always",
-  style: "percent",
-});
-
 type SupplyGrowthGaugeProps = {
-  includePowIssuance: boolean;
-  toggleIncludePowIssuance: () => void;
+  simulateMerge: boolean;
+  toggleSimulateMerge: () => void;
 };
 const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
-  includePowIssuance,
-  toggleIncludePowIssuance,
+  simulateMerge,
+  toggleSimulateMerge,
 }) => {
   const { burnRates } = useFeeData();
 
@@ -36,9 +28,9 @@ const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
     StaticEtherData.totalSupply;
   const growthRateWithoutPoWIssuance =
     (posIssuanceYear - feeBurnYear) / StaticEtherData.totalSupply;
-  const growthRate = includePowIssuance
-    ? growthRateWithPoWIssuance
-    : growthRateWithoutPoWIssuance;
+  const growthRate = simulateMerge
+    ? growthRateWithoutPoWIssuance
+    : growthRateWithPoWIssuance;
 
   const max = 4;
 
@@ -47,8 +39,8 @@ const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
       <p className="relative z-10 font-inter text-blue-spindle flex flex-row items-center justify-end px-4 md:text-sm self-center">
         <ToggleSwitch
           className="mr-4"
-          checked={includePowIssuance}
-          onToggle={toggleIncludePowIssuance}
+          checked={simulateMerge}
+          onToggle={toggleSimulateMerge}
         />
         simulate merge
       </p>
