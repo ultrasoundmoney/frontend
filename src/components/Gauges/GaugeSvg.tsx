@@ -1,4 +1,4 @@
-import React, { memo, FC, useRef } from "react";
+import React, { memo, FC } from "react";
 import * as d3 from "d3";
 import { animated, config, useSpring } from "react-spring";
 import colors from "../../colors";
@@ -14,10 +14,8 @@ const Speedometer: FC<SpeedometerProps> = ({
   progress = 0,
   progressFillColor = colors.spindle,
 }) => {
-  const svgRef = useRef(null);
-  const progressRef = useRef(0);
   const { x } = useSpring({
-    from: { x: progressRef.current || 0 },
+    from: { x: 0 },
     to: { x: progress },
     delay: 200,
     config: config.gentle,
@@ -49,7 +47,7 @@ const Speedometer: FC<SpeedometerProps> = ({
   );
 
   return (
-    <svg width={width} height={height} ref={svgRef}>
+    <svg width={width} height={height}>
       <g transform={`translate(${width / 2},${height / 2})`}>
         <path style={{ fill: colors.dusk }} d={backgroundArc}></path>
         <animated.path
