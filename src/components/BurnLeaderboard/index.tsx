@@ -3,7 +3,7 @@ import CountUp from "react-countup";
 import imageIds from "../../assets/leaderboard-image-ids.json";
 import { weiToEth } from "../../utils/metric-utils";
 import useSWR from "swr";
-import FeePeriodControl, { Timeframe } from "../fee-period-control";
+import FeePeriodControl, { Timeframe } from "../FeePeriodControl";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 // Ideally we solve this with etags instead. Can be removed once covid punks have left the leaderboard.
