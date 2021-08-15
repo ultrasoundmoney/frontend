@@ -1,7 +1,7 @@
 import React, { memo, FC, useRef } from "react";
 import * as d3 from "d3";
-import colors from "../../colors";
 import { animated, config, useSpring } from "react-spring";
+import colors from "../../colors";
 
 type SpeedometerProps = {
   innerRadius: number;

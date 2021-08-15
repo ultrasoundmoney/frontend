@@ -1,6 +1,6 @@
 import { FC } from "react";
-import BaseGauge from "./BaseGauge";
-import * as EtherStaticData from "../static-ether-data";
+import BaseGauge from "./IssuanceBurnBaseGuage";
+import * as EtherStaticData from "../../static-ether-data";
 
 type IssuanceGaugeProps = {
   includePowIssuance: boolean;

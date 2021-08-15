@@ -5,11 +5,11 @@ import HighchartsReact from "highcharts-react-official";
 import CountUp from "react-countup";
 import _ from "lodash";
 import { FC, useEffect, useRef, useState } from "react";
-import colors from "../colors";
-import useFeeData from "../use-fee-data";
-import * as EtherStaticData from "../static-ether-data";
-import { weiToEth } from "../utils/metric-utils";
-import ToggleSwitch from "./ToggleSwitch";
+import colors from "../../colors";
+import useFeeData from "../../use-fee-data";
+import * as EtherStaticData from "../../static-ether-data";
+import { weiToEth } from "../../utils/metric-utils";
+import ToggleSwitch from "../ToggleSwitch";
 
 if (typeof Highcharts === "object") {
   HighchartsMore(Highcharts);

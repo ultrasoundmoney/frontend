@@ -1,7 +1,7 @@
-import useFeeData from "../use-fee-data";
-import { weiToEth } from "../utils/metric-utils";
-import colors from "../colors";
-import BaseGauge from "./BaseGauge";
+import useFeeData from "../../use-fee-data";
+import { weiToEth } from "../../utils/metric-utils";
+import colors from "../../colors";
+import BaseGauge from "./IssuanceBurnBaseGuage";
 
 const BurnGauge = () => {
   const { burnRates } = useFeeData();

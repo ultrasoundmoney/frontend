@@ -15,10 +15,9 @@ import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 import { weiToGwei } from "../../utils/metric-utils";
 import SpanMoji from "../SpanMoji";
 import useFeeData from "../../use-fee-data";
-import IssuanceGauge from "../IssuanceGauge";
-import SupplyGrowthGauge from "../SupplyGrowthGauge";
-import BurnGauge from "../BurnGauge";
-import Speedometer from "../Speedometer";
+import IssuanceGauge from "../Gauges/IssuanceGauge";
+import SupplyGrowthGauge from "../Gauges/SupplyGrowthGauge";
+import BurnGauge from "../Gauges/BurnGauge";
 import { useCallback } from "react";
 
 type EthPrice = {
