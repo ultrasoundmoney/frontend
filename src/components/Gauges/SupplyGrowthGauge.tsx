@@ -36,9 +36,9 @@ const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
 
   return (
     <div className="flex flex-col items-center bg-blue-tangaroa px-4 md:px-0 lg:px-2 py-4 rounded-lg md:rounded-none lg:rounded-lg pt-8 lg:pt-10">
-      <div className="flex items-center">
+      <div className="relative z-10 flex items-center">
         <ToggleSwitch checked={simulateMerge} onToggle={toggleSimulateMerge} />
-        <p className="relative z-10 font-inter text-blue-spindle flex flex-row items-center justify-end px-4 self-center">
+        <p className="font-inter text-blue-spindle flex flex-row items-center justify-end px-4 self-center">
           simulate merge
         </p>
       </div>
