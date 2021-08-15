@@ -121,22 +121,21 @@ const ComingSoon: FC = () => {
         {/*   <source src="/moving-orbs.mp4" type="video/mp4" /> */}
         {/*   <source src="/moving-orbs.webm" type="video/webm; codecs='vp9'" /> */}
         {/* </video> */}
-        <div className="w-full flex flex-col md:flex-row px-4 md:px-16 pb-4 isolate">
-          <div className="hidden md:block md:w-1/3">
+        <div className="w-full flex flex-col md:flex-row md:gap-0 lg:gap-4 px-4 md:px-16 isolate">
+          <div className="hidden md:block w-1/3">
             <BurnGauge />
           </div>
-          <div className="p-2 md:p-2 lg:p-2" />
           <div className="md:w-1/3">
             <SupplyGrowthGauge
               includePowIssuance={includePowIssuance}
               toggleIncludePowIssuance={toggleIncludePowIssuance}
             />
           </div>
-          <div className="p-2 md:p-2 lg:p-2" />
-          <div className="hidden md:block md:w-1/3">
+          <div className="hidden md:block w-1/3">
             <IssuanceGauge includePowIssuance={includePowIssuance} />
           </div>
         </div>
+        <div className="w-4 h-4" />
         <div className="flex flex-col px-4 lg:w-full lg:flex-row md:px-16 isolate">
           <div className="lg:w-1/2">
             <CumulativeFeeBurn />

@@ -1,7 +1,7 @@
 import useFeeData from "../../use-fee-data";
 import { weiToEth } from "../../utils/metric-utils";
 import colors from "../../colors";
-import BaseGauge from "./IssuanceBurnBaseGuage";
+import BaseGauge from "./IssuanceBurnBaseGauge";
 
 const BurnGauge = () => {
   const { burnRates } = useFeeData();
@@ -13,11 +13,13 @@ const BurnGauge = () => {
       : 0;
 
   return (
-    <BaseGauge
-      title="burn"
-      value={burnRateAllRounded}
-      valueFillColor={colors.yellow500}
-    />
+    <div className="flex flex-col justify-start items-center bg-blue-tangaroa px-4 md:px-0 py-4 rounded-lg md:rounded-r-none lg:rounded-r-lg">
+      <BaseGauge
+        title="burn"
+        value={burnRateAllRounded}
+        valueFillColor={colors.yellow500}
+      />
+    </div>
   );
 };
 

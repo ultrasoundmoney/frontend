@@ -1,20 +1,12 @@
-import Highcharts from "highcharts";
-import HighchartsMore from "highcharts/highcharts-more";
-import SolidGauge from "highcharts/modules/solid-gauge.js";
-import HighchartsReact from "highcharts-react-official";
 import CountUp from "react-countup";
 import _ from "lodash";
 import { FC, useEffect, useRef, useState } from "react";
 import colors from "../../colors";
 import useFeeData from "../../use-fee-data";
-import * as EtherStaticData from "../../static-ether-data";
+import * as StaticEtherData from "../../static-ether-data";
 import { weiToEth } from "../../utils/metric-utils";
 import ToggleSwitch from "../ToggleSwitch";
-
-if (typeof Highcharts === "object") {
-  HighchartsMore(Highcharts);
-  SolidGauge(Highcharts);
-}
+import SplitGaugeSvg from "./SplitGaugeSvg";
 
 // interface HighchartsRef {
 //   chart: Highcharts.Chart;
@@ -170,14 +162,10 @@ const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
   includePowIssuance,
   toggleIncludePowIssuance,
 }) => {
-  const [options, setOptions] = useState<Highcharts.Options>(
-    _.merge(baseOptions, initialSupplyGrowthOptions)
-  );
   const { burnRates } = useFeeData();
-  const chartRef = useRef(null);
 
-  const powIssuanceYear = EtherStaticData.powIssuancePerDay * 365;
-  const posIssuanceYear = EtherStaticData.posIssuancePerDay * 365;
+  const powIssuanceYear = StaticEtherData.powIssuancePerDay * 365;
+  const posIssuanceYear = StaticEtherData.posIssuancePerDay * 365;
   // Burn rates are per minute.
   const feeBurnYear =
     burnRates !== undefined
@@ -192,24 +180,11 @@ const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
     ? growthRateWithPoWIssuance
     : growthRateWithoutPoWIssuance;
 
-  useEffect(() => {
-    setOptions({
-      yAxis: {
-        // Highcharts expects plain numbers, ours is a percent.
-        plotBands: buildPlotBands(growthRate * 100),
-      },
-      series: [
-        {
-          type: "gauge",
-          data: [growthRate * 100],
-        },
-      ],
-    });
-  }, [growthRate]);
+  const max = 4;
 
   return (
-    <div className="bg-blue-tangaroa px-4 md:px-0 py-4 rounded-lg">
-      <p className="font-roboto text-blue-spindle flex flex-row items-center justify-end px-4 mb-4 md:text-sm">
+    <div className="flex flex-col items-center bg-blue-tangaroa px-4 md:px-0 lg:px-2 py-4 rounded-lg md:rounded-none lg:rounded-lg">
+      <p className="relative z-10 font-roboto text-blue-spindle flex flex-row items-center justify-end px-4 md:text-sm self-end md:self-center lg:self-end">
         <ToggleSwitch
           className="mr-4"
           checked={includePowIssuance}
@@ -217,29 +192,32 @@ const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
         />
         include PoW
       </p>
-      <div className="transform md:scale-75 md:-mt-16 lg:scale-90 lg:-mt-4">
-        <HighchartsReact
-          highcharts={Highcharts}
-          options={options}
-          ref={chartRef}
-        />
+      <div className="w-4 h-4"></div>
+      <div className="relative transform md:scale-gauge-md md:-mx-4 md:-mt-12 lg:-mt-0 lg:scale-100">
+        <span className="absolute transform left-1/2 -translate-x-1/2 text-center -mb-6 font-roboto font-light text-blue-spindle">
+          0
+        </span>
+        <SplitGaugeSvg max={max} progress={(growthRate * 100) / max} />
+        <span className="absolute left-5 top-44 font-roboto font-light text-blue-spindle">
+          {-max}
+        </span>
+        <span className="absolute right-7 top-44 font-roboto font-light text-blue-spindle">
+          {max}
+        </span>
       </div>
-      {burnRates !== undefined && (
-        <p className="relative font-roboto font-light text-white text-center text-lg -mt-24 z-10">
-          <CountUp
-            start={0}
-            preserveValue={true}
-            end={growthRate * 100}
-            separator=","
-            decimals={2}
-            duration={1}
-            // breaks preserve value
-            // formattingFn={(num) => percentChangeFormatter.format(num)}
-          />
-          <span className="font-extralight text-blue-spindle pl-2">%/year</span>
-        </p>
-      )}
-      <p className="relative font-inter font-light uppercase text-blue-spindle text-md text-center mt-8 md:mt-4 z-10">
+      <p className="relative font-roboto font-light text-white text-center text-lg -mt-24">
+        <CountUp
+          decimals={2}
+          duration={1}
+          separator=","
+          end={growthRate}
+          preserveValue={true}
+        />
+      </p>
+      <span className="relative font-extralight text-blue-spindle">
+        ETH/min
+      </span>
+      <p className="relative font-inter font-light uppercase text-blue-spindle text-md text-center mt-8 md:mt-4">
         supply growth
       </p>
     </div>

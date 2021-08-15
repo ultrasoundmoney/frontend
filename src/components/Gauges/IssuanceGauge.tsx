@@ -1,6 +1,6 @@
 import { FC } from "react";
-import BaseGauge from "./IssuanceBurnBaseGuage";
-import * as EtherStaticData from "../../static-ether-data";
+import BaseGauge from "./IssuanceBurnBaseGauge";
+import * as StaticEtherData from "../../static-ether-data";
 
 type IssuanceGaugeProps = {
   includePowIssuance: boolean;
@@ -13,7 +13,11 @@ const IssuanceGauge: FC<IssuanceGaugeProps> = ({ includePowIssuance }) => {
     ? powIssuancePerMinute + posIssuancePerMinute
     : posIssuancePerMinute;
 
-  return <BaseGauge title="issuance" value={issuance} />;
+  return (
+    <div className="flex flex-col justify-start items-center bg-blue-tangaroa px-4 md:px-0 py-4 rounded-lg md:rounded-l-none lg:rounded-l-lg">
+      <BaseGauge title="issuance" value={issuance} />
+    </div>
+  );
 };
 
 export default IssuanceGauge;

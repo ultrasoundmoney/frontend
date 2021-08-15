@@ -9,10 +9,6 @@ type BaseGuageProps = {
   valueFillColor?: string;
 };
 
-const normalize = (min: number, max: number, value: number): number => {
-  return value / (max - min);
-};
-
 const BaseGuage: FC<BaseGuageProps> = ({
   title,
   value,
@@ -22,18 +18,17 @@ const BaseGuage: FC<BaseGuageProps> = ({
   const max = 12;
 
   return (
-    <div className="flex flex-col justify-start items-center bg-blue-tangaroa px-4 md:px-0 py-4 rounded-lg">
+    <>
       <div className="md:w-9 md:h-9" />
-      <div className="relative transform md:scale-gauge-md md:-mt-16 md:-mx-8 lg:scale-90 lg:-mt-4 xl:scale-100">
-        <span className="absolute left-8 top-48 font-roboto font-light text-blue-spindle">
+      <div className="relative transform md:scale-gauge-md md:-mt-12 lg:-mt-0 lg:scale-100">
+        <span className="absolute left-8 top-44 font-roboto font-light text-blue-spindle">
           {min}
         </span>
         <GaugeSvg
-          innerRadius={100}
-          progress={normalize(min, max, value)}
+          progress={value / (max - min)}
           progressFillColor={valueFillColor}
         />
-        <span className="absolute right-6 top-48 font-roboto font-light text-blue-spindle">
+        <span className="absolute right-6 top-44 font-roboto font-light text-blue-spindle">
           {max}
         </span>
       </div>
@@ -45,12 +40,14 @@ const BaseGuage: FC<BaseGuageProps> = ({
           end={value}
           preserveValue={true}
         />
-        <span className="font-extralight text-blue-spindle pl-2">ETH/min</span>
       </p>
-      <p className="relative font-inter font-light uppercase text-blue-spindle text-md text-center mt-8 md:mt-4 z-10">
+      <span className="relative font-extralight text-blue-spindle">
+        ETH/min
+      </span>
+      <p className="relative font-inter font-light uppercase text-blue-spindle text-md text-center mt-4">
         {title}
       </p>
-    </div>
+    </>
   );
 };
 
