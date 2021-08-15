@@ -44,8 +44,8 @@ const BaseGuage: FC<BaseGuageProps> = ({
           suffix="M"
         />
       </p>
-      <span className="relative font-extralight text-blue-spindle">
-        ETH/min
+      <span className="relative font-extralight text-blue-spindle -mt-1">
+        ETH/year
       </span>
       <p className="relative font-inter font-light uppercase text-blue-spindle text-md text-center mt-4">
         {title}

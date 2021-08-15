@@ -10,7 +10,7 @@ const BurnGauge = () => {
   const burnRateAllRounded =
     burnRates !== undefined
       ? // Rounding helps us skip updates.
-        Math.round(weiToEth(burnRates.burnRateAll) * 100) / 100
+        weiToEth(burnRates.burnRateAll * 60 * 24 * 365) / 1000000
       : 0;
 
   return (

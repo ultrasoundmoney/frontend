@@ -53,7 +53,7 @@ const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
         simulate merge
       </p>
       <div className="w-4 h-4"></div>
-      <div className="relative transform md:scale-gauge-md md:-mx-4 md:-mt-12 lg:-mt-0 lg:scale-100">
+      <div className="relative transform md:scale-gauge-md md:-mx-4 md:-mt-10 lg:-mt-0 lg:scale-100">
         <span className="absolute transform left-1/2 -translate-x-1/2 text-center -mb-6 font-roboto font-light text-white">
           0%
         </span>
@@ -74,10 +74,10 @@ const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
           preserveValue={true}
         />
       </p>
-      <span className="relative font-extralight text-blue-spindle">
-        ETH/min
+      <span className="relative font-extralight text-blue-spindle -mt-1">
+        %/year
       </span>
-      <p className="relative font-inter font-light uppercase text-blue-spindle text-md text-center mt-8 md:mt-4">
+      <p className="relative font-inter font-light uppercase text-blue-spindle text-md text-center mt-8 md:mt-6">
         supply growth
       </p>
     </div>
