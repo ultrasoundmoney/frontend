@@ -24,8 +24,8 @@ const GaugeSvg: FC<GaugeSvgProps> = ({
   });
 
   const thickness = 8;
-  const width = innerRadius * 3;
-  const height = innerRadius * 3;
+  const width = 2 * (innerRadius + thickness);
+  const height = 2 * (innerRadius + thickness);
   const tau = 2 * Math.PI;
   const arcFraction = 2 / 3;
   const arcStartAngle = (-1 / 3) * tau;

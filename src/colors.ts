@@ -10,5 +10,6 @@ export default {
   tangaroa: "#1b2236",
   twilight: "#59588D",
   yellow500: "#F59E0B",
-  drop: "#58A4E5",
+  fireOrange: "#F4900C",
+  drop: "#5DADEC",
 };

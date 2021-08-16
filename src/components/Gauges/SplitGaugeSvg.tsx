@@ -31,8 +31,8 @@ const SplitGaugeSvg: FC<SplitGaugeSvgProps> = ({
   });
 
   const thickness = 8;
-  const width = innerRadius * 3;
-  const height = innerRadius * 3;
+  const width = 2 * (innerRadius + thickness);
+  const height = 2 * (innerRadius + thickness);
   const tau = 2 * Math.PI;
   const backgroundArcFraction = 2 / 3;
   const foregroundArcFraction = 3 / 3;
@@ -69,7 +69,7 @@ const SplitGaugeSvg: FC<SplitGaugeSvgProps> = ({
           d={foregroundArc}
         ></animated.path>
         <animated.path
-          style={{ fill: colors.yellow500 }}
+          style={{ fill: colors.fireOrange }}
           opacity={stylesOrange.opacity}
           d={foregroundArc}
         ></animated.path>
@@ -82,7 +82,7 @@ const SplitGaugeSvg: FC<SplitGaugeSvgProps> = ({
         <animated.path
           transform={x.to((x) => `rotate(${-90 + x * 120})`)}
           opacity={stylesOrange.opacity}
-          style={{ fill: colors.yellow500 }}
+          style={{ fill: colors.fireOrange }}
           d={needlePath}
         ></animated.path>
       </g>
