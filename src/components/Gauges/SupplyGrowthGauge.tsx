@@ -59,7 +59,7 @@ const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
         </p>
       </div>
 
-      <div className="mt-6 md:mt-2 mt-6 transform scale-100 md:scale-75 lg:scale-100 xl:scale-110">
+      <div className="mt-6 md:mt-2 lg:mt-6 transform scale-100 md:scale-75 lg:scale-100 xl:scale-110">
         <SplitGaugeSvg max={max} progress={(growthRate * 100) / max} />
         <div className="font-roboto text-white text-center font-light 2xl:text-lg -mt-20 pt-1">
           <animated.p className="-mb-2">
@@ -72,7 +72,7 @@ const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
           </div>
         </div>
       </div>
-      <p className="font-inter font-light uppercase text-blue-spindle text-md text-center mt-6 md:mt-2 mt-6">
+      <p className="font-inter font-light uppercase text-blue-spindle text-md text-center mt-6 md:mt-2 lg:mt-6">
         supply growth
       </p>
     </div>
