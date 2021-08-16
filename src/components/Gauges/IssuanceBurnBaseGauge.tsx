@@ -25,7 +25,7 @@ const BaseGuage: FC<BaseGuageProps> = ({
   return (
     <>
       <SpanMoji className="leading-10 text-4xl" emoji={emoji} />
-      <div className="mt-8 transform lg:scale-100 xl:scale-110">
+      <div className="mt-6 transform lg:scale-100 xl:scale-110">
         <GaugeSvg
           progress={value / (max - min)}
           progressFillColor={valueFillColor}
@@ -34,8 +34,8 @@ const BaseGuage: FC<BaseGuageProps> = ({
         <div className="font-roboto text-white text-center font-light 2xl:text-lg -mt-20 pt-1">
           <p className="-mb-2">
             <CountUp
-              decimals={2}
-              duration={1}
+              decimals={1}
+              duration={0.8}
               separator=","
               end={value}
               preserveValue={true}
@@ -49,7 +49,7 @@ const BaseGuage: FC<BaseGuageProps> = ({
           </div>
         </div>
       </div>
-      <p className="font-inter font-light uppercase text-blue-spindle text-md text-center mt-8">
+      <p className="font-inter font-light uppercase text-blue-spindle text-md text-center mt-6">
         {title}
       </p>
     </>

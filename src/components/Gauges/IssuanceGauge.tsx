@@ -11,7 +11,7 @@ const IssuanceGauge: FC<IssuanceGaugeProps> = ({
   simulateMerge: simulateMerge,
 }) => {
   const issuance = simulateMerge
-    ? (StaticEtherData.powIssuancePerDay * 365.25) / 1000000
+    ? (StaticEtherData.posIssuancePerDay * 365.25) / 1000000
     : ((StaticEtherData.powIssuancePerDay + StaticEtherData.posIssuancePerDay) *
         365.25) /
       1000000;
