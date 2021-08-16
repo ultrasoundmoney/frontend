@@ -20,7 +20,7 @@ const BaseGuage: FC<BaseGuageProps> = ({
   emoji,
 }) => {
   const min = 0;
-  const max = 12;
+  const max = 6;
 
   return (
     <>

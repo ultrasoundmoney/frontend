@@ -10,11 +10,11 @@ type IssuanceGaugeProps = {
 const IssuanceGauge: FC<IssuanceGaugeProps> = ({
   simulateMerge: simulateMerge,
 }) => {
-  const powIssuancePerMinute = StaticEtherData.powIssuancePerDay / (24 * 60);
-  const posIssuancePerMinute = StaticEtherData.posIssuancePerDay / (24 * 60);
   const issuance = simulateMerge
-    ? posIssuancePerMinute
-    : powIssuancePerMinute + posIssuancePerMinute;
+    ? (StaticEtherData.powIssuancePerDay * 365.25) / 1000000
+    : ((StaticEtherData.powIssuancePerDay + StaticEtherData.posIssuancePerDay) *
+        365.25) /
+      1000000;
 
   return (
     <div className="flex flex-col justify-start items-center bg-blue-tangaroa px-4 md:px-0 py-4 pt-7 rounded-lg md:rounded-l-none lg:rounded-l-lg">
