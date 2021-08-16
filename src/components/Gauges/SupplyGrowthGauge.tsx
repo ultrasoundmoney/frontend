@@ -5,11 +5,20 @@ import * as StaticEtherData from "../../static-ether-data";
 import { weiToEth } from "../../utils/metric-utils";
 import ToggleSwitch from "../ToggleSwitch";
 import SplitGaugeSvg from "./SplitGaugeSvg";
+import { animated, config, useSpring } from "react-spring";
+
+const percentChangeFormatter = new Intl.NumberFormat("en-US", {
+  minimumFractionDigits: 1,
+  maximumFractionDigits: 1,
+  signDisplay: "always",
+  style: "percent",
+});
 
 type SupplyGrowthGaugeProps = {
   simulateMerge: boolean;
   toggleSimulateMerge: () => void;
 };
+
 const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
   simulateMerge,
   toggleSimulateMerge,
@@ -32,6 +41,13 @@ const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
     ? growthRateWithoutPoWIssuance
     : growthRateWithPoWIssuance;
 
+  const { growthRateA } = useSpring({
+    from: { growthRateA: 0 },
+    to: { growthRateA: growthRate },
+    delay: 200,
+    config: config.gentle,
+  });
+
   const max = 4;
 
   return (
@@ -46,16 +62,9 @@ const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
       <div className="mt-6 md:mt-2 mt-6 transform scale-100 md:scale-75 lg:scale-100 xl:scale-110">
         <SplitGaugeSvg max={max} progress={(growthRate * 100) / max} />
         <div className="font-roboto text-white text-center font-light 2xl:text-lg -mt-20 pt-1">
-          <p className="-mb-2">
-            <CountUp
-              decimals={1}
-              duration={0.8}
-              separator=","
-              end={growthRate * 100}
-              preserveValue={true}
-              suffix="%"
-            />
-          </p>
+          <animated.p className="-mb-2">
+            {growthRateA.to((n) => percentChangeFormatter.format(n))}
+          </animated.p>
           <p className="font-extralight text-blue-spindle">/year</p>
           <div className="-mt-2">
             <span className="float-left">{-max}%</span>

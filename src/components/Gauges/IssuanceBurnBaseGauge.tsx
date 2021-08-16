@@ -1,8 +1,13 @@
-import CountUp from "react-countup";
 import { FC, memo } from "react";
 import GaugeSvg from "./GaugeSvg";
 import SpanMoji from "../SpanMoji";
 import colors from "../../colors";
+import { animated, config, useSpring } from "react-spring";
+
+const ethMillionFormatter = Intl.NumberFormat("en-US", {
+  minimumFractionDigits: 1,
+  maximumFractionDigits: 1,
+});
 
 type BaseGuageProps = {
   title: string;
@@ -19,6 +24,13 @@ const BaseGuage: FC<BaseGuageProps> = ({
   needleColor,
   emoji,
 }) => {
+  const { valueA } = useSpring({
+    from: { valueA: 0 },
+    to: { valueA: value },
+    delay: 200,
+    config: config.gentle,
+  });
+
   const min = 0;
   const max = 6;
 
@@ -32,16 +44,9 @@ const BaseGuage: FC<BaseGuageProps> = ({
           needleColor={needleColor}
         />
         <div className="font-roboto text-white text-center font-light 2xl:text-lg -mt-20 pt-1">
-          <p className="-mb-2">
-            <CountUp
-              decimals={1}
-              duration={0.8}
-              separator=","
-              end={value}
-              preserveValue={true}
-              suffix="M"
-            />
-          </p>
+          <animated.p className="-mb-2">
+            {valueA.to((n) => `${ethMillionFormatter.format(n)}M`)}
+          </animated.p>
           <p className="font-extralight text-blue-spindle">ETH/year</p>
           <div className="-mt-2">
             <span className="float-left">{min}M</span>
