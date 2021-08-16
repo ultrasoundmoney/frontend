@@ -2,7 +2,6 @@ import * as React from "react";
 import { DateTime } from "luxon";
 import Slider from "../Slider/Slider";
 import SupplyChart from "./SupplyChart";
-import { intlFormat } from "../../utils/number-utils";
 import {
   estimatedDailyFeeBurn,
   estimatedDailyIssuance,
@@ -148,7 +147,7 @@ const SupplyView: React.FC<{}> = () => {
 
         <Param
           title={t.base_gas_price}
-          value={<>{intlFormat(projectedBaseGasPrice)} Gwei</>}
+          value={<>{projectedBaseGasPrice} Gwei</>}
           subValue={
             <>
               {t.fee_burn}
@@ -173,14 +172,9 @@ const SupplyView: React.FC<{}> = () => {
         <Param
           title={t.merge_date}
           value={formatDate(projectedMergeDate.toJSDate())}
-          subValue={
-            <>
-              {t.pow_removal}
-              {": in "}
-              {intlFormat(daysUntilProjectedMerge)}{" "}
-              {daysUntilProjectedMerge === 1 ? "day" : "days"}
-            </>
-          }
+          subValue={`${t.pow_removal}: in ${daysUntilProjectedMerge} ${
+            daysUntilProjectedMerge === 1 ? "day" : "days"
+          }`}
         >
           <Slider
             min={daysUntilMinProjectedMerge}
