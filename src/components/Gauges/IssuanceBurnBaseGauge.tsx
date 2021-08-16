@@ -32,7 +32,7 @@ const BaseGuage: FC<BaseGuageProps> = ({
           needleColor={needleColor}
         />
         <div className="font-roboto text-white text-center font-light 2xl:text-lg -mt-20 pt-1">
-          <p className="-mb-1">
+          <p className="-mb-2">
             <CountUp
               decimals={2}
               duration={1}
@@ -43,8 +43,10 @@ const BaseGuage: FC<BaseGuageProps> = ({
             />
           </p>
           <p className="font-extralight text-blue-spindle">ETH/year</p>
-          <span className="float-left">{min}M</span>
-          <span className="float-right">{max}M</span>
+          <div className="-mt-2">
+            <span className="float-left">{min}M</span>
+            <span className="float-right">{max}M</span>
+          </div>
         </div>
       </div>
       <p className="font-inter font-light uppercase text-blue-spindle text-md text-center mt-8">

@@ -38,7 +38,7 @@ const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
     <div className="flex flex-col justify-start items-center bg-blue-tangaroa px-4 md:px-0 py-4 pt-7 rounded-lg md:rounded-l-none lg:rounded-l-lg">
       <div className="leading-10 z-10 flex items-center">
         <ToggleSwitch checked={simulateMerge} onToggle={toggleSimulateMerge} />
-        <p className="font-inter text-blue-spindle flex flex-row items-center justify-end px-4 self-center">
+        <p className="leading-10 text-lg font-inter text-blue-spindle flex flex-row items-center justify-end px-4 self-center">
           simulate merge
         </p>
       </div>
@@ -46,7 +46,7 @@ const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
       <div className="mt-8 transform lg:scale-100 xl:scale-110">
         <SplitGaugeSvg max={max} progress={(growthRate * 100) / max} />
         <div className="font-roboto text-white text-center font-light 2xl:text-lg -mt-20 pt-1">
-          <p className="-mb-1">
+          <p className="-mb-2">
             <CountUp
               decimals={2}
               duration={1}
@@ -57,8 +57,10 @@ const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
             />
           </p>
           <p className="font-extralight text-blue-spindle">/year</p>
-          <span className="float-left">{-max}%</span>
-          <span className="float-right">+{max}%</span>
+          <div className="-mt-2">
+            <span className="float-left">{-max}%</span>
+            <span className="float-right">+{max}%</span>
+          </div>
         </div>
       </div>
       <p className="font-inter font-light uppercase text-blue-spindle text-md text-center mt-8">
