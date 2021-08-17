@@ -33,6 +33,7 @@ const LandingPage: React.FC<{}> = () => {
     parseInt((new Date(date).getTime() / 1000).toFixed(0))
   );
   const [infationaryDate, setInfationaryDate] = React.useState(dateGenesis);
+  // const [lineHeight, setLineHeight] = React.useState(150);
   React.useEffect(() => {
     //First Card Date
     const getStatusAndDate = document.querySelector(".burned_1 .eth-date");
@@ -51,6 +52,7 @@ const LandingPage: React.FC<{}> = () => {
         "#eip-constantinople"
       );
       const target1559 = document.querySelector("#next-merge");
+      const targetSupplyView = document.querySelector("#supplyview");
       const targetUltraSound = document.querySelector("#enter-ultra-sound");
       const currentPosition = window.pageYOffset;
 
@@ -59,6 +61,19 @@ const LandingPage: React.FC<{}> = () => {
         if (currentPosition > scrollTop) {
           // downscroll code
           setScrolling(false);
+          const lineHeight =
+            currentPosition - window.innerHeight > 0 &&
+            Math.floor((currentPosition - window.innerHeight) * 0.5);
+          if (lineHeight < 350) {
+            document.getElementById(
+              "line__genesis"
+            ).style.height = `${lineHeight}px`;
+          }
+          if (lineHeight > 350) {
+            document
+              .getElementById("line__genesis")
+              .classList.add("eclips__hr-circle");
+          }
           getBlcokReward.innerHTML = "5 ETH/<span>Block</span>";
           setEthSupplyPlus(5.3 + Math.floor(scrollTop * 0.001));
           const ethSupplyFactor = 72 + Math.floor(scrollTop * 0.01);
@@ -78,6 +93,17 @@ const LandingPage: React.FC<{}> = () => {
         } else {
           // upscroll code
           setScrolling(true);
+          const lineHeight =
+            currentPosition - window.innerHeight > 0 &&
+            Math.floor((currentPosition - window.innerHeight) * 0.5);
+          if (lineHeight < 350) {
+            document.getElementById(
+              "line__genesis"
+            ).style.height = `${lineHeight}px`;
+            document
+              .getElementById("line__genesis")
+              .classList.remove("eclips__hr-circle");
+          }
           setInfationaryDate(1438293600);
           getBlcokReward.innerHTML = "5 ETH/<span>Block</span>";
           const ethSupplyFactor = 121 - Math.floor(scrollTop * 0.001);
@@ -98,6 +124,20 @@ const LandingPage: React.FC<{}> = () => {
         if (currentPosition > scrollTop) {
           // downscroll code
           setScrolling(false);
+          const lineHeight =
+            currentPosition - window.innerHeight > 0 &&
+            Math.floor((currentPosition - window.innerHeight) * 0.2);
+
+          if (lineHeight < 350) {
+            document.getElementById(
+              "line__byzantium"
+            ).style.height = `${lineHeight}px`;
+          }
+          if (lineHeight > 350) {
+            document
+              .getElementById("line__byzantium")
+              .classList.add("eclips__hr-circle");
+          }
           getBlcokReward.innerHTML = "3 ETH/<span>Block</span>";
           setEthSupplyPlus(11.3 + Math.floor(scrollTop * 0.0001));
           const ethSupplyFactor = 72 + Math.floor(scrollTop * 0.01);
@@ -118,6 +158,17 @@ const LandingPage: React.FC<{}> = () => {
         } else {
           // upscroll code
           setScrolling(true);
+          const lineHeight =
+            currentPosition - window.innerHeight > 0 &&
+            Math.floor((currentPosition - window.innerHeight) * 0.2);
+          if (lineHeight < 350) {
+            document.getElementById(
+              "line__byzantium"
+            ).style.height = `${lineHeight}px`;
+            document
+              .getElementById("line__byzantium")
+              .classList.remove("eclips__hr-circle");
+          }
           getBlcokReward.innerHTML = "3 ETH/<span>Block</span>";
           setEthSupplyPlus(11.3 - Math.floor(scrollTop * 0.0001));
           const ethSupplyFactor = 121 - Math.floor(scrollTop * 0.001);
@@ -140,6 +191,20 @@ const LandingPage: React.FC<{}> = () => {
         if (currentPosition > scrollTop) {
           // downscroll code
           setScrolling(false);
+          const lineHeight =
+            currentPosition - window.innerHeight > 0 &&
+            Math.floor((currentPosition - window.innerHeight) * 0.13);
+
+          if (lineHeight < 350) {
+            document.getElementById(
+              "line__constantinople"
+            ).style.height = `${lineHeight}px`;
+          }
+          if (lineHeight > 350) {
+            document
+              .getElementById("line__constantinople")
+              .classList.add("eclips__hr-circle");
+          }
           getBlcokReward.innerHTML = "2 ETH/<span>Block</span>";
           setEthSupplyPlus(9.3 - Math.floor(scrollTop * 0.001));
           const ethSupplyFactor = 72 + Math.floor(scrollTop * 0.01);
@@ -158,6 +223,17 @@ const LandingPage: React.FC<{}> = () => {
         } else {
           //upscroll code
           setScrolling(true);
+          const lineHeight =
+            currentPosition - window.innerHeight > 0 &&
+            Math.floor((currentPosition - window.innerHeight) * 0.13);
+          if (lineHeight < 350) {
+            document.getElementById(
+              "line__constantinople"
+            ).style.height = `${lineHeight}px`;
+            document
+              .getElementById("line__constantinople")
+              .classList.remove("eclips__hr-circle");
+          }
           getBlcokReward.innerHTML = "3 ETH/<span>Block</span>";
           const x = 1628028000 - (infationaryDate + 999 * 10000);
           const ethSupplyFactor = 121 - Math.floor(scrollTop * 0.001);
@@ -217,6 +293,34 @@ const LandingPage: React.FC<{}> = () => {
         }
       }
 
+      //SupplyView
+      if (targetSupplyView.getBoundingClientRect().top < window.innerHeight) {
+        if (currentPosition > scrollTop) {
+          const lineHeight = Math.floor((currentPosition / 100) * 7);
+          if (lineHeight < 350) {
+            document.getElementById(
+              "line__supplyview"
+            ).style.height = `${lineHeight}px`;
+          }
+          if (lineHeight > 350) {
+            document
+              .getElementById("line__supplyview")
+              .classList.add("eclips__hr-circle");
+          }
+        } else {
+          const lineHeight =
+            currentPosition - window.innerHeight > 0 &&
+            Math.floor((currentPosition - window.innerHeight) * 0.1099);
+          if (lineHeight < 350) {
+            document.getElementById(
+              "line__supplyview"
+            ).style.height = `${lineHeight}px`;
+            document
+              .getElementById("line__supplyview")
+              .classList.remove("eclips__hr-circle");
+          }
+        }
+      }
       if (targetUltraSound.getBoundingClientRect().top < window.innerHeight) {
         if (currentPosition > scrollTop && !scrolling) {
           // downscroll code
@@ -259,12 +363,13 @@ const LandingPage: React.FC<{}> = () => {
             data-aos-duration="1000"
             data-aos-easing="ease-in-out"
             className="flex flex-col px-4 md:px-0 mb-16"
+            id="supplyview"
           >
             <div className="w-full md:w-5/6 lg:w-5/6 md:m-auto relative bg-blue-tangaroa md:px-8 py-4 md:py-16 rounded-xl">
               <SupplyView />
             </div>
             <div className="flex flex-wrap justify-center pt-20">
-              <div className="eclips-hr h-96"></div>
+              <div id="line__supplyview" className="eclips-hr" />
             </div>
           </div>
           <TheMergeBlock />

@@ -48,7 +48,7 @@ const TimeLineContentBlock: React.FC<TimeLineContentBlockProps> = ({
         </div>
         {children}
         <div className="flex flex-wrap justify-center">
-          <div className="eclips-hr h-96"></div>
+          <div className="eclips-hr h-96 line-moving"></div>
         </div>
       </section>
     </>

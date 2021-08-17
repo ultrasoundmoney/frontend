@@ -14,7 +14,10 @@ const TheMergeBlock: React.FC<{}> = () => {
           styles="block-fee-burn"
           id="what-next"
         />
-        <div className="the-merge flex flex-col w-full sm:w-9/12 mx-auto">
+        <div
+          id="the-merge"
+          className="the-merge flex flex-col w-full sm:w-9/12 mx-auto"
+        >
           <div
             data-aos="fade-up"
             data-aos-anchor-placement="top-center"

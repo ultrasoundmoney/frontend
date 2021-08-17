@@ -143,12 +143,55 @@
             }
         }
     }
+
     &-hr {
         position: relative;
         border-left-width: 1px;
         border-style: dashed;
         border-color: rgb(112 112 112);
 
+        // &::before {
+        //     content: '';
+        //     left: -13px;
+        //     bottom: -24px;
+        //     position: absolute;
+        //     width: 24px;
+        //     height: 24px;
+        //     border-radius: 50%;
+        //     background-color: transparent;
+        //     border: 2px solid #00ffa3;
+        // }
+
+        // &::after {
+        //     content: '';
+        //     width: 8px;
+        //     height: 8px;
+        //     border-radius: 50%;
+        //     background-color: #00ffa3;
+        //     position: absolute;
+        //     bottom: -15px;
+        //     left: -5px;
+        // }
+
+        &__left-0 {
+            left: 0;
+            align-self: center;
+        }
+
+        &-line {
+            background-color: transparent;
+            border-top: 1px dashed rgb(112, 112, 112);
+
+            &__only {
+                position: relative;
+                transform: rotate(270deg);
+                top: 70px;
+                width: 150px;
+            }
+        }
+    }
+    &__hr-circle{
+        scroll-behavior: smooth;
         &::before {
             content: '';
             left: -13px;
@@ -170,23 +213,6 @@
             position: absolute;
             bottom: -15px;
             left: -5px;
-        }
-
-        &__left-0 {
-            left: 0;
-            align-self: center;
-        }
-
-        &-line {
-            background-color: transparent;
-            border-top: 1px dashed rgb(112, 112, 112);
-
-            &__only {
-                position: relative;
-                transform: rotate(270deg);
-                top: 70px;
-                width: 150px;
-            }
         }
     }
 }
@@ -332,4 +358,91 @@
         transform: translate(-20px, -100px) rotate(180deg);
         opacity: 0;
     }
+}
+
+
+/**** slider ****/
+.slidercss {
+	overflow: hidden;
+}
+
+.slidercss-inner {
+	display: flex;
+	margin: 0;
+	padding: 0;
+	flex-flow: row nowrap;
+	justify-content: flex-start;
+	align-items: stretch;
+	list-style: none;
+	animation: pure-css-slider 11.25s cubic-bezier(0.86, 0, 0.07, 1) infinite;
+	counter-reset: i;
+}
+
+.slidercss-inner > * {
+	box-sizing: border-box;
+	margin: 0 !important;
+	flex: 0 0 100%;
+	word-break: break-word;
+}
+
+.slidercss-inner:nth-child(1) > *::before {
+	content: "BTC"
+}
+
+.slidercss-inner:nth-child(2) > *::before {
+	content: "ETH"
+}
+.slidercss-inner:nth-child(3) > *::before {
+	content: "USD"
+}
+
+.slidercss:hover .slidercss-inner {
+	animation-play-state: paused;
+}
+
+@keyframes pure-css-slider {
+	from, to {
+		transform: translateX(0);
+	}
+
+	26.66667% {
+		transform: translateX(0%);
+	}
+
+	33.33333% {
+		transform: translateX(-100%);
+	}
+
+	60% {
+		transform: translateX(-100%);
+	}
+
+	66.66667% {
+		transform: translateX(-200%);
+	}
+
+	93.33333% {
+		transform: translateX(-200%);
+	}
+
+	100% {
+		transform: translateX(0);
+	}
+}
+
+.slidercss {
+	max-width: 60em;
+	margin: auto;
+}
+
+.slidercss li {
+	position: relative;
+}
+
+.slidercss li::before {
+	position: absolute;
+	top: 0;
+	right: .875em;
+	font-size: .875em;
+	color: #3498db;
 }

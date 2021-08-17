@@ -2,11 +2,11 @@ import * as React from "react";
 import BatImg from ".././../assets/UltrasoundBat/Ultrasound_Bat.png";
 import BatImg2x from ".././../assets/UltrasoundBat/Ultrasound_Bat@2x.png";
 import BatImg3x from ".././../assets/UltrasoundBat/Ultrasound_Bat@3x.png";
-import ContentBlockMedia from "../ContentBlock/ContentBlockMedia";
-import UsdImg from "../../assets/USD.png";
-import EthImg from "../../assets/ETH.png";
-import BtcImg from "../../assets/BTC.png";
+import UsdImg from "../../assets/eth_btc/usd.png";
+import EthImg from "../../assets/eth_btc/eth.png";
+import BtcImg from "../../assets/eth_btc/btc.png";
 import { TranslationsContext } from "../../translations-context";
+import ContentBlockMedia from "../ContentBlock/ContentBlockMedia";
 
 const TheUltraSound: React.FC<{}> = () => {
   const t = React.useContext(TranslationsContext);
@@ -14,7 +14,7 @@ const TheUltraSound: React.FC<{}> = () => {
     <>
       <section
         id="enter-ultra-sound"
-        className="enther-ultr-sound py-8 px-4 md:px-8 lg:px-0"
+        className="enther-ultr-sound py-8 px-4 md:px-8 lg:px-0 relative"
       >
         <div
           data-aos="fade-up"
@@ -36,37 +36,42 @@ const TheUltraSound: React.FC<{}> = () => {
             {t.eusm_section_title}
           </div>
         </div>
-        <div
-          id="cc"
-          className="flex flex-wrap justify-center w-full md:w-10/12 mx-auto"
-        >
-          <div className="w-4/12">
-            <div className="ultrasound__content">
-              <h1
-                className="text-white font-light text-base md:text-2xl leading-normal text-left mb-6 leading-title"
-                dangerouslySetInnerHTML={{
-                  __html: t.eusm_row_1_left_col_title,
-                }}
-              />
-              <p
-                className="text-blue-shipcove font-light text-sm text-left mb-10"
-                dangerouslySetInnerHTML={{
-                  __html: t.eusm_row_1_left_col_text,
-                }}
-              />
-            </div>
-          </div>
-          <div className="w-6/12">
-            <div className="ultrasound__img">
-              <img
-                title={t.eusm_section_title}
-                alt={t.eusm_section_title}
-                src={BatImg}
-                srcSet={`${BatImg2x} 2x, ${BatImg3x} 3x`}
-                className="mx-auto text-center mb-8"
-              />
-            </div>
-          </div>
+        <div className="slidercss">
+          <ul className="slidercss-inner">
+            <li className="w-full md:w-9/12 flex flex-wrap justify-center mr-auto">
+              <div className="flex-1">
+                <ContentBlockMedia
+                  title={t.eusm_row_1_left_col_title}
+                  text={t.eusm_row_1_left_col_text}
+                />
+              </div>
+              <div className="flex-1">
+                <img src={BtcImg} alt="btc" />
+              </div>
+            </li>
+            <li className="w-full md:w-9/12 flex flex-wrap justify-center mr-auto">
+              <div className="flex-1">
+                <ContentBlockMedia
+                  title={t.eusm_row_1_left_col_title}
+                  text={t.eusm_row_1_left_col_text}
+                />
+              </div>
+              <div className="flex-1">
+                <img src={EthImg} alt="btc" />
+              </div>
+            </li>
+            <li className="w-full md:w-9/12 flex flex-wrap justify-center mr-auto">
+              <div className="flex-1">
+                <ContentBlockMedia
+                  title={t.eusm_row_1_left_col_title}
+                  text={t.eusm_row_1_left_col_text}
+                />
+              </div>
+              <div className="flex-1">
+                <img src={UsdImg} alt="btc" />
+              </div>
+            </li>
+          </ul>
         </div>
       </section>
     </>
