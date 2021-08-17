@@ -1,6 +1,5 @@
 import useSWR from "swr";
 
-type TimestampStr = string;
 type WeiPerMinute = number;
 type Wei = number;
 
@@ -23,7 +22,6 @@ export type FeesBurned = {
 type FeeData = {
   baseFeePerGas: number | undefined;
   burnRates: BurnRates | undefined;
-  feesBurnedPerInterval: Record<TimestampStr, number> | undefined;
   latestBlockFees: {
     fees: Wei;
     number: number;
@@ -42,7 +40,6 @@ const useFeeData = (): FeeData => {
   return {
     baseFeePerGas: data?.baseFeePerGas,
     burnRates: data?.burnRates,
-    feesBurnedPerInterval: data?.feesBurnedPerInterval,
     latestBlockFees: data?.latestBlockFees ?? [],
     number: data?.number,
     feesBurned: data?.feesBurned,
