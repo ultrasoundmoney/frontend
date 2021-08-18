@@ -13,11 +13,6 @@ const FeeBurnedBlcok: React.FC<FeeBurnedBlcokProps> = ({ lineHeight }) => {
       ? `eclips-bottom eclips-bottom__left-0 ${lineHeight}`
       : `eclips-bottom eclips-bottom__left-0`;
   React.useEffect(() => {
-    // const dateGenensisBlock = document.querySelectorAll(".eth-date");
-    // const getGewiBlocks = document.querySelectorAll(".eth-burn-fee");
-    // dateGenensisBlock[15].classList.add("opacity-0");
-    // getGewiBlocks[7].classList.add("opacity-0");
-
     const getBurned_4_eth = document.querySelector(".burned_4 .eth-date");
     const getBurned_4_burned = document.querySelector(
       ".burned_4 .eth-burn-fee"
@@ -32,15 +27,9 @@ const FeeBurnedBlcok: React.FC<FeeBurnedBlcokProps> = ({ lineHeight }) => {
         getBurned_4_eth.classList.remove("opacity-0");
         getBurned_4_burned.classList.remove("opacity-0");
         if (currentPosition > scrollTop) {
-          // dateGenensisBlock[15].classList.add("opacity-100");
-          // getGewiBlocks[7].classList.add("opacity-100");
           getBurned_4_eth.classList.add("animateIn");
           getBurned_4_burned.classList.add("animateIn");
-          // document.querySelector(".burned_4").classList.remove("hidden");
-          // document.querySelector(".burned_4").classList.add("animateIn");
         } else {
-          // dateGenensisBlock[15].classList.remove("opacity-100");
-          // getGewiBlocks[7].classList.remove("opacity-100");
           getBurned_4_eth.classList.remove("animateIn");
           getBurned_4_burned.classList.remove("animateIn");
         }
