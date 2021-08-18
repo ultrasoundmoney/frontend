@@ -53,8 +53,13 @@ const TheMergeBlock: React.FC<{}> = () => {
           styles="pt-10"
           id="the-merge"
         />
-        <div className="flex flex-wrap justify-center w-full md:w-7/12 md:mx-auto mb-20">
-          <div className="eclips-bottom-line eclips-bottom-line__only " />
+        <div
+          id="the-merge-line"
+          className="flex flex-wrap justify-center w-full md:w-7/12 md:mx-auto mb-20"
+        >
+          <div className="flex flex-wrap justify-center">
+            <div id="line__merge" className="eclips-hr" />
+          </div>
         </div>
       </section>
     </>

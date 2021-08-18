@@ -54,6 +54,7 @@ const LandingPage: React.FC<{}> = () => {
       // const target1559 = document.querySelector("#next-merge");
       const targetSupplyView = document.querySelector("#supplyview");
       const targetUltraSound = document.querySelector("#enter-ultra-sound");
+      const targetMergeLine = document.querySelector("#the-merge-line");
       const currentPosition = window.pageYOffset;
 
       // ETH Genesis Time
@@ -347,6 +348,36 @@ const LandingPage: React.FC<{}> = () => {
             ).style.height = `${lineHeight}px`;
             document
               .getElementById("line__supplyview")
+              .classList.remove("eclips__hr-circle");
+          }
+        }
+      }
+      if (targetMergeLine.getBoundingClientRect().top < window.innerHeight) {
+        if (currentPosition > scrollTop) {
+          // downscroll code
+          setScrolling(false);
+          const lineHeight = Math.floor((currentPosition / 100) * 6);
+          if (lineHeight < 450) {
+            document.getElementById(
+              "line__merge"
+            ).style.height = `${lineHeight}px`;
+          }
+          if (lineHeight > 450) {
+            document
+              .getElementById("line__merge")
+              .classList.add("eclips__hr-circle");
+            setGenesisArr(constantinople_data[constantinople_data.length - 1]);
+          }
+        } else {
+          // upscroll code
+          setScrolling(true);
+          const lineHeight = Math.floor((currentPosition / 100) * 6);
+          if (lineHeight < 450) {
+            document.getElementById(
+              "line__merge"
+            ).style.height = `${lineHeight}px`;
+            document
+              .getElementById("line__merge")
               .classList.remove("eclips__hr-circle");
           }
         }
