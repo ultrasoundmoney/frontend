@@ -4,19 +4,15 @@ import Clipboard from "react-clipboard.js";
 import TwitterProfile from "./TwitterProfile";
 import SpanMoji from "../SpanMoji";
 import { TranslationsContext } from "../../translations-context";
+import { famBasePath } from "../../api";
 
 const TwitterCommunity: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   const [isCopiedFeedbackVisible, setIsCopiedFeedbackVisible] = React.useState<
     boolean
   >(false);
-  const { data } = useSWR(
-    "https://api.ultrasound.money/fam/2/profiles",
-    (url: string) => fetch(url).then((r) => r.json()),
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
+  const { data } = useSWR(`${famBasePath}/2/profiles`, (url: string) =>
+    fetch(url).then((r) => r.json())
   );
 
   const profiles = data?.profiles;

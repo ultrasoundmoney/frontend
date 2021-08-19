@@ -1,6 +1,6 @@
 import React, { memo, FC } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import useFeeData from "../../use-fee-data";
+import { useFeeData } from "../../api";
 import { weiToEth } from "../../utils/metric-utils";
 
 const formatter = Intl.NumberFormat("en", {

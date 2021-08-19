@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import useFeeData from "../../use-fee-data";
+import { useFeeData } from "../../api";
 import * as StaticEtherData from "../../static-ether-data";
 import { weiToEth } from "../../utils/metric-utils";
 import ToggleSwitch from "../ToggleSwitch";

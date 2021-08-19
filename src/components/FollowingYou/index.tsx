@@ -2,6 +2,7 @@ import * as React from "react";
 import TwitterProfile from "../TwitterCommunity/TwitterProfile";
 import SpanMoji from "../SpanMoji";
 import { TranslationsContext } from "../../translations-context";
+import { famBasePath } from "../../api";
 
 type Empty = { type: "empty" };
 type FollowedBy = {
@@ -36,9 +37,7 @@ const FollowingYou: React.FC = () => {
 
     const cleanHandle = handle.startsWith("@") ? handle.slice(1) : handle;
 
-    const res = await fetch(
-      `https://api.ultrasound.money/fam/${cleanHandle}/followed-by`
-    );
+    const res = await fetch(`${famBasePath}/${cleanHandle}/followed-by`);
 
     if (res.status === 404) {
       setFollowers({ type: "handleNotFound" });

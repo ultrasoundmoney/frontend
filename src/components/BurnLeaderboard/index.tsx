@@ -5,6 +5,7 @@ import { weiToEth } from "../../utils/metric-utils";
 import useSWR from "swr";
 import FeePeriodControl, { Timeframe } from "../FeePeriodControl";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { feesBasePath } from "../../api";
 
 // Ideally we solve this with etags instead. Can be removed once covid punks have left the leaderboard.
 const bustcacheAlts = {
@@ -88,7 +89,7 @@ const feePeriodToUpdateMap: Record<Timeframe, string> = {
 
 const useLeaderboard = () => {
   const { data, error } = useSWR<LeaderboardUpdate>(
-    `https://api.ultrasound.money/fees/burn-leaderboard`,
+    `${feesBasePath}/burn-leaderboard`,
     { refreshInterval: 8000 }
   );
 
