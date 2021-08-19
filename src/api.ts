@@ -7,6 +7,8 @@ export const famBasePath = "https://api.ultrasound.money/fam";
 export const feesBasePath =
   config.env === "staging"
     ? "https://gas-analysis-staging-wxwtf.ondigitalocean.app/fees"
+    : config.env === "dev"
+    ? "https://gas-analysis-staging-wxwtf.ondigitalocean.app/fees"
     : "https://api.ultrasound.money/fees";
 
 type WeiPerMinute = number;
