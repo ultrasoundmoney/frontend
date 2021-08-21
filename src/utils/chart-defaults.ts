@@ -1,4 +1,11 @@
+import React from "react";
 import * as Highcharts from "highcharts";
+import { TranslationsContext } from "../translations-context";
+
+export interface HighchartsRef {
+  chart: Highcharts.Chart;
+  container: React.RefObject<HTMLDivElement>;
+}
 
 export const COLORS = {
   GRID: "#262e48",
@@ -91,3 +98,18 @@ export const defaultOptions: Highcharts.Options = {
     gridLineColor: COLORS.GRID,
   },
 };
+
+export function useHighchartsGlobalOptions() {
+  const t = React.useContext(TranslationsContext);
+
+  React.useMemo(() => {
+    if (typeof window !== "undefined") {
+      Highcharts.setOptions({
+        lang: {
+          thousandsSep: t.chart_thousands_sep,
+          decimalPoint: t.chart_decimal_point,
+        },
+      });
+    }
+  }, [t]);
+}

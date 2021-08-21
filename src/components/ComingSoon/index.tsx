@@ -8,6 +8,7 @@ import { TranslationsContext } from "../../translations-context";
 import BurnLeaderboard from "../BurnLeaderboard";
 import CumulativeFeeBurn from "../CumulativeFeeBurn";
 import LatestBlocks from "../LatestBlocks";
+import FeeBurnChart from "../FeeBurnChart";
 import FaqBlock from "../Landing/faq";
 import Link from "next/link";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
@@ -133,6 +134,9 @@ const ComingSoon: FC = () => {
           <div className="lg:w-1/2">
             <BurnLeaderboard />
           </div>
+        </div>
+        <div className="px-4 md:w-5/6 mx-auto mt-4 lg:w-full lg:px-16 isolate">
+          <FeeBurnChart />
         </div>
         <div className="flex flex-col px-4 md:px-16 pt-40 mb-16">
           <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8">

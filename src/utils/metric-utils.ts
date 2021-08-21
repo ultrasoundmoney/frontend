@@ -1,3 +1,5 @@
+import { DateTime } from "luxon";
+
 const SECONDS_PER_SLOT = 12;
 const SLOTS_PER_EPOCH = 32;
 const EPOCHS_PER_DAY = (24 * 60 * 60) / SLOTS_PER_EPOCH / SECONDS_PER_SLOT;
@@ -39,29 +41,9 @@ export function estimatedDailyStakeChange(ethStaked: number): number {
   return max_validator_churn_per_epoch * MAX_ETH_PER_VALIDATOR * EPOCHS_PER_DAY;
 }
 
-export function formatDate(d: Date): string {
-  const date = new Date(d);
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Aug",
-    "Nov",
-    "Dec",
-  ];
+export function formatDate(dt: DateTime): string {
   return (
-    (date.getDate() < 10 ? " " : "") +
-    date.getDate() +
-    " " +
-    months[date.getMonth()] +
-    " " +
-    date.getFullYear()
+    (dt.day < 10 ? " " : "") + dt.day + " " + dt.monthShort + " " + dt.year
   );
 }
 

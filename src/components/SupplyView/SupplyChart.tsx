@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { DateTime } from "luxon";
 import Highcharts from "highcharts";
 import highchartsAnnotations from "highcharts/modules/annotations";
@@ -6,6 +6,7 @@ import HighchartsReact from "highcharts-react-official";
 import merge from "lodash/merge";
 import last from "lodash/last";
 
+import { TranslationsContext } from "../../translations-context";
 import { useDebounce } from "../../utils/use-debounce";
 import {
   estimatedDailyFeeBurn,
@@ -14,7 +15,12 @@ import {
   formatDate,
 } from "../../utils/metric-utils";
 import { useOnResize } from "../../utils/use-on-resize";
-import { defaultOptions, COLORS } from "../../utils/chart-defaults";
+import {
+  defaultOptions,
+  COLORS,
+  useHighchartsGlobalOptions,
+  HighchartsRef,
+} from "../../utils/chart-defaults";
 
 // TODO load these from API
 import supplyData from "./supply-total.json";
@@ -22,7 +28,6 @@ import stakingData from "./supply-staking.json";
 import contractData from "./supply-in-smart-contracts.json";
 
 import styles from "./SupplyChart.module.scss";
-import { TranslationsContext } from "../../translations-context";
 
 if (typeof window !== "undefined") {
   // Initialize highchats annotations module (onlly on browser, doesn't work on server)
@@ -35,11 +40,6 @@ interface Props {
   projectedMergeDate: DateTime;
   showBreakdown: boolean;
   onPeakProjectedToggle: (isPeakPresent: boolean) => void;
-}
-
-interface HighchartsRef {
-  chart: Highcharts.Chart;
-  container: React.RefObject<HTMLDivElement>;
 }
 
 let mouseOutTimer: NodeJS.Timeout | null = null;
@@ -59,6 +59,8 @@ const SupplyChart: React.FC<Props> = ({
   const t = React.useContext(TranslationsContext);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   const chartRef = React.useRef<HighchartsRef | null>(null);
+
+  useHighchartsGlobalOptions();
 
   React.useEffect(() => {
     // Sometimes the chart container resizes to be smaller after
@@ -448,15 +450,6 @@ const SupplyChart: React.FC<Props> = ({
     // Animate only after mounting
     const animate = Boolean(chartRef.current);
 
-    if (typeof window !== "undefined") {
-      Highcharts.setOptions({
-        lang: {
-          thousandsSep: t.chart_thousands_sep,
-          decimalPoint: t.chart_decimal_point,
-        },
-      });
-    }
-
     const chartOptions: Highcharts.Options = {
       annotations: [
         {
@@ -487,7 +480,7 @@ const SupplyChart: React.FC<Props> = ({
         },
       },
       legend: {
-        // Usinga custom legend for more control over responsiveness
+        // Using a custom legend for more control over responsiveness
         enabled: false,
       },
       series,
@@ -547,7 +540,7 @@ const SupplyChart: React.FC<Props> = ({
 
           const dt = DateTime.fromMillis(this.x, { zone: "utc" });
           const header = `<div class="tt-header"><div class="tt-header-date text-blue-spindle">${formatDate(
-            dt.toJSDate()
+            dt
           )}</div>${
             isProjected
               ? `<div class="tt-header-projected">(${t.projected})</div>`

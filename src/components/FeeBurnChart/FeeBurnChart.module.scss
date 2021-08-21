@@ -1,0 +1,5 @@
+@import "../../utils/chart-styles";
+
+.feeBurnChart :global {
+  @include custom-tooltip;
+}

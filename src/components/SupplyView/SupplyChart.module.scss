@@ -1,10 +1,6 @@
-// Same as colors in chart-defaults.ts
-$tooltip-bg: #1b2135;
-$chart-label: #8490b5;
+@import "../../utils/chart-styles";
 
 $blue-spindle: #b5bddb;
-
-$tooltip-zindex: 2;
 
 @mixin projected-label {
   font-size: 11px;
@@ -45,50 +41,15 @@ $tooltip-zindex: 2;
     font-weight: 300 !important;
   }
 
-  // Tooltip
-  .highcharts-tooltip {
-    z-index: $tooltip-zindex;
-  }
-  .tt-root {
-    background-color: $tooltip-bg;
-    padding: 24px;
-    border-radius: 10px;
-  }
-  .tt-header {
-    display: flex;
-    align-items: center;
-    line-height: 1;
-    margin-bottom: 1rem;
-  }
-  .tt-header-date {
-    font-size: 14px;
-    font-weight: bold;
-    white-space: pre;
-  }
+  @include custom-tooltip;
+
   .tt-header-projected {
     margin: -2px 0 0 6px;
     @include projected-label;
   }
-  .tt-root td {
-    padding: 2px 0;
-  }
-  .tt-root td:last-child {
-    padding-left: 12px;
-    text-align: right;
-    font-weight: bold;
-  }
-  .tt-series {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    line-height: 1.125rem;
-  }
-  .tt-series-color {
-    margin-top: 2px;
-    width: 10px;
-    height: 10px;
-    border-radius: 10px;
-    margin-right: 6px;
+  .tt-header-projected {
+    margin: -2px 0 0 6px;
+    @include projected-label;
   }
   // Style overrides for "total" row
   .tt-total-row td {
