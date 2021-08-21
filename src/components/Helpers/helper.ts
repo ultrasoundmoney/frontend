@@ -10,3 +10,10 @@ export const followerCountConvert = (num: number) => {
     return num;
   }
 };
+export const convertDateStringReadable = (date: string | number) => {
+  if (date != undefined || date != null) {
+    const dateString = new Date(date).toDateString();
+    const dateStringToArr = dateString.split(" ");
+    return `${dateStringToArr[1]} ${dateStringToArr[2]},${dateStringToArr[3]}`;
+  }
+};

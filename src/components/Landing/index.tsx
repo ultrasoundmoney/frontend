@@ -17,11 +17,15 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import SupplyView from "../SupplyView";
 import TheBurnedCard from "./theBurnedCard";
-import { followerCountConvert } from "../Helpers/helper";
+import {
+  convertDateStringReadable,
+  followerCountConvert,
+} from "../Helpers/helper";
 import {
   genesis_data,
   byzantium_data,
   constantinople_data,
+  london_data,
 } from "./historicalData";
 
 const LandingPage: React.FC<{}> = () => {
@@ -51,7 +55,7 @@ const LandingPage: React.FC<{}> = () => {
       const targetConstantinople = document.querySelector(
         "#eip-constantinople"
       );
-      // const target1559 = document.querySelector("#next-merge");
+      const target1559 = document.querySelector("#eip-1559");
       const targetSupplyView = document.querySelector("#supplyview");
       const targetUltraSound = document.querySelector("#enter-ultra-sound");
       const targetMergeLine = document.querySelector("#the-merge-line");
@@ -81,10 +85,12 @@ const LandingPage: React.FC<{}> = () => {
               ]
             );
             if (genesisArr) {
-              getStatusAndDate.innerHTML = `Status ${new Date(
+              getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
                 genesisArr[0]
-              ).toDateString()}`;
-              getEthSupplyIncreament.innerHTML = `&#8593;+ ${genesisArr[2]}`;
+              )}`;
+              getEthSupplyIncreament.innerHTML = `+${Number(
+                genesisArr[2]
+              ).toFixed(3)}%`;
               getEthSupply.innerHTML = `${followerCountConvert(
                 Number(genesisArr[1])
               )}`;
@@ -121,10 +127,12 @@ const LandingPage: React.FC<{}> = () => {
               ]
             );
             if (genesisArr) {
-              getStatusAndDate.innerHTML = `Status ${new Date(
+              getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
                 genesisArr[0]
-              ).toDateString()}`;
-              getEthSupplyIncreament.innerHTML = `&#8593;+ ${genesisArr[2]}`;
+              )}`;
+              getEthSupplyIncreament.innerHTML = `+${Number(
+                genesisArr[2]
+              ).toFixed(3)}%`;
               getEthSupply.innerHTML = `${followerCountConvert(
                 Number(genesisArr[1])
               )}`;
@@ -156,10 +164,12 @@ const LandingPage: React.FC<{}> = () => {
               ]
             );
             if (genesisArr) {
-              getStatusAndDate.innerHTML = `Status ${new Date(
+              getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
                 genesisArr[0]
-              ).toDateString()}`;
-              getEthSupplyIncreament.innerHTML = `&#8593;+ ${genesisArr[2]}`;
+              )}`;
+              getEthSupplyIncreament.innerHTML = `+${Number(
+                genesisArr[2]
+              ).toFixed(3)}%`;
               getEthSupply.innerHTML = `${followerCountConvert(
                 Number(genesisArr[1])
               )}`;
@@ -196,10 +206,12 @@ const LandingPage: React.FC<{}> = () => {
               ]
             );
             if (genesisArr) {
-              getStatusAndDate.innerHTML = `Status ${new Date(
+              getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
                 genesisArr[0]
-              ).toDateString()}`;
-              getEthSupplyIncreament.innerHTML = `&#8593;+ ${genesisArr[2]}`;
+              )}`;
+              getEthSupplyIncreament.innerHTML = `+${Number(
+                genesisArr[2]
+              ).toFixed(3)}%`;
               getEthSupply.innerHTML = `${followerCountConvert(
                 Number(genesisArr[1])
               )}`;
@@ -233,10 +245,12 @@ const LandingPage: React.FC<{}> = () => {
               ]
             );
             if (genesisArr) {
-              getStatusAndDate.innerHTML = `Status ${new Date(
+              getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
                 genesisArr[0]
-              ).toDateString()}`;
-              getEthSupplyIncreament.innerHTML = `&#8593;+ ${genesisArr[2]}`;
+              )}`;
+              getEthSupplyIncreament.innerHTML = `+${Number(
+                genesisArr[2]
+              ).toFixed(3)}%`;
               getEthSupply.innerHTML = `${followerCountConvert(
                 Number(genesisArr[1])
               )}`;
@@ -273,10 +287,12 @@ const LandingPage: React.FC<{}> = () => {
               ]
             );
             if (genesisArr) {
-              getStatusAndDate.innerHTML = `Status ${new Date(
+              getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
                 genesisArr[0]
-              ).toDateString()}`;
-              getEthSupplyIncreament.innerHTML = `&#8593;+ ${genesisArr[2]}`;
+              )}`;
+              getEthSupplyIncreament.innerHTML = `+${Number(
+                genesisArr[2]
+              ).toFixed(3)}%`;
               getEthSupply.innerHTML = `${followerCountConvert(
                 Number(genesisArr[1])
               )}`;
@@ -285,46 +301,61 @@ const LandingPage: React.FC<{}> = () => {
         }
       }
 
-      // // EIP 1559 London Fork
-      // if (target1559.getBoundingClientRect().top < window.innerHeight) {
-      //   if (currentPosition > scrollTop) {
-      //     // downscroll code
-      //     setScrolling(false);
-      //     setEthSupplyPlus(9.3 + Math.floor(scrollTop * 0.001));
-      //     const ethSupplyFactor = 72 + Math.floor(scrollTop * 0.01);
-      //     setEthSupply(ethSupplyFactor > 121 ? 121 : Math.abs(ethSupplyFactor));
-      //     const getFactor = Math.floor(currentPosition / 220);
-      //     const genesisToByzDate = Math.floor(1508104800 + getFactor * 5259486);
-      //     setInfationaryDate(
-      //       genesisToByzDate > 1628028000 ? 1628028000 : genesisToByzDate
-      //     );
-      //     getStatusAndDate.innerHTML = `Status ${new Date(
-      //       infationaryDate * 1000
-      //     ).toDateString()}`;
-      //     getEthSupplyIncreament.innerHTML = `&#8593;+ ${ethSupplyPlus.toFixed(
-      //       2
-      //     )}%`;
-      //     getEthSupply.innerHTML = `${ethSupply}M`;
-      //   } else {
-      //     //upscroll code
-      //     setScrolling(true);
-      //     const ethSupplyFactor = 121 - Math.floor(scrollTop * 0.001);
-      //     setEthSupply(ethSupplyFactor > 72 ? Math.abs(ethSupplyFactor) : 72);
-      //     const getFactor = Math.floor(currentPosition / 220);
-      //     const genesisToByzDate = Math.floor(1628028000 - getFactor * 5259486);
-      //     setInfationaryDate(
-      //       genesisToByzDate > 1628028000 ? 1628028000 : genesisToByzDate
-      //     );
-      //     setEthSupplyPlus(9.3 - Math.floor(scrollTop * 0.001));
-      //     getStatusAndDate.innerHTML = `Status ${new Date(
-      //       infationaryDate * 1000
-      //     ).toDateString()}`;
-      //     getEthSupplyIncreament.innerHTML = `&#8593;+ ${ethSupplyPlus.toFixed(
-      //       2
-      //     )}%`;
-      //     getEthSupply.innerHTML = `${ethSupply}M`;
-      //   }
-      // }
+      // EIP 1559 London Fork
+      if (target1559.getBoundingClientRect().top < window.innerHeight) {
+        if (currentPosition > scrollTop) {
+          // downscroll code
+          setScrolling(false);
+          const lineHeight =
+            currentPosition - window.innerHeight > 0
+              ? Math.floor((currentPosition - window.innerHeight) * 0.1)
+              : 0;
+          const counter = Math.floor(lineHeight / 25);
+          const genesis_data_re = london_data.reverse();
+          setGenesisArr(
+            genesis_data_re[
+              counter > london_data.length ? london_data.length - 1 : counter
+            ]
+          );
+          getBlcokReward.innerHTML = "2 ETH/<span>Block</span>";
+          if (genesisArr) {
+            getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
+              genesisArr[0]
+            )}`;
+            getEthSupplyIncreament.innerHTML = `+${Number(
+              london_data[2]
+            ).toFixed(3)}%`;
+            getEthSupply.innerHTML = `${followerCountConvert(
+              Number(genesisArr[1])
+            )}`;
+          }
+        } else {
+          // upscroll code
+          setScrolling(true);
+          const lineHeight =
+            currentPosition - window.innerHeight > 0
+              ? Math.floor((currentPosition - window.innerHeight) * 0.1)
+              : 0;
+          const counter = Math.floor(lineHeight / 25);
+          setGenesisArr(
+            london_data[
+              counter > london_data.length ? london_data.length - 1 : counter
+            ]
+          );
+          getBlcokReward.innerHTML = "2 ETH/<span>Block</span>";
+          if (genesisArr) {
+            getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
+              genesisArr[0]
+            )}`;
+            getEthSupplyIncreament.innerHTML = `+${Number(
+              london_data[2]
+            ).toFixed(3)}%`;
+            getEthSupply.innerHTML = `${followerCountConvert(
+              Number(genesisArr[1])
+            )}`;
+          }
+        }
+      }
 
       //SupplyView
       if (targetSupplyView.getBoundingClientRect().top < window.innerHeight) {
