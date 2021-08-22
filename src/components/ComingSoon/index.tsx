@@ -18,20 +18,7 @@ import SupplyGrowthGauge from "../Gauges/SupplyGrowthGauge";
 import BurnGauge from "../Gauges/BurnGauge";
 import { useCallback } from "react";
 import { useEthPrices, useFeeData } from "../../api";
-
-const ethPriceFormatter = new Intl.NumberFormat("en-US", {
-  currency: "usd",
-  style: "currency",
-  minimumFractionDigits: 0,
-  maximumFractionDigits: 0,
-});
-
-const percentChangeFormatter = new Intl.NumberFormat("en-US", {
-  minimumFractionDigits: 1,
-  maximumFractionDigits: 1,
-  signDisplay: "always",
-  style: "percent",
-});
+import { formatPercentOneDigitSigned, formatUsdZeroDigit } from "../../format";
 
 const ComingSoon: FC = () => {
   const t = useContext(TranslationsContext);
@@ -39,11 +26,10 @@ const ComingSoon: FC = () => {
   const [simulateMerge, setSimulateMerge] = useState(false);
   const { ethPrices } = useEthPrices();
 
-  const ethUsdPrice =
-    ethPrices?.usd && ethPriceFormatter.format(ethPrices?.usd);
+  const ethUsdPrice = ethPrices?.usd && formatUsdZeroDigit(ethPrices?.usd);
   const ethUsd24hChange =
     ethPrices?.usd24hChange &&
-    percentChangeFormatter.format(ethPrices?.usd24hChange / 100);
+    formatPercentOneDigitSigned(ethPrices?.usd24hChange / 100);
   const color =
     typeof ethPrices?.usd24hChange === "number" && ethPrices?.usd24hChange < 0
       ? "text-red-400"

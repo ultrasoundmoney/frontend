@@ -4,6 +4,7 @@ import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 import twemoji from "twemoji";
 import { TranslationsContext } from "../../translations-context";
 import useSWR from "swr";
+import { formatUsdZeroDigit } from "../../format";
 
 const Nav = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,8 +21,9 @@ const Nav = () => {
     return null;
   }
   const gewi = data.sources && data.sources[0];
-  const getEthPrice = new Intl.NumberFormat().format(Math.floor(data.ethPrice));
-  const ethPrice = `$${getEthPrice}  <span class="pl-1">⛽️${gewi.standard} Gwei</span>`;
+  const ethPrice = `$${formatUsdZeroDigit(
+    data?.ethPrice
+  )}  <span class="pl-1">⛽️${gewi.standard} Gwei</span>`;
 
   return (
     <nav className="relative flex flex-wrap items-center justify-between px-2 py-6 bg-transparent mb-3">

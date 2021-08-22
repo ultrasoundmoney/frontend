@@ -3,6 +3,7 @@ import TwitterProfile from "../TwitterCommunity/TwitterProfile";
 import SpanMoji from "../SpanMoji";
 import { TranslationsContext } from "../../translations-context";
 import { famBasePath } from "../../api";
+import { formatNoDigit } from "../../format";
 
 type Empty = { type: "empty" };
 type FollowedBy = {
@@ -107,7 +108,7 @@ const FollowingYou: React.FC = () => {
             <>
               <TwitterProfile profileList={followers.followers} />
               {followers.count > followers.followers.length && (
-                <p className="text-white text-xl p-8 text-center">{`+${new Intl.NumberFormat().format(
+                <p className="text-white text-xl p-8 text-center">{`+${formatNoDigit(
                   followers.count - followers.followers.length
                 )} more!`}</p>
               )}

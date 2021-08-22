@@ -1,13 +1,7 @@
 import React, { memo, FC } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useFeeData } from "../../api";
-import { weiToEth } from "../../utils/metric-utils";
-
-const formatter = Intl.NumberFormat("en", {
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
-});
-const formatFee = (fee: number) => formatter.format(weiToEth(fee));
+import { formatNoDigit, formatWeiTwoDigit } from "../../format";
 
 type LatestBlocks = {
   fees: number;
@@ -50,11 +44,13 @@ const LatestBlocks: FC = () => {
                       <p className="text-white">
                         block{" "}
                         <span className="font-roboto">
-                          #{new Intl.NumberFormat().format(number)}
+                          #{formatNoDigit(number)}
                         </span>
                       </p>
                       <p className="text-white text-base md:text-lg">
-                        <span className="font-roboto">{formatFee(fees)} </span>
+                        <span className="font-roboto">
+                          {formatWeiTwoDigit(fees)}{" "}
+                        </span>
                         <span className="text-blue-spindle font-extralight">
                           ETH
                         </span>
