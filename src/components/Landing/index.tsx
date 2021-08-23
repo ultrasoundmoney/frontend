@@ -19,7 +19,9 @@ import SupplyView from "../SupplyView";
 import TheBurnedCard from "./theBurnedCard";
 import {
   convertDateStringReadable,
+  convertToInternationalCurrencySystem,
   followerCountConvert,
+  weiToEth,
 } from "../Helpers/helper";
 import {
   genesis_data,
@@ -27,15 +29,42 @@ import {
   constantinople_data,
   london_data,
 } from "./historicalData";
+import useFeeData from "../../use-fee-data";
+import useSWR from "swr";
+
+type EthPrice = {
+  usd: number;
+  usd24hChange: number;
+  btc: number;
+  btc24hChange: number;
+};
 
 const LandingPage: React.FC<{}> = () => {
+  const { feesBurned } = useFeeData();
   const [genesisArr, setGenesisArr] = React.useState(genesis_data[0]);
+  const { data } = useSWR<EthPrice>(
+    "https://api.ultrasound.money/fees/eth-price",
+    {
+      revalidateOnFocus: true,
+      revalidateOnReconnect: true,
+    }
+  );
   React.useEffect(() => {
     AOS.init();
     AOS.refresh();
   }, []);
   const [scrolling, setScrolling] = React.useState(false);
   const [scrollTop, setScrollTop] = React.useState(0);
+  const getFeeBurdedinEth = weiToEth(feesBurned?.feesBurnedAll);
+  // const getFeeBurdedinEthToUsd =
+  //   data?.usd && ethPriceFormatter.format(getFeeBurdedinEth * data?.usd);
+  const getFeeBurdedinEthToUsd =
+    data?.usd && Math.floor(getFeeBurdedinEth * data?.usd);
+
+  const afterLodonFork: string[] = [];
+  afterLodonFork[0] = new Date().toDateString();
+  afterLodonFork[1] = "117.4M";
+  afterLodonFork[2] = "+0.44%";
 
   React.useEffect(() => {
     //First Card Date
@@ -48,6 +77,9 @@ const LandingPage: React.FC<{}> = () => {
     );
     //3rd Card
     const getBlcokReward = document.querySelector(".burned_3 .eth-burn-fee");
+
+    //4th card
+    const getFeeBurded = document.querySelector(".burned_4 .eth-burn-fee");
 
     function onScroll() {
       const targetGenesis = document.querySelector("#genesis");
@@ -318,6 +350,9 @@ const LandingPage: React.FC<{}> = () => {
             ]
           );
           getBlcokReward.innerHTML = "2 ETH/<span>Block</span>";
+          getFeeBurded.innerHTML = `$${convertToInternationalCurrencySystem(
+            getFeeBurdedinEthToUsd
+          )}`;
           if (genesisArr) {
             getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
               genesisArr[0]
@@ -343,6 +378,9 @@ const LandingPage: React.FC<{}> = () => {
             ]
           );
           getBlcokReward.innerHTML = "2 ETH/<span>Block</span>";
+          getFeeBurded.innerHTML = `$${convertToInternationalCurrencySystem(
+            getFeeBurdedinEthToUsd
+          )}`;
           if (genesisArr) {
             getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
               genesisArr[0]
@@ -365,6 +403,11 @@ const LandingPage: React.FC<{}> = () => {
             document.getElementById(
               "line__supplyview"
             ).style.height = `${lineHeight}px`;
+            getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
+              afterLodonFork[0]
+            )}`;
+            getEthSupplyIncreament.innerHTML = afterLodonFork[2];
+            getEthSupply.innerHTML = afterLodonFork[1];
           }
           if (lineHeight > 450) {
             document
@@ -380,6 +423,11 @@ const LandingPage: React.FC<{}> = () => {
             document
               .getElementById("line__supplyview")
               .classList.remove("eclips__hr-circle");
+            getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
+              afterLodonFork[0]
+            )}`;
+            getEthSupplyIncreament.innerHTML = afterLodonFork[2];
+            getEthSupply.innerHTML = afterLodonFork[1];
           }
         }
       }
@@ -388,10 +436,16 @@ const LandingPage: React.FC<{}> = () => {
           // downscroll code
           setScrolling(false);
           const lineHeight = Math.floor((currentPosition / 100) * 6);
+
           if (lineHeight < 450) {
             document.getElementById(
               "line__merge"
             ).style.height = `${lineHeight}px`;
+            getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
+              afterLodonFork[0]
+            )}`;
+            getEthSupplyIncreament.innerHTML = afterLodonFork[2];
+            getEthSupply.innerHTML = afterLodonFork[1];
           }
           if (lineHeight > 450) {
             document
@@ -409,14 +463,25 @@ const LandingPage: React.FC<{}> = () => {
             document
               .getElementById("line__merge")
               .classList.remove("eclips__hr-circle");
+            getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
+              afterLodonFork[0]
+            )}`;
+            getEthSupplyIncreament.innerHTML = afterLodonFork[2];
+            getEthSupply.innerHTML = afterLodonFork[1];
           }
         }
       }
       if (targetUltraSound.getBoundingClientRect().top < window.innerHeight) {
-        if (currentPosition > scrollTop && !scrolling) {
+        // if (currentPosition > scrollTop && !scrolling) {
+        if (currentPosition > scrollTop) {
           // downscroll code
           setScrolling(false);
           getStatus.innerHTML = "Money (Deflationary)";
+          getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
+            afterLodonFork[0]
+          )}`;
+          getEthSupplyIncreament.innerHTML = afterLodonFork[2];
+          getEthSupply.innerHTML = afterLodonFork[1];
         }
       } else {
         getStatus.innerHTML = "Money (Infationary)";
@@ -426,7 +491,14 @@ const LandingPage: React.FC<{}> = () => {
 
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
-  }, [genesisArr, scrollTop, scrolling]);
+  }, [
+    afterLodonFork,
+    genesisArr,
+    getFeeBurdedinEthToUsd,
+    scrollTop,
+    scrolling,
+  ]);
+
   return (
     <>
       <div className="wrapper bg-blue-midnightexpress">

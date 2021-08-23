@@ -9,7 +9,7 @@ import { animated, config, useSpring } from "react-spring";
 const percentChangeFormatter = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 1,
   maximumFractionDigits: 1,
-  signDisplay: "always",
+  // signDisplay: "always",
   style: "percent",
 });
 

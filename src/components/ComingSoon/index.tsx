@@ -35,9 +35,9 @@ const ethPriceFormatter = new Intl.NumberFormat("en-US", {
 });
 
 const percentChangeFormatter = new Intl.NumberFormat("en-US", {
-  maximumFractionDigits: 1,
-  signDisplay: "always",
   style: "percent",
+  maximumFractionDigits: 1,
+  // signDisplay: "always",
 });
 
 const ComingSoon: FC = () => {
