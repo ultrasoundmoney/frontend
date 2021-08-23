@@ -40,9 +40,9 @@ const NftDrop: React.FC = () => {
               loop
               poster={nftDropPoster}
             >
-              <source src="/public/nft-drop.mp4" type="video/mp4" />
-              <source src="/public/nft-drop.webm" type="video/webm" />
-              <source src="/public/nft-drop.ogv" type="video/ogg" />
+              <source src="/nft-drop.mp4" type="video/mp4" />
+              <source src="/nft-drop.webm" type="video/webm" />
+              <source src="/nft-drop.ogv" type="video/ogg" />
             </video>
           </div>
         </div>

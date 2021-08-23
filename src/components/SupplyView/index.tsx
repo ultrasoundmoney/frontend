@@ -2,7 +2,6 @@ import * as React from "react";
 import { DateTime } from "luxon";
 import Slider from "../Slider/Slider";
 import SupplyChart from "./SupplyChart";
-import { intlFormat } from "../../utils/number-utils";
 import {
   estimatedDailyFeeBurn,
   estimatedDailyIssuance,
@@ -17,7 +16,7 @@ const DEFAULT_PROJECTED_ETH_STAKING = 10e6;
 const MAX_PROJECTED_ETH_STAKING = 33554432;
 
 const MIN_PROJECTED_BASE_GAS_PRICE = 0;
-const DEFAULT_PROJECTED_BASE_GAS_PRICE = 15;
+const DEFAULT_PROJECTED_BASE_GAS_PRICE = 20;
 const MAX_PROJECTED_BASE_GAS_PRICE = 150;
 
 const MIN_PROJECTED_MERGE_DATE = DateTime.utc(2021, 12, 1);
@@ -74,11 +73,8 @@ const SupplyView: React.FC<{}> = () => {
     setShowBreakdown(false);
   }, []);
 
-  const handleOnPeakProjected = React.useCallback(() => {
-    setIsPeakPresent(true);
-  }, []);
-  const handleOnNoPeakProjected = React.useCallback(() => {
-    setIsPeakPresent(false);
+  const handleOnPeakProjectedToggle = React.useCallback((isPeakPresent) => {
+    setIsPeakPresent(isPeakPresent);
   }, []);
 
   const daysUntilProjectedMerge = projectedMergeDate.diff(
@@ -114,8 +110,7 @@ const SupplyView: React.FC<{}> = () => {
         projectedBaseGasPrice={projectedBaseGasPrice}
         projectedMergeDate={projectedMergeDate}
         showBreakdown={showBreakdown}
-        onPeakProjected={handleOnPeakProjected}
-        onNoPeakProjected={handleOnNoPeakProjected}
+        onPeakProjectedToggle={handleOnPeakProjectedToggle}
       />
 
       <div className={styles.params}>
@@ -152,7 +147,7 @@ const SupplyView: React.FC<{}> = () => {
 
         <Param
           title={t.base_gas_price}
-          value={<>{intlFormat(projectedBaseGasPrice)} Gwei</>}
+          value={<>{projectedBaseGasPrice} Gwei</>}
           subValue={
             <>
               {t.fee_burn}
@@ -177,14 +172,9 @@ const SupplyView: React.FC<{}> = () => {
         <Param
           title={t.merge_date}
           value={formatDate(projectedMergeDate.toJSDate())}
-          subValue={
-            <>
-              {t.pow_removal}
-              {": in "}
-              {intlFormat(daysUntilProjectedMerge)}{" "}
-              {daysUntilProjectedMerge === 1 ? "day" : "days"}
-            </>
-          }
+          subValue={`${t.pow_removal}: in ${daysUntilProjectedMerge} ${
+            daysUntilProjectedMerge === 1 ? "day" : "days"
+          }`}
         >
           <Slider
             min={daysUntilMinProjectedMerge}
@@ -211,7 +201,9 @@ const Param: React.FC<ParamProps> = ({ title, value, subValue, children }) => (
     <div className={`text-blue-spindle ${styles.paramTitle}`}>{title}</div>
     <div className={styles.paramValue}>{value}</div>
     <div className={styles.paramChildren}>{children}</div>
-    <div className={`text-blue-spindle ${styles.paramSubValue}`}>
+    <div
+      className={`text-blue-spindle text-xs lg:text-base xl:text-lg ${styles.paramSubValue}`}
+    >
       {subValue}
     </div>
   </div>

@@ -308,7 +308,7 @@ const LandingPage: React.FC<{}> = () => {
           setScrolling(false);
           const lineHeight =
             currentPosition - window.innerHeight > 0
-              ? Math.floor((currentPosition - window.innerHeight) * 0.1)
+              ? Math.floor((currentPosition - window.innerHeight) * 0.15)
               : 0;
           const counter = Math.floor(lineHeight / 25);
           const genesis_data_re = london_data.reverse();
@@ -323,7 +323,7 @@ const LandingPage: React.FC<{}> = () => {
               genesisArr[0]
             )}`;
             getEthSupplyIncreament.innerHTML = `+${Number(
-              london_data[2]
+              genesisArr[2]
             ).toFixed(3)}%`;
             getEthSupply.innerHTML = `${followerCountConvert(
               Number(genesisArr[1])
@@ -334,7 +334,7 @@ const LandingPage: React.FC<{}> = () => {
           setScrolling(true);
           const lineHeight =
             currentPosition - window.innerHeight > 0
-              ? Math.floor((currentPosition - window.innerHeight) * 0.1)
+              ? Math.floor((currentPosition - window.innerHeight) * 0.15)
               : 0;
           const counter = Math.floor(lineHeight / 25);
           setGenesisArr(
@@ -348,7 +348,7 @@ const LandingPage: React.FC<{}> = () => {
               genesisArr[0]
             )}`;
             getEthSupplyIncreament.innerHTML = `+${Number(
-              london_data[2]
+              genesisArr[2]
             ).toFixed(3)}%`;
             getEthSupply.innerHTML = `${followerCountConvert(
               Number(genesisArr[1])
@@ -397,7 +397,6 @@ const LandingPage: React.FC<{}> = () => {
             document
               .getElementById("line__merge")
               .classList.add("eclips__hr-circle");
-            setGenesisArr(constantinople_data[constantinople_data.length - 1]);
           }
         } else {
           // upscroll code

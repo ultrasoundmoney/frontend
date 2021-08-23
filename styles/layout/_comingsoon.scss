@@ -1,7 +1,7 @@
 .coming-soon {
   background-image: url("../../src/assets/blurred-bg.svg");
   background-repeat: no-repeat;
-  background-position: center top;
+  background-position: center -300px;
   background-size: auto;
   width: 100%;
 }
@@ -137,22 +137,43 @@
   vertical-align: -0.125em;
 }
 
-.copy-container {
-  border-left: 1px solid;
-  border-color: rgba(55, 65, 81, var(--tw-border-opacity));
-}
-
-.copy-icon {
-  display: inline-block;
-  width: 2rem;
-  height: 1em;
-  vertical-align: -0.125em;
-}
-
 .show-me {
   margin-top: 0.3rem;
   margin-bottom: 0.3rem;
   @media (min-width: 768px) {
     margin-left: -8.3rem;
   }
+}
+
+.fee-block-enter {
+  opacity: 0;
+}
+
+.fee-block-enter-active {
+  opacity: 1;
+}
+
+.fee-block {
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 1000ms;
+}
+
+.fee-block-appear {
+  opacity: 0;
+}
+
+.fee-block-appear-active {
+  opacity: 1;
+}
+
+.leaderboard-link {
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.leaderboard-image {
+  border-radius: 50%;
+  border: 1px solid rgb(27, 34, 54);
 }

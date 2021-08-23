@@ -3,7 +3,6 @@ import useSWR from "swr";
 import Clipboard from "react-clipboard.js";
 import TwitterProfile from "./TwitterProfile";
 import SpanMoji from "../SpanMoji";
-import copySrc from "../../assets/copy.svg";
 import { TranslationsContext } from "../../translations-context";
 
 const TwitterCommunity: React.FC = () => {
@@ -20,9 +19,7 @@ const TwitterCommunity: React.FC = () => {
     }
   );
 
-  if (!data) {
-    return null;
-  }
+  const profiles = data?.profiles;
 
   const getFamCount = new Intl.NumberFormat().format(
     isNaN(data && data.count) ? 0 : data && data.count
@@ -52,22 +49,29 @@ const TwitterCommunity: React.FC = () => {
           {getText}
         </a>
       </h1>
-      <p className="text-white text-center mb-8 md:text-lg">
-        <span className="mr-2">wear the bat signal</span>
+      <div className="flex items-center">
+        <p className="text-blue-shipcove md:text-lg">wear the bat signal</p>
+        <div className="w-4"></div>
         <Clipboard data-clipboard-text={"🦇🔊"} onSuccess={onBatSoundCopied}>
-          <span
-            className={`border border-gray-700 rounded-full leading-10 p-2 pr-10 transition duration-500 ease-in-out ${
-              isCopiedFeedbackVisible && "bg-gray-800"
-            }`}
-          >
+          <span className="relative bg-blue-midnightexpress border border-gray-700 rounded-full p-2 pl-5 flex w-48 mx-auto justify-between items-center text-2xl isolate clipboard-emoji">
             <SpanMoji emoji="🦇🔊" />
-          </span>
-          <span className="copy-container border-gray-700 py-2 -ml-9 mr-4 rounded-r-full">
-            <img className="copy-icon" src={copySrc} />
+            <span className="font-light text-base copy-container rounded-full bg-green-mediumspring text-blue-midnightexpress px-5 py-1 isolate">
+              copy
+            </span>
+            <span
+              className={`absolute left-0 right-0 top-0 bottom-0 p-1 bg-blue-midnightexpress flex justify-center items-center rounded-full transition-opacity ${
+                isCopiedFeedbackVisible ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              <p className="font-inter font-light text-base text-white">
+                copied!
+              </p>
+            </span>
           </span>
         </Clipboard>
-      </p>
-      <TwitterProfile profileList={data && data.profiles} />
+      </div>
+      <div className="h-16"></div>
+      {Array.isArray(profiles) && <TwitterProfile profileList={profiles} />}
     </>
   );
 };

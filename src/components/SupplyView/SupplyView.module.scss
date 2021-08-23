@@ -58,13 +58,9 @@
 }
 
 .paramSubValue {
-  font-size: 0.7rem;
   font-weight: 300;
   margin-top: -4px;
   @include clip-text;
-  @media (min-width: 768px) {
-    font-size: 0.825rem;
-  }
 }
 
 .paramChildren {
