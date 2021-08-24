@@ -17,7 +17,7 @@ type FeeUserProps = {
 
 const FeeUser: FC<FeeUserProps> = ({ detail, fees, id, name, type }) => {
   const imgSrc =
-    type === "eth-transfer"
+    type === "eth-transfers"
       ? "/leaderboard-images/transfer.svg"
       : type === "bot"
       ? "/leaderboard-images/bot.svg"
@@ -69,7 +69,7 @@ type FeeBurner = {
   fees: string;
   id: string;
   name: string;
-  type?: "eth-transfer" | "bot" | "other";
+  type?: "eth-transfers" | "bot" | "other";
 };
 type LeaderboardUpdate = {
   number: number;
