@@ -10,6 +10,7 @@ import ContentBlockMedia from "../ContentBlock/ContentBlockMedia";
 
 const TheUltraSound: React.FC<{}> = () => {
   const t = React.useContext(TranslationsContext);
+
   return (
     <>
       <section
@@ -23,7 +24,7 @@ const TheUltraSound: React.FC<{}> = () => {
           data-aos-delay="50"
           data-aos-duration="1000"
           data-aos-easing="ease-in-out"
-          className="block pt-16"
+          className="block pt-16 relative"
         >
           <img
             title={t.eusm_section_title}
@@ -36,6 +37,15 @@ const TheUltraSound: React.FC<{}> = () => {
             {t.eusm_section_title}
           </div>
         </div>
+        <div className="container1 y-scroll y-proximity">
+          <div className="wrapper">
+            <div className="element">1</div>
+            <div className="element">2</div>
+            <div className="element">3</div>
+            <div className="element">4</div>
+          </div>
+        </div>
+
         <div className="slidercss">
           <ul className="slidercss-inner">
             <li className="w-full md:w-9/12 flex flex-wrap justify-center mr-auto">

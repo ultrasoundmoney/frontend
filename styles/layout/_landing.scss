@@ -190,8 +190,10 @@
             }
         }
     }
-    &__hr-circle{
+
+    &__hr-circle {
         scroll-behavior: smooth;
+
         &::before {
             content: '';
             left: -13px;
@@ -363,86 +365,201 @@
 
 /**** slider ****/
 .slidercss {
-	overflow: hidden;
+    overflow: hidden;
 }
 
 .slidercss-inner {
-	display: flex;
-	margin: 0;
-	padding: 0;
-	flex-flow: row nowrap;
-	justify-content: flex-start;
-	align-items: stretch;
-	list-style: none;
-	animation: pure-css-slider 11.25s cubic-bezier(0.86, 0, 0.07, 1) infinite;
-	counter-reset: i;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    list-style: none;
+    animation: pure-css-slider 11.25s cubic-bezier(0.86, 0, 0.07, 1) infinite;
+    counter-reset: i;
 }
 
-.slidercss-inner > * {
-	box-sizing: border-box;
-	margin: 0 !important;
-	flex: 0 0 100%;
-	word-break: break-word;
+.slidercss-inner>* {
+    box-sizing: border-box;
+    margin: 0 !important;
+    flex: 0 0 100%;
+    word-break: break-word;
 }
 
-.slidercss-inner:nth-child(1) > *::before {
-	content: "BTC"
+.slidercss-inner:nth-child(1)>*::before {
+    content: "BTC"
 }
 
-.slidercss-inner:nth-child(2) > *::before {
-	content: "ETH"
+.slidercss-inner:nth-child(2)>*::before {
+    content: "ETH"
 }
-.slidercss-inner:nth-child(3) > *::before {
-	content: "USD"
+
+.slidercss-inner:nth-child(3)>*::before {
+    content: "USD"
 }
 
 .slidercss:hover .slidercss-inner {
-	animation-play-state: paused;
+    animation-play-state: paused;
 }
 
 @keyframes pure-css-slider {
-	from, to {
-		transform: translateX(0);
-	}
 
-	26.66667% {
-		transform: translateX(0%);
-	}
+    from,
+    to {
+        transform: translateX(0);
+    }
 
-	33.33333% {
-		transform: translateX(-100%);
-	}
+    26.66667% {
+        transform: translateX(0%);
+    }
 
-	60% {
-		transform: translateX(-100%);
-	}
+    33.33333% {
+        transform: translateX(-100%);
+    }
 
-	66.66667% {
-		transform: translateX(-200%);
-	}
+    60% {
+        transform: translateX(-100%);
+    }
 
-	93.33333% {
-		transform: translateX(-200%);
-	}
+    66.66667% {
+        transform: translateX(-200%);
+    }
 
-	100% {
-		transform: translateX(0);
-	}
+    93.33333% {
+        transform: translateX(-200%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
 }
 
 .slidercss {
-	max-width: 60em;
-	margin: auto;
+    max-width: 60em;
+    margin: auto;
 }
 
 .slidercss li {
-	position: relative;
+    position: relative;
 }
 
 .slidercss li::before {
-	position: absolute;
-	top: 0;
-	right: .875em;
-	font-size: .875em;
-	color: #3498db;
+    position: absolute;
+    top: 0;
+    right: .875em;
+    font-size: .875em;
+    color: #3498db;
+}
+
+.no-support {
+    text-align: center;
+    padding: 5px;
+    width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+    background: #ee6620;
+    color: #fff;
+    font-size: 16px;
+}
+
+@supports(scroll-snap-type: y mandatory) {
+    .no-support {
+        display: none;
+    }
+}
+
+.example-wrapper {
+    text-align: center;
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.container1 {
+    width: 320px;
+    height: 320px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 2px solid #333;
+    overflow: scroll;
+    position: relative;
+}
+
+.element {
+    width: 300px;
+    height: 300px;
+    scroll-margin: 10px;
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+    color: white;
+    font-size: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.element:nth-child(1) {
+    background: #1d1e21;
+}
+
+.element:nth-child(2) {
+    background: #ee6620;
+}
+
+.element:nth-child(3) {
+    background: #777ba0;
+}
+
+.element:nth-child(4) {
+    background: #da1e62;
+}
+
+.x-mandatory {
+    scroll-snap-type: x mandatory;
+}
+
+.y-mandatory {
+    scroll-snap-type: y mandatory;
+}
+
+.both-mandatory {
+    scroll-snap-type: both mandatory;
+}
+
+.x-proximity {
+    scroll-snap-type: x proximity;
+}
+
+.y-proximity {
+    scroll-snap-type: y proximity;
+}
+
+.both-proximity {
+    scroll-snap-type: both proximity;
+}
+
+/* Below here just styles the container & elements so they look nice */
+.x-scroll .wrapper {
+    width: 1240px;
+}
+
+.x-scroll .element {
+    float: left;
+    margin-right: 10px;
+}
+
+
+.y-scroll .element {
+    margin-bottom: 10px;
+}
+
+.both-scroll .wrapper {
+    width: 620px;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 300px 300px;
+    grid-gap: 10px;
 }
