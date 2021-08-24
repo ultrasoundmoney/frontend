@@ -41,20 +41,20 @@ const TheUltraSound: React.FC<{}> = () => {
               <div className="wrapper">
                 <div className="element">
                   <ContentBlockMedia
-                    title={t.eusm_row_1_left_col_title}
-                    text={t.eusm_row_1_left_col_text}
+                    title={t.eusm_row_2_title}
+                    text={t.eusm_row_2_title}
                   />
                 </div>
                 <div className="element">
                   <ContentBlockMedia
-                    title={t.eusm_row_1_left_col_title}
-                    text={t.eusm_row_1_left_col_text}
+                    title={t.eusm_row_3_title}
+                    text={t.eusm_row_3_text}
                   />
                 </div>
                 <div className="element">
                   <ContentBlockMedia
-                    title={t.eusm_row_1_left_col_title}
-                    text={t.eusm_row_1_left_col_text}
+                    title={t.eusm_row_4_title}
+                    text={t.eusm_row_4_text}
                   />
                 </div>
               </div>
