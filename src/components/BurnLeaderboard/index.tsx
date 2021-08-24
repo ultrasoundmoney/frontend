@@ -7,18 +7,23 @@ import FeePeriodControl, { Timeframe } from "../FeePeriodControl";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { feesBasePath } from "../../api";
 
-const FeeUser: FC<{
-  name?: string;
+type FeeUserProps = {
   detail?: string;
   fees: number;
   id: string;
-  isBot: boolean;
-}> = ({ detail, name, fees, id, isBot }) => {
-  const imgSrc = isBot
-    ? "/leaderboard-images/bot.svg"
-    : imageIds.includes(id)
-    ? `/leaderboard-images/${id}.png`
-    : "/leaderboard-images/question-mark.png";
+  name?: string;
+  type: FeeBurner["type"];
+};
+
+const FeeUser: FC<FeeUserProps> = ({ detail, fees, id, name, type }) => {
+  const imgSrc =
+    type === "eth-transfer"
+      ? "/leaderboard-images/transfer.svg"
+      : type === "bot"
+      ? "/leaderboard-images/bot.svg"
+      : imageIds.includes(id)
+      ? `/leaderboard-images/${id}.png`
+      : "/leaderboard-images/question-mark.png";
 
   return (
     <div className="pt-5 md:pt-6">
@@ -60,7 +65,12 @@ type FeeUser = {
   fees: number;
 };
 
-type FeeBurner = { fees: string; id: string; name: string; isBot: boolean };
+type FeeBurner = {
+  fees: string;
+  id: string;
+  name: string;
+  type?: "eth-transfer" | "bot" | "other";
+};
 type LeaderboardUpdate = {
   number: number;
   leaderboard1h: FeeBurner[];
@@ -139,7 +149,7 @@ const BurnLeaderboard: FC = () => {
                 detail={feeUser.name.split(":")[1]}
                 id={feeUser.id}
                 fees={Number(feeUser.fees)}
-                isBot={feeUser.isBot}
+                type={feeUser.type || "other"}
               />
             </CSSTransition>
           ))}
