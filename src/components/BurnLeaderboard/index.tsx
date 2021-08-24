@@ -7,13 +7,6 @@ import FeePeriodControl, { Timeframe } from "../FeePeriodControl";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { feesBasePath } from "../../api";
 
-// Ideally we solve this with etags instead. Can be removed once covid punks have left the leaderboard.
-const bustcacheAlts = {
-  // Covid Punks
-  "0xe4cfae3aa41115cb94cff39bb5dbae8bd0ea9d41":
-    "/leaderboard-images/0xe4cfae3aa41115cb94cff39bb5dbae8bd0ea9d41-alt.png",
-};
-
 const FeeUser: FC<{
   name?: string;
   detail?: string;
@@ -23,8 +16,6 @@ const FeeUser: FC<{
 }> = ({ detail, name, fees, id, isBot }) => {
   const imgSrc = isBot
     ? "/leaderboard-images/bot.svg"
-    : bustcacheAlts[id] !== undefined
-    ? bustcacheAlts[id]
     : imageIds.includes(id)
     ? `/leaderboard-images/${id}.png`
     : "/leaderboard-images/question-mark.png";
