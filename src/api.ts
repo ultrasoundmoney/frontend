@@ -2,12 +2,12 @@ import useSWR from "swr";
 import config from "./config";
 import { milisFromSeconds } from "./duration";
 
-export const famBasePath = "https://api.ultrasound.money/fam";
+export const famBasePath = "https://api-prod.ultrasound.money/fam";
 
 export const feesBasePath =
   config.apiEnv === "staging"
-    ? "https://gas-analysis-staging-wxwtf.ondigitalocean.app/fees"
-    : "https://api.ultrasound.money/fees";
+    ? "https://api-stag.ultrasound.money/fees"
+    : "https://api-prod.ultrasound.money/fees";
 
 type WeiPerMinute = number;
 type Wei = number;

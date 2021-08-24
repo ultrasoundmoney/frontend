@@ -28,6 +28,7 @@ import stakingData from "./supply-staking.json";
 import contractData from "./supply-in-smart-contracts.json";
 
 import styles from "./SupplyChart.module.scss";
+import { formatOneDigit } from "../../format";
 
 if (typeof window !== "undefined") {
   // Initialize highchats annotations module (onlly on browser, doesn't work on server)
@@ -427,10 +428,9 @@ const SupplyChart: React.FC<Props> = ({
         text: `<div class="ann-root">
           <div class="ann-title">${t.peak_supply}</div>
           ${isProjected ? `<div class="ann-proj">(Projected)</div>` : ""}
-          <div class="ann-value">${Intl.NumberFormat(undefined, {
-            minimumFractionDigits: 1,
-            maximumFractionDigits: 1,
-          }).format(peakSupply[1] / 1e6)}M ETH</div>
+          <div class="ann-value">${formatOneDigit(
+            peakSupply[1] / 1e6
+          )}M ETH</div>
           </div>`,
         padding: 10,
         borderRadius: 10,
@@ -560,10 +560,7 @@ const SupplyChart: React.FC<Props> = ({
                   }</div>
                 </div>
               </td>
-              <td class="text-white">${Intl.NumberFormat(undefined, {
-                minimumFractionDigits: 1,
-                maximumFractionDigits: 1,
-              }).format(p.y / 1e6)}M ETH</td>
+              <td class="text-white">${formatOneDigit(p.y / 1e6)}M ETH</td>
               </tr>`
           );
 
@@ -572,10 +569,7 @@ const SupplyChart: React.FC<Props> = ({
           rows.push(
             `<tr class="tt-total-row">
               <td><div class="tt-series-name">${t.total_supply}</div></td>
-              <td class="text-white">${Intl.NumberFormat(undefined, {
-                minimumFractionDigits: 1,
-                maximumFractionDigits: 1,
-              }).format(total / 1e6)}M ETH</td>
+              <td class="text-white">${formatOneDigit(total / 1e6)}M ETH</td>
             </tr>`
           );
 

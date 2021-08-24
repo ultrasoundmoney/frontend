@@ -10,6 +10,7 @@ import {
 import { useTranslations } from "../../utils/use-translation";
 import styles from "./SupplyView.module.scss";
 import SpanMoji from "../SpanMoji";
+import { formatOneDigit } from "../../format";
 
 const MIN_PROJECTED_ETH_STAKING = 1e6;
 const DEFAULT_PROJECTED_ETH_STAKING = 10e6;
@@ -126,11 +127,9 @@ const SupplyView: React.FC<{}> = () => {
             <>
               {t.pos_issuance}
               {": "}
-              {Intl.NumberFormat(undefined, {
-                minimumFractionDigits: 1,
-                maximumFractionDigits: 1,
-              }).format(estimatedDailyIssuance(projectedStaking) / 1000)}
-              K {t.eth_per_day}
+              {formatOneDigit(
+                estimatedDailyIssuance(projectedStaking) / 1000
+              )}K {t.eth_per_day}
             </>
           }
         >
@@ -152,10 +151,9 @@ const SupplyView: React.FC<{}> = () => {
             <>
               {t.fee_burn}
               {": "}
-              {Intl.NumberFormat(undefined, {
-                minimumFractionDigits: 1,
-                maximumFractionDigits: 1,
-              }).format(estimatedDailyFeeBurn(projectedBaseGasPrice) / 1000)}
+              {formatOneDigit(
+                estimatedDailyFeeBurn(projectedBaseGasPrice) / 1000
+              )}
               K {t.eth_per_day}
             </>
           }

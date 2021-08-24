@@ -7,27 +7,29 @@ import FeePeriodControl, { Timeframe } from "../FeePeriodControl";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { feesBasePath } from "../../api";
 
-// Ideally we solve this with etags instead. Can be removed once covid punks have left the leaderboard.
-const bustcacheAlts = {
-  // Covid Punks
-  "0xe4cfae3aa41115cb94cff39bb5dbae8bd0ea9d41":
-    "/leaderboard-images/0xe4cfae3aa41115cb94cff39bb5dbae8bd0ea9d41-alt.png",
-};
-
-const FeeUser: FC<{
-  name?: string;
+type LeaderboardRowProps = {
   detail?: string;
   fees: number;
   id: string;
-  isBot: boolean;
-}> = ({ detail, name, fees, id, isBot }) => {
-  const imgSrc = isBot
-    ? "/leaderboard-images/bot.svg"
-    : bustcacheAlts[id] !== undefined
-    ? bustcacheAlts[id]
-    : imageIds.includes(id)
-    ? `/leaderboard-images/${id}.png`
-    : "/leaderboard-images/question-mark.png";
+  name?: string;
+  type: LeaderboardEntry["type"];
+};
+
+const LeaderboardRow: FC<LeaderboardRowProps> = ({
+  detail,
+  fees,
+  id,
+  name,
+  type,
+}) => {
+  const imgSrc =
+    type === "eth-transfers"
+      ? "/leaderboard-images/transfer.svg"
+      : type === "bot"
+      ? "/leaderboard-images/bot.svg"
+      : imageIds.includes(id)
+      ? `/leaderboard-images/${id}.png`
+      : "/leaderboard-images/question-mark.png";
 
   return (
     <div className="pt-5 md:pt-6">
@@ -61,22 +63,20 @@ const FeeUser: FC<{
   );
 };
 
-type FeeUser = {
-  name: string | undefined;
-  detail: string | undefined;
-  address: string | undefined;
-  image: string | undefined;
-  fees: number;
+type LeaderboardEntry = {
+  fees: string;
+  id: string;
+  name: string;
+  type?: "eth-transfers" | "bot" | "other";
 };
 
-type FeeBurner = { fees: string; id: string; name: string; isBot: boolean };
 type LeaderboardUpdate = {
   number: number;
-  leaderboard1h: FeeBurner[];
-  leaderboard24h: FeeBurner[];
-  leaderboard7d: FeeBurner[];
-  leaderboard30d: FeeBurner[];
-  leaderboardAll: FeeBurner[];
+  leaderboard1h: LeaderboardEntry[];
+  leaderboard24h: LeaderboardEntry[];
+  leaderboard7d: LeaderboardEntry[];
+  leaderboard30d: LeaderboardEntry[];
+  leaderboardAll: LeaderboardEntry[];
 };
 
 const feePeriodToUpdateMap: Record<Timeframe, string> = {
@@ -111,7 +111,7 @@ const BurnLeaderboard: FC = () => {
   const onSetFeePeriod = useCallback(setFeePeriod, [setFeePeriod]);
 
   const { leaderboard } = useLeaderboard();
-  const selectedLeaderboard: FeeBurner[] | undefined =
+  const selectedLeaderboard: LeaderboardEntry[] | undefined =
     leaderboard && leaderboard[feePeriodToUpdateMap[feePeriod]];
 
   return (
@@ -136,19 +136,19 @@ const BurnLeaderboard: FC = () => {
           enter={true}
           exit={false}
         >
-          {selectedLeaderboard.slice(0, 10).map((feeUser) => (
+          {selectedLeaderboard.slice(0, 10).map((leaderboardRow) => (
             <CSSTransition
               classNames="fee-block"
               timeout={500}
-              key={feeUser.id}
+              key={leaderboardRow.id}
             >
-              <FeeUser
-                key={feeUser.name}
-                name={feeUser.name.split(":")[0]}
-                detail={feeUser.name.split(":")[1]}
-                id={feeUser.id}
-                fees={Number(feeUser.fees)}
-                isBot={feeUser.isBot}
+              <LeaderboardRow
+                key={leaderboardRow.name}
+                name={leaderboardRow.name.split(":")[0]}
+                detail={leaderboardRow.name.split(":")[1]}
+                id={leaderboardRow.id}
+                fees={Number(leaderboardRow.fees)}
+                type={leaderboardRow.type || "other"}
               />
             </CSSTransition>
           ))}
