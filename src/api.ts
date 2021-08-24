@@ -81,5 +81,5 @@ export type FeesBurnedPerInterval = {
 export const useFeesBurnedPerInterval = (): FeesBurnedPerInterval => {
   const { data } = useSWR(`${feesBasePath}/burned-per-interval`);
 
-  return { feesBurnedPerInterval: data };
+  return { feesBurnedPerInterval: data?.feesBurnedPerInterval };
 };
