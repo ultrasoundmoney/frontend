@@ -454,6 +454,12 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    cursor: pointer;
+
+    &:hover,
+    &:active {
+        cursor: pointer;
+    }
 }
 
 .y-mandatory {

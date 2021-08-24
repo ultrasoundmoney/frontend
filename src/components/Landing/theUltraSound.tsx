@@ -2,9 +2,7 @@ import * as React from "react";
 import BatImg from ".././../assets/UltrasoundBat/Ultrasound_Bat.png";
 import BatImg2x from ".././../assets/UltrasoundBat/Ultrasound_Bat@2x.png";
 import BatImg3x from ".././../assets/UltrasoundBat/Ultrasound_Bat@3x.png";
-import UsdImg from "../../assets/eth_btc/usd.png";
-import EthImg from "../../assets/eth_btc/eth.png";
-import BtcImg from "../../assets/eth_btc/btc.png";
+import BtcImg from "../../assets/ulr.jpeg";
 import { TranslationsContext } from "../../translations-context";
 import ContentBlockMedia from "../ContentBlock/ContentBlockMedia";
 
@@ -37,17 +35,8 @@ const TheUltraSound: React.FC<{}> = () => {
             {t.eusm_section_title}
           </div>
         </div>
-        {/* <div className="container1 y-scroll y-proximity">
-          <div className="wrapper">
-            <div className="element">1</div>
-            <div className="element">2</div>
-            <div className="element">3</div>
-            <div className="element">4</div>
-          </div>
-        </div> */}
-
         <div className="w-full flex flex-wrap justify-center m-auto">
-          <div className="w-full md:w-7/12">
+          <div className="w-full md:w-7/12 self-center">
             <div className="container1 y-scroll y-proximity">
               <div className="wrapper">
                 <div className="element">
