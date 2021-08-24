@@ -37,51 +37,43 @@ const TheUltraSound: React.FC<{}> = () => {
             {t.eusm_section_title}
           </div>
         </div>
-        <div className="container1 y-scroll y-proximity">
+        {/* <div className="container1 y-scroll y-proximity">
           <div className="wrapper">
             <div className="element">1</div>
             <div className="element">2</div>
             <div className="element">3</div>
             <div className="element">4</div>
           </div>
-        </div>
+        </div> */}
 
-        <div className="slidercss">
-          <ul className="slidercss-inner">
-            <li className="w-full md:w-9/12 flex flex-wrap justify-center mr-auto">
-              <div className="flex-1">
-                <ContentBlockMedia
-                  title={t.eusm_row_1_left_col_title}
-                  text={t.eusm_row_1_left_col_text}
-                />
+        <div className="w-full flex flex-wrap justify-center m-auto">
+          <div className="w-full md:w-7/12">
+            <div className="container1 y-scroll y-proximity">
+              <div className="wrapper">
+                <div className="element">
+                  <ContentBlockMedia
+                    title={t.eusm_row_1_left_col_title}
+                    text={t.eusm_row_1_left_col_text}
+                  />
+                </div>
+                <div className="element">
+                  <ContentBlockMedia
+                    title={t.eusm_row_1_left_col_title}
+                    text={t.eusm_row_1_left_col_text}
+                  />
+                </div>
+                <div className="element">
+                  <ContentBlockMedia
+                    title={t.eusm_row_1_left_col_title}
+                    text={t.eusm_row_1_left_col_text}
+                  />
+                </div>
               </div>
-              <div className="flex-1">
-                <img src={BtcImg} alt="btc" />
-              </div>
-            </li>
-            <li className="w-full md:w-9/12 flex flex-wrap justify-center mr-auto">
-              <div className="flex-1">
-                <ContentBlockMedia
-                  title={t.eusm_row_1_left_col_title}
-                  text={t.eusm_row_1_left_col_text}
-                />
-              </div>
-              <div className="flex-1">
-                <img src={EthImg} alt="btc" />
-              </div>
-            </li>
-            <li className="w-full md:w-9/12 flex flex-wrap justify-center mr-auto">
-              <div className="flex-1">
-                <ContentBlockMedia
-                  title={t.eusm_row_1_left_col_title}
-                  text={t.eusm_row_1_left_col_text}
-                />
-              </div>
-              <div className="flex-1">
-                <img src={UsdImg} alt="btc" />
-              </div>
-            </li>
-          </ul>
+            </div>
+          </div>
+          <div className="w-full md:w-5/12">
+            <img src={BtcImg} alt="btc" />
+          </div>
         </div>
       </section>
     </>

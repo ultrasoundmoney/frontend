@@ -3,11 +3,7 @@ import GaugeSvg from "./GaugeSvg";
 import SpanMoji from "../SpanMoji";
 import colors from "../../colors";
 import { animated, config, useSpring } from "react-spring";
-
-const ethMillionFormatter = Intl.NumberFormat("en-US", {
-  minimumFractionDigits: 1,
-  maximumFractionDigits: 1,
-});
+import { formatOneDigit } from "../../format";
 
 type BaseGuageProps = {
   title: string;
@@ -45,7 +41,7 @@ const BaseGuage: FC<BaseGuageProps> = ({
         />
         <div className="font-roboto text-white text-center font-light 2xl:text-lg -mt-20 pt-1">
           <animated.p className="-mb-2">
-            {valueA.to((n) => `${ethMillionFormatter.format(n)}M`)}
+            {valueA.to((n) => `${formatOneDigit(n)}M`)}
           </animated.p>
           <p className="font-extralight text-blue-spindle">ETH/year</p>
           <div className="-mt-2">

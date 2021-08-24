@@ -9,56 +9,29 @@ import BurnLeaderboard from "../BurnLeaderboard";
 import CumulativeFeeBurn from "../CumulativeFeeBurn";
 import LatestBlocks from "../LatestBlocks";
 import FaqBlock from "../Landing/faq";
-import useSWR from "swr";
 import Link from "next/link";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 import { weiToGwei } from "../../utils/metric-utils";
 import SpanMoji from "../SpanMoji";
-import useFeeData from "../../use-fee-data";
 import IssuanceGauge from "../Gauges/IssuanceGauge";
 import SupplyGrowthGauge from "../Gauges/SupplyGrowthGauge";
 import BurnGauge from "../Gauges/BurnGauge";
 import { useCallback } from "react";
-
-type EthPrice = {
-  usd: number;
-  usd24hChange: number;
-  btc: number;
-  btc24hChange: number;
-};
-
-const ethPriceFormatter = new Intl.NumberFormat("en-US", {
-  currency: "usd",
-  style: "currency",
-  minimumFractionDigits: 0,
-  maximumFractionDigits: 0,
-});
-
-const percentChangeFormatter = new Intl.NumberFormat("en-US", {
-  style: "percent",
-  maximumFractionDigits: 1,
-  // signDisplay: "always",
-});
+import { useEthPrices, useFeeData } from "../../api";
+import { formatPercentOneDigitSigned, formatUsdZeroDigit } from "../../format";
 
 const ComingSoon: FC = () => {
   const t = useContext(TranslationsContext);
   const { baseFeePerGas } = useFeeData();
   const [simulateMerge, setSimulateMerge] = useState(false);
+  const { ethPrices } = useEthPrices();
 
-  const { data } = useSWR<EthPrice>(
-    "https://api.ultrasound.money/fees/eth-price",
-    {
-      revalidateOnFocus: true,
-      revalidateOnReconnect: true,
-    }
-  );
-
-  const ethUsdPrice = data?.usd && ethPriceFormatter.format(data?.usd);
+  const ethUsdPrice = ethPrices?.usd && formatUsdZeroDigit(ethPrices?.usd);
   const ethUsd24hChange =
-    data?.usd24hChange &&
-    percentChangeFormatter.format(data?.usd24hChange / 100);
+    ethPrices?.usd24hChange &&
+    formatPercentOneDigitSigned(ethPrices?.usd24hChange / 100);
   const color =
-    typeof data?.usd24hChange === "number" && data?.usd24hChange < 0
+    typeof ethPrices?.usd24hChange === "number" && ethPrices?.usd24hChange < 0
       ? "text-red-400"
       : "text-green-400";
 
@@ -74,7 +47,7 @@ const ComingSoon: FC = () => {
             <Link href="/">
               <img className="relative" src={EthLogo} alt={t.title} />
             </Link>
-            {data !== undefined && baseFeePerGas !== undefined && (
+            {ethPrices !== undefined && baseFeePerGas !== undefined && (
               <div className="flex text-white self-center rounded bg-blue-tangaroa px-3 py-2 text-xs lg:text-sm eth-price-gass-emoji font-roboto md:ml-4">
                 {ethUsdPrice}
                 <span className={`px-1 ${color}`}>({ethUsd24hChange})</span>

@@ -1,4 +1,4 @@
-import useFeeData from "../../use-fee-data";
+import { useFeeData } from "../../api";
 import { weiToEth } from "../../utils/metric-utils";
 import colors from "../../colors";
 import BaseGauge from "./IssuanceBurnBaseGauge";

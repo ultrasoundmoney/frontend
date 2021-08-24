@@ -10,13 +10,14 @@ import {
 import { useTranslations } from "../../utils/use-translation";
 import styles from "./SupplyView.module.scss";
 import SpanMoji from "../SpanMoji";
+import { formatOneDigit } from "../../format";
 
 const MIN_PROJECTED_ETH_STAKING = 1e6;
 const DEFAULT_PROJECTED_ETH_STAKING = 10e6;
 const MAX_PROJECTED_ETH_STAKING = 33554432;
 
 const MIN_PROJECTED_BASE_GAS_PRICE = 0;
-const DEFAULT_PROJECTED_BASE_GAS_PRICE = 20;
+const DEFAULT_PROJECTED_BASE_GAS_PRICE = 25;
 const MAX_PROJECTED_BASE_GAS_PRICE = 150;
 
 const MIN_PROJECTED_MERGE_DATE = DateTime.utc(2021, 12, 1);
@@ -126,11 +127,9 @@ const SupplyView: React.FC<{}> = () => {
             <>
               {t.pos_issuance}
               {": "}
-              {Intl.NumberFormat(undefined, {
-                minimumFractionDigits: 1,
-                maximumFractionDigits: 1,
-              }).format(estimatedDailyIssuance(projectedStaking) / 1000)}
-              K {t.eth_per_day}
+              {formatOneDigit(
+                estimatedDailyIssuance(projectedStaking) / 1000
+              )}K {t.eth_per_day}
             </>
           }
         >
@@ -152,10 +151,9 @@ const SupplyView: React.FC<{}> = () => {
             <>
               {t.fee_burn}
               {": "}
-              {Intl.NumberFormat(undefined, {
-                minimumFractionDigits: 1,
-                maximumFractionDigits: 1,
-              }).format(estimatedDailyFeeBurn(projectedBaseGasPrice) / 1000)}
+              {formatOneDigit(
+                estimatedDailyFeeBurn(projectedBaseGasPrice) / 1000
+              )}
               K {t.eth_per_day}
             </>
           }
