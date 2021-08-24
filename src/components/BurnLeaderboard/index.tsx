@@ -7,15 +7,21 @@ import FeePeriodControl, { Timeframe } from "../FeePeriodControl";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { feesBasePath } from "../../api";
 
-type FeeUserProps = {
+type LeaderboardRowProps = {
   detail?: string;
   fees: number;
   id: string;
   name?: string;
-  type: FeeBurner["type"];
+  type: LeaderboardEntry["type"];
 };
 
-const FeeUser: FC<FeeUserProps> = ({ detail, fees, id, name, type }) => {
+const LeaderboardRow: FC<LeaderboardRowProps> = ({
+  detail,
+  fees,
+  id,
+  name,
+  type,
+}) => {
   const imgSrc =
     type === "eth-transfers"
       ? "/leaderboard-images/transfer.svg"
@@ -57,27 +63,20 @@ const FeeUser: FC<FeeUserProps> = ({ detail, fees, id, name, type }) => {
   );
 };
 
-type FeeUser = {
-  name: string | undefined;
-  detail: string | undefined;
-  address: string | undefined;
-  image: string | undefined;
-  fees: number;
-};
-
-type FeeBurner = {
+type LeaderboardEntry = {
   fees: string;
   id: string;
   name: string;
   type?: "eth-transfers" | "bot" | "other";
 };
+
 type LeaderboardUpdate = {
   number: number;
-  leaderboard1h: FeeBurner[];
-  leaderboard24h: FeeBurner[];
-  leaderboard7d: FeeBurner[];
-  leaderboard30d: FeeBurner[];
-  leaderboardAll: FeeBurner[];
+  leaderboard1h: LeaderboardEntry[];
+  leaderboard24h: LeaderboardEntry[];
+  leaderboard7d: LeaderboardEntry[];
+  leaderboard30d: LeaderboardEntry[];
+  leaderboardAll: LeaderboardEntry[];
 };
 
 const feePeriodToUpdateMap: Record<Timeframe, string> = {
@@ -112,7 +111,7 @@ const BurnLeaderboard: FC = () => {
   const onSetFeePeriod = useCallback(setFeePeriod, [setFeePeriod]);
 
   const { leaderboard } = useLeaderboard();
-  const selectedLeaderboard: FeeBurner[] | undefined =
+  const selectedLeaderboard: LeaderboardEntry[] | undefined =
     leaderboard && leaderboard[feePeriodToUpdateMap[feePeriod]];
 
   return (
@@ -137,19 +136,19 @@ const BurnLeaderboard: FC = () => {
           enter={true}
           exit={false}
         >
-          {selectedLeaderboard.slice(0, 10).map((feeUser) => (
+          {selectedLeaderboard.slice(0, 10).map((leaderboardRow) => (
             <CSSTransition
               classNames="fee-block"
               timeout={500}
-              key={feeUser.id}
+              key={leaderboardRow.id}
             >
-              <FeeUser
-                key={feeUser.name}
-                name={feeUser.name.split(":")[0]}
-                detail={feeUser.name.split(":")[1]}
-                id={feeUser.id}
-                fees={Number(feeUser.fees)}
-                type={feeUser.type || "other"}
+              <LeaderboardRow
+                key={leaderboardRow.name}
+                name={leaderboardRow.name.split(":")[0]}
+                detail={leaderboardRow.name.split(":")[1]}
+                id={leaderboardRow.id}
+                fees={Number(leaderboardRow.fees)}
+                type={leaderboardRow.type || "other"}
               />
             </CSSTransition>
           ))}
