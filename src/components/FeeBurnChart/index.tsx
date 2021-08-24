@@ -4,7 +4,7 @@ import HighchartsReact from "highcharts-react-official";
 import { DateTime } from "luxon";
 import merge from "lodash/merge";
 
-import useFeeData from "../../use-fee-data";
+import { useFeesBurnedPerInterval } from "../../api";
 import { useOnResize } from "../../utils/use-on-resize";
 import { formatDate, weiToEth } from "../../utils/metric-utils";
 import {
@@ -12,7 +12,7 @@ import {
   useHighchartsGlobalOptions,
   HighchartsRef,
 } from "../../utils/chart-defaults";
-import FeePeriodControl, { Timeframe } from "../fee-period-control";
+import FeePeriodControl, { Timeframe } from "../FeePeriodControl";
 
 import styles from "./FeeBurnChart.module.scss";
 
@@ -21,7 +21,7 @@ const timeframeOptions: Timeframe[] = ["t24h", "t7d", "t30d", "tAll"];
 const LARGE_SCREEN_THRESHOLD = 1280;
 
 const FeeBurnChart: FC = () => {
-  const { feesBurnedPerInterval } = useFeeData();
+  const { feesBurnedPerInterval } = useFeesBurnedPerInterval();
   const chartRef = React.useRef<HighchartsRef | null>(null);
 
   const [timeframe, setFeePeriod] = React.useState<Timeframe>("tAll");

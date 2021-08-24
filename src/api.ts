@@ -73,3 +73,13 @@ export const useEthPrices = () => {
 
   return data !== undefined ? { ethPrices: data } : { ethPrices: undefined };
 };
+
+export type FeesBurnedPerInterval = {
+  feesBurnedPerInterval: Record<string, number> | undefined;
+};
+
+export const useFeesBurnedPerInterval = (): FeesBurnedPerInterval => {
+  const { data } = useSWR(`${feesBasePath}/burned-per-interval`);
+
+  return { feesBurnedPerInterval: data };
+};
