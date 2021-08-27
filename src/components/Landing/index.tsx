@@ -29,7 +29,7 @@ import {
   constantinople_data,
   london_data,
 } from "./historicalData";
-import useFeeData from "../../use-fee-data";
+import { useFeeData } from "../../api";
 import useSWR from "swr";
 
 type EthPrice = {
