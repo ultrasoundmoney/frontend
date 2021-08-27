@@ -22,3 +22,4 @@ out/**/**
 .next/server/
 .next/static/
 storybook-static
+make-leaderboard-image-list.js

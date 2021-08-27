@@ -7,7 +7,7 @@ const BeforeGenesis: React.FC<{}> = () => {
   return (
     <>
       <section data-aos="fade-up" id="before-genesis">
-        <div className="flex flex-col justify-center w-full lg:w-6/12 md:m-auto px-16 md:px-8 lg:px-0">
+        <div className="flex flex-col justify-center w-full lg:w-5/12 md:m-auto px-16 md:px-8 lg:px-0">
           <img
             className="text-center mx-auto mb-8"
             width="30"

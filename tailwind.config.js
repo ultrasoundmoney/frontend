@@ -38,7 +38,9 @@ module.exports = {
           ...colors.yellow,
         },
       },
-      width: {},
+      width: {
+        "w-23": "23%",
+      },
       spacing: {
         "42": "165px",
       },

@@ -69,8 +69,7 @@
   "landing_goal_block3_title": "economics",
   "landing_goal_block3_text": "<span class='rounded-lg py-1 text-blue-spindle'>enshrined ETH</span>\n\n &bull; reinforced moneyness \n &bull; no economic abstraction \n\n<span class='rounded-lg py-1 text-blue-spindle'>fee burn</span>\n\n &bull; reduced sell pressure \n &bull; less security overspend",
 
-  "landing_feeburned_card1_name":"Jul 31, 2015",
-  "landing_feeburned_card1_name":"status",
+  "landing_feeburned_card1_name":"status Jul 31, 2015",
   "landing_feeburned_card1_title":"inflationary",
 
   "landing_feeburned_card2_name":"ETH supply",

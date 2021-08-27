@@ -83,7 +83,7 @@ const CumulativeFeeBurn: FC = () => {
           </div>
         </>
       ) : (
-        <p className="font-roboto text-white text-white text-3xl md:text-4xl lg:text-3xl xl:text-5xl">
+        <p className="font-roboto text-white text-3xl md:text-4xl lg:text-3xl xl:text-5xl">
           loading...
         </p>
       )}

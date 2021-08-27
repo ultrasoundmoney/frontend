@@ -17,22 +17,55 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import SupplyView from "../SupplyView";
 import TheBurnedCard from "./theBurnedCard";
+import {
+  convertDateStringReadable,
+  convertToInternationalCurrencySystem,
+  followerCountConvert,
+  weiToEth,
+} from "../Helpers/helper";
+import {
+  genesis_data,
+  byzantium_data,
+  constantinople_data,
+  london_data,
+} from "./historicalData";
+import useFeeData from "../../use-fee-data";
+import useSWR from "swr";
+
+type EthPrice = {
+  usd: number;
+  usd24hChange: number;
+  btc: number;
+  btc24hChange: number;
+};
 
 const LandingPage: React.FC<{}> = () => {
+  const { feesBurned } = useFeeData();
+  const [genesisArr, setGenesisArr] = React.useState(genesis_data[0]);
+  const { data } = useSWR<EthPrice>(
+    "https://api.ultrasound.money/fees/eth-price",
+    {
+      revalidateOnFocus: true,
+      revalidateOnReconnect: true,
+    }
+  );
   React.useEffect(() => {
     AOS.init();
     AOS.refresh();
   }, []);
-
   const [scrolling, setScrolling] = React.useState(false);
   const [scrollTop, setScrollTop] = React.useState(0);
-  const [ethSupply, setEthSupply] = React.useState(72);
-  const [ethSupplyPlus, setEthSupplyPlus] = React.useState(5.3);
-  const date = new Date("July 31, 2015").toDateString();
-  const dateGenesis = Math.floor(
-    parseInt((new Date(date).getTime() / 1000).toFixed(0))
-  );
-  const [infationaryDate, setInfationaryDate] = React.useState(dateGenesis);
+  const getFeeBurdedinEth = weiToEth(feesBurned?.feesBurnedAll);
+  // const getFeeBurdedinEthToUsd =
+  //   data?.usd && ethPriceFormatter.format(getFeeBurdedinEth * data?.usd);
+  const getFeeBurdedinEthToUsd =
+    data?.usd && Math.floor(getFeeBurdedinEth * data?.usd);
+
+  const afterLodonFork: string[] = [];
+  afterLodonFork[0] = new Date().toDateString();
+  afterLodonFork[1] = "117.4M";
+  afterLodonFork[2] = "+0.44%";
+
   React.useEffect(() => {
     //First Card Date
     const getStatusAndDate = document.querySelector(".burned_1 .eth-date");
@@ -42,14 +75,22 @@ const LandingPage: React.FC<{}> = () => {
     const getEthSupplyIncreament = document.querySelector(
       ".burned_2 .eth-supply-incr"
     );
+    //3rd Card
+    const getBlcokReward = document.querySelector(".burned_3 .eth-burn-fee");
+
+    //4th card
+    const getFeeBurded = document.querySelector(".burned_4 .eth-burn-fee");
+
     function onScroll() {
       const targetGenesis = document.querySelector("#genesis");
       const targetByzantium = document.querySelector("#eip-byzantium");
       const targetConstantinople = document.querySelector(
         "#eip-constantinople"
       );
-      const target1559 = document.querySelector("#next-merge");
+      const target1559 = document.querySelector("#eip-1559");
+      const targetSupplyView = document.querySelector("#supplyview");
       const targetUltraSound = document.querySelector("#enter-ultra-sound");
+      const targetMergeLine = document.querySelector("#the-merge-line");
       const currentPosition = window.pageYOffset;
 
       // ETH Genesis Time
@@ -57,73 +98,157 @@ const LandingPage: React.FC<{}> = () => {
         if (currentPosition > scrollTop) {
           // downscroll code
           setScrolling(false);
-          setEthSupplyPlus(5.3 + Math.floor(scrollTop * 0.001));
-          const ethSupplyFactor = 72 + Math.floor(scrollTop * 0.01);
-          setEthSupply(ethSupplyFactor > 121 ? 121 : Math.abs(ethSupplyFactor));
-          const getFactor = Math.floor(currentPosition / 110);
-          const genesisToByzDate = Math.floor(1455509940 + getFactor * 5259486);
-          setInfationaryDate(
-            genesisToByzDate > 1508104800 ? 1508104800 : genesisToByzDate
-          );
-          getStatusAndDate.innerHTML = `Status ${new Date(
-            infationaryDate * 1000
-          ).toDateString()}`;
-          getEthSupplyIncreament.innerHTML = `&#8593;+ ${ethSupplyPlus.toFixed(
-            2
-          )}%`;
-          getEthSupply.innerHTML = `${ethSupply}M`;
+          const lineHeight =
+            currentPosition - window.innerHeight > 0
+              ? Math.floor((currentPosition - window.innerHeight) * 0.5)
+              : 0;
+
+          if (lineHeight < 450) {
+            document.getElementById(
+              "line__genesis"
+            ).style.height = `${lineHeight}px`;
+            getBlcokReward.innerHTML = "5 ETH/<span>Block</span>";
+            const counter = lineHeight * 3;
+            setGenesisArr(
+              genesis_data[
+                counter > genesis_data.length
+                  ? genesis_data.length - 1
+                  : counter
+              ]
+            );
+            if (genesisArr) {
+              getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
+                genesisArr[0]
+              )}`;
+              getEthSupplyIncreament.innerHTML = `+${Number(
+                genesisArr[2]
+              ).toFixed(3)}%`;
+              getEthSupply.innerHTML = `${followerCountConvert(
+                Number(genesisArr[1])
+              )}`;
+            }
+          }
+          if (lineHeight > 450) {
+            document
+              .getElementById("line__genesis")
+              .classList.add("eclips__hr-circle");
+            setGenesisArr(genesis_data[genesis_data.length - 1]);
+          }
         } else {
           // upscroll code
           setScrolling(true);
-          setInfationaryDate(1438293600);
-          const ethSupplyFactor = 121 - Math.floor(scrollTop * 0.001);
-          setEthSupply(ethSupplyFactor > 72 ? 72 : Math.abs(ethSupplyFactor));
-          setEthSupplyPlus(5.3 - Math.floor(scrollTop * 0.001));
-          getEthSupplyIncreament.innerHTML = `&#8593;+ ${ethSupplyPlus.toFixed(
-            2
-          )}%`;
-          getStatusAndDate.innerHTML = `Status ${new Date(
-            infationaryDate * 1000
-          ).toDateString()}`;
-          getEthSupply.innerHTML = `${ethSupply}M`;
+          const lineHeight =
+            currentPosition - window.innerHeight > 0
+              ? Math.floor((currentPosition - window.innerHeight) * 0.5)
+              : 0;
+          if (lineHeight < 450) {
+            document.getElementById(
+              "line__genesis"
+            ).style.height = `${lineHeight}px`;
+            document
+              .getElementById("line__genesis")
+              .classList.remove("eclips__hr-circle");
+            getBlcokReward.innerHTML = "5 ETH/<span>Block</span>";
+            const genesis_data_re = genesis_data.reverse();
+            const counter = lineHeight * 3;
+            setGenesisArr(
+              genesis_data_re[
+                counter > genesis_data.length
+                  ? genesis_data.length - 1
+                  : counter
+              ]
+            );
+            if (genesisArr) {
+              getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
+                genesisArr[0]
+              )}`;
+              getEthSupplyIncreament.innerHTML = `+${Number(
+                genesisArr[2]
+              ).toFixed(3)}%`;
+              getEthSupply.innerHTML = `${followerCountConvert(
+                Number(genesisArr[1])
+              )}`;
+            }
+          }
         }
       }
       //ETH By
       if (targetByzantium.getBoundingClientRect().top < window.innerHeight) {
-        // targetByzantium.classList.add("bg-green-700");
         if (currentPosition > scrollTop) {
           // downscroll code
           setScrolling(false);
-          setEthSupplyPlus(11.3 + Math.floor(scrollTop * 0.0001));
-          const ethSupplyFactor = 72 + Math.floor(scrollTop * 0.01);
-          setEthSupply(ethSupplyFactor > 121 ? 121 : Math.abs(ethSupplyFactor));
-          getEthSupplyIncreament.innerHTML = `&#8593;+ ${ethSupplyPlus.toFixed(
-            2
-          )}%`;
+          const lineHeight =
+            currentPosition - window.innerHeight > 0
+              ? Math.floor((currentPosition - window.innerHeight) * 0.3)
+              : 0;
 
-          const getFactor = Math.floor(currentPosition / 110);
-          const genesisToByzDate = Math.floor(1508104800 + getFactor * 2629743);
-          setInfationaryDate(
-            genesisToByzDate > 1571176800 ? 1571176800 : genesisToByzDate
-          );
-          getStatusAndDate.innerHTML = `Status ${new Date(
-            infationaryDate * 1000
-          ).toDateString()}`;
-          getEthSupply.innerHTML = `${ethSupply}M`;
+          if (lineHeight < 450) {
+            document.getElementById(
+              "line__byzantium"
+            ).style.height = `${lineHeight}px`;
+            getBlcokReward.innerHTML = "3 ETH/<span>Block</span>";
+            const counter = Math.floor(lineHeight * 1.5);
+            setGenesisArr(
+              byzantium_data[
+                counter > byzantium_data.length
+                  ? byzantium_data.length - 1
+                  : counter
+              ]
+            );
+            if (genesisArr) {
+              getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
+                genesisArr[0]
+              )}`;
+              getEthSupplyIncreament.innerHTML = `+${Number(
+                genesisArr[2]
+              ).toFixed(3)}%`;
+              getEthSupply.innerHTML = `${followerCountConvert(
+                Number(genesisArr[1])
+              )}`;
+            }
+          }
+          if (lineHeight > 450) {
+            document
+              .getElementById("line__byzantium")
+              .classList.add("eclips__hr-circle");
+            setGenesisArr(byzantium_data[byzantium_data.length - 1]);
+          }
         } else {
           // upscroll code
           setScrolling(true);
-          setEthSupplyPlus(11.3 - Math.floor(scrollTop * 0.0001));
-          const ethSupplyFactor = 121 - Math.floor(scrollTop * 0.001);
-          setEthSupply(ethSupplyFactor > 72 ? Math.abs(ethSupplyFactor) : 72);
-          setInfationaryDate(1508104800);
-          getEthSupplyIncreament.innerHTML = `&#8593;+ ${ethSupplyPlus.toFixed(
-            2
-          )}%`;
-          getStatusAndDate.innerHTML = `Status ${new Date(
-            infationaryDate * 1000
-          ).toDateString()}`;
-          getEthSupply.innerHTML = `${ethSupply}M`;
+          const lineHeight =
+            currentPosition - window.innerHeight > 0
+              ? Math.floor((currentPosition - window.innerHeight) * 0.3)
+              : 0;
+          if (lineHeight < 450) {
+            document.getElementById(
+              "line__byzantium"
+            ).style.height = `${lineHeight}px`;
+            document
+              .getElementById("line__genesis")
+              .classList.remove("eclips__hr-circle");
+            getBlcokReward.innerHTML = "5 ETH/<span>Block</span>";
+            const genesis_data_re = byzantium_data.reverse();
+            const counter = Math.floor(lineHeight * 1.5);
+            setGenesisArr(
+              genesis_data_re[
+                counter > byzantium_data.length
+                  ? byzantium_data.length - 1
+                  : counter
+              ]
+            );
+            if (genesisArr) {
+              getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
+                genesisArr[0]
+              )}`;
+              getEthSupplyIncreament.innerHTML = `+${Number(
+                genesisArr[2]
+              ).toFixed(3)}%`;
+              getEthSupply.innerHTML = `${followerCountConvert(
+                Number(genesisArr[1])
+              )}`;
+            }
+          }
         }
       }
 
@@ -134,37 +259,77 @@ const LandingPage: React.FC<{}> = () => {
         if (currentPosition > scrollTop) {
           // downscroll code
           setScrolling(false);
-          setEthSupplyPlus(9.3 - Math.floor(scrollTop * 0.001));
-          const ethSupplyFactor = 72 + Math.floor(scrollTop * 0.01);
-          setEthSupply(ethSupplyFactor > 121 ? 121 : Math.abs(ethSupplyFactor));
-          const x = 1508104800 - (infationaryDate + 999 * 10000);
-          setInfationaryDate(
-            x > 0 ? infationaryDate + 999 * 1000 : infationaryDate
-          );
-          getStatusAndDate.innerHTML = `Status ${new Date(
-            infationaryDate * 1000
-          ).toDateString()}`;
-          getEthSupplyIncreament.innerHTML = `&#8593;+ ${ethSupplyPlus.toFixed(
-            2
-          )}%`;
-          getEthSupply.innerHTML = `${ethSupply}M`;
+          const lineHeight =
+            currentPosition - window.innerHeight > 0
+              ? Math.floor((currentPosition - window.innerHeight) * 0.18)
+              : 0;
+          if (lineHeight < 450) {
+            document.getElementById(
+              "line__constantinople"
+            ).style.height = `${lineHeight}px`;
+            getBlcokReward.innerHTML = "2 ETH/<span>Block</span>";
+            const counter = lineHeight * 2;
+            setGenesisArr(
+              constantinople_data[
+                counter > constantinople_data.length
+                  ? constantinople_data.length - 1
+                  : counter
+              ]
+            );
+            if (genesisArr) {
+              getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
+                genesisArr[0]
+              )}`;
+              getEthSupplyIncreament.innerHTML = `+${Number(
+                genesisArr[2]
+              ).toFixed(3)}%`;
+              getEthSupply.innerHTML = `${followerCountConvert(
+                Number(genesisArr[1])
+              )}`;
+            }
+          }
+          if (lineHeight > 450) {
+            document
+              .getElementById("line__constantinople")
+              .classList.add("eclips__hr-circle");
+            setGenesisArr(constantinople_data[constantinople_data.length - 1]);
+          }
         } else {
-          //upscroll code
+          // upscroll code
           setScrolling(true);
-          const x = 1628028000 - (infationaryDate + 999 * 10000);
-          const ethSupplyFactor = 121 - Math.floor(scrollTop * 0.001);
-          setEthSupply(ethSupplyFactor > 72 ? Math.abs(ethSupplyFactor) : 72);
-          setInfationaryDate(
-            x > 0 ? infationaryDate - 999 * 1000 : infationaryDate
-          );
-          setEthSupplyPlus(9.3 + Math.floor(scrollTop * 0.001));
-          getStatusAndDate.innerHTML = `Status ${new Date(
-            infationaryDate * 1000
-          ).toDateString()}`;
-          getEthSupplyIncreament.innerHTML = `&#8593;+ ${ethSupplyPlus.toFixed(
-            2
-          )}%`;
-          getEthSupply.innerHTML = `${ethSupply}M`;
+          const lineHeight =
+            currentPosition - window.innerHeight > 0
+              ? Math.floor((currentPosition - window.innerHeight) * 0.18)
+              : 0;
+          if (lineHeight < 450) {
+            document.getElementById(
+              "line__constantinople"
+            ).style.height = `${lineHeight}px`;
+            document
+              .getElementById("line__constantinople")
+              .classList.remove("eclips__hr-circle");
+            getBlcokReward.innerHTML = "5 ETH/<span>Block</span>";
+            const genesis_data_re = constantinople_data.reverse();
+            const counter = lineHeight * 2;
+            setGenesisArr(
+              genesis_data_re[
+                counter > constantinople_data.length
+                  ? constantinople_data.length - 1
+                  : counter
+              ]
+            );
+            if (genesisArr) {
+              getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
+                genesisArr[0]
+              )}`;
+              getEthSupplyIncreament.innerHTML = `+${Number(
+                genesisArr[2]
+              ).toFixed(3)}%`;
+              getEthSupply.innerHTML = `${followerCountConvert(
+                Number(genesisArr[1])
+              )}`;
+            }
+          }
         }
       }
 
@@ -173,54 +338,150 @@ const LandingPage: React.FC<{}> = () => {
         if (currentPosition > scrollTop) {
           // downscroll code
           setScrolling(false);
-          setEthSupplyPlus(9.3 + Math.floor(scrollTop * 0.001));
-          const ethSupplyFactor = 72 + Math.floor(scrollTop * 0.01);
-          setEthSupply(ethSupplyFactor > 121 ? 121 : Math.abs(ethSupplyFactor));
-          const getFactor = Math.floor(currentPosition / 220);
-          const genesisToByzDate = Math.floor(1508104800 + getFactor * 5259486);
-          setInfationaryDate(
-            genesisToByzDate > 1628028000 ? 1628028000 : genesisToByzDate
+          const lineHeight =
+            currentPosition - window.innerHeight > 0
+              ? Math.floor((currentPosition - window.innerHeight) * 0.15)
+              : 0;
+          const counter = Math.floor(lineHeight / 25);
+          const genesis_data_re = london_data.reverse();
+          setGenesisArr(
+            genesis_data_re[
+              counter > london_data.length ? london_data.length - 1 : counter
+            ]
           );
-          getStatusAndDate.innerHTML = `Status ${new Date(
-            infationaryDate * 1000
-          ).toDateString()}`;
-          getEthSupplyIncreament.innerHTML = `&#8593;+ ${ethSupplyPlus.toFixed(
-            2
-          )}%`;
-          getEthSupply.innerHTML = `${ethSupply}M`;
+          getBlcokReward.innerHTML = "2 ETH/<span>Block</span>";
+          getFeeBurded.innerHTML = `$${convertToInternationalCurrencySystem(
+            getFeeBurdedinEthToUsd
+          )}`;
+          if (genesisArr) {
+            getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
+              genesisArr[0]
+            )}`;
+            getEthSupplyIncreament.innerHTML = `+${Number(
+              genesisArr[2]
+            ).toFixed(3)}%`;
+            getEthSupply.innerHTML = `${followerCountConvert(
+              Number(genesisArr[1])
+            )}`;
+          }
         } else {
-          //upscroll code
+          // upscroll code
           setScrolling(true);
-          const ethSupplyFactor = 121 - Math.floor(scrollTop * 0.001);
-          setEthSupply(ethSupplyFactor > 72 ? Math.abs(ethSupplyFactor) : 72);
-          const getFactor = Math.floor(currentPosition / 220);
-          const genesisToByzDate = Math.floor(1628028000 - getFactor * 5259486);
-          setInfationaryDate(
-            genesisToByzDate > 1628028000 ? 1628028000 : genesisToByzDate
+          const lineHeight =
+            currentPosition - window.innerHeight > 0
+              ? Math.floor((currentPosition - window.innerHeight) * 0.15)
+              : 0;
+          const counter = Math.floor(lineHeight / 25);
+          setGenesisArr(
+            london_data[
+              counter > london_data.length ? london_data.length - 1 : counter
+            ]
           );
-          setEthSupplyPlus(9.3 - Math.floor(scrollTop * 0.001));
-          getStatusAndDate.innerHTML = `Status ${new Date(
-            infationaryDate * 1000
-          ).toDateString()}`;
-          getEthSupplyIncreament.innerHTML = `&#8593;+ ${ethSupplyPlus.toFixed(
-            2
-          )}%`;
-          getEthSupply.innerHTML = `${ethSupply}M`;
+          getBlcokReward.innerHTML = "2 ETH/<span>Block</span>";
+          getFeeBurded.innerHTML = `$${convertToInternationalCurrencySystem(
+            getFeeBurdedinEthToUsd
+          )}`;
+          if (genesisArr) {
+            getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
+              genesisArr[0]
+            )}`;
+            getEthSupplyIncreament.innerHTML = `+${Number(
+              genesisArr[2]
+            ).toFixed(3)}%`;
+            getEthSupply.innerHTML = `${followerCountConvert(
+              Number(genesisArr[1])
+            )}`;
+          }
         }
       }
 
+      //SupplyView
+      if (targetSupplyView.getBoundingClientRect().top < window.innerHeight) {
+        if (currentPosition > scrollTop) {
+          const lineHeight = Math.floor((currentPosition / 100) * 8);
+          if (lineHeight < 450) {
+            document.getElementById(
+              "line__supplyview"
+            ).style.height = `${lineHeight}px`;
+            getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
+              afterLodonFork[0]
+            )}`;
+            getEthSupplyIncreament.innerHTML = afterLodonFork[2];
+            getEthSupply.innerHTML = afterLodonFork[1];
+          }
+          if (lineHeight > 450) {
+            document
+              .getElementById("line__supplyview")
+              .classList.add("eclips__hr-circle");
+          }
+        } else {
+          const lineHeight = Math.floor((currentPosition / 100) * 8);
+          if (lineHeight < 450) {
+            document.getElementById(
+              "line__supplyview"
+            ).style.height = `${lineHeight}px`;
+            document
+              .getElementById("line__supplyview")
+              .classList.remove("eclips__hr-circle");
+            getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
+              afterLodonFork[0]
+            )}`;
+            getEthSupplyIncreament.innerHTML = afterLodonFork[2];
+            getEthSupply.innerHTML = afterLodonFork[1];
+          }
+        }
+      }
+      if (targetMergeLine.getBoundingClientRect().top < window.innerHeight) {
+        if (currentPosition > scrollTop) {
+          // downscroll code
+          setScrolling(false);
+          const lineHeight = Math.floor((currentPosition / 100) * 6);
+
+          if (lineHeight < 450) {
+            document.getElementById(
+              "line__merge"
+            ).style.height = `${lineHeight}px`;
+            getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
+              afterLodonFork[0]
+            )}`;
+            getEthSupplyIncreament.innerHTML = afterLodonFork[2];
+            getEthSupply.innerHTML = afterLodonFork[1];
+          }
+          if (lineHeight > 450) {
+            document
+              .getElementById("line__merge")
+              .classList.add("eclips__hr-circle");
+          }
+        } else {
+          // upscroll code
+          setScrolling(true);
+          const lineHeight = Math.floor((currentPosition / 100) * 6);
+          if (lineHeight < 450) {
+            document.getElementById(
+              "line__merge"
+            ).style.height = `${lineHeight}px`;
+            document
+              .getElementById("line__merge")
+              .classList.remove("eclips__hr-circle");
+            getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
+              afterLodonFork[0]
+            )}`;
+            getEthSupplyIncreament.innerHTML = afterLodonFork[2];
+            getEthSupply.innerHTML = afterLodonFork[1];
+          }
+        }
+      }
       if (targetUltraSound.getBoundingClientRect().top < window.innerHeight) {
-        if (currentPosition > scrollTop && !scrolling) {
+        // if (currentPosition > scrollTop && !scrolling) {
+        if (currentPosition > scrollTop) {
           // downscroll code
           setScrolling(false);
           getStatus.innerHTML = "Money (Deflationary)";
-          const ethSupplyFactor = 72 + Math.floor(scrollTop * 0.01);
-          setEthSupply(ethSupplyFactor > 119 ? 119 : Math.abs(ethSupplyFactor));
-          getEthSupply.innerHTML = `${ethSupply}M`;
-        } else {
-          const ethSupplyFactor = 119 - Math.floor(scrollTop * 0.01);
-          setEthSupply(ethSupplyFactor > 121 ? Math.abs(ethSupplyFactor) : 119);
-          getEthSupply.innerHTML = `${ethSupply}M`;
+          getStatusAndDate.innerHTML = `Status ${convertDateStringReadable(
+            afterLodonFork[0]
+          )}`;
+          getEthSupplyIncreament.innerHTML = afterLodonFork[2];
+          getEthSupply.innerHTML = afterLodonFork[1];
         }
       } else {
         getStatus.innerHTML = "Money (Infationary)";
@@ -230,7 +491,14 @@ const LandingPage: React.FC<{}> = () => {
 
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
-  }, [ethSupply, ethSupplyPlus, infationaryDate, scrollTop, scrolling]);
+  }, [
+    afterLodonFork,
+    genesisArr,
+    getFeeBurdedinEthToUsd,
+    scrollTop,
+    scrolling,
+  ]);
+
   return (
     <>
       <div className="wrapper bg-blue-midnightexpress">
@@ -251,14 +519,13 @@ const LandingPage: React.FC<{}> = () => {
             data-aos-duration="1000"
             data-aos-easing="ease-in-out"
             className="flex flex-col px-4 md:px-0 mb-16"
+            id="supplyview"
           >
             <div className="w-full md:w-5/6 lg:w-5/6 md:m-auto relative bg-blue-tangaroa md:px-8 py-4 md:py-16 rounded-xl">
               <SupplyView />
-              <div className="flex flex-wrap justify-center w-full lg:w-7/12 md:mx-auto mb-8 px-4 md:px-16 lg:px-0">
-                <div className="eclips-bottom eclips-bottom__left-0">
-                  <div className="eclips-bottom-line" />
-                </div>
-              </div>
+            </div>
+            <div className="flex flex-wrap justify-center pt-20">
+              <div id="line__supplyview" className="eclips-hr" />
             </div>
           </div>
           <TheMergeBlock />
@@ -271,6 +538,7 @@ const LandingPage: React.FC<{}> = () => {
             data-aos-duration="1000"
             data-aos-easing="ease-in-out"
             className="flex px-4 md:px-8 lg:px-0 py-8 md:py-40"
+            id="join-the-community"
           >
             <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
               <TwitterCommunity />

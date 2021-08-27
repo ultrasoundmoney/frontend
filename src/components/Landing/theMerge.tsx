@@ -14,7 +14,10 @@ const TheMergeBlock: React.FC<{}> = () => {
           styles="block-fee-burn"
           id="what-next"
         />
-        <div className="the-merge flex flex-col w-full sm:w-9/12 mx-auto">
+        <div
+          id="the-merge"
+          className="the-merge flex flex-col w-full sm:w-9/12 mx-auto"
+        >
           <div
             data-aos="fade-up"
             data-aos-anchor-placement="top-center"
@@ -50,8 +53,13 @@ const TheMergeBlock: React.FC<{}> = () => {
           styles="pt-10"
           id="the-merge"
         />
-        <div className="flex flex-wrap justify-center w-full md:w-7/12 md:mx-auto mb-20">
-          <div className="eclips-bottom-line eclips-bottom-line__only " />
+        <div
+          id="the-merge-line"
+          className="flex flex-wrap justify-center w-full md:w-7/12 md:mx-auto mb-20"
+        >
+          <div className="flex flex-wrap justify-center">
+            <div id="line__merge" className="eclips-hr" />
+          </div>
         </div>
       </section>
     </>

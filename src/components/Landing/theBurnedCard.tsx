@@ -40,7 +40,7 @@ const FeeBurnedBlcok: React.FC<FeeBurnedBlcokProps> = () => {
     <>
       <div
         id="eth-card"
-        className="fixed-fee-burned flex flex-wrap justify-center w-full lg:w-10/12 md:mx-auto px-4 md:px-8 lg:px-0 sticky"
+        className="fixed-fee-burned flex flex-wrap justify-center w-full md:w-full xl:w-10/12 md:mx-auto px-4 md:px-8 lg:px-0 sticky"
       >
         <Card
           type={1}
