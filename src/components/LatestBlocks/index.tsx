@@ -32,7 +32,7 @@ const LatestBlocks: FC = () => {
           >
             {latestBlockFees !== undefined &&
               latestBlockFees
-                .reverse()
+                .sort((a, b) => b.number - a.number)
                 .slice(0, 7)
                 .map(({ number, fees }) => (
                   <CSSTransition
