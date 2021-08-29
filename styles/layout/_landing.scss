@@ -242,6 +242,14 @@
         left: -50px;
         z-index: 0;
     }
+
+    @media (max-width: 767px) {
+        background-size: contain;
+
+        &::after {
+            bottom: 0px;
+        }
+    }
 }
 
 .hero {
@@ -265,7 +273,7 @@
 }
 
 .fixed-fee-burned {
-    @media (min-width: 1023px) {
+    @media (min-width: 767px) {
         position: sticky;
         left: 0;
         bottom: 10px;

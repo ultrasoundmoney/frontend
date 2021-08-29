@@ -31,7 +31,7 @@ import {
 } from "./historicalData";
 import { useFeeData } from "../../api";
 import useSWR from "swr";
-import Timeline from "./timeline";
+// import Timeline from "./timeline";
 
 type EthPrice = {
   usd: number;
