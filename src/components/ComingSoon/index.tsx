@@ -110,13 +110,13 @@ const ComingSoon: FC = () => {
         </div>
         <div className="w-4 h-4" />
         <div className="flex flex-col px-4 lg:w-full lg:flex-row md:px-16 isolate">
-          <div className="lg:w-1/2">
+          <div className="lg:w-1/2 lg:pr-2">
             <CumulativeFeeBurn />
             <span className="block w-4 h-4" />
             <LatestBlocks />
           </div>
-          <span className="block w-4 h-4" />
-          <div className="lg:w-1/2">
+          <span className="block h-4" />
+          <div className="lg:w-1/2 lg:pl-2">
             <BurnLeaderboard />
           </div>
         </div>

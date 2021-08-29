@@ -24,15 +24,15 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
 }) => {
   const imgSrc =
     type === "eth-transfers"
-      ? "/leaderboard-images/transfer.svg"
+      ? "/leaderboard-images/transfer-v2.svg"
       : type === "bot"
-      ? "/leaderboard-images/bot.svg"
+      ? "/leaderboard-images/bot-v2.svg"
       : imageIds.includes(id)
       ? `/leaderboard-images/${id}.png`
-      : "/leaderboard-images/question-mark.svg";
+      : "/leaderboard-images/question-mark-v2.svg";
 
   return (
-    <div className="pt-5 md:pt-6">
+    <div className="pt-5 xl:pt-6">
       <a
         href={id.startsWith("0x") ? `https://etherscan.io/address/${id}` : ""}
         target="_blank"
@@ -41,7 +41,11 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
         <div className="hover:opacity-60 leaderboard-link flex flex-row items-center font-inter text-white text-base md:text-lg">
           <img className="w-8 h-8 leaderboard-image" src={imgSrc} alt="" />
           <p className="pl-4 truncate">
-            {name || <span className="font-roboto">{id}</span>}
+            {!name.startsWith("0x") ? (
+              name
+            ) : (
+              <span className="font-roboto">{id}</span>
+            )}
           </p>
           <p className="pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block">
             {detail}
