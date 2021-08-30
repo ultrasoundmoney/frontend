@@ -40,8 +40,8 @@ const ComingSoon: FC = () => {
   }, [simulateMerge]);
 
   return (
-    <div className="wrapper bg-blue-midnightexpress">
-      <div className="container m-auto coming-soon">
+    <div className="wrapper bg-blue-midnightexpress blurred-bg-image">
+      <div className="container m-auto">
         <div className="flex justify-between">
           <div className="w-full flex justify-between md:justify-start p-4">
             <Link href="/">
