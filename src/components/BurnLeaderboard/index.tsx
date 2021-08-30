@@ -34,7 +34,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
   return (
     <div className="pt-5 xl:pt-6">
       <a
-        href={id.startsWith("0x") ? `https://etherscan.io/address/${id}` : ""}
+        href={id.startsWith("0x") ? `https://etherscan.io/address/${id}` : null}
         target="_blank"
         rel="noreferrer"
       >
