@@ -3,6 +3,14 @@
   opacity: 0;
 }
 
+.fadein-animation {
+  animation: fadeIn ease 700ms;
+  -webkit-animation: fadeIn ease 700ms;
+  -moz-animation: fadeIn ease 700ms;
+  -o-animation: fadeIn ease 700ms;
+  -ms-animation: fadeIn ease 700ms;
+}
+
 .has-tooltip:hover .tooltip,
 .has-tooltip:active .tooltip {
   position: absolute;

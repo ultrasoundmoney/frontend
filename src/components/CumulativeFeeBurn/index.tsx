@@ -34,17 +34,24 @@ const CumulativeFeeBurn: FC = () => {
   const selectedBurnRate =
     burnRates !== undefined && burnRates[timeframeBurnRateMap[timeframe]];
 
-  const LONDON_TIMESTAMP = Date.parse("2021-08-05T12:33:42Z");
+  const LONDON_TIMESTAMP = Date.parse("Aug 5 2021 12:33:42 UTC");
   const msPerDay = 24 * 60 * 60 * 1000;
-  const daysSinceLondonFork = Math.floor(
-    (Date.now() - LONDON_TIMESTAMP) / msPerDay
+  const daysSinceLondonFork = formatZeroDigit(
+    Math.floor((Date.now() - LONDON_TIMESTAMP) / msPerDay)
   );
 
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8">
       <div className="flex flex-col justify-between items-start md:flex-row lg:flex-col xl:items-center xl:flex-row">
-        <p className="font-inter font-light text-blue-spindle uppercase text-md mb-4 md:mb-0 lg:mb-4 xl:mb-0">
-          fee burn
+        <p className="font-inter font-light text-blue-spindle text-md mb-4 md:mb-0 lg:mb-4 xl:mb-0">
+          <span className="uppercase">fee burn</span>{" "}
+          {timeframe === "tAll" ? (
+            <span className="text-blue-manatee text-sm fadein-animation">
+              ({daysSinceLondonFork}d)
+            </span>
+          ) : (
+            ""
+          )}
         </p>
         <FeePeriodControl
           timeframe={timeframe}
@@ -72,14 +79,7 @@ const CumulativeFeeBurn: FC = () => {
           <div className="flex justify-between mt-8">
             <div>
               <p className="font-inter font-light text-blue-spindle uppercase md:text-md mb-2">
-                burn rate{" "}
-                {timeframe === "tAll" ? (
-                  <span className="text-xs text-blue-manatee">
-                    over {formatZeroDigit(daysSinceLondonFork)} days
-                  </span>
-                ) : (
-                  ""
-                )}
+                burn rate
               </p>
               <p className="font-roboto flex text-white text-2xl">
                 <CountUp
