@@ -18,7 +18,11 @@ import SupplyGrowthGauge from "../Gauges/SupplyGrowthGauge";
 import BurnGauge from "../Gauges/BurnGauge";
 import { useCallback } from "react";
 import { useEthPrices, useFeeData } from "../../api";
-import { formatPercentOneDigitSigned, formatUsdZeroDigit } from "../../format";
+import {
+  formatPercentOneDigitSigned,
+  formatUsdZeroDigit,
+  formatOneDigit,
+} from "../../format";
 
 const ComingSoon: FC = () => {
   const t = useContext(TranslationsContext);
@@ -53,7 +57,7 @@ const ComingSoon: FC = () => {
                 <span className={`px-1 ${color}`}>({ethUsd24hChange})</span>
                 <span className="px-1">•</span>
                 <SpanMoji emoji="⛽️"></SpanMoji>
-                {weiToGwei(baseFeePerGas).toFixed(1)} Gwei
+                {formatOneDigit(weiToGwei(baseFeePerGas))} Gwei
               </div>
             )}
           </div>

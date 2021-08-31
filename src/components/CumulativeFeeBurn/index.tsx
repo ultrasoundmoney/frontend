@@ -3,6 +3,7 @@ import SpanMoji from "../SpanMoji";
 import CountUp from "react-countup";
 import FeePeriodControl, { Timeframe } from "../FeePeriodControl";
 import { BurnRates, FeesBurned, useFeeData } from "../../api";
+import { formatZeroDigit } from "../../format";
 
 const weiToEth = (wei: number): number => wei / 10 ** 18;
 
@@ -33,10 +34,16 @@ const CumulativeFeeBurn: FC = () => {
   const selectedBurnRate =
     burnRates !== undefined && burnRates[timeframeBurnRateMap[timeframe]];
 
+  const LONDON_TIMESTAMP = Date.parse("2021-08-05T12:33:42Z");
+  const msPerDay = 24 * 60 * 60 * 1000;
+  const daysSinceLondonFork = Math.floor(
+    (Date.now() - LONDON_TIMESTAMP) / msPerDay
+  );
+
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8">
       <div className="flex flex-col justify-between items-start md:flex-row lg:flex-col xl:items-center xl:flex-row">
-        <p className="font-inter font-light uppercase text-blue-spindle text-md mb-4 md:mb-0 lg:mb-4 xl:mb-0">
+        <p className="font-inter font-light text-blue-spindle uppercase text-md mb-4 md:mb-0 lg:mb-4 xl:mb-0">
           fee burn
         </p>
         <FeePeriodControl
@@ -64,8 +71,15 @@ const CumulativeFeeBurn: FC = () => {
           </div>
           <div className="flex justify-between mt-8">
             <div>
-              <p className="font-inter font-light uppercase text-blue-spindle md:text-md mb-2">
-                burn rate
+              <p className="font-inter font-light text-blue-spindle uppercase md:text-md mb-2">
+                burn rate{" "}
+                {timeframe === "tAll" ? (
+                  <span className="text-xs text-blue-manatee">
+                    over {formatZeroDigit(daysSinceLondonFork)} days
+                  </span>
+                ) : (
+                  ""
+                )}
               </p>
               <p className="font-roboto flex text-white text-2xl">
                 <CountUp
