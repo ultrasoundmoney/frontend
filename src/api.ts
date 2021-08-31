@@ -7,6 +7,8 @@ export const famBasePath = "https://api-prod.ultrasound.money/fam";
 export const feesBasePath =
   config.apiEnv === "staging"
     ? "https://api-stag.ultrasound.money/fees"
+    : config.apiEnv === "dev"
+    ? "http://localhost:8080/fees"
     : "https://api.ultrasound.money/fees";
 
 type WeiPerMinute = number;
