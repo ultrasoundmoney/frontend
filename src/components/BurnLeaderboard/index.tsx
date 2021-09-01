@@ -6,6 +6,7 @@ import useSWR from "swr";
 import FeePeriodControl, { Timeframe } from "../FeePeriodControl";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { feesBasePath } from "../../api";
+import { formatZeroDigit } from "../../format";
 
 type LeaderboardRowProps = {
   detail?: string;
@@ -118,11 +119,24 @@ const BurnLeaderboard: FC = () => {
   const selectedLeaderboard: LeaderboardEntry[] | undefined =
     leaderboard && leaderboard[feePeriodToUpdateMap[feePeriod]];
 
+  const LONDON_TIMESTAMP = Date.parse("Aug 5 2021 12:33:42 UTC");
+  const msPerDay = 24 * 60 * 60 * 1000;
+  const daysSinceLondonFork = formatZeroDigit(
+    Math.floor((Date.now() - LONDON_TIMESTAMP) / msPerDay)
+  );
+
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8 h-full">
       <div className="flex flex-col justify-between items-start md:flex-row lg:flex-col xl:items-center xl:flex-row">
-        <p className="font-inter font-light uppercase text-blue-spindle text-md mb-4 md:mb-0 lg:mb-4 xl:mb-0">
-          burn leaderboard
+        <p className="font-inter font-light text-blue-spindle text-md mb-4 md:mb-0 lg:mb-4 xl:mb-0">
+          <span className="uppercase">burn leaderboard</span>{" "}
+          {feePeriod === "tAll" ? (
+            <span className="text-blue-manatee font-normal text-sm fadein-animation pl-2">
+              ({daysSinceLondonFork}d)
+            </span>
+          ) : (
+            ""
+          )}
         </p>
         <FeePeriodControl
           timeframe={feePeriod}

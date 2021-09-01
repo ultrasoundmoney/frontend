@@ -46,7 +46,7 @@ const CumulativeFeeBurn: FC = () => {
         <p className="font-inter font-light text-blue-spindle text-md mb-4 md:mb-0 lg:mb-4 xl:mb-0">
           <span className="uppercase">fee burn</span>{" "}
           {timeframe === "tAll" ? (
-            <span className="text-blue-manatee text-sm fadein-animation">
+            <span className="text-blue-manatee font-normal text-sm fadein-animation pl-2">
               ({daysSinceLondonFork}d)
             </span>
           ) : (
