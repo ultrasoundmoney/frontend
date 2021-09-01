@@ -4,7 +4,6 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 });
 const withImages = require("next-images");
 module.exports = flow([withBundleAnalyzer, withImages])({
-  future: { webpack5: true },
   trailingSlash: true,
   // Without the exportPathMap fleek deployments for /page break.
   exportPathMap: () => ({
@@ -12,4 +11,7 @@ module.exports = flow([withBundleAnalyzer, withImages])({
     "/landing": { page: "/landing" },
     "/dashboard": { page: "/dashboard" },
   }),
+  images: {
+    disableStaticImages: true,
+  },
 });

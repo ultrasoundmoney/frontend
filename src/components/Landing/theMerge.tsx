@@ -24,7 +24,7 @@ const TheMergeBlock: React.FC<{}> = () => {
             data-aos-delay="50"
             data-aos-duration="1000"
             data-aos-easing="ease-in-out"
-            className="w-full sm:w-4/12 md:mr-auto md:py-16"
+            className="w-full sm:w-4/12 md:mr-auto py-16"
           >
             <IconBlock
               icon={`${t.landing_goal_block1_icon} ${t.landing_goal_block1_icon}`}
