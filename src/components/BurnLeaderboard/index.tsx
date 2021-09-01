@@ -39,7 +39,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
         target="_blank"
         rel="noreferrer"
       >
-        <div className="hover:opacity-60 leaderboard-link flex flex-row items-center font-inter text-white text-base md:text-lg">
+        <div className="hover:opacity-60 link-animation flex flex-row items-center font-inter text-white text-base md:text-lg">
           <img className="w-8 h-8 leaderboard-image" src={imgSrc} alt="" />
           <p className="pl-4 truncate">
             {!name.startsWith("0x") ? (
