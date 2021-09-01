@@ -56,7 +56,7 @@ const percentOneDigitSigned = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 1,
   // signDisplay: "always",
   style: "percent",
-});
+} as any);
 
 export const formatPercentOneDigitSigned = (percent: number): string =>
   percentOneDigitSigned.format(percent);

@@ -29,7 +29,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
       ? "/leaderboard-images/bot.svg"
       : imageIds.includes(id)
       ? `/leaderboard-images/${id}.png`
-      : "/leaderboard-images/question-mark.png";
+      : "/leaderboard-images/question-mark.svg";
 
   return (
     <div className="pt-5 md:pt-6">

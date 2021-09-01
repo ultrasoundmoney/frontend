@@ -20,7 +20,8 @@ const parseApiEnv = (): Env => {
   const rawEnv = process.env.NEXT_PUBLIC_API_ENV;
 
   if (rawEnv === undefined) {
-    return parseEnv();
+    const env = parseEnv();
+    return env === "staging" ? "staging" : "prod";
   }
 
   switch (rawEnv) {
