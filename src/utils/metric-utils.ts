@@ -51,7 +51,7 @@ export function formatDate(d: Date): string {
     "Jul",
     "Aug",
     "Sep",
-    "Aug",
+    "Oct",
     "Nov",
     "Dec",
   ];
