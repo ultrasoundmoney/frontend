@@ -12,6 +12,7 @@ type LeaderboardRowProps = {
   id: string;
   name?: string;
   type: LeaderboardEntry["type"];
+  image: string | undefined;
 };
 
 const LeaderboardRow: FC<LeaderboardRowProps> = ({
@@ -20,9 +21,12 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
   id,
   name,
   type,
+  image,
 }) => {
   const imgSrc =
-    type === "eth-transfers"
+    typeof image === "string"
+      ? image
+      : type === "eth-transfers"
       ? "/leaderboard-images/transfer.svg"
       : type === "bot"
       ? "/leaderboard-images/bot.svg"
@@ -62,20 +66,12 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
   );
 };
 
-type LeaderboardEntry = {
+export type LeaderboardEntry = {
   fees: string;
   id: string;
   name: string;
   type?: "eth-transfers" | "bot" | "other";
-};
-
-type LeaderboardUpdate = {
-  number: number;
-  leaderboard1h: LeaderboardEntry[];
-  leaderboard24h: LeaderboardEntry[];
-  leaderboard7d: LeaderboardEntry[];
-  leaderboard30d: LeaderboardEntry[];
-  leaderboardAll: LeaderboardEntry[];
+  image: string | undefined;
 };
 
 const feePeriodToUpdateMap: Record<Timeframe, string> = {
@@ -129,6 +125,7 @@ const BurnLeaderboard: FC = () => {
                 id={leaderboardRow.id}
                 fees={Number(leaderboardRow.fees)}
                 type={leaderboardRow.type || "other"}
+                image={leaderboardRow.image}
               />
             </CSSTransition>
           ))}
