@@ -2,10 +2,9 @@ import { FC, memo, useState, useCallback } from "react";
 import CountUp from "react-countup";
 import imageIds from "../../assets/leaderboard-image-ids.json";
 import { weiToEth } from "../../utils/metric-utils";
-import useSWR from "swr";
 import FeePeriodControl, { Timeframe } from "../FeePeriodControl";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { feesBasePath } from "../../api";
+import { useFeeData } from "../../api";
 
 type LeaderboardRowProps = {
   detail?: string;
@@ -87,32 +86,13 @@ const feePeriodToUpdateMap: Record<Timeframe, string> = {
   tAll: "leaderboardAll",
 };
 
-const useLeaderboard = () => {
-  const { data, error } = useSWR<LeaderboardUpdate>(
-    `${feesBasePath}/burn-leaderboard`,
-    { refreshInterval: 8000 }
-  );
-
-  return {
-    leaderboard: {
-      leaderboard1h: data?.leaderboard1h,
-      leaderboard24h: data?.leaderboard24h,
-      leaderboard7d: data?.leaderboard7d,
-      leaderboard30d: data?.leaderboard30d,
-      leaderboardAll: data?.leaderboardAll,
-    },
-    isLoading: !error && !data,
-    isError: error,
-  };
-};
-
 const BurnLeaderboard: FC = () => {
   const [feePeriod, setFeePeriod] = useState<Timeframe>("t24h");
   const onSetFeePeriod = useCallback(setFeePeriod, [setFeePeriod]);
 
-  const { leaderboard } = useLeaderboard();
+  const { leaderboards } = useFeeData();
   const selectedLeaderboard: LeaderboardEntry[] | undefined =
-    leaderboard && leaderboard[feePeriodToUpdateMap[feePeriod]];
+    leaderboards && leaderboards[feePeriodToUpdateMap[feePeriod]];
 
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8 h-full">
