@@ -87,6 +87,14 @@ const feePeriodToUpdateMap: Record<Timeframe, string> = {
   tAll: "leaderboardAll",
 };
 
+const selectedLeaderboardLengthMap: Record<Timeframe, number> = {
+  t1h: 10,
+  t24h: 20,
+  t7d: 32,
+  t30d: 32,
+  tAll: 32,
+};
+
 const BurnLeaderboard: FC = () => {
   const [feePeriod, setFeePeriod] = useState<Timeframe>("t24h");
   const onSetFeePeriod = useCallback(setFeePeriod, [setFeePeriod]);
@@ -102,7 +110,7 @@ const BurnLeaderboard: FC = () => {
   );
 
   return (
-    <div className="bg-blue-tangaroa w-full rounded-lg p-8 h-full">
+    <div className="bg-blue-tangaroa w-full rounded-lg p-8">
       <div className="flex flex-col justify-between items-start md:flex-row lg:flex-col xl:items-center xl:flex-row">
         <p className="font-inter font-light text-blue-spindle text-md mb-4 md:mb-0 lg:mb-4 xl:mb-0">
           <span className="uppercase">burn leaderboard</span>{" "}
@@ -124,30 +132,34 @@ const BurnLeaderboard: FC = () => {
           loading...
         </p>
       ) : (
-        <TransitionGroup
-          component={null}
-          appear={false}
-          enter={true}
-          exit={false}
-        >
-          {selectedLeaderboard.slice(0, 10).map((leaderboardRow) => (
-            <CSSTransition
-              classNames="fee-block"
-              timeout={500}
-              key={leaderboardRow.id}
-            >
-              <LeaderboardRow
-                key={leaderboardRow.name}
-                name={leaderboardRow.name.split(":")[0]}
-                detail={leaderboardRow.name.split(":")[1]}
-                id={leaderboardRow.id}
-                fees={Number(leaderboardRow.fees)}
-                type={leaderboardRow.type || "other"}
-                image={leaderboardRow.image}
-              />
-            </CSSTransition>
-          ))}
-        </TransitionGroup>
+        <div className="overflow-auto mt-4" style={{ height: "35rem" }}>
+          <TransitionGroup
+            component={null}
+            appear={false}
+            enter={true}
+            exit={false}
+          >
+            {selectedLeaderboard
+              .slice(0, selectedLeaderboardLengthMap[feePeriod])
+              .map((leaderboardRow) => (
+                <CSSTransition
+                  classNames="fee-block"
+                  timeout={500}
+                  key={leaderboardRow.id}
+                >
+                  <LeaderboardRow
+                    key={leaderboardRow.name}
+                    name={leaderboardRow.name.split(":")[0]}
+                    detail={leaderboardRow.name.split(":")[1]}
+                    id={leaderboardRow.id}
+                    fees={Number(leaderboardRow.fees)}
+                    type={leaderboardRow.type || "other"}
+                    image={leaderboardRow.image}
+                  />
+                </CSSTransition>
+              ))}
+          </TransitionGroup>
+        </div>
       )}
     </div>
   );
