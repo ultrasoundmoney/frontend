@@ -5,6 +5,7 @@ import { weiToEth } from "../../utils/metric-utils";
 import FeePeriodControl, { Timeframe } from "../FeePeriodControl";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useFeeData } from "../../api";
+import { formatZeroDigit } from "../../format";
 
 type LeaderboardRowProps = {
   detail?: string;
@@ -27,24 +28,28 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
     typeof image === "string"
       ? image
       : type === "eth-transfers"
-      ? "/leaderboard-images/transfer.svg"
+      ? "/leaderboard-images/transfer-v2.svg"
       : type === "bot"
-      ? "/leaderboard-images/bot.svg"
+      ? "/leaderboard-images/bot-v2.svg"
       : imageIds.includes(id)
       ? `/leaderboard-images/${id}.png`
-      : "/leaderboard-images/question-mark.svg";
+      : "/leaderboard-images/question-mark-v2.svg";
 
   return (
-    <div className="pt-5 md:pt-6">
+    <div className="pt-5 xl:pt-6">
       <a
-        href={id.startsWith("0x") ? `https://etherscan.io/address/${id}` : ""}
+        href={id.startsWith("0x") ? `https://etherscan.io/address/${id}` : null}
         target="_blank"
         rel="noreferrer"
       >
-        <div className="hover:opacity-60 leaderboard-link flex flex-row items-center font-inter text-white text-base md:text-lg">
+        <div className="hover:opacity-60 link-animation flex flex-row items-center font-inter text-white text-base md:text-lg">
           <img className="w-8 h-8 leaderboard-image" src={imgSrc} alt="" />
           <p className="pl-4 truncate">
-            {name || <span className="font-roboto">{id}</span>}
+            {!name.startsWith("0x") ? (
+              name
+            ) : (
+              <span className="font-roboto">{id}</span>
+            )}
           </p>
           <p className="pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block">
             {detail}
@@ -90,11 +95,24 @@ const BurnLeaderboard: FC = () => {
   const selectedLeaderboard: LeaderboardEntry[] | undefined =
     leaderboards && leaderboards[feePeriodToUpdateMap[feePeriod]];
 
+  const LONDON_TIMESTAMP = Date.parse("Aug 5 2021 12:33:42 UTC");
+  const msPerDay = 24 * 60 * 60 * 1000;
+  const daysSinceLondonFork = formatZeroDigit(
+    Math.floor((Date.now() - LONDON_TIMESTAMP) / msPerDay)
+  );
+
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8 h-full">
       <div className="flex flex-col justify-between items-start md:flex-row lg:flex-col xl:items-center xl:flex-row">
-        <p className="font-inter font-light uppercase text-blue-spindle text-md mb-4 md:mb-0 lg:mb-4 xl:mb-0">
-          burn leaderboard
+        <p className="font-inter font-light text-blue-spindle text-md mb-4 md:mb-0 lg:mb-4 xl:mb-0">
+          <span className="uppercase">burn leaderboard</span>{" "}
+          {feePeriod === "tAll" ? (
+            <span className="text-blue-manatee font-normal text-sm fadein-animation pl-2">
+              ({daysSinceLondonFork}d)
+            </span>
+          ) : (
+            ""
+          )}
         </p>
         <FeePeriodControl
           timeframe={feePeriod}

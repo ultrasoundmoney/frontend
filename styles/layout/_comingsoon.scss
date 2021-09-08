@@ -1,4 +1,4 @@
-.coming-soon {
+.blurred-bg-image {
   background-image: url("../../src/assets/blurred-bg.svg");
   background-repeat: no-repeat;
   background-position: center -300px;
@@ -167,7 +167,7 @@
   opacity: 1;
 }
 
-.leaderboard-link {
+.link-animation {
   transition-property: opacity;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;

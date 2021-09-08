@@ -45,7 +45,7 @@ interface HighchartsRef {
 
 let mouseOutTimer: NodeJS.Timeout | null = null;
 
-const LONDON_DATE = DateTime.fromISO("2021-08-04T00:00:00Z");
+const LONDON_DATE = DateTime.fromISO("2021-08-05T00:00:00Z");
 const NUM_DAYS_PER_POINT = 7;
 const COMPACT_MARKERS_BELOW_WIDTH = 1440;
 const COMPACT_CHART_BELOW_WIDTH = 640;

@@ -40,22 +40,30 @@ const LatestBlocks: FC = () => {
                     timeout={2000}
                     key={number}
                   >
-                    <li className="flex justify-between mt-3 fee-block">
-                      <p className="text-white">
-                        block{" "}
-                        <span className="font-roboto">
-                          #{formatNoDigit(number)}
-                        </span>
-                      </p>
-                      <p className="text-white text-base md:text-lg">
-                        <span className="font-roboto">
-                          {formatWeiTwoDigit(fees)}{" "}
-                        </span>
-                        <span className="text-blue-spindle font-extralight">
-                          ETH
-                        </span>
-                      </p>
-                    </li>
+                    <div className="fee-block">
+                      <a
+                        href={`https://etherscan.io/block/${number}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <li className="flex justify-between mt-3 hover:opacity-60 link-animation">
+                          <p className="text-white">
+                            block{" "}
+                            <span className="font-roboto">
+                              #{formatNoDigit(number)}
+                            </span>
+                          </p>
+                          <p className="text-white text-base md:text-lg">
+                            <span className="font-roboto">
+                              {formatWeiTwoDigit(fees)}{" "}
+                            </span>
+                            <span className="text-blue-spindle font-extralight">
+                              ETH
+                            </span>
+                          </p>
+                        </li>
+                      </a>
+                    </div>
                   </CSSTransition>
                 ))}
           </TransitionGroup>
