@@ -8,24 +8,24 @@ import { formatZeroDigit } from "../../format";
 const weiToEth = (wei: number): number => wei / 10 ** 18;
 
 const timeframeFeesBurnedMap: Record<Timeframe, keyof FeesBurned> = {
-  t1h: "feesBurned1h",
-  t24h: "feesBurned24h",
-  t7d: "feesBurned7d",
-  t30d: "feesBurned30d",
-  tAll: "feesBurnedAll",
+  "1h": "feesBurned1h",
+  "24h": "feesBurned24h",
+  "7d": "feesBurned7d",
+  "30d": "feesBurned30d",
+  all: "feesBurnedAll",
 };
 
 const timeframeBurnRateMap: Record<Timeframe, keyof BurnRates> = {
-  t1h: "burnRate1h",
-  t24h: "burnRate24h",
-  t7d: "burnRate7d",
-  t30d: "burnRate30d",
-  tAll: "burnRateAll",
+  "1h": "burnRate1h",
+  "24h": "burnRate24h",
+  "7d": "burnRate7d",
+  "30d": "burnRate30d",
+  all: "burnRateAll",
 };
 
 const CumulativeFeeBurn: FC = () => {
   const { feesBurned, burnRates } = useFeeData();
-  const [timeframe, setFeePeriod] = useState<Timeframe>("tAll");
+  const [timeframe, setFeePeriod] = useState<string>("all");
 
   const onSetFeePeriod = useCallback(setFeePeriod, [setFeePeriod]);
 
@@ -54,7 +54,8 @@ const CumulativeFeeBurn: FC = () => {
           )}
         </p>
         <FeePeriodControl
-          timeframe={timeframe}
+          timeframes={["1h", "24h", "7d", "30d", "all"]}
+          selectedTimeframe={timeframe}
           onSetFeePeriod={onSetFeePeriod}
         />
       </div>

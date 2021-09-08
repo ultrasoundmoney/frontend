@@ -2,7 +2,7 @@ import { FC, memo, useState, useCallback } from "react";
 import CountUp from "react-countup";
 import imageIds from "../../assets/leaderboard-image-ids.json";
 import { weiToEth } from "../../utils/metric-utils";
-import FeePeriodControl, { Timeframe } from "../FeePeriodControl";
+import FeePeriodControl from "../FeePeriodControl";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useFeeData } from "../../api";
 import { formatZeroDigit } from "../../format";
@@ -80,23 +80,28 @@ export type LeaderboardEntry = {
 };
 
 const feePeriodToUpdateMap: Record<Timeframe, string> = {
-  t1h: "leaderboard1h",
-  t24h: "leaderboard24h",
-  t7d: "leaderboard7d",
-  t30d: "leaderboard30d",
-  tAll: "leaderboardAll",
+  "5m": "leaderboard5m",
+  "1h": "leaderboard1h",
+  "24h": "leaderboard24h",
+  "7d": "leaderboard7d",
+  "30d": "leaderboard30d",
+  all: "leaderboardAll",
 };
 
 const selectedLeaderboardLengthMap: Record<Timeframe, number> = {
-  t1h: 10,
-  t24h: 20,
-  t7d: 32,
-  t30d: 32,
-  tAll: 32,
+  "5m": 10,
+  "1h": 10,
+  "24h": 20,
+  "7d": 32,
+  "30d": 32,
+  all: 32,
 };
 
+type Timeframe = "5m" | "1h" | "24h" | "7d" | "30d" | "all";
+const timeframes: Timeframe[] = ["5m", "1h", "24h", "7d", "30d", "all"];
+
 const BurnLeaderboard: FC = () => {
-  const [feePeriod, setFeePeriod] = useState<Timeframe>("t24h");
+  const [feePeriod, setFeePeriod] = useState<string>("24h");
   const onSetFeePeriod = useCallback(setFeePeriod, [setFeePeriod]);
 
   const { leaderboards } = useFeeData();
@@ -114,7 +119,7 @@ const BurnLeaderboard: FC = () => {
       <div className="flex flex-col justify-between items-start md:flex-row lg:flex-col xl:items-center xl:flex-row">
         <p className="font-inter font-light text-blue-spindle text-md mb-4 md:mb-0 lg:mb-4 xl:mb-0">
           <span className="uppercase">burn leaderboard</span>{" "}
-          {feePeriod === "tAll" ? (
+          {feePeriod === "all" ? (
             <span className="text-blue-manatee font-normal text-sm fadein-animation pl-2">
               ({daysSinceLondonFork}d)
             </span>
@@ -123,7 +128,8 @@ const BurnLeaderboard: FC = () => {
           )}
         </p>
         <FeePeriodControl
-          timeframe={feePeriod}
+          timeframes={timeframes}
+          selectedTimeframe={feePeriod}
           onSetFeePeriod={onSetFeePeriod}
         />
       </div>
