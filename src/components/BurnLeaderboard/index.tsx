@@ -2,10 +2,10 @@ import { FC, memo, useState, useCallback } from "react";
 import CountUp from "react-countup";
 import imageIds from "../../assets/leaderboard-image-ids.json";
 import { weiToEth } from "../../utils/metric-utils";
-import useSWR from "swr";
-import FeePeriodControl, { Timeframe } from "../FeePeriodControl";
+import FeePeriodControl from "../FeePeriodControl";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { feesBasePath } from "../../api";
+import { useFeeData } from "../../api";
+import { formatZeroDigit } from "../../format";
 
 type LeaderboardRowProps = {
   detail?: string;
@@ -13,6 +13,7 @@ type LeaderboardRowProps = {
   id: string;
   name?: string;
   type: LeaderboardEntry["type"];
+  image: string | undefined;
 };
 
 const LeaderboardRow: FC<LeaderboardRowProps> = ({
@@ -21,27 +22,34 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
   id,
   name,
   type,
+  image,
 }) => {
   const imgSrc =
-    type === "eth-transfers"
-      ? "/leaderboard-images/transfer.svg"
+    typeof image === "string"
+      ? image
+      : type === "eth-transfers"
+      ? "/leaderboard-images/transfer-v2.svg"
       : type === "bot"
-      ? "/leaderboard-images/bot.svg"
+      ? "/leaderboard-images/bot-v2.svg"
       : imageIds.includes(id)
       ? `/leaderboard-images/${id}.png`
-      : "/leaderboard-images/question-mark.svg";
+      : "/leaderboard-images/question-mark-v2.svg";
 
   return (
-    <div className="pt-5 md:pt-6">
+    <div className="pt-5 xl:pt-6">
       <a
-        href={id.startsWith("0x") ? `https://etherscan.io/address/${id}` : ""}
+        href={id.startsWith("0x") ? `https://etherscan.io/address/${id}` : null}
         target="_blank"
         rel="noreferrer"
       >
-        <div className="hover:opacity-60 leaderboard-link flex flex-row items-center font-inter text-white text-base md:text-lg">
+        <div className="hover:opacity-60 link-animation flex flex-row items-center font-inter text-white text-base md:text-lg">
           <img className="w-8 h-8 leaderboard-image" src={imgSrc} alt="" />
           <p className="pl-4 truncate">
-            {name || <span className="font-roboto">{id}</span>}
+            {!name.startsWith("0x") ? (
+              name
+            ) : (
+              <span className="font-roboto">{id}</span>
+            )}
           </p>
           <p className="pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block">
             {detail}
@@ -63,65 +71,65 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
   );
 };
 
-type LeaderboardEntry = {
+export type LeaderboardEntry = {
   fees: string;
   id: string;
   name: string;
   type?: "eth-transfers" | "bot" | "other";
-};
-
-type LeaderboardUpdate = {
-  number: number;
-  leaderboard1h: LeaderboardEntry[];
-  leaderboard24h: LeaderboardEntry[];
-  leaderboard7d: LeaderboardEntry[];
-  leaderboard30d: LeaderboardEntry[];
-  leaderboardAll: LeaderboardEntry[];
+  image: string | undefined;
 };
 
 const feePeriodToUpdateMap: Record<Timeframe, string> = {
-  t1h: "leaderboard1h",
-  t24h: "leaderboard24h",
-  t7d: "leaderboard7d",
-  t30d: "leaderboard30d",
-  tAll: "leaderboardAll",
+  "5m": "leaderboard5m",
+  "1h": "leaderboard1h",
+  "24h": "leaderboard24h",
+  "7d": "leaderboard7d",
+  "30d": "leaderboard30d",
+  all: "leaderboardAll",
 };
 
-const useLeaderboard = () => {
-  const { data, error } = useSWR<LeaderboardUpdate>(
-    `${feesBasePath}/burn-leaderboard`,
-    { refreshInterval: 8000 }
-  );
-
-  return {
-    leaderboard: {
-      leaderboard1h: data?.leaderboard1h,
-      leaderboard24h: data?.leaderboard24h,
-      leaderboard7d: data?.leaderboard7d,
-      leaderboard30d: data?.leaderboard30d,
-      leaderboardAll: data?.leaderboardAll,
-    },
-    isLoading: !error && !data,
-    isError: error,
-  };
+const selectedLeaderboardLengthMap: Record<Timeframe, number> = {
+  "5m": 10,
+  "1h": 10,
+  "24h": 20,
+  "7d": 32,
+  "30d": 32,
+  all: 32,
 };
+
+type Timeframe = "5m" | "1h" | "24h" | "7d" | "30d" | "all";
+const timeframes: Timeframe[] = ["5m", "1h", "24h", "7d", "30d", "all"];
 
 const BurnLeaderboard: FC = () => {
-  const [feePeriod, setFeePeriod] = useState<Timeframe>("t24h");
+  const [feePeriod, setFeePeriod] = useState<string>("24h");
   const onSetFeePeriod = useCallback(setFeePeriod, [setFeePeriod]);
 
-  const { leaderboard } = useLeaderboard();
+  const { leaderboards } = useFeeData();
   const selectedLeaderboard: LeaderboardEntry[] | undefined =
-    leaderboard && leaderboard[feePeriodToUpdateMap[feePeriod]];
+    leaderboards && leaderboards[feePeriodToUpdateMap[feePeriod]];
+
+  const LONDON_TIMESTAMP = Date.parse("Aug 5 2021 12:33:42 UTC");
+  const msPerDay = 24 * 60 * 60 * 1000;
+  const daysSinceLondonFork = formatZeroDigit(
+    Math.floor((Date.now() - LONDON_TIMESTAMP) / msPerDay)
+  );
 
   return (
-    <div className="bg-blue-tangaroa w-full rounded-lg p-8 h-full">
+    <div className="bg-blue-tangaroa w-full rounded-lg p-8">
       <div className="flex flex-col justify-between items-start md:flex-row lg:flex-col xl:items-center xl:flex-row">
-        <p className="font-inter font-light uppercase text-blue-spindle text-md mb-4 md:mb-0 lg:mb-4 xl:mb-0">
-          burn leaderboard
+        <p className="font-inter font-light text-blue-spindle text-md mb-4 md:mb-0 lg:mb-4 xl:mb-0">
+          <span className="uppercase">burn leaderboard</span>{" "}
+          {feePeriod === "all" ? (
+            <span className="text-blue-manatee font-normal text-sm fadein-animation pl-2">
+              ({daysSinceLondonFork}d)
+            </span>
+          ) : (
+            ""
+          )}
         </p>
         <FeePeriodControl
-          timeframe={feePeriod}
+          timeframes={timeframes}
+          selectedTimeframe={feePeriod}
           onSetFeePeriod={onSetFeePeriod}
         />
       </div>
@@ -130,29 +138,34 @@ const BurnLeaderboard: FC = () => {
           loading...
         </p>
       ) : (
-        <TransitionGroup
-          component={null}
-          appear={false}
-          enter={true}
-          exit={false}
-        >
-          {selectedLeaderboard.slice(0, 10).map((leaderboardRow) => (
-            <CSSTransition
-              classNames="fee-block"
-              timeout={500}
-              key={leaderboardRow.id}
-            >
-              <LeaderboardRow
-                key={leaderboardRow.name}
-                name={leaderboardRow.name.split(":")[0]}
-                detail={leaderboardRow.name.split(":")[1]}
-                id={leaderboardRow.id}
-                fees={Number(leaderboardRow.fees)}
-                type={leaderboardRow.type || "other"}
-              />
-            </CSSTransition>
-          ))}
-        </TransitionGroup>
+        <div className="overflow-auto mt-4" style={{ height: "35rem" }}>
+          <TransitionGroup
+            component={null}
+            appear={false}
+            enter={true}
+            exit={false}
+          >
+            {selectedLeaderboard
+              .slice(0, selectedLeaderboardLengthMap[feePeriod])
+              .map((leaderboardRow) => (
+                <CSSTransition
+                  classNames="fee-block"
+                  timeout={500}
+                  key={leaderboardRow.id}
+                >
+                  <LeaderboardRow
+                    key={leaderboardRow.name}
+                    name={leaderboardRow.name.split(":")[0]}
+                    detail={leaderboardRow.name.split(":")[1]}
+                    id={leaderboardRow.id}
+                    fees={Number(leaderboardRow.fees)}
+                    type={leaderboardRow.type || "other"}
+                    image={leaderboardRow.image}
+                  />
+                </CSSTransition>
+              ))}
+          </TransitionGroup>
+        </div>
       )}
     </div>
   );

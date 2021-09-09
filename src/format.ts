@@ -34,6 +34,13 @@ const twoDigit = new Intl.NumberFormat("en-US", {
 export const formatWeiTwoDigit = (wei: number): string =>
   pipe(wei, weiToEth, (num) => twoDigit.format(num));
 
+const zeroDigit = new Intl.NumberFormat("en-US", {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0,
+});
+
+export const formatZeroDigit = (num: number): string => zeroDigit.format(num);
+
 const oneDigit = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 1,
   maximumFractionDigits: 1,
@@ -54,9 +61,9 @@ export const formatUsdZeroDigit = (num: number): string =>
 const percentOneDigitSigned = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 1,
   maximumFractionDigits: 1,
-  // signDisplay: "always",
+  //signDisplay: "always",
   style: "percent",
-} as any);
+} as unknown);
 
 export const formatPercentOneDigitSigned = (percent: number): string =>
   percentOneDigitSigned.format(percent);

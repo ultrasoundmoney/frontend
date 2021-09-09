@@ -1,6 +1,7 @@
 import useSWR from "swr";
 import config from "./config";
 import { milisFromSeconds } from "./duration";
+import { LeaderboardEntry } from "./components/BurnLeaderboard";
 
 export const famBasePath = "https://api-prod.ultrasound.money/fam";
 
@@ -30,6 +31,14 @@ export type FeesBurned = {
   feesBurnedAll: Wei;
 };
 
+export type Leaderboards = {
+  leaderboard1h: LeaderboardEntry[];
+  leaderboard24h: LeaderboardEntry[];
+  leaderboard7d: LeaderboardEntry[];
+  leaderboard30d: LeaderboardEntry[];
+  leaderboardAll: LeaderboardEntry[];
+};
+
 export type FeeData = {
   baseFeePerGas: number | undefined;
   burnRates: BurnRates | undefined;
@@ -39,6 +48,7 @@ export type FeeData = {
   }[];
   number: number | undefined;
   feesBurned: FeesBurned | undefined;
+  leaderboards: Leaderboards | undefined;
 };
 
 export const useFeeData = (): FeeData => {
@@ -53,6 +63,7 @@ export const useFeeData = (): FeeData => {
         latestBlockFees: data.latestBlockFees,
         number: data.number,
         feesBurned: data.feesBurned,
+        leaderboards: data.leaderboards,
       }
     : {
         baseFeePerGas: undefined,
@@ -60,6 +71,7 @@ export const useFeeData = (): FeeData => {
         latestBlockFees: [],
         number: undefined,
         feesBurned: undefined,
+        leaderboards: undefined,
       };
 };
 

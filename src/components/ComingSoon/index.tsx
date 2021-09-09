@@ -18,7 +18,11 @@ import SupplyGrowthGauge from "../Gauges/SupplyGrowthGauge";
 import BurnGauge from "../Gauges/BurnGauge";
 import { useCallback } from "react";
 import { useEthPrices, useFeeData } from "../../api";
-import { formatPercentOneDigitSigned, formatUsdZeroDigit } from "../../format";
+import {
+  formatPercentOneDigitSigned,
+  formatUsdZeroDigit,
+  formatOneDigit,
+} from "../../format";
 
 const ComingSoon: FC = () => {
   const t = useContext(TranslationsContext);
@@ -40,8 +44,8 @@ const ComingSoon: FC = () => {
   }, [simulateMerge]);
 
   return (
-    <div className="wrapper bg-blue-midnightexpress">
-      <div className="container m-auto coming-soon">
+    <div className="wrapper bg-blue-midnightexpress blurred-bg-image">
+      <div className="container m-auto">
         <div className="flex justify-between">
           <div className="w-full flex justify-between md:justify-start p-4">
             <Link href="/">
@@ -53,7 +57,7 @@ const ComingSoon: FC = () => {
                 <span className={`px-1 ${color}`}>({ethUsd24hChange})</span>
                 <span className="px-1">•</span>
                 <SpanMoji emoji="⛽️"></SpanMoji>
-                {weiToGwei(baseFeePerGas).toFixed(1)} Gwei
+                {formatOneDigit(weiToGwei(baseFeePerGas))} Gwei
               </div>
             )}
           </div>
@@ -110,13 +114,13 @@ const ComingSoon: FC = () => {
         </div>
         <div className="w-4 h-4" />
         <div className="flex flex-col px-4 lg:w-full lg:flex-row md:px-16 isolate">
-          <div className="lg:w-1/2">
+          <div className="lg:w-1/2 lg:pr-2">
             <CumulativeFeeBurn />
-            <span className="block w-4 h-4" />
+            <span className="block h-4" />
             <LatestBlocks />
           </div>
-          <span className="block w-4 h-4" />
-          <div className="lg:w-1/2">
+          <span className="block h-4" />
+          <div className="lg:w-1/2 lg:pl-2">
             <BurnLeaderboard />
           </div>
         </div>
