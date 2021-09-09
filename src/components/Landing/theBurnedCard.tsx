@@ -40,32 +40,32 @@ const FeeBurnedBlcok: React.FC<FeeBurnedBlcokProps> = () => {
     <>
       <div
         id="eth-card"
-        className="fixed-fee-burned flex flex-wrap justify-center w-full md:w-full xl:w-10/12 md:mx-auto px-4 md:px-8 lg:px-0 sticky"
+        className="fixed-fee-burned flex flex-wrap justify-center w-full md:w-full xl:w-10/12 md:mx-auto px-4 md:px-0 lg:px-0 sticky"
       >
         <Card
           type={1}
           name={`Status ${t.landing_feeburned_card1_name}`}
           title={t.landing_feeburned_card1_title}
-          className="w-full md:w-auto md:flex-1 mb-4 lg:mb-0 burned_1"
+          className="w-full md:w-w-21 xl:flex-1 mb-4 lg:mb-0 burned_1"
         />
         <Card
           type={2}
           name={t.landing_feeburned_card2_name}
           title={t.landing_feeburned_card2_title}
           number={t.landing_feeburned_card2_title1}
-          className="w-full md:w-auto md:flex-initial mb-4 lg:mb-0 burned_2"
+          className="w-full md:w-w-21 lg:w-auto xl:flex-initial mb-4 lg:mb-0 burned_2"
         />
         <Card
           type={3}
           name={t.landing_feeburned_card3_name}
           title={t.landing_feeburned_card3_title}
-          className="w-full md:w-auto md:flex-1 mb-4 lg:mb-0 burned_3"
+          className="w-full md:w-w-21 xl:flex-1 mb-4 lg:mb-0 burned_3"
         />
         <Card
           type={3}
           name={t.landing_feeburned_card4_name}
           title={t.landing_feeburned_card4_title}
-          className="w-full md:w-auto mb-4 lg:mb-0 burned_4"
+          className="w-full md:w-w-21 xl:flex-1 mb-4 lg:mb-0 burned_4"
         />
       </div>
     </>
