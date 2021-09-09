@@ -20,17 +20,17 @@ const Card: React.FC<CardProps> = ({
   const renderType = () => {
     if (type === 1) {
       return (
-        <div className="eth-status text-lg font-light text-white text-left xl:leading-10 font-roboto">
+        <div className="eth-status text-base font-light text-white text-left xl:leading-10 font-roboto">
           {title}
         </div>
       );
     } else if (type === 2) {
       return (
         <div className="flex flex-wrap justify-between">
-          <div className="eth-supply text-41xl font-light text-white text-left xl:leading-18 font-roboto">
+          <div className="eth-supply text-2xl xl:text-41xl font-light text-white text-left xl:leading-18 font-roboto">
             {title}
           </div>
-          <div className="eth-supply-incr md:pl-8 text-base font-light text-green-mediumspring text-left leading-loose1 font-roboto">
+          <div className="eth-supply-incr md:pl-8 text-sm xl:text-base font-light text-green-mediumspring text-left leading-loose1 font-roboto">
             {number}
           </div>
         </div>
@@ -38,7 +38,7 @@ const Card: React.FC<CardProps> = ({
     } else if (type === 3) {
       return (
         <div
-          className="eth-burn-fee card-text text-21xl font-light text-white text-left leading-10 font-roboto"
+          className="eth-burn-fee card-text text-2xl xl:text-21xl font-light text-white text-left leading-10 font-roboto"
           dangerouslySetInnerHTML={{
             __html: title,
           }}
@@ -46,7 +46,7 @@ const Card: React.FC<CardProps> = ({
       );
     } else {
       return (
-        <div className="text-lg font-light text-white text-left leading-10 font-roboto">
+        <div className="text-base xl:text-lg font-light text-white text-left leading-10 font-roboto">
           {title}
         </div>
       );

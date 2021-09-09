@@ -502,7 +502,7 @@ const LandingPage: React.FC<{}> = () => {
 
   return (
     <>
-      <div className="wrapper bg-blue-midnightexpress">
+      <div className="wrapper bg-blue-midnightexpress blurred-bg-image">
         <div className="container m-auto">
           <Navigation />
           <Intro />
@@ -519,7 +519,7 @@ const LandingPage: React.FC<{}> = () => {
             data-aos-delay="100"
             data-aos-duration="1000"
             data-aos-easing="ease-in-out"
-            className="flex flex-col px-4 md:px-0 mb-16"
+            className="flex flex-col px-4 md:px-0 mt-20 mb-16"
             id="supplyview"
           >
             <div className="w-full md:w-5/6 lg:w-5/6 md:m-auto relative bg-blue-tangaroa md:px-8 py-4 md:py-16 rounded-xl">
@@ -539,7 +539,7 @@ const LandingPage: React.FC<{}> = () => {
             data-aos-duration="1000"
             data-aos-easing="ease-in-out"
             className="flex px-4 md:px-8 lg:px-0 py-8 md:py-40"
-            id="join-the-community"
+            id="join-the-fam"
           >
             <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
               <TwitterCommunity />

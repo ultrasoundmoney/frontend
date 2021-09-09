@@ -40,6 +40,7 @@ module.exports = {
       },
       width: {
         "w-23": "23%",
+        "w-21": "21%",
       },
       spacing: {
         "42": "165px",

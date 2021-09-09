@@ -257,19 +257,19 @@
     width: 100%;
     transition: all 300ms;
 
-    &::before {
-        position: absolute;
-        content: '';
-        background-image: url("../../src/assets/glow.svg");
-        background-repeat: no-repeat;
-        background-position: center left;
-        background-size: contain;
-        height: 100%;
-        width: 100%;
-        bottom: 0px;
-        left: 0px;
-        z-index: 0;
-    }
+    // &::before {
+    //     position: absolute;
+    //     content: '';
+    //     background-image: url("../../src/assets/glow.svg");
+    //     background-repeat: no-repeat;
+    //     background-position: center left;
+    //     background-size: contain;
+    //     width: 100%;
+    //     height: auto;
+    //     bottom: 0px;
+    //     left: 0px;
+    //     z-index: 0;
+    // }
 }
 
 .fixed-fee-burned {
@@ -449,7 +449,7 @@
     padding: 10px;
     margin-left: auto;
     margin-right: auto;
-    overflow: scroll;
+    // overflow: scroll;
     position: relative;
 }
 
@@ -484,4 +484,26 @@
 
 .y-scroll .element {
     margin-bottom: 10px;
+}
+
+.overflow_scroll {
+    overflow: auto;
+}
+
+.block-fee-burn {
+    position: relative;
+
+    &::before {
+        position: absolute;
+        content: '';
+        background-image: url("../../src/assets/bat-bg/Blurredbg.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        width: 100%;
+        height: 100%;
+        bottom: 30px;
+        left: 0px;
+        z-index: 0;
+    }
 }

@@ -9,8 +9,8 @@ const GoalBlcok: React.FC<GoalBlcokProps> = ({ styles }) => {
   const t = React.useContext(TranslationsContext);
   const getClassName =
     styles != undefined || styles != null
-      ? `block w-full lg:w-7/12 lg:m-auto px-4 md:px-8 lg:px-0 ${styles}`
-      : `block w-full lg:w-7/12 lg:m-auto px-4 md:px-8 lg:px-0`;
+      ? `block w-full lg:w-7/12 lg:m-auto px-4 md:px-8 md:py-8 bg-blue-tangaroa rounded-xl ${styles}`
+      : `block w-full lg:w-7/12 lg:m-auto px-4 md:px-8 md:py-8 bg-blue-tangaroa rounded-xl`;
   return (
     <>
       <section
