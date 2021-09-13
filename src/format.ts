@@ -61,9 +61,9 @@ export const formatUsdZeroDigit = (num: number): string =>
 const percentOneDigitSigned = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 1,
   maximumFractionDigits: 1,
-  //signDisplay: "always",
+  signDisplay: "always",
   style: "percent",
-} as unknown);
+});
 
 export const formatPercentOneDigitSigned = (percent: number): string =>
   percentOneDigitSigned.format(percent);
