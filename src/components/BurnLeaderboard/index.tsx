@@ -47,10 +47,10 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
         <div className="hover:opacity-60 link-animation flex flex-row items-center font-inter text-white text-base md:text-lg">
           <img className="w-8 h-8 leaderboard-image" src={imgSrc} alt="" />
           <p className="pl-4 truncate">
-            {!name.startsWith("0x") || name === "0x" ? (
-              name
-            ) : (
+            {name.startsWith("0x") && name.length === 42 ? (
               <span className="font-roboto">{id}</span>
+            ) : (
+              name
             )}
           </p>
           <p className="pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block">
