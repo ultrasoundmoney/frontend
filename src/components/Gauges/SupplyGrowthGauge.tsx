@@ -27,7 +27,7 @@ const useGrowthRate = (simulateMerge: boolean): number => {
     // Burn rates are per minute.
     const feeBurnYear =
       burnRates !== undefined
-        ? weiToEth(burnRates.burnRate30d) * 60 * 24 * 365.25
+        ? weiToEth(burnRates.burnRateAll) * 60 * 24 * 365.25
         : 0;
     const growthRateWithPoWIssuance =
       (powIssuanceYear + posIssuanceYear - feeBurnYear) /
