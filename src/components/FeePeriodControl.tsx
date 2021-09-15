@@ -21,7 +21,7 @@ const FeePeriodControl: FC<FeePeriodControlProps> = ({
       {timeframes.map((timeframe) => (
         <button
           key={timeframe}
-          className={`font-inter text-sm px-4 py-1 border border-transparent ${
+          className={`font-inter text-sm px-3 py-1 border border-transparent ${
             selectedTimeframe === timeframe
               ? activePeriodClasses
               : "text-blue-manatee"
