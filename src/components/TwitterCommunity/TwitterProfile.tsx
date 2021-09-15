@@ -19,7 +19,7 @@ const TwitterProfile: React.FC<TwitterProfilePros> = ({ profileList }) => {
       >
         {profileList &&
           profileList
-            .slice(0, 60)
+            .slice(0, 120)
             .map((item: TwitterProfile, index: number) => (
               <div key={index} className="m-2 w-10 h-10">
                 <ProfileTooltip item={item}>
