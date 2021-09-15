@@ -31,6 +31,8 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
       ? "/leaderboard-images/transfer-v2.svg"
       : type === "bot"
       ? "/leaderboard-images/bot-v2.svg"
+      : type === "contract-creations"
+      ? "/leaderboard-images/contract-creations.svg"
       : imageIds.includes(id)
       ? `/leaderboard-images/${id}.png`
       : "/leaderboard-images/question-mark-v2.svg";
@@ -75,7 +77,7 @@ export type LeaderboardEntry = {
   fees: string;
   id: string;
   name: string;
-  type?: "eth-transfers" | "bot" | "other";
+  type?: "eth-transfers" | "bot" | "other" | "contract-creations";
   image: string | undefined;
 };
 
