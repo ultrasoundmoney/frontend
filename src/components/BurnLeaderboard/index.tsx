@@ -90,15 +90,6 @@ const feePeriodToUpdateMap: Record<Timeframe, string> = {
   all: "leaderboardAll",
 };
 
-const selectedLeaderboardLengthMap: Record<Timeframe, number> = {
-  "5m": 10,
-  "1h": 10,
-  "24h": 20,
-  "7d": 32,
-  "30d": 32,
-  all: 32,
-};
-
 type Timeframe = "5m" | "1h" | "24h" | "7d" | "30d" | "all";
 const timeframes: Timeframe[] = ["5m", "1h", "24h", "7d", "30d", "all"];
 
@@ -147,25 +138,23 @@ const BurnLeaderboard: FC = () => {
             enter={true}
             exit={false}
           >
-            {selectedLeaderboard
-              .slice(0, selectedLeaderboardLengthMap[feePeriod])
-              .map((leaderboardRow) => (
-                <CSSTransition
-                  classNames="fee-block"
-                  timeout={500}
-                  key={leaderboardRow.id}
-                >
-                  <LeaderboardRow
-                    key={leaderboardRow.name}
-                    name={leaderboardRow.name.split(":")[0]}
-                    detail={leaderboardRow.name.split(":")[1]}
-                    id={leaderboardRow.id}
-                    fees={Number(leaderboardRow.fees)}
-                    type={leaderboardRow.type || "other"}
-                    image={leaderboardRow.image}
-                  />
-                </CSSTransition>
-              ))}
+            {selectedLeaderboard.map((leaderboardRow) => (
+              <CSSTransition
+                classNames="fee-block"
+                timeout={500}
+                key={leaderboardRow.id}
+              >
+                <LeaderboardRow
+                  key={leaderboardRow.name}
+                  name={leaderboardRow.name.split(":")[0]}
+                  detail={leaderboardRow.name.split(":")[1]}
+                  id={leaderboardRow.id}
+                  fees={Number(leaderboardRow.fees)}
+                  type={leaderboardRow.type || "other"}
+                  image={leaderboardRow.image}
+                />
+              </CSSTransition>
+            ))}
           </TransitionGroup>
         </div>
       )}
