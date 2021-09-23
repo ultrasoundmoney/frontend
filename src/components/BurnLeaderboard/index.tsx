@@ -48,13 +48,15 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
           <img className="w-8 h-8 leaderboard-image" src={imgSrc} alt="" />
           <p className="pl-4 truncate">
             {name.startsWith("0x") && name.length === 42 ? (
-              <span className="font-roboto">{id}</span>
+              <span className="font-roboto">
+                {"0x" + id.slice(2, 6) + "..." + id.slice(38, 42)}
+              </span>
             ) : (
               name
             )}
           </p>
           <p className="pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block">
-            {detail}
+            {name.startsWith("0x") && name.length === 42 ? "" : detail}
           </p>
           <p className="pl-4 whitespace-nowrap ml-auto font-roboto font-light">
             <CountUp
