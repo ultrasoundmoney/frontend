@@ -38,7 +38,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
       : "/leaderboard-images/question-mark-v2.svg";
 
   return (
-    <div className="pt-5 xl:pt-6">
+    <div className="pt-5">
       <a
         href={id.startsWith("0x") ? `https://etherscan.io/address/${id}` : null}
         target="_blank"
@@ -63,7 +63,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
               preserveValue={true}
               separator=","
               decimals={2}
-              duration={1}
+              duration={0.8}
             />{" "}
             <span className="text-blue-spindle font-extralight">ETH</span>
           </p>
@@ -131,7 +131,7 @@ const BurnLeaderboard: FC = () => {
           loading...
         </p>
       ) : (
-        <div className="overflow-auto mt-4" style={{ height: "35rem" }}>
+        <div className="overflow-auto mt-4" style={{ height: "34.6rem" }}>
           <TransitionGroup
             component={null}
             appear={false}

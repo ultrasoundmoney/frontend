@@ -18,11 +18,13 @@ import SupplyGrowthGauge from "../Gauges/SupplyGrowthGauge";
 import BurnGauge from "../Gauges/BurnGauge";
 import { useCallback } from "react";
 import { useEthPrices, useFeeData } from "../../api";
-import {
-  formatPercentOneDigitSigned,
-  formatUsdZeroDigit,
-  formatOneDigit,
-} from "../../format";
+import { formatPercentOneDigitSigned } from "../../format";
+import CountUp from "react-countup";
+
+let startGasPrice = 0;
+let startGasPriceCached = 0;
+let startEthPrice = 0;
+let startEthPriceCached = 0;
 
 const ComingSoon: FC = () => {
   const t = useContext(TranslationsContext);
@@ -30,7 +32,16 @@ const ComingSoon: FC = () => {
   const [simulateMerge, setSimulateMerge] = useState(false);
   const { ethPrices } = useEthPrices();
 
-  const ethUsdPrice = ethPrices?.usd && formatUsdZeroDigit(ethPrices?.usd);
+  if (baseFeePerGas && baseFeePerGas !== startGasPrice) {
+    startGasPriceCached = startGasPrice;
+    startGasPrice = baseFeePerGas;
+  }
+
+  if (ethPrices?.usd && ethPrices?.usd !== startEthPrice) {
+    startEthPriceCached = startEthPrice;
+    startEthPrice = ethPrices?.usd;
+  }
+
   const ethUsd24hChange =
     ethPrices?.usd24hChange &&
     formatPercentOneDigitSigned(ethPrices?.usd24hChange / 100);
@@ -52,12 +63,38 @@ const ComingSoon: FC = () => {
               <img className="relative" src={EthLogo} alt={t.title} />
             </Link>
             {ethPrices !== undefined && baseFeePerGas !== undefined && (
-              <div className="flex text-white self-center rounded bg-blue-tangaroa px-3 py-2 text-xs lg:text-sm eth-price-gass-emoji font-roboto md:ml-4">
-                {ethUsdPrice}
+              <div className="flex text-white self-center rounded bg-blue-tangaroa px-3 py-2 text-xs lg:text-sm font-roboto md:ml-4">
+                $
+                <CountUp
+                  decimals={0}
+                  duration={0.8}
+                  separator=","
+                  start={
+                    startEthPriceCached === 0
+                      ? ethPrices?.usd
+                      : startEthPriceCached
+                  }
+                  end={ethPrices?.usd}
+                />
                 <span className={`px-1 ${color}`}>({ethUsd24hChange})</span>
                 <span className="px-1">•</span>
-                <SpanMoji emoji="⛽️"></SpanMoji>
-                {formatOneDigit(weiToGwei(baseFeePerGas))} Gwei
+                <SpanMoji className="px-0.5" emoji="⛽️"></SpanMoji>
+                <span className="">
+                  <CountUp
+                    decimals={0}
+                    duration={0.8}
+                    separator=","
+                    start={
+                      startGasPriceCached === 0
+                        ? weiToGwei(baseFeePerGas)
+                        : weiToGwei(startGasPriceCached)
+                    }
+                    end={weiToGwei(baseFeePerGas)}
+                  />{" "}
+                  <span className="font-extralight text-blue-spindle">
+                    Gwei
+                  </span>
+                </span>
               </div>
             )}
           </div>

@@ -85,7 +85,9 @@ export type EthPrice = {
 };
 
 export const useEthPrices = () => {
-  const { data } = useSWR<EthPrice>(`${feesBasePath}/eth-price`);
+  const { data } = useSWR<EthPrice>(`${feesBasePath}/eth-price`, {
+    refreshInterval: milisFromSeconds(4),
+  });
 
   return data !== undefined ? { ethPrices: data } : { ethPrices: undefined };
 };
