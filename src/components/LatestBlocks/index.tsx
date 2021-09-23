@@ -9,8 +9,9 @@ import {
 import { weiToGwei } from "../../utils/metric-utils";
 
 type LatestBlocks = {
-  fees: number;
   number: number;
+  fees: number;
+  baseFeePerGas: number;
 }[];
 
 const LatestBlocks: FC = () => {

@@ -45,6 +45,7 @@ export type FeeData = {
   latestBlockFees: {
     fees: Wei;
     number: number;
+    baseFeePerGas: Wei;
   }[];
   number: number | undefined;
   feesBurned: FeesBurned | undefined;
