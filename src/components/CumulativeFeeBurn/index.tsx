@@ -45,7 +45,7 @@ const CumulativeFeeBurn: FC = () => {
       <div className="flex flex-col justify-between items-start md:flex-row lg:flex-col xl:items-center xl:flex-row">
         <p className="font-inter font-light text-blue-spindle text-md mb-4 md:mb-0 lg:mb-4 xl:mb-0">
           <span className="uppercase">fee burn</span>{" "}
-          {timeframe === "tAll" ? (
+          {timeframe === "all" ? (
             <span className="text-blue-manatee font-normal text-sm fadein-animation pl-2">
               ({daysSinceLondonFork}d)
             </span>
@@ -66,7 +66,7 @@ const CumulativeFeeBurn: FC = () => {
             <p className="font-roboto text-white">
               <CountUp
                 decimals={2}
-                duration={1}
+                duration={0.8}
                 separator=","
                 end={weiToEth(selectedFeesBurned)}
                 preserveValue={true}
@@ -85,7 +85,7 @@ const CumulativeFeeBurn: FC = () => {
               <p className="font-roboto flex text-white text-2xl">
                 <CountUp
                   decimals={2}
-                  duration={1.5}
+                  duration={0.8}
                   separator=","
                   end={weiToEth(selectedBurnRate)}
                   preserveValue={true}
