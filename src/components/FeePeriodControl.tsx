@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-export type Timeframe = "1h" | "24h" | "7d" | "30d" | "all";
+export type Timeframe = "5m" | "1h" | "24h" | "7d" | "30d" | "all";
 
 type FeePeriodControlProps = {
   timeframes: string[];

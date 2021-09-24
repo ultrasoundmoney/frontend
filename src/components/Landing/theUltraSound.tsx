@@ -1,5 +1,5 @@
 import * as React from "react";
-import BatImg from "../../assets/bat/Ethereum_UltraSoundBat.png";
+import BatImg from "../../assets/bat.png";
 import BtcImg from "../../assets/ulr.jpeg";
 import { TranslationsContext } from "../../translations-context";
 import ContentBlockMedia from "../ContentBlock/ContentBlockMedia";
