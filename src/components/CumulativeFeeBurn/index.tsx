@@ -8,6 +8,7 @@ import { formatZeroDigit } from "../../format";
 const weiToEth = (wei: number): number => wei / 10 ** 18;
 
 const timeframeFeesBurnedMap: Record<Timeframe, keyof FeesBurned> = {
+  "5m": "feesBurned5m",
   "1h": "feesBurned1h",
   "24h": "feesBurned24h",
   "7d": "feesBurned7d",
@@ -16,6 +17,7 @@ const timeframeFeesBurnedMap: Record<Timeframe, keyof FeesBurned> = {
 };
 
 const timeframeBurnRateMap: Record<Timeframe, keyof BurnRates> = {
+  "5m": "burnRate5m",
   "1h": "burnRate1h",
   "24h": "burnRate24h",
   "7d": "burnRate7d",
@@ -54,7 +56,7 @@ const CumulativeFeeBurn: FC = () => {
           )}
         </p>
         <FeePeriodControl
-          timeframes={["1h", "24h", "7d", "30d", "all"]}
+          timeframes={["5m", "1h", "24h", "7d", "30d", "all"]}
           selectedTimeframe={timeframe}
           onSetFeePeriod={onSetFeePeriod}
         />

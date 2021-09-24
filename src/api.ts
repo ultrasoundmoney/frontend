@@ -16,6 +16,7 @@ type WeiPerMinute = number;
 type Wei = number;
 
 export type BurnRates = {
+  burnRate5m: WeiPerMinute;
   burnRate1h: WeiPerMinute;
   burnRate24h: WeiPerMinute;
   burnRate30d: WeiPerMinute;
@@ -24,6 +25,7 @@ export type BurnRates = {
 };
 
 export type FeesBurned = {
+  feesBurned5m: Wei;
   feesBurned1h: Wei;
   feesBurned24h: Wei;
   feesBurned7d: Wei;
