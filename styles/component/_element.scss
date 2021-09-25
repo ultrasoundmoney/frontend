@@ -1,4 +1,4 @@
-.tooltip{
+.tooltip {
   display: none;
   opacity: 0;
 }
@@ -19,9 +19,8 @@
   visibility: visible;
   z-index: 100;
   left: 40px;
-  transform: translate(0%, -100%);
   width: 280px;
-  transform: translate(0%,-100%);
+  transform: translate(0%, -100%);
   animation: fadeIn ease 700ms;
   -webkit-animation: fadeIn ease 700ms;
   -moz-animation: fadeIn ease 700ms;
@@ -36,6 +35,12 @@
   @media (min-width: 1024px) {
     left: unset;
     transform: translate(-40%, -100%);
+  }
+
+  &.tooltip--bottom-left {
+    top: 100%;
+    left: 0;
+    transform: unset;
   }
 }
 
@@ -123,7 +128,7 @@
 }
 
 // .accordion-wrapper {
-  
+
 // }
 
 .accordion-item {
@@ -217,7 +222,6 @@
   z-index: 99;
 }
 
-
 .animateIn {
   -webkit-animation-name: accordionIn;
   -webkit-animation-duration: 0.5s;
@@ -240,7 +244,6 @@
   animation-timing-function: ease-in-out;
   animation-fill-mode: both;
   animation-delay: 0s;
-
 }
 
 .animateOut {
@@ -271,7 +274,6 @@
   0% {
     opacity: 0;
     -webkit-transform: scale(0.8);
-
   }
 
   100% {
@@ -284,7 +286,6 @@
   0% {
     opacity: 0;
     -moz-transform: scale(0.8);
-
   }
 
   100% {
@@ -309,7 +310,6 @@
   0% {
     opacity: 1;
     -webkit-transform: scale(1);
-
   }
 
   100% {
@@ -322,7 +322,6 @@
   0% {
     opacity: 1;
     -moz-transform: scale(1);
-
   }
 
   100% {
@@ -335,7 +334,6 @@
   0% {
     opacity: 1;
     transform: scale(1);
-
   }
 
   100% {
@@ -343,8 +341,8 @@
     transform: scale(0.8);
   }
 }
-.sidebar{
-  background-color: rgba(27,34,54, 1);
+.sidebar {
+  background-color: rgba(27, 34, 54, 1);
   position: fixed;
   top: 0;
   right: 0px;
@@ -354,10 +352,10 @@
   transition: transform 0.3s ease-in-out 0s;
   z-index: 9;
   text-align: center;
-  &-open{
+  &-open {
     transform: translateX(0px);
   }
-  &-close{
+  &-close {
     transform: translateX(100%);
   }
 }

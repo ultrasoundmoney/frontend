@@ -6,6 +6,9 @@ import FeePeriodControl from "../FeePeriodControl";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useFeeData } from "../../api";
 import { formatZeroDigit } from "../../format";
+import BurnProfileTooltip from "./BurnProfileTooltip";
+
+import styles from "./BurnLeaderboard.module.scss";
 
 type LeaderboardRowProps = {
   detail?: string;
@@ -38,27 +41,60 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
       : "/leaderboard-images/question-mark-v2.svg";
 
   return (
-    <div className="pt-5">
+    <div className="pt-5 relative">
       <a
         href={id.startsWith("0x") ? `https://etherscan.io/address/${id}` : null}
         target="_blank"
         rel="noreferrer"
       >
-        <div className="hover:opacity-60 link-animation flex flex-row items-center font-inter text-white text-base md:text-lg">
-          <img className="w-8 h-8 leaderboard-image" src={imgSrc} alt="" />
-          <p className="pl-4 truncate">
-            {name.startsWith("0x") && name.length === 42 ? (
-              <span className="font-roboto">
-                {"0x" + id.slice(2, 6) + "..." + id.slice(38, 42)}
-              </span>
-            ) : (
-              name
-            )}
-          </p>
-          <p className="pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block">
-            {name.startsWith("0x") && name.length === 42 ? "" : detail}
-          </p>
-          <p className="pl-4 whitespace-nowrap ml-auto font-roboto font-light">
+        <div
+          className={`flex flex-row items-center font-inter text-white text-base md:text-lg ${styles["leaderboard-row"]}`}
+        >
+          <BurnProfileTooltip
+            key={id}
+            item={{
+              contractAddress: id?.startsWith("0x")
+                ? `https://etherscan.io/address/${id}`
+                : undefined,
+              name: name,
+              profileImageUrl: image,
+              twitterProfile: {
+                bio: "wear the bat signal and join the fam",
+                name: name,
+                profileImageUrl: image,
+                profileUrl: "https://twitter.com/ultrasoundmoney",
+                famFollowerCount: 3456,
+                followersCount: 10000,
+              },
+            }}
+          >
+            <div className="flex flex-row items-center">
+              <img
+                className={`w-8 h-8 leaderboard-image link-animation ${styles["leaderboard-row__child-element"]}`}
+                src={imgSrc}
+                alt=""
+              />
+              <p
+                className={`pl-4 truncate link-animation ${styles["leaderboard-row__child-element"]}`}
+              >
+                {name.startsWith("0x") && name.length === 42 ? (
+                  <span className="font-roboto">
+                    {"0x" + id.slice(2, 6) + "..." + id.slice(38, 42)}
+                  </span>
+                ) : (
+                  name
+                )}
+              </p>
+              <p
+                className={`pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block link-animation ${styles["leaderboard-row__child-element"]}`}
+              >
+                {name.startsWith("0x") && name.length === 42 ? "" : detail}
+              </p>
+            </div>
+          </BurnProfileTooltip>
+          <p
+            className={`pl-4 whitespace-nowrap ml-auto font-roboto font-light link-animation ${styles["leaderboard-row__child-element"]}`}
+          >
             <CountUp
               start={0}
               end={weiToEth(fees)}
