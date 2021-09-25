@@ -1,0 +1,5 @@
+.leaderboard-row {
+  &:hover &__child-element {
+    opacity: 60%;
+  }
+}
