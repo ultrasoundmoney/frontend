@@ -36,12 +36,6 @@
     left: unset;
     transform: translate(-40%, -100%);
   }
-
-  &.tooltip--bottom-left {
-    top: 100%;
-    left: 0;
-    transform: unset;
-  }
 }
 
 .clipboard {
@@ -128,7 +122,6 @@
 }
 
 // .accordion-wrapper {
-
 // }
 
 .accordion-item {
