@@ -90,7 +90,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
                 ? `https://etherscan.io/address/${id}`
                 : undefined,
               name: name,
-              profileImageUrl: image,
+              contractImageUrl: imgSrc,
               twitterProfile: {
                 bio: "wear the bat signal and join the fam",
                 name: name,

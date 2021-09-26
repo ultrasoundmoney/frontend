@@ -1,15 +1,17 @@
 import React, { useState, useLayoutEffect, useRef } from "react";
 import twemoji from "twemoji";
 import AvatarImg from "../../assets/avatar.webp";
+import twitterIcon from "../../assets/twitter-icon.svg";
 import { followerCountConvert } from "../Helpers/helper";
 import { TranslationsContext } from "../../translations-context";
+import useWindowSize from "../../utils/use-window-size";
 
 type BurnProfileTooltipProps = {
   children: React.ReactNode;
   item: {
     contractAddress?: string;
     name: string;
-    profileImageUrl: string;
+    contractImageUrl: string;
     twitterProfile?: TwitterProfile;
   };
 };
@@ -23,22 +25,44 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
     el.onerror = null;
     el.src = AvatarImg;
   }
+
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const tooltipRef = useRef<HTMLDivElement | null>(null);
+
   const [tooltipPosition, setTooltipPosition] = useState<{
     x: number;
     y: number;
   }>({ x: 0, y: 0 });
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
 
+  const { width: windowWidth } = useWindowSize();
+
   useLayoutEffect(() => {
     if (!isTooltipVisible) return;
-    const { x, y } = containerRef.current.getBoundingClientRect();
-    const tooltipWidth = 288;
+
+    const {
+      x: containerX,
+      y: containerY,
+    } = containerRef.current.getBoundingClientRect();
+    const {
+      width: tooltipWidth,
+      height: tooltipHeight,
+    } = tooltipRef.current.getBoundingClientRect();
+
+    // on smaller screens shifting the tooltip on top
+    if (windowWidth < 1024) {
+      setTooltipPosition({
+        x: containerX,
+        y: containerY - tooltipHeight,
+      });
+      return;
+    }
+
     setTooltipPosition({
-      x: x - tooltipWidth,
-      y,
+      x: containerX - tooltipWidth,
+      y: containerY,
     });
-  }, [isTooltipVisible]);
+  }, [isTooltipVisible, windowWidth]);
 
   const handleShowTooltip = () => {
     setIsTooltipVisible(true);
@@ -57,6 +81,7 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
     >
       {isTooltipVisible && (
         <div
+          ref={tooltipRef}
           className="fixed w-72 shadow-lg rounded-lg bg-blue-tangaroa text-white px-7 py-7 z-10 fadein-animation"
           style={{ top: tooltipPosition.y, left: tooltipPosition.x }}
         >
@@ -74,9 +99,9 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
                 width="80"
                 height="80"
                 src={
-                  item.profileImageUrl !== null &&
-                  item.profileImageUrl != undefined
-                    ? item.profileImageUrl
+                  item.contractImageUrl !== null &&
+                  item.contractImageUrl != undefined
+                    ? item.contractImageUrl
                     : AvatarImg
                 }
                 alt={item.name}
@@ -84,36 +109,52 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
               />
             </picture>
           </a>
-          <div
-            className="text-white my-3 text-base font-medium tw-profile-text break-words"
-            dangerouslySetInnerHTML={{
-              __html: twemoji.parse(item.name),
-            }}
-          />
-          <p
-            className="text-blue-linkwater text-left mb-3 font-light text-xs break-words tw-profile-text"
-            dangerouslySetInnerHTML={{
-              __html: twemoji.parse(item.twitterProfile.bio),
-            }}
-          />
-          <div className="flex justify-between">
-            <div>
-              <p className="text-xs text-blue-spindle text-left font-light uppercase mb-0">
-                {t.profile_follower}
-              </p>
-              <p className="text-white text-left font-light text-2xl">
-                {followerCountConvert(item.twitterProfile.followersCount)}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs text-blue-spindle text-left font-light uppercase mb-0">
-                FAM FOLLOWERS
-              </p>
-              <p className="text-white text-left font-light text-2xl">
-                {followerCountConvert(item.twitterProfile.famFollowerCount)}
-              </p>
-            </div>
+          <div className="text-white my-3 text-base font-medium break-words flex items-center">
+            <span className="tw-profile-text truncate">
+              {item.name.startsWith("0x") && item.name.length === 42
+                ? item.name.slice(0, 6) + "..." + item.name.slice(38, 42)
+                : item.name}
+            </span>
+            {item.twitterProfile.profileUrl && (
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                role="link"
+                className="ml-2 w-5"
+                href={item.twitterProfile.profileUrl}
+              >
+                <img src={twitterIcon} alt="twitter-profile" />
+              </a>
+            )}
           </div>
+          {item.twitterProfile && (
+            <>
+              <p
+                className="text-blue-linkwater text-left mb-3 font-light text-xs break-words tw-profile-text"
+                dangerouslySetInnerHTML={{
+                  __html: twemoji.parse(item.twitterProfile.bio),
+                }}
+              />
+              <div className="flex justify-between">
+                <div>
+                  <p className="text-xs text-blue-spindle text-left font-light uppercase mb-0">
+                    {t.profile_follower}
+                  </p>
+                  <p className="text-white text-left font-light text-2xl">
+                    {followerCountConvert(item.twitterProfile.followersCount)}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-blue-spindle text-left font-light uppercase mb-0">
+                    FAM FOLLOWERS
+                  </p>
+                  <p className="text-white text-left font-light text-2xl">
+                    {followerCountConvert(item.twitterProfile.famFollowerCount)}
+                  </p>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       )}
       {children}
