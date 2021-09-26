@@ -112,7 +112,7 @@ const BurnLeaderboard: FC = () => {
   );
 
   return (
-    <div className="bg-blue-tangaroa w-full rounded-lg p-8">
+    <div className="bg-blue-tangaroa w-full rounded-lg p-8 h-full">
       <div className="flex flex-col justify-between items-start md:flex-row lg:flex-col xl:items-center xl:flex-row">
         <p className="font-inter font-light text-blue-spindle text-md mb-4 md:mb-0 lg:mb-4 xl:mb-0">
           <span className="uppercase">burn leaderboard</span>{" "}
@@ -137,7 +137,7 @@ const BurnLeaderboard: FC = () => {
       ) : (
         <div
           className="overflow-auto mt-4 leaderboard-scroller"
-          style={{ height: "34.6rem" }}
+          style={{ height: "35.55rem" }}
         >
           <TransitionGroup
             component={null}

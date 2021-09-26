@@ -48,6 +48,7 @@ export type FeeData = {
     fees: Wei;
     number: number;
     baseFeePerGas: Wei;
+    minedAt: string;
   }[];
   number: number | undefined;
   feesBurned: FeesBurned | undefined;
