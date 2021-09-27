@@ -45,3 +45,25 @@ a:hover {
     padding: 0;
     position: relative;
 }
+
+/* width */
+.leaderboard-scroller::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+/* scroller track */
+.leaderboard-scroller::-webkit-scrollbar-track {
+  background: rgb(27,34,54); /* tangaroa */
+}
+
+/* scroller handle */
+.leaderboard-scroller::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  border: 3px solid white;
+}
+
+/* scroller handle on hover */
+.leaderboard-scroller::-webkit-scrollbar-thumb:hover {
+  border-color: rgb(255,189,219); /* spindle */
+}
