@@ -38,7 +38,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
       : "/leaderboard-images/question-mark-v2.svg";
 
   return (
-    <div className="pt-5">
+    <div className="pt-2.5 pb-2.5 pr-2.5">
       <a
         href={id.startsWith("0x") ? `https://etherscan.io/address/${id}` : null}
         target="_blank"
@@ -133,7 +133,10 @@ const BurnLeaderboard: FC = () => {
           loading...
         </p>
       ) : (
-        <div className="overflow-auto mt-4" style={{ height: "34.6rem" }}>
+        <div
+          className="overflow-auto mt-4 leaderboard-scroller"
+          style={{ height: "34.6rem" }}
+        >
           <TransitionGroup
             component={null}
             appear={false}
