@@ -49,7 +49,9 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
           <p className="pl-4 truncate">
             {name.startsWith("0x") && name.length === 42 ? (
               <span className="font-roboto">
-                {"0x" + id.slice(2, 6) + "..." + id.slice(38, 42)}
+                {"0x" + id.slice(2, 6)}
+                <span className="font-inter">...</span>
+                {id.slice(38, 42)}
               </span>
             ) : (
               name
