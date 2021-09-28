@@ -46,12 +46,14 @@ const ProfileTooltip: React.FC<ProfileTooltipProps> = ({ children, item }) => {
             __html: twemoji.parse(item.name),
           }}
         />
-        <p
-          className="text-blue-linkwater text-left mb-3 font-light text-xs break-words tw-profile-text"
-          dangerouslySetInnerHTML={{
-            __html: twemoji.parse(item.bio),
-          }}
-        />
+        {typeof item.bio === "string" && (
+          <p
+            className="text-blue-linkwater text-left mb-3 font-light text-xs break-words tw-profile-text"
+            dangerouslySetInnerHTML={{
+              __html: twemoji.parse(item.bio),
+            }}
+          />
+        )}
         <div className="flex justify-between">
           <div>
             <p className="text-xs text-blue-spindle text-left font-light uppercase mb-0">
