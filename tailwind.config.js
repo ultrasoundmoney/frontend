@@ -34,6 +34,9 @@ module.exports = {
           ...colors.red,
           pinkish: "#f85a89",
         },
+        pink: {
+          "300": colors.pink["300"],
+        },
       },
       width: {
         "w-23": "23%",

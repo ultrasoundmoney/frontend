@@ -78,6 +78,23 @@ export const useFeeData = (): FeeData => {
       };
 };
 
+export const addContractTwitterHandle = async (
+  token: string,
+  address: string,
+  handle: string
+) => {
+  const res = await fetch(
+    `${feesBasePath}/add-contract-twitter-handle?address=${address}&token=${token}&handle=${handle}`
+  );
+
+  if (res.status !== 200) {
+    console.error("failed to add twitter handle");
+    return;
+  }
+
+  console.log(`successfully added twitter handle ${handle} for ${address}`);
+};
+
 export type EthPrice = {
   usd: number;
   usd24hChange: number;

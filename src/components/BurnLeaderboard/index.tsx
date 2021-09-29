@@ -4,7 +4,7 @@ import imageIds from "../../assets/leaderboard-image-ids.json";
 import { weiToEth } from "../../utils/metric-utils";
 import FeePeriodControl from "../FeePeriodControl";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { useFeeData } from "../../api";
+import { addContractTwitterHandle, useFeeData } from "../../api";
 import { formatZeroDigit } from "../../format";
 
 type LeaderboardRowProps = {
@@ -14,6 +14,21 @@ type LeaderboardRowProps = {
   name?: string;
   type: LeaderboardEntry["type"];
   image: string | undefined;
+};
+
+const getAdminToken = (): string | undefined => {
+  if (typeof window === undefined) {
+    return undefined;
+  }
+
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const adminToken = urlSearchParams.get("admin-token");
+
+  if (typeof adminToken !== "string" || adminToken.length === 0) {
+    return undefined;
+  }
+
+  return adminToken;
 };
 
 const LeaderboardRow: FC<LeaderboardRowProps> = ({
@@ -36,6 +51,13 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
       : imageIds.includes(id)
       ? `/leaderboard-images/${id}.png`
       : "/leaderboard-images/question-mark-v2.svg";
+
+  const adminToken = getAdminToken();
+
+  const onAddTwitterHandle = useCallback(() => {
+    const handle = window.prompt(`${name} twitter handle`);
+    addContractTwitterHandle(adminToken, id, handle);
+  }, [adminToken, id, name]);
 
   return (
     <div className="pt-2.5 pb-2.5 pr-2.5">
@@ -73,6 +95,16 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
           </p>
         </div>
       </a>
+      {adminToken !== undefined && (
+        <a
+          className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
+          onClick={onAddTwitterHandle}
+          target="_blank"
+          rel="noreferrer"
+        >
+          add handle
+        </a>
+      )}
     </div>
   );
 };
