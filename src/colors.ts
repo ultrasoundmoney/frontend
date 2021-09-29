@@ -9,7 +9,6 @@ export default {
   spindle: "#b5bddb",
   tangaroa: "#1b2236",
   twilight: "#59588D",
-  yellow500: "#F59E0B",
   fireOrange: "#F4900C",
   drop: "#5DADEC",
 };
