@@ -4,7 +4,7 @@ import imageIds from "../../assets/leaderboard-image-ids.json";
 import { weiToEth } from "../../utils/metric-utils";
 import FeePeriodControl from "../FeePeriodControl";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { addContractTwitterHandle, useFeeData } from "../../api";
+import { setContractTwitterHandle, useFeeData } from "../../api";
 import { formatZeroDigit } from "../../format";
 
 type LeaderboardRowProps = {
@@ -54,9 +54,9 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
 
   const adminToken = getAdminToken();
 
-  const onAddTwitterHandle = useCallback(() => {
+  const onSetTwitterHandle = useCallback(() => {
     const handle = window.prompt(`${name} twitter handle`);
-    addContractTwitterHandle(adminToken, id, handle);
+    setContractTwitterHandle(adminToken, id, handle);
   }, [adminToken, id, name]);
 
   return (
@@ -98,11 +98,11 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
       {adminToken !== undefined && (
         <a
           className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
-          onClick={onAddTwitterHandle}
+          onClick={onSetTwitterHandle}
           target="_blank"
           rel="noreferrer"
         >
-          add handle
+          set handle
         </a>
       )}
     </div>

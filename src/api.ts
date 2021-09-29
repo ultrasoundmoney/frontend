@@ -78,13 +78,13 @@ export const useFeeData = (): FeeData => {
       };
 };
 
-export const addContractTwitterHandle = async (
+export const setContractTwitterHandle = async (
   token: string,
   address: string,
   handle: string
 ) => {
   const res = await fetch(
-    `${feesBasePath}/add-contract-twitter-handle?address=${address}&token=${token}&handle=${handle}`
+    `${feesBasePath}/set-contract-twitter-handle?address=${address}&token=${token}&handle=${handle}`
   );
 
   if (res.status !== 200) {
