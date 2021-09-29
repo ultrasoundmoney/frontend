@@ -6,7 +6,7 @@ interface TwitterProfile {
   name: string;
   profileImageUrl: string;
   profileUrl: string;
-  bio: string;
+  bio: string | null;
   followersCount: number;
   famFollowerCount: number;
 }
