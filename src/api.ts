@@ -3,7 +3,7 @@ import config from "./config";
 import { milisFromSeconds } from "./duration";
 import { LeaderboardEntry } from "./components/BurnLeaderboard";
 
-export const famBasePath = ;
+export const famBasePath =
   config.apiEnv === "staging"
     ? "https://api-stag.ultrasound.money/fam"
     : config.apiEnv === "dev"
