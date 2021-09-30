@@ -4,7 +4,8 @@ import imageIds from "../../assets/leaderboard-image-ids.json";
 import { weiToEth } from "../../utils/metric-utils";
 import FeePeriodControl from "../FeePeriodControl";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { setContractTwitterHandle, useFeeData } from "../../api";
+import { useFeeData } from "../../api";
+import * as Api from "../../api";
 import { formatZeroDigit } from "../../format";
 
 type LeaderboardRowProps = {
@@ -56,7 +57,17 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
 
   const onSetTwitterHandle = useCallback(() => {
     const handle = window.prompt(`${name} twitter handle`);
-    setContractTwitterHandle(adminToken, id, handle);
+    Api.setContractTwitterHandle(adminToken, id, handle);
+  }, [adminToken, id, name]);
+
+  const onSetName = useCallback(() => {
+    const nameInput = window.prompt(`${name} name`);
+    Api.setContractName(adminToken, id, nameInput);
+  }, [adminToken, id, name]);
+
+  const onSetCategory = useCallback(() => {
+    const category = window.prompt(`${name} category`);
+    Api.setContractCategory(adminToken, id, category);
   }, [adminToken, id, name]);
 
   return (
@@ -96,14 +107,32 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
         </div>
       </a>
       {adminToken !== undefined && (
-        <a
-          className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
-          onClick={onSetTwitterHandle}
-          target="_blank"
-          rel="noreferrer"
-        >
-          set handle
-        </a>
+        <div className="flex flex-row gap-4">
+          <a
+            className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
+            onClick={onSetTwitterHandle}
+            target="_blank"
+            rel="noreferrer"
+          >
+            set handle
+          </a>
+          <a
+            className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
+            onClick={onSetName}
+            target="_blank"
+            rel="noreferrer"
+          >
+            set name
+          </a>
+          <a
+            className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
+            onClick={onSetCategory}
+            target="_blank"
+            rel="noreferrer"
+          >
+            set category
+          </a>
+        </div>
       )}
     </div>
   );

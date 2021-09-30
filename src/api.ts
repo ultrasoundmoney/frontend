@@ -95,6 +95,42 @@ export const setContractTwitterHandle = async (
   console.log(`successfully added twitter handle ${handle} for ${address}`);
 };
 
+export const setContractName = async (
+  token: string,
+  address: string,
+  name: string
+) => {
+  const res = await fetch(
+    `${feesBasePath}/set-contract-name?address=${address}&token=${token}&name=${name}`
+  );
+
+  if (res.status !== 200) {
+    console.error("failed to add contract name");
+    return;
+  }
+
+  console.log(`successfully added contract name ${name} for ${address}`);
+};
+
+export const setContractCategory = async (
+  token: string,
+  address: string,
+  category: string
+) => {
+  const res = await fetch(
+    `${feesBasePath}/set-contract-category?address=${address}&token=${token}&category=${category}`
+  );
+
+  if (res.status !== 200) {
+    console.error("failed to add contract category");
+    return;
+  }
+
+  console.log(
+    `successfully added contract category ${category} for ${address}`
+  );
+};
+
 export type EthPrice = {
   usd: number;
   usd24hChange: number;
