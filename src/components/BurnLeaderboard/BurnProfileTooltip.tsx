@@ -12,9 +12,13 @@ type BurnProfileTooltipProps = {
     contractAddress?: string;
     name: string;
     contractImageUrl: string;
-    twitterProfile?: TwitterProfile;
+    description: string;
+    twitterHandle: string;
+    twitterFamFollowerCount?: number;
+    twitterFollowersCount?: number;
   };
 };
+
 const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
   children,
   item,
@@ -115,45 +119,43 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
                 ? item.name.slice(0, 6) + "..." + item.name.slice(38, 42)
                 : item.name}
             </span>
-            {item.twitterProfile.profileUrl && (
+            {item.twitterHandle && (
               <a
                 target="_blank"
                 rel="noopener noreferrer"
                 role="link"
                 className="ml-2 w-5"
-                href={item.twitterProfile.profileUrl}
+                href={`https://twitter.com/${item.twitterHandle}`}
               >
                 <img src={twitterIcon} alt="twitter-profile" />
               </a>
             )}
           </div>
-          {item.twitterProfile && (
-            <>
-              <p
-                className="text-blue-linkwater text-left mb-3 font-light text-xs break-words tw-profile-text"
-                dangerouslySetInnerHTML={{
-                  __html: twemoji.parse(item.twitterProfile.bio),
-                }}
-              />
-              <div className="flex justify-between">
-                <div>
-                  <p className="text-xs text-blue-spindle text-left font-light uppercase mb-0">
-                    {t.profile_follower}
-                  </p>
-                  <p className="text-white text-left font-light text-2xl">
-                    {followerCountConvert(item.twitterProfile.followersCount)}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs text-blue-spindle text-left font-light uppercase mb-0">
-                    FAM FOLLOWERS
-                  </p>
-                  <p className="text-white text-left font-light text-2xl">
-                    {followerCountConvert(item.twitterProfile.famFollowerCount)}
-                  </p>
-                </div>
+          <p
+            className="text-blue-linkwater text-left mb-3 font-light text-xs break-words tw-profile-text"
+            dangerouslySetInnerHTML={{
+              __html: twemoji.parse(item.description ?? ""),
+            }}
+          />
+          {item.twitterFollowersCount && item.twitterFamFollowerCount && (
+            <div className="flex justify-between">
+              <div>
+                <p className="text-xs text-blue-spindle text-left font-light uppercase mb-0">
+                  {t.profile_follower}
+                </p>
+                <p className="text-white text-left font-light text-2xl">
+                  {followerCountConvert(item.twitterFollowersCount)}
+                </p>
               </div>
-            </>
+              <div>
+                <p className="text-xs text-blue-spindle text-left font-light uppercase mb-0">
+                  FAM FOLLOWERS
+                </p>
+                <p className="text-white text-left font-light text-2xl">
+                  {followerCountConvert(item.twitterFamFollowerCount)}
+                </p>
+              </div>
+            </div>
           )}
         </div>
       )}

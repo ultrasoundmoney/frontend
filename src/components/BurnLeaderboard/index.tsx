@@ -10,6 +10,7 @@ import { formatZeroDigit } from "../../format";
 import BurnProfileTooltip from "./BurnProfileTooltip";
 
 import styles from "./BurnLeaderboard.module.scss";
+import { profileDescriptions } from "../../porfile-descriptions";
 
 type LeaderboardRowProps = {
   detail?: string;
@@ -18,6 +19,10 @@ type LeaderboardRowProps = {
   name?: string;
   type: LeaderboardEntry["type"];
   image: string | undefined;
+  description: string;
+  twitterHandle: string;
+  twitterFamFollowerCount: number;
+  twitterFollowersCount: number;
 };
 
 const getAdminToken = (): string | undefined => {
@@ -42,6 +47,10 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
   name,
   type,
   image,
+  description,
+  twitterFamFollowerCount,
+  twitterFollowersCount,
+  twitterHandle,
 }) => {
   const imgSrc =
     typeof image === "string"
@@ -91,14 +100,10 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
                 : undefined,
               name: name,
               contractImageUrl: imgSrc,
-              twitterProfile: {
-                bio: "wear the bat signal and join the fam",
-                name: name,
-                profileImageUrl: image,
-                profileUrl: "https://twitter.com/ultrasoundmoney",
-                famFollowerCount: 3456,
-                followersCount: 10000,
-              },
+              twitterHandle,
+              twitterFollowersCount,
+              twitterFamFollowerCount,
+              description,
             }}
           >
             <div className="flex flex-row items-center">
@@ -178,6 +183,10 @@ export type LeaderboardEntry = {
   name: string;
   type?: "eth-transfers" | "bot" | "other" | "contract-creations";
   image: string | undefined;
+  bio?: string;
+  twitterHandle?: string;
+  followersCount?: number;
+  famFollowerCount?: number;
 };
 
 const feePeriodToUpdateMap: Record<Timeframe, string> = {
@@ -240,23 +249,39 @@ const BurnLeaderboard: FC = () => {
             enter={true}
             exit={false}
           >
-            {selectedLeaderboard.map((leaderboardRow) => (
-              <CSSTransition
-                classNames="fee-block"
-                timeout={500}
-                key={leaderboardRow.id}
-              >
-                <LeaderboardRow
-                  key={leaderboardRow.name}
-                  name={leaderboardRow.name.split(":")[0]}
-                  detail={leaderboardRow.name.split(":")[1]}
-                  id={leaderboardRow.id}
-                  fees={Number(leaderboardRow.fees)}
-                  type={leaderboardRow.type || "other"}
-                  image={leaderboardRow.image}
-                />
-              </CSSTransition>
-            ))}
+            {selectedLeaderboard.map((leaderboardRow) => {
+              let description = leaderboardRow.bio;
+              if (!description) {
+                description = leaderboardRow.id.startsWith("0x")
+                  ? profileDescriptions["unknown"]
+                  : profileDescriptions[leaderboardRow.id];
+              }
+              return (
+                <CSSTransition
+                  classNames="fee-block"
+                  timeout={500}
+                  key={leaderboardRow.id}
+                >
+                  <LeaderboardRow
+                    key={leaderboardRow.name}
+                    name={leaderboardRow.name.split(":")[0]}
+                    detail={leaderboardRow.name.split(":")[1]}
+                    id={leaderboardRow.id}
+                    fees={Number(leaderboardRow.fees)}
+                    type={leaderboardRow.type || "other"}
+                    image={leaderboardRow.image}
+                    description={description}
+                    twitterFamFollowerCount={
+                      leaderboardRow.famFollowerCount ?? undefined
+                    }
+                    twitterFollowersCount={
+                      leaderboardRow.followersCount ?? undefined
+                    }
+                    twitterHandle={leaderboardRow.twitterHandle}
+                  />
+                </CSSTransition>
+              );
+            })}
           </TransitionGroup>
         </div>
       )}
