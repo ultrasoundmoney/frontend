@@ -1,4 +1,5 @@
-import React, { memo, FC } from "react";
+import dayjs from "dayjs";
+import React, { memo, FC, useState, useEffect, useCallback } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useFeeData } from "../../api";
 import {
@@ -16,12 +17,33 @@ type LatestBlocks = {
 
 const LatestBlocks: FC = () => {
   const { latestBlockFees } = useFeeData();
+  const [timeElapsed, setTimeElapsed] = useState(0);
+
+  const getTimeElapsed = useCallback((timeStamp: string): number => {
+    return dayjs(Date.now()).diff(timeStamp, "s");
+  }, []);
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setTimeElapsed(getTimeElapsed(latestBlockFees[0].minedAt));
+    }, 1000);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [getTimeElapsed, latestBlockFees]);
+
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8 text-white">
-      <div className="flex justify-between pb-2 lg:pb-6 xl:pb-2 font-inter text-blue-spindle uppercase">
-        <span className="w-5/12">block</span>
-        <span className="w-3/12">gas</span>
-        <span className="w-4/12 text-right">burn</span>
+      <div className="flex justify-between pb-2 lg:pb-6 xl:pb-2 font-inter text-blue-spindle ">
+        <span className="w-5/12 flex flex-col">
+          <span className="uppercase">block&nbsp;</span>
+          <span className="text-blue-manatee font-normal text-sm fadein-animation">
+            ({timeElapsed}s since last block)
+          </span>
+        </span>
+        <span className="w-3/12 uppercase">gas</span>
+        <span className="w-4/12 text-right uppercase">burn</span>
       </div>
       <ul>
         {latestBlockFees !== undefined && latestBlockFees.length === 0 ? (
