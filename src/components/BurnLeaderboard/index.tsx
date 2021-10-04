@@ -16,9 +16,9 @@ type LeaderboardRowProps = {
   detail?: string;
   fees: number;
   id: string;
-  name?: string;
+  name: string;
   type: LeaderboardEntry["type"];
-  image: string | undefined;
+  image: string | null;
   description: string;
   twitterHandle: string;
   twitterFamFollowerCount: number;
@@ -181,12 +181,12 @@ export type LeaderboardEntry = {
   fees: string;
   id: string;
   name: string;
-  type?: "eth-transfers" | "bot" | "other" | "contract-creations";
-  image: string | undefined;
-  bio?: string;
-  twitterHandle?: string;
-  followersCount?: number;
-  famFollowerCount?: number;
+  type: "eth-transfers" | "bot" | "other" | "contract-creations";
+  image: string | null;
+  bio: string | null;
+  twitterHandle: string | null;
+  followersCount: number | null;
+  famFollowerCount: number | null;
 };
 
 const feePeriodToUpdateMap: Record<Timeframe, string> = {
