@@ -43,6 +43,8 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
 
   useLayoutEffect(() => {
     if (!isTooltipVisible) return;
+    if (containerRef.current === null) return;
+    if (tooltipRef.current === null) return;
 
     const {
       x: containerX,
