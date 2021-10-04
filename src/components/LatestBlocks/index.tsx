@@ -24,6 +24,8 @@ const LatestBlocks: FC = () => {
   }, []);
 
   useEffect(() => {
+    setTimeElapsed(getTimeElapsed(latestBlockFees[0]?.minedAt));
+
     const intervalId = window.setInterval(() => {
       setTimeElapsed(getTimeElapsed(latestBlockFees[0].minedAt));
     }, 1000);
