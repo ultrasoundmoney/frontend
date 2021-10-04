@@ -36,14 +36,9 @@ const LatestBlocks: FC = () => {
   }, [getTimeElapsed, latestBlockFees]);
 
   return (
-    <div className="bg-blue-tangaroa w-full rounded-lg p-8 text-white">
+    <div className="bg-blue-tangaroa w-full rounded-lg p-8 pb-12 text-white relative">
       <div className="flex justify-between pb-2 lg:pb-6 xl:pb-2 font-inter text-blue-spindle ">
-        <span className="w-5/12 flex flex-col">
-          <span className="uppercase">block&nbsp;</span>
-          <span className="text-blue-manatee font-normal text-sm fadein-animation">
-            ({timeElapsed}s since last block)
-          </span>
-        </span>
+        <span className="w-5/12 uppercase">block</span>
         <span className="w-3/12 uppercase">gas</span>
         <span className="w-4/12 text-right uppercase">burn</span>
       </div>
@@ -103,6 +98,9 @@ const LatestBlocks: FC = () => {
           </TransitionGroup>
         )}
       </ul>
+      <span className="text-blue-manatee text-sm font-extralight | absolute bottom-4 right-8">
+        Last block {timeElapsed}s old
+      </span>
     </div>
   );
 };
