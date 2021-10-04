@@ -98,8 +98,12 @@ const LatestBlocks: FC = () => {
           </TransitionGroup>
         )}
       </ul>
-      <span className="text-blue-manatee text-sm font-extralight | absolute bottom-4 right-8">
-        Last block {timeElapsed}s old
+      <span className="text-blue-spindle text-xs md:text-sm font-extralight | absolute bottom-4 right-8">
+        latest block{" "}
+        <span className="font-roboto text-white font-light">
+          {timeElapsed}s
+        </span>{" "}
+        old
       </span>
     </div>
   );
