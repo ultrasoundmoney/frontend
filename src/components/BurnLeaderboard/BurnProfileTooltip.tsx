@@ -86,7 +86,7 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
       {isTooltipVisible && (
         <div
           ref={tooltipRef}
-          className="fixed w-72 shadow-lg rounded-lg bg-blue-tangaroa text-white px-7 py-7 z-10 fadein-animation"
+          className="fixed w-72 shadow-lg rounded-lg bg-blue-midnightexpress text-white px-7 py-7 z-10 fadein-animation"
           style={{ top: tooltipPosition.y, left: tooltipPosition.x }}
         >
           <a
