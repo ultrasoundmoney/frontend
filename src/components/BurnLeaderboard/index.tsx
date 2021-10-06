@@ -1,6 +1,5 @@
 import { FC, memo, useState, useCallback } from "react";
 import CountUp from "react-countup";
-import imageIds from "../../assets/leaderboard-image-ids.json";
 import { weiToEth } from "../../utils/metric-utils";
 import FeePeriodControl from "../FeePeriodControl";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
@@ -10,20 +9,67 @@ import { formatZeroDigit } from "../../format";
 import BurnProfileTooltip from "./BurnProfileTooltip";
 
 import styles from "./BurnLeaderboard.module.scss";
-import { profileDescriptions } from "../../porfile-descriptions";
 
-type LeaderboardRowProps = {
-  detail?: string;
-  fees: number;
-  id: string;
-  name: string;
-  type: LeaderboardEntry["type"];
-  image: string | null;
-  description: string;
-  twitterHandle: string;
-  twitterFamFollowerCount: number;
-  twitterFollowersCount: number;
+const getIsContractAddress = (address: unknown): boolean =>
+  typeof address === "string" &&
+  address.startsWith("0x") &&
+  address.length === 42;
+
+const getDescription = (entry: LeaderboardEntry): string => {
+  if (entry.type === "eth-transfers") {
+    return "ETH burned transfering ETH between accounts.";
+  }
+
+  if (entry.type === "contract-creations") {
+    return "ETH burned creating new smart contracts.";
+  }
+
+  if (entry.type === "contract") {
+    if (typeof entry.bio === "string") {
+      return entry.bio;
+    }
+
+    if (entry.isBot) {
+      return "A contract assisting in the capture of value through arbitrage, front-running, and MEV.";
+    }
+  }
+
+  return "Unknown contract.";
 };
+
+const getName = (entry: LeaderboardEntry): string => {
+  if (entry.type === "contract") {
+    const shortAddress =
+      "0x" + entry.address.slice(2, 6) + "..." + entry.address.slice(38, 42);
+    // Right now contract entries always have a name. In the future the API should only return names it has.
+    if (typeof entry.name === "string") {
+      return getIsContractAddress(entry.name)
+        ? shortAddress
+        : // We have the convention to sometimes add a ':' which Etherscan often does in naming, and display this part differently.
+          entry.name.split(":")[0];
+    }
+
+    return shortAddress;
+  }
+
+  return entry.name;
+};
+
+const getDetail = (entry: LeaderboardEntry): string | undefined =>
+  entry.type === "contract" && typeof entry.name === "string"
+    ? entry.name.split(":")[1]
+    : undefined;
+
+const getImage = (entry: LeaderboardEntry): string =>
+  entry.type === "eth-transfers"
+    ? "/leaderboard-images/transfer-v2.svg"
+    : entry.type === "contract-creations"
+    ? "/leaderboard-images/contract-creations.svg"
+    : typeof entry.image === "string"
+    ? entry.image
+    : entry.isBot
+    ? "/leaderboard-images/bot-v2.svg"
+    : "/leaderboard-images/question-mark-v2.svg";
 
 const getAdminToken = (): string | undefined => {
   if (typeof window === undefined) {
@@ -40,52 +86,80 @@ const getAdminToken = (): string | undefined => {
   return adminToken;
 };
 
+type LeaderboardRowProps = {
+  address: string | undefined;
+  description: string;
+  detail: string | undefined;
+  fees: number;
+  image: string | null;
+  key: string;
+  name: string;
+  twitterFamFollowerCount: number;
+  twitterFollowersCount: number;
+  twitterHandle: string;
+};
+
 const LeaderboardRow: FC<LeaderboardRowProps> = ({
+  address,
+  description,
   detail,
   fees,
-  id,
-  name,
-  type,
   image,
-  description,
+  key,
+  name,
   twitterFamFollowerCount,
   twitterFollowersCount,
   twitterHandle,
 }) => {
-  const imgSrc =
-    typeof image === "string"
-      ? image
-      : type === "eth-transfers"
-      ? "/leaderboard-images/transfer-v2.svg"
-      : type === "bot"
-      ? "/leaderboard-images/bot-v2.svg"
-      : type === "contract-creations"
-      ? "/leaderboard-images/contract-creations.svg"
-      : imageIds.includes(id)
-      ? `/leaderboard-images/${id}.png`
-      : "/leaderboard-images/question-mark-v2.svg";
-
   const adminToken = getAdminToken();
 
   const onSetTwitterHandle = useCallback(() => {
+    if (adminToken === undefined) {
+      console.error("can't set twitter handle, admin token undefined");
+      return;
+    }
     const handle = window.prompt(`${name} twitter handle`);
-    Api.setContractTwitterHandle(adminToken, id, handle);
-  }, [adminToken, id, name]);
+    if (handle === null) {
+      console.error("can't set null twitter handle");
+      return;
+    }
+    Api.setContractTwitterHandle(adminToken, address, handle);
+  }, [adminToken, address, name]);
 
   const onSetName = useCallback(() => {
+    if (adminToken === undefined) {
+      console.error("can't set name, admin token undefined");
+      return;
+    }
     const nameInput = window.prompt(`${name} name`);
-    Api.setContractName(adminToken, id, nameInput);
-  }, [adminToken, id, name]);
+    if (nameInput === null) {
+      console.error("can't set null name");
+      return;
+    }
+    Api.setContractName(adminToken, address, nameInput);
+  }, [adminToken, address, name]);
 
   const onSetCategory = useCallback(() => {
+    if (adminToken === undefined) {
+      console.error("can't set category, admin token undefined");
+      return;
+    }
     const category = window.prompt(`${name} category`);
-    Api.setContractCategory(adminToken, id, category);
-  }, [adminToken, id, name]);
+    if (category === null) {
+      console.error("can't set null category");
+      return;
+    }
+    Api.setContractCategory(adminToken, address, category);
+  }, [adminToken, address, name]);
 
   return (
-    <div className="pt-2.5 pb-2.5 pr-2.5 | relative">
+    <div className="pt-2.5 pb-2.5 pr-2.5 relative">
       <a
-        href={id.startsWith("0x") ? `https://etherscan.io/address/${id}` : null}
+        href={
+          typeof address === "string"
+            ? `https://etherscan.io/address/${address}`
+            : undefined
+        }
         target="_blank"
         rel="noreferrer"
       >
@@ -93,13 +167,14 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
           className={`flex flex-row items-center font-inter text-white text-base md:text-lg ${styles["leaderboard-row"]}`}
         >
           <BurnProfileTooltip
-            key={id}
+            key={key}
             item={{
-              contractAddress: id?.startsWith("0x")
-                ? `https://etherscan.io/address/${id}`
-                : undefined,
+              contractAddress:
+                typeof address === "string"
+                  ? `https://etherscan.io/address/${address}`
+                  : undefined,
               name: name,
-              contractImageUrl: imgSrc,
+              contractImageUrl: image,
               twitterHandle,
               twitterFollowersCount,
               twitterFamFollowerCount,
@@ -109,25 +184,25 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
             <div className="flex flex-row items-center">
               <img
                 className={`w-8 h-8 leaderboard-image link-animation ${styles["leaderboard-row__child-element"]}`}
-                src={imgSrc}
+                src={image}
                 alt=""
               />
               <p
                 className={`pl-4 truncate link-animation ${styles["leaderboard-row__child-element"]}`}
               >
-                {name.startsWith("0x") && name.length === 42 ? (
-                  <span className="font-roboto">
-                    {"0x" + id.slice(2, 6) + "..." + id.slice(38, 42)}
-                  </span>
+                {name === undefined || getIsContractAddress(name) ? (
+                  <span className="font-roboto"></span>
                 ) : (
-                  name
+                  name || address
                 )}
               </p>
-              <p
-                className={`pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block link-animation ${styles["leaderboard-row__child-element"]}`}
-              >
-                {name.startsWith("0x") && name.length === 42 ? "" : detail}
-              </p>
+              {detail && (
+                <p
+                  className={`pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block link-animation ${styles["leaderboard-row__child-element"]}`}
+                >
+                  {detail}
+                </p>
+              )}
             </div>
           </BurnProfileTooltip>
           <p
@@ -177,17 +252,43 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
   );
 };
 
-export type LeaderboardEntry = {
-  fees: string;
-  id: string;
-  name: string;
-  type: "eth-transfers" | "bot" | "other" | "contract-creations";
-  image: string | null;
+type ContractEntry = {
+  address: string;
   bio: string | null;
-  twitterHandle: string | null;
-  followersCount: number | null;
+  category: string | null;
   famFollowerCount: number | null;
+  fees: number;
+  followersCount: number | null;
+  image: string | null;
+  isBot: boolean;
+  name: string | null;
+  twitterHandle: string | null;
+  type: "contract";
+  /* deprecated */
+  id: string;
 };
+
+type EthTransfersEntry = {
+  fees: number;
+  name: string;
+  type: "eth-transfers";
+  /* deprecated */
+  id: string;
+};
+
+type ContractCreationsEntry = {
+  fees: number;
+  name: string;
+  type: "contract-creations";
+  /* deprecated */
+  id: string;
+};
+
+// Name is undefined because we don't always know the name for a contract. Image is undefined because we don't always have an image for a contract. Address is undefined because base fees paid for ETH transfers are shared between many addresses.
+export type LeaderboardEntry =
+  | ContractEntry
+  | EthTransfersEntry
+  | ContractCreationsEntry;
 
 const feePeriodToUpdateMap: Record<Timeframe, string> = {
   "5m": "leaderboard5m",
@@ -249,39 +350,43 @@ const BurnLeaderboard: FC = () => {
             enter={true}
             exit={false}
           >
-            {selectedLeaderboard.map((leaderboardRow) => {
-              let description = leaderboardRow.bio;
-              if (!description) {
-                description = leaderboardRow.id.startsWith("0x")
-                  ? profileDescriptions["unknown"]
-                  : profileDescriptions[leaderboardRow.id];
-              }
-              return (
-                <CSSTransition
-                  classNames="fee-block"
-                  timeout={500}
-                  key={leaderboardRow.id}
-                >
-                  <LeaderboardRow
-                    key={leaderboardRow.name}
-                    name={leaderboardRow.name.split(":")[0]}
-                    detail={leaderboardRow.name.split(":")[1]}
-                    id={leaderboardRow.id}
-                    fees={Number(leaderboardRow.fees)}
-                    type={leaderboardRow.type || "other"}
-                    image={leaderboardRow.image}
-                    description={description}
-                    twitterFamFollowerCount={
-                      leaderboardRow.famFollowerCount ?? undefined
-                    }
-                    twitterFollowersCount={
-                      leaderboardRow.followersCount ?? undefined
-                    }
-                    twitterHandle={leaderboardRow.twitterHandle}
-                  />
-                </CSSTransition>
-              );
-            })}
+            {selectedLeaderboard.map((entry) => (
+              <CSSTransition
+                classNames="fee-block"
+                timeout={500}
+                key={entry.id}
+              >
+                <LeaderboardRow
+                  key={entry.type === "contract" ? entry.address : entry.name}
+                  address={
+                    entry.type === "contract" ? entry.address : undefined
+                  }
+                  name={getName(entry)}
+                  detail={getDetail(entry)}
+                  fees={Number(entry.fees)}
+                  image={getImage(entry)}
+                  description={getDescription(entry)}
+                  twitterFamFollowerCount={
+                    entry.type === "contract" &&
+                    typeof entry.famFollowerCount === "number"
+                      ? entry.famFollowerCount
+                      : undefined
+                  }
+                  twitterFollowersCount={
+                    entry.type === "contract" &&
+                    typeof entry.followersCount === "number"
+                      ? entry.followersCount
+                      : undefined
+                  }
+                  twitterHandle={
+                    entry.type === "contract" &&
+                    typeof entry.twitterHandle === "string"
+                      ? entry.twitterHandle
+                      : undefined
+                  }
+                />
+              </CSSTransition>
+            ))}
           </TransitionGroup>
         </div>
       )}

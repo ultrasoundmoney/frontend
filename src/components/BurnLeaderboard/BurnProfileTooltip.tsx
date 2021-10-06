@@ -13,7 +13,7 @@ type BurnProfileTooltipProps = {
     name: string;
     contractImageUrl: string;
     description: string;
-    twitterHandle: string;
+    twitterHandle: string | undefined;
     twitterFamFollowerCount?: number;
     twitterFollowersCount?: number;
   };
