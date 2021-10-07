@@ -30,7 +30,7 @@ const getDescription = (entry: LeaderboardEntry): string => {
     }
 
     if (entry.isBot) {
-      return "A contract assisting in the capture of value through arbitrage, front-running, and MEV.";
+      return "A contract making many, seemingly automated transactions.";
     }
   }
 
