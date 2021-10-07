@@ -30,7 +30,7 @@ const getDescription = (entry: LeaderboardEntry): string => {
     }
 
     if (entry.isBot) {
-      return "A contract making many, seemingly automated transactions.";
+      return "A contract making many seemingly automated transactions.";
     }
   }
 
