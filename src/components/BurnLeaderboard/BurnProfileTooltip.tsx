@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useRef } from "react";
+import React, { useState, useLayoutEffect, useRef, useEffect } from "react";
 import twemoji from "twemoji";
 import AvatarImg from "../../assets/avatar.webp";
 import { followerCountConvert } from "../Helpers/helper";
@@ -32,7 +32,7 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
     el.src = AvatarImg;
   }
 
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLButtonElement | null>(null);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
 
   const [tooltipPosition, setTooltipPosition] = useState<{
@@ -72,6 +72,21 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
     });
   }, [isTooltipVisible, windowWidth]);
 
+  // closes the tooltip on scroll
+  useEffect(() => {
+    if (isTooltipVisible) {
+      const handleScroll = () => {
+        containerRef.current.blur();
+        document.removeEventListener("scroll", handleScroll);
+      };
+      document.addEventListener("scroll", handleScroll);
+
+      return () => {
+        document.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, [isTooltipVisible, windowWidth]);
+
   const handleShowTooltip = () => {
     setIsTooltipVisible(true);
   };
@@ -81,11 +96,13 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
   };
 
   return (
-    <div
+    <button
       className="opacity-100"
       ref={containerRef}
       onMouseEnter={handleShowTooltip}
       onMouseLeave={handleHideTooltip}
+      onFocus={handleShowTooltip}
+      onBlur={handleHideTooltip}
     >
       {isTooltipVisible && (
         <div
@@ -167,7 +184,7 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
         </div>
       )}
       {children}
-    </div>
+    </button>
   );
 };
 export default BurnProfileTooltip;
