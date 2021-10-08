@@ -1,10 +1,12 @@
 import React, { useState, useLayoutEffect, useRef } from "react";
 import twemoji from "twemoji";
 import AvatarImg from "../../assets/avatar.webp";
-import twitterIcon from "../../assets/twitter-icon.svg";
 import { followerCountConvert } from "../Helpers/helper";
 import { TranslationsContext } from "../../translations-context";
 import useWindowSize from "../../utils/use-window-size";
+
+import twitterIcon from "../../assets/twitter-icon.svg";
+import ethereumIcon from "../../assets/ethereum-icon.svg";
 
 type BurnProfileTooltipProps = {
   children: React.ReactNode;
@@ -91,14 +93,7 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
           className="fixed w-72 shadow-lg rounded-lg bg-blue-midnightexpress text-white px-7 py-7 z-10 fadein-animation"
           style={{ top: tooltipPosition.y, left: tooltipPosition.x }}
         >
-          <a
-            target="_blank"
-            href={item.contractAddress}
-            rel="noopener noreferrer"
-            role="link"
-            onFocus={handleShowTooltip}
-            onBlur={handleHideTooltip}
-          >
+          <div>
             <picture>
               <img
                 className="rounded-full"
@@ -114,13 +109,23 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
                 onError={imageErrorHandler}
               />
             </picture>
-          </a>
+          </div>
           <div className="text-white my-3 text-base font-medium break-words flex items-center">
             <span className="tw-profile-text truncate">
               {item.name.startsWith("0x") && item.name.length === 42
                 ? item.name.slice(0, 6) + "..." + item.name.slice(38, 42)
                 : item.name}
             </span>
+            {item.contractAddress && (
+              <a
+                target="_blank"
+                rel="noreferrer"
+                className="ml-2 w-5"
+                href={item.contractAddress}
+              >
+                <img src={ethereumIcon} alt="ethereum-contract" />
+              </a>
+            )}
             {item.twitterHandle && (
               <a
                 target="_blank"

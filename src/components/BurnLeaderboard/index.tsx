@@ -154,15 +154,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
 
   return (
     <div className="pt-2.5 pb-2.5 pr-2.5 relative">
-      <a
-        href={
-          typeof address === "string"
-            ? `https://etherscan.io/address/${address}`
-            : undefined
-        }
-        target="_blank"
-        rel="noreferrer"
-      >
+      <button>
         <div
           className={`flex flex-row items-center font-inter text-white text-base md:text-lg ${styles["leaderboard-row"]}`}
         >
@@ -219,7 +211,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
             <span className="text-blue-spindle font-extralight">ETH</span>
           </p>
         </div>
-      </a>
+      </button>
       {adminToken !== undefined && (
         <div className="flex flex-row gap-4">
           <a
