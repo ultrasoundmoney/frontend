@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import * as React from "react";
 import Card from "../Card/card";
 import { TranslationsContext } from "../../translations-context";
@@ -13,21 +14,21 @@ const FeeBurnedBlcok: React.FC<FeeBurnedBlcokProps> = () => {
     const getBurned_4_burned = document.querySelector(
       ".burned_4 .eth-burn-fee"
     );
-    getBurned_4_eth.classList.add("opacity-0");
-    getBurned_4_burned.classList.add("opacity-0");
+    getBurned_4_eth!.classList.add("opacity-0");
+    getBurned_4_burned!.classList.add("opacity-0");
 
     function onScroll() {
       const target = document.querySelector("#next-merge");
       const currentPosition = window.pageYOffset;
-      if (window.scrollY >= target.getBoundingClientRect().top) {
-        getBurned_4_eth.classList.remove("opacity-0");
-        getBurned_4_burned.classList.remove("opacity-0");
+      if (target && window.scrollY >= target.getBoundingClientRect().top) {
+        getBurned_4_eth!.classList.remove("opacity-0");
+        getBurned_4_burned!.classList.remove("opacity-0");
         if (currentPosition > scrollTop) {
-          getBurned_4_eth.classList.add("animateIn");
-          getBurned_4_burned.classList.add("animateIn");
+          getBurned_4_eth!.classList.add("animateIn");
+          getBurned_4_burned!.classList.add("animateIn");
         } else {
-          getBurned_4_eth.classList.remove("animateIn");
-          getBurned_4_burned.classList.remove("animateIn");
+          getBurned_4_eth!.classList.remove("animateIn");
+          getBurned_4_burned!.classList.remove("animateIn");
         }
       }
       setScrollTop(currentPosition <= 0 ? 0 : currentPosition);

@@ -57,30 +57,41 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
 
   const onSetTwitterHandle = useCallback(() => {
     const handle = window.prompt(`${name} twitter handle`);
+    if (adminToken === undefined || handle === null) {
+      return;
+    }
     Api.setContractTwitterHandle(adminToken, id, handle);
   }, [adminToken, id, name]);
 
   const onSetName = useCallback(() => {
     const nameInput = window.prompt(`${name} name`);
+    if (adminToken === undefined || nameInput === null) {
+      return;
+    }
     Api.setContractName(adminToken, id, nameInput);
   }, [adminToken, id, name]);
 
   const onSetCategory = useCallback(() => {
     const category = window.prompt(`${name} category`);
+    if (adminToken === undefined || category === null) {
+      return;
+    }
     Api.setContractCategory(adminToken, id, category);
   }, [adminToken, id, name]);
 
   return (
     <div className="pt-2.5 pb-2.5 pr-2.5">
       <a
-        href={id.startsWith("0x") ? `https://etherscan.io/address/${id}` : null}
+        href={
+          id.startsWith("0x") ? `https://etherscan.io/address/${id}` : undefined
+        }
         target="_blank"
         rel="noreferrer"
       >
         <div className="hover:opacity-60 link-animation flex flex-row items-center font-inter text-white text-base md:text-lg">
           <img className="w-8 h-8 leaderboard-image" src={imgSrc} alt="" />
           <p className="pl-4 truncate">
-            {name.startsWith("0x") && name.length === 42 ? (
+            {name?.startsWith("0x") && name.length === 42 ? (
               <span className="font-roboto">
                 {"0x" + id.slice(2, 6)}
                 <span className="font-inter">...</span>
@@ -91,7 +102,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
             )}
           </p>
           <p className="pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block">
-            {name.startsWith("0x") && name.length === 42 ? "" : detail}
+            {name?.startsWith("0x") && name.length === 42 ? "" : detail}
           </p>
           <p className="pl-4 whitespace-nowrap ml-auto font-roboto font-light">
             <CountUp
