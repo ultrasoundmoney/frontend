@@ -20,12 +20,14 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
   return (
     <>
       <div className={getClassName}>
-        <div
-          className="icon-emoji text-center"
-          dangerouslySetInnerHTML={{
-            __html: twemoji.parse(icon),
-          }}
-        />
+        {icon && (
+          <div
+            className="icon-emoji text-center"
+            dangerouslySetInnerHTML={{
+              __html: twemoji.parse(icon),
+            }}
+          />
+        )}
         <h1 className="text-white font-light text-base text-center mb-14 mt-4">
           <span
             className=""

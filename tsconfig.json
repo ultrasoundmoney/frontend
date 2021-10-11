@@ -1,15 +1,10 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext",
-      "es2017"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext", "es2017"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": false,
+    "strict": true,
     "alwaysStrict": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
@@ -25,18 +20,8 @@
     "noUnusedParameters": true,
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
-    "types": [
-      "node",
-      "jest"
-    ],
+    "types": ["node", "jest"]
   },
-  "exclude": [
-    "node_modules",
-    "locales/**/*.json",
-  ],
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-  ]
+  "exclude": ["node_modules", "locales/**/*.json"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }

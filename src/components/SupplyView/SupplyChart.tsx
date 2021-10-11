@@ -62,18 +62,25 @@ const SupplyChart: React.FC<Props> = ({
   const chartRef = React.useRef<HighchartsRef | null>(null);
 
   React.useEffect(() => {
+    if (containerRef.current === null) {
+      return;
+    }
+
     // Sometimes the chart container resizes to be smaller after
     // the page finishes loading. Force a reflow to handle this.
     const hc = containerRef.current.querySelector(".highcharts-container");
-    if (hc.clientWidth > containerRef.current.clientWidth) {
+    if (hc && hc.clientWidth > containerRef.current.clientWidth) {
       console.log("reflow supply chart!");
-      chartRef.current.chart.reflow();
+      chartRef.current!.chart.reflow();
     }
   }, [t]);
 
   // Show / hide supply breakdown on hover
   const [showBreakdown, setShowBreakdown] = React.useState(false);
   const handleChartMouseOut = React.useCallback(() => {
+    if (mouseOutTimer === null) {
+      return;
+    }
     clearTimeout(mouseOutTimer);
     mouseOutTimer = setTimeout(() => {
       setShowBreakdown(false);
@@ -81,6 +88,9 @@ const SupplyChart: React.FC<Props> = ({
   }, []);
 
   const handleChartMouseOver = React.useCallback(() => {
+    if (mouseOutTimer === null) {
+      return;
+    }
     clearTimeout(mouseOutTimer);
     setShowBreakdown(true);
   }, []);
@@ -95,7 +105,11 @@ const SupplyChart: React.FC<Props> = ({
       window.innerWidth < COMPACT_CHART_BELOW_WIDTH
   );
 
-  useOnResize(({ width }) => {
+  useOnResize((resizeProps) => {
+    if (resizeProps === undefined) {
+      return;
+    }
+    const width = resizeProps.width;
     const _useCompactMarkers = width < COMPACT_MARKERS_BELOW_WIDTH;
     if (_useCompactMarkers !== useCompactMarkers) {
       setUseCompactMarkers(_useCompactMarkers);
@@ -176,7 +190,7 @@ const SupplyChart: React.FC<Props> = ({
       if (v > (maxSupply || 0)) {
         maxSupply = v;
         peakSupply = null;
-      } else if (v < maxSupply && !peakSupply) {
+      } else if (v < maxSupply! && !peakSupply) {
         peakSupply = [timestamp, v];
       }
 
@@ -221,18 +235,18 @@ const SupplyChart: React.FC<Props> = ({
 
     // Projection should be 1/3 of chart
     const firstDate = DateTime.fromISO(supplyData[0].t, { zone: "utc" });
-    const lastDate = DateTime.fromISO(last(supplyData).t, { zone: "utc" });
+    const lastDate = DateTime.fromISO(last(supplyData)!.t, { zone: "utc" });
     const daysOfData = lastDate.diff(firstDate, "days").days;
     const daysOfProjection = Math.floor(daysOfData / 2);
 
-    const contractProj: number[][] = [lastContractPoint];
-    const addressProj: number[][] = [lastAddressPoint];
-    const stakingProj: number[][] = [lastStakingPoint];
-    const supplyProj: number[][] = [lastSupplyPoint];
+    const contractProj: number[][] = [lastContractPoint!];
+    const addressProj: number[][] = [lastAddressPoint!];
+    const stakingProj: number[][] = [lastStakingPoint!];
+    const supplyProj: number[][] = [lastSupplyPoint!];
     const mergeDate = chartSettings.projectedMergeDate.toSeconds();
 
-    let supplyValue = lastSupplyPoint[1];
-    let stakingValue = lastStakingPoint[1];
+    let supplyValue = lastSupplyPoint![1];
+    let stakingValue = lastStakingPoint![1];
 
     const maxIssuance = estimatedDailyIssuance(chartSettings.projectedStaking);
 
@@ -270,7 +284,7 @@ const SupplyChart: React.FC<Props> = ({
 
       const nonStakingValue = Math.max(supplyValue - stakingValue, 0);
 
-      let inContractValue = Math.min(lastContractPoint[1], nonStakingValue);
+      let inContractValue = Math.min(lastContractPoint![1], nonStakingValue);
       let inAddressesValue = nonStakingValue - inContractValue;
       // Make sure ETH in addresses doesn't dip way below ETH in contracts
       if (inAddressesValue < inContractValue * 0.5) {
@@ -292,7 +306,7 @@ const SupplyChart: React.FC<Props> = ({
         maxSupply = adjustedSupplyValue;
         peakSupply = null;
       } else if (
-        adjustedSupplyValue < maxSupply &&
+        adjustedSupplyValue < maxSupply! &&
         !peakSupply &&
         isLongTermContractingSupply
       ) {
@@ -421,7 +435,7 @@ const SupplyChart: React.FC<Props> = ({
           xAxis: 0,
           yAxis: 0,
           x: DateTime.fromISO(peakSupply[0], { zone: "utc" }).toMillis(),
-          y: maxSupply,
+          y: maxSupply!,
         },
         text: `<div class="ann-root">
           <div class="ann-title">${t.peak_supply}</div>
@@ -497,7 +511,7 @@ const SupplyChart: React.FC<Props> = ({
         maxPadding: 0,
         tickInterval: 365.25 * 24 * 3600 * 1000, // always use 1 year intervals
         plotLines: markers.map(([date, title, subtitle], i) => ({
-          value: date.toMillis(),
+          value: date!.toMillis(),
           color: COLORS.PLOT_LINE,
           width: 1,
           label: {
@@ -537,11 +551,11 @@ const SupplyChart: React.FC<Props> = ({
           // Historical & projected overlap at current date; only show historical on that date
           if (points.length > 4) {
             points = points.filter(
-              (p) => !p.series.userOptions.id.includes("projected")
+              (p) => !p.series.userOptions.id!.includes("projected")
             );
           }
 
-          const isProjected = points[0].series.userOptions.id.includes(
+          const isProjected = points[0].series.userOptions.id!.includes(
             "projected"
           );
 

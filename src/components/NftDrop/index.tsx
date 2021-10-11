@@ -5,19 +5,6 @@ import { TranslationsContext } from "../../translations-context";
 
 const NftDrop: React.FC = () => {
   const t = React.useContext(TranslationsContext);
-  const refVideo = React.useRef(null);
-
-  React.useEffect(() => {
-    if (!refVideo.current) {
-      return;
-    }
-
-    //open bug since 2017 that you cannot set muted in video element https://github.com/facebook/react/issues/10389
-    refVideo.current.defaultMuted = true;
-    refVideo.current.muted = true;
-
-    refVideo.current.srcObject = "/nft-drop.mp4";
-  });
 
   return (
     <div className="w-full md:w-auto md:flex px-4 md:px-0 pt-32 pb-40">

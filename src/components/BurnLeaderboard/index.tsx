@@ -91,12 +91,12 @@ type LeaderboardRowProps = {
   description: string;
   detail: string | undefined;
   fees: number;
-  image: string | null;
+  image: string;
   key: string;
   name: string;
-  twitterFamFollowerCount: number;
-  twitterFollowersCount: number;
-  twitterHandle: string;
+  twitterFamFollowerCount: number | undefined;
+  twitterFollowersCount: number | undefined;
+  twitterHandle: string | undefined;
 };
 
 const LeaderboardRow: FC<LeaderboardRowProps> = ({
@@ -119,8 +119,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
       return;
     }
     const handle = window.prompt(`${name} twitter handle`);
-    if (handle === null) {
-      console.error("can't set null twitter handle");
+    if (adminToken === undefined || handle === null || address === undefined) {
       return;
     }
     Api.setContractTwitterHandle(adminToken, address, handle);
@@ -132,8 +131,11 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
       return;
     }
     const nameInput = window.prompt(`${name} name`);
-    if (nameInput === null) {
-      console.error("can't set null name");
+    if (
+      adminToken === undefined ||
+      nameInput === null ||
+      address === undefined
+    ) {
       return;
     }
     Api.setContractName(adminToken, address, nameInput);
@@ -145,8 +147,11 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
       return;
     }
     const category = window.prompt(`${name} category`);
-    if (category === null) {
-      console.error("can't set null category");
+    if (
+      adminToken === undefined ||
+      category === null ||
+      address === undefined
+    ) {
       return;
     }
     Api.setContractCategory(adminToken, address, category);
@@ -212,7 +217,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
           </p>
         </div>
       </button>
-      {adminToken !== undefined && (
+      {typeof adminToken === "string" && typeof address === "string" && (
         <div className="flex flex-row gap-4">
           <a
             className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"

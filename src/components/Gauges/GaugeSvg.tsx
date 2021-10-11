@@ -41,11 +41,12 @@ const GaugeSvg: FC<GaugeSvgProps> = ({
     endAngle: arcStartAngle + arcFraction * tau,
   });
 
-  const foregroundArc = x.to((x) =>
-    d3.arc().cornerRadius(thickness)({
-      ...arcBase,
-      endAngle: arcStartAngle + arcFraction * tau * x,
-    })
+  const foregroundArc = x.to(
+    (x) =>
+      d3.arc().cornerRadius(thickness)({
+        ...arcBase,
+        endAngle: arcStartAngle + arcFraction * tau * x,
+      }) ?? ""
   );
 
   const needlePath = "M 0 -4 L 64 0 L 64 0 L 0 4 A 1 1 0 0 1 0 -4";
@@ -53,7 +54,10 @@ const GaugeSvg: FC<GaugeSvgProps> = ({
   return (
     <svg width={width} height={height}>
       <g transform={`translate(${width / 2},${height / 2})`}>
-        <path style={{ fill: colors.dusk }} d={backgroundArc}></path>
+        <path
+          style={{ fill: colors.dusk }}
+          d={backgroundArc ?? undefined}
+        ></path>
         <animated.path
           style={{ fill: progressFillColor }}
           d={foregroundArc}

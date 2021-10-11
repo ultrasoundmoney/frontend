@@ -43,18 +43,20 @@ const SplitGaugeSvg: FC<SplitGaugeSvgProps> = ({
   };
 
   // cornerRadius has no effect when passed declaratively.
-  const backgroundArc = d3.arc().cornerRadius(thickness)({
-    ...arcBase,
-    startAngle: -tau / 3,
-    endAngle: backgroundStartAngle + backgroundArcFraction * tau,
-  });
-
-  const foregroundArc = x.to((x) =>
+  const backgroundArc =
     d3.arc().cornerRadius(thickness)({
       ...arcBase,
-      startAngle: 0,
-      endAngle: (1 / 3) * tau * foregroundArcFraction * x,
-    })
+      startAngle: -tau / 3,
+      endAngle: backgroundStartAngle + backgroundArcFraction * tau,
+    }) ?? undefined;
+
+  const foregroundArc = x.to(
+    (x) =>
+      d3.arc().cornerRadius(thickness)({
+        ...arcBase,
+        startAngle: 0,
+        endAngle: (1 / 3) * tau * foregroundArcFraction * x,
+      }) ?? ""
   );
 
   const needlePath = "M 0 -4 L 64 0 L 64 0 L 0 4 A 1 1 0 0 1 0 -4";
