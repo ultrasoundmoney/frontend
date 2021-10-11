@@ -12,6 +12,7 @@ type LeaderboardRowProps = {
   detail?: string;
   fees: number;
   id: string;
+  isBot: boolean;
   name?: string;
   type: LeaderboardEntry["type"];
   image: string | undefined;
