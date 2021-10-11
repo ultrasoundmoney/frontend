@@ -100,7 +100,7 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
 
   return (
     <button
-      className="opacity-100"
+      className="opacity-100 w-full"
       ref={containerRef}
       onMouseEnter={handleShowTooltip}
       onMouseLeave={handleHideTooltip}

@@ -159,62 +159,60 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
 
   return (
     <div className="pt-2.5 pb-2.5 pr-2.5 relative">
-      <div
-        className={`flex flex-row items-center font-inter text-white text-base md:text-lg ${styles["leaderboard-row"]}`}
+      <BurnProfileTooltip
+        key={key}
+        item={{
+          contractAddress:
+            typeof address === "string"
+              ? `https://etherscan.io/address/${address}`
+              : undefined,
+          name: name,
+          contractImageUrl: image,
+          twitterHandle,
+          twitterFollowersCount,
+          twitterFamFollowerCount,
+          description,
+        }}
       >
-        <BurnProfileTooltip
-          key={key}
-          item={{
-            contractAddress:
-              typeof address === "string"
-                ? `https://etherscan.io/address/${address}`
-                : undefined,
-            name: name,
-            contractImageUrl: image,
-            twitterHandle,
-            twitterFollowersCount,
-            twitterFamFollowerCount,
-            description,
-          }}
+        <div
+          className={`hover:opacity-60 link-animation flex flex-row items-center font-inter text-white text-base md:text-lg ${styles["leaderboard-row"]}`}
         >
-          <div className="flex flex-row items-center">
-            <img
-              className={`w-8 h-8 leaderboard-image link-animation ${styles["leaderboard-row__child-element"]}`}
-              src={image}
-              alt=""
-            />
-            <p
-              className={`pl-4 truncate link-animation ${styles["leaderboard-row__child-element"]}`}
-            >
-              {name === undefined || getIsContractAddress(name) ? (
-                <span className="font-roboto"></span>
-              ) : (
-                name || address
-              )}
-            </p>
-            {detail && (
-              <p
-                className={`pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block link-animation ${styles["leaderboard-row__child-element"]}`}
-              >
-                {detail}
-              </p>
+          <img
+            className={`w-8 h-8 leaderboard-image link-animation ${styles["leaderboard-row__child-element"]}`}
+            src={image}
+            alt=""
+          />
+          <p
+            className={`pl-4 truncate link-animation ${styles["leaderboard-row__child-element"]}`}
+          >
+            {name === undefined || getIsContractAddress(name) ? (
+              <span className="font-roboto"></span>
+            ) : (
+              name || address
             )}
-          </div>
-        </BurnProfileTooltip>
-        <p
-          className={`pl-4 whitespace-nowrap ml-auto font-roboto font-light link-animation ${styles["leaderboard-row__child-element"]}`}
-        >
-          <CountUp
-            start={0}
-            end={weiToEth(fees)}
-            preserveValue={true}
-            separator=","
-            decimals={2}
-            duration={0.8}
-          />{" "}
-          <span className="text-blue-spindle font-extralight">ETH</span>
-        </p>
-      </div>
+          </p>
+          {detail && (
+            <p
+              className={`pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block link-animation ${styles["leaderboard-row__child-element"]}`}
+            >
+              {detail}
+            </p>
+          )}
+          <p
+            className={`pl-4 whitespace-nowrap ml-auto font-roboto font-light link-animation ${styles["leaderboard-row__child-element"]}`}
+          >
+            <CountUp
+              start={0}
+              end={weiToEth(fees)}
+              preserveValue={true}
+              separator=","
+              decimals={2}
+              duration={0.8}
+            />{" "}
+            <span className="text-blue-spindle font-extralight">ETH</span>
+          </p>
+        </div>
+      </BurnProfileTooltip>
       {typeof adminToken === "string" && typeof address === "string" && (
         <div className="flex flex-row gap-4">
           <a
