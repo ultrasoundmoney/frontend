@@ -159,6 +159,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
 export type LeaderboardEntry = {
   fees: string;
   id: string;
+  isBot: boolean;
   name: string;
   type?: "eth-transfers" | "other" | "contract-creations";
   image: string | undefined;
