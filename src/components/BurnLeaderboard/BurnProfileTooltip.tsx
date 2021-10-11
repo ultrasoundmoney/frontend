@@ -76,6 +76,9 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
   useEffect(() => {
     if (isTooltipVisible) {
       const handleScroll = () => {
+        if (containerRef.current === null) {
+          return;
+        }
         containerRef.current.blur();
         document.removeEventListener("scroll", handleScroll);
       };
