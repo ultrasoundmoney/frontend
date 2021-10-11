@@ -15,6 +15,7 @@ type LeaderboardRowProps = {
   name?: string;
   type: LeaderboardEntry["type"];
   image: string | undefined;
+  category: string | null;
 };
 
 const getAdminToken = (): string | undefined => {
@@ -39,6 +40,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
   name,
   type,
   image,
+  category,
 }) => {
   const imgSrc =
     typeof image === "string"
@@ -101,6 +103,11 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
               name
             )}
           </p>
+          {category && (
+            <p className="px-2 py-1 ml-2 text-sm rounded-sm font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block bg-blue-highlightbg">
+              {category}
+            </p>
+          )}
           <p className="pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block">
             {name?.startsWith("0x") && name.length === 42 ? "" : detail}
           </p>
@@ -155,6 +162,7 @@ export type LeaderboardEntry = {
   name: string;
   type?: "eth-transfers" | "bot" | "other" | "contract-creations";
   image: string | undefined;
+  category: string | null;
 };
 
 const feePeriodToUpdateMap: Record<Timeframe, string> = {
@@ -231,6 +239,7 @@ const BurnLeaderboard: FC = () => {
                   fees={Number(leaderboardRow.fees)}
                   type={leaderboardRow.type || "other"}
                   image={leaderboardRow.image}
+                  category={leaderboardRow.category}
                 />
               </CSSTransition>
             ))}
