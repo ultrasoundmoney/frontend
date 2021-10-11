@@ -36,6 +36,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
   detail,
   fees,
   id,
+  isBot,
   name,
   type,
   image,
@@ -45,7 +46,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
       ? image
       : type === "eth-transfers"
       ? "/leaderboard-images/transfer-v2.svg"
-      : type === "bot"
+      : isBot
       ? "/leaderboard-images/bot-v2.svg"
       : type === "contract-creations"
       ? "/leaderboard-images/contract-creations.svg"
@@ -78,6 +79,11 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
     }
     Api.setContractCategory(adminToken, id, category);
   }, [adminToken, id, name]);
+
+  // custom text for contract creations
+  if (type === "contract-creations") {
+    name = "new contracts";
+  }
 
   return (
     <div className="pt-2.5 pb-2.5 pr-2.5">
@@ -153,7 +159,7 @@ export type LeaderboardEntry = {
   fees: string;
   id: string;
   name: string;
-  type?: "eth-transfers" | "bot" | "other" | "contract-creations";
+  type?: "eth-transfers" | "other" | "contract-creations";
   image: string | undefined;
 };
 
@@ -224,10 +230,11 @@ const BurnLeaderboard: FC = () => {
                 key={leaderboardRow.id}
               >
                 <LeaderboardRow
-                  key={leaderboardRow.name}
+                  key={leaderboardRow.name} // ??? should this be leaderboardRow.id?
                   name={leaderboardRow.name.split(":")[0]}
                   detail={leaderboardRow.name.split(":")[1]}
                   id={leaderboardRow.id}
+                  isBot={leaderboardRow.isBot}
                   fees={Number(leaderboardRow.fees)}
                   type={leaderboardRow.type || "other"}
                   image={leaderboardRow.image}
