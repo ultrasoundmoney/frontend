@@ -104,7 +104,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
             )}
           </p>
           {category && (
-            <p className="px-2 py-1 ml-2 text-sm rounded-sm font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block bg-blue-highlightbg">
+            <p className="px-1 py-0 ml-2 text-sm rounded-sm font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block bg-blue-highlightbg">
               {category}
             </p>
           )}
