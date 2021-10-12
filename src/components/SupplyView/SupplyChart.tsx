@@ -62,14 +62,10 @@ const SupplyChart: React.FC<Props> = ({
   const chartRef = React.useRef<HighchartsRef | null>(null);
 
   React.useEffect(() => {
-    if (containerRef.current === null) {
-      return;
-    }
-
     // Sometimes the chart container resizes to be smaller after
     // the page finishes loading. Force a reflow to handle this.
-    const hc = containerRef.current.querySelector(".highcharts-container");
-    if (hc && hc.clientWidth > containerRef.current.clientWidth) {
+    const hc = containerRef.current!.querySelector(".highcharts-container");
+    if (hc!.clientWidth > containerRef.current!.clientWidth) {
       console.log("reflow supply chart!");
       chartRef.current!.chart.reflow();
     }
@@ -104,10 +100,7 @@ const SupplyChart: React.FC<Props> = ({
   );
 
   useOnResize((resizeProps) => {
-    if (resizeProps === undefined) {
-      return;
-    }
-    const width = resizeProps.width;
+    const width = resizeProps!.width;
     const _useCompactMarkers = width < COMPACT_MARKERS_BELOW_WIDTH;
     if (_useCompactMarkers !== useCompactMarkers) {
       setUseCompactMarkers(_useCompactMarkers);
