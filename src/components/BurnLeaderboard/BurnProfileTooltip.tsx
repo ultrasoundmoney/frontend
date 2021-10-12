@@ -6,7 +6,7 @@ import { TranslationsContext } from "../../translations-context";
 import useWindowSize from "../../utils/use-window-size";
 
 import twitterIcon from "../../assets/twitter-icon.svg";
-import ethereumIcon from "../../assets/ethereum-icon.svg";
+import etherScanIcon from "../../assets/ether-scan-icon.svg";
 
 type BurnProfileTooltipProps = {
   children: React.ReactNode;
@@ -143,7 +143,7 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
                 className="ml-2 w-5"
                 href={item.contractAddress}
               >
-                <img src={ethereumIcon} alt="ethereum-contract" />
+                <img src={etherScanIcon} alt="ethereum-contract" />
               </a>
             )}
             {item.twitterHandle && (
