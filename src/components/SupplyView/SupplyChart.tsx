@@ -78,20 +78,14 @@ const SupplyChart: React.FC<Props> = ({
   // Show / hide supply breakdown on hover
   const [showBreakdown, setShowBreakdown] = React.useState(false);
   const handleChartMouseOut = React.useCallback(() => {
-    if (mouseOutTimer === null) {
-      return;
-    }
-    clearTimeout(mouseOutTimer);
+    mouseOutTimer === null ? clearTimeout() : clearTimeout(mouseOutTimer);
     mouseOutTimer = setTimeout(() => {
       setShowBreakdown(false);
     }, 200);
   }, []);
 
   const handleChartMouseOver = React.useCallback(() => {
-    if (mouseOutTimer === null) {
-      return;
-    }
-    clearTimeout(mouseOutTimer);
+    mouseOutTimer === null ? clearTimeout() : clearTimeout(mouseOutTimer);
     setShowBreakdown(true);
   }, []);
 
