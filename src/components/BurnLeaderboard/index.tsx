@@ -37,19 +37,19 @@ const getDescription = (entry: LeaderboardEntry): string => {
   return "Unknown contract.";
 };
 
-const getName = (entry: LeaderboardEntry): string => {
+const getName = (entry: LeaderboardEntry): string | undefined => {
   if (entry.type === "contract") {
-    const shortAddress =
-      "0x" + entry.address.slice(2, 6) + "..." + entry.address.slice(38, 42);
-    // Right now contract entries always have a name. In the future the API should only return names it has.
-    if (typeof entry.name === "string") {
-      return getIsContractAddress(entry.name)
-        ? shortAddress
-        : // We have the convention to sometimes add a ':' which Etherscan often does in naming, and display this part differently.
-          entry.name.split(":")[0];
+    if (typeof entry.name !== "string") {
+      return undefined;
     }
 
-    return shortAddress;
+    // Right now contract entries always have a name. In the future the API should only return names it has. We pretend it already does.
+    if (getIsContractAddress(entry.name)) {
+      return undefined;
+    }
+
+    // We have the convention to sometimes add a ':' which Etherscan often does in naming, and display the part that comes before differently from the part that comes after.
+    return entry.name.split(":")[0];
   }
 
   return entry.name;
@@ -93,7 +93,7 @@ type LeaderboardRowProps = {
   fees: number;
   image: string;
   key: string;
-  name: string;
+  name: string | undefined;
   twitterFamFollowerCount: number | undefined;
   twitterFollowersCount: number | undefined;
   twitterHandle: string | undefined;
@@ -166,7 +166,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
             typeof address === "string"
               ? `https://etherscan.io/address/${address}`
               : undefined,
-          name: name,
+          name: name || address || "unknown contract",
           contractImageUrl: image,
           twitterHandle,
           twitterFollowersCount,
@@ -182,13 +182,15 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
             src={image}
             alt=""
           />
-          <p
-            className={`pl-4 truncate link-animation ${styles["leaderboard-row__child-element"]}`}
-          >
-            {name === undefined || getIsContractAddress(name) ? (
-              <span className="font-roboto"></span>
+          <p className="pl-4 truncate">
+            {typeof name !== "string" && typeof address === "string" ? (
+              <span className="font-roboto">
+                {address.slice(0, 6)}
+                <span className="font-inter">...</span>
+                {address.slice(38, 42)}
+              </span>
             ) : (
-              name || address
+              name || "unknown contract"
             )}
           </p>
           {detail && (
