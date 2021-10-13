@@ -56,7 +56,7 @@ const ComingSoon: FC = () => {
 
   if (typeof window !== "undefined" && baseFeePerGas !== undefined) {
     document.title =
-      "ultrasound.money | " + weiToGwei(baseFeePerGas).toFixed(0) + " Gwei";
+      weiToGwei(baseFeePerGas).toFixed(0) + " Gwei | ultrasound.money";
   }
 
   return (
