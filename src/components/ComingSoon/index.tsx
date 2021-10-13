@@ -54,6 +54,11 @@ const ComingSoon: FC = () => {
     setSimulateMerge(!simulateMerge);
   }, [simulateMerge]);
 
+  if (typeof window !== "undefined") {
+    document.title =
+      "ultrasound.money | " + weiToGwei(baseFeePerGas).toFixed(0) + " Gwei";
+  }
+
   return (
     <div className="wrapper bg-blue-midnightexpress blurred-bg-image">
       <div className="container m-auto">
