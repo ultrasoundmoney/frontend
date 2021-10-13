@@ -115,7 +115,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint",
-    "*.{ts,tsx}": "tsc -p . --noEmit"
+    "*.{ts,tsx}": "tsc-files --noEmit"
   },
   "standard": {
     "globals": [
