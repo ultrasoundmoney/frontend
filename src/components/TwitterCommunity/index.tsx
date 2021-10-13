@@ -12,7 +12,7 @@ const TwitterCommunity: React.FC = () => {
   const [isCopiedFeedbackVisible, setIsCopiedFeedbackVisible] = React.useState<
     boolean
   >(false);
-  const { data } = useSWR(`${famBasePath}/2/profiles`);
+  const { data } = useSWR(`${famBasePath}/profiles`);
 
   const profiles = data?.profiles;
   const famCount = data?.count;
