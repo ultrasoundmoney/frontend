@@ -54,7 +54,7 @@ const ComingSoon: FC = () => {
     setSimulateMerge(!simulateMerge);
   }, [simulateMerge]);
 
-  if (typeof window !== "undefined") {
+  if (typeof window !== "undefined" && baseFeePerGas !== undefined) {
     document.title =
       "ultrasound.money | " + weiToGwei(baseFeePerGas).toFixed(0) + " Gwei";
   }
