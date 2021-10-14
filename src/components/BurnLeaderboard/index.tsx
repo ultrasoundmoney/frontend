@@ -157,64 +157,79 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
     Api.setContractCategory(adminToken, address, category);
   }, [adminToken, address, name]);
 
+  const renderItemNameAndDetails = () => (
+    <>
+      <p className="pl-4 truncate">
+        {typeof name !== "string" && typeof address === "string" ? (
+          <span className="font-roboto">
+            {address.slice(0, 6)}
+            <span className="font-inter">...</span>
+            {address.slice(38, 42)}
+          </span>
+        ) : (
+          name || "unknown contract"
+        )}
+      </p>
+      {detail && (
+        <p
+          className={`pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block link-animation ${styles["leaderboard-row__child-element"]}`}
+        >
+          {detail}
+        </p>
+      )}
+    </>
+  );
+
   return (
     <div className="pt-2.5 pb-2.5 pr-2.5 relative">
-      <BurnProfileTooltip
-        key={key}
-        item={{
-          contractAddress:
-            typeof address === "string"
-              ? `https://etherscan.io/address/${address}`
-              : undefined,
-          name: name || address || "unknown contract",
-          contractImageUrl: image,
-          twitterHandle,
-          twitterFollowersCount,
-          twitterFamFollowerCount,
-          description,
-        }}
+      <div
+        className={`link-animation flex flex-row items-center font-inter text-white text-base md:text-lg ${styles["leaderboard-row"]}`}
       >
-        <div
-          className={`hover:opacity-60 link-animation flex flex-row items-center font-inter text-white text-base md:text-lg ${styles["leaderboard-row"]}`}
+        <BurnProfileTooltip
+          key={key}
+          item={{
+            name: name || address || "unknown contract",
+            contractImageUrl: image,
+            twitterHandle,
+            twitterFollowersCount,
+            twitterFamFollowerCount,
+            description,
+          }}
+          className="w-8 h-8"
         >
           <img
-            className={`w-8 h-8 leaderboard-image link-animation ${styles["leaderboard-row__child-element"]}`}
+            className={`leaderboard-image link-animation ${styles["leaderboard-row__child-element"]}`}
+            style={{ minWidth: "32px" }}
             src={image}
             alt=""
           />
-          <p className="pl-4 truncate">
-            {typeof name !== "string" && typeof address === "string" ? (
-              <span className="font-roboto">
-                {address.slice(0, 6)}
-                <span className="font-inter">...</span>
-                {address.slice(38, 42)}
-              </span>
-            ) : (
-              name || "unknown contract"
-            )}
-          </p>
-          {detail && (
-            <p
-              className={`pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block link-animation ${styles["leaderboard-row__child-element"]}`}
-            >
-              {detail}
-            </p>
-          )}
-          <p
-            className={`pl-4 whitespace-nowrap ml-auto font-roboto font-light link-animation ${styles["leaderboard-row__child-element"]}`}
+        </BurnProfileTooltip>
+        {typeof address === "string" ? (
+          <a
+            className="inline-flex items-center overflow-hidden"
+            target="_blank"
+            rel="noreferrer"
+            href={`https://etherscan.io/address/${address}`}
           >
-            <CountUp
-              start={0}
-              end={weiToEth(fees)}
-              preserveValue={true}
-              separator=","
-              decimals={2}
-              duration={0.8}
-            />{" "}
-            <span className="text-blue-spindle font-extralight">ETH</span>
-          </p>
-        </div>
-      </BurnProfileTooltip>
+            {renderItemNameAndDetails()}
+          </a>
+        ) : (
+          renderItemNameAndDetails()
+        )}
+        <p
+          className={`pl-4 whitespace-nowrap ml-auto font-roboto font-light link-animation ${styles["leaderboard-row__child-element"]}`}
+        >
+          <CountUp
+            start={0}
+            end={weiToEth(fees)}
+            preserveValue={true}
+            separator=","
+            decimals={2}
+            duration={0.8}
+          />{" "}
+          <span className="text-blue-spindle font-extralight">ETH</span>
+        </p>
+      </div>
       {typeof adminToken === "string" && typeof address === "string" && (
         <div className="flex flex-row gap-4">
           <a

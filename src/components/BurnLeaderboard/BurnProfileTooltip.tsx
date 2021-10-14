@@ -5,9 +5,6 @@ import { followerCountConvert } from "../Helpers/helper";
 import { TranslationsContext } from "../../translations-context";
 import useWindowSize from "../../utils/use-window-size";
 
-import twitterIcon from "../../assets/twitter-icon.svg";
-import etherScanIcon from "../../assets/ether-scan-icon.svg";
-
 type BurnProfileTooltipProps = {
   children: React.ReactNode;
   item: {
@@ -19,11 +16,13 @@ type BurnProfileTooltipProps = {
     twitterFamFollowerCount?: number;
     twitterFollowersCount?: number;
   };
+  className?: string;
 };
 
 const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
   children,
   item,
+  className,
 }) => {
   const t = React.useContext(TranslationsContext);
   function imageErrorHandler(e: React.SyntheticEvent<HTMLImageElement, Event>) {
@@ -95,15 +94,42 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
   };
 
   const handleHideTooltip = () => {
-    setIsTooltipVisible(false);
+    // need timeout so that browser registers the click
+    // on profile image which has a link to twitter
+    setTimeout(() => {
+      setIsTooltipVisible(false);
+    }, 0);
   };
+
+  const renderItemImage = () => (
+    <picture>
+      <img
+        className="rounded-full"
+        width="80"
+        height="80"
+        src={
+          item.contractImageUrl !== null && item.contractImageUrl != undefined
+            ? item.contractImageUrl
+            : AvatarImg
+        }
+        alt={item.name}
+        onError={imageErrorHandler}
+      />
+    </picture>
+  );
 
   return (
     <button
-      className="opacity-100 w-full"
+      className={`opacity-100 ${className ? className : ""}`}
       ref={containerRef}
       onMouseEnter={handleShowTooltip}
-      onMouseLeave={handleHideTooltip}
+      onMouseLeave={() => {
+        if (document.activeElement === containerRef.current) {
+          containerRef.current?.blur();
+        } else {
+          handleHideTooltip();
+        }
+      }}
       onFocus={handleShowTooltip}
       onBlur={handleHideTooltip}
     >
@@ -114,21 +140,22 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
           style={{ top: tooltipPosition.y, left: tooltipPosition.x }}
         >
           <div>
-            <picture>
-              <img
-                className="rounded-full"
-                width="80"
-                height="80"
-                src={
-                  item.contractImageUrl !== null &&
-                  item.contractImageUrl != undefined
-                    ? item.contractImageUrl
-                    : AvatarImg
+            {item.twitterHandle ? (
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                role="link"
+                href={
+                  item.twitterHandle
+                    ? `https://twitter.com/${item.twitterHandle}`
+                    : "#"
                 }
-                alt={item.name}
-                onError={imageErrorHandler}
-              />
-            </picture>
+              >
+                {renderItemImage()}
+              </a>
+            ) : (
+              renderItemImage()
+            )}
           </div>
           <div className="text-white my-3 text-base font-medium break-words flex items-center">
             <span className="tw-profile-text truncate">
@@ -136,27 +163,6 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
                 ? item.name.slice(0, 6) + "..." + item.name.slice(38, 42)
                 : item.name}
             </span>
-            {item.contractAddress && (
-              <a
-                target="_blank"
-                rel="noreferrer"
-                className="ml-2 w-5"
-                href={item.contractAddress}
-              >
-                <img src={etherScanIcon} alt="ethereum-contract" />
-              </a>
-            )}
-            {item.twitterHandle && (
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                role="link"
-                className="ml-2 w-5"
-                href={`https://twitter.com/${item.twitterHandle}`}
-              >
-                <img src={twitterIcon} alt="twitter-profile" />
-              </a>
-            )}
           </div>
           <p
             className="text-blue-linkwater text-left mb-3 font-light text-xs break-words tw-profile-text"
