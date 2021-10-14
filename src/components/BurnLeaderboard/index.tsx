@@ -17,11 +17,11 @@ const getIsContractAddress = (address: unknown): boolean =>
 
 const getDescription = (entry: LeaderboardEntry): string => {
   if (entry.type === "eth-transfers") {
-    return "ETH burned transfering ETH between accounts.";
+    return "native ETH transfers between accounts";
   }
 
   if (entry.type === "contract-creations") {
-    return "ETH burned creating new smart contracts.";
+    return "smart contract creations";
   }
 
   if (entry.type === "contract") {
@@ -30,11 +30,11 @@ const getDescription = (entry: LeaderboardEntry): string => {
     }
 
     if (entry.isBot) {
-      return "A contract making many seemingly automated transactions.";
+      return "";
     }
   }
 
-  return "Unknown contract.";
+  return "please DM @ultrasoundmoney the Twitter handle for this contract";
 };
 
 const getName = (entry: LeaderboardEntry): string | undefined => {
