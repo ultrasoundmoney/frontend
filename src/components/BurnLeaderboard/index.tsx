@@ -1,6 +1,7 @@
 import { FC, memo, useState, useCallback } from "react";
 import CountUp from "react-countup";
 import { weiToEth } from "../../utils/metric-utils";
+import { isContractAddress } from "../../utils/is-contract-address";
 import FeePeriodControl from "../FeePeriodControl";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useFeeData } from "../../api";
@@ -9,11 +10,6 @@ import { formatZeroDigit } from "../../format";
 import BurnProfileTooltip from "./BurnProfileTooltip";
 
 import styles from "./BurnLeaderboard.module.scss";
-
-const getIsContractAddress = (address: unknown): boolean =>
-  typeof address === "string" &&
-  address.startsWith("0x") &&
-  address.length === 42;
 
 const getDescription = (entry: LeaderboardEntry): string => {
   if (entry.type === "eth-transfers") {
@@ -44,7 +40,7 @@ const getName = (entry: LeaderboardEntry): string | undefined => {
     }
 
     // Right now contract entries always have a name. In the future the API should only return names it has. We pretend it already does.
-    if (getIsContractAddress(entry.name)) {
+    if (isContractAddress(entry.name)) {
       return undefined;
     }
 
@@ -159,7 +155,9 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
 
   const renderItemNameAndDetails = () => (
     <>
-      <p className="pl-4 truncate">
+      <p
+        className={`pl-4 truncate ${styles["leaderboard-row__child-element"]}`}
+      >
         {typeof name !== "string" && typeof address === "string" ? (
           <span className="font-roboto">
             {address.slice(0, 6)}
@@ -172,7 +170,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
       </p>
       {detail && (
         <p
-          className={`pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block link-animation ${styles["leaderboard-row__child-element"]}`}
+          className={`pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block ${styles["leaderboard-row__child-element"]}`}
         >
           {detail}
         </p>
@@ -216,9 +214,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
         ) : (
           renderItemNameAndDetails()
         )}
-        <p
-          className={`pl-4 whitespace-nowrap ml-auto font-roboto font-light link-animation ${styles["leaderboard-row__child-element"]}`}
-        >
+        <p className={`pl-4 whitespace-nowrap ml-auto font-roboto font-light`}>
           <CountUp
             start={0}
             end={weiToEth(fees)}

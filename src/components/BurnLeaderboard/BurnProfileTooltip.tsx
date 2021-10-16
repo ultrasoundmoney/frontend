@@ -4,6 +4,7 @@ import AvatarImg from "../../assets/avatar.webp";
 import { followerCountConvert } from "../Helpers/helper";
 import { TranslationsContext } from "../../translations-context";
 import useWindowSize from "../../utils/use-window-size";
+import { isContractAddress } from "../../utils/is-contract-address";
 
 type BurnProfileTooltipProps = {
   children: React.ReactNode;
@@ -40,7 +41,7 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
   }>({ x: 0, y: 0 });
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
 
-  const { width: windowWidth } = useWindowSize();
+  const { width: windowWidth, height: windowHeight } = useWindowSize();
 
   useLayoutEffect(() => {
     if (!isTooltipVisible) return;
@@ -50,6 +51,7 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
     const {
       x: containerX,
       y: containerY,
+      height: containerHeight,
     } = containerRef.current.getBoundingClientRect();
     const {
       width: tooltipWidth,
@@ -65,11 +67,20 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
       return;
     }
 
+    if (windowHeight < containerY + tooltipHeight) {
+      setTooltipPosition({
+        x: containerX - tooltipWidth - 8,
+        y: containerY + containerHeight - tooltipHeight,
+      });
+      return;
+    }
+
     setTooltipPosition({
-      x: containerX - tooltipWidth,
+      // extra 8 for a small padding of the tooltip container
+      x: containerX - tooltipWidth - 8,
       y: containerY,
     });
-  }, [isTooltipVisible, windowWidth]);
+  }, [isTooltipVisible, windowWidth, windowHeight]);
 
   // closes the tooltip on scroll
   useEffect(() => {
@@ -135,61 +146,71 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
     >
       {isTooltipVisible && (
         <div
-          ref={tooltipRef}
-          className="fixed w-72 shadow-lg rounded-lg bg-blue-midnightexpress text-white px-7 py-7 z-10 fadein-animation"
+          className=" fixed pr-2"
           style={{ top: tooltipPosition.y, left: tooltipPosition.x }}
         >
-          <div>
-            {item.twitterHandle ? (
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                role="link"
-                href={
-                  item.twitterHandle
-                    ? `https://twitter.com/${item.twitterHandle}`
-                    : "#"
-                }
-              >
-                {renderItemImage()}
-              </a>
-            ) : (
-              renderItemImage()
+          <div
+            ref={tooltipRef}
+            className="w-72 shadow-lg rounded-lg bg-blue-midnightexpress text-white px-7 py-7 z-10 fadein-animation cursor-default"
+          >
+            <div className="w-20 h-20">
+              {item.twitterHandle ? (
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  role="link"
+                  href={
+                    item.twitterHandle
+                      ? `https://twitter.com/${item.twitterHandle}`
+                      : "#"
+                  }
+                >
+                  {renderItemImage()}
+                </a>
+              ) : (
+                renderItemImage()
+              )}
+            </div>
+            <div className="text-white my-3 text-base font-medium break-words flex items-center">
+              <span className="tw-profile-text truncate">
+                {isContractAddress(item.name) ? (
+                  <span className="font-roboto">
+                    {item.name.slice(0, 6)}
+                    <span className="font-inter">...</span>
+                    {item.name.slice(38, 42)}
+                  </span>
+                ) : (
+                  item.name
+                )}
+              </span>
+            </div>
+            <p
+              className="text-blue-linkwater text-left mb-3 font-light text-xs break-words tw-profile-text"
+              dangerouslySetInnerHTML={{
+                __html: twemoji.parse(item.description ?? ""),
+              }}
+            />
+            {item.twitterFollowersCount && item.twitterFamFollowerCount && (
+              <div className="flex justify-between">
+                <div>
+                  <p className="text-xs text-blue-spindle text-left font-light uppercase mb-0">
+                    {t.profile_follower}
+                  </p>
+                  <p className="text-white text-left font-light text-2xl">
+                    {followerCountConvert(item.twitterFollowersCount)}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-blue-spindle text-left font-light uppercase mb-0">
+                    FAM FOLLOWERS
+                  </p>
+                  <p className="text-white text-left font-light text-2xl">
+                    {followerCountConvert(item.twitterFamFollowerCount)}
+                  </p>
+                </div>
+              </div>
             )}
           </div>
-          <div className="text-white my-3 text-base font-medium break-words flex items-center">
-            <span className="tw-profile-text truncate">
-              {item.name.startsWith("0x") && item.name.length === 42
-                ? item.name.slice(0, 6) + "..." + item.name.slice(38, 42)
-                : item.name}
-            </span>
-          </div>
-          <p
-            className="text-blue-linkwater text-left mb-3 font-light text-xs break-words tw-profile-text"
-            dangerouslySetInnerHTML={{
-              __html: twemoji.parse(item.description ?? ""),
-            }}
-          />
-          {item.twitterFollowersCount && item.twitterFamFollowerCount && (
-            <div className="flex justify-between">
-              <div>
-                <p className="text-xs text-blue-spindle text-left font-light uppercase mb-0">
-                  {t.profile_follower}
-                </p>
-                <p className="text-white text-left font-light text-2xl">
-                  {followerCountConvert(item.twitterFollowersCount)}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs text-blue-spindle text-left font-light uppercase mb-0">
-                  FAM FOLLOWERS
-                </p>
-                <p className="text-white text-left font-light text-2xl">
-                  {followerCountConvert(item.twitterFamFollowerCount)}
-                </p>
-              </div>
-            </div>
-          )}
         </div>
       )}
       {children}
