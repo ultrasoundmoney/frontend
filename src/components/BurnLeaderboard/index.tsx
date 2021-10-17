@@ -93,6 +93,7 @@ type LeaderboardRowProps = {
   twitterFamFollowerCount: number | undefined;
   twitterFollowersCount: number | undefined;
   twitterHandle: string | undefined;
+  twitterName: string | undefined;
 };
 
 const LeaderboardRow: FC<LeaderboardRowProps> = ({
@@ -106,6 +107,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
   twitterFamFollowerCount,
   twitterFollowersCount,
   twitterHandle,
+  twitterName,
 }) => {
   const adminToken = getAdminToken();
 
@@ -186,7 +188,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
         <BurnProfileTooltip
           key={key}
           item={{
-            name: name || address || "unknown contract",
+            name: twitterName || name || address || "unknown contract",
             contractImageUrl: image,
             twitterHandle,
             twitterFollowersCount,
@@ -269,6 +271,7 @@ type ContractEntry = {
   isBot: boolean;
   name: string | null;
   twitterHandle: string | null;
+  twitterName: string | null;
   type: "contract";
   /* deprecated */
   id: string;
@@ -388,6 +391,12 @@ const BurnLeaderboard: FC = () => {
                     entry.type === "contract" &&
                     typeof entry.twitterHandle === "string"
                       ? entry.twitterHandle
+                      : undefined
+                  }
+                  twitterName={
+                    entry.type === "contract" &&
+                    typeof entry.twitterName === "string"
+                      ? entry.twitterName
                       : undefined
                   }
                 />
