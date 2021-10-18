@@ -352,6 +352,7 @@ const BurnLeaderboard: FC = () => {
         <div
           className="overflow-auto mt-4 leaderboard-scroller"
           style={{ height: "35.55rem" }}
+          id="leaderboard-list"
         >
           <TransitionGroup
             component={null}

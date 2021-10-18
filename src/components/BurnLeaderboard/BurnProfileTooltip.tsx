@@ -85,20 +85,24 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
   // closes the tooltip on scroll
   useEffect(() => {
     if (isTooltipVisible) {
+      const leaderboardList = document.querySelector("#leaderboard-list");
       const handleScroll = () => {
         if (containerRef.current === null) {
           return;
         }
         containerRef.current.blur();
         document.removeEventListener("scroll", handleScroll);
+        leaderboardList?.removeEventListener("scroll", handleScroll);
       };
       document.addEventListener("scroll", handleScroll);
+      leaderboardList?.addEventListener("scroll", handleScroll);
 
       return () => {
         document.removeEventListener("scroll", handleScroll);
+        leaderboardList?.removeEventListener("scroll", handleScroll);
       };
     }
-  }, [isTooltipVisible, windowWidth]);
+  }, [isTooltipVisible]);
 
   const handleShowTooltip = () => {
     setIsTooltipVisible(true);
@@ -146,7 +150,7 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
     >
       {isTooltipVisible && (
         <div
-          className=" fixed pr-2"
+          className=" fixed pr-2 z-50"
           style={{ top: tooltipPosition.y, left: tooltipPosition.x }}
         >
           <div
