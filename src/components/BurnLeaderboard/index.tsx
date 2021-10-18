@@ -94,6 +94,7 @@ type LeaderboardRowProps = {
   twitterFollowersCount: number | undefined;
   twitterHandle: string | undefined;
   twitterName: string | undefined;
+  type: string;
 };
 
 const LeaderboardRow: FC<LeaderboardRowProps> = ({
@@ -102,7 +103,6 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
   detail,
   fees,
   image,
-  key,
   name,
   twitterFamFollowerCount,
   twitterFollowersCount,
@@ -180,30 +180,37 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
     </>
   );
 
+  const renderEntryImage = () => (
+    <img
+      className={`leaderboard-image link-animation ${styles["leaderboard-row__child-element"]}`}
+      style={{ minWidth: "32px" }}
+      src={image}
+      alt=""
+    />
+  );
+
   return (
     <div className="pt-2.5 pb-2.5 pr-2.5 relative">
       <div
         className={`link-animation flex flex-row items-center font-inter text-white text-base md:text-lg ${styles["leaderboard-row"]}`}
       >
-        <BurnProfileTooltip
-          key={key}
-          item={{
-            name: twitterName || name || address || "unknown contract",
-            contractImageUrl: image,
-            twitterHandle,
-            twitterFollowersCount,
-            twitterFamFollowerCount,
-            description,
-          }}
-          className="w-8 h-8"
-        >
-          <img
-            className={`leaderboard-image link-animation ${styles["leaderboard-row__child-element"]}`}
-            style={{ minWidth: "32px" }}
-            src={image}
-            alt=""
-          />
-        </BurnProfileTooltip>
+        {["Contract creations", "MEV Bot"].includes(name as string) ? (
+          renderEntryImage()
+        ) : (
+          <BurnProfileTooltip
+            item={{
+              name: twitterName || name || address || "unknown contract",
+              contractImageUrl: image,
+              twitterHandle,
+              twitterFollowersCount,
+              twitterFamFollowerCount,
+              description,
+            }}
+            className="w-8 h-8"
+          >
+            {renderEntryImage()}
+          </BurnProfileTooltip>
+        )}
         {typeof address === "string" ? (
           <a
             className="inline-flex items-center overflow-hidden"
