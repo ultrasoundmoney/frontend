@@ -10,6 +10,7 @@ import { formatZeroDigit } from "../../format";
 import BurnProfileTooltip from "./BurnProfileTooltip";
 
 import styles from "./BurnLeaderboard.module.scss";
+import clsx from "clsx";
 
 const getDescription = (entry: LeaderboardEntry): string => {
   if (entry.type === "eth-transfers") {
@@ -94,7 +95,7 @@ type LeaderboardRowProps = {
   twitterFollowersCount: number | undefined;
   twitterHandle: string | undefined;
   twitterName: string | undefined;
-  type: string;
+  shouldRenderTooltip?: boolean;
 };
 
 const LeaderboardRow: FC<LeaderboardRowProps> = ({
@@ -108,6 +109,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
   twitterFollowersCount,
   twitterHandle,
   twitterName,
+  shouldRenderTooltip,
 }) => {
   const adminToken = getAdminToken();
 
@@ -158,7 +160,10 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
   const renderItemNameAndDetails = () => (
     <>
       <p
-        className={`pl-4 truncate ${styles["leaderboard-row__child-element"]}`}
+        className={clsx(
+          "pl-4 truncate",
+          address && styles["leaderboard-row__child-element"]
+        )}
       >
         {typeof name !== "string" && typeof address === "string" ? (
           <span className="font-roboto">
@@ -172,7 +177,10 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
       </p>
       {detail && (
         <p
-          className={`pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block ${styles["leaderboard-row__child-element"]}`}
+          className={clsx(
+            "pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block",
+            address && styles["leaderboard-row__child-element"]
+          )}
         >
           {detail}
         </p>
@@ -182,7 +190,10 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
 
   const renderEntryImage = () => (
     <img
-      className={`leaderboard-image link-animation ${styles["leaderboard-row__child-element"]}`}
+      className={clsx(
+        "leaderboard-image link-animation",
+        shouldRenderTooltip && styles["leaderboard-row__child-element"]
+      )}
       style={{ minWidth: "32px" }}
       src={image}
       alt=""
@@ -194,9 +205,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
       <div
         className={`link-animation flex flex-row items-center font-inter text-white text-base md:text-lg ${styles["leaderboard-row"]}`}
       >
-        {["Contract creations", "MEV Bot"].includes(name as string) ? (
-          renderEntryImage()
-        ) : (
+        {shouldRenderTooltip ? (
           <BurnProfileTooltip
             item={{
               name: twitterName || name || address || "unknown contract",
@@ -210,6 +219,8 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
           >
             {renderEntryImage()}
           </BurnProfileTooltip>
+        ) : (
+          renderEntryImage()
         )}
         {typeof address === "string" ? (
           <a
@@ -406,6 +417,10 @@ const BurnLeaderboard: FC = () => {
                     typeof entry.twitterName === "string"
                       ? entry.twitterName
                       : undefined
+                  }
+                  shouldRenderTooltip={
+                    entry.type !== "contract-creations" &&
+                    !((entry as unknown) as ContractEntry).isBot
                   }
                 />
               </CSSTransition>
