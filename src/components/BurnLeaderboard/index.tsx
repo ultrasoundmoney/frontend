@@ -8,9 +8,9 @@ import { useFeeData } from "../../api";
 import * as Api from "../../api";
 import { formatZeroDigit } from "../../format";
 import BurnProfileTooltip from "./BurnProfileTooltip";
+import clsx from "clsx";
 
 import styles from "./BurnLeaderboard.module.scss";
-import clsx from "clsx";
 
 const getDescription = (entry: LeaderboardEntry): string => {
   if (entry.type === "eth-transfers") {

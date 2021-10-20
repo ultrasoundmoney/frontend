@@ -184,7 +184,11 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
                     {item.name.slice(38, 42)}
                   </span>
                 ) : (
-                  item.name
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: twemoji.parse(item.name),
+                    }}
+                  />
                 )}
               </span>
             </div>
