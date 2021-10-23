@@ -159,12 +159,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
 
   const renderItemNameAndDetails = () => (
     <>
-      <p
-        className={clsx(
-          "pl-4 truncate",
-          address && styles["leaderboard-row__child-element"]
-        )}
-      >
+      <p className="pl-4 truncate">
         {typeof name !== "string" && typeof address === "string" ? (
           <span className="font-roboto">
             {address.slice(0, 6)}
@@ -176,12 +171,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
         )}
       </p>
       {detail && (
-        <p
-          className={clsx(
-            "pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block",
-            address && styles["leaderboard-row__child-element"]
-          )}
-        >
+        <p className="pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block">
           {detail}
         </p>
       )}
@@ -192,7 +182,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
     <img
       className={clsx(
         "leaderboard-image link-animation",
-        shouldRenderTooltip && styles["leaderboard-row__child-element"]
+        shouldRenderTooltip && "hover:opacity-60"
       )}
       style={{ minWidth: "32px" }}
       src={image}
@@ -202,9 +192,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
 
   return (
     <div className="pt-2.5 pb-2.5 pr-2.5 relative">
-      <div
-        className={`link-animation flex flex-row items-center font-inter text-white text-base md:text-lg ${styles["leaderboard-row"]}`}
-      >
+      <div className="link-animation flex flex-row items-center font-inter text-white text-base md:text-lg">
         {shouldRenderTooltip ? (
           <BurnProfileTooltip
             item={{
@@ -224,7 +212,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
         )}
         {typeof address === "string" ? (
           <a
-            className="inline-flex items-center overflow-hidden"
+            className="inline-flex items-center overflow-hidden hover:opacity-60 link-animation"
             target="_blank"
             rel="noreferrer"
             href={`https://etherscan.io/address/${address}`}
