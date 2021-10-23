@@ -10,28 +10,29 @@ import { formatZeroDigit } from "../../format";
 import BurnProfileTooltip from "./BurnProfileTooltip";
 import clsx from "clsx";
 
-import styles from "./BurnLeaderboard.module.scss";
-
-const getDescription = (entry: LeaderboardEntry): string => {
-  if (entry.type === "eth-transfers") {
-    return "native ETH transfers between accounts";
-  }
-
-  if (entry.type === "contract-creations") {
-    return "smart contract creations";
-  }
-
+const getDescription = (
+  entry: LeaderboardEntry
+): React.ReactElement | string => {
   if (entry.type === "contract") {
     if (typeof entry.bio === "string") {
       return entry.bio;
     }
-
-    if (entry.isBot) {
-      return "";
-    }
   }
 
-  return "please DM @ultrasoundmoney the Twitter handle for this contract";
+  return (
+    <>
+      Please DM&nbsp;
+      <a
+        target="_blank"
+        className="text-white link-animation font-semibold"
+        href="https://twitter.com/ultrasoundmoney"
+        rel="noreferrer"
+      >
+        @ultrasoundmoney
+      </a>{" "}
+      the Twitter handle for this contract
+    </>
+  );
 };
 
 const getName = (entry: LeaderboardEntry): string | undefined => {
@@ -407,8 +408,9 @@ const BurnLeaderboard: FC = () => {
                       : undefined
                   }
                   shouldRenderTooltip={
-                    entry.type !== "contract-creations" &&
-                    !((entry as unknown) as ContractEntry).isBot
+                    !["contract-creations", "eth-transfers"].includes(
+                      entry.type
+                    ) && !((entry as unknown) as ContractEntry).isBot
                   }
                 />
               </CSSTransition>

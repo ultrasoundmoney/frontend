@@ -150,7 +150,7 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
     >
       {isTooltipVisible && (
         <div
-          className=" fixed pr-2 z-50"
+          className="fixed pr-2 z-50"
           style={{ top: tooltipPosition.y, left: tooltipPosition.x }}
         >
           <div
@@ -192,12 +192,18 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
                 )}
               </span>
             </div>
-            <p
-              className="text-blue-linkwater text-left mb-3 font-light text-xs break-words tw-profile-text"
-              dangerouslySetInnerHTML={{
-                __html: twemoji.parse(item.description ?? ""),
-              }}
-            />
+            {typeof item.description === "string" ? (
+              <p
+                className="text-blue-linkwater text-left mb-3 font-light text-xs break-words tw-profile-text"
+                dangerouslySetInnerHTML={{
+                  __html: twemoji.parse(item.description ?? ""),
+                }}
+              />
+            ) : (
+              <p className="text-blue-linkwater text-left mb-3 font-light text-xs break-words tw-profile-text">
+                {item.description}
+              </p>
+            )}
             {item.twitterFollowersCount && item.twitterFamFollowerCount && (
               <div className="flex justify-between">
                 <div>
