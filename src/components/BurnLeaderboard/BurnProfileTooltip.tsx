@@ -155,75 +155,73 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
         >
           <div
             ref={tooltipRef}
-            className="w-72 shadow-lg rounded-lg bg-blue-midnightexpress text-white px-7 py-7 z-10 fadein-animation cursor-default"
+            className="w-72 shadow-lg rounded-lg bg-blue-midnightexpress text-white px-7 py-7 z-10 cursor-default"
           >
-            <div className="w-20 h-20">
-              {item.twitterHandle ? (
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  role="link"
-                  href={
-                    item.twitterHandle
-                      ? `https://twitter.com/${item.twitterHandle}`
-                      : "#"
-                  }
-                >
-                  {renderItemImage()}
-                </a>
+            <div className="fadein-animation">
+              <div className="w-20 h-20">
+                {item.twitterHandle ? (
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    role="link"
+                    href={`https://twitter.com/${item.twitterHandle}`}
+                  >
+                    {renderItemImage()}
+                  </a>
+                ) : (
+                  renderItemImage()
+                )}
+              </div>
+              <div className="text-white my-3 text-base font-medium break-words flex items-center">
+                <span className="tw-profile-text truncate">
+                  {isContractAddress(item.name) ? (
+                    <span className="font-roboto">
+                      {item.name.slice(0, 6)}
+                      <span className="font-inter">...</span>
+                      {item.name.slice(38, 42)}
+                    </span>
+                  ) : (
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: twemoji.parse(item.name),
+                      }}
+                    />
+                  )}
+                </span>
+              </div>
+              {typeof item.description === "string" ? (
+                <p
+                  className="text-blue-linkwater text-left mb-3 font-light text-xs break-words tw-profile-text"
+                  dangerouslySetInnerHTML={{
+                    __html: twemoji.parse(item.description ?? ""),
+                  }}
+                />
               ) : (
-                renderItemImage()
+                <p className="text-blue-linkwater text-left mb-3 font-light text-xs break-words tw-profile-text">
+                  {item.description}
+                </p>
+              )}
+              {item.twitterFollowersCount && item.twitterFamFollowerCount && (
+                <div className="flex justify-between">
+                  <div>
+                    <p className="text-xs text-blue-spindle text-left font-light uppercase mb-0">
+                      {t.profile_follower}
+                    </p>
+                    <p className="text-white text-left font-light text-2xl">
+                      {followerCountConvert(item.twitterFollowersCount)}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-blue-spindle text-left font-light uppercase mb-0">
+                      FAM FOLLOWERS
+                    </p>
+                    <p className="text-white text-left font-light text-2xl">
+                      {followerCountConvert(item.twitterFamFollowerCount)}
+                    </p>
+                  </div>
+                </div>
               )}
             </div>
-            <div className="text-white my-3 text-base font-medium break-words flex items-center">
-              <span className="tw-profile-text truncate">
-                {isContractAddress(item.name) ? (
-                  <span className="font-roboto">
-                    {item.name.slice(0, 6)}
-                    <span className="font-inter">...</span>
-                    {item.name.slice(38, 42)}
-                  </span>
-                ) : (
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: twemoji.parse(item.name),
-                    }}
-                  />
-                )}
-              </span>
-            </div>
-            {typeof item.description === "string" ? (
-              <p
-                className="text-blue-linkwater text-left mb-3 font-light text-xs break-words tw-profile-text"
-                dangerouslySetInnerHTML={{
-                  __html: twemoji.parse(item.description ?? ""),
-                }}
-              />
-            ) : (
-              <p className="text-blue-linkwater text-left mb-3 font-light text-xs break-words tw-profile-text">
-                {item.description}
-              </p>
-            )}
-            {item.twitterFollowersCount && item.twitterFamFollowerCount && (
-              <div className="flex justify-between">
-                <div>
-                  <p className="text-xs text-blue-spindle text-left font-light uppercase mb-0">
-                    {t.profile_follower}
-                  </p>
-                  <p className="text-white text-left font-light text-2xl">
-                    {followerCountConvert(item.twitterFollowersCount)}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs text-blue-spindle text-left font-light uppercase mb-0">
-                    FAM FOLLOWERS
-                  </p>
-                  <p className="text-white text-left font-light text-2xl">
-                    {followerCountConvert(item.twitterFamFollowerCount)}
-                  </p>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       )}
