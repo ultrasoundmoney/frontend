@@ -87,10 +87,14 @@ const BurnProfileTooltip: React.FC<BurnProfileTooltipProps> = ({
     if (isTooltipVisible) {
       const leaderboardList = document.querySelector("#leaderboard-list");
       const handleScroll = () => {
-        if (containerRef.current === null) {
-          return;
+        if (
+          containerRef.current &&
+          document.activeElement === containerRef.current
+        ) {
+          containerRef.current.blur();
+        } else {
+          setIsTooltipVisible(false);
         }
-        containerRef.current.blur();
         document.removeEventListener("scroll", handleScroll);
         leaderboardList?.removeEventListener("scroll", handleScroll);
       };
