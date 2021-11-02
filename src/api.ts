@@ -1,19 +1,19 @@
+import * as Config from "./config";
 import useSWR from "swr";
-import config from "./config";
-import { milisFromSeconds } from "./duration";
 import { LeaderboardEntry } from "./components/BurnLeaderboard";
+import { milisFromSeconds } from "./duration";
 
 export const famBasePath =
-  config.apiEnv === "staging"
+  Config.apiEnv === "staging"
     ? "https://api-stag.ultrasound.money/fam"
-    : config.apiEnv === "dev"
+    : Config.apiEnv === "dev"
     ? "http://localhost:8080/fam"
     : "https://api.ultrasound.money/fam";
 
 export const feesBasePath =
-  config.apiEnv === "staging"
+  Config.apiEnv === "staging"
     ? "https://api-stag.ultrasound.money/fees"
-    : config.apiEnv === "dev"
+    : Config.apiEnv === "dev"
     ? "http://localhost:8080/fees"
     : "https://api.ultrasound.money/fees";
 

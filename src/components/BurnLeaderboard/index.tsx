@@ -7,6 +7,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useFeeData } from "../../api";
 import * as Api from "../../api";
 import { formatZeroDigit } from "../../format";
+import { featureFlags } from "../../feature-flags";
 
 type LeaderboardRowProps = {
   detail?: string;
@@ -120,7 +121,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
               name
             )}
           </p>
-          {category && (
+          {featureFlags.leaderboardCategory && category && (
             <p className="px-1.5 py-0.5 ml-2 text-sm rounded-sm text-blue-manatee font-normal hidden md:block lg:hidden xl:block bg-blue-highlightbg">
               {category}
             </p>
