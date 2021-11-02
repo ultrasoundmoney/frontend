@@ -88,6 +88,11 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
     name = "new contracts";
   }
 
+  //Your handler Component
+  const onImageError = useCallback((e) => {
+    e.target.src = "/leaderboard-images/question-mark-v2.svg";
+  }, []);
+
   return (
     <div className="pt-2.5 pb-2.5 pr-2.5">
       <a
@@ -98,7 +103,12 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
         rel="noreferrer"
       >
         <div className="hover:opacity-60 link-animation flex flex-row items-center font-inter text-white text-base md:text-lg">
-          <img className="w-8 h-8 leaderboard-image" src={imgSrc} alt="" />
+          <img
+            className="w-8 h-8 leaderboard-image"
+            src={imgSrc}
+            alt=""
+            onError={onImageError}
+          />
           <p className="pl-4 truncate">
             {name?.startsWith("0x") && name.length === 42 ? (
               <span className="font-roboto">
