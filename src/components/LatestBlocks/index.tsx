@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import { DateTime } from "luxon";
 import React, { memo, FC, useState, useEffect, useCallback } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useFeeData } from "../../api";
@@ -19,15 +19,24 @@ const LatestBlocks: FC = () => {
   const { latestBlockFees } = useFeeData();
   const [timeElapsed, setTimeElapsed] = useState(0);
 
-  const getTimeElapsed = useCallback((timeStamp: string): number => {
-    return dayjs(Date.now()).diff(timeStamp, "s");
+  const getTimeElapsed = useCallback((dt: Date): number => {
+    const secondsDiff = DateTime.fromJSDate(dt)
+      .diffNow("seconds")
+      .as("seconds");
+    return Math.round(secondsDiff * -1);
   }, []);
 
   useEffect(() => {
-    setTimeElapsed(getTimeElapsed(latestBlockFees[0]?.minedAt));
+    const latestMinedBlockDate = new Date(latestBlockFees[0]?.minedAt);
+
+    if (latestMinedBlockDate === undefined) {
+      return;
+    }
+
+    setTimeElapsed(getTimeElapsed(latestMinedBlockDate));
 
     const intervalId = window.setInterval(() => {
-      setTimeElapsed(getTimeElapsed(latestBlockFees[0].minedAt));
+      setTimeElapsed(getTimeElapsed(latestMinedBlockDate));
     }, 1000);
 
     return () => {
