@@ -144,10 +144,23 @@ export type EthPrice = {
   btc24hChange: number;
 };
 
-export const useEthPrices = () => {
+type BaseFeePerGas = {
+  baseFeePerGas: number;
+};
+
+export const useEthPrices = (): EthPrice | undefined => {
   const { data } = useSWR<EthPrice>(`${feesBasePath}/eth-price`, {
     refreshInterval: milisFromSeconds(4),
   });
 
-  return data !== undefined ? { ethPrices: data } : { ethPrices: undefined };
+  return data;
+};
+
+export const useBaseFeePerGas = (): number | undefined => {
+  const { data } = useSWR<BaseFeePerGas>(`${feesBasePath}/base-fee-per-gas`, {
+    refreshInterval: milisFromSeconds(4),
+    refreshWhenHidden: true,
+  });
+
+  return data?.baseFeePerGas;
 };
