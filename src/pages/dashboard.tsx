@@ -45,7 +45,7 @@ const DashboardPage: NextPage = () => {
             carts
           </p>
           <div className="w-full px-4">
-            <BurnLeaderboard unit={"eth"} />
+            <BurnLeaderboard timeframe={"24h"} unit={"eth"} />
           </div>
         </div>
       </div>
