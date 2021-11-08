@@ -242,7 +242,7 @@ const ComingSoon: FC = () => {
           <div className="lg:w-1/2 lg:pr-2">
             <CumulativeFeeBurn unit={unit} />
             <span className="block h-4" />
-            <LatestBlocks />
+            <LatestBlocks unit={unit} />
           </div>
           <span className="block h-4" />
           <div className="lg:w-1/2 lg:pl-2">
