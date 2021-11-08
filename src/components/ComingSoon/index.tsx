@@ -18,8 +18,9 @@ import SupplyGrowthGauge from "../Gauges/SupplyGrowthGauge";
 import BurnGauge from "../Gauges/BurnGauge";
 import { useCallback } from "react";
 import { EthPrice, useBaseFeePerGas, useEthPrices } from "../../api";
-import { formatPercentOneDigitSigned } from "../../format";
+import { formatPercentOneDigitSigned, formatZeroDigit } from "../../format";
 import CountUp from "react-countup";
+import FeePeriodControl from "../FeePeriodControl";
 
 let startGasPrice = 0;
 let startGasPriceCached = 0;
@@ -84,11 +85,56 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
   );
 };
 
+type UnitControlProps = {
+  selectedUnit: "eth" | "usd";
+  onSetUnit: (unit: "usd" | "eth") => void;
+};
+
+const UnitControl: FC<UnitControlProps> = ({ selectedUnit, onSetUnit }) => {
+  const activePeriodClasses =
+    "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg";
+
+  return (
+    <div className="flex flex-row items-center">
+      <button
+        className={`font-inter text-sm px-3 py-1 border border-transparent uppercase ${
+          selectedUnit === "eth" ? activePeriodClasses : "text-blue-manatee"
+        }`}
+        onClick={() => onSetUnit("eth")}
+      >
+        eth
+      </button>
+      <button
+        className={`font-inter text-sm px-3 py-1 border border-transparent uppercase ${
+          selectedUnit === "usd" ? activePeriodClasses : "text-blue-manatee"
+        }`}
+        onClick={() => onSetUnit("usd")}
+      >
+        usd
+      </button>
+    </div>
+  );
+};
+
+export type Unit = "eth" | "usd";
+
 const ComingSoon: FC = () => {
   const t = useContext(TranslationsContext);
   const [simulateMerge, setSimulateMerge] = useState(false);
   const ethPrices = useEthPrices();
   const baseFeePerGas = useBaseFeePerGas();
+  const [timeframe, setFeePeriod] = useState<string>("all");
+  const [unit, setUnit] = useState<Unit>("eth");
+
+  const onSetFeePeriod = useCallback(setFeePeriod, [setFeePeriod]);
+
+  const onSetUnit = useCallback(setUnit, [setUnit]);
+
+  const LONDON_TIMESTAMP = Date.parse("Aug 5 2021 12:33:42 UTC");
+  const msPerDay = 24 * 60 * 60 * 1000;
+  const daysSinceLondonFork = formatZeroDigit(
+    Math.floor((Date.now() - LONDON_TIMESTAMP) / msPerDay)
+  );
 
   const toggleSimulateMerge = useCallback(() => {
     setSimulateMerge(!simulateMerge);
@@ -166,15 +212,41 @@ const ComingSoon: FC = () => {
           </div>
         </div>
         <div className="w-4 h-4" />
+        <div className="px-4 md:px-16">
+          <div className="bg-blue-tangaroa flex flex-col md:flex-row justify-between p-4">
+            <div>
+              <p className="text-lg font-inter text-blue-spindle flex flex-row items-center">
+                timeframe
+                {timeframe === "all" ? (
+                  <span className="text-blue-manatee font-normal text-sm fadein-animation pl-2">
+                    ({daysSinceLondonFork}d)
+                  </span>
+                ) : null}
+              </p>
+              <FeePeriodControl
+                timeframes={["5m", "1h", "24h", "7d", "30d", "all"]}
+                selectedTimeframe={timeframe}
+                onSetFeePeriod={onSetFeePeriod}
+              />
+            </div>
+            <div>
+              <p className="text-lg font-inter text-blue-spindle flex flex-row items-center">
+                currency
+              </p>
+              <UnitControl selectedUnit={unit} onSetUnit={onSetUnit} />
+            </div>
+          </div>
+        </div>
+        <div className="w-4 h-4" />
         <div className="flex flex-col px-4 lg:w-full lg:flex-row md:px-16 isolate">
           <div className="lg:w-1/2 lg:pr-2">
-            <CumulativeFeeBurn />
+            <CumulativeFeeBurn unit={unit} />
             <span className="block h-4" />
             <LatestBlocks />
           </div>
           <span className="block h-4" />
           <div className="lg:w-1/2 lg:pl-2">
-            <BurnLeaderboard />
+            <BurnLeaderboard unit={unit} />
           </div>
         </div>
         <div className="flex flex-col px-4 md:px-16 pt-40 mb-16">

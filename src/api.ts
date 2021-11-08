@@ -22,20 +22,32 @@ type Wei = number;
 
 export type BurnRates = {
   burnRate5m: WeiPerMinute;
+  burnRate5mUsd: number;
   burnRate1h: WeiPerMinute;
+  burnRate1hUsd: number;
   burnRate24h: WeiPerMinute;
+  burnRate24hUsd: number;
   burnRate30d: WeiPerMinute;
+  burnRate30dUsd: number;
   burnRate7d: WeiPerMinute;
+  burnRate7dUsd: number;
   burnRateAll: WeiPerMinute;
+  burnRateAllUsd: number;
 };
 
 export type FeesBurned = {
   feesBurned5m: Wei;
+  feesBurned5mUsd: number;
   feesBurned1h: Wei;
+  feesBurned1hUsd: number;
   feesBurned24h: Wei;
+  feesBurned24hUsd: number;
   feesBurned7d: Wei;
+  feesBurned7dUsd: number;
   feesBurned30d: Wei;
+  feesBurned30dUsd: number;
   feesBurnedAll: Wei;
+  feesBurnedAllUsd: number;
 };
 
 export type Leaderboards = {
@@ -46,15 +58,18 @@ export type Leaderboards = {
   leaderboardAll: LeaderboardEntry[];
 };
 
+export type LatestBlockFees = {
+  fees: Wei;
+  feesUsd: number;
+  number: number;
+  baseFeePerGas: Wei;
+  minedAt: string;
+};
+
 export type FeeData = {
   baseFeePerGas: number | undefined;
   burnRates: BurnRates | undefined;
-  latestBlockFees: {
-    fees: Wei;
-    number: number;
-    baseFeePerGas: Wei;
-    minedAt: string;
-  }[];
+  latestBlockFees: LatestBlockFees[];
   number: number | undefined;
   feesBurned: FeesBurned | undefined;
   leaderboards: Leaderboards | undefined;

@@ -8,14 +8,9 @@ import {
   formatZeroDigit,
 } from "../../format";
 import { weiToGwei } from "../../utils/metric-utils";
+import { Unit } from "../ComingSoon";
 
-type LatestBlocks = {
-  number: number;
-  fees: number;
-  baseFeePerGas: number;
-}[];
-
-const LatestBlocks: FC = () => {
+const LatestBlocks: FC<{ unit: Unit }> = ({ unit }) => {
   const { latestBlockFees } = useFeeData();
   const [timeElapsed, setTimeElapsed] = useState(0);
 
@@ -65,7 +60,7 @@ const LatestBlocks: FC = () => {
               latestBlockFees
                 .sort((a, b) => b.number - a.number)
                 .slice(0, 7)
-                .map(({ number, fees, baseFeePerGas }) => (
+                .map(({ number, fees, feesUsd, baseFeePerGas }) => (
                   <CSSTransition
                     classNames="fee-block"
                     timeout={2000}
@@ -93,10 +88,12 @@ const LatestBlocks: FC = () => {
                           </p>
                           <p className="w-4/12 text-right">
                             <span className="font-roboto">
-                              {formatWeiTwoDigit(fees)}{" "}
+                              {unit === "eth"
+                                ? formatWeiTwoDigit(fees)
+                                : formatZeroDigit(feesUsd)}{" "}
                             </span>
                             <span className="text-blue-spindle font-extralight">
-                              ETH
+                              {unit === "eth" ? "ETH" : "USD"}
                             </span>
                           </p>
                         </li>

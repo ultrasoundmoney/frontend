@@ -4,37 +4,53 @@ import CountUp from "react-countup";
 import FeePeriodControl, { Timeframe } from "../FeePeriodControl";
 import { BurnRates, FeesBurned, useFeeData } from "../../api";
 import { formatZeroDigit } from "../../format";
+import { Unit } from "../ComingSoon";
 
 const weiToEth = (wei: number): number => wei / 10 ** 18;
 
-const timeframeFeesBurnedMap: Record<Timeframe, keyof FeesBurned> = {
-  "5m": "feesBurned5m",
-  "1h": "feesBurned1h",
-  "24h": "feesBurned24h",
-  "7d": "feesBurned7d",
-  "30d": "feesBurned30d",
-  all: "feesBurnedAll",
+const timeframeFeesBurnedMap: Record<
+  Timeframe,
+  { eth: keyof FeesBurned; usd: keyof FeesBurned }
+> = {
+  "5m": { eth: "feesBurned5m", usd: "feesBurned5mUsd" },
+  "1h": { eth: "feesBurned1h", usd: "feesBurned1hUsd" },
+  "24h": { eth: "feesBurned24h", usd: "feesBurned24hUsd" },
+  "7d": { eth: "feesBurned7d", usd: "feesBurned7dUsd" },
+  "30d": { eth: "feesBurned30d", usd: "feesBurned30dUsd" },
+  all: { eth: "feesBurnedAll", usd: "feesBurnedAllUsd" },
 };
 
-const timeframeBurnRateMap: Record<Timeframe, keyof BurnRates> = {
-  "5m": "burnRate5m",
-  "1h": "burnRate1h",
-  "24h": "burnRate24h",
-  "7d": "burnRate7d",
-  "30d": "burnRate30d",
-  all: "burnRateAll",
+const timeframeBurnRateMap: Record<
+  Timeframe,
+  { eth: keyof BurnRates; usd: keyof BurnRates }
+> = {
+  "5m": { eth: "burnRate5m", usd: "burnRate5mUsd" },
+  "1h": { eth: "burnRate1h", usd: "burnRate1hUsd" },
+  "24h": { eth: "burnRate24h", usd: "burnRate24hUsd" },
+  "7d": { eth: "burnRate7d", usd: "burnRate7dUsd" },
+  "30d": { eth: "burnRate30d", usd: "burnRate30dUsd" },
+  all: { eth: "burnRateAll", usd: "burnRateAllUsd" },
 };
 
-const CumulativeFeeBurn: FC = () => {
+const CumulativeFeeBurn: FC<{ unit: Unit }> = ({ unit }) => {
   const { feesBurned, burnRates } = useFeeData();
   const [timeframe, setFeePeriod] = useState<string>("all");
 
   const onSetFeePeriod = useCallback(setFeePeriod, [setFeePeriod]);
 
   const selectedFeesBurned =
-    feesBurned !== undefined && feesBurned[timeframeFeesBurnedMap[timeframe]];
+    feesBurned === undefined
+      ? null
+      : unit === "eth"
+      ? weiToEth(feesBurned[timeframeFeesBurnedMap[timeframe][unit]])
+      : feesBurned[timeframeFeesBurnedMap[timeframe][unit]];
+
   const selectedBurnRate =
-    burnRates !== undefined && burnRates[timeframeBurnRateMap[timeframe]];
+    burnRates === undefined
+      ? null
+      : unit === "eth"
+      ? weiToEth(burnRates[timeframeBurnRateMap[timeframe][unit]])
+      : burnRates[timeframeBurnRateMap[timeframe][unit]];
 
   const LONDON_TIMESTAMP = Date.parse("Aug 5 2021 12:33:42 UTC");
   const msPerDay = 24 * 60 * 60 * 1000;
@@ -70,11 +86,11 @@ const CumulativeFeeBurn: FC = () => {
                 decimals={2}
                 duration={0.8}
                 separator=","
-                end={weiToEth(selectedFeesBurned)}
+                end={selectedFeesBurned}
                 preserveValue={true}
               />
               <span className="font-extralight text-blue-spindle pl-4">
-                ETH
+                {unit === "eth" ? "ETH" : "USD"}
               </span>
             </p>
             <SpanMoji emoji="🔥" />
@@ -89,11 +105,11 @@ const CumulativeFeeBurn: FC = () => {
                   decimals={2}
                   duration={0.8}
                   separator=","
-                  end={weiToEth(selectedBurnRate)}
+                  end={selectedBurnRate}
                   preserveValue={true}
                 />
                 <span className="font-extralight text-blue-spindle pl-4">
-                  ETH/min
+                  {unit === "eth" ? "ETH/min" : "USD/min"}
                 </span>
               </p>
             </div>

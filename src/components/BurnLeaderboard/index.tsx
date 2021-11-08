@@ -8,16 +8,18 @@ import { useFeeData } from "../../api";
 import * as Api from "../../api";
 import { formatZeroDigit } from "../../format";
 import { featureFlags } from "../../feature-flags";
+import { Unit } from "../ComingSoon";
 
 type LeaderboardRowProps = {
+  category: string | null;
   detail?: string;
   fees: number;
   id: string;
+  image: string | undefined;
   isBot: boolean;
   name?: string;
   type: LeaderboardEntry["type"];
-  image: string | undefined;
-  category: string | null;
+  unit: Unit;
 };
 
 const getAdminToken = (): string | undefined => {
@@ -36,14 +38,15 @@ const getAdminToken = (): string | undefined => {
 };
 
 const LeaderboardRow: FC<LeaderboardRowProps> = ({
+  category,
   detail,
   fees,
   id,
+  image,
   isBot,
   name,
   type,
-  image,
-  category,
+  unit,
 }) => {
   const imgSrc =
     typeof image === "string"
@@ -132,13 +135,15 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
           <p className="pl-4 whitespace-nowrap ml-auto font-roboto font-light">
             <CountUp
               start={0}
-              end={weiToEth(fees)}
+              end={fees}
               preserveValue={true}
               separator=","
               decimals={2}
               duration={0.8}
             />{" "}
-            <span className="text-blue-spindle font-extralight">ETH</span>
+            <span className="text-blue-spindle font-extralight">
+              {unit === "eth" ? "ETH" : "USD"}
+            </span>
           </p>
         </div>
       </a>
@@ -175,7 +180,8 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
 };
 
 export type LeaderboardEntry = {
-  fees: string;
+  fees: number;
+  feesUsd: number;
   id: string;
   isBot: boolean;
   name: string;
@@ -196,7 +202,7 @@ const feePeriodToUpdateMap: Record<Timeframe, string> = {
 type Timeframe = "5m" | "1h" | "24h" | "7d" | "30d" | "all";
 const timeframes: Timeframe[] = ["5m", "1h", "24h", "7d", "30d", "all"];
 
-const BurnLeaderboard: FC = () => {
+const BurnLeaderboard: FC<{ unit: Unit }> = ({ unit }) => {
   const [feePeriod, setFeePeriod] = useState<string>("24h");
   const onSetFeePeriod = useCallback(setFeePeriod, [setFeePeriod]);
 
@@ -256,10 +262,15 @@ const BurnLeaderboard: FC = () => {
                   detail={leaderboardRow.name.split(":")[1]}
                   id={leaderboardRow.id}
                   isBot={leaderboardRow.isBot}
-                  fees={Number(leaderboardRow.fees)}
+                  fees={
+                    unit === "eth"
+                      ? weiToEth(leaderboardRow.fees)
+                      : leaderboardRow.feesUsd
+                  }
                   type={leaderboardRow.type || "other"}
                   image={leaderboardRow.image}
                   category={leaderboardRow.category}
+                  unit={unit}
                 />
               </CSSTransition>
             ))}
