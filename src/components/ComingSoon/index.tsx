@@ -20,7 +20,7 @@ import { useCallback } from "react";
 import { EthPrice, useBaseFeePerGas, useEthPrices } from "../../api";
 import { formatPercentOneDigitSigned, formatZeroDigit } from "../../format";
 import CountUp from "react-countup";
-import FeePeriodControl from "../FeePeriodControl";
+import FeePeriodControl, { Timeframe } from "../FeePeriodControl";
 
 let startGasPrice = 0;
 let startGasPriceCached = 0;
@@ -123,7 +123,7 @@ const ComingSoon: FC = () => {
   const [simulateMerge, setSimulateMerge] = useState(false);
   const ethPrices = useEthPrices();
   const baseFeePerGas = useBaseFeePerGas();
-  const [timeframe, setFeePeriod] = useState<string>("all");
+  const [timeframe, setFeePeriod] = useState<Timeframe>("all");
   const [unit, setUnit] = useState<Unit>("eth");
 
   const onSetFeePeriod = useCallback(setFeePeriod, [setFeePeriod]);
@@ -199,16 +199,22 @@ const ComingSoon: FC = () => {
         {/* </video> */}
         <div className="w-full flex flex-col md:flex-row md:gap-0 lg:gap-4 px-4 md:px-16 isolate">
           <div className="hidden md:block w-1/3">
-            <BurnGauge />
+            <BurnGauge timeframe={timeframe} unit={unit} />
           </div>
           <div className="md:w-1/3">
             <SupplyGrowthGauge
               simulateMerge={simulateMerge}
+              timeframe={timeframe}
               toggleSimulateMerge={toggleSimulateMerge}
+              unit={unit}
             />
           </div>
           <div className="hidden md:block w-1/3">
-            <IssuanceGauge simulateMerge={simulateMerge} />
+            <IssuanceGauge
+              simulateMerge={simulateMerge}
+              timeframe={timeframe}
+              unit={unit}
+            />
           </div>
         </div>
         <div className="w-4 h-4" />
@@ -217,11 +223,13 @@ const ComingSoon: FC = () => {
             <div>
               <p className="text-lg font-inter text-blue-spindle flex flex-row items-center">
                 timeframe
-                {timeframe === "all" ? (
-                  <span className="text-blue-manatee font-normal text-sm fadein-animation pl-2">
-                    ({daysSinceLondonFork}d)
-                  </span>
-                ) : null}
+                <span className="text-blue-manatee font-normal text-sm pl-2">
+                  (
+                  {timeframe === "all"
+                    ? `${daysSinceLondonFork}d`
+                    : `${timeframe}`}
+                  )
+                </span>
               </p>
               <FeePeriodControl
                 timeframes={["5m", "1h", "24h", "7d", "30d", "all"]}
@@ -240,13 +248,13 @@ const ComingSoon: FC = () => {
         <div className="w-4 h-4" />
         <div className="flex flex-col px-4 lg:w-full lg:flex-row md:px-16 isolate">
           <div className="lg:w-1/2 lg:pr-2">
-            <CumulativeFeeBurn unit={unit} />
+            <CumulativeFeeBurn timeframe={timeframe} unit={unit} />
             <span className="block h-4" />
             <LatestBlocks unit={unit} />
           </div>
           <span className="block h-4" />
           <div className="lg:w-1/2 lg:pl-2">
-            <BurnLeaderboard unit={unit} />
+            <BurnLeaderboard timeframe={timeframe} unit={unit} />
           </div>
         </div>
         <div className="flex flex-col px-4 md:px-16 pt-40 mb-16">

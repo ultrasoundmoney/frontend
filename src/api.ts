@@ -2,6 +2,7 @@ import * as Config from "./config";
 import useSWR from "swr";
 import { LeaderboardEntry } from "./components/BurnLeaderboard";
 import { milisFromSeconds } from "./duration";
+import { Timeframe } from "./components/FeePeriodControl";
 
 export const famBasePath =
   Config.apiEnv === "staging"
@@ -178,4 +179,35 @@ export const useBaseFeePerGas = (): number | undefined => {
   });
 
   return data?.baseFeePerGas;
+};
+
+export type AverageEthPrice = {
+  all: 3536.800133928138;
+  d30: 4090.2621816488527;
+  d7: 4537.676751145321;
+  h1: 4751.528260560356;
+  h24: 4717.513628893767;
+  m5: 4743.869230769231;
+};
+
+export const newTimeframeMap: Record<Timeframe, keyof AverageEthPrice> = {
+  "5m": "m5",
+  "1h": "h1",
+  "24h": "h24",
+  "7d": "d7",
+  "30d": "d30",
+  all: "all",
+};
+
+export const useAverageEthPrice = (
+  timeframe: Timeframe
+): number | undefined => {
+  const { data } = useSWR<AverageEthPrice>(
+    `${feesBasePath}/average-eth-price`,
+    {
+      refreshInterval: milisFromSeconds(8),
+    }
+  );
+
+  return data === undefined ? undefined : data[newTimeframeMap[timeframe]];
 };

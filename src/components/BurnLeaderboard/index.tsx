@@ -1,14 +1,14 @@
-import { FC, memo, useState, useCallback } from "react";
+import { FC, memo, useCallback } from "react";
 import CountUp from "react-countup";
 import imageIds from "../../assets/leaderboard-image-ids.json";
 import { weiToEth } from "../../utils/metric-utils";
-import FeePeriodControl from "../FeePeriodControl";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useFeeData } from "../../api";
 import * as Api from "../../api";
 import { formatZeroDigit } from "../../format";
 import { featureFlags } from "../../feature-flags";
 import { Unit } from "../ComingSoon";
+import { Timeframe } from "../FeePeriodControl";
 
 type LeaderboardRowProps = {
   category: string | null;
@@ -199,16 +199,13 @@ const feePeriodToUpdateMap: Record<Timeframe, string> = {
   all: "leaderboardAll",
 };
 
-type Timeframe = "5m" | "1h" | "24h" | "7d" | "30d" | "all";
-const timeframes: Timeframe[] = ["5m", "1h", "24h", "7d", "30d", "all"];
-
-const BurnLeaderboard: FC<{ unit: Unit }> = ({ unit }) => {
-  const [feePeriod, setFeePeriod] = useState<string>("24h");
-  const onSetFeePeriod = useCallback(setFeePeriod, [setFeePeriod]);
-
+const BurnLeaderboard: FC<{ timeframe: Timeframe; unit: Unit }> = ({
+  timeframe,
+  unit,
+}) => {
   const { leaderboards } = useFeeData();
   const selectedLeaderboard: LeaderboardEntry[] | undefined =
-    leaderboards && leaderboards[feePeriodToUpdateMap[feePeriod]];
+    leaderboards && leaderboards[feePeriodToUpdateMap[timeframe]];
 
   const LONDON_TIMESTAMP = Date.parse("Aug 5 2021 12:33:42 UTC");
   const msPerDay = 24 * 60 * 60 * 1000;
@@ -221,19 +218,10 @@ const BurnLeaderboard: FC<{ unit: Unit }> = ({ unit }) => {
       <div className="flex flex-col justify-between items-start md:flex-row lg:flex-col xl:items-center xl:flex-row">
         <p className="font-inter font-light text-blue-spindle text-md mb-4 md:mb-0 lg:mb-4 xl:mb-0">
           <span className="uppercase">burn leaderboard</span>{" "}
-          {feePeriod === "all" ? (
-            <span className="text-blue-manatee font-normal text-sm fadein-animation pl-2">
-              ({daysSinceLondonFork}d)
-            </span>
-          ) : (
-            ""
-          )}
+          <span className="text-blue-manatee font-normal text-sm pl-2">
+            ({timeframe === "all" ? `${daysSinceLondonFork}d` : `${timeframe}`})
+          </span>
         </p>
-        <FeePeriodControl
-          timeframes={timeframes}
-          selectedTimeframe={feePeriod}
-          onSetFeePeriod={onSetFeePeriod}
-        />
       </div>
       {selectedLeaderboard === undefined ? (
         <p className="text-lg text-center text-gray-500 pt-16 pb-20">

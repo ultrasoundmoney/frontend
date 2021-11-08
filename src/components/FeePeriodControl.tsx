@@ -3,9 +3,9 @@ import { FC } from "react";
 export type Timeframe = "5m" | "1h" | "24h" | "7d" | "30d" | "all";
 
 type FeePeriodControlProps = {
-  timeframes: string[];
-  selectedTimeframe: string;
-  onSetFeePeriod: (timeframe: string) => void;
+  timeframes: Timeframe[];
+  selectedTimeframe: Timeframe;
+  onSetFeePeriod: (timeframe: Timeframe) => void;
 };
 
 const FeePeriodControl: FC<FeePeriodControlProps> = ({

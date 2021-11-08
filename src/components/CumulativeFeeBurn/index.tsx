@@ -1,7 +1,7 @@
-import React, { memo, FC, useState, useCallback } from "react";
+import React, { memo, FC } from "react";
 import SpanMoji from "../SpanMoji";
 import CountUp from "react-countup";
-import FeePeriodControl, { Timeframe } from "../FeePeriodControl";
+import { Timeframe } from "../FeePeriodControl";
 import { BurnRates, FeesBurned, useFeeData } from "../../api";
 import { formatZeroDigit } from "../../format";
 import { Unit } from "../ComingSoon";
@@ -20,7 +20,7 @@ const timeframeFeesBurnedMap: Record<
   all: { eth: "feesBurnedAll", usd: "feesBurnedAllUsd" },
 };
 
-const timeframeBurnRateMap: Record<
+export const timeframeBurnRateMap: Record<
   Timeframe,
   { eth: keyof BurnRates; usd: keyof BurnRates }
 > = {
@@ -32,22 +32,22 @@ const timeframeBurnRateMap: Record<
   all: { eth: "burnRateAll", usd: "burnRateAllUsd" },
 };
 
-const CumulativeFeeBurn: FC<{ unit: Unit }> = ({ unit }) => {
+const CumulativeFeeBurn: FC<{ timeframe: Timeframe; unit: Unit }> = ({
+  timeframe,
+  unit,
+}) => {
   const { feesBurned, burnRates } = useFeeData();
-  const [timeframe, setFeePeriod] = useState<string>("all");
-
-  const onSetFeePeriod = useCallback(setFeePeriod, [setFeePeriod]);
 
   const selectedFeesBurned =
     feesBurned === undefined
-      ? null
+      ? undefined
       : unit === "eth"
       ? weiToEth(feesBurned[timeframeFeesBurnedMap[timeframe][unit]])
       : feesBurned[timeframeFeesBurnedMap[timeframe][unit]];
 
   const selectedBurnRate =
     burnRates === undefined
-      ? null
+      ? undefined
       : unit === "eth"
       ? weiToEth(burnRates[timeframeBurnRateMap[timeframe][unit]])
       : burnRates[timeframeBurnRateMap[timeframe][unit]];
@@ -63,19 +63,10 @@ const CumulativeFeeBurn: FC<{ unit: Unit }> = ({ unit }) => {
       <div className="flex flex-col justify-between items-start md:flex-row lg:flex-col xl:items-center xl:flex-row">
         <p className="font-inter font-light text-blue-spindle text-md mb-4 md:mb-0 lg:mb-4 xl:mb-0">
           <span className="uppercase">fee burn</span>{" "}
-          {timeframe === "all" ? (
-            <span className="text-blue-manatee font-normal text-sm fadein-animation pl-2">
-              ({daysSinceLondonFork}d)
-            </span>
-          ) : (
-            ""
-          )}
+          <span className="text-blue-manatee font-normal text-sm pl-2">
+            ({timeframe === "all" ? `${daysSinceLondonFork}d` : `${timeframe}`})
+          </span>
         </p>
-        <FeePeriodControl
-          timeframes={["5m", "1h", "24h", "7d", "30d", "all"]}
-          selectedTimeframe={timeframe}
-          onSetFeePeriod={onSetFeePeriod}
-        />
       </div>
       <div className="h-6"></div>
       {selectedFeesBurned !== undefined && selectedBurnRate !== undefined ? (
