@@ -5,7 +5,7 @@ import { weiToEth } from "../../utils/metric-utils";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useFeeData } from "../../api";
 import * as Api from "../../api";
-import { formatWeiTwoDigit, formatZeroDigit } from "../../format";
+import { formatZeroDigit } from "../../format";
 import { featureFlags } from "../../feature-flags";
 import { Unit } from "../ComingSoon";
 import { Timeframe } from "../FeePeriodControl";
