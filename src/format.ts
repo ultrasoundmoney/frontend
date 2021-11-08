@@ -34,6 +34,8 @@ const twoDigit = new Intl.NumberFormat("en-US", {
 export const formatWeiTwoDigit = (wei: number): string =>
   pipe(wei, weiToEth, (num) => twoDigit.format(num));
 
+export const formatTwoDigit = (num: number): string => twoDigit.format(num);
+
 const zeroDigit = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 0,
   maximumFractionDigits: 0,

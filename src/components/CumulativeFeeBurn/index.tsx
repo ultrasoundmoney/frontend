@@ -43,14 +43,14 @@ const CumulativeFeeBurn: FC<{ timeframe: Timeframe; unit: Unit }> = ({
       ? undefined
       : unit === "eth"
       ? weiToEth(feesBurned[timeframeFeesBurnedMap[timeframe][unit]])
-      : feesBurned[timeframeFeesBurnedMap[timeframe][unit]];
+      : feesBurned[timeframeFeesBurnedMap[timeframe][unit]] / 1000;
 
   const selectedBurnRate =
     burnRates === undefined
       ? undefined
       : unit === "eth"
       ? weiToEth(burnRates[timeframeBurnRateMap[timeframe][unit]])
-      : burnRates[timeframeBurnRateMap[timeframe][unit]];
+      : burnRates[timeframeBurnRateMap[timeframe][unit]] / 1000;
 
   const LONDON_TIMESTAMP = Date.parse("Aug 5 2021 12:33:42 UTC");
   const msPerDay = 24 * 60 * 60 * 1000;
@@ -81,7 +81,7 @@ const CumulativeFeeBurn: FC<{ timeframe: Timeframe; unit: Unit }> = ({
                 preserveValue={true}
               />
               <span className="font-extralight text-blue-spindle pl-4">
-                {unit === "eth" ? "ETH" : "USD"}
+                {unit === "eth" ? "ETH" : "kUSD"}
               </span>
             </p>
             <SpanMoji emoji="🔥" />
@@ -100,7 +100,7 @@ const CumulativeFeeBurn: FC<{ timeframe: Timeframe; unit: Unit }> = ({
                   preserveValue={true}
                 />
                 <span className="font-extralight text-blue-spindle pl-4">
-                  {unit === "eth" ? "ETH/min" : "USD/min"}
+                  {unit === "eth" ? "ETH/min" : "kUSD/min"}
                 </span>
               </p>
             </div>

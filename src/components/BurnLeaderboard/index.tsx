@@ -5,7 +5,7 @@ import { weiToEth } from "../../utils/metric-utils";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useFeeData } from "../../api";
 import * as Api from "../../api";
-import { formatZeroDigit } from "../../format";
+import { formatWeiTwoDigit, formatZeroDigit } from "../../format";
 import { featureFlags } from "../../feature-flags";
 import { Unit } from "../ComingSoon";
 import { Timeframe } from "../FeePeriodControl";
@@ -135,14 +135,14 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
           <p className="pl-4 whitespace-nowrap ml-auto font-roboto font-light">
             <CountUp
               start={0}
-              end={fees}
+              end={unit === "eth" ? weiToEth(fees) : fees / 1000}
               preserveValue={true}
               separator=","
               decimals={2}
               duration={0.8}
             />{" "}
             <span className="text-blue-spindle font-extralight">
-              {unit === "eth" ? "ETH" : "USD"}
+              {unit === "eth" ? "ETH" : "kUSD"}
             </span>
           </p>
         </div>
@@ -252,7 +252,7 @@ const BurnLeaderboard: FC<{ timeframe: Timeframe; unit: Unit }> = ({
                   isBot={leaderboardRow.isBot}
                   fees={
                     unit === "eth"
-                      ? weiToEth(leaderboardRow.fees)
+                      ? leaderboardRow.fees
                       : leaderboardRow.feesUsd
                   }
                   type={leaderboardRow.type || "other"}

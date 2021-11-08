@@ -4,6 +4,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useFeeData } from "../../api";
 import {
   formatNoDigit,
+  formatTwoDigit,
   formatWeiTwoDigit,
   formatZeroDigit,
 } from "../../format";
@@ -90,10 +91,10 @@ const LatestBlocks: FC<{ unit: Unit }> = ({ unit }) => {
                             <span className="font-roboto">
                               {unit === "eth"
                                 ? formatWeiTwoDigit(fees)
-                                : formatZeroDigit(feesUsd)}{" "}
+                                : formatTwoDigit(feesUsd / 1000)}{" "}
                             </span>
                             <span className="text-blue-spindle font-extralight">
-                              {unit === "eth" ? "ETH" : "USD"}
+                              {unit === "eth" ? "ETH" : "kUSD"}
                             </span>
                           </p>
                         </li>
