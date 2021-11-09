@@ -216,7 +216,7 @@ const ComingSoon: FC = () => {
           <WidgetBackground>
             <div className="flex flex-col gap-y-10 md:gap-y-0 md:flex-row justify-between">
               <div className="flex flex-col">
-                <WidgetTitle timeframe={timeframe} title="timeframe" />
+                <WidgetTitle timeframe={timeframe} title="time frame" />
                 <FeePeriodControl
                   selectedTimeframe={timeframe}
                   onSetFeePeriod={onSetFeePeriod}
