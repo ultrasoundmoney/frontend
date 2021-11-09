@@ -7,17 +7,18 @@ export const WidgetBackground: FC = ({ children }) => (
   <div className="bg-blue-tangaroa w-full rounded-lg p-8">{children}</div>
 );
 
-export const WidgetTitle: FC<{ timeframe?: Timeframe; title: string }> = ({
-  timeframe,
-  title,
-}) => {
+export const WidgetTitle: FC<{
+  align?: "right";
+  timeframe?: Timeframe;
+  title: string;
+}> = ({ align, timeframe, title }) => {
   const daysSinceLondonFork = DateFns.differenceInDays(
     new Date(),
     londonHardforkTimestamp
   );
 
   return (
-    <div className="flex mb-4">
+    <div className={`flex mb-4 ${align === "right" ? "md:justify-end" : ""}`}>
       <p className="font-inter font-light text-blue-spindle text-md uppercase">
         {title}
       </p>

@@ -223,7 +223,7 @@ const ComingSoon: FC = () => {
                 />
               </div>
               <div className="flex flex-col">
-                <WidgetTitle title="currency" />
+                <WidgetTitle align="right" title="currency" />
                 <UnitControl selectedUnit={unit} onSetUnit={onSetUnit} />
               </div>
             </div>
