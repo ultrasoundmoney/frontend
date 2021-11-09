@@ -86,36 +86,35 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
   );
 };
 
+const activePeriodClasses =
+  "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg";
+
+const UnitButton: FC<{
+  onClick: (unit: Unit) => void;
+  selectedUnit: Unit;
+  unit: Unit;
+}> = ({ onClick, selectedUnit, unit }) => (
+  <button
+    className={`font-roboto text-sm lg:text-lg px-3 py-1 border border-transparent uppercase ${
+      selectedUnit === unit ? activePeriodClasses : "text-blue-manatee"
+    }`}
+    onClick={() => onClick(unit)}
+  >
+    {unit}
+  </button>
+);
+
 type UnitControlProps = {
   selectedUnit: "eth" | "usd";
   onSetUnit: (unit: "usd" | "eth") => void;
 };
 
-const UnitControl: FC<UnitControlProps> = ({ selectedUnit, onSetUnit }) => {
-  const activePeriodClasses =
-    "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg";
-
-  return (
-    <div className="flex flex-row items-center">
-      <button
-        className={`font-roboto text-sm px-3 py-1 border border-transparent uppercase ${
-          selectedUnit === "eth" ? activePeriodClasses : "text-blue-manatee"
-        }`}
-        onClick={() => onSetUnit("eth")}
-      >
-        eth
-      </button>
-      <button
-        className={`font-roboto text-sm px-3 py-1 border border-transparent uppercase ${
-          selectedUnit === "usd" ? activePeriodClasses : "text-blue-manatee"
-        }`}
-        onClick={() => onSetUnit("usd")}
-      >
-        usd
-      </button>
-    </div>
-  );
-};
+const UnitControl: FC<UnitControlProps> = ({ selectedUnit, onSetUnit }) => (
+  <div className="flex flex-row items-center">
+    <UnitButton onClick={onSetUnit} selectedUnit={selectedUnit} unit="eth" />
+    <UnitButton onClick={onSetUnit} selectedUnit={selectedUnit} unit="usd" />
+  </div>
+);
 
 export type Unit = "eth" | "usd";
 
