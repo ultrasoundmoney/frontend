@@ -33,14 +33,15 @@ const BaseGuage: FC<BaseGuageProps> = ({
   });
 
   const min = 0;
-  const max = 6;
+  const max = Math.round(Math.max(10, value));
+  const progress = clamp(value, min, max) / (max - min);
 
   return (
     <>
       <SpanMoji className="leading-10 text-4xl" emoji={emoji} />
       <div className="mt-6 md:mt-2 lg:mt-8 transform scale-100 md:scale-75 lg:scale-100 xl:scale-110">
         <GaugeSvg
-          progress={clamp(value, min, max) / (max - min)}
+          progress={progress}
           progressFillColor={valueFillColor}
           needleColor={needleColor}
         />
