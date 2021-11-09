@@ -74,14 +74,15 @@ const CumulativeFeeBurn: FC<{ timeframe: Timeframe; unit: Unit }> = ({
           <div className="flex justify-between items-center text-3xl md:text-4xl lg:text-3xl xl:text-5xl">
             <p className="font-roboto text-white">
               <CountUp
-                decimals={2}
+                decimals={unit === "eth" ? 2 : 1}
                 duration={0.8}
                 separator=","
                 end={selectedFeesBurned}
                 preserveValue={true}
+                suffix={unit === "eth" ? undefined : "K"}
               />
               <span className="font-extralight text-blue-spindle pl-4">
-                {unit === "eth" ? "ETH" : "kUSD"}
+                {unit === "eth" ? "ETH" : "USD"}
               </span>
             </p>
             <SpanMoji emoji="🔥" />
@@ -93,14 +94,15 @@ const CumulativeFeeBurn: FC<{ timeframe: Timeframe; unit: Unit }> = ({
               </p>
               <p className="font-roboto flex text-white text-2xl">
                 <CountUp
-                  decimals={2}
+                  decimals={unit === "eth" ? 2 : 1}
                   duration={0.8}
                   separator=","
                   end={selectedBurnRate}
                   preserveValue={true}
+                  suffix={unit === "eth" ? undefined : "K"}
                 />
                 <span className="font-extralight text-blue-spindle pl-4">
-                  {unit === "eth" ? "ETH/min" : "kUSD/min"}
+                  {unit === "eth" ? "ETH/min" : "USD/min"}
                 </span>
               </p>
             </div>
