@@ -123,7 +123,7 @@ const ComingSoon: FC = () => {
   const [simulateMerge, setSimulateMerge] = useState(false);
   const ethPrice = useEthPrice();
   const baseFeePerGas = useBaseFeePerGas();
-  const [timeframe, setFeePeriod] = useState<Timeframe>("all");
+  const [timeframe, setFeePeriod] = useState<Timeframe>("24h");
   const [unit, setUnit] = useState<Unit>("eth");
 
   const onSetFeePeriod = useCallback(setFeePeriod, [setFeePeriod]);
