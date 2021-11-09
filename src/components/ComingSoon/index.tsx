@@ -6,7 +6,7 @@ import FollowingYou from "../FollowingYou";
 import SupplyView from "../SupplyView";
 import { TranslationsContext } from "../../translations-context";
 import BurnLeaderboard from "../BurnLeaderboard";
-import CumulativeFeeBurn from "../CumulativeFeeBurn";
+import FeeBurn from "../FeeBurn";
 import LatestBlocks from "../LatestBlocks";
 import FaqBlock from "../Landing/faq";
 import Link from "next/link";
@@ -215,18 +215,16 @@ const ComingSoon: FC = () => {
         <div className="w-4 h-4" />
         <div className="px-4 md:px-16">
           <WidgetBackground>
-            <div className="flex flex-col gap-y-8 md:flex-row justify-between">
-              <div>
+            <div className="flex flex-col gap-y-10 md:gap-y-0 md:flex-row justify-between">
+              <div className="flex flex-col">
                 <WidgetTitle timeframe={timeframe} title="timeframe" />
-                <div className="md:h-4"></div>
                 <FeePeriodControl
                   selectedTimeframe={timeframe}
                   onSetFeePeriod={onSetFeePeriod}
                 />
               </div>
-              <div>
+              <div className="flex flex-col">
                 <WidgetTitle title="currency" />
-                <div className="md:h-4"></div>
                 <UnitControl selectedUnit={unit} onSetUnit={onSetUnit} />
               </div>
             </div>
@@ -235,7 +233,7 @@ const ComingSoon: FC = () => {
         <div className="w-4 h-4" />
         <div className="flex flex-col px-4 lg:w-full lg:flex-row md:px-16 isolate">
           <div className="lg:w-1/2 lg:pr-2">
-            <CumulativeFeeBurn timeframe={timeframe} unit={unit} />
+            <FeeBurn timeframe={timeframe} unit={unit} />
             <span className="block h-4" />
             <LatestBlocks unit={unit} />
           </div>

@@ -6,7 +6,7 @@ import ToggleSwitch from "../ToggleSwitch";
 import SplitGaugeSvg from "./SplitGaugeSvg";
 import { animated, config, useSpring } from "react-spring";
 import { formatPercentOneDigitSigned } from "../../format";
-import { timeframeBurnRateMap } from "../CumulativeFeeBurn";
+import { timeframeBurnRateMap } from "../FeeBurn";
 import { Timeframe } from "../FeePeriodControl";
 import { Unit } from "../ComingSoon";
 

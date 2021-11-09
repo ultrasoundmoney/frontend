@@ -44,7 +44,7 @@ const LatestBlocks: FC<{ unit: Unit }> = ({ unit }) => {
   return (
     <WidgetBackground>
       <div className="pb-4 text-white relative">
-        <div className="flex justify-between pb-2 lg:pb-6 xl:pb-2 font-inter text-blue-spindle ">
+        <div className="flex justify-between mb-4 lg:mb-6 xl:mb-2 font-inter text-blue-spindle ">
           <span className="w-5/12 uppercase">block</span>
           <span className="w-3/12 uppercase">gas</span>
           <span className="w-4/12 text-right uppercase">burn</span>
@@ -75,12 +75,10 @@ const LatestBlocks: FC<{ unit: Unit }> = ({ unit }) => {
                           target="_blank"
                           rel="noreferrer"
                         >
-                          <li className="flex justify-between mt-3 hover:opacity-60 link-animation">
-                            <p className="w-5/12">
-                              <span className="font-roboto text-white">
-                                {formatNoDigit(number)}
-                              </span>
-                            </p>
+                          <li className="flex justify-between mt-4 hover:opacity-60 link-animation">
+                            <span className="w-5/12 font-roboto text-white">
+                              {formatNoDigit(number)}
+                            </span>
                             <div className="w-3/12">
                               <span className="font-roboto text-white">
                                 {formatZeroDigit(weiToGwei(baseFeePerGas))}
@@ -89,7 +87,7 @@ const LatestBlocks: FC<{ unit: Unit }> = ({ unit }) => {
                                 Gwei
                               </span>
                             </div>
-                            <p className="w-4/12 text-right">
+                            <div className="w-4/12 text-right">
                               <span className="font-roboto text-white">
                                 {unit === "eth"
                                   ? formatWeiTwoDigit(fees)
@@ -98,7 +96,7 @@ const LatestBlocks: FC<{ unit: Unit }> = ({ unit }) => {
                               <span className="text-blue-spindle font-extralight">
                                 {unit === "eth" ? " ETH" : " USD"}
                               </span>
-                            </p>
+                            </div>
                           </li>
                         </a>
                       </div>

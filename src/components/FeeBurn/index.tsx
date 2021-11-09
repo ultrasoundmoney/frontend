@@ -55,10 +55,9 @@ const CumulativeFeeBurn: FC<{ timeframe: Timeframe; unit: Unit }> = ({
   return (
     <WidgetBackground>
       <WidgetTitle timeframe={timeframe} title="fee burn" />
-      <div className="h-6"></div>
       {selectedFeesBurned !== undefined && selectedBurnRate !== undefined ? (
         <>
-          <div className="flex justify-between items-center text-3xl md:text-4xl lg:text-3xl xl:text-5xl">
+          <div className="flex justify-between items-center text-2xl md:text-3xl xl:text-4xl">
             <p className="font-roboto text-white">
               <CountUp
                 decimals={unit === "eth" ? 2 : 1}

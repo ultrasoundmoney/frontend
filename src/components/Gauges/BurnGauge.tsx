@@ -3,7 +3,7 @@ import { useFeeData } from "../../api";
 import colors from "../../colors";
 import { weiToEth } from "../../utils/metric-utils";
 import { Unit } from "../ComingSoon";
-import { timeframeBurnRateMap } from "../CumulativeFeeBurn";
+import { timeframeBurnRateMap } from "../FeeBurn";
 import { Timeframe } from "../FeePeriodControl";
 import BaseGauge from "./IssuanceBurnBaseGauge";
 

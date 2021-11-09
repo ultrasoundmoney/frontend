@@ -17,8 +17,8 @@ export const WidgetTitle: FC<{ timeframe?: Timeframe; title: string }> = ({
   );
 
   return (
-    <div className="flex">
-      <p className="font-inter font-light text-blue-spindle text-md mb-4 md:mb-0 lg:mb-4 xl:mb-0 uppercase">
+    <div className="flex mb-4">
+      <p className="font-inter font-light text-blue-spindle text-md uppercase">
         {title}
       </p>
       {timeframe !== undefined && (

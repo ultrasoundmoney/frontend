@@ -1,6 +1,7 @@
 import React, { FC, memo } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useFeeData } from "../../api";
+import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { Unit } from "../ComingSoon";
 import { Timeframe } from "../FeePeriodControl";
 import { WidgetBackground, WidgetTitle } from "../WidgetBits";
@@ -30,6 +31,7 @@ type Props = { timeframe: Timeframe; unit: Unit };
 
 const BurnLeaderboard: FC<Props> = ({ timeframe, unit }) => {
   const { leaderboards } = useFeeData();
+  const { lg } = useActiveBreakpoint();
   const selectedLeaderboard: LeaderboardEntry[] | undefined =
     leaderboards && leaderboards[feePeriodToUpdateMap[timeframe]];
 
@@ -42,8 +44,9 @@ const BurnLeaderboard: FC<Props> = ({ timeframe, unit }) => {
         </p>
       ) : (
         <div
-          className="overflow-auto mt-4 leaderboard-scroller"
-          style={{ height: "35.55rem" }}
+          className="overflow-auto leaderboard-scroller"
+          // Could be solved with a ref to the left column + layout effect?, copying its height.
+          style={{ height: lg ? "35.7rem" : "35.9rem" }}
         >
           <TransitionGroup
             component={null}
