@@ -3,7 +3,7 @@ import GaugeSvg from "./GaugeSvg";
 import SpanMoji from "../SpanMoji";
 import colors from "../../colors";
 import { animated, config, useSpring } from "react-spring";
-import { formatOneDigit } from "../../format";
+import { formatOneDigit, formatZeroDigit } from "../../format";
 import { clamp } from "lodash";
 import { pipe } from "fp-ts/lib/function";
 import { Unit } from "../ComingSoon";
@@ -59,7 +59,12 @@ const BaseGuage: FC<BaseGuageProps> = ({
         />
         <div className="font-roboto text-white text-center font-light 2xl:text-lg -mt-20 pt-1">
           <animated.p className="-mb-2">
-            {valueA.to((n) => `${formatOneDigit(n)}${gaugeUnit}`)}
+            {valueA.to(
+              (n) =>
+                `${
+                  unit === "eth" ? formatOneDigit(n) : formatZeroDigit(n)
+                }${gaugeUnit}`
+            )}
           </animated.p>
           <p className="font-extralight text-blue-spindle">{valueUnit}</p>
           <div className="-mt-2">
