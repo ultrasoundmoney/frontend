@@ -164,7 +164,7 @@ type BaseFeePerGas = {
   baseFeePerGas: number;
 };
 
-export const useEthPrices = (): EthPrice | undefined => {
+export const useEthPrice = (): EthPrice | undefined => {
   const { data } = useSWR<EthPrice>(`${feesBasePath}/eth-price`, {
     refreshInterval: milisFromSeconds(4),
   });

@@ -17,7 +17,7 @@ import IssuanceGauge from "../Gauges/IssuanceGauge";
 import SupplyGrowthGauge from "../Gauges/SupplyGrowthGauge";
 import BurnGauge from "../Gauges/BurnGauge";
 import { useCallback } from "react";
-import { EthPrice, useBaseFeePerGas, useEthPrices } from "../../api";
+import { EthPrice, useBaseFeePerGas, useEthPrice } from "../../api";
 import { formatPercentOneDigitSigned } from "../../format";
 import CountUp from "react-countup";
 import FeePeriodControl, { Timeframe } from "../FeePeriodControl";
@@ -30,28 +30,28 @@ let startEthPriceCached = 0;
 
 type PriceGasWidgetProps = {
   baseFeePerGas: number;
-  ethPrices: EthPrice;
+  ethPrice: EthPrice;
 };
 
 const PriceGasWidget: FC<PriceGasWidgetProps> = ({
   baseFeePerGas,
-  ethPrices,
+  ethPrice: ethPrice,
 }) => {
   if (baseFeePerGas && baseFeePerGas !== startGasPrice) {
     startGasPriceCached = startGasPrice;
     startGasPrice = baseFeePerGas;
   }
 
-  if (ethPrices?.usd && ethPrices?.usd !== startEthPrice) {
+  if (ethPrice?.usd && ethPrice?.usd !== startEthPrice) {
     startEthPriceCached = startEthPrice;
-    startEthPrice = ethPrices?.usd;
+    startEthPrice = ethPrice?.usd;
   }
 
   const ethUsd24hChange =
-    ethPrices?.usd24hChange &&
-    formatPercentOneDigitSigned(ethPrices?.usd24hChange / 1000);
+    ethPrice?.usd24hChange &&
+    formatPercentOneDigitSigned(ethPrice?.usd24hChange / 1000);
   const color =
-    typeof ethPrices?.usd24hChange === "number" && ethPrices?.usd24hChange < 0
+    typeof ethPrice?.usd24hChange === "number" && ethPrice?.usd24hChange < 0
       ? "text-red-400"
       : "text-green-400";
 
@@ -62,8 +62,8 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
         decimals={0}
         duration={0.8}
         separator=","
-        start={startEthPriceCached === 0 ? ethPrices?.usd : startEthPriceCached}
-        end={ethPrices?.usd}
+        start={startEthPriceCached === 0 ? ethPrice?.usd : startEthPriceCached}
+        end={ethPrice?.usd}
       />
       <span className={`px-1 ${color}`}>({ethUsd24hChange})</span>
       <span className="px-1">•</span>
@@ -122,7 +122,7 @@ export type Unit = "eth" | "usd";
 const ComingSoon: FC = () => {
   const t = useContext(TranslationsContext);
   const [simulateMerge, setSimulateMerge] = useState(false);
-  const ethPrices = useEthPrices();
+  const ethPrice = useEthPrice();
   const baseFeePerGas = useBaseFeePerGas();
   const [timeframe, setFeePeriod] = useState<Timeframe>("all");
   const [unit, setUnit] = useState<Unit>("eth");
@@ -148,10 +148,10 @@ const ComingSoon: FC = () => {
             <Link href="/">
               <img className="relative" src={EthLogo} alt={t.title} />
             </Link>
-            {ethPrices !== undefined && baseFeePerGas !== undefined && (
+            {ethPrice !== undefined && baseFeePerGas !== undefined && (
               <PriceGasWidget
                 baseFeePerGas={baseFeePerGas}
-                ethPrices={ethPrices}
+                ethPrice={ethPrice}
               />
             )}
           </div>
@@ -215,9 +215,10 @@ const ComingSoon: FC = () => {
         <div className="w-4 h-4" />
         <div className="px-4 md:px-16">
           <WidgetBackground>
-            <div className="flex flex-col gap-y-4 md:flex-row justify-between">
+            <div className="flex flex-col gap-y-8 md:flex-row justify-between">
               <div>
                 <WidgetTitle timeframe={timeframe} title="timeframe" />
+                <div className="md:h-4"></div>
                 <FeePeriodControl
                   selectedTimeframe={timeframe}
                   onSetFeePeriod={onSetFeePeriod}
@@ -225,6 +226,7 @@ const ComingSoon: FC = () => {
               </div>
               <div>
                 <WidgetTitle title="currency" />
+                <div className="md:h-4"></div>
                 <UnitControl selectedUnit={unit} onSetUnit={onSetUnit} />
               </div>
             </div>
