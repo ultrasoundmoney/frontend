@@ -26,10 +26,9 @@ const feePeriodToUpdateMap: Record<Timeframe, string> = {
   all: "leaderboardAll",
 };
 
-const BurnLeaderboard: FC<{ timeframe: Timeframe; unit: Unit }> = ({
-  timeframe,
-  unit,
-}) => {
+type Props = { timeframe: Timeframe; unit: Unit };
+
+const BurnLeaderboard: FC<Props> = ({ timeframe, unit }) => {
   const { leaderboards } = useFeeData();
   const selectedLeaderboard: LeaderboardEntry[] | undefined =
     leaderboards && leaderboards[feePeriodToUpdateMap[timeframe]];
