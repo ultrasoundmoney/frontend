@@ -23,6 +23,7 @@
     "aos": "^2.3.4",
     "css-scroll-snap-polyfill": "^0.1.2",
     "d3": "^6.0.0",
+    "date-fns": "^2.25.0",
     "fp-ts": "^2.11.1",
     "highcharts": "^9.1.1",
     "highcharts-react-official": "^3.0.0",

@@ -18,9 +18,10 @@ import SupplyGrowthGauge from "../Gauges/SupplyGrowthGauge";
 import BurnGauge from "../Gauges/BurnGauge";
 import { useCallback } from "react";
 import { EthPrice, useBaseFeePerGas, useEthPrices } from "../../api";
-import { formatPercentOneDigitSigned, formatZeroDigit } from "../../format";
+import { formatPercentOneDigitSigned } from "../../format";
 import CountUp from "react-countup";
 import FeePeriodControl, { Timeframe } from "../FeePeriodControl";
+import { WidgetBackground, WidgetTitle } from "../WidgetBits";
 
 let startGasPrice = 0;
 let startGasPriceCached = 0;
@@ -97,7 +98,7 @@ const UnitControl: FC<UnitControlProps> = ({ selectedUnit, onSetUnit }) => {
   return (
     <div className="flex flex-row items-center">
       <button
-        className={`font-inter text-sm px-3 py-1 border border-transparent uppercase ${
+        className={`font-roboto text-sm px-3 py-1 border border-transparent uppercase ${
           selectedUnit === "eth" ? activePeriodClasses : "text-blue-manatee"
         }`}
         onClick={() => onSetUnit("eth")}
@@ -105,7 +106,7 @@ const UnitControl: FC<UnitControlProps> = ({ selectedUnit, onSetUnit }) => {
         eth
       </button>
       <button
-        className={`font-inter text-sm px-3 py-1 border border-transparent uppercase ${
+        className={`font-roboto text-sm px-3 py-1 border border-transparent uppercase ${
           selectedUnit === "usd" ? activePeriodClasses : "text-blue-manatee"
         }`}
         onClick={() => onSetUnit("usd")}
@@ -129,12 +130,6 @@ const ComingSoon: FC = () => {
   const onSetFeePeriod = useCallback(setFeePeriod, [setFeePeriod]);
 
   const onSetUnit = useCallback(setUnit, [setUnit]);
-
-  const LONDON_TIMESTAMP = Date.parse("Aug 5 2021 12:33:42 UTC");
-  const msPerDay = 24 * 60 * 60 * 1000;
-  const daysSinceLondonFork = formatZeroDigit(
-    Math.floor((Date.now() - LONDON_TIMESTAMP) / msPerDay)
-  );
 
   const toggleSimulateMerge = useCallback(() => {
     setSimulateMerge(!simulateMerge);
@@ -219,31 +214,21 @@ const ComingSoon: FC = () => {
         </div>
         <div className="w-4 h-4" />
         <div className="px-4 md:px-16">
-          <div className="bg-blue-tangaroa flex flex-col md:flex-row justify-between p-4">
-            <div>
-              <p className="text-lg font-inter text-blue-spindle flex flex-row items-center">
-                timeframe
-                <span className="text-blue-manatee font-normal text-sm pl-2">
-                  (
-                  {timeframe === "all"
-                    ? `${daysSinceLondonFork}d`
-                    : `${timeframe}`}
-                  )
-                </span>
-              </p>
-              <FeePeriodControl
-                timeframes={["5m", "1h", "24h", "7d", "30d", "all"]}
-                selectedTimeframe={timeframe}
-                onSetFeePeriod={onSetFeePeriod}
-              />
+          <WidgetBackground>
+            <div className="flex flex-col gap-y-4 md:flex-row justify-between">
+              <div>
+                <WidgetTitle timeframe={timeframe} title="timeframe" />
+                <FeePeriodControl
+                  selectedTimeframe={timeframe}
+                  onSetFeePeriod={onSetFeePeriod}
+                />
+              </div>
+              <div>
+                <WidgetTitle title="currency" />
+                <UnitControl selectedUnit={unit} onSetUnit={onSetUnit} />
+              </div>
             </div>
-            <div>
-              <p className="text-lg font-inter text-blue-spindle flex flex-row items-center">
-                currency
-              </p>
-              <UnitControl selectedUnit={unit} onSetUnit={onSetUnit} />
-            </div>
-          </div>
+          </WidgetBackground>
         </div>
         <div className="w-4 h-4" />
         <div className="flex flex-col px-4 lg:w-full lg:flex-row md:px-16 isolate">
