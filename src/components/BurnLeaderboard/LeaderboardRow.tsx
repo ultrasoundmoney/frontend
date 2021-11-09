@@ -132,7 +132,7 @@ const LeaderboardRow: FC<Props> = ({
           <p className="pl-4 whitespace-nowrap ml-auto font-roboto font-light">
             <CountUp
               start={0}
-              end={unit === "eth" ? weiToEth(fees) : fees / 100}
+              end={unit === "eth" ? weiToEth(fees) : fees / 1000}
               preserveValue={true}
               separator=","
               decimals={unit === "eth" ? 2 : 1}

@@ -93,7 +93,7 @@ const LatestBlocks: FC<{ unit: Unit }> = ({ unit }) => {
                               <span className="font-roboto text-white">
                                 {unit === "eth"
                                   ? formatWeiTwoDigit(fees)
-                                  : `${formatOneDigit(feesUsd / 100)}K`}
+                                  : `${formatOneDigit(feesUsd / 1000)}K`}
                               </span>
                               <span className="text-blue-spindle font-extralight">
                                 {unit === "eth" ? " ETH" : " USD"}
