@@ -5,6 +5,9 @@ import colors from "../../colors";
 import { animated, config, useSpring } from "react-spring";
 import { formatOneDigit } from "../../format";
 import { clamp } from "lodash";
+import { pipe } from "fp-ts/lib/function";
+import { Unit } from "../ComingSoon";
+import { useEthPrice } from "../../api";
 
 type BaseGuageProps = {
   emoji: string;
@@ -14,6 +17,7 @@ type BaseGuageProps = {
   value: number;
   valueFillColor?: string;
   valueUnit: string;
+  unit: Unit;
 };
 
 const BaseGuage: FC<BaseGuageProps> = ({
@@ -24,7 +28,10 @@ const BaseGuage: FC<BaseGuageProps> = ({
   value,
   valueFillColor = colors.spindle,
   valueUnit,
+  unit,
 }) => {
+  const ethPrice = useEthPrice();
+
   const { valueA } = useSpring({
     from: { valueA: 0 },
     to: { valueA: value },
@@ -33,7 +40,12 @@ const BaseGuage: FC<BaseGuageProps> = ({
   });
 
   const min = 0;
-  const max = Math.round(Math.max(10, value));
+  const max = pipe(
+    unit === "eth" ? 10 : (10 * (ethPrice?.usd ?? 0)) / 10 ** 3,
+    (max) => Math.max(max, value),
+    Math.round
+  );
+
   const progress = clamp(value, min, max) / (max - min);
 
   return (

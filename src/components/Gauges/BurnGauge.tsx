@@ -1,11 +1,11 @@
-import { useFeeData } from "../../api";
-import { weiToEth } from "../../utils/metric-utils";
-import colors from "../../colors";
-import BaseGauge from "./IssuanceBurnBaseGauge";
 import { FC } from "react";
-import { Timeframe } from "../FeePeriodControl";
+import { useFeeData } from "../../api";
+import colors from "../../colors";
+import { weiToEth } from "../../utils/metric-utils";
 import { Unit } from "../ComingSoon";
 import { timeframeBurnRateMap } from "../CumulativeFeeBurn";
+import { Timeframe } from "../FeePeriodControl";
+import BaseGauge from "./IssuanceBurnBaseGauge";
 
 type BurnGaugeProps = { timeframe: Timeframe; unit: Unit };
 
@@ -34,6 +34,7 @@ const BurnGauge: FC<BurnGaugeProps> = ({ timeframe, unit }) => {
         emoji="🔥"
         gaugeUnit={unit === "eth" ? "M" : "B"}
         valueUnit={unit === "eth" ? "ETH/year" : "USD/year"}
+        unit={unit}
       />
     </div>
   );

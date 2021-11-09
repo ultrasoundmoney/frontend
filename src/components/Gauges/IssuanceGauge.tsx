@@ -18,9 +18,11 @@ const IssuanceGauge: FC<IssuanceGaugeProps> = ({
   unit,
 }) => {
   const averageEthPrice = useAverageEthPrice(timeframe);
+
   const issuancePerDay = simulateMerge
     ? StaticEtherData.posIssuancePerDay
     : StaticEtherData.powIssuancePerDay + StaticEtherData.posIssuancePerDay;
+
   const issuance =
     averageEthPrice === undefined
       ? 0
@@ -38,6 +40,7 @@ const IssuanceGauge: FC<IssuanceGaugeProps> = ({
         emoji="💧"
         gaugeUnit={unit === "eth" ? "M" : "B"}
         valueUnit={unit === "eth" ? "ETH/year" : "USD/year"}
+        unit={unit}
       />
     </div>
   );
