@@ -1,29 +1,20 @@
 import { FC, useEffect, useState } from "react";
+import { animated, config, useSpring } from "react-spring";
 import { useAverageEthPrice, useFeeData } from "../../api";
+import { formatPercentOneDigitSigned } from "../../format";
 import * as StaticEtherData from "../../static-ether-data";
 import { weiToEth } from "../../utils/metric-utils";
-import ToggleSwitch from "../ToggleSwitch";
-import SplitGaugeSvg from "./SplitGaugeSvg";
-import { animated, config, useSpring } from "react-spring";
-import { formatPercentOneDigitSigned } from "../../format";
 import { timeframeBurnRateMap } from "../FeeBurn";
 import { TimeFrame } from "../TimeFrameControl";
-import { Unit } from "../ComingSoon";
-
-type SupplyGrowthGaugeProps = {
-  simulateMerge: boolean;
-  timeFrame: TimeFrame;
-  toggleSimulateMerge: () => void;
-  unit: Unit;
-};
+import ToggleSwitch from "../ToggleSwitch";
+import SplitGaugeSvg from "./SplitGaugeSvg";
 
 const powIssuanceYear = StaticEtherData.powIssuancePerDay * 365.25;
 const posIssuanceYear = StaticEtherData.posIssuancePerDay * 365.25;
 
 const useGrowthRate = (
   simulateMerge: boolean,
-  timeFrame: TimeFrame,
-  unit: Unit
+  timeFrame: TimeFrame
 ): number => {
   const { burnRates } = useFeeData();
   const [growthRate, setGrowthRate] = useState(0);
@@ -34,41 +25,40 @@ const useGrowthRate = (
       return;
     }
 
-    const selectedBurnRate = burnRates[timeframeBurnRateMap[timeFrame][unit]];
+    const selectedBurnRate = burnRates[timeframeBurnRateMap[timeFrame]["eth"]];
 
-    // Convert burn rate from eth/min or usd/min to /year.
-    const feeBurnYear =
-      unit === "eth"
-        ? weiToEth(selectedBurnRate) * 60 * 24 * 365.25
-        : selectedBurnRate * 60 * 24 * 365.25;
+    // Convert burn rate from eth/min to eth/year.
+    const feeBurnYear = weiToEth(selectedBurnRate) * 60 * 24 * 365.25;
 
     const issuanceRate = simulateMerge
       ? posIssuanceYear
       : posIssuanceYear + powIssuanceYear;
 
     const growthRate =
-      unit === "eth"
-        ? (issuanceRate - feeBurnYear) / StaticEtherData.totalSupply
-        : (issuanceRate * averageEthPrice - feeBurnYear) /
-          (StaticEtherData.totalSupply * averageEthPrice);
+      (issuanceRate - feeBurnYear) / StaticEtherData.totalSupply;
 
     const rateRounded = Math.round(growthRate * 1000) / 1000;
 
     if (rateRounded !== growthRate) {
       setGrowthRate(rateRounded);
     }
-  }, [burnRates, growthRate, simulateMerge, averageEthPrice, timeFrame, unit]);
+  }, [burnRates, growthRate, simulateMerge, averageEthPrice, timeFrame]);
 
   return growthRate;
 };
 
-const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
+type Props = {
+  simulateMerge: boolean;
+  timeFrame: TimeFrame;
+  toggleSimulateMerge: () => void;
+};
+
+const SupplyGrowthGauge: FC<Props> = ({
   simulateMerge,
   timeFrame: timeframe,
   toggleSimulateMerge,
-  unit,
 }) => {
-  const growthRate = useGrowthRate(simulateMerge, timeframe, unit);
+  const growthRate = useGrowthRate(simulateMerge, timeframe);
 
   // Workaround as react-spring is breaking our positive number with sign formatting.
   const [freezeAnimated, setFreezeAnimated] = useState(true);
