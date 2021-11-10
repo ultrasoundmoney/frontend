@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { animated, config, useSpring } from "react-spring";
 import { useAverageEthPrice, useFeeData } from "../../api";
 import { formatPercentOneDigitSigned } from "../../format";
@@ -55,10 +55,10 @@ type Props = {
 
 const SupplyGrowthGauge: FC<Props> = ({
   simulateMerge,
-  timeFrame: timeframe,
+  timeFrame,
   toggleSimulateMerge,
 }) => {
-  const growthRate = useGrowthRate(simulateMerge, timeframe);
+  const growthRate = useGrowthRate(simulateMerge, timeFrame);
 
   // Workaround as react-spring is breaking our positive number with sign formatting.
   const [freezeAnimated, setFreezeAnimated] = useState(true);

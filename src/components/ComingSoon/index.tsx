@@ -20,8 +20,8 @@ import { useCallback } from "react";
 import { EthPrice, useBaseFeePerGas, useEthPrice } from "../../api";
 import { formatPercentOneDigitSigned } from "../../format";
 import CountUp from "react-countup";
-import TimeFrameControl, { TimeFrame } from "../TimeFrameControl";
-import { WidgetBackground, WidgetTitle } from "../WidgetBits";
+import TimeFrameControl, { TimeFrame, timeFrames } from "../TimeFrameControl";
+import { WidgetBackground } from "../WidgetBits";
 
 let startGasPrice = 0;
 let startGasPriceCached = 0;
@@ -95,8 +95,8 @@ const UnitButton: FC<{
   unit: Unit;
 }> = ({ onClick, selectedUnit, unit }) => (
   <button
-    className={`font-roboto text-sm lg:text-lg px-3 py-1 border border-transparent uppercase ${
-      selectedUnit === unit ? activePeriodClasses : "text-blue-manatee"
+    className={`font-roboto font-extralight text-sm lg:text-lg px-3 py-1 border border-transparent uppercase ${
+      selectedUnit === unit ? activePeriodClasses : "text-blue-spindle"
     }`}
     onClick={() => onClick(unit)}
   >
@@ -123,10 +123,10 @@ const ComingSoon: FC = () => {
   const [simulateMerge, setSimulateMerge] = useState(false);
   const ethPrice = useEthPrice();
   const baseFeePerGas = useBaseFeePerGas();
-  const [timeframe, setFeePeriod] = useState<Timeframe>("24h");
+  const [timeFrame, setTimeFrame] = useState<TimeFrame>("24h");
   const [unit, setUnit] = useState<Unit>("eth");
 
-  const onSetFeePeriod = useCallback(setFeePeriod, [setFeePeriod]);
+  const onSetTimeFrame = useCallback(setTimeFrame, [setTimeFrame]);
 
   const onSetUnit = useCallback(setUnit, [setUnit]);
 
@@ -138,6 +138,16 @@ const ComingSoon: FC = () => {
     document.title =
       weiToGwei(baseFeePerGas).toFixed(0) + " Gwei | ultrasound.money";
   }
+
+  const onClickTimeFrame = useCallback(() => {
+    const currentTimeFrameIndex = timeFrames.indexOf(timeFrame);
+    const nextIndex =
+      currentTimeFrameIndex === timeFrames.length - 1
+        ? 0
+        : currentTimeFrameIndex + 1;
+
+    setTimeFrame(timeFrames[nextIndex]);
+  }, [timeFrame]);
 
   return (
     <div className="wrapper bg-blue-midnightexpress blurred-bg-image">
@@ -193,20 +203,19 @@ const ComingSoon: FC = () => {
         {/* </video> */}
         <div className="w-full flex flex-col md:flex-row md:gap-0 lg:gap-4 px-4 md:px-16 isolate">
           <div className="hidden md:block w-1/3">
-            <BurnGauge timeframe={timeframe} unit={unit} />
+            <BurnGauge timeFrame={timeFrame} unit={unit} />
           </div>
           <div className="md:w-1/3">
             <SupplyGrowthGauge
               simulateMerge={simulateMerge}
-              timeframe={timeframe}
+              timeFrame={timeFrame}
               toggleSimulateMerge={toggleSimulateMerge}
-              unit={unit}
             />
           </div>
           <div className="hidden md:block w-1/3">
             <IssuanceGauge
               simulateMerge={simulateMerge}
-              timeframe={timeframe}
+              timeFrame={timeFrame}
               unit={unit}
             />
           </div>
@@ -214,16 +223,20 @@ const ComingSoon: FC = () => {
         <div className="w-4 h-4" />
         <div className="px-4 md:px-16">
           <WidgetBackground>
-            <div className="flex flex-col gap-y-10 md:gap-y-0 md:flex-row justify-between">
-              <div className="flex flex-col">
-                <WidgetTitle timeframe={timeframe} title="time frame" />
+            <div className="flex flex-col gap-y-8 md:flex-row lg:gap-y-0 justify-between">
+              <div className="flex flex-col gap-y-4 lg:gap-x-4 lg:flex-row lg:items-center">
+                <p className="font-inter font-light text-blue-spindle text-md uppercase">
+                  time frame
+                </p>
                 <TimeFrameControl
-                  selectedTimeframe={timeframe}
-                  onSetFeePeriod={onSetFeePeriod}
+                  selectedTimeframe={timeFrame}
+                  onSetFeePeriod={onSetTimeFrame}
                 />
               </div>
-              <div className="flex flex-col">
-                <WidgetTitle align="right" title="currency" />
+              <div className="flex flex-col gap-y-4 lg:gap-x-4 lg:flex-row lg:items-center">
+                <p className="font-inter font-light text-blue-spindle text-md uppercase md:text-right lg:text-left">
+                  currency
+                </p>
                 <UnitControl selectedUnit={unit} onSetUnit={onSetUnit} />
               </div>
             </div>
@@ -232,13 +245,21 @@ const ComingSoon: FC = () => {
         <div className="w-4 h-4" />
         <div className="flex flex-col px-4 lg:w-full lg:flex-row md:px-16 isolate">
           <div className="lg:w-1/2 lg:pr-2">
-            <FeeBurn timeframe={timeframe} unit={unit} />
+            <FeeBurn
+              onClickTimeFrame={onClickTimeFrame}
+              timeFrame={timeFrame}
+              unit={unit}
+            />
             <span className="block h-4" />
             <LatestBlocks unit={unit} />
           </div>
           <span className="block h-4" />
           <div className="lg:w-1/2 lg:pl-2">
-            <BurnLeaderboard timeframe={timeframe} unit={unit} />
+            <BurnLeaderboard
+              onClickTimeFrame={onClickTimeFrame}
+              timeFrame={timeFrame}
+              unit={unit}
+            />
           </div>
         </div>
         <div className="flex flex-col px-4 md:px-16 pt-40 mb-16">

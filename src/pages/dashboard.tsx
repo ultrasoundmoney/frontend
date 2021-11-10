@@ -45,7 +45,11 @@ const DashboardPage: NextPage = () => {
             carts
           </p>
           <div className="w-full px-4">
-            <BurnLeaderboard timeFrame={"24h"} unit={"eth"} />
+            <BurnLeaderboard
+              onClickTimeFrame={() => undefined}
+              timeFrame={"24h"}
+              unit={"eth"}
+            />
           </div>
         </div>
       </div>

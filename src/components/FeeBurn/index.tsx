@@ -32,9 +32,13 @@ export const timeframeBurnRateMap: Record<
   all: { eth: "burnRateAll", usd: "burnRateAllUsd" },
 };
 
-type Props = { timeFrame: TimeFrame; unit: Unit };
+type Props = { onClickTimeFrame: () => void; timeFrame: TimeFrame; unit: Unit };
 
-const CumulativeFeeBurn: FC<Props> = ({ timeFrame, unit }) => {
+const CumulativeFeeBurn: FC<Props> = ({
+  onClickTimeFrame,
+  timeFrame,
+  unit,
+}) => {
   const { feesBurned, burnRates } = useFeeData();
 
   const selectedFeesBurned =
@@ -53,10 +57,15 @@ const CumulativeFeeBurn: FC<Props> = ({ timeFrame, unit }) => {
 
   return (
     <WidgetBackground>
-      <WidgetTitle timeFrame={timeFrame} title="fee burn" />
+      <WidgetTitle
+        onClickTimeFrame={onClickTimeFrame}
+        timeFrame={timeFrame}
+        title="fee burn"
+      />
+      <div className="h-8"></div>
       {selectedFeesBurned !== undefined && selectedBurnRate !== undefined ? (
         <>
-          <div className="flex justify-between items-center text-2xl md:text-3xl xl:text-4xl">
+          <div className="flex justify-between items-center text-2xl md:text-4xl">
             <p className="font-roboto text-white">
               <CountUp
                 decimals={unit === "eth" ? 2 : 1}

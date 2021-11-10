@@ -1,35 +1,33 @@
-import * as DateFns from "date-fns";
-import { FC } from "react";
-import { londonHardforkTimestamp } from "../dates";
-import { displayTimeFrameMap, TimeFrame } from "./TimeFrameControl";
+import React, { FC } from "react";
+import { TimeFrame } from "./TimeFrameControl";
+import TimeFrameIndicator from "./TimeframeIndicator";
 
 export const WidgetBackground: FC = ({ children }) => (
   <div className="bg-blue-tangaroa w-full rounded-lg p-8">{children}</div>
 );
 
-export const WidgetTitle: FC<{
+type WidgetTitleProps = {
   align?: "right";
+  onClickTimeFrame: () => void;
   timeFrame?: TimeFrame;
   title: string;
-}> = ({ align, timeFrame, title }) => {
-  const daysSinceLondonFork = DateFns.differenceInDays(
-    new Date(),
-    londonHardforkTimestamp
-  );
+};
 
+export const WidgetTitle: FC<WidgetTitleProps> = ({
+  onClickTimeFrame,
+  timeFrame,
+  title,
+}) => {
   return (
-    <div className={`flex mb-4 ${align === "right" ? "md:justify-end" : ""}`}>
+    <div className={`flex items-center justify-between`}>
       <p className="font-inter font-light text-blue-spindle text-md uppercase">
         {title}
       </p>
       {timeFrame !== undefined && (
-        <span className="font-roboto font-normal text-blue-manatee text-sm pl-2">
-          (
-          {timeFrame === "all"
-            ? `${daysSinceLondonFork}d`
-            : `${displayTimeFrameMap[timeFrame]}`}
-          )
-        </span>
+        <TimeFrameIndicator
+          onClickTimeFrame={onClickTimeFrame}
+          timeFrame={timeFrame}
+        />
       )}
     </div>
   );

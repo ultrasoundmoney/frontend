@@ -22,14 +22,14 @@ const TimeFrameControl: FC<Props> = ({ selectedTimeframe, onSetFeePeriod }) => {
     "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg";
 
   return (
-    <div className="flex flex-row items-center">
+    <div className="flex flex-row items-center lg:gap-x-2">
       {timeFrames.map((timeFrame) => (
         <button
           key={timeFrame}
           className={`font-roboto font-extralight text-sm lg:text-lg px-3 py-1 border border-transparent ${
             selectedTimeframe === timeFrame
               ? activePeriodClasses
-              : "text-blue-manatee"
+              : "text-blue-shipcove"
           }`}
           onClick={() => onSetFeePeriod(timeFrame)}
         >

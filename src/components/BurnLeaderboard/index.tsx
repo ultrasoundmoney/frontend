@@ -27,9 +27,9 @@ const feePeriodToUpdateMap: Record<TimeFrame, string> = {
   all: "leaderboardAll",
 };
 
-type Props = { timeFrame: TimeFrame; unit: Unit };
+type Props = { onClickTimeFrame: () => void; timeFrame: TimeFrame; unit: Unit };
 
-const BurnLeaderboard: FC<Props> = ({ timeFrame, unit }) => {
+const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
   const { leaderboards } = useFeeData();
   const { lg } = useActiveBreakpoint();
   const selectedLeaderboard: LeaderboardEntry[] | undefined =
@@ -37,7 +37,12 @@ const BurnLeaderboard: FC<Props> = ({ timeFrame, unit }) => {
 
   return (
     <WidgetBackground>
-      <WidgetTitle title="burn leaderboard" timeFrame={timeFrame} />
+      <WidgetTitle
+        onClickTimeFrame={onClickTimeFrame}
+        title="burn leaderboard"
+        timeFrame={timeFrame}
+      />
+      <div className="h-8"></div>
       {selectedLeaderboard === undefined ? (
         <p className="text-lg text-center text-gray-500 pt-16 pb-20">
           loading...
