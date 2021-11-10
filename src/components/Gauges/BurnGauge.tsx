@@ -4,12 +4,12 @@ import colors from "../../colors";
 import { weiToEth } from "../../utils/metric-utils";
 import { Unit } from "../ComingSoon";
 import { timeframeBurnRateMap } from "../FeeBurn";
-import { Timeframe } from "../FeePeriodControl";
+import { TimeFrame } from "../TimeFrameControl";
 import BaseGauge from "./IssuanceBurnBaseGauge";
 
-type BurnGaugeProps = { timeframe: Timeframe; unit: Unit };
+type BurnGaugeProps = { timeFrame: TimeFrame; unit: Unit };
 
-const BurnGauge: FC<BurnGaugeProps> = ({ timeframe, unit }) => {
+const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame: timeframe, unit }) => {
   const { burnRates } = useFeeData();
 
   const selectedBurnRate =

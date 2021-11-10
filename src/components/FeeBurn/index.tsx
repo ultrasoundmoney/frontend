@@ -1,7 +1,7 @@
 import React, { memo, FC } from "react";
 import SpanMoji from "../SpanMoji";
 import CountUp from "react-countup";
-import { Timeframe } from "../FeePeriodControl";
+import { TimeFrame } from "../TimeFrameControl";
 import { BurnRates, FeesBurned, useFeeData } from "../../api";
 import { Unit } from "../ComingSoon";
 import { WidgetBackground, WidgetTitle } from "../WidgetBits";
@@ -9,7 +9,7 @@ import { WidgetBackground, WidgetTitle } from "../WidgetBits";
 const weiToEth = (wei: number): number => wei / 10 ** 18;
 
 const timeframeFeesBurnedMap: Record<
-  Timeframe,
+  TimeFrame,
   { eth: keyof FeesBurned; usd: keyof FeesBurned }
 > = {
   "5m": { eth: "feesBurned5m", usd: "feesBurned5mUsd" },
@@ -21,7 +21,7 @@ const timeframeFeesBurnedMap: Record<
 };
 
 export const timeframeBurnRateMap: Record<
-  Timeframe,
+  TimeFrame,
   { eth: keyof BurnRates; usd: keyof BurnRates }
 > = {
   "5m": { eth: "burnRate5m", usd: "burnRate5mUsd" },
@@ -32,29 +32,28 @@ export const timeframeBurnRateMap: Record<
   all: { eth: "burnRateAll", usd: "burnRateAllUsd" },
 };
 
-const CumulativeFeeBurn: FC<{ timeframe: Timeframe; unit: Unit }> = ({
-  timeframe,
-  unit,
-}) => {
+type Props = { timeFrame: TimeFrame; unit: Unit };
+
+const CumulativeFeeBurn: FC<Props> = ({ timeFrame, unit }) => {
   const { feesBurned, burnRates } = useFeeData();
 
   const selectedFeesBurned =
     feesBurned === undefined
       ? undefined
       : unit === "eth"
-      ? weiToEth(feesBurned[timeframeFeesBurnedMap[timeframe][unit]])
-      : feesBurned[timeframeFeesBurnedMap[timeframe][unit]] / 1000;
+      ? weiToEth(feesBurned[timeframeFeesBurnedMap[timeFrame][unit]])
+      : feesBurned[timeframeFeesBurnedMap[timeFrame][unit]] / 1000;
 
   const selectedBurnRate =
     burnRates === undefined
       ? undefined
       : unit === "eth"
-      ? weiToEth(burnRates[timeframeBurnRateMap[timeframe][unit]])
-      : burnRates[timeframeBurnRateMap[timeframe][unit]] / 1000;
+      ? weiToEth(burnRates[timeframeBurnRateMap[timeFrame][unit]])
+      : burnRates[timeframeBurnRateMap[timeFrame][unit]] / 1000;
 
   return (
     <WidgetBackground>
-      <WidgetTitle timeframe={timeframe} title="fee burn" />
+      <WidgetTitle timeFrame={timeFrame} title="fee burn" />
       {selectedFeesBurned !== undefined && selectedBurnRate !== undefined ? (
         <>
           <div className="flex justify-between items-center text-2xl md:text-3xl xl:text-4xl">

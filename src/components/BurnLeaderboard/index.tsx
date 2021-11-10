@@ -3,7 +3,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useFeeData } from "../../api";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { Unit } from "../ComingSoon";
-import { Timeframe } from "../FeePeriodControl";
+import { TimeFrame } from "../TimeFrameControl";
 import { WidgetBackground, WidgetTitle } from "../WidgetBits";
 import LeaderboardRow from "./LeaderboardRow";
 
@@ -18,7 +18,7 @@ export type LeaderboardEntry = {
   category: string | null;
 };
 
-const feePeriodToUpdateMap: Record<Timeframe, string> = {
+const feePeriodToUpdateMap: Record<TimeFrame, string> = {
   "5m": "leaderboard5m",
   "1h": "leaderboard1h",
   "24h": "leaderboard24h",
@@ -27,17 +27,17 @@ const feePeriodToUpdateMap: Record<Timeframe, string> = {
   all: "leaderboardAll",
 };
 
-type Props = { timeframe: Timeframe; unit: Unit };
+type Props = { timeFrame: TimeFrame; unit: Unit };
 
-const BurnLeaderboard: FC<Props> = ({ timeframe, unit }) => {
+const BurnLeaderboard: FC<Props> = ({ timeFrame, unit }) => {
   const { leaderboards } = useFeeData();
   const { lg } = useActiveBreakpoint();
   const selectedLeaderboard: LeaderboardEntry[] | undefined =
-    leaderboards && leaderboards[feePeriodToUpdateMap[timeframe]];
+    leaderboards && leaderboards[feePeriodToUpdateMap[timeFrame]];
 
   return (
     <WidgetBackground>
-      <WidgetTitle title="burn leaderboard" timeframe={timeframe} />
+      <WidgetTitle title="burn leaderboard" timeFrame={timeFrame} />
       {selectedLeaderboard === undefined ? (
         <p className="text-lg text-center text-gray-500 pt-16 pb-20">
           loading...

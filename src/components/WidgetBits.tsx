@@ -1,7 +1,7 @@
 import * as DateFns from "date-fns";
 import { FC } from "react";
 import { londonHardforkTimestamp } from "../dates";
-import { displayTimeframeMap, Timeframe } from "./FeePeriodControl";
+import { displayTimeFrameMap, TimeFrame } from "./TimeFrameControl";
 
 export const WidgetBackground: FC = ({ children }) => (
   <div className="bg-blue-tangaroa w-full rounded-lg p-8">{children}</div>
@@ -9,9 +9,9 @@ export const WidgetBackground: FC = ({ children }) => (
 
 export const WidgetTitle: FC<{
   align?: "right";
-  timeframe?: Timeframe;
+  timeFrame?: TimeFrame;
   title: string;
-}> = ({ align, timeframe, title }) => {
+}> = ({ align, timeFrame, title }) => {
   const daysSinceLondonFork = DateFns.differenceInDays(
     new Date(),
     londonHardforkTimestamp
@@ -22,12 +22,12 @@ export const WidgetTitle: FC<{
       <p className="font-inter font-light text-blue-spindle text-md uppercase">
         {title}
       </p>
-      {timeframe !== undefined && (
+      {timeFrame !== undefined && (
         <span className="font-roboto font-normal text-blue-manatee text-sm pl-2">
           (
-          {timeframe === "all"
+          {timeFrame === "all"
             ? `${daysSinceLondonFork}d`
-            : `${displayTimeframeMap[timeframe]}`}
+            : `${displayTimeFrameMap[timeFrame]}`}
           )
         </span>
       )}

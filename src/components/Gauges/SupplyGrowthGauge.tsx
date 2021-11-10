@@ -7,12 +7,12 @@ import SplitGaugeSvg from "./SplitGaugeSvg";
 import { animated, config, useSpring } from "react-spring";
 import { formatPercentOneDigitSigned } from "../../format";
 import { timeframeBurnRateMap } from "../FeeBurn";
-import { Timeframe } from "../FeePeriodControl";
+import { TimeFrame } from "../TimeFrameControl";
 import { Unit } from "../ComingSoon";
 
 type SupplyGrowthGaugeProps = {
   simulateMerge: boolean;
-  timeframe: Timeframe;
+  timeFrame: TimeFrame;
   toggleSimulateMerge: () => void;
   unit: Unit;
 };
@@ -22,19 +22,19 @@ const posIssuanceYear = StaticEtherData.posIssuancePerDay * 365.25;
 
 const useGrowthRate = (
   simulateMerge: boolean,
-  timeframe: Timeframe,
+  timeFrame: TimeFrame,
   unit: Unit
 ): number => {
   const { burnRates } = useFeeData();
   const [growthRate, setGrowthRate] = useState(0);
-  const averageEthPrice = useAverageEthPrice(timeframe);
+  const averageEthPrice = useAverageEthPrice(timeFrame);
 
   useEffect(() => {
     if (burnRates === undefined || averageEthPrice === undefined) {
       return;
     }
 
-    const selectedBurnRate = burnRates[timeframeBurnRateMap[timeframe][unit]];
+    const selectedBurnRate = burnRates[timeframeBurnRateMap[timeFrame][unit]];
 
     // Convert burn rate from eth/min or usd/min to /year.
     const feeBurnYear =
@@ -57,14 +57,14 @@ const useGrowthRate = (
     if (rateRounded !== growthRate) {
       setGrowthRate(rateRounded);
     }
-  }, [burnRates, growthRate, simulateMerge, averageEthPrice, timeframe, unit]);
+  }, [burnRates, growthRate, simulateMerge, averageEthPrice, timeFrame, unit]);
 
   return growthRate;
 };
 
 const SupplyGrowthGauge: FC<SupplyGrowthGaugeProps> = ({
   simulateMerge,
-  timeframe,
+  timeFrame: timeframe,
   toggleSimulateMerge,
   unit,
 }) => {

@@ -20,7 +20,7 @@ import { useCallback } from "react";
 import { EthPrice, useBaseFeePerGas, useEthPrice } from "../../api";
 import { formatPercentOneDigitSigned } from "../../format";
 import CountUp from "react-countup";
-import FeePeriodControl, { Timeframe } from "../FeePeriodControl";
+import TimeFrameControl, { TimeFrame } from "../TimeFrameControl";
 import { WidgetBackground, WidgetTitle } from "../WidgetBits";
 
 let startGasPrice = 0;
@@ -217,7 +217,7 @@ const ComingSoon: FC = () => {
             <div className="flex flex-col gap-y-10 md:gap-y-0 md:flex-row justify-between">
               <div className="flex flex-col">
                 <WidgetTitle timeframe={timeframe} title="time frame" />
-                <FeePeriodControl
+                <TimeFrameControl
                   selectedTimeframe={timeframe}
                   onSetFeePeriod={onSetFeePeriod}
                 />

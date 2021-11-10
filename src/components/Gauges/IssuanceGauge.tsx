@@ -4,20 +4,16 @@ import * as StaticEtherData from "../../static-ether-data";
 import colors from "../../colors";
 import { Unit } from "../ComingSoon";
 import { useAverageEthPrice } from "../../api";
-import { Timeframe } from "../FeePeriodControl";
+import { TimeFrame } from "../TimeFrameControl";
 
-type IssuanceGaugeProps = {
+type Props = {
   simulateMerge: boolean;
-  timeframe: Timeframe;
+  timeFrame: TimeFrame;
   unit: Unit;
 };
 
-const IssuanceGauge: FC<IssuanceGaugeProps> = ({
-  simulateMerge,
-  timeframe,
-  unit,
-}) => {
-  const averageEthPrice = useAverageEthPrice(timeframe);
+const IssuanceGauge: FC<Props> = ({ simulateMerge, timeFrame, unit }) => {
+  const averageEthPrice = useAverageEthPrice(timeFrame);
 
   const issuancePerDay = simulateMerge
     ? StaticEtherData.posIssuancePerDay

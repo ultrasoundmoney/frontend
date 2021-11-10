@@ -1,9 +1,9 @@
 import * as DateFns from "date-fns";
 import { FC } from "react";
 import { londonHardforkTimestamp } from "../dates";
-import { displayTimeframeMap, Timeframe } from "./FeePeriodControl";
+import { displayTimeFrameMap, TimeFrame } from "./TimeFrameControl";
 
-const TimeframeIndicator: FC<{ timeframe: Timeframe }> = ({ timeframe }) => {
+const TimeFrameIndicator: FC<{ timeframe: TimeFrame }> = ({ timeframe }) => {
   const daysSinceLondonFork = DateFns.differenceInDays(
     new Date(),
     londonHardforkTimestamp
@@ -14,10 +14,10 @@ const TimeframeIndicator: FC<{ timeframe: Timeframe }> = ({ timeframe }) => {
       (
       {timeframe === "all"
         ? `${daysSinceLondonFork}d`
-        : `${displayTimeframeMap[timeframe]}`}
+        : `${displayTimeFrameMap[timeframe]}`}
       )
     </span>
   );
 };
 
-export default TimeframeIndicator;
+export default TimeFrameIndicator;

@@ -2,7 +2,7 @@ import * as Config from "./config";
 import useSWR from "swr";
 import { LeaderboardEntry } from "./components/BurnLeaderboard";
 import { milisFromSeconds } from "./duration";
-import { Timeframe } from "./components/FeePeriodControl";
+import { TimeFrame } from "./components/TimeFrameControl";
 
 export const famBasePath =
   Config.apiEnv === "staging"
@@ -190,7 +190,7 @@ export type AverageEthPrice = {
   m5: 4743.869230769231;
 };
 
-export const newTimeframeMap: Record<Timeframe, keyof AverageEthPrice> = {
+export const newTimeframeMap: Record<TimeFrame, keyof AverageEthPrice> = {
   "5m": "m5",
   "1h": "h1",
   "24h": "h24",
@@ -200,7 +200,7 @@ export const newTimeframeMap: Record<Timeframe, keyof AverageEthPrice> = {
 };
 
 export const useAverageEthPrice = (
-  timeframe: Timeframe
+  timeFrame: TimeFrame
 ): number | undefined => {
   const { data } = useSWR<AverageEthPrice>(
     `${feesBasePath}/average-eth-price`,
@@ -209,5 +209,5 @@ export const useAverageEthPrice = (
     }
   );
 
-  return data === undefined ? undefined : data[newTimeframeMap[timeframe]];
+  return data === undefined ? undefined : data[newTimeframeMap[timeFrame]];
 };
