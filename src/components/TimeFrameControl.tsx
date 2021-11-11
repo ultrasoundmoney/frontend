@@ -26,7 +26,7 @@ const TimeFrameControl: FC<Props> = ({ selectedTimeframe, onSetFeePeriod }) => {
       {timeFrames.map((timeFrame) => (
         <button
           key={timeFrame}
-          className={`font-roboto font-extralight text-sm lg:text-lg px-3 py-1 border border-transparent ${
+          className={`font-roboto font-extralight px-3 py-1 border border-transparent ${
             selectedTimeframe === timeFrame
               ? activePeriodClasses
               : "text-blue-spindle"

@@ -37,7 +37,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
 
   return (
     <WidgetBackground>
-      <div className="flex flex-col gap-y-8">
+      <div className="flex flex-col gap-y-4">
         <WidgetTitle
           onClickTimeFrame={onClickTimeFrame}
           title="burn leaderboard"
@@ -51,7 +51,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
           <div
             className="overflow-auto leaderboard-scroller -mt-1"
             // Could be solved with a ref to the left column + layout effect?, copying its height.
-            style={{ height: lg ? "39.95rem" : "39.65rem" }}
+            style={{ height: lg ? "595px" : "591px" }}
           >
             <TransitionGroup
               component={null}

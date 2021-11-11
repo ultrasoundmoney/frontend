@@ -9,12 +9,14 @@ import {
   formatZeroDigit,
 } from "../../format";
 import { weiToGwei } from "../../utils/metric-utils";
+import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { Unit } from "../ComingSoon";
 import { WidgetBackground } from "../WidgetBits";
 
 const LatestBlocks: FC<{ unit: Unit }> = ({ unit }) => {
   const { latestBlockFees } = useFeeData();
   const [timeElapsed, setTimeElapsed] = useState(0);
+  const { md } = useActiveBreakpoint();
 
   const getTimeElapsed = useCallback((dt: Date): number => {
     const secondsDiff = DateTime.fromJSDate(dt)
@@ -43,13 +45,13 @@ const LatestBlocks: FC<{ unit: Unit }> = ({ unit }) => {
 
   return (
     <WidgetBackground>
-      <div className="flex flex-col gap-y-8">
+      <div className="flex flex-col gap-y-4">
         <div className="flex justify-between font-inter text-blue-spindle ">
           <span className="w-5/12 uppercase">block</span>
           <span className="w-3/12 uppercase">gas</span>
           <span className="w-4/12 text-right uppercase">burn</span>
         </div>
-        <ul>
+        <ul className="flex flex-col gap-y-4">
           {latestBlockFees !== undefined && latestBlockFees.length === 0 ? (
             <p className="font-roboto text-white md:text-4xl">loading...</p>
           ) : (
@@ -75,7 +77,7 @@ const LatestBlocks: FC<{ unit: Unit }> = ({ unit }) => {
                           target="_blank"
                           rel="noreferrer"
                         >
-                          <li className="flex justify-between mt-4 hover:opacity-60 link-animation">
+                          <li className="flex justify-between hover:opacity-60 link-animation">
                             <span className="w-5/12 font-roboto text-white">
                               {formatNoDigit(number)}
                             </span>
@@ -83,9 +85,11 @@ const LatestBlocks: FC<{ unit: Unit }> = ({ unit }) => {
                               <span className="font-roboto text-white">
                                 {formatZeroDigit(weiToGwei(baseFeePerGas))}
                               </span>{" "}
-                              <span className="text-blue-spindle font-extralight">
-                                Gwei
-                              </span>
+                              {md && (
+                                <span className="text-blue-spindle font-extralight">
+                                  Gwei
+                                </span>
+                              )}
                             </div>
                             <div className="w-4/12 text-right">
                               <span className="font-roboto text-white">

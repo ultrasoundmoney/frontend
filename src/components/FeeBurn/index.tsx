@@ -62,30 +62,38 @@ const CumulativeFeeBurn: FC<Props> = ({
         timeFrame={timeFrame}
         title="fee burn"
       />
-      <div className="h-8"></div>
-      {selectedFeesBurned !== undefined && selectedBurnRate !== undefined ? (
-        <>
-          <div className="flex justify-between items-center text-2xl md:text-4xl lg:text-3xl xl:text-4xl">
-            <p className="font-roboto text-white">
-              <CountUp
-                decimals={unit === "eth" ? 2 : 1}
-                duration={0.8}
-                separator=","
-                end={selectedFeesBurned}
-                preserveValue={true}
-                suffix={unit === "eth" ? undefined : "K"}
-              />
-              <span className="font-extralight text-blue-spindle pl-4">
-                {unit === "eth" ? "ETH" : "USD"}
-              </span>
-            </p>
-            <SpanMoji emoji="🔥" />
-          </div>
-          <div className="flex justify-between mt-8">
-            <div>
-              <p className="font-inter font-light text-blue-spindle uppercase md:text-md mb-2">
-                burn rate
+      <div className="h-4"></div>
+      <div className="flex flex-col gap-y-8">
+        <div className="flex gap-x-4 items-center font-roboto text-2xl md:text-4xl lg:text-3xl xl:text-4xl">
+          {selectedFeesBurned !== undefined ? (
+            <>
+              <p className="text-white">
+                <CountUp
+                  decimals={unit === "eth" ? 2 : 1}
+                  duration={0.8}
+                  separator=","
+                  end={selectedFeesBurned}
+                  preserveValue={true}
+                  suffix={unit === "eth" ? undefined : "K"}
+                />
               </p>
+              <p className="font-extralight text-blue-spindle">
+                {unit === "eth" ? "ETH" : "USD"}
+              </p>
+            </>
+          ) : (
+            <p className="font-roboto text-white text-2xl md:text-4xl lg:text-3xl xl:text-4xl">
+              loading...
+            </p>
+          )}
+          <SpanMoji emoji="🔥" />
+        </div>
+        <div className="flex justify-between">
+          <div>
+            <p className="font-inter font-light text-blue-spindle uppercase md:text-md mb-2">
+              burn rate
+            </p>
+            {selectedBurnRate !== undefined ? (
               <p className="font-roboto flex text-white text-2xl">
                 <CountUp
                   decimals={unit === "eth" ? 2 : 1}
@@ -99,14 +107,12 @@ const CumulativeFeeBurn: FC<Props> = ({
                   {unit === "eth" ? "ETH/min" : "USD/min"}
                 </span>
               </p>
-            </div>
+            ) : (
+              <p className="font-roboto text-white text-2xl">loading...</p>
+            )}
           </div>
-        </>
-      ) : (
-        <p className="font-roboto text-white text-3xl md:text-4xl lg:text-3xl xl:text-5xl">
-          loading...
-        </p>
-      )}
+        </div>
+      </div>
     </WidgetBackground>
   );
 };
