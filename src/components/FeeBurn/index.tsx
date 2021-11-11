@@ -64,7 +64,7 @@ const CumulativeFeeBurn: FC<Props> = ({
       />
       <div className="h-4"></div>
       <div className="flex flex-col gap-y-8">
-        <div className="flex gap-x-4 items-center font-roboto text-2xl md:text-4xl lg:text-3xl xl:text-4xl">
+        <div className="flex items-center font-roboto text-2xl md:text-4xl lg:text-3xl xl:text-4xl">
           {selectedFeesBurned !== undefined ? (
             <>
               <p className="text-white">
@@ -77,6 +77,7 @@ const CumulativeFeeBurn: FC<Props> = ({
                   suffix={unit === "eth" ? undefined : "K"}
                 />
               </p>
+              <span className="font-inter">&thinsp;</span>
               <p className="font-extralight text-blue-spindle">
                 {unit === "eth" ? "ETH" : "USD"}
               </p>
@@ -86,7 +87,7 @@ const CumulativeFeeBurn: FC<Props> = ({
               loading...
             </p>
           )}
-          <SpanMoji emoji="🔥" />
+          <SpanMoji className="ml-4 md:ml-8" emoji="🔥" />
         </div>
         <div className="flex justify-between">
           <div>
@@ -103,7 +104,8 @@ const CumulativeFeeBurn: FC<Props> = ({
                   preserveValue={true}
                   suffix={unit === "eth" ? undefined : "K"}
                 />
-                <span className="font-extralight text-blue-spindle pl-4">
+                <span className="font-inter">&thinsp;</span>
+                <span className="font-extralight text-blue-spindle">
                   {unit === "eth" ? "ETH/min" : "USD/min"}
                 </span>
               </p>

@@ -139,8 +139,9 @@ const LeaderboardRow: FC<Props> = ({
               duration={0.8}
               suffix={unit === "eth" ? undefined : "K"}
             />
+            <span className="font-inter">&thinsp;</span>
             <span className="text-blue-spindle font-extralight">
-              {unit === "eth" ? " ETH" : " USD"}
+              {unit === "eth" ? "ETH" : "USD"}
             </span>
           </p>
         </div>

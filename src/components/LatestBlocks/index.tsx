@@ -84,11 +84,14 @@ const LatestBlocks: FC<{ unit: Unit }> = ({ unit }) => {
                             <div className="w-3/12">
                               <span className="font-roboto text-white">
                                 {formatZeroDigit(weiToGwei(baseFeePerGas))}
-                              </span>{" "}
+                              </span>
                               {md && (
-                                <span className="text-blue-spindle font-extralight">
-                                  Gwei
-                                </span>
+                                <>
+                                  <span className="font-inter">&thinsp;</span>
+                                  <span className="font-roboto text-blue-spindle font-extralight">
+                                    Gwei
+                                  </span>
+                                </>
                               )}
                             </div>
                             <div className="w-4/12 text-right">
@@ -97,8 +100,9 @@ const LatestBlocks: FC<{ unit: Unit }> = ({ unit }) => {
                                   ? formatWeiTwoDigit(fees)
                                   : `${formatOneDigit(feesUsd / 1000)}K`}
                               </span>
-                              <span className="text-blue-spindle font-extralight">
-                                {unit === "eth" ? " ETH" : " USD"}
+                              <span className="font-inter">&thinsp;</span>
+                              <span className="font-roboto text-blue-spindle font-extralight">
+                                {unit === "eth" ? "ETH" : "USD"}
                               </span>
                             </div>
                           </li>
