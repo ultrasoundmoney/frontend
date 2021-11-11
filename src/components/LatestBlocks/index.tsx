@@ -105,7 +105,7 @@ const LatestBlocks: FC<{ unit: Unit }> = ({ unit }) => {
             </TransitionGroup>
           )}
         </ul>
-        <span className="text-blue-spindle text-xs md:text-sm font-extralight | absolute -bottom-4 right-0">
+        <span className="text-blue-spindle text-xs md:text-sm font-extralight absolute -bottom-4 left-0">
           latest block{" "}
           <span className="font-roboto text-white font-light">
             {timeElapsed}s

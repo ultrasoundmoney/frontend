@@ -29,7 +29,7 @@ const TimeFrameControl: FC<Props> = ({ selectedTimeframe, onSetFeePeriod }) => {
           className={`font-roboto font-extralight text-sm lg:text-lg px-3 py-1 border border-transparent ${
             selectedTimeframe === timeFrame
               ? activePeriodClasses
-              : "text-blue-shipcove"
+              : "text-blue-spindle"
           }`}
           onClick={() => onSetFeePeriod(timeFrame)}
         >

@@ -65,7 +65,7 @@ const CumulativeFeeBurn: FC<Props> = ({
       <div className="h-8"></div>
       {selectedFeesBurned !== undefined && selectedBurnRate !== undefined ? (
         <>
-          <div className="flex justify-between items-center text-2xl md:text-4xl">
+          <div className="flex justify-between items-center text-2xl md:text-4xl lg:text-3xl xl:text-4xl">
             <p className="font-roboto text-white">
               <CountUp
                 decimals={unit === "eth" ? 2 : 1}
