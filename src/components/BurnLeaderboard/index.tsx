@@ -1,10 +1,9 @@
 import React, { FC, memo } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useFeeData } from "../../api";
-import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { Unit } from "../ComingSoon";
 import { TimeFrame } from "../TimeFrameControl";
-import { WidgetBackground, WidgetTitle } from "../WidgetBits";
+import { WidgetTitle } from "../WidgetBits";
 import LeaderboardRow from "./LeaderboardRow";
 
 export type LeaderboardEntry = {
@@ -27,17 +26,23 @@ const feePeriodToUpdateMap: Record<TimeFrame, string> = {
   all: "leaderboardAll",
 };
 
-type Props = { onClickTimeFrame: () => void; timeFrame: TimeFrame; unit: Unit };
+type Props = {
+  onClickTimeFrame: () => void;
+  timeFrame: TimeFrame;
+  unit: Unit;
+};
 
 const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
   const { leaderboards } = useFeeData();
-  const { lg } = useActiveBreakpoint();
   const selectedLeaderboard: LeaderboardEntry[] | undefined =
     leaderboards && leaderboards[feePeriodToUpdateMap[timeFrame]];
 
   return (
-    <WidgetBackground>
-      <div className="flex flex-col gap-y-4">
+    <div className="bg-blue-tangaroa w-full rounded-lg p-8">
+      <div
+        className="flex flex-col gap-y-4 lg:h-0 lg:min-h-full"
+        style={{ height: "32rem" }}
+      >
         <WidgetTitle
           onClickTimeFrame={onClickTimeFrame}
           title="burn leaderboard"
@@ -48,11 +53,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
             loading...
           </p>
         ) : (
-          <div
-            className="overflow-auto leaderboard-scroller -mt-1"
-            // Could be solved with a ref to the left column + layout effect?, copying its height.
-            style={{ height: lg ? "595px" : "591px" }}
-          >
+          <div className="overflow-auto leaderboard-scroller -mt-1">
             <TransitionGroup
               component={null}
               appear={false}
@@ -87,7 +88,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
           </div>
         )}
       </div>
-    </WidgetBackground>
+    </div>
   );
 };
 

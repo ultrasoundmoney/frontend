@@ -257,24 +257,21 @@ const ComingSoon: FC = () => {
           </WidgetBackground>
         </div>
         <div className="w-4 h-4" />
-        <div className="flex flex-col px-4 lg:w-full lg:flex-row md:px-16 isolate">
-          <div className="lg:w-1/2 lg:pr-2">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-4 px-4 md:px-16 md:gap-x-4 lg:w-full lg:flex-row">
+          <div>
             <FeeBurn
               onClickTimeFrame={onClickTimeFrame}
               timeFrame={timeFrame}
               unit={unit}
             />
-            <span className="block h-4" />
+            <div className="h-4"></div>
             <LatestBlocks unit={unit} />
           </div>
-          <span className="block h-4" />
-          <div className="lg:w-1/2 lg:pl-2">
-            <BurnLeaderboard
-              onClickTimeFrame={onClickTimeFrame}
-              timeFrame={timeFrame}
-              unit={unit}
-            />
-          </div>
+          <BurnLeaderboard
+            onClickTimeFrame={onClickTimeFrame}
+            timeFrame={timeFrame}
+            unit={unit}
+          />
         </div>
         <div className="flex flex-col px-4 md:px-16 pt-40 mb-16">
           <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8">
