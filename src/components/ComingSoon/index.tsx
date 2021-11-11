@@ -89,11 +89,17 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
 const activePeriodClasses =
   "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg";
 
-const UnitButton: FC<{
+type CurrencyButtonProps = {
   onClick: (unit: Unit) => void;
   selectedUnit: Unit;
   unit: Unit;
-}> = ({ onClick, selectedUnit, unit }) => (
+};
+
+const CurrencyButton: FC<CurrencyButtonProps> = ({
+  onClick,
+  selectedUnit,
+  unit,
+}) => (
   <button
     className={`font-roboto font-extralight text-sm lg:text-lg px-3 py-1 border border-transparent uppercase ${
       selectedUnit === unit ? activePeriodClasses : "text-blue-spindle"
@@ -109,10 +115,18 @@ type UnitControlProps = {
   onSetUnit: (unit: "usd" | "eth") => void;
 };
 
-const UnitControl: FC<UnitControlProps> = ({ selectedUnit, onSetUnit }) => (
+const CurrencyControl: FC<UnitControlProps> = ({ selectedUnit, onSetUnit }) => (
   <div className="flex flex-row items-center">
-    <UnitButton onClick={onSetUnit} selectedUnit={selectedUnit} unit="eth" />
-    <UnitButton onClick={onSetUnit} selectedUnit={selectedUnit} unit="usd" />
+    <CurrencyButton
+      onClick={onSetUnit}
+      selectedUnit={selectedUnit}
+      unit="eth"
+    />
+    <CurrencyButton
+      onClick={onSetUnit}
+      selectedUnit={selectedUnit}
+      unit="usd"
+    />
   </div>
 );
 
@@ -237,7 +251,7 @@ const ComingSoon: FC = () => {
                 <p className="font-inter font-light text-blue-spindle text-md uppercase md:text-right lg:text-left">
                   currency
                 </p>
-                <UnitControl selectedUnit={unit} onSetUnit={onSetUnit} />
+                <CurrencyControl selectedUnit={unit} onSetUnit={onSetUnit} />
               </div>
             </div>
           </WidgetBackground>
