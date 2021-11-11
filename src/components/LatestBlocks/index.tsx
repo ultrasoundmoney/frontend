@@ -13,10 +13,12 @@ import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { Unit } from "../ComingSoon";
 import { WidgetBackground } from "../WidgetBits";
 
-const LatestBlocks: FC<{ unit: Unit }> = ({ unit }) => {
+type Props = { unit: Unit };
+
+const LatestBlocks: FC<Props> = ({ unit }) => {
   const { latestBlockFees } = useFeeData();
   const [timeElapsed, setTimeElapsed] = useState(0);
-  const { md } = useActiveBreakpoint();
+  const { sm } = useActiveBreakpoint();
 
   const getTimeElapsed = useCallback((dt: Date): number => {
     const secondsDiff = DateTime.fromJSDate(dt)
@@ -46,7 +48,7 @@ const LatestBlocks: FC<{ unit: Unit }> = ({ unit }) => {
   return (
     <WidgetBackground>
       <div className="flex flex-col gap-y-4">
-        <div className="flex justify-between font-inter text-blue-spindle ">
+        <div className="flex justify-between font-inter text-blue-spindle">
           <span className="w-5/12 uppercase">block</span>
           <span className="w-3/12 uppercase">gas</span>
           <span className="w-4/12 text-right uppercase">burn</span>
@@ -85,7 +87,7 @@ const LatestBlocks: FC<{ unit: Unit }> = ({ unit }) => {
                               <span className="font-roboto text-white">
                                 {formatZeroDigit(weiToGwei(baseFeePerGas))}
                               </span>
-                              {md && (
+                              {sm && (
                                 <>
                                   <span className="font-inter">&thinsp;</span>
                                   <span className="font-roboto text-blue-spindle font-extralight">
