@@ -109,12 +109,13 @@ const LatestBlocks: FC<{ unit: Unit }> = ({ unit }) => {
             </TransitionGroup>
           )}
         </ul>
+        {/* spaces need to stay on the font-inter element to keep them consistent */}
         <span className="text-blue-spindle text-xs md:text-sm font-extralight">
-          latest block
+          {"latest block "}
           <span className="font-roboto text-white font-light">
-            {` ${timeElapsed}s `}
+            {timeElapsed}s
           </span>
-          old
+          {" old"}
         </span>
       </div>
     </WidgetBackground>
