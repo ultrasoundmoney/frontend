@@ -43,8 +43,8 @@ const LatestBlocks: FC<{ unit: Unit }> = ({ unit }) => {
 
   return (
     <WidgetBackground>
-      <div className="pb-4 text-white relative">
-        <div className="flex justify-between mb-4 lg:mb-6 xl:mb-2 font-inter text-blue-spindle ">
+      <div className="flex flex-col gap-y-8">
+        <div className="flex justify-between font-inter text-blue-spindle ">
           <span className="w-5/12 uppercase">block</span>
           <span className="w-3/12 uppercase">gas</span>
           <span className="w-4/12 text-right uppercase">burn</span>
@@ -105,11 +105,11 @@ const LatestBlocks: FC<{ unit: Unit }> = ({ unit }) => {
             </TransitionGroup>
           )}
         </ul>
-        <span className="text-blue-spindle text-xs md:text-sm font-extralight absolute -bottom-4 left-0">
-          latest block{" "}
+        <span className="text-blue-spindle text-xs md:text-sm font-extralight">
+          latest block
           <span className="font-roboto text-white font-light">
-            {timeElapsed}s
-          </span>{" "}
+            {` ${timeElapsed}s `}
+          </span>
           old
         </span>
       </div>

@@ -78,7 +78,7 @@ const SupplyGrowthGauge: FC<Props> = ({
   const max = 10;
 
   return (
-    <div className="flex flex-col justify-start items-center bg-blue-tangaroa px-4 md:px-0 py-4 pt-7 rounded-lg md:rounded-l-none lg:rounded-l-lg">
+    <div className="flex flex-col justify-start items-center bg-blue-tangaroa px-4 md:px-0 py-8 pt-7 rounded-lg md:rounded-l-none lg:rounded-l-lg">
       <div className="leading-10 z-10 flex items-center">
         <ToggleSwitch checked={simulateMerge} onToggle={toggleSimulateMerge} />
         <p className="leading-10 text-lg font-inter text-blue-spindle flex flex-row items-center justify-end px-4 self-center">

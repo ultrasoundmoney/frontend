@@ -37,55 +37,56 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
 
   return (
     <WidgetBackground>
-      <WidgetTitle
-        onClickTimeFrame={onClickTimeFrame}
-        title="burn leaderboard"
-        timeFrame={timeFrame}
-      />
-      <div className="h-8"></div>
-      {selectedLeaderboard === undefined ? (
-        <p className="text-lg text-center text-gray-500 pt-16 pb-20">
-          loading...
-        </p>
-      ) : (
-        <div
-          className="overflow-auto leaderboard-scroller"
-          // Could be solved with a ref to the left column + layout effect?, copying its height.
-          style={{ height: lg ? "35.7rem" : "35.9rem" }}
-        >
-          <TransitionGroup
-            component={null}
-            appear={false}
-            enter={true}
-            exit={false}
+      <div className="flex flex-col gap-y-8">
+        <WidgetTitle
+          onClickTimeFrame={onClickTimeFrame}
+          title="burn leaderboard"
+          timeFrame={timeFrame}
+        />
+        {selectedLeaderboard === undefined ? (
+          <p className="text-lg text-center text-gray-500 pt-16 pb-20">
+            loading...
+          </p>
+        ) : (
+          <div
+            className="overflow-auto leaderboard-scroller -mt-1"
+            // Could be solved with a ref to the left column + layout effect?, copying its height.
+            style={{ height: lg ? "39.95rem" : "39.65rem" }}
           >
-            {selectedLeaderboard.map((leaderboardRow) => (
-              <CSSTransition
-                classNames="fee-block"
-                timeout={500}
-                key={leaderboardRow.id}
-              >
-                <LeaderboardRow
-                  key={leaderboardRow.name} // ??? should this be leaderboardRow.id?
-                  name={leaderboardRow.name.split(":")[0]}
-                  detail={leaderboardRow.name.split(":")[1]}
-                  id={leaderboardRow.id}
-                  isBot={leaderboardRow.isBot}
-                  fees={
-                    unit === "eth"
-                      ? leaderboardRow.fees
-                      : leaderboardRow.feesUsd
-                  }
-                  type={leaderboardRow.type || "other"}
-                  image={leaderboardRow.image}
-                  category={leaderboardRow.category}
-                  unit={unit}
-                />
-              </CSSTransition>
-            ))}
-          </TransitionGroup>
-        </div>
-      )}
+            <TransitionGroup
+              component={null}
+              appear={false}
+              enter={true}
+              exit={false}
+            >
+              {selectedLeaderboard.map((leaderboardRow) => (
+                <CSSTransition
+                  classNames="fee-block"
+                  timeout={500}
+                  key={leaderboardRow.id}
+                >
+                  <LeaderboardRow
+                    key={leaderboardRow.name} // ??? should this be leaderboardRow.id?
+                    name={leaderboardRow.name.split(":")[0]}
+                    detail={leaderboardRow.name.split(":")[1]}
+                    id={leaderboardRow.id}
+                    isBot={leaderboardRow.isBot}
+                    fees={
+                      unit === "eth"
+                        ? leaderboardRow.fees
+                        : leaderboardRow.feesUsd
+                    }
+                    type={leaderboardRow.type || "other"}
+                    image={leaderboardRow.image}
+                    category={leaderboardRow.category}
+                    unit={unit}
+                  />
+                </CSSTransition>
+              ))}
+            </TransitionGroup>
+          </div>
+        )}
+      </div>
     </WidgetBackground>
   );
 };

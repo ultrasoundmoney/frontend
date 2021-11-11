@@ -27,7 +27,7 @@ const IssuanceGauge: FC<Props> = ({ simulateMerge, timeFrame, unit }) => {
       : (issuancePerDay * 365.25 * averageEthPrice) / 1_000_000_000;
 
   return (
-    <div className="flex flex-col justify-start items-center bg-blue-tangaroa px-4 md:px-0 py-4 pt-7 rounded-lg md:rounded-l-none lg:rounded-l-lg">
+    <div className="flex flex-col justify-start items-center bg-blue-tangaroa px-4 md:px-0 py-8 pt-7 rounded-lg md:rounded-l-none lg:rounded-l-lg">
       <BaseGauge
         title="issuance"
         value={issuance}
