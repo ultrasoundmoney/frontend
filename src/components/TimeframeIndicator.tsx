@@ -14,7 +14,7 @@ const TimeFrameIndicator: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   return (
     <div className="flex items-center">
       <span
-        className={`font-roboto font-extralight text-blue-spindle text-sm transition-opacity ${
+        className={`font-roboto font-extralight text-blue-shipcove text-sm transition-opacity ${
           timeFrame === "all" ? "opacity-1" : "opacity-0"
         }`}
       >
