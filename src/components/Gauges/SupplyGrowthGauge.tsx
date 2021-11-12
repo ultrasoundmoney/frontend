@@ -129,7 +129,7 @@ const SupplyGrowthGauge: FC<Props> = ({
       </div>
       {/* This element is to align the slightly higher "supply growth" label with */}
       {/* the sibling gauges. */}
-      <div style={{ marginTop: "-4px" }}></div>
+      <div className="mt-0 md:-mt-2"></div>
     </div>
   );
 };
