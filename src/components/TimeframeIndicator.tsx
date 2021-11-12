@@ -3,20 +3,30 @@ import { FC } from "react";
 import { londonHardforkTimestamp } from "../dates";
 import { displayTimeFrameMap, TimeFrame } from "./TimeFrameControl";
 
-type Props = { onClickTimeFrame: () => void; timeFrame: TimeFrame };
+type Props = {
+  compressWhitespace?: boolean;
+  onClickTimeFrame: () => void;
+  timeFrame: TimeFrame;
+};
 
-const TimeFrameIndicator: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
+const TimeFrameIndicator: FC<Props> = ({
+  compressWhitespace = false,
+  onClickTimeFrame,
+  timeFrame,
+}) => {
   const daysSinceLondonFork = DateFns.differenceInDays(
     new Date(),
     londonHardforkTimestamp
   );
 
+  const timeFrameDaysOpacity = timeFrame === "all" ? "opacity-1" : "opacity-0";
+  const timeFrameDaysDisplay =
+    compressWhitespace === true && timeFrame !== "all" ? "hidden" : "";
+
   return (
     <div className="flex gap-x-2 md:gap-x-4 items-center">
       <span
-        className={`font-roboto font-extralight text-blue-shipcove transition-opacity ${
-          timeFrame === "all" ? "opacity-1" : "opacity-0"
-        }`}
+        className={`font-roboto font-extralight text-blue-shipcove transition-opacity ${timeFrameDaysOpacity} ${timeFrameDaysDisplay}`}
       >
         ({`${daysSinceLondonFork}d`})
       </span>

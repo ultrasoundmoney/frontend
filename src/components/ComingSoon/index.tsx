@@ -153,7 +153,7 @@ const ComingSoon: FC = () => {
       weiToGwei(baseFeePerGas).toFixed(0) + " Gwei | ultrasound.money";
   }
 
-  const onClickTimeFrame = useCallback(() => {
+  const handleClickTimeFrame = useCallback(() => {
     const currentTimeFrameIndex = timeFrames.indexOf(timeFrame);
     const nextIndex =
       currentTimeFrameIndex === timeFrames.length - 1
@@ -221,6 +221,7 @@ const ComingSoon: FC = () => {
           </div>
           <div className="md:w-1/3">
             <SupplyGrowthGauge
+              onClickTimeFrame={handleClickTimeFrame}
               simulateMerge={simulateMerge}
               timeFrame={timeFrame}
               toggleSimulateMerge={toggleSimulateMerge}
@@ -260,7 +261,7 @@ const ComingSoon: FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-4 px-4 md:px-16 md:gap-x-4 lg:w-full lg:flex-row">
           <div>
             <FeeBurn
-              onClickTimeFrame={onClickTimeFrame}
+              onClickTimeFrame={handleClickTimeFrame}
               timeFrame={timeFrame}
               unit={unit}
             />
@@ -268,7 +269,7 @@ const ComingSoon: FC = () => {
             <LatestBlocks unit={unit} />
           </div>
           <BurnLeaderboard
-            onClickTimeFrame={onClickTimeFrame}
+            onClickTimeFrame={handleClickTimeFrame}
             timeFrame={timeFrame}
             unit={unit}
           />

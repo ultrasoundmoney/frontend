@@ -6,6 +6,7 @@ import * as StaticEtherData from "../../static-ether-data";
 import { weiToEth } from "../../utils/metric-utils";
 import { timeframeBurnRateMap } from "../FeeBurn";
 import { TimeFrame } from "../TimeFrameControl";
+import TimeframeIndicator from "../TimeframeIndicator";
 import ToggleSwitch from "../ToggleSwitch";
 import SplitGaugeSvg from "./SplitGaugeSvg";
 
@@ -48,12 +49,14 @@ const useGrowthRate = (
 };
 
 type Props = {
+  onClickTimeFrame: () => void;
   simulateMerge: boolean;
   timeFrame: TimeFrame;
   toggleSimulateMerge: () => void;
 };
 
 const SupplyGrowthGauge: FC<Props> = ({
+  onClickTimeFrame,
   simulateMerge,
   timeFrame,
   toggleSimulateMerge,
@@ -78,14 +81,18 @@ const SupplyGrowthGauge: FC<Props> = ({
   const max = 10;
 
   return (
-    <div className="flex flex-col justify-start items-center bg-blue-tangaroa px-4 md:px-0 py-8 pt-7 rounded-lg md:rounded-l-none lg:rounded-l-lg">
-      <div className="leading-10 z-10 flex items-center">
-        <ToggleSwitch checked={simulateMerge} onToggle={toggleSimulateMerge} />
-        <p className="leading-10 text-lg font-inter text-blue-spindle flex flex-row items-center justify-end px-4 self-center">
-          simulate merge
-        </p>
+    <div className="flex flex-col justify-start items-center bg-blue-tangaroa px-4 md:px-0 py-8 pt-7 rounded-lg md:rounded-none lg:rounded-lg">
+      <div className="flex justify-between">
+        <div className="leading-10 z-10 flex items-center">
+          <ToggleSwitch
+            checked={simulateMerge}
+            onToggle={toggleSimulateMerge}
+          />
+          <p className="leading-10 text-lg font-inter text-blue-spindle flex flex-row items-center justify-end px-4 self-center">
+            simulate merge
+          </p>
+        </div>
       </div>
-
       <div className="mt-6 md:mt-2 lg:mt-8 transform scale-100 md:scale-75 lg:scale-100 xl:scale-110">
         <SplitGaugeSvg max={max} progress={(growthRate * 100) / max} />
         <div className="font-roboto text-white text-center font-light 2xl:text-lg -mt-20 pt-1">
@@ -105,9 +112,17 @@ const SupplyGrowthGauge: FC<Props> = ({
           </div>
         </div>
       </div>
-      <p className="font-inter font-light uppercase text-blue-spindle text-md text-center mt-6 md:mt-2 lg:mt-6">
-        supply growth
-      </p>
+      <div style={{ marginTop: "-2px" }}></div>
+      <div className="flex items-center mt-6 md:mt-0 lg:mt-4 gap-x-2">
+        <p className="font-inter font-light uppercase sm:text-right text-blue-spindle text-md">
+          supply growth
+        </p>
+        <TimeframeIndicator
+          compressWhitespace={true}
+          onClickTimeFrame={onClickTimeFrame}
+          timeFrame={timeFrame}
+        />
+      </div>
     </div>
   );
 };
