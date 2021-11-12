@@ -18,7 +18,7 @@ type Props = { unit: Unit };
 const LatestBlocks: FC<Props> = ({ unit }) => {
   const { latestBlockFees } = useFeeData();
   const [timeElapsed, setTimeElapsed] = useState(0);
-  const { sm } = useActiveBreakpoint();
+  const { md } = useActiveBreakpoint();
 
   const getTimeElapsed = useCallback((dt: Date): number => {
     const secondsDiff = DateTime.fromJSDate(dt)
@@ -87,7 +87,7 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
                               <span className="font-roboto text-white">
                                 {formatZeroDigit(weiToGwei(baseFeePerGas))}
                               </span>
-                              {sm && (
+                              {md && (
                                 <>
                                   <span className="font-inter">&thinsp;</span>
                                   <span className="font-roboto text-blue-spindle font-extralight">
