@@ -4,14 +4,14 @@ import { londonHardforkTimestamp } from "../dates";
 import { displayTimeFrameMap, TimeFrame } from "./TimeFrameControl";
 
 type Props = {
-  compressWhitespace?: boolean;
   onClickTimeFrame: () => void;
+  showDays?: boolean;
   timeFrame: TimeFrame;
 };
 
 const TimeFrameIndicator: FC<Props> = ({
-  compressWhitespace = false,
   onClickTimeFrame,
+  showDays = true,
   timeFrame,
 }) => {
   const daysSinceLondonFork = DateFns.differenceInDays(
@@ -20,8 +20,7 @@ const TimeFrameIndicator: FC<Props> = ({
   );
 
   const timeFrameDaysOpacity = timeFrame === "all" ? "opacity-1" : "opacity-0";
-  const timeFrameDaysDisplay =
-    compressWhitespace === true && timeFrame !== "all" ? "hidden" : "";
+  const timeFrameDaysDisplay = showDays === false ? "hidden" : "";
 
   return (
     <div className="flex gap-x-2 md:gap-x-4 items-center">

@@ -122,7 +122,7 @@ const SupplyGrowthGauge: FC<Props> = ({
           supply growth
         </p>
         <TimeframeIndicator
-          compressWhitespace={true}
+          showDays={false}
           onClickTimeFrame={onClickTimeFrame}
           timeFrame={timeFrame}
         />
