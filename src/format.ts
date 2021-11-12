@@ -70,6 +70,15 @@ const percentOneDigitSigned = new Intl.NumberFormat("en-US", {
 export const formatPercentOneDigitSigned = (percent: number): string =>
   percentOneDigitSigned.format(percent);
 
+const percentOneDigit = new Intl.NumberFormat("en-US", {
+  minimumFractionDigits: 1,
+  maximumFractionDigits: 1,
+  style: "percent",
+});
+
+export const formatPercentOneDigit = (percent: number): string =>
+  percentOneDigit.format(percent);
+
 const noDigit = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
 
 export const formatNoDigit = (num: number): string => noDigit.format(num);
