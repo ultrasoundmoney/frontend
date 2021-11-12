@@ -1,7 +1,7 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import { animated, config, useSpring } from "react-spring";
 import { useAverageEthPrice, useFeeData } from "../../api";
-import { formatPercentOneDigitSigned } from "../../format";
+import * as Format from "../../format";
 import * as StaticEtherData from "../../static-ether-data";
 import { weiToEth } from "../../utils/metric-utils";
 import { timeframeBurnRateMap } from "../FeeBurn";
@@ -62,12 +62,16 @@ const SupplyGrowthGauge: FC<Props> = ({
   toggleSimulateMerge,
 }) => {
   const growthRate = useGrowthRate(simulateMerge, timeFrame);
+  const toPercentOneDigitSigned = useCallback(
+    (n) => Format.formatPercentOneDigitSigned(n),
+    []
+  );
 
   // Workaround as react-spring is breaking our positive number with sign formatting.
   const [freezeAnimated, setFreezeAnimated] = useState(true);
-  const { growthRateA } = useSpring({
-    from: { growthRateA: 0 },
-    to: { growthRateA: growthRate },
+  const { growthRateAnimated } = useSpring({
+    from: { growthRateAnimated: 0 },
+    to: { growthRateAnimated: growthRate },
     delay: 200,
     config: config.gentle,
     onRest: () => {
@@ -98,11 +102,11 @@ const SupplyGrowthGauge: FC<Props> = ({
         <div className="font-roboto text-white text-center font-light 2xl:text-lg -mt-20 pt-1">
           {freezeAnimated ? (
             <p className="-mb-2">
-              {formatPercentOneDigitSigned(growthRateA.get())}
+              {Format.formatPercentOneDigitSigned(growthRateAnimated.get())}
             </p>
           ) : (
             <animated.p className="-mb-2">
-              {growthRateA.to((n) => formatPercentOneDigitSigned(n))}
+              {growthRateAnimated.to(toPercentOneDigitSigned)}
             </animated.p>
           )}
           <p className="font-extralight text-blue-spindle">/year</p>
