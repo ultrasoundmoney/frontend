@@ -116,8 +116,8 @@ const SupplyGrowthGauge: FC<Props> = ({
           </div>
         </div>
       </div>
-      <div style={{ marginTop: "-2px" }}></div>
-      <div className="flex items-center mt-6 md:mt-0 lg:mt-4 gap-x-2">
+      {/* Height is set to align with sibling gauges */}
+      <div className="flex items-center h-10 mt-6 md:mt-0 lg:mt-4 gap-x-2">
         <p className="font-inter font-light uppercase sm:text-right text-blue-spindle text-md">
           supply growth
         </p>
@@ -127,6 +127,9 @@ const SupplyGrowthGauge: FC<Props> = ({
           timeFrame={timeFrame}
         />
       </div>
+      {/* This element is to align the slightly higher "supply growth" label with */}
+      {/* the sibling gauges. */}
+      <div style={{ marginTop: "-4px" }}></div>
     </div>
   );
 };
