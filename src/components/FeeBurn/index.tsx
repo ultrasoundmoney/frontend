@@ -5,6 +5,7 @@ import { TimeFrame } from "../TimeFrameControl";
 import { BurnRates, FeesBurned, useFeeData } from "../../api";
 import { Unit } from "../ComingSoon";
 import { WidgetBackground, WidgetTitle } from "../WidgetBits";
+import { AmountUnitSpace } from "../Spacing";
 
 const weiToEth = (wei: number): number => wei / 10 ** 18;
 
@@ -77,7 +78,7 @@ const CumulativeFeeBurn: FC<Props> = ({
                   suffix={unit === "eth" ? undefined : "K"}
                 />
               </p>
-              <span className="font-inter">&thinsp;</span>
+              <AmountUnitSpace />
               <p className="font-extralight text-blue-spindle">
                 {unit === "eth" ? "ETH" : "USD"}
               </p>
@@ -104,7 +105,7 @@ const CumulativeFeeBurn: FC<Props> = ({
                   preserveValue={true}
                   suffix={unit === "eth" ? undefined : "K"}
                 />
-                <span className="font-inter">&thinsp;</span>
+                <AmountUnitSpace />
                 <span className="font-extralight text-blue-spindle">
                   {unit === "eth" ? "ETH/min" : "USD/min"}
                 </span>

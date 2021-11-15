@@ -6,6 +6,7 @@ import imageIds from "../../assets/leaderboard-image-ids.json";
 import { featureFlags } from "../../feature-flags";
 import { weiToEth } from "../../utils/metric-utils";
 import { Unit } from "../ComingSoon";
+import { AmountUnitSpace } from "../Spacing";
 
 type Props = {
   category: string | null;
@@ -139,7 +140,7 @@ const LeaderboardRow: FC<Props> = ({
               duration={0.8}
               suffix={unit === "eth" ? undefined : "K"}
             />
-            <span className="font-inter">&thinsp;</span>
+            <AmountUnitSpace />
             <span className="text-blue-spindle font-extralight">
               {unit === "eth" ? "ETH" : "USD"}
             </span>

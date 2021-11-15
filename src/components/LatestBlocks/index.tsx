@@ -11,6 +11,7 @@ import {
 import { weiToGwei } from "../../utils/metric-utils";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { Unit } from "../ComingSoon";
+import { AmountUnitSpace } from "../Spacing";
 import { WidgetBackground } from "../WidgetBits";
 
 type Props = { unit: Unit };
@@ -102,7 +103,7 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
                                   ? formatWeiTwoDigit(fees)
                                   : `${formatOneDigit(feesUsd / 1000)}K`}
                               </span>
-                              <span className="font-inter">&thinsp;</span>
+                              <AmountUnitSpace />
                               <span className="font-roboto text-blue-spindle font-extralight">
                                 {unit === "eth" ? "ETH" : "USD"}
                               </span>

@@ -22,6 +22,7 @@ import { formatPercentOneDigitSigned } from "../../format";
 import CountUp from "react-countup";
 import TimeFrameControl, { TimeFrame, timeFrames } from "../TimeFrameControl";
 import { WidgetBackground } from "../WidgetBits";
+import { AmountUnitSpace } from "../Spacing";
 
 let startGasPrice = 0;
 let startGasPriceCached = 0;
