@@ -19,13 +19,13 @@ const TimeFrameIndicator: FC<Props> = ({
     londonHardforkTimestamp
   );
 
-  const timeFrameDaysOpacity = timeFrame === "all" ? "opacity-1" : "opacity-0";
+  const timeFrameDaysVisible = timeFrame === "all" ? "visible" : "invisible";
   const timeFrameDaysDisplay = showDays === false ? "hidden" : "";
 
   return (
     <div className="flex gap-x-2 md:gap-x-4 items-center">
       <span
-        className={`font-roboto font-extralight text-blue-shipcove transition-opacity ${timeFrameDaysOpacity} ${timeFrameDaysDisplay}`}
+        className={`font-roboto font-extralight text-blue-shipcove transition-opacity ${timeFrameDaysVisible} ${timeFrameDaysDisplay}`}
       >
         ({`${daysSinceLondonFork}d`})
       </span>
