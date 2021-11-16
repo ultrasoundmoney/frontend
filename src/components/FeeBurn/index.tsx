@@ -85,7 +85,9 @@ const CumulativeFeeBurn: FC<Props> = ({
   // TODO: issuance changes post-merge, update this to switch to proof of stake issuance on time.
   // In ETH.
   const issuancePerMillisecond =
-    (StaticEtherData.powIssuancePerDay + StaticEtherData.posIssuancePerDay) /
+    (simulateMerge
+      ? StaticEtherData.posIssuancePerDay
+      : StaticEtherData.powIssuancePerDay + StaticEtherData.posIssuancePerDay) /
     Duration.millisFromDays(1);
 
   const millisecondsSinceLondonHardFork = DateFns.differenceInMilliseconds(
