@@ -5,16 +5,43 @@ import { TimeFrame } from "../TimeFrameControl";
 import { WidgetTitle } from "../WidgetBits";
 import LeaderboardRow from "./LeaderboardRow";
 
-export type LeaderboardEntry = {
+type ContractEntry = {
+  type: "contract";
+  name: string | null;
+  image: string | null;
   fees: number;
   feesUsd: number;
-  id: string;
-  isBot: boolean;
-  name: string;
-  type?: "eth-transfers" | "other" | "contract-creations";
-  image: string | undefined;
+  address: string;
   category: string | null;
+  isBot: boolean;
+  twitterHandle: string | null;
+  /* deprecated */
+  id: string;
 };
+
+type EthTransfersEntry = {
+  type: "eth-transfers";
+  name: string;
+  fees: number;
+  feesUsd: number;
+  /* deprecated */
+  id: string;
+};
+
+type ContractCreationsEntry = {
+  type: "contract-creations";
+  name: string;
+  fees: number;
+  feesUsd: number;
+  /* deprecated */
+  id: string;
+};
+
+// Name is undefined because we don't always know the name for a contract. Image is undefined because we don't always have an image for a contract. Address is undefined because base fees paid for ETH transfers are shared between many addresses.
+export type LeaderboardEntry =
+  | ContractEntry
+  | EthTransfersEntry
+  | ContractCreationsEntry;
 
 const feePeriodToUpdateMap: Record<TimeFrame, string> = {
   "5m": "leaderboard5m",
@@ -53,22 +80,36 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
           </p>
         ) : (
           <div className="overflow-auto leaderboard-scroller -mt-1">
-            {selectedLeaderboard.map((leaderboardRow) => (
-              <LeaderboardRow
-                key={leaderboardRow.name} // ??? should this be leaderboardRow.id?
-                name={leaderboardRow.name.split(":")[0]}
-                detail={leaderboardRow.name.split(":")[1]}
-                id={leaderboardRow.id}
-                isBot={leaderboardRow.isBot}
-                fees={
-                  unit === "eth" ? leaderboardRow.fees : leaderboardRow.feesUsd
-                }
-                type={leaderboardRow.type || "other"}
-                image={leaderboardRow.image}
-                category={leaderboardRow.category}
-                unit={unit}
-              />
-            ))}
+            {selectedLeaderboard.map((row) =>
+              row.type === "contract" ? (
+                <LeaderboardRow
+                  key={row.address}
+                  name={(row.name || "").split(":")[0]}
+                  detail={(row.name || "").split(":")[1]}
+                  id={row.id}
+                  isBot={row.isBot}
+                  fees={unit === "eth" ? row.fees : row.feesUsd}
+                  type={row.type || "other"}
+                  image={row.image ?? undefined}
+                  category={row.category}
+                  unit={unit}
+                />
+              ) : row.type === "eth-transfers" ||
+                row.type === "contract-creations" ? (
+                <LeaderboardRow
+                  key={row.type}
+                  name={row.name.split(":")[0]}
+                  detail={row.name.split(":")[1]}
+                  id={row.id}
+                  isBot={false}
+                  fees={unit === "eth" ? row.fees : row.feesUsd}
+                  type={row.type || "other"}
+                  image={undefined}
+                  category={null}
+                  unit={unit}
+                />
+              ) : null
+            )}
           </div>
         )}
       </div>
