@@ -211,6 +211,7 @@ const Widgets: FC = () => {
         <div>
           <FeeBurn
             onClickTimeFrame={handleClickTimeFrame}
+            simulateMerge={simulateMerge}
             timeFrame={timeFrame}
             unit={unit}
           />

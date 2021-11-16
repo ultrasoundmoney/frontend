@@ -50,10 +50,16 @@ const timeFrameMillisecondsMap = {
   "5m": Duration.millisFromMinutes(5),
 };
 
-type Props = { onClickTimeFrame: () => void; timeFrame: TimeFrame; unit: Unit };
+type Props = {
+  onClickTimeFrame: () => void;
+  simulateMerge: boolean;
+  timeFrame: TimeFrame;
+  unit: Unit;
+};
 
 const CumulativeFeeBurn: FC<Props> = ({
   onClickTimeFrame,
+  simulateMerge,
   timeFrame,
   unit,
 }) => {
@@ -160,7 +166,7 @@ const CumulativeFeeBurn: FC<Props> = ({
           </div>
           <div className="md:text-right">
             <p className="font-inter font-light text-blue-spindle uppercase md:text-md mb-2">
-              issuance offset
+              {simulateMerge ? "pos issuance offset" : "issuance offset"}
             </p>
             {selectedBurnRate !== undefined ? (
               <p className="font-roboto text-white text-2xl">
