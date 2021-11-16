@@ -1,7 +1,7 @@
 import * as Config from "./config";
 import useSWR from "swr";
 import { LeaderboardEntry } from "./components/BurnLeaderboard";
-import { milisFromSeconds } from "./duration";
+import { millisFromSeconds } from "./duration";
 import { TimeFrame } from "./components/TimeFrameControl";
 
 export const famBasePath =
@@ -166,7 +166,7 @@ type BaseFeePerGas = {
 
 export const useEthPrice = (): EthPrice | undefined => {
   const { data } = useSWR<EthPrice>(`${feesBasePath}/eth-price`, {
-    refreshInterval: milisFromSeconds(4),
+    refreshInterval: millisFromSeconds(4),
   });
 
   return data;
