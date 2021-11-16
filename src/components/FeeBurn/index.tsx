@@ -100,7 +100,7 @@ const CumulativeFeeBurn: FC<Props> = ({
       <WidgetTitle
         onClickTimeFrame={onClickTimeFrame}
         timeFrame={timeFrame}
-        title="fee burn"
+        title="burn total"
       />
       <div className="flex flex-col gap-y-8 pt-2">
         <div className="flex items-center font-roboto text-2xl md:text-4xl lg:text-3xl xl:text-4xl">
