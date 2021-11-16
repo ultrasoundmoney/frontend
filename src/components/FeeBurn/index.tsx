@@ -1,11 +1,19 @@
-import React, { memo, FC } from "react";
-import SpanMoji from "../SpanMoji";
+import * as DateFns from "date-fns";
+import React, { FC, memo } from "react";
 import CountUp from "react-countup";
-import { TimeFrame } from "../TimeFrameControl";
-import { BurnRates, FeesBurned, useFeeData } from "../../api";
+import {
+  BurnRates,
+  FeesBurned,
+  useAverageEthPrice,
+  useFeeData,
+} from "../../api";
+import { londonHardforkTimestamp } from "../../dates";
+import * as StaticEtherData from "../../static-ether-data";
 import { Unit } from "../ComingSoon";
-import { WidgetBackground, WidgetTitle } from "../WidgetBits";
 import { AmountUnitSpace } from "../Spacing";
+import SpanMoji from "../SpanMoji";
+import { TimeFrame } from "../TimeFrameControl";
+import { WidgetBackground, WidgetTitle } from "../WidgetBits";
 
 const weiToEth = (wei: number): number => wei / 10 ** 18;
 
@@ -33,6 +41,15 @@ export const timeframeBurnRateMap: Record<
   all: { eth: "burnRateAll", usd: "burnRateAllUsd" },
 };
 
+const timeFrameDaysMap: Record<TimeFrame, number> = {
+  all: DateFns.differenceInDays(new Date(), londonHardforkTimestamp),
+  "30d": 30,
+  "7d": 7,
+  "24h": 1,
+  "1h": 1 / 24,
+  "5m": 1 / 24 / (60 / 5),
+};
+
 type Props = { onClickTimeFrame: () => void; timeFrame: TimeFrame; unit: Unit };
 
 const CumulativeFeeBurn: FC<Props> = ({
@@ -41,7 +58,9 @@ const CumulativeFeeBurn: FC<Props> = ({
   unit,
 }) => {
   const { feesBurned, burnRates } = useFeeData();
+  const averageEthPrice = useAverageEthPrice(timeFrame);
 
+  // In ETH or USD K.
   const selectedFeesBurned =
     feesBurned === undefined
       ? undefined
@@ -49,12 +68,32 @@ const CumulativeFeeBurn: FC<Props> = ({
       ? weiToEth(feesBurned[timeframeFeesBurnedMap[timeFrame][unit]])
       : feesBurned[timeframeFeesBurnedMap[timeFrame][unit]] / 1000;
 
+  // In ETH / min or USD K / min.
   const selectedBurnRate =
     burnRates === undefined
       ? undefined
       : unit === "eth"
       ? weiToEth(burnRates[timeframeBurnRateMap[timeFrame][unit]])
       : burnRates[timeframeBurnRateMap[timeFrame][unit]] / 1000;
+
+  // TODO: issuance changes post-merge, update this to switch to proof of stake issuance on time.
+  // In ETH.
+  const issuancePerDay =
+    StaticEtherData.powIssuancePerDay + StaticEtherData.posIssuancePerDay;
+
+  // In ETH.
+  const selectedIssuance =
+    selectedFeesBurned === undefined || averageEthPrice === undefined
+      ? undefined
+      : issuancePerDay * timeFrameDaysMap[timeFrame];
+
+  // Percent.
+  const issuanceOffset =
+    selectedFeesBurned === undefined || selectedIssuance === undefined
+      ? undefined
+      : // TODO: ask Justin about clamp at 100
+        // Does it make sense to offset more than 100% of issuance?
+        Math.min((selectedFeesBurned / selectedIssuance) * 100, 100);
 
   return (
     <WidgetBackground>
@@ -63,8 +102,7 @@ const CumulativeFeeBurn: FC<Props> = ({
         timeFrame={timeFrame}
         title="fee burn"
       />
-      <div className="h-4"></div>
-      <div className="flex flex-col gap-y-8">
+      <div className="flex flex-col gap-y-8 pt-2">
         <div className="flex items-center font-roboto text-2xl md:text-4xl lg:text-3xl xl:text-4xl">
           {selectedFeesBurned !== undefined ? (
             <>
@@ -90,13 +128,13 @@ const CumulativeFeeBurn: FC<Props> = ({
           )}
           <SpanMoji className="ml-4 md:ml-8" emoji="🔥" />
         </div>
-        <div className="flex justify-between">
+        <div className="flex flex-col justify-between md:flex-row gap-y-8">
           <div>
             <p className="font-inter font-light text-blue-spindle uppercase md:text-md mb-2">
               burn rate
             </p>
             {selectedBurnRate !== undefined ? (
-              <p className="font-roboto flex text-white text-2xl">
+              <p className="font-roboto text-white text-2xl">
                 <CountUp
                   decimals={unit === "eth" ? 2 : 1}
                   duration={0.8}
@@ -109,6 +147,25 @@ const CumulativeFeeBurn: FC<Props> = ({
                 <span className="font-extralight text-blue-spindle">
                   {unit === "eth" ? "ETH/min" : "USD/min"}
                 </span>
+              </p>
+            ) : (
+              <p className="font-roboto text-white text-2xl">loading...</p>
+            )}
+          </div>
+          <div className="md:text-right">
+            <p className="font-inter font-light text-blue-spindle uppercase md:text-md mb-2">
+              issuance offset
+            </p>
+            {selectedBurnRate !== undefined ? (
+              <p className="font-roboto text-white text-2xl">
+                <CountUp
+                  decimals={0}
+                  duration={0.8}
+                  separator=","
+                  end={issuanceOffset ?? 0}
+                  preserveValue={true}
+                  suffix={"%"}
+                />
               </p>
             ) : (
               <p className="font-roboto text-white text-2xl">loading...</p>
