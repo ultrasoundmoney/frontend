@@ -1,5 +1,4 @@
 import React, { FC, memo } from "react";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useFeeData } from "../../api";
 import { Unit } from "../ComingSoon";
 import { TimeFrame } from "../TimeFrameControl";
@@ -54,37 +53,22 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
           </p>
         ) : (
           <div className="overflow-auto leaderboard-scroller -mt-1">
-            <TransitionGroup
-              component={null}
-              appear={false}
-              enter={true}
-              exit={false}
-            >
-              {selectedLeaderboard.map((leaderboardRow) => (
-                <CSSTransition
-                  classNames="fee-block"
-                  timeout={500}
-                  key={leaderboardRow.id}
-                >
-                  <LeaderboardRow
-                    key={leaderboardRow.name} // ??? should this be leaderboardRow.id?
-                    name={leaderboardRow.name.split(":")[0]}
-                    detail={leaderboardRow.name.split(":")[1]}
-                    id={leaderboardRow.id}
-                    isBot={leaderboardRow.isBot}
-                    fees={
-                      unit === "eth"
-                        ? leaderboardRow.fees
-                        : leaderboardRow.feesUsd
-                    }
-                    type={leaderboardRow.type || "other"}
-                    image={leaderboardRow.image}
-                    category={leaderboardRow.category}
-                    unit={unit}
-                  />
-                </CSSTransition>
-              ))}
-            </TransitionGroup>
+            {selectedLeaderboard.map((leaderboardRow) => (
+              <LeaderboardRow
+                key={leaderboardRow.name} // ??? should this be leaderboardRow.id?
+                name={leaderboardRow.name.split(":")[0]}
+                detail={leaderboardRow.name.split(":")[1]}
+                id={leaderboardRow.id}
+                isBot={leaderboardRow.isBot}
+                fees={
+                  unit === "eth" ? leaderboardRow.fees : leaderboardRow.feesUsd
+                }
+                type={leaderboardRow.type || "other"}
+                image={leaderboardRow.image}
+                category={leaderboardRow.category}
+                unit={unit}
+              />
+            ))}
           </div>
         )}
       </div>
