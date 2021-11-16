@@ -1,7 +1,7 @@
 import * as Config from "./config";
 import useSWR from "swr";
 import { LeaderboardEntry } from "./components/BurnLeaderboard";
-import { millisFromSeconds } from "./duration";
+import * as Duration from "./duration";
 import { TimeFrame } from "./components/TimeFrameControl";
 
 export const famBasePath =
@@ -78,7 +78,7 @@ export type FeeData = {
 
 export const useFeeData = (): FeeData => {
   const { data } = useSWR(`${feesBasePath}/all`, {
-    refreshInterval: milisFromSeconds(4),
+    refreshInterval: Duration.millisFromSeconds(4),
   });
 
   return data !== undefined
@@ -166,7 +166,7 @@ type BaseFeePerGas = {
 
 export const useEthPrice = (): EthPrice | undefined => {
   const { data } = useSWR<EthPrice>(`${feesBasePath}/eth-price`, {
-    refreshInterval: millisFromSeconds(4),
+    refreshInterval: Duration.millisFromSeconds(4),
   });
 
   return data;
@@ -174,7 +174,7 @@ export const useEthPrice = (): EthPrice | undefined => {
 
 export const useBaseFeePerGas = (): number | undefined => {
   const { data } = useSWR<BaseFeePerGas>(`${feesBasePath}/base-fee-per-gas`, {
-    refreshInterval: milisFromSeconds(4),
+    refreshInterval: Duration.millisFromSeconds(4),
     refreshWhenHidden: true,
   });
 
@@ -205,7 +205,7 @@ export const useAverageEthPrice = (
   const { data } = useSWR<AverageEthPrice>(
     `${feesBasePath}/average-eth-price`,
     {
-      refreshInterval: milisFromSeconds(8),
+      refreshInterval: Duration.millisFromSeconds(8),
     }
   );
 
