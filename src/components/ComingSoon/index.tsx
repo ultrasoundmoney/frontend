@@ -1,5 +1,4 @@
-import * as React from "react";
-import { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { useState, useContext } from "react";
 import TwitterCommunity from "../TwitterCommunity";
 import FollowingYou from "../FollowingYou";
@@ -9,20 +8,20 @@ import BurnLeaderboard from "../BurnLeaderboard";
 import FeeBurn from "../FeeBurn";
 import LatestBlocks from "../LatestBlocks";
 import FaqBlock from "../Landing/faq";
-import Link from "next/link";
-import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 import { weiToGwei } from "../../utils/metric-utils";
-import SpanMoji from "../SpanMoji";
 import IssuanceGauge from "../Gauges/IssuanceGauge";
 import SupplyGrowthGauge from "../Gauges/SupplyGrowthGauge";
 import BurnGauge from "../Gauges/BurnGauge";
 import { useCallback } from "react";
 import { EthPrice, useBaseFeePerGas, useEthPrice } from "../../api";
-import { formatPercentOneDigitSigned } from "../../format";
+import { formatPercentOneDigitSigned, formatZeroDigit } from "../../format";
 import CountUp from "react-countup";
 import TimeFrameControl, { TimeFrame, timeFrames } from "../TimeFrameControl";
-import { WidgetBackground } from "../WidgetBits";
+import { WidgetBackground, WidgetTitle } from "../WidgetBits";
 import { AmountUnitSpace } from "../Spacing";
+import ToggleSwitch from "../ToggleSwitch";
+import { useLocalStorage } from "../../use-local-storage";
+import { pipe } from "fp-ts/lib/function";
 
 let startGasPrice = 0;
 let startGasPriceCached = 0;
@@ -30,8 +29,8 @@ let startEthPrice = 0;
 let startEthPriceCached = 0;
 
 type PriceGasWidgetProps = {
-  baseFeePerGas: number;
-  ethPrice: EthPrice;
+  baseFeePerGas: number | undefined;
+  ethPrice: EthPrice | undefined;
 };
 
 const PriceGasWidget: FC<PriceGasWidgetProps> = ({
@@ -49,27 +48,21 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
   }
 
   const ethUsd24hChange =
-    ethPrice?.usd24hChange &&
-    formatPercentOneDigitSigned(ethPrice?.usd24hChange / 1000);
+    ethPrice?.usd24hChange !== undefined
+      ? formatPercentOneDigitSigned(ethPrice.usd24hChange / 1000)
+      : formatPercentOneDigitSigned(0);
+
   const color =
     typeof ethPrice?.usd24hChange === "number" && ethPrice?.usd24hChange < 0
       ? "text-red-400"
       : "text-green-400";
 
   return (
-    <div className="flex text-white self-center rounded bg-blue-tangaroa px-3 py-2 text-xs lg:text-sm font-roboto md:ml-4">
-      $
-      <CountUp
-        decimals={0}
-        duration={0.8}
-        separator=","
-        start={startEthPriceCached === 0 ? ethPrice?.usd : startEthPriceCached}
-        end={ethPrice?.usd}
-      />
-      <span className={`px-1 ${color}`}>({ethUsd24hChange})</span>
-      <span className="px-1">•</span>
-      <SpanMoji className="px-0.5" emoji="⛽️"></SpanMoji>
-      <span className="">
+    <div className="flex items-center font-roboto text-white rounded bg-blue-tangaroa px-3 py-2 text-xs lg:text-sm">
+      <img className="pr-1" src="/gas-icon.svg" alt="gas pump icon" />
+      {baseFeePerGas === undefined ? (
+        "---"
+      ) : (
         <CountUp
           decimals={0}
           duration={0.8}
@@ -80,9 +73,28 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
               : weiToGwei(startGasPriceCached)
           }
           end={weiToGwei(baseFeePerGas)}
-        />{" "}
-        <span className="font-extralight text-blue-spindle">Gwei</span>
-      </span>
+        />
+      )}
+      <AmountUnitSpace />
+      <span className="font-extralight text-blue-spindle">Gwei</span>
+      <div className="mr-4"></div>
+      <img className="pr-1" src="/eth-icon.svg" alt="Ethereum Ether icon" />
+      {ethPrice === undefined ? (
+        "-,---"
+      ) : (
+        <CountUp
+          decimals={0}
+          duration={0.8}
+          separator=","
+          start={
+            startEthPriceCached === 0 ? ethPrice?.usd : startEthPriceCached
+          }
+          end={ethPrice?.usd}
+        />
+      )}
+      <AmountUnitSpace />
+      <span className="text-blue-spindle font-extralight">USD</span>
+      <span className={`pl-1 ${color}`}>({ethUsd24hChange})</span>
     </div>
   );
 };
@@ -130,6 +142,263 @@ const CurrencyControl: FC<UnitControlProps> = ({ selectedUnit, onSetUnit }) => (
     />
   </div>
 );
+
+type UseNotification =
+  | {
+      type: "Unsupported";
+    }
+  | {
+      type: "Supported";
+      notificationPermission: "default" | "granted" | "denied";
+      requestPermission: () => void;
+      showNotification: (text: string) => void;
+    };
+
+const useNotification = (): UseNotification => {
+  const [notificationPermission, setNotificationPermission] = useState(
+    typeof window !== "undefined" && "Notification" in window
+      ? Notification.permission
+      : "denied"
+  );
+
+  const isNotificationSupported =
+    typeof window !== "undefined" && "Notification" in window;
+
+  if (!isNotificationSupported) {
+    return {
+      type: "Unsupported",
+    };
+  }
+
+  const requestPermission = () => {
+    Notification.requestPermission().then((permission) => {
+      setNotificationPermission(permission);
+    });
+  };
+
+  const showNotification = (text: string) => {
+    if (notificationPermission === "granted") {
+      new Notification(text, {});
+    }
+  };
+
+  return {
+    type: "Supported",
+    notificationPermission,
+    requestPermission,
+    showNotification,
+  };
+};
+
+const thresholdToNumber = (threshold: string) =>
+  pipe(threshold, (str) => str.replaceAll(",", ""), Number);
+
+type AlarmInputProps = {
+  alarmThreshold: string;
+  enabled: boolean;
+  onToggleEnabled: (enabled: boolean) => void;
+  onSetAlarmThreshold: (threshold: string) => void;
+  icon: string;
+  unit: string;
+};
+
+const AlarmInput: FC<AlarmInputProps> = ({
+  alarmThreshold,
+  enabled,
+  icon,
+  onSetAlarmThreshold,
+  onToggleEnabled,
+  unit,
+}) => {
+  return (
+    <div className="flex justify-between items-center pt-4">
+      <div
+        className={`flex justify-between items-center px-2 py-1 pr-4 border rounded-full border-gray-500`}
+      >
+        <img className="pl-2" src={icon} alt="icon of gaspump or eth" />
+        <div className="">
+          <input
+            className="font-roboto w-14 bg-transparent text-sm text-white text-right"
+            inputMode="numeric"
+            pattern="^[\d]+$"
+            value={formatZeroDigit(thresholdToNumber(alarmThreshold))}
+            onChange={(event) => onSetAlarmThreshold(event.target.value)}
+          />
+          <AmountUnitSpace />
+          <span className="font-roboto text-blue-spindle font-extralight whitespace-pre">
+            {unit}
+          </span>
+        </div>
+      </div>
+      <ToggleSwitch checked={enabled} onToggle={onToggleEnabled} />
+    </div>
+  );
+};
+
+const TopBar: FC<{}> = () => {
+  const baseFeePerGas = useBaseFeePerGas();
+  const ethPrice = useEthPrice();
+  const [gasAlarmActive, setGasAlarmActive] = useLocalStorage(
+    "gas-alarm-enabled",
+    false
+  );
+  const [ethAlarmActive, setEthAlarmActive] = useLocalStorage(
+    "eth-alarm-enabled",
+    false
+  );
+  const [gasThreshold, setGasThreshold] = useLocalStorage(
+    "gas-threshold",
+    "1000"
+  );
+  const [ethThreshold, setEthThreshold] = useLocalStorage(
+    "eth-threshold",
+    "10000"
+  );
+  const [showAlarmDialog, setShowAlarmDialog] = useState(false);
+  const notification = useNotification();
+
+  const isAlarmActive = gasAlarmActive || ethAlarmActive;
+
+  const activeButtonCss =
+    "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg";
+  const alarmActiveClasses = isAlarmActive ? activeButtonCss : "";
+
+  const handleClickAlarm = useCallback(() => {
+    setShowAlarmDialog(!showAlarmDialog);
+  }, [showAlarmDialog]);
+
+  const showAlarmDialogCss = showAlarmDialog ? "visible" : "invisible";
+
+  const handleSetGasThreshold = useCallback(
+    (threshold: string) => {
+      // We try to parse this on display, if someone manages to set NaN, their input gets stuck.
+      if (Number.isNaN(Number(threshold.replaceAll(",", "")))) {
+        setGasThreshold("0");
+        return;
+      }
+
+      setGasThreshold(threshold);
+    },
+    [setGasThreshold]
+  );
+
+  const handleSetEthThreshold = useCallback(
+    (threshold: string) => {
+      // We try to parse this on display, if someone manages to set NaN, their input gets stuck.
+      if (Number.isNaN(Number(threshold.replaceAll(",", "")))) {
+        setEthThreshold("0");
+      }
+
+      setEthThreshold(threshold);
+    },
+    [setEthThreshold]
+  );
+
+  const handleSetGasAlarm = useCallback(
+    (enabled: boolean) => {
+      if (notification.type !== "Supported") {
+        return;
+      }
+
+      if (notification.notificationPermission === "denied") {
+        return;
+      }
+
+      if (notification.notificationPermission === "default") {
+        notification.requestPermission();
+        return;
+      }
+
+      if (notification.notificationPermission === "granted") {
+        setGasAlarmActive(enabled);
+      }
+    },
+    [notification, setGasAlarmActive]
+  );
+
+  useEffect(() => {
+    if (
+      typeof baseFeePerGas === "number" &&
+      notification.type === "Supported" &&
+      notification.notificationPermission === "granted" &&
+      gasAlarmActive &&
+      weiToGwei(baseFeePerGas) >= thresholdToNumber(gasThreshold)
+    ) {
+      notification.showNotification(
+        `gas price hit ${weiToGwei(baseFeePerGas)} Gwei!`
+      );
+      setGasAlarmActive(false);
+    }
+  }, [
+    baseFeePerGas,
+    gasAlarmActive,
+    gasThreshold,
+    notification,
+    setGasAlarmActive,
+  ]);
+
+  useEffect(() => {
+    if (
+      ethPrice !== undefined &&
+      notification.type === "Supported" &&
+      notification.notificationPermission === "granted" &&
+      ethAlarmActive &&
+      ethPrice.usd >= thresholdToNumber(ethThreshold)
+    ) {
+      notification.showNotification(`ETH price hit ${ethPrice.usd} USD!`);
+      setEthAlarmActive(false);
+    }
+  }, [ethPrice, ethAlarmActive, ethThreshold, notification, setEthAlarmActive]);
+
+  return (
+    <div className="flex justify-between pt-4 md:pt-8">
+      <div className="relative flex">
+        <PriceGasWidget baseFeePerGas={baseFeePerGas} ethPrice={ethPrice} />
+        {notification.type === "Supported" ? (
+          <button
+            className={`flex items-center px-3 py-2 bg-blue-tangaroa rounded ml-4 border border-transparent ${alarmActiveClasses}`}
+            onClick={handleClickAlarm}
+          >
+            <img src="/alarm-icon.svg" alt="bell icon" />
+          </button>
+        ) : null}
+        <div
+          className={`absolute w-full bg-blue-tangaroa rounded p-8 top-12 md:top-12 ${showAlarmDialogCss}`}
+        >
+          <WidgetTitle title="price alerts" />
+          <AlarmInput
+            enabled={gasAlarmActive}
+            onToggleEnabled={handleSetGasAlarm}
+            icon="/gas-icon.svg"
+            alarmThreshold={gasThreshold}
+            onSetAlarmThreshold={handleSetGasThreshold}
+            unit="Gwei"
+          />
+          <AlarmInput
+            enabled={ethAlarmActive}
+            onToggleEnabled={setEthAlarmActive}
+            icon="/eth-icon.svg"
+            alarmThreshold={ethThreshold}
+            onSetAlarmThreshold={handleSetEthThreshold}
+            unit="USD "
+          />
+          {notification.type === "Supported" &&
+            notification.notificationPermission === "denied" && (
+              <p className="text-sm text-red-400 mt-4">
+                notifications disabled, please grant notification permission.
+              </p>
+            )}
+        </div>
+      </div>
+      <a
+        className="hidden md:block flex px-4 py-1 font-medium text-white hover:text-blue-shipcove border-white border-solid border-2 rounded-3xl hover:border-blue-shipcove"
+        href="#join-the-fam"
+      >
+        join the fam
+      </a>
+    </div>
+  );
+};
 
 export type Unit = "eth" | "usd";
 
@@ -234,24 +503,8 @@ const ComingSoon: FC = () => {
   return (
     <div className="wrapper bg-blue-midnightexpress blurred-bg-image">
       <div className="container m-auto">
-        <div className="flex justify-between">
-          <div className="w-full flex justify-between md:justify-start p-4">
-            <Link href="/">
-              <img className="relative" src={EthLogo} alt={t.title} />
-            </Link>
-            {ethPrice !== undefined && baseFeePerGas !== undefined && (
-              <PriceGasWidget
-                baseFeePerGas={baseFeePerGas}
-                ethPrice={ethPrice}
-              />
-            )}
-          </div>
-          <a
-            className="hidden md:block flex self-center whitespace-nowrap px-4 py-1 mr-4 font-medium text-white hover:text-blue-shipcove border-white border-solid border-2 rounded-3xl hover:border-blue-shipcove"
-            href="#join-the-fam"
-          >
-            join the fam
-          </a>
+        <div className="px-4 md:px-16">
+          <TopBar />
         </div>
         <div
           className={`ultra-sound-text w-full pt-16 text-6xl md:text-7xl md:w-1/2 lg:w-5/6 lg:pt-16 m-auto mb-8`}

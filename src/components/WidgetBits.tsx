@@ -8,7 +8,7 @@ export const WidgetBackground: FC = ({ children }) => (
 
 type WidgetTitleProps = {
   align?: "right";
-  onClickTimeFrame: () => void;
+  onClickTimeFrame?: () => void;
   timeFrame?: TimeFrame;
   title: string;
 };
@@ -19,11 +19,11 @@ export const WidgetTitle: FC<WidgetTitleProps> = ({
   title,
 }) => {
   return (
-    <div className={`flex items-center justify-between`}>
+    <div className="flex items-center justify-between">
       <p className="font-inter font-light text-blue-spindle text-md uppercase">
         {title}
       </p>
-      {timeFrame !== undefined && (
+      {timeFrame !== undefined && onClickTimeFrame !== undefined && (
         <TimeFrameIndicator
           onClickTimeFrame={onClickTimeFrame}
           timeFrame={timeFrame}
