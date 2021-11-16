@@ -1,4 +1,5 @@
 import * as DateFns from "date-fns";
+import * as Duration from "../../duration";
 import React, { FC, memo } from "react";
 import CountUp from "react-countup";
 import {
@@ -41,13 +42,12 @@ export const timeframeBurnRateMap: Record<
   all: { eth: "burnRateAll", usd: "burnRateAllUsd" },
 };
 
-const timeFrameDaysMap: Record<TimeFrame, number> = {
-  all: DateFns.differenceInDays(new Date(), londonHardforkTimestamp),
-  "30d": 30,
-  "7d": 7,
-  "24h": 1,
-  "1h": 1 / 24,
-  "5m": 1 / 24 / (60 / 5),
+const timeFrameMillisecondsMap = {
+  "30d": Duration.millisFromDays(30),
+  "7d": Duration.millisFromDays(7),
+  "24h": Duration.millisFromHours(24),
+  "1h": Duration.millisFromHours(1),
+  "5m": Duration.millisFromMinutes(5),
 };
 
 type Props = { onClickTimeFrame: () => void; timeFrame: TimeFrame; unit: Unit };
@@ -78,22 +78,28 @@ const CumulativeFeeBurn: FC<Props> = ({
 
   // TODO: issuance changes post-merge, update this to switch to proof of stake issuance on time.
   // In ETH.
-  const issuancePerDay =
-    StaticEtherData.powIssuancePerDay + StaticEtherData.posIssuancePerDay;
+  const issuancePerMillisecond =
+    (StaticEtherData.powIssuancePerDay + StaticEtherData.posIssuancePerDay) /
+    Duration.millisFromDays(1);
+
+  const millisecondsSinceLondonHardFork = DateFns.differenceInMilliseconds(
+    new Date(),
+    londonHardforkTimestamp
+  );
 
   // In ETH.
   const selectedIssuance =
     selectedFeesBurned === undefined || averageEthPrice === undefined
       ? undefined
-      : issuancePerDay * timeFrameDaysMap[timeFrame];
+      : timeFrame === "all"
+      ? issuancePerMillisecond * millisecondsSinceLondonHardFork
+      : issuancePerMillisecond * timeFrameMillisecondsMap[timeFrame];
 
   // Percent.
   const issuanceOffset =
     selectedFeesBurned === undefined || selectedIssuance === undefined
       ? undefined
-      : // TODO: ask Justin about clamp at 100
-        // Does it make sense to offset more than 100% of issuance?
-        Math.min((selectedFeesBurned / selectedIssuance) * 100, 100);
+      : (selectedFeesBurned / selectedIssuance) * 100;
 
   return (
     <WidgetBackground>
