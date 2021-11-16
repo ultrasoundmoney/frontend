@@ -133,10 +133,8 @@ const CurrencyControl: FC<UnitControlProps> = ({ selectedUnit, onSetUnit }) => (
 
 export type Unit = "eth" | "usd";
 
-const ComingSoon: FC = () => {
-  const t = useContext(TranslationsContext);
+const Widgets: FC = () => {
   const [simulateMerge, setSimulateMerge] = useState(false);
-  const ethPrice = useEthPrice();
   const baseFeePerGas = useBaseFeePerGas();
   const [timeFrame, setTimeFrame] = useState<TimeFrame>("24h");
   const [unit, setUnit] = useState<Unit>("eth");
@@ -163,6 +161,74 @@ const ComingSoon: FC = () => {
 
     setTimeFrame(timeFrames[nextIndex]);
   }, [timeFrame]);
+
+  return (
+    <>
+      <div className="w-full flex flex-col md:flex-row md:gap-0 lg:gap-4 px-4 md:px-16 isolate">
+        <div className="hidden md:block w-1/3">
+          <BurnGauge timeFrame={timeFrame} unit={unit} />
+        </div>
+        <div className="md:w-1/3">
+          <SupplyGrowthGauge
+            onClickTimeFrame={handleClickTimeFrame}
+            simulateMerge={simulateMerge}
+            timeFrame={timeFrame}
+            toggleSimulateMerge={toggleSimulateMerge}
+          />
+        </div>
+        <div className="hidden md:block w-1/3">
+          <IssuanceGauge
+            simulateMerge={simulateMerge}
+            timeFrame={timeFrame}
+            unit={unit}
+          />
+        </div>
+      </div>
+      <div className="w-4 h-4" />
+      <div className="px-4 md:px-16">
+        <WidgetBackground>
+          <div className="flex flex-col gap-y-8 md:flex-row lg:gap-y-0 justify-between">
+            <div className="flex flex-col gap-y-4 lg:gap-x-4 lg:flex-row lg:items-center">
+              <p className="font-inter font-light text-blue-spindle text-md uppercase">
+                time frame
+              </p>
+              <TimeFrameControl
+                selectedTimeframe={timeFrame}
+                onSetFeePeriod={onSetTimeFrame}
+              />
+            </div>
+            <div className="flex flex-col gap-y-4 lg:gap-x-4 lg:flex-row lg:items-center">
+              <p className="font-inter font-light text-blue-spindle text-md uppercase md:text-right lg:text-left">
+                currency
+              </p>
+              <CurrencyControl selectedUnit={unit} onSetUnit={onSetUnit} />
+            </div>
+          </div>
+        </WidgetBackground>
+      </div>
+      <div className="w-4 h-4" />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-4 px-4 md:px-16 md:gap-x-4 lg:w-full lg:flex-row">
+        <div>
+          <FeeBurn
+            onClickTimeFrame={handleClickTimeFrame}
+            timeFrame={timeFrame}
+            unit={unit}
+          />
+          <div className="h-4"></div>
+          <LatestBlocks unit={unit} />
+        </div>
+        <BurnLeaderboard
+          onClickTimeFrame={handleClickTimeFrame}
+          timeFrame={timeFrame}
+          unit={unit}
+        />
+      </div>
+    </>
+  );
+};
+
+const ComingSoon: FC = () => {
+  const t = useContext(TranslationsContext);
 
   return (
     <div className="wrapper bg-blue-midnightexpress blurred-bg-image">
@@ -216,65 +282,7 @@ const ComingSoon: FC = () => {
         {/*   <source src="/moving-orbs.mp4" type="video/mp4" /> */}
         {/*   <source src="/moving-orbs.webm" type="video/webm; codecs='vp9'" /> */}
         {/* </video> */}
-        <div className="w-full flex flex-col md:flex-row md:gap-0 lg:gap-4 px-4 md:px-16 isolate">
-          <div className="hidden md:block w-1/3">
-            <BurnGauge timeFrame={timeFrame} unit={unit} />
-          </div>
-          <div className="md:w-1/3">
-            <SupplyGrowthGauge
-              onClickTimeFrame={handleClickTimeFrame}
-              simulateMerge={simulateMerge}
-              timeFrame={timeFrame}
-              toggleSimulateMerge={toggleSimulateMerge}
-            />
-          </div>
-          <div className="hidden md:block w-1/3">
-            <IssuanceGauge
-              simulateMerge={simulateMerge}
-              timeFrame={timeFrame}
-              unit={unit}
-            />
-          </div>
-        </div>
-        <div className="w-4 h-4" />
-        <div className="px-4 md:px-16">
-          <WidgetBackground>
-            <div className="flex flex-col gap-y-8 md:flex-row lg:gap-y-0 justify-between">
-              <div className="flex flex-col gap-y-4 lg:gap-x-4 lg:flex-row lg:items-center">
-                <p className="font-inter font-light text-blue-spindle text-md uppercase">
-                  time frame
-                </p>
-                <TimeFrameControl
-                  selectedTimeframe={timeFrame}
-                  onSetFeePeriod={onSetTimeFrame}
-                />
-              </div>
-              <div className="flex flex-col gap-y-4 lg:gap-x-4 lg:flex-row lg:items-center">
-                <p className="font-inter font-light text-blue-spindle text-md uppercase md:text-right lg:text-left">
-                  currency
-                </p>
-                <CurrencyControl selectedUnit={unit} onSetUnit={onSetUnit} />
-              </div>
-            </div>
-          </WidgetBackground>
-        </div>
-        <div className="w-4 h-4" />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-4 px-4 md:px-16 md:gap-x-4 lg:w-full lg:flex-row">
-          <div>
-            <FeeBurn
-              onClickTimeFrame={handleClickTimeFrame}
-              timeFrame={timeFrame}
-              unit={unit}
-            />
-            <div className="h-4"></div>
-            <LatestBlocks unit={unit} />
-          </div>
-          <BurnLeaderboard
-            onClickTimeFrame={handleClickTimeFrame}
-            timeFrame={timeFrame}
-            unit={unit}
-          />
-        </div>
+        <Widgets />
         <div className="flex flex-col px-4 md:px-16 pt-40 mb-16">
           <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8">
             {t.teaser_supply_title}
