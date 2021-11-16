@@ -22,6 +22,7 @@ import { AmountUnitSpace } from "../Spacing";
 import ToggleSwitch from "../ToggleSwitch";
 import { useLocalStorage } from "../../use-local-storage";
 import { pipe } from "fp-ts/lib/function";
+import { debounce } from "lodash";
 
 let startGasPrice = 0;
 let startGasPriceCached = 0;
@@ -324,10 +325,14 @@ const TopBar: FC<{}> = () => {
       gasAlarmActive &&
       weiToGwei(baseFeePerGas) >= thresholdToNumber(gasThreshold)
     ) {
-      notification.showNotification(
-        `gas price hit ${weiToGwei(baseFeePerGas)} Gwei!`
-      );
-      setGasAlarmActive(false);
+      const timerId = setTimeout(() => {
+        notification.showNotification(
+          `gas price hit ${weiToGwei(baseFeePerGas)} Gwei!`
+        );
+        setGasAlarmActive(false);
+      }, 1000);
+
+      return () => clearTimeout(timerId);
     }
   }, [
     baseFeePerGas,
@@ -345,8 +350,12 @@ const TopBar: FC<{}> = () => {
       ethAlarmActive &&
       ethPrice.usd >= thresholdToNumber(ethThreshold)
     ) {
-      notification.showNotification(`ETH price hit ${ethPrice.usd} USD!`);
-      setEthAlarmActive(false);
+      const timerId = setTimeout(() => {
+        notification.showNotification(`ETH price hit ${ethPrice.usd} USD!`);
+        setEthAlarmActive(false);
+      }, 1000);
+
+      return () => clearTimeout(timerId);
     }
   }, [ethPrice, ethAlarmActive, ethThreshold, notification, setEthAlarmActive]);
 
