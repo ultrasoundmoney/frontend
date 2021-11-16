@@ -214,7 +214,7 @@ const AlarmInput: FC<AlarmInputProps> = ({
   return (
     <div className="flex justify-between items-center pt-4">
       <div
-        className={`flex justify-between items-center px-2 py-1 pr-4 border rounded-full border-gray-500`}
+        className={`flex justify-between items-center px-2 py-1 pr-4 border border-gray-500 rounded-full ${styles.alarmInput}`}
       >
         <img className="pl-2" src={icon} alt="icon of gaspump or eth" />
         <div className="">
