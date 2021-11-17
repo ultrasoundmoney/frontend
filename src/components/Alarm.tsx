@@ -126,6 +126,18 @@ const AlarmInput: FC<AlarmInputProps> = ({
     (nextIsAlarmActive: boolean) => {
       // Should never happen, the parent should disable the dialog altogether in this case.
       if (currentValue === undefined) {
+        return undefined;
+      }
+
+      if (
+        notification.type !== "Supported" ||
+        notification.notificationPermission === "denied"
+      ) {
+        return undefined;
+      }
+
+      if (notification.notificationPermission === "default") {
+        notification.requestPermission();
         return;
       }
 
@@ -142,7 +154,13 @@ const AlarmInput: FC<AlarmInputProps> = ({
 
       onToggleIsAlarmActive(nextIsAlarmActive);
     },
-    [currentValue, onToggleIsAlarmActive, setThresholdType, threshold]
+    [
+      currentValue,
+      notification,
+      onToggleIsAlarmActive,
+      setThresholdType,
+      threshold,
+    ]
   );
 
   useEffect(() => {
