@@ -36,7 +36,7 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
   const ethUsd24hChange =
     ethPrice?.usd24hChange !== undefined
       ? Format.formatPercentOneDigitSigned(ethPrice.usd24hChange / 1000)
-      : Format.formatPercentOneDigitSigned(0);
+      : undefined;
 
   const color =
     typeof ethPrice?.usd24hChange === "number" && ethPrice?.usd24hChange < 0
@@ -81,7 +81,7 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
       <AmountUnitSpace />
       <span className="text-blue-spindle font-extralight">USD</span>
       {ethUsd24hChange === undefined ? (
-        <div className="pl-1">{"(____%)"}</div>
+        <div className="pl-1">{"(__._%)"}</div>
       ) : (
         <span className={`pl-1 ${color}`}>({ethUsd24hChange})</span>
       )}
