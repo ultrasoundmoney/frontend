@@ -118,18 +118,23 @@ const TopBar: FC<{}> = () => {
   const isAlarmValuesAvailable =
     typeof baseFeePerGas === "number" && typeof ethPrice?.usd === "number";
 
+  const showButtonClasses =
+    notification.type === "Supported" && isAlarmValuesAvailable
+      ? "visible"
+      : "invisible";
+
   return (
     <div className="flex justify-between pt-4 md:pt-8">
       <div className="relative flex">
         <PriceGasWidget baseFeePerGas={baseFeePerGas} ethPrice={ethPrice} />
-        {notification.type === "Supported" && isAlarmValuesAvailable ? (
-          <button
-            className={`flex items-center px-3 py-2 bg-blue-tangaroa rounded ml-4 select-none border border-transparent ${alarmActiveClasses}`}
-            onClick={handleClickAlarm}
-          >
-            <img src="/alarm-icon.svg" alt="bell icon" />
-          </button>
-        ) : null}
+
+        <button
+          className={`flex items-center px-3 py-2 bg-blue-tangaroa rounded ml-4 select-none border border-transparent ${showButtonClasses} ${alarmActiveClasses}`}
+          onClick={handleClickAlarm}
+        >
+          <img src="/alarm-icon.svg" alt="bell icon" />
+        </button>
+
         <div
           className={`absolute w-full bg-blue-tangaroa rounded p-8 top-12 md:top-12 ${showAlarmDialogCss}`}
         >
