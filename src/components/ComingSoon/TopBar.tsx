@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from "react";
+import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import CountUp from "react-countup";
 import { EthPrice, useBaseFeePerGas, useEthPrice } from "../../api";
 import * as Format from "../../format";
@@ -89,7 +89,7 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
   );
 };
 
-const TopBar: FC<{}> = () => {
+const TopBar: FC = () => {
   const baseFeePerGas = useBaseFeePerGas();
   const ethPrice = useEthPrice();
   const [gasAlarmActive, setGasAlarmActive] = useLocalStorage(
@@ -102,6 +102,7 @@ const TopBar: FC<{}> = () => {
   );
   const [showAlarmDialog, setShowAlarmDialog] = useState(false);
   const notification = useNotification();
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   const isAlarmActive = gasAlarmActive || ethAlarmActive;
 
@@ -109,8 +110,25 @@ const TopBar: FC<{}> = () => {
     "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg";
   const alarmActiveClasses = isAlarmActive ? activeButtonCss : "";
 
+  const checkIfClickedOutside = useCallback(
+    (e: MouseEvent) => {
+      if (
+        showAlarmDialog &&
+        dialogRef.current &&
+        !dialogRef.current.contains(e.target as Node | null)
+      ) {
+        setShowAlarmDialog(false);
+      }
+    },
+    [showAlarmDialog]
+  );
+
   const handleClickAlarm = useCallback(() => {
-    setShowAlarmDialog(!showAlarmDialog);
+    if (showAlarmDialog === false) {
+      setShowAlarmDialog(true);
+    }
+
+    // Any click outside the dialog closes the dialog. There is no need to close in response to the button click event.
   }, [showAlarmDialog]);
 
   const showAlarmDialogCss = showAlarmDialog ? "visible" : "invisible";
@@ -122,6 +140,14 @@ const TopBar: FC<{}> = () => {
     notification.type === "Supported" && isAlarmValuesAvailable
       ? "visible"
       : "invisible";
+
+  useEffect(() => {
+    document.addEventListener("mousedown", checkIfClickedOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", checkIfClickedOutside);
+    };
+  });
 
   return (
     <div className="flex justify-between pt-4 md:pt-8">
@@ -136,6 +162,7 @@ const TopBar: FC<{}> = () => {
         </button>
 
         <div
+          ref={dialogRef}
           className={`absolute w-full bg-blue-tangaroa rounded p-8 top-12 md:top-12 ${showAlarmDialogCss}`}
         >
           <WidgetTitle title="price alerts" />
