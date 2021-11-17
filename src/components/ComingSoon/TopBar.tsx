@@ -47,7 +47,7 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
     <div className="flex items-center font-roboto text-white rounded bg-blue-tangaroa px-3 py-2 text-xs lg:text-sm">
       <img className="pr-1" src="/gas-icon.svg" alt="gas pump icon" />
       {baseFeePerGas === undefined ? (
-        "---"
+        "___"
       ) : (
         <CountUp
           decimals={0}
@@ -66,7 +66,7 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
       <div className="mr-4"></div>
       <img className="pr-1" src="/eth-icon.svg" alt="Ethereum Ether icon" />
       {ethPrice === undefined ? (
-        "-,---"
+        "_,___"
       ) : (
         <CountUp
           decimals={0}
@@ -80,7 +80,11 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
       )}
       <AmountUnitSpace />
       <span className="text-blue-spindle font-extralight">USD</span>
-      <span className={`pl-1 ${color}`}>({ethUsd24hChange})</span>
+      {ethUsd24hChange === undefined ? (
+        <div className="pl-1">{"(____%)"}</div>
+      ) : (
+        <span className={`pl-1 ${color}`}>({ethUsd24hChange})</span>
+      )}
     </div>
   );
 };
