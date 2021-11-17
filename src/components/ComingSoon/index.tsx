@@ -4,7 +4,7 @@ import FollowingYou from "../FollowingYou";
 import FaqBlock from "../Landing/faq";
 import SupplyView from "../SupplyView";
 import TwitterCommunity from "../TwitterCommunity";
-import TopBar from "./ComingSoon";
+import TopBar from "./TopBar";
 import Widgets from "./Widgets";
 
 export type Unit = "eth" | "usd";

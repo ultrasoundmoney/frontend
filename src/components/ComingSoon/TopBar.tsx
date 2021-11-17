@@ -120,7 +120,7 @@ const TopBar: FC<{}> = () => {
         <PriceGasWidget baseFeePerGas={baseFeePerGas} ethPrice={ethPrice} />
         {notification.type === "Supported" && isAlarmValuesAvailable ? (
           <button
-            className={`flex items-center px-3 py-2 bg-blue-tangaroa rounded ml-4 border border-transparent ${alarmActiveClasses}`}
+            className={`flex items-center px-3 py-2 bg-blue-tangaroa rounded ml-4 select-none border border-transparent ${alarmActiveClasses}`}
             onClick={handleClickAlarm}
           >
             <img src="/alarm-icon.svg" alt="bell icon" />
