@@ -2,7 +2,8 @@ import * as React from "react";
 import { NextPage } from "next";
 import dynamic from "next/dynamic";
 import Head from "next/head";
-const LandingPage = dynamic(() => import("../components/Landing"));
+// const LandingPage = dynamic(() => import("../components/Landing"));
+const LandingPage = dynamic(() => import("../components/Landing/landing"));
 import { TranslationsContext } from "../translations-context";
 
 type IndexPageProps = {};

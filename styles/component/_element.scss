@@ -1,4 +1,4 @@
-.tooltip{
+.tooltip {
   display: none;
   opacity: 0;
 }
@@ -21,7 +21,7 @@
   left: 40px;
   transform: translate(0%, -100%);
   width: 280px;
-  transform: translate(0%,-100%);
+  transform: translate(0%, -100%);
   animation: fadeIn ease 700ms;
   -webkit-animation: fadeIn ease 700ms;
   -moz-animation: fadeIn ease 700ms;
@@ -29,6 +29,7 @@
   -ms-animation: fadeIn ease 700ms;
 
   will-change: transform;
+
   @media screen and (min-width: 420px) and (max-width: 1023px) {
     left: 20%;
   }
@@ -123,13 +124,14 @@
 }
 
 // .accordion-wrapper {
-  
+
 // }
 
 .accordion-item {
   overflow: hidden;
   height: auto;
 }
+
 @media all {
   .accordion-item {
     max-height: 50em;
@@ -139,6 +141,7 @@
     transition: max-height 1s;
   }
 }
+
 @media screen and (min-width: 48em) {
   .accordion-item {
     max-height: 15em;
@@ -343,8 +346,9 @@
     transform: scale(0.8);
   }
 }
-.sidebar{
-  background-color: rgba(27,34,54, 1);
+
+.sidebar {
+  background-color: rgba(27, 34, 54, 1);
   position: fixed;
   top: 0;
   right: 0px;
@@ -354,10 +358,104 @@
   transition: transform 0.3s ease-in-out 0s;
   z-index: 9;
   text-align: center;
-  &-open{
+
+  &-open {
     transform: translateX(0px);
   }
-  &-close{
+
+  &-close {
     transform: translateX(100%);
+  }
+}
+
+#enter-ultra-sound {
+  path#eth {
+    // stroke: blue;
+    fill: none;
+    stroke-width: 2;
+    stroke-dasharray: 900 900;
+    animation: strokeAni 5s linear;
+  }
+
+  path#btc {
+    // stroke: yellow;
+    fill: none;
+    stroke-width: 3;
+    stroke-dasharray: 900 900;
+    animation: strokeAni 5s linear;
+  }
+
+  path#usd {
+    // stroke: green;
+    fill: none;
+    stroke-width: 3;
+    stroke-dasharray: 900 900;
+    animation: strokeAni 5s linear;
+  }
+
+  @keyframes strokeAni {
+    0% {
+      stroke-dashoffset: 900;
+    }
+
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes draw2 {
+    20% {
+      stroke-dashoffset: 10;
+    }
+
+    40%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .span--btc {
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 14px;
+      left: 20px;
+      width: 12px;
+      height: 12px;
+      background: #FF891D;
+      border-radius: 100%;
+    }
+  }
+
+  .span--eth {
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 14px;
+      left: 20px;
+      width: 12px;
+      height: 12px;
+      background: #5474F4;
+      border-radius: 100%;
+    }
+  }
+
+  .span--usd {
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 14px;
+      left: 20px;
+      width: 12px;
+      height: 12px;
+      background: #A3D972;
+      border-radius: 100%;
+    }
   }
 }
