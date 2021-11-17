@@ -3,6 +3,7 @@ import React, {
   FC,
   useCallback,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import { useBaseFeePerGas, useEthPrice } from "../api";
@@ -74,6 +75,7 @@ const AlarmInput: FC<AlarmInputProps> = ({
     `${type}-threshold-type`,
     "GreaterThanOrEqualTo"
   );
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const roundedGasPriceGwei = pipe(
     baseFeePerGas,
@@ -211,16 +213,26 @@ const AlarmInput: FC<AlarmInputProps> = ({
     unit,
   ]);
 
+  const handleSurroundingInputClick = useCallback(() => {
+    if (inputRef.current === null) {
+      return undefined;
+    }
+
+    inputRef.current.focus();
+  }, [inputRef]);
+
   return (
     <div className="flex justify-between items-center pt-4">
       <div
         className={`flex justify-between items-center px-2 py-1 pr-4 border border-gray-500 rounded-full ${styles.alarmInput}`}
+        onClick={handleSurroundingInputClick}
       >
         <div className="flex justify-center ml-1 w-5">
           <img className="" src={icon} alt="icon of gaspump or eth" />
         </div>
         <div className="flex items-center">
           <input
+            ref={inputRef}
             className="font-roboto w-14 bg-transparent text-sm text-white text-right"
             inputMode="numeric"
             pattern="[0-9]"
