@@ -41,6 +41,8 @@ const compareMap: Record<ThresholdType, CrossThresholdFn> = {
   SmallerThan: (current: number, limit: number) => current < limit,
 };
 
+const typeToDisplay = (type: AlarmType) => (type === "eth" ? "ETH" : type);
+
 type AlarmType = "gas" | "eth";
 
 type ThresholdType = "GreaterThanOrEqualTo" | "SmallerThan";
@@ -190,7 +192,9 @@ const AlarmInput: FC<AlarmInputProps> = ({
       }
 
       notification.showNotification(
-        `${type} price hit ${roundedGasPriceGwei} ${unit.trimEnd()}!`
+        `${typeToDisplay(type)} price hit ${formatZeroDigit(
+          currentValue
+        )} ${unit.trimEnd()}`
       );
 
       onToggleIsAlarmActive(false);
