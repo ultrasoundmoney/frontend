@@ -191,11 +191,10 @@ const AlarmInput: FC<AlarmInputProps> = ({
         return undefined;
       }
 
-      notification.showNotification(
-        `${typeToDisplay(type)} price hit ${formatZeroDigit(
-          currentValue
-        )} ${unit.trimEnd()}`
-      );
+      const message = `${typeToDisplay(type)} price hit ${formatZeroDigit(
+        currentValue
+      )} ${unit.trimEnd()}`;
+      notification.showNotification(message);
 
       onToggleIsAlarmActive(false);
     }
