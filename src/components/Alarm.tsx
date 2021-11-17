@@ -213,8 +213,10 @@ const AlarmInput: FC<AlarmInputProps> = ({
       <div
         className={`flex justify-between items-center px-2 py-1 pr-4 border border-gray-500 rounded-full ${styles.alarmInput}`}
       >
-        <img className="pl-2" src={icon} alt="icon of gaspump or eth" />
-        <div className="">
+        <div className="flex justify-center ml-1 w-5">
+          <img className="" src={icon} alt="icon of gaspump or eth" />
+        </div>
+        <div className="flex items-center">
           <input
             className="font-roboto w-14 bg-transparent text-sm text-white text-right"
             inputMode="numeric"
@@ -224,7 +226,7 @@ const AlarmInput: FC<AlarmInputProps> = ({
             onBlur={handleDoneEditing}
           />
           <AmountUnitSpace />
-          <span className="font-roboto text-blue-spindle font-extralight whitespace-pre">
+          <span className="font-roboto text-blue-spindle text-sm font-extralight whitespace-pre">
             {unit}
           </span>
         </div>
