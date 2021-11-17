@@ -150,18 +150,6 @@ const TopBar: FC<{}> = () => {
                 notifications disabled, please grant notification permission.
               </p>
             )}
-          <button
-            className="text-red-200 mt-4 whitespace-pre"
-            onClick={
-              notification.type === "Supported"
-                ? () => {
-                    notification.showNotification("gas hit 128 Gwei");
-                  }
-                : () => undefined
-            }
-          >
-            show notification →
-          </button>
         </div>
       </div>
       <a
