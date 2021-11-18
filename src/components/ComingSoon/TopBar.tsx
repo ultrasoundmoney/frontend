@@ -142,10 +142,10 @@ const TopBar: FC = () => {
       : "invisible";
 
   useEffect(() => {
-    document.addEventListener("mousedown", checkIfClickedOutside);
+    document.addEventListener("click", checkIfClickedOutside);
 
     return () => {
-      document.removeEventListener("mousedown", checkIfClickedOutside);
+      document.removeEventListener("click", checkIfClickedOutside);
     };
   });
 
