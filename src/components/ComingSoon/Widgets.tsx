@@ -10,6 +10,7 @@ import FeeBurn from "../FeeBurn";
 import LatestBlocks from "../LatestBlocks";
 import { WidgetBackground } from "../WidgetBits";
 import CurrencyControl, { Unit } from "./CurrencyControl";
+import Flippenings from "./Flippenings";
 
 const Widgets: FC = () => {
   const [simulateMerge, setSimulateMerge] = useState(false);
@@ -86,15 +87,15 @@ const Widgets: FC = () => {
       </div>
       <div className="w-4 h-4" />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-4 px-4 md:px-16 md:gap-x-4 lg:w-full lg:flex-row">
-        <div>
+        <div className="flex flex-col gap-y-4">
           <FeeBurn
             onClickTimeFrame={handleClickTimeFrame}
             simulateMerge={simulateMerge}
             timeFrame={timeFrame}
             unit={unit}
           />
-          <div className="h-4"></div>
           <LatestBlocks unit={unit} />
+          <Flippenings />
         </div>
         <BurnLeaderboard
           onClickTimeFrame={handleClickTimeFrame}

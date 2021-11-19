@@ -211,3 +211,19 @@ export const useAverageEthPrice = (
 
   return data === undefined ? undefined : data[newTimeframeMap[timeFrame]];
 };
+
+type MarketCaps = {
+  btcMarketCap: number;
+  ethMarketCap: number;
+  goldMarketCap: number;
+  usdM2MarketCap: number;
+  timestamp: Date;
+};
+
+export const useMarketCaps = (): MarketCaps | undefined => {
+  const { data } = useSWR<MarketCaps>(`${feesBasePath}/market-caps`, {
+    refreshInterval: Duration.millisFromSeconds(8),
+  });
+
+  return data;
+};
