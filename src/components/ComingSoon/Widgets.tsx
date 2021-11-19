@@ -87,21 +87,21 @@ const Widgets: FC = () => {
       </div>
       <div className="w-4 h-4" />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-4 px-4 md:px-16 md:gap-x-4 lg:w-full lg:flex-row">
-        <div className="flex flex-col gap-y-4">
-          <FeeBurn
-            onClickTimeFrame={handleClickTimeFrame}
-            simulateMerge={simulateMerge}
-            timeFrame={timeFrame}
-            unit={unit}
-          />
-          <LatestBlocks unit={unit} />
-          <Flippenings />
-        </div>
-        <BurnLeaderboard
+        <FeeBurn
           onClickTimeFrame={handleClickTimeFrame}
+          simulateMerge={simulateMerge}
           timeFrame={timeFrame}
           unit={unit}
         />
+        <div className="lg:col-start-2 lg:row-start-1 lg:row-end-4">
+          <BurnLeaderboard
+            onClickTimeFrame={handleClickTimeFrame}
+            timeFrame={timeFrame}
+            unit={unit}
+          />
+        </div>
+        <LatestBlocks unit={unit} />
+        <Flippenings />
       </div>
     </>
   );

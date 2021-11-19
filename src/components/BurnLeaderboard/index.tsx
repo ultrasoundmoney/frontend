@@ -64,7 +64,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
     leaderboards && leaderboards[feePeriodToUpdateMap[timeFrame]];
 
   return (
-    <div className="bg-blue-tangaroa w-full rounded-lg p-8">
+    <div className="bg-blue-tangaroa w-full rounded-lg p-8 lg:h-full">
       <div
         className="flex flex-col gap-y-4 lg:h-0 lg:min-h-full"
         style={{ height: "32rem" }}
