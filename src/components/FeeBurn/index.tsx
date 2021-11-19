@@ -2,12 +2,7 @@ import * as DateFns from "date-fns";
 import * as Duration from "../../duration";
 import React, { FC, memo } from "react";
 import CountUp from "react-countup";
-import {
-  BurnRates,
-  FeesBurned,
-  useAverageEthPrice,
-  useFeeData,
-} from "../../api";
+import { BurnRates, FeesBurned, useFeeData } from "../../api";
 import { londonHardforkTimestamp } from "../../dates";
 import * as StaticEtherData from "../../static-ether-data";
 import { AmountUnitSpace } from "../Spacing";
@@ -15,6 +10,7 @@ import SpanMoji from "../SpanMoji";
 import { TimeFrame } from "../TimeFrameControl";
 import { WidgetBackground, WidgetTitle } from "../WidgetBits";
 import { Unit } from "../ComingSoon/CurrencyControl";
+import { O, pipe } from "../../fp";
 
 const weiToEth = (wei: number): number => wei / 10 ** 18;
 
@@ -64,15 +60,27 @@ const CumulativeFeeBurn: FC<Props> = ({
   unit,
 }) => {
   const { feesBurned, burnRates } = useFeeData();
-  const averageEthPrice = useAverageEthPrice(timeFrame);
+
+  const selectedFeesBurnedEth = pipe(
+    feesBurned,
+    O.fromNullable,
+    O.map((feesBurned) =>
+      weiToEth(feesBurned[timeframeFeesBurnedMap[timeFrame]["eth"]])
+    ),
+    O.toUndefined
+  );
 
   // In ETH or USD K.
-  const selectedFeesBurned =
-    feesBurned === undefined
-      ? undefined
-      : unit === "eth"
-      ? weiToEth(feesBurned[timeframeFeesBurnedMap[timeFrame][unit]])
-      : feesBurned[timeframeFeesBurnedMap[timeFrame][unit]] / 1000;
+  const selectedFeesBurned = pipe(
+    feesBurned,
+    O.fromNullable,
+    O.map((feesBurned) =>
+      unit === "eth"
+        ? weiToEth(feesBurned[timeframeFeesBurnedMap[timeFrame]["eth"]])
+        : feesBurned[timeframeFeesBurnedMap[timeFrame][unit]] / 1000
+    ),
+    O.toUndefined
+  );
 
   // In ETH / min or USD K / min.
   const selectedBurnRate =
@@ -97,7 +105,7 @@ const CumulativeFeeBurn: FC<Props> = ({
 
   // In ETH.
   const selectedIssuance =
-    selectedFeesBurned === undefined || averageEthPrice === undefined
+    selectedFeesBurned === undefined
       ? undefined
       : timeFrame === "all"
       ? issuancePerMillisecond * millisecondsSinceLondonHardFork
@@ -105,9 +113,9 @@ const CumulativeFeeBurn: FC<Props> = ({
 
   // Percent.
   const issuanceOffset =
-    selectedFeesBurned === undefined || selectedIssuance === undefined
+    selectedFeesBurnedEth === undefined || selectedIssuance === undefined
       ? undefined
-      : (selectedFeesBurned / selectedIssuance) * 100;
+      : (selectedFeesBurnedEth / selectedIssuance) * 100;
 
   return (
     <WidgetBackground>
