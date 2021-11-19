@@ -79,7 +79,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
             loading...
           </p>
         ) : (
-          <div className="overflow-auto leaderboard-scroller -mt-1">
+          <div className="overflow-y-auto overflow-x-hidden leaderboard-scroller -mt-1">
             {selectedLeaderboard.map((row) =>
               row.type === "contract" ? (
                 <LeaderboardRow
