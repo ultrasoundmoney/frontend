@@ -32,11 +32,14 @@ type RowProps = {
 
 const Row: FC<RowProps> = ({ icon, title, progress }) => {
   return (
-    <div className="flex gap-x-4 mt-4">
-      <img className="-mt-2" src={icon} alt="" />
-      <div className="w-full flex flex-col gap-y-2">
+    <div className="flex flex-row items-start gap-x-4">
+      <img className="" src={icon} alt="" />
+      <div className="w-full flex flex-col justify-between">
         <ProgressBar progress={progress} />
-        <div className="flex flex-row justify-between">
+        <div
+          className="flex flex-row justify-between"
+          style={{ paddingTop: "0.1875rem" }}
+        >
           <p className="font-inter text-white text-lg">{title}</p>
           <p className="font-roboto text-white text-lg">
             <CountUp
@@ -75,7 +78,7 @@ const Flippenings: FC = () => {
   return (
     <WidgetBackground>
       <WidgetTitle title="flippenings" />
-      <div className="flex flex-col gap-y-4">
+      <div className="flex flex-col gap-y-4 mt-4">
         <Row title="bitcoin" icon="/btc-styled.svg" progress={btcProgress} />
         <Row title="gold" icon="/gold-styled.svg" progress={goldProgress} />
         <Row title="usd" icon="/usd-styled.svg" progress={usdProgress} />
