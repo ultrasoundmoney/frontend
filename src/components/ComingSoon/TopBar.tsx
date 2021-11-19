@@ -93,7 +93,7 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
         <span className="text-blue-spindle font-extralight">USD</span>
         <AmountUnitSpace />
         {ethUsd24hChange === undefined ? (
-          <div>{"(__._%)"}</div>
+          <span>{"(__._%)"}</span>
         ) : (
           <span className={`${color}`}>({ethUsd24hChange})</span>
         )}
