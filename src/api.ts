@@ -216,7 +216,7 @@ type MarketCaps = {
   btcMarketCap: number;
   ethMarketCap: number;
   goldMarketCap: number;
-  usdM2MarketCap: number;
+  usdM3MarketCap: number;
   timestamp: Date;
 };
 

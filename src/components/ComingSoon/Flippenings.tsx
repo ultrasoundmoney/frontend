@@ -73,7 +73,7 @@ const Flippenings: FC = () => {
   const usdProgress =
     marketCaps === undefined
       ? 0
-      : marketCaps.ethMarketCap / marketCaps.usdM2MarketCap;
+      : marketCaps.ethMarketCap / marketCaps.usdM3MarketCap;
 
   return (
     <WidgetBackground>
