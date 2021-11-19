@@ -117,6 +117,12 @@ const CumulativeFeeBurn: FC<Props> = ({
       ? undefined
       : (selectedFeesBurnedEth / selectedIssuance) * 100;
 
+  // Keeps the width of the fees burned amount the same to make the animation look more stable.
+  const startFeesBurned =
+    selectedFeesBurned === undefined
+      ? undefined
+      : 10 ** (selectedFeesBurned.toFixed(0).length - 1);
+
   return (
     <WidgetBackground>
       <WidgetTitle
@@ -133,6 +139,7 @@ const CumulativeFeeBurn: FC<Props> = ({
                   decimals={unit === "eth" ? 2 : 1}
                   duration={0.8}
                   separator=","
+                  start={startFeesBurned}
                   end={selectedFeesBurned}
                   preserveValue={true}
                   suffix={unit === "eth" ? undefined : "K"}
