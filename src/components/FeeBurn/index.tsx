@@ -144,10 +144,10 @@ const CumulativeFeeBurn: FC<Props> = ({
                   preserveValue={true}
                   suffix={unit === "eth" ? undefined : "K"}
                 />
-              </p>
-              <AmountUnitSpace />
-              <p className="font-extralight text-blue-spindle">
-                {unit === "eth" ? "ETH" : "USD"}
+                <AmountUnitSpace />
+                <span className="font-extralight text-blue-spindle">
+                  {unit === "eth" ? "ETH" : "USD"}
+                </span>
               </p>
             </>
           ) : (

@@ -45,46 +45,59 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
 
   return (
     <div className="flex items-center font-roboto text-white rounded bg-blue-tangaroa px-3 py-2 text-xs lg:text-sm">
-      <img className="pr-1" src="/gas-icon.svg" alt="gas pump icon" />
-      {baseFeePerGas === undefined ? (
-        "___"
-      ) : (
-        <CountUp
-          decimals={0}
-          duration={0.8}
-          separator=","
-          start={
-            startGasPriceCached === 0
-              ? weiToGwei(baseFeePerGas)
-              : weiToGwei(startGasPriceCached)
-          }
-          end={weiToGwei(baseFeePerGas)}
-        />
-      )}
-      <AmountUnitSpace />
-      <span className="font-extralight text-blue-spindle">Gwei</span>
+      <img
+        className="pr-1 select-none"
+        src="/gas-icon.svg"
+        alt="gas pump icon"
+      />
+      <p>
+        {baseFeePerGas === undefined ? (
+          "___"
+        ) : (
+          <CountUp
+            decimals={0}
+            duration={0.8}
+            separator=","
+            start={
+              startGasPriceCached === 0
+                ? weiToGwei(baseFeePerGas)
+                : weiToGwei(startGasPriceCached)
+            }
+            end={weiToGwei(baseFeePerGas)}
+          />
+        )}
+        <AmountUnitSpace />
+        <span className="font-extralight text-blue-spindle">Gwei</span>
+      </p>
       <div className="mr-4"></div>
-      <img className="pr-1" src="/eth-icon.svg" alt="Ethereum Ether icon" />
-      {ethPrice === undefined ? (
-        "_,___"
-      ) : (
-        <CountUp
-          decimals={0}
-          duration={0.8}
-          separator=","
-          start={
-            startEthPriceCached === 0 ? ethPrice?.usd : startEthPriceCached
-          }
-          end={ethPrice?.usd}
-        />
-      )}
-      <AmountUnitSpace />
-      <span className="text-blue-spindle font-extralight">USD</span>
-      {ethUsd24hChange === undefined ? (
-        <div className="pl-1">{"(__._%)"}</div>
-      ) : (
-        <span className={`pl-1 ${color}`}>({ethUsd24hChange})</span>
-      )}
+      <img
+        className="pr-1 select-none"
+        src="/eth-icon.svg"
+        alt="Ethereum Ether icon"
+      />
+      <p>
+        {ethPrice === undefined ? (
+          "_,___"
+        ) : (
+          <CountUp
+            decimals={0}
+            duration={0.8}
+            separator=","
+            start={
+              startEthPriceCached === 0 ? ethPrice?.usd : startEthPriceCached
+            }
+            end={ethPrice?.usd}
+          />
+        )}
+        <AmountUnitSpace />
+        <span className="text-blue-spindle font-extralight">USD</span>
+        <AmountUnitSpace />
+        {ethUsd24hChange === undefined ? (
+          <div>{"(__._%)"}</div>
+        ) : (
+          <span className={`${color}`}>({ethUsd24hChange})</span>
+        )}
+      </p>
     </div>
   );
 };

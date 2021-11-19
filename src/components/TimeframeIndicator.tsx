@@ -31,7 +31,7 @@ const TimeFrameIndicator: FC<Props> = ({
       </span>
       {timeFrame !== undefined && (
         <button
-          className={`font-roboto font-extralight px-3 py-1 border text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg`}
+          className={`font-roboto font-extralight px-3 py-1 border text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg select-none`}
           onClick={onClickTimeFrame}
         >
           {displayTimeFrameMap[timeFrame]}

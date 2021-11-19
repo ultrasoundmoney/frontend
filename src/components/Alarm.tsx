@@ -224,7 +224,7 @@ const AlarmInput: FC<AlarmInputProps> = ({
   return (
     <div className="flex justify-between items-center pt-4">
       <div
-        className={`flex justify-between items-center px-2 py-1 pr-4 border border-gray-500 rounded-full ${styles.alarmInput}`}
+        className={`flex justify-between items-center px-2 py-1 pr-4 border border-gray-500 rounded-full select-none ${styles.alarmInput}`}
         onClick={handleSurroundingInputClick}
       >
         <div className="flex justify-center ml-1 w-5">
