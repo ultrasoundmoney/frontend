@@ -1,16 +1,16 @@
-import React, { FC } from "react";
+import { clamp } from "lodash";
+import { FC } from "react";
+import CountUp from "react-countup";
+import { animated, useSpring } from "react-spring";
 import { useMarketCaps } from "../../api";
 import { WidgetBackground, WidgetTitle } from "../WidgetBits";
-import { useSpring, animated } from "react-spring";
-import CountUp from "react-countup";
 
-type ProgressBarProps = { delay?: number; progress: number };
+type ProgressBarProps = { progress: number };
 
 const ProgressBar: FC<ProgressBarProps> = ({ progress }) => {
   const { width } = useSpring({
-    to: { width: progress * 100 },
+    to: { width: clamp(progress * 100, 100) },
     from: { width: 0 },
-    delay: Math.random() * 100,
   });
 
   return (
