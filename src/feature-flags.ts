@@ -1,5 +1,6 @@
 import * as Config from "./config";
 
 export const featureFlags = {
-  leaderboardCategory: Config.apiEnv === "dev" || Config.apiEnv === "staging",
+  leaderboardCategory: Config.env === "dev" || Config.env === "staging",
+  flippenings: Config.env === "dev" || Config.env === "staging",
 };
