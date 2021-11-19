@@ -2,7 +2,7 @@ import { FC } from "react";
 import { useFeeData } from "../../api";
 import colors from "../../colors";
 import { weiToEth } from "../../utils/metric-utils";
-import { Unit } from "../ComingSoon";
+import { Unit } from "../ComingSoon/CurrencyControl";
 import { timeframeBurnRateMap } from "../FeeBurn";
 import { TimeFrame } from "../TimeFrameControl";
 import BaseGauge from "./IssuanceBurnBaseGauge";

@@ -1,5 +1,4 @@
 import React, { FC, useState, useCallback } from "react";
-import { Unit } from ".";
 import { useBaseFeePerGas } from "../../api";
 import { weiToGwei } from "../../utils/metric-utils";
 import TimeFrameControl, { TimeFrame, timeFrames } from "../TimeFrameControl";
@@ -10,50 +9,7 @@ import BurnLeaderboard from "../BurnLeaderboard";
 import FeeBurn from "../FeeBurn";
 import LatestBlocks from "../LatestBlocks";
 import { WidgetBackground } from "../WidgetBits";
-
-const activePeriodClasses =
-  "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg";
-
-type CurrencyButtonProps = {
-  onClick: (unit: Unit) => void;
-  selectedUnit: Unit;
-  unit: Unit;
-};
-
-const CurrencyButton: FC<CurrencyButtonProps> = ({
-  onClick,
-  selectedUnit,
-  unit,
-}) => (
-  <button
-    className={`font-roboto font-extralight text-sm md:text-base px-3 py-1 border border-transparent uppercase ${
-      selectedUnit === unit ? activePeriodClasses : "text-blue-spindle"
-    }`}
-    onClick={() => onClick(unit)}
-  >
-    {unit}
-  </button>
-);
-
-type UnitControlProps = {
-  selectedUnit: "eth" | "usd";
-  onSetUnit: (unit: "usd" | "eth") => void;
-};
-
-const CurrencyControl: FC<UnitControlProps> = ({ selectedUnit, onSetUnit }) => (
-  <div className="flex flex-row items-center">
-    <CurrencyButton
-      onClick={onSetUnit}
-      selectedUnit={selectedUnit}
-      unit="eth"
-    />
-    <CurrencyButton
-      onClick={onSetUnit}
-      selectedUnit={selectedUnit}
-      unit="usd"
-    />
-  </div>
-);
+import CurrencyControl, { Unit } from "./CurrencyControl";
 
 const Widgets: FC = () => {
   const [simulateMerge, setSimulateMerge] = useState(false);

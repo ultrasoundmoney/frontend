@@ -10,11 +10,11 @@ import {
 } from "../../api";
 import { londonHardforkTimestamp } from "../../dates";
 import * as StaticEtherData from "../../static-ether-data";
-import { Unit } from "../ComingSoon";
 import { AmountUnitSpace } from "../Spacing";
 import SpanMoji from "../SpanMoji";
 import { TimeFrame } from "../TimeFrameControl";
 import { WidgetBackground, WidgetTitle } from "../WidgetBits";
+import { Unit } from "../ComingSoon/CurrencyControl";
 
 const weiToEth = (wei: number): number => wei / 10 ** 18;
 

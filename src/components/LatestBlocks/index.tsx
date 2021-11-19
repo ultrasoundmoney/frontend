@@ -10,7 +10,7 @@ import {
 } from "../../format";
 import { weiToGwei } from "../../utils/metric-utils";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
-import { Unit } from "../ComingSoon";
+import { Unit } from "../ComingSoon/CurrencyControl";
 import { AmountUnitSpace } from "../Spacing";
 import { WidgetBackground } from "../WidgetBits";
 

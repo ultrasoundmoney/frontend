@@ -5,7 +5,7 @@ import * as Api from "../../api";
 import imageIds from "../../assets/leaderboard-image-ids.json";
 import { featureFlags } from "../../feature-flags";
 import { weiToEth } from "../../utils/metric-utils";
-import { Unit } from "../ComingSoon";
+import { Unit } from "../ComingSoon/CurrencyControl";
 import { AmountUnitSpace } from "../Spacing";
 
 type Props = {

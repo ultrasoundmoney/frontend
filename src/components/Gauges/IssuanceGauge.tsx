@@ -2,9 +2,9 @@ import { FC } from "react";
 import BaseGauge from "./IssuanceBurnBaseGauge";
 import * as StaticEtherData from "../../static-ether-data";
 import colors from "../../colors";
-import { Unit } from "../ComingSoon";
 import { useAverageEthPrice } from "../../api";
 import { TimeFrame } from "../TimeFrameControl";
+import { Unit } from "../ComingSoon/CurrencyControl";
 
 type Props = {
   simulateMerge: boolean;

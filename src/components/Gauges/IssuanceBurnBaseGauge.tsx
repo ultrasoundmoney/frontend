@@ -6,8 +6,8 @@ import { animated, config, useSpring } from "react-spring";
 import { formatOneDigit, formatZeroDigit } from "../../format";
 import { clamp } from "lodash";
 import { pipe } from "fp-ts/lib/function";
-import { Unit } from "../ComingSoon";
 import { useEthPrice } from "../../api";
+import { Unit } from "../ComingSoon/CurrencyControl";
 
 type BaseGuageProps = {
   emoji: string;
