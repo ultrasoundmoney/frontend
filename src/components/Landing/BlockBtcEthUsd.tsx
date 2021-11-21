@@ -72,7 +72,7 @@ const TheUltraSound: React.FC<{}> = () => {
               </div>
             </div>
             {cryptoType === "eth" && (
-              <svg viewBox="0 0 435 394" fill="none">
+              <svg viewBox="0 0 435 394" fill="none" id="eth-base">
                 <path
                   fillRule="evenodd"
                   clipRule="evenodd"
@@ -134,7 +134,7 @@ const TheUltraSound: React.FC<{}> = () => {
                 </defs>
                 <use href="#ethpoint" x="-9" y="-12" fill="#5474F4">
                   <animateMotion
-                    dur="3s"
+                    dur="2.5s"
                     repeatCount="1"
                     fill="freeze"
                     path="M63.3164 329.648C78.5084 279.154 124.057 187.155
@@ -148,11 +148,13 @@ const TheUltraSound: React.FC<{}> = () => {
                   d="M63.3164 328.174C366.232 328.174 413.036 170.934 413.036 121.287"
                   stroke="#A3D972"
                   strokeWidth="2"
+                  className="dimming"
                 />
                 <path
                   d="M64.7778 327.518C93.1492 189.781 105.654 164.358 163.041 127.072C220.427 89.7858 391.767 87.269 418.93 87.4203"
                   stroke="#FF891D"
                   strokeWidth="2"
+                  className="dimming"
                 />
               </svg>
             )}
@@ -168,11 +170,13 @@ const TheUltraSound: React.FC<{}> = () => {
                   d="M63.3164 329.648C78.5084 279.154 124.057 187.155 162.967 176.273C208.906 163.425 299.285 179.82 421.871 196.021"
                   stroke="#5474F4"
                   strokeWidth="2"
+                  className="dimming"
                 />
                 <path
                   d="M63.3164 328.174C366.232 328.174 413.036 170.934 413.036 121.287"
                   stroke="#A3D972"
                   strokeWidth="2"
+                  className="dimming"
                 />
                 <symbol id="btcpoint">
                   <circle
@@ -205,7 +209,7 @@ const TheUltraSound: React.FC<{}> = () => {
                   className="btc"
                 />
                 <use href="#btcpoint" x="-9" y="-12" fill="#5474F4">
-                  <animateMotion dur="3s" repeatCount="1" fill="freeze">
+                  <animateMotion dur="2.7s" repeatCount="1" fill="freeze">
                     <mpath href="#btc" />
                   </animateMotion>
                 </use>
@@ -250,7 +254,7 @@ const TheUltraSound: React.FC<{}> = () => {
                   className="usd"
                 />
                 <use href="#usdcpoint" x="-11" y="-12" fill="#5474F4">
-                  <animateMotion dur="3s" repeatCount="1" fill="freeze">
+                  <animateMotion dur="2.5s" repeatCount="1" fill="freeze">
                     <mpath href="#usd" />
                   </animateMotion>
                 </use>
@@ -258,11 +262,13 @@ const TheUltraSound: React.FC<{}> = () => {
                   d="M63.3164 329.648C78.5084 279.154 124.057 187.155 162.967 176.273C208.906 163.425 299.285 179.82 421.871 196.021"
                   stroke="#5474F4"
                   strokeWidth="2"
+                  className="dimming"
                 />
                 <path
                   d="M64.7778 327.518C93.1492 189.781 105.654 164.358 163.041 127.072C220.427 89.7858 391.767 87.269 418.93 87.4203"
                   stroke="#FF891D"
                   strokeWidth="2"
+                  className="dimming"
                 />
               </svg>
             )}
