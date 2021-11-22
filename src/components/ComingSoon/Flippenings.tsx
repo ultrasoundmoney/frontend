@@ -39,11 +39,13 @@ type RowProps = {
 const Row: FC<RowProps> = ({ highlightColor, title, progress, icon  }) => {
   const [hovering, setHovering] = useState(false)
 
-  const iconStyle = hovering ? "color" : "blueish"
+  const blueishVisibleCss = hovering ? "invisible" : "visible"
+  const colorVisibleCss = hovering ? "visible" : "invisible"
 
   return (
     <div className="flex flex-row items-start gap-x-4" onMouseEnter={() => setHovering(true)} onMouseLeave={() => setHovering(false)}>
-      <img className="" src={`/${icon}-${iconStyle}.svg`} alt={`${icon} icon`} />
+      <img className={`${blueishVisibleCss}`} src={`/${icon}-blueish.svg`} alt={`${icon} icon`} />
+      <img className={`absolute ${colorVisibleCss}`} src={`/${icon}-color.svg`} alt={`${icon} icon`} />
       <div className="w-full flex flex-col justify-between">
         <ProgressBar highlightColor={highlightColor} showHighlight={hovering} progress={progress} />
         <div
