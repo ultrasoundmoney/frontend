@@ -111,11 +111,11 @@ const CumulativeFeeBurn: FC<Props> = ({
       ? issuancePerMillisecond * millisecondsSinceLondonHardFork
       : issuancePerMillisecond * timeFrameMillisecondsMap[timeFrame];
 
-  // Percent.
+  // Fraction.
   const issuanceOffset =
     selectedFeesBurnedEth === undefined || selectedIssuance === undefined
       ? undefined
-      : (selectedFeesBurnedEth / selectedIssuance) * 100;
+      : (selectedFeesBurnedEth / selectedIssuance);
 
   // Keeps the width of the fees burned amount the same to make the animation look more stable.
   const startFeesBurned =
@@ -188,12 +188,12 @@ const CumulativeFeeBurn: FC<Props> = ({
             {selectedBurnRate !== undefined ? (
               <p className="font-roboto text-white text-2xl">
                 <CountUp
-                  decimals={0}
+                  decimals={2}
                   duration={0.8}
                   separator=","
                   end={issuanceOffset ?? 0}
                   preserveValue={true}
-                  suffix={"%"}
+                  suffix={"x"}
                 />
               </p>
             ) : (
