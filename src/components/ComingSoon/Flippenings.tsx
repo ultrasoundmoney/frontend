@@ -1,41 +1,51 @@
 import { clamp } from "lodash";
-import { FC } from "react";
+import { FC, useState } from "react";
 import CountUp from "react-countup";
 import { animated, useSpring } from "react-spring";
 import { useMarketCaps } from "../../api";
+import colors from "../../colors";
 import { WidgetBackground, WidgetTitle } from "../WidgetBits";
 
-type ProgressBarProps = { progress: number };
+type Icon = "btc" | "gold" | "usd"
 
-const ProgressBar: FC<ProgressBarProps> = ({ progress }) => {
+type ProgressBarProps = { highlightColor: string, showHighlight: boolean; progress: number };
+
+const ProgressBar: FC<ProgressBarProps> = ({ highlightColor, showHighlight, progress }) => {
   const { width } = useSpring({
     to: { width: clamp(progress * 100, 100) },
     from: { width: 0 },
   });
+
+  const backgroundColor = showHighlight ? highlightColor : colors.spindle
 
   return (
     <div className="relative">
       <div className="w-full h-2 rounded-full bg-blue-dusk"></div>
       <animated.div
         className="absolute top-0 h-2 rounded-full bg-blue-spindle"
-        style={{ width: width.to((width) => `${width}%`) }}
+        style={{ width: width.to((width) => `${width}%`), background: backgroundColor }}
       ></animated.div>
     </div>
   );
 };
 
 type RowProps = {
-  icon: string;
-  title: string;
+  highlightColor: string;
+  icon: Icon
   progress: number;
+  title: string;
 };
 
-const Row: FC<RowProps> = ({ icon, title, progress }) => {
+const Row: FC<RowProps> = ({ highlightColor, title, progress, icon  }) => {
+  const [hovering, setHovering] = useState(false)
+
+  const iconStyle = hovering ? "color" : "blueish"
+
   return (
-    <div className="flex flex-row items-start gap-x-4">
-      <img className="" src={icon} alt="" />
+    <div className="flex flex-row items-start gap-x-4" onMouseEnter={() => setHovering(true)} onMouseLeave={() => setHovering(false)}>
+      <img className="" src={`/${icon}-${iconStyle}.svg`} alt={`${icon} icon`} />
       <div className="w-full flex flex-col justify-between">
-        <ProgressBar progress={progress} />
+        <ProgressBar highlightColor={highlightColor} showHighlight={hovering} progress={progress} />
         <div
           className="flex flex-row justify-between"
           style={{ paddingTop: "0.1875rem" }}
@@ -79,9 +89,9 @@ const Flippenings: FC = () => {
     <WidgetBackground>
       <WidgetTitle title="flippenings" />
       <div className="flex flex-col gap-y-4 mt-4">
-        <Row title="bitcoin" icon="/btc-styled.svg" progress={btcProgress} />
-        <Row title="gold" icon="/gold-styled.svg" progress={goldProgress} />
-        <Row title="usd" icon="/usd-styled.svg" progress={usdProgress} />
+        <Row icon="btc" highlightColor="linear-gradient(88.24deg, #FF891D -10.74%, #E8AB74 115.66%)" title="bitcoin" progress={btcProgress} />
+        <Row icon="gold" highlightColor="linear-gradient(85.54deg, #FCD34D 3.61%, #FBE18C 528.11%)" title="gold" progress={goldProgress} />
+        <Row icon="usd" highlightColor="linear-gradient(78.13deg, #A3D972 8.69%, #C4E6A5 1527.23%)" title="usd" progress={usdProgress} />
       </div>
     </WidgetBackground>
   );
