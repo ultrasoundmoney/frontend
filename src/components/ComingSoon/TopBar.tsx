@@ -35,7 +35,7 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
 
   const ethUsd24hChange =
     ethPrice?.usd24hChange !== undefined
-      ? Format.formatPercentOneDigitSigned(ethPrice.usd24hChange / 1000)
+      ? Format.formatPercentOneDigitSigned(ethPrice.usd24hChange / 100)
       : undefined;
 
   const color =
