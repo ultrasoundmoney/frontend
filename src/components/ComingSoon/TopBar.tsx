@@ -2,6 +2,7 @@ import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import CountUp from "react-countup";
 import { EthPrice, useBaseFeePerGas, useEthPrice } from "../../api";
 import * as Format from "../../format";
+import { O, pipe } from "../../fp";
 import { useLocalStorage } from "../../use-local-storage";
 import useNotification from "../../use-notification";
 import { weiToGwei } from "../../utils/metric-utils";
@@ -33,10 +34,13 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
     startEthPrice = ethPrice?.usd;
   }
 
-  const ethUsd24hChange =
-    ethPrice?.usd24hChange !== undefined
-      ? Format.formatPercentOneDigitSigned(ethPrice.usd24hChange / 100)
-      : undefined;
+  const ethUsd24hChange = pipe(
+    ethPrice?.usd24hChange,
+    O.fromNullable,
+    O.map((num) => num / 100),
+    O.map(Format.formatPercentOneDigitSigned),
+    O.toUndefined
+  );
 
   const color =
     typeof ethPrice?.usd24hChange === "number" && ethPrice?.usd24hChange < 0
