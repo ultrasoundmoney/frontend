@@ -49,10 +49,14 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
   return (
     <WidgetBackground>
       <div className="flex flex-col gap-y-4">
-        <div className="flex justify-between font-inter text-blue-spindle">
-          <span className="w-5/12 uppercase">block</span>
-          <span className="w-3/12 text-right uppercase">gas</span>
-          <span className="w-4/12 text-right uppercase">burn</span>
+        <div className="grid grid-cols-3">
+          <span className="font-inter text-blue-spindle uppercase">block</span>
+          <span className="font-inter text-blue-spindle text-right uppercase">
+            gas
+          </span>
+          <span className="font-inter text-blue-spindle text-right uppercase">
+            burn
+          </span>
         </div>
         <ul className="flex flex-col gap-y-4">
           {latestBlockFees !== undefined && latestBlockFees.length === 0 ? (
@@ -80,11 +84,11 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
                           target="_blank"
                           rel="noreferrer"
                         >
-                          <li className="flex justify-between hover:opacity-60 link-animation">
-                            <span className="w-5/12 font-roboto text-white">
+                          <li className="grid grid-cols-3 justify-between hover:opacity-60 link-animation">
+                            <span className="font-roboto text-white">
                               {formatNoDigit(number)}
                             </span>
-                            <div className="w-3/12 text-right">
+                            <div className="text-right">
                               <span className="font-roboto text-white">
                                 {formatZeroDigit(weiToGwei(baseFeePerGas))}
                               </span>
@@ -97,7 +101,7 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
                                 </>
                               )}
                             </div>
-                            <div className="w-4/12 text-right">
+                            <div className="text-right">
                               <span className="font-roboto text-white">
                                 {unit === "eth"
                                   ? formatWeiTwoDigit(fees)
