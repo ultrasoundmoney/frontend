@@ -4,6 +4,8 @@ import FollowingYou from "../FollowingYou";
 import FaqBlock from "../Landing/faq";
 import SupplyView from "../SupplyView";
 import TwitterCommunity from "../TwitterCommunity";
+import Flippenings from "./Flippenings";
+import Scarcity from "./Scarcity";
 import TopBar from "./TopBar";
 import Widgets from "./Widgets";
 
@@ -47,6 +49,16 @@ const ComingSoon: FC = () => {
         {/*   <source src="/moving-orbs.webm" type="video/webm; codecs='vp9'" /> */}
         {/* </video> */}
         <Widgets />
+
+        <div className="h-16"></div>
+        <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8">
+          monetary premium
+        </h1>
+        <div className="h-4"></div>
+        <div className="flex items-start md:gap-0 lg:gap-4 px-4 md:px-16">
+          <Scarcity />
+          <Flippenings />
+        </div>
         <div className="flex flex-col px-4 md:px-16 pt-40 mb-16">
           <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8">
             {t.teaser_supply_title}

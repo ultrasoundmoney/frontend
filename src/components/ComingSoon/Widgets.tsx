@@ -1,16 +1,15 @@
-import React, { FC, useState, useCallback } from "react";
+import React, { FC, useCallback, useState } from "react";
 import { useBaseFeePerGas } from "../../api";
 import { weiToGwei } from "../../utils/metric-utils";
-import TimeFrameControl, { TimeFrame, timeFrames } from "../TimeFrameControl";
+import BurnLeaderboard from "../BurnLeaderboard";
+import FeeBurn from "../FeeBurn";
 import BurnGauge from "../Gauges/BurnGauge";
 import IssuanceGauge from "../Gauges/IssuanceGauge";
 import SupplyGrowthGauge from "../Gauges/SupplyGrowthGauge";
-import BurnLeaderboard from "../BurnLeaderboard";
-import FeeBurn from "../FeeBurn";
 import LatestBlocks from "../LatestBlocks";
+import TimeFrameControl, { TimeFrame, timeFrames } from "../TimeFrameControl";
 import { WidgetBackground } from "../WidgetBits";
 import CurrencyControl, { Unit } from "./CurrencyControl";
-import Flippenings from "./Flippenings";
 
 const Widgets: FC = () => {
   const [simulateMerge, setSimulateMerge] = useState(false);
@@ -93,7 +92,7 @@ const Widgets: FC = () => {
           timeFrame={timeFrame}
           unit={unit}
         />
-        <div className="lg:col-start-2 lg:row-start-1 lg:row-end-4">
+        <div className="lg:col-start-2 lg:row-start-1 lg:row-end-3">
           <BurnLeaderboard
             onClickTimeFrame={handleClickTimeFrame}
             timeFrame={timeFrame}
@@ -101,7 +100,6 @@ const Widgets: FC = () => {
           />
         </div>
         <LatestBlocks unit={unit} />
-        <Flippenings />
       </div>
     </>
   );
