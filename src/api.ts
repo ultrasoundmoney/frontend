@@ -301,7 +301,7 @@ export const useScarcity = (): Scarcity | undefined => {
       },
       staked: {
         ...data.engines.staked,
-        startedOn: new Date(data.engines.burned.startedOn),
+        startedOn: new Date(data.engines.staked.startedOn),
         amount: jsbiFromBigIntString(data.engines.staked.amount),
       },
     },
