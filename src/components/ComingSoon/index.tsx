@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react";
 import React, { FC, useContext } from "react";
 import { TranslationsContext } from "../../translations-context";
 import FollowingYou from "../FollowingYou";
@@ -48,8 +49,15 @@ const ComingSoon: FC = () => {
         {/*   <source src="/moving-orbs.mp4" type="video/mp4" /> */}
         {/*   <source src="/moving-orbs.webm" type="video/webm; codecs='vp9'" /> */}
         {/* </video> */}
-        <Widgets />
-
+        <Sentry.ErrorBoundary
+          fallback={
+            <div className="font-roboto text-white text-xl text-center">
+              an unexpected exception occured, devs have been notified.
+            </div>
+          }
+        >
+          <Widgets />
+        </Sentry.ErrorBoundary>
         <div className="h-32"></div>
         <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8">
           monetary premium
