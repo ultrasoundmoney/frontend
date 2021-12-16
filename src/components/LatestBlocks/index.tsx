@@ -84,7 +84,7 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
                           target="_blank"
                           rel="noreferrer"
                         >
-                          <li className="grid grid-cols-3 justify-between hover:opacity-60 link-animation">
+                          <li className="grid grid-cols-3 hover:opacity-60 link-animation">
                             <span className="font-roboto text-white">
                               {formatNoDigit(number)}
                             </span>
