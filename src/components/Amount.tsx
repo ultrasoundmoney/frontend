@@ -8,7 +8,7 @@ export const Amount: FC<{
   unit: Unit | "months";
   unitPrefix?: string;
 }> = ({ className, children, unitPrefix, unit }) => (
-  <span className={`font-roboto text-white ${className}`}>
+  <span className={`font-roboto text-white ${className ?? ""}`}>
     {children}
     {unitPrefix}
     <AmountUnitSpace />

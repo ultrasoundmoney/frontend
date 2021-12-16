@@ -5,7 +5,9 @@ export const LabelText: FC<{ className?: string }> = ({
   className,
 }) => (
   <span
-    className={`font-inter font-light text-blue-spindle text-md uppercase ${className}`}
+    className={`font-inter font-light text-blue-spindle text-md uppercase ${
+      className ?? ""
+    }`}
   >
     {children}
   </span>
