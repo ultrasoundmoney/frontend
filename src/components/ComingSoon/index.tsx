@@ -50,12 +50,12 @@ const ComingSoon: FC = () => {
         {/* </video> */}
         <Widgets />
 
-        <div className="h-16"></div>
+        <div className="h-32"></div>
         <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8">
           monetary premium
         </h1>
         <div className="h-4"></div>
-        <div className="flex items-start md:gap-0 lg:gap-4 px-4 md:px-16">
+        <div className="flex items-start flex-col lg:flex-row lg:gap-0 gap-y-4 lg:gap-4 px-4 md:px-16">
           <Scarcity />
           <Flippenings />
         </div>
