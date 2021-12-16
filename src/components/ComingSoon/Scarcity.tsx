@@ -110,13 +110,15 @@ const Scarcity: FC = () => {
           burned={mEthFromWei(scarcity.engines.burned.amount)}
         />
       )}
-      <div className="grid grid-cols-3 gap-y-4">
-        <LabelText>engine</LabelText>
-        <LabelText>amount</LabelText>
-        <LabelText className="text-right">time span</LabelText>
+      <div className="flex flex-col gap-y-4">
+        <div className="grid grid-cols-3">
+          <LabelText>engine</LabelText>
+          <LabelText className="text-right">amount</LabelText>
+          <LabelText className="text-right">time span</LabelText>
+        </div>
         {scarcity && (
           <>
-            <>
+            <div className="grid grid-cols-3 hover:opacity-60">
               <span className="font-inter text-white">staking</span>
               <Amount className="text-right" unitPrefix="M" unit="eth">
                 {mEthFromWeiFormatted(scarcity.engines.staked.amount)}
@@ -127,8 +129,8 @@ const Scarcity: FC = () => {
                   scarcity.engines.staked.startedOn
                 )}
               </Amount>
-            </>
-            <>
+            </div>
+            <div className="grid grid-cols-3 hover:opacity-60">
               <span className="font-inter text-white">defi</span>
               <Amount className="text-right" unitPrefix="M" unit="eth">
                 {Format.formatOneDigit(
@@ -141,8 +143,8 @@ const Scarcity: FC = () => {
                   scarcity.engines.locked.startedOn
                 )}
               </Amount>
-            </>
-            <>
+            </div>
+            <div className="grid grid-cols-3 hover:opacity-60">
               <span className="font-inter text-white">burn</span>
               <Amount className="text-right" unitPrefix="M" unit="eth">
                 {mEthFromWeiFormatted(scarcity.engines.burned.amount)}
@@ -153,7 +155,7 @@ const Scarcity: FC = () => {
                   scarcity.engines.burned.startedOn
                 )}
               </Amount>
-            </>
+            </div>
           </>
         )}
       </div>
