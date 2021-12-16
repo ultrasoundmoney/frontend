@@ -35,25 +35,30 @@ const ScarcityBar: FC<{
     <div className="relative py-16">
       <div className="absolute w-full h-2 bg-orange-fire rounded-full"></div>
       <div
-        className="absolute h-2 bg-blue-dusk rounded-full pr-1"
+        className="absolute h-2 bg-blue-dusk rounded-full"
         style={{ width: `${totalSupplyPercent}%` }}
       ></div>
       <div
-        className="absolute h-2 bg-blue-spindle rounded-full pr-1"
+        className="absolute h-2 bg-blue-spindle rounded-full"
         style={{ width: `${stakedPlusLocked}%` }}
       ></div>
       <div
         className="absolute h-2 bg-blue-dusk"
-        style={{ left: `${stakedPlusLocked / 2}%`, width: "2px" }}
+        style={{ left: `calc(${stakedPlusLocked / 2}% - 1px`, width: "2px" }}
       ></div>
-      <div className="absolute top-8" style={{ width: `${stakedPlusLocked}%` }}>
-        <div className="flex justify-around">
+      <div
+        className="absolute top-8 flex"
+        style={{ width: `${stakedPlusLocked}%` }}
+      >
+        <div className="w-1/2 flex justify-center">
           <img
-            src="/icecube.svg"
+            src="/staked-coloroff.svg"
             alt="monocolor icecube, signifying staked ETH"
           />
+        </div>
+        <div className="w-1/2 flex justify-center">
           <img
-            src="/lock.svg"
+            src="/locked-coloroff.svg"
             alt="monocolor padlock, signifying ETH locked in DeFi"
           />
         </div>
