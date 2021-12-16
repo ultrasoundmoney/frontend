@@ -14,7 +14,7 @@ export const LabelText: FC<{ className?: string }> = ({
 );
 
 export const UnitText: FC = ({ children }) => (
-  <span className="font-roboto text-blue-spindle font-extralight">
+  <span className="font-roboto text-blue-spindle font-extralight text-base md:text-lg">
     {children}
   </span>
 );
