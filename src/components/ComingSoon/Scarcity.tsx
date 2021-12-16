@@ -99,7 +99,9 @@ const Scarcity: FC = () => {
     <WidgetBackground>
       <WidgetTitle title="scarcity" />
       {scarcity === undefined ? (
-        <div className="h-2 py-10 bg-blue-dusk"></div>
+        <div className="relative py-16">
+          <div className="absolute w-full h-2 bg-blue-dusk rounded-full"></div>
+        </div>
       ) : (
         <ScarcityBar
           staked={mEthFromWei(scarcity.engines.staked.amount)}
