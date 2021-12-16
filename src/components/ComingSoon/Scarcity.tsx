@@ -116,7 +116,7 @@ const Scarcity: FC = () => {
           <>
             <>
               <span className="font-inter text-white">staking</span>
-              <Amount unitPrefix="M" unit="eth">
+              <Amount className="text-right" unitPrefix="M" unit="eth">
                 {mEthFromWeiFormatted(scarcity.engines.staked.amount)}
               </Amount>
               <Amount className="text-right" unit="months">
@@ -128,7 +128,7 @@ const Scarcity: FC = () => {
             </>
             <>
               <span className="font-inter text-white">defi</span>
-              <Amount unitPrefix="M" unit="eth">
+              <Amount className="text-right" unitPrefix="M" unit="eth">
                 {Format.formatOneDigit(
                   scarcity.engines.locked.amount / 1_000_000
                 )}
@@ -142,7 +142,7 @@ const Scarcity: FC = () => {
             </>
             <>
               <span className="font-inter text-white">burn</span>
-              <Amount unitPrefix="M" unit="eth">
+              <Amount className="text-right" unitPrefix="M" unit="eth">
                 {mEthFromWeiFormatted(scarcity.engines.burned.amount)}
               </Amount>
               <Amount className="text-right" unit="months">
