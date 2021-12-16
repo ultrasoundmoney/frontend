@@ -84,7 +84,7 @@ const CumulativeFeeBurn: FC<Props> = ({
 
   // In ETH / min or USD K / min.
   const selectedBurnRate =
-    burnRates === undefined
+    burnRates === undefined || null
       ? undefined
       : unit === "eth"
       ? weiToEth(burnRates[timeframeBurnRateMap[timeFrame][unit]])
@@ -115,7 +115,7 @@ const CumulativeFeeBurn: FC<Props> = ({
   const issuanceOffset =
     selectedFeesBurnedEth === undefined || selectedIssuance === undefined
       ? undefined
-      : (selectedFeesBurnedEth / selectedIssuance);
+      : selectedFeesBurnedEth / selectedIssuance;
 
   // Keeps the width of the fees burned amount the same to make the animation look more stable.
   const startFeesBurned =

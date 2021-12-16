@@ -84,12 +84,12 @@ export const useFeeData = (): FeeData => {
 
   return data !== undefined
     ? {
-        baseFeePerGas: data.baseFeePerGas,
-        burnRates: data.burnRates,
-        latestBlockFees: data.latestBlockFees,
+        baseFeePerGas: data.baseFeePerGas ?? undefined,
+        burnRates: data.burnRates ?? undefined,
+        latestBlockFees: data.latestBlockFees ?? undefined,
         number: data.number,
-        feesBurned: data.feesBurned,
-        leaderboards: data.leaderboards,
+        feesBurned: data.feesBurned ?? undefined,
+        leaderboards: data.leaderboards ?? undefined,
       }
     : {
         baseFeePerGas: undefined,
