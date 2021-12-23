@@ -1,6 +1,6 @@
 import * as DateFns from "date-fns";
 import JSBI from "jsbi";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { useScarcity } from "../../api";
 import * as Format from "../../format";
 import { pipe } from "../../fp";
@@ -8,12 +8,31 @@ import { Amount } from "../Amount";
 import { LabelText } from "../Texts";
 import { WidgetBackground, WidgetTitle } from "../WidgetBits";
 
-const ScarcityBar: FC<{
+type ScarcityBarProps = {
   staked: number;
   locked: number;
   supply: number;
   burned: number;
-}> = ({ staked, locked, supply, burned }) => {
+  onHoverStaked: (hovering: boolean) => void;
+  onHoverLocked: (hovering: boolean) => void;
+  onHoverBurned: (hovering: boolean) => void;
+  hoveringStaked: boolean;
+  hoveringLocked: boolean;
+  hoveringBurned: boolean;
+};
+
+const ScarcityBar: FC<ScarcityBarProps> = ({
+  staked,
+  locked,
+  supply,
+  burned,
+  onHoverBurned,
+  onHoverLocked,
+  onHoverStaked,
+  hoveringBurned,
+  hoveringLocked,
+  hoveringStaked,
+}) => {
   // We don't have ETH issued, we use burned + current supply to get it instead.
   const totalIssued = burned + supply;
 
@@ -27,61 +46,117 @@ const ScarcityBar: FC<{
   const lockedPercent = (locked / supply) * 100;
   const stakedPlusLocked = ((staked + locked) / supply) * 100;
 
-  // We scale up because the bar is too short otherwise.
-  // const scalingFactor = 4;
-  // const stakedPlusLockedWidth = stakedPlusLocked * scalingFactor;
-
   return (
-    <div className="relative py-16">
-      <div className="absolute w-full h-2 bg-orange-fire rounded-full"></div>
-      <div
-        className="absolute h-2 bg-blue-dusk rounded-full"
-        style={{ width: `${totalSupplyPercent}%` }}
-      ></div>
-      <div
-        className="absolute h-2 bg-blue-spindle rounded-full"
-        style={{ width: `${stakedPlusLocked}%` }}
-      ></div>
-      <div
-        className="absolute h-2 bg-blue-dusk"
-        style={{ left: `calc(${stakedPlusLocked / 2}% - 1px`, width: "2px" }}
-      ></div>
-      <div
-        className="absolute top-8 flex"
-        style={{ width: `${stakedPlusLocked}%` }}
-      >
-        <div className="w-1/2 flex justify-center">
+    <div className="relative">
+      <div className="h-28 flex items-center">
+        <div
+          className="absolute w-full h-2 bg-orange-fire rounded-full"
+          style={{
+            opacity: hoveringBurned ? 0.6 : 1,
+          }}
+        ></div>
+        <div
+          className="absolute h-2 bg-blue-dusk rounded-full"
+          style={{ width: `${totalSupplyPercent}%` }}
+        ></div>
+      </div>
+      <div className="absolute h-28 flex flex-row w-full top-0 left-0 items-center">
+        <div
+          className="flex flex-col items-center"
+          style={{
+            width: `${stakedPercent}%`,
+          }}
+          onMouseEnter={() => onHoverStaked(true)}
+          onMouseLeave={() => onHoverStaked(false)}
+        >
           <img
+            className="relative"
             src="/staked-coloroff.svg"
-            alt="monocolor icecube, signifying staked ETH"
+            alt="monocolor ice crystal, signifying staked ETH"
+            style={{
+              height: "21px",
+              marginBottom: "12px",
+              visibility: hoveringStaked ? "hidden" : "visible",
+            }}
           />
-        </div>
-        <div className="w-1/2 flex justify-center">
           <img
-            src="/locked-coloroff.svg"
-            alt="monocolor padlock, signifying ETH locked in DeFi"
+            className="absolute"
+            src="/staked-coloron.svg"
+            alt="colored ice crystal, signifying staked ETH"
+            style={{
+              height: "21px",
+              marginBottom: "12px",
+              visibility: hoveringStaked ? "visible" : "hidden",
+            }}
           />
-        </div>
-      </div>
-      <div
-        className="absolute top-8 right-0"
-        // Use this when the burn is big enough
-        // style={{ width: `${fractionBurnedPercent}%` }}
-      >
-        <img src="/flame.svg" alt="flame emoji, signifying ETH burned" />
-      </div>
-      <div
-        className="absolute bottom-6"
-        style={{ width: `${stakedPlusLocked}%` }}
-      >
-        <div className="flex justify-around">
-          <p className="font-roboto text-white">
+          <div
+            className="h-2 bg-blue-spindle rounded-l-full w-full"
+            style={{
+              opacity: hoveringStaked ? 0.6 : 1,
+            }}
+          ></div>
+          <p
+            className="font-roboto text-white"
+            style={{ marginTop: "9px", opacity: hoveringStaked ? 0.6 : 1 }}
+          >
             {Format.formatNoDigit(stakedPercent)}%
           </p>
-          <p className="font-roboto text-white">
+        </div>
+        <div
+          className="absolute h-2 bg-blue-dusk z-10"
+          style={{ left: `calc(${stakedPlusLocked / 2}% - 2px`, width: "2px" }}
+        ></div>
+        <div
+          className="flex flex-col items-center"
+          style={{
+            width: `${lockedPercent}%`,
+          }}
+          onMouseEnter={() => onHoverLocked(true)}
+          onMouseLeave={() => onHoverLocked(false)}
+        >
+          <img
+            className="relative"
+            src="/locked-coloroff.svg"
+            alt="monocolor padlock, signifying ETH locked in DeFi"
+            style={{
+              height: "21px",
+              marginBottom: "12px",
+              visibility: hoveringLocked ? "hidden" : "visible",
+            }}
+          />
+          <img
+            className="absolute"
+            src="/locked-coloron.svg"
+            alt="colored padlock, signifying ETH locked in DeFi"
+            style={{
+              height: "21px",
+              marginBottom: "12px",
+              visibility: hoveringLocked ? "visible" : "hidden",
+            }}
+          />
+          <div
+            className="h-2 bg-blue-spindle rounded-r-full w-full"
+            style={{ opacity: hoveringLocked ? 0.6 : 1 }}
+          ></div>
+          <p
+            className="font-roboto text-white"
+            style={{ marginTop: "9px", opacity: hoveringLocked ? 0.6 : 1 }}
+          >
             {Format.formatNoDigit(lockedPercent)}%
           </p>
         </div>
+      </div>
+      <div
+        className="absolute top-5 right-0"
+        style={{
+          opacity: hoveringBurned ? 0.6 : 1,
+          // Use this when the burn is big enough
+          // width: `${fractionBurnedPercent}%`
+        }}
+        onMouseEnter={() => onHoverBurned(true)}
+        onMouseLeave={() => onHoverBurned(false)}
+      >
+        <img src="/flame.svg" alt="flame emoji, signifying ETH burned" />
       </div>
     </div>
   );
@@ -89,6 +164,9 @@ const ScarcityBar: FC<{
 
 const Scarcity: FC = () => {
   const scarcity = useScarcity();
+  const [hoveringStaked, setHoveringStaked] = useState(false);
+  const [hoveringLocked, setHoveringLocked] = useState(false);
+  const [hoveringBurned, setHoveringBurned] = useState(false);
 
   const mEthFromWei = (num: JSBI): number =>
     pipe(
@@ -113,6 +191,12 @@ const Scarcity: FC = () => {
           locked={scarcity.engines.locked.amount / 10 ** 6}
           supply={mEthFromWei(scarcity.ethSupply)}
           burned={mEthFromWei(scarcity.engines.burned.amount)}
+          onHoverStaked={setHoveringStaked}
+          onHoverLocked={setHoveringLocked}
+          onHoverBurned={setHoveringBurned}
+          hoveringStaked={hoveringStaked}
+          hoveringLocked={hoveringLocked}
+          hoveringBurned={hoveringBurned}
         />
       )}
       <div className="flex flex-col gap-y-4">
@@ -123,7 +207,12 @@ const Scarcity: FC = () => {
         </div>
         {scarcity && (
           <>
-            <div className="grid grid-cols-3 hover:opacity-60">
+            <div
+              className="grid grid-cols-3"
+              onMouseEnter={() => setHoveringStaked(true)}
+              onMouseLeave={() => setHoveringStaked(false)}
+              style={{ opacity: hoveringStaked ? 0.6 : 1 }}
+            >
               <span className="font-inter text-white">staking</span>
               <Amount className="text-right" unitPrefix="M" unit="eth">
                 {mEthFromWeiFormatted(scarcity.engines.staked.amount)}
@@ -135,7 +224,12 @@ const Scarcity: FC = () => {
                 )}
               </Amount>
             </div>
-            <div className="grid grid-cols-3 hover:opacity-60">
+            <div
+              className="grid grid-cols-3"
+              onMouseEnter={() => setHoveringLocked(true)}
+              onMouseLeave={() => setHoveringLocked(false)}
+              style={{ opacity: hoveringLocked ? 0.6 : 1 }}
+            >
               <span className="font-inter text-white">defi</span>
               <Amount className="text-right" unitPrefix="M" unit="eth">
                 {Format.formatOneDigit(
@@ -149,7 +243,12 @@ const Scarcity: FC = () => {
                 )}
               </Amount>
             </div>
-            <div className="grid grid-cols-3 hover:opacity-60">
+            <div
+              className="grid grid-cols-3"
+              onMouseEnter={() => setHoveringBurned(true)}
+              onMouseLeave={() => setHoveringBurned(false)}
+              style={{ opacity: hoveringBurned ? 0.6 : 1 }}
+            >
               <span className="font-inter text-white">burn</span>
               <Amount className="text-right" unitPrefix="M" unit="eth">
                 {mEthFromWeiFormatted(scarcity.engines.burned.amount)}
