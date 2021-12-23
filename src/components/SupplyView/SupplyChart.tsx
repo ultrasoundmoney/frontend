@@ -1,29 +1,23 @@
-import * as React from "react";
-import { DateTime } from "luxon";
 import Highcharts from "highcharts";
-import highchartsAnnotations from "highcharts/modules/annotations";
 import HighchartsReact from "highcharts-react-official";
-import merge from "lodash/merge";
+import highchartsAnnotations from "highcharts/modules/annotations";
 import last from "lodash/last";
-
-import { useDebounce } from "../../utils/use-debounce";
+import merge from "lodash/merge";
+import { DateTime } from "luxon";
+import * as React from "react";
+import { useSupplyProjectionInputs } from "../../api";
+import { formatOneDigit } from "../../format";
+import { TranslationsContext } from "../../translations-context";
+import { COLORS, defaultOptions } from "../../utils/chart-defaults";
 import {
   estimatedDailyFeeBurn,
   estimatedDailyIssuance,
   estimatedDailyStakeChange,
   formatDate,
 } from "../../utils/metric-utils";
+import { useDebounce } from "../../utils/use-debounce";
 import { useOnResize } from "../../utils/use-on-resize";
-import { defaultOptions, COLORS } from "../../utils/chart-defaults";
-
-// TODO load these from API
-import supplyData from "./supply-total.json";
-import stakingData from "./supply-staking.json";
-import contractData from "./supply-in-smart-contracts.json";
-
 import styles from "./SupplyChart.module.scss";
-import { TranslationsContext } from "../../translations-context";
-import { formatOneDigit } from "../../format";
 
 if (typeof window !== "undefined") {
   // Initialize highchats annotations module (onlly on browser, doesn't work on server)
@@ -66,7 +60,6 @@ const SupplyChart: React.FC<Props> = ({
     // the page finishes loading. Force a reflow to handle this.
     const hc = containerRef.current!.querySelector(".highcharts-container");
     if (hc!.clientWidth > containerRef.current!.clientWidth) {
-      console.log("reflow supply chart!");
       chartRef.current!.chart.reflow();
     }
   }, [t]);
@@ -148,12 +141,20 @@ const SupplyChart: React.FC<Props> = ({
     [chartSettings, t]
   );
 
+  const projectionsInputs = useSupplyProjectionInputs();
+
   // Transform our input data into series that we'll pass to highcharts
   const [series, annotations, totalSupplyByDate] = React.useMemo((): [
     Highcharts.SeriesAreaOptions[],
     Highcharts.AnnotationsLabelsOptions[],
     Record<string, number>
   ] => {
+    if (projectionsInputs === undefined) {
+      return [[], [], {}];
+    }
+
+    const { stakingData, contractData, supplyData } = projectionsInputs;
+
     const stakingByDate = {};
     stakingData.forEach(({ t, v }) => {
       stakingByDate[t] = v;
@@ -174,7 +175,7 @@ const SupplyChart: React.FC<Props> = ({
     const numSupplyDataPoints = supplyData.length;
 
     let maxSupply: number | null = null;
-    let peakSupply: [string, number] | null = null;
+    let peakSupply: [number, number] | null = null;
 
     supplyData.forEach(({ t: timestamp, v }, i) => {
       // Calculate peak supply
@@ -190,7 +191,7 @@ const SupplyChart: React.FC<Props> = ({
         return;
       }
 
-      const date = DateTime.fromISO(timestamp, { zone: "utc" });
+      const date = DateTime.fromSeconds(timestamp, { zone: "utc" });
       const dateMillis = date.toMillis();
 
       // Subtract any staking eth from total supply on that date
@@ -225,8 +226,8 @@ const SupplyChart: React.FC<Props> = ({
     const lastContractPoint = last(contractSeriesData);
 
     // Projection should be 1/3 of chart
-    const firstDate = DateTime.fromISO(supplyData[0].t, { zone: "utc" });
-    const lastDate = DateTime.fromISO(last(supplyData)!.t, { zone: "utc" });
+    const firstDate = DateTime.fromSeconds(supplyData[0].t, { zone: "utc" });
+    const lastDate = DateTime.fromSeconds(last(supplyData)!.t, { zone: "utc" });
     const daysOfData = lastDate.diff(firstDate, "days").days;
     const daysOfProjection = Math.floor(daysOfData / 2);
 
@@ -301,7 +302,7 @@ const SupplyChart: React.FC<Props> = ({
         !peakSupply &&
         isLongTermContractingSupply
       ) {
-        peakSupply = [projDate.toISO(), adjustedSupplyValue];
+        peakSupply = [projDate.toSeconds(), adjustedSupplyValue];
       }
 
       // Only render every Nth point for chart performance
@@ -419,13 +420,15 @@ const SupplyChart: React.FC<Props> = ({
     // If we found a peak supply value, render an annotation at the peak
     const annotations: Highcharts.AnnotationsLabelsOptions[] = [];
     if (peakSupply) {
-      const peakSupplyDate = DateTime.fromISO(peakSupply[0], { zone: "utc" });
+      const peakSupplyDate = DateTime.fromSeconds(peakSupply[0], {
+        zone: "utc",
+      });
       const isProjected = peakSupplyDate.toMillis() > DateTime.utc().toMillis();
       const annotation: Highcharts.AnnotationsLabelsOptions = {
         point: {
           xAxis: 0,
           yAxis: 0,
-          x: DateTime.fromISO(peakSupply[0], { zone: "utc" }).toMillis(),
+          x: DateTime.fromSeconds(peakSupply[0], { zone: "utc" }).toMillis(),
           y: maxSupply!,
         },
         text: `<div class="ann-root">
@@ -446,7 +449,7 @@ const SupplyChart: React.FC<Props> = ({
     }
 
     return [series, annotations, supplyByDate];
-  }, [chartSettings, onPeakProjectedToggle, t]);
+  }, [chartSettings, onPeakProjectedToggle, t, projectionsInputs]);
 
   // Now build up the Highcharts configuration object
   const options = React.useMemo((): Highcharts.Options => {
