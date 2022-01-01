@@ -171,8 +171,8 @@ const Scarcity: FC = () => {
   const mEthFromWei = (num: JSBI): number =>
     pipe(
       num,
-      (num) => JSBI.divide(num, JSBI.BigInt(10 ** (18 + 6))),
-      (num) => JSBI.toNumber(num)
+      (num) => JSBI.toNumber(num),
+      (num) => num / 10 ** (18 + 6)
     );
 
   const mEthFromWeiFormatted = (num: JSBI): string =>
