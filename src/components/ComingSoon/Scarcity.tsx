@@ -210,11 +210,13 @@ const Scarcity: FC = () => {
         </div>
         {scarcity && (
           <>
-            <div
+            <a
               className="grid grid-cols-3"
               onMouseEnter={() => setHoveringStaked(true)}
               onMouseLeave={() => setHoveringStaked(false)}
               style={{ opacity: hoveringStaked ? 0.6 : 1 }}
+              href="https://beaconcha.in/charts/staked_ether"
+              target="_blank"
             >
               <span className="font-inter text-white">staking</span>
               <Amount className="text-right" unitPrefix="M" unit="eth">
@@ -229,12 +231,14 @@ const Scarcity: FC = () => {
                   ).split(" ")[0]
                 }
               </Amount>
-            </div>
-            <div
+            </a>
+            <a
               className="grid grid-cols-3"
               onMouseEnter={() => setHoveringLocked(true)}
               onMouseLeave={() => setHoveringLocked(false)}
               style={{ opacity: hoveringLocked ? 0.6 : 1 }}
+              href="https://defipulse.com/"
+              target="_blank"
             >
               <span className="font-inter text-white">defi</span>
               <Amount className="text-right" unitPrefix="M" unit="eth">
@@ -251,12 +255,14 @@ const Scarcity: FC = () => {
                   ).split(" ")[0]
                 }
               </Amount>
-            </div>
-            <div
+            </a>
+            <a
               className="grid grid-cols-3"
               onMouseEnter={() => setHoveringBurned(true)}
               onMouseLeave={() => setHoveringBurned(false)}
               style={{ opacity: hoveringBurned ? 0.6 : 1 }}
+              href="https://dune.xyz/cembar/ETH-Burned"
+              target="_blank"
             >
               <span className="font-inter text-white">burn</span>
               <Amount className="text-right" unitPrefix="M" unit="eth">
@@ -271,7 +277,7 @@ const Scarcity: FC = () => {
                   ).split(" ")[0]
                 }
               </Amount>
-            </div>
+            </a>
           </>
         )}
       </div>
