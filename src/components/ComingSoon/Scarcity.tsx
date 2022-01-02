@@ -169,22 +169,61 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
 
 export const ethFromWei = (wei: number) => wei / 10 ** 18;
 
+const mEthFromWei = (num: JSBI): number =>
+  pipe(
+    num,
+    (num) => JSBI.toNumber(num),
+    ethFromWei,
+    (num) => num / 10 ** 6
+  );
+
+const mEthFromWeiFormatted = (num: JSBI): string =>
+  pipe(num, mEthFromWei, Format.formatOneDigit);
+
+type EngineRowProps = {
+  amountFormatted: string;
+  hovering: boolean;
+  link: string;
+  name: string;
+  setHovering: (hovering: boolean) => void;
+  startedOn: Date;
+};
+
+const EngineRow: FC<EngineRowProps> = ({
+  amountFormatted,
+  hovering,
+  link,
+  name,
+  setHovering,
+  startedOn,
+}) => (
+  <a
+    className="grid grid-cols-3 link-animation"
+    onMouseEnter={() => setHovering(true)}
+    onMouseLeave={() => setHovering(false)}
+    style={{ opacity: hovering ? 0.6 : 1 }}
+    href={link}
+    target="_blank"
+  >
+    <span className="font-inter text-white">{name}</span>
+    <Amount className="text-right" unitPrefix="M" unit="eth">
+      {amountFormatted}
+    </Amount>
+    <Amount className="text-right" unit="months">
+      {
+        DateFns.formatDistanceStrict(startedOn, new Date(), {
+          unit: "month",
+        }).split(" ")[0]
+      }
+    </Amount>
+  </a>
+);
+
 const Scarcity: FC = () => {
   const scarcity = useScarcity();
   const [hoveringStaked, setHoveringStaked] = useState(false);
   const [hoveringLocked, setHoveringLocked] = useState(false);
   const [hoveringBurned, setHoveringBurned] = useState(false);
-
-  const mEthFromWei = (num: JSBI): number =>
-    pipe(
-      num,
-      (num) => JSBI.toNumber(num),
-      ethFromWei,
-      (num) => num / 10 ** 6
-    );
-
-  const mEthFromWeiFormatted = (num: JSBI): string =>
-    pipe(num, mEthFromWei, Format.formatOneDigit);
 
   return (
     <WidgetBackground>
@@ -215,74 +254,36 @@ const Scarcity: FC = () => {
         </div>
         {scarcity && (
           <>
-            <a
-              className="grid grid-cols-3"
-              onMouseEnter={() => setHoveringStaked(true)}
-              onMouseLeave={() => setHoveringStaked(false)}
-              style={{ opacity: hoveringStaked ? 0.6 : 1 }}
-              href="https://beaconcha.in/charts/staked_ether"
-              target="_blank"
-            >
-              <span className="font-inter text-white">staking</span>
-              <Amount className="text-right" unitPrefix="M" unit="eth">
-                {mEthFromWeiFormatted(scarcity.engines.staked.amount)}
-              </Amount>
-              <Amount className="text-right" unit="months">
-                {
-                  DateFns.formatDistanceStrict(
-                    scarcity.engines.staked.startedOn,
-                    new Date(),
-                    { unit: "month" }
-                  ).split(" ")[0]
-                }
-              </Amount>
-            </a>
-            <a
-              className="grid grid-cols-3"
-              onMouseEnter={() => setHoveringLocked(true)}
-              onMouseLeave={() => setHoveringLocked(false)}
-              style={{ opacity: hoveringLocked ? 0.6 : 1 }}
-              href="https://defipulse.com/"
-              target="_blank"
-            >
-              <span className="font-inter text-white">defi</span>
-              <Amount className="text-right" unitPrefix="M" unit="eth">
-                {Format.formatOneDigit(
-                  scarcity.engines.locked.amount / 1_000_000
-                )}
-              </Amount>
-              <Amount className="text-right" unit="months">
-                {
-                  DateFns.formatDistanceStrict(
-                    scarcity.engines.locked.startedOn,
-                    new Date(),
-                    { unit: "month" }
-                  ).split(" ")[0]
-                }
-              </Amount>
-            </a>
-            <a
-              className="grid grid-cols-3"
-              onMouseEnter={() => setHoveringBurned(true)}
-              onMouseLeave={() => setHoveringBurned(false)}
-              style={{ opacity: hoveringBurned ? 0.6 : 1 }}
-              href="https://dune.xyz/cembar/ETH-Burned"
-              target="_blank"
-            >
-              <span className="font-inter text-white">burn</span>
-              <Amount className="text-right" unitPrefix="M" unit="eth">
-                {mEthFromWeiFormatted(scarcity.engines.burned.amount)}
-              </Amount>
-              <Amount className="text-right" unit="months">
-                {
-                  DateFns.formatDistanceStrict(
-                    scarcity.engines.burned.startedOn,
-                    new Date(),
-                    { unit: "month" }
-                  ).split(" ")[0]
-                }
-              </Amount>
-            </a>
+            <EngineRow
+              amountFormatted={mEthFromWeiFormatted(
+                scarcity.engines.staked.amount
+              )}
+              hovering={hoveringStaked}
+              link="https://beaconcha.in/charts/staked_ether"
+              name="staking"
+              setHovering={setHoveringStaked}
+              startedOn={scarcity.engines.staked.startedOn}
+            />
+            <EngineRow
+              amountFormatted={Format.formatOneDigit(
+                scarcity.engines.locked.amount / 1_000_000
+              )}
+              hovering={hoveringLocked}
+              link="https://defipulse.com/"
+              name="defi"
+              setHovering={setHoveringLocked}
+              startedOn={scarcity.engines.locked.startedOn}
+            />
+            <EngineRow
+              amountFormatted={mEthFromWeiFormatted(
+                scarcity.engines.burned.amount
+              )}
+              hovering={hoveringBurned}
+              link="https://dune.xyz/cembar/ETH-Burned"
+              name="burn"
+              setHovering={setHoveringBurned}
+              startedOn={scarcity.engines.burned.startedOn}
+            />
           </>
         )}
       </div>
