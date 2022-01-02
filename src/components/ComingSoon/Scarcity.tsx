@@ -162,6 +162,8 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
   );
 };
 
+export const ethFromWei = (wei: number) => wei / 10 ** 18;
+
 const Scarcity: FC = () => {
   const scarcity = useScarcity();
   const [hoveringStaked, setHoveringStaked] = useState(false);
@@ -172,7 +174,8 @@ const Scarcity: FC = () => {
     pipe(
       num,
       (num) => JSBI.toNumber(num),
-      (num) => num / 10 ** (18 + 6)
+      ethFromWei,
+      (num) => num / 10 ** 6
     );
 
   const mEthFromWeiFormatted = (num: JSBI): string =>
@@ -218,10 +221,13 @@ const Scarcity: FC = () => {
                 {mEthFromWeiFormatted(scarcity.engines.staked.amount)}
               </Amount>
               <Amount className="text-right" unit="months">
-                {DateFns.differenceInMonths(
-                  new Date(),
-                  scarcity.engines.staked.startedOn
-                )}
+                {
+                  DateFns.formatDistanceStrict(
+                    scarcity.engines.staked.startedOn,
+                    new Date(),
+                    { unit: "month" }
+                  ).split(" ")[0]
+                }
               </Amount>
             </div>
             <div
@@ -237,10 +243,13 @@ const Scarcity: FC = () => {
                 )}
               </Amount>
               <Amount className="text-right" unit="months">
-                {DateFns.differenceInMonths(
-                  new Date(),
-                  scarcity.engines.locked.startedOn
-                )}
+                {
+                  DateFns.formatDistanceStrict(
+                    scarcity.engines.locked.startedOn,
+                    new Date(),
+                    { unit: "month" }
+                  ).split(" ")[0]
+                }
               </Amount>
             </div>
             <div
@@ -254,10 +263,13 @@ const Scarcity: FC = () => {
                 {mEthFromWeiFormatted(scarcity.engines.burned.amount)}
               </Amount>
               <Amount className="text-right" unit="months">
-                {DateFns.differenceInMonths(
-                  new Date(),
-                  scarcity.engines.burned.startedOn
-                )}
+                {
+                  DateFns.formatDistanceStrict(
+                    scarcity.engines.burned.startedOn,
+                    new Date(),
+                    { unit: "month" }
+                  ).split(" ")[0]
+                }
               </Amount>
             </div>
           </>
