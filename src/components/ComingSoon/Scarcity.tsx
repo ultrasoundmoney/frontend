@@ -60,7 +60,12 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
           style={{ width: `${totalSupplyPercent}%` }}
         ></div>
       </div>
-      <div className="absolute h-28 flex flex-row w-full top-0 left-0 items-center">
+      <div
+        className="absolute h-28 flex flex-row top-0 left-0 items-center"
+        style={{
+          width: `${(supply / totalIssued) * 100}%`,
+        }}
+      >
         <div
           className="flex flex-col items-center"
           style={{
