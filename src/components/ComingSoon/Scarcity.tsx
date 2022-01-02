@@ -54,6 +54,8 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
           style={{
             opacity: hoveringBurned ? 0.6 : 1,
           }}
+          onMouseEnter={() => onHoverBurned(true)}
+          onMouseLeave={() => onHoverBurned(false)}
         ></div>
         <div
           className="absolute h-2 bg-blue-dusk rounded-full"
