@@ -2,6 +2,7 @@ import * as DateFns from "date-fns";
 import JSBI from "jsbi";
 import React, { FC, useState } from "react";
 import { useScarcity } from "../../api";
+import Colors from "../../colors";
 import * as Format from "../../format";
 import { pipe } from "../../fp";
 import { Amount } from "../Amount";
@@ -50,9 +51,11 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
     <div className="relative">
       <div className="h-28 flex items-center">
         <div
-          className="absolute w-full h-2 bg-orange-fire rounded-full"
+          className="absolute w-full h-2 bg-orange-fire rounded-full color-animation"
           style={{
-            opacity: hoveringBurned ? 0.6 : 1,
+            backgroundColor: hoveringBurned
+              ? Colors.fireHighlight
+              : Colors.fireOrange,
           }}
           onMouseEnter={() => onHoverBurned(true)}
           onMouseLeave={() => onHoverBurned(false)}
@@ -97,14 +100,17 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
             }}
           />
           <div
-            className="h-2 bg-blue-spindle rounded-l-full w-full"
+            className="h-2 bg-blue-spindle rounded-l-full w-full color-animation"
             style={{
-              opacity: hoveringStaked ? 0.6 : 1,
+              backgroundColor: hoveringStaked ? Colors.white : Colors.spindle,
             }}
           ></div>
           <p
-            className="font-roboto text-white"
-            style={{ marginTop: "9px", opacity: hoveringStaked ? 0.6 : 1 }}
+            className="font-roboto text-white color-animation"
+            style={{
+              marginTop: "9px",
+              color: hoveringStaked ? Colors.white : Colors.spindle,
+            }}
           >
             {Format.formatNoDigit(stakedPercent)}%
           </p>
@@ -142,28 +148,47 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
             }}
           />
           <div
-            className="h-2 bg-blue-spindle rounded-r-full w-full"
-            style={{ opacity: hoveringLocked ? 0.6 : 1 }}
+            className="h-2 bg-blue-spindle rounded-r-full w-full color-animation"
+            style={{
+              backgroundColor: hoveringLocked ? Colors.white : Colors.spindle,
+            }}
           ></div>
           <p
-            className="font-roboto text-white"
-            style={{ marginTop: "9px", opacity: hoveringLocked ? 0.6 : 1 }}
+            className="font-roboto color-animation"
+            style={{
+              marginTop: "9px",
+              color: hoveringLocked ? Colors.white : Colors.spindle,
+            }}
           >
             {Format.formatNoDigit(lockedPercent)}%
           </p>
         </div>
       </div>
       <div
-        className="absolute top-5 right-0"
-        style={{
-          opacity: hoveringBurned ? 0.6 : 1,
-          // Use this when the burn is big enough
-          // width: `${fractionBurnedPercent}%`
-        }}
+        className="absolute top-5 -right-1"
+        style={
+          {
+            // Use this when the burn is big enough
+            // width: `${fractionBurnedPercent}%`
+          }
+        }
         onMouseEnter={() => onHoverBurned(true)}
         onMouseLeave={() => onHoverBurned(false)}
       >
-        <img src="/flame.svg" alt="flame emoji, signifying ETH burned" />
+        <img
+          className="relative"
+          src="/flame.svg"
+          alt="flame emoji, signifying ETH burned"
+        />
+        <img
+          className="absolute top-0 link-animation"
+          style={{
+            opacity: hoveringBurned ? 1 : 0,
+            // visibility: hoveringBurned ? "visible" : "hidden",
+          }}
+          src="/flame-highlight.svg"
+          alt="flame emoji, signifying ETH burned"
+        />
       </div>
     </div>
   );
