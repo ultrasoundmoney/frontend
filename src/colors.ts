@@ -11,4 +11,5 @@ export default {
   spindle: "#b5bddb",
   tangaroa: "#1b2236",
   twilight: "#59588D",
+  white: "#FFFFFF",
 };
