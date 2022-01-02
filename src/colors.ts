@@ -2,6 +2,7 @@ export default {
   cloudyblue: "#AAAAD2",
   drop: "#5DADEC",
   dusk: "#464B6F",
+  fireHighlight: "#FFCC4D",
   fireOrange: "#F4900C",
   linkwater: "#c8cbd9",
   manatee: "#8888af",
