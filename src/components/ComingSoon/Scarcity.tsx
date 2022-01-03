@@ -196,7 +196,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
 
 export const ethFromWei = (wei: number) => wei / 10 ** 18;
 
-const mEthFromWei = (num: JSBI): number =>
+const mEthFromWei = (num: JSBI) =>
   pipe(
     num,
     (num) => JSBI.toNumber(num),
@@ -204,8 +204,16 @@ const mEthFromWei = (num: JSBI): number =>
     (num) => num / 10 ** 6
   );
 
+const floorOneDigit = (num: number) =>
+  pipe(
+    num,
+    (num) => num * 10,
+    Math.floor,
+    (num) => num / 10
+  );
+
 const mEthFromWeiFormatted = (num: JSBI): string =>
-  pipe(num, mEthFromWei, Format.formatOneDigit);
+  pipe(num, mEthFromWei, floorOneDigit, Format.formatOneDigit);
 
 type EngineRowProps = {
   amountFormatted: string;
