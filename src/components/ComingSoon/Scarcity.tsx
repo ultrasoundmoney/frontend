@@ -177,7 +177,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
       >
         <img
           className="relative"
-          src="/flame.svg"
+          src="/flame-base.svg"
           alt="flame emoji, signifying ETH burned"
         />
         <img
