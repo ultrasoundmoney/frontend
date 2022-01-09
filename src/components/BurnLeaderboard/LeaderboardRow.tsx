@@ -23,6 +23,62 @@ const getAdminToken = (): string | undefined => {
   return adminToken;
 };
 
+const onSetTwitterHandle = (adminToken: string, address: string) => {
+  const handle = window.prompt(`input twitter handle`);
+  if (handle === null) {
+    return;
+  }
+  Api.setContractTwitterHandle(adminToken, address, handle);
+};
+
+const onSetName = (adminToken: string, address: string) => {
+  const nameInput = window.prompt(`input name`);
+  if (nameInput === null) {
+    return;
+  }
+  Api.setContractName(adminToken, address, nameInput);
+};
+
+const onSetCategory = (adminToken: string, address: string) => {
+  const category = window.prompt(`input category`);
+  if (category === null) {
+    return;
+  }
+  Api.setContractCategory(adminToken, address, category);
+};
+
+const AdminControls: FC<{ adminToken: string; address: string }> = ({
+  adminToken,
+  address,
+}) => (
+  <div className="flex flex-row gap-4">
+    <a
+      className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
+      onClick={() => onSetTwitterHandle(adminToken, address)}
+      target="_blank"
+      rel="noreferrer"
+    >
+      set handle
+    </a>
+    <a
+      className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
+      onClick={() => onSetName(adminToken, address)}
+      target="_blank"
+      rel="noreferrer"
+    >
+      set name
+    </a>
+    <a
+      className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
+      onClick={() => onSetCategory(adminToken, address)}
+      target="_blank"
+      rel="noreferrer"
+    >
+      set category
+    </a>
+  </div>
+);
+
 type Props = {
   address?: string;
   category?: string | undefined;
@@ -58,38 +114,6 @@ const LeaderboardRow: FC<Props> = ({
       : "/leaderboard-images/question-mark-v2.svg";
 
   const adminToken = getAdminToken();
-
-  const onSetTwitterHandle = useCallback(() => {
-    const handle = window.prompt(`${name} twitter handle`);
-    if (adminToken === undefined || handle === null || address === undefined) {
-      return;
-    }
-    Api.setContractTwitterHandle(adminToken, address, handle);
-  }, [adminToken, address, name]);
-
-  const onSetName = useCallback(() => {
-    const nameInput = window.prompt(`${name} name`);
-    if (
-      adminToken === undefined ||
-      nameInput === null ||
-      address === undefined
-    ) {
-      return;
-    }
-    Api.setContractName(adminToken, address, nameInput);
-  }, [adminToken, address, name]);
-
-  const onSetCategory = useCallback(() => {
-    const category = window.prompt(`${name} category`);
-    if (
-      adminToken === undefined ||
-      category === null ||
-      address === undefined
-    ) {
-      return;
-    }
-    Api.setContractCategory(adminToken, address, category);
-  }, [adminToken, address, name]);
 
   //Your handler Component
   const onImageError = useCallback((e) => {
@@ -158,33 +182,8 @@ const LeaderboardRow: FC<Props> = ({
           </p>
         </div>
       </a>
-      {adminToken !== undefined && (
-        <div className="flex flex-row gap-4">
-          <a
-            className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
-            onClick={onSetTwitterHandle}
-            target="_blank"
-            rel="noreferrer"
-          >
-            set handle
-          </a>
-          <a
-            className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
-            onClick={onSetName}
-            target="_blank"
-            rel="noreferrer"
-          >
-            set name
-          </a>
-          <a
-            className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
-            onClick={onSetCategory}
-            target="_blank"
-            rel="noreferrer"
-          >
-            set category
-          </a>
-        </div>
+      {adminToken !== undefined && address !== undefined && (
+        <AdminControls address={address} adminToken={adminToken} />
       )}
     </div>
   );
