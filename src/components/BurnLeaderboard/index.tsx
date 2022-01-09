@@ -1,7 +1,7 @@
 import React, { FC, memo } from "react";
 import { useFeeData } from "../../api";
+import { TimeFrame } from "../../time_frames";
 import { Unit } from "../ComingSoon/CurrencyControl";
-import { TimeFrame } from "../TimeFrameControl";
 import { WidgetTitle } from "../WidgetBits";
 import LeaderboardRow from "./LeaderboardRow";
 

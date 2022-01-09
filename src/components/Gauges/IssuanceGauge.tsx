@@ -3,8 +3,8 @@ import BaseGauge from "./IssuanceBurnBaseGauge";
 import * as StaticEtherData from "../../static-ether-data";
 import colors from "../../colors";
 import { useAverageEthPrice } from "../../api";
-import { TimeFrame } from "../TimeFrameControl";
 import { Unit } from "../ComingSoon/CurrencyControl";
+import { TimeFrame } from "../../time_frames";
 
 type Props = {
   simulateMerge: boolean;

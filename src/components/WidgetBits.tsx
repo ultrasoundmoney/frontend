@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { TimeFrame } from "./TimeFrameControl";
+import { TimeFrame } from "../time_frames";
 import TimeFrameIndicator from "./TimeframeIndicator";
 
 export const WidgetBackground: FC = ({ children }) => (

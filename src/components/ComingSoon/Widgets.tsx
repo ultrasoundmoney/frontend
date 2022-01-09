@@ -1,6 +1,10 @@
 import React, { FC, useCallback, useState } from "react";
 import { useBaseFeePerGas } from "../../api";
-import { TimeFrame, timeFrames } from "../../time_frames";
+import {
+  timeFrameFromNext,
+  TimeFrameNext,
+  timeFramesNext,
+} from "../../time_frames";
 import { weiToGwei } from "../../utils/metric-utils";
 import BurnLeaderboard from "../BurnLeaderboard";
 import BurnRecords from "../BurnRecords";
@@ -16,7 +20,7 @@ import CurrencyControl, { Unit } from "./CurrencyControl";
 const Widgets: FC = () => {
   const [simulateMerge, setSimulateMerge] = useState(false);
   const baseFeePerGas = useBaseFeePerGas();
-  const [timeFrame, setTimeFrame] = useState<TimeFrame>("24h");
+  const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
 
   const onSetTimeFrame = useCallback(setTimeFrame, [setTimeFrame]);
@@ -33,33 +37,33 @@ const Widgets: FC = () => {
   }
 
   const handleClickTimeFrame = useCallback(() => {
-    const currentTimeFrameIndex = timeFrames.indexOf(timeFrame);
+    const currentTimeFrameIndex = timeFramesNext.indexOf(timeFrame);
     const nextIndex =
-      currentTimeFrameIndex === timeFrames.length - 1
+      currentTimeFrameIndex === timeFramesNext.length - 1
         ? 0
         : currentTimeFrameIndex + 1;
 
-    setTimeFrame(timeFrames[nextIndex]);
+    setTimeFrame(timeFramesNext[nextIndex]);
   }, [timeFrame]);
 
   return (
     <>
       <div className="w-full flex flex-col md:flex-row md:gap-0 lg:gap-4 px-4 md:px-16 isolate">
         <div className="hidden md:block w-1/3">
-          <BurnGauge timeFrame={timeFrame} unit={unit} />
+          <BurnGauge timeFrame={timeFrameFromNext[timeFrame]} unit={unit} />
         </div>
         <div className="md:w-1/3">
           <SupplyGrowthGauge
             onClickTimeFrame={handleClickTimeFrame}
             simulateMerge={simulateMerge}
-            timeFrame={timeFrame}
+            timeFrame={timeFrameFromNext[timeFrame]}
             toggleSimulateMerge={toggleSimulateMerge}
           />
         </div>
         <div className="hidden md:block w-1/3">
           <IssuanceGauge
             simulateMerge={simulateMerge}
-            timeFrame={timeFrame}
+            timeFrame={timeFrameFromNext[timeFrame]}
             unit={unit}
           />
         </div>
@@ -91,13 +95,13 @@ const Widgets: FC = () => {
         <FeeBurn
           onClickTimeFrame={handleClickTimeFrame}
           simulateMerge={simulateMerge}
-          timeFrame={timeFrame}
+          timeFrame={timeFrameFromNext[timeFrame]}
           unit={unit}
         />
         <div className="lg:col-start-2 lg:row-start-1 lg:row-end-3">
           <BurnLeaderboard
             onClickTimeFrame={handleClickTimeFrame}
-            timeFrame={timeFrame}
+            timeFrame={timeFrameFromNext[timeFrame]}
             unit={unit}
           />
         </div>

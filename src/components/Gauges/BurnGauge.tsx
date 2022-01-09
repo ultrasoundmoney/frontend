@@ -1,20 +1,20 @@
 import { FC } from "react";
 import { useFeeData } from "../../api";
 import colors from "../../colors";
+import { TimeFrame } from "../../time_frames";
 import { weiToEth } from "../../utils/metric-utils";
 import { Unit } from "../ComingSoon/CurrencyControl";
 import { timeframeBurnRateMap } from "../FeeBurn";
-import { TimeFrame } from "../TimeFrameControl";
 import BaseGauge from "./IssuanceBurnBaseGauge";
 
 type BurnGaugeProps = { timeFrame: TimeFrame; unit: Unit };
 
-const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame: timeframe, unit }) => {
+const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame, unit }) => {
   const { burnRates } = useFeeData();
 
   const selectedBurnRate =
     burnRates !== undefined
-      ? burnRates[timeframeBurnRateMap[timeframe][unit]]
+      ? burnRates[timeframeBurnRateMap[timeFrame][unit]]
       : undefined;
 
   const burnRate =

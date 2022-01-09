@@ -7,10 +7,10 @@ import { londonHardforkTimestamp } from "../../dates";
 import * as StaticEtherData from "../../static-ether-data";
 import { AmountUnitSpace } from "../Spacing";
 import SpanMoji from "../SpanMoji";
-import { TimeFrame } from "../TimeFrameControl";
 import { WidgetBackground, WidgetTitle } from "../WidgetBits";
 import { Unit } from "../ComingSoon/CurrencyControl";
 import { O, pipe } from "../../fp";
+import { TimeFrame } from "../../time_frames";
 
 const weiToEth = (wei: number): number => wei / 10 ** 18;
 

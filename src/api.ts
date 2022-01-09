@@ -3,7 +3,12 @@ import useSWR from "swr";
 import { LeaderboardEntry } from "./components/BurnLeaderboard";
 import * as Config from "./config";
 import * as Duration from "./duration";
-import { TimeFrame, TimeFrameNext } from "./time_frames";
+import {
+  nextFromTimeFrame,
+  TimeFrame,
+  TimeFrameNext,
+  timeFramesNext,
+} from "./time_frames";
 
 export const famBasePath =
   Config.apiEnv === "staging"
@@ -182,23 +187,7 @@ export const useBaseFeePerGas = (): number | undefined => {
   return data?.baseFeePerGas;
 };
 
-export type AverageEthPrice = {
-  all: 3536.800133928138;
-  d30: 4090.2621816488527;
-  d7: 4537.676751145321;
-  h1: 4751.528260560356;
-  h24: 4717.513628893767;
-  m5: 4743.869230769231;
-};
-
-export const newTimeframeMap: Record<TimeFrame, keyof AverageEthPrice> = {
-  "5m": "m5",
-  "1h": "h1",
-  "24h": "h24",
-  "7d": "d7",
-  "30d": "d30",
-  all: "all",
-};
+export type AverageEthPrice = Record<TimeFrameNext, number>;
 
 export const useAverageEthPrice = (
   timeFrame: TimeFrame
@@ -210,7 +199,7 @@ export const useAverageEthPrice = (
     }
   );
 
-  return data === undefined ? undefined : data[newTimeframeMap[timeFrame]];
+  return data === undefined ? undefined : data[nextFromTimeFrame[timeFrame]];
 };
 
 type MarketCaps = {
