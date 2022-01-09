@@ -1,7 +1,5 @@
 import { FC } from "react";
-
-export const timeFrames = ["5m", "1h", "24h", "7d", "30d", "all"] as const;
-export type TimeFrame = typeof timeFrames[number];
+import { TimeFrame, timeFrames } from "../time_frames";
 
 export const displayTimeFrameMap: Record<TimeFrame, string> = {
   "5m": "5m",

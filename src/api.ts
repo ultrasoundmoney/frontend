@@ -1,9 +1,9 @@
 import JSBI from "jsbi";
 import useSWR from "swr";
 import { LeaderboardEntry } from "./components/BurnLeaderboard";
-import { TimeFrame } from "./components/TimeFrameControl";
 import * as Config from "./config";
 import * as Duration from "./duration";
+import { TimeFrame, TimeFrameNext } from "./time_frames";
 
 export const famBasePath =
   Config.apiEnv === "staging"

@@ -1,13 +1,15 @@
 import React, { FC, useCallback, useState } from "react";
 import { useBaseFeePerGas } from "../../api";
+import { TimeFrame, timeFrames } from "../../time_frames";
 import { weiToGwei } from "../../utils/metric-utils";
 import BurnLeaderboard from "../BurnLeaderboard";
+import BurnRecords from "../BurnRecords";
 import FeeBurn from "../FeeBurn";
 import BurnGauge from "../Gauges/BurnGauge";
 import IssuanceGauge from "../Gauges/IssuanceGauge";
 import SupplyGrowthGauge from "../Gauges/SupplyGrowthGauge";
 import LatestBlocks from "../LatestBlocks";
-import TimeFrameControl, { TimeFrame, timeFrames } from "../TimeFrameControl";
+import TimeFrameControl from "../TimeFrameControl";
 import { WidgetBackground } from "../WidgetBits";
 import CurrencyControl, { Unit } from "./CurrencyControl";
 
