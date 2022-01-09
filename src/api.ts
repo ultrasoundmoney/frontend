@@ -316,13 +316,13 @@ export const useSupplyProjectionInputs = (): SupplyInputs | undefined => {
   };
 };
 
-type BurnRecord = {
+export type BurnRecord = {
   blockNumber: number;
   baseFeeSum: number;
   minedAt: Date;
 };
 
-type BurnRecords = {
+export type BurnRecords = {
   number: number;
   records: Record<TimeFrameNext, BurnRecord[]>;
 };

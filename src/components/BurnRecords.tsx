@@ -1,7 +1,9 @@
 import * as DateFns from "date-fns";
 import { FC } from "react";
-import { useBurnRecords } from "../api";
+import Skeleton from "react-loading-skeleton";
+import { BurnRecord, useBurnRecords } from "../api";
 import * as Format from "../format";
+import { flow, O } from "../fp";
 import { timeFrameFromNext, TimeFrameNext } from "../time_frames";
 import { AmountUnitSpace } from "./Spacing";
 import SpanMoji from "./SpanMoji";
@@ -12,10 +14,32 @@ type Props = {
   timeFrame: TimeFrameNext;
 };
 
-const BurnRecordAmount: FC<{ children: number }> = ({ children }) => (
+const formatBurnRecordAmount = flow(
+  O.fromPredicate((unknown): unknown is number => typeof unknown === "number"),
+  O.map(Format.ethFromWei),
+  O.map(Format.formatTwoDigit),
+  O.toUndefined
+);
+
+const formatBlockNumber = flow(
+  O.fromPredicate((unknown): unknown is number => typeof unknown === "number"),
+  O.map(Format.formatNoDigit),
+  O.map((str) => `#${str}`),
+  O.toUndefined
+);
+
+const formatAge = flow(
+  O.fromPredicate((unknown): unknown is Date => unknown instanceof Date),
+  O.map(DateFns.formatDistanceToNow),
+  O.toUndefined
+);
+
+const BurnRecordAmount: FC<{ amount: number | undefined }> = ({ amount }) => (
   <div className="font-roboto  text-2xl md:text-3xl">
     <span className={"text-white"}>
-      {Format.formatTwoDigit(Format.ethFromWei(children))}
+      {formatBurnRecordAmount(amount) || (
+        <Skeleton inline={true} width="4rem" />
+      )}
     </span>
     <AmountUnitSpace />
     <span className="text-blue-spindle font-extralight">ETH</span>
@@ -26,7 +50,9 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const burnRecords = useBurnRecords();
 
   const timeFrameRecords =
-    burnRecords === undefined ? undefined : burnRecords.records[timeFrame];
+    burnRecords === undefined
+      ? (new Array(10).fill({}) as Partial<BurnRecord>[])
+      : burnRecords.records[timeFrame];
 
   return (
     <WidgetBackground>
@@ -35,46 +61,43 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
         timeFrame={timeFrameFromNext[timeFrame]}
         title="burn records"
       />
-
-      {timeFrameRecords === undefined ? (
-        <div>loading...</div>
-      ) : (
-        <div className="flex flex-col gap-y-6 h-64 mt-3 -mr-4 overflow-y-auto leaderboard-scroller">
-          {timeFrameRecords.map((record, index) => (
-            <div
-              className="flex flex-col gap-y-2 pr-2"
-              key={record.blockNumber}
-            >
-              <div className="flex justify-between w-full">
-                <BurnRecordAmount>{record.baseFeeSum}</BurnRecordAmount>
-                {index === 0 ? (
-                  <SpanMoji className="text-2xl md:text-3xl" emoji="🥇" />
-                ) : index === 1 ? (
-                  <SpanMoji className="text-2xl md:text-3xl" emoji="🥈" />
-                ) : index === 2 ? (
-                  <SpanMoji className="text-2xl md:text-3xl" emoji="🥉" />
-                ) : (
-                  <div></div>
-                )}
-              </div>
-              <div className="flex justify-between">
-                <a
-                  href={`https://etherscan.io/block/${record.blockNumber}`}
-                  target="_blank"
-                  rel="noopener"
-                >
-                  <span className="font-roboto text-blue-shipcove md:text-lg hover:opacity-60 link-animation">
-                    #{Format.formatNoDigit(record.blockNumber)}
-                  </span>
-                </a>
-                <span className="font-inter font-light text-white md:text-lg">
-                  {DateFns.formatDistanceToNow(record.minedAt)}
-                </span>
-              </div>
+      <div className="flex flex-col gap-y-6 h-64 mt-3 -mr-4 overflow-y-auto leaderboard-scroller">
+        {timeFrameRecords.map((record, index) => (
+          <div
+            className="flex flex-col gap-y-2 pr-2"
+            key={record.blockNumber || index}
+          >
+            <div className="flex justify-between w-full">
+              <BurnRecordAmount amount={record.baseFeeSum} />
+              {index === 0 ? (
+                <SpanMoji className="text-2xl md:text-3xl" emoji="🥇" />
+              ) : index === 1 ? (
+                <SpanMoji className="text-2xl md:text-3xl" emoji="🥈" />
+              ) : index === 2 ? (
+                <SpanMoji className="text-2xl md:text-3xl" emoji="🥉" />
+              ) : (
+                <div></div>
+              )}
             </div>
-          ))}
-        </div>
-      )}
+            <div className="flex justify-between">
+              <a
+                href={`https://etherscan.io/block/${record.blockNumber}`}
+                target="_blank"
+                rel="noopener"
+              >
+                <span className="font-roboto text-blue-shipcove md:text-lg hover:opacity-60 link-animation">
+                  {formatBlockNumber(record.blockNumber) || (
+                    <Skeleton width="8rem" />
+                  )}
+                </span>
+              </a>
+              <span className="font-inter font-light text-white md:text-lg">
+                {formatAge(record.minedAt) || <Skeleton width="6rem" />}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
     </WidgetBackground>
   );
 };
