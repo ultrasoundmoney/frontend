@@ -19,4 +19,4 @@ const SpanMoji = ({
   />
 );
 
-export default React.memo(SpanMoji);
+export default SpanMoji;
