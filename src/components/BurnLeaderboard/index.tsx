@@ -59,7 +59,7 @@ type Props = {
 };
 
 const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
-  const { leaderboards } = useFeeData();
+  const leaderboards = useFeeData()?.leaderboards;
   const selectedLeaderboard: LeaderboardEntry[] | undefined =
     leaderboards && leaderboards[feePeriodToUpdateMap[timeFrame]];
 

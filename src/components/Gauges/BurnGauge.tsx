@@ -10,7 +10,7 @@ import BaseGauge from "./IssuanceBurnBaseGauge";
 type BurnGaugeProps = { timeFrame: TimeFrame; unit: Unit };
 
 const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame, unit }) => {
-  const { burnRates } = useFeeData();
+  const burnRates = useFeeData()?.burnRates;
 
   const selectedBurnRate =
     burnRates !== undefined

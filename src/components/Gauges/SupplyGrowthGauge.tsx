@@ -17,7 +17,7 @@ const useGrowthRate = (
   simulateMerge: boolean,
   timeFrame: TimeFrame
 ): number => {
-  const { burnRates } = useFeeData();
+  const burnRates = useFeeData()?.burnRates;
   const [growthRate, setGrowthRate] = useState(0);
   const averageEthPrice = useAverageEthPrice(timeFrame);
 

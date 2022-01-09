@@ -58,7 +58,9 @@ const CumulativeFeeBurn: FC<Props> = ({
   timeFrame,
   unit,
 }) => {
-  const { feesBurned, burnRates } = useFeeData();
+  const feeData = useFeeData();
+  const burnRates = feeData?.burnRates;
+  const feesBurned = feeData?.feesBurned;
 
   const selectedFeesBurnedEth = pipe(
     feesBurned,
