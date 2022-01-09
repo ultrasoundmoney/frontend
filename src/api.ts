@@ -58,6 +58,7 @@ export type FeesBurned = {
 };
 
 export type Leaderboards = {
+  leaderboard5m: LeaderboardEntry[];
   leaderboard1h: LeaderboardEntry[];
   leaderboard24h: LeaderboardEntry[];
   leaderboard7d: LeaderboardEntry[];
