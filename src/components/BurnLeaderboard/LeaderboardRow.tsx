@@ -1,27 +1,15 @@
 import { FC, useCallback } from "react";
 import CountUp from "react-countup";
+import Skeleton from "react-loading-skeleton";
 import { LeaderboardEntry } from ".";
 import * as Api from "../../api";
-import imageIds from "../../assets/leaderboard-image-ids.json";
 import { featureFlags } from "../../feature-flags";
 import * as Format from "../../format";
 import { Unit } from "../ComingSoon/CurrencyControl";
 import { AmountUnitSpace } from "../Spacing";
 
-type Props = {
-  category: string | null;
-  detail?: string;
-  fees: number;
-  id: string;
-  image: string | undefined;
-  isBot: boolean;
-  name?: string;
-  type: LeaderboardEntry["type"];
-  unit: Unit;
-};
-
 const getAdminToken = (): string | undefined => {
-  if (typeof window === undefined) {
+  if (typeof window === "undefined") {
     return undefined;
   }
 
@@ -35,11 +23,23 @@ const getAdminToken = (): string | undefined => {
   return adminToken;
 };
 
+type Props = {
+  address?: string;
+  category?: string | undefined;
+  detail?: string;
+  fees: number | undefined;
+  image?: string | undefined;
+  isBot?: boolean | undefined;
+  name: string | undefined;
+  type: LeaderboardEntry["type"] | undefined;
+  unit: Unit;
+};
+
 const LeaderboardRow: FC<Props> = ({
+  address,
   category,
   detail,
   fees,
-  id,
   image,
   isBot,
   name,
@@ -55,40 +55,41 @@ const LeaderboardRow: FC<Props> = ({
       ? "/leaderboard-images/bot-v2.svg"
       : type === "contract-creations"
       ? "/leaderboard-images/contract-creations.svg"
-      : imageIds.includes(id)
-      ? `/leaderboard-images/${id}.png`
       : "/leaderboard-images/question-mark-v2.svg";
 
   const adminToken = getAdminToken();
 
   const onSetTwitterHandle = useCallback(() => {
     const handle = window.prompt(`${name} twitter handle`);
-    if (adminToken === undefined || handle === null) {
+    if (adminToken === undefined || handle === null || address === undefined) {
       return;
     }
-    Api.setContractTwitterHandle(adminToken, id, handle);
-  }, [adminToken, id, name]);
+    Api.setContractTwitterHandle(adminToken, address, handle);
+  }, [adminToken, address, name]);
 
   const onSetName = useCallback(() => {
     const nameInput = window.prompt(`${name} name`);
-    if (adminToken === undefined || nameInput === null) {
+    if (
+      adminToken === undefined ||
+      nameInput === null ||
+      address === undefined
+    ) {
       return;
     }
-    Api.setContractName(adminToken, id, nameInput);
-  }, [adminToken, id, name]);
+    Api.setContractName(adminToken, address, nameInput);
+  }, [adminToken, address, name]);
 
   const onSetCategory = useCallback(() => {
     const category = window.prompt(`${name} category`);
-    if (adminToken === undefined || category === null) {
+    if (
+      adminToken === undefined ||
+      category === null ||
+      address === undefined
+    ) {
       return;
     }
-    Api.setContractCategory(adminToken, id, category);
-  }, [adminToken, id, name]);
-
-  // custom text for contract creations
-  if (type === "contract-creations") {
-    name = "new contracts";
-  }
+    Api.setContractCategory(adminToken, address, category);
+  }, [adminToken, address, name]);
 
   //Your handler Component
   const onImageError = useCallback((e) => {
@@ -99,7 +100,9 @@ const LeaderboardRow: FC<Props> = ({
     <div className="pt-2.5 pb-2.5 pr-2.5">
       <a
         href={
-          id.startsWith("0x") ? `https://etherscan.io/address/${id}` : undefined
+          typeof address !== undefined
+            ? `https://etherscan.io/address/${address}`
+            : undefined
         }
         target="_blank"
         rel="noreferrer"
@@ -112,14 +115,16 @@ const LeaderboardRow: FC<Props> = ({
             onError={onImageError}
           />
           <p className="pl-4 truncate">
-            {name?.startsWith("0x") && name.length === 42 ? (
+            {typeof name === "string" ? (
+              name
+            ) : typeof address === "string" ? (
               <span className="font-roboto">
-                {"0x" + id.slice(2, 6)}
+                {"0x" + address.slice(2, 6)}
                 <span className="font-inter">...</span>
-                {id.slice(38, 42)}
+                {address.slice(38, 42)}
               </span>
             ) : (
-              name
+              <Skeleton inline={true} width="12rem" />
             )}
           </p>
           {featureFlags.leaderboardCategory && category && (
@@ -127,19 +132,25 @@ const LeaderboardRow: FC<Props> = ({
               {category}
             </p>
           )}
-          <p className="pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block">
-            {name?.startsWith("0x") && name.length === 42 ? "" : detail}
-          </p>
+          {detail && (
+            <p className="pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block">
+              {detail}
+            </p>
+          )}
           <p className="pl-4 whitespace-nowrap ml-auto font-roboto font-light">
-            <CountUp
-              start={0}
-              end={unit === "eth" ? Format.ethFromWei(fees) : fees / 1000}
-              preserveValue={true}
-              separator=","
-              decimals={unit === "eth" ? 2 : 1}
-              duration={0.8}
-              suffix={unit === "eth" ? undefined : "K"}
-            />
+            {fees === undefined ? (
+              <Skeleton inline={true} width="4rem" />
+            ) : (
+              <CountUp
+                start={0}
+                end={unit === "eth" ? Format.ethFromWei(fees) : fees / 1000}
+                preserveValue={true}
+                separator=","
+                decimals={unit === "eth" ? 2 : 1}
+                duration={0.8}
+                suffix={unit === "eth" ? undefined : "K"}
+              />
+            )}
             <AmountUnitSpace />
             <span className="text-blue-spindle font-extralight">
               {unit === "eth" ? "ETH" : "USD"}

@@ -1,21 +1,26 @@
 import React, { FC, memo } from "react";
-import { useFeeData } from "../../api";
+import { Leaderboards, useFeeData } from "../../api";
 import { TimeFrame } from "../../time_frames";
 import { Unit } from "../ComingSoon/CurrencyControl";
 import { WidgetTitle } from "../WidgetBits";
 import LeaderboardRow from "./LeaderboardRow";
 
 type ContractEntry = {
-  type: "contract";
-  name: string | null;
-  image: string | null;
-  fees: number;
-  feesUsd: number;
   address: string;
   category: string | null;
+  detail: string | null;
+  fees: number;
+  feesUsd: number;
+  image: string | null;
   isBot: boolean;
+  name: string | null;
+  twitterDescription: string | null;
   twitterHandle: string | null;
-  /* deprecated */
+  twitterName: string | null;
+  type: "contract";
+  /**
+   * @deprecated
+   */
   id: string;
 };
 
@@ -24,7 +29,9 @@ type EthTransfersEntry = {
   name: string;
   fees: number;
   feesUsd: number;
-  /* deprecated */
+  /**
+   * @deprecated
+   */
   id: string;
 };
 
@@ -33,7 +40,9 @@ type ContractCreationsEntry = {
   name: string;
   fees: number;
   feesUsd: number;
-  /* deprecated */
+  /**
+   * @deprecated
+   */
   id: string;
 };
 
@@ -43,13 +52,57 @@ export type LeaderboardEntry =
   | EthTransfersEntry
   | ContractCreationsEntry;
 
-const feePeriodToUpdateMap: Record<TimeFrame, string> = {
+const feePeriodToUpdateMap: Record<TimeFrame, keyof Leaderboards> = {
   "5m": "leaderboard5m",
   "1h": "leaderboard1h",
   "24h": "leaderboard24h",
   "7d": "leaderboard7d",
   "30d": "leaderboard30d",
   all: "leaderboardAll",
+};
+
+const formatName = (rawName: unknown, address: unknown) => {
+  if (typeof rawName !== "string" && typeof address !== "string") {
+    // We have neither.
+    return undefined;
+  }
+
+  if (typeof rawName !== "string") {
+    if (typeof address !== "string") {
+      // Should never happen. If there is no name there should always be an address available.
+      return undefined;
+    }
+
+    return undefined;
+  }
+
+  // We have a name
+
+  // It's possible the name is actually an address.
+  // To deprecate this:
+  // * deploy a frontend that falls back to address when name is missing.
+  if (rawName.startsWith("0x") && rawName.length === 42) {
+    return undefined;
+    // return <FormattedAddress address={rawName} />;
+  }
+
+  // Contract names are really an encoded format of shape: `name: details`. We decode the name portion.
+  // To deprecate this:
+  // * deploy a frontend that relies on the detail field in leaderboard entries.
+  const name = rawName.split(":")[0];
+  return name;
+};
+
+const formatDetail = (rawName: unknown, detail: unknown) => {
+  if (typeof rawName !== "string" && typeof detail !== "string") {
+    return undefined;
+  }
+
+  if (typeof detail === "string") {
+    return detail;
+  }
+
+  return undefined;
 };
 
 type Props = {
@@ -60,8 +113,14 @@ type Props = {
 
 const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
   const leaderboards = useFeeData()?.leaderboards;
-  const selectedLeaderboard: LeaderboardEntry[] | undefined =
-    leaderboards && leaderboards[feePeriodToUpdateMap[timeFrame]];
+  const selectedLeaderboard =
+    leaderboards === undefined
+      ? undefined
+      : leaderboards[feePeriodToUpdateMap[timeFrame]];
+
+  const leaderboardSkeletons: Partial<LeaderboardEntry>[] = new Array(100).fill(
+    {}
+  );
 
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8 lg:h-full">
@@ -75,44 +134,32 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
           timeFrame={timeFrame}
         />
         {/* the scrollbar normally hides, to make it appear as if floating to the right of the main content we add a negative right margin. */}
-        {selectedLeaderboard === undefined ? (
-          <p className="text-lg text-center text-gray-500 pt-16 pb-20">
-            loading...
-          </p>
-        ) : (
-          <div className="overflow-y-auto overflow-x-hidden leaderboard-scroller -mt-1 -mr-3">
-            {selectedLeaderboard.map((row) =>
-              row.type === "contract" ? (
-                <LeaderboardRow
-                  key={row.address}
-                  name={(row.name || "").split(":")[0]}
-                  detail={(row.name || "").split(":")[1]}
-                  id={row.id}
-                  isBot={row.isBot}
-                  fees={unit === "eth" ? row.fees : row.feesUsd}
-                  type={row.type || "other"}
-                  image={row.image ?? undefined}
-                  category={row.category}
-                  unit={unit}
-                />
-              ) : row.type === "eth-transfers" ||
-                row.type === "contract-creations" ? (
-                <LeaderboardRow
-                  key={row.type}
-                  name={row.name.split(":")[0]}
-                  detail={row.name.split(":")[1]}
-                  id={row.id}
-                  isBot={false}
-                  fees={unit === "eth" ? row.fees : row.feesUsd}
-                  type={row.type || "other"}
-                  image={undefined}
-                  category={null}
-                  unit={unit}
-                />
-              ) : null
-            )}
-          </div>
-        )}
+        <div className="overflow-y-auto overflow-x-hidden leaderboard-scroller -mt-1 -mr-3">
+          {(selectedLeaderboard || leaderboardSkeletons).map((row, index) =>
+            row.type === "contract" ? (
+              <LeaderboardRow
+                address={row.address}
+                category={row.category || undefined}
+                detail={formatDetail(row.name, row.detail)}
+                fees={unit === "eth" ? row.fees : row.feesUsd}
+                image={row.image ?? undefined}
+                isBot={row.isBot}
+                key={row.address || index}
+                name={formatName(row.name, row.address)}
+                type={row.type}
+                unit={unit}
+              />
+            ) : (
+              <LeaderboardRow
+                fees={unit === "eth" ? row.fees : row.feesUsd}
+                key={row.type || index}
+                name={formatName(row.name, undefined)}
+                type={row.type}
+                unit={unit}
+              />
+            )
+          )}
+        </div>
       </div>
     </div>
   );
