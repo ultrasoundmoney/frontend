@@ -11,6 +11,7 @@ Sentry.init({
   tracesSampleRate: process.env.ENV === "dev" ? 1 : 0.2,
 });
 
-export default function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
-}
+const MyApp = ({ Component, pageProps }: AppProps) => (
+  <Component {...pageProps} />
+);
+export default MyApp;
