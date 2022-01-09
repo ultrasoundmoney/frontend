@@ -98,7 +98,7 @@ const Widgets: FC = () => {
           timeFrame={timeFrameFromNext[timeFrame]}
           unit={unit}
         />
-        <div className="lg:col-start-2 lg:row-start-1 lg:row-end-3">
+        <div className="lg:col-start-2 lg:row-start-1 lg:row-end-4">
           <BurnLeaderboard
             onClickTimeFrame={handleClickTimeFrame}
             timeFrame={timeFrameFromNext[timeFrame]}
@@ -106,6 +106,10 @@ const Widgets: FC = () => {
           />
         </div>
         <LatestBlocks unit={unit} />
+        <BurnRecords
+          onClickTimeFrame={handleClickTimeFrame}
+          timeFrame={timeFrame}
+        />
       </div>
     </>
   );

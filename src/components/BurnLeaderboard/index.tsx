@@ -74,12 +74,13 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
           title="burn leaderboard"
           timeFrame={timeFrame}
         />
+        {/* the scrollbar normally hides, to make it appear as if floating to the right of the main content we add a negative right margin. */}
         {selectedLeaderboard === undefined ? (
           <p className="text-lg text-center text-gray-500 pt-16 pb-20">
             loading...
           </p>
         ) : (
-          <div className="overflow-y-auto overflow-x-hidden leaderboard-scroller -mt-1">
+          <div className="overflow-y-auto overflow-x-hidden leaderboard-scroller -mt-1 -mr-3">
             {selectedLeaderboard.map((row) =>
               row.type === "contract" ? (
                 <LeaderboardRow

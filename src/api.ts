@@ -320,6 +320,7 @@ export const useSupplyProjectionInputs = (): SupplyInputs | undefined => {
   const { data } = useSWR<RawSupplyInputs>(
     `${feesBasePath}/supply-projection-inputs`
   );
+
   if (data === undefined) {
     return undefined;
   }
@@ -329,4 +330,43 @@ export const useSupplyProjectionInputs = (): SupplyInputs | undefined => {
     contractData: data.lockedData,
     supplyData: data.supplyData,
   };
+};
+
+type BurnRecord = {
+  blockNumber: number;
+  baseFeeSum: number;
+  minedAt: Date;
+};
+
+type BurnRecords = {
+  number: number;
+  records: Record<TimeFrameNext, BurnRecord[]>;
+};
+
+type RawBurnRecord = {
+  blockNumber: number;
+  baseFeeSum: number;
+  minedAt: string;
+};
+
+type RawBurnRecords = {
+  number: number;
+  records: Record<TimeFrameNext, RawBurnRecord[]>;
+};
+
+export const useBurnRecords = (): BurnRecords | undefined => {
+  const { data } = useSWR<RawBurnRecords>(`${feesBasePath}/burn-records`);
+
+  return data === undefined
+    ? undefined
+    : {
+        ...data,
+        records: timeFramesNext.reduce((map, timeFrame) => {
+          map[timeFrame] = data.records[timeFrame].map((record) => ({
+            ...record,
+            minedAt: new Date(record.minedAt),
+          }));
+          return map;
+        }, {} as Record<TimeFrameNext, BurnRecord[]>),
+      };
 };
