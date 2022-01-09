@@ -196,7 +196,7 @@ type MarketCaps = {
 
 export const useMarketCaps = (): MarketCaps | undefined => {
   const { data } = useSWR<MarketCaps>(`${feesBasePath}/market-caps`, {
-    refreshInterval: Duration.millisFromSeconds(8),
+    refreshInterval: Duration.millisFromSeconds(30),
   });
 
   return data;
