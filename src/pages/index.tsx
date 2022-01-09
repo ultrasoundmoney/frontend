@@ -37,7 +37,11 @@ const IndexPage: NextPage<IndexPageProps> = () => {
         ></script>
       </Head>
       <React.StrictMode>
-        <SkeletonTheme baseColor={Colors.dusk} enableAnimation={false}>
+        <SkeletonTheme
+          baseColor={Colors.dusk}
+          highlightColor="#565b7f"
+          enableAnimation={true}
+        >
           <ComingSoon />
         </SkeletonTheme>
       </React.StrictMode>
