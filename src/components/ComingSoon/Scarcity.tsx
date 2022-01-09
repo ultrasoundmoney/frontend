@@ -213,6 +213,9 @@ const floorOneDigit = (num: number) =>
 const mEthFromWeiFormatted = (num: JSBI): string =>
   pipe(num, mEthFromWei, floorOneDigit, Format.formatOneDigit);
 
+const mEthFromEthFormatted = (num: number): string =>
+  pipe(num, (num) => num / 10 ** 6, floorOneDigit, Format.formatOneDigit);
+
 type EngineRowProps = {
   amountFormatted: string;
   hovering: boolean;
@@ -298,8 +301,8 @@ const Scarcity: FC = () => {
               startedOn={scarcity.engines.staked.startedOn}
             />
             <EngineRow
-              amountFormatted={Format.formatOneDigit(
-                scarcity.engines.locked.amount / 1_000_000
+              amountFormatted={mEthFromEthFormatted(
+                scarcity.engines.locked.amount
               )}
               hovering={hoveringLocked}
               link="https://defipulse.com/"
