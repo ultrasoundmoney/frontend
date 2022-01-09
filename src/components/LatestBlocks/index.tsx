@@ -52,6 +52,10 @@ export const formatBlockNumber = (number: unknown) =>
     O.toUndefined
   );
 
+const latestBlockFeesSkeletons = new Array(maxBlocks).fill(
+  {} as Partial<LatestBlock>
+);
+
 type Props = { unit: Unit };
 
 const LatestBlocks: FC<Props> = ({ unit }) => {
@@ -80,10 +84,6 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
       window.clearInterval(intervalId);
     };
   }, [latestBlockFees]);
-
-  const latestBlockFeesSkeletons = new Array(maxBlocks).fill(
-    {} as Partial<LatestBlock>
-  );
 
   return (
     <WidgetBackground>
