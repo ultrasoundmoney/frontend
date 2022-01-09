@@ -36,9 +36,11 @@ const IndexPage: NextPage<IndexPageProps> = () => {
           src="https://plausible.io/js/plausible.js"
         ></script>
       </Head>
+      <React.StrictMode>
         <SkeletonTheme baseColor={Colors.dusk} enableAnimation={false}>
           <ComingSoon />
         </SkeletonTheme>
+      </React.StrictMode>
     </>
   );
 };
