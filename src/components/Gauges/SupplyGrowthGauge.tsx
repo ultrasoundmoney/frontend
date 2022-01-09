@@ -5,7 +5,6 @@ import { useAverageEthPrice, useFeeData } from "../../api";
 import * as Format from "../../format";
 import * as StaticEtherData from "../../static-ether-data";
 import { TimeFrame } from "../../time_frames";
-import { weiToEth } from "../../utils/metric-utils";
 import { timeframeBurnRateMap } from "../FeeBurn";
 import TimeframeIndicator from "../TimeframeIndicator";
 import ToggleSwitch from "../ToggleSwitch";
@@ -30,7 +29,7 @@ const useGrowthRate = (
     const selectedBurnRate = burnRates[timeframeBurnRateMap[timeFrame]["eth"]];
 
     // Convert burn rate from eth/min to eth/year.
-    const feeBurnYear = weiToEth(selectedBurnRate) * 60 * 24 * 365.25;
+    const feeBurnYear = Format.ethFromWei(selectedBurnRate) * 60 * 24 * 365.25;
 
     const issuanceRate = simulateMerge
       ? posIssuanceYear

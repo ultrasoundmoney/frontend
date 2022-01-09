@@ -1,14 +1,8 @@
 import { DateTime } from "luxon";
-import React, { memo, FC, useState, useEffect, useCallback } from "react";
+import React, { FC, memo, useCallback, useEffect, useState } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useFeeData } from "../../api";
-import {
-  formatNoDigit,
-  formatOneDigit,
-  formatWeiTwoDigit,
-  formatZeroDigit,
-} from "../../format";
-import { weiToGwei } from "../../utils/metric-utils";
+import * as Format from "../../format";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { Unit } from "../ComingSoon/CurrencyControl";
 import { AmountUnitSpace } from "../Spacing";
@@ -86,11 +80,13 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
                         >
                           <li className="grid grid-cols-3 hover:opacity-60 link-animation">
                             <span className="font-roboto text-white">
-                              {formatNoDigit(number)}
+                              {Format.formatNoDigit(number)}
                             </span>
                             <div className="text-right">
                               <span className="font-roboto text-white">
-                                {formatZeroDigit(weiToGwei(baseFeePerGas))}
+                                {Format.formatZeroDigit(
+                                  Format.gweiFromWei(baseFeePerGas)
+                                )}
                               </span>
                               {md && (
                                 <>
@@ -104,8 +100,8 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
                             <div className="text-right">
                               <span className="font-roboto text-white">
                                 {unit === "eth"
-                                  ? formatWeiTwoDigit(fees)
-                                  : `${formatOneDigit(feesUsd / 1000)}K`}
+                                  ? Format.formatWeiTwoDigit(fees)
+                                  : `${Format.formatOneDigit(feesUsd / 1000)}K`}
                               </span>
                               <AmountUnitSpace />
                               <span className="font-roboto text-blue-spindle font-extralight">

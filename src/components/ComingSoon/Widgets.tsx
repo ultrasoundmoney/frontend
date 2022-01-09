@@ -1,11 +1,11 @@
 import React, { FC, useCallback, useState } from "react";
 import { useBaseFeePerGas } from "../../api";
+import * as Format from "../../format";
 import {
   timeFrameFromNext,
   TimeFrameNext,
   timeFramesNext,
 } from "../../time_frames";
-import { weiToGwei } from "../../utils/metric-utils";
 import BurnLeaderboard from "../BurnLeaderboard";
 import BurnRecords from "../BurnRecords";
 import FeeBurn from "../FeeBurn";
@@ -33,7 +33,7 @@ const Widgets: FC = () => {
 
   if (typeof window !== "undefined" && baseFeePerGas !== undefined) {
     document.title =
-      weiToGwei(baseFeePerGas).toFixed(0) + " Gwei | ultrasound.money";
+      Format.gweiFromWei(baseFeePerGas).toFixed(0) + " Gwei | ultrasound.money";
   }
 
   const handleClickTimeFrame = useCallback(() => {

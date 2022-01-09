@@ -194,13 +194,11 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
   );
 };
 
-export const ethFromWei = (wei: number) => wei / 10 ** 18;
-
 const mEthFromWei = (num: JSBI) =>
   pipe(
     num,
     (num) => JSBI.toNumber(num),
-    ethFromWei,
+    Format.ethFromWei,
     (num) => num / 10 ** 6
   );
 

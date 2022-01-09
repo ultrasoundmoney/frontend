@@ -11,8 +11,7 @@ import { WidgetBackground, WidgetTitle } from "../WidgetBits";
 import { Unit } from "../ComingSoon/CurrencyControl";
 import { O, pipe } from "../../fp";
 import { TimeFrame } from "../../time_frames";
-
-const weiToEth = (wei: number): number => wei / 10 ** 18;
+import * as Format from "../../format";
 
 const timeframeFeesBurnedMap: Record<
   TimeFrame,
@@ -65,7 +64,7 @@ const CumulativeFeeBurn: FC<Props> = ({
     feesBurned,
     O.fromNullable,
     O.map((feesBurned) =>
-      weiToEth(feesBurned[timeframeFeesBurnedMap[timeFrame]["eth"]])
+      Format.ethFromWei(feesBurned[timeframeFeesBurnedMap[timeFrame]["eth"]])
     ),
     O.toUndefined
   );
@@ -76,7 +75,9 @@ const CumulativeFeeBurn: FC<Props> = ({
     O.fromNullable,
     O.map((feesBurned) =>
       unit === "eth"
-        ? weiToEth(feesBurned[timeframeFeesBurnedMap[timeFrame]["eth"]])
+        ? Format.ethFromWei(
+            feesBurned[timeframeFeesBurnedMap[timeFrame]["eth"]]
+          )
         : feesBurned[timeframeFeesBurnedMap[timeFrame][unit]] / 1000
     ),
     O.toUndefined
@@ -87,7 +88,7 @@ const CumulativeFeeBurn: FC<Props> = ({
     burnRates === undefined || null
       ? undefined
       : unit === "eth"
-      ? weiToEth(burnRates[timeframeBurnRateMap[timeFrame][unit]])
+      ? Format.ethFromWei(burnRates[timeframeBurnRateMap[timeFrame][unit]])
       : burnRates[timeframeBurnRateMap[timeFrame][unit]] / 1000;
 
   // TODO: issuance changes post-merge, update this to switch to proof of stake issuance on time.

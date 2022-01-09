@@ -4,7 +4,7 @@ import { LeaderboardEntry } from ".";
 import * as Api from "../../api";
 import imageIds from "../../assets/leaderboard-image-ids.json";
 import { featureFlags } from "../../feature-flags";
-import { weiToEth } from "../../utils/metric-utils";
+import * as Format from "../../format";
 import { Unit } from "../ComingSoon/CurrencyControl";
 import { AmountUnitSpace } from "../Spacing";
 
@@ -133,7 +133,7 @@ const LeaderboardRow: FC<Props> = ({
           <p className="pl-4 whitespace-nowrap ml-auto font-roboto font-light">
             <CountUp
               start={0}
-              end={unit === "eth" ? weiToEth(fees) : fees / 1000}
+              end={unit === "eth" ? Format.ethFromWei(fees) : fees / 1000}
               preserveValue={true}
               separator=","
               decimals={unit === "eth" ? 2 : 1}
