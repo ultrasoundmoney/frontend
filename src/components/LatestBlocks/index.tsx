@@ -120,13 +120,13 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
                       <li className="grid grid-cols-3 hover:opacity-60 link-animation">
                         <span className="font-roboto text-white">
                           {formatBlockNumber(number) || (
-                            <Skeleton width="8rem" inline={true} />
+                            <Skeleton inline={true} width="8rem" />
                           )}
                         </span>
                         <div className="text-right">
                           <span className="font-roboto text-white">
                             {formatGas(baseFeePerGas) || (
-                              <Skeleton width="3rem" />
+                              <Skeleton inline={true} width="3rem" />
                             )}
                           </span>
                           {md && (
