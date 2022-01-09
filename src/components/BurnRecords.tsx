@@ -35,12 +35,12 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
         timeFrame={timeFrameFromNext[timeFrame]}
         title="burn records"
       />
-      {/* the scrollbar normally hides, to make it appear as if floating to the right of the main content we add a negative right margin. */}
-      <div className="flex flex-col gap-y-6 h-64 mt-3 -mr-4 overflow-auto leaderboard-scroller">
-        {timeFrameRecords === undefined ? (
-          <div>loading...</div>
-        ) : (
-          timeFrameRecords.map((record, index) => (
+
+      {timeFrameRecords === undefined ? (
+        <div>loading...</div>
+      ) : (
+        <div className="flex flex-col gap-y-6 h-64 mt-3 -mr-4 overflow-y-auto leaderboard-scroller">
+          {timeFrameRecords.map((record, index) => (
             <div
               className="flex flex-col gap-y-2 pr-2"
               key={record.blockNumber}
@@ -72,9 +72,9 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                 </span>
               </div>
             </div>
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </WidgetBackground>
   );
 };
