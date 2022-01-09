@@ -339,7 +339,9 @@ type RawBurnRecords = {
 };
 
 export const useBurnRecords = (): BurnRecords | undefined => {
-  const { data } = useSWR<RawBurnRecords>(`${feesBasePath}/burn-records`);
+  const { data } = useSWR<RawBurnRecords>(`${feesBasePath}/burn-records`, {
+    refreshInterval: Duration.millisFromSeconds(4),
+  });
 
   return data === undefined
     ? undefined
