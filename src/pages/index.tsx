@@ -1,6 +1,9 @@
-import * as React from "react";
 import { NextPage } from "next";
 import Head from "next/head";
+import * as React from "react";
+import { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import Colors from "../colors";
 import ComingSoon from "../components/ComingSoon";
 import { TranslationsContext } from "../translations-context";
 
@@ -33,7 +36,9 @@ const IndexPage: NextPage<IndexPageProps> = () => {
           src="https://plausible.io/js/plausible.js"
         ></script>
       </Head>
-      <ComingSoon />
+        <SkeletonTheme baseColor={Colors.dusk} enableAnimation={false}>
+          <ComingSoon />
+        </SkeletonTheme>
     </>
   );
 };

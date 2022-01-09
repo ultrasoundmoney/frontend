@@ -1,44 +1,89 @@
-import { DateTime } from "luxon";
-import React, { FC, memo, useCallback, useEffect, useState } from "react";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { useFeeData } from "../../api";
+import * as DateFns from "date-fns";
+import { flow } from "lodash";
+import React, { FC, memo, useEffect, useState } from "react";
+import Skeleton from "react-loading-skeleton";
+import { TransitionGroup } from "react-transition-group";
+import { LatestBlock, useFeeData } from "../../api";
 import * as Format from "../../format";
+import { O, OAlt, pipe } from "../../fp";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { Unit } from "../ComingSoon/CurrencyControl";
+import CSSTransition from "../CSSTransition";
 import { AmountUnitSpace } from "../Spacing";
 import { WidgetBackground } from "../WidgetBits";
+
+const maxBlocks = 7;
+
+const formatGas = flow(
+  OAlt.numberFromUnknown,
+  O.map(Format.gweiFromWei),
+  O.map(Format.formatZeroDigit),
+  O.toUndefined
+);
+
+const formatFees = (unit: Unit, fees: unknown, feesUsd: unknown) =>
+  unit === "eth"
+    ? pipe(
+        fees,
+        OAlt.numberFromUnknown,
+        O.map(Format.formatWeiTwoDigit),
+        O.toUndefined
+      )
+    : pipe(
+        feesUsd,
+        OAlt.numberFromUnknown,
+        O.map((feesUsd) => `${Format.formatOneDigit(feesUsd / 1000)}K`),
+        O.toUndefined
+      );
+
+const formatTimeElapsed = flow(
+  O.fromNullable,
+  O.map((num: number) => `${num}s`),
+  O.toUndefined
+);
+
+export const formatBlockNumber = (number: unknown) =>
+  pipe(
+    number,
+    O.fromPredicate(
+      (unknown): unknown is number => typeof unknown === "number"
+    ),
+    O.map(Format.formatNoDigit),
+    O.toUndefined
+  );
 
 type Props = { unit: Unit };
 
 const LatestBlocks: FC<Props> = ({ unit }) => {
-  const { latestBlockFees } = useFeeData();
-  const [timeElapsed, setTimeElapsed] = useState(0);
+  const latestBlockFees = useFeeData()?.latestBlockFees;
+  const [timeElapsed, setTimeElapsed] = useState<number>();
   const { md } = useActiveBreakpoint();
 
-  const getTimeElapsed = useCallback((dt: Date): number => {
-    const secondsDiff = DateTime.fromJSDate(dt)
-      .diffNow("seconds")
-      .as("seconds");
-    return Math.round(secondsDiff * -1);
-  }, []);
-
   useEffect(() => {
-    const latestMinedBlockDate = new Date(latestBlockFees[0]?.minedAt);
-
-    if (latestMinedBlockDate === undefined) {
+    if (latestBlockFees === undefined) {
       return;
     }
 
-    setTimeElapsed(getTimeElapsed(latestMinedBlockDate));
+    const latestMinedBlockDate = new Date(latestBlockFees[0].minedAt);
+
+    setTimeElapsed(
+      DateFns.differenceInSeconds(new Date(), latestMinedBlockDate)
+    );
 
     const intervalId = window.setInterval(() => {
-      setTimeElapsed(getTimeElapsed(latestMinedBlockDate));
+      setTimeElapsed(
+        DateFns.differenceInSeconds(new Date(), latestMinedBlockDate)
+      );
     }, 1000);
 
     return () => {
       window.clearInterval(intervalId);
     };
-  }, [getTimeElapsed, latestBlockFees]);
+  }, [latestBlockFees]);
+
+  const latestBlockFeesSkeletons = new Array(maxBlocks).fill(
+    {} as Partial<LatestBlock>
+  );
 
   return (
     <WidgetBackground>
@@ -53,74 +98,72 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
           </span>
         </div>
         <ul className="flex flex-col gap-y-4">
-          {latestBlockFees !== undefined && latestBlockFees.length === 0 ? (
-            <p className="font-roboto text-white md:text-4xl">loading...</p>
-          ) : (
-            <TransitionGroup
-              component={null}
-              appear={true}
-              enter={true}
-              exit={false}
-            >
-              {latestBlockFees !== undefined &&
-                latestBlockFees
-                  .sort((a, b) => b.number - a.number)
-                  .slice(0, 7)
-                  .map(({ number, fees, feesUsd, baseFeePerGas }) => (
-                    <CSSTransition
-                      classNames="fee-block"
-                      timeout={2000}
-                      key={number}
+          <TransitionGroup
+            component={null}
+            appear={true}
+            enter={true}
+            exit={false}
+          >
+            {(latestBlockFees || latestBlockFeesSkeletons).map(
+              ({ number, fees, feesUsd, baseFeePerGas }, index) => (
+                <CSSTransition
+                  classNames="fee-block"
+                  timeout={2000}
+                  key={number || index}
+                >
+                  <div className="fee-block text-base md:text-lg">
+                    <a
+                      href={`https://etherscan.io/block/${number}`}
+                      target="_blank"
+                      rel="noreferrer"
                     >
-                      <div className="fee-block text-base md:text-lg">
-                        <a
-                          href={`https://etherscan.io/block/${number}`}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <li className="grid grid-cols-3 hover:opacity-60 link-animation">
-                            <span className="font-roboto text-white">
-                              {Format.formatNoDigit(number)}
-                            </span>
-                            <div className="text-right">
-                              <span className="font-roboto text-white">
-                                {Format.formatZeroDigit(
-                                  Format.gweiFromWei(baseFeePerGas)
-                                )}
-                              </span>
-                              {md && (
-                                <>
-                                  <span className="font-inter">&thinsp;</span>
-                                  <span className="font-roboto text-blue-spindle font-extralight">
-                                    Gwei
-                                  </span>
-                                </>
-                              )}
-                            </div>
-                            <div className="text-right">
-                              <span className="font-roboto text-white">
-                                {unit === "eth"
-                                  ? Format.formatWeiTwoDigit(fees)
-                                  : `${Format.formatOneDigit(feesUsd / 1000)}K`}
-                              </span>
-                              <AmountUnitSpace />
+                      <li className="grid grid-cols-3 hover:opacity-60 link-animation">
+                        <span className="font-roboto text-white">
+                          {formatBlockNumber(number) || (
+                            <Skeleton width="8rem" inline={true} />
+                          )}
+                        </span>
+                        <div className="text-right">
+                          <span className="font-roboto text-white">
+                            {formatGas(baseFeePerGas) || (
+                              <Skeleton width="3rem" />
+                            )}
+                          </span>
+                          {md && (
+                            <>
+                              <span className="font-inter">&thinsp;</span>
                               <span className="font-roboto text-blue-spindle font-extralight">
-                                {unit === "eth" ? "ETH" : "USD"}
+                                Gwei
                               </span>
-                            </div>
-                          </li>
-                        </a>
-                      </div>
-                    </CSSTransition>
-                  ))}
-            </TransitionGroup>
-          )}
+                            </>
+                          )}
+                        </div>
+                        <div className="text-right">
+                          <span className="font-roboto text-white">
+                            {formatFees(unit, fees, feesUsd) || (
+                              <Skeleton inline={true} width="3rem" />
+                            )}
+                          </span>
+                          <AmountUnitSpace />
+                          <span className="font-roboto text-blue-spindle font-extralight">
+                            {unit === "eth" ? "ETH" : "USD"}
+                          </span>
+                        </div>
+                      </li>
+                    </a>
+                  </div>
+                </CSSTransition>
+              )
+            )}
+          </TransitionGroup>
         </ul>
         {/* spaces need to stay on the font-inter element to keep them consistent */}
         <span className="text-blue-spindle text-xs md:text-sm font-extralight">
           {"latest block "}
           <span className="font-roboto text-white font-light">
-            {timeElapsed}s
+            {formatTimeElapsed(timeElapsed) || (
+              <Skeleton inline={true} width="2rem" />
+            )}
           </span>
           {" old"}
         </span>

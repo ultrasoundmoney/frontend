@@ -65,7 +65,7 @@ export type Leaderboards = {
   leaderboardAll: LeaderboardEntry[];
 };
 
-export type LatestBlockFees = {
+export type LatestBlock = {
   fees: Wei;
   feesUsd: number;
   number: number;
@@ -76,7 +76,7 @@ export type LatestBlockFees = {
 export type FeeData = {
   baseFeePerGas: number | undefined;
   burnRates: BurnRates | undefined;
-  latestBlockFees: LatestBlockFees[];
+  latestBlockFees: LatestBlock[];
   number: number | undefined;
   feesBurned: FeesBurned | undefined;
   leaderboards: Leaderboards | undefined;
@@ -87,23 +87,7 @@ export const useFeeData = (): FeeData => {
     refreshInterval: Duration.millisFromSeconds(4),
   });
 
-  return data !== undefined
-    ? {
-        baseFeePerGas: data.baseFeePerGas ?? undefined,
-        burnRates: data.burnRates ?? undefined,
-        latestBlockFees: data.latestBlockFees ?? undefined,
-        number: data.number,
-        feesBurned: data.feesBurned ?? undefined,
-        leaderboards: data.leaderboards ?? undefined,
-      }
-    : {
-        baseFeePerGas: undefined,
-        burnRates: undefined,
-        latestBlockFees: [],
-        number: undefined,
-        feesBurned: undefined,
-        leaderboards: undefined,
-      };
+  return data === undefined ? undefined : data;
 };
 
 export const setContractTwitterHandle = async (
