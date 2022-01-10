@@ -30,7 +30,7 @@ const formatBlockNumber = flow(
 
 const formatAge = flow(
   O.fromPredicate((unknown): unknown is Date => unknown instanceof Date),
-  O.map(DateFns.formatDistanceToNow),
+  O.map(DateFns.formatDistanceToNowStrict),
   O.toUndefined
 );
 
@@ -92,7 +92,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                 </span>
               </a>
               <span className="font-inter font-light text-white md:text-lg">
-                {formatAge(record.minedAt) || <Skeleton width="6rem" />}
+                {formatAge(record.minedAt) || <Skeleton width="6rem" />} ago
               </span>
             </div>
           </div>
