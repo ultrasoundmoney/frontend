@@ -37,7 +37,7 @@ type EthPrice = {
 };
 
 const LandingPage: React.FC<{}> = () => {
-  const { feesBurned } = useFeeData();
+  const feesBurned = useFeeData()?.feesBurned;
   const [genesisArr, setGenesisArr] = React.useState(genesis_data[0]);
   const { data } = useSWR<EthPrice>(
     "https://api.ultrasound.money/fees/eth-price",
