@@ -49,6 +49,7 @@ export const formatBlockNumber = (number: unknown) =>
       (unknown): unknown is number => typeof unknown === "number"
     ),
     O.map(Format.formatNoDigit),
+    O.map((str) => `#${str}`),
     O.toUndefined
   );
 
