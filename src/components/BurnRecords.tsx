@@ -69,7 +69,11 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
         timeFrame={timeFrameFromNext[timeFrame]}
         title="burn records"
       />
-      <div className="flex flex-col gap-y-6 h-64 mt-3 -mr-4 overflow-y-auto leaderboard-scroller">
+      <div
+        className="flex flex-col gap-y-6 mt-3 -mr-3 overflow-y-auto leaderboard-scroller"
+        // Custom height to fit three records on desktop.
+        style={{ height: "17rem" }}
+      >
         {timeFrameRecords.map((record, index) => (
           <div
             className="flex flex-col gap-y-1 pr-2"
