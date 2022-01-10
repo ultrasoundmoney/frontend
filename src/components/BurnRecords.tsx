@@ -9,11 +9,6 @@ import { AmountUnitSpace } from "./Spacing";
 import SpanMoji from "./SpanMoji";
 import { WidgetBackground, WidgetTitle } from "./WidgetBits";
 
-type Props = {
-  onClickTimeFrame: () => void;
-  timeFrame: TimeFrameNext;
-};
-
 const formatBurnRecordAmount = flow(
   O.fromPredicate((unknown): unknown is number => typeof unknown === "number"),
   O.map(Format.ethFromWei),
@@ -52,6 +47,13 @@ const BurnRecordAmount: FC<{ amount: number | undefined }> = ({ amount }) => (
   </div>
 );
 
+const emojiMap = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
+
+type Props = {
+  onClickTimeFrame: () => void;
+  timeFrame: TimeFrameNext;
+};
+
 const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const burnRecords = useBurnRecords();
 
@@ -75,15 +77,10 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
           >
             <div className="flex justify-between w-full">
               <BurnRecordAmount amount={record.baseFeeSum} />
-              {index === 0 ? (
-                <SpanMoji className="text-2xl md:text-3xl" emoji="🥇" />
-              ) : index === 1 ? (
-                <SpanMoji className="text-2xl md:text-3xl" emoji="🥈" />
-              ) : index === 2 ? (
-                <SpanMoji className="text-2xl md:text-3xl" emoji="🥉" />
-              ) : (
-                <div></div>
-              )}
+              <SpanMoji
+                className="text-2xl md:text-3xl"
+                emoji={emojiMap[index]}
+              />
             </div>
             <div className="flex justify-between">
               <a
