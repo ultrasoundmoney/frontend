@@ -3,7 +3,7 @@ import { FC } from "react";
 import Skeleton from "react-loading-skeleton";
 import { BurnRecord, useBurnRecords } from "../api";
 import * as Format from "../format";
-import { flow, O } from "../fp";
+import { flow, O, OAlt } from "../fp";
 import { timeFrameFromNext, TimeFrameNext } from "../time_frames";
 import { AmountUnitSpace } from "./Spacing";
 import SpanMoji from "./SpanMoji";
@@ -31,6 +31,12 @@ const formatBlockNumber = flow(
 const formatAge = flow(
   O.fromPredicate((unknown): unknown is Date => unknown instanceof Date),
   O.map(DateFns.formatDistanceToNowStrict),
+  O.toUndefined
+);
+
+const getBlockPageLink = flow(
+  OAlt.numberFromUnknown,
+  O.map((num) => `https://etherscan.io/block/${num}`),
   O.toUndefined
 );
 
@@ -81,7 +87,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
             </div>
             <div className="flex justify-between">
               <a
-                href={`https://etherscan.io/block/${record.blockNumber}`}
+                href={getBlockPageLink(record.blockNumber)}
                 target="_blank"
                 rel="noreferrer"
               >
