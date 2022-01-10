@@ -83,7 +83,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
               <a
                 href={`https://etherscan.io/block/${record.blockNumber}`}
                 target="_blank"
-                rel="noopener"
+                rel="noreferrer"
               >
                 <span className="font-roboto text-blue-shipcove md:text-lg hover:opacity-60 link-animation">
                   {formatBlockNumber(record.blockNumber) || (
