@@ -72,7 +72,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
       <div className="flex flex-col gap-y-6 h-64 mt-3 -mr-4 overflow-y-auto leaderboard-scroller">
         {timeFrameRecords.map((record, index) => (
           <div
-            className="flex flex-col gap-y-2 pr-2"
+            className="flex flex-col gap-y-1 pr-2"
             key={record.blockNumber || index}
           >
             <div className="flex justify-between w-full">
