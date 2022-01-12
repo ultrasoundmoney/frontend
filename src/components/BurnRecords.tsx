@@ -99,7 +99,10 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                 </span>
               </a>
               <span className="font-inter font-light text-white md:text-lg">
-                {formatAge(record.minedAt) || <Skeleton width="6rem" />} ago
+                {formatAge(record.minedAt) || (
+                  <Skeleton inline={true} width="6rem" />
+                )}
+                {" ago"}
               </span>
             </div>
           </div>
