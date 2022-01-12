@@ -1,20 +1,15 @@
 import * as DateFns from "date-fns";
 import { FC, useEffect, useState } from "react";
+import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
 import { BurnRecord, useFeeData } from "../api";
 import * as Format from "../format";
 import { flow, O, OAlt } from "../fp";
 import { timeFrameFromNext, TimeFrameNext } from "../time_frames";
+import { Unit } from "./ComingSoon/CurrencyControl";
 import { AmountUnitSpace } from "./Spacing";
 import SpanMoji from "./SpanMoji";
 import { WidgetBackground, WidgetTitle } from "./WidgetBits";
-
-const formatBurnRecordAmount = flow(
-  O.fromPredicate((unknown): unknown is number => typeof unknown === "number"),
-  O.map(Format.ethFromWei),
-  O.map(Format.formatTwoDigit),
-  O.toUndefined
-);
 
 const formatBlockNumber = flow(
   O.fromPredicate((unknown): unknown is number => typeof unknown === "number"),
@@ -29,11 +24,24 @@ const getBlockPageLink = flow(
   O.toUndefined
 );
 
-const BurnRecordAmount: FC<{ amount: number | undefined }> = ({ amount }) => (
+const BurnRecordAmount: FC<{ amount: number | undefined; unit: Unit }> = ({
+  amount,
+  unit,
+}) => (
   <div className="font-roboto  text-2xl md:text-3xl">
     <span className={"text-white"}>
-      {formatBurnRecordAmount(amount) || (
+      {amount === undefined ? (
         <Skeleton inline={true} width="4rem" />
+      ) : (
+        <CountUp
+          start={0}
+          end={unit === "eth" ? Format.ethFromWei(amount) : amount / 1000}
+          preserveValue={true}
+          separator=","
+          decimals={unit === "eth" ? 2 : 1}
+          duration={0.8}
+          suffix={unit === "eth" ? undefined : "K"}
+        />
       )}
     </span>
     <AmountUnitSpace />
@@ -101,7 +109,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
             key={record.blockNumber || index}
           >
             <div className="flex justify-between w-full">
-              <BurnRecordAmount amount={record.baseFeeSum} />
+              <BurnRecordAmount amount={record.baseFeeSum} unit="eth" />
               <SpanMoji
                 className="text-2xl md:text-3xl"
                 emoji={emojiMap[index]}
