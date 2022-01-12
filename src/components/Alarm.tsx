@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { useBaseFeePerGas, useEthPrice } from "../api";
+import { useEthPrice, useFeeData } from "../api";
 import * as Format from "../format";
 import { O, pipe } from "../fp";
 import { useLocalStorage } from "../use-local-storage";
@@ -63,7 +63,7 @@ const AlarmInput: FC<AlarmInputProps> = ({
   type,
 }) => {
   const notification = useNotification();
-  const baseFeePerGas = useBaseFeePerGas();
+  const baseFeePerGas = useFeeData()?.baseFeePerGas;
   const ethPrice = useEthPrice();
   const [isBusyEditing, setIsBusyEditing] = useState(false);
   const [threshold, setThreshold] = useLocalStorage<string>(
@@ -174,7 +174,7 @@ const AlarmInput: FC<AlarmInputProps> = ({
     const isAlarmActiveSynced =
       isAlarmActiveLocalStorage === null
         ? false
-        : JSON.parse(isAlarmActiveLocalStorage);
+        : (JSON.parse(isAlarmActiveLocalStorage) as boolean);
     onToggleIsAlarmActive(isAlarmActiveSynced);
 
     if (

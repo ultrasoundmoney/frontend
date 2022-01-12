@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useState } from "react";
-import { useBaseFeePerGas } from "../../api";
+import { useFeeData } from "../../api";
 import * as Format from "../../format";
 import {
   timeFrameFromNext,
@@ -19,7 +19,7 @@ import CurrencyControl, { Unit } from "./CurrencyControl";
 
 const Widgets: FC = () => {
   const [simulateMerge, setSimulateMerge] = useState(false);
-  const baseFeePerGas = useBaseFeePerGas();
+  const baseFeePerGas = useFeeData()?.baseFeePerGas;
   const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
 

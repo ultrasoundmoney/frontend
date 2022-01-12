@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import CountUp from "react-countup";
-import { EthPrice, useBaseFeePerGas, useEthPrice } from "../../api";
+import { EthPrice, useEthPrice, useFeeData } from "../../api";
 import * as Format from "../../format";
 import { O, pipe } from "../../fp";
 import { useLocalStorage } from "../../use-local-storage";
@@ -106,7 +106,7 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
 };
 
 const TopBar: FC = () => {
-  const baseFeePerGas = useBaseFeePerGas();
+  const baseFeePerGas = useFeeData()?.baseFeePerGas;
   const ethPrice = useEthPrice();
   const [gasAlarmActive, setGasAlarmActive] = useLocalStorage(
     "gas-alarm-enabled",
