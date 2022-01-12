@@ -1,20 +1,25 @@
-import * as React from "react";
+import { FC, ReactEventHandler, useCallback, useContext } from "react";
 import twemoji from "twemoji";
 import AvatarImg from "../../assets/avatar.webp";
 import * as Format from "../../format";
 import { TranslationsContext } from "../../translations-context";
 
 type ProfileTooltipProps = {
-  children: React.ReactNode;
   item: TwitterProfile;
 };
-const ProfileTooltip: React.FC<ProfileTooltipProps> = ({ children, item }) => {
-  const t = React.useContext(TranslationsContext);
-  function imageErrorHandler(e: React.SyntheticEvent<HTMLImageElement, Event>) {
-    const el = e.target as HTMLImageElement;
-    el.onerror = null;
-    el.src = AvatarImg;
-  }
+
+const ProfileTooltip: FC<ProfileTooltipProps> = ({ children, item }) => {
+  const t = useContext(TranslationsContext);
+
+  const imageErrorHandler = useCallback<ReactEventHandler<HTMLImageElement>>(
+    (e) => {
+      const el = e.currentTarget;
+      el.onerror = null;
+      el.src = AvatarImg;
+    },
+    []
+  );
+
   return (
     <div className="has-tooltip opacity-70 hover:opacity-100">
       <div className="tooltip shadow-lg rounded-lg bg-blue-tangaroa text-white px-7 py-7 z-10">

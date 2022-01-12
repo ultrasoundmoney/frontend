@@ -365,3 +365,23 @@ export const useBurnRecords = (): BurnRecords | undefined => {
         records: decodeBurnRecords(data.records),
       };
 };
+
+type Profile = {
+  bio: string;
+  famFollowerCount: number;
+  followersCount: number;
+  name: string;
+  profileImageUrl: string;
+  profileUrl: string;
+};
+
+type ProfilesResponse = {
+  count: number;
+  profiles: Profile[];
+};
+
+export const useProfiles = () => {
+  const { data } = useSWR<ProfilesResponse>(`${famBasePath}/profiles`);
+
+  return data;
+};
