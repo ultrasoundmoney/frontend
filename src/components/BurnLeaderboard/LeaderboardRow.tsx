@@ -1,4 +1,4 @@
-import { FC, useCallback } from "react";
+import { FC, ReactEventHandler, useCallback } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
 import { LeaderboardEntry } from ".";
@@ -23,28 +23,28 @@ const getAdminToken = (): string | undefined => {
   return adminToken;
 };
 
-const onSetTwitterHandle = (adminToken: string, address: string) => {
+const onSetTwitterHandle = async (adminToken: string, address: string) => {
   const handle = window.prompt(`input twitter handle`);
   if (handle === null) {
     return;
   }
-  Api.setContractTwitterHandle(adminToken, address, handle);
+  await Api.setContractTwitterHandle(adminToken, address, handle);
 };
 
-const onSetName = (adminToken: string, address: string) => {
+const onSetName = async (adminToken: string, address: string) => {
   const nameInput = window.prompt(`input name`);
   if (nameInput === null) {
     return;
   }
-  Api.setContractName(adminToken, address, nameInput);
+  await Api.setContractName(adminToken, address, nameInput);
 };
 
-const onSetCategory = (adminToken: string, address: string) => {
+const onSetCategory = async (adminToken: string, address: string) => {
   const category = window.prompt(`input category`);
   if (category === null) {
     return;
   }
-  Api.setContractCategory(adminToken, address, category);
+  await Api.setContractCategory(adminToken, address, category);
 };
 
 const AdminControls: FC<{ adminToken: string; address: string }> = ({
@@ -116,17 +116,18 @@ const LeaderboardRow: FC<Props> = ({
   const adminToken = getAdminToken();
 
   //Your handler Component
-  const onImageError = useCallback((e) => {
-    e.target.src = "/leaderboard-images/question-mark-v2.svg";
+  const onImageError = useCallback<ReactEventHandler<HTMLImageElement>>((e) => {
+    (e.target as HTMLImageElement).src =
+      "/leaderboard-images/question-mark-v2.svg";
   }, []);
 
   return (
     <div className="pt-2.5 pb-2.5 pr-2.5">
       <a
         href={
-          typeof address !== undefined
-            ? `https://etherscan.io/address/${address}`
-            : undefined
+          address === undefined
+            ? undefined
+            : `https://etherscan.io/address/${address}`
         }
         target="_blank"
         rel="noreferrer"
