@@ -1,5 +1,5 @@
 import * as DateFns from "date-fns";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { BurnRecord, useFeeData } from "../api";
 import * as Format from "../format";
@@ -23,12 +23,6 @@ const formatBlockNumber = flow(
   O.toUndefined
 );
 
-const formatAge = flow(
-  O.fromPredicate((unknown): unknown is Date => unknown instanceof Date),
-  O.map(DateFns.formatDistanceToNowStrict),
-  O.toUndefined
-);
-
 const getBlockPageLink = flow(
   OAlt.numberFromUnknown,
   O.map((num) => `https://etherscan.io/block/${num}`),
@@ -48,6 +42,33 @@ const BurnRecordAmount: FC<{ amount: number | undefined }> = ({ amount }) => (
 );
 
 const emojiMap = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
+
+const Age: FC<{ minedAt: Date | undefined }> = ({ minedAt }) => {
+  const [age, setAge] = useState<string | undefined>();
+
+  useEffect(() => {
+    if (minedAt === undefined) {
+      return;
+    }
+
+    setAge(DateFns.formatDistanceToNowStrict(minedAt));
+
+    const intervalId = window.setInterval(() => {
+      setAge(DateFns.formatDistanceToNowStrict(minedAt));
+    }, 1000);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [minedAt]);
+
+  return (
+    <span className="font-inter font-light text-white md:text-lg">
+      {age || <Skeleton inline={true} width="6rem" />}
+      {" ago"}
+    </span>
+  );
+};
 
 type Props = {
   onClickTimeFrame: () => void;
@@ -98,12 +119,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                   )}
                 </span>
               </a>
-              <span className="font-inter font-light text-white md:text-lg">
-                {formatAge(record.minedAt) || (
-                  <Skeleton inline={true} width="6rem" />
-                )}
-                {" ago"}
-              </span>
+              <Age minedAt={record.minedAt} />
             </div>
           </div>
         ))}
