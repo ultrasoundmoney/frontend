@@ -79,10 +79,10 @@ export type FeeData = {
   burnRates: BurnRates;
   burnRecords: BurnRecords["records"];
   ethPrice: EthPrice;
-  latestBlockFees: LatestBlock[];
-  number: number;
   feesBurned: FeesBurned;
+  latestBlockFees: LatestBlock[];
   leaderboards: Leaderboards;
+  number: number;
 };
 
 export const useFeeData = (): FeeData | undefined => {
