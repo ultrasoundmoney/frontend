@@ -87,7 +87,7 @@ export type FeeData = {
 
 export const useFeeData = (): FeeData | undefined => {
   const { data } = useSWR<FeeData>(`${feesBasePath}/all`, {
-    refreshInterval: Duration.millisFromSeconds(3),
+    refreshInterval: Duration.millisFromSeconds(2),
   });
 
   return data;
