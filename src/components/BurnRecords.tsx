@@ -6,6 +6,7 @@ import { BurnRecord, useFeeData } from "../api";
 import * as Format from "../format";
 import { flow, O, OAlt } from "../fp";
 import { timeFrameFromNext, TimeFrameNext } from "../time_frames";
+import { useActiveBreakpoint } from "../utils/use-active-breakpoint";
 import { Unit } from "./ComingSoon/CurrencyControl";
 import { AmountUnitSpace } from "./Spacing";
 import SpanMoji from "./SpanMoji";
@@ -85,6 +86,7 @@ type Props = {
 
 const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const burnRecords = useFeeData()?.burnRecords;
+  const { lg } = useActiveBreakpoint();
 
   const timeFrameRecords =
     burnRecords === undefined
@@ -100,8 +102,8 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
       />
       <div
         className="flex flex-col gap-y-6 mt-3 -mr-3 overflow-y-auto leaderboard-scroller"
-        // Custom height to fit three records on desktop.
-        style={{ height: "17rem" }}
+        // Custom height to fit three records on desktop and mobile.
+        style={{ height: lg ? "16rem" : "15rem" }}
       >
         {timeFrameRecords.map((record, index) => (
           <div
