@@ -77,6 +77,8 @@ export type LatestBlock = {
 export type FeeData = {
   baseFeePerGas: number;
   burnRates: BurnRates;
+  burnRecords: BurnRecords["records"];
+  ethPrice: EthPrice;
   latestBlockFees: LatestBlock[];
   number: number;
   feesBurned: FeesBurned;

@@ -1,7 +1,7 @@
 import * as DateFns from "date-fns";
 import { FC } from "react";
 import Skeleton from "react-loading-skeleton";
-import { BurnRecord, useBurnRecords } from "../api";
+import { BurnRecord, useFeeData } from "../api";
 import * as Format from "../format";
 import { flow, O, OAlt } from "../fp";
 import { timeFrameFromNext, TimeFrameNext } from "../time_frames";
@@ -55,12 +55,12 @@ type Props = {
 };
 
 const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
-  const burnRecords = useBurnRecords();
+  const burnRecords = useFeeData()?.burnRecords;
 
   const timeFrameRecords =
     burnRecords === undefined
       ? (new Array(10).fill({}) as Partial<BurnRecord>[])
-      : burnRecords.records[timeFrame];
+      : burnRecords[timeFrame];
 
   return (
     <WidgetBackground>
