@@ -1,12 +1,11 @@
 import { FC, ReactEventHandler, useCallback } from "react";
 import Skeleton from "react-loading-skeleton";
-import { useProfiles } from "../../api";
 import AvatarImg from "../../assets/avatar.webp";
 import ProfileTooltip from "./ProfileTooltip";
 
-const TwitterProfile: FC = () => {
-  const profiles = useProfiles()?.profiles;
-
+const TwitterProfile: FC<{ profiles: TwitterProfile[] | undefined }> = ({
+  profiles,
+}) => {
   const currentProfiles =
     profiles === undefined
       ? (new Array(120).fill(undefined) as undefined[])

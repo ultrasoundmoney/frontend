@@ -1,6 +1,6 @@
 import { FC, useContext, useEffect, useState } from "react";
 import Clipboard from "react-clipboard.js";
-import { useProfiles as useProfilesData } from "../../api";
+import { useProfiles } from "../../api";
 import { formatNoDigit } from "../../format";
 import { TranslationsContext } from "../../translations-context";
 import SpanMoji from "../SpanMoji";
@@ -8,7 +8,9 @@ import TwitterProfile from "./TwitterProfile";
 
 const TwitterCommunity: FC = () => {
   const t = useContext(TranslationsContext);
-  const famCount = useProfilesData()?.count;
+  const famCount = useProfiles()?.count;
+  const profiles = useProfiles()?.profiles;
+
   const [isCopiedFeedbackVisible, setIsCopiedFeedbackVisible] = useState(false);
 
   const getText =
@@ -66,7 +68,7 @@ const TwitterCommunity: FC = () => {
         </Clipboard>
       </div>
       <div className="h-16"></div>
-      <TwitterProfile />
+      <TwitterProfile profiles={profiles} />
     </>
   );
 };

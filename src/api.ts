@@ -78,7 +78,7 @@ export type FeeData = {
   baseFeePerGas: number;
   burnRates: BurnRates;
   burnRecords: BurnRecords["records"];
-  ethPrice: EthPrice;
+  ethPrice: EthPrice | null;
   feesBurned: FeesBurned;
   latestBlockFees: LatestBlock[];
   leaderboards: Leaderboards;
@@ -89,7 +89,7 @@ type RawFeeData = {
   baseFeePerGas: number;
   burnRates: BurnRates;
   burnRecords: RawBurnRecords["records"];
-  ethPrice: EthPrice;
+  ethPrice: EthPrice | null;
   feesBurned: FeesBurned;
   latestBlockFees: LatestBlock[];
   leaderboards: Leaderboards;

@@ -46,7 +46,10 @@ const FollowingYou: React.FC = () => {
     }
 
     if (res.status === 200) {
-      const body = await res.json();
+      const body = (await res.json()) as {
+        followers: TwitterProfile[];
+        count: number;
+      };
       // Somehow clicking show me rapidly can have res 200, but still have body
       // be undefined on mobile.
       if (body.followers !== undefined) {
@@ -106,7 +109,7 @@ const FollowingYou: React.FC = () => {
             </p>
           ) : (
             <>
-              <TwitterProfile profileList={followers.followers} />
+              <TwitterProfile profiles={followers.followers} />
               {followers.count > followers.followers.length && (
                 <p className="text-white text-xl p-8 text-center">{`+${formatNoDigit(
                   followers.count - followers.followers.length
