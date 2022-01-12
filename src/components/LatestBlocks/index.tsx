@@ -173,4 +173,4 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
   );
 };
 
-export default memo(LatestBlocks);
+export default LatestBlocks;

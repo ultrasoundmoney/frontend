@@ -1,5 +1,5 @@
-import React, { memo, FC } from "react";
 import * as d3 from "d3";
+import React, { FC } from "react";
 import { animated, config, useSpring } from "react-spring";
 import colors from "../../colors";
 
@@ -72,4 +72,4 @@ const GaugeSvg: FC<GaugeSvgProps> = ({
   );
 };
 
-export default memo(GaugeSvg);
+export default GaugeSvg;

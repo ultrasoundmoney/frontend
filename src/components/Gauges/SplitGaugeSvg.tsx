@@ -92,4 +92,4 @@ const SplitGaugeSvg: FC<SplitGaugeSvgProps> = ({
   );
 };
 
-export default memo(SplitGaugeSvg);
+export default SplitGaugeSvg;

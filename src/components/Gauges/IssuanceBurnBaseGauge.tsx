@@ -1,13 +1,13 @@
-import { FC, memo } from "react";
-import GaugeSvg from "./GaugeSvg";
-import SpanMoji from "../SpanMoji";
-import colors from "../../colors";
-import { animated, config, useSpring } from "react-spring";
-import { formatOneDigit, formatZeroDigit } from "../../format";
-import { clamp } from "lodash";
 import { pipe } from "fp-ts/lib/function";
+import { clamp } from "lodash";
+import { FC } from "react";
+import { animated, config, useSpring } from "react-spring";
 import { useEthPrice } from "../../api";
+import colors from "../../colors";
+import { formatOneDigit, formatZeroDigit } from "../../format";
 import { Unit } from "../ComingSoon/CurrencyControl";
+import SpanMoji from "../SpanMoji";
+import GaugeSvg from "./GaugeSvg";
 
 type BaseGuageProps = {
   emoji: string;
@@ -86,4 +86,4 @@ const BaseGuage: FC<BaseGuageProps> = ({
   );
 };
 
-export default memo(BaseGuage);
+export default BaseGuage;
