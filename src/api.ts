@@ -75,20 +75,20 @@ export type LatestBlock = {
 };
 
 export type FeeData = {
-  baseFeePerGas: number | undefined;
-  burnRates: BurnRates | undefined;
+  baseFeePerGas: number;
+  burnRates: BurnRates;
   latestBlockFees: LatestBlock[];
-  number: number | undefined;
-  feesBurned: FeesBurned | undefined;
-  leaderboards: Leaderboards | undefined;
+  number: number;
+  feesBurned: FeesBurned;
+  leaderboards: Leaderboards;
 };
 
-export const useFeeData = (): FeeData => {
-  const { data } = useSWR(`${feesBasePath}/all`, {
-    refreshInterval: Duration.millisFromSeconds(4),
+export const useFeeData = (): FeeData | undefined => {
+  const { data } = useSWR<FeeData>(`${feesBasePath}/all`, {
+    refreshInterval: Duration.millisFromSeconds(3),
   });
 
-  return data === undefined ? undefined : data;
+  return data;
 };
 
 export const setContractTwitterHandle = async (
@@ -151,25 +151,12 @@ export type EthPrice = {
   btc24hChange: number;
 };
 
-type BaseFeePerGas = {
-  baseFeePerGas: number;
-};
-
 export const useEthPrice = (): EthPrice | undefined => {
   const { data } = useSWR<EthPrice>(`${feesBasePath}/eth-price`, {
-    refreshInterval: Duration.millisFromSeconds(4),
+    refreshInterval: Duration.millisFromSeconds(8),
   });
 
   return data;
-};
-
-export const useBaseFeePerGas = (): number | undefined => {
-  const { data } = useSWR<BaseFeePerGas>(`${feesBasePath}/base-fee-per-gas`, {
-    refreshInterval: Duration.millisFromSeconds(4),
-    refreshWhenHidden: true,
-  });
-
-  return data?.baseFeePerGas;
 };
 
 export type AverageEthPrice = Record<TimeFrameNext, number>;
