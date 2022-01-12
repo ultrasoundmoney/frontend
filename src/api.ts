@@ -107,7 +107,7 @@ const decodeBurnRecords = (rawBurnRecords: RawBurnRecords["records"]) =>
 
 export const useFeeData = (): FeeData | undefined => {
   const { data } = useSWR<RawFeeData>(`${feesBasePath}/all`, {
-    refreshInterval: Duration.millisFromSeconds(2),
+    refreshInterval: Duration.millisFromSeconds(4),
   });
 
   return data === undefined
