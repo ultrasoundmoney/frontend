@@ -85,12 +85,37 @@ export type FeeData = {
   number: number;
 };
 
+type RawFeeData = {
+  baseFeePerGas: number;
+  burnRates: BurnRates;
+  burnRecords: RawBurnRecords["records"];
+  ethPrice: EthPrice;
+  feesBurned: FeesBurned;
+  latestBlockFees: LatestBlock[];
+  leaderboards: Leaderboards;
+  number: number;
+};
+
+const decodeBurnRecords = (rawBurnRecords: RawBurnRecords["records"]) =>
+  timeFramesNext.reduce((map, timeFrame) => {
+    map[timeFrame] = rawBurnRecords[timeFrame].map((record) => ({
+      ...record,
+      minedAt: new Date(record.minedAt),
+    }));
+    return map;
+  }, {} as Record<TimeFrameNext, BurnRecord[]>);
+
 export const useFeeData = (): FeeData | undefined => {
-  const { data } = useSWR<FeeData>(`${feesBasePath}/all`, {
+  const { data } = useSWR<RawFeeData>(`${feesBasePath}/all`, {
     refreshInterval: Duration.millisFromSeconds(2),
   });
 
-  return data;
+  return data === undefined
+    ? undefined
+    : {
+        ...data,
+        burnRecords: decodeBurnRecords(data.burnRecords),
+      };
 };
 
 export const setContractTwitterHandle = async (
@@ -337,12 +362,6 @@ export const useBurnRecords = (): BurnRecords | undefined => {
     ? undefined
     : {
         ...data,
-        records: timeFramesNext.reduce((map, timeFrame) => {
-          map[timeFrame] = data.records[timeFrame].map((record) => ({
-            ...record,
-            minedAt: new Date(record.minedAt),
-          }));
-          return map;
-        }, {} as Record<TimeFrameNext, BurnRecord[]>),
+        records: decodeBurnRecords(data.records),
       };
 };
