@@ -1,6 +1,6 @@
 import * as DateFns from "date-fns";
 import { flow } from "lodash";
-import React, { FC, memo, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { TransitionGroup } from "react-transition-group";
 import { LatestBlock, useFeeData } from "../../api";
@@ -53,9 +53,9 @@ export const formatBlockNumber = (number: unknown) =>
     O.toUndefined
   );
 
-const latestBlockFeesSkeletons = new Array(maxBlocks).fill(
-  {} as Partial<LatestBlock>
-);
+const latestBlockFeesSkeletons = new Array(maxBlocks).fill({}) as Partial<
+  LatestBlock
+>[];
 
 type Props = { unit: Unit };
 
@@ -114,7 +114,11 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
                 >
                   <div className="fee-block text-base md:text-lg">
                     <a
-                      href={`https://etherscan.io/block/${number}`}
+                      href={
+                        number === undefined
+                          ? undefined
+                          : `https://etherscan.io/block/${number}`
+                      }
                       target="_blank"
                       rel="noreferrer"
                     >

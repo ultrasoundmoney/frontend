@@ -62,7 +62,7 @@ const SupplyGrowthGauge: FC<Props> = ({
   toggleSimulateMerge,
 }) => {
   const growthRate = useGrowthRate(simulateMerge, timeFrame);
-  const toPercentOneDigitSigned = useCallback(
+  const toPercentOneDigitSigned = useCallback<(n: number) => string>(
     (n) => Format.formatPercentOneDigitSigned(n),
     []
   );
