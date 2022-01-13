@@ -59,7 +59,7 @@ const ComingSoon: FC = () => (
       {/* </video> */}
       <Sentry.ErrorBoundary
         fallback={
-          <div className="font-roboto text-white text-xl text-center">
+          <div className="bg-blue-tangaroa w-4/6 m-auto p-8 rounded-lg font-roboto text-white text-xl text-center">
             an unexpected exception occured, devs have been notified.
           </div>
         }
