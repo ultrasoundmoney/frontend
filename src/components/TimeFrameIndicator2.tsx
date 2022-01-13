@@ -1,12 +1,12 @@
 import * as DateFns from "date-fns";
 import { FC } from "react";
 import { londonHardforkTimestamp } from "../dates";
-import { displayTimeFrameMap, TimeFrame } from "../time_frames";
+import { displayTimeFrameNextMap, TimeFrameNext } from "../time_frames";
 
 type Props = {
   onClickTimeFrame: () => void;
   showDays?: boolean;
-  timeFrame: TimeFrame;
+  timeFrame: TimeFrameNext;
 };
 
 const TimeFrameIndicator: FC<Props> = ({
@@ -34,7 +34,7 @@ const TimeFrameIndicator: FC<Props> = ({
           className={`font-roboto font-extralight px-3 py-1 border text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg select-none`}
           onClick={onClickTimeFrame}
         >
-          {displayTimeFrameMap[timeFrame]}
+          {displayTimeFrameNextMap[timeFrame]}
         </button>
       )}
     </div>
