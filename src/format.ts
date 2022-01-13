@@ -1,4 +1,5 @@
 import { pipe } from "fp-ts/lib/function";
+import JSBI from "jsbi";
 
 export function formatLargeNumber(
   n: number,
@@ -85,6 +86,11 @@ export const formatNoDigit = (num: number): string => noDigit.format(num);
 export const gweiFromWei = (wei: number): number => wei / 10 ** 9;
 
 export const ethFromWei = (wei: number): number => wei / 10 ** 18;
+
+export const ethFromWeiBIUnsafe = (wei: JSBI): number =>
+  JSBI.toNumber(
+    JSBI.divide(wei, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
+  );
 
 export const followerCountConvert = (num: number) => {
   if (num > 999 && num < 1000000) {

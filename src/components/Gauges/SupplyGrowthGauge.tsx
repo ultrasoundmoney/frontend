@@ -1,7 +1,7 @@
 import { clamp } from "lodash";
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { animated, config, useSpring } from "react-spring";
-import { useAverageEthPrice, useFeeData } from "../../api";
+import { useAverageEthPrice, useFeeData, useScarcity } from "../../api";
 import * as Format from "../../format";
 import * as StaticEtherData from "../../static-ether-data";
 import { TimeFrameNext } from "../../time_frames";
@@ -17,6 +17,7 @@ const useGrowthRate = (
   simulateMerge: boolean,
   timeFrame: TimeFrameNext
 ): number => {
+  const ethSupply = useScarcity()?.ethSupply;
   const burnRates = useFeeData()?.burnRates;
   const [growthRate, setGrowthRate] = useState(0);
   const averageEthPrice = useAverageEthPrice(timeFrame);
@@ -36,14 +37,26 @@ const useGrowthRate = (
       : posIssuanceYear + powIssuanceYear;
 
     const growthRate =
-      (issuanceRate - feeBurnYear) / StaticEtherData.totalSupply;
+      ethSupply === undefined
+        ? undefined
+        : (issuanceRate - feeBurnYear) / Format.ethFromWeiBIUnsafe(ethSupply);
 
-    const rateRounded = Math.round(growthRate * 1000) / 1000;
+    const rateRounded =
+      growthRate === undefined
+        ? undefined
+        : Math.round(growthRate * 1000) / 1000;
 
-    if (rateRounded !== growthRate) {
+    if (rateRounded !== undefined && rateRounded !== growthRate) {
       setGrowthRate(rateRounded);
     }
-  }, [burnRates, growthRate, simulateMerge, averageEthPrice, timeFrame]);
+  }, [
+    burnRates,
+    ethSupply,
+    growthRate,
+    simulateMerge,
+    averageEthPrice,
+    timeFrame,
+  ]);
 
   return growthRate;
 };
