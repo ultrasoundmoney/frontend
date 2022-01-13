@@ -240,6 +240,7 @@ const EngineRow: FC<EngineRowProps> = ({
     style={{ opacity: hovering ? 0.6 : 1 }}
     href={link}
     target="_blank"
+    rel="noreferrer"
   >
     <span className="font-inter text-white">{name}</span>
     <Amount className="text-right" unitPrefix="M" unit="eth">
