@@ -118,9 +118,9 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
       ? undefined
       : leaderboards[feePeriodToUpdateMap[timeFrame]];
 
-  const leaderboardSkeletons: Partial<LeaderboardEntry>[] = new Array(100).fill(
-    {}
-  );
+  const leaderboardSkeletons = new Array(100).fill({}) as Partial<
+    LeaderboardEntry
+  >[];
 
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8 lg:h-full">
