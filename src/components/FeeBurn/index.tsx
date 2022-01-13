@@ -1,5 +1,5 @@
 import * as DateFns from "date-fns";
-import React, { FC, memo } from "react";
+import { FC } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
 import { BurnRates, FeesBurned, useFeeData } from "../../api";
@@ -206,4 +206,4 @@ const CumulativeFeeBurn: FC<Props> = ({
   );
 };
 
-export default memo(CumulativeFeeBurn);
+export default CumulativeFeeBurn;
