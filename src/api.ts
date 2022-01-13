@@ -3,12 +3,7 @@ import useSWR from "swr";
 import { LeaderboardEntry } from "./components/BurnLeaderboard";
 import * as Config from "./config";
 import * as Duration from "./duration";
-import {
-  nextFromTimeFrame,
-  TimeFrame,
-  TimeFrameNext,
-  timeFramesNext,
-} from "./time_frames";
+import { TimeFrameNext, timeFramesNext } from "./time_frames";
 
 export const famBasePath =
   Config.apiEnv === "staging"
@@ -189,7 +184,7 @@ export const useEthPrice = (): EthPrice | undefined => {
 export type AverageEthPrice = Record<TimeFrameNext, number>;
 
 export const useAverageEthPrice = (
-  timeFrame: TimeFrame
+  timeFrame: TimeFrameNext
 ): number | undefined => {
   const { data } = useSWR<AverageEthPrice>(
     `${feesBasePath}/average-eth-price`,
@@ -198,7 +193,7 @@ export const useAverageEthPrice = (
     }
   );
 
-  return data === undefined ? undefined : data[nextFromTimeFrame[timeFrame]];
+  return data === undefined ? undefined : data[timeFrame];
 };
 
 type MarketCaps = {

@@ -4,9 +4,9 @@ import { animated, config, useSpring } from "react-spring";
 import { useAverageEthPrice, useFeeData } from "../../api";
 import * as Format from "../../format";
 import * as StaticEtherData from "../../static-ether-data";
-import { TimeFrame } from "../../time_frames";
+import { TimeFrameNext } from "../../time_frames";
 import { timeframeBurnRateMap } from "../FeeBurn";
-import TimeframeIndicator from "../TimeframeIndicator";
+import TimeFrameIndicator from "../TimeFrameIndicator";
 import ToggleSwitch from "../ToggleSwitch";
 import SplitGaugeSvg from "./SplitGaugeSvg";
 
@@ -15,7 +15,7 @@ const posIssuanceYear = StaticEtherData.posIssuancePerDay * 365.25;
 
 const useGrowthRate = (
   simulateMerge: boolean,
-  timeFrame: TimeFrame
+  timeFrame: TimeFrameNext
 ): number => {
   const burnRates = useFeeData()?.burnRates;
   const [growthRate, setGrowthRate] = useState(0);
@@ -51,7 +51,7 @@ const useGrowthRate = (
 type Props = {
   onClickTimeFrame: () => void;
   simulateMerge: boolean;
-  timeFrame: TimeFrame;
+  timeFrame: TimeFrameNext;
   toggleSimulateMerge: () => void;
 };
 
@@ -123,7 +123,7 @@ const SupplyGrowthGauge: FC<Props> = ({
         <p className="font-inter font-light uppercase sm:text-right text-blue-spindle text-md">
           supply growth
         </p>
-        <TimeframeIndicator
+        <TimeFrameIndicator
           showDays={false}
           onClickTimeFrame={onClickTimeFrame}
           timeFrame={timeFrame}

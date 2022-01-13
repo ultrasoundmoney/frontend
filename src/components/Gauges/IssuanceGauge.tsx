@@ -1,14 +1,14 @@
 import { FC } from "react";
-import BaseGauge from "./IssuanceBurnBaseGauge";
-import * as StaticEtherData from "../../static-ether-data";
-import colors from "../../colors";
 import { useAverageEthPrice } from "../../api";
+import colors from "../../colors";
+import * as StaticEtherData from "../../static-ether-data";
+import { TimeFrameNext } from "../../time_frames";
 import { Unit } from "../ComingSoon/CurrencyControl";
-import { TimeFrame } from "../../time_frames";
+import BaseGauge from "./IssuanceBurnBaseGauge";
 
 type Props = {
   simulateMerge: boolean;
-  timeFrame: TimeFrame;
+  timeFrame: TimeFrameNext;
   unit: Unit;
 };
 

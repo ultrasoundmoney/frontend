@@ -1,6 +1,6 @@
 import React, { FC, memo } from "react";
 import { Leaderboards, useFeeData } from "../../api";
-import { TimeFrame } from "../../time_frames";
+import { TimeFrameNext } from "../../time_frames";
 import { Unit } from "../ComingSoon/CurrencyControl";
 import { WidgetTitle } from "../WidgetBits";
 import LeaderboardRow from "./LeaderboardRow";
@@ -52,12 +52,12 @@ export type LeaderboardEntry =
   | EthTransfersEntry
   | ContractCreationsEntry;
 
-const feePeriodToUpdateMap: Record<TimeFrame, keyof Leaderboards> = {
-  "5m": "leaderboard5m",
-  "1h": "leaderboard1h",
-  "24h": "leaderboard24h",
-  "7d": "leaderboard7d",
-  "30d": "leaderboard30d",
+const feePeriodToUpdateMap: Record<TimeFrameNext, keyof Leaderboards> = {
+  m5: "leaderboard5m",
+  h1: "leaderboard1h",
+  d1: "leaderboard24h",
+  d7: "leaderboard7d",
+  d30: "leaderboard30d",
   all: "leaderboardAll",
 };
 
@@ -107,7 +107,7 @@ const formatDetail = (rawName: unknown, detail: unknown) => {
 
 type Props = {
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrame;
+  timeFrame: TimeFrameNext;
   unit: Unit;
 };
 

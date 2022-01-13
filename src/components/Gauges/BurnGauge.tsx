@@ -2,12 +2,12 @@ import { FC } from "react";
 import { useFeeData } from "../../api";
 import colors from "../../colors";
 import * as Format from "../../format";
-import { TimeFrame } from "../../time_frames";
+import { TimeFrameNext } from "../../time_frames";
 import { Unit } from "../ComingSoon/CurrencyControl";
 import { timeframeBurnRateMap } from "../FeeBurn";
 import BaseGauge from "./IssuanceBurnBaseGauge";
 
-type BurnGaugeProps = { timeFrame: TimeFrame; unit: Unit };
+type BurnGaugeProps = { timeFrame: TimeFrameNext; unit: Unit };
 
 const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame, unit }) => {
   const burnRates = useFeeData()?.burnRates;

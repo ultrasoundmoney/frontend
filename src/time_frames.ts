@@ -8,6 +8,9 @@ export const timeFrames = ["5m", "1h", "24h", "7d", "30d", "all"] as const;
  */
 export type TimeFrame = typeof timeFrames[number];
 
+export const limitedTimeFramesNext = ["m5", "h1", "d1", "d7", "d30"];
+export type LimitedTimeFrameNext = typeof limitedTimeFramesNext[number];
+
 export const timeFramesNext = ["m5", "h1", "d1", "d7", "d30", "all"] as const;
 export type TimeFrameNext = typeof timeFramesNext[number];
 

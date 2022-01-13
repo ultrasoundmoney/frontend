@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import { TimeFrame } from "../time_frames";
-import TimeFrameIndicator from "./TimeframeIndicator";
+import { TimeFrameNext } from "../time_frames";
+import TimeFrameIndicator from "./TimeFrameIndicator";
 
 export const WidgetBackground: FC = ({ children }) => (
   <div className="bg-blue-tangaroa w-full rounded-lg p-8">{children}</div>
@@ -9,7 +9,7 @@ export const WidgetBackground: FC = ({ children }) => (
 type WidgetTitleProps = {
   align?: "right";
   onClickTimeFrame?: () => void;
-  timeFrame?: TimeFrame;
+  timeFrame?: TimeFrameNext;
   title: string;
 };
 

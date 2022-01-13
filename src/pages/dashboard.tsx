@@ -47,7 +47,7 @@ const DashboardPage: NextPage = () => {
           <div className="w-full px-4">
             <BurnLeaderboard
               onClickTimeFrame={() => undefined}
-              timeFrame={"24h"}
+              timeFrame={"d1"}
               unit={"eth"}
             />
           </div>

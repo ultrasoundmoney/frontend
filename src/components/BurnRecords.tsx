@@ -5,7 +5,7 @@ import Skeleton from "react-loading-skeleton";
 import { BurnRecord, useFeeData } from "../api";
 import * as Format from "../format";
 import { flow, O, OAlt } from "../fp";
-import { timeFrameFromNext, TimeFrameNext } from "../time_frames";
+import { TimeFrameNext } from "../time_frames";
 import { useActiveBreakpoint } from "../utils/use-active-breakpoint";
 import { Unit } from "./ComingSoon/CurrencyControl";
 import { AmountUnitSpace } from "./Spacing";
@@ -97,7 +97,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
     <WidgetBackground>
       <WidgetTitle
         onClickTimeFrame={onClickTimeFrame}
-        timeFrame={timeFrameFromNext[timeFrame]}
+        timeFrame={timeFrame}
         title="burn records"
       />
       <div

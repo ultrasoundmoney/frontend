@@ -8,48 +8,48 @@ import * as Duration from "../../duration";
 import * as Format from "../../format";
 import { O, pipe } from "../../fp";
 import * as StaticEtherData from "../../static-ether-data";
-import { TimeFrame } from "../../time_frames";
+import { LimitedTimeFrameNext, TimeFrameNext } from "../../time_frames";
 import { Unit } from "../ComingSoon/CurrencyControl";
 import { AmountUnitSpace } from "../Spacing";
 import SpanMoji from "../SpanMoji";
 import { WidgetBackground, WidgetTitle } from "../WidgetBits";
 
 const timeframeFeesBurnedMap: Record<
-  TimeFrame,
+  TimeFrameNext,
   { eth: keyof FeesBurned; usd: keyof FeesBurned }
 > = {
-  "5m": { eth: "feesBurned5m", usd: "feesBurned5mUsd" },
-  "1h": { eth: "feesBurned1h", usd: "feesBurned1hUsd" },
-  "24h": { eth: "feesBurned24h", usd: "feesBurned24hUsd" },
-  "7d": { eth: "feesBurned7d", usd: "feesBurned7dUsd" },
-  "30d": { eth: "feesBurned30d", usd: "feesBurned30dUsd" },
+  m5: { eth: "feesBurned5m", usd: "feesBurned5mUsd" },
+  h1: { eth: "feesBurned1h", usd: "feesBurned1hUsd" },
+  d1: { eth: "feesBurned24h", usd: "feesBurned24hUsd" },
+  d7: { eth: "feesBurned7d", usd: "feesBurned7dUsd" },
+  d30: { eth: "feesBurned30d", usd: "feesBurned30dUsd" },
   all: { eth: "feesBurnedAll", usd: "feesBurnedAllUsd" },
 };
 
 export const timeframeBurnRateMap: Record<
-  TimeFrame,
+  TimeFrameNext,
   { eth: keyof BurnRates; usd: keyof BurnRates }
 > = {
-  "5m": { eth: "burnRate5m", usd: "burnRate5mUsd" },
-  "1h": { eth: "burnRate1h", usd: "burnRate1hUsd" },
-  "24h": { eth: "burnRate24h", usd: "burnRate24hUsd" },
-  "7d": { eth: "burnRate7d", usd: "burnRate7dUsd" },
-  "30d": { eth: "burnRate30d", usd: "burnRate30dUsd" },
+  m5: { eth: "burnRate5m", usd: "burnRate5mUsd" },
+  h1: { eth: "burnRate1h", usd: "burnRate1hUsd" },
+  d1: { eth: "burnRate24h", usd: "burnRate24hUsd" },
+  d7: { eth: "burnRate7d", usd: "burnRate7dUsd" },
+  d30: { eth: "burnRate30d", usd: "burnRate30dUsd" },
   all: { eth: "burnRateAll", usd: "burnRateAllUsd" },
 };
 
-const timeFrameMillisecondsMap = {
-  "30d": Duration.millisFromDays(30),
-  "7d": Duration.millisFromDays(7),
-  "24h": Duration.millisFromHours(24),
-  "1h": Duration.millisFromHours(1),
-  "5m": Duration.millisFromMinutes(5),
+const timeFrameMillisecondsMap: Record<LimitedTimeFrameNext, number> = {
+  d30: Duration.millisFromDays(30),
+  d7: Duration.millisFromDays(7),
+  d1: Duration.millisFromHours(24),
+  h1: Duration.millisFromHours(1),
+  m5: Duration.millisFromMinutes(5),
 };
 
 type Props = {
   onClickTimeFrame: () => void;
   simulateMerge: boolean;
-  timeFrame: TimeFrame;
+  timeFrame: TimeFrameNext;
   unit: Unit;
 };
 

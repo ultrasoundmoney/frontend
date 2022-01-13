@@ -1,11 +1,7 @@
 import React, { FC, useCallback, useState } from "react";
 import { useFeeData } from "../../api";
 import * as Format from "../../format";
-import {
-  timeFrameFromNext,
-  TimeFrameNext,
-  timeFramesNext,
-} from "../../time_frames";
+import { TimeFrameNext, timeFramesNext } from "../../time_frames";
 import BurnLeaderboard from "../BurnLeaderboard";
 import BurnRecords from "../BurnRecords";
 import FeeBurn from "../FeeBurn";
@@ -51,20 +47,20 @@ const Widgets: FC = () => {
     <div style={{ overflowAnchor: "none" }}>
       <div className="w-full flex flex-col md:flex-row md:gap-0 lg:gap-4 px-4 md:px-16 isolate">
         <div className="hidden md:block w-1/3">
-          <BurnGauge timeFrame={timeFrameFromNext[timeFrame]} unit={unit} />
+          <BurnGauge timeFrame={timeFrame} unit={unit} />
         </div>
         <div className="md:w-1/3">
           <SupplyGrowthGauge
             onClickTimeFrame={handleClickTimeFrame}
             simulateMerge={simulateMerge}
-            timeFrame={timeFrameFromNext[timeFrame]}
+            timeFrame={timeFrame}
             toggleSimulateMerge={toggleSimulateMerge}
           />
         </div>
         <div className="hidden md:block w-1/3">
           <IssuanceGauge
             simulateMerge={simulateMerge}
-            timeFrame={timeFrameFromNext[timeFrame]}
+            timeFrame={timeFrame}
             unit={unit}
           />
         </div>
@@ -96,13 +92,13 @@ const Widgets: FC = () => {
         <FeeBurn
           onClickTimeFrame={handleClickTimeFrame}
           simulateMerge={simulateMerge}
-          timeFrame={timeFrameFromNext[timeFrame]}
+          timeFrame={timeFrame}
           unit={unit}
         />
         <div className="lg:col-start-2 lg:row-start-1 lg:row-end-4">
           <BurnLeaderboard
             onClickTimeFrame={handleClickTimeFrame}
-            timeFrame={timeFrameFromNext[timeFrame]}
+            timeFrame={timeFrame}
             unit={unit}
           />
         </div>
