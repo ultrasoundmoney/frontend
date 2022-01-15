@@ -88,30 +88,24 @@ type RawMetadataFreshness = {
 };
 type RawMetadataFreshnessMap = Record<string, RawMetadataFreshness>;
 export type MetadataFreshness = {
-  openseaContractLastFetch: Date | null;
-  lastManuallyVerified: Date | null;
+  openseaContractLastFetch: Date | undefined;
+  lastManuallyVerified: Date | undefined;
 };
 export type MetadataFreshnessMap = Record<string, MetadataFreshness>;
 
-const mapValues = <B, C>(
-  obj: Record<string, B>,
-  fn: (b: B) => C
-): Record<string, C> =>
-  pipe(
-    Array.from(Object.entries(obj)),
-    A.map(([key, value]) => [key, fn(value)] as [string, C]),
-    (entries) => Object.fromEntries(entries)
-  );
-
 const decodeFreshness = (freshness: RawMetadataFreshness) => ({
-  openseaContractLastFetch:
-    freshness.openseaContractLastFetch === null
-      ? null
-      : DateFns.parseISO(freshness.openseaContractLastFetch),
-  lastManuallyVerified:
-    freshness.lastManuallyVerified === null
-      ? null
-      : DateFns.parseISO(freshness.lastManuallyVerified),
+  openseaContractLastFetch: pipe(
+    freshness.openseaContractLastFetch,
+    O.fromNullable,
+    O.map(DateFns.parseISO),
+    O.toUndefined
+  ),
+  lastManuallyVerified: pipe(
+    freshness.lastManuallyVerified,
+    O.fromNullable,
+    O.map(DateFns.parseISO),
+    O.toUndefined
+  ),
 });
 
 export const useContractsFreshness = (
@@ -122,6 +116,7 @@ export const useContractsFreshness = (
 
   const fetcher = (url: string) =>
     fetch(url, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
@@ -137,10 +132,10 @@ export const useContractsFreshness = (
 
   const { data } = useSWR(
     shouldFetch
-      ? `${feesBasePath}/contracts/admin/set-last-manually-verified?token=${token}`
+      ? `${feesBasePath}/contracts/metadata-freshness?token=${token}`
       : null,
     fetcher
   );
 
-  return data === undefined ? undefined : mapValues(data, decodeFreshness);
+  return data === undefined ? undefined : pipe(data, Re.map(decodeFreshness));
 };

@@ -125,9 +125,11 @@ type Props = {
 
 const LeaderboardRow: FC<Props> = ({
   address,
+  adminToken,
   category,
   detail,
   fees,
+  freshness,
   image,
   isBot,
   name,
@@ -145,8 +147,6 @@ const LeaderboardRow: FC<Props> = ({
       ? "/leaderboard-images/contract-creations.svg"
       : "/leaderboard-images/question-mark-v2.svg";
 
-  const adminToken = getAdminToken();
-
   //Your handler Component
   const onImageError = useCallback<ReactEventHandler<HTMLImageElement>>((e) => {
     (e.target as HTMLImageElement).src =
@@ -154,71 +154,73 @@ const LeaderboardRow: FC<Props> = ({
   }, []);
 
   return (
-    <div className="pt-2.5 pb-2.5 pr-2.5">
-      <a
-        href={
-          address === undefined
-            ? undefined
-            : `https://etherscan.io/address/${address}`
-        }
-        target="_blank"
-        rel="noreferrer"
-      >
-        <div className="hover:opacity-60 link-animation flex flex-row items-center font-inter text-white text-base md:text-lg">
-          <img
-            className="w-8 h-8 leaderboard-image"
-            src={imgSrc}
-            alt=""
-            onError={onImageError}
-          />
-          <p className="pl-4 truncate">
-            {typeof name === "string" ? (
-              name
-            ) : typeof address === "string" ? (
-              <span className="font-roboto">
-                {"0x" + address.slice(2, 6)}
-                <span className="font-inter">...</span>
-                {address.slice(38, 42)}
+    <>
+      <div className="pt-2.5 pb-2.5 pr-2.5">
+        <a
+          href={
+            address === undefined
+              ? undefined
+              : `https://etherscan.io/address/${address}`
+          }
+          target="_blank"
+          rel="noreferrer"
+        >
+          <div className="hover:opacity-60 link-animation flex flex-row items-center font-inter text-white text-base md:text-lg">
+            <img
+              className="w-8 h-8 leaderboard-image"
+              src={imgSrc}
+              alt=""
+              onError={onImageError}
+            />
+            <p className="pl-4 truncate">
+              {typeof name === "string" ? (
+                name
+              ) : typeof address === "string" ? (
+                <span className="font-roboto">
+                  {"0x" + address.slice(2, 6)}
+                  <span className="font-inter">...</span>
+                  {address.slice(38, 42)}
+                </span>
+              ) : (
+                <Skeleton inline={true} width="12rem" />
+              )}
+            </p>
+            {featureFlags.leaderboardCategory && category && (
+              <p className="px-1.5 py-0.5 ml-2 text-sm rounded-sm text-blue-manatee font-normal hidden md:block lg:hidden xl:block bg-blue-highlightbg">
+                {category}
+              </p>
+            )}
+            {detail && (
+              <p className="pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block">
+                {detail}
+              </p>
+            )}
+            <p className="pl-4 whitespace-nowrap ml-auto font-roboto font-light">
+              {fees === undefined ? (
+                <Skeleton inline={true} width="4rem" />
+              ) : (
+                <CountUp
+                  start={0}
+                  end={unit === "eth" ? Format.ethFromWei(fees) : fees / 1000}
+                  preserveValue={true}
+                  separator=","
+                  decimals={unit === "eth" ? 2 : 1}
+                  duration={0.8}
+                  suffix={unit === "eth" ? undefined : "K"}
+                />
+              )}
+              <AmountUnitSpace />
+              <span className="text-blue-spindle font-extralight">
+                {unit === "eth" ? "ETH" : "USD"}
               </span>
-            ) : (
-              <Skeleton inline={true} width="12rem" />
-            )}
-          </p>
-          {featureFlags.leaderboardCategory && category && (
-            <p className="px-1.5 py-0.5 ml-2 text-sm rounded-sm text-blue-manatee font-normal hidden md:block lg:hidden xl:block bg-blue-highlightbg">
-              {category}
             </p>
-          )}
-          {detail && (
-            <p className="pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block">
-              {detail}
-            </p>
-          )}
-          <p className="pl-4 whitespace-nowrap ml-auto font-roboto font-light">
-            {fees === undefined ? (
-              <Skeleton inline={true} width="4rem" />
-            ) : (
-              <CountUp
-                start={0}
-                end={unit === "eth" ? Format.ethFromWei(fees) : fees / 1000}
-                preserveValue={true}
-                separator=","
-                decimals={unit === "eth" ? 2 : 1}
-                duration={0.8}
-                suffix={unit === "eth" ? undefined : "K"}
-              />
-            )}
-            <AmountUnitSpace />
-            <span className="text-blue-spindle font-extralight">
-              {unit === "eth" ? "ETH" : "USD"}
-            </span>
-          </p>
-        </div>
-      </a>
-      {adminToken !== undefined && address !== undefined && (
-        <AdminControls address={address} adminToken={adminToken} />
-      )}
-    </div>
+          </div>
+        </a>
+        {adminToken !== undefined && address !== undefined && (
+          <AdminControls address={address} freshness={freshness} />
+        )}
+      </div>
+    </>
   );
 };
 
