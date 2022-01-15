@@ -1,3 +1,4 @@
+import * as DateFns from "date-fns";
 import JSBI from "jsbi";
 import useSWR from "swr";
 import { LeaderboardEntry } from "./components/BurnLeaderboard";
@@ -95,7 +96,7 @@ const decodeBurnRecords = (rawBurnRecords: RawBurnRecords["records"]) =>
   timeFramesNext.reduce((map, timeFrame) => {
     map[timeFrame] = rawBurnRecords[timeFrame].map((record) => ({
       ...record,
-      minedAt: new Date(record.minedAt),
+      minedAt: DateFns.parseISO(record.minedAt),
     }));
     return map;
   }, {} as Record<TimeFrameNext, BurnRecord[]>);
@@ -111,59 +112,6 @@ export const useFeeData = (): FeeData | undefined => {
         ...data,
         burnRecords: decodeBurnRecords(data.burnRecords),
       };
-};
-
-export const setContractTwitterHandle = async (
-  token: string,
-  address: string,
-  handle: string
-) => {
-  const res = await fetch(
-    `${feesBasePath}/set-contract-twitter-handle?address=${address}&token=${token}&handle=${handle}`
-  );
-
-  if (res.status !== 200) {
-    console.error("failed to add twitter handle");
-    return;
-  }
-
-  console.log(`successfully added twitter handle ${handle} for ${address}`);
-};
-
-export const setContractName = async (
-  token: string,
-  address: string,
-  name: string
-) => {
-  const res = await fetch(
-    `${feesBasePath}/set-contract-name?address=${address}&token=${token}&name=${name}`
-  );
-
-  if (res.status !== 200) {
-    console.error("failed to add contract name");
-    return;
-  }
-
-  console.log(`successfully added contract name ${name} for ${address}`);
-};
-
-export const setContractCategory = async (
-  token: string,
-  address: string,
-  category: string
-) => {
-  const res = await fetch(
-    `${feesBasePath}/set-contract-category?address=${address}&token=${token}&category=${category}`
-  );
-
-  if (res.status !== 200) {
-    console.error("failed to add contract category");
-    return;
-  }
-
-  console.log(
-    `successfully added contract category ${category} for ${address}`
-  );
 };
 
 export type EthPrice = {
