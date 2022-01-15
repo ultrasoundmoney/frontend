@@ -1,6 +1,6 @@
 import { FC, useContext, useEffect, useState } from "react";
 import Clipboard from "react-clipboard.js";
-import { useProfiles } from "../../api";
+import { useProfiles } from "../../api/fam";
 import { formatNoDigit } from "../../format";
 import { TranslationsContext } from "../../translations-context";
 import SpanMoji from "../SpanMoji";

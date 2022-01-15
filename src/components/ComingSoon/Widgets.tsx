@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useState } from "react";
-import { useFeeData } from "../../api";
+import { useGroupedData1 } from "../../api/grouped_stats_1";
 import * as Format from "../../format";
 import { TimeFrameNext, timeFramesNext } from "../../time_frames";
 import BurnLeaderboard from "../BurnLeaderboard";
@@ -15,7 +15,7 @@ import CurrencyControl, { Unit } from "./CurrencyControl";
 
 const Widgets: FC = () => {
   const [simulateMerge, setSimulateMerge] = useState(false);
-  const baseFeePerGas = useFeeData()?.baseFeePerGas;
+  const baseFeePerGas = useGroupedData1()?.baseFeePerGas;
   const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
 

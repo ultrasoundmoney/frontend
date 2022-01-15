@@ -1,7 +1,9 @@
 import { clamp } from "lodash";
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { animated, config, useSpring } from "react-spring";
-import { useAverageEthPrice, useFeeData, useScarcity } from "../../api";
+import { useScarcity } from "../../api";
+import { useAverageEthPrice } from "../../api/eth_price";
+import { useGroupedData1 } from "../../api/grouped_stats_1";
 import * as Format from "../../format";
 import * as StaticEtherData from "../../static-ether-data";
 import { TimeFrameNext } from "../../time_frames";
@@ -18,7 +20,7 @@ const useGrowthRate = (
   timeFrame: TimeFrameNext
 ): number => {
   const ethSupply = useScarcity()?.ethSupply;
-  const burnRates = useFeeData()?.burnRates;
+  const burnRates = useGroupedData1()?.burnRates;
   const [growthRate, setGrowthRate] = useState(0);
   const averageEthPrice = useAverageEthPrice(timeFrame);
 

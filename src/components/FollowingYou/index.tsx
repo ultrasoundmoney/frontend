@@ -2,8 +2,8 @@ import * as React from "react";
 import TwitterProfile from "../TwitterCommunity/TwitterProfile";
 import SpanMoji from "../SpanMoji";
 import { TranslationsContext } from "../../translations-context";
-import { famBasePath } from "../../api";
 import { formatNoDigit } from "../../format";
+import { famBasePath } from "../../api/fam";
 
 type Empty = { type: "empty" };
 type FollowedBy = {

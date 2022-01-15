@@ -2,7 +2,7 @@ import { pipe } from "fp-ts/lib/function";
 import { clamp } from "lodash";
 import { FC } from "react";
 import { animated, config, useSpring } from "react-spring";
-import { useEthPrice } from "../../api";
+import { useEthPrice } from "../../api/eth_price";
 import colors from "../../colors";
 import { formatOneDigit, formatZeroDigit } from "../../format";
 import { Unit } from "../ComingSoon/CurrencyControl";

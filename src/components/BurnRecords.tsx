@@ -2,7 +2,8 @@ import * as DateFns from "date-fns";
 import { FC, useEffect, useState } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
-import { BurnRecord, useFeeData } from "../api";
+import { BurnRecord } from "../api/burn_records";
+import { useGroupedData1 } from "../api/grouped_stats_1";
 import * as Format from "../format";
 import { flow, O, OAlt } from "../fp";
 import { TimeFrameNext } from "../time_frames";
@@ -85,7 +86,7 @@ type Props = {
 };
 
 const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
-  const burnRecords = useFeeData()?.burnRecords;
+  const burnRecords = useGroupedData1()?.burnRecords;
   const { lg } = useActiveBreakpoint();
 
   const timeFrameRecords =

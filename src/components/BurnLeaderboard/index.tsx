@@ -1,56 +1,12 @@
 import React, { FC, memo } from "react";
-import { Leaderboards, useFeeData } from "../../api";
+import { getAdminToken } from "../../admin";
+import { useContractsFreshness } from "../../api/contracts";
+import { useGroupedData1 } from "../../api/grouped_stats_1";
+import { LeaderboardEntry, Leaderboards } from "../../api/leaderboards";
 import { TimeFrameNext } from "../../time_frames";
 import { Unit } from "../ComingSoon/CurrencyControl";
 import { WidgetTitle } from "../WidgetBits";
 import LeaderboardRow from "./LeaderboardRow";
-
-type ContractEntry = {
-  address: string;
-  category: string | null;
-  detail: string | null;
-  fees: number;
-  feesUsd: number;
-  image: string | null;
-  isBot: boolean;
-  name: string | null;
-  twitterDescription: string | null;
-  twitterHandle: string | null;
-  twitterName: string | null;
-  type: "contract";
-  /**
-   * @deprecated
-   */
-  id: string;
-};
-
-type EthTransfersEntry = {
-  type: "eth-transfers";
-  name: string;
-  fees: number;
-  feesUsd: number;
-  /**
-   * @deprecated
-   */
-  id: string;
-};
-
-type ContractCreationsEntry = {
-  type: "contract-creations";
-  name: string;
-  fees: number;
-  feesUsd: number;
-  /**
-   * @deprecated
-   */
-  id: string;
-};
-
-// Name is undefined because we don't always know the name for a contract. Image is undefined because we don't always have an image for a contract. Address is undefined because base fees paid for ETH transfers are shared between many addresses.
-export type LeaderboardEntry =
-  | ContractEntry
-  | EthTransfersEntry
-  | ContractCreationsEntry;
 
 const feePeriodToUpdateMap: Record<TimeFrameNext, keyof Leaderboards> = {
   m5: "leaderboard5m",
@@ -105,6 +61,15 @@ const formatDetail = (rawName: unknown, detail: unknown) => {
   return undefined;
 };
 
+const getLeaderboardsAddresses = (leaderboards: Leaderboards) =>
+  Object.values(leaderboards)
+    .flatMap((leaderboardEntries) =>
+      leaderboardEntries.map((entry) =>
+        entry.type === "contract" ? entry.address : undefined
+      )
+    )
+    .filter((mAddress): mAddress is string => mAddress !== undefined);
+
 type Props = {
   onClickTimeFrame: () => void;
   timeFrame: TimeFrameNext;
@@ -112,7 +77,7 @@ type Props = {
 };
 
 const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
-  const leaderboards = useFeeData()?.leaderboards;
+  const leaderboards = useGroupedData1()?.leaderboards;
   const selectedLeaderboard =
     leaderboards === undefined
       ? undefined
@@ -121,6 +86,13 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
   const leaderboardSkeletons = new Array(100).fill({}) as Partial<
     LeaderboardEntry
   >[];
+
+  const adminToken = getAdminToken();
+  const addresses =
+    leaderboards === undefined
+      ? undefined
+      : getLeaderboardsAddresses(leaderboards);
+  const freshnessMap = useContractsFreshness(addresses);
 
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8 lg:h-full">
@@ -148,6 +120,12 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
                 name={formatName(row.name, row.address)}
                 type={row.type}
                 unit={unit}
+                adminToken={adminToken}
+                freshness={
+                  row.address === undefined || freshnessMap === undefined
+                    ? undefined
+                    : freshnessMap[row.address]
+                }
               />
             ) : (
               <LeaderboardRow

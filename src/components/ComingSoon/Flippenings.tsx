@@ -2,7 +2,7 @@ import { clamp } from "lodash";
 import { FC, useState } from "react";
 import CountUp from "react-countup";
 import { animated, useSpring } from "react-spring";
-import { useMarketCaps } from "../../api";
+import { useMarketCaps } from "../../api/market_caps";
 import colors from "../../colors";
 import { WidgetBackground, WidgetTitle } from "../WidgetBits";
 

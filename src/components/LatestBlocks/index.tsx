@@ -3,7 +3,7 @@ import { flow } from "lodash";
 import React, { FC, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { TransitionGroup } from "react-transition-group";
-import { LatestBlock, useFeeData } from "../../api";
+import { LatestBlock, useGroupedData1 } from "../../api/grouped_stats_1";
 import * as Format from "../../format";
 import { O, OAlt, pipe } from "../../fp";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
@@ -60,7 +60,7 @@ const latestBlockFeesSkeletons = new Array(maxBlocks).fill({}) as Partial<
 type Props = { unit: Unit };
 
 const LatestBlocks: FC<Props> = ({ unit }) => {
-  const latestBlockFees = useFeeData()?.latestBlockFees;
+  const latestBlockFees = useGroupedData1()?.latestBlockFees;
   const [timeElapsed, setTimeElapsed] = useState<number>();
   const { md } = useActiveBreakpoint();
 

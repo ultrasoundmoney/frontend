@@ -1,8 +1,8 @@
 import * as DateFns from "date-fns";
 import useSWR from "swr";
 import { getAdminToken } from "../admin";
-import { feesBasePath } from "../api";
-import { A, pipe } from "../fp";
+import { O, pipe, Re } from "../fp";
+import { feesBasePath } from "./fees";
 
 export const setContractTwitterHandle = async (
   address: string,
@@ -79,7 +79,7 @@ export const setContractLastManuallyVerified = async (address: string) => {
     return;
   }
 
-  console.log(`successfully added set last manually verified for ${address}`);
+  console.log(`successfully set last manually verified for ${address}`);
 };
 
 type RawMetadataFreshness = {

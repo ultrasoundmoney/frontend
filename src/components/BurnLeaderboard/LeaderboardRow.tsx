@@ -1,89 +1,121 @@
+import * as DateFns from "date-fns";
 import { FC, ReactEventHandler, useCallback } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
-import { LeaderboardEntry } from ".";
-import * as Api from "../../api";
+import * as Contracts from "../../api/contracts";
+import { LeaderboardEntry } from "../../api/leaderboards";
 import { featureFlags } from "../../feature-flags";
 import * as Format from "../../format";
 import { Unit } from "../ComingSoon/CurrencyControl";
 import { AmountUnitSpace } from "../Spacing";
 
-const getAdminToken = (): string | undefined => {
-  if (typeof window === "undefined") {
-    return undefined;
-  }
-
-  const urlSearchParams = new URLSearchParams(window.location.search);
-  const adminToken = urlSearchParams.get("admin-token");
-
-  if (typeof adminToken !== "string" || adminToken.length === 0) {
-    return undefined;
-  }
-
-  return adminToken;
-};
-
-const onSetTwitterHandle = async (adminToken: string, address: string) => {
+const onSetTwitterHandle = async (address: string) => {
   const handle = window.prompt(`input twitter handle`);
   if (handle === null) {
     return;
   }
-  await Api.setContractTwitterHandle(adminToken, address, handle);
+  await Contracts.setContractTwitterHandle(address, handle);
 };
 
-const onSetName = async (adminToken: string, address: string) => {
+const onSetName = async (address: string) => {
   const nameInput = window.prompt(`input name`);
   if (nameInput === null) {
     return;
   }
-  await Api.setContractName(adminToken, address, nameInput);
+  await Contracts.setContractName(address, nameInput);
 };
 
-const onSetCategory = async (adminToken: string, address: string) => {
+const onSetCategory = async (address: string) => {
   const category = window.prompt(`input category`);
   if (category === null) {
     return;
   }
-  await Api.setContractCategory(adminToken, address, category);
+  await Contracts.setContractCategory(address, category);
 };
 
-const AdminControls: FC<{ adminToken: string; address: string }> = ({
-  adminToken,
-  address,
-}) => (
-  <div className="flex flex-row gap-4">
-    <a
-      className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
-      onClick={() => onSetTwitterHandle(adminToken, address)}
-      target="_blank"
-      rel="noreferrer"
-    >
-      set handle
-    </a>
-    <a
-      className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
-      onClick={() => onSetName(adminToken, address)}
-      target="_blank"
-      rel="noreferrer"
-    >
-      set name
-    </a>
-    <a
-      className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
-      onClick={() => onSetCategory(adminToken, address)}
-      target="_blank"
-      rel="noreferrer"
-    >
-      set category
-    </a>
-  </div>
+const getAgeColor = (dt: Date | undefined) =>
+  dt === undefined
+    ? "opacity-100"
+    : `opacity-${Math.min(
+        100,
+        Math.round(
+          (20 + (80 / 168) * DateFns.differenceInHours(new Date(), dt)) / 10
+        ) * 10
+      )}`;
+
+const AdminControls: FC<{
+  address: string;
+  freshness: Contracts.MetadataFreshness | undefined;
+}> = ({ address, freshness }) => (
+  <>
+    <div className="flex flex-row gap-4">
+      <a
+        className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
+        onClick={() => onSetTwitterHandle(address)}
+        target="_blank"
+        rel="noreferrer"
+      >
+        set handle
+      </a>
+      <a
+        className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
+        onClick={() => onSetName(address)}
+        target="_blank"
+        rel="noreferrer"
+      >
+        set name
+      </a>
+      <a
+        className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
+        onClick={() => onSetCategory(address)}
+        target="_blank"
+        rel="noreferrer"
+      >
+        set category
+      </a>
+      <a
+        className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
+        onClick={() => Contracts.setContractLastManuallyVerified(address)}
+        target="_blank"
+        rel="noreferrer"
+      >
+        set verified
+      </a>
+    </div>
+    <div className="flex text-sm text-white gap-x-4 mt-2">
+      <span
+        className={`bg-gray-700 rounded-lg py-1 px-2 ${getAgeColor(
+          freshness?.openseaContractLastFetch
+        )}`}
+      >
+        {freshness?.openseaContractLastFetch === undefined
+          ? "never fetched"
+          : `opensea fetch ${DateFns.formatDistanceToNowStrict(
+              freshness.openseaContractLastFetch
+            )} ago`}
+      </span>
+      <span
+        className={`bg-gray-700 rounded-lg py-1 px-2 ${getAgeColor(
+          freshness?.lastManuallyVerified
+        )}`}
+      >
+        {freshness?.lastManuallyVerified === undefined
+          ? "never verified"
+          : `last verified ${DateFns.formatDistanceToNowStrict(
+              freshness.lastManuallyVerified
+            )} ago`}
+      </span>
+    </div>
+  </>
 );
 
 type Props = {
   address?: string;
+  adminToken?: string;
   category?: string | undefined;
   detail?: string;
   fees: number | undefined;
+  freshness?: Contracts.MetadataFreshness;
   image?: string | undefined;
   isBot?: boolean | undefined;
   name: string | undefined;

@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { useFeeData } from "../api";
+import { useGroupedData1 } from "../api/grouped_stats_1";
 import * as Format from "../format";
 import { O, pipe } from "../fp";
 import { useLocalStorage } from "../use-local-storage";
@@ -63,8 +63,8 @@ const AlarmInput: FC<AlarmInputProps> = ({
   type,
 }) => {
   const notification = useNotification();
-  const baseFeePerGas = useFeeData()?.baseFeePerGas;
-  const ethPrice = useFeeData()?.ethPrice;
+  const baseFeePerGas = useGroupedData1()?.baseFeePerGas;
+  const ethPrice = useGroupedData1()?.ethPrice;
   const [isBusyEditing, setIsBusyEditing] = useState(false);
   const [threshold, setThreshold] = useLocalStorage<string>(
     `${type}-threshold`,
