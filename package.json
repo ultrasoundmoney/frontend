@@ -5,8 +5,9 @@
   "author": "iammdmusa",
   "private": true,
   "scripts": {
-    "build": "next build && next export",
+    "build": "next build",
     "dev": "next dev",
+    "export": "next export",
     "format": "prettier --write '{src,styles}/**/*.{ts,tsx,js,jsx}'",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "prepare": "husky install",
