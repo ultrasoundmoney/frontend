@@ -33,7 +33,7 @@ const onSetCategory = async (address: string) => {
   await Contracts.setContractCategory(address, category);
 };
 
-const getAgeColor = (dt: Date | undefined) =>
+const getOpacityFromAge = (dt: Date | undefined) =>
   dt === undefined
     ? "opacity-100"
     : `opacity-${Math.min(
@@ -84,7 +84,7 @@ const AdminControls: FC<{
     </div>
     <div className="flex text-sm text-white gap-x-4 mt-2">
       <span
-        className={`bg-gray-700 rounded-lg py-1 px-2 ${getAgeColor(
+        className={`bg-gray-700 rounded-lg py-1 px-2 ${getOpacityFromAge(
           freshness?.openseaContractLastFetch
         )}`}
       >
@@ -95,7 +95,7 @@ const AdminControls: FC<{
             )} ago`}
       </span>
       <span
-        className={`bg-gray-700 rounded-lg py-1 px-2 ${getAgeColor(
+        className={`bg-gray-700 rounded-lg py-1 px-2 ${getOpacityFromAge(
           freshness?.lastManuallyVerified
         )}`}
       >
