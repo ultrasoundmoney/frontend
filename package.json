@@ -5,13 +5,13 @@
   "author": "iammdmusa",
   "private": true,
   "scripts": {
-    "dev": "next dev",
     "build": "next build && next export",
-    "start": "next start",
+    "dev": "next dev",
+    "format": "prettier --write '{src,styles}/**/*.{ts,tsx,js,jsx}'",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
-    "prod": "serve out -p 9999",
     "prepare": "husky install",
-    "format": "prettier --write '{src,styles}/**/*.{ts,tsx,js,jsx}'"
+    "prod": "serve out -p 9999",
+    "start": "next start"
   },
   "dependencies": {
     "@react-hook/media-query": "^1.1.1",
