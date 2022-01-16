@@ -36,7 +36,6 @@
     "react-loading-skeleton": "^3.0.2",
     "react-spring": "^9.2.4",
     "react-transition-group": "^4.4.2",
-    "react-use-websocket": "^2.7.1",
     "twemoji": "^13.1.0"
   },
   "devDependencies": {
