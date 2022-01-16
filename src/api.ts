@@ -1,10 +1,7 @@
-import * as DateFns from "date-fns";
 import JSBI from "jsbi";
 import useSWR from "swr";
-import { famBasePath } from "./api/fam";
 import { feesBasePath } from "./api/fees";
 import * as Duration from "./duration";
-import { TimeFrameNext, timeFramesNext } from "./time_frames";
 
 export type Scarcity = {
   engines: {

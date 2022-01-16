@@ -24,9 +24,9 @@ import {
   constantinople_data,
   london_data,
 } from "./historicalData";
-import { useFeeData } from "../../api";
 import useSWR from "swr";
 import * as Format from "../../format";
+import { useGroupedData1 } from "../../api/grouped_stats_1";
 // import Timeline from "./timeline";
 
 type EthPrice = {
@@ -36,8 +36,8 @@ type EthPrice = {
   btc24hChange: number;
 };
 
-const LandingPage: React.FC<{}> = () => {
-  const feesBurned = useFeeData()?.feesBurned;
+const LandingPage: React.FC = () => {
+  const feesBurned = useGroupedData1()?.feesBurned;
   const [genesisArr, setGenesisArr] = React.useState(genesis_data[0]);
   const { data } = useSWR<EthPrice>(
     "https://api.ultrasound.money/fees/eth-price",
