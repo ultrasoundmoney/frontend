@@ -4,6 +4,8 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 });
 const withImages = require("next-images");
 module.exports = flow([withBundleAnalyzer, withImages])({
+  // Fleek recommends this.
+  // See: https://blog.fleek.co/posts/fleek-nextJS
   trailingSlash: true,
   // Without the exportPathMap fleek deployments for /page break.
   exportPathMap: () => ({
