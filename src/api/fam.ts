@@ -27,4 +27,3 @@ export const useProfiles = () => {
 
   return data;
 };
-
