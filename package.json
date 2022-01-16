@@ -8,7 +8,7 @@
     "build": "next build",
     "dev": "next dev",
     "export": "next export",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "lint": "next lint",
     "prepare": "husky install",
     "prod": "serve out -p 9999",
     "start": "next start"
