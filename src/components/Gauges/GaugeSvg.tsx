@@ -1,5 +1,5 @@
-import * as d3 from "d3";
-import React, { FC } from "react";
+import * as D3 from "d3";
+import { FC } from "react";
 import { animated, config, useSpring } from "react-spring";
 import colors from "../../colors";
 
@@ -36,14 +36,14 @@ const GaugeSvg: FC<GaugeSvgProps> = ({
   };
 
   // cornerRadius has no effect when passed declaratively.
-  const backgroundArc = d3.arc().cornerRadius(thickness)({
+  const backgroundArc = D3.arc().cornerRadius(thickness)({
     ...arcBase,
     endAngle: arcStartAngle + arcFraction * tau,
   });
 
   const foregroundArc = x.to(
     (x) =>
-      d3.arc().cornerRadius(thickness)({
+      D3.arc().cornerRadius(thickness)({
         ...arcBase,
         endAngle: arcStartAngle + arcFraction * tau * x,
       }) ?? ""
