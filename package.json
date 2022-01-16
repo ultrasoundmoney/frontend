@@ -9,7 +9,6 @@
     "dev": "next dev",
     "export": "next export",
     "lint": "next lint",
-    "prepare": "husky install",
     "prod": "serve out -p 9999",
     "start": "next start"
   },
@@ -77,7 +76,6 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
-    "husky": "^6.0.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "25.0.0",
     "jest-mock": "^26.1.0",
