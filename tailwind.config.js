@@ -1,11 +1,14 @@
 const { colors } = require("tailwindcss/defaultTheme");
 module.exports = {
   darkMood: "media",
-  purge: [
-    "./public/**/*.html",
-    "./src/pages/**/*.{js,ts,jsx,tsx}",
-    "./src/components/**/*.{js,ts,jsx,tsx}",
-  ],
+  purge: {
+    content: [
+      "./public/**/*.html",
+      "./src/pages/**/*.{js,ts,jsx,tsx}",
+      "./src/components/**/*.{js,ts,jsx,tsx}",
+    ],
+    safeList: [/opacity-\d+/],
+  },
   theme: {
     extend: {
       colors: {
