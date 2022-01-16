@@ -7,7 +7,7 @@ module.exports = flow([withBundleAnalyzer, withImages])({
   trailingSlash: true,
   // Without the exportPathMap fleek deployments for /page break.
   exportPathMap: () => ({
-    "/": { page: "/", query: { "admin-token": "admin-token" } },
+    "/": { page: "/" },
     "/landing": { page: "/landing" },
     "/dashboard": { page: "/dashboard" },
   }),
