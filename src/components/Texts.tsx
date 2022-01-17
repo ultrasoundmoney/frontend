@@ -34,3 +34,33 @@ export const SectionTitle: FC<{ title: string; subtitle: string }> = ({
     </>
   );
 };
+
+export const TextInter: FC<{ className?: string }> = ({
+  children,
+  className,
+}) => (
+  <span
+    className={`
+      font-inter font-light
+      text-white
+      ${className ?? ""}
+    `}
+  >
+    {children}
+  </span>
+);
+
+export const TextRoboto: FC<{ className?: string }> = ({
+  children,
+  className,
+}) => (
+  <span
+    className={`
+      font-roboto font-light
+      text-white
+      ${className ?? ""}
+    `}
+  >
+    {children}
+  </span>
+);

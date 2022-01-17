@@ -4,7 +4,7 @@ import CountUp from "react-countup";
 import { animated, useSpring } from "react-spring";
 import { useMarketCaps } from "../../api/market_caps";
 import colors from "../../colors";
-import * as Text from "../Texts";
+import { TextInter, TextRoboto } from "../Texts";
 import WidgetBackground from "../widget-subcomponents/WidgetBackground";
 import WidgetTitle from "../widget-subcomponents/WidgetTitle";
 
@@ -81,8 +81,8 @@ const Row: FC<RowProps> = ({ highlightColor, title, progress, icon }) => {
           className="flex flex-row justify-between"
           style={{ paddingTop: "0.1875rem" }}
         >
-          <p className="font-inter text-white text-lg">{title}</p>
-          <p className="font-roboto text-white text-lg">
+          <TextInter className="text-lg">{title}</TextInter>
+          <TextRoboto className="text-lg">
             <CountUp
               decimals={2}
               duration={0.8}
@@ -91,7 +91,7 @@ const Row: FC<RowProps> = ({ highlightColor, title, progress, icon }) => {
               preserveValue={true}
               suffix={"%"}
             />
-          </p>
+          </TextRoboto>
         </div>
       </div>
     </div>
