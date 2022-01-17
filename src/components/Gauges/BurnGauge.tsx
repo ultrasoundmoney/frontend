@@ -25,7 +25,14 @@ const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame, unit }) => {
       : (selectedBurnRate * 60 * 24 * 365.25) / 10 ** 9;
 
   return (
-    <div className="flex flex-col justify-start items-center bg-blue-tangaroa px-4 md:px-0 py-8 pt-7 rounded-lg md:rounded-r-none lg:rounded-r-lg">
+    <div
+      className={`
+        flex flex-col justify-start items-center
+        bg-blue-tangaroa
+        px-4 md:px-0 py-8 pt-7
+        rounded-lg md:rounded-r-none lg:rounded-r-lg
+      `}
+    >
       <BaseGauge
         title="burn"
         value={burnRate}
