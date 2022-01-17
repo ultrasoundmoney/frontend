@@ -9,7 +9,6 @@
     "dev": "next dev",
     "export": "next export",
     "lint": "next lint",
-    "prod": "serve out -p 9999",
     "start": "next start"
   },
   "dependencies": {
