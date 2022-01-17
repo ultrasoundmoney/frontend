@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Unit } from "./ComingSoon/CurrencyControl";
+import { Unit } from "../denomination";
 import { AmountUnitSpace } from "./Spacing";
 import { UnitText } from "./Texts";
 

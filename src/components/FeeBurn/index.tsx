@@ -8,15 +8,16 @@ import {
   useGroupedData1,
 } from "../../api/grouped_stats_1";
 import { londonHardforkTimestamp } from "../../dates";
+import { Unit } from "../../denomination";
 import * as Duration from "../../duration";
 import * as Format from "../../format";
 import { O, pipe } from "../../fp";
 import * as StaticEtherData from "../../static-ether-data";
 import { LimitedTimeFrameNext, TimeFrameNext } from "../../time_frames";
-import { Unit } from "../ComingSoon/CurrencyControl";
 import { AmountUnitSpace } from "../Spacing";
 import SpanMoji from "../SpanMoji";
-import { WidgetBackground, WidgetTitle } from "../WidgetBits";
+import WidgetBackground from "../widget-subcomponents/WidgetBackground";
+import WidgetTitle from "../widget-subcomponents/WidgetTitle";
 
 const timeframeFeesBurnedMap: Record<
   TimeFrameNext,

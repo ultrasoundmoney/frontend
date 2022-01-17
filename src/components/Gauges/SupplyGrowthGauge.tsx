@@ -8,7 +8,7 @@ import * as Format from "../../format";
 import * as StaticEtherData from "../../static-ether-data";
 import { TimeFrameNext } from "../../time_frames";
 import { timeframeBurnRateMap } from "../FeeBurn";
-import TimeFrameIndicator from "../TimeFrameIndicator";
+import TimeFrameIndicator from "../widget-subcomponents/TimeFrameIndicator";
 import ToggleSwitch from "../ToggleSwitch";
 import SplitGaugeSvg from "./SplitGaugeSvg";
 

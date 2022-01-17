@@ -4,7 +4,9 @@ import CountUp from "react-countup";
 import { animated, useSpring } from "react-spring";
 import { useMarketCaps } from "../../api/market_caps";
 import colors from "../../colors";
-import { WidgetBackground, WidgetTitle } from "../WidgetBits";
+import * as Text from "../Texts";
+import WidgetBackground from "../widget-subcomponents/WidgetBackground";
+import WidgetTitle from "../widget-subcomponents/WidgetTitle";
 
 type Icon = "btc" | "gold" | "usd";
 

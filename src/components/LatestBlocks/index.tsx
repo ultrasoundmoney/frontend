@@ -4,13 +4,13 @@ import React, { FC, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { TransitionGroup } from "react-transition-group";
 import { LatestBlock, useGroupedData1 } from "../../api/grouped_stats_1";
+import { Unit } from "../../denomination";
 import * as Format from "../../format";
 import { O, OAlt, pipe } from "../../fp";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
-import { Unit } from "../ComingSoon/CurrencyControl";
 import CSSTransition from "../CSSTransition";
 import { AmountUnitSpace } from "../Spacing";
-import { WidgetBackground } from "../WidgetBits";
+import WidgetBackground from "../widget-subcomponents/WidgetBackground";
 
 const maxBlocks = 7;
 

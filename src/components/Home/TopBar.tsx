@@ -8,7 +8,7 @@ import { useLocalStorage } from "../../use-local-storage";
 import useNotification from "../../use-notification";
 import AlarmInput from "../Alarm";
 import { AmountUnitSpace } from "../Spacing";
-import { WidgetTitle } from "../WidgetBits";
+import WidgetTitle from "../widget-subcomponents/WidgetTitle";
 
 let startGasPrice = 0;
 let startGasPriceCached = 0;
@@ -48,7 +48,14 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
       : "text-green-400";
 
   return (
-    <div className="flex items-center font-roboto text-white rounded bg-blue-tangaroa px-3 py-2 text-xs lg:text-sm">
+    <div className={`
+        flex items-center
+        font-roboto
+        text-white text-xs lg:text-sm
+        rounded
+        bg-blue-tangaroa
+        px-3 py-2
+      `}>
       <img
         className="pr-1 select-none"
         src="/gas-icon.svg"

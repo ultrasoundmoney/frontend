@@ -4,8 +4,8 @@ import { FC } from "react";
 import { animated, config, useSpring } from "react-spring";
 import { useEthPrice } from "../../api/eth_price";
 import colors from "../../colors";
+import { Unit } from "../../denomination";
 import { formatOneDigit, formatZeroDigit } from "../../format";
-import { Unit } from "../ComingSoon/CurrencyControl";
 import SpanMoji from "../SpanMoji";
 import GaugeSvg from "./GaugeSvg";
 

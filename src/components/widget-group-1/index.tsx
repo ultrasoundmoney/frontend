@@ -1,19 +1,20 @@
 import React, { FC, useCallback, useState } from "react";
 import { useGroupedData1 } from "../../api/grouped_stats_1";
+import { Unit } from "../../denomination";
 import * as Format from "../../format";
 import { TimeFrameNext, timeFramesNext } from "../../time_frames";
-import BurnLeaderboard from "../BurnLeaderboard";
 import BurnRecords from "../BurnRecords";
 import FeeBurn from "../FeeBurn";
 import BurnGauge from "../Gauges/BurnGauge";
 import IssuanceGauge from "../Gauges/IssuanceGauge";
 import SupplyGrowthGauge from "../Gauges/SupplyGrowthGauge";
 import LatestBlocks from "../LatestBlocks";
-import TimeFrameControl from "../TimeFrameControl";
-import { WidgetBackground } from "../WidgetBits";
-import CurrencyControl, { Unit } from "./CurrencyControl";
+import Background from "../widget-subcomponents/WidgetBackground";
+import BurnLeaderboard from "./BurnLeaderboard";
+import CurrencyControl from "./controls/CurrencyControl";
+import TimeFrameControl from "./controls/TimeFrameControl";
 
-const Widgets: FC = () => {
+const WidgetGroup1: FC = () => {
   const [simulateMerge, setSimulateMerge] = useState(false);
   const baseFeePerGas = useGroupedData1()?.baseFeePerGas;
   const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
@@ -67,7 +68,7 @@ const Widgets: FC = () => {
       </div>
       <div className="w-4 h-4" />
       <div className="px-4 md:px-16">
-        <WidgetBackground>
+        <Background>
           <div className="flex flex-col gap-y-8 md:flex-row lg:gap-y-0 justify-between">
             <div className="flex flex-col gap-y-4 lg:gap-x-4 lg:flex-row lg:items-center">
               <p className="font-inter font-light text-blue-spindle text-md uppercase">
@@ -85,7 +86,7 @@ const Widgets: FC = () => {
               <CurrencyControl selectedUnit={unit} onSetUnit={onSetUnit} />
             </div>
           </div>
-        </WidgetBackground>
+        </Background>
       </div>
       <div className="w-4 h-4" />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-4 px-4 md:px-16 md:gap-x-4 lg:w-full lg:flex-row">
@@ -112,4 +113,4 @@ const Widgets: FC = () => {
   );
 };
 
-export default Widgets;
+export default WidgetGroup1;

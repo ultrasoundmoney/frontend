@@ -1,11 +1,11 @@
 import React, { FC, memo } from "react";
-import { getAdminToken } from "../../admin";
-import { useContractsFreshness } from "../../api/contracts";
-import { useGroupedData1 } from "../../api/grouped_stats_1";
-import { LeaderboardEntry, Leaderboards } from "../../api/leaderboards";
-import { TimeFrameNext } from "../../time_frames";
-import { Unit } from "../ComingSoon/CurrencyControl";
-import { WidgetTitle } from "../WidgetBits";
+import { getAdminToken } from "../../../admin";
+import { useContractsFreshness } from "../../../api/contracts";
+import { useGroupedData1 } from "../../../api/grouped_stats_1";
+import { LeaderboardEntry, Leaderboards } from "../../../api/leaderboards";
+import { Unit } from "../../../denomination";
+import { TimeFrameNext } from "../../../time_frames";
+import Title from "../../widget-subcomponents/WidgetTitle";
 import LeaderboardRow from "./LeaderboardRow";
 
 const feePeriodToUpdateMap: Record<TimeFrameNext, keyof Leaderboards> = {
@@ -65,8 +65,8 @@ const getLeaderboardsAddresses = (leaderboards: Leaderboards) =>
   Object.values(leaderboards)
     .flatMap((leaderboardEntries) =>
       leaderboardEntries.map((entry) =>
-        entry.type === "contract" ? entry.address : undefined
-      )
+        entry.type === "contract" ? entry.address : undefined,
+      ),
     )
     .filter((mAddress): mAddress is string => mAddress !== undefined);
 
@@ -83,9 +83,9 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
       ? undefined
       : leaderboards[feePeriodToUpdateMap[timeFrame]];
 
-  const leaderboardSkeletons = new Array(100).fill({}) as Partial<
-    LeaderboardEntry
-  >[];
+  const leaderboardSkeletons = new Array(100).fill(
+    {},
+  ) as Partial<LeaderboardEntry>[];
 
   const adminToken = getAdminToken();
   const addresses =
@@ -100,7 +100,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
         className="flex flex-col gap-y-4 lg:h-0 lg:min-h-full"
         style={{ height: "32rem" }}
       >
-        <WidgetTitle
+        <Title
           onClickTimeFrame={onClickTimeFrame}
           title="burn leaderboard"
           timeFrame={timeFrame}
@@ -135,7 +135,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
                 type={row.type}
                 unit={unit}
               />
-            )
+            ),
           )}
         </div>
       </div>

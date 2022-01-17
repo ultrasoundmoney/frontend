@@ -2,12 +2,12 @@ import * as DateFns from "date-fns";
 import { FC, ReactEventHandler, useCallback } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
-import * as Contracts from "../../api/contracts";
-import { LeaderboardEntry } from "../../api/leaderboards";
-import { featureFlags } from "../../feature-flags";
-import * as Format from "../../format";
-import { Unit } from "../ComingSoon/CurrencyControl";
-import { AmountUnitSpace } from "../Spacing";
+import * as Contracts from "../../../api/contracts";
+import { LeaderboardEntry } from "../../../api/leaderboards";
+import { Unit } from "../../../denomination";
+import { featureFlags } from "../../../feature-flags";
+import * as Format from "../../../format";
+import { AmountUnitSpace } from "../../Spacing";
 
 const onSetTwitterHandle = async (address: string) => {
   const handle = window.prompt(`input twitter handle`);
@@ -165,7 +165,14 @@ const LeaderboardRow: FC<Props> = ({
           target="_blank"
           rel="noreferrer"
         >
-          <div className="hover:opacity-60 link-animation flex flex-row items-center font-inter text-white text-base md:text-lg">
+          <div
+            className={`
+              hover:opacity-60 link-animation
+              flex flex-row items-center
+              font-inter font-light
+              text-white text-base md:text-lg
+            `}
+          >
             <img
               className="w-8 h-8 leaderboard-image"
               src={imgSrc}

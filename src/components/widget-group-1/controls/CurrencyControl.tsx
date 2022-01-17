@@ -1,6 +1,5 @@
 import { FC } from "react";
-
-export type Unit = "eth" | "usd";
+import { Unit } from "../../../denomination";
 
 const activePeriodClasses =
   "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg";
@@ -17,8 +16,10 @@ const CurrencyButton: FC<CurrencyButtonProps> = ({
   unit,
 }) => (
   <button
-    className={`font-roboto font-extralight text-sm md:text-base px-3 py-1 border border-transparent uppercase select-none ${
-      selectedUnit === unit ? activePeriodClasses : "text-blue-spindle"
+    className={`font-roboto font-extralight text-sm md:text-base px-3 py-1 border uppercase select-none ${
+      selectedUnit === unit
+        ? activePeriodClasses
+        : "border-transparent text-blue-spindle"
     }`}
     onClick={() => onClick(unit)}
   >

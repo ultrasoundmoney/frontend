@@ -4,14 +4,15 @@ import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
 import { BurnRecord } from "../api/burn_records";
 import { useGroupedData1 } from "../api/grouped_stats_1";
+import { Unit } from "../denomination";
 import * as Format from "../format";
 import { flow, O, OAlt } from "../fp";
 import { TimeFrameNext } from "../time_frames";
 import { useActiveBreakpoint } from "../utils/use-active-breakpoint";
-import { Unit } from "./ComingSoon/CurrencyControl";
 import { AmountUnitSpace } from "./Spacing";
 import SpanMoji from "./SpanMoji";
-import { WidgetBackground, WidgetTitle } from "./WidgetBits";
+import WidgetBackground from "./widget-subcomponents/WidgetBackground";
+import WidgetTitle from "./widget-subcomponents/WidgetTitle";
 
 const formatBlockNumber = flow(
   O.fromPredicate((unknown): unknown is number => typeof unknown === "number"),
