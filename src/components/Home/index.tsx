@@ -21,7 +21,7 @@ const SectionDivider: FC<{ title: string; subtitle: string }> = ({
   </>
 );
 
-const ComingSoon: FC = () => (
+const Home: FC = () => (
   <div className="wrapper bg-blue-midnightexpress blurred-bg-image">
     <div className="container m-auto">
       <div className="px-4 md:px-16">
@@ -119,4 +119,4 @@ const ComingSoon: FC = () => (
   </div>
 );
 
-export default ComingSoon;
+export default Home;

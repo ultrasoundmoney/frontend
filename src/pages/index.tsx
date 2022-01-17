@@ -4,7 +4,7 @@ import * as React from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import Colors from "../colors";
-import ComingSoon from "../components/ComingSoon";
+import Home from "../components/Home";
 import { TranslationsContext } from "../translations-context";
 
 type IndexPageProps = {};
@@ -37,7 +37,7 @@ const IndexPage: NextPage<IndexPageProps> = () => {
         highlightColor="#565b7f"
         enableAnimation={true}
       >
-        <ComingSoon />
+        <Home />
       </SkeletonTheme>
     </>
   );
