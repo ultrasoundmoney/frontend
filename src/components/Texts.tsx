@@ -14,9 +14,9 @@ export const LabelText: FC<{ className?: string }> = ({
 );
 
 export const UnitText: FC = ({ children }) => (
-  <span className="font-roboto text-blue-spindle font-extralight text-base md:text-lg">
+  <TextRoboto className="text-blue-spindle font-extralight text-base md:text-lg">
     {children}
-  </span>
+  </TextRoboto>
 );
 
 export const SectionTitle: FC<{ title: string; subtitle: string }> = ({
@@ -46,32 +46,38 @@ export const SectionTitle: FC<{ title: string; subtitle: string }> = ({
   );
 };
 
-export const TextInter: FC<{ className?: string }> = ({
+export const TextInter: FC<{ className?: string; inline?: boolean }> = ({
   children,
   className,
-}) => (
-  <span
-    className={`
-      font-inter font-light
-      text-white
-      ${className ?? ""}
-    `}
-  >
-    {children}
-  </span>
-);
+  inline = true,
+}) => {
+  const mergedClassName = `
+    font-inter font-light
+    text-white
+    ${className ?? ""}
+  `;
 
-export const TextRoboto: FC<{ className?: string }> = ({
+  return inline ? (
+    <span className={mergedClassName}>{children}</span>
+  ) : (
+    <p className={mergedClassName}>{children}</p>
+  );
+};
+
+export const TextRoboto: FC<{ className?: string; inline?: boolean }> = ({
   children,
   className,
-}) => (
-  <span
-    className={`
-      font-roboto font-light
-      text-white
-      ${className ?? ""}
-    `}
-  >
-    {children}
-  </span>
-);
+  inline = true,
+}) => {
+  const mergedClassName = `
+    font-roboto font-light
+    text-white
+    ${className ?? ""}
+  `;
+
+  return inline ? (
+    <span className={mergedClassName}>{children}</span>
+  ) : (
+    <p className={mergedClassName}>{children}</p>
+  );
+};
