@@ -78,7 +78,7 @@ const Home: FC = () => (
           title="monetary premium"
           subtitle="the race to become the most desirable money"
         />
-        <div className="flex items-start flex-col lg:flex-row lg:gap-0 gap-y-4 lg:gap-4 px-4 md:px-16">
+        <div className="flex items-start flex-col lg:flex-row gap-y-4 lg:gap-4 px-4 md:px-16">
           <Scarcity />
           <Flippenings />
         </div>
