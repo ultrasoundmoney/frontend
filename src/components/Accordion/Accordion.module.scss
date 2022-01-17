@@ -1,0 +1,84 @@
+.item {
+  overflow: hidden;
+  height: auto;
+}
+
+@media all {
+  .item {
+    max-height: 50em;
+    -moz-transition: max-height 1s;
+    -o-transition: max-height 1s;
+    -webkit-transition: max-height 1s;
+    transition: max-height 1s;
+  }
+}
+
+@media screen and (min-width: 48em) {
+  .item {
+    max-height: 15em;
+    -moz-transition: max-height 0.5s;
+    -o-transition: max-height 0.5s;
+    -webkit-transition: max-height 0.5s;
+    transition: max-height 0.5s;
+  }
+}
+
+.item.collapsed {
+  max-height: 0;
+}
+
+.title {
+  cursor: pointer;
+  color: #fff;
+  padding-left: 2.5rem;
+  position: relative;
+
+  &::before {
+    font-weight: 400;
+    content: "＋";
+    left: 0px;
+    margin-right: 25px;
+    font-size: 28px;
+    color: #00fffb;
+    position: absolute;
+  }
+
+  &.open {
+    &::before {
+      font-weight: 400;
+      content: "－";
+      left: 0px;
+      margin-right: 25px;
+      font-size: 28px;
+      color: #00fffb;
+      position: absolute;
+    }
+  }
+}
+
+.title .emoji {
+  margin-left: 2px;
+  height: 1.5em;
+  vertical-align: -0.4em;
+}
+
+.content {
+  font-family: "Inter";
+  padding-left: 2.5rem;
+  white-space: pre-line;
+  color: #bfc1c9;
+}
+
+.content a {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+
+.content a:hover {
+  text-decoration-color: rgba(181, 189, 219, 0.75);
+}
+
+.content .mono {
+  font-family: "Roboto Mono";
+}
+
