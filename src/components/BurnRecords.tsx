@@ -7,6 +7,7 @@ import { useGroupedData1 } from "../api/grouped_stats_1";
 import { Unit } from "../denomination";
 import * as Format from "../format";
 import { flow, O, OAlt } from "../fp";
+import styles from "../styles/Scrollbar.module.scss";
 import { TimeFrameNext } from "../time_frames";
 import { useActiveBreakpoint } from "../utils/use-active-breakpoint";
 import { AmountUnitSpace } from "./Spacing";
@@ -104,7 +105,12 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
         title="burn records"
       />
       <div
-        className="flex flex-col gap-y-6 mt-3 -mr-3 overflow-y-auto leaderboard-scroller"
+        className={`
+          flex flex-col gap-y-6
+          mt-3
+          overflow-y-auto
+          ${styles["styled-scrollbar"]}
+        `}
         // Custom height to fit three records on desktop and mobile.
         style={{ height: lg ? "16rem" : "15rem" }}
       >

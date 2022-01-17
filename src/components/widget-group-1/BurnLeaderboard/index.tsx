@@ -4,6 +4,7 @@ import { useContractsFreshness } from "../../../api/contracts";
 import { useGroupedData1 } from "../../../api/grouped_stats_1";
 import { LeaderboardEntry, Leaderboards } from "../../../api/leaderboards";
 import { Unit } from "../../../denomination";
+import styles from "../../../styles/Scrollbar.module.scss";
 import { TimeFrameNext } from "../../../time_frames";
 import Title from "../../widget-subcomponents/WidgetTitle";
 import LeaderboardRow from "./LeaderboardRow";
@@ -106,7 +107,13 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
           timeFrame={timeFrame}
         />
         {/* the scrollbar normally hides, to make it appear as if floating to the right of the main content we add a negative right margin. */}
-        <div className="overflow-y-auto overflow-x-hidden leaderboard-scroller -mt-1 -mr-3">
+        <div
+          className={`
+            -mt-1 -mr-3
+            overflow-y-auto overflow-x-hidden
+            ${styles["styled-scrollbar"]}
+          `}
+        >
           {(selectedLeaderboard || leaderboardSkeletons).map((row, index) =>
             row.type === "contract" ? (
               <LeaderboardRow
