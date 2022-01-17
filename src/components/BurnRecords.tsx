@@ -11,6 +11,7 @@ import { TimeFrameNext } from "../time_frames";
 import { useActiveBreakpoint } from "../utils/use-active-breakpoint";
 import { AmountUnitSpace } from "./Spacing";
 import SpanMoji from "./SpanMoji";
+import { TextInter, TextRoboto } from "./Texts";
 import WidgetBackground from "./widget-subcomponents/WidgetBackground";
 import WidgetTitle from "./widget-subcomponents/WidgetTitle";
 
@@ -31,8 +32,8 @@ const BurnRecordAmount: FC<{ amount: number | undefined; unit: Unit }> = ({
   amount,
   unit,
 }) => (
-  <div className="font-roboto  text-2xl md:text-3xl">
-    <span className={"text-white"}>
+  <div className="text-2xl md:text-3xl">
+    <TextRoboto>
       {amount === undefined ? (
         <Skeleton inline={true} width="4rem" />
       ) : (
@@ -46,7 +47,7 @@ const BurnRecordAmount: FC<{ amount: number | undefined; unit: Unit }> = ({
           suffix={unit === "eth" ? undefined : "K"}
         />
       )}
-    </span>
+    </TextRoboto>
     <AmountUnitSpace />
     <span className="text-blue-spindle font-extralight">ETH</span>
   </div>
@@ -74,10 +75,10 @@ const Age: FC<{ minedAt: Date | undefined }> = ({ minedAt }) => {
   }, [minedAt]);
 
   return (
-    <span className="font-inter font-light text-white md:text-lg">
+    <TextInter className="md:text-lg">
       {age || <Skeleton inline={true} width="6rem" />}
       {" ago"}
-    </span>
+    </TextInter>
   );
 };
 
@@ -125,7 +126,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <span className="font-roboto text-blue-shipcove md:text-lg hover:opacity-60 link-animation">
+                <span className="font-roboto font-light text-blue-shipcove md:text-lg hover:opacity-60 link-animation">
                   {formatBlockNumber(record.blockNumber) || (
                     <Skeleton width="8rem" />
                   )}

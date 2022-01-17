@@ -53,9 +53,9 @@ export const formatBlockNumber = (number: unknown) =>
     O.toUndefined,
   );
 
-const latestBlockFeesSkeletons = new Array(maxBlocks).fill({}) as Partial<
-  LatestBlock
->[];
+const latestBlockFeesSkeletons = new Array(maxBlocks).fill(
+  {},
+) as Partial<LatestBlock>[];
 
 type Props = { unit: Unit };
 
@@ -112,7 +112,7 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
                   timeout={2000}
                   key={number || index}
                 >
-                  <div className="fee-block text-base md:text-lg">
+                  <div className="fee-block font-light text-base md:text-lg">
                     <a
                       href={
                         number === undefined
@@ -163,7 +163,7 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
           </TransitionGroup>
         </ul>
         {/* spaces need to stay on the font-inter element to keep them consistent */}
-        <span className="text-blue-spindle text-xs md:text-sm font-extralight">
+        <span className="font-inter text-blue-spindle text-xs md:text-sm font-extralight">
           {"latest block "}
           <span className="font-roboto text-white font-light">
             {formatTimeElapsed(timeElapsed) || (

@@ -6,7 +6,7 @@ import Colors from "../../colors";
 import * as Format from "../../format";
 import { pipe } from "../../fp";
 import { Amount } from "../Amount";
-import { LabelText } from "../Texts";
+import { LabelText, TextInter } from "../Texts";
 import WidgetBackground from "../widget-subcomponents/WidgetBackground";
 import WidgetTitle from "../widget-subcomponents/WidgetTitle";
 
@@ -243,8 +243,8 @@ const EngineRow: FC<EngineRowProps> = ({
     target="_blank"
     rel="noreferrer"
   >
-    <span className="font-inter text-white">{name}</span>
-    <Amount className="text-right" unitPrefix="M" unit="eth">
+    <TextInter>{name}</TextInter>
+    <Amount className="font-light text-right" unitPrefix="M" unit="eth">
       {amountFormatted}
     </Amount>
     <Amount className="text-right" unit="months">

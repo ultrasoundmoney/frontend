@@ -25,10 +25,21 @@ export const SectionTitle: FC<{ title: string; subtitle: string }> = ({
 }) => {
   return (
     <>
-      <h2 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-6">
+      <h2
+        className={`
+          font-inter font-light
+          text-white text-center text-2xl md:text-3xl xl:text-41xl
+          mb-6
+        `}
+      >
         {title}
       </h2>
-      <p className="text-blue-shipcove text-center font-light text-base lg:text-lg">
+      <p
+        className={`
+          font-inter font-light
+          text-blue-shipcove text-center text-base lg:text-lg
+        `}
+      >
         {subtitle}
       </p>
     </>

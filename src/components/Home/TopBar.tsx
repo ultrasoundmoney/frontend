@@ -8,6 +8,7 @@ import { useLocalStorage } from "../../use-local-storage";
 import useNotification from "../../use-notification";
 import AlarmInput from "../Alarm";
 import { AmountUnitSpace } from "../Spacing";
+import { TextRoboto } from "../Texts";
 import WidgetTitle from "../widget-subcomponents/WidgetTitle";
 
 let startGasPrice = 0;
@@ -48,20 +49,21 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
       : "text-green-400";
 
   return (
-    <div className={`
+    <div
+      className={`
+        text-xs lg:text-sm
         flex items-center
-        font-roboto
-        text-white text-xs lg:text-sm
-        rounded
-        bg-blue-tangaroa
         px-3 py-2
-      `}>
+        bg-blue-tangaroa
+        rounded
+      `}
+    >
       <img
         className="pr-1 select-none"
         src="/gas-icon.svg"
         alt="gas pump icon"
       />
-      <p>
+      <TextRoboto>
         {baseFeePerGas === undefined ? (
           "___"
         ) : (
@@ -79,14 +81,14 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
         )}
         <AmountUnitSpace />
         <span className="font-extralight text-blue-spindle">Gwei</span>
-      </p>
+      </TextRoboto>
       <div className="mr-4"></div>
       <img
         className="pr-1 select-none"
         src="/eth-icon.svg"
         alt="Ethereum Ether icon"
       />
-      <p>
+      <TextRoboto>
         {ethPrice === undefined ? (
           "_,___"
         ) : (
@@ -108,7 +110,7 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
         ) : (
           <span className={`${color}`}>({ethUsd24hChange})</span>
         )}
-      </p>
+      </TextRoboto>
     </div>
   );
 };

@@ -16,6 +16,7 @@ import * as StaticEtherData from "../../static-ether-data";
 import { LimitedTimeFrameNext, TimeFrameNext } from "../../time_frames";
 import { AmountUnitSpace } from "../Spacing";
 import SpanMoji from "../SpanMoji";
+import { TextInter, TextRoboto } from "../Texts";
 import WidgetBackground from "../widget-subcomponents/WidgetBackground";
 import WidgetTitle from "../widget-subcomponents/WidgetTitle";
 
@@ -140,8 +141,13 @@ const CumulativeFeeBurn: FC<Props> = ({
         title="burn total"
       />
       <div className="flex flex-col gap-y-8 pt-2">
-        <div className="flex items-center font-roboto text-2xl md:text-4xl lg:text-3xl xl:text-4xl">
-          <p className="text-white">
+        <div
+          className={`
+            flex items-center
+            text-2xl md:text-4xl lg:text-3xl xl:text-4xl
+          `}
+        >
+          <TextRoboto>
             {selectedFeesBurned !== undefined ? (
               <CountUp
                 decimals={unit === "eth" ? 2 : 1}
@@ -159,15 +165,18 @@ const CumulativeFeeBurn: FC<Props> = ({
             <span className="font-extralight text-blue-spindle">
               {unit === "eth" ? "ETH" : "USD"}
             </span>
-          </p>
+          </TextRoboto>
           <SpanMoji className="ml-4 md:ml-8" emoji="🔥" />
         </div>
         <div className="flex flex-col justify-between md:flex-row gap-y-8">
           <div>
-            <p className="font-inter font-light text-blue-spindle uppercase md:text-md mb-2">
+            <TextInter
+              className="text-blue-spindle uppercase md:text-md mb-2"
+              inline={false}
+            >
               burn rate
-            </p>
-            <p className="font-roboto text-white text-2xl">
+            </TextInter>
+            <TextRoboto className="text-2xl">
               {selectedBurnRate !== undefined ? (
                 <CountUp
                   decimals={unit === "eth" ? 2 : 1}
@@ -181,16 +190,16 @@ const CumulativeFeeBurn: FC<Props> = ({
                 <Skeleton inline={true} width="4rem" />
               )}
               <AmountUnitSpace />
-              <span className="font-extralight text-blue-spindle">
+              <TextRoboto className="font-extralight text-blue-spindle">
                 {unit === "eth" ? "ETH/min" : "USD/min"}
-              </span>
-            </p>
+              </TextRoboto>
+            </TextRoboto>
           </div>
           <div className="md:text-right">
             <p className="font-inter font-light text-blue-spindle uppercase md:text-md mb-2">
               {simulateMerge ? "pos issuance offset" : "issuance offset"}
             </p>
-            <p className="font-roboto text-white text-2xl">
+            <TextRoboto className="text-2xl">
               {selectedBurnRate !== undefined ? (
                 <CountUp
                   decimals={2}
@@ -203,7 +212,7 @@ const CumulativeFeeBurn: FC<Props> = ({
               ) : (
                 <Skeleton inline={true} width="4rem" />
               )}
-            </p>
+            </TextRoboto>
           </div>
         </div>
       </div>

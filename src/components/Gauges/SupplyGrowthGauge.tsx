@@ -109,7 +109,14 @@ const SupplyGrowthGauge: FC<Props> = ({
             checked={simulateMerge}
             onToggle={toggleSimulateMerge}
           />
-          <p className="leading-10 text-lg font-inter text-blue-spindle flex flex-row items-center justify-end px-4 self-center">
+          <p
+            className={`
+              leading-10 px-4
+              text-lg text-blue-spindle
+              font-inter font-light
+              flex flex-row items-center justify-end self-center
+            `}
+          >
             simulate merge
           </p>
         </div>
