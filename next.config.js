@@ -9,4 +9,5 @@ module.exports = {
     "/landing": { page: "/landing" },
     "/dashboard": { page: "/dashboard" },
   }),
+  reactStrictMode: true,
 };
