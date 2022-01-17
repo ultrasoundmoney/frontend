@@ -15,7 +15,7 @@ const ToggleSwitch: FC<ToggleSwitchProps> = ({
   <input
     checked={checked}
     onChange={(e) => onToggle(e.target.checked)}
-    className={`${className} ${styles["toggle-switch"]}`}
+    className={`${className ?? ""} ${styles["toggle-switch"]}`}
     type="checkbox"
   />
 );
