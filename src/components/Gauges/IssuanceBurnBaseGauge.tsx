@@ -43,7 +43,7 @@ const BaseGuage: FC<BaseGuageProps> = ({
   const max = pipe(
     unit === "eth" ? 10 : (10 * (ethPrice?.usd ?? 0)) / 10 ** 3,
     (max) => Math.max(max, value),
-    Math.round
+    Math.round,
   );
 
   const progress = clamp(value, min, max) / (max - min);
@@ -63,7 +63,7 @@ const BaseGuage: FC<BaseGuageProps> = ({
               (n) =>
                 `${
                   unit === "eth" ? formatOneDigit(n) : formatZeroDigit(n)
-                }${gaugeUnit}`
+                }${gaugeUnit}`,
             )}
           </animated.p>
           <p className="font-extralight text-blue-spindle">{valueUnit}</p>

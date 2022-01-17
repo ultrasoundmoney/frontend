@@ -17,7 +17,7 @@ const posIssuanceYear = StaticEtherData.posIssuancePerDay * 365.25;
 
 const useGrowthRate = (
   simulateMerge: boolean,
-  timeFrame: TimeFrameNext
+  timeFrame: TimeFrameNext,
 ): number => {
   const ethSupply = useScarcity()?.ethSupply;
   const burnRates = useGroupedData1()?.burnRates;
@@ -79,7 +79,7 @@ const SupplyGrowthGauge: FC<Props> = ({
   const growthRate = useGrowthRate(simulateMerge, timeFrame);
   const toPercentOneDigitSigned = useCallback<(n: number) => string>(
     (n) => Format.formatPercentOneDigitSigned(n),
-    []
+    [],
   );
 
   // Workaround as react-spring is breaking our positive number with sign formatting.

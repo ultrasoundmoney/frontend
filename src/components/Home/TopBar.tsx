@@ -39,7 +39,7 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
     O.fromNullable,
     O.map((num) => num / 100),
     O.map(Format.formatPercentOneDigitSigned),
-    O.toUndefined
+    O.toUndefined,
   );
 
   const color =
@@ -118,11 +118,11 @@ const TopBar: FC = () => {
   const ethPrice = useEthPrice();
   const [gasAlarmActive, setGasAlarmActive] = useLocalStorage(
     "gas-alarm-enabled",
-    false
+    false,
   );
   const [ethAlarmActive, setEthAlarmActive] = useLocalStorage(
     "eth-alarm-enabled",
-    false
+    false,
   );
   const [showAlarmDialog, setShowAlarmDialog] = useState(false);
   const notification = useNotification();
@@ -144,7 +144,7 @@ const TopBar: FC = () => {
         setShowAlarmDialog(false);
       }
     },
-    [showAlarmDialog]
+    [showAlarmDialog],
   );
 
   const handleClickAlarm = useCallback(() => {

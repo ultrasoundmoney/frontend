@@ -200,7 +200,7 @@ const mEthFromWei = (num: JSBI) =>
     num,
     (num) => JSBI.toNumber(num),
     Format.ethFromWei,
-    (num) => num / 10 ** 6
+    (num) => num / 10 ** 6,
   );
 
 const floorOneDigit = (num: number) =>
@@ -208,7 +208,7 @@ const floorOneDigit = (num: number) =>
     num,
     (num) => num * 10,
     Math.floor,
-    (num) => num / 10
+    (num) => num / 10,
   );
 
 const mEthFromWeiFormatted = (num: JSBI): string =>
@@ -294,7 +294,7 @@ const Scarcity: FC = () => {
           <>
             <EngineRow
               amountFormatted={mEthFromWeiFormatted(
-                scarcity.engines.staked.amount
+                scarcity.engines.staked.amount,
               )}
               hovering={hoveringStaked}
               link="https://beaconcha.in/charts/staked_ether"
@@ -304,7 +304,7 @@ const Scarcity: FC = () => {
             />
             <EngineRow
               amountFormatted={mEthFromEthFormatted(
-                scarcity.engines.locked.amount
+                scarcity.engines.locked.amount,
               )}
               hovering={hoveringLocked}
               link="https://defipulse.com/"
@@ -314,7 +314,7 @@ const Scarcity: FC = () => {
             />
             <EngineRow
               amountFormatted={mEthFromWeiFormatted(
-                scarcity.engines.burned.amount
+                scarcity.engines.burned.amount,
               )}
               hovering={hoveringBurned}
               link="https://dune.xyz/cembar/ETH-Burned"

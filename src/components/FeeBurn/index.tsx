@@ -72,9 +72,9 @@ const CumulativeFeeBurn: FC<Props> = ({
     feesBurned,
     O.fromNullable,
     O.map((feesBurned) =>
-      Format.ethFromWei(feesBurned[timeframeFeesBurnedMap[timeFrame]["eth"]])
+      Format.ethFromWei(feesBurned[timeframeFeesBurnedMap[timeFrame]["eth"]]),
     ),
-    O.toUndefined
+    O.toUndefined,
   );
 
   // In ETH or USD K.
@@ -84,11 +84,11 @@ const CumulativeFeeBurn: FC<Props> = ({
     O.map((feesBurned) =>
       unit === "eth"
         ? Format.ethFromWei(
-            feesBurned[timeframeFeesBurnedMap[timeFrame]["eth"]]
+            feesBurned[timeframeFeesBurnedMap[timeFrame]["eth"]],
           )
-        : feesBurned[timeframeFeesBurnedMap[timeFrame][unit]] / 1000
+        : feesBurned[timeframeFeesBurnedMap[timeFrame][unit]] / 1000,
     ),
-    O.toUndefined
+    O.toUndefined,
   );
 
   // In ETH / min or USD K / min.
@@ -109,7 +109,7 @@ const CumulativeFeeBurn: FC<Props> = ({
 
   const millisecondsSinceLondonHardFork = DateFns.differenceInMilliseconds(
     new Date(),
-    londonHardforkTimestamp
+    londonHardforkTimestamp,
   );
 
   // In ETH.

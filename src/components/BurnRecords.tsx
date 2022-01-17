@@ -18,13 +18,13 @@ const formatBlockNumber = flow(
   O.fromPredicate((unknown): unknown is number => typeof unknown === "number"),
   O.map(Format.formatNoDigit),
   O.map((str) => `#${str}`),
-  O.toUndefined
+  O.toUndefined,
 );
 
 const getBlockPageLink = flow(
   OAlt.numberFromUnknown,
   O.map((num) => `https://etherscan.io/block/${num}`),
-  O.toUndefined
+  O.toUndefined,
 );
 
 const BurnRecordAmount: FC<{ amount: number | undefined; unit: Unit }> = ({
