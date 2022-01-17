@@ -4,6 +4,15 @@ import AvatarImg from "../../assets/avatar.webp";
 import * as Format from "../../format";
 import { TranslationsContext } from "../../translations-context";
 
+export type TwitterProfile = {
+  name: string;
+  profileImageUrl: string;
+  profileUrl: string;
+  bio: string | null;
+  followersCount: number;
+  famFollowerCount: number;
+};
+
 type ProfileTooltipProps = {
   item: TwitterProfile;
 };

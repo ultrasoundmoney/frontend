@@ -2,19 +2,6 @@ interface Data {
   [key: string]: string;
 }
 
-interface TwitterProfile {
-  name: string;
-  profileImageUrl: string;
-  profileUrl: string;
-  bio: string | null;
-  followersCount: number;
-  famFollowerCount: number;
-}
-
-interface TwitterProfileData {
-  profile: TwitterProfile[];
-  count: number;
-}
 declare module "*.svg" {
   const value: string;
   export default value;
