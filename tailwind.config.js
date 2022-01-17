@@ -1,25 +1,10 @@
-const { colors } = require("tailwindcss/defaultTheme");
+const colors = require("tailwindcss/colors");
 module.exports = {
-  darkMood: "media",
-  purge: {
-    content: [
-      "./public/**/*.html",
-      "./src/pages/**/*.{js,ts,jsx,tsx}",
-      "./src/components/**/*.{js,ts,jsx,tsx}",
-    ],
-    safeList: [
-      "opacity-10",
-      "opacity-20",
-      "opacity-30",
-      "opacity-40",
-      "opacity-50",
-      "opacity-60",
-      "opacity-70",
-      "opacity-80",
-      "opacity-90",
-      "opacity-100",
-    ],
-  },
+  content: [
+    "./public/**/*.html",
+    "./src/pages/**/*.{js,ts,jsx,tsx}",
+    "./src/components/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
     extend: {
       colors: {
@@ -50,7 +35,7 @@ module.exports = {
           pinkish: "#f85a89",
         },
         pink: {
-          "300": colors.pink["300"],
+          300: colors.pink["300"],
         },
         orange: {
           fire: "#F4900C",
@@ -61,12 +46,12 @@ module.exports = {
         "w-21": "21%",
       },
       spacing: {
-        "42": "165px",
+        42: "165px",
       },
       lineHeight: {
-        "2": "2",
+        2: "2",
         card: "3.3",
-        "18": "1.18",
+        18: "1.18",
         loose1: "2.95",
       },
       fontFamily: {
@@ -84,7 +69,7 @@ module.exports = {
         "21xl": "1.87rem",
       },
       inset: {
-        "128": "32rem",
+        128: "32rem",
       },
       scale: {
         "gauge-md": "0.65",
@@ -92,14 +77,5 @@ module.exports = {
     },
   },
   variants: {},
-  plugins: [
-    require("tailwindcss"),
-    require("precss"),
-    require("autoprefixer"),
-    require("postcss-import"),
-  ],
-  future: {
-    removeDeprecatedGapUtilities: true,
-    purgeLayersByDefault: true,
-  },
+  plugins: [],
 };
