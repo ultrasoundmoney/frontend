@@ -107,7 +107,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
       <div
         className={`
           flex flex-col gap-y-6
-          mt-3
+          mt-3 -mr-3
           overflow-y-auto
           ${styles["styled-scrollbar"]}
         `}
