@@ -2,7 +2,6 @@ import { AppProps } from "next/app";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
 import "tailwindcss/tailwind.css";
-import "../styles/index.css";
 import "../styles/global.scss";
 
 Sentry.init({
