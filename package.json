@@ -32,7 +32,6 @@
     "react-loading-skeleton": "^3.0.2",
     "react-spring": "^9.2.4",
     "react-transition-group": "^4.4.2",
-    "sass": "^1.48.0",
     "twemoji": "^13.1.0"
   },
   "devDependencies": {
