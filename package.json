@@ -43,6 +43,7 @@
     "@types/react-dom": "^17.0.2",
     "@types/react-transition-group": "^4.4.0",
     "@types/twemoji": "^12.1.1",
+    "@typescript-eslint/eslint-plugin": "^5.10.0",
     "autoprefixer": "^10.4.2",
     "eslint": "8.7.0",
     "eslint-config-next": "12.0.8",
