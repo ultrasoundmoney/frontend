@@ -14,10 +14,6 @@ const IndexPage: NextPage<IndexPageProps> = () => {
     <>
       <Head>
         <title>{t.title}</title>
-        <meta httpEquiv="cache-control" content="max-age=0" />
-        <meta httpEquiv="cache-control" content="no-cache" />
-        <meta httpEquiv="expires" content="0" />
-        <meta httpEquiv="pragma" content="no-cache" />
         <meta name="description" content={t.meta_description} />
         <meta name="keywords" content={t.meta_keywords} />
         <meta property="og:title" content={t.title} />
