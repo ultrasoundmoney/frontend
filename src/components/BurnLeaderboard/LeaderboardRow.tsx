@@ -35,13 +35,11 @@ const onSetCategory = async (address: string) => {
 
 const getOpacityFromAge = (dt: Date | undefined) =>
   dt === undefined
-    ? "opacity-100"
-    : `opacity-${Math.min(
-        100,
-        Math.round(
-          (20 + (80 / 168) * DateFns.differenceInHours(new Date(), dt)) / 10
-        ) * 10
-      )}`;
+    ? 1
+    : Math.min(
+        1,
+        0.2 + (0.8 / 168) * DateFns.differenceInHours(new Date(), dt),
+      );
 
 const AdminControls: FC<{
   address: string;
@@ -84,25 +82,27 @@ const AdminControls: FC<{
     </div>
     <div className="flex text-sm text-white gap-x-4 mt-2">
       <span
-        className={`bg-gray-700 rounded-lg py-1 px-2 ${getOpacityFromAge(
-          freshness?.openseaContractLastFetch
-        )}`}
+        className="bg-gray-700 rounded-lg py-1 px-2"
+        style={{
+          opacity: getOpacityFromAge(freshness?.openseaContractLastFetch),
+        }}
       >
         {freshness?.openseaContractLastFetch === undefined
           ? "never fetched"
           : `opensea fetch ${DateFns.formatDistanceToNowStrict(
-              freshness.openseaContractLastFetch
+              freshness.openseaContractLastFetch,
             )} ago`}
       </span>
       <span
-        className={`bg-gray-700 rounded-lg py-1 px-2 ${getOpacityFromAge(
-          freshness?.lastManuallyVerified
-        )}`}
+        className="bg-gray-700 rounded-lg py-1 px-2"
+        style={{
+          opacity: getOpacityFromAge(freshness?.lastManuallyVerified),
+        }}
       >
         {freshness?.lastManuallyVerified === undefined
           ? "never verified"
           : `last verified ${DateFns.formatDistanceToNowStrict(
-              freshness.lastManuallyVerified
+              freshness.lastManuallyVerified,
             )} ago`}
       </span>
     </div>
