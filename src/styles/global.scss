@@ -1,6 +1,11 @@
 // NOTE: don't use this file unless you really have to! Try to use component scoped CSS instead.
 // See: https://nextjs.org/docs/basic-features/built-in-css-support#adding-component-level-css
 
+// Makes overscrolling look better by filling in the default white with our background color.
+body {
+  background-color: #131827;
+}
+
 a:hover {
   color: inherit;
 }
