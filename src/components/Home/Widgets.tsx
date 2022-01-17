@@ -19,7 +19,7 @@ const Widgets: FC = () => {
   const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
 
-  const onSetTimeFrame = useCallback(setTimeFrame, [setTimeFrame]);
+  const handleSetTimeFrame = useCallback(setTimeFrame, [setTimeFrame]);
 
   const onSetUnit = useCallback(setUnit, [setUnit]);
 
@@ -75,7 +75,7 @@ const Widgets: FC = () => {
               </p>
               <TimeFrameControl
                 selectedTimeframe={timeFrame}
-                onSetFeePeriod={onSetTimeFrame}
+                onSetTimeFrame={handleSetTimeFrame}
               />
             </div>
             <div className="flex flex-col gap-y-4 lg:gap-x-4 lg:flex-row lg:items-center">
