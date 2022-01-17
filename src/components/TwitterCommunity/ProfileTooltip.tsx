@@ -17,7 +17,7 @@ const ProfileTooltip: FC<ProfileTooltipProps> = ({ children, item }) => {
       el.onerror = null;
       el.src = AvatarImg;
     },
-    []
+    [],
   );
 
   return (

@@ -30,14 +30,14 @@ const SupplyView: React.FC = () => {
 
   // TODO Initialize this to current amount of ETH staked
   const [projectedStaking, setProjectedStaking] = React.useState(
-    DEFAULT_PROJECTED_ETH_STAKING
+    DEFAULT_PROJECTED_ETH_STAKING,
   );
   // TODO Initialize this to current base gas price
   const [projectedBaseGasPrice, setProjectedBaseGasPrice] = React.useState(
-    DEFAULT_PROJECTED_BASE_GAS_PRICE
+    DEFAULT_PROJECTED_BASE_GAS_PRICE,
   );
   const [projectedMergeDate, setProjectedMergeDate] = React.useState(
-    DEFAULT_PROJECTED_MERGE_DATE
+    DEFAULT_PROJECTED_MERGE_DATE,
   );
   const [showBreakdown, setShowBreakdown] = React.useState(false);
   const [isPeakPresent, setIsPeakPresent] = React.useState(true);
@@ -46,25 +46,25 @@ const SupplyView: React.FC = () => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setProjectedStaking(parseInt(e.target.value));
     },
-    []
+    [],
   );
 
   const handleProjectedBaseGasPriceChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setProjectedBaseGasPrice(parseInt(e.target.value));
     },
-    []
+    [],
   );
 
   const handleProjectedMergeDateChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const numDays: number = parseInt(e.target.value);
       const projectedDate = pipe(new Date(), DateFns.startOfDay, (dt) =>
-        DateFns.addDays(dt, numDays)
+        DateFns.addDays(dt, numDays),
       );
       setProjectedMergeDate(projectedDate);
     },
-    []
+    [],
   );
 
   const handleProjectedStakingPointerDown = React.useCallback(() => {
@@ -126,7 +126,7 @@ const SupplyView: React.FC = () => {
               {t.pos_issuance}
               {": "}
               {formatOneDigit(
-                estimatedDailyIssuance(projectedStaking) / 1000
+                estimatedDailyIssuance(projectedStaking) / 1000,
               )}K {t.eth_per_day}
             </>
           }
@@ -150,7 +150,7 @@ const SupplyView: React.FC = () => {
               {t.fee_burn}
               {": "}
               {formatOneDigit(
-                estimatedDailyFeeBurn(projectedBaseGasPrice) / 1000
+                estimatedDailyFeeBurn(projectedBaseGasPrice) / 1000,
               )}
               K {t.eth_per_day}
             </>

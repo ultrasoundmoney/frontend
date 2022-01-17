@@ -22,7 +22,7 @@ const thresholdToNumber = (threshold: string | undefined): number | undefined =>
     O.map((str) => str.replaceAll(",", "")),
     O.map(Number),
     O.chain((num) => (Number.isNaN(num) ? O.none : O.some(num))),
-    O.toUndefined
+    O.toUndefined,
   );
 
 const safeFormatZeroDigit = (num: number | undefined) =>
@@ -68,11 +68,11 @@ const AlarmInput: FC<AlarmInputProps> = ({
   const [isBusyEditing, setIsBusyEditing] = useState(false);
   const [threshold, setThreshold] = useLocalStorage<string>(
     `${type}-threshold`,
-    "0"
+    "0",
   );
   const [thresholdType, setThresholdType] = useLocalStorage<ThresholdType>(
     `${type}-threshold-type`,
-    "GreaterThanOrEqualTo"
+    "GreaterThanOrEqualTo",
   );
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -81,7 +81,7 @@ const AlarmInput: FC<AlarmInputProps> = ({
     O.fromNullable,
     O.map(Format.gweiFromWei),
     O.map(Math.round),
-    O.toUndefined
+    O.toUndefined,
   );
   const roundedEthPrice = safeRound(ethPrice?.usd);
   const currentValueMap: Record<AlarmType, number | undefined> = {
@@ -118,7 +118,7 @@ const AlarmInput: FC<AlarmInputProps> = ({
       setIsBusyEditing(true);
       setThreshold(event.target.value);
     },
-    [currentValue, setThreshold, setThresholdType]
+    [currentValue, setThreshold, setThresholdType],
   );
 
   const handleDoneEditing = useCallback(() => {
@@ -163,13 +163,13 @@ const AlarmInput: FC<AlarmInputProps> = ({
       onToggleIsAlarmActive,
       setThresholdType,
       threshold,
-    ]
+    ],
   );
 
   useEffect(() => {
     // It's possible someone changed this in another tab and we haven't yet read this from local storage. To make sure we have the latest value we read local storage again. This key is currently hardcoded to match the one in the parent that ows this piece of state.
     const isAlarmActiveLocalStorage = localStorage.getItem(
-      `${type}-alarm-enabled`
+      `${type}-alarm-enabled`,
     );
     const isAlarmActiveSynced =
       isAlarmActiveLocalStorage === null
