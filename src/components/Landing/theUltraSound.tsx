@@ -1,4 +1,3 @@
-import Image from "next/image";
 import * as React from "react";
 import BatImg from "../../assets/bat.png";
 import BtcImg from "../../assets/ulr.jpeg";
@@ -23,10 +22,10 @@ const TheUltraSound: React.FC = () => {
           data-aos-easing="ease-in-out"
           className="block pt-16 relative"
         >
-          <Image
+          <img
             title={t.eusm_section_title}
             alt={t.eusm_section_title}
-            src={BatImg}
+            src={BatImg as unknown as string}
             className="mx-auto text-center mb-8"
           />
           <div className="ultra-sound-text text-2xl md:text-6xl mb-24">
@@ -60,7 +59,7 @@ const TheUltraSound: React.FC = () => {
             </div>
           </div>
           <div className="w-full md:w-5/12">
-            <Image src={BtcImg} alt="btc" />
+            <img src={BtcImg as unknown as string} alt="btc" />
           </div>
         </div>
       </section>

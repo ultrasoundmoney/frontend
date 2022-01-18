@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React, {
   ChangeEvent,
   FC,
@@ -50,15 +49,10 @@ type AlarmType = "gas" | "eth";
 type ThresholdType = "GreaterThanOrEqualTo" | "SmallerThan";
 
 const imageMap: Record<AlarmType, JSX.Element> = {
-  gas: <Image src="/gas-icon.svg" width="13" height="14" alt="gas pump icon" />,
+  gas: <img src="/gas-icon.svg" width="13" height="14" alt="gas pump icon" />,
 
   eth: (
-    <Image
-      src="/eth-icon.svg"
-      alt="Ethereum Ether icon"
-      width="15"
-      height="16"
-    />
+    <img src="/eth-icon.svg" alt="Ethereum Ether icon" width="15" height="16" />
   ),
 };
 

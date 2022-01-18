@@ -1,4 +1,3 @@
-import Image from "next/image";
 import * as React from "react";
 import AvatarImg from "../../assets/avatar.webp";
 
@@ -30,11 +29,15 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
       <section className={getClassName}>
         {img !== null && img != undefined && (
           <picture>
-            <Image
+            <img
               className="text-center mx-auto mb-8"
               width="30"
               height="48"
-              src={img !== null && img != undefined ? img : AvatarImg}
+              src={
+                img !== null && img != undefined
+                  ? img
+                  : (AvatarImg as unknown as string)
+              }
               alt={title}
               onError={imageErrorHandler}
             />

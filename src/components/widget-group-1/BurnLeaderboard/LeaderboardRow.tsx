@@ -1,5 +1,4 @@
 import * as DateFns from "date-fns";
-import Image from "next/image";
 import { FC, ReactEventHandler, useCallback } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
@@ -174,7 +173,7 @@ const LeaderboardRow: FC<Props> = ({
               text-white text-base md:text-lg
             `}
           >
-            <Image
+            <img
               className="w-8 h-8 rounded-full"
               src={imgSrc}
               alt=""

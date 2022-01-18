@@ -1,4 +1,3 @@
-import Image from "next/image";
 import * as React from "react";
 import AvatarImg from "../../assets/avatar.webp";
 
@@ -15,9 +14,13 @@ const ContentBlockMedia: React.FC<ContentBlockMediaProps> = ({
   return (
     <>
       {img !== null && img != undefined && (
-        <Image
+        <img
           className="text-left mr-auto mb-6"
-          src={img !== null && img != undefined ? img : AvatarImg}
+          src={
+            img !== null && img != undefined
+              ? img
+              : (AvatarImg as unknown as string)
+          }
           alt={title}
         />
       )}
