@@ -7,3 +7,27 @@
     }
   }
 }
+
+.tooltip {
+  visibility: hidden;
+  position: absolute;
+
+  z-index: 100;
+  left: 40px;
+  transform: translate(0%, -100%);
+  width: 280px;
+
+  @media screen and (min-width: 420px) and (max-width: 1023px) {
+    left: 20%;
+  }
+
+  @media (min-width: 1024px) {
+    left: unset;
+    transform: translate(-40%, -100%);
+  }
+}
+
+.has-tooltip:hover .tooltip,
+.has-tooltip:active .tooltip {
+  visibility: visible;
+}
