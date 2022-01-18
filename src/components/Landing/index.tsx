@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import * as React from "react";
 import Intro from "./Intro";
 import BeforeGenesis from "./beforeGenesis";
