@@ -1,7 +1,8 @@
+import Image from "next/image";
 import { FC, ReactEventHandler, useCallback } from "react";
 import Skeleton from "react-loading-skeleton";
 import AvatarImg from "../../assets/avatar.webp";
-import ProfileTooltip from "./ProfileTooltip";
+import ProfileTooltip, { TwitterProfile } from "./ProfileTooltip";
 
 const TwitterProfile: FC<{ profiles: TwitterProfile[] | undefined }> = ({
   profiles,
@@ -15,9 +16,9 @@ const TwitterProfile: FC<{ profiles: TwitterProfile[] | undefined }> = ({
     (e) => {
       const el = e.currentTarget;
       el.onerror = null;
-      el.src = AvatarImg;
+      el.src = AvatarImg as unknown as string;
     },
-    []
+    [],
   );
 
   return (
@@ -37,7 +38,7 @@ const TwitterProfile: FC<{ profiles: TwitterProfile[] | undefined }> = ({
                     role="link"
                   >
                     <picture>
-                      <img
+                      <Image
                         className="rounded-full"
                         width="40"
                         height="40"
@@ -54,7 +55,7 @@ const TwitterProfile: FC<{ profiles: TwitterProfile[] | undefined }> = ({
                   </a>
                 ) : (
                   <picture>
-                    <img
+                    <Image
                       className="rounded-full"
                       width="40"
                       height="40"
