@@ -71,6 +71,9 @@ module.exports = {
       scale: {
         "gauge-md": "0.65",
       },
+      padding: {
+        "26": "104px"
+      }
     },
   },
   variants: {},
