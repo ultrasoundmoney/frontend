@@ -1,8 +1,10 @@
 import React, { FC, useCallback, useState } from "react";
 import { useGroupedData1 } from "../../api/grouped_stats_1";
 import { Unit } from "../../denomination";
+import { featureFlags } from "../../feature-flags";
 import * as Format from "../../format";
 import { TimeFrameNext, timeFramesNext } from "../../time_frames";
+import BurnCategories from "../BurnCategories";
 import BurnRecords from "../BurnRecords";
 import FeeBurn from "../FeeBurn";
 import BurnGauge from "../Gauges/BurnGauge";
@@ -96,7 +98,7 @@ const WidgetGroup1: FC = () => {
           timeFrame={timeFrame}
           unit={unit}
         />
-        <div className="lg:col-start-2 lg:row-start-1 lg:row-end-4">
+        <div className="lg:col-start-2 lg:row-start-1 lg:row-end-3">
           <BurnLeaderboard
             onClickTimeFrame={handleClickTimeFrame}
             timeFrame={timeFrame}
@@ -108,6 +110,7 @@ const WidgetGroup1: FC = () => {
           onClickTimeFrame={handleClickTimeFrame}
           timeFrame={timeFrame}
         />
+        {featureFlags.leaderboardCategory && <BurnCategories />}
       </div>
     </div>
   );
