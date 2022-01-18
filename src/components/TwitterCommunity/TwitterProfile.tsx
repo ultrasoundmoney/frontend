@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { FC, ReactEventHandler, useCallback } from "react";
 import Skeleton from "react-loading-skeleton";
 import AvatarImg from "../../assets/avatar.webp";
@@ -38,6 +37,7 @@ const TwitterProfile: FC<{ profiles: TwitterProfile[] | undefined }> = ({
                     role="link"
                   >
                     <picture>
+                      {/* using Image here break the images */}
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         className="rounded-full"
@@ -56,7 +56,9 @@ const TwitterProfile: FC<{ profiles: TwitterProfile[] | undefined }> = ({
                   </a>
                 ) : (
                   <picture>
-                    <Image
+                    {/* using Image here break the images */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
                       className="rounded-full"
                       width="40"
                       height="40"
@@ -64,7 +66,7 @@ const TwitterProfile: FC<{ profiles: TwitterProfile[] | undefined }> = ({
                         item.profileImageUrl !== null &&
                         item.profileImageUrl != undefined
                           ? item.profileImageUrl
-                          : AvatarImg
+                          : (AvatarImg as unknown as string)
                       }
                       alt={item.name}
                       onError={imageErrorHandler}

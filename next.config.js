@@ -10,6 +10,6 @@ module.exports = {
   }),
   reactStrictMode: true,
   images: {
-    domains: ["lh3.googleusercontent.com"],
+    domains: ["pbs.twimg.com", "lh3.googleusercontent.com"],
   },
 };
