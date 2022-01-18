@@ -7,7 +7,6 @@ module.exports = {
   exportPathMap: () => ({
     "/": { page: "/" },
     "/landing": { page: "/landing" },
-    "/dashboard": { page: "/dashboard" },
   }),
   reactStrictMode: true,
   images: {
