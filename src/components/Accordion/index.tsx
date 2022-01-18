@@ -21,7 +21,9 @@ const Accordion: React.FC<AccordionProps> = ({ title, text }) => {
       />
       <div
         className={`${styles.item} break-words ${
-          !isOpen ? `${styles.collapsed} animateOut` : "animateIn"
+          !isOpen
+            ? `${styles.collapsed} ${styles.animateOut}`
+            : `${styles.animateIn}`
         }`}
       >
         <div
