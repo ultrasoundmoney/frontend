@@ -11,6 +11,6 @@ module.exports = {
   }),
   reactStrictMode: true,
   images: {
-    domains: ["pbs.twimg.com"],
+    domains: ["pbs.twimg.com", "lh3.googleusercontent.com"],
   },
 };
