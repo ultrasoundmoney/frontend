@@ -118,7 +118,10 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
         </div>
         <div
           className="absolute h-2 bg-blue-dusk z-10"
-          style={{ left: `calc(${stakedPlusLocked / 2}% - 2px`, width: "2px" }}
+          style={{
+            left: `calc(${stakedPlusLocked / 2}% - 1.5px`,
+            width: "3px",
+          }}
         ></div>
         <div
           className="flex flex-col items-center"
