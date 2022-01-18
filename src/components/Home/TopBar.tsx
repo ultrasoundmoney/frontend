@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import CountUp from "react-countup";
 import { useEthPrice } from "../../api/eth_price";
@@ -58,12 +59,14 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
         rounded
       `}
     >
-      <img
-        className="pr-1 select-none"
+      <Image
+        className="select-none"
         src="/gas-icon.svg"
         alt="gas pump icon"
+        width="13"
+        height="14"
       />
-      <TextRoboto>
+      <TextRoboto className="pl-1">
         {baseFeePerGas === undefined ? (
           "___"
         ) : (
@@ -83,12 +86,14 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
         <span className="font-extralight text-blue-spindle">Gwei</span>
       </TextRoboto>
       <div className="mr-4"></div>
-      <img
-        className="pr-1 select-none"
+      <Image
+        className="select-none"
         src="/eth-icon.svg"
         alt="Ethereum Ether icon"
+        width="11"
+        height="16"
       />
-      <TextRoboto>
+      <TextRoboto className="pl-1">
         {ethPrice === undefined ? (
           "_,___"
         ) : (
@@ -184,7 +189,7 @@ const TopBar: FC = () => {
           className={`flex items-center px-3 py-2 bg-blue-tangaroa rounded ml-4 select-none border border-transparent ${showButtonClasses} ${alarmActiveClasses}`}
           onClick={handleClickAlarm}
         >
-          <img src="/alarm-icon.svg" alt="bell icon" />
+          <Image src="/alarm-icon.svg" alt="bell icon" width="12" height="14" />
         </button>
 
         <div
@@ -195,14 +200,12 @@ const TopBar: FC = () => {
           <AlarmInput
             isAlarmActive={gasAlarmActive}
             onToggleIsAlarmActive={setGasAlarmActive}
-            icon="/gas-icon.svg"
             unit="Gwei"
             type="gas"
           />
           <AlarmInput
             isAlarmActive={ethAlarmActive}
             onToggleIsAlarmActive={setEthAlarmActive}
-            icon="/eth-icon.svg"
             unit="USD "
             type="eth"
           />

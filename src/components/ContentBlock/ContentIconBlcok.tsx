@@ -1,3 +1,4 @@
+import Image from "next/image";
 import * as React from "react";
 import AvatarImg from "../../assets/avatar.webp";
 
@@ -18,7 +19,7 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
   function imageErrorHandler(e: React.SyntheticEvent<HTMLImageElement, Event>) {
     const el = e.target as HTMLImageElement;
     el.onerror = null;
-    el.src = AvatarImg;
+    el.src = AvatarImg as unknown as string;
   }
   const getClassName =
     styles != undefined || styles != null
@@ -29,7 +30,7 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
       <section className={getClassName}>
         {img !== null && img != undefined && (
           <picture>
-            <img
+            <Image
               className="text-center mx-auto mb-8"
               width="30"
               height="48"

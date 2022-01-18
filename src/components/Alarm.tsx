@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React, {
   ChangeEvent,
   FC,
@@ -13,6 +14,7 @@ import { useLocalStorage } from "../use-local-storage";
 import useNotification from "../use-notification";
 import styles from "./AlarmInput.module.scss";
 import { AmountUnitSpace } from "./Spacing";
+import { TextRoboto } from "./Texts";
 import ToggleSwitch from "./ToggleSwitch";
 
 const thresholdToNumber = (threshold: string | undefined): number | undefined =>
@@ -47,9 +49,21 @@ type AlarmType = "gas" | "eth";
 
 type ThresholdType = "GreaterThanOrEqualTo" | "SmallerThan";
 
+const imageMap: Record<AlarmType, JSX.Element> = {
+  gas: <Image src="/gas-icon.svg" width="13" height="14" alt="gas pump icon" />,
+
+  eth: (
+    <Image
+      src="/eth-icon.svg"
+      alt="Ethereum Ether icon"
+      width="15"
+      height="16"
+    />
+  ),
+};
+
 type AlarmInputProps = {
   isAlarmActive: boolean;
-  icon: string;
   onToggleIsAlarmActive: (isAlarmActive: boolean) => void;
   unit: string;
   type: AlarmType;
@@ -57,7 +71,6 @@ type AlarmInputProps = {
 
 const AlarmInput: FC<AlarmInputProps> = ({
   isAlarmActive,
-  icon,
   onToggleIsAlarmActive,
   unit,
   type,
@@ -219,16 +232,13 @@ const AlarmInput: FC<AlarmInputProps> = ({
 
     inputRef.current.focus();
   }, [inputRef]);
-
   return (
     <div className="flex justify-between items-center pt-4">
       <div
         className={`flex justify-between items-center px-2 py-1 pr-4 border border-gray-500 rounded-full select-none ${styles.alarmInput}`}
         onClick={handleSurroundingInputClick}
       >
-        <div className="flex justify-center ml-1 w-5">
-          <img className="" src={icon} alt="icon of gaspump or eth" />
-        </div>
+        <div className="flex justify-center ml-1 w-5">{imageMap[type]}</div>
         <div className="flex items-center">
           <input
             ref={inputRef}
@@ -240,9 +250,9 @@ const AlarmInput: FC<AlarmInputProps> = ({
             onBlur={handleDoneEditing}
           />
           <AmountUnitSpace />
-          <span className="font-roboto text-blue-spindle text-sm font-extralight whitespace-pre">
+          <TextRoboto className="text-blue-spindle text-sm font-extralight whitespace-pre">
             {unit}
-          </span>
+          </TextRoboto>
         </div>
       </div>
       <ToggleSwitch

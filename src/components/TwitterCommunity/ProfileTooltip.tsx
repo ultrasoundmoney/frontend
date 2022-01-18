@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { FC, ReactEventHandler, useCallback, useContext } from "react";
 import twemoji from "twemoji";
 import AvatarImg from "../../assets/avatar.webp";
@@ -24,7 +25,7 @@ const ProfileTooltip: FC<ProfileTooltipProps> = ({ children, item }) => {
     (e) => {
       const el = e.currentTarget;
       el.onerror = null;
-      el.src = AvatarImg;
+      el.src = AvatarImg as unknown as string;
     },
     [],
   );
@@ -39,7 +40,7 @@ const ProfileTooltip: FC<ProfileTooltipProps> = ({ children, item }) => {
           role="link"
         >
           <picture>
-            <img
+            <Image
               className="rounded-full"
               width="80"
               height="80"
