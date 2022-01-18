@@ -1,8 +1,8 @@
 import * as React from "react";
 import { TranslationsContext } from "../../translations-context";
-import Twemoji from "../Twemoji";
+import SpanMoji from "../SpanMoji";
 
-const Intro: React.FC<{}> = () => {
+const Intro: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   return (
     <>
