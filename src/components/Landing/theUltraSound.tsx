@@ -1,10 +1,11 @@
+import Image from "next/image";
 import * as React from "react";
 import BatImg from "../../assets/bat.png";
 import BtcImg from "../../assets/ulr.jpeg";
 import { TranslationsContext } from "../../translations-context";
 import ContentBlockMedia from "../ContentBlock/ContentBlockMedia";
 
-const TheUltraSound: React.FC<{}> = () => {
+const TheUltraSound: React.FC = () => {
   const t = React.useContext(TranslationsContext);
 
   return (
@@ -22,7 +23,7 @@ const TheUltraSound: React.FC<{}> = () => {
           data-aos-easing="ease-in-out"
           className="block pt-16 relative"
         >
-          <img
+          <Image
             title={t.eusm_section_title}
             alt={t.eusm_section_title}
             src={BatImg}
@@ -59,7 +60,7 @@ const TheUltraSound: React.FC<{}> = () => {
             </div>
           </div>
           <div className="w-full md:w-5/12">
-            <img src={BtcImg} alt="btc" />
+            <Image src={BtcImg} alt="btc" />
           </div>
         </div>
       </section>
