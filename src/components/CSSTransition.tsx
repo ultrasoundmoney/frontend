@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { ReactElement, useRef } from "react";
 import { CSSTransition as _CSSTransition } from "react-transition-group";
 import { CSSTransitionProps } from "react-transition-group/CSSTransition";
 
@@ -12,8 +12,8 @@ const CSSTransition = (props: CSSTransitionProps) => {
     <_CSSTransition {...props} nodeRef={nodeRef}>
       <>
         {React.Children.map(props.children, (child) => {
-          // @ts-ignore
-          return React.cloneElement(child, { ref: nodeRef });
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          return React.cloneElement(child as any, { ref: nodeRef });
         })}
       </>
     </_CSSTransition>
