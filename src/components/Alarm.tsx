@@ -242,7 +242,13 @@ const AlarmInput: FC<AlarmInputProps> = ({
         <div className="flex items-center">
           <input
             ref={inputRef}
-            className="font-roboto w-14 bg-transparent text-sm text-white text-right"
+            className={`
+              font-roboto font-light
+              w-14
+              bg-transparent
+              text-sm text-white text-right
+              focus:outline-none
+            `}
             inputMode="numeric"
             pattern="[0-9]"
             value={toThresholdDisplay(threshold)}

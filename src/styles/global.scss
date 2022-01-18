@@ -438,6 +438,10 @@ a:hover {
   opacity: 1;
 }
 
+*:focus {
+  outline: white solid 1px
+}
+
 .link-animation {
   transition-property: opacity;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
