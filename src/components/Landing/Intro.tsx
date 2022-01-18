@@ -16,7 +16,7 @@ const Intro: React.FC = () => {
               {t.landing_hero_title_1}
             </div>
             <div className="flex self-center">
-              <Twemoji emoji="🦇🔊" />
+              <SpanMoji emoji="🦇🔊" />
               <span className="text-red-600 text-2xl">*</span>
             </div>
           </div>
