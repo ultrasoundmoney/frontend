@@ -10,4 +10,7 @@ module.exports = {
     "/dashboard": { page: "/dashboard" },
   }),
   reactStrictMode: true,
+  images: {
+    domains: ["pbs.twimg.com"],
+  },
 };
