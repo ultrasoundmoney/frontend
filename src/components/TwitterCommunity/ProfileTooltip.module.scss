@@ -1,0 +1,9 @@
+.profileText {
+  img {
+    width: 16px;
+    margin: auto 2px;
+    &:last-child {
+      margin-right: 0px;
+    }
+  }
+}

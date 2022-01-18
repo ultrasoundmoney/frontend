@@ -11,6 +11,7 @@ import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import CSSTransition from "../CSSTransition";
 import { AmountUnitSpace } from "../Spacing";
 import WidgetBackground from "../widget-subcomponents/WidgetBackground";
+import styles from "./LatestBlocks.module.scss";
 
 const maxBlocks = 7;
 
@@ -108,11 +109,11 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
             {(latestBlockFees || latestBlockFeesSkeletons).map(
               ({ number, fees, feesUsd, baseFeePerGas }, index) => (
                 <CSSTransition
-                  classNames="fee-block"
+                  classNames={{ ...styles }}
                   timeout={2000}
                   key={number || index}
                 >
-                  <div className="fee-block font-light text-base md:text-lg">
+                  <div className="transition-opacity duration-700 font-light text-base md:text-lg">
                     <a
                       href={
                         number === undefined

@@ -1,17 +1,18 @@
 import * as Sentry from "@sentry/react";
 import React, { FC } from "react";
+import { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import Colors from "../../colors";
 import FollowingYou from "../FollowingYou";
 import FaqBlock from "../Landing/faq";
 import SupplyView from "../SupplyView";
 import { SectionTitle } from "../Texts";
 import TwitterCommunity from "../TwitterCommunity";
+import WidgetGroup1 from "../widget-group-1";
 import Flippenings from "./Flippenings";
+import styles from "./Home.module.scss";
 import Scarcity from "./Scarcity";
 import TopBar from "./TopBar";
-import WidgetGroup1 from "../widget-group-1";
-import { SkeletonTheme } from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
-import Colors from "../../colors";
 
 const SectionDivider: FC<{ title: string; subtitle: string }> = ({
   title,
@@ -30,13 +31,17 @@ const Home: FC = () => (
     highlightColor="#565b7f"
     enableAnimation={true}
   >
-    <div className="wrapper bg-blue-midnightexpress blurred-bg-image">
+    <div className={`wrapper bg-blue-midnightexpress ${styles.blurredBgImage}`}>
       <div className="container m-auto">
         <div className="px-4 md:px-16">
           <TopBar />
         </div>
         <div
-          className={`ultra-sound-text w-full pt-16 text-6xl md:text-7xl md:w-1/2 lg:w-5/6 lg:pt-16 m-auto mb-8`}
+          className={`
+            text-6xl md:text-7xl
+            w-full pt-16 md:w-1/2 lg:w-5/6 lg:pt-16 m-auto mb-8
+            ${styles.ultraSoundText}
+          `}
         >
           ultra sound awakening
         </div>

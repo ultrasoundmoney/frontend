@@ -4,6 +4,7 @@ import twemoji from "twemoji";
 import AvatarImg from "../../assets/avatar.webp";
 import * as Format from "../../format";
 import { TranslationsContext } from "../../translations-context";
+import styles from "./ProfileTooltip.module.scss";
 
 export type TwitterProfile = {
   name: string;
@@ -56,14 +57,14 @@ const ProfileTooltip: FC<ProfileTooltipProps> = ({ children, item }) => {
           </picture>
         </a>
         <div
-          className="text-white my-3 text-base font-medium tw-profile-text break-words"
+          className={`text-white my-3 text-base font-medium ${styles.profileText} break-words`}
           dangerouslySetInnerHTML={{
             __html: twemoji.parse(item.name),
           }}
         />
         {typeof item.bio === "string" && (
           <p
-            className="text-blue-linkwater text-left mb-3 font-light text-xs break-words tw-profile-text"
+            className={`text-blue-linkwater text-left mb-3 font-light text-xs break-words ${styles.profileText}`}
             dangerouslySetInnerHTML={{
               __html: twemoji.parse(item.bio),
             }}
