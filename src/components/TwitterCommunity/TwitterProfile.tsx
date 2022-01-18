@@ -38,7 +38,8 @@ const TwitterProfile: FC<{ profiles: TwitterProfile[] | undefined }> = ({
                     role="link"
                   >
                     <picture>
-                      <Image
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
                         className="rounded-full"
                         width="40"
                         height="40"
@@ -46,7 +47,7 @@ const TwitterProfile: FC<{ profiles: TwitterProfile[] | undefined }> = ({
                           item.profileImageUrl !== null &&
                           item.profileImageUrl != undefined
                             ? item.profileImageUrl
-                            : AvatarImg
+                            : (AvatarImg as unknown as string)
                         }
                         alt={item.name}
                         onError={imageErrorHandler}
