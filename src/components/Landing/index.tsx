@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import * as React from "react";
-import Navigation from "../Navigation/Nav";
 import Intro from "./Intro";
 import BeforeGenesis from "./beforeGenesis";
 import GenesisBlock from "./gennesis";
@@ -505,7 +504,6 @@ const LandingPage: React.FC = () => {
     <>
       <div className="wrapper bg-blue-midnightexpress blurred-bg-image">
         <div className="container m-auto">
-          <Navigation />
           <Intro />
           <BeforeGenesis />
           <GenesisBlock />
