@@ -1,7 +1,7 @@
 import * as React from "react";
 import { TranslationsContext } from "../../translations-context";
 
-const EIPConstantinopole: React.FC<{}> = () => {
+const EIPConstantinopole: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   return (
     <>

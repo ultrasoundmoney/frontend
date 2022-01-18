@@ -69,7 +69,7 @@ export const ethFromWei = (wei: number): number => wei / 10 ** 18;
 
 export const ethFromWeiBIUnsafe = (wei: JSBI): number =>
   JSBI.toNumber(
-    JSBI.divide(wei, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
+    JSBI.divide(wei, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))),
   );
 
 export const followerCountConvert = (num: number) => {

@@ -2,7 +2,7 @@ import * as React from "react";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 // import Timeline from "./timeline";
 import { TranslationsContext } from "../../translations-context";
-const BeforeGenesis: React.FC<{}> = () => {
+const BeforeGenesis: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   return (
     <>
@@ -12,6 +12,7 @@ const BeforeGenesis: React.FC<{}> = () => {
             className="text-center mx-auto mb-8"
             width="30"
             height="48"
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             src={EthLogo}
             alt="ultra sound money"
           />

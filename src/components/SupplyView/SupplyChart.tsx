@@ -86,11 +86,11 @@ const SupplyChart: React.FC<Props> = ({
   // Responsive helpers
   const [useCompactMarkers, setUseCompactMarkers] = React.useState(
     typeof window !== "undefined" &&
-      window.innerWidth < COMPACT_MARKERS_BELOW_WIDTH
+      window.innerWidth < COMPACT_MARKERS_BELOW_WIDTH,
   );
   const [useCompactChart, setUseCompactChart] = React.useState(
     typeof window !== "undefined" &&
-      window.innerWidth < COMPACT_CHART_BELOW_WIDTH
+      window.innerWidth < COMPACT_CHART_BELOW_WIDTH,
   );
 
   useOnResize((resizeProps) => {
@@ -124,7 +124,7 @@ const SupplyChart: React.FC<Props> = ({
       forceShowBreakdown,
       useCompactChart,
       useCompactMarkers,
-    ]
+    ],
   );
   const chartSettings = useDebounce(_chartSettings, 100);
 
@@ -139,7 +139,7 @@ const SupplyChart: React.FC<Props> = ({
       [LONDON_DATE, "london", "burn"],
       [chartSettings.projectedMergeDate, t.marker_merge, t.marker_pow_removal],
     ]),
-    [chartSettings, t]
+    [chartSettings, t],
   );
 
   const projectionsInputs = useSupplyProjectionInputs();
@@ -148,7 +148,7 @@ const SupplyChart: React.FC<Props> = ({
   const [series, annotations, totalSupplyByDate] = React.useMemo((): [
     Highcharts.SeriesAreaOptions[],
     Highcharts.AnnotationsLabelsOptions[],
-    Record<string, number>
+    Record<string, number>,
   ] => {
     if (projectionsInputs === undefined) {
       return [[], [], {}];
@@ -247,7 +247,7 @@ const SupplyChart: React.FC<Props> = ({
       const projDate = pipe(
         lastDate,
         (dt) => DateFns.addDays(dt, i + 1),
-        DateFns.startOfDay
+        DateFns.startOfDay,
       );
 
       // Calculate new ETH staking on this day
@@ -255,13 +255,13 @@ const SupplyChart: React.FC<Props> = ({
         // Add ETH to approach projected staking value
         stakingValue = Math.min(
           chartSettings.projectedStaking,
-          stakingValue + estimatedDailyStakeChange(stakingValue)
+          stakingValue + estimatedDailyStakeChange(stakingValue),
         );
       } else if (stakingValue > chartSettings.projectedStaking) {
         // Subtract ETH to approach projected staking value
         stakingValue = Math.max(
           chartSettings.projectedStaking,
-          stakingValue - estimatedDailyStakeChange(stakingValue)
+          stakingValue - estimatedDailyStakeChange(stakingValue),
         );
       }
 
@@ -438,7 +438,7 @@ const SupplyChart: React.FC<Props> = ({
           <div class="ann-title">${t.peak_supply}</div>
           ${isProjected ? `<div class="ann-proj">(Projected)</div>` : ""}
           <div class="ann-value">${formatOneDigit(
-            peakSupply[1] / 1e6
+            peakSupply[1] / 1e6,
           )}M ETH</div>
           </div>`,
         padding: 10,
@@ -548,17 +548,16 @@ const SupplyChart: React.FC<Props> = ({
           // Historical & projected overlap at current date; only show historical on that date
           if (points.length > 4) {
             points = points.filter(
-              (p) => !p.series.userOptions.id!.includes("projected")
+              (p) => !p.series.userOptions.id!.includes("projected"),
             );
           }
 
-          const isProjected = points[0].series.userOptions.id!.includes(
-            "projected"
-          );
+          const isProjected =
+            points[0].series.userOptions.id!.includes("projected");
 
           const dt = new Date(this.x);
           const header = `<div class="tt-header"><div class="tt-header-date text-blue-spindle">${formatDate(
-            dt
+            dt,
           )}</div>${
             isProjected
               ? `<div class="tt-header-projected">(${t.projected})</div>`
@@ -571,7 +570,8 @@ const SupplyChart: React.FC<Props> = ({
               <td>
                 <div class="tt-series">
                   <div class="tt-series-color" style="background-color:${
-                    p.series.userOptions.color
+                    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                    p.series.userOptions.color as any
                   }"></div>
                   <div class="tt-series-name">${
                     p.series.name.split(" (")[0]
@@ -579,7 +579,7 @@ const SupplyChart: React.FC<Props> = ({
                 </div>
               </td>
               <td class="text-white">${formatOneDigit(p.y / 1e6)}M ETH</td>
-              </tr>`
+              </tr>`,
           );
 
           // Show total supply last
@@ -588,7 +588,7 @@ const SupplyChart: React.FC<Props> = ({
             `<tr class="tt-total-row">
               <td><div class="tt-series-name">${t.total_supply}</div></td>
               <td class="text-white">${formatOneDigit(total / 1e6)}M ETH</td>
-            </tr>`
+            </tr>`,
           );
 
           const table = `<table><tbody>${rows.join("")}</tbody></table>`;
