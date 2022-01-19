@@ -56,8 +56,15 @@ const BurnRecordAmount: FC<{ amount: number | undefined; unit: Unit }> = ({
 
 const emojiMap = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
 
+const formatDistance = flow(
+  (dt: Date | undefined) => dt,
+  O.fromNullable,
+  O.map(DateFns.formatDistanceToNowStrict),
+  O.toUndefined,
+);
+
 const Age: FC<{ minedAt: Date | undefined }> = ({ minedAt }) => {
-  const [age, setAge] = useState<string | undefined>();
+  const [age, setAge] = useState(formatDistance(minedAt));
 
   useEffect(() => {
     if (minedAt === undefined) {
