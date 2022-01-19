@@ -7,6 +7,7 @@ import TwitterCommunity from "../TwitterCommunity";
 import FaqBlock from "./faq";
 import NftDrop from "../NftDrop/index";
 import FollowingYou from "../FollowingYou";
+import TheMergeBlock from "./theMerge";
 
 const LandingPage: React.FC<{}> = () => {
   return (
@@ -15,6 +16,7 @@ const LandingPage: React.FC<{}> = () => {
         <div className="container m-auto">
           <Navigation />
           <Intro />
+          <TheMergeBlock />
           <EtherTheUltraSound />
           <FaqBlock />
           <section
