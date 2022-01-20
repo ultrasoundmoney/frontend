@@ -1,4 +1,3 @@
-import { pipe } from "fp-ts/lib/function";
 import { clamp } from "lodash";
 import { FC } from "react";
 import { animated, config, useSpring } from "react-spring";
@@ -6,6 +5,7 @@ import { useGroupedData1 } from "../../api/grouped_stats_1";
 import colors from "../../colors";
 import { Unit } from "../../denomination";
 import { formatOneDigit, formatZeroDigit } from "../../format";
+import { pipe } from "../../fp";
 import SpanMoji from "../SpanMoji";
 import GaugeSvg from "./GaugeSvg";
 
