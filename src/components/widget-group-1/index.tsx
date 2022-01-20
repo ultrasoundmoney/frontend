@@ -98,7 +98,11 @@ const WidgetGroup1: FC = () => {
           timeFrame={timeFrame}
           unit={unit}
         />
-        <div className="lg:col-start-2 lg:row-start-1 lg:row-end-3">
+        <div
+          className={`lg:col-start-2 lg:row-start-1 ${
+            featureFlags.enableCategories ? "lg:row-end-3" : "lg:row-end-4"
+          }`}
+        >
           <BurnLeaderboard
             onClickTimeFrame={handleClickTimeFrame}
             timeFrame={timeFrame}
@@ -110,7 +114,7 @@ const WidgetGroup1: FC = () => {
           onClickTimeFrame={handleClickTimeFrame}
           timeFrame={timeFrame}
         />
-        {featureFlags.leaderboardCategory && <BurnCategories />}
+        {featureFlags.enableCategories && <BurnCategories />}
       </div>
     </div>
   );
