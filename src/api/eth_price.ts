@@ -15,13 +15,13 @@ export const useEthPrice = (): EthPrice | undefined => {
 export type AverageEthPrice = Record<TimeFrameNext, number>;
 
 export const useAverageEthPrice = (
-  timeFrame: TimeFrameNext
+  timeFrame: TimeFrameNext,
 ): number | undefined => {
   const { data } = useSWR<AverageEthPrice>(
     `${feesBasePath}/average-eth-price`,
     {
       refreshInterval: Duration.millisFromSeconds(8),
-    }
+    },
   );
 
   return data === undefined ? undefined : data[timeFrame];
