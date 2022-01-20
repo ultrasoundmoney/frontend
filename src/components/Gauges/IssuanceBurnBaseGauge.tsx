@@ -2,7 +2,7 @@ import { pipe } from "fp-ts/lib/function";
 import { clamp } from "lodash";
 import { FC } from "react";
 import { animated, config, useSpring } from "react-spring";
-import { useEthPrice } from "../../api/eth_price";
+import { useGroupedData1 } from "../../api/grouped_stats_1";
 import colors from "../../colors";
 import { Unit } from "../../denomination";
 import { formatOneDigit, formatZeroDigit } from "../../format";
@@ -30,7 +30,7 @@ const BaseGuage: FC<BaseGuageProps> = ({
   valueUnit,
   unit,
 }) => {
-  const ethPrice = useEthPrice();
+  const ethPrice = useGroupedData1()?.ethPrice;
 
   const { valueA } = useSpring({
     from: { valueA: 0 },

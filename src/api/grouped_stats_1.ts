@@ -56,7 +56,7 @@ export type FeeData = {
   baseFeePerGas: number;
   burnRates: BurnRates;
   burnRecords: BurnRecords["records"];
-  ethPrice: EthPrice | null;
+  ethPrice: EthPrice | undefined;
   feesBurned: FeesBurned;
   latestBlockFees: LatestBlock[];
   leaderboards: Leaderboards;
@@ -76,6 +76,7 @@ type RawFeeData = {
 
 const decodeFeeData = (raw: RawFeeData): FeeData => ({
   ...raw,
+  ethPrice: raw.ethPrice ?? undefined,
   burnRecords: decodeBurnRecords({
     number: raw.number,
     records: raw.burnRecords,
