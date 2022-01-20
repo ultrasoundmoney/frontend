@@ -194,7 +194,7 @@ const LeaderboardRow: FC<Props> = ({
                 <Skeleton inline={true} width="12rem" />
               )}
             </p>
-            {featureFlags.leaderboardCategory && category && (
+            {featureFlags.enableCategories && category && (
               <p className="px-1.5 py-0.5 ml-2 text-sm rounded-sm text-blue-manatee font-normal hidden md:block lg:hidden xl:block bg-blue-highlightbg">
                 {category}
               </p>
