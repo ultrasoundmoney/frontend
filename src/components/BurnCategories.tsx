@@ -225,15 +225,11 @@ const CategoryRow: FC<{
 
 const BurnCategoryWidget = () => {
   const burnCategoriesData = useBurnCategories();
-  console.log(burnCategoriesData);
   const [hoveringNft, setHoveringNft] = useState(false);
   const [hoveringDefi, setHoveringDefi] = useState(false);
   const [hoveringMev, setHoveringMev] = useState(false);
   const [hoveringL2, setHoveringL2] = useState(false);
   const [hoveringMisc, setHoveringMisc] = useState(false);
-
-  // console.log(totalContracts, counts);
-  //
 
   const miscCategory = pipe(
     burnCategoriesData,
