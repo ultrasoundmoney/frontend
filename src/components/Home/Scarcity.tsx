@@ -287,7 +287,7 @@ const Scarcity: FC = () => {
           hoveringBurned={hoveringBurned}
         />
       )}
-      <div className="flex flex-col gap-y-4">
+      <div className="flex flex-col gap-y-3">
         <div className="grid grid-cols-3">
           <LabelText>engine</LabelText>
           <LabelText className="text-right">amount</LabelText>

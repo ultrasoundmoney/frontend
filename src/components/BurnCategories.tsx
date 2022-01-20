@@ -1,177 +1,427 @@
-import { FC } from "react";
-import { Amount } from "./Amount";
-import { LabelText, TextRoboto } from "./Texts";
+import { FC, useState } from "react";
+import Skeleton from "react-loading-skeleton";
+import { BurnCategories, useBurnCategories } from "../api";
+import Colors from "../colors";
+import * as Format from "../format";
+import { A, flow, NEA, O, pipe } from "../fp";
+import { LabelText, TextInter, TextRoboto } from "./Texts";
 import WidgetBackground from "./widget-subcomponents/WidgetBackground";
 import WidgetTitle from "./widget-subcomponents/WidgetTitle";
-import Colors from "../colors";
-import { useGroupedData1 } from "../api/grouped_stats_1";
+
+type Category = {
+  fees: number | undefined;
+  feesUsd: number | undefined;
+  transactionCount: number | undefined;
+  percentOfTotalBurn: number | undefined;
+  percentOfTotalBurnUsd: number | undefined;
+  imgAlt: string;
+  imgName: string;
+  onHoverCategory: (hovering: boolean) => void;
+  showHighlight: boolean;
+};
 
 type CategoryBarProps = {
-  totalContracts: number;
-  nftCount: number;
-  defiCount: number;
-  gamingCount: number;
+  nft: Category | undefined;
+  defi: Category | undefined;
+  mev: Category | undefined;
+  l2: Category | undefined;
+  misc: Category | undefined;
 };
 
-const CategoryBar: FC<CategoryBarProps> = ({
-  totalContracts,
-  nftCount,
-  defiCount,
-  gamingCount,
-}) => {
-  const nftPercent = (nftCount / totalContracts) * 100;
-  const defiPercent = (defiCount / totalContracts) * 100;
-  const gamingPercent = (gamingCount / totalContracts) * 100;
-
-  return (
-    <div className="relative mt-2 mb-4">
-      <div className="h-28 flex items-center">
-        <div className="absolute w-full h-2 bg-blue-dusk rounded-full color-animation">
-          <div
-            className="absolute flex flex-row top-0 left-0 items-center"
-            style={{
-              width: "100%",
-            }}
-          >
-            <div
-              className="flex flex-col items-center"
-              style={{
-                width: `${nftPercent}%`,
-              }}
-            >
-              <div className="h-2 bg-green-mediumspring rounded-l-full w-full color-animation"></div>
-              <p
-                className="font-roboto text-white color-animation"
-                style={{
-                  marginTop: "9px",
-                  color: Colors.spindle,
-                }}
-              >
-                {nftCount}
-              </p>
-            </div>
-            <div
-              className="flex flex-col items-center"
-              style={{
-                width: `${defiPercent}%`,
-              }}
-            >
-              <div className="h-2 bg-red-pinkish w-full color-animation"></div>
-              <p
-                className="font-roboto text-white color-animation"
-                style={{
-                  marginTop: "9px",
-                  color: Colors.spindle,
-                }}
-              >
-                {defiCount}
-              </p>
-            </div>
-            <div
-              className="flex flex-col items-center"
-              style={{
-                width: `${gamingPercent}%`,
-              }}
-            >
-              <div className="h-2 bg-orange-fire w-full color-animation"></div>
-              <p
-                className="font-roboto text-white color-animation"
-                style={{
-                  marginTop: "9px",
-                  color: Colors.spindle,
-                }}
-              >
-                {gamingCount}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const EngineRow: FC<{
-  amountFormatted: number;
-  link: string;
-  name: string;
-}> = ({ amountFormatted, link, name }) => (
-  <a
-    className="grid grid-cols-2 link-animation"
-    href={link}
-    target="_blank"
-    rel="noreferrer"
+const CategorySegment: FC<{
+  imgAlt: string;
+  imgName: string;
+  onHoverCategory: (hovering: boolean) => void;
+  percentOfTotalBurn: number | undefined;
+  rounded?: "left" | "right";
+  showHighlight: boolean;
+}> = ({
+  imgAlt,
+  imgName,
+  onHoverCategory,
+  percentOfTotalBurn,
+  rounded,
+  showHighlight,
+}) => (
+  <div
+    className="flex flex-col items-center select-none"
+    style={{
+      width: `${(percentOfTotalBurn ?? 0.1) * 100}%`,
+    }}
+    onMouseEnter={() => onHoverCategory(true)}
+    onMouseLeave={() => onHoverCategory(false)}
   >
-    <span className="font-inter text-white">{name}</span>
-    <TextRoboto className="text-right">{amountFormatted}</TextRoboto>
+    {imgName === undefined ? (
+      <Skeleton height="16px" width="1.4rem" className="mb-3" />
+    ) : (
+      <>
+        <img
+          className="relative w-6"
+          src={`/${imgName}-coloroff.svg`}
+          alt={imgAlt}
+          style={{
+            height: "21px",
+            marginBottom: "12px",
+            visibility:
+              (percentOfTotalBurn ?? 0.1) < 0.082
+                ? "hidden"
+                : showHighlight
+                ? "hidden"
+                : "visible",
+          }}
+        />
+        <img
+          className="absolute w-6"
+          src={`/${imgName}-coloron.svg`}
+          alt="colored ice crystal, signifying staked ETH"
+          style={{
+            height: "21px",
+            marginBottom: "12px",
+            visibility:
+              (percentOfTotalBurn ?? 0.1) < 0.082
+                ? "hidden"
+                : showHighlight
+                ? "visible"
+                : "hidden",
+          }}
+        />
+      </>
+    )}
+    <div
+      className={`h-2 bg-blue-spindle w-full color-animation ${
+        rounded === "left"
+          ? "rounded-l-full"
+          : rounded === "right"
+          ? "rounded-r-full"
+          : ""
+      }`}
+      style={{
+        backgroundColor: showHighlight ? Colors.white : Colors.spindle,
+      }}
+    ></div>
+    <div style={{ marginTop: "9px" }}>
+      {percentOfTotalBurn === undefined ? (
+        <Skeleton width="1.5rem" />
+      ) : (
+        <TextRoboto
+          className="font-roboto color-animation"
+          style={{
+            color: showHighlight ? Colors.white : Colors.spindle,
+          }}
+        >
+          {Format.formatNoDigit((percentOfTotalBurn ?? 0.1) * 100)}%
+        </TextRoboto>
+      )}
+    </div>
+  </div>
+);
+
+const CategoryBar: FC<CategoryBarProps> = ({ nft, defi, mev, l2, misc }) => (
+  <div className="relative">
+    <div className="h-28 flex items-center">
+      <div
+        className="absolute w-full h-2 bg-blue-highlightbg rounded-full color-animation"
+        onMouseEnter={() => undefined}
+        onMouseLeave={() => undefined}
+      ></div>
+    </div>
+    <div className="absolute h-28 w-full flex flex-row top-0 left-0 items-center">
+      {nft && (
+        <CategorySegment
+          imgAlt={nft.imgAlt}
+          imgName={nft.imgName}
+          onHoverCategory={nft.onHoverCategory}
+          percentOfTotalBurn={nft.percentOfTotalBurn}
+          rounded="left"
+          showHighlight={nft.showHighlight}
+        />
+      )}
+      <div className="h-2 bg-blue-dusk w-0.5"></div>
+      {defi && (
+        <CategorySegment
+          imgAlt={defi.imgAlt}
+          imgName={defi.imgName}
+          onHoverCategory={defi.onHoverCategory}
+          percentOfTotalBurn={defi.percentOfTotalBurn}
+          showHighlight={defi.showHighlight}
+        />
+      )}
+      <div className="h-2 bg-blue-dusk w-0.5"></div>
+      {mev && (
+        <CategorySegment
+          imgAlt={mev.imgAlt}
+          imgName={mev.imgName}
+          onHoverCategory={mev.onHoverCategory}
+          percentOfTotalBurn={mev.percentOfTotalBurn}
+          showHighlight={mev.showHighlight}
+        />
+      )}
+      <div className="h-2 bg-blue-dusk w-0.5"></div>
+      {l2 && (
+        <CategorySegment
+          imgAlt={l2.imgAlt}
+          imgName={l2.imgName}
+          onHoverCategory={l2.onHoverCategory}
+          percentOfTotalBurn={l2.percentOfTotalBurn}
+          showHighlight={l2.showHighlight}
+        />
+      )}
+      <div className="h-2 bg-blue-dusk w-0.5"></div>
+      {misc && (
+        <CategorySegment
+          imgAlt={misc.imgAlt}
+          imgName={misc.imgName}
+          onHoverCategory={misc.onHoverCategory}
+          percentOfTotalBurn={misc.percentOfTotalBurn}
+          rounded="right"
+          showHighlight={misc.showHighlight}
+        />
+      )}
+    </div>
+  </div>
+);
+
+const CategoryRow: FC<{
+  amountFormatted: string | undefined;
+  countFormatted: string | undefined;
+  link?: string;
+  name: string;
+  hovering: boolean;
+  setHovering: (hovering: boolean) => void;
+}> = ({
+  amountFormatted,
+  countFormatted,
+  hovering,
+  link,
+  name,
+  setHovering,
+}) => (
+  <a
+    className="grid grid-cols-3 link-animation select-none"
+    href={link}
+    onMouseEnter={() => setHovering(true)}
+    onMouseLeave={() => setHovering(false)}
+    rel="noreferrer"
+    style={{ opacity: hovering ? 0.6 : 1 }}
+    target="_blank"
+  >
+    <TextInter className="font-inter text-white">{name}</TextInter>
+    <div className="text-right col-span-2 md:col-span-1 md:mr-8">
+      {amountFormatted === undefined ? (
+        <Skeleton width="4rem" />
+      ) : (
+        <TextRoboto>{amountFormatted}</TextRoboto>
+      )}
+    </div>
+    <div className="text-right hidden md:block">
+      {countFormatted === undefined ? (
+        <Skeleton width="5rem" />
+      ) : (
+        <TextRoboto className="text-right">{countFormatted}</TextRoboto>
+      )}
+    </div>
   </a>
 );
 
-const BurnCategories = () => {
-  const leaderboards = useGroupedData1()?.leaderboards;
-  let totalContracts = 0;
-  const counts: Record<string, number> = {};
-  leaderboards === undefined
-    ? []
-    : Object.values(leaderboards)
-        .flat()
-        .forEach((entry) => {
-          if (entry.type !== "contract") {
-            return;
-          }
+const BurnCategoryWidget = () => {
+  const burnCategoriesData = useBurnCategories();
+  console.log(burnCategoriesData);
+  const [hoveringNft, setHoveringNft] = useState(false);
+  const [hoveringDefi, setHoveringDefi] = useState(false);
+  const [hoveringMev, setHoveringMev] = useState(false);
+  const [hoveringL2, setHoveringL2] = useState(false);
+  const [hoveringMisc, setHoveringMisc] = useState(false);
 
-          totalContracts++;
+  // console.log(totalContracts, counts);
+  //
 
-          if (typeof entry.category !== "string") {
-            return;
-          }
+  const miscCategory = pipe(
+    burnCategoriesData,
+    O.fromNullable,
+    O.map(
+      flow(
+        (categories: BurnCategories) => categories,
+        A.filter(
+          (category) =>
+            !["nft", "defi", "mev", "l2"].includes(category.category),
+        ),
+        NEA.fromArray,
+        O.match(
+          () => ({
+            imgName: "misc",
+            imgAlt:
+              "three dots, signaling the summing of other contracts that have been categorized",
+            fees: undefined,
+            feesUsd: undefined,
+            transactionCount: undefined,
+            percentOfTotalBurn: undefined,
+            percentOfTotalBurnUsd: undefined,
+            onHoverCategory: setHoveringMisc,
+            showHighlight: hoveringMisc,
+          }),
+          (miscCategories) =>
+            pipe(
+              miscCategories,
+              A.reduce({} as Category, (misc, category) => ({
+                imgName: "misc",
+                imgAlt:
+                  "three dots, signaling the summing of other contracts that have been categorized",
+                fees: (misc.fees ?? 0) + category.fees,
+                feesUsd: (misc.feesUsd ?? 0) + category.feesUsd,
+                transactionCount:
+                  (misc.transactionCount ?? 0) + category.transactionCount,
+                percentOfTotalBurn:
+                  (misc.percentOfTotalBurn ?? 0) + category.percentOfTotalBurn,
+                percentOfTotalBurnUsd:
+                  (misc.percentOfTotalBurnUsd ?? 0) +
+                  category.percentOfTotalBurnUsd,
+                onHoverCategory: setHoveringMisc,
+                showHighlight: hoveringMisc,
+              })),
+            ),
+        ),
+      ),
+    ),
+    O.toUndefined,
+  );
 
-          const currentCount = counts[entry.category] || 0;
-          const nextCount = currentCount + 1;
-          counts[entry.category] = nextCount;
-        });
+  const nft = burnCategoriesData?.find(({ category }) => category === "nft");
+  const defi = burnCategoriesData?.find(({ category }) => category === "defi");
+  const mev = burnCategoriesData?.find(({ category }) => category === "mev");
+  const l2 = burnCategoriesData?.find(({ category }) => category === "l2");
 
-  console.log(totalContracts, counts);
+  const burnCategoryParts =
+    burnCategoriesData === undefined
+      ? undefined
+      : {
+          nft: {
+            imgName: "nft",
+            imgAlt: "icon of a wooden painters palette, signaling NFTs",
+            fees: nft?.fees,
+            feesUsd: nft?.feesUsd,
+            transactionCount: nft?.transactionCount,
+            percentOfTotalBurn: nft?.percentOfTotalBurn,
+            percentOfTotalBurnUsd: nft?.percentOfTotalBurnUsd,
+            onHoverCategory: setHoveringNft,
+            showHighlight: hoveringNft,
+          },
+          defi: {
+            imgName: "defi",
+            imgAlt: "an image of flying money, signaling DeFi",
+            fees: defi?.fees,
+            feesUsd: defi?.feesUsd,
+            transactionCount: defi?.transactionCount,
+            percentOfTotalBurn: defi?.percentOfTotalBurn,
+            percentOfTotalBurnUsd: defi?.percentOfTotalBurnUsd,
+            onHoverCategory: setHoveringDefi,
+            showHighlight: hoveringDefi,
+          },
+          mev: {
+            imgName: "mev",
+            imgAlt:
+              "a robot, signaling bots extracting miner-extractable-value",
+            fees: mev?.fees,
+            feesUsd: mev?.feesUsd,
+            transactionCount: mev?.transactionCount,
+            percentOfTotalBurn: mev?.percentOfTotalBurn,
+            percentOfTotalBurnUsd: mev?.percentOfTotalBurnUsd,
+            onHoverCategory: setHoveringMev,
+            showHighlight: hoveringMev,
+          },
+          l2: {
+            imgName: "l2",
+            imgAlt: "chains signaling layer-2 networks",
+            fees: l2?.fees,
+            feesUsd: l2?.feesUsd,
+            transactionCount: l2?.transactionCount,
+            percentOfTotalBurn: l2?.percentOfTotalBurn,
+            percentOfTotalBurnUsd: l2?.percentOfTotalBurnUsd,
+            onHoverCategory: setHoveringL2,
+            showHighlight: hoveringL2,
+          },
+        };
 
-  const burnCategories = {
-    nft: 8.6,
-    defi: 8.2,
-    gaming: 2.1,
-    other: 4.5,
-  };
+  const formatFees = flow(
+    (num: number | undefined) => O.fromNullable(num),
+    O.map((num) => num / 10 ** (18 + 3)),
+    O.map((num) => Format.formatTwoDigit(num) + "K"),
+    O.toUndefined,
+  );
+
+  const formatCount = flow(
+    (count: number | undefined) => O.fromNullable(count),
+    O.map((num) => num / 10 ** 3),
+    O.map((num) => Format.formatOneDigit(num) + "K"),
+    O.toUndefined,
+  );
 
   return (
     <WidgetBackground>
       <WidgetTitle title="burn categories" />
       <CategoryBar
-        totalContracts={totalContracts}
-        nftCount={counts["nft"] ?? 0}
-        defiCount={counts["defi"] ?? 0}
-        gamingCount={counts["gaming"] ?? 0}
+        nft={burnCategoryParts?.nft}
+        defi={burnCategoryParts?.defi}
+        mev={burnCategoryParts?.mev}
+        l2={burnCategoryParts?.l2}
+        misc={miscCategory}
       />
-      <div className="flex flex-col gap-y-4">
-        <div className="grid grid-cols-2">
+      <div className="flex flex-col gap-y-3">
+        <div className="grid grid-cols-3">
           <LabelText>category</LabelText>
-          <LabelText className="text-right">count</LabelText>
+          <LabelText className="text-right col-span-2 md:col-span-1 md:mr-8">
+            burn
+          </LabelText>
+          <LabelText className="text-right hidden md:block invisible md:visible">
+            transactions
+          </LabelText>
         </div>
         {
           <>
-            <EngineRow amountFormatted={counts["nft"]} link="" name="nft" />
-            <EngineRow amountFormatted={counts["defi"]} link="" name="defi" />
-            <EngineRow
-              amountFormatted={counts["gaming"] ?? 0}
-              link=""
-              name="gaming"
-            />
-            <EngineRow amountFormatted={totalContracts} link="" name="total" />
-            <EngineRow
-              amountFormatted={Object.values(counts).reduce(
-                (sum, num) => sum + num,
-                0,
+            <CategoryRow
+              amountFormatted={formatFees(burnCategoryParts?.nft.fees)}
+              countFormatted={formatCount(
+                burnCategoryParts?.nft.transactionCount,
               )}
-              link=""
-              name="identified"
+              name="nft"
+              hovering={hoveringNft}
+              setHovering={setHoveringNft}
             />
+            <CategoryRow
+              amountFormatted={formatFees(burnCategoryParts?.defi.fees)}
+              countFormatted={formatCount(
+                burnCategoryParts?.defi.transactionCount,
+              )}
+              name="defi"
+              hovering={hoveringDefi}
+              setHovering={setHoveringDefi}
+            />
+            <CategoryRow
+              amountFormatted={formatFees(burnCategoryParts?.mev.fees)}
+              countFormatted={formatCount(
+                burnCategoryParts?.mev.transactionCount,
+              )}
+              name="mev"
+              hovering={hoveringMev}
+              setHovering={setHoveringMev}
+            />
+            <CategoryRow
+              amountFormatted={formatFees(burnCategoryParts?.l2.fees)}
+              countFormatted={formatCount(
+                burnCategoryParts?.l2.transactionCount,
+              )}
+              name="l2"
+              hovering={hoveringL2}
+              setHovering={setHoveringL2}
+            />
+            {miscCategory && (
+              <CategoryRow
+                amountFormatted={formatFees(miscCategory?.fees)}
+                countFormatted={formatCount(miscCategory?.transactionCount)}
+                name="misc"
+                hovering={hoveringMisc}
+                setHovering={setHoveringMisc}
+              />
+            )}
           </>
         }
       </div>
@@ -179,4 +429,4 @@ const BurnCategories = () => {
   );
 };
 
-export default BurnCategories;
+export default BurnCategoryWidget;

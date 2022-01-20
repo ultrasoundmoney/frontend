@@ -4,6 +4,7 @@ import * as Str from "fp-ts/string";
 
 export * as A from "fp-ts/Array";
 export { flow, pipe } from "fp-ts/function";
+export * as NEA from "fp-ts/NonEmptyArray";
 export * as O from "fp-ts/Option";
 export * as Re from "fp-ts/Record";
 
