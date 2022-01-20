@@ -9,7 +9,7 @@ type BallProps = {
 
 type ControlPoint = {
   offsetY: number;
-  height: number;
+  name: string;
 };
 
 type StepsProps = {
@@ -23,7 +23,7 @@ const Steps: React.FC<StepsProps> = ({ iconOffset, controlPoints }) => {
     const [active, setActive] = React.useState<boolean>();
 
     React.useEffect(() => {
-      setActive(window.pageYOffset > pointOffset);
+      setActive(window.pageYOffset > pointOffset - window.innerHeight / 2);
     }, []);
     return (
       <div
@@ -49,6 +49,7 @@ const Steps: React.FC<StepsProps> = ({ iconOffset, controlPoints }) => {
   };
   const Track = () => (
     <div
+      className=""
       style={{
         height: "1px",
         width: "25%",
@@ -61,7 +62,7 @@ const Steps: React.FC<StepsProps> = ({ iconOffset, controlPoints }) => {
   );
 
   const containerRef = React.useRef<HTMLDivElement | null>(null);
-  console.log(controlPoints);
+  // console.log(controlPoints);
 
   return (
     <div
@@ -76,22 +77,25 @@ const Steps: React.FC<StepsProps> = ({ iconOffset, controlPoints }) => {
         className={`absolute -bottom-2`}
       >
         <Link href="/">
-          <img
-            className=""
-            style={{ height: "32px" }}
-            src={EthLogo}
-            alt={t.title}
-          />
+          <img style={{ height: "32px" }} src={EthLogo} alt={t.title} />
         </Link>
       </div>
       <div className="flex w-full justify-around items-center">
-        <Ball pointOffset={0} />
-        {controlPoints.map((item) => (
-          <>
-            <Track />
-            <Ball pointOffset={item.offsetY} />
-          </>
-        ))}
+        {controlPoints.map((item, index) => {
+          if (index === controlPoints.length - 1) {
+            return (
+              <>
+                <Ball pointOffset={item.offsetY} />
+              </>
+            );
+          }
+          return (
+            <>
+              <Ball pointOffset={item.offsetY} />
+              <Track />
+            </>
+          );
+        })}
       </div>
     </div>
   );

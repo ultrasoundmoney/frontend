@@ -7,7 +7,7 @@ type PositionType = "fixed top-0" | "absolute";
 
 type ControlPoint = {
   offsetY: number;
-  height: number;
+  name: string;
 };
 
 type StepperProps = {
@@ -20,6 +20,27 @@ const Stepper: React.FC<StepperProps> = ({ controlPoints }) => {
   const [iconOffset, setIconOffset] = useState(0);
   const stepsRef = useRef<HTMLElement | null>(null);
 
+  const getIconOffset = (pointsHeights: number[]) => {
+    const pointsQuantity = pointsHeights.length;
+    const trackPosition =
+      window.pageYOffset + window.innerHeight / 2 - pointsHeights[0];
+    let offset = 0;
+    pointsHeights.forEach((height: number, index) => {
+      if (index === 0) {
+        return;
+      }
+      if (trackPosition <= height - pointsHeights[index - 1]) {
+        offset += (trackPosition * pointsQuantity) / 100;
+        setIconOffset(offset);
+      }
+      if (trackPosition > height - pointsHeights[index - 1]) {
+        offset += ((height - pointsHeights[index - 1]) * pointsQuantity) / 100;
+        setIconOffset(offset + (trackPosition * pointsQuantity) / 100);
+      }
+    });
+    return offset / 10;
+  };
+
   useEffect(() => {
     const offsetTop = stepsRef.current?.offsetTop;
     const onScroll = () => {
@@ -29,6 +50,7 @@ const Stepper: React.FC<StepperProps> = ({ controlPoints }) => {
             (document.documentElement.scrollHeight - offsetTop)) *
             100
         );
+        console.log(getIconOffset([1000, 1800, 2400, 2800, 3000]));
       }
       if (offsetTop) {
         if (window.pageYOffset >= offsetTop) {

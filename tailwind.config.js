@@ -41,6 +41,7 @@ module.exports = {
       width: {
         "w-23": "23%",
         "w-21": "21%",
+        "w-38": "38%",
       },
       spacing: {
         "42": "165px",
@@ -64,6 +65,7 @@ module.exports = {
       fontSize: {
         "41xl": "2.5rem",
         "21xl": "1.87rem",
+        "32xl": "2rem",
       },
       inset: {
         "128": "32rem",

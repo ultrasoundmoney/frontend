@@ -90,6 +90,7 @@ const LandingPage: React.FC<{}> = () => {
     function onScroll() {
       const targetGenesis = document.querySelector("#genesis");
       const targetByzantium = document.querySelector("#eip-byzantium");
+      const targetBeforeGenesis = document.querySelector("#before-genesis");
       const targetConstantinople = document.querySelector(
         "#eip-constantinople"
       );
@@ -99,6 +100,85 @@ const LandingPage: React.FC<{}> = () => {
       const targetMergeLine = document.querySelector("#the-merge-line");
       const currentPosition = window.pageYOffset;
 
+      // ETH Before Genesis Time
+      if (
+        targetBeforeGenesis!.getBoundingClientRect().top < window.innerHeight
+      ) {
+        if (currentPosition > scrollTop) {
+          setScrolling(false);
+          const lineHeight =
+            currentPosition - window.innerHeight > 0
+              ? Math.floor((currentPosition - window.innerHeight) * 0.7)
+              : 0;
+          if (lineHeight < 450) {
+            document.getElementById(
+              "line__before__genesis"
+            )!.style.height = `${lineHeight}px`;
+            getBlcokReward!.innerHTML = "5 ETH/<span>Block</span>";
+            const counter = lineHeight * 3;
+            setGenesisArr(
+              genesis_data[
+                counter > genesis_data.length
+                  ? genesis_data.length - 1
+                  : counter
+              ]
+            );
+            if (genesisArr) {
+              getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+                genesisArr[0]
+              )}`;
+              getEthSupplyIncreament!.innerHTML = `+${Number(
+                genesisArr[2]
+              ).toFixed(3)}%`;
+              getEthSupply!.innerHTML = `${followerCountConvert(
+                Number(genesisArr[1])
+              )}`;
+            }
+          }
+          if (lineHeight > 450) {
+            document
+              .getElementById("line__before__genesis")!
+              .classList.add("eclips__hr-circle");
+            setGenesisArr(genesis_data[genesis_data.length - 1]);
+          }
+        } else {
+          // upscroll code
+          setScrolling(true);
+          const lineHeight =
+            currentPosition - window.innerHeight > 0
+              ? Math.floor((currentPosition - window.innerHeight) * 0.7)
+              : 0;
+          if (lineHeight < 630) {
+            document.getElementById(
+              "line__before__genesis"
+            )!.style.height = `${lineHeight}px`;
+            document
+              .getElementById("line__before__genesis")!
+              .classList.remove("eclips__hr-circle");
+            getBlcokReward!.innerHTML = "5 ETH/<span>Block</span>";
+            const genesis_data_re = genesis_data.reverse();
+            const counter = lineHeight * 3;
+            setGenesisArr(
+              genesis_data_re[
+                counter > genesis_data.length
+                  ? genesis_data.length - 1
+                  : counter
+              ]
+            );
+            if (genesisArr) {
+              getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+                genesisArr[0]
+              )}`;
+              getEthSupplyIncreament!.innerHTML = `+${Number(
+                genesisArr[2]
+              ).toFixed(3)}%`;
+              getEthSupply!.innerHTML = `${followerCountConvert(
+                Number(genesisArr[1])
+              )}`;
+            }
+          }
+        }
+      }
       // ETH Genesis Time
       if (targetGenesis!.getBoundingClientRect().top < window.innerHeight) {
         if (currentPosition > scrollTop) {
@@ -505,12 +585,36 @@ const LandingPage: React.FC<{}> = () => {
     scrolling,
   ]);
 
+  // const dummyPoints = [
+  //   {
+  //     offsetY: 1000,
+  //     name: "Genesis",
+  //   },
+  //   {
+  //     offsetY: 2600,
+  //     name: "Byzantium",
+  //   },
+  //   {
+  //     offsetY: 3200,
+  //     name: "Constantinopole",
+  //   },
+  //   {
+  //     offsetY: 3800,
+  //     name: "EIP 1559",
+  //   },
+  //   {
+  //     offsetY: 4400,
+  //     name: "Merge",
+  //   },
+  // ];
+
   return (
     <>
       <div className="wrapper bg-blue-midnightexpress blurred-bg-image">
         <div className="container m-auto">
           <Navigation />
           <Intro />
+          {/* <Stepper controlPoints={dummyPoints} /> */}
           <BeforeGenesis />
           <GenesisBlock />
           <EIPByzantium />
