@@ -11,6 +11,9 @@ module.exports = {
     project: ["tsconfig.json"],
   },
   plugins: ["@typescript-eslint"],
+  rules: {
+    "@next/next/no-img-element": "off",
+  },
   // rules: {
   //   "react-hooks/rules-of-hooks": "error",
   //   "react/react-in-jsx-scope": "off",
