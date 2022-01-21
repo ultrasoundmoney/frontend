@@ -11,15 +11,6 @@ const EIP1559: React.FC<{}> = () => {
     el.src = AvatarImg;
   }
   return (
-    // <>
-    //   <ContentBlock
-    //     img={EthBurn}
-    //     title={t.landing_eip1559_title}
-    //     text={t.landing_eip1559_text}
-    //     styles="block-fee-burn lg:w-4/12"
-    //     id="eip-1559"
-    //   />
-    // </>
     <section
       data-aos="fade-up"
       data-aos-anchor-placement="top-bottom"
@@ -44,7 +35,7 @@ const EIP1559: React.FC<{}> = () => {
           {t.landing_eip1559_title}
         </h1>
         <p
-          className="text-blue-shipcove font-light lg:w-w-55 text-sm text-center mb-24 font-inter"
+          className="text-blue-shipcove font-light lg:w-w-55 text-sm text-center mb-8 font-inter"
           dangerouslySetInnerHTML={{
             __html: t.landing_eip1559_text,
           }}

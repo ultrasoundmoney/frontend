@@ -628,7 +628,7 @@ const LandingPage: React.FC<{}> = () => {
             data-aos-delay="100"
             data-aos-duration="1000"
             data-aos-easing="ease-in-out"
-            className="flex flex-col px-4 md:px-0 mt-20 mb-16"
+            className="flex flex-col px-4 md:px-0 mt-6 mb-16"
             id="supplyview"
           >
             <div className="w-full md:w-5/6 lg:w-5/6 md:m-auto relative bg-blue-tangaroa md:px-8 py-4 md:py-16 rounded-xl">

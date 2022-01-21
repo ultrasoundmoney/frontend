@@ -2,7 +2,7 @@ import * as React from "react";
 import twemoji from "twemoji";
 
 type ContentBlockProps = {
-  icon?: string;
+  image?: string;
   title: string;
   text: string;
   styles?: string;
@@ -15,8 +15,8 @@ type ContentBlockProps = {
     | "end"
     | "match-parent";
 };
-const ContentBlock: React.FC<ContentBlockProps> = ({
-  icon,
+const ImageBlock: React.FC<ContentBlockProps> = ({
+  image,
   title,
   text,
   styles,
@@ -31,13 +31,10 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
   return (
     <>
       <div className={getClassName}>
-        {icon && (
-          <div
-            className={`icon-emoji text-${textAlign || "center"}`}
-            dangerouslySetInnerHTML={{
-              __html: twemoji.parse(icon),
-            }}
-          />
+        {image && (
+          <div className={`icon-emoji text-${textAlign || "center"}`}>
+            <img src={image} alt="image" />
+          </div>
         )}
         <h1
           className={`text-white font-light text-base text-${
@@ -64,4 +61,4 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
   );
 };
 
-export default ContentBlock;
+export default ImageBlock;

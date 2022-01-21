@@ -56,18 +56,18 @@
   "landing_eip1559_title":"EIP 1559 aka (The Fee 🔥 Burn)",
   "landing_eip1559_text":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud e ",
 
-  "landing_goal_title": "EIP-1559 benefits",
-  "landing_goal_block1_icon": "😃",
-  "landing_goal_block1_title": "UX",
-  "landing_goal_block1_text": "<span class='rounded-lg py-1 text-blue-spindle'>quoted gas prices</span>\n\n &bull; reduced fee uncertainty \n &bull; reduced fee mispricing\n\n<span class='rounded-lg py-1 text-blue-spindle'>dynamic block sizes</span>\n\n &bull; reduced inclusion delays \n &bull; demand spike smoothing",
+  "landing_goal_title": "It’ Goals?",
+  "landing_goal_block1_icon": "🔭",
+  "landing_goal_block1_title": "Predictable Transaction Fees",
+  "landing_goal_block1_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
 
-  "landing_goal_block2_icon": "🔒",
-  "landing_goal_block2_title": "security",
-  "landing_goal_block2_text": "<span class='rounded-lg py-1 text-blue-spindle'>reduced MEV</span>\n\n &bull; reduced reorg incentives \n &bull; steadier security budget \n\n<span class='rounded-lg py-1 text-blue-spindle'>gas price oracles</span>\n\n &bull; trustless and accurate \n &bull; robust gas refunds",
+  "landing_goal_block2_icon": "🚀",
+  "landing_goal_block2_title": "Reduced Delays",
+  "landing_goal_block2_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
 
-  "landing_goal_block3_icon": "🦇",
-  "landing_goal_block3_title": "economics",
-  "landing_goal_block3_text": "<span class='rounded-lg py-1 text-blue-spindle'>enshrined ETH</span>\n\n &bull; reinforced moneyness \n &bull; no economic abstraction \n\n<span class='rounded-lg py-1 text-blue-spindle'>fee burn</span>\n\n &bull; reduced sell pressure \n &bull; less security overspend",
+  "landing_goal_block3_icon": "😃",
+  "landing_goal_block3_title": "Improved User Experience",
+  "landing_goal_block3_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
 
   "landing_feeburned_card1_name":"status Jul 31, 2015",
   "landing_feeburned_card1_title":"inflationary",
