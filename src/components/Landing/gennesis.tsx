@@ -14,11 +14,11 @@ const GenesisBlock: React.FC<{}> = () => {
         data-aos-easing="ease-in-out"
         id="genesis"
       >
-        <div className="flex flex-col justify-center w-full md:w-6/12 md:mx-auto pt-56 px-4 md:px-0">
-          <p className="text-blue-shipcove font-light text-sm text-center mb-6 font-inter">
+        <div className="flex flex-col justify-center w-full md:w-4/12 md:mx-auto pt-56 px-4 md:px-0">
+          <p className="text-blue-shipcove font-light text-sm text-center mb-7 font-inter">
             {t.landing_genesis_date}
           </p>
-          <h1 className="text-white font-light text-base md:text-3xl leading-normal text-center mb-6 leading-title font-inter">
+          <h1 className="text-white font-light text-base md:text-28xl leading-5 text-center mb-7 font-inter">
             {t.landing_genesis_title}
           </h1>
           <p

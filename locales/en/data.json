@@ -21,7 +21,7 @@
   "landing_before_genesis_text":"Section for brief historical events and and current ETH state to set the scene for Ultrasound money. Graphics, Light data and simple carts",
 
   "landing_genesis_date": "block 0, Jul 31, 2015",
-  "landing_genesis_title": "genesis",
+  "landing_genesis_title": "Ethereum  Genesis",
   "landing_genesis_text": "Ethereum is open access to digital money and data-friendly services for everyone – no matter your background or location. It's a community-built technology behind the cryptocurrency ether (ETH)",
   "landing_genesis_card_name":"Jul 31, 2015",
   "landing_genesis_card_title":"inflationary",
@@ -32,8 +32,8 @@
   "landing_genesis_card3_title":"3 ETH/<span>block</span>",
 
   "landing_byzantium_date": "block 4,370,000, Oct 16, 2017",
-  "landing_byzantium_title": "byzantium",
-  "landing_byzantium_text": "<span>EIP (Ethereum Imprevement Proposal)</span> is open access to digital money and data-friendly services for everyone – no matter your background or location. It's a community-built technology behind the cryptocurrency ether (ETH)",
+  "landing_byzantium_title": "EIP Byzantium",
+  "landing_byzantium_text": "<span class=\"text-white\">EIP (Ethereum Imprevement Proposal)</span> is open access to digital money and data-friendly services for everyone – no matter your background or location. It's a community-built technology behind the cryptocurrency ether (ETH)",
   "landing_byzantium_card_name":"Oct 16, 2017",
   "landing_byzantium_card_title":"inflationary",
   "landing_byzantium_card2_name":"ETH supply",
@@ -43,8 +43,8 @@
   "landing_byzantium_card3_title":"3 ETH/<span>block</span>",
 
   "landing_constantinopole_date": "block 4,370,000, Oct 16, 2017",
-  "landing_constantinopole_title": "constantinopole",
-  "landing_constantinopole_text": "<span>EIP (Ethereum Imprevement Proposal)</span> is open access to digital money and data-friendly services for everyone – no matter your background or location. It's a community-built technology behind the cryptocurrency ether (ETH)",
+  "landing_constantinopole_title": "EIP Constantinopole",
+  "landing_constantinopole_text": "<span class=\"text-white\">EIP (Ethereum Imprevement Proposal)</span> is open access to digital money and data-friendly services for everyone – no matter your background or location. It's a community-built technology behind the cryptocurrency ether (ETH)",
   "landing_constantinopole_card_name":"Oct 16, 2017",
   "landing_constantinopole_card_title":"inflationary",
   "landing_constantinopole_card2_name":"ETH supply",
