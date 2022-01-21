@@ -53,8 +53,8 @@
   "landing_constantinopole_card3_name":"block reward",
   "landing_constantinopole_card3_title":"3 ETH/<span>block</span>",
 
-  "landing_eip1559_title":"🔥 fee burn 🔥",
-  "landing_eip1559_text":"introduced via EIP-1559",
+  "landing_eip1559_title":"EIP 1559 aka (The Fee 🔥 Burn)",
+  "landing_eip1559_text":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud e ",
 
   "landing_goal_title": "EIP-1559 benefits",
   "landing_goal_block1_icon": "😃",
