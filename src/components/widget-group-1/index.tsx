@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useState } from "react";
 import { useGroupedData1 } from "../../api/grouped_stats_1";
 import { Unit } from "../../denomination";
-import { featureFlags } from "../../feature-flags";
+import { getFeatureFlags } from "../../feature-flags";
 import * as Format from "../../format";
 import { TimeFrameNext, timeFramesNext } from "../../time_frames";
 import BurnCategories from "../BurnCategories";
@@ -21,6 +21,7 @@ const WidgetGroup1: FC = () => {
   const baseFeePerGas = useGroupedData1()?.baseFeePerGas;
   const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
+  const featureFlags = getFeatureFlags();
 
   const handleSetTimeFrame = useCallback(setTimeFrame, [setTimeFrame]);
 
