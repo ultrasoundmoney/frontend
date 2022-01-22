@@ -25,6 +25,25 @@ const SectionDivider: FC<{ title: string; subtitle: string }> = ({
   </>
 );
 
+const Title: FC = ({ children }) => (
+  <div
+    className={`
+      bg-transparent
+      font-extralight
+      text-white text-center
+      mt-16 mb-8 mx-auto px-4 md:px-16
+      text-[4.8rem]
+      md:text-[4.0rem]
+      lg:text-[4.8rem]
+      leading-[5.4rem]
+      md:leading-[5.4rem]
+      ${styles.gradientText}
+    `}
+  >
+    {children}
+  </div>
+);
+
 const Home: FC = () => (
   <SkeletonTheme
     baseColor={Colors.dusk}
@@ -35,15 +54,7 @@ const Home: FC = () => (
       <div className="px-4 md:px-16">
         <TopBar />
       </div>
-      <div
-        className={`
-            text-6xl md:text-7xl
-            w-full pt-16 md:w-1/2 lg:w-5/6 lg:pt-16 m-auto mb-8
-            ${styles.ultraSoundText}
-          `}
-      >
-        ultra sound awakening
-      </div>
+      <Title>Ultra Sound Awakening</Title>
       <p className="font-inter font-light text-blue-spindle text-xl md:text-2xl lg:text-3xl text-white text-center mb-16">
         track ETH become ultra sound
       </p>

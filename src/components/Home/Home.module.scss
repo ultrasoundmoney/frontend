@@ -6,15 +6,11 @@
   width: 100%;
 }
 
-.ultraSoundText {
-  background-image: linear-gradient(45deg, #ff01e6 0%, #ff5f51 39%, #00ffa3);
-  font-weight: 200;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.3 !important;
-  letter-spacing: normal;
-  text-align: center;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+.gradientText {
+    background-image: linear-gradient(45deg, #ff01e6, #ff5f51 39%, #00ffa3 90%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
 }
