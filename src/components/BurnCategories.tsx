@@ -28,14 +28,16 @@ type CategoryBarProps = {
   misc: Category | undefined;
 };
 
-const CategorySegment: FC<{
+type CategorySegmentProps = {
   imgAlt: string;
   imgName: string;
   onHoverCategory: (hovering: boolean) => void;
   percentOfTotalBurn: number | undefined;
   rounded?: "left" | "right";
   showHighlight: boolean;
-}> = ({
+};
+
+const CategorySegment: FC<CategorySegmentProps> = ({
   imgAlt,
   imgName,
   onHoverCategory,
