@@ -92,7 +92,11 @@ const WidgetGroup1: FC = () => {
         </Background>
       </div>
       <div className="w-4 h-4" />
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-4 px-4 md:px-16 md:gap-x-4 lg:w-full lg:flex-row">
+      <div
+        className={`
+          grid grid-cols-1 lg:grid-cols-2
+          gap-y-4 md:gap-x-4 px-4 md:px-16`}
+      >
         <FeeBurn
           onClickTimeFrame={handleClickTimeFrame}
           simulateMerge={simulateMerge}
@@ -100,8 +104,8 @@ const WidgetGroup1: FC = () => {
           unit={unit}
         />
         <div
-          className={`lg:col-start-2 lg:row-start-1 ${
-            featureFlags.enableCategories ? "lg:row-end-3" : "lg:row-end-4"
+          className={`${
+            featureFlags.enableCategories ? "lg:row-span-2" : "lg:row-span-3"
           }`}
         >
           <BurnLeaderboard
