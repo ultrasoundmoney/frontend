@@ -1,5 +1,5 @@
 import React, { FC, memo } from "react";
-import { getAdminToken } from "../../../admin";
+import { useAdminToken } from "../../../admin";
 import { useContractsFreshness } from "../../../api/contracts";
 import { useGroupedData1 } from "../../../api/grouped_stats_1";
 import { LeaderboardEntry, Leaderboards } from "../../../api/leaderboards";
@@ -88,12 +88,12 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
     {},
   ) as Partial<LeaderboardEntry>[];
 
-  const adminToken = getAdminToken();
+  const adminToken = useAdminToken();
   const addresses =
     leaderboards === undefined
       ? undefined
       : getLeaderboardsAddresses(leaderboards);
-  const freshnessMap = useContractsFreshness(addresses);
+  const freshnessMap = useContractsFreshness(addresses, adminToken);
 
   return (
     <div className="bg-blue-tangaroa w-full rounded-lg p-8 lg:h-full">
