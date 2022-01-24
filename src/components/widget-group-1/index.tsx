@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useState } from "react";
 import { useGroupedData1 } from "../../api/grouped_stats_1";
 import { Unit } from "../../denomination";
-import { getFeatureFlags } from "../../feature-flags";
+import { FeatureFlags } from "../../feature-flags";
 import * as Format from "../../format";
 import { TimeFrameNext, timeFramesNext } from "../../time_frames";
 import BurnCategories from "../BurnCategories";
@@ -16,12 +16,11 @@ import BurnLeaderboard from "./BurnLeaderboard";
 import CurrencyControl from "./controls/CurrencyControl";
 import TimeFrameControl from "./controls/TimeFrameControl";
 
-const WidgetGroup1: FC = () => {
+const WidgetGroup1: FC<{ featureFlags: FeatureFlags }> = ({ featureFlags }) => {
   const [simulateMerge, setSimulateMerge] = useState(false);
   const baseFeePerGas = useGroupedData1()?.baseFeePerGas;
   const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
-  const featureFlags = getFeatureFlags();
 
   const handleSetTimeFrame = useCallback(setTimeFrame, [setTimeFrame]);
 
@@ -95,7 +94,8 @@ const WidgetGroup1: FC = () => {
       <div
         className={`
           grid grid-cols-1 lg:grid-cols-2
-          gap-y-4 md:gap-x-4 px-4 md:px-16`}
+          gap-y-4 md:gap-x-4 px-4 md:px-16
+        `}
       >
         <FeeBurn
           onClickTimeFrame={handleClickTimeFrame}
@@ -104,8 +104,8 @@ const WidgetGroup1: FC = () => {
           unit={unit}
         />
         <div
-          className={`${
-            featureFlags.enableCategories ? "lg:row-span-2" : "lg:row-span-3"
+          className={`md:col-start-2 ${
+            featureFlags.enableCategories ? "md:row-span-2" : "md:row-span-3"
           }`}
         >
           <BurnLeaderboard
@@ -114,12 +114,22 @@ const WidgetGroup1: FC = () => {
             unit={unit}
           />
         </div>
-        <LatestBlocks unit={unit} />
-        <BurnRecords
-          onClickTimeFrame={handleClickTimeFrame}
-          timeFrame={timeFrame}
-        />
-        {featureFlags.enableCategories && <BurnCategories />}
+        <div
+          className={`md:col-start-2 ${
+            featureFlags.enableCategories ? "block" : "hidden"
+          }`}
+        >
+          <BurnCategories />
+        </div>
+        <div className="col-start-1 md:row-start-2">
+          <LatestBlocks unit={unit} />
+        </div>
+        <div className="col-start-1 md:row-start-3">
+          <BurnRecords
+            onClickTimeFrame={handleClickTimeFrame}
+            timeFrame={timeFrame}
+          />
+        </div>
       </div>
     </div>
   );

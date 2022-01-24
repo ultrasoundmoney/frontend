@@ -5,7 +5,7 @@ import Skeleton from "react-loading-skeleton";
 import * as Contracts from "../../../api/contracts";
 import { LeaderboardEntry } from "../../../api/leaderboards";
 import { Unit } from "../../../denomination";
-import { getFeatureFlags } from "../../../feature-flags";
+import { useFeatureFlags } from "../../../feature-flags";
 import * as Format from "../../../format";
 import { AmountUnitSpace } from "../../Spacing";
 
@@ -136,7 +136,7 @@ const LeaderboardRow: FC<Props> = ({
   type,
   unit,
 }) => {
-  const featureFlags = getFeatureFlags();
+  const { featureFlags } = useFeatureFlags();
   const imgSrc =
     typeof image === "string"
       ? image

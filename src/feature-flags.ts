@@ -1,33 +1,27 @@
+import { useReducer } from "react";
 import * as Config from "./config";
 
-export const getUrlFeatureFlags = (): string[] | undefined => {
-  if (typeof window === "undefined") {
-    return undefined;
-  }
+export const flags = ["enableCategories"] as const;
+export type Flag = typeof flags[number];
 
-  const urlSearchParams = new URLSearchParams(window.location.search);
-  const featureFlags = urlSearchParams.get("ff");
+export type FeatureFlags = Record<Flag, boolean>;
 
-  if (typeof featureFlags !== "string" || featureFlags.length === 0) {
-    return undefined;
-  }
-
-  return featureFlags.split(",");
+export const defaults: FeatureFlags = {
+  enableCategories:
+    (false && (Config.env === "dev" || Config.env === "staging")) ?? false,
 };
 
-const defaults: Record<string, boolean> = {
-  enableCategories: Config.env === "dev" || Config.env === "staging",
+export const displayFlagMap: Record<Flag, string> = {
+  enableCategories: "burn categories",
 };
 
-export const getFeatureFlags = () => {
-  const urlFeatureFlags = getUrlFeatureFlags();
-  const featureFlags = {
-    ...defaults,
-  };
+const reducer = (
+  state: FeatureFlags,
+  action: { flag: Flag; enabled: boolean },
+) => ({ ...state, [action.flag]: action.enabled });
 
-  urlFeatureFlags?.forEach((flag) => {
-    featureFlags[flag] = true;
-  });
+export const useFeatureFlags = () => {
+  const [featureFlags, setFlag] = useReducer(reducer, defaults);
 
-  return featureFlags;
+  return { featureFlags, setFlag };
 };
