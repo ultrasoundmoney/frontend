@@ -8,89 +8,18 @@ import FaqBlock from "./faq";
 import NftDrop from "../NftDrop/index";
 import FollowingYou from "../FollowingYou";
 import TheMergeBlock from "./theMerge";
-import Stepper from "../Navigation/Stepper";
 import StepperNavigator from "../Navigation/StepperNavigator";
 
 const LandingPage: React.FC<{}> = () => {
-  const dummyPoints = [
-    {
-      offsetY: 1000,
-      name: "Genesis",
-    },
-    {
-      offsetY: 2600,
-      name: "Byzantium",
-    },
-    {
-      offsetY: 3200,
-      name: "Constantinopole",
-    },
-    {
-      offsetY: 3800,
-      name: "EIP 1559",
-    },
-    {
-      offsetY: 4400,
-      name: "Merge",
-    },
-  ];
   return (
     <>
       <div className="wrapper bg-blue-midnightexpress blurred-bg-image">
-        <div
-          style={{
-            position: "absolute",
-            top: 1000,
-            color: "white",
-          }}
-        >
-          Genesis
-        </div>
-        <div
-          style={{
-            position: "absolute",
-            top: 2600,
-            color: "white",
-          }}
-        >
-          Byzantium
-        </div>
-        <div
-          style={{
-            position: "absolute",
-            top: 3200,
-            color: "white",
-          }}
-        >
-          Constantinopole
-        </div>
-        <div
-          style={{
-            position: "absolute",
-            top: 3800,
-            color: "white",
-          }}
-        >
-          EIP 1559
-        </div>
-        <div
-          style={{
-            position: "absolute",
-            top: 4400,
-            color: "white",
-          }}
-        >
-          Merge
-        </div>
         <div className="container m-auto">
           <Navigation />
           <div className="w-full">
             <Intro />
           </div>
           <TheMergeBlock />
-          <div className="w-full">
-            <Stepper controlPoints={dummyPoints} />
-          </div>
           <EtherTheUltraSound />
           <section>
             <StepperNavigator />
