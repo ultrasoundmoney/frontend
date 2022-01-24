@@ -1,7 +1,7 @@
 import * as DateFns from "date-fns";
 import JSBI from "jsbi";
 import React, { FC, useState } from "react";
-import { useScarcity } from "../../api";
+import { useScarcity } from "../../api/scarcity";
 import Colors from "../../colors";
 import * as Format from "../../format";
 import { pipe } from "../../fp";

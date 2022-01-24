@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import { BurnCategories, useBurnCategories } from "../api";
+import { BurnCategories, useBurnCategories } from "../api/burn_categories";
 import Colors from "../colors";
 import * as Format from "../format";
 import { A, flow, NEA, O, pipe } from "../fp";
