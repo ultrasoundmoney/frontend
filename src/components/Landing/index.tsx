@@ -33,6 +33,7 @@ import {
 } from "./historicalData";
 import { useFeeData } from "../../api";
 import useSWR from "swr";
+import Stepper from "../Navigation/Stepper";
 // import Timeline from "./timeline";
 
 type EthPrice = {
@@ -585,28 +586,28 @@ const LandingPage: React.FC<{}> = () => {
     scrolling,
   ]);
 
-  // const dummyPoints = [
-  //   {
-  //     offsetY: 1000,
-  //     name: "Genesis",
-  //   },
-  //   {
-  //     offsetY: 2600,
-  //     name: "Byzantium",
-  //   },
-  //   {
-  //     offsetY: 3200,
-  //     name: "Constantinopole",
-  //   },
-  //   {
-  //     offsetY: 3800,
-  //     name: "EIP 1559",
-  //   },
-  //   {
-  //     offsetY: 4400,
-  //     name: "Merge",
-  //   },
-  // ];
+  const dummyPoints = [
+    {
+      offsetY: 1000,
+      name: "Genesis",
+    },
+    {
+      offsetY: 2600,
+      name: "Byzantium",
+    },
+    {
+      offsetY: 3200,
+      name: "Constantinopole",
+    },
+    {
+      offsetY: 3800,
+      name: "EIP 1559",
+    },
+    {
+      offsetY: 4400,
+      name: "Merge",
+    },
+  ];
 
   return (
     <>
@@ -614,7 +615,7 @@ const LandingPage: React.FC<{}> = () => {
         <div className="container m-auto">
           <Navigation />
           <Intro />
-          {/* <Stepper controlPoints={dummyPoints} /> */}
+          <Stepper controlPoints={dummyPoints} />
           <BeforeGenesis />
           <GenesisBlock />
           <EIPByzantium />

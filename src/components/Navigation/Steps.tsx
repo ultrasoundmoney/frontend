@@ -1,15 +1,21 @@
-import * as React from "react";
 import Link from "next/link";
+import * as React from "react";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 import { TranslationsContext } from "../../translations-context";
 
 type BallProps = {
-  pointOffset: number;
+  active: boolean;
 };
 
 type ControlPoint = {
   offsetY: number;
   name: string;
+};
+
+type ControlPointMutated = {
+  offsetY: number;
+  name: string;
+  active: boolean;
 };
 
 type StepsProps = {
@@ -18,13 +24,29 @@ type StepsProps = {
 };
 
 const Steps: React.FC<StepsProps> = ({ iconOffset, controlPoints }) => {
-  const t = React.useContext(TranslationsContext);
-  const Ball: React.FC<BallProps> = ({ pointOffset }) => {
-    const [active, setActive] = React.useState<boolean>();
+  const [activeBalls, setActiveBalls] = React.useState<
+    ControlPointMutated[] | undefined
+  >();
 
-    React.useEffect(() => {
-      setActive(window.pageYOffset > pointOffset - window.innerHeight / 2);
-    }, []);
+  const getActiveBalls = () => {
+    return controlPoints.map((item) => {
+      return {
+        ...item,
+        active: window.pageYOffset > item.offsetY - window.innerHeight / 2,
+      };
+    });
+  };
+
+  const t = React.useContext(TranslationsContext);
+  React.useEffect(() => {
+    const onScroll = () => {
+      setActiveBalls(getActiveBalls());
+    };
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const Ball: React.FC<BallProps> = ({ active }) => {
     return (
       <div
         style={{
@@ -47,12 +69,12 @@ const Steps: React.FC<StepsProps> = ({ iconOffset, controlPoints }) => {
       </div>
     );
   };
+
   const Track = () => (
     <div
-      className=""
+      className="w-full"
       style={{
         height: "1px",
-        width: "25%",
         margin: "0 10px",
         backgroundImage: "linear-gradient(to right, grey 40%, transparent 40%)",
         backgroundSize: "10px 1px",
@@ -62,7 +84,6 @@ const Steps: React.FC<StepsProps> = ({ iconOffset, controlPoints }) => {
   );
 
   const containerRef = React.useRef<HTMLDivElement | null>(null);
-  // console.log(controlPoints);
 
   return (
     <div
@@ -80,22 +101,23 @@ const Steps: React.FC<StepsProps> = ({ iconOffset, controlPoints }) => {
           <img style={{ height: "32px" }} src={EthLogo} alt={t.title} />
         </Link>
       </div>
-      <div className="flex w-full justify-around items-center">
-        {controlPoints.map((item, index) => {
-          if (index === controlPoints.length - 1) {
+      <div className="flex w-full justify-around">
+        {activeBalls &&
+          activeBalls.map((item, index) => {
+            if (index === controlPoints.length - 1) {
+              return (
+                <div className="flex w-full items-center" key={`${index}`}>
+                  <Ball active={item.active} />
+                </div>
+              );
+            }
             return (
-              <>
-                <Ball pointOffset={item.offsetY} />
-              </>
+              <div className="flex w-full items-center" key={`${index}`}>
+                <Ball active={item.active} />
+                <Track />
+              </div>
             );
-          }
-          return (
-            <>
-              <Ball pointOffset={item.offsetY} />
-              <Track />
-            </>
-          );
-        })}
+          })}
       </div>
     </div>
   );
