@@ -7,8 +7,7 @@ export type Flag = typeof flags[number];
 export type FeatureFlags = Record<Flag, boolean>;
 
 export const defaults: FeatureFlags = {
-  enableCategories:
-    (false && (Config.env === "dev" || Config.env === "staging")) ?? false,
+  enableCategories: (Config.env === "dev" || Config.env === "staging") ?? false,
 };
 
 export const displayFlagMap: Record<Flag, string> = {
