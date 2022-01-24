@@ -1,7 +1,26 @@
 import useSWR from "swr";
 import { feesBasePath } from "./fees";
 
-export type Category = "nft" | "defi" | "mev" | "l2";
+export type Category =
+  | "defi"
+  | "gaming"
+  | "l1"
+  | "l1-bridge"
+  | "l2"
+  | "mev"
+  | "nft"
+  | "woof";
+
+export const categoryDisplayMap: Record<Category, string> = {
+  "l1-bridge": "L1 Bridge",
+  defi: "DeFi",
+  gaming: "Gaming",
+  l1: "L1",
+  l2: "L2",
+  mev: "MEV",
+  nft: "NFTs",
+  woof: "Woof",
+};
 
 type BurnCategory = {
   category: Category;
