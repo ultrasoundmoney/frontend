@@ -107,7 +107,11 @@ const CategorySegment: FC<CategorySegmentProps> = ({
         <Skeleton width="1.5rem" />
       ) : (
         <TextRoboto
-          className="font-roboto color-animation"
+          className={`font-roboto color-animation ${
+            !showHighlight && percentOfTotalBurn < 0.06
+              ? "invisible"
+              : "visible"
+          }`}
           style={{
             color: showHighlight ? Colors.white : Colors.spindle,
           }}
