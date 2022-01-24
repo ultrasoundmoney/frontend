@@ -61,7 +61,10 @@ const AdminTools: FC<{
   <div className="fixed bottom-4 left-4 bg-blue-tangaroa rounded-lg p-4 z-10">
     <WidgetTitle title="feature flags"></WidgetTitle>
     {flags.map((flag) => (
-      <div key={flag} className="flex items-center mt-4">
+      <div
+        key={flag}
+        className="flex items-center justify-between gap-x-4 mt-4"
+      >
         <span className="text-white mr-4">{displayFlagMap[flag]}</span>
         <ToggleSwitch
           checked={featureFlags[flag]}
