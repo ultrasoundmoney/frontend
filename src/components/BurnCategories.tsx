@@ -383,7 +383,7 @@ const BurnCategoryWidget = () => {
               countFormatted={formatCount(
                 burnCategoryParts?.nft.transactionCount,
               )}
-              name="nft"
+              name="NFTs"
               hovering={hoveringNft}
               setHovering={setHoveringNft}
             />
@@ -392,7 +392,7 @@ const BurnCategoryWidget = () => {
               countFormatted={formatCount(
                 burnCategoryParts?.defi.transactionCount,
               )}
-              name="defi"
+              name="DeFi"
               hovering={hoveringDefi}
               setHovering={setHoveringDefi}
             />
@@ -401,7 +401,7 @@ const BurnCategoryWidget = () => {
               countFormatted={formatCount(
                 burnCategoryParts?.mev.transactionCount,
               )}
-              name="mev"
+              name="MEV"
               hovering={hoveringMev}
               setHovering={setHoveringMev}
             />
@@ -410,7 +410,7 @@ const BurnCategoryWidget = () => {
               countFormatted={formatCount(
                 burnCategoryParts?.l2.transactionCount,
               )}
-              name="l2"
+              name="L2"
               hovering={hoveringL2}
               setHovering={setHoveringL2}
             />
@@ -418,7 +418,7 @@ const BurnCategoryWidget = () => {
               <CategoryRow
                 amountFormatted={formatFees(miscCategory?.fees)}
                 countFormatted={formatCount(miscCategory?.transactionCount)}
-                name="misc"
+                name="Misc"
                 hovering={hoveringMisc}
                 setHovering={setHoveringMisc}
               />
