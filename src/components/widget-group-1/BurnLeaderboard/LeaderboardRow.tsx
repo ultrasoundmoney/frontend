@@ -209,7 +209,7 @@ const LeaderboardRow: FC<Props> = ({
             </p>
             {featureFlags.enableCategories && category && (
               <p className="px-1.5 py-0.5 ml-2 text-sm rounded-sm text-blue-manatee font-normal hidden md:block lg:hidden xl:block bg-blue-highlightbg">
-                {adminToken !== undefined
+                {featureFlags.showCategorySlugs
                   ? category
                   : categoryDisplayMap[category]}
               </p>
