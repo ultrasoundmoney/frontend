@@ -9,7 +9,7 @@ import { LabelText, TextInter, TextRoboto } from "./Texts";
 import WidgetBackground from "./widget-subcomponents/WidgetBackground";
 import WidgetTitle from "./widget-subcomponents/WidgetTitle";
 
-type Category = {
+type CategoryProps = {
   fees: number | undefined;
   feesUsd: number | undefined;
   transactionCount: number | undefined;
@@ -22,11 +22,11 @@ type Category = {
 };
 
 type CategoryBarProps = {
-  nft: Category | undefined;
-  defi: Category | undefined;
-  mev: Category | undefined;
-  l2: Category | undefined;
-  misc: Category | undefined;
+  nft: CategoryProps | undefined;
+  defi: CategoryProps | undefined;
+  mev: CategoryProps | undefined;
+  l2: CategoryProps | undefined;
+  misc: CategoryProps | undefined;
 };
 
 type CategorySegmentProps = {
@@ -263,7 +263,7 @@ const BurnCategoryWidget = () => {
           (miscCategories) =>
             pipe(
               miscCategories,
-              A.reduce({} as Category, (misc, category) => ({
+              A.reduce({} as CategoryProps, (misc, category) => ({
                 imgName: "misc",
                 imgAlt:
                   "three dots, signaling the summing of other contracts that have been categorized",
