@@ -104,8 +104,8 @@ const WidgetGroup1: FC<{ featureFlags: FeatureFlags }> = ({ featureFlags }) => {
           unit={unit}
         />
         <div
-          className={`md:col-start-2 ${
-            featureFlags.enableCategories ? "md:row-span-2" : "md:row-span-3"
+          className={`lg:col-start-2 ${
+            featureFlags.enableCategories ? "lg:row-span-2" : "lg:row-span-3"
           }`}
         >
           <BurnLeaderboard
@@ -115,16 +115,16 @@ const WidgetGroup1: FC<{ featureFlags: FeatureFlags }> = ({ featureFlags }) => {
           />
         </div>
         <div
-          className={`md:col-start-2 ${
+          className={`lg:col-start-2 ${
             featureFlags.enableCategories ? "block" : "hidden"
           }`}
         >
           <BurnCategories />
         </div>
-        <div className="col-start-1 md:row-start-2">
+        <div className="col-start-1 lg:row-start-2">
           <LatestBlocks unit={unit} />
         </div>
-        <div className="col-start-1 md:row-start-3">
+        <div className="col-start-1 lg:row-start-3">
           <BurnRecords
             onClickTimeFrame={handleClickTimeFrame}
             timeFrame={timeFrame}
