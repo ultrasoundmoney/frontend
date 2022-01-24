@@ -1,15 +1,18 @@
 import useSWR from "swr";
 import { feesBasePath } from "./fees";
 
-export type Category =
-  | "defi"
-  | "gaming"
-  | "l1"
-  | "l1-bridge"
-  | "l2"
-  | "mev"
-  | "nft"
-  | "woof";
+const category = [
+  "defi",
+  "gaming",
+  "l1",
+  "l1-bridge",
+  "l2",
+  "mev",
+  "nft",
+  "woof",
+] as const;
+
+export type Category = typeof category[number];
 
 export const categoryDisplayMap: Record<Category, string> = {
   "l1-bridge": "L1 Bridge",
@@ -21,6 +24,9 @@ export const categoryDisplayMap: Record<Category, string> = {
   nft: "NFTs",
   woof: "Woof",
 };
+
+export const getIsKnownCategory = (u: unknown): u is Category =>
+  typeof u === "string" && category.includes(u as Category);
 
 type BurnCategory = {
   category: Category;

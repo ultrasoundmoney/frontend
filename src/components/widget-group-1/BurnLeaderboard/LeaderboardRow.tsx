@@ -3,7 +3,11 @@ import { FC, ReactEventHandler, useCallback } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
 import { useAdminToken } from "../../../admin";
-import { Category, categoryDisplayMap } from "../../../api/burn_categories";
+import {
+  Category,
+  categoryDisplayMap,
+  getIsKnownCategory,
+} from "../../../api/burn_categories";
 import * as Contracts from "../../../api/contracts";
 import { LeaderboardEntry } from "../../../api/leaderboards";
 import { Unit } from "../../../denomination";
@@ -123,7 +127,7 @@ const AdminControls: FC<{
 type Props = {
   address?: string;
   adminToken?: string;
-  category?: Category | undefined;
+  category?: Category | string | undefined;
   detail?: string;
   fees: number | undefined;
   freshness?: Contracts.MetadataFreshness;
@@ -211,7 +215,9 @@ const LeaderboardRow: FC<Props> = ({
               <p className="px-1.5 py-0.5 ml-2 text-sm rounded-sm text-blue-manatee font-normal hidden md:block lg:hidden xl:block bg-blue-highlightbg">
                 {featureFlags.showCategorySlugs
                   ? category
-                  : categoryDisplayMap[category]}
+                  : getIsKnownCategory(category)
+                  ? categoryDisplayMap[category]
+                  : category}
               </p>
             )}
             {detail && (
