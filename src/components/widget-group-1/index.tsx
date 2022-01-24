@@ -109,6 +109,7 @@ const WidgetGroup1: FC<{ featureFlags: FeatureFlags }> = ({ featureFlags }) => {
           }`}
         >
           <BurnLeaderboard
+            featureFlags={featureFlags}
             onClickTimeFrame={handleClickTimeFrame}
             timeFrame={timeFrame}
             unit={unit}

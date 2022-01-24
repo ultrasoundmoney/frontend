@@ -6,7 +6,7 @@ import { useAdminToken } from "../../../admin";
 import * as Contracts from "../../../api/contracts";
 import { LeaderboardEntry } from "../../../api/leaderboards";
 import { Unit } from "../../../denomination";
-import { useFeatureFlags } from "../../../feature-flags";
+import { FeatureFlags, useFeatureFlags } from "../../../feature-flags";
 import * as Format from "../../../format";
 import { AmountUnitSpace } from "../../Spacing";
 
@@ -126,6 +126,7 @@ type Props = {
   detail?: string;
   fees: number | undefined;
   freshness?: Contracts.MetadataFreshness;
+  featureFlags: FeatureFlags;
   image?: string | undefined;
   isBot?: boolean | undefined;
   name: string | undefined;
@@ -138,6 +139,7 @@ const LeaderboardRow: FC<Props> = ({
   adminToken,
   category,
   detail,
+  featureFlags,
   fees,
   freshness,
   image,
@@ -146,7 +148,6 @@ const LeaderboardRow: FC<Props> = ({
   type,
   unit,
 }) => {
-  const { featureFlags } = useFeatureFlags();
   const imgSrc =
     typeof image === "string"
       ? image

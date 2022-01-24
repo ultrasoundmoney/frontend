@@ -4,6 +4,7 @@ import { useContractsFreshness } from "../../../api/contracts";
 import { useGroupedData1 } from "../../../api/grouped_stats_1";
 import { LeaderboardEntry, Leaderboards } from "../../../api/leaderboards";
 import { Unit } from "../../../denomination";
+import { FeatureFlags } from "../../../feature-flags";
 import styles from "../../../styles/Scrollbar.module.scss";
 import { TimeFrameNext } from "../../../time_frames";
 import Title from "../../widget-subcomponents/WidgetTitle";
@@ -72,12 +73,18 @@ const getLeaderboardsAddresses = (leaderboards: Leaderboards) =>
     .filter((mAddress): mAddress is string => mAddress !== undefined);
 
 type Props = {
+  featureFlags: FeatureFlags;
   onClickTimeFrame: () => void;
   timeFrame: TimeFrameNext;
   unit: Unit;
 };
 
-const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
+const BurnLeaderboard: FC<Props> = ({
+  featureFlags,
+  onClickTimeFrame,
+  timeFrame,
+  unit,
+}) => {
   const leaderboards = useGroupedData1()?.leaderboards;
   const selectedLeaderboard =
     leaderboards === undefined
@@ -118,24 +125,26 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
             row.type === "contract" ? (
               <LeaderboardRow
                 address={row.address}
+                adminToken={adminToken}
                 category={row.category || undefined}
                 detail={formatDetail(row.name, row.detail)}
                 fees={unit === "eth" ? row.fees : row.feesUsd}
+                freshness={
+                  row.address === undefined || freshnessMap === undefined
+                    ? undefined
+                    : freshnessMap[row.address]
+                }
                 image={row.image ?? undefined}
                 isBot={row.isBot}
                 key={row.address || index}
                 name={formatName(row.name, row.address)}
                 type={row.type}
                 unit={unit}
-                adminToken={adminToken}
-                freshness={
-                  row.address === undefined || freshnessMap === undefined
-                    ? undefined
-                    : freshnessMap[row.address]
-                }
+                featureFlags={featureFlags}
               />
             ) : (
               <LeaderboardRow
+                featureFlags={featureFlags}
                 fees={unit === "eth" ? row.fees : row.feesUsd}
                 key={row.type || index}
                 name={formatName(row.name, undefined)}
