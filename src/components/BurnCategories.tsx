@@ -4,6 +4,7 @@ import { BurnCategories, useBurnCategories } from "../api";
 import Colors from "../colors";
 import * as Format from "../format";
 import { A, flow, NEA, O, pipe } from "../fp";
+import { Amount } from "./Amount";
 import { LabelText, TextInter, TextRoboto } from "./Texts";
 import WidgetBackground from "./widget-subcomponents/WidgetBackground";
 import WidgetTitle from "./widget-subcomponents/WidgetTitle";
@@ -183,14 +184,16 @@ const CategoryBar: FC<CategoryBarProps> = ({ nft, defi, mev, l2, misc }) => (
   </div>
 );
 
-const CategoryRow: FC<{
+type CategoryRowProps = {
   amountFormatted: string | undefined;
   countFormatted: string | undefined;
   link?: string;
   name: string;
   hovering: boolean;
   setHovering: (hovering: boolean) => void;
-}> = ({
+};
+
+const CategoryRow: FC<CategoryRowProps> = ({
   amountFormatted,
   countFormatted,
   hovering,
@@ -212,7 +215,7 @@ const CategoryRow: FC<{
       {amountFormatted === undefined ? (
         <Skeleton width="4rem" />
       ) : (
-        <TextRoboto>{amountFormatted}</TextRoboto>
+        <Amount unit="eth">{amountFormatted}</Amount>
       )}
     </div>
     <div className="text-right hidden md:block">
@@ -341,8 +344,8 @@ const BurnCategoryWidget = () => {
 
   const formatFees = flow(
     (num: number | undefined) => O.fromNullable(num),
-    O.map((num) => num / 10 ** (18 + 3)),
-    O.map((num) => Format.formatTwoDigit(num) + "K"),
+    O.map(Format.ethFromWei),
+    O.map((num) => Format.formatZeroDigit(num)),
     O.toUndefined,
   );
 
