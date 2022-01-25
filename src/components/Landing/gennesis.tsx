@@ -4,12 +4,12 @@ import { TranslationsContext } from "../../translations-context";
 
 const GenesisBlock: React.FC = () => {
   const t = React.useContext(TranslationsContext);
-  const context = React.useContext(StepperContext);
+  const stepperContext = React.useContext(StepperContext);
   const genesisRef = React.useRef<HTMLDivElement | null>(null);
 
-  React.useLayoutEffect(() => {
-    if (context && genesisRef.current) {
-      context.addStepperELement(genesisRef, "Genesis");
+  React.useEffect(() => {
+    if (stepperContext && genesisRef.current) {
+      stepperContext.addStepperELement(genesisRef, "Genesis");
     }
   }, []);
 

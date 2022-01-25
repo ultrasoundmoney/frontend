@@ -587,41 +587,13 @@ const LandingPage: React.FC<{}> = () => {
     scrolling,
   ]);
 
-  const dummyPoints = [
-    {
-      offsetY: 1000,
-      height: 400,
-      name: "Genesis",
-    },
-    {
-      offsetY: 2600,
-      height: 200,
-      name: "Byzantium",
-    },
-    {
-      offsetY: 3200,
-      height: 400,
-      name: "Constantinopole",
-    },
-    {
-      offsetY: 3800,
-      height: 300,
-      name: "EIP 1559",
-    },
-    {
-      offsetY: 4400,
-      height: 900,
-      name: "Merge",
-    },
-  ];
-
   return (
     <SteppersProvider>
       <div className="wrapper bg-blue-midnightexpress blurred-bg-image">
         {/* <div className="container m-auto"> */}
         <Navigation />
         <Intro />
-        <Stepper controlPoints={dummyPoints} />
+        <Stepper />
         <BeforeGenesis />
         <GenesisBlock />
         <EIPByzantium />

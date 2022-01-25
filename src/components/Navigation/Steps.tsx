@@ -2,10 +2,8 @@ import * as React from "react";
 import Link from "next/link";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 import { TranslationsContext } from "../../translations-context";
-
-type BallProps = {
-  active: boolean;
-};
+import StepperPoint from "./StepperPoint";
+import StepperTrack from "./StepperTrack";
 
 type ControlPoint = {
   offsetY: number;
@@ -19,58 +17,23 @@ type ControlPointMutated = {
 };
 
 type StepsProps = {
-  controlPoints: ControlPoint[];
+  controlPoints: (ControlPoint | undefined)[];
 };
-
-const Ball: React.FC<BallProps> = ({ active }) => {
-  return (
-    <div
-      style={{
-        width: "16px",
-        height: "16px",
-        margin: "0 10px",
-        borderRadius: "50%",
-        border: `1px solid ${active ? "#00FFA3" : "#8991AD"}`,
-      }}
-    >
-      <div
-        style={{
-          width: "6px",
-          height: "6px",
-          backgroundColor: active ? "#00FFA3" : "#8991AD",
-          borderRadius: "50%",
-          margin: "4px",
-        }}
-      ></div>
-    </div>
-  );
-};
-
-const Track = () => (
-  <div
-    className="w-full"
-    style={{
-      height: "1px",
-      margin: "0 10px",
-      backgroundImage: "linear-gradient(to right, grey 40%, transparent 40%)",
-      backgroundSize: "10px 1px",
-      backgroundRepeat: "repeat-x",
-    }}
-  ></div>
-);
 
 const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
   ({ controlPoints }, ref) => {
     const [activeBalls, setActiveBalls] = React.useState<
-      ControlPointMutated[] | undefined
+      (ControlPointMutated | undefined)[] | undefined
     >();
 
     const getActiveBalls = React.useCallback(() => {
       return controlPoints.map((item) => {
-        return {
-          ...item,
-          active: window.pageYOffset > item.offsetY - window.innerHeight / 2,
-        };
+        if (item) {
+          return {
+            ...item,
+            active: window.pageYOffset > item.offsetY - window.innerHeight / 2,
+          };
+        }
       });
     }, [controlPoints]);
 
@@ -83,37 +46,41 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
       return () => window.removeEventListener("scroll", onScroll);
     }, [getActiveBalls]);
 
-    // console.log("render");
     return (
-      <div className="w-full md:w-9/12 relative flex justify-around lg:justify-around">
+      <div className="w-full h-full md:w-9/12 relative flex justify-around lg:justify-around">
         <div
           ref={ref}
           style={{
             minWidth: "32px",
             transition: "0.3s ease-in-out",
           }}
-          className={`absolute -bottom-2`}
+          className={`absolute bottom-6`}
         >
           <Link href="/">
             <img style={{ height: "32px" }} src={EthLogo} alt={t.title} />
           </Link>
         </div>
-        <div className="flex w-full justify-around">
+        <div className="flex w-full justify-around items-start">
           {activeBalls &&
             activeBalls.map((item, index) => {
-              if (index === controlPoints.length - 1) {
+              if (item) {
+                if (index === controlPoints.length - 1) {
+                  return (
+                    <div className="flex h-full items-center" key={`${index}`}>
+                      <StepperPoint name={item.name} active={item.active} />
+                    </div>
+                  );
+                }
                 return (
-                  <div className="flex items-center" key={`${index}`}>
-                    <Ball active={item.active} />
+                  <div
+                    className="flex w-full h-full items-center"
+                    key={`${index}`}
+                  >
+                    <StepperPoint name={item.name} active={item.active} />
+                    <StepperTrack />
                   </div>
                 );
               }
-              return (
-                <div className="flex w-full items-center" key={`${index}`}>
-                  <Ball active={item.active} />
-                  <Track />
-                </div>
-              );
             })}
         </div>
       </div>

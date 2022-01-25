@@ -1,8 +1,18 @@
 import * as React from "react";
+import { StepperContext } from "../../context/StepperContext";
 import { TranslationsContext } from "../../translations-context";
 
 const EIPByzantium: React.FC<{}> = () => {
   const t = React.useContext(TranslationsContext);
+  const stepperContext = React.useContext(StepperContext);
+  const byzantiumRef = React.useRef<HTMLDivElement | null>(null);
+
+  React.useEffect(() => {
+    if (stepperContext && byzantiumRef.current) {
+      stepperContext.addStepperELement(byzantiumRef, "Byzantium");
+    }
+  }, []);
+
   return (
     <>
       <section
@@ -13,6 +23,7 @@ const EIPByzantium: React.FC<{}> = () => {
         data-aos-duration="1000"
         data-aos-easing="ease-in-out"
         id="eip-byzantium"
+        ref={byzantiumRef}
       >
         <div className="flex flex-col justify-center w-full md:w-w-34 md:mx-auto pt-56 px-4 md:px-0">
           <p className="text-blue-shipcove font-light text-sm text-center mb-6 font-inter">

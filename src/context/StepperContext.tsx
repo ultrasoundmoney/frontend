@@ -1,20 +1,15 @@
-import { createContext, FC, MutableRefObject, useRef } from "react";
+import { createContext, FC, MutableRefObject, useState } from "react";
 
-type StepperPoint = {
+export type StepperPoint = {
   offsetY: number;
   name: string;
   height: number;
 };
 
 const StepperContext = createContext<{
-  stepperElements: MutableRefObject<
-    | {}
-    | {
-        current: {
-          [key: string]: StepperPoint;
-        };
-      }
-  >;
+  stepperElements: {
+    [key: string]: StepperPoint;
+  };
   addStepperELement: (
     newElementRef: MutableRefObject<HTMLDivElement | null>,
     elementName: string
@@ -22,29 +17,26 @@ const StepperContext = createContext<{
 } | null>(null);
 
 const SteppersProvider: FC = ({ children }) => {
-  const stepperElements = useRef<
-    | {
-        current: { [key: string]: StepperPoint };
-      }
-    | {}
-  >({});
+  const [stepperElements, setStepperElements] = useState<{
+    [key: string]: StepperPoint;
+  }>({});
 
   const addStepperELement = (
-    newElementRef: React.MutableRefObject<HTMLDivElement | null>,
+    newElementRef: MutableRefObject<HTMLDivElement | null>,
     elementName: string
   ) => {
     if (newElementRef && newElementRef.current) {
-      stepperElements.current = {
-        ...stepperElements.current,
+      setStepperElements((prevState: { [key: string]: StepperPoint }): any => ({
+        ...prevState,
         [elementName]: {
           offsetY: newElementRef?.current?.offsetTop,
           name: elementName,
           height: newElementRef?.current?.clientHeight,
         },
-      };
+      }));
     }
   };
-
+  // console.log(stepperElements);
   return (
     <StepperContext.Provider value={{ stepperElements, addStepperELement }}>
       {children}

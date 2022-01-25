@@ -1,6 +1,7 @@
 import * as React from "react";
 import AvatarImg from "../../assets/avatar.webp";
 import EthBurn from "../../assets/eth-burn.svg";
+import { StepperContext } from "../../context/StepperContext";
 import { TranslationsContext } from "../../translations-context";
 
 const EIP1559: React.FC<{}> = () => {
@@ -10,6 +11,15 @@ const EIP1559: React.FC<{}> = () => {
     el.onerror = null;
     el.src = AvatarImg;
   }
+  const stepperContext = React.useContext(StepperContext);
+  const EIPRef = React.useRef<HTMLDivElement | null>(null);
+
+  React.useEffect(() => {
+    if (stepperContext && EIPRef.current) {
+      stepperContext.addStepperELement(EIPRef, "EIP 1559");
+    }
+  }, []);
+
   return (
     <section
       data-aos="fade-up"
@@ -19,6 +29,7 @@ const EIP1559: React.FC<{}> = () => {
       data-aos-duration="1000"
       data-aos-easing="ease-in-out"
       id="eip-1559"
+      ref={EIPRef}
     >
       <div className="block-fee-burn flex flex-col justify-center items-center w-full md:w-6/12 md:mx-auto pt-20 px-4 md:px-0 ">
         <picture>
