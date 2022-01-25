@@ -66,9 +66,9 @@ const CategorySegment: FC<CategorySegmentProps> = ({
             height: "21px",
             marginBottom: "12px",
             visibility:
-              (percentOfTotalBurn ?? 0.1) < 0.082
+              percentOfTotalBurn === undefined
                 ? "hidden"
-                : showHighlight
+                : percentOfTotalBurn < 0.082
                 ? "hidden"
                 : "visible",
           }}
@@ -81,7 +81,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
             height: "21px",
             marginBottom: "12px",
             visibility:
-              (percentOfTotalBurn ?? 0.1) < 0.082
+              percentOfTotalBurn === undefined
                 ? "hidden"
                 : showHighlight
                 ? "visible"
