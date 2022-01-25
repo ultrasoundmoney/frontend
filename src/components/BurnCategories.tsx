@@ -232,6 +232,61 @@ const CategoryRow: FC<CategoryRowProps> = ({
   </a>
 );
 
+const formatFees = flow(
+  (num: number | undefined) => O.fromNullable(num),
+  O.map(Format.ethFromWei),
+  O.map((num) => Format.formatZeroDigit(num)),
+  O.toUndefined,
+);
+
+const formatCount = flow(
+  (count: number | undefined) => O.fromNullable(count),
+  O.map((num) => num / 10 ** 3),
+  O.map((num) => Format.formatOneDigit(num) + "K"),
+  O.toUndefined,
+);
+
+const buildMiscCategory = (
+  burnCategoriesData: BurnCategories,
+  setHoveringMisc: (bool: boolean) => void,
+  hoveringMisc: boolean,
+) =>
+  pipe(
+    NEA.fromArray(burnCategoriesData),
+    O.map(
+      A.reduce({} as CategoryProps, (sumCategory, category) => ({
+        imgName: "misc",
+        imgAlt:
+          "three dots, signaling the summing of other contracts that have been categorized",
+        fees: (sumCategory.fees ?? 0) + category.fees,
+        feesUsd: (sumCategory.feesUsd ?? 0) + category.feesUsd,
+        transactionCount:
+          (sumCategory.transactionCount ?? 0) + category.transactionCount,
+        percentOfTotalBurn:
+          (sumCategory.percentOfTotalBurn ?? 0) + category.percentOfTotalBurn,
+        percentOfTotalBurnUsd:
+          (sumCategory.percentOfTotalBurnUsd ?? 0) +
+          category.percentOfTotalBurnUsd,
+        onHoverCategory: setHoveringMisc,
+        showHighlight: hoveringMisc,
+      })),
+    ),
+    O.getOrElse(
+      (): CategoryProps => ({
+        imgName: "misc",
+        imgAlt:
+          "three dots, signaling the summing of other contracts that have been categorized",
+        fees: undefined,
+        feesUsd: undefined,
+        transactionCount: undefined,
+        percentOfTotalBurn: undefined,
+        percentOfTotalBurnUsd: undefined,
+        onHoverCategory: setHoveringMisc,
+        showHighlight: hoveringMisc,
+      }),
+    ),
+  );
+
 const BurnCategoryWidget = () => {
   const burnCategoriesData = useBurnCategories();
   const [hoveringNft, setHoveringNft] = useState(false);
@@ -240,125 +295,67 @@ const BurnCategoryWidget = () => {
   const [hoveringL2, setHoveringL2] = useState(false);
   const [hoveringMisc, setHoveringMisc] = useState(false);
 
-  const miscCategory = pipe(
-    burnCategoriesData,
-    O.fromNullable,
-    O.map(
-      flow(
-        (categories: BurnCategories) => categories,
-        A.filter(
-          (category) =>
-            !["nft", "defi", "mev", "l2"].includes(category.category),
-        ),
-        NEA.fromArray,
-        O.match(
-          () => ({
-            imgName: "misc",
-            imgAlt:
-              "three dots, signaling the summing of other contracts that have been categorized",
-            fees: undefined,
-            feesUsd: undefined,
-            transactionCount: undefined,
-            percentOfTotalBurn: undefined,
-            percentOfTotalBurnUsd: undefined,
-            onHoverCategory: setHoveringMisc,
-            showHighlight: hoveringMisc,
-          }),
-          (miscCategories) =>
-            pipe(
-              miscCategories,
-              A.reduce({} as CategoryProps, (misc, category) => ({
-                imgName: "misc",
-                imgAlt:
-                  "three dots, signaling the summing of other contracts that have been categorized",
-                fees: (misc.fees ?? 0) + category.fees,
-                feesUsd: (misc.feesUsd ?? 0) + category.feesUsd,
-                transactionCount:
-                  (misc.transactionCount ?? 0) + category.transactionCount,
-                percentOfTotalBurn:
-                  (misc.percentOfTotalBurn ?? 0) + category.percentOfTotalBurn,
-                percentOfTotalBurnUsd:
-                  (misc.percentOfTotalBurnUsd ?? 0) +
-                  category.percentOfTotalBurnUsd,
-                onHoverCategory: setHoveringMisc,
-                showHighlight: hoveringMisc,
-              })),
-            ),
-        ),
-      ),
-    ),
-    O.toUndefined,
-  );
-
   const nft = burnCategoriesData?.find(({ category }) => category === "nft");
   const defi = burnCategoriesData?.find(({ category }) => category === "defi");
   const mev = burnCategoriesData?.find(({ category }) => category === "mev");
   const l2 = burnCategoriesData?.find(({ category }) => category === "l2");
-
-  const burnCategoryParts =
-    burnCategoriesData === undefined
-      ? undefined
-      : {
-          nft: {
-            imgName: "nft",
-            imgAlt: "icon of a wooden painters palette, signaling NFTs",
-            fees: nft?.fees,
-            feesUsd: nft?.feesUsd,
-            transactionCount: nft?.transactionCount,
-            percentOfTotalBurn: nft?.percentOfTotalBurn,
-            percentOfTotalBurnUsd: nft?.percentOfTotalBurnUsd,
-            onHoverCategory: setHoveringNft,
-            showHighlight: hoveringNft,
-          },
-          defi: {
-            imgName: "defi",
-            imgAlt: "an image of flying money, signaling DeFi",
-            fees: defi?.fees,
-            feesUsd: defi?.feesUsd,
-            transactionCount: defi?.transactionCount,
-            percentOfTotalBurn: defi?.percentOfTotalBurn,
-            percentOfTotalBurnUsd: defi?.percentOfTotalBurnUsd,
-            onHoverCategory: setHoveringDefi,
-            showHighlight: hoveringDefi,
-          },
-          mev: {
-            imgName: "mev",
-            imgAlt:
-              "a robot, signaling bots extracting miner-extractable-value",
-            fees: mev?.fees,
-            feesUsd: mev?.feesUsd,
-            transactionCount: mev?.transactionCount,
-            percentOfTotalBurn: mev?.percentOfTotalBurn,
-            percentOfTotalBurnUsd: mev?.percentOfTotalBurnUsd,
-            onHoverCategory: setHoveringMev,
-            showHighlight: hoveringMev,
-          },
-          l2: {
-            imgName: "l2",
-            imgAlt: "chains signaling layer-2 networks",
-            fees: l2?.fees,
-            feesUsd: l2?.feesUsd,
-            transactionCount: l2?.transactionCount,
-            percentOfTotalBurn: l2?.percentOfTotalBurn,
-            percentOfTotalBurnUsd: l2?.percentOfTotalBurnUsd,
-            onHoverCategory: setHoveringL2,
-            showHighlight: hoveringL2,
-          },
-        };
-
-  const formatFees = flow(
-    (num: number | undefined) => O.fromNullable(num),
-    O.map(Format.ethFromWei),
-    O.map((num) => Format.formatZeroDigit(num)),
+  const misc = pipe(
+    burnCategoriesData?.filter(
+      (category) => !["nft", "defi", "mev", "l2"].includes(category.category),
+    ),
+    O.fromNullable,
+    O.map((categories) =>
+      buildMiscCategory(categories, setHoveringMisc, hoveringMisc),
+    ),
     O.toUndefined,
   );
 
-  const formatCount = flow(
-    (count: number | undefined) => O.fromNullable(count),
-    O.map((num) => num / 10 ** 3),
-    O.map((num) => Format.formatOneDigit(num) + "K"),
-    O.toUndefined,
-  );
+  const burnCategoryParts = {
+    nft: {
+      imgName: "nft",
+      imgAlt: "icon of a wooden painters palette, signaling NFTs",
+      fees: nft?.fees,
+      feesUsd: nft?.feesUsd,
+      transactionCount: nft?.transactionCount,
+      percentOfTotalBurn: nft?.percentOfTotalBurn,
+      percentOfTotalBurnUsd: nft?.percentOfTotalBurnUsd,
+      onHoverCategory: setHoveringNft,
+      showHighlight: hoveringNft,
+    },
+    defi: {
+      imgName: "defi",
+      imgAlt: "an image of flying money, signaling DeFi",
+      fees: defi?.fees,
+      feesUsd: defi?.feesUsd,
+      transactionCount: defi?.transactionCount,
+      percentOfTotalBurn: defi?.percentOfTotalBurn,
+      percentOfTotalBurnUsd: defi?.percentOfTotalBurnUsd,
+      onHoverCategory: setHoveringDefi,
+      showHighlight: hoveringDefi,
+    },
+    mev: {
+      imgName: "mev",
+      imgAlt: "a robot, signaling bots extracting miner-extractable-value",
+      fees: mev?.fees,
+      feesUsd: mev?.feesUsd,
+      transactionCount: mev?.transactionCount,
+      percentOfTotalBurn: mev?.percentOfTotalBurn,
+      percentOfTotalBurnUsd: mev?.percentOfTotalBurnUsd,
+      onHoverCategory: setHoveringMev,
+      showHighlight: hoveringMev,
+    },
+    l2: {
+      imgName: "l2",
+      imgAlt: "chains signaling layer-2 networks",
+      fees: l2?.fees,
+      feesUsd: l2?.feesUsd,
+      transactionCount: l2?.transactionCount,
+      percentOfTotalBurn: l2?.percentOfTotalBurn,
+      percentOfTotalBurnUsd: l2?.percentOfTotalBurnUsd,
+      onHoverCategory: setHoveringL2,
+      showHighlight: hoveringL2,
+    },
+  };
 
   return (
     <WidgetBackground>
@@ -368,7 +365,7 @@ const BurnCategoryWidget = () => {
         defi={burnCategoryParts?.defi}
         mev={burnCategoryParts?.mev}
         l2={burnCategoryParts?.l2}
-        misc={miscCategory}
+        misc={misc}
       />
       <div className="flex flex-col gap-y-3">
         <div className="grid grid-cols-3">
@@ -418,10 +415,10 @@ const BurnCategoryWidget = () => {
               hovering={hoveringL2}
               setHovering={setHoveringL2}
             />
-            {miscCategory && (
+            {misc && (
               <CategoryRow
-                amountFormatted={formatFees(miscCategory?.fees)}
-                countFormatted={formatCount(miscCategory?.transactionCount)}
+                amountFormatted={formatFees(misc?.fees)}
+                countFormatted={formatCount(misc?.transactionCount)}
                 name="Misc"
                 hovering={hoveringMisc}
                 setHovering={setHoveringMisc}
