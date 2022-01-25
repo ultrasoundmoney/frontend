@@ -1,8 +1,18 @@
 import * as React from "react";
+import { StepperContext } from "../../context/StepperContext";
 import { TranslationsContext } from "../../translations-context";
 
-const GenesisBlock: React.FC<{}> = () => {
+const GenesisBlock: React.FC = () => {
   const t = React.useContext(TranslationsContext);
+  const context = React.useContext(StepperContext);
+  const genesisRef = React.useRef<HTMLDivElement | null>(null);
+
+  React.useLayoutEffect(() => {
+    if (context && genesisRef.current) {
+      context.addStepperELement(genesisRef, "Genesis");
+    }
+  }, []);
+
   return (
     <>
       <section
@@ -13,6 +23,7 @@ const GenesisBlock: React.FC<{}> = () => {
         data-aos-duration="1000"
         data-aos-easing="ease-in-out"
         id="genesis"
+        ref={genesisRef}
       >
         <div className="flex flex-col justify-center w-full md:w-4/12 md:mx-auto pt-56 px-4 md:px-0">
           <p className="text-blue-shipcove font-light text-sm text-center mb-7 font-inter">

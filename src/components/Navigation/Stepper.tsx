@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import arrowRight from "../../assets/arrowRight.svg";
 import Steps from "./Steps";
-
-type PositionType = "fixed top-0" | "absolute";
+import { StepperContext } from "../../context/StepperContext";
 
 type ControlPoint = {
   offsetY: number;
@@ -17,9 +16,9 @@ type StepperProps = {
 
 const Stepper: React.FC<StepperProps> = ({ controlPoints }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [position, setPosition] = useState<PositionType>("absolute");
   const stepsRef = useRef<HTMLElement | null>(null);
   const steperIconRef = useRef<HTMLDivElement | null>(null);
+  const stepperPoints = useContext(StepperContext);
 
   const getIconOffset = (pointsHeights: ControlPoint[]) => {
     const pointsQuantity = pointsHeights.length;
@@ -48,24 +47,17 @@ const Stepper: React.FC<StepperProps> = ({ controlPoints }) => {
           steperIconRef.current.style.left = `${getIconOffset(controlPoints)}%`;
         }
       }
-      if (offsetTop) {
-        if (window.pageYOffset >= offsetTop) {
-          setPosition("fixed top-0");
-        } else {
-          setPosition("absolute");
-        }
-      }
     };
     window.addEventListener("scroll", onScroll);
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
   }, []);
-
+  console.log(stepperPoints?.stepperElements);
   return (
     <nav
       ref={stepsRef}
-      className={`${position} left-0 w-full flex justify-between md:justify-start p-4 bg-blue-tangaroa z-50`}
+      className="sticky top-0 left-0 w-full flex justify-between md:justify-start p-4 bg-blue-tangaroa z-50"
     >
       <div className="w-full px-1 md:px-4 mx-auto flex flex-wrap items-center justify-between">
         <Steps ref={steperIconRef} controlPoints={controlPoints} />
