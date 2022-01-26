@@ -1,7 +1,6 @@
 import { clamp } from "lodash";
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { animated, config, useSpring } from "react-spring";
-import { useAverageEthPrice } from "../../api/eth_price";
 import { useGroupedData1 } from "../../api/grouped_stats_1";
 import { useScarcity } from "../../api/scarcity";
 import * as Format from "../../format";
@@ -22,10 +21,9 @@ const useGrowthRate = (
   const ethSupply = useScarcity()?.ethSupply;
   const burnRates = useGroupedData1()?.burnRates;
   const [growthRate, setGrowthRate] = useState(0);
-  const averageEthPrice = useAverageEthPrice(timeFrame);
 
   useEffect(() => {
-    if (burnRates === undefined || averageEthPrice === undefined) {
+    if (burnRates === undefined) {
       return;
     }
 
@@ -51,14 +49,7 @@ const useGrowthRate = (
     if (rateRounded !== undefined && rateRounded !== growthRate) {
       setGrowthRate(rateRounded);
     }
-  }, [
-    burnRates,
-    ethSupply,
-    growthRate,
-    simulateMerge,
-    averageEthPrice,
-    timeFrame,
-  ]);
+  }, [burnRates, ethSupply, growthRate, simulateMerge, timeFrame]);
 
   return growthRate;
 };
