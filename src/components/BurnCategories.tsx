@@ -2,6 +2,7 @@ import { FC, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { BurnCategory, useBurnCategories } from "../api/burn_categories";
 import Colors from "../colors";
+import { FeatureFlags } from "../feature-flags";
 import * as Format from "../format";
 import { A, flow, NEA, O, pipe } from "../fp";
 import { TimeFrameNext } from "../time_frames";
@@ -192,10 +193,11 @@ const CategoryBar: FC<CategoryBarProps> = ({ nft, defi, mev, l2, misc }) => (
 type CategoryRowProps = {
   amountFormatted: string | undefined;
   countFormatted: string | undefined;
+  hovering: boolean;
   link?: string;
   name: string;
-  hovering: boolean;
   setHovering: (hovering: boolean) => void;
+  showCategoryCounts: boolean;
 };
 
 const CategoryRow: FC<CategoryRowProps> = ({
@@ -205,9 +207,14 @@ const CategoryRow: FC<CategoryRowProps> = ({
   link,
   name,
   setHovering,
+  showCategoryCounts = false,
 }) => (
   <a
-    className="grid grid-cols-3 link-animation select-none"
+    className={`
+      grid ${showCategoryCounts ? "grid-cols-3" : "grid-cols-2"}
+      link-animation
+      select-none
+    `}
     href={link}
     onMouseEnter={() => setHovering(true)}
     onMouseLeave={() => setHovering(false)}
@@ -216,14 +223,25 @@ const CategoryRow: FC<CategoryRowProps> = ({
     target="_blank"
   >
     <TextInter className="font-inter text-white">{name}</TextInter>
-    <div className="text-right col-span-2 md:col-span-1 md:mr-8">
+    <div
+      className={`
+        text-right
+        col-span-2 md:col-span-1
+        ${showCategoryCounts ? "md:mr-8" : ""}
+      `}
+    >
       {amountFormatted === undefined ? (
         <Skeleton width="4rem" />
       ) : (
         <Amount unit="eth">{amountFormatted}</Amount>
       )}
     </div>
-    <div className="text-right hidden md:block">
+    <div
+      className={`
+        text-right
+        hidden ${showCategoryCounts ? "md:block" : ""}
+      `}
+    >
       {countFormatted === undefined ? (
         <Skeleton width="5rem" />
       ) : (
@@ -288,16 +306,24 @@ const buildMiscCategory = (
     ),
   );
 
-const BurnCategoryWidget: FC<{
+type Props = {
+  featureFlags: FeatureFlags;
   onClickTimeFrame: () => void;
   timeFrame: TimeFrameNext;
-}> = ({ onClickTimeFrame, timeFrame }) => {
+};
+
+const BurnCategoryWidget: FC<Props> = ({
+  featureFlags,
+  onClickTimeFrame,
+  timeFrame,
+}) => {
   const burnCategories = useBurnCategories();
   const [hoveringNft, setHoveringNft] = useState(false);
   const [hoveringDefi, setHoveringDefi] = useState(false);
   const [hoveringMev, setHoveringMev] = useState(false);
   const [hoveringL2, setHoveringL2] = useState(false);
   const [hoveringMisc, setHoveringMisc] = useState(false);
+  const { showCategoryCounts } = featureFlags;
 
   const selectedBurnCategories =
     // TODO: our old API returned an array, this element is not visible yet, but trying to access an array like an object does crash the full page, therefore we have this check to make sure not to crash, and can remove it once the new API is deployed in production.
@@ -401,12 +427,26 @@ const BurnCategoryWidget: FC<{
             misc={misc}
           />
           <div className="flex flex-col gap-y-3">
-            <div className="grid grid-cols-3">
+            <div
+              className={`grid ${
+                showCategoryCounts ? "grid-cols-3" : "grid-cols-2"
+              }`}
+            >
               <LabelText>category</LabelText>
-              <LabelText className="text-right col-span-2 md:col-span-1 md:mr-8">
+              <LabelText
+                className={`
+                  text-right
+                  col-span-2 md:col-span-1
+                  ${showCategoryCounts ? "md:mr-8" : ""}
+                `}
+              >
                 burn
               </LabelText>
-              <LabelText className="text-right hidden md:block invisible md:visible">
+              <LabelText
+                className={`text-right hidden ${
+                  showCategoryCounts ? "md:block" : ""
+                }`}
+              >
                 transactions
               </LabelText>
             </div>
@@ -417,46 +457,49 @@ const BurnCategoryWidget: FC<{
                   countFormatted={formatCount(
                     burnCategoryParts?.nft.transactionCount,
                   )}
-                  name="NFTs"
                   hovering={hoveringNft}
+                  name="NFTs"
                   setHovering={setHoveringNft}
+                  showCategoryCounts={showCategoryCounts}
                 />
                 <CategoryRow
                   amountFormatted={formatFees(burnCategoryParts?.defi.fees)}
                   countFormatted={formatCount(
                     burnCategoryParts?.defi.transactionCount,
                   )}
-                  name="DeFi"
                   hovering={hoveringDefi}
+                  name="DeFi"
                   setHovering={setHoveringDefi}
+                  showCategoryCounts={showCategoryCounts}
                 />
                 <CategoryRow
                   amountFormatted={formatFees(burnCategoryParts?.mev.fees)}
                   countFormatted={formatCount(
                     burnCategoryParts?.mev.transactionCount,
                   )}
-                  name="MEV"
                   hovering={hoveringMev}
+                  name="MEV"
                   setHovering={setHoveringMev}
+                  showCategoryCounts={showCategoryCounts}
                 />
                 <CategoryRow
                   amountFormatted={formatFees(burnCategoryParts?.l2.fees)}
                   countFormatted={formatCount(
                     burnCategoryParts?.l2.transactionCount,
                   )}
-                  name="L2"
                   hovering={hoveringL2}
+                  name="L2"
                   setHovering={setHoveringL2}
+                  showCategoryCounts={showCategoryCounts}
                 />
-                {
-                  <CategoryRow
-                    amountFormatted={formatFees(misc?.fees)}
-                    countFormatted={formatCount(misc?.transactionCount)}
-                    name="Misc"
-                    hovering={hoveringMisc}
-                    setHovering={setHoveringMisc}
-                  />
-                }
+                <CategoryRow
+                  amountFormatted={formatFees(misc?.fees)}
+                  countFormatted={formatCount(misc?.transactionCount)}
+                  hovering={hoveringMisc}
+                  name="Misc"
+                  setHovering={setHoveringMisc}
+                  showCategoryCounts={showCategoryCounts}
+                />
               </>
             }
           </div>

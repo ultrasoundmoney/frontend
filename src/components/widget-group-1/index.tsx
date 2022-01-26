@@ -121,6 +121,7 @@ const WidgetGroup1: FC<{ featureFlags: FeatureFlags }> = ({ featureFlags }) => {
           }`}
         >
           <BurnCategories
+            featureFlags={featureFlags}
             onClickTimeFrame={handleClickTimeFrame}
             timeFrame={timeFrame}
           />
