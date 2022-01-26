@@ -6,7 +6,7 @@ import Colors from "../../colors";
 import * as Format from "../../format";
 import { pipe } from "../../fp";
 import { Amount } from "../Amount";
-import { LabelText, TextInter } from "../Texts";
+import { LabelText, TextInter, TextRoboto } from "../Texts";
 import WidgetBackground from "../widget-subcomponents/WidgetBackground";
 import WidgetTitle from "../widget-subcomponents/WidgetTitle";
 
@@ -106,15 +106,15 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
               backgroundColor: hoveringStaked ? Colors.white : Colors.spindle,
             }}
           ></div>
-          <p
-            className="font-roboto text-white color-animation"
+          <TextRoboto
+            className="color-animation"
             style={{
               marginTop: "9px",
               color: hoveringStaked ? Colors.white : Colors.spindle,
             }}
           >
             {Format.formatNoDigit(stakedPercent)}%
-          </p>
+          </TextRoboto>
         </div>
         <div
           className="absolute h-2 bg-blue-dusk z-10"
@@ -157,7 +157,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
               backgroundColor: hoveringLocked ? Colors.white : Colors.spindle,
             }}
           ></div>
-          <p
+          <TextRoboto
             className="font-roboto color-animation"
             style={{
               marginTop: "9px",
@@ -165,7 +165,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
             }}
           >
             {Format.formatNoDigit(lockedPercent)}%
-          </p>
+          </TextRoboto>
         </div>
       </div>
       <div
