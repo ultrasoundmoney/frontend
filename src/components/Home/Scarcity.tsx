@@ -117,10 +117,9 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
           </TextRoboto>
         </div>
         <div
-          className="absolute h-2 bg-blue-dusk z-10"
+          className="absolute h-2 bg-blue-dusk z-10 w-0.5"
           style={{
-            left: `calc(${stakedPlusLocked / 2}% - 1.5px`,
-            width: "3px",
+            left: `${stakedPlusLocked / 2}%`,
           }}
         ></div>
         <div
