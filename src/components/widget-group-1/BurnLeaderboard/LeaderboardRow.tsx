@@ -215,11 +215,11 @@ const LeaderboardRow: FC<Props> = ({
                 px-1.5 py-0.5 ml-2
                 text-sm text-blue-manatee
                 font-normal
-                hidden md:block lg:hidden xl:block
                 bg-blue-highlightbg
                 rounded-sm
                 whitespace-nowrap
-                ${category ? "block" : "hidden"}
+                hidden md:block
+                ${category ? "block" : "md:hidden"}
               `}
             >
               {featureFlags.showCategorySlugs
