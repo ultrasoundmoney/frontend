@@ -105,3 +105,8 @@ export function convertToInternationalCurrencySystem(labelValue: number) {
     ? Number(Math.abs(Number(labelValue)) / 1.0e3).toFixed(2) + "K"
     : Math.abs(Number(labelValue)).toFixed(2);
 }
+
+export const capitalize = (str: unknown) =>
+  typeof str === "string"
+    ? `${str[0]?.toUpperCase()}${str.slice(1)}`
+    : undefined;

@@ -11,6 +11,7 @@ import * as Contracts from "../../../api/contracts";
 import { LeaderboardEntry } from "../../../api/leaderboards";
 import { Unit } from "../../../denomination";
 import { FeatureFlags } from "../../../feature-flags";
+import * as Format from "../../../format";
 import { AnimatedAmount } from "../../Amount";
 import { AmountUnitSpace } from "../../Spacing";
 
@@ -226,7 +227,7 @@ const LeaderboardRow: FC<Props> = ({
                 ? category
                 : getIsKnownCategory(category)
                 ? categoryDisplayMap[category]
-                : category}
+                : Format.capitalize(category)}
             </p>
             {detail && (
               <p className="pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block">
