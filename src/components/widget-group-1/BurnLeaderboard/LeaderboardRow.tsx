@@ -1,6 +1,5 @@
 import * as DateFns from "date-fns";
 import { FC, ReactEventHandler, useCallback } from "react";
-import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
 import { useAdminToken } from "../../../admin";
 import {
@@ -12,7 +11,7 @@ import * as Contracts from "../../../api/contracts";
 import { LeaderboardEntry } from "../../../api/leaderboards";
 import { Unit } from "../../../denomination";
 import { FeatureFlags } from "../../../feature-flags";
-import * as Format from "../../../format";
+import { AnimatedAmount } from "../../Amount";
 import { AmountUnitSpace } from "../../Spacing";
 
 const onSetTwitterHandle = async (
@@ -239,15 +238,7 @@ const LeaderboardRow: FC<Props> = ({
               {fees === undefined ? (
                 <Skeleton inline={true} width="4rem" />
               ) : (
-                <CountUp
-                  start={0}
-                  end={unit === "eth" ? Format.ethFromWei(fees) : fees / 1000}
-                  preserveValue={true}
-                  separator=","
-                  decimals={unit === "eth" ? 2 : 1}
-                  duration={0.8}
-                  suffix={unit === "eth" ? undefined : "K"}
-                />
+                <AnimatedAmount unit={unit}>{fees}</AnimatedAmount>
               )}
               <AmountUnitSpace />
               <span className="text-blue-spindle font-extralight">
