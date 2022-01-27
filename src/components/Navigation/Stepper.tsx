@@ -4,6 +4,27 @@ import arrowRight from "../../assets/arrowRight.svg";
 import Steps from "./Steps";
 import { StepperContext, StepperPoint } from "../../context/StepperContext";
 
+const getIconOffset = (pointsHeights: (StepperPoint | undefined)[]) => {
+  if (pointsHeights) {
+    const pointsQuantity = pointsHeights.length;
+    const trackPosition = window.scrollY + window.innerHeight / 2;
+    let offset = 0;
+    pointsHeights.forEach((point) => {
+      if (point && trackPosition >= point.offsetY) {
+        if (trackPosition >= point.offsetY + point.height) {
+          offset += 100 / pointsQuantity;
+          return;
+        }
+        offset +=
+          (((trackPosition - point.offsetY) / point.height) * 100) /
+          pointsQuantity;
+      }
+    });
+    return offset;
+  }
+  return 0;
+};
+
 const Stepper: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const stepsRef = useRef<HTMLElement | null>(null);
@@ -14,34 +35,6 @@ const Stepper: React.FC = () => {
       return stepperPoints?.stepperElements[element];
     }
   );
-
-  const getIconOffset = (pointsHeights: (StepperPoint | undefined)[]) => {
-    console.log("controlPoints", controlPoints, stepperPoints);
-    if (pointsHeights) {
-      const pointsQuantity = pointsHeights.length;
-      const trackPosition = window.pageYOffset + window.innerHeight / 2;
-      let offset = 0;
-      console.log(
-        "offset and others ===>",
-        offset,
-        pointsQuantity,
-        trackPosition
-      );
-      pointsHeights.forEach((point) => {
-        if (point && trackPosition >= point.offsetY) {
-          if (trackPosition >= point.offsetY + point.height) {
-            offset += 100 / pointsQuantity;
-            return;
-          }
-          offset +=
-            (((trackPosition - point.offsetY) / point.height) * 100) /
-            pointsQuantity;
-        }
-      });
-      return offset;
-    }
-    return 0;
-  };
 
   useEffect(() => {
     const offsetTop = stepsRef.current?.offsetTop;
@@ -56,7 +49,7 @@ const Stepper: React.FC = () => {
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
-  }, []);
+  }, [controlPoints]);
 
   return (
     <nav
