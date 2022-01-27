@@ -85,11 +85,11 @@
   "landing_themerge_title": "What's Next?",
   "landing_themerge_text": "\"The Merge\" is an upgrade to Ethereum that swaps out the current proof-of-work (PoW) consensus mechanism with a more eco-friendly, efficient, and secure proof-of-stake (PoS) consensus mechanism.",
 
-  "landing_themerge_pow_icon": "",
+  "landing_themerge_pow_icon": "\uD83C\uDFED ⚡",
   "landing_themerge_pow_title": "Proof of Work",
   "landing_themerge_pow_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
 
-  "landing_themerge_pos_icon": "",
+  "landing_themerge_pos_icon": "\uD83C\uDF3F",
   "landing_themerge_pos_title": "Proof of Stake",
   "landing_themerge_pos_text":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
 

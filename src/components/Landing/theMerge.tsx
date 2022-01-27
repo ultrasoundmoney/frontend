@@ -2,9 +2,11 @@ import * as React from "react";
 import ContentBlock from "../ContentBlock/ContentBlcok";
 import IconBlock from "../ContentBlock/IconBlock";
 import { TranslationsContext } from "../../translations-context";
+import AnimatedPath from "./AnimatedPath";
 
 const TheMergeBlock: React.FC<{}> = () => {
   const t = React.useContext(TranslationsContext);
+
   return (
     <>
       <section id="next-merge">
@@ -16,7 +18,7 @@ const TheMergeBlock: React.FC<{}> = () => {
         />
         <div
           id="the-merge"
-          className="the-merge flex flex-col w-full sm:w-9/12 mx-auto"
+          className="the-merge-path flex flex-col w-full sm:w-9/12 mx-auto"
         >
           <div
             data-aos="fade-up"
@@ -24,10 +26,10 @@ const TheMergeBlock: React.FC<{}> = () => {
             data-aos-delay="50"
             data-aos-duration="1000"
             data-aos-easing="ease-in-out"
-            className="w-full sm:w-4/12 md:mr-auto py-16"
+            className="w-6/12 md:w-4/12 md:absolute md:mr-auto py-16 merge-icon-block"
           >
             <IconBlock
-              icon={`${t.landing_goal_block1_icon} ${t.landing_goal_block1_icon}`}
+              icon={`${t.landing_themerge_pow_icon}`}
               title={t.landing_themerge_pow_title}
               text={t.landing_themerge_pow_text}
             />
@@ -38,14 +40,15 @@ const TheMergeBlock: React.FC<{}> = () => {
             data-aos-delay="50"
             data-aos-duration="1000"
             data-aos-easing="ease-in-out"
-            className="w-full sm:w-4/12 md:ml-auto"
+            className="w-6/12 md:w-4/12 md:absolute md:ml-auto merge-icon-block"
           >
             <IconBlock
-              icon={t.landing_goal_block1_icon}
+              icon={t.landing_themerge_pos_icon}
               title={t.landing_themerge_pos_title}
               text={t.landing_themerge_pos_text}
             />
           </div>
+          <AnimatedPath />
         </div>
         <ContentBlock
           title={t.landing_themerge_title2}
