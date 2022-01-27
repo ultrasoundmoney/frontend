@@ -210,25 +210,24 @@ const LeaderboardRow: FC<Props> = ({
                 <Skeleton inline={true} width="12rem" />
               )}
             </p>
-            {featureFlags.enableCategories && category && (
-              <p
-                className={`
-                  px-1.5 py-0.5 ml-2
-                  text-sm text-blue-manatee
-                  font-normal
-                  hidden md:block lg:hidden xl:block
-                  bg-blue-highlightbg
-                  rounded-sm
-                  whitespace-nowrap
-                `}
-              >
-                {featureFlags.showCategorySlugs
-                  ? category
-                  : getIsKnownCategory(category)
-                  ? categoryDisplayMap[category]
-                  : category}
-              </p>
-            )}
+            <p
+              className={`
+                px-1.5 py-0.5 ml-2
+                text-sm text-blue-manatee
+                font-normal
+                hidden md:block lg:hidden xl:block
+                bg-blue-highlightbg
+                rounded-sm
+                whitespace-nowrap
+                ${category ? "block" : "hidden"}
+              `}
+            >
+              {featureFlags.showCategorySlugs
+                ? category
+                : getIsKnownCategory(category)
+                ? categoryDisplayMap[category]
+                : category}
+            </p>
             {detail && (
               <p className="pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block">
                 {detail}
