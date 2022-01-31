@@ -131,14 +131,8 @@ const CategorySegment: FC<CategorySegmentProps> = ({
 );
 
 const CategoryBar: FC<CategoryBarProps> = ({ nft, defi, mev, l2, misc }) => (
-  <div className="relative flex py-4">
-    <div className="flex items-center">
-      <div
-        className="absolute w-full h-2 bg-blue-highlightbg rounded-full color-animation"
-        onMouseEnter={() => undefined}
-        onMouseLeave={() => undefined}
-      ></div>
-    </div>
+  <div className="relative flex py-4 items-center">
+    <div className="absolute w-full h-2 bg-blue-highlightbg rounded-full color-animation"></div>
     <div className="w-full flex flex-row top-0 left-0 items-center z-10">
       {nft && (
         <CategorySegment
