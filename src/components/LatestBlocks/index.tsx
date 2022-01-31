@@ -10,7 +10,7 @@ import { O, OAlt, pipe } from "../../fp";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import CSSTransition from "../CSSTransition";
 import { AmountUnitSpace } from "../Spacing";
-import WidgetBackground from "../widget-subcomponents/WidgetBackground";
+import { WidgetBackground } from "../widget-subcomponents";
 import styles from "./LatestBlocks.module.scss";
 
 const maxBlocks = 7;

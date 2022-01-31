@@ -8,8 +8,7 @@ import { A, flow, NEA, O, pipe } from "../fp";
 import { TimeFrameNext } from "../time_frames";
 import { Amount } from "./Amount";
 import { LabelText, TextInter, TextRoboto } from "./Texts";
-import WidgetBackground from "./widget-subcomponents/WidgetBackground";
-import WidgetTitle from "./widget-subcomponents/WidgetTitle";
+import { Group1Base } from "./widget-subcomponents";
 
 type CategoryProps = {
   fees: number | undefined;
@@ -406,12 +405,11 @@ const BurnCategoryWidget: FC<Props> = ({
   };
 
   return (
-    <WidgetBackground>
-      <WidgetTitle
-        onClickTimeFrame={onClickTimeFrame}
-        title="burn categories"
-        timeFrame={timeFrame}
-      />
+    <Group1Base
+      title="burn categories"
+      onClickTimeFrame={onClickTimeFrame}
+      timeFrame={timeFrame}
+    >
       <div className="relative">
         <div
           className={`
@@ -511,7 +509,7 @@ const BurnCategoryWidget: FC<Props> = ({
           </div>
         </div>
       </div>
-    </WidgetBackground>
+    </Group1Base>
   );
 };
 

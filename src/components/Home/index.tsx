@@ -18,7 +18,7 @@ import { SectionTitle } from "../Texts";
 import ToggleSwitch from "../ToggleSwitch";
 import TwitterCommunity from "../TwitterCommunity";
 import WidgetGroup1 from "../widget-group-1";
-import WidgetTitle from "../widget-subcomponents/WidgetTitle";
+import { WidgetTitle } from "../widget-subcomponents";
 import Flippenings from "./Flippenings";
 import styles from "./Home.module.scss";
 import Scarcity from "./Scarcity";

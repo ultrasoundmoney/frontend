@@ -13,8 +13,7 @@ import { AnimatedAmount } from "./Amount";
 import { AmountUnitSpace } from "./Spacing";
 import SpanMoji from "./SpanMoji";
 import { TextInter, TextRoboto } from "./Texts";
-import WidgetBackground from "./widget-subcomponents/WidgetBackground";
-import WidgetTitle from "./widget-subcomponents/WidgetTitle";
+import { Group1Base } from "./widget-subcomponents";
 
 const formatBlockNumber = flow(
   O.fromPredicate((unknown): unknown is number => typeof unknown === "number"),
@@ -97,12 +96,11 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
       : burnRecords[timeFrame];
 
   return (
-    <WidgetBackground>
-      <WidgetTitle
-        onClickTimeFrame={onClickTimeFrame}
-        timeFrame={timeFrame}
-        title="burn records"
-      />
+    <Group1Base
+      onClickTimeFrame={onClickTimeFrame}
+      timeFrame={timeFrame}
+      title="burn records"
+    >
       <div
         className={`
           flex flex-col gap-y-6
@@ -142,7 +140,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
           </div>
         ))}
       </div>
-    </WidgetBackground>
+    </Group1Base>
   );
 };
 

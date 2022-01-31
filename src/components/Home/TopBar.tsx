@@ -8,7 +8,7 @@ import useNotification from "../../use-notification";
 import AlarmInput from "../Alarm";
 import { AmountUnitSpace } from "../Spacing";
 import { TextRoboto } from "../Texts";
-import WidgetTitle from "../widget-subcomponents/WidgetTitle";
+import { WidgetTitle } from "../widget-subcomponents";
 
 let startGasPrice = 0;
 let startGasPriceCached = 0;
@@ -194,7 +194,7 @@ const TopBar: FC = () => {
           ref={dialogRef}
           className={`absolute w-full bg-blue-tangaroa rounded p-8 top-12 md:top-12 ${showAlarmDialogCss}`}
         >
-          <WidgetTitle title="price alerts" />
+          <WidgetTitle>price alerts</WidgetTitle>
           <AlarmInput
             isAlarmActive={gasAlarmActive}
             onToggleIsAlarmActive={setGasAlarmActive}

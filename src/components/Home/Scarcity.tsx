@@ -7,8 +7,7 @@ import * as Format from "../../format";
 import { pipe } from "../../fp";
 import { Amount } from "../Amount";
 import { LabelText, TextInter, TextRoboto } from "../Texts";
-import WidgetBackground from "../widget-subcomponents/WidgetBackground";
-import WidgetTitle from "../widget-subcomponents/WidgetTitle";
+import { WidgetBackground, WidgetTitle } from "../widget-subcomponents";
 
 type ScarcityBarProps = {
   staked: number;
@@ -267,7 +266,7 @@ const Scarcity: FC = () => {
 
   return (
     <WidgetBackground>
-      <WidgetTitle title="scarcity" />
+      <WidgetTitle>scarcity</WidgetTitle>
       {scarcity === undefined ? (
         <div className="relative py-16">
           <div className="absolute w-full h-2 bg-blue-dusk rounded-full"></div>
