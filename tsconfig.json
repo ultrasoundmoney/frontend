@@ -1,7 +1,12 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext", "es2017"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext",
+      "es2017"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -20,8 +25,20 @@
     "noUnusedParameters": true,
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
-    "types": ["node", "jest"]
+    "types": [
+      "node",
+      "jest"
+    ],
+    "incremental": true
   },
-  "exclude": ["node_modules", "locales/**/*.json"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/Landing/BTCETH/slider.js"]
+  "exclude": [
+    "node_modules",
+    "locales/**/*.json"
+  ],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/components/Landing/BTCETH/slider.js"
+  ]
 }
