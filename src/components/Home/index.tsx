@@ -62,7 +62,7 @@ const AdminTools: FC<{
     className={`
       fixed bottom-4 left-4
       bg-blue-tangaroa rounded-lg
-      p-4 z-10
+      p-4 z-20
       border-2 border-slate-600
     `}
   >
