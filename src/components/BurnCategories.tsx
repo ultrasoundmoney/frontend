@@ -40,6 +40,9 @@ type CategorySegmentProps = {
   showHighlight: boolean;
 };
 
+const alwaysShowImgPercentThreshold = 0.08;
+const skeletonLoadingWidth = 0.1;
+
 const CategorySegment: FC<CategorySegmentProps> = ({
   imgAlt,
   imgName,
@@ -51,7 +54,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
   <div
     className="flex flex-col items-center select-none"
     style={{
-      width: `${(percentOfTotalBurn ?? 0.1) * 100}%`,
+      width: `${(percentOfTotalBurn ?? skeletonLoadingWidth) * 100}%`,
     }}
     onMouseEnter={() => onHoverCategory(true)}
     onMouseLeave={() => onHoverCategory(false)}
@@ -70,7 +73,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
             visibility:
               percentOfTotalBurn === undefined
                 ? "hidden"
-                : percentOfTotalBurn < 0.082
+                : percentOfTotalBurn < alwaysShowImgPercentThreshold
                 ? "hidden"
                 : "visible",
           }}
@@ -110,7 +113,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
       ) : (
         <TextRoboto
           className={`font-roboto color-animation ${
-            !showHighlight && percentOfTotalBurn < 0.06
+            !showHighlight && percentOfTotalBurn < alwaysShowImgPercentThreshold
               ? "invisible"
               : "visible"
           }`}
@@ -118,7 +121,10 @@ const CategorySegment: FC<CategorySegmentProps> = ({
             color: showHighlight ? Colors.white : Colors.spindle,
           }}
         >
-          {Format.formatNoDigit((percentOfTotalBurn ?? 0.1) * 100)}%
+          {Format.formatNoDigit(
+            (percentOfTotalBurn ?? skeletonLoadingWidth) * 100,
+          )}
+          %
         </TextRoboto>
       )}
     </div>
