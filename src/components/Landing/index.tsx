@@ -33,6 +33,8 @@ import {
 } from "./historicalData";
 import { useFeeData } from "../../api";
 import useSWR from "swr";
+import Stepper from "../Navigation/Stepper";
+import { SteppersProvider } from "../../context/StepperContext";
 // import Timeline from "./timeline";
 
 type EthPrice = {
@@ -90,6 +92,7 @@ const LandingPage: React.FC<{}> = () => {
     function onScroll() {
       const targetGenesis = document.querySelector("#genesis");
       const targetByzantium = document.querySelector("#eip-byzantium");
+      const targetBeforeGenesis = document.querySelector("#before-genesis");
       const targetConstantinople = document.querySelector(
         "#eip-constantinople"
       );
@@ -99,6 +102,85 @@ const LandingPage: React.FC<{}> = () => {
       const targetMergeLine = document.querySelector("#the-merge-line");
       const currentPosition = window.pageYOffset;
 
+      // ETH Before Genesis Time
+      if (
+        targetBeforeGenesis!.getBoundingClientRect().top < window.innerHeight
+      ) {
+        if (currentPosition > scrollTop) {
+          setScrolling(false);
+          const lineHeight =
+            currentPosition - window.innerHeight > 0
+              ? Math.floor((currentPosition - window.innerHeight) * 0.7)
+              : 0;
+          if (lineHeight < 450) {
+            document.getElementById(
+              "line__before__genesis"
+            )!.style.height = `${lineHeight}px`;
+            getBlcokReward!.innerHTML = "5 ETH/<span>Block</span>";
+            const counter = lineHeight * 3;
+            setGenesisArr(
+              genesis_data[
+                counter > genesis_data.length
+                  ? genesis_data.length - 1
+                  : counter
+              ]
+            );
+            if (genesisArr) {
+              getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+                genesisArr[0]
+              )}`;
+              getEthSupplyIncreament!.innerHTML = `+${Number(
+                genesisArr[2]
+              ).toFixed(3)}%`;
+              getEthSupply!.innerHTML = `${followerCountConvert(
+                Number(genesisArr[1])
+              )}`;
+            }
+          }
+          if (lineHeight > 450) {
+            document
+              .getElementById("line__before__genesis")!
+              .classList.add("eclips__hr-circle");
+            setGenesisArr(genesis_data[genesis_data.length - 1]);
+          }
+        } else {
+          // upscroll code
+          setScrolling(true);
+          const lineHeight =
+            currentPosition - window.innerHeight > 0
+              ? Math.floor((currentPosition - window.innerHeight) * 0.7)
+              : 0;
+          if (lineHeight < 630) {
+            document.getElementById(
+              "line__before__genesis"
+            )!.style.height = `${lineHeight}px`;
+            document
+              .getElementById("line__before__genesis")!
+              .classList.remove("eclips__hr-circle");
+            getBlcokReward!.innerHTML = "5 ETH/<span>Block</span>";
+            const genesis_data_re = genesis_data.reverse();
+            const counter = lineHeight * 3;
+            setGenesisArr(
+              genesis_data_re[
+                counter > genesis_data.length
+                  ? genesis_data.length - 1
+                  : counter
+              ]
+            );
+            if (genesisArr) {
+              getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+                genesisArr[0]
+              )}`;
+              getEthSupplyIncreament!.innerHTML = `+${Number(
+                genesisArr[2]
+              ).toFixed(3)}%`;
+              getEthSupply!.innerHTML = `${followerCountConvert(
+                Number(genesisArr[1])
+              )}`;
+            }
+          }
+        }
+      }
       // ETH Genesis Time
       if (targetGenesis!.getBoundingClientRect().top < window.innerHeight) {
         if (currentPosition > scrollTop) {
@@ -506,67 +588,68 @@ const LandingPage: React.FC<{}> = () => {
   ]);
 
   return (
-    <>
+    <SteppersProvider>
       <div className="wrapper bg-blue-midnightexpress blurred-bg-image">
-        <div className="container m-auto">
-          <Navigation />
-          <Intro />
-          <BeforeGenesis />
-          <GenesisBlock />
-          <EIPByzantium />
-          <EIPConstantinopole />
-          <EIP1559 />
-          <BlockGoal />
-          <div
-            data-aos="fade-up"
-            data-aos-anchor-placement="top-bottom"
-            data-aos-offset="100"
-            data-aos-delay="100"
-            data-aos-duration="1000"
-            data-aos-easing="ease-in-out"
-            className="flex flex-col px-4 md:px-0 mt-20 mb-16"
-            id="supplyview"
-          >
-            <div className="w-full md:w-5/6 lg:w-5/6 md:m-auto relative bg-blue-tangaroa md:px-8 py-4 md:py-16 rounded-xl">
-              <SupplyView />
-            </div>
-            <div className="flex flex-wrap justify-center pt-20">
-              <div id="line__supplyview" className="eclips-hr" />
-            </div>
+        {/* <div className="container m-auto"> */}
+        <Navigation />
+        <Intro />
+        <Stepper />
+        <BeforeGenesis />
+        <GenesisBlock />
+        <EIPByzantium />
+        <EIPConstantinopole />
+        <EIP1559 />
+        <BlockGoal />
+        <div
+          data-aos="fade-up"
+          data-aos-anchor-placement="top-bottom"
+          data-aos-offset="100"
+          data-aos-delay="100"
+          data-aos-duration="1000"
+          data-aos-easing="ease-in-out"
+          className="flex flex-col px-4 md:px-0 mt-6 mb-16"
+          id="supplyview"
+        >
+          <div className="w-full md:w-5/6 lg:w-5/6 md:m-auto relative bg-blue-tangaroa md:px-8 py-4 md:py-16 rounded-xl">
+            <SupplyView />
           </div>
-          <TheMergeBlock />
-          <EtherTheUltraSound />
-          <FaqBlock />
-          <section
-            data-aos="fade-up"
-            data-aos-anchor-placement="top-center"
-            data-aos-delay="50"
-            data-aos-duration="1000"
-            data-aos-easing="ease-in-out"
-            className="flex px-4 md:px-8 lg:px-0 py-8 md:py-40"
-            id="join-the-fam"
-          >
-            <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
-              <TwitterCommunity />
-            </div>
-          </section>
-          <section
-            data-aos="fade-up"
-            data-aos-anchor-placement="top-center"
-            data-aos-delay="50"
-            data-aos-duration="1000"
-            data-aos-easing="ease-in-out"
-            className="flex px-4 md:px-8 lg:px-0 py-24"
-          >
-            <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
-              <FollowingYou />
-            </div>
-          </section>
-          <NftDrop />
-          <TheBurnedCard />
+          <div className="flex flex-wrap justify-center pt-20">
+            <div id="line__supplyview" className="eclips-hr" />
+          </div>
         </div>
+        <TheMergeBlock />
+        <EtherTheUltraSound />
+        <FaqBlock />
+        <section
+          data-aos="fade-up"
+          data-aos-anchor-placement="top-center"
+          data-aos-delay="50"
+          data-aos-duration="1000"
+          data-aos-easing="ease-in-out"
+          className="flex px-4 md:px-8 lg:px-0 py-8 md:py-40"
+          id="join-the-fam"
+        >
+          <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
+            <TwitterCommunity />
+          </div>
+        </section>
+        <section
+          data-aos="fade-up"
+          data-aos-anchor-placement="top-center"
+          data-aos-delay="50"
+          data-aos-duration="1000"
+          data-aos-easing="ease-in-out"
+          className="relative flex px-4 md:px-8 lg:px-0 py-24 z-10"
+        >
+          <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
+            <FollowingYou />
+          </div>
+        </section>
+        <NftDrop />
+        <TheBurnedCard />
+        {/* </div> */}
       </div>
-    </>
+    </SteppersProvider>
   );
 };
 

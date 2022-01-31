@@ -2,12 +2,21 @@ import * as React from "react";
 import ContentBlock from "../ContentBlock/ContentBlcok";
 import IconBlock from "../ContentBlock/IconBlock";
 import { TranslationsContext } from "../../translations-context";
+import { StepperContext } from "../../context/StepperContext";
 
 const TheMergeBlock: React.FC<{}> = () => {
   const t = React.useContext(TranslationsContext);
+  const stepperContext = React.useContext(StepperContext);
+  const MergeRef = React.useRef<HTMLDivElement | null>(null);
+
+  React.useEffect(() => {
+    if (stepperContext && MergeRef.current) {
+      stepperContext.addStepperELement(MergeRef, "Merge");
+    }
+  }, []);
   return (
     <>
-      <section id="next-merge">
+      <section id="next-merge" ref={MergeRef}>
         <ContentBlock
           title={t.landing_themerge_title}
           text={t.landing_themerge_text}

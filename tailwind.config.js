@@ -41,6 +41,10 @@ module.exports = {
       width: {
         "w-23": "23%",
         "w-21": "21%",
+        "w-38": "38%",
+        "w-34": "34%",
+        "w-32": "30%",
+        "w-55": "55%",
       },
       spacing: {
         "42": "165px",
@@ -64,6 +68,8 @@ module.exports = {
       fontSize: {
         "41xl": "2.5rem",
         "21xl": "1.87rem",
+        "32xl": "2rem",
+        "28xl": "1.75rem",
       },
       inset: {
         "128": "32rem",
@@ -71,6 +77,9 @@ module.exports = {
       scale: {
         "gauge-md": "0.65",
       },
+      padding: {
+        "26": "104px"
+      }
     },
   },
   variants: {},
