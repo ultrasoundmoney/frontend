@@ -8,6 +8,7 @@ import FaqBlock from "./faq";
 import NftDrop from "../NftDrop/index";
 import FollowingYou from "../FollowingYou";
 import TheMergeBlock from "./theMerge";
+import StepperNavigator from "../Navigation/StepperNavigator";
 
 const LandingPage: React.FC<{}> = () => {
   return (
@@ -15,9 +16,14 @@ const LandingPage: React.FC<{}> = () => {
       <div className="wrapper bg-blue-midnightexpress blurred-bg-image">
         <div className="container m-auto">
           <Navigation />
-          <Intro />
+          <div className="w-full">
+            <Intro />
+          </div>
           <TheMergeBlock />
           <EtherTheUltraSound />
+          <section>
+            <StepperNavigator />
+          </section>
           <FaqBlock />
           <section
             data-aos="fade-up"
