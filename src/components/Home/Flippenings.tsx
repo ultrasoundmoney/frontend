@@ -116,7 +116,7 @@ const Flippenings: FC = () => {
       : marketCaps.ethMarketCap / marketCaps.usdM3MarketCap;
 
   return (
-    <WidgetBackground>
+    <WidgetBackground className="self-start">
       <WidgetTitle>flippenings</WidgetTitle>
       <div className="flex flex-col gap-y-4 mt-4">
         <Row

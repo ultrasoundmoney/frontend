@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import CountUp from "react-countup";
+import Skeleton from "react-loading-skeleton";
 import { Unit } from "../denomination";
 import * as Format from "../format";
 import { AmountUnitSpace } from "./Spacing";
@@ -27,22 +28,28 @@ export const Amount: FC<AmountProps> = ({
 
 type MoneyAmountProps = {
   className?: string;
+  skeletonWidth?: string;
   unit: Unit;
   unitPrefix?: string;
 };
 
 export const MoneyAmount: FC<MoneyAmountProps> = ({
-  className,
   children,
-  unitPrefix,
+  className,
+  skeletonWidth = "3rem",
   unit = "eth",
+  unitPrefix,
 }) => (
   <Amount
     className={className}
     unitPostfix={unit === "eth" ? "ETH" : unit === "usd" ? "USD" : unit}
     unitPrefix={unitPrefix}
   >
-    {children}
+    {children === undefined ? (
+      <Skeleton inline={true} width={skeletonWidth} />
+    ) : (
+      children
+    )}
   </Amount>
 );
 
