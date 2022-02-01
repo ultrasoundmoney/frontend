@@ -46,7 +46,7 @@ export const MoneyAmount: FC<MoneyAmountProps> = ({
   </Amount>
 );
 
-type MoneyAmountAnimatedProps = { unit: Unit; children: number };
+type MoneyAmountAnimatedProps = { children: number; unit: Unit };
 
 export const MoneyAmountAnimated: FC<MoneyAmountAnimatedProps> = ({
   children,
