@@ -5,22 +5,50 @@ import * as Format from "../format";
 import { AmountUnitSpace } from "./Spacing";
 import { TextRoboto, UnitText } from "./Texts";
 
-export const Amount: FC<{
+type AmountProps = {
   className?: string;
-  unit: Unit | "months";
+  unitPostfix: string;
   unitPrefix?: string;
-}> = ({ className, children, unitPrefix, unit }) => (
+};
+
+export const Amount: FC<AmountProps> = ({
+  className,
+  children,
+  unitPrefix,
+  unitPostfix,
+}) => (
   <TextRoboto className={`text-base md:text-lg ${className ?? ""}`}>
     {children}
     {unitPrefix}
     <AmountUnitSpace />
-    <UnitText>
-      {unit === "eth" ? "ETH" : unit === "usd" ? "USD" : unit}
-    </UnitText>
+    <UnitText>{unitPostfix}</UnitText>
   </TextRoboto>
 );
 
-export const AnimatedAmount: FC<{ unit: Unit; children: number }> = ({
+type MoneyAmountProps = {
+  className?: string;
+  unit: Unit;
+  unitPrefix?: string;
+};
+
+export const MoneyAmount: FC<MoneyAmountProps> = ({
+  className,
+  children,
+  unitPrefix,
+  unit = "eth",
+}) => (
+  <Amount
+    className={className}
+    unitPostfix={unit === "eth" ? "ETH" : unit === "usd" ? "USD" : unit}
+    unitPrefix={unitPrefix}
+  >
+    {children}
+  </Amount>
+);
+
+type MoneyAmountAnimatedProps = { unit: Unit; children: number };
+
+export const MoneyAmountAnimated: FC<MoneyAmountAnimatedProps> = ({
   children,
   unit,
 }) => (

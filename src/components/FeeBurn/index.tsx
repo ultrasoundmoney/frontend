@@ -13,7 +13,7 @@ import * as Duration from "../../duration";
 import * as Format from "../../format";
 import * as StaticEtherData from "../../static-ether-data";
 import { LimitedTimeFrameNext, TimeFrameNext } from "../../time_frames";
-import { AnimatedAmount } from "../Amount";
+import { MoneyAmountAnimated } from "../Amount";
 import { AmountUnitSpace } from "../Spacing";
 import SpanMoji from "../SpanMoji";
 import { TextInter, TextRoboto } from "../Texts";
@@ -131,7 +131,9 @@ const CumulativeFeeBurn: FC<Props> = ({
         >
           <TextRoboto>
             {selectedFeesBurned !== undefined ? (
-              <AnimatedAmount unit={unit}>{selectedFeesBurned}</AnimatedAmount>
+              <MoneyAmountAnimated unit={unit}>
+                {selectedFeesBurned}
+              </MoneyAmountAnimated>
             ) : (
               <Skeleton inline={true} width="10rem" />
             )}
@@ -152,7 +154,9 @@ const CumulativeFeeBurn: FC<Props> = ({
             </TextInter>
             <TextRoboto className="text-2xl">
               {selectedBurnRate !== undefined ? (
-                <AnimatedAmount unit={unit}>{selectedBurnRate}</AnimatedAmount>
+                <MoneyAmountAnimated unit={unit}>
+                  {selectedBurnRate}
+                </MoneyAmountAnimated>
               ) : (
                 <Skeleton inline={true} width="4rem" />
               )}

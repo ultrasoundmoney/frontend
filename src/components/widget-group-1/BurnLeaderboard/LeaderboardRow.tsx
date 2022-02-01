@@ -12,7 +12,7 @@ import { LeaderboardEntry } from "../../../api/leaderboards";
 import { Unit } from "../../../denomination";
 import { FeatureFlags } from "../../../feature-flags";
 import * as Format from "../../../format";
-import { AnimatedAmount } from "../../Amount";
+import { MoneyAmountAnimated } from "../../Amount";
 import { AmountUnitSpace } from "../../Spacing";
 
 const onSetTwitterHandle = async (
@@ -238,7 +238,7 @@ const LeaderboardRow: FC<Props> = ({
               {fees === undefined ? (
                 <Skeleton inline={true} width="4rem" />
               ) : (
-                <AnimatedAmount unit={unit}>{fees}</AnimatedAmount>
+                <MoneyAmountAnimated unit={unit}>{fees}</MoneyAmountAnimated>
               )}
               <AmountUnitSpace />
               <span className="text-blue-spindle font-extralight">

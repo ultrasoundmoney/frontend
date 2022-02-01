@@ -9,7 +9,7 @@ import { flow, O, OAlt } from "../fp";
 import styles from "../styles/Scrollbar.module.scss";
 import { TimeFrameNext } from "../time_frames";
 import { useActiveBreakpoint } from "../utils/use-active-breakpoint";
-import { AnimatedAmount } from "./Amount";
+import { MoneyAmountAnimated } from "./Amount";
 import { AmountUnitSpace } from "./Spacing";
 import SpanMoji from "./SpanMoji";
 import { TextInter, TextRoboto } from "./Texts";
@@ -37,7 +37,7 @@ const BurnRecordAmount: FC<{ amount: number | undefined; unit: Unit }> = ({
       {amount === undefined ? (
         <Skeleton inline={true} width="4rem" />
       ) : (
-        <AnimatedAmount unit={unit}>{amount}</AnimatedAmount>
+        <MoneyAmountAnimated unit={unit}>{amount}</MoneyAmountAnimated>
       )}
     </TextRoboto>
     <AmountUnitSpace />
