@@ -6,7 +6,7 @@ import * as Format from "../../format";
 import { TimeFrameNext, timeFramesNext } from "../../time_frames";
 import BurnCategories from "../BurnCategories";
 import BurnRecords from "../BurnRecords";
-import FeeBurn from "../FeeBurn";
+import BurnTotal from "../BurnTotal";
 import BurnGauge from "../Gauges/BurnGauge";
 import IssuanceGauge from "../Gauges/IssuanceGauge";
 import SupplyGrowthGauge from "../Gauges/SupplyGrowthGauge";
@@ -97,7 +97,7 @@ const WidgetGroup1: FC<{ featureFlags: FeatureFlags }> = ({ featureFlags }) => {
           gap-y-4 md:gap-x-4 px-4 md:px-16
         `}
       >
-        <FeeBurn
+        <BurnTotal
           onClickTimeFrame={handleClickTimeFrame}
           simulateMerge={simulateMerge}
           timeFrame={timeFrame}

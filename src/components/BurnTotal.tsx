@@ -2,22 +2,18 @@ import * as DateFns from "date-fns";
 import { FC } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
-import {
-  BurnRates,
-  FeesBurned,
-  useGroupedData1,
-} from "../../api/grouped_stats_1";
-import { londonHardforkTimestamp } from "../../dates";
-import { Unit } from "../../denomination";
-import * as Duration from "../../duration";
-import * as Format from "../../format";
-import * as StaticEtherData from "../../static-ether-data";
-import { LimitedTimeFrameNext, TimeFrameNext } from "../../time_frames";
-import { MoneyAmountAnimated } from "../Amount";
-import { AmountUnitSpace } from "../Spacing";
-import SpanMoji from "../SpanMoji";
-import { TextInter, TextRoboto } from "../Texts";
-import { Group1Base } from "../widget-subcomponents";
+import { BurnRates, FeesBurned, useGroupedData1 } from "../api/grouped_stats_1";
+import { londonHardforkTimestamp } from "../dates";
+import { Unit } from "../denomination";
+import * as Duration from "../duration";
+import * as Format from "../format";
+import * as StaticEtherData from "../static-ether-data";
+import { LimitedTimeFrameNext, TimeFrameNext } from "../time_frames";
+import { MoneyAmountAnimated } from "./Amount";
+import { AmountUnitSpace } from "./Spacing";
+import SpanMoji from "./SpanMoji";
+import { TextInter, TextRoboto } from "./Texts";
+import { Group1Base } from "./widget-subcomponents";
 
 const timeframeFeesBurnedMap: Record<
   TimeFrameNext,
@@ -58,7 +54,7 @@ type Props = {
   unit: Unit;
 };
 
-const CumulativeFeeBurn: FC<Props> = ({
+const BurnTotal: FC<Props> = ({
   onClickTimeFrame,
   simulateMerge,
   timeFrame,
@@ -191,4 +187,4 @@ const CumulativeFeeBurn: FC<Props> = ({
   );
 };
 
-export default CumulativeFeeBurn;
+export default BurnTotal;
