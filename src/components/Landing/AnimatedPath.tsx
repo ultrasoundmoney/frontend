@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useSpring, useMotionValue } from "framer-motion";
-// import glowBg from "../../assets/blurred-bg1.svg";
 import glowBg from "../../assets/blurred-bg1.png";
 
 const isElementInViewport = (el: SVGSVGElement) => {
