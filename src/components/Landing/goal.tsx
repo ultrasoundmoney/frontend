@@ -1,7 +1,4 @@
 import * as React from "react";
-import telescope from "../../assets/telescope.svg";
-import smile from "../../assets/smile.svg";
-import roket from "../../assets/roket.svg";
 import { TranslationsContext } from "../../translations-context";
 import ImageBlock from "../ContentBlock/ImageBlock";
 
@@ -34,22 +31,25 @@ const GoalBlcok: React.FC<GoalBlcokProps> = ({ styles }) => {
         />
         <div className="w-full md:flex md:flex-wrap justify-between py-8">
           <ImageBlock
-            image={telescope}
+            image={t.landing_goal_block1_icon}
             title={t.landing_goal_block1_title}
             text={t.landing_goal_block1_text}
             textAlign="start"
+            imageType="twemoji"
           />
           <ImageBlock
-            image={roket}
+            image={t.landing_goal_block2_icon}
             title={t.landing_goal_block2_title}
             text={t.landing_goal_block2_text}
             textAlign="start"
+            imageType="twemoji"
           />
           <ImageBlock
-            image={smile}
+            image={t.landing_goal_block3_icon}
             title={t.landing_goal_block3_title}
             text={t.landing_goal_block3_text}
             textAlign="start"
+            imageType="twemoji"
           />
         </div>
       </section>

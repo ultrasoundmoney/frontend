@@ -358,6 +358,15 @@
     width: 100%;
     transition: all 300ms;
 
+    &_bg {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 100%;
+        transform: translate(-50%,-50%);
+        max-width: 1200px;
+    }
+
     // &::before {
     //     position: absolute;
     //     content: '';

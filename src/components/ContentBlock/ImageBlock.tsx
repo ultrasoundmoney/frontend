@@ -3,6 +3,7 @@ import twemoji from "twemoji";
 
 type ContentBlockProps = {
   image?: string;
+  imageType?: "twemoji";
   title: string;
   text: string;
   styles?: string;
@@ -17,6 +18,7 @@ type ContentBlockProps = {
 };
 const ImageBlock: React.FC<ContentBlockProps> = ({
   image,
+  imageType,
   title,
   text,
   styles,
@@ -31,10 +33,18 @@ const ImageBlock: React.FC<ContentBlockProps> = ({
   return (
     <>
       <div className={getClassName}>
-        {image && (
+        {image && !imageType && (
           <div className={`icon-emoji text-${textAlign || "center"}`}>
             <img src={image} alt="image" />
           </div>
+        )}
+        {image && imageType === "twemoji" && (
+          <div
+            className={`icon-emoji text-${textAlign || "center"}`}
+            dangerouslySetInnerHTML={{
+              __html: twemoji.parse(image),
+            }}
+          />
         )}
         <h1
           className={`text-white font-light text-base text-${
