@@ -282,6 +282,35 @@
         }
     }
 
+    @media screen and (min-width: 768px){
+        .merge-path_animated {
+            left: calc(50% - 20px);
+            margin: initial;
+        }
+        .merge-icon-block {
+            max-width: 240px;
+
+            &:nth-child(1) {
+                right: calc(50% + 30px);
+            }
+
+            &:nth-child(2) {
+                top: 70px;
+                left: calc(50% + 30px);
+            }
+        }
+    }
+
+    @media screen and (min-width: 1172px){
+        .merge-icon-block {
+            &:nth-child(2) {
+                top: 300px;
+                left: calc(50% + 210px);
+            }
+        }
+    }
+
+
     @media (max-width: 1024px) {
         .merge-path_static {
             width: 190px;

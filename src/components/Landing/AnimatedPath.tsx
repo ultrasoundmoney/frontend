@@ -14,7 +14,7 @@ const isElementInViewport = (el: SVGSVGElement) => {
 
 const points = {
   left: "20 20 20 800",
-  right: "120 300 120 800 20 840 20 920",
+  right: "190 300 190 800 20 840 20 920",
 };
 const dots = [
   {
@@ -48,13 +48,13 @@ const dots = [
     isAnimated: false,
   },
   {
-    x: 120,
+    x: 190,
     y: 300,
     animatedOn: 0,
     isAnimated: false,
   },
   {
-    x: 120,
+    x: 190,
     y: 600,
     animatedOn: 0.45,
     isAnimated: false,
@@ -88,12 +88,12 @@ const dashed = [
     isAnimated: false,
   },
   {
-    points: "120 300 120 600",
+    points: "190 300 190 600",
     animatedOn: 0.45,
     isAnimated: false,
   },
   {
-    points: "120 600 120 800 20 840",
+    points: "190 600 190 800 20 840",
     animatedOn: 0.92,
     isAnimated: false,
   },
