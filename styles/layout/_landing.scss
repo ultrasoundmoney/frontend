@@ -219,6 +219,19 @@
     }
 }
 
+.stepper_nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    transition: all .2s ease;
+    transform: translateY(-100%);
+
+    &.active {
+        transform: translateY(0);
+    }
+}
+
 .the-merge-path {
     position: relative;
 
@@ -409,7 +422,7 @@
 }
 
 .flame {
-    animation-name: flamefly;
+    animation-ame: flamefly;
     animation-duration: 2s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;

@@ -37,13 +37,17 @@ const Stepper: React.FC = () => {
   );
 
   useEffect(() => {
-    const offsetTop = stepsRef.current?.offsetTop;
+    // const offsetTop = stepsRef.current?.offsetTop;
+    controlPoints[0] &&
+    controlPoints[0]?.offsetY < window.scrollY + window.innerHeight / 2
+      ? stepsRef.current?.classList.add("active")
+      : stepsRef.current?.classList.remove("active");
     const onScroll = () => {
-      if (offsetTop) {
-        if (steperIconRef && steperIconRef.current) {
-          steperIconRef.current.style.left = `${getIconOffset(controlPoints)}%`;
-        }
+      // if (offsetTop) {
+      if (steperIconRef && steperIconRef.current) {
+        steperIconRef.current.style.left = `${getIconOffset(controlPoints)}%`;
       }
+      // }
     };
     window.addEventListener("scroll", onScroll);
     return () => {
@@ -54,7 +58,7 @@ const Stepper: React.FC = () => {
   return (
     <nav
       ref={stepsRef}
-      className="sticky top-0 left-0 w-full flex justify-between md:justify-start p-3 bg-blue-tangaroa z-50"
+      className="stepper_nav sticky top-0 left-0 w-full flex justify-between md:justify-start p-3 bg-blue-tangaroa z-50"
     >
       <div className="w-full px-1 md:px-4 mx-auto flex flex-wrap items-center justify-between">
         <Steps ref={steperIconRef} controlPoints={controlPoints} />
