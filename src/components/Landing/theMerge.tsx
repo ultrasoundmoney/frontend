@@ -26,7 +26,7 @@ const TheMergeBlock: React.FC<{}> = () => {
         />
         <div
           id="the-merge"
-          className="the-merge-path flex flex-col w-full sm:w-9/12 mx-auto"
+          className="the-merge-path flex flex-col w-full sm:w-9/12 mx-auto max-w-4xl"
         >
           <div
             data-aos="fade-up"
