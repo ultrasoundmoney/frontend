@@ -26,7 +26,7 @@ const Nav = () => {
   )}  <span class="pl-1">⛽️${gewi.standard} Gwei</span>`;
 
   return (
-    <nav className="relative flex flex-wrap items-center justify-between px-2 py-6 bg-transparent mb-3">
+    <nav className="relative flex flex-wrap items-center justify-between px-2 py-6 bg-transparent mb-3 z-10">
       <div className="container px-1 md:px-4 mx-auto flex flex-wrap items-center justify-between">
         <div className="w-full md:w-6/12 relative flex justify-start lg:static lg:justify-start">
           <div className="flex-initial pr-2 lg:pr-8">
