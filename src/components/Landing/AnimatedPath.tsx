@@ -132,11 +132,7 @@ const AnimatedPath: React.FC<{}> = () => {
     const rect = el.getBoundingClientRect();
     const offset = window.innerHeight / 2;
     if (rect.y - offset < 0) {
-      let progress = ((rect.y - offset) * -1) / rect.height;
-      const lastProgress = animationYProgress.get();
-      if (progress < lastProgress) {
-        progress = lastProgress;
-      }
+      const progress = ((rect.y - offset) * -1) / rect.height;
       return progress > 1 ? 1 : progress;
     }
     return 0;
@@ -157,10 +153,6 @@ const AnimatedPath: React.FC<{}> = () => {
   useEffect(() => {
     if (pathRef.current)
       if (isElementInViewport(pathRef.current)) {
-        const pathLengthProgress = pathLength.get();
-        // if animated done
-        if (pathLengthProgress === 1) return;
-
         // get event scroll progress
         const progress = getScrollProgress(pathRef.current);
 
@@ -170,23 +162,27 @@ const AnimatedPath: React.FC<{}> = () => {
         // show green points
         setDotsState((prevState) => {
           return prevState.map((dot) =>
-            dot.animatedOn < pathLengthProgress
+            dot.animatedOn < progress
               ? { ...dot, isAnimated: true }
-              : dot
+              : { ...dot, isAnimated: false }
           );
         });
 
         // show dashed path
         setDashedState((prevState) => {
           return prevState.map((dashedItem) =>
-            dashedItem.animatedOn < pathLengthProgress
+            dashedItem.animatedOn < progress
               ? { ...dashedItem, isAnimated: true }
-              : dashedItem
+              : { ...dashedItem, isAnimated: false }
           );
         });
 
+        // show glow
+        progress >= 0.8 ? setGlowIsShow(true) : setGlowIsShow(false);
+
         // forced animated
-        if (pathLengthProgress > 0.7) {
+        progress < 0.1 && animationYProgress.set(0);
+        if (progress > 0.8) {
           animationYProgress.set(1);
           setDotsState((prevState) =>
             prevState.map((dot) => ({ ...dot, isAnimated: true }))
@@ -194,8 +190,6 @@ const AnimatedPath: React.FC<{}> = () => {
           setDashedState((prevState) =>
             prevState.map((dashedItem) => ({ ...dashedItem, isAnimated: true }))
           );
-          // show glow
-          setGlowIsShow(true);
         }
       }
   }, [scrollYProgress, pathRef]);
@@ -240,17 +234,6 @@ const AnimatedPath: React.FC<{}> = () => {
               pathLength: pathLength,
             }}
           />
-          {dotsState.map((dot, index) => (
-            <motion.circle
-              key={index}
-              cx={dot.x}
-              cy={dot.y}
-              r="4"
-              fill="#00ffa3"
-              variants={dotVariants}
-              animate={dot.isAnimated ? "visible" : "hidden"}
-            />
-          ))}
           {dashedState.map((dashedItem, index) => (
             <motion.polyline
               key={index}
@@ -263,6 +246,17 @@ const AnimatedPath: React.FC<{}> = () => {
               strokeDasharray="4 4"
               variants={dashedVariants}
               animate={dashedItem.isAnimated ? "visible" : "hidden"}
+            />
+          ))}
+          {dotsState.map((dot, index) => (
+            <motion.circle
+              key={index}
+              cx={dot.x}
+              cy={dot.y}
+              r="4"
+              fill="#00ffa3"
+              variants={dotVariants}
+              animate={dot.isAnimated ? "visible" : "hidden"}
             />
           ))}
         </motion.svg>
