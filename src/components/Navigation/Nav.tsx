@@ -26,7 +26,7 @@ const Nav = () => {
   )}  <span class="pl-1">⛽️${gewi.standard} Gwei</span>`;
 
   return (
-    <nav className="relative flex flex-wrap items-center justify-between px-2 py-6 bg-transparent mb-3">
+    <nav className="relative flex flex-wrap items-center justify-between px-2 py-6 bg-transparent mb-3 z-10">
       <div className="container px-1 md:px-4 mx-auto flex flex-wrap items-center justify-between">
         <div className="w-full md:w-6/12 relative flex justify-start lg:static lg:justify-start">
           <div className="flex-initial pr-2 lg:pr-8">
@@ -42,20 +42,20 @@ const Nav = () => {
           />
         </div>
         <div className="w-full md:w-6/12 hidden md:block" id="menu">
-          <ul className="flex flex-col md:flex-row justify-end list-none mt-4 md:mt-0 relative">
-            <li className="nav-item lg:px-4 xl:px-8 justify-center">
+          <ul className="flex flex-col md:flex-row justify-end list-none mt-4 md:mt-0 relative text-sm">
+            <li className="nav-item px-6 justify-center">
               <Link href="#faq">
                 <a
-                  className="px-3 py-2 flex items-center text-xs leading-snug text-blue-shipcove hover:opacity-75 hover:text-white hover:cursor-pointer"
+                  className="px-3 py-2 flex items-center leading-snug text-blue-shipcove hover:opacity-75 hover:text-white hover:cursor-pointer"
                   href="#faq"
                 >
                   FAQ
                 </a>
               </Link>
             </li>
-            <li className="nav-item lg:px-4 xl:px-8 justify-center">
+            <li className="nav-item pl-16 justify-center">
               <a
-                className="px-3 py-2 flex items-center font-medium text-sm  text-white hover:text-blue-shipcove border-white border-solid border-2 rounded-3xl hover:border-blue-shipcove"
+                className="px-5 py-2 flex items-center font-medium text-white hover:text-blue-shipcove border-white border-solid border-2 rounded-3xl hover:border-blue-shipcove"
                 href="#join-the-fam"
               >
                 join the fam
