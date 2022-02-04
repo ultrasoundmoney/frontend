@@ -40,9 +40,6 @@ const EIPConstantinopole: React.FC<{}> = () => {
             }}
           />
         </div>
-        {/*<div className="flex flex-wrap justify-center">*/}
-        {/*  <div id="line__constantinople" className="eclips-hr" />*/}
-        {/*</div>*/}
       </section>
     </>
   );

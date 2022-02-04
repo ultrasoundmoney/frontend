@@ -31,7 +31,7 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
         if (item) {
           return {
             ...item,
-            active: window.pageYOffset > item.offsetY - window.innerHeight / 2,
+            active: window.scrollY > item.offsetY - window.innerHeight / 2,
           };
         }
       });

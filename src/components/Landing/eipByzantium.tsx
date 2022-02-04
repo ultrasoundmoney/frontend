@@ -41,9 +41,6 @@ const EIPByzantium: React.FC<{}> = () => {
             }}
           />
         </div>
-        {/*<div className="flex flex-wrap justify-center">*/}
-        {/*  <div id="line__byzantium" className="eclips-hr" />*/}
-        {/*</div>*/}
       </section>
     </>
   );

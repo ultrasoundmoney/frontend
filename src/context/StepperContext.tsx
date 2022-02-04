@@ -27,14 +27,6 @@ const SteppersProvider: FC = ({ children }) => {
   ) => {
     if (newElementRef && newElementRef.current) {
       const rect = newElementRef.current?.getBoundingClientRect();
-      // setStepperElements((prevState: { [key: string]: StepperPoint }): any => ({
-      //   ...prevState,
-      //   [elementName]: {
-      //     offsetY: newElementRef?.current?.offsetTop,
-      //     name: elementName,
-      //     height: newElementRef?.current?.clientHeight,
-      //   },
-      // }));
       setStepperElements((prevState: { [key: string]: StepperPoint }): any => ({
         ...prevState,
         [elementName]: {

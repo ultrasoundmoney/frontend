@@ -23,9 +23,6 @@ const BeforeGenesis: React.FC = () => {
             {t.landing_before_genesis_text}
           </p>
         </div>
-        <div className="flex flex-wrap justify-center">
-          <div id="line__before__genesis" className="eclips-hr" />
-        </div>
       </section>
     </>
   );
