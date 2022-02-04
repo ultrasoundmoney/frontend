@@ -121,7 +121,7 @@ const AnimatedPath: React.FC<{}> = () => {
   const [dashedState, setDashedState] = useState(dashed);
   const [glowIsShow, setGlowIsShow] = useState(false);
   const [scrollYProgress, setScrollYProgress] = useState(0);
-  const animationYProgress = useMotionValue(0);
+  const animationYProgress = useMotionValue<number>(0);
   const pathLength = useSpring(animationYProgress, {
     stiffness: 400,
     damping: 90,

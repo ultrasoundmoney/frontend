@@ -1,6 +1,7 @@
 import * as React from "react";
 import { StepperContext } from "../../context/StepperContext";
 import { TranslationsContext } from "../../translations-context";
+import DrawingLine from "./DrawingLine";
 
 const EIPConstantinopole: React.FC<{}> = () => {
   const t = React.useContext(TranslationsContext);
@@ -14,6 +15,7 @@ const EIPConstantinopole: React.FC<{}> = () => {
   }, []);
   return (
     <>
+      <DrawingLine pointRef={constantinopoleRef} />
       <section
         data-aos="fade-up"
         data-aos-anchor-placement="top-bottom"
@@ -38,9 +40,9 @@ const EIPConstantinopole: React.FC<{}> = () => {
             }}
           />
         </div>
-        <div className="flex flex-wrap justify-center">
-          <div id="line__constantinople" className="eclips-hr" />
-        </div>
+        {/*<div className="flex flex-wrap justify-center">*/}
+        {/*  <div id="line__constantinople" className="eclips-hr" />*/}
+        {/*</div>*/}
       </section>
     </>
   );

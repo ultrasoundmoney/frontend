@@ -1,0 +1,64 @@
+$line_height: 400px;
+$wrap_height: $line_height + 34px;
+$color_point: #00FFA3;
+
+.drawing_line {
+  height: $wrap_height;
+  position: relative;
+
+  &_container {
+    overflow: hidden;
+    height: 100%;
+  }
+
+  &_path {
+    height: $line_height;
+    position: relative;
+    width: 4px;
+    margin: auto;
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='white' stroke-width='1' stroke-dasharray='4%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+    transform: translateX(2px);
+
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 3px;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background: #131827;
+    }
+  }
+
+  &_point {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid $color_point;
+    margin: 10px auto 0;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity .2s ease;
+    opacity: 0;
+
+    &:after {
+      content: "";
+      height: 8px;
+      width: 8px;
+      border-radius: 50%;
+      background-color: $color_point;
+    }
+  }
+
+  &_active {
+    .drawing_line_point {
+      opacity: 1;
+    }
+  }
+}

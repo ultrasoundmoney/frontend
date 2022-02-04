@@ -43,6 +43,8 @@ const Stepper: React.FC = () => {
       ? stepsRef.current?.classList.add("active")
       : stepsRef.current?.classList.remove("active");
     const onScroll = () => {
+      // console.log(window.scrollY)
+      // console.log(controlPoints)
       // if (offsetTop) {
       if (steperIconRef && steperIconRef.current) {
         steperIconRef.current.style.left = `${getIconOffset(controlPoints)}%`;

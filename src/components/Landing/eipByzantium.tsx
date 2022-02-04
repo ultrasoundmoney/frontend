@@ -1,6 +1,7 @@
 import * as React from "react";
 import { StepperContext } from "../../context/StepperContext";
 import { TranslationsContext } from "../../translations-context";
+import DrawingLine from "./DrawingLine";
 
 const EIPByzantium: React.FC<{}> = () => {
   const t = React.useContext(TranslationsContext);
@@ -15,6 +16,7 @@ const EIPByzantium: React.FC<{}> = () => {
 
   return (
     <>
+      <DrawingLine pointRef={byzantiumRef} />
       <section
         data-aos="fade-up"
         data-aos-anchor-placement="top-bottom"
@@ -39,9 +41,9 @@ const EIPByzantium: React.FC<{}> = () => {
             }}
           />
         </div>
-        <div className="flex flex-wrap justify-center">
-          <div id="line__byzantium" className="eclips-hr" />
-        </div>
+        {/*<div className="flex flex-wrap justify-center">*/}
+        {/*  <div id="line__byzantium" className="eclips-hr" />*/}
+        {/*</div>*/}
       </section>
     </>
   );
