@@ -25,12 +25,12 @@ const TheUltraSound: React.FC<{}> = () => {
         </div>
         <div
           id="graph_svg"
-          className="w-full flex flex-wrap justify-center m-auto md:px-20"
+          className="w-full md:w-11/12 flex flex-wrap justify-center m-auto md:px-20"
         >
-          <div className="w-full md:w-7/12 self-center order-2 md:order-1">
+          <div className="w-full md:w-6/12 self-center order-2 md:order-1">
             <SVGrenderText typ={cryptoType} />
           </div>
-          <div className="w-full md:w-5/12 order-1 md:order-1">
+          <div className="w-full md:w-6/12 order-1 md:order-1">
             <div className="flex flex-wrap justify-center text-center">
               <div
                 onClick={() => {
