@@ -139,7 +139,7 @@ const Home: FC = () => {
           title="monetary premium"
           subtitle="the race to become the most desirable money"
         />
-        <div className="grid grid-cols-2 gap-y-4 lg:gap-4 px-4 md:px-16">
+        <div className="grid lg:grid-cols-2 gap-y-4 lg:gap-4 px-4 md:px-16">
           <Scarcity />
           {featureFlags.showFairPrice && <FairPrice />}
           <Flippenings />
