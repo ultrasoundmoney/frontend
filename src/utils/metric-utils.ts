@@ -15,7 +15,7 @@ export function estimatedDailyIssuance(ethStaked: number): number {
   const maxBalanceAtStake = activeValidators * MAX_EFFECTIVE_BALANCE;
   const MAX_ISSUANCE_PER_EPOCH = Math.floor(
     (BASE_REWARD_FACTOR * maxBalanceAtStake) /
-      integerSquareRoot(maxBalanceAtStake)
+      integerSquareRoot(maxBalanceAtStake),
   );
   const MAX_ISSUANCE_PER_DAY = MAX_ISSUANCE_PER_EPOCH * EPOCHS_PER_DAY;
   return Math.floor(MAX_ISSUANCE_PER_DAY / GWEI_PER_ETH);
@@ -34,7 +34,7 @@ export function estimatedDailyStakeChange(ethStaked: number): number {
   const validator_count = Math.floor(ethStaked / MAX_ETH_PER_VALIDATOR);
   const max_validator_churn_per_epoch = Math.max(
     4,
-    Math.floor(validator_count / 65536)
+    Math.floor(validator_count / 65536),
   );
   return max_validator_churn_per_epoch * MAX_ETH_PER_VALIDATOR * EPOCHS_PER_DAY;
 }
@@ -56,6 +56,7 @@ export function formatDate(d: Date): string {
     "Dec",
   ];
   return (
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
     (date.getDate() < 10 ? " " : "") +
     date.getDate() +
     " " +
