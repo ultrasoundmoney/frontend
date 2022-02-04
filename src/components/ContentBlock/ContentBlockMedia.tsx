@@ -21,13 +21,13 @@ const ContentBlockMedia: React.FC<ContentBlockMediaProps> = ({
         />
       )}
       <h1
-        className="text-white font-light text-base md:text-2xl leading-normal text-left mb-6 leading-title"
+        className="text-white font-light text-base md:text-2xl leading-normal text-center md:text-left mb-6 leading-title"
         dangerouslySetInnerHTML={{
           __html: title,
         }}
       />
       <p
-        className="text-blue-shipcove font-light text-sm text-left mb-10"
+        className="text-blue-shipcove font-light text-sm mb-10 text-center md:text-left"
         dangerouslySetInnerHTML={{
           __html: text,
         }}

@@ -7,10 +7,10 @@ const SVGrender: React.FC<{ typ: string }> = ({ typ }) => {
   if (typ === "eth") {
     return (
       <>
-        <div className="tt">
+        <div className="graph_text_eth">
           <ContentBlockMedia
             title={t.eusm_row_2_title}
-            text={t.eusm_row_2_title}
+            text={t.eusm_row_2_text}
           />
         </div>
       </>
@@ -18,10 +18,10 @@ const SVGrender: React.FC<{ typ: string }> = ({ typ }) => {
   } else if (typ === "btc") {
     return (
       <>
-        <div className="tt">
+        <div className="graph_text_btc">
           <ContentBlockMedia
             title={t.eusm_row_3_title}
-            text={t.eusm_row_3_title}
+            text={t.eusm_row_3_text}
           />
         </div>
       </>
@@ -29,10 +29,10 @@ const SVGrender: React.FC<{ typ: string }> = ({ typ }) => {
   } else if (typ === "usd") {
     return (
       <>
-        <div className="tt">
+        <div className="graph_text_usd">
           <ContentBlockMedia
             title={t.eusm_row_4_title}
-            text={t.eusm_row_4_title}
+            text={t.eusm_row_4_text}
           />
         </div>
       </>
@@ -40,10 +40,10 @@ const SVGrender: React.FC<{ typ: string }> = ({ typ }) => {
   } else {
     return (
       <>
-        <div className="tt">
+        <div className="graph_text_usd">
           <ContentBlockMedia
             title={t.eusm_row_2_title}
-            text={t.eusm_row_2_title}
+            text={t.eusm_row_2_text}
           />
         </div>
       </>
