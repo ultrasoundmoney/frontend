@@ -2,12 +2,16 @@ import * as React from "react";
 import BatImg from "../../assets/bat.png";
 import { TranslationsContext } from "../../translations-context";
 import SVGrenderText from "./BTCETH/generateText";
+import DrawingLine from "./DrawingLine";
+import { useRef } from "react";
 
 const TheUltraSound: React.FC<{}> = () => {
   const t = React.useContext(TranslationsContext);
+  const ref = useRef(null);
   const [cryptoType, setCryptoType] = React.useState("none");
   return (
     <>
+      <DrawingLine pointRef={ref} />
       <section
         id="enter-ultra-sound"
         className="enther-ultr-sound py-8 px-4 md:px-8 lg:px-0 relative"
