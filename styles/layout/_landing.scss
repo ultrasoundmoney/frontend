@@ -219,6 +219,33 @@
     }
 }
 
+.stepper_nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    transition: all .2s ease;
+    transform: translateY(-100%);
+
+    &.active {
+        transform: translateY(0);
+    }
+
+    .track_wrapper {
+        position: absolute;
+        width: calc(100% - 40px);
+        height: 100%;
+
+        & > div {
+            transform: translateX(-50%);
+        }
+
+        img {
+            margin: 0;
+        }
+    }
+}
+
 .the-merge-path {
     position: relative;
 
@@ -281,6 +308,35 @@
             margin: 0;
         }
     }
+
+    @media screen and (min-width: 768px){
+        .merge-path_animated {
+            left: calc(50% - 20px);
+            margin: initial;
+        }
+        .merge-icon-block {
+            max-width: 240px;
+
+            &:nth-child(1) {
+                right: calc(50% + 30px);
+            }
+
+            &:nth-child(2) {
+                top: 70px;
+                left: calc(50% + 30px);
+            }
+        }
+    }
+
+    @media screen and (min-width: 1172px){
+        .merge-icon-block {
+            &:nth-child(2) {
+                top: 300px;
+                left: calc(50% + 210px);
+            }
+        }
+    }
+
 
     @media (max-width: 1024px) {
         .merge-path_static {
@@ -409,7 +465,7 @@
 }
 
 .flame {
-    animation-name: flamefly;
+    animation-ame: flamefly;
     animation-duration: 2s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;

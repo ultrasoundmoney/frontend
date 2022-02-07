@@ -2,12 +2,16 @@ import * as React from "react";
 import BatImg from "../../assets/bat.png";
 import { TranslationsContext } from "../../translations-context";
 import SVGrenderText from "./BTCETH/generateText";
+import DrawingLine from "./DrawingLine";
+import { useRef } from "react";
 
 const TheUltraSound: React.FC<{}> = () => {
   const t = React.useContext(TranslationsContext);
+  const ref = useRef(null);
   const [cryptoType, setCryptoType] = React.useState("none");
   return (
     <>
+      <DrawingLine pointRef={ref} />
       <section
         id="enter-ultra-sound"
         className="enther-ultr-sound py-8 px-4 md:px-8 lg:px-0 relative"
@@ -25,12 +29,12 @@ const TheUltraSound: React.FC<{}> = () => {
         </div>
         <div
           id="graph_svg"
-          className="w-full flex flex-wrap justify-center m-auto md:px-20"
+          className="w-full md:w-9/12 flex flex-wrap justify-center m-auto"
         >
-          <div className="w-full md:w-7/12 self-center order-2 md:order-1">
+          <div className="w-full md:w-7/12 self-center order-2 md:order-1 md:px-20">
             <SVGrenderText typ={cryptoType} />
           </div>
-          <div className="w-full md:w-5/12 order-1 md:order-1">
+          <div className="w-full md:w-5/12 order-1 md:order-1 mb-6 md:mb-0">
             <div className="flex flex-wrap justify-center text-center">
               <div
                 onClick={() => {
