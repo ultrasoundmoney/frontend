@@ -230,6 +230,20 @@
     &.active {
         transform: translateY(0);
     }
+
+    .track_wrapper {
+        position: absolute;
+        width: calc(100% - 40px);
+        height: 100%;
+
+        & > div {
+            transform: translateX(-50%);
+        }
+
+        img {
+            margin: 0;
+        }
+    }
 }
 
 .the-merge-path {

@@ -47,18 +47,20 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
     }, [getActiveBalls]);
 
     return (
-      <div className="w-full h-full md:w-9/12 relative flex justify-around lg:justify-around items-center relative">
-        <div
-          ref={ref}
-          style={{
-            minWidth: "32px",
-            transition: "0.3s ease-in-out",
-          }}
-          className={`absolute top-0`}
-        >
-          <Link href="/">
-            <img style={{ height: "32px" }} src={EthLogo} alt={t.title} />
-          </Link>
+      <div className="w-full h-full md:w-9/12 relative flex justify-around lg:justify-around items-center">
+        <div className="track_wrapper">
+          <div
+            ref={ref}
+            style={{
+              minWidth: "32px",
+              transition: "0.3s ease-in-out",
+            }}
+            className={`absolute top-0 flex justify-center`}
+          >
+            <Link href="/">
+              <img style={{ height: "32px" }} src={EthLogo} alt={t.title} />
+            </Link>
+          </div>
         </div>
         <div className="flex w-full justify-around items-start">
           {activeBalls &&
