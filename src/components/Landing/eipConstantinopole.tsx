@@ -24,7 +24,6 @@ const EIPConstantinopole: React.FC<{}> = () => {
         data-aos-duration="1000"
         data-aos-easing="ease-in-out"
         id="eip-constantinople"
-        ref={constantinopoleRef}
       >
         <div className="flex flex-col justify-center w-full md:w-w-34 md:mx-auto pt-56 px-4 md:px-0">
           <p className="text-blue-shipcove font-light text-sm text-center mb-6 font-inter">

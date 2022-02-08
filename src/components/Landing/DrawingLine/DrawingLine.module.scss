@@ -5,6 +5,7 @@ $color_point: #00FFA3;
 .drawing_line {
   height: $wrap_height;
   position: relative;
+  z-index: 3;
 
   &_container {
     overflow: hidden;
