@@ -54,8 +54,8 @@ const Card: React.FC<CardProps> = ({
   };
   const getClass =
     className != undefined || className != null
-      ? `card bg-blue-tangaroa rounded-lg py-3 md:m-2 px-8 ${className}`
-      : `card bg-blue-tangaroa rounded-lg py-3 md:m-2 px-8`;
+      ? `card bg-blue-tangaroa rounded-lg py-3 px-8 ${className}`
+      : `card bg-blue-tangaroa rounded-lg py-3 px-8`;
   return (
     <>
       <div id={id} className={getClass}>
