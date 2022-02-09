@@ -1,17 +1,84 @@
 import * as React from "react";
+import { useEffect, useRef } from "react";
 import BatImg from "../../assets/bat.png";
 import { TranslationsContext } from "../../translations-context";
 import SVGrenderText from "./BTCETH/generateText";
 import DrawingLine from "./DrawingLine";
-import { useRef } from "react";
 
 const TheUltraSound: React.FC<{}> = () => {
   const t = React.useContext(TranslationsContext);
-  const ref = useRef(null);
-  const [cryptoType, setCryptoType] = React.useState("none");
+  const pointRef = useRef(null);
+  const graphRef = useRef<HTMLDivElement>(null);
+  const [cryptoType, setCryptoType] = React.useState<string>("none");
+  const [step, setStep] = React.useState<number>(0);
+  const [allow, setAllow] = React.useState<boolean>(true);
+  const [disableScroll, setDisableScroll] = React.useState<boolean>(false);
+  const [event, setEvent] = React.useState<WheelEvent | null>(null);
+  const tabs = ["none", "btc", "eth", "usd"];
+  let timeoutId: null | ReturnType<typeof setTimeout> = null;
+
+  const onScroll = (e: WheelEvent) => {
+    if (graphRef?.current) {
+      const rect = graphRef.current.getBoundingClientRect();
+      const elPosition = window.scrollY + rect.top;
+      const from = elPosition - window.innerHeight / 2;
+      const to = elPosition + (window.innerHeight - window.innerHeight / 3);
+      const scrollTriggerStart = window.scrollY < to && window.scrollY > from;
+      scrollTriggerStart && setEvent(e);
+    }
+  };
+
+  useEffect(() => {
+    if (event) {
+      const direction = event.deltaY < 0 ? "up" : "down";
+      // block wheel event
+      const disableScroll =
+        (direction === "down" && step <= tabs.length) ||
+        (direction === "up" && step >= 1);
+      setDisableScroll(disableScroll);
+      disableScroll && graphRef?.current?.scrollIntoView({ block: "center" });
+    }
+    // set new step
+    if (allow && event) {
+      event.deltaY < 0
+        ? setStep((prevState) => (prevState <= 0 ? 0 : prevState - 1))
+        : setStep((prevState) =>
+            prevState > tabs.length ? prevState : prevState + 1
+          );
+    }
+  }, [event]);
+
+  useEffect(() => {
+    disableScroll
+      ? (document.body.style.overflowY = "hidden")
+      : (document.body.style.overflowY = "auto");
+  }, [disableScroll]);
+
+  useEffect(() => {
+    // change tab
+    if (tabs[step - 1]) setCryptoType(tabs[step - 1]);
+
+    // delay
+    setAllow(false);
+    timeoutId = setTimeout(() => setAllow(true), 1500);
+  }, [step]);
+
+  useEffect(() => {
+    window.addEventListener("wheel", onScroll, { passive: false });
+    return () => {
+      window.removeEventListener("wheel", onScroll);
+      timeoutId && clearTimeout(timeoutId);
+    };
+  }, []);
+
+  const setSpecificTab = (currency = "none") => {
+    const index = tabs.indexOf(currency);
+    index && setStep(index + 1);
+  };
+
   return (
     <>
-      <DrawingLine pointRef={ref} />
+      <DrawingLine pointRef={pointRef} />
       <section
         id="enter-ultra-sound"
         className="enther-ultr-sound py-8 px-4 md:px-8 lg:px-0 relative"
@@ -29,6 +96,7 @@ const TheUltraSound: React.FC<{}> = () => {
         </div>
         <div
           id="graph_svg"
+          ref={graphRef}
           className="w-full md:w-9/12 flex flex-wrap justify-center m-auto"
         >
           <div className="w-full md:w-7/12 self-center order-2 md:order-1 md:px-20">
@@ -38,7 +106,7 @@ const TheUltraSound: React.FC<{}> = () => {
             <div className="flex flex-wrap justify-center text-center">
               <div
                 onClick={() => {
-                  setCryptoType("btc");
+                  setSpecificTab("btc");
                 }}
                 className={`pl-10 pr-6 py-3 text-sm text-white rounded-lg font-roboto leading-none span--btc transition-all delay-200 duration-100 mx-2 ${
                   cryptoType === "btc"
@@ -50,7 +118,7 @@ const TheUltraSound: React.FC<{}> = () => {
               </div>
               <div
                 onClick={() => {
-                  setCryptoType("eth");
+                  setSpecificTab("eth");
                 }}
                 className={`pl-10 pr-6 py-3 text-sm text-white rounded-lg font-roboto leading-none span--eth transition-all delay-200 duration-100 mx-2 ${
                   cryptoType === "eth"
@@ -62,7 +130,7 @@ const TheUltraSound: React.FC<{}> = () => {
               </div>
               <div
                 onClick={() => {
-                  setCryptoType("usd");
+                  setSpecificTab("usd");
                 }}
                 className={`pl-10 pr-6 py-3 text-sm text-white rounded-lg font-roboto leading-none span--usd transition-all delay-200 duration-100 mx-2 ${
                   cryptoType === "usd"
