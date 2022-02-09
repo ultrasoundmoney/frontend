@@ -1,53 +1,31 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import * as React from "react";
 import Card from "../Card/card";
 import { TranslationsContext } from "../../translations-context";
 import { useState } from "react";
 
-type FeeBurnedBlcokProps = {
+type FeeBurnedBlockProps = {
   lineHeight?: string;
 };
-const FeeBurnedBlcok: React.FC<FeeBurnedBlcokProps> = () => {
+const FeeBurnedBlock: React.FC<FeeBurnedBlockProps> = () => {
   const t = React.useContext(TranslationsContext);
-  // const [scrollTop, setScrollTop] = React.useState(0);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isShow, setIsShow] = useState(true);
+
+  function onScroll() {
+    const isTopScreen = window.scrollY < window.innerHeight / 3;
+    setIsShow(isTopScreen);
+  }
 
   React.useEffect(() => {
-    // const getBurned_4_eth = document.querySelector(".burned_4 .eth-date");
-    // const getBurned_4_burned = document.querySelector(
-    //   ".burned_4 .eth-burn-fee"
-    // );
-    // getBurned_4_eth!.classList.add("opacity-0");
-    // getBurned_4_burned!.classList.add("opacity-0");
-
-    function onScroll() {
-      // const target = document.querySelector("#next-merge");
-      // const currentPosition = window.scrollY;
-      const showWidgets = window.scrollY > window.innerHeight;
-      setIsOpen(showWidgets);
-      // if (target && window.scrollY >= target.getBoundingClientRect().top) {
-      //   getBurned_4_eth!.classList.remove("opacity-0");
-      //   getBurned_4_burned!.classList.remove("opacity-0");
-      //   if (currentPosition > scrollTop) {
-      //     getBurned_4_eth!.classList.add("animateIn");
-      //     getBurned_4_burned!.classList.add("animateIn");
-      //   } else {
-      //     getBurned_4_eth!.classList.remove("animateIn");
-      //     getBurned_4_burned!.classList.remove("animateIn");
-      //   }
-      // }
-      // setScrollTop(currentPosition <= 0 ? 0 : currentPosition);
-    }
-
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
   return (
     <>
       <div
         id="eth-card"
         className={`fixed-fee-burned flex flex-wrap justify-center w-full md:w-full xl:w-10/12 md:mx-auto px-4 md:px-4 sticky gap-4 pb-4 ${
-          isOpen && "active"
+          isShow && "active"
         }`}
       >
         <Card
@@ -80,4 +58,4 @@ const FeeBurnedBlcok: React.FC<FeeBurnedBlcokProps> = () => {
   );
 };
 
-export default FeeBurnedBlcok;
+export default FeeBurnedBlock;
