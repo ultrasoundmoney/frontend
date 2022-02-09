@@ -12,7 +12,7 @@ const TheUltraSound: React.FC<{}> = () => {
   const [cryptoType, setCryptoType] = React.useState<string>("none");
   const [step, setStep] = React.useState<number>(0);
   const [allow, setAllow] = React.useState<boolean>(true);
-  const [disableScroll, setDisableScroll] = React.useState<boolean>(false);
+  // const [disableScroll, setDisableScroll] = React.useState<boolean>(false);
   const [event, setEvent] = React.useState<WheelEvent | null>(null);
   const tabs = ["none", "btc", "eth", "usd"];
   let timeoutId: null | ReturnType<typeof setTimeout> = null;
@@ -25,6 +25,13 @@ const TheUltraSound: React.FC<{}> = () => {
       const to = elPosition + (window.innerHeight - window.innerHeight / 3);
       const scrollTriggerStart = window.scrollY < to && window.scrollY > from;
       scrollTriggerStart && setEvent(e);
+      if (
+        scrollTriggerStart &&
+        graphRef?.current.classList.contains("disable_scroll")
+      ) {
+        e.stopPropagation();
+        e.preventDefault();
+      }
     }
   };
 
@@ -35,8 +42,13 @@ const TheUltraSound: React.FC<{}> = () => {
       const disableScroll =
         (direction === "down" && step <= tabs.length) ||
         (direction === "up" && step >= 1);
-      setDisableScroll(disableScroll);
+      // setDisableScroll(disableScroll);
       disableScroll && graphRef?.current?.scrollIntoView({ block: "center" });
+      if (graphRef?.current) {
+        disableScroll
+          ? graphRef?.current.classList.add("disable_scroll")
+          : graphRef?.current.classList.remove("disable_scroll");
+      }
     }
     // set new step
     if (allow && event) {
@@ -48,11 +60,11 @@ const TheUltraSound: React.FC<{}> = () => {
     }
   }, [event]);
 
-  useEffect(() => {
-    disableScroll
-      ? (document.body.style.overflowY = "hidden")
-      : (document.body.style.overflowY = "auto");
-  }, [disableScroll]);
+  // useEffect(() => {
+  //   disableScroll
+  //     ? (document.body.style.overflowY = "hidden")
+  //     : (document.body.style.overflowY = "auto");
+  // }, [disableScroll]);
 
   useEffect(() => {
     // change tab
