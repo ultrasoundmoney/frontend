@@ -1,5 +1,5 @@
 import * as React from "react";
-import BatImg from "../../assets/bat.png";
+import BatImg from "../../assets/moving-new-unscreen.gif";
 import { TranslationsContext } from "../../translations-context";
 import SVGrenderText from "./BTCETH/generateText";
 import DrawingLine from "./DrawingLine";
@@ -18,6 +18,11 @@ const TheUltraSound: React.FC<{}> = () => {
       >
         <div className="block pt-16 relative">
           <img
+            data-aos="fade-up"
+            data-aos-anchor-placement="top-center"
+            data-aos-delay="50"
+            data-aos-duration="1000"
+            data-aos-easing="ease-in-out"
             title={t.eusm_section_title}
             alt={t.eusm_section_title}
             src={BatImg}

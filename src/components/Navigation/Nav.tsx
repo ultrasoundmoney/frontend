@@ -43,7 +43,7 @@ const Nav = () => {
         </div>
         <div className="w-full md:w-6/12 hidden md:block" id="menu">
           <ul className="flex flex-col md:flex-row justify-end list-none mt-4 md:mt-0 relative text-sm">
-            <li className="nav-item px-6 justify-center">
+            <li className="nav-item pl-6 justify-center">
               <Link href="#faq">
                 <a
                   className="px-3 py-2 flex items-center leading-snug text-blue-shipcove hover:opacity-75 hover:text-white hover:cursor-pointer"
@@ -53,7 +53,7 @@ const Nav = () => {
                 </a>
               </Link>
             </li>
-            <li className="nav-item pl-16 justify-center">
+            <li className="nav-item justify-center" style={{ paddingLeft: 75 }}>
               <a
                 className="px-5 py-2 flex items-center font-medium text-white hover:text-blue-shipcove border-white border-solid border-2 rounded-3xl hover:border-blue-shipcove"
                 href="#join-the-fam"
