@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import CountUp from "react-countup";
-import { EthPrice, useGroupedData1 } from "../../api/grouped_stats_1";
+import { EthPrice, useGroupedData1 } from "../../api/grouped-stats-1";
 import * as Format from "../../format";
 import { O, pipe } from "../../fp";
 import { useLocalStorage } from "../../use-local-storage";

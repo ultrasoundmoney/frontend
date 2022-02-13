@@ -1,9 +1,9 @@
 import React, { FC, useCallback, useState } from "react";
-import { useGroupedData1 } from "../../api/grouped_stats_1";
+import { useGroupedData1 } from "../../api/grouped-stats-1";
 import { Unit } from "../../denomination";
 import { FeatureFlags } from "../../feature-flags";
 import * as Format from "../../format";
-import { TimeFrameNext, timeFramesNext } from "../../time_frames";
+import { TimeFrameNext, timeFramesNext } from "../../time-frames";
 import BurnCategories from "../BurnCategories";
 import BurnRecords from "../BurnRecords";
 import BurnTotal from "../BurnTotal";

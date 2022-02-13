@@ -1,5 +1,5 @@
 import { FC, HTMLAttributes } from "react";
-import { TimeFrameNext } from "../../time_frames";
+import { TimeFrameNext } from "../../time-frames";
 import TimeFrameIndicator from "./TimeFrameIndicator";
 
 type BackgroundProps = {

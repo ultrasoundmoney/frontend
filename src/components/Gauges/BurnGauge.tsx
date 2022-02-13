@@ -1,9 +1,9 @@
 import { FC } from "react";
-import { useGroupedData1 } from "../../api/grouped_stats_1";
+import { useGroupedData1 } from "../../api/grouped-stats-1";
 import colors from "../../colors";
 import { Unit } from "../../denomination";
 import * as Format from "../../format";
-import { TimeFrameNext } from "../../time_frames";
+import { TimeFrameNext } from "../../time-frames";
 import { timeframeBurnRateMap } from "../BurnTotal";
 import BaseGauge from "./IssuanceBurnBaseGauge";
 

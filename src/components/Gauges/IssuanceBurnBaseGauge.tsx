@@ -1,7 +1,7 @@
 import { clamp } from "lodash";
 import { FC } from "react";
 import { animated, config, useSpring } from "react-spring";
-import { useGroupedData1 } from "../../api/grouped_stats_1";
+import { useGroupedData1 } from "../../api/grouped-stats-1";
 import colors from "../../colors";
 import { Unit } from "../../denomination";
 import { formatOneDigit, formatZeroDigit } from "../../format";

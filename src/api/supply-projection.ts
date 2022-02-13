@@ -1,5 +1,6 @@
 import useSWR from "swr";
-import { feesBasePath } from "../api/fees";
+import fetcher from "./default-fetcher";
+import { feesBasePath } from "./fees";
 
 type DataPoint = {
   t: number;
@@ -21,6 +22,7 @@ type SupplyInputs = {
 export const useSupplyProjectionInputs = (): SupplyInputs | undefined => {
   const { data } = useSWR<RawSupplyInputs>(
     `${feesBasePath}/supply-projection-inputs`,
+    fetcher,
   );
 
   if (data === undefined) {

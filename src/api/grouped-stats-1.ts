@@ -1,6 +1,7 @@
 import useSWR from "swr";
 import * as Duration from "../duration";
-import { BurnRecords, decodeBurnRecords, RawBurnRecords } from "./burn_records";
+import { BurnRecords, decodeBurnRecords, RawBurnRecords } from "./burn-records";
+import fetcher from "./default-fetcher";
 import { feesBasePath } from "./fees";
 import { Leaderboards } from "./leaderboards";
 
@@ -84,7 +85,7 @@ const decodeFeeData = (raw: RawFeeData): FeeData => ({
 });
 
 export const useGroupedData1 = (): FeeData | undefined => {
-  const { data } = useSWR<RawFeeData>(`${feesBasePath}/all`, {
+  const { data } = useSWR<RawFeeData>(`${feesBasePath}/all`, fetcher, {
     refreshInterval: Duration.millisFromSeconds(4),
   });
 

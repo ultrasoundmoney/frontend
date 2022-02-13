@@ -1,6 +1,6 @@
 import { FC, InputHTMLAttributes, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import { useGroupedData1 } from "../api/grouped_stats_1";
+import { useGroupedData1 } from "../api/grouped-stats-1";
 import { useScarcity } from "../api/scarcity";
 import * as Format from "../format";
 import { MoneyAmount, MoneyAmountAnimated } from "./Amount";

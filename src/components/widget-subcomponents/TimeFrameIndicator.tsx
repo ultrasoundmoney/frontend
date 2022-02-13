@@ -2,7 +2,7 @@ import * as DateFns from "date-fns";
 import { FC } from "react";
 import { londonHardforkTimestamp } from "../../dates";
 import { pipe } from "../../fp";
-import { displayTimeFrameNextMap, TimeFrameNext } from "../../time_frames";
+import { displayTimeFrameNextMap, TimeFrameNext } from "../../time-frames";
 
 const getFormattedDays = () =>
   pipe(

@@ -1,11 +1,11 @@
 import { clamp } from "lodash";
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { animated, config, useSpring } from "react-spring";
-import { useGroupedData1 } from "../../api/grouped_stats_1";
+import { useGroupedData1 } from "../../api/grouped-stats-1";
 import { useScarcity } from "../../api/scarcity";
 import * as Format from "../../format";
 import * as StaticEtherData from "../../static-ether-data";
-import { TimeFrameNext } from "../../time_frames";
+import { TimeFrameNext } from "../../time-frames";
 import { timeframeBurnRateMap } from "../BurnTotal";
 import ToggleSwitch from "../ToggleSwitch";
 import TimeFrameIndicator from "../widget-subcomponents/TimeFrameIndicator";

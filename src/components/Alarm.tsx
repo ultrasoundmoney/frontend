@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { useGroupedData1 } from "../api/grouped_stats_1";
+import { useGroupedData1 } from "../api/grouped-stats-1";
 import * as Format from "../format";
 import { O, pipe } from "../fp";
 import { useLocalStorage } from "../use-local-storage";

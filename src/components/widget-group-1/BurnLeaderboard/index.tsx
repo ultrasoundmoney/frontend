@@ -1,12 +1,12 @@
 import React, { FC, memo } from "react";
 import { useAdminToken } from "../../../admin";
 import { useContractsFreshness } from "../../../api/contracts";
-import { useGroupedData1 } from "../../../api/grouped_stats_1";
+import { useGroupedData1 } from "../../../api/grouped-stats-1";
 import { LeaderboardEntry, Leaderboards } from "../../../api/leaderboards";
 import { Unit } from "../../../denomination";
 import { FeatureFlags } from "../../../feature-flags";
 import styles from "../../../styles/Scrollbar.module.scss";
-import { TimeFrameNext } from "../../../time_frames";
+import { TimeFrameNext } from "../../../time-frames";
 import { WidgetTitle } from "../../widget-subcomponents";
 import LeaderboardRow from "./LeaderboardRow";
 

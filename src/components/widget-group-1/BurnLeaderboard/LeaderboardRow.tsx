@@ -6,7 +6,7 @@ import {
   Category,
   categoryDisplayMap,
   getIsKnownCategory,
-} from "../../../api/burn_categories";
+} from "../../../api/burn-categories";
 import * as Contracts from "../../../api/contracts";
 import { LeaderboardEntry } from "../../../api/leaderboards";
 import { Unit } from "../../../denomination";

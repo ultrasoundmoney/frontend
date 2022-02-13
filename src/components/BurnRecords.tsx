@@ -1,13 +1,13 @@
 import * as DateFns from "date-fns";
 import { FC, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import { BurnRecord } from "../api/burn_records";
-import { useGroupedData1 } from "../api/grouped_stats_1";
+import { BurnRecord } from "../api/burn-records";
+import { useGroupedData1 } from "../api/grouped-stats-1";
 import { Unit } from "../denomination";
 import * as Format from "../format";
 import { flow, O, OAlt } from "../fp";
 import styles from "../styles/Scrollbar.module.scss";
-import { TimeFrameNext } from "../time_frames";
+import { TimeFrameNext } from "../time-frames";
 import { useActiveBreakpoint } from "../utils/use-active-breakpoint";
 import { MoneyAmountAnimated } from "./Amount";
 import { AmountUnitSpace } from "./Spacing";

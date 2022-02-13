@@ -3,7 +3,7 @@ import { flow } from "lodash";
 import React, { FC, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { TransitionGroup } from "react-transition-group";
-import { LatestBlock, useGroupedData1 } from "../../api/grouped_stats_1";
+import { LatestBlock, useGroupedData1 } from "../../api/grouped-stats-1";
 import { Unit } from "../../denomination";
 import * as Format from "../../format";
 import { O, OAlt, pipe } from "../../fp";

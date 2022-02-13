@@ -26,7 +26,7 @@ import {
 } from "./historicalData";
 import useSWR from "swr";
 import * as Format from "../../format";
-import { useGroupedData1 } from "../../api/grouped_stats_1";
+import { useGroupedData1 } from "../../api/grouped-stats-1";
 // import Timeline from "./timeline";
 
 type EthPrice = {

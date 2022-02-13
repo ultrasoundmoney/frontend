@@ -1,5 +1,6 @@
 import useSWR from "swr";
-import { TimeFrameNext } from "../time_frames";
+import { TimeFrameNext } from "../time-frames";
+import fetcher from "./default-fetcher";
 import { feesBasePath } from "./fees";
 
 const category = [
@@ -41,7 +42,10 @@ export type BurnCategory = {
 export type BurnCategories = Record<TimeFrameNext, BurnCategory[]>;
 
 export const useBurnCategories = () => {
-  const { data } = useSWR<BurnCategories>(`${feesBasePath}/burn-categories`);
+  const { data } = useSWR<BurnCategories>(
+    `${feesBasePath}/burn-categories`,
+    fetcher,
+  );
 
   return data;
 };

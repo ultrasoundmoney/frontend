@@ -5,7 +5,7 @@ import highchartsAnnotations from "highcharts/modules/annotations";
 import last from "lodash/last";
 import merge from "lodash/merge";
 import * as React from "react";
-import { useSupplyProjectionInputs } from "../../api/supply_projection";
+import { useSupplyProjectionInputs } from "../../api/supply-projection";
 import { formatOneDigit } from "../../format";
 import { pipe } from "../../fp";
 import { TranslationsContext } from "../../translations-context";
