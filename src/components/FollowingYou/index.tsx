@@ -1,17 +1,17 @@
-import * as React from "react";
-import SpanMoji from "../SpanMoji";
-import { TranslationsContext } from "../../translations-context";
+import { FC, useState } from "react";
+import Skeleton from "react-loading-skeleton";
+import { famBasePath, FamProfile } from "../../api/fam";
 import { formatNoDigit } from "../../format";
-import { famBasePath } from "../../api/fam";
+import SpanMoji from "../SpanMoji";
+import FamAvatar from "../TwitterFam/FamAvatar";
+import { FamModal, FamModalContent } from "../TwitterFam/FamModal";
 import styles from "./FollowingYou.module.scss";
-import { TwitterProfile as TwitterProfileT } from "../TwitterFam/ProfileTooltip";
-import TwitterProfile from "../TwitterFam/TwitterProfile";
 
 type Empty = { type: "empty" };
 type FollowedBy = {
   type: "followers";
   count: number;
-  followers: TwitterProfileT[];
+  followers: FamProfile[];
 };
 type HandleNotFound = { type: "handleNotFound" };
 type Searching = { type: "searching" };
@@ -24,12 +24,14 @@ type FollowedByResult =
   | Searching
   | UnknownError;
 
-const FollowingYou: React.FC = () => {
-  const t = React.useContext(TranslationsContext);
-  const [handle, setHandle] = React.useState<string>("");
-  const [followers, setFollowers] = React.useState<FollowedByResult>({
+const FollowingYou: FC = () => {
+  const [handle, setHandle] = useState<string>("");
+  const [followers, setFollowers] = useState<FollowedByResult>({
     type: "empty",
   });
+  const [selectedProfile, setSelectedProfile] = useState<
+    FamProfile | undefined
+  >();
 
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>,
@@ -49,7 +51,7 @@ const FollowingYou: React.FC = () => {
 
     if (res.status === 200) {
       const body = (await res.json()) as {
-        followers: TwitterProfileT[];
+        followers: FamProfile[];
         count: number;
       };
       // Somehow clicking show me rapidly can have res 200, but still have body
@@ -70,13 +72,13 @@ const FollowingYou: React.FC = () => {
   return (
     <>
       <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8">
-        {t.title_following_you}
+        me & the fam
         <SpanMoji emoji=" 👀" />
       </h1>
       <p
         className={`text-blue-shipcove leading-6 md:leading-none text-center font-light text-base lg:text-lg mb-14`}
       >
-        {t.teaser_following_you}
+        do we know each other? find out how many of us follow you.
       </p>
       <form className="flex justify-center" onSubmit={handleSubmit}>
         <input
@@ -118,7 +120,19 @@ const FollowingYou: React.FC = () => {
             </p>
           ) : (
             <>
-              <TwitterProfile profiles={followers.followers} />
+              <div className="flex flex-wrap justify-center">
+                {followers.followers.map((profile, index) =>
+                  profile === undefined ? (
+                    <Skeleton circle={true} height="40px" width="40" />
+                  ) : (
+                    <FamAvatar
+                      key={index}
+                      onClick={setSelectedProfile}
+                      profile={profile}
+                    />
+                  ),
+                )}
+              </div>
               {followers.count > followers.followers.length && (
                 <p className="text-white text-xl p-8 text-center">{`+${formatNoDigit(
                   followers.count - followers.followers.length,
@@ -132,6 +146,15 @@ const FollowingYou: React.FC = () => {
           unknown followers state
         </p>
       )}
+      <FamModal
+        show={selectedProfile !== undefined}
+        onClickBackground={() => setSelectedProfile(undefined)}
+      >
+        <FamModalContent
+          onClickClose={() => setSelectedProfile(undefined)}
+          profile={selectedProfile}
+        ></FamModalContent>
+      </FamModal>
     </>
   );
 };
