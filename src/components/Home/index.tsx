@@ -17,7 +17,7 @@ import FaqBlock from "../Landing/faq";
 import SupplyView from "../SupplyView";
 import { SectionTitle } from "../Texts";
 import ToggleSwitch from "../ToggleSwitch";
-import TwitterCommunity from "../TwitterCommunity";
+import TwitterFam from "../TwitterFam";
 import WidgetGroup1 from "../widget-group-1";
 import { WidgetTitle } from "../widget-subcomponents";
 import Flippenings from "./Flippenings";
@@ -168,7 +168,7 @@ const Home: FC = () => {
               {/*   <source src="/moving-orbs.webm" type="video/webm; codecs='vp9'" /> */}
               {/*   <source src="/moving-orbs.mp4" type="video/mp4" /> */}
               {/* </video> */}
-              <TwitterCommunity />
+              <TwitterFam />
             </div>
           </div>
           <div className="flex px-4 md:px-0 pt-20 pb-20">

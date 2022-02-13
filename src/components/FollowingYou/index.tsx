@@ -4,8 +4,8 @@ import { TranslationsContext } from "../../translations-context";
 import { formatNoDigit } from "../../format";
 import { famBasePath } from "../../api/fam";
 import styles from "./FollowingYou.module.scss";
-import { TwitterProfile as TwitterProfileT } from "../TwitterCommunity/ProfileTooltip";
-import TwitterProfile from "../TwitterCommunity/TwitterProfile";
+import { TwitterProfile as TwitterProfileT } from "../TwitterFam/ProfileTooltip";
+import TwitterProfile from "../TwitterFam/TwitterProfile";
 
 type Empty = { type: "empty" };
 type FollowedBy = {

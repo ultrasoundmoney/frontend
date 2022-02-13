@@ -10,7 +10,7 @@ import EIP1559 from "./eip1559";
 import BlockGoal from "./goal";
 import TheMergeBlock from "./theMerge";
 import EtherTheUltraSound from "./theUltraSound";
-import TwitterCommunity from "../TwitterCommunity";
+import TwitterFam from "../TwitterFam";
 import FaqBlock from "./faq";
 import NftDrop from "../NftDrop/index";
 import FollowingYou from "../FollowingYou";
@@ -542,7 +542,7 @@ const LandingPage: React.FC = () => {
             id="join-the-fam"
           >
             <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
-              <TwitterCommunity />
+              <TwitterFam />
             </div>
           </section>
           <section

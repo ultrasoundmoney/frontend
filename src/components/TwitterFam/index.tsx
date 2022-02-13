@@ -1,13 +1,11 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Clipboard from "react-clipboard.js";
 import { useProfiles } from "../../api/fam";
 import { formatNoDigit } from "../../format";
-import { TranslationsContext } from "../../translations-context";
 import SpanMoji from "../SpanMoji";
 import TwitterProfile from "./TwitterProfile";
 
-const TwitterCommunity: FC = () => {
-  const t = useContext(TranslationsContext);
+const TwitterFam: FC = () => {
   const famCount = useProfiles()?.count;
   const profiles = useProfiles()?.profiles;
 
@@ -15,8 +13,8 @@ const TwitterCommunity: FC = () => {
 
   const getText =
     famCount !== undefined
-      ? t.title_community.replace("#XXX", formatNoDigit(famCount))
-      : t.title_community;
+      ? "join #XXX fam members".replace("#XXX", formatNoDigit(famCount))
+      : "join #XXX fam members";
 
   const onBatSoundCopied = () => {
     setIsCopiedFeedbackVisible(true);
@@ -40,7 +38,7 @@ const TwitterCommunity: FC = () => {
           href="https://twitter.com/i/lists/1376636817089396750/members"
           rel="noopener noreferrer"
           role="link"
-          title={t.title_community_hover}
+          title="join the ultra sound Twitter fam"
           className="hover:underline hover:text-blue-spindle relative h-full"
         >
           {getText}
@@ -73,4 +71,4 @@ const TwitterCommunity: FC = () => {
   );
 };
 
-export default TwitterCommunity;
+export default TwitterFam;
