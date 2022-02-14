@@ -11,9 +11,9 @@ import {
   flags,
   useFeatureFlags,
 } from "../../feature-flags";
-import FairPrice from "../FairPrice";
 import FollowingYou from "../FollowingYou";
 import FaqBlock from "../Landing/faq";
+import PriceModel from "../PriceModel";
 import SupplyView from "../SupplyView";
 import { SectionTitle } from "../Texts";
 import ToggleSwitch from "../ToggleSwitch";
@@ -141,7 +141,7 @@ const Home: FC = () => {
         />
         <div className="grid lg:grid-cols-2 gap-y-4 lg:gap-4 px-4 md:px-16">
           <Scarcity />
-          {featureFlags.showFairPrice && <FairPrice />}
+          {featureFlags.showFairPrice && <PriceModel />}
           <Flippenings />
         </div>
         <div className="flex flex-col px-4 md:px-16">

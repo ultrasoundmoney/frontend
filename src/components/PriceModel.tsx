@@ -1,13 +1,14 @@
-import { FC, InputHTMLAttributes, useState } from "react";
+import { FC, InputHTMLAttributes, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useGroupedData1 } from "../api/grouped-stats-1";
 import { useScarcity } from "../api/scarcity";
 import * as Format from "../format";
 import { MoneyAmount, MoneyAmountAnimated } from "./Amount";
-import styles from "./FairPrice.module.scss";
+import styles from "./PriceModel.module.scss";
 import { AmountUnitSpace } from "./Spacing";
 import { TextInter, TextRoboto } from "./Texts";
 import { WidgetBackground, WidgetTitle } from "./widget-subcomponents";
+import * as NumberUtil from "../number-util";
 
 type SliderProps = {
   className?: InputHTMLAttributes<HTMLInputElement>["className"];
@@ -58,10 +59,32 @@ const Marker: FC<{ alt?: string; icon: string; ratio: number }> = ({
   </div>
 );
 
-const FairPrice: FC = () => {
+const monetaryPremiumMax = 6;
+const monetaryPremiumStepSize = 0.1;
+const goldMonetaryPremiumMultiple = 5;
+const goldMonetaryPremiumPosition = NumberUtil.round(
+  goldMonetaryPremiumMultiple / monetaryPremiumMax,
+  1,
+);
+
+// Converts from a linear scale between 0 and 100 to a log scale between 1 and 400.
+const logFromPosition = (position: number) => {
+  const max = 300;
+  const minLog = Math.log(1);
+  const maxLog = Math.log(max);
+
+  // calculate adjustment factor
+  const scale = (maxLog - minLog) / 100;
+  const logPosition = Math.exp(minLog + scale * position);
+  const clampedLogPosition = Math.min(logPosition, max);
+  return clampedLogPosition;
+};
+
+const PriceModel: FC = () => {
   const d30BurnTotal = useGroupedData1()?.feesBurned.feesBurned30dUsd;
   const ethSupply = useScarcity()?.ethSupply;
-  const [priceEarningsRatio, setPriceEarningsRatio] = useState(24.5);
+  const [peRatio, setPeRatio] = useState(24.5);
+  const [peRatioPosition, setPeRatioPosition] = useState(33);
   const [monetaryPremium, setMonetaryPremium] = useState(1);
 
   const annualizedEarnings =
@@ -70,17 +93,21 @@ const FairPrice: FC = () => {
     annualizedEarnings === undefined || ethSupply === undefined
       ? undefined
       : annualizedEarnings / Format.ethFromWeiBIUnsafe(ethSupply);
-  const fairPrice =
+  const projectedPrice =
     earningsPerShare === undefined
       ? undefined
-      : earningsPerShare * priceEarningsRatio * monetaryPremium;
+      : earningsPerShare * peRatio * monetaryPremium;
+
+  useEffect(() => {
+    setPeRatio(logFromPosition(peRatioPosition));
+  }, [peRatioPosition]);
 
   return (
     <WidgetBackground>
-      <WidgetTitle>fair price</WidgetTitle>
+      <WidgetTitle>price model</WidgetTitle>
       <div className="flex flex-col gap-4 mt-4">
         <div className="flex justify-between">
-          <TextInter>anualized earnings</TextInter>
+          <TextInter>anual profits</TextInter>
           <MoneyAmount unitPrefix="B" unit="usd">
             {annualizedEarnings === undefined
               ? undefined
@@ -89,18 +116,18 @@ const FairPrice: FC = () => {
         </div>
         <div>
           <div className="flex justify-between">
-            <TextInter>benchmark p/e</TextInter>
-            <TextRoboto>{Format.formatOneDigit(priceEarningsRatio)}</TextRoboto>
+            <TextInter>growth profile</TextInter>
+            <TextRoboto>{Format.formatOneDigit(peRatio)}</TextRoboto>
           </div>
           <div className="relative mb-8">
             <Slider
               className="w-full"
-              step={0.5}
-              min={5}
-              max={30}
-              onChange={setPriceEarningsRatio}
+              step={1}
+              min={0}
+              max={100}
+              onChange={setPeRatioPosition}
             >
-              {priceEarningsRatio}
+              {peRatioPosition}
             </Slider>
             <div className="absolute top-0 bottom-0 w-full flex [margin-top:10px] pointer-events-none">
               <Marker icon="apple" ratio={0.2} />
@@ -118,20 +145,27 @@ const FairPrice: FC = () => {
             )}x`}</TextRoboto>
           </div>
           <div className="relative mb-8">
-            <Slider step={0.1} min={1} max={7} onChange={setMonetaryPremium}>
+            <Slider
+              step={monetaryPremiumStepSize}
+              min={1}
+              max={monetaryPremiumMax}
+              onChange={setMonetaryPremium}
+            >
               {monetaryPremium}
             </Slider>
             <div className="absolute top-0 bottom-0 w-full flex [margin-top:10px] pointer-events-none">
-              <Marker icon="gold" ratio={0.8} />
+              <Marker icon="gold" ratio={goldMonetaryPremiumPosition} />
             </div>
           </div>
         </div>
         <div className="bg-blue-highlightbg p-3 rounded-lg m-auto">
           <TextRoboto className="text-xl">
-            {fairPrice === undefined ? (
+            {projectedPrice === undefined ? (
               <Skeleton width="6rem" />
             ) : (
-              <MoneyAmountAnimated unit="usd">{fairPrice}</MoneyAmountAnimated>
+              <MoneyAmountAnimated unit="usd">
+                {projectedPrice}
+              </MoneyAmountAnimated>
             )}
             <AmountUnitSpace />
             <TextRoboto className="text-blue-spindle">USD</TextRoboto>
@@ -142,4 +176,4 @@ const FairPrice: FC = () => {
   );
 };
 
-export default FairPrice;
+export default PriceModel;
