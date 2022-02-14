@@ -79,7 +79,7 @@ const TwitterFam: FC = () => {
       <div className="flex flex-wrap justify-center">
         {currentProfiles.map((profile, index) =>
           profile === undefined ? (
-            <Skeleton circle={true} height="40px" width="40" />
+            <Skeleton key={index} circle={true} height="40px" width="40" />
           ) : (
             <FamAvatar
               key={index}
