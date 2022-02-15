@@ -33,16 +33,17 @@ const FamAvatar: FC<{
         onMouseLeave={() => setHovering(false)}
       >
         <Image
+          alt={profile.name}
           className="rounded-full"
-          width="40"
           height="40"
+          onError={imageErrorHandler}
           src={
             profile.profileImageUrl != undefined
               ? profile.profileImageUrl
               : "/avatar.svg"
           }
-          alt={profile.name}
-          onError={imageErrorHandler}
+          unoptimized
+          width="40"
         />
       </div>
       <div
