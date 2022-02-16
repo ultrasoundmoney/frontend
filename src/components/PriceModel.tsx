@@ -46,17 +46,30 @@ const Slider: FC<SliderProps> = ({
   />
 );
 
-const Marker: FC<{ alt?: string; icon: string; ratio: number }> = ({
-  alt,
-  icon,
-  ratio,
-}) => (
+const Marker: FC<{
+  alt?: string;
+  icon: string;
+  ratio: number;
+  symbol?: string;
+}> = ({ alt, icon, ratio, symbol }) => (
   <div
-    className="absolute flex flex-col items-center"
+    className="absolute flex flex-col items-center pointer-events-none"
     style={{ left: `${ratio * 100}%` }}
   >
     <div className="[min-height:8px] w-0.5 bg-blue-spindle mb-3"></div>
-    <img src={`/${icon}-icon.svg`} alt={alt ?? ""} />
+    <div className="pointer-events-auto">
+      <a
+        href={
+          symbol === undefined
+            ? undefined
+            : `https://www.google.com/finance/quote/${symbol}:NASDAQ`
+        }
+        target="_blank"
+        rel="noreferrer"
+      >
+        <img src={`/${icon}-icon.svg`} alt={alt ?? ""} />
+      </a>
+    </div>
   </div>
 );
 
@@ -72,12 +85,12 @@ const growthProfileMin = 5;
 const growthProfileMax = 300;
 const growthProfileLogMin = Math.log(growthProfileMin);
 const growthProfileLogMax = Math.log(growthProfileMax);
+const logRange = growthProfileLogMax - growthProfileLogMin;
 
 // Converts from a linear scale between 0 and 100 to a log scale between 1 and 300.
 const logFromLinear = (position: number) =>
   pipe(
-    growthProfileLogMax - growthProfileLogMin,
-    (logRange) => position * logRange,
+    position * logRange,
     (positionInRange) => positionInRange + growthProfileLogMin,
     (shiftedPosition) => Math.exp(shiftedPosition),
   );
@@ -86,13 +99,12 @@ const logFromLinear = (position: number) =>
 const linearFromLog = (num: number) =>
   pipe(
     Math.log(num) - growthProfileLogMin,
-    (peShiftedRange) =>
-      peShiftedRange / (growthProfileLogMax - growthProfileLogMin),
+    (peShiftedRange) => peShiftedRange / logRange,
   );
 
-const sliderPositions = new Array(100)
+const sliderPositions = new Array(101)
   .fill(undefined)
-  .map((_, index) => logFromLinear((index + 1) / 100));
+  .map((_, index) => logFromLinear(index / 100));
 
 const roundToNearestPosition = (num: number) => {
   let bestCandidate = sliderPositions[0];
@@ -178,30 +190,35 @@ const PriceModel: FC = () => {
             >
               {peRatioPosition}
             </Slider>
-            <div className="absolute top-0 bottom-0 w-full flex [margin-top:10px] pointer-events-none">
+            <div className="absolute top-0 w-full [margin-top:10px] select-none">
               {peRatios !== undefined && (
                 <>
                   <Marker
                     icon="amazon"
                     ratio={linearFromLog(roundToNearestPosition(peRatios.AMZN))}
+                    symbol="AMZN"
                   />
                   <Marker
                     icon="google"
                     ratio={linearFromLog(
                       roundToNearestPosition(peRatios.GOOGL),
                     )}
+                    symbol="GOOGL"
                   />
                   <Marker
                     icon="intel"
                     ratio={linearFromLog(roundToNearestPosition(peRatios.INTC))}
+                    symbol="INTC"
                   />
                   <Marker
                     icon="netflix"
                     ratio={linearFromLog(roundToNearestPosition(peRatios.NFLX))}
+                    symbol="NFLX"
                   />
                   <Marker
                     icon="tesla"
                     ratio={linearFromLog(roundToNearestPosition(peRatios.TSLA))}
+                    symbol="TSLA"
                   />
                 </>
               )}
