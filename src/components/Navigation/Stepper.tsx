@@ -58,14 +58,23 @@ const Stepper: React.FC = () => {
   const throttledScroll = throttle(onScroll, 300);
 
   useEffect(() => {
-    const showStickyHeader = window.scrollY > window.innerHeight;
+    const halfHeightWindow = window.innerHeight / 2;
+    let offsetYFirstPoint = 2;
+    controlPoints.forEach((el, index) => {
+      if (index === 0 && typeof el?.offsetY === "number") {
+        offsetYFirstPoint = el?.offsetY;
+      }
+    });
+
+    const showStickyHeader: boolean =
+      window.scrollY > offsetYFirstPoint - window.innerHeight / 2;
     showStickyHeader
       ? stepsRef.current?.classList.add("active")
       : stepsRef.current?.classList.remove("active");
     if (steperIconRef && steperIconRef.current) {
       steperIconRef.current.style.left = `${getIconOffset(
         controlPoints,
-        scrollYProgress
+        window.scrollY + halfHeightWindow
       )}%`;
     }
   }, [controlPoints, scrollYProgress]);

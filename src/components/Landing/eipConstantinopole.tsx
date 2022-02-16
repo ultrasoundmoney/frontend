@@ -15,7 +15,7 @@ const EIPConstantinopole: React.FC<{}> = () => {
   }, []);
   return (
     <>
-      <DrawingLine pointRef={constantinopoleRef} />
+      <DrawingLine pointRef={constantinopoleRef} indexTopSection={2} />
       <section
         data-aos="fade-up"
         data-aos-anchor-placement="top-bottom"
