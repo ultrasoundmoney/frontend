@@ -1,6 +1,6 @@
-$line_height: 400px;
+$line_height: 600px;
 $wrap_height: $line_height + 34px;
-$color_point: #00FFA3;
+$color_point: #00ffa3;
 
 .drawing_line {
   height: $wrap_height;
@@ -45,7 +45,7 @@ $color_point: #00FFA3;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: opacity .2s ease;
+    transition: opacity 0.2s ease;
     opacity: 0;
 
     &:after {

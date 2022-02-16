@@ -23,7 +23,7 @@ const DrawingLine: React.FC<DrawingLineProps> = ({
   const [scrollYProgress, setScrollYProgress] = useState(0);
   const [isDone, setIsDone] = useState(true);
   const animationYProgress = useMotionValue<number>(0);
-  const y = useTransform(animationYProgress, [0, 1], [0, 400]);
+  const y = useTransform(animationYProgress, [0, 1], [0, 600]);
   const height = useSpring(y, {
     stiffness: 600,
     damping: 90,
