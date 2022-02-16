@@ -139,10 +139,14 @@ const Home: FC = () => {
           title="monetary premium"
           subtitle="the race to become the most desirable money"
         />
-        <div className="grid lg:grid-cols-2 gap-y-4 lg:gap-4 px-4 md:px-16">
-          <Scarcity />
-          {featureFlags.showFairPrice && <PriceModel />}
-          <Flippenings />
+        <div className="flex flex-col lg:flex-row gap-y-4 lg:gap-x-4 px-4 md:px-16">
+          <div className="flex flex-col basis-1/2 gap-y-4">
+            <Scarcity />
+            <Flippenings />
+          </div>
+          <div className="basis-1/2">
+            <PriceModel />
+          </div>
         </div>
         <div className="flex flex-col px-4 md:px-16">
           <SectionDivider
