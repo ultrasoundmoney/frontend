@@ -1,14 +1,15 @@
+import JSBI from "jsbi";
 import { FC, InputHTMLAttributes, useEffect, useState } from "react";
-import Skeleton from "react-loading-skeleton";
 import { useGroupedData1 } from "../api/grouped-stats-1";
+import { usePeRatios } from "../api/pe-ratios";
 import { useScarcity } from "../api/scarcity";
 import * as Format from "../format";
-import { MoneyAmount, MoneyAmountAnimated } from "./Amount";
+import { pipe } from "../fp";
+import * as NumberUtil from "../number-util";
+import { MoneyAmount } from "./Amount";
 import styles from "./PriceModel.module.scss";
-import { AmountUnitSpace } from "./Spacing";
 import { TextInter, TextRoboto } from "./Texts";
 import { WidgetBackground, WidgetTitle } from "./widget-subcomponents";
-import * as NumberUtil from "../number-util";
 
 type SliderProps = {
   className?: InputHTMLAttributes<HTMLInputElement>["className"];
@@ -67,39 +68,87 @@ const goldMonetaryPremiumPosition = NumberUtil.round(
   1,
 );
 
-// Converts from a linear scale between 0 and 100 to a log scale between 1 and 400.
-const logFromPosition = (position: number) => {
-  const max = 300;
-  const minLog = Math.log(1);
-  const maxLog = Math.log(max);
+const growthProfileMin = 5;
+const growthProfileMax = 300;
+const growthProfileLogMin = Math.log(growthProfileMin);
+const growthProfileLogMax = Math.log(growthProfileMax);
 
-  // calculate adjustment factor
-  const scale = (maxLog - minLog) / 100;
-  const logPosition = Math.exp(minLog + scale * position);
-  const clampedLogPosition = Math.min(logPosition, max);
-  return clampedLogPosition;
+// Converts from a linear scale between 0 and 100 to a log scale between 1 and 300.
+const logFromLinear = (position: number) =>
+  pipe(
+    growthProfileLogMax - growthProfileLogMin,
+    (logRange) => position * logRange,
+    (positionInRange) => positionInRange + growthProfileLogMin,
+    (shiftedPosition) => Math.exp(shiftedPosition),
+  );
+
+// Converts from a log scale between 1 and 300 to a linear scale between 0 and 1
+const linearFromLog = (num: number) =>
+  pipe(
+    Math.log(num) - growthProfileLogMin,
+    (peShiftedRange) =>
+      peShiftedRange / (growthProfileLogMax - growthProfileLogMin),
+  );
+
+const sliderPositions = new Array(100)
+  .fill(undefined)
+  .map((_, index) => logFromLinear((index + 1) / 100));
+
+const roundToNearestPosition = (num: number) => {
+  let bestCandidate = sliderPositions[0];
+
+  for (let i = 1; i < sliderPositions.length; i++) {
+    const nextCandidate = sliderPositions[i];
+    if (Math.abs(num - bestCandidate) > Math.abs(num - nextCandidate)) {
+      bestCandidate = nextCandidate;
+    } else {
+      break;
+    }
+  }
+
+  return bestCandidate;
+};
+
+const calcProjectedPrice = (
+  annualizedEarnings: number | undefined,
+  ethSupply: JSBI | undefined,
+  monetaryPremium: number | undefined,
+  peRatio: number | undefined,
+) => {
+  if (
+    annualizedEarnings === undefined ||
+    ethSupply === undefined ||
+    peRatio === undefined ||
+    monetaryPremium === undefined
+  ) {
+    return undefined;
+  }
+
+  const earningsPerShare =
+    annualizedEarnings / Format.ethFromWeiBIUnsafe(ethSupply);
+  return earningsPerShare * peRatio * monetaryPremium;
 };
 
 const PriceModel: FC = () => {
+  const peRatios = usePeRatios();
   const d30BurnTotal = useGroupedData1()?.feesBurned.feesBurned30dUsd;
   const ethSupply = useScarcity()?.ethSupply;
   const [peRatio, setPeRatio] = useState(24.5);
-  const [peRatioPosition, setPeRatioPosition] = useState(33);
+  const [peRatioPosition, setPeRatioPosition] = useState(0.33);
   const [monetaryPremium, setMonetaryPremium] = useState(1);
 
   const annualizedEarnings =
     d30BurnTotal === undefined ? undefined : d30BurnTotal * 12;
-  const earningsPerShare =
-    annualizedEarnings === undefined || ethSupply === undefined
-      ? undefined
-      : annualizedEarnings / Format.ethFromWeiBIUnsafe(ethSupply);
-  const projectedPrice =
-    earningsPerShare === undefined
-      ? undefined
-      : earningsPerShare * peRatio * monetaryPremium;
+
+  const projectedPrice = calcProjectedPrice(
+    annualizedEarnings,
+    ethSupply,
+    monetaryPremium,
+    peRatio,
+  );
 
   useEffect(() => {
-    setPeRatio(logFromPosition(peRatioPosition));
+    setPeRatio(logFromLinear(peRatioPosition));
   }, [peRatioPosition]);
 
   return (
@@ -108,7 +157,7 @@ const PriceModel: FC = () => {
       <div className="flex flex-col gap-4 mt-4">
         <div className="flex justify-between">
           <TextInter>anual profits</TextInter>
-          <MoneyAmount unitPrefix="B" unit="usd">
+          <MoneyAmount amountPostfix="B" unit="usd">
             {annualizedEarnings === undefined
               ? undefined
               : Format.formatOneDigit(annualizedEarnings / 1e9)}
@@ -122,18 +171,40 @@ const PriceModel: FC = () => {
           <div className="relative mb-8">
             <Slider
               className="w-full"
-              step={1}
+              step={0.01}
               min={0}
-              max={100}
+              max={1}
               onChange={setPeRatioPosition}
             >
               {peRatioPosition}
             </Slider>
             <div className="absolute top-0 bottom-0 w-full flex [margin-top:10px] pointer-events-none">
-              <Marker icon="apple" ratio={0.2} />
-              <Marker icon="google" ratio={0.4} />
-              <Marker icon="netflix" ratio={0.55} />
-              <Marker icon="tesla" ratio={0.8} />
+              {peRatios !== undefined && (
+                <>
+                  <Marker
+                    icon="amazon"
+                    ratio={linearFromLog(roundToNearestPosition(peRatios.AMZN))}
+                  />
+                  <Marker
+                    icon="google"
+                    ratio={linearFromLog(
+                      roundToNearestPosition(peRatios.GOOGL),
+                    )}
+                  />
+                  <Marker
+                    icon="intel"
+                    ratio={linearFromLog(roundToNearestPosition(peRatios.INTC))}
+                  />
+                  <Marker
+                    icon="netflix"
+                    ratio={linearFromLog(roundToNearestPosition(peRatios.NFLX))}
+                  />
+                  <Marker
+                    icon="tesla"
+                    ratio={linearFromLog(roundToNearestPosition(peRatios.TSLA))}
+                  />
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -159,17 +230,16 @@ const PriceModel: FC = () => {
           </div>
         </div>
         <div className="bg-blue-highlightbg p-3 rounded-lg m-auto">
-          <TextRoboto className="text-xl">
-            {projectedPrice === undefined ? (
-              <Skeleton width="6rem" />
-            ) : (
-              <MoneyAmountAnimated unit="usd">
-                {projectedPrice}
-              </MoneyAmountAnimated>
-            )}
-            <AmountUnitSpace />
-            <TextRoboto className="text-blue-spindle">USD</TextRoboto>
-          </TextRoboto>
+          <MoneyAmount
+            className="text-xl"
+            unit="usd"
+            skeletonWidth="6rem"
+            amountPostfix="K"
+          >
+            {projectedPrice === undefined
+              ? undefined
+              : Format.formatTwoDigit(projectedPrice / 1000)}
+          </MoneyAmount>
         </div>
       </div>
     </WidgetBackground>

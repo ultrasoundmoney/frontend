@@ -245,7 +245,7 @@ const EngineRow: FC<EngineRowProps> = ({
     rel="noreferrer"
   >
     <TextInter>{name}</TextInter>
-    <MoneyAmount className="font-light text-right" unitPrefix="M" unit="eth">
+    <MoneyAmount className="font-light text-right" amountPostfix="M" unit="eth">
       {amountFormatted}
     </MoneyAmount>
     <Amount className="text-right" unitPostfix="months">

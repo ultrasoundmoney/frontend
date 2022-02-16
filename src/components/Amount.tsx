@@ -9,13 +9,13 @@ import { TextRoboto, UnitText } from "./Texts";
 type AmountProps = {
   className?: string;
   unitPostfix: string;
-  unitPrefix?: string;
+  amountPostfix?: string;
 };
 
 export const Amount: FC<AmountProps> = ({
   className,
   children,
-  unitPrefix,
+  amountPostfix: unitPrefix,
   unitPostfix,
 }) => (
   <TextRoboto className={`text-base md:text-lg ${className ?? ""}`}>
@@ -27,23 +27,23 @@ export const Amount: FC<AmountProps> = ({
 );
 
 type MoneyAmountProps = {
+  amountPostfix?: string;
   className?: string;
   skeletonWidth?: string;
   unit: Unit;
-  unitPrefix?: string;
 };
 
 export const MoneyAmount: FC<MoneyAmountProps> = ({
+  amountPostfix: amountPostfix,
   children,
   className,
   skeletonWidth = "3rem",
   unit = "eth",
-  unitPrefix,
 }) => (
   <Amount
+    amountPostfix={amountPostfix}
     className={className}
     unitPostfix={unit === "eth" ? "ETH" : unit === "usd" ? "USD" : unit}
-    unitPrefix={unitPrefix}
   >
     {children === undefined ? (
       <Skeleton inline={true} width={skeletonWidth} />
