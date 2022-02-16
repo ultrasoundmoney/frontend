@@ -16,7 +16,7 @@ const EIPByzantium: React.FC<{}> = () => {
 
   return (
     <>
-      <DrawingLine pointRef={byzantiumRef} />
+      <DrawingLine pointRef={byzantiumRef} indexTopSection={1} />
       <section
         data-aos="fade-up"
         data-aos-anchor-placement="top-bottom"

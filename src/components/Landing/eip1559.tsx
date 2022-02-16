@@ -24,7 +24,7 @@ const EIP1559: React.FC<{}> = () => {
 
   return (
     <>
-      <DrawingLine pointRef={EIPRef} />
+      <DrawingLine pointRef={EIPRef} indexTopSection={3} />
       <section
         data-aos="fade-up"
         data-aos-anchor-placement="top-center"

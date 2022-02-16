@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import arrowRight from "../../assets/arrowRight.svg";
 import Steps from "./Steps";
@@ -7,8 +7,10 @@ import { throttle } from "lodash";
 
 const getIconOffset = (
   pointsHeights: (StepperPoint | undefined)[],
-  trackPosition: number
+  pageLoad: boolean
 ) => {
+  if (!pageLoad) return 0;
+  const trackPosition = window.scrollY + window.innerHeight / 2;
   if (pointsHeights) {
     const pointsQuantity = pointsHeights.length;
     const lastPoint = pointsHeights[pointsQuantity - 1];
@@ -16,10 +18,9 @@ const getIconOffset = (
     let globalPercent = 0;
 
     if (lastPoint && trackPosition > lastPoint?.offsetY) return 100;
-
-    pointsHeights.forEach((point, index) => {
+    for (let index = 0; index < pointsHeights.length; index++) {
       const nextPoint = pointsHeights[index + 1]?.offsetY;
-      const currentPoint = point?.offsetY;
+      const currentPoint = pointsHeights[index]?.offsetY;
       if (
         currentPoint &&
         nextPoint &&
@@ -33,7 +34,7 @@ const getIconOffset = (
           distanceBetweenPoints * index +
           (percent * distanceBetweenPoints) / 100;
       }
-    });
+    }
     return globalPercent;
   }
   return 0;
@@ -57,20 +58,32 @@ const Stepper: React.FC = () => {
 
   const throttledScroll = throttle(onScroll, 300);
 
+  const [pageLoad, setPageLoad] = useState(false);
+  const memoizedValue = useMemo(() => getIconOffset(controlPoints, pageLoad), [
+    controlPoints,
+    pageLoad,
+  ]);
+
   useEffect(() => {
-    const showStickyHeader = window.scrollY > window.innerHeight;
+    let offsetYFirstPoint = 2;
+    controlPoints.forEach((el, index) => {
+      if (index === 0 && typeof el?.offsetY === "number") {
+        offsetYFirstPoint = el?.offsetY;
+      }
+    });
+
+    const showStickyHeader: boolean =
+      window.scrollY > offsetYFirstPoint - window.innerHeight / 2;
     showStickyHeader
       ? stepsRef.current?.classList.add("active")
       : stepsRef.current?.classList.remove("active");
     if (steperIconRef && steperIconRef.current) {
-      steperIconRef.current.style.left = `${getIconOffset(
-        controlPoints,
-        scrollYProgress
-      )}%`;
+      steperIconRef.current.style.left = `${memoizedValue}%`;
     }
   }, [controlPoints, scrollYProgress]);
 
   useEffect(() => {
+    setPageLoad(true);
     window.addEventListener("scroll", throttledScroll);
     return () => {
       window.removeEventListener("scroll", throttledScroll);

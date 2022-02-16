@@ -220,7 +220,6 @@
   z-index: 99;
 }
 
-
 .animateIn {
   -webkit-animation-name: accordionIn;
   -webkit-animation-duration: 0.5s;
@@ -243,7 +242,6 @@
   animation-timing-function: ease-in-out;
   animation-fill-mode: both;
   animation-delay: 0s;
-
 }
 
 .animateOut {
@@ -274,7 +272,6 @@
   0% {
     opacity: 0;
     -webkit-transform: scale(0.8);
-
   }
 
   100% {
@@ -287,7 +284,6 @@
   0% {
     opacity: 0;
     -moz-transform: scale(0.8);
-
   }
 
   100% {
@@ -312,7 +308,6 @@
   0% {
     opacity: 1;
     -webkit-transform: scale(1);
-
   }
 
   100% {
@@ -325,7 +320,6 @@
   0% {
     opacity: 1;
     -moz-transform: scale(1);
-
   }
 
   100% {
@@ -338,7 +332,6 @@
   0% {
     opacity: 1;
     transform: scale(1);
-
   }
 
   100% {
@@ -418,13 +411,13 @@
     position: relative;
 
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 14px;
       left: 20px;
       width: 12px;
       height: 12px;
-      background: #FF891D;
+      background: #ff891d;
       border-radius: 100%;
     }
   }
@@ -433,13 +426,13 @@
     position: relative;
 
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 14px;
       left: 20px;
       width: 12px;
       height: 12px;
-      background: #5474F4;
+      background: #5474f4;
       border-radius: 100%;
     }
   }
@@ -448,13 +441,13 @@
     position: relative;
 
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 14px;
       left: 20px;
       width: 12px;
       height: 12px;
-      background: #A3D972;
+      background: #a3d972;
       border-radius: 100%;
     }
   }

@@ -1,16 +1,29 @@
-import React, { RefObject, useEffect, useState } from "react";
+import React, {
+  RefObject,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import styles from "./DrawingLine.module.scss";
+import { StepperContext } from "../../../context/StepperContext";
 
 interface DrawingLineProps {
   pointRef: RefObject<HTMLDivElement> | null;
+  indexTopSection?: number;
 }
-
-const DrawingLine: React.FC<DrawingLineProps> = ({ pointRef }) => {
+interface Obj {
+  [key: string]: any;
+}
+const DrawingLine: React.FC<DrawingLineProps> = ({
+  pointRef,
+  indexTopSection,
+}) => {
   const [scrollYProgress, setScrollYProgress] = useState(0);
-  const [isDone, setIsDone] = useState(false);
+  const [isDone, setIsDone] = useState(true);
   const animationYProgress = useMotionValue<number>(0);
-  const y = useTransform(animationYProgress, [0, 1], [0, 400]);
+  const y = useTransform(animationYProgress, [0, 1], [0, 600]);
   const height = useSpring(y, {
     stiffness: 600,
     damping: 90,
@@ -40,6 +53,25 @@ const DrawingLine: React.FC<DrawingLineProps> = ({ pointRef }) => {
     };
   }, []);
 
+  const stepperPoints = useContext(StepperContext);
+  const controlPoints = Object.keys(stepperPoints?.stepperElements as {}).map(
+    (element) => {
+      return stepperPoints?.stepperElements[element];
+    }
+  );
+
+  const triggerActivePointScroll: Obj = useRef(0);
+  useEffect(() => {
+    if (
+      indexTopSection &&
+      Array.isArray(controlPoints) &&
+      typeof controlPoints[indexTopSection]?.offsetY === "number"
+    ) {
+      triggerActivePointScroll.current =
+        controlPoints[indexTopSection]?.offsetY;
+    }
+  }, [controlPoints]);
+
   useEffect(() => {
     if (pointRef?.current) {
       // get event scroll progress
@@ -47,10 +79,16 @@ const DrawingLine: React.FC<DrawingLineProps> = ({ pointRef }) => {
 
       // set progress value
       animationYProgress.set(progress);
-
-      // forced animated
-      progress > 0.95 ? setIsDone(true) : setIsDone(false);
-      progress < 0.3 && animationYProgress.set(0);
+      if (indexTopSection) {
+        window.scrollY >
+        triggerActivePointScroll.current - window.innerHeight / 2
+          ? setIsDone(true)
+          : setIsDone(false);
+      } else {
+        // forced animated
+        progress > 0.95 ? setIsDone(true) : setIsDone(false);
+        progress < 0.3 && animationYProgress.set(0);
+      }
     }
   }, [scrollYProgress, pointRef]);
 

@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 import twemoji from "twemoji";
 import { TranslationsContext } from "../../translations-context";
 import useSWR from "swr";
 import { formatUsdZeroDigit } from "../../format";
+import { StepperContext } from "../../context/StepperContext";
 
 const Nav = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrollYProgress, setScrollYProgress] = useState(0);
+  const defaultBar = useRef<null | HTMLDivElement>(null);
+  const stepperPoints = useContext(StepperContext);
+
   const t = React.useContext(TranslationsContext);
   const { data } = useSWR(
     "https://ethgas.watch/api/gas",
@@ -17,6 +22,32 @@ const Nav = () => {
       revalidateOnReconnect: true,
     }
   );
+
+  const handleScroll = () => {
+    setScrollYProgress(window.scrollY);
+  };
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+  const controlPoints: any[] = Object.keys(
+    stepperPoints?.stepperElements as {}
+  ).map((element) => {
+    return stepperPoints?.stepperElements[element];
+  });
+  useEffect((): void => {
+    if (Array.isArray(controlPoints) && controlPoints.length > 0) {
+      if (window.scrollY > controlPoints[0].offsetY - window.innerHeight / 2) {
+        defaultBar.current?.classList.add("hiddenBar");
+      } else {
+        defaultBar.current?.classList.remove("hiddenBar");
+      }
+    }
+  }, [scrollYProgress]);
+
   if (!data) {
     return null;
   }
@@ -26,8 +57,11 @@ const Nav = () => {
   )}  <span class="pl-1">⛽️${gewi.standard} Gwei</span>`;
 
   return (
-    <nav className="relative flex flex-wrap items-center justify-between px-2 py-6 bg-transparent mb-3 z-10">
-      <div className="container px-1 md:px-4 mx-auto flex flex-wrap items-center justify-between">
+    <nav className="fixed w-full flex flex-wrap items-center justify-between px-2 py-6 bg-transparent mb-3 z-10">
+      <div
+        ref={defaultBar}
+        className="default_bar container px-1 md:px-4 mx-auto flex flex-wrap items-center justify-between"
+      >
         <div className="w-full md:w-6/12 relative flex justify-start lg:static lg:justify-start">
           <div className="flex-initial pr-2 lg:pr-8">
             <Link href="/">
