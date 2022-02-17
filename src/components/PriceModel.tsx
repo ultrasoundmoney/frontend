@@ -169,7 +169,7 @@ const PriceModel: FC = () => {
       <WidgetTitle>price model</WidgetTitle>
       <div className="flex flex-col gap-4 mt-4">
         <div className="flex justify-between">
-          <TextInter>anual profits</TextInter>
+          <TextInter>annual profits</TextInter>
           <MoneyAmount amountPostfix="B" unit="usd">
             {annualizedEarnings === undefined
               ? undefined
