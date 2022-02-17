@@ -48,13 +48,12 @@ const Nav = () => {
     }
   }, [scrollYProgress]);
 
-  if (!data) {
-    return null;
-  }
-  const gewi = data.sources && data.sources[0];
-  const ethPrice = `$${formatUsdZeroDigit(
-    data?.ethPrice
-  )}  <span class="pl-1">⛽️${gewi.standard} Gwei</span>`;
+  const gewi = data && data.sources && data.sources[0];
+  const ethPrice = !data
+    ? `0 <span class="pl-1">⛽️0 Gwei</span>`
+    : `$${formatUsdZeroDigit(data?.ethPrice)}  <span class="pl-1">⛽️${
+        gewi.standard
+      } Gwei</span>`;
 
   return (
     <nav className="fixed w-full flex flex-wrap items-center justify-between px-2 py-6 bg-transparent mb-3 z-10">
