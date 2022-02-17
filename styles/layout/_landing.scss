@@ -242,7 +242,7 @@
   }
 }
 .default_bar {
-  transition: 0.6s transform;
+  transition: 0.3s transform;
   transform: translateY(0);
   &.hiddenBar {
     transform: translateY(-100%);

@@ -1,7 +1,8 @@
 import * as React from "react";
 import Card from "../Card/card";
 import { TranslationsContext } from "../../translations-context";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { StepperContext } from "../../context/StepperContext";
 
 type FeeBurnedBlockProps = {
   lineHeight?: string;
@@ -9,16 +10,28 @@ type FeeBurnedBlockProps = {
 const FeeBurnedBlock: React.FC<FeeBurnedBlockProps> = () => {
   const t = React.useContext(TranslationsContext);
   const [isShow, setIsShow] = useState(true);
+  const stepperPoints = useContext(StepperContext);
 
+  const controlPoints: any[] = Object.keys(
+    stepperPoints?.stepperElements as {}
+  ).map((element) => {
+    return stepperPoints?.stepperElements[element];
+  });
   function onScroll() {
-    const isTopScreen = window.scrollY < window.innerHeight / 3;
-    setIsShow(isTopScreen);
+    if (
+      window.scrollY < window.innerHeight / 3 ||
+      window.scrollY > controlPoints[0].offsetY - window.innerHeight / 2
+    ) {
+      setIsShow(true);
+    } else {
+      setIsShow(false);
+    }
   }
 
   React.useEffect(() => {
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [stepperPoints]);
 
   return (
     <>
