@@ -194,11 +194,13 @@ const PriceModel: FC = () => {
               {peRatios !== undefined && (
                 <>
                   <Marker
+                    alt="amazon logo"
                     icon="amazon"
                     ratio={linearFromLog(roundToNearestPosition(peRatios.AMZN))}
                     symbol="AMZN"
                   />
                   <Marker
+                    alt="google logo"
                     icon="google"
                     ratio={linearFromLog(
                       roundToNearestPosition(peRatios.GOOGL),
@@ -206,16 +208,19 @@ const PriceModel: FC = () => {
                     symbol="GOOGL"
                   />
                   <Marker
+                    alt="intel logo"
                     icon="intel"
                     ratio={linearFromLog(roundToNearestPosition(peRatios.INTC))}
                     symbol="INTC"
                   />
                   <Marker
+                    alt="netflix logo"
                     icon="netflix"
                     ratio={linearFromLog(roundToNearestPosition(peRatios.NFLX))}
                     symbol="NFLX"
                   />
                   <Marker
+                    alt="tesla logo"
                     icon="tesla"
                     ratio={linearFromLog(roundToNearestPosition(peRatios.TSLA))}
                     symbol="TSLA"
