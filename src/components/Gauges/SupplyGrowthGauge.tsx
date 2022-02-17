@@ -11,9 +11,6 @@ import ToggleSwitch from "../ToggleSwitch";
 import TimeFrameIndicator from "../widget-subcomponents/TimeFrameIndicator";
 import SplitGaugeSvg from "./SplitGaugeSvg";
 
-const powIssuanceYear = StaticEtherData.powIssuancePerDay * 365.25;
-const posIssuanceYear = StaticEtherData.posIssuancePerDay * 365.25;
-
 const useGrowthRate = (
   simulateMerge: boolean,
   timeFrame: TimeFrameNext,
@@ -33,8 +30,8 @@ const useGrowthRate = (
     const feeBurnYear = Format.ethFromWei(selectedBurnRate) * 60 * 24 * 365.25;
 
     const issuanceRate = simulateMerge
-      ? posIssuanceYear
-      : posIssuanceYear + powIssuanceYear;
+      ? StaticEtherData.posIssuanceYear
+      : StaticEtherData.posIssuanceYear + StaticEtherData.powIssuanceYear;
 
     const growthRate =
       ethSupply === undefined
