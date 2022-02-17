@@ -9,7 +9,7 @@ const SpanMoji = ({
   emoji: string;
 }) => (
   <span
-    className={className}
+    className={`flex items-center ${className ?? ""}`}
     dangerouslySetInnerHTML={{
       __html: twemoji.parse(emoji, {
         folder: "svg",

@@ -71,10 +71,12 @@ const FollowingYou: FC = () => {
 
   return (
     <>
-      <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8">
-        me & the fam
-        <SpanMoji emoji=" 👀" />
-      </h1>
+      <div className="flex justify-center items-center mb-8">
+        <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mr-1">
+          me & the fam
+        </h1>
+        <SpanMoji emoji="👀" />
+      </div>
       <p
         className={`text-blue-shipcove leading-6 md:leading-none text-center font-light text-base lg:text-lg mb-14`}
       >
