@@ -46,6 +46,7 @@ const Slider: FC<SliderProps> = ({
   />
 );
 
+// Markers are positioned absolutely, manipulating their 'left' relatively to the full width bar which should be positioned relatively as their parent. Marker width
 const Marker: FC<{
   alt?: string;
   icon: string;
@@ -53,23 +54,23 @@ const Marker: FC<{
   symbol?: string;
 }> = ({ alt, icon, ratio, symbol }) => (
   <div
-    className="absolute flex flex-col items-center pointer-events-none"
-    style={{ left: `${ratio * 100}%` }}
+    className="absolute flex flex-col pointer-events-none"
+    // For unclear reasons the left 89% position for TSLA is closer to notch 91 on the actual slider. We manually adjust.
+    style={{ left: `${symbol === "TSLA" ? ratio * 100 - 2 : ratio * 100}%` }}
   >
     <div className="[min-height:8px] w-0.5 bg-blue-spindle mb-3"></div>
-    <div className="pointer-events-auto">
-      <a
-        href={
-          symbol === undefined
-            ? undefined
-            : `https://www.google.com/finance/quote/${symbol}:NASDAQ`
-        }
-        target="_blank"
-        rel="noreferrer"
-      >
-        <img src={`/${icon}-icon.svg`} alt={alt ?? ""} />
-      </a>
-    </div>
+    <a
+      className="pointer-events-auto -translate-x-1/2"
+      href={
+        symbol === undefined
+          ? undefined
+          : `https://www.google.com/finance/quote/${symbol}:NASDAQ`
+      }
+      target="_blank"
+      rel="noreferrer"
+    >
+      <img src={`/${icon}-icon.svg`} alt={alt} />
+    </a>
   </div>
 );
 
