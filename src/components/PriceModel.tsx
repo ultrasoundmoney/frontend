@@ -221,6 +221,14 @@ const PriceModel: FC = () => {
                     symbol="NFLX"
                   />
                   <Marker
+                    alt="disney logo"
+                    icon="disney"
+                    ratio={linearFromLog(
+                      roundToNearestPosition(peRatios.DIS - 4),
+                    )}
+                    symbol="DIS"
+                  />
+                  <Marker
                     alt="tesla logo"
                     icon="tesla"
                     ratio={linearFromLog(roundToNearestPosition(peRatios.TSLA))}

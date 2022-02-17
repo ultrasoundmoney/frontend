@@ -5,6 +5,7 @@ import { feesBasePath } from "./fees";
 type PeRatios = {
   AAPL: number;
   AMZN: number;
+  DIS: number;
   GOOGL: number;
   INTC: number;
   NFLX: number;
