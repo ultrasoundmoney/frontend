@@ -50,7 +50,7 @@ const BaseGuage: FC<BaseGuageProps> = ({
 
   return (
     <>
-      <SpanMoji className="leading-10 text-4xl" emoji={emoji} />
+      <SpanMoji className="h-10" emoji={emoji} />
       <div className="mt-6 md:mt-2 lg:mt-8 transform scale-100 md:scale-75 lg:scale-100 xl:scale-110">
         <GaugeSvg
           progress={progress}
