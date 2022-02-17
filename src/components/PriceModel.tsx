@@ -1,11 +1,12 @@
 import JSBI from "jsbi";
 import { FC, InputHTMLAttributes, useEffect, useState } from "react";
+import { useAverageEthPrice } from "../api/eth-price";
 import { useGroupedData1 } from "../api/grouped-stats-1";
 import { usePeRatios } from "../api/pe-ratios";
 import { useScarcity } from "../api/scarcity";
 import * as Format from "../format";
 import { pipe } from "../fp";
-import * as NumberUtil from "../number-util";
+import * as StaticEtherData from "../static-ether-data";
 import { MoneyAmount } from "./Amount";
 import styles from "./PriceModel.module.scss";
 import { TextInter, TextRoboto } from "./Texts";
@@ -55,8 +56,7 @@ const Marker: FC<{
 }> = ({ alt, icon, ratio, symbol }) => (
   <div
     className="absolute flex flex-col pointer-events-none"
-    // For unclear reasons the left 89% position for TSLA is closer to notch 91 on the actual slider. We manually adjust.
-    style={{ left: `${symbol === "TSLA" ? ratio * 100 - 2 : ratio * 100}%` }}
+    style={{ left: `${ratio * 100}%` }}
   >
     <div className="[min-height:8px] w-0.5 bg-blue-spindle mb-3"></div>
     <a
@@ -74,13 +74,23 @@ const Marker: FC<{
   </div>
 );
 
-const monetaryPremiumMax = 6;
-const monetaryPremiumStepSize = 0.1;
-const goldMonetaryPremiumMultiple = 5;
-const goldMonetaryPremiumPosition = NumberUtil.round(
-  goldMonetaryPremiumMultiple / monetaryPremiumMax,
-  1,
+const MarkerText: FC<{ ratio: number }> = ({ ratio, children }) => (
+  <div
+    className="absolute flex flex-col pointer-events-none"
+    // For unclear reasons the left 89% position for TSLA is closer to notch 91 on the actual slider. We manually adjust.
+    style={{ left: `${ratio * 100}%` }}
+  >
+    <div className="[min-height:8px] w-0.5 bg-blue-spindle mb-3"></div>
+    <TextRoboto className="text-blue-spindle -translate-x-1/2">
+      {children}
+    </TextRoboto>
+  </div>
 );
+
+const monetaryPremiumMin = 1;
+const monetaryPremiumMax = 20;
+const monetaryPremiumRange = monetaryPremiumMax - monetaryPremiumMin;
+const monetaryPremiumStepSize = 0.1;
 
 const growthProfileMin = 5;
 const growthProfileMax = 300;
@@ -122,6 +132,17 @@ const roundToNearestPosition = (num: number) => {
   return bestCandidate;
 };
 
+const calcEarningsPerShare = (
+  annualizedEarnings: number | undefined,
+  ethSupply: JSBI | undefined,
+) => {
+  if (annualizedEarnings === undefined || ethSupply === undefined) {
+    return undefined;
+  }
+
+  return annualizedEarnings / Format.ethFromWeiBIUnsafe(ethSupply);
+};
+
 const calcProjectedPrice = (
   annualizedEarnings: number | undefined,
   ethSupply: JSBI | undefined,
@@ -137,21 +158,66 @@ const calcProjectedPrice = (
     return undefined;
   }
 
-  const earningsPerShare =
-    annualizedEarnings / Format.ethFromWeiBIUnsafe(ethSupply);
+  const earningsPerShare = calcEarningsPerShare(annualizedEarnings, ethSupply);
+  if (earningsPerShare === undefined) {
+    return undefined;
+  }
+
   return earningsPerShare * peRatio * monetaryPremium;
 };
 
 const PriceModel: FC = () => {
   const peRatios = usePeRatios();
-  const d30BurnTotal = useGroupedData1()?.feesBurned.feesBurned30dUsd;
+  const d30BurnTotal = useGroupedData1()?.feesBurned.feesBurned30d;
   const ethSupply = useScarcity()?.ethSupply;
   const [peRatio, setPeRatio] = useState(24.5);
   const [peRatioPosition, setPeRatioPosition] = useState(0.33);
   const [monetaryPremium, setMonetaryPremium] = useState(1);
+  const [initialPeSet, setInitialPeSet] = useState(false);
+  const d30AverageEthPrice = useAverageEthPrice()?.d30;
 
+  const annualizedRevenue =
+    d30BurnTotal === undefined || d30AverageEthPrice === undefined
+      ? undefined
+      : Format.ethFromWei(d30BurnTotal * 12.175) * d30AverageEthPrice;
+  const annualizedCosts =
+    d30AverageEthPrice === undefined
+      ? undefined
+      : StaticEtherData.posIssuanceYear * d30AverageEthPrice;
   const annualizedEarnings =
-    d30BurnTotal === undefined ? undefined : d30BurnTotal * 12;
+    annualizedRevenue === undefined || annualizedCosts === undefined
+      ? undefined
+      : annualizedRevenue - annualizedCosts;
+
+  useEffect(() => {
+    if (
+      initialPeSet ||
+      annualizedEarnings === undefined ||
+      d30AverageEthPrice === undefined
+    ) {
+      return;
+    }
+
+    setInitialPeSet(true);
+
+    const earningsPerShare = calcEarningsPerShare(
+      annualizedEarnings,
+      ethSupply,
+    );
+    if (earningsPerShare === undefined) {
+      return;
+    }
+
+    const currentPeRatio = d30AverageEthPrice / earningsPerShare;
+
+    setPeRatioPosition(linearFromLog(currentPeRatio));
+  }, [
+    annualizedEarnings,
+    d30AverageEthPrice,
+    ethSupply,
+    initialPeSet,
+    setPeRatioPosition,
+  ]);
 
   const projectedPrice = calcProjectedPrice(
     annualizedEarnings,
@@ -179,7 +245,9 @@ const PriceModel: FC = () => {
         <div>
           <div className="flex justify-between">
             <TextInter>growth profile</TextInter>
-            <TextRoboto>{Format.formatOneDigit(peRatio)}</TextRoboto>
+            <MoneyAmount unit="P/E">
+              {Format.formatOneDigit(peRatio)}
+            </MoneyAmount>
           </div>
           <div className="relative mb-8">
             <Slider
@@ -193,12 +261,15 @@ const PriceModel: FC = () => {
             </Slider>
             <div className="absolute top-0 w-full [margin-top:10px] select-none">
               {peRatios !== undefined && (
+                // Because the actual slider does not span the entire visual slider, overlaying an element and setting the left is not perfect. We manually adjust values to match the slider more precisely. To improve this look into off-the-shelf components that allow for styled markers.
                 <>
                   <Marker
-                    alt="amazon logo"
-                    icon="amazon"
-                    ratio={linearFromLog(roundToNearestPosition(peRatios.AMZN))}
-                    symbol="AMZN"
+                    alt="intel logo"
+                    icon="intel"
+                    ratio={linearFromLog(
+                      roundToNearestPosition(peRatios.INTC + 1),
+                    )}
+                    symbol="INTC"
                   />
                   <Marker
                     alt="google logo"
@@ -209,16 +280,16 @@ const PriceModel: FC = () => {
                     symbol="GOOGL"
                   />
                   <Marker
-                    alt="intel logo"
-                    icon="intel"
-                    ratio={linearFromLog(roundToNearestPosition(peRatios.INTC))}
-                    symbol="INTC"
-                  />
-                  <Marker
                     alt="netflix logo"
                     icon="netflix"
                     ratio={linearFromLog(roundToNearestPosition(peRatios.NFLX))}
                     symbol="NFLX"
+                  />
+                  <Marker
+                    alt="amazon logo"
+                    icon="amazon"
+                    ratio={linearFromLog(roundToNearestPosition(peRatios.AMZN))}
+                    symbol="AMZN"
                   />
                   <Marker
                     alt="disney logo"
@@ -231,7 +302,9 @@ const PriceModel: FC = () => {
                   <Marker
                     alt="tesla logo"
                     icon="tesla"
-                    ratio={linearFromLog(roundToNearestPosition(peRatios.TSLA))}
+                    ratio={linearFromLog(
+                      roundToNearestPosition(peRatios.TSLA - 4),
+                    )}
                     symbol="TSLA"
                   />
                 </>
@@ -249,27 +322,48 @@ const PriceModel: FC = () => {
           <div className="relative mb-8">
             <Slider
               step={monetaryPremiumStepSize}
-              min={1}
+              min={monetaryPremiumMin}
               max={monetaryPremiumMax}
               onChange={setMonetaryPremium}
             >
               {monetaryPremium}
             </Slider>
+            {/* Because a slider range is not exactly the visual width of the element positioning using absolute children with a left is not exactly right. we add small amounts to try fudge them into the right place. */}
             <div className="absolute top-0 bottom-0 w-full flex [margin-top:10px] pointer-events-none">
-              <Marker icon="gold" ratio={goldMonetaryPremiumPosition} />
+              <MarkerText
+                ratio={(2 + 0.3 - monetaryPremiumMin) / monetaryPremiumRange}
+              >
+                2x
+              </MarkerText>
+              <MarkerText
+                ratio={(4 + 0.2 - monetaryPremiumMin) / monetaryPremiumRange}
+              >
+                4x
+              </MarkerText>
+              <MarkerText
+                ratio={(8 + 0.1 - monetaryPremiumMin) / monetaryPremiumRange}
+              >
+                8x
+              </MarkerText>
+              <MarkerText
+                ratio={(16 - 0.3 - monetaryPremiumMin) / monetaryPremiumRange}
+              >
+                16x
+              </MarkerText>
             </div>
           </div>
         </div>
-        <div className="bg-blue-highlightbg p-3 rounded-lg m-auto">
+        <div className="flex flex-col gap-y-2">
+          <WidgetTitle>implied eth price</WidgetTitle>
           <MoneyAmount
-            className="text-xl"
-            unit="usd"
-            skeletonWidth="6rem"
             amountPostfix="K"
+            skeletonWidth="6rem"
+            textSizeClass="text-2xl md:text-3xl"
+            unit="usd"
           >
             {projectedPrice === undefined
               ? undefined
-              : Format.formatTwoDigit(projectedPrice / 1000)}
+              : Format.formatOneDigit(projectedPrice / 1000)}
           </MoneyAmount>
         </div>
       </div>
