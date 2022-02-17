@@ -111,7 +111,7 @@ const TheUltraSound: React.FC<{}> = () => {
           ref={graphRef}
           className="w-full md:w-9/12 flex flex-wrap justify-center m-auto"
         >
-          <div className="w-full md:w-7/12 self-center order-2 md:order-1 md:px-20">
+          <div className="graph_text_containter w-full md:w-7/12 self-center order-2 md:order-1 md:px-20">
             <SVGrenderText typ={cryptoType} />
           </div>
           <div className="w-full md:w-5/12 order-1 md:order-1 mb-6 md:mb-0">
