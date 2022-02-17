@@ -111,7 +111,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
         <Skeleton width="1.5rem" />
       ) : (
         <TextRoboto
-          className={`font-roboto color-animation ${
+          className={`color-animation ${
             !showHighlight && percentOfTotalBurn < alwaysShowImgPercentThreshold
               ? "invisible"
               : "visible"
