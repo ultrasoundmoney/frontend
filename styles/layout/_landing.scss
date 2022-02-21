@@ -21,7 +21,31 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
+.graph_text_containter {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  & .graph_text_eth {
+    position: absolute;
+    width: 100%;
+    padding: inherit;
+    opacity: 0;
+  }
+}
+.chart_bg {
+  position: absolute;
+  top: 105px;
+  left: 166px;
+  width: 350px;
+  height: 410px;
+  background: #00ff29;
+  border-radius: 50%;
+  opacity: 0.2;
+  filter: blur(150px);
+  transition: 0.4s;
+}
 .h-screen-90 {
   height: 90vh;
 }
@@ -233,19 +257,16 @@
 
   .track_wrapper {
     position: absolute;
-    width: calc(100% - 64px);
+    width: calc(100% - 40px);
     height: 100%;
-    left: 0;
+
+    & > div {
+      transform: translateX(-50%);
+    }
+
     img {
       margin: 0;
     }
-  }
-}
-.default_bar {
-  transition: 0.3s transform;
-  transform: translateY(0);
-  &.hiddenBar {
-    transform: translateY(-100%);
   }
 }
 .the-merge-path {
@@ -439,22 +460,13 @@
   // }
 }
 
-@media (min-width: 767px) {
-  .fixed-fee-burned {
-    position: fixed;
+.fixed-fee-burned {
+  @media (min-width: 767px) {
+    position: sticky;
     left: 0;
-    right: 0;
-    //bottom: -100%;
-    bottom: 0;
+    bottom: 10px;
     width: 100%;
     z-index: 999;
-    flex-wrap: nowrap;
-    transition: all 0.2s ease;
-    transform: translateY(100%);
-
-    &.active {
-      transform: translateY(0);
-    }
   }
 }
 
@@ -569,32 +581,18 @@
 .block-fee-burn {
   position: relative;
 
-  //&::before {
-  //    position: absolute;
-  //    content: '';
-  //    background-image: url("../../src/assets/bat-bg/Blurredbg.png");
-  //    background-repeat: no-repeat;
-  //    background-position: center;
-  //    background-size: contain;
-  //    width: 100%;
-  //    height: 100%;
-  //    bottom: 30px;
-  //    left: 0px;
-  //    z-index: 0;
-  //}
-
-  .eip_bg {
+  &::before {
     position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, -20%);
-    z-index: 1;
-    opacity: 0.7;
-    max-width: 500px;
-  }
-
-  & > *:not(video) {
-    z-index: 2;
+    content: "";
+    background-image: url("../../src/assets/bat-bg/Blurredbg.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 100%;
+    height: 100%;
+    bottom: 30px;
+    left: 0px;
+    z-index: 0;
   }
 }
 
