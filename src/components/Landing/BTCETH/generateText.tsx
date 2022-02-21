@@ -1,46 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { TranslationsContext } from "../../../translations-context";
-import { motion } from "framer-motion";
-import ContentBlockMedia from "../../ContentBlock/ContentBlockMedia";
+import BlockText from "./BlockText";
 
-const BlockText: React.FC<{
-  title: string;
-  text: string;
-  variants: any;
-  indexElement: number;
-  currentIndexElement: number;
-}> = ({ title, text, variants, indexElement, currentIndexElement }) => {
-  const [activePosition, setActivePosition] = React.useState(variants.down);
-  useEffect(() => {
-    if (
-      currentIndexElement + 2 === indexElement ||
-      currentIndexElement - 2 === indexElement
-    ) {
-      return;
-    }
-
-    if (indexElement === currentIndexElement) {
-      setActivePosition(variants.center);
-    } else {
-      if (currentIndexElement > indexElement) {
-        setActivePosition(variants.up);
-      } else {
-        setActivePosition(variants.down);
-      }
-    }
-  }, [currentIndexElement]);
-
-  return (
-    <motion.div
-      className="graph_text_eth"
-      animate={activePosition}
-      transition={{ duration: 1 }}
-      variants={variants}
-    >
-      <ContentBlockMedia title={title} text={text} />
-    </motion.div>
-  );
-};
 const SVGrender: React.FC<{ typ: string }> = ({ typ }) => {
   const t = useContext(TranslationsContext);
   const [currentIndex, setCurentIndex] = useState(0);
