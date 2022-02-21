@@ -16,7 +16,7 @@ const GenesisBlock: React.FC = () => {
 
   return (
     <>
-      <DrawingLine pointRef={genesisRef} />
+      <DrawingLine pointRef={genesisRef} indexTopSection={0} />
       <section
         data-aos="fade-up"
         data-aos-anchor-placement="top-bottom"
