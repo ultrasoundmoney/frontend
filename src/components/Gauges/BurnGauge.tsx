@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { useGroupedData1 } from "../../api/grouped-stats-1";
+import { useGroupedStats1 } from "../../api/grouped-stats-1";
 import colors from "../../colors";
 import { Unit } from "../../denomination";
 import * as Format from "../../format";
@@ -10,7 +10,7 @@ import BaseGauge from "./IssuanceBurnBaseGauge";
 type BurnGaugeProps = { timeFrame: TimeFrameNext; unit: Unit };
 
 const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame, unit }) => {
-  const burnRates = useGroupedData1()?.burnRates;
+  const burnRates = useGroupedStats1()?.burnRates;
 
   const selectedBurnRate =
     burnRates !== undefined

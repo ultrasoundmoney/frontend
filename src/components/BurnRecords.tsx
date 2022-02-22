@@ -2,7 +2,7 @@ import * as DateFns from "date-fns";
 import { FC, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { BurnRecord } from "../api/burn-records";
-import { useGroupedData1 } from "../api/grouped-stats-1";
+import { useGroupedStats1 } from "../api/grouped-stats-1";
 import { Unit } from "../denomination";
 import * as Format from "../format";
 import { flow, O, OAlt } from "../fp";
@@ -87,7 +87,7 @@ type Props = {
 };
 
 const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
-  const burnRecords = useGroupedData1()?.burnRecords;
+  const burnRecords = useGroupedStats1()?.burnRecords;
   const { lg } = useActiveBreakpoint();
 
   const timeFrameRecords =

@@ -1,7 +1,7 @@
 import React, { FC, memo } from "react";
 import { useAdminToken } from "../../../admin";
 import { useContractsFreshness } from "../../../api/contracts";
-import { useGroupedData1 } from "../../../api/grouped-stats-1";
+import { useGroupedStats1 } from "../../../api/grouped-stats-1";
 import { LeaderboardEntry, Leaderboards } from "../../../api/leaderboards";
 import { Unit } from "../../../denomination";
 import { FeatureFlags } from "../../../feature-flags";
@@ -85,7 +85,7 @@ const BurnLeaderboard: FC<Props> = ({
   timeFrame,
   unit,
 }) => {
-  const leaderboards = useGroupedData1()?.leaderboards;
+  const leaderboards = useGroupedStats1()?.leaderboards;
   const selectedLeaderboard =
     leaderboards === undefined
       ? undefined

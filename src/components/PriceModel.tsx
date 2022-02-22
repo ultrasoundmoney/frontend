@@ -1,7 +1,7 @@
 import JSBI from "jsbi";
 import { FC, InputHTMLAttributes, useEffect, useState } from "react";
 import { useAverageEthPrice } from "../api/eth-price";
-import { useGroupedData1 } from "../api/grouped-stats-1";
+import { useGroupedStats1 } from "../api/grouped-stats-1";
 import { usePeRatios } from "../api/pe-ratios";
 import { useScarcity } from "../api/scarcity";
 import * as Format from "../format";
@@ -168,7 +168,7 @@ const calcProjectedPrice = (
 
 const PriceModel: FC = () => {
   const peRatios = usePeRatios();
-  const d30BurnTotal = useGroupedData1()?.feesBurned.feesBurned30d;
+  const d30BurnTotal = useGroupedStats1()?.feesBurned.feesBurned30d;
   const ethSupply = useScarcity()?.ethSupply;
   const [peRatio, setPeRatio] = useState(24.5);
   const [peRatioPosition, setPeRatioPosition] = useState(0.33);

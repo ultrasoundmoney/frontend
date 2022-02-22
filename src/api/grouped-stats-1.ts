@@ -84,7 +84,7 @@ const decodeFeeData = (raw: RawFeeData): FeeData => ({
   }).records,
 });
 
-export const useGroupedData1 = (): FeeData | undefined => {
+export const useGroupedStats1 = (): FeeData | undefined => {
   const { data } = useSWR<RawFeeData>(`${feesBasePath}/all`, fetcher, {
     refreshInterval: Duration.millisFromSeconds(4),
   });

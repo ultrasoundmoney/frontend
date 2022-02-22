@@ -2,7 +2,11 @@ import * as DateFns from "date-fns";
 import { FC } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
-import { BurnRates, FeesBurned, useGroupedData1 } from "../api/grouped-stats-1";
+import {
+  BurnRates,
+  FeesBurned,
+  useGroupedStats1,
+} from "../api/grouped-stats-1";
 import { londonHardforkTimestamp } from "../dates";
 import { Unit } from "../denomination";
 import * as Duration from "../duration";
@@ -60,7 +64,7 @@ const BurnTotal: FC<Props> = ({
   timeFrame,
   unit,
 }) => {
-  const feeData = useGroupedData1();
+  const feeData = useGroupedStats1();
   const burnRates = feeData?.burnRates;
   const feesBurned = feeData?.feesBurned;
 

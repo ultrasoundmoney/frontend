@@ -1,7 +1,7 @@
 import { clamp } from "lodash";
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { animated, config, useSpring } from "react-spring";
-import { useGroupedData1 } from "../../api/grouped-stats-1";
+import { useGroupedStats1 } from "../../api/grouped-stats-1";
 import { useScarcity } from "../../api/scarcity";
 import * as Format from "../../format";
 import * as StaticEtherData from "../../static-ether-data";
@@ -16,7 +16,7 @@ const useGrowthRate = (
   timeFrame: TimeFrameNext,
 ): number => {
   const ethSupply = useScarcity()?.ethSupply;
-  const burnRates = useGroupedData1()?.burnRates;
+  const burnRates = useGroupedStats1()?.burnRates;
   const [growthRate, setGrowthRate] = useState(0);
 
   useEffect(() => {
