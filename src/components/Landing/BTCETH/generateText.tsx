@@ -13,8 +13,8 @@ const SVGrender: React.FC<{ typ: string }> = ({ typ }) => {
 
   const data = [
     {
-      title: t.eusm_row_2_title,
-      text: t.eusm_row_2_text,
+      title: t.eusm_row_1_left_col_title,
+      text: t.eusm_row_1_left_col_text,
       type: "none",
     },
     {
