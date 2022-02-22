@@ -41,9 +41,9 @@ const Nav = () => {
   useEffect((): void => {
     if (Array.isArray(controlPoints) && controlPoints.length > 0) {
       if (window.scrollY > controlPoints[0].offsetY - window.innerHeight / 2) {
-        defaultBar.current?.classList.add("hiddenBar");
+        defaultBar.current?.classList.add("hidden_bar");
       } else {
-        defaultBar.current?.classList.remove("hiddenBar");
+        defaultBar.current?.classList.remove("hidden_bar");
       }
     }
   }, [scrollYProgress]);
