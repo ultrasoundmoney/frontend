@@ -367,7 +367,7 @@
     fill: none;
     stroke-width: 2;
     stroke-dasharray: 900 900;
-    animation: strokeAni 5s linear;
+    animation: strokeAni 2.7s linear;
   }
 
   path#btc {
@@ -375,7 +375,7 @@
     fill: none;
     stroke-width: 2;
     stroke-dasharray: 900 900;
-    animation: strokeAni 5s linear;
+    animation: strokeAni 2.7s linear;
   }
 
   path#usd {
@@ -383,7 +383,7 @@
     fill: none;
     stroke-width: 2;
     stroke-dasharray: 900 900;
-    animation: strokeAni 5s linear;
+    animation: strokeAni 2.7s linear;
   }
 
   @keyframes strokeAni {
