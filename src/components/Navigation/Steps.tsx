@@ -71,13 +71,21 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
                 if (index === controlPoints.length - 1) {
                   return (
                     <div className="flex h-full items-center" key={`${index}`}>
-                      <StepperPoint name={item.name} active={item.active} />
+                      <StepperPoint
+                        name={item.name}
+                        indexItem={index}
+                        active={item.active}
+                      />
                     </div>
                   );
                 }
                 return (
                   <div className="flex w-full h-full" key={`${index}`}>
-                    <StepperPoint name={item.name} active={item.active} />
+                    <StepperPoint
+                      name={item.name}
+                      indexItem={index}
+                      active={item.active}
+                    />
                     <StepperTrack />
                   </div>
                 );

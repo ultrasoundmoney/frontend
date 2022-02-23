@@ -1,0 +1,49 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext",
+      "es2017"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "alwaysStrict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "types": [
+      "node",
+      "jest"
+    ],
+    "incremental": true
+  },
+  "exclude": [
+    "node_modules",
+    "locales/**/*.json"
+  ],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/components/Landing/BTCETH/slider.js"
+  ],
+  "files": [
+    "/home/dev/Documents/projects/website_frontend/src/components/Navigation/Stepper.tsx",
+    "/home/dev/Documents/projects/website_frontend/src/components/Navigation/StepperPoint.tsx",
+    "/home/dev/Documents/projects/website_frontend/src/components/Navigation/Steps.tsx"
+  ]
+}
