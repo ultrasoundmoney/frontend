@@ -4,10 +4,9 @@ import glowBg from "../../assets/blurred-bg1.png";
 
 const isElementInViewport = (el: SVGSVGElement) => {
   const rect = el.getBoundingClientRect();
-  const offset = window.innerHeight / 2;
+  const offset = window.innerHeight - 300;
   const start = rect.top - offset;
   const end = rect.bottom;
-
   return start < 0 && end > 0;
 };
 
@@ -55,7 +54,7 @@ const dots = [
   {
     x: 190,
     y: 600,
-    animatedOn: 0.45,
+    animatedOn: 0.6,
     isAnimated: false,
   },
   {
@@ -88,7 +87,7 @@ const dashed = [
   },
   {
     points: "190 300 190 600",
-    animatedOn: 0.45,
+    animatedOn: 0.6,
     isAnimated: false,
   },
   {
@@ -122,14 +121,19 @@ const AnimatedPath: React.FC<{}> = () => {
   const [glowIsShow, setGlowIsShow] = useState(false);
   const [scrollYProgress, setScrollYProgress] = useState(0);
   const animationYProgress = useMotionValue<number>(0);
+  const animationYProgress2 = useMotionValue<number>(0);
   const pathLength = useSpring(animationYProgress, {
+    stiffness: 400,
+    damping: 90,
+  });
+  const pathLength2 = useSpring(animationYProgress2, {
     stiffness: 400,
     damping: 90,
   });
 
   const getScrollProgress = (el: SVGSVGElement) => {
     const rect = el.getBoundingClientRect();
-    const offset = window.innerHeight / 2;
+    const offset = window.innerHeight - 300;
     if (rect.y - offset < 0) {
       const progress = ((rect.y - offset) * -1) / rect.height;
       return progress > 1 ? 1 : progress;
@@ -157,6 +161,7 @@ const AnimatedPath: React.FC<{}> = () => {
 
         // set progress value
         animationYProgress.set(progress);
+        animationYProgress2.set(progress - 0.2 > 0 ? progress - 0.2 : 0);
 
         // show green points
         setDotsState((prevState) => {
@@ -180,8 +185,12 @@ const AnimatedPath: React.FC<{}> = () => {
         progress >= 0.8 ? setGlowIsShow(true) : setGlowIsShow(false);
 
         // forced animated
-        progress < 0.1 && animationYProgress.set(0);
+        if (progress < 0.1) {
+          animationYProgress2.set(0);
+          animationYProgress.set(0);
+        }
         if (progress > 0.8) {
+          animationYProgress2.set(1);
           animationYProgress.set(1);
           setDotsState((prevState) =>
             prevState.map((dot) => ({ ...dot, isAnimated: true }))
@@ -230,7 +239,7 @@ const AnimatedPath: React.FC<{}> = () => {
             strokeLinecap="round"
             strokeLinejoin="round"
             style={{
-              pathLength: pathLength,
+              pathLength: pathLength2,
             }}
           />
           {dashedState.map((dashedItem, index) => (

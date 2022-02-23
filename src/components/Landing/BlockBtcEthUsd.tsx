@@ -90,6 +90,14 @@ const TheUltraSound: FC<{}> = () => {
             src={BatImg}
             className="mx-auto text-center mb-8"
           />
+          {/* <video
+            loop
+            autoPlay
+            muted
+            style={{ width: "360px", margin: "0 auto 20px auto" }}
+          >
+            <source src="/moving_new.mp4" />
+          </video> */}
           <div className="ultra-sound-text text-2xl md:text-6xl mb-24">
             {t.eusm_section_title}
           </div>
@@ -429,35 +437,9 @@ const TheUltraSound: FC<{}> = () => {
                   />
                   <path
                     d="M0 350.887C302.916 350.887 349.72 193.647 349.72 144"
-                    stroke="url(#usd_g)"
+                    stroke="#A3D972"
                     strokeWidth="2"
-                    id="usd"
-                    className="usd"
                   />
-                  <defs>
-                    <linearGradient
-                      id="usd_g"
-                      x1="417.161"
-                      y1="9.09606"
-                      x2="0.501528"
-                      y2="243.142"
-                      gradientUnits="userSpaceOnUse"
-                    >
-                      <stop stopColor="#06FF5B" />
-                      <stop
-                        offset="0.17008"
-                        stopColor="#7AD972"
-                        stopOpacity="0.82992"
-                      />
-                      <stop
-                        offset="0.775903"
-                        stopColor="#A3D972"
-                        stopOpacity="0.73"
-                      />
-                      <stop offset="1" stopColor="#C6E374" />
-                    </linearGradient>
-                  </defs>
-
                   <path
                     d="M1 350.988C16.192 300.494 61.7406 208.495 100.651 197.613C146.59 184.765 236.969 201.16 359.555 217.361"
                     stroke="#5474F4"

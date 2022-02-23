@@ -32,6 +32,8 @@
     width: 100%;
     padding: inherit;
     opacity: 0;
+    max-width: 400px;
+    box-sizing: content-box;
   }
 }
 .h-screen-90 {
@@ -371,6 +373,7 @@
     width: 100%;
     transform: translate(-50%, -50%);
     max-width: 1200px;
+    opacity: 0.5;
   }
 }
 
@@ -508,8 +511,8 @@
     left: 50%;
     transform: translate(-50%, -20%);
     z-index: 1;
-    opacity: 0.7;
     max-width: 500px;
+    opacity: 0.5;
   }
 
   & > *:not(video) {

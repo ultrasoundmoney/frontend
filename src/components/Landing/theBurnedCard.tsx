@@ -20,7 +20,7 @@ const FeeBurnedBlock: React.FC<FeeBurnedBlockProps> = () => {
   function onScroll() {
     if (
       window.scrollY < window.innerHeight / 3 ||
-      window.scrollY > controlPoints[0].offsetY - window.innerHeight / 2
+      window.scrollY > controlPoints[0].offsetY - window.innerHeight / 2 + 200
     ) {
       setIsShow(true);
     } else {

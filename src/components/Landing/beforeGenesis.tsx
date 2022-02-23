@@ -15,7 +15,7 @@ const BeforeGenesis: React.FC = () => {
         data-aos-easing="ease-in-out"
         id="before-genesis"
       >
-        <div className="flex flex-col justify-center w-full lg:w-w-38 md:m-auto px-16  pt-56  md:px-8 lg:px-0">
+        <div className="flex flex-col justify-center w-full lg:w-w-38 md:m-auto px-16  pt-40  md:px-8 lg:px-0">
           <h1 className="text-white font-light text-base md:text-32xl leading-normal text-center mb-6 leading-title font-inter">
             {t.landing_before_genesis_title}
           </h1>

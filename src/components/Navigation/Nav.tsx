@@ -75,7 +75,7 @@ const Nav = () => {
           />
         </div>
         <div className="w-full md:w-6/12 hidden md:block" id="menu">
-          <ul className="flex flex-col md:flex-row justify-end list-none mt-4 md:mt-0 relative text-sm">
+          <ul className="flex flex-col items-center md:flex-row justify-end list-none mt-4 md:mt-0 relative text-sm">
             <li className="nav-item pl-6 justify-center">
               <Link href="#faq">
                 <a

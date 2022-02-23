@@ -12,6 +12,7 @@ import { StepperContext } from "../../../context/StepperContext";
 interface DrawingLineProps {
   pointRef: RefObject<HTMLDivElement> | null;
   indexTopSection?: number;
+  withoutBottomMargin?: boolean;
 }
 interface Obj {
   [key: string]: any;
@@ -19,6 +20,7 @@ interface Obj {
 const DrawingLine: React.FC<DrawingLineProps> = ({
   pointRef,
   indexTopSection,
+  withoutBottomMargin,
 }) => {
   const [scrollYProgress, setScrollYProgress] = useState(0);
   const [isDone, setIsDone] = useState(true);
@@ -31,9 +33,10 @@ const DrawingLine: React.FC<DrawingLineProps> = ({
 
   const getScrollProgress = (el: HTMLDivElement) => {
     const rect = el.getBoundingClientRect();
-
-    const distance = window.innerHeight / 2;
-    const progress = 1 - (rect.top - distance) / distance;
+    let marginBottom = 170;
+    if (!withoutBottomMargin) marginBottom = 240;
+    const distance = window.innerHeight - marginBottom;
+    const progress = 1 - (rect.top - distance + marginBottom) / distance;
     const roundDecimal = Math.round(progress * 100) / 100;
     if (roundDecimal < 0) {
       return 0;
@@ -87,7 +90,7 @@ const DrawingLine: React.FC<DrawingLineProps> = ({
       } else {
         // forced animated
         progress > 0.95 ? setIsDone(true) : setIsDone(false);
-        progress < 0.3 && animationYProgress.set(0);
+        progress < 0 && animationYProgress.set(0);
       }
     }
   }, [scrollYProgress, pointRef]);
