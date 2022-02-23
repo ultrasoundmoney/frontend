@@ -1,13 +1,36 @@
-import React from "react";
+import React, { useContext } from "react";
+import { StepperContext } from "../../context/StepperContext";
 
 type StepperPointProps = {
   active: boolean;
   name: string;
+  indexItem: number;
 };
 
-const StepperPoint: React.FC<StepperPointProps> = ({ active, name }) => {
+const StepperDots: React.FC<StepperPointProps> = ({
+  active,
+  name,
+  indexItem,
+}) => {
+  const stepperPoints = useContext(StepperContext);
+  const moveToPoint = (indexPoint: number) => () => {
+    const objStepperElements = stepperPoints?.stepperElements;
+    if (objStepperElements) {
+      let top = 0;
+      const currentKey = Object.keys(stepperPoints.stepperElements)[indexPoint];
+      top = objStepperElements[currentKey]
+        ? objStepperElements[currentKey].offsetY
+        : 0;
+
+      const windowHeight = window.innerHeight / 5;
+      window.scrollTo(0, top - windowHeight);
+    }
+  };
   return (
-    <div className="relative h-full justify-center w-24 text-xs text-center text-blue-shipcove">
+    <div
+      onClick={moveToPoint(indexItem)}
+      className="relative transition-opacity cursor-pointer h-full justify-center w-24 text-xs text-center text-blue-shipcove hover:opacity-60"
+    >
       <div
         style={{
           display: "flex",
@@ -35,4 +58,4 @@ const StepperPoint: React.FC<StepperPointProps> = ({ active, name }) => {
   );
 };
 
-export default StepperPoint;
+export default StepperDots;
