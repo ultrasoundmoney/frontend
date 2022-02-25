@@ -7,6 +7,7 @@ import { TimeFrameNext, timeFramesNext } from "../../time-frames";
 import BurnCategories from "../BurnCategories";
 import BurnRecords from "../BurnRecords";
 import BurnTotal from "../BurnTotal";
+import DeflationaryStreak from "../DeflationaryStreak";
 import BurnGauge from "../Gauges/BurnGauge";
 import IssuanceGauge from "../Gauges/IssuanceGauge";
 import SupplyGrowthGauge from "../Gauges/SupplyGrowthGauge";
@@ -103,7 +104,7 @@ const WidgetGroup1: FC<{ featureFlags: FeatureFlags }> = ({ featureFlags }) => {
           timeFrame={timeFrame}
           unit={unit}
         />
-        <div className={`lg:col-start-2 ${"lg:row-span-2"}`}>
+        <div className="lg:col-start-2 lg:row-span-2 max-h-[694px]">
           <BurnLeaderboard
             featureFlags={featureFlags}
             onClickTimeFrame={handleClickTimeFrame}
@@ -111,17 +112,20 @@ const WidgetGroup1: FC<{ featureFlags: FeatureFlags }> = ({ featureFlags }) => {
             unit={unit}
           />
         </div>
-        <div className="lg:col-start-2">
+        <div className="lg:col-start-2 lg:row-start-3 lg:row-end-5">
           <BurnCategories
             featureFlags={featureFlags}
             onClickTimeFrame={handleClickTimeFrame}
             timeFrame={timeFrame}
           />
         </div>
-        <div className="col-start-1 lg:row-start-2">
+        <div className="lg:row-start-2">
           <LatestBlocks unit={unit} />
         </div>
-        <div className="col-start-1 lg:row-start-3">
+        <div className="lg:row-start-3">
+          <DeflationaryStreak />
+        </div>
+        <div className="lg:row-end-5">
           <BurnRecords
             onClickTimeFrame={handleClickTimeFrame}
             timeFrame={timeFrame}

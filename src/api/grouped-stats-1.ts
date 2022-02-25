@@ -53,10 +53,17 @@ export type EthPrice = {
   btc24hChange: number;
 };
 
+export type DeflationaryStreak = {
+  from: string;
+  count: number;
+};
+export type DeflationaryStreakState = DeflationaryStreak | null;
+
 export type FeeData = {
   baseFeePerGas: number;
   burnRates: BurnRates;
   burnRecords: BurnRecords["records"];
+  deflationaryStreak: DeflationaryStreakState;
   ethPrice: EthPrice | undefined;
   feesBurned: FeesBurned;
   latestBlockFees: LatestBlock[];
@@ -68,6 +75,7 @@ type RawFeeData = {
   baseFeePerGas: number;
   burnRates: BurnRates;
   burnRecords: RawBurnRecords["records"];
+  deflationaryStreak: DeflationaryStreakState;
   ethPrice: EthPrice | null;
   feesBurned: FeesBurned;
   latestBlockFees: LatestBlock[];
