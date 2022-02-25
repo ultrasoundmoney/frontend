@@ -7,7 +7,7 @@ import { Unit } from "../../../denomination";
 import { FeatureFlags } from "../../../feature-flags";
 import styles from "../../../styles/Scrollbar.module.scss";
 import { TimeFrameNext } from "../../../time-frames";
-import { WidgetTitle } from "../../widget-subcomponents";
+import { Group1Base } from "../../widget-subcomponents";
 import LeaderboardRow from "./LeaderboardRow";
 
 const feePeriodToUpdateMap: Record<TimeFrameNext, keyof Leaderboards> = {
@@ -103,55 +103,54 @@ const BurnLeaderboard: FC<Props> = ({
   const freshnessMap = useContractsFreshness(addresses, adminToken);
 
   return (
-    <div className="bg-blue-tangaroa w-full rounded-lg p-8 lg:h-full">
+    <Group1Base
+      backgroundClassName="flex flex-col gap-y-4 h-[32rem] lg:h-full"
+      title="burn leaderboard"
+      timeFrame={timeFrame}
+      onClickTimeFrame={onClickTimeFrame}
+    >
+      {/* the scrollbar normally hides, to make it appear as if floating to the right of the main content we add a negative right margin. */}
       <div
-        className="flex flex-col gap-y-4 lg:h-0 lg:min-h-full"
-        style={{ height: "32rem" }}
-      >
-        <WidgetTitle>burn leaderboard</WidgetTitle>
-        {/* the scrollbar normally hides, to make it appear as if floating to the right of the main content we add a negative right margin. */}
-        <div
-          className={`
+        className={`
             -mt-1 -mr-3
             overflow-y-auto overflow-x-hidden
             ${styles["styled-scrollbar"]}
           `}
-        >
-          {(selectedLeaderboard || leaderboardSkeletons).map((row, index) =>
-            row.type === "contract" ? (
-              <LeaderboardRow
-                address={row.address}
-                adminToken={adminToken}
-                category={row.category || undefined}
-                detail={formatDetail(row.name, row.detail)}
-                fees={unit === "eth" ? row.fees : row.feesUsd}
-                freshness={
-                  row.address === undefined || freshnessMap === undefined
-                    ? undefined
-                    : freshnessMap[row.address]
-                }
-                image={row.image ?? undefined}
-                isBot={row.isBot}
-                key={row.address || index}
-                name={formatName(row.name, row.address)}
-                type={row.type}
-                unit={unit}
-                featureFlags={featureFlags}
-              />
-            ) : (
-              <LeaderboardRow
-                featureFlags={featureFlags}
-                fees={unit === "eth" ? row.fees : row.feesUsd}
-                key={row.type || index}
-                name={formatName(row.name, undefined)}
-                type={row.type}
-                unit={unit}
-              />
-            ),
-          )}
-        </div>
+      >
+        {(selectedLeaderboard || leaderboardSkeletons).map((row, index) =>
+          row.type === "contract" ? (
+            <LeaderboardRow
+              address={row.address}
+              adminToken={adminToken}
+              category={row.category || undefined}
+              detail={formatDetail(row.name, row.detail)}
+              fees={unit === "eth" ? row.fees : row.feesUsd}
+              freshness={
+                row.address === undefined || freshnessMap === undefined
+                  ? undefined
+                  : freshnessMap[row.address]
+              }
+              image={row.image ?? undefined}
+              isBot={row.isBot}
+              key={row.address || index}
+              name={formatName(row.name, row.address)}
+              type={row.type}
+              unit={unit}
+              featureFlags={featureFlags}
+            />
+          ) : (
+            <LeaderboardRow
+              featureFlags={featureFlags}
+              fees={unit === "eth" ? row.fees : row.feesUsd}
+              key={row.type || index}
+              name={formatName(row.name, undefined)}
+              type={row.type}
+              unit={unit}
+            />
+          ),
+        )}
       </div>
-    </div>
+    </Group1Base>
   );
 };
 
