@@ -33,8 +33,8 @@ const DrawingLine: React.FC<DrawingLineProps> = ({
 
   const getScrollProgress = (el: HTMLDivElement) => {
     const rect = el.getBoundingClientRect();
-    let marginBottom = 170;
-    if (!withoutBottomMargin) marginBottom = 240;
+    let marginBottom = window.innerHeight / 12;
+    if (!withoutBottomMargin) marginBottom = window.innerHeight / 5;
     const distance = window.innerHeight - marginBottom;
     const progress = 1 - (rect.top - distance + marginBottom) / distance;
     const roundDecimal = Math.round(progress * 100) / 100;

@@ -1,46 +1,46 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;200;300;400&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;200;300;400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500&display=swap");
 
 html {
-    width: 100%;
-    height: 100%;
-    scroll-behavior: smooth;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-        'Ubuntu', 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji',
-        'Segoe UI Emoji', 'Segoe UI Symbol','Calibri','Candara','Segoe','Optima';
-    font-size: 16px;
+  width: 100vw;
+  height: 100%;
+  scroll-behavior: smooth;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Calibri", "Candara", "Segoe", "Optima";
+  font-size: 16px;
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: theme('fontFamily.inter');
-    font-style: normal;
-    font-weight: 300;
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
-    background-color: rgb(19 24 39);
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: theme("fontFamily.inter");
+  font-style: normal;
+  font-weight: 300;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
+  background-color: rgb(19 24 39);
+  overflow-x: hidden;
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-        monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
 }
 
 *:focus {
-    outline: none !important;
+  outline: none !important;
 }
 
 a:hover {
-    color: inherit;
+  color: inherit;
 }
 
-.wrapper{
-    width: 100%;
-    height: 100%;
-    box-sizing: content-box;
-    margin: 0;
-    padding: 0;
-    position: relative;
+.wrapper {
+  width: 100%;
+  height: 100%;
+  box-sizing: content-box;
+  margin: 0;
+  padding: 0;
+  position: relative;
 }

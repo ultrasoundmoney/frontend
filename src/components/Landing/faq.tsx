@@ -14,7 +14,7 @@ const FaqBlock: React.FC<FaqBlockPros> = () => {
       data-aos-easing="ease-in-out"
       id="faq"
     >
-      <div className="w-full max-w-3xl md:m-auto px-4 md:px-8 lg:px-0 ">
+      <div className="four_vidgets max-w-3xl md:m-auto px-4 md:px-8 lg:px-0 ">
         <div className="block py-8">
           <h1 className="text-white text-center text-2xl md:text-3xl xl:text-41xl">
             {t.faq_section_title}

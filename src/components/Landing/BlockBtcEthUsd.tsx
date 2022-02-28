@@ -4,6 +4,10 @@ import { TranslationsContext } from "../../translations-context";
 import SVGrenderText from "./BTCETH/generateText";
 import DrawingLine from "./DrawingLine";
 
+interface Obj {
+  [key: string]: any;
+}
+
 const TheUltraSound: FC<{}> = () => {
   const t = useContext(TranslationsContext);
   const pointRef = useRef(null);
@@ -14,60 +18,80 @@ const TheUltraSound: FC<{}> = () => {
 
   const step = useRef(0);
   const allow = useRef(true);
-  const eventWheel = useRef<null | WheelEvent>(null);
+  const eventScroll = useRef<null | Obj>(null);
 
-  const onChangeCryptoType = (currentDirection: "up" | "down") => {
-    if (allow.current) {
-      currentDirection === "up"
-        ? (step.current = step.current <= 0 ? 0 : step.current - 1)
-        : (step.current =
-            step.current > tabs.length ? step.current : step.current + 1);
-      if (tabs[step.current - 1]) setCryptoType(tabs[step.current - 1]);
-      allow.current = false;
-      timeoutId = setTimeout(() => (allow.current = true), 1500);
+  const onChangeCryptoType = (wheelEvent: Obj) => {
+    const direction = wheelEvent.deltaY < 0 ? "up" : "down";
+    if (!allow.current) return;
+    if (direction === "up") {
+      if (step.current > 0) {
+        step.current = step.current - 1;
+      }
+    } else {
+      if (step.current <= tabs.length) {
+        step.current = step.current + 1;
+      }
     }
+    let overflowYValue: "scroll" | "hidden" = "scroll";
+    if (step.current !== 0 && step.current !== 5) {
+      overflowYValue = "hidden";
+      wheelEvent.stopPropagation();
+      wheelEvent.preventDefault();
+    } else {
+      if (step.current === 0) {
+        window.scrollTo(0, window.scrollY - 30);
+      } else {
+        window.scrollTo(0, window.scrollY + 30);
+      }
+      overflowYValue = "scroll";
+    }
+    document.body.style.overflowY = overflowYValue;
+    if (tabs[step.current - 1]) {
+      setCryptoType(tabs[step.current - 1]);
+    }
+    allow.current = false;
+    timeoutId = setTimeout(() => (allow.current = true), 1500);
   };
 
-  const blockedScroll = (event: WheelEvent, el: HTMLElement) => {
-    if (el) {
-      graphRef?.current?.scrollIntoView({ block: "center" });
-      event.stopPropagation();
-      event.preventDefault();
-    }
-  };
-
-  const onScroll = (event: WheelEvent, important?: boolean) => {
-    eventWheel.current = event;
+  const onScroll = (event: Obj, important?: boolean) => {
+    eventScroll.current = event;
     if (graphRef?.current) {
       const rect = graphRef.current.getBoundingClientRect();
-      const trigger = window.scrollY + window.innerHeight / 2 - rect.height / 3;
+      const trigger = window.scrollY + window.innerHeight / 2 - rect.height / 2;
       const elPosition = window.scrollY + rect.top;
+
       const scrollTriggerStart =
-        elPosition < trigger + 120 && elPosition > trigger - 120;
-      const direction = event.deltaY < 0 ? "up" : "down";
-      const disableScroll =
-        (direction === "down" && step.current <= tabs.length) ||
-        (direction === "up" && step.current >= 1);
-      if ((scrollTriggerStart && disableScroll) || important) {
-        blockedScroll(event, graphRef?.current);
-        onChangeCryptoType(direction);
+        elPosition < trigger + 60 && elPosition > trigger - 60;
+
+      if (scrollTriggerStart || important) {
+        console.log("wheel");
+        window.addEventListener("wheel", onChangeCryptoType, {
+          passive: false,
+        });
+      } else {
+        console.log("remove wheel");
+        document.body.style.overflowY = "scroll";
+        window.removeEventListener("wheel", onChangeCryptoType);
       }
     }
   };
 
   useEffect(() => {
-    window.addEventListener("wheel", onScroll, { passive: false });
+    const isTouchDevice = "ontouchstart" in window;
+
+    if (!isTouchDevice) window.addEventListener("scroll", onScroll);
     return () => {
-      window.removeEventListener("wheel", onScroll);
+      window.removeEventListener("scroll", onScroll);
       timeoutId && clearTimeout(timeoutId);
     };
   }, []);
 
   const setSpecificTab = (currency = "none") => {
     const index = tabs.indexOf(currency);
-    if (index && eventWheel.current) {
-      step.current = index + 2;
-      onScroll(eventWheel.current, true);
+    if (index && eventScroll.current) {
+      step.current = index + 1;
+      setCryptoType(tabs[step.current - 1]);
+      graphRef?.current?.scrollIntoView({ block: "center" });
     }
   };
 
@@ -105,7 +129,7 @@ const TheUltraSound: FC<{}> = () => {
         <div
           id="graph_svg"
           ref={graphRef}
-          className="w-full md:w-9/12 flex flex-wrap justify-center m-auto"
+          className="w-full md:w-9/12 flex flex-wrap justify-center ml-auto mr-auto"
         >
           <div className="graph_text_containter w-full md:w-7/12 self-center order-2 md:order-1 md:px-20">
             <SVGrenderText typ={cryptoType} />
