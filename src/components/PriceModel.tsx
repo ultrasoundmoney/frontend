@@ -159,22 +159,23 @@ const calcProjectedPrice = (
 
 const PriceModel: FC = () => {
   const peRatios = usePeRatios();
-  const d30BurnTotal = useGroupedStats1()?.feesBurned.feesBurned30d;
+  const burnRateAll = useGroupedStats1()?.burnRates.burnRateAll;
+  const ethPrice = useGroupedStats1()?.ethPrice?.usd;
   const ethSupply = useScarcity()?.ethSupply;
-  const [peRatio, setPeRatio] = useState(24.5);
-  const [peRatioPosition, setPeRatioPosition] = useState(0.33);
+  const [peRatio, setPeRatio] = useState<number>();
+  const [peRatioPosition, setPeRatioPosition] = useState<number>(0);
   const [monetaryPremium, setMonetaryPremium] = useState(1);
   const [initialPeSet, setInitialPeSet] = useState(false);
-  const d30AverageEthPrice = useAverageEthPrice()?.d30;
+  const averageEthPrice = useAverageEthPrice()?.all;
 
   const annualizedRevenue =
-    d30BurnTotal === undefined || d30AverageEthPrice === undefined
+    burnRateAll === undefined || averageEthPrice === undefined
       ? undefined
-      : Format.ethFromWei(d30BurnTotal * 12.175) * d30AverageEthPrice;
+      : Format.ethFromWei(burnRateAll * 60 * 24 * 365.25) * averageEthPrice;
   const annualizedCosts =
-    d30AverageEthPrice === undefined
+    averageEthPrice === undefined
       ? undefined
-      : StaticEtherData.posIssuanceYear * d30AverageEthPrice;
+      : StaticEtherData.posIssuanceYear * averageEthPrice;
   const annualizedEarnings =
     annualizedRevenue === undefined || annualizedCosts === undefined
       ? undefined
@@ -184,7 +185,7 @@ const PriceModel: FC = () => {
     if (
       initialPeSet ||
       annualizedEarnings === undefined ||
-      d30AverageEthPrice === undefined
+      ethPrice === undefined
     ) {
       return;
     }
@@ -199,12 +200,12 @@ const PriceModel: FC = () => {
       return;
     }
 
-    const currentPeRatio = d30AverageEthPrice / earningsPerShare;
+    const currentPeRatio = ethPrice / earningsPerShare;
 
     setPeRatioPosition(linearFromLog(currentPeRatio));
   }, [
     annualizedEarnings,
-    d30AverageEthPrice,
+    ethPrice,
     ethSupply,
     initialPeSet,
     setPeRatioPosition,
