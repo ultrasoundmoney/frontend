@@ -20,7 +20,6 @@ const DeflationaryStreak: FC<{ simulateMerge: boolean }> = ({
   const [timeElapsed, setTimeElapsed] = useState<string>();
   const streakKey = getStreakKey(simulateMerge);
   const deflationaryStreak = useGroupedStats1()?.deflationaryStreak[streakKey];
-  console.log(streakKey, deflationaryStreak);
 
   useEffect(() => {
     if (deflationaryStreak == undefined) {
