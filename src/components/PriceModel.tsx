@@ -56,29 +56,46 @@ const Marker: FC<{
   peRatio: number;
   ratio: number;
   symbol?: string;
-}> = ({ alt, icon, peRatio, ratio, symbol }) => (
-  <div
-    className="absolute w-full flex flex-col pointer-events-none"
-    style={{
-      transform: `translateX(${ratio * 100}%)`,
-    }}
-  >
-    <div className="[min-height:3px] w-3 bg-blue-shipcove mb-3 -translate-x-1/2"></div>
-    <a
-      title={peRatio.toFixed(1)}
-      className="absolute pointer-events-auto top-4 -translate-x-1/2"
-      href={
-        symbol === undefined
-          ? undefined
-          : `https://www.google.com/finance/quote/${symbol}:NASDAQ`
-      }
-      target="_blank"
-      rel="noreferrer"
+}> = ({ alt, icon, peRatio, ratio, symbol }) => {
+  const [isHovering, setIsHovering] = useState(false);
+
+  return (
+    <div
+      className="absolute w-full flex flex-col pointer-events-none"
+      style={{
+        transform: `translateX(${ratio * 100}%)`,
+      }}
     >
-      <img src={`/${icon}-icon.svg`} alt={alt} />
-    </a>
-  </div>
-);
+      <div className="[min-height:3px] w-3 bg-blue-shipcove mb-3 -translate-x-1/2"></div>
+      <a
+        title={peRatio.toFixed(1)}
+        className="absolute pointer-events-auto top-4 -translate-x-1/2"
+        href={
+          symbol === undefined
+            ? undefined
+            : `https://www.google.com/finance/quote/${symbol}:NASDAQ`
+        }
+        target="_blank"
+        rel="noreferrer"
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+      >
+        <>
+          <img
+            src={`/${icon}-coloroff.svg`}
+            alt={alt}
+            className={`relative ${isHovering ? "invisible" : "visible"}`}
+          />
+          <img
+            className={`absolute top-0 ${isHovering ? "visible" : "invisible"}`}
+            src={`/${icon}-coloron.svg`}
+            alt={alt}
+          />
+        </>
+      </a>
+    </div>
+  );
+};
 
 const MarkerText: FC<{ ratio: number }> = ({ ratio, children }) => (
   <div
