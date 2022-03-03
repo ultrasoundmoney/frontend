@@ -6,7 +6,7 @@ import { feesBasePath } from "./fees";
 import { EthPrice } from "./grouped-stats-1";
 
 export const useEthPrice = (): EthPrice | undefined => {
-  const { data } = useSWR<EthPrice>(`${feesBasePath}/eth-price`, {
+  const { data } = useSWR<EthPrice>(`${feesBasePath}/eth-price`, fetcher, {
     refreshInterval: Duration.millisFromSeconds(8),
   });
 
