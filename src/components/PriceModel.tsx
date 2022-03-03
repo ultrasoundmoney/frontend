@@ -114,8 +114,12 @@ const logFromLinear = (position: number) =>
 // Converts from a log scale between 1 and 300 to a linear scale between 0 and 1
 const linearFromLog = (num: number) =>
   pipe(
-    Math.log(num) - growthProfileLogMin,
-    (peShiftedRange) => peShiftedRange / logRange,
+    Math.log(num),
+    (linearPosition) => linearPosition - growthProfileLogMin,
+    (peInRange) => peInRange / logRange,
+    // Clamp
+    (ratio) => Math.min(1, ratio),
+    (ratio) => Math.max(0, ratio),
   );
 
 const calcEarningsPerShare = (
