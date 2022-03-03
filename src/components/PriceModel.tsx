@@ -35,6 +35,7 @@ const Slider: FC<SliderProps> = ({
       w-full h-2
       bg-blue-dusk
       rounded-full
+      cursor-pointer
       ${styles.customSlider}
       ${className ?? ""}
     `}
