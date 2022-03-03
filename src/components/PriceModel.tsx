@@ -52,16 +52,20 @@ const Slider: FC<SliderProps> = ({
 const Marker: FC<{
   alt?: string;
   icon: string;
+  peRatio: number;
   ratio: number;
   symbol?: string;
-}> = ({ alt, icon, ratio, symbol }) => (
+}> = ({ alt, icon, peRatio, ratio, symbol }) => (
   <div
-    className="absolute flex flex-col pointer-events-none"
-    style={{ left: `${ratio * 100}%` }}
+    className="absolute w-full flex flex-col pointer-events-none"
+    style={{
+      transform: `translateX(${ratio * 100}%)`,
+    }}
   >
-    <div className="[min-height:8px] w-0.5 bg-blue-spindle mb-3"></div>
+    <div className="[min-height:3px] w-3 bg-blue-shipcove mb-3 -translate-x-1/2"></div>
     <a
-      className="pointer-events-auto -translate-x-1/2"
+      title={peRatio.toFixed(1)}
+      className="absolute pointer-events-auto top-4 -translate-x-1/2"
       href={
         symbol === undefined
           ? undefined
@@ -77,12 +81,12 @@ const Marker: FC<{
 
 const MarkerText: FC<{ ratio: number }> = ({ ratio, children }) => (
   <div
-    className="absolute flex flex-col pointer-events-none"
+    className="absolute w-full flex flex-col pointer-events-none"
     // For unclear reasons the left 89% position for TSLA is closer to notch 91 on the actual slider. We manually adjust.
-    style={{ left: `${ratio * 100}%` }}
+    style={{ transform: `translateX(${ratio * 100}%)` }}
   >
-    <div className="[min-height:8px] w-0.5 bg-blue-spindle mb-3"></div>
-    <TextRoboto className="text-blue-spindle -translate-x-1/2">
+    <div className="[min-height:3px] w-3 bg-blue-shipcove mb-3 -translate-x-1/2"></div>
+    <TextRoboto className="absolute top-4 text-blue-spindle -translate-x-1/2">
       {children}
     </TextRoboto>
   </div>
@@ -234,7 +238,7 @@ const PriceModel: FC = () => {
   return (
     <WidgetBackground>
       <WidgetTitle>price model (post-merge)</WidgetTitle>
-      <div className="flex flex-col gap-4 mt-4">
+      <div className="flex flex-col gap-4 mt-4 overflow-hidden">
         <div className="flex justify-between">
           <TextInter>annual profits</TextInter>
           <MoneyAmount amountPostfix="B" unit="usd">
@@ -252,60 +256,58 @@ const PriceModel: FC = () => {
           </div>
           <div className="relative mb-8">
             <Slider
-              className="w-full"
               step={0.01}
+              className="relative w-full z-10"
               min={0}
               max={1}
               onChange={setPeRatioPosition}
             >
               {peRatioPosition}
             </Slider>
-            <div className="absolute top-0 w-full [margin-top:10px] select-none">
+            <div className="absolute top-2 w-full [margin-top:10px] select-none">
               {peRatios !== undefined && (
                 // Because the actual slider does not span the entire visual slider, overlaying an element and setting the left is not perfect. We manually adjust values to match the slider more precisely. To improve this look into off-the-shelf components that allow for styled markers.
                 <>
                   <Marker
                     alt="intel logo"
                     icon="intel"
-                    ratio={linearFromLog(
-                      roundToNearestPosition(peRatios.INTC + 1),
-                    )}
+                    peRatio={peRatios.INTC}
+                    ratio={linearFromLog(peRatios.INTC)}
                     symbol="INTC"
                   />
                   <Marker
                     alt="google logo"
                     icon="google"
-                    ratio={linearFromLog(
-                      roundToNearestPosition(peRatios.GOOGL),
-                    )}
+                    peRatio={peRatios.GOOGL}
+                    ratio={linearFromLog(peRatios.GOOGL)}
                     symbol="GOOGL"
                   />
                   <Marker
                     alt="netflix logo"
                     icon="netflix"
-                    ratio={linearFromLog(roundToNearestPosition(peRatios.NFLX))}
+                    peRatio={peRatios.NFLX}
+                    ratio={linearFromLog(peRatios.NFLX)}
                     symbol="NFLX"
                   />
                   <Marker
                     alt="amazon logo"
                     icon="amazon"
-                    ratio={linearFromLog(roundToNearestPosition(peRatios.AMZN))}
+                    peRatio={peRatios.AMZN}
+                    ratio={linearFromLog(peRatios.AMZN)}
                     symbol="AMZN"
                   />
                   <Marker
                     alt="disney logo"
                     icon="disney"
-                    ratio={linearFromLog(
-                      roundToNearestPosition(peRatios.DIS - 4),
-                    )}
+                    peRatio={peRatios.DIS}
+                    ratio={linearFromLog(peRatios.DIS)}
                     symbol="DIS"
                   />
                   <Marker
                     alt="tesla logo"
                     icon="tesla"
-                    ratio={linearFromLog(
-                      roundToNearestPosition(peRatios.TSLA - 4),
-                    )}
+                    peRatio={peRatios.TSLA}
+                    ratio={linearFromLog(peRatios.TSLA)}
                     symbol="TSLA"
                   />
                 </>
@@ -322,6 +324,7 @@ const PriceModel: FC = () => {
           </div>
           <div className="relative mb-8">
             <Slider
+              className="relative z-10"
               step={monetaryPremiumStepSize}
               min={monetaryPremiumMin}
               max={monetaryPremiumMax}
@@ -330,7 +333,7 @@ const PriceModel: FC = () => {
               {monetaryPremium}
             </Slider>
             {/* Because a slider range is not exactly the visual width of the element positioning using absolute children with a left is not exactly right. we add small amounts to try fudge them into the right place. */}
-            <div className="absolute top-0 bottom-0 w-full flex [margin-top:10px] pointer-events-none">
+            <div className="absolute top-2 bottom-0 w-full flex [margin-top:10px] pointer-events-none">
               <MarkerText
                 ratio={(2 + 0.3 - monetaryPremiumMin) / monetaryPremiumRange}
               >
@@ -354,11 +357,11 @@ const PriceModel: FC = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-y-2">
+        <div className="flex flex-col gap-y-2 text-center">
           <WidgetTitle>implied eth price</WidgetTitle>
           <MoneyAmount
             amountPostfix="K"
-            skeletonWidth="6rem"
+            skeletonWidth="3rem"
             textSizeClass="text-2xl md:text-3xl"
             unit="usd"
           >
