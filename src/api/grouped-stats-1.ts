@@ -53,12 +53,15 @@ export type EthPrice = {
   btc24hChange: number;
 };
 
+export type DeflationaryStreakMode = "preMerge" | "postMerge";
 export type DeflationaryStreak = {
   from: string;
   count: number;
 };
-export type DeflationaryStreakState = DeflationaryStreak | null;
-
+export type DeflationaryStreakState = Record<
+  DeflationaryStreakMode,
+  DeflationaryStreak | null
+>;
 export type FeeData = {
   baseFeePerGas: number;
   burnRates: BurnRates;

@@ -1,16 +1,26 @@
 import * as DateFns from "date-fns";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
-import { useGroupedStats1 } from "../api/grouped-stats-1";
+import {
+  DeflationaryStreakMode,
+  useGroupedStats1,
+} from "../api/grouped-stats-1";
 import { AmountUnitSpace } from "./Spacing";
 import SpanMoji from "./SpanMoji";
 import { TextRoboto } from "./Texts";
 import { WidgetBackground, WidgetTitle } from "./widget-subcomponents";
 
-const DeflationaryStreak = () => {
+const getStreakKey = (simulateMerge: boolean): DeflationaryStreakMode =>
+  simulateMerge ? "postMerge" : "preMerge";
+
+const DeflationaryStreak: FC<{ simulateMerge: boolean }> = ({
+  simulateMerge,
+}) => {
   const [timeElapsed, setTimeElapsed] = useState<string>();
-  const deflationaryStreak = useGroupedStats1()?.deflationaryStreak;
+  const streakKey = getStreakKey(simulateMerge);
+  const deflationaryStreak = useGroupedStats1()?.deflationaryStreak[streakKey];
+  console.log(streakKey, deflationaryStreak);
 
   useEffect(() => {
     if (deflationaryStreak == undefined) {
@@ -55,7 +65,7 @@ const DeflationaryStreak = () => {
                   end={deflationaryStreak.count}
                   preserveValue={true}
                   separator=","
-                  suffix={" blocks"}
+                  suffix={deflationaryStreak.count === 1 ? " block" : " blocks"}
                 />
                 <AmountUnitSpace />
               </TextRoboto>
@@ -71,7 +81,7 @@ const DeflationaryStreak = () => {
             "awaiting deflationary block"
           ) : (
             <>
-              {"over "}
+              {"spanning "}
               <span className="font-roboto text-white font-light [word-spacing:-4px]">
                 {timeElapsed || <Skeleton inline={true} width="2rem" />}
               </span>
