@@ -302,7 +302,7 @@ const PriceModel: FC = () => {
                   {ethPeRatio === undefined ? null : (
                     <Marker
                       alt="ethereum logo"
-                      icon="ETH"
+                      icon="eth"
                       peRatio={ethPeRatio}
                       ratio={linearFromLog(ethPeRatio)}
                     />
