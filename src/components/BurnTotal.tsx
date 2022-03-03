@@ -7,7 +7,7 @@ import {
   FeesBurned,
   useGroupedStats1,
 } from "../api/grouped-stats-1";
-import { londonHardforkTimestamp } from "../dates";
+import { londonHardfork } from "../dates";
 import { Unit } from "../denomination";
 import * as Duration from "../duration";
 import * as Format from "../format";
@@ -99,7 +99,7 @@ const BurnTotal: FC<Props> = ({
 
   const millisecondsSinceLondonHardFork = DateFns.differenceInMilliseconds(
     new Date(),
-    londonHardforkTimestamp,
+    londonHardfork,
   );
 
   // In ETH.
