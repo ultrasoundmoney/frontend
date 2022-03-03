@@ -95,7 +95,7 @@ const MarkerText: FC<{ ratio: number }> = ({ ratio, children }) => (
 const monetaryPremiumMin = 1;
 const monetaryPremiumMax = 20;
 const monetaryPremiumRange = monetaryPremiumMax - monetaryPremiumMin;
-const monetaryPremiumStepSize = 0.1;
+const monetaryPremiumStepSize = 0.01;
 
 const growthProfileMin = 5;
 const growthProfileMax = 300;
@@ -256,8 +256,8 @@ const PriceModel: FC = () => {
           </div>
           <div className="relative mb-8">
             <Slider
-              step={0.01}
               className="relative w-full z-10"
+              step={0.001}
               min={0}
               max={1}
               onChange={setPeRatioPosition}
