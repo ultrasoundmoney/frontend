@@ -118,25 +118,6 @@ const linearFromLog = (num: number) =>
     (peShiftedRange) => peShiftedRange / logRange,
   );
 
-const sliderPositions = new Array(101)
-  .fill(undefined)
-  .map((_, index) => logFromLinear(index / 100));
-
-const roundToNearestPosition = (num: number) => {
-  let bestCandidate = sliderPositions[0];
-
-  for (let i = 1; i < sliderPositions.length; i++) {
-    const nextCandidate = sliderPositions[i];
-    if (Math.abs(num - bestCandidate) > Math.abs(num - nextCandidate)) {
-      bestCandidate = nextCandidate;
-    } else {
-      break;
-    }
-  }
-
-  return bestCandidate;
-};
-
 const calcEarningsPerShare = (
   annualizedEarnings: number | undefined,
   ethSupply: JSBI | undefined,
