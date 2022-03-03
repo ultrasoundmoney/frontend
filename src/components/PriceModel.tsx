@@ -184,6 +184,7 @@ const PriceModel: FC = () => {
   const [monetaryPremium, setMonetaryPremium] = useState(1);
   const [initialPeSet, setInitialPeSet] = useState(false);
   const averageEthPrice = useAverageEthPrice()?.all;
+  const [ethPeRatio, setEthPeRatio] = useState<number>();
 
   const annualizedRevenue =
     burnRateAll === undefined || averageEthPrice === undefined
@@ -217,9 +218,10 @@ const PriceModel: FC = () => {
       return;
     }
 
-    const currentPeRatio = ethPrice / earningsPerShare;
+    const ethPeRatio = ethPrice / earningsPerShare;
 
-    setPeRatioPosition(linearFromLog(currentPeRatio));
+    setEthPeRatio(ethPeRatio);
+    setPeRatioPosition(linearFromLog(ethPeRatio));
   }, [
     annualizedEarnings,
     ethPrice,
@@ -290,13 +292,22 @@ const PriceModel: FC = () => {
                     ratio={linearFromLog(peRatios.GOOGL)}
                     symbol="GOOGL"
                   />
-                  <Marker
-                    alt="netflix logo"
-                    icon="netflix"
-                    peRatio={peRatios.NFLX}
-                    ratio={linearFromLog(peRatios.NFLX)}
-                    symbol="NFLX"
-                  />
+                  {/* <Marker */}
+                  {/*   alt="netflix logo" */}
+                  {/*   icon="netflix" */}
+                  {/*   peRatio={peRatios.NFLX} */}
+                  {/*   ratio={linearFromLog(peRatios.NFLX)} */}
+                  {/*   symbol="NFLX" */}
+                  {/* /> */}
+                  {ethPeRatio === undefined ? null : (
+                    <Marker
+                      alt="ethereum logo"
+                      icon="ETH"
+                      peRatio={ethPeRatio}
+                      ratio={linearFromLog(ethPeRatio)}
+                    />
+                  )}
+
                   <Marker
                     alt="amazon logo"
                     icon="amazon"
