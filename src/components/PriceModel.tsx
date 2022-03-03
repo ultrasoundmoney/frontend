@@ -103,7 +103,7 @@ const growthProfileLogMin = Math.log(growthProfileMin);
 const growthProfileLogMax = Math.log(growthProfileMax);
 const logRange = growthProfileLogMax - growthProfileLogMin;
 
-// Converts from a linear scale between 0 and 100 to a log scale between 1 and 300.
+// Converts from a linear scale between 0 and 1 to a log scale between 1 and 300.
 const logFromLinear = (position: number) =>
   pipe(
     position * logRange,
