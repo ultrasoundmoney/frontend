@@ -240,7 +240,7 @@ const PriceModel: FC = () => {
       <WidgetTitle>price model (post-merge)</WidgetTitle>
       <div className="flex flex-col gap-4 mt-4 overflow-hidden">
         <div className="flex justify-between">
-          <TextInter>annual profits</TextInter>
+          <TextInter>annualized profits</TextInter>
           <MoneyAmount amountPostfix="B" unit="usd">
             {annualizedEarnings === undefined
               ? undefined
