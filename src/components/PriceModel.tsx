@@ -1,5 +1,6 @@
 import JSBI from "jsbi";
 import { FC, InputHTMLAttributes, useEffect, useState } from "react";
+import Skeleton from "react-loading-skeleton";
 import { useAverageEthPrice } from "../api/eth-price";
 import { useGroupedStats1 } from "../api/grouped-stats-1";
 import { usePeRatios } from "../api/pe-ratios";
@@ -236,7 +237,11 @@ const PriceModel: FC = () => {
           <div className="flex justify-between">
             <TextInter>growth profile</TextInter>
             <MoneyAmount unit="P/E">
-              {Format.formatOneDigit(peRatio)}
+              {peRatio === undefined ? (
+                <Skeleton inline width="3rem" />
+              ) : (
+                Format.formatOneDigit(peRatio)
+              )}
             </MoneyAmount>
           </div>
           <div className="relative mb-8">
