@@ -74,14 +74,13 @@ const DeflationaryStreak: FC<{ simulateMerge: boolean }> = ({
             <TextRoboto>0 blocks</TextRoboto>
           )}
         </div>
-        {/* spaces need to stay on the font-inter element to keep them consistent */}
         <span className="font-inter text-blue-spindle text-xs md:text-sm font-extralight">
           {deflationaryStreak == null ? (
             "awaiting deflationary block"
           ) : (
             <>
-              {"spanning "}
-              <span className="font-roboto text-white font-light [word-spacing:-4px]">
+              spanning
+              <span className="font-roboto text-white font-light ml-1 [word-spacing:-4px]">
                 {timeElapsed || <Skeleton inline={true} width="2rem" />}
               </span>
             </>
