@@ -6,7 +6,7 @@ import { TransitionGroup } from "react-transition-group";
 import { LatestBlock, useGroupedStats1 } from "../../api/grouped-stats-1";
 import { Unit } from "../../denomination";
 import * as Format from "../../format";
-import { O, OAlt, pipe } from "../../fp";
+import { NEA, O, OAlt, pipe } from "../../fp";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import CSSTransition from "../CSSTransition";
 import { AmountUnitSpace } from "../Spacing";
@@ -70,7 +70,7 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
       return;
     }
 
-    const latestMinedBlockDate = new Date(latestBlockFees[0].minedAt);
+    const latestMinedBlockDate = new Date(NEA.head(latestBlockFees).minedAt);
 
     setTimeElapsed(
       DateFns.differenceInSeconds(new Date(), latestMinedBlockDate),

@@ -1,5 +1,6 @@
 import useSWR from "swr";
 import * as Duration from "../duration";
+import { NEA } from "../fp";
 import { BurnRecords, decodeBurnRecords, RawBurnRecords } from "./burn-records";
 import fetcher from "./default-fetcher";
 import { feesBasePath } from "./fees";
@@ -69,7 +70,7 @@ export type FeeData = {
   deflationaryStreak: DeflationaryStreakState;
   ethPrice: EthPrice | undefined;
   feesBurned: FeesBurned;
-  latestBlockFees: LatestBlock[];
+  latestBlockFees: NEA.NonEmptyArray<LatestBlock>;
   leaderboards: Leaderboards;
   number: number;
 };
@@ -81,7 +82,7 @@ type RawFeeData = {
   deflationaryStreak: DeflationaryStreakState;
   ethPrice: EthPrice | null;
   feesBurned: FeesBurned;
-  latestBlockFees: LatestBlock[];
+  latestBlockFees: NEA.NonEmptyArray<LatestBlock>;
   leaderboards: Leaderboards;
   number: number;
 };

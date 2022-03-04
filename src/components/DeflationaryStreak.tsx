@@ -6,6 +6,7 @@ import {
   DeflationaryStreakMode,
   useGroupedStats1,
 } from "../api/grouped-stats-1";
+import { NEA } from "../fp";
 import { AmountUnitSpace } from "./Spacing";
 import SpanMoji from "./SpanMoji";
 import { TextRoboto } from "./Texts";
@@ -20,30 +21,22 @@ const DeflationaryStreak: FC<{ simulateMerge: boolean }> = ({
   const [timeElapsed, setTimeElapsed] = useState<string>();
   const streakKey = getStreakKey(simulateMerge);
   const deflationaryStreak = useGroupedStats1()?.deflationaryStreak[streakKey];
+  const latestBlocks = useGroupedStats1()?.latestBlockFees;
 
   useEffect(() => {
-    if (deflationaryStreak == undefined) {
+    if (deflationaryStreak == undefined || latestBlocks === undefined) {
       return;
     }
 
+    const lastBlock = NEA.head(latestBlocks);
+
     setTimeElapsed(
-      DateFns.formatDistanceToNowStrict(
+      DateFns.formatDistanceStrict(
+        DateFns.parseISO(lastBlock.minedAt),
         DateFns.parseISO(deflationaryStreak.from),
       ),
     );
-
-    const intervalId = window.setInterval(() => {
-      setTimeElapsed(
-        DateFns.formatDistanceToNowStrict(
-          DateFns.parseISO(deflationaryStreak.from),
-        ),
-      );
-    }, 1000);
-
-    return () => {
-      window.clearInterval(intervalId);
-    };
-  }, [deflationaryStreak]);
+  }, [deflationaryStreak, latestBlocks]);
 
   return (
     <WidgetBackground>
