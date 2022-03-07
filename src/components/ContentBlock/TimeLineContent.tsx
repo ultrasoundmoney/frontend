@@ -19,8 +19,8 @@ const TimeLineContentBlock: React.FC<TimeLineContentBlockProps> = ({
 }) => {
   const getClassName =
     styles != undefined || styles != null
-      ? `flex flex-col justify-center w-full md:w-6/12 md:mx-auto pt-40 px-4 md:px-0 ${styles}`
-      : `flex flex-col justify-center w-full md:w-6/12 md:mx-auto pt-40 px-4 md:px-0`;
+      ? `flex flex-col justify-center w-full md:w-6/12 md:mx-auto pt-16 px-4 md:px-0 ${styles}`
+      : `flex flex-col justify-center w-full md:w-6/12 md:mx-auto pt-16 px-4 md:px-0`;
   return (
     <>
       <section

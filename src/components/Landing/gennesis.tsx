@@ -30,7 +30,7 @@ const GenesisBlock: React.FC = () => {
         data-aos-easing="ease-in-out"
         id="genesis"
       >
-        <div className="flex flex-col justify-center w-full md:w-4/12 md:mx-auto pt-40 px-4 md:px-0">
+        <div className="flex flex-col justify-center w-full md:w-4/12 md:mx-auto pt-16 px-4 md:px-0">
           <p className="text-blue-shipcove font-light text-sm text-center mb-7 font-inter">
             {t.landing_genesis_date}
           </p>
