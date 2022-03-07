@@ -166,7 +166,7 @@ const ComingSoon: FC = () => {
             <BurnLeaderboard />
           </div>
         </div>
-        <div className="flex flex-col px-4 md:px-16 pt-40 mb-16">
+        <div className="flex flex-col px-4 md:px-16 pt-16 mb-16">
           <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mb-8">
             {t.teaser_supply_title}
           </h1>
@@ -178,7 +178,7 @@ const ComingSoon: FC = () => {
           </div>
           <div
             id="join-the-fam"
-            className="relative flex px-4 md:px-0 pt-8 pt-40 mb-16"
+            className="relative flex px-4 md:px-0 pt-8 pt-16 mb-16"
           >
             <div className="w-full relative flex flex-col items-center">
               {/* <video */}

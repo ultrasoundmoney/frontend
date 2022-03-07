@@ -19,8 +19,9 @@ const TheUltraSound: FC<{}> = () => {
   const step = useRef(0);
   const allow = useRef(true);
   const eventScroll = useRef<null | Obj>(null);
+  const elPosition = useRef<number>(0);
 
-  const onChangeCryptoType = (wheelEvent: Obj) => {
+  const changeCryptoType = (wheelEvent: Obj) => {
     const direction = wheelEvent.deltaY < 0 ? "up" : "down";
     if (!allow.current) return;
     if (direction === "up") {
@@ -32,20 +33,18 @@ const TheUltraSound: FC<{}> = () => {
         step.current = step.current + 1;
       }
     }
-    let overflowYValue: "scroll" | "hidden" = "scroll";
-    if (step.current !== 0 && step.current !== 5) {
-      overflowYValue = "hidden";
-      wheelEvent.stopPropagation();
-      wheelEvent.preventDefault();
-    } else {
+    if ((step.current === 0 || step.current === 5) && graphRef.current) {
+      const trigger =
+        elPosition.current -
+        (window.innerHeight / 2 -
+          graphRef.current.getBoundingClientRect().height / 2);
       if (step.current === 0) {
-        window.scrollTo(0, window.scrollY - 30);
+        window.scrollTo(0, trigger - 52);
       } else {
-        window.scrollTo(0, window.scrollY + 30);
+        window.scrollTo(0, trigger + 102);
       }
-      overflowYValue = "scroll";
     }
-    document.body.style.overflowY = overflowYValue;
+
     if (tabs[step.current - 1]) {
       setCryptoType(tabs[step.current - 1]);
     }
@@ -58,20 +57,15 @@ const TheUltraSound: FC<{}> = () => {
     if (graphRef?.current) {
       const rect = graphRef.current.getBoundingClientRect();
       const trigger = window.scrollY + window.innerHeight / 2 - rect.height / 2;
-      const elPosition = window.scrollY + rect.top;
-
+      elPosition.current = window.scrollY + rect.top;
       const scrollTriggerStart =
-        elPosition < trigger + 60 && elPosition > trigger - 60;
-
+        elPosition.current < trigger + 50 && elPosition.current > trigger - 100;
       if (scrollTriggerStart || important) {
-        console.log("wheel");
-        window.addEventListener("wheel", onChangeCryptoType, {
-          passive: false,
-        });
+        document.body.style.overflowY = "hidden";
+        window.addEventListener("wheel", changeCryptoType);
       } else {
-        console.log("remove wheel");
         document.body.style.overflowY = "scroll";
-        window.removeEventListener("wheel", onChangeCryptoType);
+        window.removeEventListener("wheel", changeCryptoType);
       }
     }
   };
