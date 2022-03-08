@@ -115,13 +115,13 @@ const monetaryPremiumMax = 20;
 const monetaryPremiumRange = monetaryPremiumMax - monetaryPremiumMin;
 const monetaryPremiumStepSize = 0.01;
 
-const growthProfileMin = 5;
-const growthProfileMax = 300;
+const growthProfileMin = 6;
+const growthProfileMax = 250;
 const growthProfileLogMin = Math.log(growthProfileMin);
 const growthProfileLogMax = Math.log(growthProfileMax);
 const logRange = growthProfileLogMax - growthProfileLogMin;
 
-// Converts from a linear scale between 0 and 1 to a log scale between 1 and 300.
+// Converts from a linear scale between 0 and 1 to a log scale between 6 and 250.
 const logFromLinear = (position: number) =>
   pipe(
     position * logRange,
@@ -129,7 +129,7 @@ const logFromLinear = (position: number) =>
     (shiftedPosition) => Math.exp(shiftedPosition),
   );
 
-// Converts from a log scale between 1 and 300 to a linear scale between 0 and 1
+// Converts from a log scale between 6 and 250 to a linear scale between 0 and 1
 const linearFromLog = (num: number) =>
   pipe(
     Math.log(num),
