@@ -1,9 +1,12 @@
+import { useEffect, useState } from "react";
+import useWebSocket from "react-use-websocket";
 import useSWR from "swr";
 import * as Duration from "../duration";
+import { useFeatureFlags } from "../feature-flags";
 import { NEA } from "../fp";
 import { BurnRecords, decodeBurnRecords, RawBurnRecords } from "./burn-records";
 import fetcher from "./default-fetcher";
-import { feesBasePath } from "./fees";
+import { feesBasePath, feesWsUrl } from "./fees";
 import { Leaderboards } from "./leaderboards";
 
 type WeiPerMinute = number;
@@ -102,4 +105,49 @@ export const useGroupedStats1 = (): FeeData | undefined => {
   });
 
   return data === undefined ? undefined : decodeFeeData(data);
+};
+
+type GroupedAnallysis1Envelope = {
+  id: "grouped-analysis-1";
+  message: RawFeeData;
+};
+
+const getIsGroupedAnalysisMessage = (
+  u: unknown,
+): u is GroupedAnallysis1Envelope =>
+  u != null &&
+  typeof (u as GroupedAnallysis1Envelope).id === "string" &&
+  (u as GroupedAnallysis1Envelope).id === "grouped-analysis-1";
+
+export const useGroupedStats1Ws = (): RawFeeData | undefined => {
+  const [latestGroupedStats1, setLatestGroupedStats1] = useState<RawFeeData>();
+  const [socketUrl] = useState(feesWsUrl);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const { lastJsonMessage } = useWebSocket(socketUrl, {
+    onOpen: () => console.log("opened"),
+    //Will attempt to reconnect on all close events, such as server shutting down
+    shouldReconnect: () => true,
+    share: true,
+  });
+
+  useEffect(() => {
+    if (!getIsGroupedAnalysisMessage(lastJsonMessage)) {
+      return undefined;
+    }
+
+    if (latestGroupedStats1 === undefined) {
+      setLatestGroupedStats1(lastJsonMessage.message);
+      return undefined;
+    }
+
+    const newBlock = NEA.head(lastJsonMessage.message.latestBlockFees);
+    if (
+      newBlock.number > NEA.head(latestGroupedStats1.latestBlockFees).number
+    ) {
+      setLatestGroupedStats1(lastJsonMessage.message);
+      return undefined;
+    }
+  }, [lastJsonMessage, latestGroupedStats1, setLatestGroupedStats1]);
+
+  return latestGroupedStats1;
 };
