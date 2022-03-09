@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import useSWR from "swr";
 import * as Duration from "../duration";
-import { useFeatureFlags } from "../feature-flags";
+import { getUseWebSockets } from "../feature-flags";
 import { NEA } from "../fp";
 import { BurnRecords, decodeBurnRecords, RawBurnRecords } from "./burn-records";
 import fetcher from "./default-fetcher";
@@ -100,16 +100,19 @@ const decodeFeeData = (raw: RawFeeData): FeeData => ({
 });
 
 export const useGroupedStats1 = (): FeeData | undefined => {
-  const featureFlags = useFeatureFlags().featureFlags;
+  const useWebSockets = getUseWebSockets();
   const { data } = useSWR<RawFeeData>(`${feesBasePath}/all`, fetcher, {
     refreshInterval: Duration.millisFromSeconds(1),
+    isPaused: () => getUseWebSockets(),
   });
-  const dataWs = useGroupedStats1Ws();
+  const dataWs = useGroupedStats1Ws(useWebSockets);
   const [latestGroupedStats1, setLatestGroupedStats1] = useState<FeeData>();
 
   useEffect(() => {
-    if (featureFlags.useWebSockets && dataWs !== undefined) {
-      setLatestGroupedStats1(decodeFeeData(dataWs));
+    if (useWebSockets) {
+      if (dataWs !== undefined) {
+        setLatestGroupedStats1(decodeFeeData(dataWs));
+      }
       return undefined;
     }
 
@@ -117,7 +120,7 @@ export const useGroupedStats1 = (): FeeData | undefined => {
       setLatestGroupedStats1(decodeFeeData(data));
       return undefined;
     }
-  }, [data, dataWs, featureFlags.useWebSockets]);
+  }, [data, dataWs, useWebSockets]);
 
   return latestGroupedStats1;
 };
@@ -134,16 +137,24 @@ const getIsGroupedAnalysisMessage = (
   typeof (u as GroupedAnallysis1Envelope).id === "string" &&
   (u as GroupedAnallysis1Envelope).id === "grouped-analysis-1";
 
-export const useGroupedStats1Ws = (): RawFeeData | undefined => {
+export const useGroupedStats1Ws = (
+  enabled: boolean,
+): RawFeeData | undefined => {
   const [latestGroupedStats1, setLatestGroupedStats1] = useState<RawFeeData>();
   const [socketUrl] = useState(feesWsUrl);
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const { lastJsonMessage } = useWebSocket(socketUrl, {
-    onOpen: () => console.log("opened"),
-    //Will attempt to reconnect on all close events, such as server shutting down
-    shouldReconnect: () => true,
-    share: true,
-  });
+  const { lastJsonMessage } = useWebSocket(
+    socketUrl,
+    {
+      onOpen: () => console.log("ws opened"),
+      onClose: () => console.log("ws closed"),
+      onError: (event) => console.log("ws error", event),
+      //Will attempt to reconnect on all close events, such as server shutting down
+      shouldReconnect: () => true,
+      share: true,
+    },
+    enabled,
+  );
 
   useEffect(() => {
     if (!getIsGroupedAnalysisMessage(lastJsonMessage)) {

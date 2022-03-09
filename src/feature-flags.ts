@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 
 export const flags = [
   "showCategoryCounts",
@@ -29,5 +29,12 @@ const reducer = (
 export const useFeatureFlags = () => {
   const [featureFlags, setFlag] = useReducer(reducer, defaults);
 
+  useEffect(() => {
+    useWebSockets = featureFlags.useWebSockets;
+  }, [featureFlags]);
   return { featureFlags, setFlag };
 };
+
+// React makes it hard to switch to toggle websockets easily. We use some dark magic.
+let useWebSockets = false;
+export const getUseWebSockets = () => useWebSockets;
