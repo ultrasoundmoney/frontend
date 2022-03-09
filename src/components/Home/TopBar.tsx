@@ -135,10 +135,6 @@ const TopBar: FC = () => {
 
   const isAlarmActive = gasAlarmActive || ethAlarmActive;
 
-  const activeButtonCss =
-    "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg";
-  const alarmActiveClasses = isAlarmActive ? activeButtonCss : "";
-
   const checkIfClickedOutside = useCallback(
     (e: MouseEvent) => {
       if (
@@ -165,11 +161,6 @@ const TopBar: FC = () => {
   const isAlarmValuesAvailable =
     typeof baseFeePerGas === "number" && typeof ethPrice?.usd === "number";
 
-  const showButtonClasses =
-    notification.type === "Supported" && isAlarmValuesAvailable
-      ? "visible"
-      : "invisible";
-
   useEffect(() => {
     document.addEventListener("click", checkIfClickedOutside);
 
@@ -184,7 +175,23 @@ const TopBar: FC = () => {
         <PriceGasWidget baseFeePerGas={baseFeePerGas} ethPrice={ethPrice} />
 
         <button
-          className={`flex items-center px-3 py-2 bg-blue-tangaroa rounded ml-4 select-none border border-transparent ${showButtonClasses} ${alarmActiveClasses}`}
+          className={`
+            flex items-center
+            px-3 py-2 ml-4
+            bg-blue-tangaroa rounded
+            select-none
+            border border-transparent
+            ${
+              notification.type === "Supported" && isAlarmValuesAvailable
+                ? "visible"
+                : "invisible"
+            }
+            ${
+              isAlarmActive
+                ? "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg"
+                : ""
+            }
+          `}
           onClick={handleClickAlarm}
         >
           <img src="/alarm-icon.svg" alt="bell icon" width="12" height="14" />
