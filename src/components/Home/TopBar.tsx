@@ -5,7 +5,7 @@ import * as Format from "../../format";
 import { O, pipe } from "../../fp";
 import { useLocalStorage } from "../../use-local-storage";
 import useNotification from "../../use-notification";
-import AlarmInput from "../Alarm";
+import AlarmInput from "../AlarmInput";
 import { AmountUnitSpace } from "../Spacing";
 import { TextRoboto } from "../Texts";
 import { WidgetTitle } from "../widget-subcomponents";
