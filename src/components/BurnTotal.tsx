@@ -64,9 +64,8 @@ const BurnTotal: FC<Props> = ({
   timeFrame,
   unit,
 }) => {
-  const feeData = useGroupedStats1();
-  const burnRates = feeData?.burnRates;
-  const feesBurned = feeData?.feesBurned;
+  const burnRates = useGroupedStats1()?.burnRates;
+  const feesBurned = useGroupedStats1()?.feesBurned;
 
   const selectedFeesBurnedEth =
     feesBurned === undefined
