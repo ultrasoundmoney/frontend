@@ -100,11 +100,26 @@ const decodeFeeData = (raw: RawFeeData): FeeData => ({
 });
 
 export const useGroupedStats1 = (): FeeData | undefined => {
+  const featureFlags = useFeatureFlags().featureFlags;
   const { data } = useSWR<RawFeeData>(`${feesBasePath}/all`, fetcher, {
     refreshInterval: Duration.millisFromSeconds(1),
   });
+  const dataWs = useGroupedStats1Ws();
+  const [latestGroupedStats1, setLatestGroupedStats1] = useState<FeeData>();
 
-  return data === undefined ? undefined : decodeFeeData(data);
+  useEffect(() => {
+    if (featureFlags.useWebSockets && dataWs !== undefined) {
+      setLatestGroupedStats1(decodeFeeData(dataWs));
+      return undefined;
+    }
+
+    if (data !== undefined) {
+      setLatestGroupedStats1(decodeFeeData(data));
+      return undefined;
+    }
+  }, [data, dataWs, featureFlags.useWebSockets]);
+
+  return latestGroupedStats1;
 };
 
 type GroupedAnallysis1Envelope = {
