@@ -378,16 +378,21 @@ const PriceModel: FC = () => {
         </div>
         <div className="flex flex-col gap-y-2 text-center">
           <WidgetTitle>implied eth price</WidgetTitle>
-          <MoneyAmount
-            amountPostfix="K"
-            skeletonWidth="3rem"
-            textSizeClass="text-2xl md:text-3xl"
-            unit="usd"
+          <span
+            title={`profits = revenue (burn) - expenses (issuance)
+price = profits * P/E ratio * monetary premium`}
           >
-            {projectedPrice === undefined
-              ? undefined
-              : Format.formatOneDigit(projectedPrice / 1000)}
-          </MoneyAmount>
+            <MoneyAmount
+              amountPostfix="K"
+              skeletonWidth={3}
+              textSizeClass="text-2xl md:text-3xl"
+              unit="usd"
+            >
+              {projectedPrice === undefined
+                ? undefined
+                : Format.formatOneDigit(projectedPrice / 1000)}
+            </MoneyAmount>
+          </span>
         </div>
       </div>
     </WidgetBackground>
