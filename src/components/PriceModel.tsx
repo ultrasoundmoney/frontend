@@ -14,39 +14,46 @@ import { TextInter, TextRoboto } from "./Texts";
 import { WidgetBackground, WidgetTitle } from "./widget-subcomponents";
 
 type SliderProps = {
+  children: number | undefined;
   className?: InputHTMLAttributes<HTMLInputElement>["className"];
   max: InputHTMLAttributes<HTMLInputElement>["max"];
   min: InputHTMLAttributes<HTMLInputElement>["min"];
   onChange: (num: number) => void;
   step: InputHTMLAttributes<HTMLInputElement>["step"];
-  children: number;
+  thumbVisible?: boolean;
 };
 
 const Slider: FC<SliderProps> = ({
-  className,
-  min,
-  max,
-  step,
   children,
+  className,
+  max,
+  min,
   onChange,
+  step,
+  thumbVisible = true,
 }) => (
-  <input
-    className={`
-      appearance-none
-      w-full h-2
-      bg-blue-dusk
-      rounded-full
-      cursor-pointer
-      ${styles.customSlider}
-      ${className ?? ""}
-    `}
-    type="range"
-    min={min}
-    max={max}
-    value={children}
-    onChange={(event) => onChange(Number(event.target.value))}
-    step={step}
-  />
+  <>
+    <div className="absolute w-full rounded-full h-2 bg-blue-dusk"></div>
+    <input
+      className={`
+        absolute
+        appearance-none
+        w-full h-2 top-0 z-10
+        bg-transparent
+        rounded-full
+        cursor-pointer
+        ${thumbVisible ? "" : styles.thumbInvisible}
+        ${styles.customSlider}
+        ${className ?? ""}
+      `}
+      type="range"
+      min={min}
+      max={max}
+      value={children}
+      onChange={(event) => onChange(Number(event.target.value))}
+      step={step}
+    />
+  </>
 );
 
 // Markers are positioned absolutely, manipulating their 'left' relatively to the full width bar which should be positioned relatively as their parent. Marker width
@@ -176,11 +183,11 @@ const calcProjectedPrice = (
 
 const PriceModel: FC = () => {
   const peRatios = usePeRatios();
-  const burnRateAll = useGroupedStats1()?.burnRates.burnRateAll;
+  const burnRateAll = useGroupedStats1()?.burnRates.burnRateAllUsd;
   const ethPrice = useGroupedStats1()?.ethPrice?.usd;
   const ethSupply = useScarcity()?.ethSupply;
   const [peRatio, setPeRatio] = useState<number>();
-  const [peRatioPosition, setPeRatioPosition] = useState<number>(0);
+  const [peRatioPosition, setPeRatioPosition] = useState<number>();
   const [monetaryPremium, setMonetaryPremium] = useState(1);
   const [initialPeSet, setInitialPeSet] = useState(false);
   const averageEthPrice = useAverageEthPrice()?.all;
@@ -189,7 +196,7 @@ const PriceModel: FC = () => {
   const annualizedRevenue =
     burnRateAll === undefined || averageEthPrice === undefined
       ? undefined
-      : Format.ethFromWei(burnRateAll * 60 * 24 * 365.25) * averageEthPrice;
+      : burnRateAll * 60 * 24 * 365.25;
   const annualizedCosts =
     averageEthPrice === undefined
       ? undefined
@@ -238,6 +245,10 @@ const PriceModel: FC = () => {
   );
 
   useEffect(() => {
+    if (peRatioPosition === undefined) {
+      return undefined;
+    }
+
     setPeRatio(logFromLinear(peRatioPosition));
   }, [peRatioPosition]);
 
@@ -253,7 +264,7 @@ const PriceModel: FC = () => {
               : Format.formatOneDigit(annualizedEarnings / 1e9)}
           </MoneyAmount>
         </div>
-        <div>
+        <div className="flex flex-col gap-y-2">
           <div className="flex justify-between">
             <TextInter>growth profile</TextInter>
             <MoneyAmount unit="P/E">
@@ -264,17 +275,17 @@ const PriceModel: FC = () => {
               )}
             </MoneyAmount>
           </div>
-          <div className="relative mb-8">
+          <div className="relative mb-10">
             <Slider
-              className="relative w-full z-10"
               step={0.001}
               min={0}
               max={1}
               onChange={setPeRatioPosition}
+              thumbVisible={peRatioPosition !== undefined}
             >
               {peRatioPosition}
             </Slider>
-            <div className="absolute top-2 w-full [margin-top:10px] select-none">
+            <div className="absolute w-full [margin-top:8px] select-none">
               {peRatios !== undefined && (
                 // Because the actual slider does not span the entire visual slider, overlaying an element and setting the left is not perfect. We manually adjust values to match the slider more precisely. To improve this look into off-the-shelf components that allow for styled markers.
                 <>
@@ -334,7 +345,7 @@ const PriceModel: FC = () => {
             </div>
           </div>
         </div>
-        <div>
+        <div className="flex flex-col gap-y-2">
           <div className="flex justify-between">
             <TextInter>monetary premium</TextInter>
             <TextRoboto>{`${Format.formatOneDigit(
@@ -343,7 +354,6 @@ const PriceModel: FC = () => {
           </div>
           <div className="relative mb-8">
             <Slider
-              className="relative z-10"
               step={monetaryPremiumStepSize}
               min={monetaryPremiumMin}
               max={monetaryPremiumMax}
