@@ -73,7 +73,7 @@ const DeflationaryStreak: FC<{ simulateMerge: boolean }> = ({
           ) : (
             <>
               spanning
-              <span className="font-roboto text-white font-light ml-1 [word-spacing:-4px]">
+              <span className="text-white ml-1">
                 {timeElapsed || <Skeleton inline={true} width="2rem" />}
               </span>
             </>
