@@ -15,7 +15,6 @@ import { WidgetBackground, WidgetTitle } from "./widget-subcomponents";
 
 type SliderProps = {
   children: number | undefined;
-  className?: InputHTMLAttributes<HTMLInputElement>["className"];
   max: InputHTMLAttributes<HTMLInputElement>["max"];
   min: InputHTMLAttributes<HTMLInputElement>["min"];
   onChange: (num: number) => void;
@@ -25,7 +24,6 @@ type SliderProps = {
 
 const Slider: FC<SliderProps> = ({
   children,
-  className,
   max,
   min,
   onChange,
@@ -42,7 +40,6 @@ const Slider: FC<SliderProps> = ({
       cursor-pointer
       ${thumbVisible ? "" : styles.thumbInvisible}
       ${styles.customSlider}
-      ${className ?? ""}
     `}
     type="range"
     min={min}
