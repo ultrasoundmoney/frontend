@@ -74,6 +74,8 @@ const Marker: FC<{
         href={
           symbol === undefined
             ? undefined
+            : symbol === "DIS"
+            ? "https://www.google.com/finance/quote/DIS:NYSE"
             : `https://www.google.com/finance/quote/${symbol}:NASDAQ`
         }
         target="_blank"
