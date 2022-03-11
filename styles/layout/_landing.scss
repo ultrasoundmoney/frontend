@@ -10,12 +10,14 @@
 
 .ultra-sound-text {
   background: linear-gradient(
-    90.4deg,
-    #ff01e6 0.98%,
+    90deg,
+    rgb(255, 36, 174) 0%,
     #ff5f51 41.52%,
-    #00ffa3 102.19%
+    rgb(77, 206, 138) 100%
   );
-
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
   // font-size: 56px;
   font-weight: 200;
   font-stretch: normal;
