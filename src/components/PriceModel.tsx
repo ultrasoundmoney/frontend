@@ -104,8 +104,8 @@ const MarkerText: FC<{ ratio: number }> = ({ ratio, children }) => (
     // For unclear reasons the left 89% position for TSLA is closer to notch 91 on the actual slider. We manually adjust.
     style={{ transform: `translateX(${ratio * 100}%)` }}
   >
-    <div className="[min-height:3px] w-3 bg-blue-shipcove mb-3 -translate-x-1/2"></div>
-    <TextRoboto className="absolute top-4 text-blue-spindle -translate-x-1/2">
+    <div className="[min-height:3px] w-3 bg-blue-shipcove -translate-x-1/2"></div>
+    <TextRoboto className="absolute top-3 text-blue-spindle -translate-x-1/2">
       {children}
     </TextRoboto>
   </div>
@@ -249,7 +249,7 @@ const PriceModel: FC = () => {
   return (
     <WidgetBackground>
       <WidgetTitle>price model (post-merge)</WidgetTitle>
-      <div className="flex flex-col gap-4 mt-4 overflow-hidden">
+      <div className="flex flex-col gap-y-4 mt-4 overflow-hidden">
         <div className="flex justify-between">
           <TextInter>annualized profits</TextInter>
           <MoneyAmount amountPostfix="B" unit="usd">
@@ -269,7 +269,7 @@ const PriceModel: FC = () => {
               )}
             </MoneyAmount>
           </div>
-          <div className="relative mb-10">
+          <div className="relative mb-12">
             <Slider
               step={0.001}
               min={0}
@@ -279,7 +279,7 @@ const PriceModel: FC = () => {
             >
               {peRatioPosition}
             </Slider>
-            <div className="absolute w-full [margin-top:8px] select-none">
+            <div className="absolute w-full top-2 select-none">
               {peRatios !== undefined && (
                 // Because the actual slider does not span the entire visual slider, overlaying an element and setting the left is not perfect. We manually adjust values to match the slider more precisely. To improve this look into off-the-shelf components that allow for styled markers.
                 <>
@@ -346,7 +346,7 @@ const PriceModel: FC = () => {
               monetaryPremium,
             )}x`}</TextRoboto>
           </div>
-          <div className="relative mb-8">
+          <div className="relative mb-10">
             <Slider
               step={monetaryPremiumStepSize}
               min={monetaryPremiumMin}
@@ -356,7 +356,7 @@ const PriceModel: FC = () => {
               {monetaryPremium}
             </Slider>
             {/* Because a slider range is not exactly the visual width of the element positioning using absolute children with a left is not exactly right. we add small amounts to try fudge them into the right place. */}
-            <div className="absolute top-2 bottom-0 w-full flex [margin-top:10px] pointer-events-none">
+            <div className="absolute w-full flex top-2 pointer-events-none">
               <MarkerText
                 ratio={(2 + 0.3 - monetaryPremiumMin) / monetaryPremiumRange}
               >
@@ -388,7 +388,7 @@ price = profits * P/E ratio * monetary premium`}
           >
             <MoneyAmount
               amountPostfix="K"
-              skeletonWidth={3}
+              skeletonWidth="3rem"
               textSizeClass="text-2xl md:text-3xl"
               unit="usd"
             >
