@@ -32,9 +32,9 @@
 }
 
 .customSlider::-webkit-slider-thumb:hover {
-  opacity: 0.8
+  filter: brightness(90%);
 }
 
 .customSlider::-moz-range-thumb:hover {
-  opacity: 0.8
+  filter: brightness(90%);
 }
