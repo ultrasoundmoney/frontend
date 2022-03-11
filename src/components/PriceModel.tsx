@@ -32,28 +32,25 @@ const Slider: FC<SliderProps> = ({
   step,
   thumbVisible = true,
 }) => (
-  <>
-    <div className="absolute w-full rounded-full h-2 bg-blue-dusk"></div>
-    <input
-      className={`
-        absolute
-        appearance-none
-        w-full h-2 top-0 z-10
-        bg-transparent
-        rounded-full
-        cursor-pointer
-        ${thumbVisible ? "" : styles.thumbInvisible}
-        ${styles.customSlider}
-        ${className ?? ""}
-      `}
-      type="range"
-      min={min}
-      max={max}
-      value={children}
-      onChange={(event) => onChange(Number(event.target.value))}
-      step={step}
-    />
-  </>
+  <input
+    className={`
+      absolute
+      appearance-none
+      w-full h-2 z-10
+      bg-blue-dusk
+      rounded-full
+      cursor-pointer
+      ${thumbVisible ? "" : styles.thumbInvisible}
+      ${styles.customSlider}
+      ${className ?? ""}
+    `}
+    type="range"
+    min={min}
+    max={max}
+    value={children}
+    onChange={(event) => onChange(Number(event.target.value))}
+    step={step}
+  />
 );
 
 // Markers are positioned absolutely, manipulating their 'left' relatively to the full width bar which should be positioned relatively as their parent. Marker width
