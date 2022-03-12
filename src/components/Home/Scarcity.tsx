@@ -45,7 +45,6 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
 
   const stakedPercent = (staked / supply) * 100;
   const lockedPercent = (locked / supply) * 100;
-  const stakedPlusLocked = ((staked + locked) / supply) * 100;
 
   return (
     <div className="relative">
@@ -118,7 +117,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
         <div
           className="absolute h-2 bg-blue-dusk z-10 w-0.5"
           style={{
-            left: `${stakedPlusLocked / 2}%`,
+            left: `${stakedPercent}%`,
           }}
         ></div>
         <div
