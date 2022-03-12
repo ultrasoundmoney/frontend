@@ -122,11 +122,10 @@ const WidgetGroup1: FC<{ featureFlags: FeatureFlags }> = ({ featureFlags }) => {
         <div className="lg:row-start-2">
           <LatestBlocks unit={unit} />
         </div>
-        {/* temporarily turn off streaks */}
-        {/* <div className="lg:row-start-3"> */}
-        {/*   <DeflationaryStreak simulateMerge={simulateMerge} /> */}
-        {/* </div> */}
-        <div className="lg:row-start-3 lg:row-end-5">
+        <div className="lg:row-start-3">
+          <DeflationaryStreak simulateMerge={simulateMerge} />
+        </div>
+        <div className="lg:row-end-5">
           <BurnRecords
             onClickTimeFrame={handleClickTimeFrame}
             timeFrame={timeFrame}
