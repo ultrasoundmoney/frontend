@@ -33,7 +33,7 @@ const DeflationaryStreak: FC<{ simulateMerge: boolean }> = ({
     setTimeElapsed(
       DateFns.formatDistanceStrict(
         DateFns.parseISO(lastBlock.minedAt),
-        DateFns.parseISO(deflationaryStreak.from),
+        DateFns.parseISO(deflationaryStreak.startedOn),
       ),
     );
   }, [deflationaryStreak, latestBlocks]);

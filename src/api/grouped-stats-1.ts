@@ -59,7 +59,7 @@ export type EthPrice = {
 
 export type DeflationaryStreakMode = "preMerge" | "postMerge";
 export type DeflationaryStreak = {
-  from: string;
+  startedOn: string;
   count: number;
 };
 export type DeflationaryStreakState = Record<
