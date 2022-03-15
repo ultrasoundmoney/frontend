@@ -10,15 +10,11 @@
 
 .ultra-sound-text {
   background: linear-gradient(
-    90deg,
-    rgb(255, 36, 174) 0%,
+    90.4deg,
+    #ff01e6 0.98%,
     #ff5f51 41.52%,
-    rgb(77, 206, 138) 100%
+    #00ffa3 102.19%
   );
-  width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
-  // font-size: 56px;
   font-weight: 200;
   font-stretch: normal;
   font-style: normal;
@@ -28,6 +24,11 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+.ultra-sound-text.current-gradient {
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
 }
 .graph_text_containter {
   position: relative;
@@ -234,7 +235,7 @@
 
   .track_wrapper {
     position: absolute;
-    width: calc(100% - 84px);
+    width: calc(100% - 44px);
     height: 100%;
     left: 20px;
     img {
