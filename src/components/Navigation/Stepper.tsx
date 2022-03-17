@@ -96,7 +96,11 @@ const Stepper: React.FC = () => {
       className="stepper_nav sticky top-0 left-0 w-full flex justify-between md:justify-start p-3 bg-blue-tangaroa z-50"
     >
       <div className="w-full px-1 md:px-4 mx-auto flex flex-wrap items-center justify-between">
-        <Steps ref={steperIconRef} controlPoints={controlPoints} />
+        <Steps
+          currentPositionLogo={memoizedValue}
+          ref={steperIconRef}
+          controlPoints={controlPoints}
+        />
         <div className="w-full md:w-3/12 hidden md:block py-1" id="menu">
           <ul className="flex flex-col md:flex-row justify-end list-none mt-4 md:mt-0 relative">
             <li className="nav-item lg:px-4 xl:px-8 justify-center">
