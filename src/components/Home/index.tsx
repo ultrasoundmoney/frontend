@@ -117,7 +117,7 @@ const Home: FC = () => {
             <source src="/bat-no-wings.mp4" type="video/mp4" />
           </video>
           {/* <video */}
-          {/*   className="absolute left-0 -ml-24 top-8 md:top-128 lg:top-96 opacity-40 mix-blend-lighten" */}
+          {/*   className="absolute hidden md:block left-0 -ml-24 md:top-96 lg:top-96 opacity-40 mix-blend-lighten -z-10" */}
           {/*   playsInline */}
           {/*   autoPlay */}
           {/*   muted */}
@@ -170,7 +170,10 @@ const Home: FC = () => {
                 {/*   loop */}
                 {/*   poster="/bat-no-wings.png" */}
                 {/* > */}
-                {/*   <source src="/moving-orbs.webm" type="video/webm; codecs='vp9'" /> */}
+                {/*   <source */}
+                {/*     src="/moving-orbs.webm" */}
+                {/*     type="video/webm; codecs='vp9'" */}
+                {/*   /> */}
                 {/*   <source src="/moving-orbs.mp4" type="video/mp4" /> */}
                 {/* </video> */}
                 <TwitterFam />
