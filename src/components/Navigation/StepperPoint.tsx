@@ -29,7 +29,10 @@ const StepperDots: React.FC<StepperPointProps> = ({
   return (
     <div
       onClick={moveToPoint(indexItem)}
-      className="relative transition-opacity cursor-pointer h-full justify-center w-24 text-xs text-center text-blue-shipcove hover:opacity-60"
+      style={{
+        width: "16px",
+      }}
+      className="relative flex flex-col items-center transition-opacity cursor-pointer h-full justify-center whitespace-nowrap text-xs text-center text-blue-shipcove hover:opacity-60"
     >
       <div
         style={{
@@ -37,7 +40,6 @@ const StepperDots: React.FC<StepperPointProps> = ({
           justifyContent: "center",
           width: "16px",
           height: "16px",
-          margin: "auto",
           borderRadius: "50%",
           position: "relative",
           border: `1px solid ${active ? "#00FFA3" : "#8991AD"}`,

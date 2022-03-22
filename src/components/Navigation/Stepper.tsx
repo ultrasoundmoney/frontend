@@ -71,7 +71,6 @@ const Stepper: React.FC = () => {
         offsetYFirstPoint = el?.offsetY;
       }
     });
-
     const showStickyHeader: boolean =
       window.scrollY > offsetYFirstPoint - window.innerHeight / 2;
     showStickyHeader
