@@ -1,13 +1,13 @@
 import * as DateFns from "date-fns";
 import JSBI from "jsbi";
 import React, { FC, useState } from "react";
-import { useScarcity } from "../../api/scarcity";
-import Colors from "../../colors";
-import * as Format from "../../format";
-import { pipe } from "../../fp";
-import { Amount, MoneyAmount } from "../Amount";
-import { LabelText, TextInter, TextRoboto } from "../Texts";
-import { WidgetBackground, WidgetTitle } from "../widget-subcomponents";
+import { useScarcity } from "../api/scarcity";
+import Colors from "../colors";
+import * as Format from "../format";
+import { pipe } from "../fp";
+import { Amount, MoneyAmount } from "./Amount";
+import { LabelText, TextInter, TextRoboto } from "./Texts";
+import { WidgetBackground, WidgetTitle } from "./widget-subcomponents";
 
 type ScarcityBarProps = {
   staked: number;

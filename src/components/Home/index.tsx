@@ -11,18 +11,18 @@ import {
   flags,
   useFeatureFlags,
 } from "../../feature-flags";
+import Flippenings from "../Flippenings";
 import FollowingYou from "../FollowingYou";
 import FaqBlock from "../Landing/faq";
 import PriceModel from "../PriceModel";
+import Scarcity from "../Scarcity";
 import SupplyView from "../SupplyView";
 import { SectionTitle } from "../Texts";
 import ToggleSwitch from "../ToggleSwitch";
 import TwitterFam from "../TwitterFam";
 import WidgetGroup1 from "../widget-group-1";
 import { WidgetTitle } from "../widget-subcomponents";
-import Flippenings from "./Flippenings";
 import styles from "./Home.module.scss";
-import Scarcity from "./Scarcity";
 import TopBar from "./TopBar";
 
 const SectionDivider: FC<{ title: string; subtitle: string }> = ({
