@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 import { TranslationsContext } from "../../translations-context";
 import StepperPoint from "./StepperPoint";
 import StepperTrack from "./StepperTrack";
 import { motion } from "framer-motion";
+import { ActionLogo } from "./Stepper";
 
 type ControlPoint = {
   offsetY: number;
@@ -19,10 +20,12 @@ type ControlPointMutated = {
 type StepsProps = {
   controlPoints: (ControlPoint | undefined)[];
   currentPositionLogo: number;
+  onActionLogo: (vodue: ActionLogo) => void;
+  activeLogo: ActionLogo;
 };
 
 const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
-  ({ controlPoints, currentPositionLogo }, ref) => {
+  ({ controlPoints, currentPositionLogo, onActionLogo, activeLogo }, ref) => {
     const [activeBalls, setActiveBalls] = React.useState<
       (ControlPointMutated | undefined)[] | undefined
     >();
@@ -48,6 +51,10 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
     }, [getActiveBalls]);
 
     const trackWrapper = useRef<HTMLDivElement | null>(null);
+
+    const [positinLogo, setPositinLogo] = useState(0);
+    const [logoOnDots, setLogoOnDots] = useState(false);
+    const handlerLogoOnDots = (value: boolean) => setLogoOnDots(value);
     useEffect(() => {
       if (
         typeof ref !== "object" ||
@@ -69,24 +76,31 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
         ) {
           ref.current.style.left = `${e.pageX - marginLeft}px`;
         }
+
+        onActionLogo("move");
+        setPositinLogo(e.pageX);
       };
       const handleUpLogo = () => {
-        if (ref.current?.style) {
+        onActionLogo("up");
+        if (!logoOnDots && ref.current?.style) {
           ref.current.style.transition = ".4s";
           setTimeout(() => {
             if (!ref.current?.style) return;
             ref.current.style.left = `${currentPositionLogo}%`;
-          }, 200);
-          setTimeout(() => {
-            if (!ref.current?.style) return;
-            ref.current.style.transition = "0s";
           }, 800);
+          setTimeout(() => onActionLogo("none"), 800);
         }
+
+        setTimeout(() => {
+          if (!ref.current?.style) return;
+          ref.current.style.transition = "0s";
+        }, 800);
         window.removeEventListener("pointermove", handleMoveLogo);
         window.removeEventListener("pointerup", handleUpLogo);
       };
       const handleDownLogo = (e: MouseEvent) => {
         e.preventDefault();
+        onActionLogo("down");
         window.addEventListener("pointermove", handleMoveLogo);
         window.addEventListener("pointerup", handleUpLogo);
       };
@@ -127,6 +141,9 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
                   return (
                     <div className="flex h-full items-center" key={`${index}`}>
                       <StepperPoint
+                        actionLogo={activeLogo}
+                        positinLogo={positinLogo}
+                        onLogoOnDots={handlerLogoOnDots}
                         name={item.name}
                         indexItem={index}
                         active={item.active}
@@ -137,6 +154,9 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
                 return (
                   <div className="flex w-full h-full" key={`${index}`}>
                     <StepperPoint
+                      actionLogo={activeLogo}
+                      positinLogo={positinLogo}
+                      onLogoOnDots={handlerLogoOnDots}
                       name={item.name}
                       indexItem={index}
                       active={item.active}

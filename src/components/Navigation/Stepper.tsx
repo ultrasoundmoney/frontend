@@ -5,6 +5,8 @@ import Steps from "./Steps";
 import { StepperContext, StepperPoint } from "../../context/StepperContext";
 import { throttle } from "lodash";
 
+export type ActionLogo = "none" | "down" | "move" | "up";
+
 const getIconOffset = (
   pointsHeights: (StepperPoint | undefined)[],
   pageLoad: boolean
@@ -46,6 +48,10 @@ const Stepper: React.FC = () => {
   const stepsRef = useRef<HTMLElement | null>(null);
   const steperIconRef = useRef<HTMLDivElement | null>(null);
   const stepperPoints = useContext(StepperContext);
+  const [currentActionLogo, setCurrentActionLogo] = useState<ActionLogo>(
+    "none"
+  );
+  const handlerActionLogo = (value: ActionLogo) => setCurrentActionLogo(value);
   const controlPoints = Object.keys(stepperPoints?.stepperElements as {}).map(
     (element) => {
       return stepperPoints?.stepperElements[element];
@@ -77,7 +83,7 @@ const Stepper: React.FC = () => {
     showStickyHeader
       ? stepsRef.current?.classList.add("active")
       : stepsRef.current?.classList.remove("active");
-    if (steperIconRef && steperIconRef.current) {
+    if (currentActionLogo !== "up" && steperIconRef && steperIconRef.current) {
       steperIconRef.current.style.left = `${memoizedValue}%`;
     }
   }, [controlPoints, scrollYProgress]);
@@ -97,6 +103,8 @@ const Stepper: React.FC = () => {
     >
       <div className="w-full px-1 md:px-4 mx-auto flex flex-wrap items-center justify-between">
         <Steps
+          onActionLogo={handlerActionLogo}
+          activeLogo={currentActionLogo}
           currentPositionLogo={memoizedValue}
           ref={steperIconRef}
           controlPoints={controlPoints}
