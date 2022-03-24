@@ -9,7 +9,7 @@ type FeeBurnedBlockProps = {
 };
 const FeeBurnedBlock: React.FC<FeeBurnedBlockProps> = () => {
   const t = React.useContext(TranslationsContext);
-  const [isShow, setIsShow] = useState(true);
+  const [isShow, setIsShow] = useState(false);
   const stepperPoints = useContext(StepperContext);
 
   const controlPoints: any[] = Object.keys(
@@ -19,8 +19,8 @@ const FeeBurnedBlock: React.FC<FeeBurnedBlockProps> = () => {
   });
   function onScroll() {
     if (
-      window.scrollY < window.innerHeight / 3 ||
-      window.scrollY > controlPoints[0].offsetY - window.innerHeight / 2 + 200
+      window.scrollY >
+      controlPoints[0].offsetY - window.innerHeight / 2 + 200
     ) {
       setIsShow(true);
     } else {

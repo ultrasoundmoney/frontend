@@ -116,7 +116,7 @@ const TheUltraSound: FC<{}> = () => {
           >
             <source src="/moving_new.mp4" />
           </video> */}
-          <div className="ultra-sound-text text-2xl md:text-6xl mb-24">
+          <div className="ultra-sound-text current-gradient text-2xl md:text-6xl mb-24">
             {t.eusm_section_title}
           </div>
         </div>

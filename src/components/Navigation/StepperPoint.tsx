@@ -66,6 +66,7 @@ const StepperDots: React.FC<StepperPointProps> = ({
         opacity: onElement ? ".4" : "1",
       }}
       className="stepper_point relative flex flex-col items-center transition-opacity cursor-pointer h-full justify-center whitespace-nowrap text-xs text-center text-blue-shipcove hover:opacity-60"
+
     >
       <div
         className="stepper_circle"
@@ -74,7 +75,6 @@ const StepperDots: React.FC<StepperPointProps> = ({
           justifyContent: "center",
           width: "16px",
           height: "16px",
-          margin: "auto",
           borderRadius: "50%",
           position: "relative",
           border: `1px solid ${active ? "#00FFA3" : "#8991AD"}`,
