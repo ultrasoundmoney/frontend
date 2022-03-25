@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import useSWR from "swr";
 import * as Duration from "../duration";
-import { getUseWebSockets } from "../feature-flags";
+import { FeatureFlagsContext } from "../feature-flags";
 import { NEA } from "../fp";
 import { BurnRecords, decodeBurnRecords, RawBurnRecords } from "./burn-records";
 import fetcher from "./default-fetcher";
@@ -100,12 +100,12 @@ const decodeFeeData = (raw: RawFeeData): FeeData => ({
 });
 
 export const useGroupedStats1 = (): FeeData | undefined => {
-  const useWebSockets = getUseWebSockets();
+  const { useWebSockets } = useContext(FeatureFlagsContext);
   const { data } = useSWR<RawFeeData>(`${feesBasePath}/all`, fetcher, {
     refreshInterval: Duration.millisFromSeconds(1),
-    isPaused: () => getUseWebSockets(),
+    isPaused: () => useWebSockets,
   });
-  const dataWs = useGroupedStats1Ws(useWebSockets);
+  const dataWs = useGroupedStats1Ws();
   const [latestGroupedStats1, setLatestGroupedStats1] = useState<FeeData>();
 
   useEffect(() => {
@@ -137,9 +137,9 @@ const getIsGroupedAnalysisMessage = (
   typeof (u as GroupedAnallysis1Envelope).id === "string" &&
   (u as GroupedAnallysis1Envelope).id === "grouped-analysis-1";
 
-export const useGroupedStats1Ws = (
-  enabled: boolean,
-): RawFeeData | undefined => {
+export const useGroupedStats1Ws = (): // enabled: boolean,
+RawFeeData | undefined => {
+  const { useWebSockets } = useContext(FeatureFlagsContext);
   const [latestGroupedStats1, setLatestGroupedStats1] = useState<RawFeeData>();
   const [socketUrl] = useState(feesWsUrl);
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -153,7 +153,7 @@ export const useGroupedStats1Ws = (
       shouldReconnect: () => true,
       share: true,
     },
-    enabled,
+    useWebSockets,
   );
 
   useEffect(() => {
