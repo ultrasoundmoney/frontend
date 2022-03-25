@@ -1,9 +1,14 @@
 .profileText {
   img {
+    display: inline;
     width: 16px;
     margin: auto 2px;
     &:last-child {
       margin-right: 0px;
     }
   }
+}
+
+.emoji {
+  display: inline;
 }

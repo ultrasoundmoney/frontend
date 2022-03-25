@@ -72,7 +72,7 @@ const FollowingYou: FC = () => {
   return (
     <>
       <div className="flex justify-center items-center mb-8">
-        <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl mr-1">
+        <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl">
           me & the fam
         </h1>
         <SpanMoji emoji="👀" />
