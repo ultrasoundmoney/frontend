@@ -172,7 +172,7 @@ const LeaderboardRow: FC<Props> = ({
 
   return (
     <>
-      <div className="pt-2.5 pb-2.5 pr-2.5">
+      <div className="pt-2.5 pb-2.5 pr-2">
         <a
           href={
             address === undefined
