@@ -104,7 +104,7 @@ const WidgetGroup1: FC<{ featureFlags: FeatureFlags }> = ({ featureFlags }) => {
           timeFrame={timeFrame}
           unit={unit}
         />
-        <div className="lg:col-start-2 lg:row-span-2 max-h-[694px]">
+        <div className="lg:col-start-2 lg:row-span-2 max-h-[697px] xl:max-h-[707px]">
           <BurnLeaderboard
             featureFlags={featureFlags}
             onClickTimeFrame={handleClickTimeFrame}
