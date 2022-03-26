@@ -1,10 +1,10 @@
 import { FC, useState } from "react";
-import Skeleton from "react-loading-skeleton";
 import { famBasePath, FamProfile } from "../../api/fam";
 import { formatNoDigit } from "../../format";
+import ImageWithTooltip from "../ImageWithTooltip";
+import { Modal } from "../Modal";
 import SpanMoji from "../SpanMoji";
-import FamAvatar from "../TwitterFam/FamAvatar";
-import { FamModal, FamModalContent } from "../TwitterFam/FamModal";
+import Tooltip from "../Tooltip";
 import styles from "./FollowingYou.module.scss";
 
 type Empty = { type: "empty" };
@@ -123,17 +123,21 @@ const FollowingYou: FC = () => {
           ) : (
             <>
               <div className="flex flex-wrap justify-center">
-                {followers.followers.map((profile, index) =>
-                  profile === undefined ? (
-                    <Skeleton circle={true} height="40px" width="40" />
-                  ) : (
-                    <FamAvatar
-                      key={index}
-                      onClick={setSelectedProfile}
-                      profile={profile}
+                {followers.followers.map((profile) => (
+                  <div className="m-2 w-10 h-10" key={profile?.profileUrl}>
+                    <ImageWithTooltip
+                      description={profile?.bio}
+                      famFollowerCount={profile?.famFollowerCount}
+                      followerCount={profile?.followersCount}
+                      imageUrl={profile?.profileImageUrl}
+                      key={profile.profileUrl}
+                      links={profile?.links}
+                      onClickImage={() => setSelectedProfile(profile)}
+                      title={profile?.name}
+                      tooltipImageUrl={profile.profileImageUrl}
                     />
-                  ),
-                )}
+                  </div>
+                ))}
               </div>
               {followers.count > followers.followers.length && (
                 <p className="text-white text-xl p-8 text-center">{`+${formatNoDigit(
@@ -148,15 +152,24 @@ const FollowingYou: FC = () => {
           unknown followers state
         </p>
       )}
-      <FamModal
-        show={selectedProfile !== undefined}
+      <Modal
         onClickBackground={() => setSelectedProfile(undefined)}
+        show={selectedProfile !== undefined}
       >
-        <FamModalContent
-          onClickClose={() => setSelectedProfile(undefined)}
-          profile={selectedProfile}
-        ></FamModalContent>
-      </FamModal>
+        {selectedProfile !== undefined && (
+          <Tooltip
+            description={selectedProfile?.bio}
+            famFollowerCount={selectedProfile?.famFollowerCount}
+            followerCount={selectedProfile?.followersCount}
+            imageUrl={selectedProfile?.profileImageUrl}
+            links={selectedProfile?.links}
+            onClickClose={() => setSelectedProfile(undefined)}
+            show={selectedProfile !== undefined}
+            title={selectedProfile?.name}
+            twitterUrl={selectedProfile?.profileUrl}
+          />
+        )}
+      </Modal>
     </>
   );
 };

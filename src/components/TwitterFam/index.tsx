@@ -1,17 +1,19 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import Clipboard from "react-clipboard.js";
 import Skeleton from "react-loading-skeleton";
 import { FamProfile, useProfiles } from "../../api/fam";
 import * as Format from "../../format";
+import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
+import ImageWithTooltip from "../ImageWithTooltip";
+import { Modal } from "../Modal";
 import SpanMoji from "../SpanMoji";
-import FamAvatar from "./FamAvatar";
-import { FamModal, FamModalContent } from "./FamModal";
+import Tooltip from "../Tooltip";
 
 const TwitterFam: FC = () => {
   const famCount = useProfiles()?.count;
   const profiles = useProfiles()?.profiles;
   const [selectedProfile, setSelectedProfile] = useState<FamProfile>();
-
+  const { md } = useActiveBreakpoint();
   const [isCopiedFeedbackVisible, setIsCopiedFeedbackVisible] = useState(false);
 
   const onBatSoundCopied = () => {
@@ -33,6 +35,17 @@ const TwitterFam: FC = () => {
     profiles === undefined
       ? (new Array(120).fill(undefined) as undefined[])
       : profiles;
+
+  const handleSelectProfile = useCallback(
+    (profile: FamProfile | undefined) => {
+      if (md) {
+        return;
+      }
+
+      setSelectedProfile(profile);
+    },
+    [md, setSelectedProfile],
+  );
 
   return (
     <>
@@ -77,27 +90,40 @@ const TwitterFam: FC = () => {
       </div>
       <div className="h-16"></div>
       <div className="flex flex-wrap justify-center">
-        {currentProfiles.map((profile, index) =>
-          profile === undefined ? (
-            <Skeleton key={index} circle={true} height="40px" width="40" />
-          ) : (
-            <FamAvatar
-              key={index}
-              onClick={setSelectedProfile}
-              profile={profile}
+        {currentProfiles.map((profile) => (
+          <div className="m-2 w-10 h-10" key={profile?.profileUrl}>
+            <ImageWithTooltip
+              description={profile?.bio}
+              famFollowerCount={profile?.famFollowerCount}
+              followerCount={profile?.followersCount}
+              imageUrl={profile?.profileImageUrl}
+              links={profile?.links}
+              onClickImage={() => handleSelectProfile(profile)}
+              title={profile?.name}
+              tooltipImageUrl={profile?.profileImageUrl}
+              twitterUrl={profile?.profileUrl}
             />
-          ),
-        )}
+          </div>
+        ))}
       </div>
-      <FamModal
+      <Modal
         onClickBackground={() => setSelectedProfile(undefined)}
         show={selectedProfile !== undefined}
       >
-        <FamModalContent
-          onClickClose={() => setSelectedProfile(undefined)}
-          profile={selectedProfile}
-        ></FamModalContent>
-      </FamModal>
+        {selectedProfile !== undefined && (
+          <Tooltip
+            description={selectedProfile?.bio}
+            famFollowerCount={selectedProfile?.famFollowerCount}
+            followerCount={selectedProfile?.followersCount}
+            imageUrl={selectedProfile?.profileImageUrl}
+            links={selectedProfile?.links}
+            onClickClose={() => setSelectedProfile(undefined)}
+            show={selectedProfile !== undefined}
+            title={selectedProfile?.name}
+            twitterUrl={selectedProfile?.profileUrl}
+          />
+        )}
+      </Modal>
     </>
   );
 };
