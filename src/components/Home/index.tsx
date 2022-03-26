@@ -14,6 +14,7 @@ import Scarcity from "../Scarcity";
 import SupplyView from "../SupplyView";
 import { SectionTitle } from "../Texts";
 import ToggleSwitch from "../ToggleSwitch";
+import TotalValueSecured from "../TotalValueSecured";
 import TwitterFam from "../TwitterFam";
 import WidgetGroup1 from "../widget-group-1";
 import { WidgetTitle } from "../widget-subcomponents";
