@@ -1,4 +1,6 @@
-import { CSSProperties, FC } from "react";
+import { CSSProperties, FC, useContext } from "react";
+import Skeleton from "react-loading-skeleton";
+import { FeatureFlagsContext } from "../feature-flags";
 
 export const LabelText: FC<{ className?: string }> = ({
   children,
@@ -51,7 +53,15 @@ export const TextInter: FC<{
   className?: string;
   inline?: boolean;
   style?: CSSProperties;
-}> = ({ children, className, inline = true, style }) => {
+  skeletonWidth?: string;
+}> = ({
+  children,
+  className,
+  inline = true,
+  style,
+  skeletonWidth = "3rem",
+}) => {
+  const { previewSkeletons } = useContext(FeatureFlagsContext);
   const mergedClassName = `
     font-inter font-light
     text-white
@@ -60,11 +70,15 @@ export const TextInter: FC<{
 
   return inline ? (
     <span className={mergedClassName} style={style}>
-      {children}
+      {(children || previewSkeletons) ?? (
+        <Skeleton inline width={skeletonWidth} />
+      )}
     </span>
   ) : (
     <p className={mergedClassName} style={style}>
-      {children}
+      {(children || previewSkeletons) ?? (
+        <Skeleton inline width={skeletonWidth} />
+      )}
     </p>
   );
 };
