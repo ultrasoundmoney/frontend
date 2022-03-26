@@ -16,10 +16,11 @@ export const Button: FC<{ isActive: boolean; onClick: () => void }> = ({
       text-sm md:text-base
       px-3 py-1
       select-none
+      border
       ${
         isActive
-          ? "text-white bg-blue-highlightbg border border-blue-highlightborder rounded-sm"
-          : "text-blue-spindle"
+          ? "text-white bg-blue-highlightbg border-blue-highlightborder rounded-sm"
+          : "text-blue-spindle border-transparent"
       }
       `}
     onClick={onClick}
