@@ -27,7 +27,7 @@ const SectionDivider: FC<{ title: string; subtitle: string }> = ({
   <>
     <div className="h-32"></div>
     <SectionTitle title={title} subtitle={subtitle} />
-    <div className="h-10 xl:h-16"></div>
+    <div className="h-16"></div>
   </>
 );
 
