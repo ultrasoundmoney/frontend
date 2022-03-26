@@ -6,7 +6,7 @@ import { useGroupedStats1 } from "../api/grouped-stats-1";
 import { Unit } from "../denomination";
 import * as Format from "../format";
 import { flow, O, OAlt } from "../fp";
-import styles from "../styles/Scrollbar.module.scss";
+import scrollbarStyles from "../styles/Scrollbar.module.scss";
 import { TimeFrameNext } from "../time-frames";
 import { useActiveBreakpoint } from "../utils/use-active-breakpoint";
 import { MoneyAmountAnimated } from "./Amount";
@@ -106,7 +106,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
           flex flex-col gap-y-6
           mt-4 -mr-3
           overflow-y-auto
-          ${styles["styled-scrollbar"]}
+          ${scrollbarStyles["styled-scrollbar"]}
         `}
         // Custom height to fit three records on desktop and mobile.
         style={{ height: lg ? "16rem" : "15rem" }}

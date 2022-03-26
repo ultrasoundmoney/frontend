@@ -5,7 +5,7 @@ import { useGroupedStats1 } from "../../../api/grouped-stats-1";
 import { LeaderboardEntry, Leaderboards } from "../../../api/leaderboards";
 import { Unit } from "../../../denomination";
 import { FeatureFlags } from "../../../feature-flags";
-import styles from "../../../styles/Scrollbar.module.scss";
+import scrollbarStyles from "../../../styles/Scrollbar.module.scss";
 import { TimeFrameNext } from "../../../time-frames";
 import { Group1Base } from "../../widget-subcomponents";
 import LeaderboardRow from "./LeaderboardRow";
@@ -114,7 +114,7 @@ const BurnLeaderboard: FC<Props> = ({
         className={`
             -mt-1 -mr-3
             overflow-y-auto overflow-x-hidden
-            ${styles["styled-scrollbar"]}
+            ${scrollbarStyles["styled-scrollbar"]}
           `}
       >
         {(selectedLeaderboard || leaderboardSkeletons).map((row, index) =>
