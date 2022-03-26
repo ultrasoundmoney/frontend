@@ -123,7 +123,7 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      <li className="grid grid-cols-3 hover:opacity-60 link-animation">
+                      <li className="grid grid-cols-3 hover:opacity-60">
                         <span className="font-roboto text-white">
                           {formatBlockNumber(number) || (
                             <Skeleton inline={true} width="8rem" />

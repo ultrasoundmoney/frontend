@@ -211,7 +211,6 @@ const CategoryRow: FC<CategoryRowProps> = ({
   <a
     className={`
       grid grid-cols-2 ${showCategoryCounts ? "md:grid-cols-3" : ""}
-      link-animation
       select-none
     `}
     href={link}

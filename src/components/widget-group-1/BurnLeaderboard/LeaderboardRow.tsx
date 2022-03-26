@@ -184,7 +184,7 @@ const LeaderboardRow: FC<Props> = ({
         >
           <div
             className={`
-              hover:opacity-60 link-animation
+              hover:opacity-60
               flex flex-row items-center
               font-inter font-light
               text-white text-base md:text-lg

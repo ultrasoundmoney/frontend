@@ -182,7 +182,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
           alt="flame emoji, signifying ETH burned"
         />
         <img
-          className="absolute top-0 link-animation"
+          className="absolute top-0"
           style={{
             opacity: hoveringBurned ? 1 : 0,
             // visibility: hoveringBurned ? "visible" : "hidden",
