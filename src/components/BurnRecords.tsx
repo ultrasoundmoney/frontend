@@ -37,7 +37,12 @@ const BurnRecordAmount: FC<{ amount: number | undefined; unit: Unit }> = ({
       {amount === undefined ? (
         <Skeleton inline={true} width="4rem" />
       ) : (
-        <MoneyAmountAnimated unit={unit}>{amount}</MoneyAmountAnimated>
+        <MoneyAmountAnimated
+          unit={unit}
+          unitText={unit === "eth" ? "ETH" : "USD"}
+        >
+          {amount}
+        </MoneyAmountAnimated>
       )}
     </TextRoboto>
     <AmountUnitSpace />

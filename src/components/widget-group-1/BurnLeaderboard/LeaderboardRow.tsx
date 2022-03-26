@@ -238,7 +238,12 @@ const LeaderboardRow: FC<Props> = ({
               {fees === undefined ? (
                 <Skeleton inline={true} width="4rem" />
               ) : (
-                <MoneyAmountAnimated unit={unit}>{fees}</MoneyAmountAnimated>
+                <MoneyAmountAnimated
+                  unit={unit}
+                  unitText={unit === "eth" ? "ETH" : "USD"}
+                >
+                  {fees}
+                </MoneyAmountAnimated>
               )}
               <AmountUnitSpace />
               <span className="text-blue-spindle font-extralight">
