@@ -64,9 +64,9 @@ const SplitGaugeSvg: FC<SplitGaugeSvgProps> = ({
   return (
     <svg width={width} height={height}>
       <defs>
-        <linearGradient id="orange-gradient">
-          <stop offset="0%" stopColor="#F4DD0C" />
-          <stop offset="100%" stopColor="#F4900C" />
+        <linearGradient id="orange-gradient-2">
+          <stop offset="0%" stopColor="#F4900C" />
+          <stop offset="100%" stopColor="#F4DD0C" />
         </linearGradient>
         <linearGradient id="blue-gradient">
           <stop offset="0%" stopColor="#5DECD2" />
@@ -76,15 +76,13 @@ const SplitGaugeSvg: FC<SplitGaugeSvgProps> = ({
       <g transform={`translate(${width / 2},${height / 2})`}>
         <path style={{ fill: colors.dusk }} d={backgroundArc}></path>
         <animated.path
-          // style={{ fill: colors.drop }}
           d={foregroundArc}
           fill="url(#blue-gradient)"
           opacity={stylesBlue.opacity}
         ></animated.path>
         <animated.path
-          // style={{ fill: colors.fireOrange }}
           d={foregroundArc}
-          fill="url(#orange-gradient)"
+          fill="url(#orange-gradient-2)"
           opacity={stylesOrange.opacity}
         ></animated.path>
         <animated.path
