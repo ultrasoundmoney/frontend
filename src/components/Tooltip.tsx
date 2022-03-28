@@ -30,15 +30,9 @@ export const ExternalLink: FC<ExternalLinkProps> = ({
       rel="noreferrer"
       target="_blank"
     >
+      <img src={`/round-${icon}-coloroff.svg`} alt={alt} className={`w-12`} />
       <img
-        src={`/round-${icon}-coloroff.svg`}
-        alt={alt}
-        className={`w-12 ${isHovering ? "invisible" : "visible"}`}
-      />
-      <img
-        className={`absolute w-12 top-0 ${
-          isHovering ? "visible" : "invisible"
-        }`}
+        className={`absolute w-12 top-0 ${isHovering ? "" : "hidden"}`}
         src={`/round-${icon}-coloron.svg`}
         alt={alt}
       />
