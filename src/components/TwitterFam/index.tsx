@@ -99,6 +99,7 @@ const TwitterFam: FC = () => {
               imageUrl={profile?.profileImageUrl}
               links={profile?.links}
               onClickImage={() => handleSelectProfile(profile)}
+              skeletonDiameter="40px"
               title={profile?.name}
               tooltipImageUrl={profile?.profileImageUrl}
               twitterUrl={profile?.profileUrl}
