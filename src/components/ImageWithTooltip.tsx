@@ -100,10 +100,8 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
       )}
       <div
         ref={setPopperEl}
-        className={`hidden md:block z-10`}
-        style={{
-          ...styles.popper,
-        }}
+        className=""
+        style={styles.popper}
         {...attributes.popper}
         onMouseEnter={() => (isHovering ? setTooltipHovering(true) : undefined)}
         onMouseLeave={() => setTooltipHovering(false)}
