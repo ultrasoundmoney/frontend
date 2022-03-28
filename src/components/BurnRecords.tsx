@@ -71,9 +71,8 @@ const Age: FC<{ minedAt: Date | undefined }> = ({ minedAt }) => {
   }, [minedAt]);
 
   return (
-    <TextInter className="md:text-lg">
-      {age || <Skeleton inline={true} width="6rem" />}
-      {" ago"}
+    <TextInter className="md:text-lg" skeletonWidth="6rem">
+      {age === undefined ? undefined : `${age} ago`}
     </TextInter>
   );
 };
