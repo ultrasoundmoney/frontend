@@ -54,6 +54,7 @@ const TotalValueSecured = () => {
           famFollowerCount={selectedRanking?.famFollowerCount}
           followerCount={selectedRanking?.followerCount}
           imageUrl={selectedRanking?.imageUrl}
+          links={selectedRanking?.links}
           nftGoUrl={selectedRanking?.nftGoUrl}
           onClickClose={() => setSelectedRanking(undefined)}
           title={selectedRanking?.tooltipName?.split(":")[0]}
