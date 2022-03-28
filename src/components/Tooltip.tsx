@@ -1,4 +1,5 @@
 import { FC, ReactEventHandler, useCallback, useState } from "react";
+import scrollbarStyles from "../styles/Scrollbar.module.scss";
 import { Linkables } from "../api/fam";
 import * as Format from "../format";
 import { TextInter, TextRoboto } from "./Texts";
@@ -104,7 +105,9 @@ const Tooltip: FC<TooltipProps> = ({
         src={imageUrl}
       />
       <TextInter className="font-semibold">{title}</TextInter>
-      <div className="max-h-64 overflow-y-auto">
+      <div
+        className={`max-h-64 overflow-y-auto ${scrollbarStyles["styled-scrollbar"]}`}
+      >
         <TextInter>
           {description === undefined ? null : links === undefined ? (
             description
