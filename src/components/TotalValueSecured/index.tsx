@@ -33,7 +33,7 @@ const TotalValueSecured = () => {
           className="lg:col-start-2 lg:row-start-1 lg:row-end-3"
           rows={totalValueSecured?.erc20Leaderboard}
           title="erc20 leaderboard"
-          maxHeight="max-h-[23rem] lg:max-h-[34rem]"
+          maxHeight="max-h-[23rem] lg:max-h-[35rem]"
           onSelectRanking={handleSelectRanking}
         />
         <TvsLeaderboard
