@@ -24,6 +24,7 @@ type ImageWithTooltipProps = {
   nftGoUrl?: string;
   onClickImage: () => void;
   placement?: Placement | undefined;
+  skeletonDiameter?: string;
   title: string | undefined;
   tooltipImageUrl: string | undefined;
   twitterUrl?: string;
@@ -40,6 +41,7 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
   nftGoUrl,
   onClickImage,
   placement,
+  skeletonDiameter = "32px",
   title,
   tooltipImageUrl,
   twitterUrl,
@@ -84,7 +86,12 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
     <>
       {imageUrl === undefined || previewSkeletons ? (
         <div className="leading-4">
-          <Skeleton circle={true} height="32px" width="32px" inline />
+          <Skeleton
+            circle={true}
+            height={skeletonDiameter}
+            width={skeletonDiameter}
+            inline
+          />
         </div>
       ) : (
         <img
