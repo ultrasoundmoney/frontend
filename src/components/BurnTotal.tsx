@@ -126,7 +126,7 @@ const BurnTotal: FC<Props> = ({
         <div
           className={`
             flex items-center
-            text-2xl md:text-3xl lg:text-2xl xl:text-4xl
+            text-2xl md:text-3xl lg:text-3xl xl:text-4xl
           `}
         >
           <MoneyAmountAnimated
