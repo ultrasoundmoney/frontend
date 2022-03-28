@@ -1,4 +1,11 @@
-import { FC, ReactEventHandler, useCallback, useState } from "react";
+import { Placement } from "@popperjs/core";
+import {
+  FC,
+  ReactEventHandler,
+  useCallback,
+  useContext,
+  useState,
+} from "react";
 import Skeleton from "react-loading-skeleton";
 import { usePopper } from "react-popper";
 import { Linkables } from "../api/fam";
@@ -16,6 +23,7 @@ type ImageWithTooltipProps = {
   links?: Linkables;
   nftGoUrl?: string;
   onClickImage: () => void;
+  placement?: Placement | undefined;
   title: string | undefined;
   tooltipImageUrl: string | undefined;
   twitterUrl?: string;
@@ -31,6 +39,7 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
   links,
   nftGoUrl,
   onClickImage,
+  placement,
   title,
   tooltipImageUrl,
   twitterUrl,
@@ -39,7 +48,7 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
   const [refEl, setRefEl] = useState<HTMLDivElement | null>(null);
   const [popperEl, setPopperEl] = useState<HTMLDivElement | null>(null);
   const { styles, attributes } = usePopper(refEl, popperEl, {
-    placement: "right",
+    placement,
     modifiers: [
       {
         name: "flip",
