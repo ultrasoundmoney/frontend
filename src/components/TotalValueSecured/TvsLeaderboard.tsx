@@ -55,6 +55,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
                 title={row?.tooltipName?.split(":")[0]}
                 tooltipImageUrl={row?.imageUrl}
                 twitterUrl={row?.twitterUrl}
+                placement="right"
               />
               <Link
                 className="flex justify-between ml-4 w-full truncate"
