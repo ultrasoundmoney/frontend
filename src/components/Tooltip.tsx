@@ -81,6 +81,7 @@ const Tooltip: FC<TooltipProps> = ({
       flex flex-col gap-y-4
       bg-blue-tangaroa p-8 rounded-lg
       border border-blue-shipcove
+      w-[20rem]
       ${show ? "block" : "hidden"}
     `}
   >
@@ -92,7 +93,7 @@ const Tooltip: FC<TooltipProps> = ({
     />
     <img className="w-20 h-20 mx-auto rounded-full" src={imageUrl} alt="" />
     <TextInter className="font-semibold">{title}</TextInter>
-    <div className="max-w-[272px]">
+    <div className="">
       <TextInter>
         {description === undefined ? null : links === undefined ? (
           description
