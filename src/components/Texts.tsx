@@ -71,14 +71,18 @@ export const TextInter: FC<{
 
   return inline ? (
     <span className={mergedClassName} style={style}>
-      {(children || previewSkeletons) ?? (
+      {children === undefined || previewSkeletons ? (
         <Skeleton inline width={skeletonWidth} />
+      ) : (
+        children
       )}
     </span>
   ) : (
     <p className={mergedClassName} style={style}>
-      {(children || previewSkeletons) ?? (
+      {children === undefined || previewSkeletons ? (
         <Skeleton inline width={skeletonWidth} />
+      ) : (
+        children
       )}
     </p>
   );
