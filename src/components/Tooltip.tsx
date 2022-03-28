@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, ReactEventHandler, useCallback, useState } from "react";
 import { Linkables } from "../api/fam";
 import * as Format from "../format";
 import { TextInter, TextRoboto } from "./Texts";
@@ -71,57 +71,68 @@ const Tooltip: FC<TooltipProps> = ({
   show,
   title,
   twitterUrl,
-}) => (
-  <div
-    onClick={(e) => {
-      e.stopPropagation();
-    }}
-    className={`
-      relative
-      flex flex-col gap-y-4
-      bg-blue-tangaroa p-8 rounded-lg
-      border border-blue-shipcove
-      w-[20rem]
-      ${show ? "block" : "hidden"}
-    `}
-  >
-    <img
-      className="md:hidden absolute w-6 right-5 top-5 hover:brightness-90 active:brightness-110"
-      src="/close.svg"
-      alt=""
-      onClick={onClickClose}
-    />
-    <img className="w-20 h-20 mx-auto rounded-full" src={imageUrl} alt="" />
-    <TextInter className="font-semibold">{title}</TextInter>
-    <div className="">
-      <TextInter>
-        {description === undefined ? null : links === undefined ? (
-          description
-        ) : (
-          <BioWithLinks bio={description} linkables={links}></BioWithLinks>
-        )}
-      </TextInter>
-    </div>
-    <div className="flex justify-between">
-      <div className="flex flex-col gap-y-4">
-        <WidgetTitle>followers</WidgetTitle>
-        <TextRoboto className="font-extralight text-2xl">
-          {followerCount === undefined
-            ? "--"
-            : Format.formatCompact(followerCount)}
-        </TextRoboto>
-      </div>
-      <div className="flex flex-col gap-y-4 items-end">
-        <WidgetTitle>fam followers</WidgetTitle>
-        <TextRoboto className="font-extralight text-2xl">
-          {famFollowerCount === undefined
-            ? "--"
-            : Format.formatCompact(famFollowerCount)}
-        </TextRoboto>
-      </div>
-    </div>
+}) => {
+  const onImageError = useCallback<ReactEventHandler<HTMLImageElement>>((e) => {
+    (e.target as HTMLImageElement).src =
+      "/leaderboard-images/question-mark-v2.svg";
+  }, []);
+
+  return (
     <div
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
       className={`
+        relative
+        flex flex-col gap-y-4
+        bg-blue-tangaroa p-8 rounded-lg
+        border border-blue-shipcove
+        w-[20rem]
+        ${show ? "block" : "hidden"}
+      `}
+    >
+      <img
+        alt="a close button, circular with an x in the middle"
+        className="md:hidden absolute w-6 right-5 top-5 hover:brightness-90 active:brightness-110"
+        onClick={onClickClose}
+        src="/close.svg"
+      />
+      <img
+        alt=""
+        className="w-20 h-20 mx-auto rounded-full"
+        onError={onImageError}
+        src={imageUrl}
+      />
+      <TextInter className="font-semibold">{title}</TextInter>
+      <div className="max-h-64 overflow-y-auto">
+        <TextInter>
+          {description === undefined ? null : links === undefined ? (
+            description
+          ) : (
+            <BioWithLinks bio={description} linkables={links}></BioWithLinks>
+          )}
+        </TextInter>
+      </div>
+      <div className="flex justify-between">
+        <div className="flex flex-col gap-y-4">
+          <WidgetTitle>followers</WidgetTitle>
+          <TextRoboto className="font-extralight text-2xl">
+            {followerCount === undefined
+              ? "--"
+              : Format.formatCompact(followerCount)}
+          </TextRoboto>
+        </div>
+        <div className="flex flex-col gap-y-4 items-end">
+          <WidgetTitle>fam followers</WidgetTitle>
+          <TextRoboto className="font-extralight text-2xl">
+            {famFollowerCount === undefined
+              ? "--"
+              : Format.formatCompact(famFollowerCount)}
+          </TextRoboto>
+        </div>
+      </div>
+      <div
+        className={`
         flex flex-col gap-y-4
         ${
           twitterUrl !== undefined ||
@@ -130,34 +141,35 @@ const Tooltip: FC<TooltipProps> = ({
             ? "block"
             : "hidden"
         }`}
-    >
-      <WidgetTitle>external links</WidgetTitle>
-      <div className="flex gap-x-4">
-        <ExternalLink
-          alt="twitter logo"
-          className={`${coingeckoUrl === "undefined" ? "hidden" : "block"}`}
-          href={twitterUrl}
-          icon={"twitter"}
-        />
-        {coingeckoUrl && (
+      >
+        <WidgetTitle>external links</WidgetTitle>
+        <div className="flex gap-x-4">
           <ExternalLink
-            alt="coingecko logo"
+            alt="twitter logo"
             className={`${coingeckoUrl === "undefined" ? "hidden" : "block"}`}
-            href={coingeckoUrl}
-            icon={"coingecko"}
+            href={twitterUrl}
+            icon={"twitter"}
           />
-        )}
-        {nftGoUrl && (
-          <ExternalLink
-            alt="nftgo logo"
-            className={`${nftGoUrl === "undefined" ? "hidden" : "block"}`}
-            href={nftGoUrl}
-            icon={"nftgo"}
-          />
-        )}
+          {coingeckoUrl && (
+            <ExternalLink
+              alt="coingecko logo"
+              className={`${coingeckoUrl === "undefined" ? "hidden" : "block"}`}
+              href={coingeckoUrl}
+              icon={"coingecko"}
+            />
+          )}
+          {nftGoUrl && (
+            <ExternalLink
+              alt="nftgo logo"
+              className={`${nftGoUrl === "undefined" ? "hidden" : "block"}`}
+              href={nftGoUrl}
+              icon={"nftgo"}
+            />
+          )}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default Tooltip;
