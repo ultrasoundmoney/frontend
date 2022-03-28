@@ -88,7 +88,12 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
         </div>
       ) : (
         <img
-          className={`rounded-full hover:opacity-60 ${className}`}
+          className={`
+            rounded-full
+            hover:opacity-60 active:brightness-125
+            cursor-pointer md:cursor-auto
+            ${className}
+          `}
           src={imageUrl ?? "/leaderboard-images/question-mark-v2.svg"}
           alt="logo of an ERC20 token"
           onError={onImageError}
