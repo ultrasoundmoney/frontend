@@ -69,12 +69,14 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
     [md, setHovering],
   );
 
-  const { previewSkeletons } = useFeatureFlags().featureFlags;
+  const { previewSkeletons } = useContext(FeatureFlagsContext);
 
   return (
     <>
       {imageUrl === undefined || previewSkeletons ? (
-        <Skeleton circle={true} height="32px" width="32px" />
+        <div className="leading-4">
+          <Skeleton circle={true} height="32px" width="32px" inline />
+        </div>
       ) : (
         <img
           className={`rounded-full hover:opacity-60 ${className}`}
