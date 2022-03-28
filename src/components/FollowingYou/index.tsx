@@ -164,7 +164,6 @@ const FollowingYou: FC = () => {
             imageUrl={selectedProfile?.profileImageUrl}
             links={selectedProfile?.links}
             onClickClose={() => setSelectedProfile(undefined)}
-            show={selectedProfile !== undefined}
             title={selectedProfile?.name}
             twitterUrl={selectedProfile?.profileUrl}
           />
