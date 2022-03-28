@@ -65,6 +65,7 @@ export const TextInter: FC<{
   const mergedClassName = `
     font-inter font-light
     text-white
+    text-base md:text-lg
     ${className ?? ""}
   `;
 
