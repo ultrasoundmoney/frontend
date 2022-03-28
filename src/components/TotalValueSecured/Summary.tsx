@@ -58,16 +58,17 @@ const Summary: FC<{ className?: string }> = ({ className = "" }) => {
   return (
     <WidgetBackground className={`h-min ${className}`}>
       <div className="flex flex-col gap-y-4">
-        <div className="flex flex-col md:flex-row md:justify-between gap-y-4">
-          <div>
+        <div className="flex flex-col  gap-y-4 md:flex-row md:justify-between">
+          <div className="flex flex-col gap-y-4">
             <WidgetTitle>total value secured (TVS)</WidgetTitle>
             <AmountBillionsUsdAnimated textClassName="text-2xl md:text-3xl xl:text-4xl">
               {totalValueSecured?.sum}
             </AmountBillionsUsdAnimated>
           </div>
-          <div>
-            <div className="flex items-center md:justify-end">
+          <div className="flex flex-col gap-y-4 md:items-end">
+            <div className="flex items-center">
               <WidgetTitle>security ratio</WidgetTitle>
+              {/* hidden nerd emoji, needs design of explainer */}
               <img className="hidden ml-2" src="/nerd-coloroff.svg" alt="" />
             </div>
             <AmountAnimatedShell textClassName="text-2xl md:text-3xl xl:text-4xl">
