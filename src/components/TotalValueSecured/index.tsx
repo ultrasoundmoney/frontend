@@ -13,7 +13,6 @@ const TotalValueSecured = () => {
   const totalValueSecured = useTotalValueSecured();
   const [selectedRanking, setSelectedRanking] = useState<TvsRanking>();
   const { md } = useActiveBreakpoint();
-  const tooltipTitle = selectedRanking?.tooltipName?.split(":")[0];
 
   const handleSelectRanking = useCallback(
     (profile: TvsRanking | undefined) => {
