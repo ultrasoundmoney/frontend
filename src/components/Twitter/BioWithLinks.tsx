@@ -81,6 +81,7 @@ const BioWithLinks: FC<{ bio: string; linkables: Linkables }> = ({
         </p>
       ) : instruction.type === "url" ? (
         <a
+          className="text-blue-spindle hover:underline"
           href={instruction.linkable.expanded_url}
           key={index}
           rel="noreferrer"
@@ -90,6 +91,7 @@ const BioWithLinks: FC<{ bio: string; linkables: Linkables }> = ({
         </a>
       ) : instruction.type === "mention" ? (
         <a
+          className="text-blue-spindle hover:underline"
           href={`https://twitter.com/${instruction.linkable.username}`}
           key={index}
           rel="noreferrer"
@@ -99,6 +101,7 @@ const BioWithLinks: FC<{ bio: string; linkables: Linkables }> = ({
         </a>
       ) : instruction.type === "hashtag" ? (
         <a
+          className="text-blue-spindle hover:underline"
           href={`https://twitter.com/hashtag/${instruction.linkable.tag}`}
           key={index}
           rel="noreferrer"
@@ -108,6 +111,7 @@ const BioWithLinks: FC<{ bio: string; linkables: Linkables }> = ({
         </a>
       ) : instruction.type === "cashtag" ? (
         <a
+          className="text-blue-spindle hover:underline"
           href={`https://twitter.com/search?q=%24${instruction.linkable.tag}`}
           key={index}
           rel="noreferrer"
