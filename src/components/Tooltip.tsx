@@ -85,7 +85,7 @@ const Tooltip: FC<TooltipProps> = ({
     >
       <img
         alt="a close button, circular with an x in the middle"
-        className="md:hidden absolute w-6 right-5 top-5 hover:brightness-90 active:brightness-110"
+        className="md:hidden absolute w-6 right-5 top-5 hover:brightness-90 active:brightness-110 cursor-pointer"
         onClick={onClickClose}
         src="/close.svg"
       />
