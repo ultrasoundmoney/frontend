@@ -10,9 +10,8 @@ import scrollbarStyles from "../styles/Scrollbar.module.scss";
 import { TimeFrameNext } from "../time-frames";
 import { useActiveBreakpoint } from "../utils/use-active-breakpoint";
 import { MoneyAmountAnimated } from "./Amount";
-import { AmountUnitSpace } from "./Spacing";
 import SpanMoji from "./SpanMoji";
-import { TextInter, TextRoboto } from "./Texts";
+import { TextInter } from "./Texts";
 import { Group1Base } from "./widget-subcomponents";
 
 const formatBlockNumber = flow(
@@ -33,20 +32,13 @@ const BurnRecordAmount: FC<{ amount: number | undefined; unit: Unit }> = ({
   unit,
 }) => (
   <div className="text-2xl md:text-3xl">
-    <TextRoboto>
-      {amount === undefined ? (
-        <Skeleton inline={true} width="4rem" />
-      ) : (
-        <MoneyAmountAnimated
-          unit={unit}
-          unitText={unit === "eth" ? "ETH" : "USD"}
-        >
-          {amount}
-        </MoneyAmountAnimated>
-      )}
-    </TextRoboto>
-    <AmountUnitSpace />
-    <span className="text-blue-spindle font-extralight">ETH</span>
+    <MoneyAmountAnimated
+      skeletonWidth="4rem"
+      unit={unit}
+      unitText={unit === "eth" ? "ETH" : "USD"}
+    >
+      {amount}
+    </MoneyAmountAnimated>
   </div>
 );
 

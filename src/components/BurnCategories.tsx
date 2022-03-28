@@ -220,7 +220,7 @@ const CategoryRow: FC<CategoryRowProps> = ({
     style={{ opacity: hovering ? 0.6 : 1 }}
     target="_blank"
   >
-    <TextInter className="font-inter text-white">{name}</TextInter>
+    <TextInter className="">{name}</TextInter>
     <div
       className={`
         text-right

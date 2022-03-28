@@ -13,7 +13,6 @@ import { Unit } from "../../../denomination";
 import { FeatureFlagsContext } from "../../../feature-flags";
 import * as Format from "../../../format";
 import { MoneyAmountAnimated } from "../../Amount";
-import { AmountUnitSpace } from "../../Spacing";
 
 const onSetTwitterHandle = async (
   address: string,
@@ -233,7 +232,7 @@ const LeaderboardRow: FC<Props> = ({
                 {detail}
               </p>
             )}
-            <p className="pl-4 whitespace-nowrap ml-auto font-roboto font-light">
+            <p className="pl-4 whitespace-nowrap ml-auto">
               {fees === undefined ? (
                 <Skeleton inline={true} width="4rem" />
               ) : (
@@ -244,10 +243,6 @@ const LeaderboardRow: FC<Props> = ({
                   {fees}
                 </MoneyAmountAnimated>
               )}
-              <AmountUnitSpace />
-              <span className="text-blue-spindle font-extralight">
-                {unit === "eth" ? "ETH" : "USD"}
-              </span>
             </p>
           </div>
         </a>
