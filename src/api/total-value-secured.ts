@@ -1,6 +1,7 @@
 import useSWR from "swr";
 import * as Duration from "../duration";
 import fetcher from "./default-fetcher";
+import { Linkables } from "./fam";
 import { feesBasePath } from "./fees";
 
 export type TvsRanking = {
@@ -9,6 +10,7 @@ export type TvsRanking = {
   famFollowerCount: number | undefined;
   followerCount: number | undefined;
   imageUrl: string | undefined;
+  links: Linkables | undefined;
   marketCap: number;
   name: string;
   nftGoUrl: string | undefined;
