@@ -56,7 +56,6 @@ const TotalValueSecured = () => {
           imageUrl={selectedRanking?.imageUrl}
           nftGoUrl={selectedRanking?.nftGoUrl}
           onClickClose={() => setSelectedRanking(undefined)}
-          show={selectedRanking !== undefined}
           title={selectedRanking?.tooltipName?.split(":")[0]}
           twitterUrl={selectedRanking?.twitterUrl}
         />
