@@ -96,7 +96,7 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
         <img
           className={`
             rounded-full
-            hover:opacity-60 active:brightness-125
+            hover:opacity-60 active:brightness-125 md:active:brightness-100
             cursor-pointer md:cursor-auto
             ${className}
           `}
