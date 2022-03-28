@@ -1,7 +1,7 @@
 import { FC, ReactEventHandler, useCallback, useState } from "react";
-import scrollbarStyles from "../styles/Scrollbar.module.scss";
 import { Linkables } from "../api/fam";
 import * as Format from "../format";
+import scrollbarStyles from "../styles/Scrollbar.module.scss";
 import { TextInter, TextRoboto } from "./Texts";
 import BioWithLinks from "./Twitter/BioWithLinks";
 import { WidgetTitle } from "./widget-subcomponents";
