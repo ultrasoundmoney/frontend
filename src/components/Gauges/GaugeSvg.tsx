@@ -65,9 +65,9 @@ const GaugeSvg: FC<GaugeSvgProps> = ({
   return (
     <svg width={width} height={height}>
       <defs>
-        <linearGradient id="orange-gradient">
-          <stop offset="0%" stopColor="#F4DD0C" />
-          <stop offset="100%" stopColor="#F4900C" />
+        <linearGradient y1="1" id="orange-gradient">
+          <stop offset="00%" stopColor="#EDDB36" />
+          <stop offset="60%" stopColor="#E79800" />
         </linearGradient>
         <linearGradient id="blue-gradient">
           <stop offset="0%" stopColor="#5DECD2" />
