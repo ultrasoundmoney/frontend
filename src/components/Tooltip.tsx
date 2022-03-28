@@ -138,12 +138,14 @@ const Tooltip: FC<TooltipProps> = ({
       >
         <WidgetTitle>external links</WidgetTitle>
         <div className="flex gap-x-4">
-          <ExternalLink
-            alt="twitter logo"
-            className={`${twitterUrl === "undefined" ? "hidden" : "block"}`}
-            href={twitterUrl}
-            icon={"twitter"}
-          />
+          {twitterUrl && (
+            <ExternalLink
+              alt="twitter logo"
+              className={`${twitterUrl === "undefined" ? "hidden" : "block"}`}
+              href={twitterUrl}
+              icon={"twitter"}
+            />
+          )}
           {coingeckoUrl && (
             <ExternalLink
               alt="coingecko logo"
