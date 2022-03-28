@@ -49,7 +49,6 @@ export type TooltipProps = {
   links?: Linkables;
   nftGoUrl?: string;
   onClickClose?: () => void;
-  show: boolean;
   title: string | undefined;
   twitterUrl?: string;
 };
@@ -63,7 +62,6 @@ const Tooltip: FC<TooltipProps> = ({
   links,
   nftGoUrl,
   onClickClose,
-  show,
   title,
   twitterUrl,
 }) => {
@@ -83,7 +81,6 @@ const Tooltip: FC<TooltipProps> = ({
         bg-blue-tangaroa p-8 rounded-lg
         border border-blue-shipcove
         w-[20rem]
-        ${show ? "block" : "hidden"}
       `}
     >
       <img

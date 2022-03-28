@@ -54,7 +54,6 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
     modifiers: [
       {
         name: "flip",
-        options: { fallbackPlacements: ["bottom", "left", "top"] },
       },
     ],
   });
@@ -112,10 +111,13 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
       )}
       <div
         ref={setPopperEl}
-        className=""
-        style={styles.popper}
+        className="z-10"
+        style={{
+          ...styles.popper,
+          visibility: showTooltip ? "visible" : "hidden",
+        }}
         {...attributes.popper}
-        onMouseEnter={() => (isHovering ? setTooltipHovering(true) : undefined)}
+        onMouseEnter={() => setTooltipHovering(true)}
         onMouseLeave={() => setTooltipHovering(false)}
       >
         <Tooltip
@@ -126,7 +128,6 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
           imageUrl={tooltipImageUrl}
           links={links}
           nftGoUrl={nftGoUrl}
-          show={showTooltip}
           title={title}
           twitterUrl={twitterUrl}
         />
