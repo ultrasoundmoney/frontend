@@ -61,7 +61,10 @@ const Summary: FC<{ className?: string }> = ({ className = "" }) => {
         <div className="flex flex-col  gap-y-4 md:flex-row md:justify-between">
           <div className="flex flex-col gap-y-4">
             <WidgetTitle>total value secured (TVS)</WidgetTitle>
-            <AmountBillionsUsdAnimated textClassName="text-2xl md:text-3xl xl:text-4xl">
+            <AmountBillionsUsdAnimated
+              skeletonWidth="8rem"
+              textClassName="text-2xl md:text-3xl xl:text-4xl"
+            >
               {totalValueSecured?.sum}
             </AmountBillionsUsdAnimated>
           </div>
@@ -71,7 +74,10 @@ const Summary: FC<{ className?: string }> = ({ className = "" }) => {
               {/* hidden nerd emoji, needs design of explainer */}
               <img className="hidden ml-2" src="/nerd-coloroff.svg" alt="" />
             </div>
-            <AmountAnimatedShell textClassName="text-2xl md:text-3xl xl:text-4xl">
+            <AmountAnimatedShell
+              skeletonWidth="5rem"
+              textClassName="text-2xl md:text-3xl xl:text-4xl"
+            >
               {totalValueSecured?.securityRatio === undefined ? undefined : (
                 <CountUp
                   decimals={1}
