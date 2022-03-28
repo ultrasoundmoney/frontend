@@ -149,7 +149,7 @@ const Tooltip: FC<TooltipProps> = ({
         <div className="flex gap-x-4">
           <ExternalLink
             alt="twitter logo"
-            className={`${coingeckoUrl === "undefined" ? "hidden" : "block"}`}
+            className={`${twitterUrl === "undefined" ? "hidden" : "block"}`}
             href={twitterUrl}
             icon={"twitter"}
           />
