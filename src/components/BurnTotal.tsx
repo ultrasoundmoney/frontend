@@ -10,7 +10,7 @@ import {
 import { londonHardfork } from "../dates";
 import { Unit } from "../denomination";
 import * as Duration from "../duration";
-import { FeatureFlagsContext, useFeatureFlags } from "../feature-flags";
+import { FeatureFlagsContext } from "../feature-flags";
 import * as Format from "../format";
 import * as StaticEtherData from "../static-ether-data";
 import { LimitedTimeFrameNext, TimeFrameNext } from "../time-frames";

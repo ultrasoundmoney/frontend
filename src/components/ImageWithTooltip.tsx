@@ -2,7 +2,7 @@ import { FC, ReactEventHandler, useCallback, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { usePopper } from "react-popper";
 import { Linkables } from "../api/fam";
-import { useFeatureFlags } from "../feature-flags";
+import { FeatureFlagsContext } from "../feature-flags";
 import { useActiveBreakpoint } from "../utils/use-active-breakpoint";
 import Tooltip from "./Tooltip";
 
