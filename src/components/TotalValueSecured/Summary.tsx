@@ -90,7 +90,7 @@ const Summary: FC<{ className?: string }> = ({ className = "" }) => {
             </AmountAnimatedShell>
           </div>
         </div>
-        <WidgetTitle>per-asset type</WidgetTitle>
+        <WidgetTitle>per asset type</WidgetTitle>
         <AssetType
           amount={totalValueSecured?.ethTotal}
           href={"https://www.coingecko.com/en/coins/ethereum"}
