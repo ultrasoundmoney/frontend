@@ -145,7 +145,7 @@ const Home: FC = () => {
                 </div>
               }
             >
-              <WidgetGroup1 featureFlags={featureFlags} />
+              <WidgetGroup1 />
             </Sentry.ErrorBoundary>
             <SectionDivider
               title="monetary premium"

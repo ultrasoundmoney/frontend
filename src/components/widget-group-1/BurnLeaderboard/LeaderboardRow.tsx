@@ -1,5 +1,5 @@
 import * as DateFns from "date-fns";
-import { FC, ReactEventHandler, useCallback } from "react";
+import { FC, ReactEventHandler, useCallback, useContext } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useAdminToken } from "../../../admin";
 import {
@@ -10,7 +10,7 @@ import {
 import * as Contracts from "../../../api/contracts";
 import { LeaderboardEntry } from "../../../api/leaderboards";
 import { Unit } from "../../../denomination";
-import { FeatureFlags } from "../../../feature-flags";
+import { FeatureFlagsContext } from "../../../feature-flags";
 import * as Format from "../../../format";
 import { MoneyAmountAnimated } from "../../Amount";
 import { AmountUnitSpace } from "../../Spacing";
@@ -131,7 +131,6 @@ type Props = {
   detail?: string;
   fees: number | undefined;
   freshness?: Contracts.MetadataFreshness;
-  featureFlags: FeatureFlags;
   image?: string | undefined;
   isBot?: boolean | undefined;
   name: string | undefined;
@@ -144,7 +143,6 @@ const LeaderboardRow: FC<Props> = ({
   adminToken,
   category,
   detail,
-  featureFlags,
   fees,
   freshness,
   image,
@@ -153,6 +151,7 @@ const LeaderboardRow: FC<Props> = ({
   type,
   unit,
 }) => {
+  const { showCategorySlugs } = useContext(FeatureFlagsContext);
   const imgSrc =
     typeof image === "string"
       ? image
@@ -223,7 +222,7 @@ const LeaderboardRow: FC<Props> = ({
                 ${category ? "block" : "md:hidden"}
               `}
             >
-              {featureFlags.showCategorySlugs
+              {showCategorySlugs
                 ? category
                 : getIsKnownCategory(category)
                 ? categoryDisplayMap[category]

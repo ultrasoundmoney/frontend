@@ -4,7 +4,6 @@ import { useContractsFreshness } from "../../../api/contracts";
 import { useGroupedStats1 } from "../../../api/grouped-stats-1";
 import { LeaderboardEntry, Leaderboards } from "../../../api/leaderboards";
 import { Unit } from "../../../denomination";
-import { FeatureFlags } from "../../../feature-flags";
 import scrollbarStyles from "../../../styles/Scrollbar.module.scss";
 import { TimeFrameNext } from "../../../time-frames";
 import { Group1Base } from "../../widget-subcomponents";
@@ -73,18 +72,12 @@ const getLeaderboardsAddresses = (leaderboards: Leaderboards) =>
     .filter((mAddress): mAddress is string => mAddress !== undefined);
 
 type Props = {
-  featureFlags: FeatureFlags;
   onClickTimeFrame: () => void;
   timeFrame: TimeFrameNext;
   unit: Unit;
 };
 
-const BurnLeaderboard: FC<Props> = ({
-  featureFlags,
-  onClickTimeFrame,
-  timeFrame,
-  unit,
-}) => {
+const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
   const leaderboards = useGroupedStats1()?.leaderboards;
   const selectedLeaderboard =
     leaderboards === undefined
@@ -136,11 +129,9 @@ const BurnLeaderboard: FC<Props> = ({
               name={formatName(row.name, row.address)}
               type={row.type}
               unit={unit}
-              featureFlags={featureFlags}
             />
           ) : (
             <LeaderboardRow
-              featureFlags={featureFlags}
               fees={unit === "eth" ? row.fees : row.feesUsd}
               key={row.type || index}
               name={formatName(row.name, undefined)}

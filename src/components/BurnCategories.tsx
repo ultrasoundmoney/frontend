@@ -1,8 +1,8 @@
-import { FC, useState } from "react";
+import { FC, useContext, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { BurnCategory, useBurnCategories } from "../api/burn-categories";
 import Colors from "../colors";
-import { FeatureFlags } from "../feature-flags";
+import { FeatureFlagsContext } from "../feature-flags";
 import * as Format from "../format";
 import { A, flow, NEA, O, pipe } from "../fp";
 import { TimeFrameNext } from "../time-frames";
@@ -305,23 +305,18 @@ const buildMiscCategory = (
   );
 
 type Props = {
-  featureFlags: FeatureFlags;
   onClickTimeFrame: () => void;
   timeFrame: TimeFrameNext;
 };
 
-const BurnCategoryWidget: FC<Props> = ({
-  featureFlags,
-  onClickTimeFrame,
-  timeFrame,
-}) => {
+const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const burnCategories = useBurnCategories();
   const [hoveringNft, setHoveringNft] = useState(false);
   const [hoveringDefi, setHoveringDefi] = useState(false);
   const [hoveringMev, setHoveringMev] = useState(false);
   const [hoveringL2, setHoveringL2] = useState(false);
   const [hoveringMisc, setHoveringMisc] = useState(false);
-  const { showCategoryCounts } = featureFlags;
+  const { showCategoryCounts } = useContext(FeatureFlagsContext);
 
   const selectedBurnCategories =
     // TODO: our old API returned an array, this element is not visible yet, but trying to access an array like an object does crash the full page, therefore we have this check to make sure not to crash, and can remove it once the new API is deployed in production.

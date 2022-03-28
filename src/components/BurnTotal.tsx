@@ -1,5 +1,5 @@
 import * as DateFns from "date-fns";
-import { FC } from "react";
+import { FC, useContext } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
 import {
@@ -10,7 +10,7 @@ import {
 import { londonHardfork } from "../dates";
 import { Unit } from "../denomination";
 import * as Duration from "../duration";
-import { useFeatureFlags } from "../feature-flags";
+import { FeatureFlagsContext, useFeatureFlags } from "../feature-flags";
 import * as Format from "../format";
 import * as StaticEtherData from "../static-ether-data";
 import { LimitedTimeFrameNext, TimeFrameNext } from "../time-frames";
@@ -66,7 +66,7 @@ const BurnTotal: FC<Props> = ({
 }) => {
   const burnRates = useGroupedStats1()?.burnRates;
   const feesBurned = useGroupedStats1()?.feesBurned;
-  const { previewSkeletons } = useFeatureFlags().featureFlags;
+  const { previewSkeletons } = useContext(FeatureFlagsContext);
 
   const selectedFeesBurnedEth =
     feesBurned === undefined
