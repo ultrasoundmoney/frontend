@@ -145,7 +145,6 @@ const BurnTotal: FC<Props> = ({
                 }
                 preserveValue={true}
                 separator=","
-                suffix={unit === "eth" ? "" : ""}
               />
             )}
           </AmountAnimatedShell>

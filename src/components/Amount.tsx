@@ -84,12 +84,11 @@ export const MoneyAmountAnimated: FC<MoneyAmountAnimatedProps> = ({
   >
     {children && (
       <CountUp
-        decimals={unit === "eth" ? 2 : 1}
+        decimals={unit === "eth" ? 2 : 0}
         duration={defaultMoneyAnimationDuration}
-        end={unit === "eth" ? Format.ethFromWei(children) : children / 1000}
+        end={unit === "eth" ? Format.ethFromWei(children) : children}
         preserveValue={true}
         separator=","
-        suffix={unit === "eth" ? "" : "K"}
       />
     )}
   </AmountAnimatedShell>

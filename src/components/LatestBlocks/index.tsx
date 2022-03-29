@@ -33,7 +33,7 @@ const formatFees = (unit: Unit, fees: unknown, feesUsd: unknown) =>
     : pipe(
         feesUsd,
         OAlt.numberFromUnknown,
-        O.map((feesUsd) => `${Format.formatOneDigit(feesUsd / 1000)}K`),
+        O.map((feesUsd) => `${Format.formatZeroDigit(feesUsd)}`),
         O.toUndefined,
       );
 
@@ -159,7 +159,8 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
                     </a>
                   </div>
                 </CSSTransition>
-              ))}
+              ),
+            )}
           </TransitionGroup>
         </ul>
         {/* spaces need to stay on the font-inter element to keep them consistent */}
