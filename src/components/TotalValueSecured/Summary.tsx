@@ -1,6 +1,8 @@
 import { FC, useState } from "react";
 import CountUp from "react-countup";
 import { useTotalValueSecured } from "../../api/total-value-secured";
+import * as Format from "../../format";
+import { O, pipe } from "../../fp";
 import {
   AmountAnimatedShell,
   AmountBillionsUsdAnimated,
@@ -64,7 +66,15 @@ const Summary: FC<{ className?: string }> = ({ className = "" }) => {
     <WidgetBackground className={`h-min ${className}`}>
       <div className="flex flex-col gap-y-4">
         <div className="flex flex-col  gap-y-4 md:flex-row md:justify-between">
-          <div className="flex flex-col gap-y-4">
+          <div
+            className="flex flex-col gap-y-4"
+            title={pipe(
+              totalValueSecured?.sum,
+              O.fromNullable,
+              O.map(Format.formatUsdZeroDigit),
+              O.toUndefined,
+            )}
+          >
             <WidgetTitle>total value secured</WidgetTitle>
             <AmountTrillionsUsdAnimated
               skeletonWidth="8rem"
