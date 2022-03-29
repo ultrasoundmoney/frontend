@@ -122,7 +122,7 @@ const BurnTotal: FC<Props> = ({
       timeFrame={timeFrame}
       title="burn total"
     >
-      <div className="flex flex-col gap-y-8 pt-4">
+      <div className="flex flex-col gap-y-4 pt-4">
         <div
           className={`
             flex items-center
@@ -150,7 +150,7 @@ const BurnTotal: FC<Props> = ({
             )}
           </AmountAnimatedShell>
           <div className="ml-4 md:ml-8">
-            <Twemoji>🔥</Twemoji>
+            <Twemoji imageClassName="h-6 lg:h-8">🔥</Twemoji>
           </div>
         </div>
         <div className="flex flex-col gap-y-4 justify-between lg:flex-row">
