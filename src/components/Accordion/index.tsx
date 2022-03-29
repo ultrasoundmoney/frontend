@@ -16,7 +16,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, text }) => {
         }`}
         onClick={() => setOpen(!isOpen)}
       >
-        <Twemoji className="flex gap-1" imageClassName="h-8">
+        <Twemoji className="flex gap-1 items-center" imageClassName="h-6">
           {title}
         </Twemoji>
       </div>
@@ -27,7 +27,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, text }) => {
             : `${styles.animateIn}`
         }`}
       >
-        <Twemoji className="flex gap-1" imageClassName="h-8">
+        <Twemoji className="flex gap-1 items-center" imageClassName="h-6">
           <div className={`${styles.content} leading-relaxed pb-6`}>{text}</div>
         </Twemoji>
       </div>

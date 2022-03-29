@@ -75,7 +75,7 @@ const FollowingYou: FC = () => {
         <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl">
           me & the fam
         </h1>
-        <SpanMoji emoji="👀" />
+        <SpanMoji imageClassName="h-[30px] ml-2" emoji="👀" />
       </div>
       <p
         className={`text-blue-shipcove leading-6 md:leading-none text-center font-light text-base lg:text-lg mb-14`}

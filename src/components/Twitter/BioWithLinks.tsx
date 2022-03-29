@@ -7,7 +7,6 @@ import {
   LinkableUrl,
 } from "../../api/fam";
 import { TwemojiBio } from "../Tooltip";
-import Twemoji from "../Twemoji";
 
 type Text = { type: "text"; text: string[] };
 type Url = { type: "url"; linkable: LinkableUrl };
