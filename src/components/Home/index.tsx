@@ -148,6 +148,13 @@ const Home: FC = () => {
               <WidgetGroup1 />
             </Sentry.ErrorBoundary>
             <SectionDivider
+              title="total value secured"
+              subtitle="securing the internet of value"
+            />
+            <div className="flex flex-col px-4 md:px-16">
+              <TotalValueSecured></TotalValueSecured>
+            </div>
+            <SectionDivider
               title="monetary premium"
               subtitle="the race to become the most desirable money"
             />
@@ -159,13 +166,6 @@ const Home: FC = () => {
               <div className="basis-1/2">
                 <PriceModel />
               </div>
-            </div>
-            <SectionDivider
-              title="total value secured"
-              subtitle="securing the internet of value"
-            />
-            <div className="flex flex-col px-4 md:px-16">
-              <TotalValueSecured></TotalValueSecured>
             </div>
             <div className="flex flex-col px-4 md:px-16">
               <SectionDivider
