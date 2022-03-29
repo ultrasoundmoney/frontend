@@ -63,23 +63,21 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
                 twitterUrl={row?.twitterUrl}
               />
               <Link
-                className="flex justify-between ml-4 w-full truncate"
+                className="flex justify-between ml-4 w-full overflow-hidden"
                 href={row?.coinGeckoUrl || row?.nftGoUrl}
               >
-                <div className="truncate">
-                  <TextInter skeletonWidth="6rem">
-                    {row?.name?.split(":")[0]}
-                  </TextInter>
-                  <TextInter
-                    className={`
-                      font-extralight text-blue-shipcove uppercase
-                      ml-2
-                      hidden ${row?.detail !== undefined ? "md:inline" : ""}
-                    `}
-                  >
-                    {row?.detail}
-                  </TextInter>
-                </div>
+                <TextInter skeletonWidth="6rem" className="truncate">
+                  {row?.name?.split(":")[0]}
+                </TextInter>
+                <TextInter
+                  className={`
+                    font-extralight text-blue-shipcove uppercase
+                    pr-2 ml-2 mr-auto
+                    hidden ${row?.detail !== undefined ? "md:inline" : ""}
+                  `}
+                >
+                  {row?.detail}
+                </TextInter>
                 <AmountBillionsUsdAnimated>
                   {row?.marketCap}
                 </AmountBillionsUsdAnimated>
