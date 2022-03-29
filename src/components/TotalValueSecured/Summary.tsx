@@ -93,7 +93,7 @@ const Summary: FC<{ className?: string }> = ({ className = "" }) => {
         <WidgetTitle>per asset type</WidgetTitle>
         <AssetType
           amount={totalValueSecured?.ethTotal}
-          href={"https://www.coingecko.com/en/coins/ethereum"}
+          href={"https://etherscan.io/stat/supply"}
           icon="eth"
           title="ETH"
         />
