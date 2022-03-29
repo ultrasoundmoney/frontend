@@ -123,7 +123,7 @@ const Tooltip: FC<TooltipProps> = ({
           <WidgetTitle>followers</WidgetTitle>
           <TextRoboto className="font-extralight text-2xl">
             {followerCount === undefined
-              ? "--"
+              ? "-"
               : Format.formatCompact(followerCount)}
           </TextRoboto>
         </div>
@@ -131,7 +131,7 @@ const Tooltip: FC<TooltipProps> = ({
           <WidgetTitle>fam followers</WidgetTitle>
           <TextRoboto className="font-extralight text-2xl">
             {famFollowerCount === undefined
-              ? "--"
+              ? "-"
               : Format.formatCompact(famFollowerCount)}
           </TextRoboto>
         </div>
