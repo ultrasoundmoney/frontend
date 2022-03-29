@@ -101,7 +101,7 @@ const Tooltip: FC<TooltipProps> = ({
         src={imageUrl}
       />
       <TextInter className="font-semibold">
-        <Twemoji imageClassName="inline h-5">{title}</Twemoji>
+        <Twemoji imageClassName="inline h-5 ml-1">{title}</Twemoji>
       </TextInter>
       <div
         className={`max-h-64 overflow-y-auto ${scrollbarStyles["styled-scrollbar"]}`}
