@@ -46,6 +46,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
               <ImageWithTooltip
                 className="w-8 h-8"
                 coingeckoUrl={row?.coinGeckoUrl}
+                contractAddresses={row?.contractAddresses}
                 description={row?.tooltipDescription}
                 famFollowerCount={row?.famFollowerCount}
                 followerCount={row?.followerCount}

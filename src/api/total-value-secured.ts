@@ -1,15 +1,18 @@
 import useSWR from "swr";
 import * as Duration from "../duration";
+import { NEA } from "../fp";
 import fetcher from "./default-fetcher";
 import { Linkables } from "./fam";
 import { feesBasePath } from "./fees";
 
 export type TvsRanking = {
   coinGeckoUrl: string | undefined;
+  contractAddresses: NEA.NonEmptyArray<string>;
   detail: string | undefined;
   famFollowerCount: number | undefined;
   followerCount: number | undefined;
   imageUrl: string | undefined;
+  imageUrlAlt: string | undefined;
   links: Linkables | undefined;
   marketCap: number;
   name: string;

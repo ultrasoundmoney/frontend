@@ -16,6 +16,7 @@ import Tooltip from "./Tooltip";
 type ImageWithTooltipProps = {
   className?: HTMLImageElement["className"];
   coingeckoUrl?: string;
+  contractAddresses?: string[];
   description: string | undefined;
   famFollowerCount: number | undefined;
   followerCount: number | undefined;
@@ -33,6 +34,7 @@ type ImageWithTooltipProps = {
 const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
   className = "",
   coingeckoUrl,
+  contractAddresses,
   description,
   famFollowerCount,
   followerCount,
@@ -122,6 +124,7 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
       >
         <Tooltip
           coingeckoUrl={coingeckoUrl}
+          contractAddresses={contractAddresses}
           description={description}
           famFollowerCount={famFollowerCount}
           followerCount={followerCount}

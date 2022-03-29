@@ -47,6 +47,7 @@ export const ExternalLink: FC<ExternalLinkProps> = ({
 
 export type TooltipProps = {
   coingeckoUrl?: string;
+  contractAddresses?: string[];
   description: string | undefined;
   famFollowerCount: number | undefined;
   followerCount: number | undefined;
@@ -60,6 +61,7 @@ export type TooltipProps = {
 
 const Tooltip: FC<TooltipProps> = ({
   coingeckoUrl,
+  contractAddresses,
   description,
   famFollowerCount,
   followerCount,
@@ -145,30 +147,36 @@ const Tooltip: FC<TooltipProps> = ({
       >
         <WidgetTitle>external links</WidgetTitle>
         <div className="flex gap-x-4">
-          {twitterUrl && (
-            <ExternalLink
-              alt="twitter logo"
-              className={`${twitterUrl === "undefined" ? "hidden" : "block"}`}
-              href={twitterUrl}
-              icon={"twitter"}
-            />
-          )}
-          {coingeckoUrl && (
-            <ExternalLink
-              alt="coingecko logo"
-              className={`${coingeckoUrl === "undefined" ? "hidden" : "block"}`}
-              href={coingeckoUrl}
-              icon={"coingecko"}
-            />
-          )}
-          {nftGoUrl && (
-            <ExternalLink
-              alt="nftgo logo"
-              className={`${nftGoUrl === "undefined" ? "hidden" : "block"}`}
-              href={nftGoUrl}
-              icon={"nftgo"}
-            />
-          )}
+          <ExternalLink
+            alt="twitter logo"
+            className={`${twitterUrl === undefined ? "hidden" : "block"}`}
+            href={twitterUrl}
+            icon={"twitter"}
+          />
+          <ExternalLink
+            alt="coingecko logo"
+            className={`${coingeckoUrl === undefined ? "hidden" : "block"}`}
+            href={coingeckoUrl}
+            icon={"coingecko"}
+          />
+          <ExternalLink
+            alt="nftgo logo"
+            className={`${nftGoUrl === undefined ? "hidden" : "block"}`}
+            href={nftGoUrl}
+            icon={"nftgo"}
+          />
+          {contractAddresses !== undefined &&
+            contractAddresses
+              // More than three and we might have trouble fitting everything.
+              .slice(0, 3)
+              .map((contractAddress) => (
+                <ExternalLink
+                  key={contractAddress}
+                  alt="etherscan logo"
+                  href={`https://etherscan.com/address/${contractAddress}`}
+                  icon={"etherscan"}
+                />
+              ))}
         </div>
       </div>
     </div>
