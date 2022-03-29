@@ -148,7 +148,7 @@ const Home: FC = () => {
               <WidgetGroup1 />
             </Sentry.ErrorBoundary>
             <SectionDivider
-              title="total value secured"
+              title="total value secured—TVS"
               subtitle="securing the internet of value"
             />
             <div className="flex flex-col px-4 md:px-16">
