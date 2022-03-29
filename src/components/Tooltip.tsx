@@ -8,7 +8,7 @@ import BioWithLinks from "./Twitter/BioWithLinks";
 import { WidgetTitle } from "./widget-subcomponents";
 
 export const TwemojiBio: FC = ({ children }) => (
-  <Twemoji imageClassName="inline h-6">{children}</Twemoji>
+  <Twemoji imageClassName="inline h-6 ml-1">{children}</Twemoji>
 );
 
 type ExternalLinkProps = {
