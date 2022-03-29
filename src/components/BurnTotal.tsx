@@ -14,7 +14,7 @@ import { FeatureFlagsContext } from "../feature-flags";
 import * as Format from "../format";
 import * as StaticEtherData from "../static-ether-data";
 import { LimitedTimeFrameNext, TimeFrameNext } from "../time-frames";
-import { AmountAnimatedShell, MoneyAmountAnimated } from "./Amount";
+import { AmountAnimatedShell } from "./Amount";
 import { TextRoboto } from "./Texts";
 import Twemoji from "./Twemoji";
 import { Group1Base, WidgetTitle } from "./widget-subcomponents";
@@ -155,16 +155,26 @@ const BurnTotal: FC<Props> = ({
         <div className="flex flex-col gap-y-4 justify-between lg:flex-row">
           <div className="flex flex-col gap-y-4">
             <WidgetTitle>burn rate</WidgetTitle>
-            <div className="text-2xl md:text-3xl lg:text-2xl xl:text-4xl">
-              <MoneyAmountAnimated
-                skeletonWidth="4rem"
-                textClassName=""
-                unit={unit}
-                unitText={unit === "eth" ? "ETH/min" : "USD/min"}
-              >
-                {selectedBurnRate}
-              </MoneyAmountAnimated>
-            </div>
+            <AmountAnimatedShell
+              skeletonWidth="4rem"
+              textClassName="text-2xl md:text-3xl lg:text-2xl xl:text-4xl"
+              unitText={unit === "eth" ? "ETH/min" : "USD/min"}
+            >
+              {selectedBurnRate && (
+                <CountUp
+                  decimals={unit === "eth" ? 2 : 1}
+                  duration={0.8}
+                  end={
+                    unit === "eth"
+                      ? Format.ethFromWei(selectedBurnRate)
+                      : selectedBurnRate / 1000
+                  }
+                  preserveValue={true}
+                  separator=","
+                  suffix={unit === "usd" ? "K" : ""}
+                />
+              )}
+            </AmountAnimatedShell>
           </div>
           <div className="lg:text-right flex flex-col gap-y-4">
             <WidgetTitle>
