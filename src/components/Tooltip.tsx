@@ -132,7 +132,7 @@ const Tooltip: FC<TooltipProps> = ({
           <TextRoboto className="font-extralight text-2xl">
             {famFollowerCount === undefined
               ? "-"
-              : Format.formatCompact(famFollowerCount)}
+              : Format.formatZeroDigit(famFollowerCount)}
           </TextRoboto>
         </div>
       </div>
