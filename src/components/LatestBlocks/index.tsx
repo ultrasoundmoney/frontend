@@ -159,8 +159,7 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
                     </a>
                   </div>
                 </CSSTransition>
-              ),
-            )}
+              ))}
           </TransitionGroup>
         </ul>
         {/* spaces need to stay on the font-inter element to keep them consistent */}

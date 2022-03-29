@@ -103,14 +103,12 @@ const WidgetGroup1: FC = () => {
           timeFrame={timeFrame}
           unit={unit}
         />
-        <div className="lg:col-start-2 lg:row-span-2 max-h-[697px] xl:max-h-[707px]">
+        <div className="lg:col-start-2 lg:row-start-1 lg:row-end-5 lg:h-[717px] xl:h-[735px] flex flex-col gap-y-4">
           <BurnLeaderboard
             onClickTimeFrame={handleClickTimeFrame}
             timeFrame={timeFrame}
             unit={unit}
           />
-        </div>
-        <div className="lg:col-start-2 lg:row-start-3 lg:row-end-5">
           <BurnCategories
             onClickTimeFrame={handleClickTimeFrame}
             timeFrame={timeFrame}

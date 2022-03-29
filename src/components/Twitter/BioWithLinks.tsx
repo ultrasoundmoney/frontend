@@ -85,7 +85,7 @@ const BioWithLinks: FC<{ bio: string; linkables: Linkables }> = ({
       ) : instruction.type === "url" ? (
         <TwemojiBio>
           <a
-            className="text-blue-spindle hover:underline"
+            className="text-blue-spindle hover:underline hover:text-blue-spindle"
             href={instruction.linkable.expanded_url}
             key={index}
             rel="noreferrer"
@@ -97,7 +97,7 @@ const BioWithLinks: FC<{ bio: string; linkables: Linkables }> = ({
       ) : instruction.type === "mention" ? (
         <TwemojiBio>
           <a
-            className="text-blue-spindle hover:underline"
+            className="text-blue-spindle hover:underline hover:text-blue-spindle"
             href={`https://twitter.com/${instruction.linkable.username}`}
             key={index}
             rel="noreferrer"
@@ -109,7 +109,7 @@ const BioWithLinks: FC<{ bio: string; linkables: Linkables }> = ({
       ) : instruction.type === "hashtag" ? (
         <TwemojiBio>
           <a
-            className="text-blue-spindle hover:underline"
+            className="text-blue-spindle hover:underline hover:text-blue-spindle"
             href={`https://twitter.com/hashtag/${instruction.linkable.tag}`}
             key={index}
             rel="noreferrer"
@@ -121,7 +121,7 @@ const BioWithLinks: FC<{ bio: string; linkables: Linkables }> = ({
       ) : instruction.type === "cashtag" ? (
         <TwemojiBio>
           <a
-            className="text-blue-spindle hover:underline"
+            className="text-blue-spindle hover:underline hover:text-blue-spindle"
             href={`https://twitter.com/search?q=%24${instruction.linkable.tag}`}
             key={index}
             rel="noreferrer"

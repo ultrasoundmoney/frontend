@@ -42,7 +42,10 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
           `}
         >
           {(rows || leaderboardSkeletons).map((row, index) => (
-            <li className="flex items-center" key={row?.name ?? index}>
+            <li
+              className="text-white flex items-center"
+              key={row?.name ?? index}
+            >
               <ImageWithTooltip
                 className="w-8 h-8"
                 coingeckoUrl={row?.coinGeckoUrl}
