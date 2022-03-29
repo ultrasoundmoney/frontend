@@ -67,11 +67,11 @@ const AdminTools: FC<{
   return (
     <div
       className={`
-      fixed bottom-4 left-4
-      bg-blue-tangaroa rounded-lg
-      p-4 z-20
-      border-2 border-slate-600
-    `}
+        fixed bottom-4 left-4
+        bg-blue-tangaroa rounded-lg
+        p-4 z-20
+        border-2 border-slate-600
+      `}
     >
       <WidgetTitle>feature flags</WidgetTitle>
       {FeatureFlags.flags.map((flag) => (
@@ -104,7 +104,7 @@ const Home: FC = () => {
         enableAnimation={true}
       >
         <div className={styles.blurredBgImage}>
-          <div className={`container m-auto`}>
+          <div className="container mx-auto">
             {adminToken && <AdminTools setFlag={setFlag} />}
             <div className="px-4 md:px-16">
               <TopBar />

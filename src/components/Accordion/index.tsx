@@ -1,5 +1,5 @@
 import * as React from "react";
-import twemoji from "twemoji";
+import Twemoji from "../Twemoji";
 import styles from "./Accordion.module.scss";
 
 type AccordionProps = {
@@ -15,10 +15,11 @@ const Accordion: React.FC<AccordionProps> = ({ title, text }) => {
           isOpen ? `${styles.open}` : ""
         }`}
         onClick={() => setOpen(!isOpen)}
-        dangerouslySetInnerHTML={{
-          __html: twemoji.parse(title),
-        }}
-      />
+      >
+        <Twemoji className="flex gap-1" imageClassName="h-8">
+          {title}
+        </Twemoji>
+      </div>
       <div
         className={`${styles.item} break-words ${
           !isOpen
@@ -26,12 +27,9 @@ const Accordion: React.FC<AccordionProps> = ({ title, text }) => {
             : `${styles.animateIn}`
         }`}
       >
-        <div
-          className={`${styles.content} leading-relaxed pb-6`}
-          dangerouslySetInnerHTML={{
-            __html: twemoji.parse(text),
-          }}
-        />
+        <Twemoji className="flex gap-1" imageClassName="h-8">
+          <div className={`${styles.content} leading-relaxed pb-6`}>{text}</div>
+        </Twemoji>
       </div>
     </div>
   );

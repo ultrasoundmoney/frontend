@@ -6,13 +6,11 @@ export const Modal: FC<{
 }> = ({ children, onClickBackground, show }) => (
   <div
     className={`
-      fixed top-0 bottom-0 left-0 w-full
+      fixed top-0 left-0 bottom-0 right-0
       flex justify-center items-center
       z-10
-      ${show ? "block" : "hidden"}`}
-    style={{
-      backgroundColor: "rgba(49, 58, 85, 0.6)",
-    }}
+      bg-blue-highlightbg/60
+      ${show ? "" : "hidden"}`}
     onClick={onClickBackground}
   >
     {children}

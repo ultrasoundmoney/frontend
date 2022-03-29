@@ -6,8 +6,8 @@ import * as Format from "../../format";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import ImageWithTooltip from "../ImageWithTooltip";
 import { Modal } from "../Modal";
-import SpanMoji from "../SpanMoji";
 import Tooltip from "../Tooltip";
+import Twemoji from "../Twemoji";
 
 const TwitterFam: FC = () => {
   const famCount = useProfiles()?.count;
@@ -72,7 +72,7 @@ const TwitterFam: FC = () => {
         <div className="w-4"></div>
         <Clipboard data-clipboard-text={"🦇🔊"} onSuccess={onBatSoundCopied}>
           <span className="relative bg-blue-midnightexpress border border-gray-700 rounded-full p-2 pl-5 flex w-48 mx-auto justify-between items-center text-2xl isolate clipboard-emoji">
-            <SpanMoji emoji="🦇🔊" />
+            <Twemoji className="flex gap-x-1">🦇🔊</Twemoji>
             <span className="font-light text-base copy-container rounded-full bg-green-mediumspring text-blue-midnightexpress px-5 py-1 isolate">
               copy
             </span>

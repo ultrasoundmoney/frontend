@@ -111,7 +111,7 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
       )}
       <div
         ref={setPopperEl}
-        className="z-10"
+        className="z-10 hidden md:block"
         style={{
           ...styles.popper,
           visibility: showTooltip ? "visible" : "hidden",

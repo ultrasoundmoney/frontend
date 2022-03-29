@@ -3,8 +3,13 @@ import { Linkables } from "../api/fam";
 import * as Format from "../format";
 import scrollbarStyles from "../styles/Scrollbar.module.scss";
 import { TextInter, TextRoboto } from "./Texts";
+import Twemoji from "./Twemoji";
 import BioWithLinks from "./Twitter/BioWithLinks";
 import { WidgetTitle } from "./widget-subcomponents";
+
+export const TwemojiBio: FC = ({ children }) => (
+  <Twemoji imageClassName="inline h-6">{children}</Twemoji>
+);
 
 type ExternalLinkProps = {
   alt: string;
@@ -80,7 +85,7 @@ const Tooltip: FC<TooltipProps> = ({
         flex flex-col gap-y-4
         bg-blue-tangaroa p-8 rounded-lg
         border border-blue-shipcove
-        w-[20rem]
+        w-[22rem]
       `}
     >
       <img
@@ -95,13 +100,15 @@ const Tooltip: FC<TooltipProps> = ({
         onError={onImageError}
         src={imageUrl}
       />
-      <TextInter className="font-semibold">{title}</TextInter>
+      <TextInter className="font-semibold">
+        <Twemoji imageClassName="inline h-5">{title}</Twemoji>
+      </TextInter>
       <div
         className={`max-h-64 overflow-y-auto ${scrollbarStyles["styled-scrollbar"]}`}
       >
         <TextInter>
           {description === undefined ? null : links === undefined ? (
-            description
+            <TwemojiBio>{description}</TwemojiBio>
           ) : (
             <BioWithLinks bio={description} linkables={links}></BioWithLinks>
           )}

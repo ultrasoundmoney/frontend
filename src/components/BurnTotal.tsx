@@ -15,8 +15,8 @@ import * as Format from "../format";
 import * as StaticEtherData from "../static-ether-data";
 import { LimitedTimeFrameNext, TimeFrameNext } from "../time-frames";
 import { MoneyAmountAnimated } from "./Amount";
-import SpanMoji from "./SpanMoji";
 import { TextInter, TextRoboto } from "./Texts";
+import Twemoji from "./Twemoji";
 import { Group1Base } from "./widget-subcomponents";
 
 const timeframeFeesBurnedMap: Record<
@@ -136,7 +136,9 @@ const BurnTotal: FC<Props> = ({
           >
             {selectedFeesBurned}
           </MoneyAmountAnimated>
-          <SpanMoji className="ml-4 md:ml-8" emoji="🔥" />
+          <div className="ml-4 md:ml-8">
+            <Twemoji>🔥</Twemoji>
+          </div>
         </div>
         <div className="flex flex-col justify-between md:flex-row gap-y-8">
           <div>
