@@ -3,7 +3,6 @@ import { FC, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { BurnRecord } from "../api/burn-records";
 import { useGroupedStats1 } from "../api/grouped-stats-1";
-import { Unit } from "../denomination";
 import * as Format from "../format";
 import { flow, O, OAlt } from "../fp";
 import scrollbarStyles from "../styles/Scrollbar.module.scss";
@@ -25,21 +24,6 @@ const getBlockPageLink = flow(
   OAlt.numberFromUnknown,
   O.map((num) => `https://etherscan.io/block/${num}`),
   O.toUndefined,
-);
-
-const BurnRecordAmount: FC<{ amount: number | undefined; unit: Unit }> = ({
-  amount,
-  unit,
-}) => (
-  <div className="text-2xl md:text-3xl">
-    <MoneyAmountAnimated
-      skeletonWidth="4rem"
-      unit={unit}
-      unitText={unit === "eth" ? "ETH" : "USD"}
-    >
-      {amount}
-    </MoneyAmountAnimated>
-  </div>
 );
 
 const emojiMap = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
@@ -113,7 +97,14 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
             key={record.blockNumber || index}
           >
             <div className="flex justify-between w-full">
-              <BurnRecordAmount amount={record.baseFeeSum} unit="eth" />
+              <MoneyAmountAnimated
+                skeletonWidth="4rem"
+                textClassName="text-2xl md:text-3xl"
+                unit="eth"
+                unitText="ETH"
+              >
+                {record.baseFeeSum}
+              </MoneyAmountAnimated>
               <SpanMoji
                 className="text-2xl md:text-3xl"
                 emoji={emojiMap[index]}
