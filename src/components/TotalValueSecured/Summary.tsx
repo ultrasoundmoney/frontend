@@ -1,7 +1,11 @@
 import { FC, useState } from "react";
 import CountUp from "react-countup";
 import { useTotalValueSecured } from "../../api/total-value-secured";
-import { AmountAnimatedShell, AmountBillionsUsdAnimated } from "../Amount";
+import {
+  AmountAnimatedShell,
+  AmountBillionsUsdAnimated,
+  AmountTrillionsUsdAnimated,
+} from "../Amount";
 import Link from "../Link";
 import { TextInter } from "../Texts";
 import { WidgetBackground, WidgetTitle } from "../widget-subcomponents";
@@ -44,6 +48,7 @@ const AssetType: FC<{
       </div>
       <AmountBillionsUsdAnimated
         textClassName={`
+          text-base md:text-lg
           ${isHovering ? "opacity-60" : ""}
         `}
       >
@@ -60,13 +65,13 @@ const Summary: FC<{ className?: string }> = ({ className = "" }) => {
       <div className="flex flex-col gap-y-4">
         <div className="flex flex-col  gap-y-4 md:flex-row md:justify-between">
           <div className="flex flex-col gap-y-4">
-            <WidgetTitle>total value secured (TVS)</WidgetTitle>
-            <AmountBillionsUsdAnimated
+            <WidgetTitle>total value secured</WidgetTitle>
+            <AmountTrillionsUsdAnimated
               skeletonWidth="8rem"
               textClassName="text-2xl md:text-3xl xl:text-4xl"
             >
               {totalValueSecured?.sum}
-            </AmountBillionsUsdAnimated>
+            </AmountTrillionsUsdAnimated>
           </div>
           <div className="flex flex-col gap-y-4 md:items-end">
             <div className="flex items-center">

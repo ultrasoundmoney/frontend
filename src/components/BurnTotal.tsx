@@ -14,7 +14,7 @@ import { FeatureFlagsContext } from "../feature-flags";
 import * as Format from "../format";
 import * as StaticEtherData from "../static-ether-data";
 import { LimitedTimeFrameNext, TimeFrameNext } from "../time-frames";
-import { MoneyAmountAnimated } from "./Amount";
+import { AmountAnimatedShell, MoneyAmountAnimated } from "./Amount";
 import { TextInter, TextRoboto } from "./Texts";
 import Twemoji from "./Twemoji";
 import { Group1Base } from "./widget-subcomponents";
@@ -129,13 +129,26 @@ const BurnTotal: FC<Props> = ({
             text-2xl md:text-3xl lg:text-3xl xl:text-4xl
           `}
         >
-          <MoneyAmountAnimated
+          <AmountAnimatedShell
             skeletonWidth="9rem"
-            unit={unit}
+            textClassName=""
             unitText={unit === "eth" ? "ETH" : "USD"}
           >
-            {selectedFeesBurned}
-          </MoneyAmountAnimated>
+            {selectedFeesBurned && (
+              <CountUp
+                decimals={unit === "eth" ? 2 : 0}
+                duration={0.8}
+                end={
+                  unit === "eth"
+                    ? Format.ethFromWei(selectedFeesBurned)
+                    : selectedFeesBurned
+                }
+                preserveValue={true}
+                separator=","
+                suffix={unit === "eth" ? "" : ""}
+              />
+            )}
+          </AmountAnimatedShell>
           <div className="ml-4 md:ml-8">
             <Twemoji>🔥</Twemoji>
           </div>
@@ -152,6 +165,7 @@ const BurnTotal: FC<Props> = ({
             <div className="text-2xl md:text-3xl lg:text-2xl xl:text-4xl">
               <MoneyAmountAnimated
                 skeletonWidth="4rem"
+                textClassName=""
                 unit={unit}
                 unitText={unit === "eth" ? "ETH/min" : "USD/min"}
               >

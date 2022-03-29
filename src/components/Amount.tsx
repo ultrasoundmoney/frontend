@@ -65,6 +65,7 @@ const defaultMoneyAnimationDuration = 0.8;
 type MoneyAmountAnimatedProps = {
   children: number | undefined;
   skeletonWidth?: string;
+  textClassName: HTMLDivElement["className"];
   unit: Unit;
   unitText: string;
 };
@@ -72,10 +73,15 @@ type MoneyAmountAnimatedProps = {
 export const MoneyAmountAnimated: FC<MoneyAmountAnimatedProps> = ({
   children,
   skeletonWidth,
+  textClassName,
   unit,
   unitText,
 }) => (
-  <AmountAnimatedShell skeletonWidth={skeletonWidth} unitText={unitText}>
+  <AmountAnimatedShell
+    skeletonWidth={skeletonWidth}
+    textClassName={textClassName}
+    unitText={unitText}
+  >
     {children && (
       <CountUp
         decimals={unit === "eth" ? 2 : 1}
@@ -99,7 +105,7 @@ export const AmountAnimatedShell: FC<AmountAnimatedShellProps> = ({
   children,
   className = "",
   skeletonWidth = "3rem",
-  textClassName = "",
+  textClassName,
   unitText,
 }) => {
   const { previewSkeletons } = useContext(FeatureFlagsContext);
@@ -136,7 +142,7 @@ type AmountBillionsUsdAnimatedProps = {
 export const AmountBillionsUsdAnimated: FC<AmountBillionsUsdAnimatedProps> = ({
   children,
   skeletonWidth = "3rem",
-  textClassName = "",
+  textClassName,
 }) => (
   <AmountAnimatedShell
     skeletonWidth={skeletonWidth}
@@ -151,6 +157,34 @@ export const AmountBillionsUsdAnimated: FC<AmountBillionsUsdAnimatedProps> = ({
         preserveValue={true}
         separator=","
         suffix="B"
+      />
+    )}
+  </AmountAnimatedShell>
+);
+
+type AmountTrillionsUsdAnimatedProps = {
+  children: number | undefined;
+  className?: string;
+  skeletonWidth?: string;
+  textClassName?: string;
+};
+
+export const AmountTrillionsUsdAnimated: FC<
+  AmountTrillionsUsdAnimatedProps
+> = ({ children, skeletonWidth = "3rem", textClassName = "" }) => (
+  <AmountAnimatedShell
+    skeletonWidth={skeletonWidth}
+    textClassName={textClassName}
+    unitText="USD"
+  >
+    {children && (
+      <CountUp
+        decimals={2}
+        duration={defaultMoneyAnimationDuration}
+        end={children / 1e12}
+        preserveValue={true}
+        separator=","
+        suffix="T"
       />
     )}
   </AmountAnimatedShell>
