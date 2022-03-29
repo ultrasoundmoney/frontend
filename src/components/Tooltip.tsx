@@ -106,7 +106,7 @@ const Tooltip: FC<TooltipProps> = ({
       <div
         className={`max-h-64 overflow-y-auto ${scrollbarStyles["styled-scrollbar"]}`}
       >
-        <TextInter>
+        <TextInter className="md:leading-normal">
           {description === undefined ? null : links === undefined ? (
             <TwemojiBio>{description}</TwemojiBio>
           ) : (
