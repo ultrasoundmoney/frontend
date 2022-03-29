@@ -1,7 +1,8 @@
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useContext, useEffect, useState } from "react";
 import Clipboard from "react-clipboard.js";
 import Skeleton from "react-loading-skeleton";
 import { FamProfile, useProfiles } from "../../api/fam";
+import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import ImageWithTooltip from "../ImageWithTooltip";
@@ -46,6 +47,8 @@ const TwitterFam: FC = () => {
     },
     [md, setSelectedProfile],
   );
+
+  const { enableTooltips } = useContext(FeatureFlagsContext);
 
   return (
     <>
@@ -107,23 +110,25 @@ const TwitterFam: FC = () => {
           </div>
         ))}
       </div>
-      <Modal
-        onClickBackground={() => setSelectedProfile(undefined)}
-        show={selectedProfile !== undefined}
-      >
-        {selectedProfile !== undefined && (
-          <Tooltip
-            description={selectedProfile?.bio}
-            famFollowerCount={selectedProfile?.famFollowerCount}
-            followerCount={selectedProfile?.followersCount}
-            imageUrl={selectedProfile?.profileImageUrl}
-            links={selectedProfile?.links}
-            onClickClose={() => setSelectedProfile(undefined)}
-            title={selectedProfile?.name}
-            twitterUrl={selectedProfile?.profileUrl}
-          />
-        )}
-      </Modal>
+      {enableTooltips && (
+        <Modal
+          onClickBackground={() => setSelectedProfile(undefined)}
+          show={selectedProfile !== undefined}
+        >
+          {selectedProfile !== undefined && (
+            <Tooltip
+              description={selectedProfile?.bio}
+              famFollowerCount={selectedProfile?.famFollowerCount}
+              followerCount={selectedProfile?.followersCount}
+              imageUrl={selectedProfile?.profileImageUrl}
+              links={selectedProfile?.links}
+              onClickClose={() => setSelectedProfile(undefined)}
+              title={selectedProfile?.name}
+              twitterUrl={selectedProfile?.profileUrl}
+            />
+          )}
+        </Modal>
+      )}
     </>
   );
 };

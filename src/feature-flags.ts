@@ -1,6 +1,7 @@
 import { createContext, useReducer } from "react";
 
 export const flags = [
+  "enableTooltips",
   "previewSkeletons",
   "showCategoryCounts",
   "showCategorySlugs",
@@ -11,6 +12,7 @@ export type Flag = typeof flags[number];
 export type FeatureFlags = Record<Flag, boolean>;
 
 export const defaults: FeatureFlags = {
+  enableTooltips: false,
   previewSkeletons: false,
   showCategoryCounts: false,
   showCategorySlugs: false,
@@ -18,6 +20,7 @@ export const defaults: FeatureFlags = {
 };
 
 export const displayFlagMap: Record<Flag, string> = {
+  enableTooltips: "enable tooltips",
   previewSkeletons: "preview skeletons",
   showCategoryCounts: "show category counts",
   showCategorySlugs: "show category slugs",

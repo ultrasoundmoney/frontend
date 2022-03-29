@@ -81,7 +81,7 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
     [md, setHovering],
   );
 
-  const { previewSkeletons } = useContext(FeatureFlagsContext);
+  const { previewSkeletons, enableTooltips } = useContext(FeatureFlagsContext);
 
   return (
     <>
@@ -111,30 +111,32 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
           onMouseLeave={() => handleSetHovering(false)}
         />
       )}
-      <div
-        ref={setPopperEl}
-        className="z-10 hidden md:block p-4"
-        style={{
-          ...styles.popper,
-          visibility: showTooltip ? "visible" : "hidden",
-        }}
-        {...attributes.popper}
-        onMouseEnter={() => setTooltipHovering(true)}
-        onMouseLeave={() => setTooltipHovering(false)}
-      >
-        <Tooltip
-          coingeckoUrl={coingeckoUrl}
-          contractAddresses={contractAddresses}
-          description={description}
-          famFollowerCount={famFollowerCount}
-          followerCount={followerCount}
-          imageUrl={tooltipImageUrl}
-          links={links}
-          nftGoUrl={nftGoUrl}
-          title={title}
-          twitterUrl={twitterUrl}
-        />
-      </div>
+      {enableTooltips && (
+        <div
+          ref={setPopperEl}
+          className="z-10 hidden md:block p-4"
+          style={{
+            ...styles.popper,
+            visibility: showTooltip ? "visible" : "hidden",
+          }}
+          {...attributes.popper}
+          onMouseEnter={() => setTooltipHovering(true)}
+          onMouseLeave={() => setTooltipHovering(false)}
+        >
+          <Tooltip
+            coingeckoUrl={coingeckoUrl}
+            contractAddresses={contractAddresses}
+            description={description}
+            famFollowerCount={famFollowerCount}
+            followerCount={followerCount}
+            imageUrl={tooltipImageUrl}
+            links={links}
+            nftGoUrl={nftGoUrl}
+            title={title}
+            twitterUrl={twitterUrl}
+          />
+        </div>
+      )}
     </>
   );
 };

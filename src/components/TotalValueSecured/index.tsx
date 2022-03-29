@@ -1,8 +1,9 @@
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import {
   TvsRanking,
   useTotalValueSecured,
 } from "../../api/total-value-secured";
+import { FeatureFlagsContext } from "../../feature-flags";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { Modal } from "../Modal";
 import Tooltip from "../Tooltip";
@@ -25,6 +26,8 @@ const TotalValueSecured = () => {
     [md, setSelectedRanking],
   );
 
+  const { enableTooltips } = useContext(FeatureFlagsContext);
+
   return (
     <>
       <div className="grid gap-4 lg:grid-cols-2">
@@ -44,23 +47,25 @@ const TotalValueSecured = () => {
           onSelectRanking={handleSelectRanking}
         />
       </div>
-      <Modal
-        onClickBackground={() => setSelectedRanking(undefined)}
-        show={selectedRanking !== undefined}
-      >
-        <Tooltip
-          coingeckoUrl={selectedRanking?.coinGeckoUrl}
-          description={selectedRanking?.tooltipDescription}
-          famFollowerCount={selectedRanking?.famFollowerCount}
-          followerCount={selectedRanking?.followerCount}
-          imageUrl={selectedRanking?.imageUrl}
-          links={selectedRanking?.links}
-          nftGoUrl={selectedRanking?.nftGoUrl}
-          onClickClose={() => setSelectedRanking(undefined)}
-          title={selectedRanking?.tooltipName?.split(":")[0]}
-          twitterUrl={selectedRanking?.twitterUrl}
-        />
-      </Modal>
+      {enableTooltips && (
+        <Modal
+          onClickBackground={() => setSelectedRanking(undefined)}
+          show={selectedRanking !== undefined}
+        >
+          <Tooltip
+            coingeckoUrl={selectedRanking?.coinGeckoUrl}
+            description={selectedRanking?.tooltipDescription}
+            famFollowerCount={selectedRanking?.famFollowerCount}
+            followerCount={selectedRanking?.followerCount}
+            imageUrl={selectedRanking?.imageUrl}
+            links={selectedRanking?.links}
+            nftGoUrl={selectedRanking?.nftGoUrl}
+            onClickClose={() => setSelectedRanking(undefined)}
+            title={selectedRanking?.tooltipName?.split(":")[0]}
+            twitterUrl={selectedRanking?.twitterUrl}
+          />
+        </Modal>
+      )}
     </>
   );
 };
