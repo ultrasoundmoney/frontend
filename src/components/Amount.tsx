@@ -65,7 +65,7 @@ const defaultMoneyAnimationDuration = 0.8;
 type MoneyAmountAnimatedProps = {
   children: number | undefined;
   skeletonWidth?: string;
-  textClassName: HTMLDivElement["className"];
+  textClassName?: HTMLDivElement["className"];
   unit: Unit;
   unitText: string;
 };
