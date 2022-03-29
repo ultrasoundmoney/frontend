@@ -8,7 +8,6 @@ import {
 } from "../../utils/metric-utils";
 import { useTranslations } from "../../utils/use-translation";
 import Slider from "../Slider/Slider";
-import SpanMoji from "../SpanMoji";
 import Twemoji from "../Twemoji";
 import SupplyChart from "./SupplyChart";
 import styles from "./SupplyView.module.scss";
