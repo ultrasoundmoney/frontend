@@ -177,6 +177,7 @@ const TwitterFam: FC = () => {
               famFollowerCount={profile?.famFollowerCount}
               followerCount={profile?.followersCount}
               imageUrl={profile?.profileImageUrl}
+              isDoneLoading={profile !== undefined}
               links={profile?.links}
               skeletonDiameter="40px"
               title={profile?.name}
