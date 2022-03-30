@@ -71,7 +71,8 @@ const Summary: FC<{ className?: string }> = ({ className = "" }) => {
             title={pipe(
               totalValueSecured?.sum,
               O.fromNullable,
-              O.map(Format.formatUsdZeroDigit),
+              O.map(Format.formatZeroDigit),
+              O.map((str) => `${str} USD`),
               O.toUndefined,
             )}
           >
