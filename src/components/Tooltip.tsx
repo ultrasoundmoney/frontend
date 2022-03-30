@@ -7,12 +7,6 @@ import Twemoji from "./Twemoji";
 import BioWithLinks from "./Twitter/BioWithLinks";
 import { WidgetTitle } from "./widget-subcomponents";
 
-export const TwemojiBio: FC = ({ children }) => (
-  <Twemoji imageClassName="inline-block align-middle h-5 ml-1">
-    {children}
-  </Twemoji>
-);
-
 type ExternalLinkProps = {
   alt: string;
   className?: HTMLAnchorElement["className"];
