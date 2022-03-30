@@ -17,12 +17,12 @@ const Intro: React.FC<{}> = () => {
       >
         <source src="/hero_compressed.mp4" type="video/mp4" />
       </video>
-      <div className=" flex flex-wrap flex-col md:pt-32 relative">
-        <h1 className="text-white font-extralight text-center leading-none text-2xl md:text-6xl font-inter">
+      <div className=" flex flex-wrap flex-col pt-32 relative">
+        <h1 className="text-white font-extralight text-center leading-none text-4xl md:text-6xl font-inter">
           {t.landing_hero_title}
         </h1>
         <div className="flex flex-wrap justify-center mb-8">
-          <div className="ultra-sound-text text-2xl md:text-6xl font-inter font-extralight">
+          <div className="ultra-sound-text text-4xl md:text-6xl font-inter font-extralight">
             {t.landing_hero_title_1}
           </div>
           <div className="flex self-center">
