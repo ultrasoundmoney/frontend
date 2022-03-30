@@ -132,7 +132,7 @@ const FollowingYou: FC = () => {
                       imageUrl={profile?.profileImageUrl}
                       key={profile.profileUrl}
                       links={profile?.links}
-                      onClickImage={() => setSelectedProfile(profile)}
+                      onClick={() => setSelectedProfile(profile)}
                       title={profile?.name}
                       tooltipImageUrl={profile.profileImageUrl}
                     />

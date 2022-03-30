@@ -6,7 +6,7 @@ import {
   Linkables,
   LinkableUrl,
 } from "../../api/fam";
-import { TwemojiBio } from "../Tooltip";
+import Twemoji from "../Twemoji";
 
 type Text = { type: "text"; text: string[] };
 type Url = { type: "url"; linkable: LinkableUrl };
@@ -77,59 +77,51 @@ const BioWithLinks: FC<{ bio: string; linkables: Linkables }> = ({
   <>
     {buildBioElements(bio, linkables).map((instruction, index) =>
       instruction.type === "text" ? (
-        <TwemojiBio>
+        <Twemoji imageClassName="inline-block align-middle h-5 ml-1">
           <p className="inline" key={index}>
             {instruction.text.join("")}
           </p>
-        </TwemojiBio>
+        </Twemoji>
       ) : instruction.type === "url" ? (
-        <TwemojiBio>
-          <a
-            className="text-blue-spindle hover:underline hover:text-blue-spindle"
-            href={instruction.linkable.expanded_url}
-            key={index}
-            rel="noreferrer"
-            target="_blank"
-          >
-            {instruction.linkable.display_url}
-          </a>
-        </TwemojiBio>
+        <a
+          className="text-blue-spindle hover:underline hover:text-blue-spindle"
+          href={instruction.linkable.expanded_url}
+          key={index}
+          rel="noreferrer"
+          target="_blank"
+        >
+          {instruction.linkable.display_url}
+        </a>
       ) : instruction.type === "mention" ? (
-        <TwemojiBio>
-          <a
-            className="text-blue-spindle hover:underline hover:text-blue-spindle"
-            href={`https://twitter.com/${instruction.linkable.username}`}
-            key={index}
-            rel="noreferrer"
-            target="_blank"
-          >
-            @{instruction.linkable.username}
-          </a>
-        </TwemojiBio>
+        <a
+          className="text-blue-spindle hover:underline hover:text-blue-spindle"
+          href={`https://twitter.com/${instruction.linkable.username}`}
+          key={index}
+          rel="noreferrer"
+          target="_blank"
+        >
+          @{instruction.linkable.username}
+        </a>
       ) : instruction.type === "hashtag" ? (
-        <TwemojiBio>
-          <a
-            className="text-blue-spindle hover:underline hover:text-blue-spindle"
-            href={`https://twitter.com/hashtag/${instruction.linkable.tag}`}
-            key={index}
-            rel="noreferrer"
-            target="_blank"
-          >
-            #{instruction.linkable.tag}
-          </a>
-        </TwemojiBio>
+        <a
+          className="text-blue-spindle hover:underline hover:text-blue-spindle"
+          href={`https://twitter.com/hashtag/${instruction.linkable.tag}`}
+          key={index}
+          rel="noreferrer"
+          target="_blank"
+        >
+          #{instruction.linkable.tag}
+        </a>
       ) : instruction.type === "cashtag" ? (
-        <TwemojiBio>
-          <a
-            className="text-blue-spindle hover:underline hover:text-blue-spindle"
-            href={`https://twitter.com/search?q=%24${instruction.linkable.tag}`}
-            key={index}
-            rel="noreferrer"
-            target="_blank"
-          >
-            ${instruction.linkable.tag}
-          </a>
-        </TwemojiBio>
+        <a
+          className="text-blue-spindle hover:underline hover:text-blue-spindle"
+          href={`https://twitter.com/search?q=%24${instruction.linkable.tag}`}
+          key={index}
+          rel="noreferrer"
+          target="_blank"
+        >
+          ${instruction.linkable.tag}
+        </a>
       ) : null,
     )}
   </>

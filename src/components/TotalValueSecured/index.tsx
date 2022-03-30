@@ -14,6 +14,7 @@ const TotalValueSecured = () => {
   const totalValueSecured = useTotalValueSecured();
   const [selectedRanking, setSelectedRanking] = useState<TvsRanking>();
   const { md } = useActiveBreakpoint();
+  const { enableTooltips } = useContext(FeatureFlagsContext);
 
   const handleSelectRanking = useCallback(
     (profile: TvsRanking | undefined) => {
@@ -25,8 +26,6 @@ const TotalValueSecured = () => {
     },
     [md, setSelectedRanking],
   );
-
-  const { enableTooltips } = useContext(FeatureFlagsContext);
 
   return (
     <>

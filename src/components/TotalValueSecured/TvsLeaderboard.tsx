@@ -56,7 +56,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
                 imageUrl={row?.imageUrl}
                 links={row?.links}
                 nftGoUrl={row?.nftGoUrl}
-                onClickImage={() => onSelectRanking(row as TvsRanking)}
+                onClick={() => onSelectRanking(row as TvsRanking)}
                 placement="right"
                 title={row?.tooltipName?.split(":")[0]}
                 tooltipImageUrl={row?.imageUrl}

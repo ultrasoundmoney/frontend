@@ -98,7 +98,9 @@ const SupplyView: React.FC = () => {
               isPeakPresent ? "opacity-1" : "opacity-0"
             }`}
           >
-            <Twemoji imageClassName="inline ml-1 h-6">🦇🔊</Twemoji>
+            <Twemoji imageClassName="inline ml-1 h-6" wrapper>
+              🦇🔊
+            </Twemoji>
           </span>
         </div>
       </div>
