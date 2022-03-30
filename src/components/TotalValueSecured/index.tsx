@@ -1,31 +1,9 @@
-import { useCallback, useContext, useState } from "react";
-import {
-  TvsRanking,
-  useTotalValueSecured,
-} from "../../api/total-value-secured";
-import { FeatureFlagsContext } from "../../feature-flags";
-import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
-import { Modal } from "../Modal";
-import Tooltip from "../Tooltip";
+import { useTotalValueSecured } from "../../api/total-value-secured";
 import Summary from "./Summary";
 import TvsLeaderboard from "./TvsLeaderboard";
 
 const TotalValueSecured = () => {
   const totalValueSecured = useTotalValueSecured();
-  const [selectedRanking, setSelectedRanking] = useState<TvsRanking>();
-  const { md } = useActiveBreakpoint();
-  const { enableTooltips } = useContext(FeatureFlagsContext);
-
-  const handleSelectRanking = useCallback(
-    (profile: TvsRanking | undefined) => {
-      if (md) {
-        return;
-      }
-
-      setSelectedRanking(profile);
-    },
-    [md, setSelectedRanking],
-  );
 
   return (
     <>
@@ -36,35 +14,14 @@ const TotalValueSecured = () => {
           rows={totalValueSecured?.erc20Leaderboard}
           title="erc20 leaderboard"
           maxHeight="max-h-[23rem] lg:max-h-[564px]"
-          onSelectRanking={handleSelectRanking}
         />
         <TvsLeaderboard
           className=""
           rows={totalValueSecured?.nftLeaderboard}
           title="nft leaderboard"
           maxHeight="max-h-[224px]"
-          onSelectRanking={handleSelectRanking}
         />
       </div>
-      {enableTooltips && (
-        <Modal
-          onClickBackground={() => setSelectedRanking(undefined)}
-          show={selectedRanking !== undefined}
-        >
-          <Tooltip
-            coingeckoUrl={selectedRanking?.coinGeckoUrl}
-            description={selectedRanking?.tooltipDescription}
-            famFollowerCount={selectedRanking?.famFollowerCount}
-            followerCount={selectedRanking?.followerCount}
-            imageUrl={selectedRanking?.imageUrl}
-            links={selectedRanking?.links}
-            nftGoUrl={selectedRanking?.nftGoUrl}
-            onClickClose={() => setSelectedRanking(undefined)}
-            title={selectedRanking?.tooltipName?.split(":")[0]}
-            twitterUrl={selectedRanking?.twitterUrl}
-          />
-        </Modal>
-      )}
     </>
   );
 };

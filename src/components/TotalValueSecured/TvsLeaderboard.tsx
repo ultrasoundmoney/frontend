@@ -1,10 +1,14 @@
-import { FC, HTMLAttributes } from "react";
+import { FC, HTMLAttributes, RefObject, useCallback, useState } from "react";
+import { usePopper } from "react-popper";
 import { TvsRanking } from "../../api/total-value-secured";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
+import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { AmountBillionsUsdAnimated } from "../Amount";
 import ImageWithTooltip from "../ImageWithTooltip";
 import Link from "../Link";
+import { Modal } from "../Modal";
 import { TextInter } from "../Texts";
+import Tooltip from "../Tooltip";
 import { WidgetBackground, WidgetTitle } from "../widget-subcomponents";
 
 type TvsLeaderboardProps = {
@@ -12,7 +16,6 @@ type TvsLeaderboardProps = {
   rows: TvsRanking[] | undefined;
   title: string;
   maxHeight?: string;
-  onSelectRanking: (ranking: TvsRanking) => void;
 };
 
 const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
@@ -20,8 +23,89 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
   maxHeight = "",
   rows,
   title,
-  onSelectRanking,
 }) => {
+  const { md } = useActiveBreakpoint();
+
+  // Tooltip logic to be abstracted
+  // Popper Tooltip
+  const [refEl, setRefEl] = useState<HTMLImageElement | null>(null);
+  const [popperEl, setPopperEl] = useState<HTMLDivElement | null>(null);
+  const { styles, attributes } = usePopper(refEl, popperEl, {
+    modifiers: [
+      {
+        name: "flip",
+      },
+    ],
+  });
+  const [selectedRanking, setSelectedRanking] = useState<TvsRanking>();
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [showTimer, setShowTimer] = useState<number>();
+  const [hideTimer, setHideTimer] = useState<number>();
+
+  const handleImageMouseEnter = useCallback(
+    (ranking: TvsRanking, ref: RefObject<HTMLImageElement>) => {
+      // The ranking data isn't there yet so no tooltip can be shown.
+      if (ranking === undefined) {
+        return;
+      }
+
+      // If we were waiting to hide, we're hovering again, so leave the tooltip open.
+      window.clearTimeout(hideTimer);
+
+      const id = window.setTimeout(() => {
+        setRefEl(ref.current);
+        setSelectedRanking(ranking);
+        setShowTooltip(true);
+      }, 300);
+      setShowTimer(id);
+
+      return () => window.clearTimeout(id);
+    },
+    [hideTimer],
+  );
+
+  const handleImageMouseLeave = useCallback(() => {
+    // If we were waiting to show, we stopped hovering, so stop waiting and don't show any tooltip.
+    window.clearTimeout(showTimer);
+
+    // If we never made it passed waiting and opened the tooltip, there is nothing to hide.
+    if (selectedRanking === undefined) {
+      return;
+    }
+
+    const id = window.setTimeout(() => {
+      setShowTooltip(false);
+    }, 300);
+    setHideTimer(id);
+
+    return () => window.clearTimeout(id);
+  }, [setHideTimer, showTimer, selectedRanking]);
+
+  const handleTooltipEnter = useCallback(() => {
+    // If we were waiting to hide, we're hovering again, so leave the tooltip open.
+    window.clearTimeout(hideTimer);
+  }, [hideTimer]);
+
+  const handleTooltipLeave = useCallback(() => {
+    const id = window.setTimeout(() => {
+      setShowTooltip(false);
+    }, 300);
+    setHideTimer(id);
+
+    return () => window.clearTimeout(id);
+  }, []);
+
+  const handleClickProfile = useCallback(
+    (ranking: TvsRanking | undefined) => {
+      if (md) {
+        return;
+      }
+
+      setSelectedRanking(ranking);
+    },
+    [md, setSelectedRanking],
+  );
+
   const leaderboardSkeletons = new Array(20).fill({}) as undefined[];
 
   return (
@@ -55,8 +139,21 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
                 followerCount={row?.followerCount}
                 imageUrl={row?.imageUrl}
                 links={row?.links}
+                isDoneLoading={row !== undefined}
                 nftGoUrl={row?.nftGoUrl}
-                onClick={() => onSelectRanking(row as TvsRanking)}
+                onMouseEnter={(ref) =>
+                  !md || row === undefined
+                    ? () => undefined
+                    : handleImageMouseEnter(row, ref)
+                }
+                onMouseLeave={() =>
+                  !md ? () => undefined : handleImageMouseLeave()
+                }
+                onClick={() =>
+                  md || row === undefined
+                    ? () => undefined
+                    : handleClickProfile(row)
+                }
                 placement="right"
                 title={row?.tooltipName?.split(":")[0]}
                 tooltipImageUrl={row?.imageUrl}
@@ -86,6 +183,51 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
           ))}
         </ul>
       </WidgetBackground>
+      <>
+        <div
+          ref={setPopperEl}
+          className="z-20 hidden md:block p-4"
+          style={{
+            ...styles.popper,
+            visibility: showTooltip ? "visible" : "hidden",
+          }}
+          {...attributes.popper}
+          onMouseOver={handleTooltipEnter}
+          onMouseOut={handleTooltipLeave}
+        >
+          <Tooltip
+            coingeckoUrl={selectedRanking?.coinGeckoUrl}
+            description={selectedRanking?.tooltipDescription}
+            famFollowerCount={selectedRanking?.famFollowerCount}
+            followerCount={selectedRanking?.followerCount}
+            imageUrl={selectedRanking?.imageUrl}
+            links={selectedRanking?.links ?? undefined}
+            nftGoUrl={selectedRanking?.nftGoUrl}
+            onClickClose={() => setSelectedRanking(undefined)}
+            title={selectedRanking?.tooltipName?.split(":")[0]}
+            twitterUrl={selectedRanking?.twitterUrl}
+          />
+        </div>
+        <Modal
+          onClickBackground={() => setSelectedRanking(undefined)}
+          show={!md && selectedRanking !== undefined}
+        >
+          {!md && selectedRanking !== undefined && (
+            <Tooltip
+              coingeckoUrl={selectedRanking?.coinGeckoUrl}
+              description={selectedRanking?.tooltipDescription}
+              famFollowerCount={selectedRanking?.famFollowerCount}
+              followerCount={selectedRanking?.followerCount}
+              imageUrl={selectedRanking?.imageUrl}
+              links={selectedRanking?.links ?? undefined}
+              nftGoUrl={selectedRanking?.nftGoUrl}
+              onClickClose={() => setSelectedRanking(undefined)}
+              title={selectedRanking?.tooltipName?.split(":")[0]}
+              twitterUrl={selectedRanking?.twitterUrl}
+            />
+          )}
+        </Modal>
+      </>
     </>
   );
 };

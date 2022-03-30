@@ -22,7 +22,6 @@ const TwitterFam: FC = () => {
   const famCount = useProfiles()?.count;
   const profiles = useProfiles()?.profiles;
   const { md } = useActiveBreakpoint();
-  const { enableTooltips } = useContext(FeatureFlagsContext);
 
   // Popper Tooltip
   const [refEl, setRefEl] = useState<HTMLImageElement | null>(null);
@@ -35,44 +34,9 @@ const TwitterFam: FC = () => {
     ],
   });
   const [selectedProfile, setSelectedProfile] = useState<FamProfile>();
-  const [isTooltipHovering, setTooltipHovering] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [showTimer, setShowTimer] = useState<number>();
   const [hideTimer, setHideTimer] = useState<number>();
-
-  // Copy batsound feedback
-  const [isCopiedFeedbackVisible, setIsCopiedFeedbackVisible] = useState(false);
-  const onBatSoundCopied = () => {
-    setIsCopiedFeedbackVisible(true);
-    setTimeout(() => setIsCopiedFeedbackVisible(false), 400);
-  };
-
-  // Workaround to try and improve scroll to behavior for #join-the-fam .
-  // TODO: check if this is still needed.
-  useEffect(() => {
-    if (window.location.hash === "#join-the-fam" && document !== null) {
-      document
-        .querySelector("#join-the-fam")
-        ?.scrollIntoView({ behavior: "smooth" });
-    }
-  }, []);
-
-  // Support profile skeletons.
-  const currentProfiles =
-    profiles === undefined
-      ? (new Array(120).fill(undefined) as undefined[])
-      : profiles;
-
-  const handleClickProfile = useCallback(
-    (profile: FamProfile | undefined) => {
-      if (md) {
-        return;
-      }
-
-      setSelectedProfile(profile);
-    },
-    [md, setSelectedProfile],
-  );
 
   const handleImageMouseEnter = useCallback(
     (profile: FamProfile, ref: RefObject<HTMLImageElement>) => {
@@ -126,6 +90,40 @@ const TwitterFam: FC = () => {
 
     return () => window.clearTimeout(id);
   }, []);
+
+  // Copy batsound feedback
+  const [isCopiedFeedbackVisible, setIsCopiedFeedbackVisible] = useState(false);
+  const onBatSoundCopied = () => {
+    setIsCopiedFeedbackVisible(true);
+    setTimeout(() => setIsCopiedFeedbackVisible(false), 400);
+  };
+
+  // Workaround to try and improve scroll to behavior for #join-the-fam .
+  // TODO: check if this is still needed.
+  useEffect(() => {
+    if (window.location.hash === "#join-the-fam" && document !== null) {
+      document
+        .querySelector("#join-the-fam")
+        ?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
+
+  // Support profile skeletons.
+  const currentProfiles =
+    profiles === undefined
+      ? (new Array(120).fill(undefined) as undefined[])
+      : profiles;
+
+  const handleClickProfile = useCallback(
+    (profile: FamProfile | undefined) => {
+      if (md) {
+        return;
+      }
+
+      setSelectedProfile(profile);
+    },
+    [md, setSelectedProfile],
+  );
 
   return (
     <>
