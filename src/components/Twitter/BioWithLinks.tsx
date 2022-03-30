@@ -60,7 +60,7 @@ const buildBioElements = (bio: string, linkables: Linkables) => {
     bioElements.push({ type: linkable.type, linkable } as BioElement);
     lastEndIndex = linkable.end;
   }
-  if (lastEndIndex !== bioCodePoints.length - 1) {
+  if (lastEndIndex !== bioCodePoints.length) {
     bioElements.push({
       type: "text",
       text: bioCodePoints.slice(lastEndIndex ?? 0),
