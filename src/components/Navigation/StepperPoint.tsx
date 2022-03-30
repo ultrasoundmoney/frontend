@@ -1,15 +1,6 @@
 import React, { useContext, useRef, useEffect, useState } from "react";
 import { StepperContext } from "../../context/StepperContext";
-import { ActionLogo } from "./Stepper";
-
-type StepperPointProps = {
-  active: boolean;
-  name: string;
-  indexItem: number;
-  actionLogo: ActionLogo;
-  positinLogo: number;
-  onLogoOnDots: (value: boolean) => void;
-};
+import { StepperPointProps } from "./types";
 
 const StepperDots: React.FC<StepperPointProps> = ({
   active,
@@ -66,7 +57,6 @@ const StepperDots: React.FC<StepperPointProps> = ({
         opacity: onElement ? ".4" : "1",
       }}
       className="stepper_point relative flex flex-col items-center transition-opacity cursor-pointer h-full justify-center whitespace-nowrap text-xs text-center text-blue-shipcove hover:opacity-60"
-
     >
       <div
         className="stepper_circle"

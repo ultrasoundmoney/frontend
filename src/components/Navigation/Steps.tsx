@@ -4,28 +4,13 @@ import { TranslationsContext } from "../../translations-context";
 import StepperPoint from "./StepperPoint";
 import StepperTrack from "./StepperTrack";
 import { motion } from "framer-motion";
-import { ActionLogo } from "./Stepper";
-
-type ControlPoint = {
-  offsetY: number;
-  name: string;
-};
-
-type ControlPointMutated = {
-  offsetY: number;
-  name: string;
-  active: boolean;
-};
-
-type StepsProps = {
-  controlPoints: (ControlPoint | undefined)[];
-  currentPositionLogo: number;
-  onActionLogo: (vodue: ActionLogo) => void;
-  activeLogo: ActionLogo;
-};
+import { StepsProps, ControlPointMutated } from "./types";
 
 const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
-  ({ controlPoints, currentPositionLogo, onActionLogo, activeLogo }, ref) => {
+  (
+    { controlPoints, currentPositionLogo, onActionLogo, activeLogo, setScroll },
+    ref
+  ) => {
     const [activeBalls, setActiveBalls] = React.useState<
       (ControlPointMutated | undefined)[] | undefined
     >();
@@ -42,7 +27,7 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
     }, [controlPoints]);
 
     const t = React.useContext(TranslationsContext);
-    React.useEffect(() => {
+    useEffect(() => {
       const onScroll = () => {
         setActiveBalls(getActiveBalls());
       };
@@ -75,26 +60,16 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
           e.pageX < cord.right
         ) {
           ref.current.style.left = `${e.pageX - marginLeft}px`;
+          setScroll(cord.width, e.pageX - marginLeft);
         }
-
         onActionLogo("move");
         setPositinLogo(e.pageX);
       };
       const handleUpLogo = () => {
         onActionLogo("up");
         if (!logoOnDots && ref.current?.style) {
-          ref.current.style.transition = ".4s";
-          setTimeout(() => {
-            if (!ref.current?.style) return;
-            ref.current.style.left = `${currentPositionLogo}%`;
-          }, 800);
           setTimeout(() => onActionLogo("none"), 800);
         }
-
-        setTimeout(() => {
-          if (!ref.current?.style) return;
-          ref.current.style.transition = "0s";
-        }, 800);
         window.removeEventListener("pointermove", handleMoveLogo);
         window.removeEventListener("pointerup", handleUpLogo);
       };
@@ -110,7 +85,14 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
           ref.current.removeEventListener("pointerdown", handleDownLogo);
         }
       };
-    }, [ref, trackWrapper, currentPositionLogo]);
+    }, [
+      ref,
+      trackWrapper,
+      currentPositionLogo,
+      logoOnDots,
+      onActionLogo,
+      setScroll,
+    ]);
 
     return (
       <div className="w-full h-full md:w-9/12 relative flex justify-around lg:justify-around items-center">
