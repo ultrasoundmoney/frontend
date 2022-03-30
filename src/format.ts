@@ -71,6 +71,15 @@ const compactNumber = new Intl.NumberFormat("en", {
 
 export const formatCompact = (num: number) => compactNumber.format(num);
 
+const compactNumberOneDigit = new Intl.NumberFormat("en", {
+  minimumFractionDigits: 1,
+  maximumFractionDigits: 1,
+  notation: "compact",
+});
+
+export const formatCompactOneDigit = (num: number) =>
+  compactNumberOneDigit.format(num);
+
 export const gweiFromWei = (wei: number): number => wei / 10 ** 9;
 
 export const ethFromWei = (wei: number): number => wei / 10 ** 18;
