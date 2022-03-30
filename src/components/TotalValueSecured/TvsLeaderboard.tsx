@@ -1,6 +1,9 @@
 import { FC, HTMLAttributes, RefObject, useCallback, useState } from "react";
 import { usePopper } from "react-popper";
+import { useAdminToken } from "../../admin";
+import { useContractsFreshness } from "../../api/contracts";
 import { TvsRanking } from "../../api/total-value-secured";
+import { A, NEA, O, pipe } from "../../fp";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { AmountBillionsUsdAnimated } from "../Amount";
@@ -9,6 +12,7 @@ import Link from "../Link";
 import { Modal } from "../Modal";
 import { TextInter } from "../Texts";
 import Tooltip from "../Tooltip";
+import AdminControls from "../widget-group-1/BurnLeaderboard/AdminControls";
 import { WidgetBackground, WidgetTitle } from "../widget-subcomponents";
 
 type TvsLeaderboardProps = {
@@ -25,6 +29,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
   title,
 }) => {
   const { md } = useActiveBreakpoint();
+  const adminToken = useAdminToken();
 
   // Tooltip logic to be abstracted
   // Popper Tooltip
@@ -108,6 +113,14 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
 
   const leaderboardSkeletons = new Array(20).fill({}) as undefined[];
 
+  const addresses = pipe(
+    rows,
+    O.fromNullable,
+    O.map(A.map((row) => row.contractAddresses[0])),
+    O.toUndefined,
+  );
+  const freshnessMap = useContractsFreshness(addresses, adminToken);
+
   return (
     <>
       <WidgetBackground
@@ -179,6 +192,14 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
                   {row?.marketCap}
                 </AmountBillionsUsdAnimated>
               </Link>
+              {adminToken !== undefined &&
+                row !== undefined &&
+                freshnessMap !== undefined && (
+                  <AdminControls
+                    address={NEA.head(row?.contractAddresses)}
+                    freshness={freshnessMap[row?.contractAddresses[0]]}
+                  />
+                )}
             </li>
           ))}
         </ul>
