@@ -103,7 +103,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
   const handleTooltipLeave = useCallback(() => {
     const id = window.setTimeout(() => {
       setShowTooltip(false);
-    }, 300);
+    }, 100);
     setHideTimer(id);
 
     return () => window.clearTimeout(id);

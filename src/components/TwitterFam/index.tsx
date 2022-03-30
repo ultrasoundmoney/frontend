@@ -77,7 +77,7 @@ const TwitterFam: FC = () => {
   const handleTooltipLeave = useCallback(() => {
     const id = window.setTimeout(() => {
       setShowTooltip(false);
-    }, 300);
+    }, 0);
     setHideTimer(id);
 
     return () => window.clearTimeout(id);
