@@ -1,4 +1,5 @@
-import { FC } from "react";
+import { FC, useEffect, useRef } from "react";
+import twemoji from "twemoji";
 import {
   LinkableCashtag,
   LinkableHashtag,
@@ -70,66 +71,67 @@ const buildBioElements = (bio: string, linkables: Linkables) => {
   return bioElements;
 };
 
+// NOTE: using twemoji in the more safe dom parsing mode together with rapidly created and destroyed content resulted in crashes where somehow nodes from destroyed content would end up in newly created content, presumably because twemoji was keeping refs and directly updating the DOM. This would cause react to run into problems when trying in turn to update the DOM that had now changed out from under it. Using twemoji's string parsing mode seems to alleviate the issue.
+const insertTwemoji = (str: string) =>
+  twemoji.parse(str, { className: "inline-block align-middle w-5 mb-1" });
+
 const BioWithLinks: FC<{ bio: string; linkables: Linkables }> = ({
   bio,
   linkables,
-}) => (
-  <>
-    <Twemoji
-      className="flex items-center"
-      imageClassName="inline-block align-middle w-5 mb-1"
-      tag="span"
-      wrapper
-    >
-      <p>
-        {buildBioElements(bio, linkables).map((instruction, index) =>
-          instruction.type === "text" ? (
-            instruction.text.join("")
-          ) : instruction.type === "url" ? (
-            <a
-              className="text-blue-spindle hover:underline hover:text-blue-spindle"
-              href={instruction.linkable.expanded_url}
-              key={index}
-              rel="noreferrer"
-              target="_blank"
-            >
-              {instruction.linkable.display_url}
-            </a>
-          ) : instruction.type === "mention" ? (
-            <a
-              className="text-blue-spindle hover:underline hover:text-blue-spindle"
-              href={`https://twitter.com/${instruction.linkable.username}`}
-              key={index}
-              rel="noreferrer"
-              target="_blank"
-            >
-              @{instruction.linkable.username}
-            </a>
-          ) : instruction.type === "hashtag" ? (
-            <a
-              className="text-blue-spindle hover:underline hover:text-blue-spindle"
-              href={`https://twitter.com/hashtag/${instruction.linkable.tag}`}
-              key={index}
-              rel="noreferrer"
-              target="_blank"
-            >
-              #{instruction.linkable.tag}
-            </a>
-          ) : instruction.type === "cashtag" ? (
-            <a
-              className="text-blue-spindle hover:underline hover:text-blue-spindle"
-              href={`https://twitter.com/search?q=%24${instruction.linkable.tag}`}
-              key={index}
-              rel="noreferrer"
-              target="_blank"
-            >
-              ${instruction.linkable.tag}
-            </a>
-          ) : null,
-        )}
-      </p>
-    </Twemoji>
-  </>
-);
+}) => {
+  return (
+    <p>
+      {buildBioElements(bio, linkables).map((instruction, index) =>
+        instruction.type === "text" ? (
+          <span
+            dangerouslySetInnerHTML={{
+              __html: insertTwemoji(instruction.text.join("")),
+            }}
+          ></span>
+        ) : instruction.type === "url" ? (
+          <a
+            className="text-blue-spindle hover:underline hover:text-blue-spindle"
+            href={instruction.linkable.expanded_url}
+            key={index}
+            rel="noreferrer"
+            target="_blank"
+          >
+            {instruction.linkable.display_url}
+          </a>
+        ) : instruction.type === "mention" ? (
+          <a
+            className="text-blue-spindle hover:underline hover:text-blue-spindle"
+            href={`https://twitter.com/${instruction.linkable.username}`}
+            key={index}
+            rel="noreferrer"
+            target="_blank"
+          >
+            @{instruction.linkable.username}
+          </a>
+        ) : instruction.type === "hashtag" ? (
+          <a
+            className="text-blue-spindle hover:underline hover:text-blue-spindle"
+            href={`https://twitter.com/hashtag/${instruction.linkable.tag}`}
+            key={index}
+            rel="noreferrer"
+            target="_blank"
+          >
+            #{instruction.linkable.tag}
+          </a>
+        ) : instruction.type === "cashtag" ? (
+          <a
+            className="text-blue-spindle hover:underline hover:text-blue-spindle"
+            href={`https://twitter.com/search?q=%24${instruction.linkable.tag}`}
+            key={index}
+            rel="noreferrer"
+            target="_blank"
+          >
+            ${instruction.linkable.tag}
+          </a>
+        ) : null,
+      )}
+    </p>
+  );
+};
 
 export default BioWithLinks;
