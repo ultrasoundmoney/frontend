@@ -123,8 +123,11 @@ const FollowingYou: FC = () => {
           ) : (
             <>
               <div className="flex flex-wrap justify-center">
-                {followers.followers.map((profile) => (
-                  <div className="m-2 w-10 h-10" key={profile?.profileUrl}>
+                {followers.followers.map((profile, index) => (
+                  <div
+                    className="m-2 w-10 h-10"
+                    key={profile.profileUrl ?? index}
+                  >
                     <ImageWithTooltip
                       description={profile?.bio}
                       famFollowerCount={profile?.famFollowerCount}
