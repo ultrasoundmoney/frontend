@@ -1,6 +1,14 @@
-import { FC, useCallback, useContext, useEffect, useState } from "react";
+import {
+  FC,
+  RefObject,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import Clipboard from "react-clipboard.js";
 import Skeleton from "react-loading-skeleton";
+import { usePopper } from "react-popper";
 import { FamProfile, useProfiles } from "../../api/fam";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
@@ -13,10 +21,27 @@ import Twemoji from "../Twemoji";
 const TwitterFam: FC = () => {
   const famCount = useProfiles()?.count;
   const profiles = useProfiles()?.profiles;
-  const [selectedProfile, setSelectedProfile] = useState<FamProfile>();
   const { md } = useActiveBreakpoint();
-  const [isCopiedFeedbackVisible, setIsCopiedFeedbackVisible] = useState(false);
+  const { enableTooltips } = useContext(FeatureFlagsContext);
 
+  // Popper Tooltip
+  const [refEl, setRefEl] = useState<HTMLImageElement | null>(null);
+  const [popperEl, setPopperEl] = useState<HTMLDivElement | null>(null);
+  const { styles, attributes } = usePopper(refEl, popperEl, {
+    modifiers: [
+      {
+        name: "flip",
+      },
+    ],
+  });
+  const [selectedProfile, setSelectedProfile] = useState<FamProfile>();
+  const [isTooltipHovering, setTooltipHovering] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [showTimer, setShowTimer] = useState<number>();
+  const [hideTimer, setHideTimer] = useState<number>();
+
+  // Copy batsound feedback
+  const [isCopiedFeedbackVisible, setIsCopiedFeedbackVisible] = useState(false);
   const onBatSoundCopied = () => {
     setIsCopiedFeedbackVisible(true);
     setTimeout(() => setIsCopiedFeedbackVisible(false), 400);
@@ -32,12 +57,13 @@ const TwitterFam: FC = () => {
     }
   }, []);
 
+  // Support profile skeletons.
   const currentProfiles =
     profiles === undefined
       ? (new Array(120).fill(undefined) as undefined[])
       : profiles;
 
-  const handleSelectProfile = useCallback(
+  const handleClickProfile = useCallback(
     (profile: FamProfile | undefined) => {
       if (md) {
         return;
@@ -48,7 +74,58 @@ const TwitterFam: FC = () => {
     [md, setSelectedProfile],
   );
 
-  const { enableTooltips } = useContext(FeatureFlagsContext);
+  const handleImageMouseEnter = useCallback(
+    (profile: FamProfile, ref: RefObject<HTMLImageElement>) => {
+      // The profile data isn't there yet so no tooltip can be shown.
+      if (profile === undefined) {
+        return;
+      }
+
+      // If we were waiting to hide, we're hovering again, so leave the tooltip open.
+      window.clearTimeout(hideTimer);
+
+      const id = window.setTimeout(() => {
+        setRefEl(ref.current);
+        setSelectedProfile(profile);
+        setShowTooltip(true);
+      }, 300);
+      setShowTimer(id);
+
+      return () => window.clearTimeout(id);
+    },
+    [hideTimer],
+  );
+
+  const handleImageMouseLeave = useCallback(() => {
+    // If we were waiting to show, we stopped hovering, so stop waiting and don't show any tooltip.
+    window.clearTimeout(showTimer);
+
+    // If we never made it passed waiting and opened the tooltip, there is nothing to hide.
+    if (selectedProfile === undefined) {
+      return;
+    }
+
+    const id = window.setTimeout(() => {
+      setShowTooltip(false);
+    }, 300);
+    setHideTimer(id);
+
+    return () => window.clearTimeout(id);
+  }, [setHideTimer, showTimer, selectedProfile]);
+
+  const handleTooltipEnter = useCallback(() => {
+    // If we were waiting to hide, we're hovering again, so leave the tooltip open.
+    window.clearTimeout(hideTimer);
+  }, [hideTimer]);
+
+  const handleTooltipLeave = useCallback(() => {
+    const id = window.setTimeout(() => {
+      setShowTooltip(false);
+    }, 300);
+    setHideTimer(id);
+
+    return () => window.clearTimeout(id);
+  }, []);
 
   return (
     <>
@@ -75,7 +152,9 @@ const TwitterFam: FC = () => {
         <div className="w-4"></div>
         <Clipboard data-clipboard-text={"🦇🔊"} onSuccess={onBatSoundCopied}>
           <span className="relative bg-blue-midnightexpress border border-gray-700 rounded-full p-2 pl-5 flex w-48 mx-auto justify-between items-center text-2xl isolate clipboard-emoji">
-            <Twemoji className="flex gap-x-1">🦇🔊</Twemoji>
+            <Twemoji className="flex gap-x-1" imageClassName="w-7" wrapper>
+              🦇🔊
+            </Twemoji>
             <span className="font-light text-base copy-container rounded-full bg-green-mediumspring text-blue-midnightexpress px-5 py-1 isolate">
               copy
             </span>
@@ -101,34 +180,67 @@ const TwitterFam: FC = () => {
               followerCount={profile?.followersCount}
               imageUrl={profile?.profileImageUrl}
               links={profile?.links}
-              onClickImage={() => handleSelectProfile(profile)}
               skeletonDiameter="40px"
               title={profile?.name}
               tooltipImageUrl={profile?.profileImageUrl}
               twitterUrl={profile?.profileUrl}
+              onMouseEnter={(ref) =>
+                !md || profile === undefined
+                  ? () => undefined
+                  : handleImageMouseEnter(profile, ref)
+              }
+              onMouseLeave={() =>
+                !md ? () => undefined : handleImageMouseLeave()
+              }
+              onClick={() =>
+                md || profile === undefined
+                  ? () => undefined
+                  : handleClickProfile(profile)
+              }
             />
           </div>
         ))}
       </div>
-      {enableTooltips && (
+      <>
+        <div
+          ref={setPopperEl}
+          className="z-10 hidden md:block p-4"
+          style={{
+            ...styles.popper,
+            visibility: showTooltip ? "visible" : "hidden",
+          }}
+          {...attributes.popper}
+          onMouseOver={handleTooltipEnter}
+          onMouseOut={handleTooltipLeave}
+        >
+          <Tooltip
+            description={selectedProfile?.bio}
+            famFollowerCount={selectedProfile?.famFollowerCount}
+            followerCount={selectedProfile?.followersCount}
+            imageUrl={selectedProfile?.profileImageUrl}
+            links={selectedProfile?.links}
+            title={selectedProfile?.name}
+            twitterUrl={selectedProfile?.profileUrl}
+          />
+        </div>
         <Modal
           onClickBackground={() => setSelectedProfile(undefined)}
-          show={selectedProfile !== undefined}
+          show={!md && selectedProfile !== undefined}
         >
-          {selectedProfile !== undefined && (
+          {!md && selectedProfile !== undefined && (
             <Tooltip
-              description={selectedProfile?.bio}
-              famFollowerCount={selectedProfile?.famFollowerCount}
-              followerCount={selectedProfile?.followersCount}
-              imageUrl={selectedProfile?.profileImageUrl}
-              links={selectedProfile?.links}
+              description={selectedProfile.bio}
+              famFollowerCount={selectedProfile.famFollowerCount}
+              followerCount={selectedProfile.followersCount}
+              imageUrl={selectedProfile.profileImageUrl}
+              links={selectedProfile.links}
               onClickClose={() => setSelectedProfile(undefined)}
-              title={selectedProfile?.name}
-              twitterUrl={selectedProfile?.profileUrl}
+              title={selectedProfile.name}
+              twitterUrl={selectedProfile.profileUrl}
             />
           )}
         </Modal>
-      )}
+      </>
     </>
   );
 };
