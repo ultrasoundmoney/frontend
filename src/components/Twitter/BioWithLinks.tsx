@@ -1,4 +1,5 @@
-import { FC, useEffect, useRef } from "react";
+import { FC } from "react";
+import sanitizeHtml from "sanitize-html";
 import twemoji from "twemoji";
 import {
   LinkableCashtag,
@@ -7,7 +8,6 @@ import {
   Linkables,
   LinkableUrl,
 } from "../../api/fam";
-import Twemoji from "../Twemoji";
 
 type Text = { type: "text"; text: string[] };
 type Url = { type: "url"; linkable: LinkableUrl };
@@ -85,8 +85,18 @@ const BioWithLinks: FC<{ bio: string; linkables: Linkables }> = ({
         instruction.type === "text" ? (
           <span
             dangerouslySetInnerHTML={{
-              __html: insertTwemoji(instruction.text.join("")),
+              __html: sanitizeHtml(insertTwemoji(instruction.text.join("")), {
+                allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
+                allowedAttributes: {
+                  img: [
+                    ...sanitizeHtml.defaults.allowedAttributes["img"],
+                    "class",
+                    "draggable",
+                  ],
+                },
+              }),
             }}
+            key={index}
           ></span>
         ) : instruction.type === "url" ? (
           <a
