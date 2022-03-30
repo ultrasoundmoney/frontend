@@ -102,7 +102,7 @@ const Tooltip: FC<TooltipProps> = ({
         alt=""
         className="w-20 h-20 mx-auto rounded-full"
         onError={onImageError}
-        src={imageUrl}
+        src={imageUrl ?? "/leaderboard-images/question-mark-v2.svg"}
       />
       <TextInter className="font-semibold">
         <Twemoji imageClassName="inline h-5 ml-1" wrapper>
