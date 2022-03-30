@@ -16,7 +16,11 @@ const Accordion: React.FC<AccordionProps> = ({ title, text }) => {
         }`}
         onClick={() => setOpen(!isOpen)}
       >
-        <Twemoji className="flex gap-1 items-center" imageClassName="h-6">
+        <Twemoji
+          className="flex gap-1 items-center"
+          imageClassName="h-6"
+          wrapper
+        >
           {title}
         </Twemoji>
       </div>

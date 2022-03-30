@@ -5,7 +5,7 @@ import { useGroupedStats1 } from "../../api/grouped-stats-1";
 import { Unit } from "../../denomination";
 import { formatOneDigit, formatZeroDigit } from "../../format";
 import { pipe } from "../../fp";
-import SpanMoji from "../SpanMoji";
+import Twemoji from "../Twemoji";
 import GaugeSvg, { GaugeGradientFill } from "./GaugeSvg";
 
 type BaseGuageProps = {
@@ -49,7 +49,9 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
 
   return (
     <>
-      <SpanMoji className="h-10" emoji={emoji} />
+      <Twemoji className="w-10" wrapper>
+        {emoji}
+      </Twemoji>
       <div className="mt-6 md:mt-2 lg:mt-8 transform scale-100 md:scale-75 lg:scale-100 xl:scale-110">
         <GaugeSvg
           gradientFill={gradientFill}

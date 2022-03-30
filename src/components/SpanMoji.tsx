@@ -6,7 +6,7 @@ const SpanMoji: FC<{
   imageClassName?: HTMLImageElement["className"];
   emoji: string;
 }> = ({ className, imageClassName = "h-[30px]", emoji }) => (
-  <Twemoji className={className} imageClassName={imageClassName}>
+  <Twemoji className={className} imageClassName={imageClassName} wrapper>
     {emoji}
   </Twemoji>
 );
