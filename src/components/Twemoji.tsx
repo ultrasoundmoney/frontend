@@ -1,6 +1,5 @@
 import React, {
   Children,
-  createRef,
   FC,
   ReactHTML,
   ReactNode,
@@ -8,6 +7,17 @@ import React, {
   useRef,
 } from "react";
 import twemoji from "twemoji";
+
+const parseChild = (
+  child: HTMLElement,
+  imageClassName: HTMLImageElement["className"] | undefined,
+) => {
+  twemoji.parse(child, {
+    className: imageClassName,
+    ext: ".svg",
+    folder: "svg",
+  });
+};
 
 const Twemoji: FC<{
   children: ReactNode;
@@ -22,51 +32,44 @@ const Twemoji: FC<{
   wrapper = false,
   tag = "div",
 }) => {
-  const childRefs =
-    typeof children === "string" || typeof children === "number"
-      ? [createRef<HTMLElement>()]
-      : !Array.isArray(children)
-      ? [createRef<HTMLElement>()]
-      : children.map(() => createRef<HTMLElement>());
-  const refList = useRef(childRefs);
+  const wrapperRef = useRef<HTMLElement>(null);
+  const refList = useRef<HTMLElement[]>([]);
 
   useEffect(() => {
-    if (refList.current === null) {
-      return;
-    }
-
     refList.current.map((childRef) => {
-      if (childRef.current === null) {
-        return;
-      }
-
-      twemoji.parse(childRef.current, {
-        className: imageClassName,
-        ext: ".svg",
-        folder: "svg",
-      });
+      parseChild(childRef, imageClassName);
     });
   }, [children, imageClassName, refList]);
 
-  return children === undefined ? null : wrapper ? (
-    React.createElement(tag, { ref: refList.current[0], className }, children)
+  useEffect(() => {
+    if (wrapperRef.current === null) {
+      return;
+    }
+
+    parseChild(wrapperRef.current, imageClassName);
+  }, [children, wrapperRef, imageClassName]);
+
+  return children == null ? null : wrapper ? (
+    React.createElement(tag, { ref: wrapperRef, className }, children)
   ) : (
     <>
       {Children.map(children, (child, index) => {
-        if (child === undefined) {
+        if (child == null) {
           return null;
         }
 
         if (child === "string") {
           console.warn(
-            "Twemoji can't parse plain strings, and strings are passed with noWrapper set. Wrap them or drop noWrapper",
+            "Twemoji can't parse plain strings, and strings are passed with wrapper set. Wrap them or add 'wrapper'",
           );
           return child;
         }
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
         return React.cloneElement(child as any, {
-          ref: refList.current[index],
+          ref: (ref: HTMLElement) => {
+            refList.current[index] = ref;
+          },
         });
       })}
     </>
