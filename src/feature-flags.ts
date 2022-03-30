@@ -5,6 +5,7 @@ export const flags = [
   "previewSkeletons",
   "showCategoryCounts",
   "showCategorySlugs",
+  "showMetadataTools",
   "showTop100Erc20",
   "useWebSockets",
 ] as const;
@@ -17,6 +18,7 @@ export const defaults: FeatureFlags = {
   previewSkeletons: false,
   showCategoryCounts: false,
   showCategorySlugs: false,
+  showMetadataTools: false,
   showTop100Erc20: false,
   useWebSockets: false,
 };
@@ -26,6 +28,7 @@ export const displayFlagMap: Record<Flag, string> = {
   previewSkeletons: "preview skeletons",
   showCategoryCounts: "show category counts",
   showCategorySlugs: "show category slugs",
+  showMetadataTools: "show metadata tools",
   showTop100Erc20: "show top-100 ERC20",
   useWebSockets: "use websockets",
 };

@@ -40,7 +40,8 @@ const LeaderboardRow: FC<Props> = ({
   type,
   unit,
 }) => {
-  const { showCategorySlugs } = useContext(FeatureFlagsContext);
+  const { showCategorySlugs, showMetadataTools } =
+    useContext(FeatureFlagsContext);
   const imgSrc =
     typeof image === "string"
       ? image
@@ -136,9 +137,11 @@ const LeaderboardRow: FC<Props> = ({
             </p>
           </div>
         </a>
-        {adminToken !== undefined && address !== undefined && (
-          <AdminControls address={address} freshness={freshness} />
-        )}
+        {adminToken !== undefined &&
+          address !== undefined &&
+          showMetadataTools && (
+            <AdminControls address={address} freshness={freshness} />
+          )}
       </div>
     </>
   );

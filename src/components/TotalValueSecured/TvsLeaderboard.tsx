@@ -1,8 +1,16 @@
-import { FC, HTMLAttributes, RefObject, useCallback, useState } from "react";
+import {
+  FC,
+  HTMLAttributes,
+  RefObject,
+  useCallback,
+  useContext,
+  useState,
+} from "react";
 import { usePopper } from "react-popper";
 import { useAdminToken } from "../../admin";
 import { useContractsFreshness } from "../../api/contracts";
 import { TvsRanking } from "../../api/total-value-secured";
+import { FeatureFlagsContext } from "../../feature-flags";
 import { A, NEA, O, pipe } from "../../fp";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
@@ -120,6 +128,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
     O.toUndefined,
   );
   const freshnessMap = useContractsFreshness(addresses, adminToken);
+  const { showMetadataTools } = useContext(FeatureFlagsContext);
 
   return (
     <>
@@ -194,7 +203,8 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
               </Link>
               {adminToken !== undefined &&
                 row !== undefined &&
-                freshnessMap !== undefined && (
+                freshnessMap !== undefined &&
+                showMetadataTools && (
                   <AdminControls
                     address={NEA.head(row?.contractAddresses)}
                     freshness={freshnessMap[row?.contractAddresses[0]]}
