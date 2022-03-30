@@ -105,7 +105,7 @@ const Tooltip: FC<TooltipProps> = ({
         src={imageUrl ?? "/leaderboard-images/question-mark-v2.svg"}
       />
       <TextInter className="font-semibold">
-        <Twemoji imageClassName="inline h-5 ml-1" wrapper>
+        <Twemoji imageClassName="inline-block align-middle h-5 ml-1" wrapper>
           {title}
         </Twemoji>
       </TextInter>

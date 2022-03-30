@@ -77,7 +77,7 @@ const BioWithLinks: FC<{ bio: string; linkables: Linkables }> = ({
   <>
     <Twemoji
       className="flex items-center"
-      imageClassName="h-5"
+      imageClassName="inline-block align-middle w-5 mb-1"
       tag="span"
       wrapper
     >
