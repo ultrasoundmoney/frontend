@@ -98,6 +98,7 @@ type AmountAnimatedShellProps = {
   className?: string;
   skeletonWidth?: string;
   textClassName?: string;
+  tooltip?: string;
   unitText?: string;
 };
 export const AmountAnimatedShell: FC<AmountAnimatedShellProps> = ({
@@ -105,6 +106,7 @@ export const AmountAnimatedShell: FC<AmountAnimatedShellProps> = ({
   className = "",
   skeletonWidth = "3rem",
   textClassName,
+  tooltip,
   unitText,
 }) => {
   const { previewSkeletons } = useContext(FeatureFlagsContext);
@@ -115,6 +117,7 @@ export const AmountAnimatedShell: FC<AmountAnimatedShellProps> = ({
         ${textClassName ?? "text-base md:text-lg"}
         ${className}
       `}
+      tooltip={tooltip}
     >
       {children === undefined || previewSkeletons ? (
         <Skeleton width={skeletonWidth} inline />
@@ -136,16 +139,19 @@ type AmountBillionsUsdAnimatedProps = {
   className?: string;
   skeletonWidth?: string;
   textClassName?: string;
+  tooltip?: string;
 };
 
 export const AmountBillionsUsdAnimated: FC<AmountBillionsUsdAnimatedProps> = ({
   children,
   skeletonWidth = "3rem",
   textClassName,
+  tooltip,
 }) => (
   <AmountAnimatedShell
     skeletonWidth={skeletonWidth}
     textClassName={textClassName}
+    tooltip={tooltip}
     unitText="USD"
   >
     {children && (

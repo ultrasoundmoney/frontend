@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import CountUp from "react-countup";
 import { useTotalValueSecured } from "../../api/total-value-secured";
 import * as Format from "../../format";
-import { O, pipe } from "../../fp";
+import { flow, O, pipe, S } from "../../fp";
 import {
   AmountAnimatedShell,
   AmountBillionsUsdAnimated,
@@ -53,6 +53,12 @@ const AssetType: FC<{
           text-base md:text-lg
           ${isHovering ? "opacity-60" : ""}
         `}
+        tooltip={pipe(
+          amount,
+          O.fromNullable,
+          O.map(flow(Format.formatZeroDigit, (str) => `${str} USD`)),
+          O.toUndefined,
+        )}
       >
         {amount}
       </AmountBillionsUsdAnimated>

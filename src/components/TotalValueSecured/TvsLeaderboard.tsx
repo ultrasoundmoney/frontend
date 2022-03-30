@@ -22,6 +22,7 @@ import { TextInter } from "../Texts";
 import Tooltip from "../Tooltip";
 import AdminControls from "../widget-group-1/BurnLeaderboard/AdminControls";
 import { WidgetBackground, WidgetTitle } from "../widget-subcomponents";
+import * as Format from "../../format";
 
 type TvsLeaderboardProps = {
   className?: HTMLAttributes<HTMLDivElement>["className"];
@@ -197,7 +198,15 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
                 >
                   {row?.detail}
                 </TextInter>
-                <AmountBillionsUsdAnimated>
+                <AmountBillionsUsdAnimated
+                  tooltip={pipe(
+                    row?.marketCap,
+                    O.fromNullable,
+                    O.map(Format.formatZeroDigit),
+                    O.map((str) => `${str} USD`),
+                    O.toUndefined,
+                  )}
+                >
                   {row?.marketCap}
                 </AmountBillionsUsdAnimated>
               </Link>

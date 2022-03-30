@@ -92,7 +92,8 @@ export const TextRoboto: FC<{
   className?: string;
   inline?: boolean;
   style?: CSSProperties;
-}> = ({ children, className, inline = true, style }) => {
+  tooltip?: string;
+}> = ({ children, className, inline = true, style, tooltip }) => {
   const mergedClassName = `
     font-roboto font-light
     text-white
@@ -100,11 +101,11 @@ export const TextRoboto: FC<{
   `;
 
   return inline ? (
-    <span className={mergedClassName} style={style}>
+    <span className={mergedClassName} style={style} title={tooltip}>
       {children}
     </span>
   ) : (
-    <p className={mergedClassName} style={style}>
+    <p className={mergedClassName} style={style} title={tooltip}>
       {children}
     </p>
   );
