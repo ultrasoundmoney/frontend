@@ -131,7 +131,7 @@ const LandingPage: React.FC<{}> = () => {
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
                 genesisArr[2]
-              ).toFixed(3)}%`;
+              ).toFixed(2)}%`;
               getEthSupply!.innerHTML = `${followerCountConvert(
                 Number(genesisArr[1])
               )}`;
@@ -173,7 +173,7 @@ const LandingPage: React.FC<{}> = () => {
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
                 genesisArr[2]
-              ).toFixed(3)}%`;
+              ).toFixed(2)}%`;
               getEthSupply!.innerHTML = `${followerCountConvert(
                 Number(genesisArr[1])
               )}`;
@@ -210,7 +210,7 @@ const LandingPage: React.FC<{}> = () => {
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
                 genesisArr[2]
-              ).toFixed(3)}%`;
+              ).toFixed(2)}%`;
               getEthSupply!.innerHTML = `${followerCountConvert(
                 Number(genesisArr[1])
               )}`;
@@ -252,7 +252,7 @@ const LandingPage: React.FC<{}> = () => {
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
                 genesisArr[2]
-              ).toFixed(3)}%`;
+              ).toFixed(2)}%`;
               getEthSupply!.innerHTML = `${followerCountConvert(
                 Number(genesisArr[1])
               )}`;
@@ -289,7 +289,7 @@ const LandingPage: React.FC<{}> = () => {
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
                 genesisArr[2]
-              ).toFixed(3)}%`;
+              ).toFixed(2)}%`;
               getEthSupply!.innerHTML = `${followerCountConvert(
                 Number(genesisArr[1])
               )}`;
@@ -331,7 +331,7 @@ const LandingPage: React.FC<{}> = () => {
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
                 genesisArr[2]
-              ).toFixed(3)}%`;
+              ).toFixed(2)}%`;
               getEthSupply!.innerHTML = `${followerCountConvert(
                 Number(genesisArr[1])
               )}`;
@@ -370,7 +370,7 @@ const LandingPage: React.FC<{}> = () => {
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
                 genesisArr[2]
-              ).toFixed(3)}%`;
+              ).toFixed(2)}%`;
               getEthSupply!.innerHTML = `${followerCountConvert(
                 Number(genesisArr[1])
               )}`;
@@ -412,7 +412,7 @@ const LandingPage: React.FC<{}> = () => {
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
                 genesisArr[2]
-              ).toFixed(3)}%`;
+              ).toFixed(2)}%`;
               getEthSupply!.innerHTML = `${followerCountConvert(
                 Number(genesisArr[1])
               )}`;
@@ -447,7 +447,7 @@ const LandingPage: React.FC<{}> = () => {
             )}`;
             getEthSupplyIncreament!.innerHTML = `+${Number(
               genesisArr[2]
-            ).toFixed(3)}%`;
+            ).toFixed(2)}%`;
             getEthSupply!.innerHTML = `${followerCountConvert(
               Number(genesisArr[1])
             )}`;
@@ -475,7 +475,7 @@ const LandingPage: React.FC<{}> = () => {
             )}`;
             getEthSupplyIncreament!.innerHTML = `+${Number(
               genesisArr[2]
-            ).toFixed(3)}%`;
+            ).toFixed(2)}%`;
             getEthSupply!.innerHTML = `${followerCountConvert(
               Number(genesisArr[1])
             )}`;
