@@ -66,6 +66,7 @@ module.exports = {
         outline: "0 0 0 1px rgba(229, 103, 86, 0.4)",
       },
       fontSize: {
+        "2xs": "0.65rem",
         "41xl": "2.5rem",
         "21xl": "1.87rem",
         "32xl": "2rem",
@@ -78,8 +79,8 @@ module.exports = {
         "gauge-md": "0.65",
       },
       padding: {
-        "26": "104px"
-      }
+        "26": "104px",
+      },
     },
   },
   variants: {},
