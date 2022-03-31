@@ -37,7 +37,7 @@ const FeeBurnedBlock: React.FC<FeeBurnedBlockProps> = () => {
     <>
       <div
         id="eth-card"
-        className={`fixed-fee-burned flex flex-wrap justify-center w-full md:w-full xl:w-10/12 md:mx-auto px-4 md:px-4 sticky gap-4 pb-4 ${
+        className={`fixed-fee-burned inset-x-0 bottom-0 z-50 grid grid-cols-2 gap-1 sm:gap-2 lg:flex lg:flex-nowrap justify-center w-full max-w-7xl md:mx-auto px-2 lg:px-4 sticky lg:gap-4 pb-2 lg:pb-4 ${
           isShow && "active"
         }`}
       >
@@ -45,26 +45,27 @@ const FeeBurnedBlock: React.FC<FeeBurnedBlockProps> = () => {
           type={1}
           name={`Status ${t.landing_feeburned_card1_name}`}
           title={t.landing_feeburned_card1_title}
-          className="burned_1 w-full md:w-3/12"
+          className="burned_1 w-full lg:w-3/12"
         />
         <Card
           type={2}
           name={t.landing_feeburned_card2_name}
           title={t.landing_feeburned_card2_title}
           number={t.landing_feeburned_card2_title1}
-          className="burned_2 w-full md:w-3/12"
+          className="burned_2 w-full lg:w-3/12"
         />
         <Card
           type={3}
           name={t.landing_feeburned_card3_name}
           title={t.landing_feeburned_card3_title}
-          className="burned_3 w-full md:w-3/12"
+          eth={true}
+          className="burned_3 w-full lg:w-3/12"
         />
         <Card
           type={3}
           name={t.landing_feeburned_card4_name}
           title={t.landing_feeburned_card4_title}
-          className="burned_4 w-full md:w-3/12"
+          className="burned_4 w-full lg:w-3/12"
         />
       </div>
     </>
