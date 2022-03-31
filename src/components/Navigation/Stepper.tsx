@@ -7,6 +7,43 @@ import { throttle } from "lodash";
 
 export type ActionLogo = "none" | "down" | "move" | "up";
 
+const showHideNavBar = (
+  controlPoints: (StepperPoint | undefined)[],
+  stepsRefElem: HTMLElement
+) => {
+  let offsetYFirstPoint = 2;
+  controlPoints.forEach((el, index) => {
+    if (index === 0 && typeof el?.offsetY === "number") {
+      offsetYFirstPoint = el?.offsetY;
+    }
+  });
+  const maxOffsetYValue = controlPoints.reduce(
+    (acc: number, item: StepperPoint | undefined) =>
+      item && acc < item.offsetY ? item.offsetY : acc,
+    0
+  );
+  const collectionElems = stepsRefElem.parentElement?.children!;
+  const childrenElems = Array.from(collectionElems);
+  const lastSectionIndex: number = childrenElems.findIndex(
+    (node) => node.id === "next-merge"
+  )!;
+  const lastSectionHight = childrenElems[
+    lastSectionIndex
+  ]?.getBoundingClientRect()?.height;
+  const nextDrawingLineHight = childrenElems[
+    lastSectionIndex + 1
+  ]?.getBoundingClientRect()?.height;
+  if (lastSectionHight && maxOffsetYValue && nextDrawingLineHight) {
+    const showStickyHeader: boolean =
+      window.scrollY > offsetYFirstPoint - window.innerHeight / 2 &&
+      window.scrollY <
+        maxOffsetYValue + lastSectionHight + nextDrawingLineHight;
+    showStickyHeader
+      ? stepsRefElem.classList.add("active")
+      : stepsRefElem.classList.remove("active");
+  }
+};
+
 const getIconOffset = (
   pointsHeights: (StepperPoint | undefined)[],
   pageLoad: boolean
@@ -71,17 +108,7 @@ const Stepper: React.FC = () => {
   ]);
 
   useEffect(() => {
-    let offsetYFirstPoint = 2;
-    controlPoints.forEach((el, index) => {
-      if (index === 0 && typeof el?.offsetY === "number") {
-        offsetYFirstPoint = el?.offsetY;
-      }
-    });
-    const showStickyHeader: boolean =
-      window.scrollY > offsetYFirstPoint - window.innerHeight / 2;
-    showStickyHeader
-      ? stepsRef.current?.classList.add("active")
-      : stepsRef.current?.classList.remove("active");
+    showHideNavBar(controlPoints, stepsRef.current!);
     if (currentActionLogo !== "up" && steperIconRef && steperIconRef.current) {
       steperIconRef.current.style.left = `${memoizedValue}%`;
     }
