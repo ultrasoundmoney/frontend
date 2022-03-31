@@ -37,7 +37,7 @@ const FeeBurnedBlock: React.FC<FeeBurnedBlockProps> = () => {
     <>
       <div
         id="eth-card"
-        className={`fixed-fee-burned inset-x-0 bottom-0 z-50 grid grid-cols-2 gap-1 sm:gap-2 lg:flex lg:flex-nowrap justify-center w-full max-w-7xl md:mx-auto px-2 lg:px-4 sticky lg:gap-4 pb-4 ${
+        className={`fixed-fee-burned inset-x-0 bottom-0 z-50 grid grid-cols-2 gap-1 sm:gap-2 lg:flex lg:flex-nowrap justify-center w-full max-w-7xl md:mx-auto px-2 lg:px-4 sticky lg:gap-4 pb-2 lg:pb-4 ${
           isShow && "active"
         }`}
       >
