@@ -3,6 +3,7 @@ import { flow } from "lodash";
 import React, { FC, useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { TransitionGroup } from "react-transition-group";
+import { useBlockLag } from "../../api/block-lag";
 import { LatestBlock, useGroupedStats1 } from "../../api/grouped-stats-1";
 import { Unit } from "../../denomination";
 import { FeatureFlagsContext } from "../../feature-flags";
@@ -12,6 +13,7 @@ import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import CSSTransition from "../CSSTransition";
 import { AmountUnitSpace } from "../Spacing";
+import { TextRoboto } from "../Texts";
 import { WidgetBackground } from "../widget-subcomponents";
 import styles from "./LatestBlocks.module.scss";
 
@@ -39,11 +41,13 @@ const formatFees = (unit: Unit, fees: unknown, feesUsd: unknown) =>
         O.toUndefined,
       );
 
-const formatTimeElapsed = flow(
-  O.fromNullable,
-  O.map((num: number) => `${num}s`),
-  O.toUndefined,
-);
+const formatTimeElapsed = (num: number | undefined) =>
+  pipe(
+    num,
+    O.fromNullable,
+    O.map((num: number) => `${num}s`),
+    O.toUndefined,
+  );
 
 export const formatBlockNumber = (number: unknown) =>
   pipe(
@@ -64,6 +68,7 @@ type Props = { unit: Unit };
 
 const LatestBlocks: FC<Props> = ({ unit }) => {
   const latestBlockFees = useGroupedStats1()?.latestBlockFees;
+  const blockLag = useBlockLag()?.blockLag;
   const [timeElapsed, setTimeElapsed] = useState<number>();
   const { md } = useActiveBreakpoint();
 
@@ -99,14 +104,14 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
           <span className="font-inter text-blue-spindle text-right uppercase">
             gas
           </span>
-          <span className="font-inter text-blue-spindle text-right uppercase">
+          <span className="font-inter text-blue-spindle text-right uppercase -mr-2">
             burn
           </span>
         </div>
         <ul
           className={`
             flex flex-col gap-y-4
-            max-h-[184px] lg:max-h-[209px] overflow-y-auto
+            max-h-[184px] md:max-h-[209px] overflow-y-auto
             pr-1 -mr-3
             ${scrollbarStyles["styled-scrollbar"]}
           `}
@@ -142,16 +147,16 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
                           <Skeleton inline={true} width="7rem" />
                         )}
                       </span>
-                      <div className="text-right">
-                        <span className="font-roboto text-white">
+                      <div className="text-right mr-1">
+                        <TextRoboto className="font-roboto text-white">
                           {formatGas(baseFeePerGas) || (
                             <Skeleton
-                              className="-mr-1 lg:mr-0"
+                              className="-mr-0.5 md:mr-0"
                               inline={true}
-                              width="1.5rem"
+                              width="1rem"
                             />
                           )}
-                        </span>
+                        </TextRoboto>
                         {md && (
                           <>
                             <span className="font-inter">&thinsp;</span>
@@ -162,11 +167,11 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
                         )}
                       </div>
                       <div className="text-right">
-                        <span className="font-roboto text-white">
+                        <TextRoboto className="font-roboto text-white">
                           {formatFees(unit, fees, feesUsd) || (
                             <Skeleton inline={true} width="2rem" />
                           )}
-                        </span>
+                        </TextRoboto>
                         <AmountUnitSpace />
                         <span className="font-roboto text-blue-spindle font-extralight">
                           {unit === "eth" ? "ETH" : "USD"}
@@ -183,11 +188,22 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
         <span className="font-inter text-blue-spindle text-xs md:text-sm font-extralight">
           {"latest block "}
           <span className="font-roboto text-white font-light">
-            {formatTimeElapsed(timeElapsed) || (
+            {formatTimeElapsed(timeElapsed) === undefined ||
+            previewSkeletons ? (
               <Skeleton inline={true} width="2rem" />
+            ) : (
+              formatTimeElapsed(timeElapsed)
             )}
           </span>
-          {" old"}
+          {" old, "}
+          <span className="font-roboto text-white font-light">
+            {blockLag === undefined || previewSkeletons ? (
+              <Skeleton inline={true} width="1rem" />
+            ) : (
+              blockLag
+            )}
+          </span>
+          {" block lag"}
         </span>
       </div>
     </WidgetBackground>
