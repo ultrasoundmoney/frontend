@@ -236,6 +236,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
           onMouseOut={handleTooltipLeave}
         >
           <Tooltip
+            contractAddresses={selectedRanking?.contractAddresses}
             coingeckoUrl={selectedRanking?.coinGeckoUrl}
             description={selectedRanking?.tooltipDescription}
             famFollowerCount={selectedRanking?.famFollowerCount}
@@ -254,6 +255,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
         >
           {!md && selectedRanking !== undefined && (
             <Tooltip
+              contractAddresses={selectedRanking?.contractAddresses}
               coingeckoUrl={selectedRanking?.coinGeckoUrl}
               description={selectedRanking?.tooltipDescription}
               famFollowerCount={selectedRanking?.famFollowerCount}
