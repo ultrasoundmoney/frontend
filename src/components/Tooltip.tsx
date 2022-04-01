@@ -107,15 +107,13 @@ const Tooltip: FC<TooltipProps> = ({
         className={`max-h-64 overflow-y-auto ${scrollbarStyles["styled-scrollbar"]}`}
       >
         <TextInter className="whitespace-pre-wrap md:leading-normal">
-          {description === undefined ? null : links === undefined ? (
-            <Twemoji
-              imageClassName="inline-block align-middle h-5 ml-1"
-              wrapper
-            >
-              {description}
-            </Twemoji>
-          ) : (
-            <BioWithLinks bio={description} linkables={links}></BioWithLinks>
+          {description === undefined ? null : (
+            <BioWithLinks
+              bio={description}
+              linkables={
+                links ?? { cashtags: [], hashtags: [], mentions: [], urls: [] }
+              }
+            ></BioWithLinks>
           )}
         </TextInter>
       </div>
