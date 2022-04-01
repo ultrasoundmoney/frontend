@@ -5,6 +5,7 @@ import React, {
   ReactNode,
   useEffect,
   useRef,
+  useState,
 } from "react";
 import twemoji from "twemoji";
 
@@ -34,11 +35,13 @@ const Twemoji: FC<{
 }) => {
   const wrapperRef = useRef<HTMLElement>(null);
   const refList = useRef<HTMLElement[]>([]);
+  const [replaceDone, setReplaceDone] = useState(false);
 
   useEffect(() => {
     refList.current.map((childRef) => {
       parseChild(childRef, imageClassName);
     });
+    setReplaceDone(true);
   }, [children, imageClassName, refList]);
 
   useEffect(() => {
@@ -47,10 +50,18 @@ const Twemoji: FC<{
     }
 
     parseChild(wrapperRef.current, imageClassName);
+    setReplaceDone(true);
   }, [children, wrapperRef, imageClassName]);
 
   return children == null ? null : wrapper ? (
-    React.createElement(tag, { ref: wrapperRef, className }, children)
+    React.createElement(
+      tag,
+      {
+        ref: wrapperRef,
+        className: `${className ?? ""} ${replaceDone ? "" : "invisible"}`,
+      },
+      children,
+    )
   ) : (
     <>
       {Children.map(children, (child, index) => {
@@ -70,6 +81,10 @@ const Twemoji: FC<{
           ref: (ref: HTMLElement) => {
             refList.current[index] = ref;
           },
+          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
+          className: `${(child as any)?.className ?? ""} ${
+            replaceDone ? "" : "invisible"
+          }`,
         });
       })}
     </>
