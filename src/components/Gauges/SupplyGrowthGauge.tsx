@@ -1,8 +1,10 @@
 import { clamp } from "lodash";
-import React, { FC, useCallback, useEffect, useState } from "react";
+import React, { FC, useCallback, useContext, useEffect, useState } from "react";
+import Skeleton from "react-loading-skeleton";
 import { animated, config, useSpring } from "react-spring";
 import { useGroupedStats1 } from "../../api/grouped-stats-1";
 import { useScarcity } from "../../api/scarcity";
+import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
 import * as StaticEtherData from "../../static-ether-data";
 import { TimeFrameNext } from "../../time-frames";
@@ -14,10 +16,10 @@ import SplitGaugeSvg from "./SplitGaugeSvg";
 const useGrowthRate = (
   simulateMerge: boolean,
   timeFrame: TimeFrameNext,
-): number => {
+): number | undefined => {
   const ethSupply = useScarcity()?.ethSupply;
   const burnRates = useGroupedStats1()?.burnRates;
-  const [growthRate, setGrowthRate] = useState(0);
+  const [growthRate, setGrowthRate] = useState<number>();
 
   useEffect(() => {
     if (burnRates === undefined) {
@@ -33,17 +35,17 @@ const useGrowthRate = (
       ? StaticEtherData.posIssuanceYear
       : StaticEtherData.posIssuanceYear + StaticEtherData.powIssuanceYear;
 
-    const growthRate =
+    const nextGrowthRate =
       ethSupply === undefined
         ? undefined
         : (issuanceRate - feeBurnYear) / Format.ethFromWeiBIUnsafe(ethSupply);
 
     const rateRounded =
-      growthRate === undefined
+      nextGrowthRate === undefined
         ? undefined
-        : Math.round(growthRate * 1000) / 1000;
+        : Math.round(nextGrowthRate * 1000) / 1000;
 
-    if (rateRounded !== undefined && rateRounded !== growthRate) {
+    if (rateRounded !== undefined && rateRounded !== nextGrowthRate) {
       setGrowthRate(rateRounded);
     }
   }, [burnRates, ethSupply, growthRate, simulateMerge, timeFrame]);
@@ -87,7 +89,9 @@ const SupplyGrowthGauge: FC<Props> = ({
 
   const max = 10;
 
-  const progress = clamp(growthRate * 100, -max, max) / max;
+  const progress = clamp((growthRate ?? 0) * 100, -max, max) / max;
+
+  const { previewSkeletons } = useContext(FeatureFlagsContext);
 
   return (
     <div className="flex flex-col justify-start items-center bg-blue-tangaroa px-4 md:px-0 py-8 pt-7 rounded-lg md:rounded-none lg:rounded-lg">
@@ -112,7 +116,11 @@ const SupplyGrowthGauge: FC<Props> = ({
       <div className="mt-6 md:mt-2 lg:mt-8 transform scale-100 md:scale-75 lg:scale-100 xl:scale-110">
         <SplitGaugeSvg max={max} progress={progress} />
         <div className="font-roboto text-white text-center font-light 2xl:text-lg -mt-20 pt-1">
-          {freezeAnimated ? (
+          {growthRate === undefined || previewSkeletons ? (
+            <div className="-mb-2">
+              <Skeleton inline width="46px" />
+            </div>
+          ) : freezeAnimated ? (
             <p className="-mb-2">
               {Format.formatPercentOneDigitSigned(growthRateAnimated.get())}
             </p>

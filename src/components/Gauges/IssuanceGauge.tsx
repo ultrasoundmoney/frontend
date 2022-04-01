@@ -24,7 +24,7 @@ const IssuanceGauge: FC<Props> = ({ simulateMerge, timeFrame, unit }) => {
 
   const issuance =
     selectedAverageEthPrice === undefined
-      ? 0
+      ? undefined
       : unit === "eth"
       ? (issuancePerDay * 365.25) / 1_000_000
       : (issuancePerDay * 365.25 * selectedAverageEthPrice) / 1_000_000_000;

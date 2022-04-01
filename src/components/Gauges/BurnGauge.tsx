@@ -19,7 +19,7 @@ const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame, unit }) => {
 
   const burnRate =
     selectedBurnRate === undefined
-      ? 0
+      ? undefined
       : unit === "eth"
       ? Format.ethFromWei(selectedBurnRate * 60 * 24 * 365.25) / 10 ** 6
       : (selectedBurnRate * 60 * 24 * 365.25) / 10 ** 9;
