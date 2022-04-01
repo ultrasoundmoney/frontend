@@ -17,6 +17,7 @@ export type StepsProps = {
   onActionLogo: (vodue: ActionLogo) => void;
   activeLogo: ActionLogo;
   setScroll: (trackWidth: number, logoOffset: number) => void;
+  isLastTrackingElem: boolean;
 };
 
 export type StepperPointProps = {

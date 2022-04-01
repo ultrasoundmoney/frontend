@@ -8,23 +8,30 @@ import { StepsProps, ControlPointMutated } from "./types";
 
 const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
   (
-    { controlPoints, currentPositionLogo, onActionLogo, activeLogo, setScroll },
+    {
+      controlPoints,
+      currentPositionLogo,
+      onActionLogo,
+      activeLogo,
+      setScroll,
+      isLastTrackingElem,
+    },
     ref
   ) => {
-    const [activeBalls, setActiveBalls] = React.useState<
-      (ControlPointMutated | undefined)[] | undefined
-    >();
+    const [activeBalls, setActiveBalls] = useState<ControlPointMutated[]>();
 
-    const getActiveBalls = React.useCallback(() => {
+    const getActiveBalls: any = React.useCallback(() => {
       return controlPoints.map((item) => {
         if (item) {
           return {
             ...item,
-            active: window.scrollY > item.offsetY - window.innerHeight / 2,
+            active:
+              window.scrollY > item.offsetY - window.innerHeight / 2 ||
+              isLastTrackingElem,
           };
         }
       });
-    }, [controlPoints]);
+    }, [controlPoints, isLastTrackingElem]);
 
     const t = React.useContext(TranslationsContext);
     useEffect(() => {

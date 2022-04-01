@@ -48,6 +48,8 @@ const StepperDots: React.FC<StepperPointProps> = ({
 
   useEffect(() => onLogoOnDots(onElement), [onElement]);
 
+  const pointBorderColor = active ? "#00FFA3" : "#8991AD";
+
   return (
     <div
       onClick={moveToPoint(indexItem)}
@@ -67,14 +69,14 @@ const StepperDots: React.FC<StepperPointProps> = ({
           height: "16px",
           borderRadius: "50%",
           position: "relative",
-          border: `1px solid ${active ? "#00FFA3" : "#8991AD"}`,
+          border: `1px solid ${pointBorderColor}`,
         }}
       >
         <div
           style={{
             width: "6px",
             height: "6px",
-            backgroundColor: active ? "#00FFA3" : "#8991AD",
+            backgroundColor: pointBorderColor,
             borderRadius: "50%",
             margin: "4px",
           }}

@@ -10,7 +10,7 @@ import arrowRight from "../../assets/arrowRight.svg";
 import Steps from "./Steps";
 import { StepperContext } from "../../context/StepperContext";
 import { ActionLogo } from "./types";
-import { getIconOffset } from "./helpers";
+import { getIconOffset, showHideNavBar, setScrollPosition } from "./helpers";
 
 const Stepper: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,24 +23,14 @@ const Stepper: React.FC = () => {
   const [memoizedValue, setMemoizedValue] = useState<number>(0);
   const [pageLoad, setPageLoad] = useState(false);
   const handlerActionLogo = (value: ActionLogo) => setCurrentActionLogo(value);
-  const controlPoints = Object.keys(stepperPoints?.stepperElements as {}).map(
-    (element) => {
-      return stepperPoints?.stepperElements[element];
-    }
-  );
+  const controlPoints: any[] = Object.keys(
+    stepperPoints?.stepperElements as {}
+  ).map((element) => {
+    return stepperPoints?.stepperElements[element];
+  });
 
   const onScroll = useCallback(() => {
-    let offsetYFirstPoint = 2;
-    controlPoints.forEach((el, index) => {
-      if (index === 0 && typeof el?.offsetY === "number") {
-        offsetYFirstPoint = el?.offsetY;
-      }
-    });
-    const showStickyHeader: boolean =
-      window.scrollY > offsetYFirstPoint - window.innerHeight / 2;
-    showStickyHeader
-      ? stepsRef.current?.classList.add("active")
-      : stepsRef.current?.classList.remove("active");
+    showHideNavBar(controlPoints, stepsRef.current!);
     if (
       currentActionLogo !== "up" &&
       currentActionLogo !== "move" &&
@@ -50,46 +40,20 @@ const Stepper: React.FC = () => {
     ) {
       const logoOffset = getIconOffset(controlPoints, pageLoad);
       steperIconRef.current.style.left = `${logoOffset}%`;
-
-      // setMemoizedValue(logoOffset);
-
-      // const viewContainer = stepsRef.current?.parentElement;
-      // const viewContainerHeight = viewContainer?.getBoundingClientRect()
-      //   ?.height;
-      // const trackWrapper = stepsRef.current.children[0].children[0].children[0];
-      // const trackWrapperWidth = trackWrapper.getBoundingClientRect()?.width;
-      // if (trackWrapperWidth && viewContainerHeight) {
-      //   const logoOffsetPercent = (window.scrollY / viewContainerHeight) * 100;
-      //   steperIconRef.current.style.left = `${logoOffsetPercent}%`;
-      //   // setMemoizedValue(logoOffsetPercent);
-      // }
+      setMemoizedValue(logoOffset);
     }
   }, [currentActionLogo, controlPoints]);
+  const [isLastTrackingElem, setIsLastTrackingElem] = useState<boolean>(false);
   const setScrollPosOnLogoMove = (trackWidth: number, logoOffset: number) => {
-    const viewContainer = stepsRef.current?.parentElement;
-    const viewContainerHeight = viewContainer?.getBoundingClientRect()?.height;
-    if (viewContainerHeight) {
-      const scrollYOffset = (logoOffset / trackWidth) * viewContainerHeight;
-      window.scrollTo({ top: scrollYOffset });
-      setMemoizedValue((logoOffset / trackWidth) * 100);
+    if (stepsRef.current && pageLoad) {
+      const isHighlightDot = setScrollPosition(
+        controlPoints,
+        trackWidth,
+        logoOffset,
+        stepsRef.current
+      );
+      setIsLastTrackingElem(isHighlightDot);
     }
-
-    // const viewContainer = stepsRef.current?.parentElement;
-    // const viewContainerHeight = viewContainer?.getBoundingClientRect()?.height;
-    // const scrollPosPercent = getScrollPosition(
-    //   controlPoints,
-    //   pageLoad,
-    //   trackWidth,
-    //   logoOffset
-    // );
-    // if (viewContainerHeight) {
-    //   const scrollYOffset = (logoOffset / trackWidth) * viewContainerHeight;
-    //   window.scrollTo({ top: scrollYOffset });
-
-    //   // steperIconRef.current.style.left = `${logoOffset}%`;
-
-    //   setMemoizedValue((logoOffset / trackWidth) * 100);
-    // }
   };
 
   useEffect(() => {
@@ -113,6 +77,7 @@ const Stepper: React.FC = () => {
           ref={steperIconRef}
           controlPoints={controlPoints}
           setScroll={setScrollPosOnLogoMove}
+          isLastTrackingElem={isLastTrackingElem}
         />
         <div className="w-full md:w-3/12 hidden md:block py-1" id="menu">
           <ul className="flex flex-col md:flex-row justify-end list-none mt-4 md:mt-0 relative">
