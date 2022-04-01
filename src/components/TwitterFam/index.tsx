@@ -19,6 +19,7 @@ const TwitterFam: FC = () => {
   const [refEl, setRefEl] = useState<HTMLImageElement | null>(null);
   const [popperEl, setPopperEl] = useState<HTMLDivElement | null>(null);
   const { styles, attributes } = usePopper(refEl, popperEl, {
+    placement: "right",
     modifiers: [
       {
         name: "flip",
