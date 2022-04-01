@@ -53,7 +53,7 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
 
   return (
     <>
-      <Twemoji className="text-5xl w-10 select-none" wrapper>
+      <Twemoji className="h-10 w-10 select-none" wrapper>
         {emoji}
       </Twemoji>
       <div className="mt-6 md:mt-2 lg:mt-8 transform scale-100 md:scale-75 lg:scale-100 xl:scale-110">
