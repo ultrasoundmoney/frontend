@@ -45,6 +45,8 @@ const LeaderboardRow: FC<Props> = ({
   const imgSrc =
     typeof image === "string"
       ? image
+      : image === undefined
+      ? undefined
       : type === "eth-transfers"
       ? "/leaderboard-images/transfer-v2.svg"
       : isBot
@@ -52,12 +54,15 @@ const LeaderboardRow: FC<Props> = ({
       : type === "contract-creations"
       ? "/leaderboard-images/contract-creations.svg"
       : "/leaderboard-images/question-mark-v2.svg";
+  const isDoneLoading = type !== undefined;
 
   //Your handler Component
   const onImageError = useCallback<ReactEventHandler<HTMLImageElement>>((e) => {
     (e.target as HTMLImageElement).src =
       "/leaderboard-images/question-mark-v2.svg";
   }, []);
+
+  const { previewSkeletons } = useContext(FeatureFlagsContext);
 
   return (
     <>
@@ -79,14 +84,18 @@ const LeaderboardRow: FC<Props> = ({
               text-white text-base md:text-lg
             `}
           >
-            <img
-              className="w-8 h-8 rounded-full select-none"
-              src={imgSrc}
-              alt=""
-              onError={onImageError}
-              width="32"
-              height="32"
-            />
+            {(imgSrc === undefined && !isDoneLoading) || previewSkeletons ? (
+              <div className="leading-4">
+                <Skeleton circle height="32px" width="32px" />
+              </div>
+            ) : (
+              <img
+                className="w-8 h-8 rounded-full select-none"
+                src={imgSrc ?? "/leaderboard-images/question-mark-v2.svg"}
+                alt=""
+                onError={onImageError}
+              />
+            )}
             <p className="pl-4 truncate">
               {typeof name === "string" ? (
                 name
