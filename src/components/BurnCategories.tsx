@@ -8,7 +8,7 @@ import { A, flow, NEA, O, pipe } from "../fp";
 import { TimeFrameNext } from "../time-frames";
 import { MoneyAmount } from "./Amount";
 import { LabelText, TextInter, TextRoboto } from "./Texts";
-import { Group1Base } from "./widget-subcomponents";
+import { Group1Base, WidgetTitle } from "./widget-subcomponents";
 
 type CategoryProps = {
   fees: number | undefined;
@@ -419,16 +419,16 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                 showCategoryCounts ? "md:grid-cols-3" : "grid-cols-2"
               }`}
             >
-              <LabelText>category</LabelText>
-              <LabelText
+              <WidgetTitle>category</WidgetTitle>
+              <div
                 className={`
                   text-right
                   ${showCategoryCounts ? "col-span-1" : "col-span-1"}
                   ${showCategoryCounts ? "md:mr-8" : ""}
                 `}
               >
-                burn
-              </LabelText>
+                <WidgetTitle>burn</WidgetTitle>
+              </div>
               <LabelText
                 className={`text-right hidden ${
                   showCategoryCounts ? "md:block" : ""
