@@ -203,22 +203,17 @@ const CategoryRow: FC<CategoryRowProps> = ({
   amountFormatted,
   countFormatted,
   hovering,
-  link,
   name,
   setHovering,
   showCategoryCounts = false,
 }) => (
-  <a
+  <div
     className={`
       grid grid-cols-2 ${showCategoryCounts ? "md:grid-cols-3" : ""}
-      select-none
     `}
-    href={link}
     onMouseEnter={() => setHovering(true)}
     onMouseLeave={() => setHovering(false)}
-    rel="noreferrer"
     style={{ opacity: hovering ? 0.6 : 1 }}
-    target="_blank"
   >
     <TextInter className="">{name}</TextInter>
     <div
@@ -246,7 +241,7 @@ const CategoryRow: FC<CategoryRowProps> = ({
         <TextRoboto className="text-right">{countFormatted}</TextRoboto>
       )}
     </div>
-  </a>
+  </div>
 );
 
 const formatFees = flow(

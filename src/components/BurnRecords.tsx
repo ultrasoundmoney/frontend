@@ -106,7 +106,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                 {record.baseFeeSum}
               </MoneyAmountAnimated>
               <SpanMoji
-                className="text-2xl md:text-3xl"
+                className="text-2xl md:text-3xl select-none"
                 emoji={emojiMap[index]}
               />
             </div>

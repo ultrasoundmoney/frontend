@@ -88,13 +88,13 @@ const Tooltip: FC<TooltipProps> = ({
     >
       <img
         alt="a close button, circular with an x in the middle"
-        className="md:hidden absolute w-6 right-5 top-5 hover:brightness-90 active:brightness-110 cursor-pointer"
+        className="md:hidden absolute w-6 right-5 top-5 hover:brightness-90 active:brightness-110 cursor-pointer select-none"
         onClick={onClickClose}
         src="/close.svg"
       />
       <img
         alt=""
-        className="w-20 h-20 mx-auto rounded-full"
+        className="w-20 h-20 mx-auto rounded-full select-none"
         onError={onImageError}
         src={imageUrl ?? "/leaderboard-images/question-mark-v2.svg"}
       />
@@ -149,7 +149,7 @@ const Tooltip: FC<TooltipProps> = ({
         }`}
       >
         <WidgetTitle>external links</WidgetTitle>
-        <div className="flex gap-x-4">
+        <div className="flex gap-x-4 select-none">
           <ExternalLink
             alt="twitter logo"
             className={`${twitterUrl === undefined ? "hidden" : "block"}`}

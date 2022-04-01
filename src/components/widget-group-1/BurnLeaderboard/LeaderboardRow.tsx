@@ -80,7 +80,7 @@ const LeaderboardRow: FC<Props> = ({
             `}
           >
             <img
-              className="w-8 h-8 rounded-full"
+              className="w-8 h-8 rounded-full select-none"
               src={imgSrc}
               alt=""
               onError={onImageError}

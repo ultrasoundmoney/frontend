@@ -99,6 +99,7 @@ const FollowingYou: FC = () => {
             border border-white
             bg-transparent hover:bg-gray-700
             rounded-full
+            select-none
           `}
           type="submit"
         >

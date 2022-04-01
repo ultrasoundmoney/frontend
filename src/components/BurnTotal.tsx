@@ -149,7 +149,7 @@ const BurnTotal: FC<Props> = ({
             )}
           </AmountAnimatedShell>
           <div className="ml-4 md:ml-8">
-            <Twemoji imageClassName="h-6 lg:h-8" wrapper>
+            <Twemoji imageClassName="h-6 lg:h-8 select-none" wrapper>
               🔥
             </Twemoji>
           </div>

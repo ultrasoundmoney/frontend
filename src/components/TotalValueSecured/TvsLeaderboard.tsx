@@ -155,7 +155,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
               key={row?.name ?? index}
             >
               <ImageWithTooltip
-                className="w-8 h-8"
+                className="w-8 h-8 select-none"
                 coingeckoUrl={row?.coinGeckoUrl}
                 contractAddresses={row?.contractAddresses}
                 description={row?.tooltipDescription}

@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import CountUp from "react-countup";
 import { useTotalValueSecured } from "../../api/total-value-secured";
 import * as Format from "../../format";
-import { flow, O, pipe, S } from "../../fp";
+import { flow, O, pipe } from "../../fp";
 import {
   AmountAnimatedShell,
   AmountBillionsUsdAnimated,
@@ -32,11 +32,13 @@ const AssetType: FC<{
       <div className="flex items-center">
         <img
           alt={alt}
-          className={`${isHovering ? "invisible" : "visible"}`}
+          className={`select-none ${isHovering ? "invisible" : "visible"}`}
           src={`/round-${icon}-coloroff.svg`}
         />
         <img
-          className={`absolute top-0 ${isHovering ? "visible" : "invisible"}`}
+          className={`absolute top-0 select-none ${
+            isHovering ? "visible" : "invisible"
+          }`}
           src={`/round-${icon}-coloron.svg`}
           alt={alt}
         />

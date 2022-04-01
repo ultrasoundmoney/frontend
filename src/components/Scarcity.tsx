@@ -47,7 +47,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
   const lockedPercent = (locked / supply) * 100;
 
   return (
-    <div className="relative">
+    <div className="relative select-none">
       <div className="h-28 flex items-center">
         <div
           className="absolute w-full h-2 bg-orange-fire rounded-full color-animation"
