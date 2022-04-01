@@ -72,7 +72,7 @@ const compactNumber = new Intl.NumberFormat("en", {
 export const formatCompact = (num: number) => compactNumber.format(num);
 
 const compactNumberOneDigit = new Intl.NumberFormat("en", {
-  minimumFractionDigits: 1,
+  minimumFractionDigits: 0,
   maximumFractionDigits: 1,
   notation: "compact",
 });
