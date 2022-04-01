@@ -45,7 +45,7 @@ export const famBasePath =
   Config.apiEnv === "staging"
     ? "https://api-stag.ultrasound.money/fam"
     : Config.apiEnv === "dev"
-    ? "http://localhost:8080/fam"
+    ? "http://localhost:8082/fam"
     : "https://api.ultrasound.money/fam";
 
 export const useProfiles = () => {
