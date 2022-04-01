@@ -11,6 +11,7 @@ import { useAdminToken } from "../../admin";
 import { useContractsFreshness } from "../../api/contracts";
 import { TvsRanking } from "../../api/total-value-secured";
 import { FeatureFlagsContext } from "../../feature-flags";
+import * as Format from "../../format";
 import { A, NEA, O, pipe } from "../../fp";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
@@ -22,7 +23,6 @@ import { TextInter } from "../Texts";
 import Tooltip from "../Tooltip";
 import AdminControls from "../widget-group-1/BurnLeaderboard/AdminControls";
 import { WidgetBackground, WidgetTitle } from "../widget-subcomponents";
-import * as Format from "../../format";
 
 type TvsLeaderboardProps = {
   className?: HTMLAttributes<HTMLDivElement>["className"];
@@ -45,6 +45,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
   const [refEl, setRefEl] = useState<HTMLImageElement | null>(null);
   const [popperEl, setPopperEl] = useState<HTMLDivElement | null>(null);
   const { styles, attributes } = usePopper(refEl, popperEl, {
+    placement: "right",
     modifiers: [
       {
         name: "flip",
@@ -177,7 +178,6 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
                     ? () => undefined
                     : handleClickProfile(row)
                 }
-                placement="right"
                 title={row?.tooltipName?.split(":")[0]}
                 tooltipImageUrl={row?.imageUrl}
                 twitterUrl={row?.twitterUrl}
