@@ -1,6 +1,15 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  FC,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import CountUp from "react-countup";
+import Skeleton from "react-loading-skeleton";
 import { EthPrice, useGroupedStats1 } from "../../api/grouped-stats-1";
+import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
 import { O, pipe } from "../../fp";
 import { useLocalStorage } from "../../use-local-storage";
@@ -47,6 +56,8 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
       ? "text-red-400"
       : "text-green-400";
 
+  const { previewSkeletons } = useContext(FeatureFlagsContext);
+
   return (
     <div
       className={`
@@ -65,8 +76,8 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
         height="14"
       />
       <TextRoboto className="pl-1">
-        {baseFeePerGas === undefined ? (
-          "___"
+        {baseFeePerGas === undefined || previewSkeletons ? (
+          <Skeleton width="17px" inline />
         ) : (
           <CountUp
             decimals={0}
@@ -92,8 +103,8 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
         height="16"
       />
       <TextRoboto className="pl-1">
-        {ethPrice === undefined ? (
-          "_,___"
+        {ethPrice === undefined || previewSkeletons ? (
+          <Skeleton width="42px" inline />
         ) : (
           <CountUp
             decimals={0}
@@ -108,8 +119,11 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
         <AmountUnitSpace />
         <span className="text-blue-spindle font-extralight">USD</span>
         <AmountUnitSpace />
-        {ethUsd24hChange === undefined ? (
-          <span>{"(__._%)"}</span>
+        {ethUsd24hChange === undefined || previewSkeletons ? (
+          <>
+            (<Skeleton width="34px" inline />
+            %)
+          </>
         ) : (
           <span className={`${color}`}>({ethUsd24hChange})</span>
         )}
