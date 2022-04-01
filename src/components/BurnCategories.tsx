@@ -445,7 +445,7 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                     burnCategoryParts?.nft.transactionCount,
                   )}
                   hovering={hoveringNft}
-                  name="NFTs"
+                  name="NFT"
                   setHovering={setHoveringNft}
                   showCategoryCounts={showCategoryCounts}
                 />
@@ -455,7 +455,7 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                     burnCategoryParts?.defi.transactionCount,
                   )}
                   hovering={hoveringDefi}
-                  name="DeFi"
+                  name="defi"
                   setHovering={setHoveringDefi}
                   showCategoryCounts={showCategoryCounts}
                 />
@@ -483,7 +483,7 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                   amountFormatted={formatFees(misc?.fees)}
                   countFormatted={formatCount(misc?.transactionCount)}
                   hovering={hoveringMisc}
-                  name="Misc"
+                  name="misc"
                   setHovering={setHoveringMisc}
                   showCategoryCounts={showCategoryCounts}
                 />
