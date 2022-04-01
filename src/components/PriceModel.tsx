@@ -53,7 +53,7 @@ const Slider: FC<SliderProps> = ({
 const Marker: FC<{
   alt?: string;
   icon: string;
-  peRatio: number;
+  peRatio: number | undefined;
   ratio: number;
   symbol?: string;
 }> = ({ alt, icon, peRatio, ratio, symbol }) => {
@@ -68,7 +68,7 @@ const Marker: FC<{
     >
       <div className="[min-height:3px] w-3 bg-blue-shipcove mb-3 -translate-x-1/2"></div>
       <a
-        title={`${peRatio.toFixed(1)} P/E`}
+        title={`${peRatio?.toFixed(1) ?? "-"} P/E`}
         className="absolute pointer-events-auto top-4 -translate-x-1/2"
         href={
           symbol === undefined
@@ -312,13 +312,16 @@ const PriceModel: FC = () => {
                     />
                   )}
 
-                  <Marker
-                    alt="amazon logo"
-                    icon="amazon"
-                    peRatio={peRatios.AMZN}
-                    ratio={linearFromLog(peRatios.AMZN)}
-                    symbol="AMZN"
-                  />
+                  {ethPeRatio === undefined ||
+                    (peRatios.AMZN - ethPeRatio > 4 && (
+                      <Marker
+                        alt="amazon logo"
+                        icon="amazon"
+                        peRatio={peRatios.AMZN}
+                        ratio={linearFromLog(peRatios.AMZN)}
+                        symbol="AMZN"
+                      />
+                    ))}
                   <Marker
                     alt="disney logo"
                     icon="disney"
