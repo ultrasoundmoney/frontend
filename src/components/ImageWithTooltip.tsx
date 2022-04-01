@@ -26,7 +26,6 @@ type ImageWithTooltipProps = {
   onHover?: (hovering: boolean, ref: RefObject<HTMLImageElement>) => void;
   onMouseEnter?: (ref: RefObject<HTMLImageElement>) => void;
   onMouseLeave?: (ref: RefObject<HTMLImageElement>) => void;
-  placement?: Placement | undefined;
   skeletonDiameter?: string;
   title: string | undefined;
   tooltipImageUrl: string | undefined;
