@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/react";
-import React, { FC, useContext } from "react";
+import React, { FC, useContext, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useAdminToken } from "../../admin";
@@ -12,7 +12,7 @@ import FaqBlock from "../Landing/faq";
 import PriceModel from "../PriceModel";
 import Scarcity from "../Scarcity";
 import SupplyView from "../SupplyView";
-import { SectionTitle } from "../Texts";
+import { SectionTitle, TextRoboto } from "../Texts";
 import ToggleSwitch from "../ToggleSwitch";
 import TotalValueSecured from "../TotalValueSecured";
 import TwitterFam from "../TwitterFam";
@@ -60,6 +60,7 @@ const AdminTools: FC<{
     enabled: boolean;
   }) => void;
 }> = ({ setFlag }) => {
+  const [minimizeFlags, setMinimizeFlags] = useState(false);
   const featureFlags: FeatureFlags.FeatureFlags = useContext(
     FeatureFlags.FeatureFlagsContext,
   );
@@ -71,9 +72,25 @@ const AdminTools: FC<{
         bg-blue-tangaroa rounded-lg
         p-4 z-20
         border-2 border-slate-600
+      transition-transform
+        ${minimizeFlags ? "translate-y-[88%]" : ""}
       `}
     >
-      <WidgetTitle>feature flags</WidgetTitle>
+      <div className="flex justify-between items-center">
+        <WidgetTitle>feature flags</WidgetTitle>
+        <div className="" onClick={() => setMinimizeFlags(!minimizeFlags)}>
+          <TextRoboto
+            className={`text-xl px-2 ${minimizeFlags ? "hidden" : ""}`}
+          >
+            ↓
+          </TextRoboto>
+          <TextRoboto
+            className={`text-xl px-2 ${minimizeFlags ? "" : "hidden"}`}
+          >
+            ↑
+          </TextRoboto>
+        </div>
+      </div>
       {FeatureFlags.flags.map((flag) => (
         <div
           key={flag}
