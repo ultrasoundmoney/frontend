@@ -61,7 +61,6 @@ export const TextInter: FC<{
   style,
   skeletonWidth = "3rem",
 }) => {
-  const { previewSkeletons } = useContext(FeatureFlagsContext);
   const mergedClassName = `
     font-inter font-light
     text-white
@@ -71,7 +70,7 @@ export const TextInter: FC<{
 
   return inline ? (
     <span className={mergedClassName} style={style}>
-      {children === undefined || previewSkeletons ? (
+      {children === undefined ? (
         <Skeleton inline width={skeletonWidth} />
       ) : (
         children
@@ -79,7 +78,7 @@ export const TextInter: FC<{
     </span>
   ) : (
     <p className={mergedClassName} style={style}>
-      {children === undefined || previewSkeletons ? (
+      {children === undefined ? (
         <Skeleton inline width={skeletonWidth} />
       ) : (
         children
