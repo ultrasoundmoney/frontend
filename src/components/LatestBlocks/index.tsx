@@ -14,7 +14,7 @@ import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import CSSTransition from "../CSSTransition";
 import { AmountUnitSpace } from "../Spacing";
 import { TextRoboto } from "../Texts";
-import { WidgetBackground } from "../widget-subcomponents";
+import { WidgetBackground, WidgetTitle } from "../widget-subcomponents";
 import styles from "./LatestBlocks.module.scss";
 
 const maxBlocks = 20;
@@ -100,13 +100,9 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
     <WidgetBackground>
       <div className="flex flex-col gap-y-4">
         <div className="grid grid-cols-3">
-          <span className="font-inter text-blue-spindle uppercase">block</span>
-          <span className="font-inter text-blue-spindle text-right uppercase">
-            gas
-          </span>
-          <span className="font-inter text-blue-spindle text-right uppercase -mr-2">
-            burn
-          </span>
+          <WidgetTitle>block</WidgetTitle>
+          <WidgetTitle className="text-right">gas</WidgetTitle>
+          <WidgetTitle className="text-right -mr-1">burn</WidgetTitle>
         </div>
         <ul
           className={`
