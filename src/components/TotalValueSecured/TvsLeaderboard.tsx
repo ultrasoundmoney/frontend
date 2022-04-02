@@ -150,11 +150,8 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
           `}
         >
           {(rows || leaderboardSkeletons).map((row, index) => (
-            <>
-              <li
-                className="text-white flex items-center"
-                key={row?.name ?? index}
-              >
+            <div key={row?.name ?? index}>
+              <li className="text-white flex items-center">
                 <ImageWithTooltip
                   className="w-8 h-8 select-none"
                   coingeckoUrl={row?.coinGeckoUrl}
@@ -221,7 +218,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
                     freshness={freshnessMap[row?.contractAddresses[0]]}
                   />
                 )}
-            </>
+            </div>
           ))}
         </ul>
       </WidgetBackground>
