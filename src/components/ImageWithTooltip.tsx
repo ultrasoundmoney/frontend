@@ -1,4 +1,3 @@
-import { Placement } from "@popperjs/core";
 import {
   FC,
   ReactEventHandler,
