@@ -18,7 +18,7 @@ import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { AmountBillionsUsdAnimated } from "../Amount";
 import ImageWithTooltip from "../ImageWithTooltip";
 import Link from "../Link";
-import { Modal } from "../Modal";
+import Modal from "../Modal";
 import { TextInter } from "../Texts";
 import Tooltip from "../Tooltip";
 import AdminControls from "../widget-group-1/BurnLeaderboard/AdminControls";

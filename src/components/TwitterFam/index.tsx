@@ -6,7 +6,7 @@ import { FamProfile, useProfiles } from "../../api/fam";
 import * as Format from "../../format";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import ImageWithTooltip from "../ImageWithTooltip";
-import { Modal } from "../Modal";
+import Modal from "../Modal";
 import Tooltip from "../Tooltip";
 import Twemoji from "../Twemoji";
 

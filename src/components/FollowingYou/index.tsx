@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { famBasePath, FamProfile } from "../../api/fam";
 import { formatNoDigit } from "../../format";
 import ImageWithTooltip from "../ImageWithTooltip";
-import { Modal } from "../Modal";
+import Modal from "../Modal";
 import SpanMoji from "../SpanMoji";
 import Tooltip from "../Tooltip";
 import styles from "./FollowingYou.module.scss";

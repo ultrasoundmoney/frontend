@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-export const Modal: FC<{
+const Modal: FC<{
   onClickBackground: () => void;
   show: boolean;
 }> = ({ children, onClickBackground, show }) => (
@@ -16,3 +16,5 @@ export const Modal: FC<{
     {children}
   </div>
 );
+
+export default Modal;
