@@ -15,8 +15,14 @@ export const WidgetBackground: FC<BackgroundProps> = ({
   </div>
 );
 
-export const WidgetTitle: FC = ({ children }) => (
-  <p className="font-inter font-light text-blue-spindle text-md uppercase">
+export const WidgetTitle: FC<{
+  className?: string;
+}> = ({ className, children }) => (
+  <p
+    className={`font-inter font-light text-blue-spindle text-md uppercase ${
+      className ?? ""
+    }`}
+  >
     {children}
   </p>
 );
