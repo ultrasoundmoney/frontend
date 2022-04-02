@@ -67,7 +67,7 @@ const TooltipSecurityRatio: FC<{ onClickClose: () => void }> = ({
           <TextInter>value securing Ethereum</TextInter>
         </div>
       </div>
-      <div className="flex items-center">
+      <div className="flex items-center text-base md:text-md">
         <TextInter>=</TextInter>
         <div className="flex flex-col ml-2">
           <div>
@@ -82,7 +82,7 @@ const TooltipSecurityRatio: FC<{ onClickClose: () => void }> = ({
             <AmountUnitSpace />
             <UnitText>USD</UnitText>
             <AmountUnitSpace />
-            <TextInter className="font-extralight text-blue-spindle">
+            <TextInter className="font-inter text-white font-extralight text-blue-spindle text-base md:text-base">
               in ETH, ERC20s, NFTs
             </TextInter>
           </div>
@@ -118,7 +118,7 @@ const TooltipSecurityRatio: FC<{ onClickClose: () => void }> = ({
               <AmountUnitSpace />
               <UnitText>USD</UnitText>
               <AmountUnitSpace />
-              <TextInter className="font-extralight text-blue-spindle">
+              <TextInter className="font-inter text-white font-extralight text-blue-spindle text-base md:text-base">
                 in staked ETH
               </TextInter>
             </div>
