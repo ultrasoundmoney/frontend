@@ -45,15 +45,14 @@ const LeaderboardRow: FC<Props> = ({
   const imgSrc =
     typeof image === "string"
       ? image
-      : image === undefined
-      ? undefined
       : type === "eth-transfers"
       ? "/leaderboard-images/transfer-v2.svg"
       : isBot
       ? "/leaderboard-images/bot-v2.svg"
       : type === "contract-creations"
       ? "/leaderboard-images/contract-creations.svg"
-      : "/leaderboard-images/question-mark-v2.svg";
+      : undefined;
+
   const isDoneLoading = type !== undefined;
 
   //Your handler Component
