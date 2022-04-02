@@ -150,66 +150,68 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
           `}
         >
           {(rows || leaderboardSkeletons).map((row, index) => (
-            <li
-              className="text-white flex items-center"
-              key={row?.name ?? index}
-            >
-              <ImageWithTooltip
-                className="w-8 h-8 select-none"
-                coingeckoUrl={row?.coinGeckoUrl}
-                contractAddresses={row?.contractAddresses}
-                description={row?.tooltipDescription}
-                famFollowerCount={row?.famFollowerCount}
-                followerCount={row?.followerCount}
-                imageUrl={row?.imageUrl}
-                links={row?.links}
-                isDoneLoading={row !== undefined}
-                nftGoUrl={row?.nftGoUrl}
-                onMouseEnter={(ref) =>
-                  !md || row === undefined
-                    ? () => undefined
-                    : handleImageMouseEnter(row, ref)
-                }
-                onMouseLeave={() =>
-                  !md ? () => undefined : handleImageMouseLeave()
-                }
-                onClick={() =>
-                  md || row === undefined
-                    ? () => undefined
-                    : handleClickProfile(row)
-                }
-                title={row?.tooltipName?.split(":")[0]}
-                tooltipImageUrl={row?.imageUrl}
-                twitterUrl={row?.twitterUrl}
-              />
-              <Link
-                className="flex justify-between ml-4 w-full overflow-hidden"
-                href={row?.coinGeckoUrl || row?.nftGoUrl}
+            <>
+              <li
+                className="text-white flex items-center"
+                key={row?.name ?? index}
               >
-                <TextInter skeletonWidth="6rem" className="truncate">
-                  {row?.name?.split(":")[0]}
-                </TextInter>
-                <TextInter
-                  className={`
+                <ImageWithTooltip
+                  className="w-8 h-8 select-none"
+                  coingeckoUrl={row?.coinGeckoUrl}
+                  contractAddresses={row?.contractAddresses}
+                  description={row?.tooltipDescription}
+                  famFollowerCount={row?.famFollowerCount}
+                  followerCount={row?.followerCount}
+                  imageUrl={row?.imageUrl}
+                  links={row?.links}
+                  isDoneLoading={row !== undefined}
+                  nftGoUrl={row?.nftGoUrl}
+                  onMouseEnter={(ref) =>
+                    !md || row === undefined
+                      ? () => undefined
+                      : handleImageMouseEnter(row, ref)
+                  }
+                  onMouseLeave={() =>
+                    !md ? () => undefined : handleImageMouseLeave()
+                  }
+                  onClick={() =>
+                    md || row === undefined
+                      ? () => undefined
+                      : handleClickProfile(row)
+                  }
+                  title={row?.tooltipName?.split(":")[0]}
+                  tooltipImageUrl={row?.imageUrl}
+                  twitterUrl={row?.twitterUrl}
+                />
+                <Link
+                  className="flex justify-between ml-4 w-full overflow-hidden"
+                  href={row?.coinGeckoUrl || row?.nftGoUrl}
+                >
+                  <TextInter skeletonWidth="6rem" className="truncate">
+                    {row?.name?.split(":")[0]}
+                  </TextInter>
+                  <TextInter
+                    className={`
                     font-extralight text-blue-shipcove uppercase
                     pr-2 ml-2 mr-auto
                     hidden ${row?.detail !== undefined ? "md:inline" : ""}
                   `}
-                >
-                  {row?.detail}
-                </TextInter>
-                <AmountBillionsUsdAnimated
-                  tooltip={pipe(
-                    row?.marketCap,
-                    O.fromNullable,
-                    O.map(Format.formatZeroDigit),
-                    O.map((str) => `${str} USD`),
-                    O.toUndefined,
-                  )}
-                >
-                  {row?.marketCap}
-                </AmountBillionsUsdAnimated>
-              </Link>
+                  >
+                    {row?.detail}
+                  </TextInter>
+                  <AmountBillionsUsdAnimated
+                    tooltip={pipe(
+                      row?.marketCap,
+                      O.fromNullable,
+                      O.map(Format.formatZeroDigit),
+                      O.map((str) => `${str} USD`),
+                      O.toUndefined,
+                    )}
+                  >
+                    {row?.marketCap}
+                  </AmountBillionsUsdAnimated>
+                </Link>
+              </li>
               {adminToken !== undefined &&
                 row !== undefined &&
                 freshnessMap !== undefined &&
@@ -219,7 +221,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
                     freshness={freshnessMap[row?.contractAddresses[0]]}
                   />
                 )}
-            </li>
+            </>
           ))}
         </ul>
       </WidgetBackground>
