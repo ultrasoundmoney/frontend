@@ -199,5 +199,16 @@
   100% {
     opacity: 0;
     transform: scale(0.8);
+    padding-bottom: 0;
   }
 }
+
+.wrapper a {
+  color: #B5BDDB;
+
+  &:hover {
+    text-decoration-line: underline;
+  }
+}
+
+
