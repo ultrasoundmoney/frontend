@@ -74,6 +74,7 @@ const Summary: FC<{ className?: string }> = ({ className = "" }) => {
   const totalValueSecured = useTotalValueSecured();
   const [showSecurityRatioTooltip, setShowSecurityRatioTooltip] =
     useState(false);
+  const [isHoveringNerd, setIsHoveringNerd] = useState(false);
 
   return (
     <>
@@ -101,10 +102,25 @@ const Summary: FC<{ className?: string }> = ({ className = "" }) => {
             <div
               className="flex flex-col gap-y-4 md:items-end cursor-pointer"
               onClick={() => setShowSecurityRatioTooltip(true)}
+              onMouseEnter={() => setIsHoveringNerd(true)}
+              onMouseLeave={() => setIsHoveringNerd(false)}
             >
               <div className="flex items-center">
                 <WidgetTitle>security ratio</WidgetTitle>
-                <img className="ml-2" src="/nerd-coloroff.svg" alt="" />
+                <img
+                  alt="an emoji of a nerd"
+                  className={`ml-2 select-none ${
+                    isHoveringNerd ? "hidden" : ""
+                  }`}
+                  src={`/nerd-coloroff.svg`}
+                />
+                <img
+                  alt="an colored emoji of a nerd"
+                  className={`ml-2 select-none ${
+                    isHoveringNerd ? "" : "hidden"
+                  }`}
+                  src={`/nerd-coloron.svg`}
+                />
               </div>
               <AmountAnimatedShell
                 skeletonWidth="5rem"
