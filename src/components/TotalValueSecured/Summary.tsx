@@ -98,15 +98,13 @@ const Summary: FC<{ className?: string }> = ({ className = "" }) => {
                 {totalValueSecured?.sum}
               </AmountTrillionsUsdAnimated>
             </div>
-            <div className="flex flex-col gap-y-4 md:items-end">
+            <div
+              className="flex flex-col gap-y-4 md:items-end cursor-pointer"
+              onClick={() => setShowSecurityRatioTooltip(true)}
+            >
               <div className="flex items-center">
                 <WidgetTitle>security ratio</WidgetTitle>
-                <img
-                  className="ml-2 cursor-pointer"
-                  src="/nerd-coloroff.svg"
-                  alt=""
-                  onClick={() => setShowSecurityRatioTooltip(true)}
-                />
+                <img className="ml-2" src="/nerd-coloroff.svg" alt="" />
               </div>
               <AmountAnimatedShell
                 skeletonWidth="5rem"
