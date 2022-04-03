@@ -149,13 +149,13 @@ const Summary: FC<{ className?: string }> = ({ className = "" }) => {
             amount={totalValueSecured?.erc20Total}
             href={"https://www.coingecko.com/?asset_platform_id=ethereum"}
             icon="erc20"
-            title="ERC20"
+            title="ERC20s"
           />
           <AssetType
             amount={totalValueSecured?.nftTotal}
             href={"https://nftgo.io/overview"}
             icon="nft"
-            title="NFT"
+            title="NFTs"
           />
         </div>
       </WidgetBackground>
