@@ -34,7 +34,7 @@ const TooltipSecurityRatio: FC<{ onClickClose: () => void }> = ({
     >
       <img
         alt="a close button, circular with an x in the middle"
-        className="md:hidden absolute w-6 right-5 top-5 hover:brightness-90 active:brightness-110 cursor-pointer select-none"
+        className="absolute w-6 right-5 top-5 hover:brightness-90 active:brightness-110 cursor-pointer select-none"
         onClick={onClickClose}
         src="/close.svg"
       />
@@ -46,8 +46,8 @@ const TooltipSecurityRatio: FC<{ onClickClose: () => void }> = ({
       <TextInter className="font-semibold">Security ratio</TextInter>
       <div>
         <TextInter className="whitespace-pre-wrap md:leading-normal">
-          Ratio of total value secured (TVS) to economic security—lower is
-          better.
+          The ratio of total value secured (TVS) to economic security. It
+          measures attacker leverage—lower is better.
         </TextInter>
       </div>
       <WidgetTitle>formula</WidgetTitle>
@@ -55,7 +55,7 @@ const TooltipSecurityRatio: FC<{ onClickClose: () => void }> = ({
         <TextInter>=</TextInter>
         <div className="flex flex-col ml-2">
           <TextInter>total value secured</TextInter>
-          <hr />
+          <hr className="h-[1px]" />
           <TextInter>economic security</TextInter>
         </div>
       </div>
@@ -63,7 +63,7 @@ const TooltipSecurityRatio: FC<{ onClickClose: () => void }> = ({
         <TextInter>=</TextInter>
         <div className="flex flex-col ml-2">
           <TextInter>value secured by Ethereum</TextInter>
-          <hr />
+          <hr className="h-[1px]" />
           <TextInter>value securing Ethereum</TextInter>
         </div>
       </div>
@@ -86,7 +86,7 @@ const TooltipSecurityRatio: FC<{ onClickClose: () => void }> = ({
               in ETH, ERC20s, NFTs
             </TextInter>
           </div>
-          <hr />
+          <hr className="h-[1px]" />
           {totalValueSecured === undefined ? (
             <Skeleton inline width="2rem" />
           ) : (
