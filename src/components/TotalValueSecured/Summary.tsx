@@ -138,7 +138,7 @@ const Summary: FC<{ className?: string }> = ({ className = "" }) => {
               </AmountAnimatedShell>
             </div>
           </div>
-          <WidgetTitle>per asset type</WidgetTitle>
+          <WidgetTitle>ethereum secures</WidgetTitle>
           <AssetType
             amount={totalValueSecured?.ethTotal}
             href={"https://etherscan.io/stat/supply"}
