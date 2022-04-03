@@ -121,7 +121,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
     [md, setSelectedRanking],
   );
 
-  const leaderboardSkeletons = new Array(20).fill({}) as undefined[];
+  const leaderboardSkeletons = new Array(100).fill({}) as undefined[];
 
   const addresses = pipe(
     rows,

@@ -6,7 +6,6 @@ export const flags = [
   "showCategoryCounts",
   "showCategorySlugs",
   "showMetadataTools",
-  "showTop100Erc20",
   "useWebSockets",
 ] as const;
 export type Flag = typeof flags[number];
@@ -19,7 +18,6 @@ export const defaults: FeatureFlags = {
   showCategoryCounts: false,
   showCategorySlugs: false,
   showMetadataTools: false,
-  showTop100Erc20: false,
   useWebSockets: false,
 };
 
@@ -29,7 +27,6 @@ export const displayFlagMap: Record<Flag, string> = {
   showCategoryCounts: "show category counts",
   showCategorySlugs: "show category slugs",
   showMetadataTools: "show metadata tools",
-  showTop100Erc20: "show top-100 ERC20",
   useWebSockets: "use websockets",
 };
 
