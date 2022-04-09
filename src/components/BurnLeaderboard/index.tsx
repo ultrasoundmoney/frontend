@@ -241,8 +241,12 @@ const BurnLeaderboard: FC = () => {
               >
                 <LeaderboardRow
                   key={leaderboardRow.name} // ??? should this be leaderboardRow.id?
-                  name={leaderboardRow.name.split(":")[0]}
-                  detail={leaderboardRow.name.split(":")[1]}
+                  name={
+                    leaderboardRow.name ? leaderboardRow.name.split(":")[0] : ""
+                  }
+                  detail={
+                    leaderboardRow.name ? leaderboardRow.name.split(":")[1] : ""
+                  }
                   id={leaderboardRow.id}
                   isBot={leaderboardRow.isBot}
                   fees={Number(leaderboardRow.fees)}

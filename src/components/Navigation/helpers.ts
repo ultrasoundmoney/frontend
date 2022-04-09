@@ -61,7 +61,7 @@ export const setScrollPosition = (
       iconOffsetInBlock = iconOffset;
     }
     const percentOffsetBlock = iconOffsetInBlock / distanceWidth;
-    const certainBlockHeight = blocksHeights[distanceOrderItem - 1];
+    const certainBlockHeight = blocksHeights[distanceOrderItem];
     const blockYOffset = certainBlockHeight * percentOffsetBlock;
     const drawingLineHight = allTrackingChildren[0].children[0].getBoundingClientRect()
       .height;
@@ -96,7 +96,7 @@ export const showHideNavBar = (
   const collectionElems = stepsRefElem.parentElement?.children!;
   const childrenElems = Array.from(collectionElems);
   const lastSectionIndex: number = childrenElems.findIndex(
-    (node) => node.id === "next-merge"
+    (node) => node.id === "before-genesis"
   )!;
   const lastSectionHight = childrenElems[
     lastSectionIndex
