@@ -44,8 +44,10 @@ const Stepper: React.FC = () => {
     }
   }, [currentActionLogo, controlPoints]);
   const [isLastTrackingElem, setIsLastTrackingElem] = useState<boolean>(false);
+  const isDragging = useRef<boolean>(false);
   const setScrollPosOnLogoMove = (trackWidth: number, logoOffset: number) => {
-    if (stepsRef.current && pageLoad) {
+    if (stepsRef.current && pageLoad && !isDragging.current) {
+      isDragging.current = true;
       const isHighlightDot = setScrollPosition(
         controlPoints,
         trackWidth,
@@ -53,6 +55,9 @@ const Stepper: React.FC = () => {
         stepsRef.current
       );
       setIsLastTrackingElem(isHighlightDot);
+      setTimeout(() => {
+        isDragging.current = false;
+      }, 200);
     }
   };
 

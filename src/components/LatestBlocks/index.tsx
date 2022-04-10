@@ -27,7 +27,7 @@ const LatestBlocks: FC = () => {
     setTimeElapsed(getTimeElapsed(latestBlockFees[0]?.minedAt));
 
     const intervalId = window.setInterval(() => {
-      setTimeElapsed(getTimeElapsed(latestBlockFees[0].minedAt));
+      setTimeElapsed(getTimeElapsed(latestBlockFees[0]?.minedAt));
     }, 1000);
 
     return () => {

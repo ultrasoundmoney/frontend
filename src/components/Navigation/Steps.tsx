@@ -110,12 +110,17 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
               minWidth: "32px",
               willChange: "left",
               transform: "translateX(-50%)",
+              position: "relative",
+              zIndex: 1,
             }}
             transition={{ duration: 0 }}
             className={`absolute top-0 flex justify-center`}
           >
             <img
-              style={{ height: "32px", cursor: "ew-resize" }}
+              style={{
+                height: "32px",
+                cursor: "ew-resize",
+              }}
               draggable="true"
               src={EthLogo}
               alt={t.title}

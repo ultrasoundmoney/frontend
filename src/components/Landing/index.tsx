@@ -627,9 +627,9 @@ const LandingPage: React.FC<{}> = () => {
                 <div id="line__supplyview" className="eclips-hr" />
               </div>
             </div>
+            <TheMergeBlock />
           </div>
         </section>
-        <TheMergeBlock />
         <EtherTheUltraSound />
         <FaqBlock />
         <section
