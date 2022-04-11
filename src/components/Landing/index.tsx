@@ -131,7 +131,7 @@ const LandingPage: React.FC<{}> = () => {
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
                 genesisArr[2]
-              ).toFixed(3)}%`;
+              ).toFixed(2)}%`;
               getEthSupply!.innerHTML = `${followerCountConvert(
                 Number(genesisArr[1])
               )}`;
@@ -173,7 +173,7 @@ const LandingPage: React.FC<{}> = () => {
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
                 genesisArr[2]
-              ).toFixed(3)}%`;
+              ).toFixed(2)}%`;
               getEthSupply!.innerHTML = `${followerCountConvert(
                 Number(genesisArr[1])
               )}`;
@@ -210,7 +210,7 @@ const LandingPage: React.FC<{}> = () => {
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
                 genesisArr[2]
-              ).toFixed(3)}%`;
+              ).toFixed(2)}%`;
               getEthSupply!.innerHTML = `${followerCountConvert(
                 Number(genesisArr[1])
               )}`;
@@ -252,7 +252,7 @@ const LandingPage: React.FC<{}> = () => {
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
                 genesisArr[2]
-              ).toFixed(3)}%`;
+              ).toFixed(2)}%`;
               getEthSupply!.innerHTML = `${followerCountConvert(
                 Number(genesisArr[1])
               )}`;
@@ -289,7 +289,7 @@ const LandingPage: React.FC<{}> = () => {
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
                 genesisArr[2]
-              ).toFixed(3)}%`;
+              ).toFixed(2)}%`;
               getEthSupply!.innerHTML = `${followerCountConvert(
                 Number(genesisArr[1])
               )}`;
@@ -331,7 +331,7 @@ const LandingPage: React.FC<{}> = () => {
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
                 genesisArr[2]
-              ).toFixed(3)}%`;
+              ).toFixed(2)}%`;
               getEthSupply!.innerHTML = `${followerCountConvert(
                 Number(genesisArr[1])
               )}`;
@@ -370,7 +370,7 @@ const LandingPage: React.FC<{}> = () => {
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
                 genesisArr[2]
-              ).toFixed(3)}%`;
+              ).toFixed(2)}%`;
               getEthSupply!.innerHTML = `${followerCountConvert(
                 Number(genesisArr[1])
               )}`;
@@ -412,7 +412,7 @@ const LandingPage: React.FC<{}> = () => {
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
                 genesisArr[2]
-              ).toFixed(3)}%`;
+              ).toFixed(2)}%`;
               getEthSupply!.innerHTML = `${followerCountConvert(
                 Number(genesisArr[1])
               )}`;
@@ -447,7 +447,7 @@ const LandingPage: React.FC<{}> = () => {
             )}`;
             getEthSupplyIncreament!.innerHTML = `+${Number(
               genesisArr[2]
-            ).toFixed(3)}%`;
+            ).toFixed(2)}%`;
             getEthSupply!.innerHTML = `${followerCountConvert(
               Number(genesisArr[1])
             )}`;
@@ -475,7 +475,7 @@ const LandingPage: React.FC<{}> = () => {
             )}`;
             getEthSupplyIncreament!.innerHTML = `+${Number(
               genesisArr[2]
-            ).toFixed(3)}%`;
+            ).toFixed(2)}%`;
             getEthSupply!.innerHTML = `${followerCountConvert(
               Number(genesisArr[1])
             )}`;
@@ -595,29 +595,41 @@ const LandingPage: React.FC<{}> = () => {
         <Navigation />
         <Intro />
         <BeforeGenesis />
-        <GenesisBlock />
-        <EIPByzantium />
-        <EIPConstantinopole />
-        <EIP1559 />
-        <BlockGoal />
-        <div
-          data-aos="fade-up"
-          data-aos-anchor-placement="top-bottom"
-          data-aos-offset="100"
-          data-aos-delay="100"
-          data-aos-duration="1000"
-          data-aos-easing="ease-in-out"
-          className="flex flex-col px-4 md:px-0 mt-6 mb-16"
-          id="supplyview"
-        >
-          <div className="w-full md:w-5/6 lg:w-5/6 md:m-auto relative bg-blue-tangaroa md:px-8 py-4 md:py-16 rounded-xl">
-            <SupplyView />
+        <section data-navigationtrackingblock>
+          <div>
+            <GenesisBlock />
           </div>
-          <div className="flex flex-wrap justify-center pt-20">
-            <div id="line__supplyview" className="eclips-hr" />
+          <div>
+            <EIPByzantium />
           </div>
-        </div>
-        <TheMergeBlock />
+          <div>
+            <EIPConstantinopole />
+          </div>
+          <div>
+            <EIP1559 />
+          </div>
+          <div>
+            <BlockGoal />
+            <div
+              data-aos="fade-up"
+              data-aos-anchor-placement="top-bottom"
+              data-aos-offset="100"
+              data-aos-delay="100"
+              data-aos-duration="1000"
+              data-aos-easing="ease-in-out"
+              className="flex flex-col px-4 md:px-0 mt-6 mb-16"
+              id="supplyview"
+            >
+              <div className="w-full md:w-5/6 lg:w-5/6 md:m-auto relative bg-blue-tangaroa md:px-8 py-4 md:py-16 rounded-xl">
+                <SupplyView />
+              </div>
+              <div className="flex flex-wrap justify-center pt-20">
+                <div id="line__supplyview" className="eclips-hr" />
+              </div>
+            </div>
+            <TheMergeBlock />
+          </div>
+        </section>
         <EtherTheUltraSound />
         <FaqBlock />
         <section

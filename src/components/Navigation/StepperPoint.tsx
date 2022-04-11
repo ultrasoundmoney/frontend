@@ -1,15 +1,6 @@
 import React, { useContext, useRef, useEffect, useState } from "react";
 import { StepperContext } from "../../context/StepperContext";
-import { ActionLogo } from "./Stepper";
-
-type StepperPointProps = {
-  active: boolean;
-  name: string;
-  indexItem: number;
-  actionLogo: ActionLogo;
-  positinLogo: number;
-  onLogoOnDots: (value: boolean) => void;
-};
+import { StepperPointProps } from "./types";
 
 const StepperDots: React.FC<StepperPointProps> = ({
   active,
@@ -57,6 +48,8 @@ const StepperDots: React.FC<StepperPointProps> = ({
 
   useEffect(() => onLogoOnDots(onElement), [onElement]);
 
+  const pointBorderColor = active ? "#00FFA3" : "#8991AD";
+
   return (
     <div
       onClick={moveToPoint(indexItem)}
@@ -66,7 +59,6 @@ const StepperDots: React.FC<StepperPointProps> = ({
         opacity: onElement ? ".4" : "1",
       }}
       className="stepper_point relative flex flex-col items-center transition-opacity cursor-pointer h-full justify-center whitespace-nowrap text-xs text-center text-blue-shipcove hover:opacity-60"
-
     >
       <div
         className="stepper_circle"
@@ -77,14 +69,14 @@ const StepperDots: React.FC<StepperPointProps> = ({
           height: "16px",
           borderRadius: "50%",
           position: "relative",
-          border: `1px solid ${active ? "#00FFA3" : "#8991AD"}`,
+          border: `1px solid ${pointBorderColor}`,
         }}
       >
         <div
           style={{
             width: "6px",
             height: "6px",
-            backgroundColor: active ? "#00FFA3" : "#8991AD",
+            backgroundColor: pointBorderColor,
             borderRadius: "50%",
             margin: "4px",
           }}
