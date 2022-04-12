@@ -73,7 +73,9 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
         setPositinLogo(e.pageX);
       };
       const handleUpLogo = () => {
-        onActionLogo("up");
+        if (activeLogo !== "move" && activeLogo !== "none") {
+          onActionLogo("up");
+        }
         if (!logoOnDots && ref.current?.style) {
           setTimeout(() => onActionLogo("none"), 800);
         }

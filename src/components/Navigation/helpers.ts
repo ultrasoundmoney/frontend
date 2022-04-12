@@ -69,7 +69,6 @@ export const setScrollPosition = (
       controllPoints[distanceOrderItem - 1]?.offsetY +
       blockYOffset -
       drawingLineHight;
-
     window.scrollTo({ top: offsetValue });
     const isActiveDot =
       iconOffsetInBlock > (distanceWidth / 4) * 3 &&
