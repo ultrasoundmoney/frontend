@@ -1,6 +1,7 @@
 import React, { useContext, useRef, useEffect, useState } from "react";
 import { StepperContext } from "../../context/StepperContext";
 import { StepperPointProps } from "./types";
+import classes from "./Navigation.module.scss";
 
 const StepperDots: React.FC<StepperPointProps> = ({
   active,
@@ -82,7 +83,10 @@ const StepperDots: React.FC<StepperPointProps> = ({
           }}
         ></div>
       </div>
-      <div className="mt-1" ref={textPoint}>
+      <div
+        className={`mt-1 ${indexItem % 2 && classes.labelUp}`}
+        ref={textPoint}
+      >
         {name}
       </div>
     </div>
