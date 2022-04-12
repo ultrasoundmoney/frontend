@@ -103,7 +103,7 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
     ]);
 
     return (
-      <div className="w-full h-full md:w-9/12 relative flex justify-around lg:justify-around items-center">
+      <div className="w-full h-full md:w-9/12 relative flex justify-around lg:justify-around items-center pt-5">
         <div className="track_wrapper" ref={trackWrapper}>
           <motion.div
             ref={ref}
