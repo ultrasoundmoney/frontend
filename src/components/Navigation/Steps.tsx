@@ -75,9 +75,8 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
       const handleUpLogo = () => {
         if (activeLogo !== "move" && activeLogo !== "none") {
           onActionLogo("up");
-        }
-        if (!logoOnDots && ref.current?.style) {
-          setTimeout(() => onActionLogo("none"), 800);
+        } else {
+          onActionLogo("none");
         }
         window.removeEventListener("pointermove", handleMoveLogo);
         window.removeEventListener("pointerup", handleUpLogo);
