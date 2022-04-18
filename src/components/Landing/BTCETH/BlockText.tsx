@@ -30,16 +30,20 @@ const BlockText: React.FC<{
     }
   }, [currentIndexElement]);
 
-  return (
-    <motion.div
-      className="graph_text_eth"
-      animate={activePosition}
-      transition={{ duration: 1 }}
-      variants={variants}
-    >
-      <ContentBlockMedia title={title} text={text} />
-    </motion.div>
-  );
+  if (window.innerWidth <= 740) {
+    return (
+      <motion.div
+        className="graph_text_eth"
+        animate={activePosition}
+        transition={{ duration: 1 }}
+        variants={variants}
+      >
+        <ContentBlockMedia title={title} text={text} />
+      </motion.div>
+    );
+  } else {
+    return <ContentBlockMedia title={title} text={text} />;
+  }
 };
 
 export default BlockText;
