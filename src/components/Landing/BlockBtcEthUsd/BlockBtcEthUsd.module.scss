@@ -5,24 +5,12 @@
 .pointer {
   cursor: pointer;
 }
+
 @keyframes makevisible {
   from {
     opacity: 0;
   }
   to {
     opacity: 1;
-  }
-}
-
-.invisible {
-  animation: maketransparent 0.3s linear forwards;
-}
-
-@keyframes maketransparent {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
   }
 }
