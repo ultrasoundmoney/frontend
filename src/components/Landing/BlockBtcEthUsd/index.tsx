@@ -80,26 +80,8 @@ const TheUltraSound: FC<{}> = () => {
         }
       }
     } else if (graphsBlockRef.current && graphTextRef.current) {
+      window.removeEventListener("wheel", changeCryptoType);
       handleGraphs(graphsBlockRef.current, graphTextRef.current, setCryptoType);
-    }
-  };
-
-  useEffect(() => {
-    const isTouchDevice = "ontouchstart" in window;
-
-    if (!isTouchDevice) window.addEventListener("scroll", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      timeoutId && clearTimeout(timeoutId);
-    };
-  }, []);
-
-  const setSpecificTab = (currency = "none") => {
-    const index = tabs.indexOf(currency);
-    if (index && eventScroll.current) {
-      step.current = index + 1;
-      setCryptoType(tabs[step.current - 1]);
-      graphRef?.current?.scrollIntoView({ block: "center" });
     }
   };
 
@@ -121,13 +103,27 @@ const TheUltraSound: FC<{}> = () => {
       }
     }
   };
+
   useEffect(() => {
+    const isTouchDevice = "ontouchstart" in window;
+    if (!isTouchDevice) window.addEventListener("scroll", onScroll);
     setTextBlicksHeights();
     window.addEventListener("resize", setTextBlicksHeights);
     return () => {
+      window.removeEventListener("scroll", onScroll);
+      timeoutId && clearTimeout(timeoutId);
       window.removeEventListener("resize", setTextBlicksHeights);
     };
   }, []);
+
+  const setSpecificTab = (currency = "none") => {
+    const index = tabs.indexOf(currency);
+    if (index && eventScroll.current) {
+      step.current = index + 1;
+      setCryptoType(tabs[step.current - 1]);
+      graphRef?.current?.scrollIntoView({ block: "center" });
+    }
+  };
 
   return (
     <>

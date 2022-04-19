@@ -30,7 +30,7 @@ const BlockText: React.FC<{
     }
   }, [currentIndexElement]);
 
-  if (window.innerWidth <= 740) {
+  if (typeof window !== "undefined" && window.innerWidth <= 740) {
     return (
       <motion.div
         className="graph_text_eth"
