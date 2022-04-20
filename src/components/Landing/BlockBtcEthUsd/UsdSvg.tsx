@@ -2,7 +2,7 @@ import classes from "./BlockBtcEthUsd.module.scss";
 
 const UsdSvg: React.FC = () => {
   return (
-    <svg className={classes.visible} viewBox="0 0 435 394" fill="none">
+    <svg className="overflow-visible" viewBox="0 0 435 394" fill="none">
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -27,6 +27,8 @@ const UsdSvg: React.FC = () => {
         d="M0 350.887C302.916 350.887 349.72 193.647 349.72 144"
         stroke="url(#usd_g)"
         strokeWidth="2"
+        id="usd"
+        className="usd"
       />
       <defs>
         <linearGradient
@@ -43,7 +45,17 @@ const UsdSvg: React.FC = () => {
           <stop offset="1" stopColor="#C6E374" />
         </linearGradient>
       </defs>
-      <use href="#usdcpoint" x="200" y="-5" fill="#5474F4"></use>
+      <use
+        className={classes.visible}
+        href="#usdcpoint"
+        x="-150"
+        y="-150"
+        fill="#5474F4"
+      >
+        <animateMotion dur="0.5s" repeatCount="1" fill="freeze">
+          <mpath href="#usd" />
+        </animateMotion>
+      </use>
       <path
         d="M1 350.988C16.192 300.494 61.7406 208.495 100.651 197.613C146.59 184.765 236.969 201.16 359.555 217.361"
         stroke="#5474F4"

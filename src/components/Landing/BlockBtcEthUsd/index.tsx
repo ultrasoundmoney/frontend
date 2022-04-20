@@ -8,7 +8,7 @@ import BtcSvg from "./BtcSvg";
 import UsdSvg from "./UsdSvg";
 import NoneSvg from "./NoneSvg";
 import CurrencyTabs from "./CurrencyTabs";
-import { handleGraphs } from "./helpers";
+import { handleGraphs, setScrollPos } from "./helpers";
 
 interface Obj {
   [key: string]: any;
@@ -117,11 +117,20 @@ const TheUltraSound: FC<{}> = () => {
   }, []);
 
   const setSpecificTab = (currency = "none") => {
-    const index = tabs.indexOf(currency);
-    if (index && eventScroll.current) {
+    let index = tabs.indexOf(currency);
+    if (index < 0) {
+      index = 0;
+    }
+    if (eventScroll.current && window.innerWidth <= 740) {
       step.current = index + 1;
       setCryptoType(tabs[step.current - 1]);
       graphRef?.current?.scrollIntoView({ block: "center" });
+    } else if (
+      graphsBlockRef.current &&
+      graphTextRef.current &&
+      graphRef.current
+    ) {
+      setScrollPos(graphRef.current, graphTextRef.current, index);
     }
   };
 

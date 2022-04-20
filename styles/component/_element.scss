@@ -361,29 +361,24 @@
   }
 }
 
+@mixin strokeGraphAni {
+  fill: none;
+  stroke-width: 2;
+  stroke-dasharray: 900 900;
+  animation: strokeAni 1s linear;
+}
 #enter-ultra-sound {
   path#eth {
-    // stroke: blue;
-    fill: none;
-    stroke-width: 2;
-    stroke-dasharray: 900 900;
-    animation: strokeAni 2.7s linear;
+    @include strokeGraphAni;
   }
 
   path#btc {
-    // stroke: yellow;
-    fill: none;
-    stroke-width: 2;
-    stroke-dasharray: 900 900;
-    animation: strokeAni 2.7s linear;
+    @include strokeGraphAni;
+    animation-duration: 0.9s;
   }
 
   path#usd {
-    // stroke: green;
-    fill: none;
-    stroke-width: 2;
-    stroke-dasharray: 900 900;
-    animation: strokeAni 2.7s linear;
+    @include strokeGraphAni;
   }
 
   @keyframes strokeAni {
