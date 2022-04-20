@@ -1,4 +1,4 @@
-const GRAPH_TOP_VALUE = 400;
+const GRAPH_TOP_VALUE = 250;
 const graphType = ["none", "btc", "eth", "usd"];
 
 export const handleGraphs = (
@@ -6,8 +6,9 @@ export const handleGraphs = (
   graphTextElem: HTMLElement,
   setCryptoType: (val: string) => void
 ) => {
-  const textBlockToBottom = graphTextElem.getBoundingClientRect().bottom;
-  const textBlockToHeight = graphTextElem.getBoundingClientRect().height;
+  const graphTextElemData = graphTextElem.getBoundingClientRect();
+  const textBlockToBottom = graphTextElemData.bottom;
+  const textBlockToHeight = graphTextElemData.height;
   const bottomHeight = textBlockToHeight + GRAPH_TOP_VALUE;
   const heightCoeffValue = (textBlockToBottom - bottomHeight) / 2;
   if (
