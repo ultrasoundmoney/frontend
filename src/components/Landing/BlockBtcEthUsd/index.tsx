@@ -185,7 +185,9 @@ const TheUltraSound: FC<{}> = () => {
               {cryptoType === "eth" && <EthSvg />}
               {cryptoType === "btc" && <BtcSvg />}
               {cryptoType === "usd" && <UsdSvg />}
-              {cryptoType === "none" && <NoneSvg />}
+              {cryptoType === "none" && (
+                <NoneSvg setSpecificTab={setSpecificTab} />
+              )}
             </div>
           </div>
         </div>

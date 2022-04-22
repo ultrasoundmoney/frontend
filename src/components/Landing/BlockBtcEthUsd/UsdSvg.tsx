@@ -25,6 +25,12 @@ const UsdSvg: React.FC = () => {
       </symbol>
       <path
         d="M0 350.887C302.916 350.887 349.72 193.647 349.72 144"
+        strokeWidth="2"
+        stroke="#a3d972"
+        style={{ opacity: 0.1 }}
+      />
+      <path
+        d="M0 350.887C302.916 350.887 349.72 193.647 349.72 144"
         stroke="url(#usd_g)"
         strokeWidth="2"
         id="usd"
