@@ -3,10 +3,7 @@ import BatImg from "../../../assets/bat.png";
 import { TranslationsContext } from "../../../translations-context";
 import SVGrenderText from "../BTCETH/generateText";
 import DrawingLine from "../DrawingLine";
-import EthSvg from "./EthSvg";
-import BtcSvg from "./BtcSvg";
-import UsdSvg from "./UsdSvg";
-import NoneSvg from "./NoneSvg";
+import Graphics from "./Graphics";
 import CurrencyTabs from "./CurrencyTabs";
 import { handleGraphs, setScrollPos } from "./helpers";
 
@@ -182,12 +179,10 @@ const TheUltraSound: FC<{}> = () => {
                 setSpecificTab={setSpecificTab}
                 cryptoType={cryptoType}
               />
-              {cryptoType === "eth" && <EthSvg />}
-              {cryptoType === "btc" && <BtcSvg />}
-              {cryptoType === "usd" && <UsdSvg />}
-              {cryptoType === "none" && (
-                <NoneSvg setSpecificTab={setSpecificTab} />
-              )}
+              <Graphics
+                setSpecificTab={setSpecificTab}
+                cryptoType={cryptoType}
+              />
             </div>
           </div>
         </div>
