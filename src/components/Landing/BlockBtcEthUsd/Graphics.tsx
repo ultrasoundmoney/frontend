@@ -1,19 +1,22 @@
 import React, { useRef, useState } from "react";
 import classes from "./BlockBtcEthUsd.module.scss";
-import { onHoverFunctionality } from "./helpers";
+import {
+  onHoverFunctionality,
+  onSvgMouseOut,
+  BTC_DOT_COORDS_STATIC,
+  BTC_DOT_COORDS_ANIM,
+  ETH_DOT_COORDS_STATIC,
+  ETH_DOT_COORDS_ANIM,
+  USD_DOT_COORDS_STATIC,
+  USD_DOT_COORDS_ANIM,
+} from "./helpers";
 
 type NoneSvgProps = {
   setSpecificTab: (val: string) => void;
+  cryptoType: string;
 };
 
-const BTC_DOT_COORDS_STATIC = ["205", "-40"];
-const BTC_DOT_COORDS_ANIM = ["-148", "-150"];
-const ETH_DOT_COORDS_STATIC = ["210", "67"];
-const ETH_DOT_COORDS_ANIM = ["-150", "-150"];
-const USD_DOT_COORDS_STATIC = ["200", "-8"];
-const USD_DOT_COORDS_ANIM = ["-150", "-150"];
-
-const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab }) => {
+const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab, cryptoType }) => {
   const btcPathRef = useRef<SVGPathElement>(null);
   const btcPathRefMore = useRef<SVGPathElement>(null);
   const btcUseRef = useRef<SVGUseElement>(null);
@@ -28,22 +31,22 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab }) => {
   const onHoverhandler = (
     e: React.MouseEvent<SVGPathElement | SVGUseElement>
   ): void => {
-    if (
-      ethPathRef.current &&
-      ethUseRef.current &&
-      usdPathRef.current &&
-      btcPathRef.current &&
-      usdUseRef.current &&
-      btcUseRef.current
-    ) {
+    if (ethPathRef.current && usdPathRef.current && btcPathRef.current) {
       onHoverFunctionality(
         e,
         ethPathRef.current,
-        ethUseRef.current,
         usdPathRef.current,
-        usdUseRef.current,
         btcPathRef.current,
-        btcUseRef.current,
+        setHoverElem
+      );
+    }
+  };
+  const onSvgMouseOutHandler = () => {
+    if (ethPathRef.current && usdPathRef.current && btcPathRef.current) {
+      onSvgMouseOut(
+        ethPathRef.current,
+        usdPathRef.current,
+        btcPathRef.current,
         setHoverElem
       );
     }
@@ -56,16 +59,30 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab }) => {
   };
 
   const BTC_DOT_C =
-    hoverElem === "btc" ? BTC_DOT_COORDS_ANIM : BTC_DOT_COORDS_STATIC;
+    cryptoType === "btc"
+      ? BTC_DOT_COORDS_ANIM
+      : hoverElem === "btc"
+      ? BTC_DOT_COORDS_ANIM
+      : BTC_DOT_COORDS_STATIC;
   const ETH_DOT_C =
-    hoverElem === "eth" ? ETH_DOT_COORDS_ANIM : ETH_DOT_COORDS_STATIC;
+    cryptoType == "eth"
+      ? ETH_DOT_COORDS_ANIM
+      : hoverElem === "eth"
+      ? ETH_DOT_COORDS_ANIM
+      : ETH_DOT_COORDS_STATIC;
   const USD_DOT_C =
-    hoverElem === "usd" ? USD_DOT_COORDS_ANIM : USD_DOT_COORDS_STATIC;
+    cryptoType === "usd"
+      ? USD_DOT_COORDS_ANIM
+      : hoverElem === "usd"
+      ? USD_DOT_COORDS_ANIM
+      : USD_DOT_COORDS_STATIC;
+
   return (
     <svg
-      className={`${classes.visible} overflow-visible`}
+      className="overflow-visible"
       viewBox="0 0 435 394"
       fill="none"
+      onMouseOut={onSvgMouseOutHandler}
     >
       <path
         fillRule="evenodd"
@@ -90,9 +107,6 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab }) => {
           <circle cx="150" cy="150" r="6" fill="#A3D972" fillOpacity="0.2" />
           <circle cx="150" cy="150" r="2.5" fill="#A3D972" stroke="white" />
         </symbol>
-        <symbol id="usdpointCircle">
-          <circle cx="349.72" cy="144" r="50" fill="transparent" />
-        </symbol>
       </defs>
       <path
         d="M0 350.887C302.916 350.887 349.72 193.647 349.72 144"
@@ -103,10 +117,11 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab }) => {
       <path
         d="M0 350.887C302.916 350.887 349.72 193.647 349.72 144"
         stroke="url(#usd_gDefault)"
-        strokeWidth="2"
         data-graph="usd"
         ref={usdPathRef}
-        className={`${hoverElem === "usd" && classes.usd_none}`}
+        className={`${classes.pathDefault} ${
+          cryptoType === "usd" && classes.pathStrokeAnim
+        }`}
         id="usd_none"
       />
       <path
@@ -114,9 +129,9 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab }) => {
         stroke="transparent"
         strokeWidth="30"
         data-graph="usd"
-        onMouseEnter={onHoverhandler}
-        onMouseOut={onHoverhandler}
-        onMouseDown={onGraphClickHandler}
+        onMouseEnter={cryptoType !== "usd" ? onHoverhandler : undefined}
+        onMouseOut={cryptoType !== "usd" ? onHoverhandler : undefined}
+        onMouseDown={cryptoType !== "usd" ? onGraphClickHandler : undefined}
         ref={usdPathRefMore}
         className={classes.pointer}
       />
@@ -141,20 +156,16 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab }) => {
         y={USD_DOT_C[1]}
         fill="#5474F4"
         data-graph="usd"
-        data-use
-        onMouseEnter={onHoverhandler}
+        onMouseEnter={cryptoType !== "usd" ? onHoverhandler : undefined}
+        onMouseDown={cryptoType !== "usd" ? onGraphClickHandler : undefined}
         ref={usdUseRef}
         className={`${classes.pointer} ${
-          hoverElem === "usd" && classes.usd_none_circle
+          cryptoType === "usd"
+            ? classes.usd_none_circle
+            : hoverElem === "usd"
+            ? classes.usd_none_circle
+            : classes.novisible
         }`}
-      ></use>
-      <use
-        className={classes.pointer}
-        data-graph="usd"
-        onMouseEnter={onHoverhandler}
-        onMouseOut={onHoverhandler}
-        onMouseDown={onGraphClickHandler}
-        href="#usdpointCircle"
       />
 
       {/* BTC graph */}
@@ -173,11 +184,7 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab }) => {
           <circle cx="150" cy="150" r="6" fill="#FF891D" fillOpacity="0.2" />
           <circle cx="150" cy="150" r="2.5" fill="#FF891D" stroke="white" />
         </symbol>
-        <symbol id="btcpointCircle">
-          <circle cx="355.152" cy="110.006" r="50" fill="transparent" />
-        </symbol>
       </defs>
-
       <path
         d="M1 350.104C29.3714 212.367 41.8762 186.944 99.2632 149.658C156.649 112.371 327.989 109.855 355.152 110.006"
         strokeWidth="2"
@@ -187,19 +194,21 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab }) => {
       <path
         d="M1 350.104C29.3714 212.367 41.8762 186.944 99.2632 149.658C156.649 112.371 327.989 109.855 355.152 110.006"
         stroke="url(#btc_g)"
-        strokeWidth="2"
         ref={btcPathRef}
         id="btc_none"
-        className={`${hoverElem === "btc" && classes.btc_none}`}
+        className={`${classes.pathDefault} ${
+          cryptoType === "btc" && classes.pathStrokeAnim
+        }`}
+        data-graph="btc"
       />
       <path
         d="M1 350.104C29.3714 212.367 41.8762 186.944 99.2632 149.658C156.649 112.371 327.989 109.855 355.152 110.006"
         stroke="transparent"
         strokeWidth="30"
         data-graph="btc"
-        onMouseEnter={onHoverhandler}
-        onMouseOut={onHoverhandler}
-        onMouseDown={onGraphClickHandler}
+        onMouseEnter={cryptoType !== "btc" ? onHoverhandler : undefined}
+        onMouseOut={cryptoType !== "btc" ? onHoverhandler : undefined}
+        onMouseDown={cryptoType !== "btc" ? onGraphClickHandler : undefined}
         ref={btcPathRefMore}
         className={classes.pointer}
       />
@@ -224,20 +233,16 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab }) => {
         y={BTC_DOT_C[1]}
         fill="#5474F4"
         data-graph="btc"
-        data-use
         ref={btcUseRef}
-        onMouseEnter={onHoverhandler}
+        onMouseEnter={cryptoType !== "btc" ? onHoverhandler : undefined}
+        onMouseDown={cryptoType !== "btc" ? onGraphClickHandler : undefined}
         className={`${classes.pointer} ${
-          hoverElem === "btc" && classes.btc_none_circle
+          cryptoType === "btc"
+            ? classes.btc_none_circle
+            : hoverElem === "btc"
+            ? classes.btc_none_circle
+            : classes.novisible
         }`}
-      ></use>
-      <use
-        className={classes.pointer}
-        data-graph="btc"
-        onMouseEnter={onHoverhandler}
-        onMouseOut={onHoverhandler}
-        onMouseDown={onGraphClickHandler}
-        href="#btcpointCircle"
       />
 
       {/* ETH graph */}
@@ -256,9 +261,6 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab }) => {
           <circle cx="150" cy="150" r="6" fill="#5474F4" fillOpacity="0.2" />
           <circle cx="150" cy="150" r="2.5" fill="#5474F4" stroke="white" />
         </symbol>
-        <symbol id="ethpointCircle">
-          <circle cx="359.555" cy="217.361" r="50" fill="transparent" />
-        </symbol>
       </defs>
       <path
         d="M1 350.988C16.192 300.494 61.7406 208.495 100.651 197.613C146.59 184.765 236.969 201.16 359.555 217.361"
@@ -269,10 +271,11 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab }) => {
       <path
         d="M1 350.988C16.192 300.494 61.7406 208.495 100.651 197.613C146.59 184.765 236.969 201.16 359.555 217.361"
         stroke="url(#paint0_linear)"
-        strokeWidth="2"
         data-graph="eth"
         ref={ethPathRef}
-        className={`${hoverElem === "eth" && classes.eth_none}`}
+        className={`${classes.pathDefault} ${
+          cryptoType === "eth" && classes.pathStrokeAnim
+        }`}
         id="eth_none"
       />
       <path
@@ -280,9 +283,9 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab }) => {
         stroke="transparent"
         strokeWidth="30"
         data-graph="eth"
-        onMouseEnter={onHoverhandler}
-        onMouseOut={onHoverhandler}
-        onMouseDown={onGraphClickHandler}
+        onMouseEnter={cryptoType !== "eth" ? onHoverhandler : undefined}
+        onMouseOut={cryptoType !== "eth" ? onHoverhandler : undefined}
+        onMouseDown={cryptoType !== "eth" ? onGraphClickHandler : undefined}
         ref={ethPathRefMore}
         className={classes.pointer}
       />
@@ -307,20 +310,16 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab }) => {
         y={ETH_DOT_C[1]}
         fill="#5474F4"
         data-graph="eth"
-        data-use
-        onMouseEnter={onHoverhandler}
+        onMouseEnter={cryptoType !== "eth" ? onHoverhandler : undefined}
+        onMouseDown={cryptoType !== "eth" ? onGraphClickHandler : undefined}
         ref={ethUseRef}
         className={`${classes.pointer} ${
-          hoverElem === "eth" && classes.eth_none_circle
+          cryptoType === "eth"
+            ? classes.eth_none_circle
+            : hoverElem === "eth"
+            ? classes.eth_none_circle
+            : classes.novisible
         }`}
-      ></use>
-      <use
-        className={classes.pointer}
-        data-graph="eth"
-        onMouseEnter={onHoverhandler}
-        onMouseOut={onHoverhandler}
-        onMouseDown={onGraphClickHandler}
-        href="#ethpointCircle"
       />
     </svg>
   );

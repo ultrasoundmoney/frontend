@@ -15,51 +15,44 @@
   }
 }
 
-@mixin strokeGraphAni {
+.pathDefault {
+  stroke-width: 2px;
   fill: none;
-  stroke-width: 2;
+  transition: 1s;
   stroke-dasharray: 900 900;
-  animation: strokeAni 1s linear;
+  stroke-dashoffset: 900;
 }
-.btc_none {
-  @include strokeGraphAni;
-  animation-duration: 1s;
+.pathStrokeAnim {
+  animation: showPathStrokeAnim 0.575s linear forwards;
 }
-.eth_none {
-  @include strokeGraphAni;
-  animation-duration: 1s;
-}
-.usd_none {
-  @include strokeGraphAni;
-  animation-duration: 1s;
-}
-
-@keyframes strokeAni {
-  0% {
-    stroke-dashoffset: 900;
-  }
-
+@keyframes showPathStrokeAnim {
   100% {
     stroke-dashoffset: 0;
   }
 }
 
+.novisible {
+  visibility: hidden;
+}
 // circles
 .btc_none_circle {
+  visibility: visible;
   offset-path: path(
     "M1 350.104C29.3714 212.367 41.8762 186.944 99.2632 149.658C156.649 112.371 327.989 109.855 355.152 110.006"
   );
-  animation: circleAnim 0.5s linear forwards;
+  animation: circleAnim 0.3s linear forwards;
 }
 .eth_none_circle {
+  visibility: visible;
   offset-path: path(
     "M1 350.988C16.192 300.494 61.7406 208.495 100.651 197.613C146.59 184.765 236.969 201.16 359.555 217.361"
   );
-  animation: circleAnim 0.5s linear forwards;
+  animation: circleAnim 0.3s linear forwards;
 }
 .usd_none_circle {
+  visibility: visible;
   offset-path: path("M0 350.887C302.916 350.887 349.72 193.647 349.72 144");
-  animation: circleAnim 0.5s linear forwards;
+  animation: circleAnim 0.3s linear forwards;
 }
 @keyframes circleAnim {
   100% {
@@ -67,7 +60,6 @@
   }
 }
 
-
-.graphsWrap{
+.graphsWrap {
   display: flex;
 }
