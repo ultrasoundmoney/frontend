@@ -1,5 +1,7 @@
 const GRAPH_TOP_VALUE = 250;
+const GRAPH_TOP_MOBILE_VALUE = 100;
 const OFFSET_TO_SCROLL = 48;
+const WINDOW_BREAK_POINT = 740;
 const graphType = ["none", "btc", "eth", "usd"];
 
 export const handleGraphs = (
@@ -12,17 +14,32 @@ export const handleGraphs = (
   const textBlockToHeight = graphTextElemData.height;
   const bottomHeight = textBlockToHeight + GRAPH_TOP_VALUE;
   const heightCoeffValue = (textBlockToBottom - bottomHeight) / 2;
-  if (
-    textBlockToBottom > heightCoeffValue &&
-    graphsBlockElem.style.position !== "sticky"
-  ) {
-    graphsBlockElem.style.position = "sticky";
-    graphsBlockElem.style.top = GRAPH_TOP_VALUE + "px";
-  }
   const textBlocksArray = Array.from(graphTextElem.children);
+  const topBreakPointValue =
+    window.innerWidth <= WINDOW_BREAK_POINT
+      ? GRAPH_TOP_MOBILE_VALUE + graphsBlockElem.getBoundingClientRect().height
+      : GRAPH_TOP_VALUE;
+  if (window.innerWidth <= WINDOW_BREAK_POINT) {
+    const graphsBlockParentElem = graphsBlockElem.parentElement!;
+    if (
+      textBlockToBottom > heightCoeffValue &&
+      graphsBlockParentElem.style.position !== "sticky"
+    ) {
+      graphsBlockParentElem.style.position = "sticky";
+      graphsBlockParentElem.style.top = GRAPH_TOP_MOBILE_VALUE + "px";
+    }
+  } else {
+    if (
+      textBlockToBottom > heightCoeffValue &&
+      graphsBlockElem.style.position !== "sticky"
+    ) {
+      graphsBlockElem.style.position = "sticky";
+      graphsBlockElem.style.top = GRAPH_TOP_VALUE + "px";
+    }
+  }
   for (let i = 0; i <= textBlocksArray.length - 1; i++) {
     const topValue = textBlocksArray[i].getBoundingClientRect().top;
-    if (topValue >= GRAPH_TOP_VALUE) {
+    if (topValue >= topBreakPointValue) {
       setCryptoType(graphType[i]);
       break;
     }
@@ -38,7 +55,10 @@ export const setScrollPos = (
   const topParent = firstParent.parentNode!;
   const upBlockHeight = firstParent.children[0].getBoundingClientRect().height;
   const childrenArray = Array.from(topParent.children);
-  let heightToPoint = upBlockHeight - OFFSET_TO_SCROLL;
+  let heightToPoint =
+    window.innerWidth <= WINDOW_BREAK_POINT
+      ? upBlockHeight
+      : upBlockHeight - OFFSET_TO_SCROLL;
   for (let i = 2; i < childrenArray.length - 1; i++) {
     if (childrenArray[i].id === "enter-ultra-sound") {
       break;
