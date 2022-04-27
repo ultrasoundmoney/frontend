@@ -6,6 +6,7 @@ import DrawingLine from "../DrawingLine";
 import Graphics from "./Graphics";
 import CurrencyTabs from "./CurrencyTabs";
 import { handleGraphs, setScrollPos } from "./helpers";
+import classes from "./BlockBtcEthUsd.module.scss";
 
 interface Obj {
   [key: string]: any;
@@ -23,7 +24,6 @@ const TheUltraSound: FC<{}> = () => {
 
   const step = useRef(0);
   const allow = useRef(true);
-  const eventScroll = useRef<null | Obj>(null);
   const elPosition = useRef<number>(0);
 
   const changeCryptoType = (wheelEvent: Obj) => {
@@ -57,26 +57,8 @@ const TheUltraSound: FC<{}> = () => {
     timeoutId = setTimeout(() => (allow.current = true), 1500);
   };
 
-  const onScroll = (event: Obj, important?: boolean) => {
-    if (window.innerWidth <= 740) {
-      eventScroll.current = event;
-      if (graphRef?.current) {
-        const rect = graphRef.current.getBoundingClientRect();
-        const trigger =
-          window.scrollY + window.innerHeight / 2 - rect.height / 2;
-        elPosition.current = window.scrollY + rect.top;
-        const scrollTriggerStart =
-          elPosition.current < trigger + 50 &&
-          elPosition.current > trigger - 100;
-        if (scrollTriggerStart || important) {
-          document.body.style.overflowY = "hidden";
-          window.addEventListener("wheel", changeCryptoType);
-        } else {
-          document.body.style.overflowY = "scroll";
-          window.removeEventListener("wheel", changeCryptoType);
-        }
-      }
-    } else if (graphsBlockRef.current && graphTextRef.current) {
+  const onScroll = () => {
+    if (graphsBlockRef.current && graphTextRef.current) {
       window.removeEventListener("wheel", changeCryptoType);
       handleGraphs(graphsBlockRef.current, graphTextRef.current, setCryptoType);
     }
@@ -90,7 +72,7 @@ const TheUltraSound: FC<{}> = () => {
       if (window.innerWidth <= 740) {
         for (let i = 0; i <= blocks.length - 1; i++) {
           const el: any = blocks[i];
-          delete el.style.minHeight;
+          el.style.minHeight = "auto";
         }
       } else {
         for (let i = 0; i <= blocks.length - 1; i++) {
@@ -118,15 +100,7 @@ const TheUltraSound: FC<{}> = () => {
     if (index < 0) {
       index = 0;
     }
-    if (eventScroll.current && window.innerWidth <= 740) {
-      step.current = index + 1;
-      setCryptoType(tabs[step.current - 1]);
-      graphRef?.current?.scrollIntoView({ block: "center" });
-    } else if (
-      graphsBlockRef.current &&
-      graphTextRef.current &&
-      graphRef.current
-    ) {
+    if (graphsBlockRef.current && graphTextRef.current && graphRef.current) {
       setScrollPos(graphRef.current, graphTextRef.current, index);
     }
   };
@@ -150,14 +124,6 @@ const TheUltraSound: FC<{}> = () => {
             src={BatImg}
             className="mx-auto text-center mb-8"
           />
-          {/* <video
-            loop
-            autoPlay
-            muted
-            style={{ width: "360px", margin: "0 auto 20px auto" }}
-          >
-            <source src="/moving_new.mp4" />
-          </video> */}
           <div className="ultra-sound-text current-gradient text-2xl md:text-6xl mb-24">
             {t.eusm_section_title}
           </div>
@@ -171,10 +137,10 @@ const TheUltraSound: FC<{}> = () => {
             ref={graphTextRef}
             className="graph_text_containter w-full md:w-7/12 self-center order-2 md:order-1 md:px-20"
           >
-            <SVGrenderText typ={cryptoType} />
+            <SVGrenderText />
           </div>
           <div className="relative w-full md:w-5/12 order-1 md:order-1 mb-6 md:mb-0">
-            <div ref={graphsBlockRef}>
+            <div ref={graphsBlockRef} className={classes.graphsBlock}>
               <CurrencyTabs
                 setSpecificTab={setSpecificTab}
                 cryptoType={cryptoType}

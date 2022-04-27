@@ -1,15 +1,9 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { TranslationsContext } from "../../../translations-context";
-import BlockText from "./BlockText";
+import ContentBlockMedia from "../../ContentBlock/ContentBlockMedia";
 
-const SVGrender: React.FC<{ typ: string }> = ({ typ }) => {
+const SVGrender: React.FC = () => {
   const t = useContext(TranslationsContext);
-  const [currentIndex, setCurentIndex] = useState(0);
-  const variants = {
-    down: { y: 500, opacity: 0 },
-    center: { y: 0, opacity: 1 },
-    up: { y: -500, opacity: 0 },
-  };
 
   const data = [
     {
@@ -34,33 +28,13 @@ const SVGrender: React.FC<{ typ: string }> = ({ typ }) => {
     },
   ];
 
-  useEffect(() => {
-    switch (typ) {
-      case "btc":
-        setCurentIndex(1);
-        break;
-      case "eth":
-        setCurentIndex(2);
-        break;
-      case "usd":
-        setCurentIndex(3);
-        break;
-      default:
-        setCurentIndex(0);
-        break;
-    }
-  }, [typ]);
-
   return (
     <>
-      {data.map((item, index) => (
-        <BlockText
+      {data.map((item) => (
+        <ContentBlockMedia
           key={item.type}
-          currentIndexElement={currentIndex}
-          indexElement={index}
           title={item.title}
           text={item.text}
-          variants={variants}
         />
       ))}
     </>
