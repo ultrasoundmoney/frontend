@@ -8,7 +8,10 @@ const NftDrop: React.FC = () => {
   const t = React.useContext(TranslationsContext);
 
   return (
-    <div className="relative w-full md:w-auto md:flex px-4 md:px-0 pt-32 pb-40">
+    <div
+      id="nft-drop"
+      className="relative w-full md:w-auto md:flex px-4 md:px-0 pt-32 pb-40"
+    >
       <div className="absolute -top-32 left-0">
         <img src={GlowBackground} alt="glow" />
       </div>

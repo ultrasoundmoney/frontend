@@ -214,7 +214,7 @@
 .hamburger-menu {
   position: fixed;
   right: 10px;
-  top: 30px;
+  top: 0;
   height: 34px;
   padding: 8px;
   z-index: 99;
@@ -341,7 +341,7 @@
 }
 
 .sidebar {
-  background-color: rgba(27, 34, 54, 1);
+  background-color: rgba(27, 34, 54, 0.95);
   position: fixed;
   top: 0;
   right: 0px;
