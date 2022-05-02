@@ -12,7 +12,7 @@ const ContentBlockMedia: React.FC<ContentBlockMediaProps> = ({
   text,
 }) => {
   return (
-    <div>
+    <div className="flex flex-col justify-center mb-8">
       {img !== null && img != undefined && (
         <img
           className="text-left mr-auto mb-6"

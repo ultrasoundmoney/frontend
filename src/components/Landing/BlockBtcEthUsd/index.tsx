@@ -131,11 +131,11 @@ const TheUltraSound: FC<{}> = () => {
         <div
           id="graph_svg"
           ref={graphRef}
-          className="w-full md:w-9/12 flex flex-wrap justify-center ml-auto mr-auto"
+          className="w-full md:w-8/12 flex flex-wrap justify-between ml-auto mr-auto"
         >
           <div
             ref={graphTextRef}
-            className="graph_text_containter w-full md:w-7/12 self-center order-2 md:order-1 md:px-20"
+            className="graph_text_containter w-full md:w-5/12 self-center order-2 md:order-1"
           >
             <SVGrenderText />
           </div>
