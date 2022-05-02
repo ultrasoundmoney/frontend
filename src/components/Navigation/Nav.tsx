@@ -4,8 +4,6 @@ import { StepperContext } from "../../context/StepperContext";
 import classes from "./Navigation.module.scss";
 import { navigationItems } from "../../utils/static";
 
-import GweiDynamicBlock from "../GweiDynamicBlock";
-
 const Nav = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrollYProgress, setScrollYProgress] = useState(0);
@@ -41,9 +39,8 @@ const Nav = () => {
     <nav className="fixed w-full flex flex-wrap items-center justify-between px-2 py-6 bg-transparent mb-3 z-10">
       <div
         ref={defaultBar}
-        className="default_bar container px-1 md:px-4 mx-auto flex items-center justify-between"
+        className="default_bar container px-1 md:px-4 mx-auto flex items-center justify-end"
       >
-        <GweiDynamicBlock />
         <div className="w-full md:w-6/12 hidden md:block" id="menu">
           <ul className="flex flex-col items-center md:flex-row justify-end list-none mt-4 md:mt-0 relative text-sm">
             <li className="nav-item pl-6 justify-center">
@@ -64,7 +61,7 @@ const Nav = () => {
             </li>
           </ul>
         </div>
-        <div className="-mr-2 flex md:hidden fixed right-5 top-2">
+        <div className="-mr-2 flex md:hidden fixed right-5 -top-1">
           <Image
             onClick={openCloseNavHandler}
             src="/images/burger_menu_icon.svg"
@@ -79,7 +76,7 @@ const Nav = () => {
         }
         id="mobile-menu"
       >
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 relative">
+        <div className="px-2 pt-20 pb-3 space-y-1 sm:px-3 relative">
           <div className="absolute right-5 top-2">
             <Image
               onClick={openCloseNavHandler}

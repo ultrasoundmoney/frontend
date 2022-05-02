@@ -36,9 +36,11 @@ const GweiDynamicBlock: React.FC = () => {
   }
   return (
     <div className="w-full flex justify-between md:justify-start p-4">
-      <Link href="/">
-        <img className="relative" src={EthLogo} alt={t.title} />
-      </Link>
+      <div className="hidden md:block">
+        <Link href="/">
+          <img className="relative" src={EthLogo} alt={t.title} />
+        </Link>
+      </div>
       {ethPrices !== undefined && baseFeePerGas !== undefined && (
         <div className="flex text-white self-center rounded bg-blue-tangaroa px-3 py-2 text-xs lg:text-sm font-roboto md:ml-4">
           $
