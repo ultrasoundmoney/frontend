@@ -1,11 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
-import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
-import twemoji from "twemoji";
-import { TranslationsContext } from "../../translations-context";
-import useSWR from "swr";
-import { formatUsdZeroDigit } from "../../format";
 import { StepperContext } from "../../context/StepperContext";
 import classes from "./Navigation.module.scss";
 import { navigationItems } from "../../utils/static";
@@ -16,19 +10,7 @@ const Nav = () => {
   const defaultBar = useRef<null | HTMLDivElement>(null);
   const stepperPoints = useContext(StepperContext);
 
-  const t = React.useContext(TranslationsContext);
-  const { data } = useSWR(
-    "https://ethgas.watch/api/gas",
-    (url: string) => fetch(url).then((r) => r.json()),
-    {
-      revalidateOnFocus: true,
-      revalidateOnReconnect: true,
-    }
-  );
-
-  const handleScroll = () => {
-    setScrollYProgress(window.scrollY);
-  };
+  const handleScroll = () => setScrollYProgress(window.scrollY);
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
 
@@ -53,32 +35,12 @@ const Nav = () => {
 
   const openCloseNavHandler = () => setIsOpen((prevVal) => !prevVal);
 
-  const gewi = data && data.sources && data.sources[0];
-  const ethPrice = !data
-    ? `0 <span class="pl-1">⛽️0 Gwei</span>`
-    : `$${formatUsdZeroDigit(data?.ethPrice)}  <span class="pl-1">⛽️${
-        gewi.standard
-      } Gwei</span>`;
-
   return (
     <nav className="fixed w-full flex flex-wrap items-center justify-between px-2 py-6 bg-transparent mb-3 z-10">
       <div
         ref={defaultBar}
-        className="default_bar container px-1 md:px-4 mx-auto flex flex-wrap items-center justify-between"
+        className="default_bar container px-1 md:px-4 mx-auto flex items-center justify-end"
       >
-        <div className="w-full md:w-6/12 relative flex justify-start lg:static lg:justify-start">
-          <div className="flex-initial pr-2 lg:pr-8">
-            <Link href="/">
-              <img className="max-w-max" src={EthLogo} alt={t.title} />
-            </Link>
-          </div>
-          <div
-            className="flex-initial flex text-white self-center bg-blue-tangaroa px-2 md:px-3 py-2 text-xs lg:text-sm eth-price-gass-emoji font-roboto"
-            dangerouslySetInnerHTML={{
-              __html: twemoji.parse(ethPrice),
-            }}
-          />
-        </div>
         <div className="w-full md:w-6/12 hidden md:block" id="menu">
           <ul className="flex flex-col items-center md:flex-row justify-end list-none mt-4 md:mt-0 relative text-sm">
             <li className="nav-item pl-6 justify-center">
@@ -99,7 +61,7 @@ const Nav = () => {
             </li>
           </ul>
         </div>
-        <div className="-mr-2 flex md:hidden fixed right-5 top-2">
+        <div className="-mr-2 flex md:hidden fixed right-5 -top-1">
           <Image
             onClick={openCloseNavHandler}
             src="/images/burger_menu_icon.svg"
@@ -114,7 +76,7 @@ const Nav = () => {
         }
         id="mobile-menu"
       >
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 relative">
+        <div className="px-2 pt-20 pb-3 space-y-1 sm:px-3 relative">
           <div className="absolute right-5 top-2">
             <Image
               onClick={openCloseNavHandler}

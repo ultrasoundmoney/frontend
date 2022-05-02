@@ -1,6 +1,9 @@
-import * as React from "react";
-import { FC } from "react";
+import React, { FC, useCallback } from "react";
 import { useState, useContext } from "react";
+import { weiToGwei } from "../../utils/metric-utils";
+import { useFeeData } from "../../api";
+
+import GweiDynamicBlock from "../GweiDynamicBlock";
 import TwitterCommunity from "../TwitterCommunity";
 import FollowingYou from "../FollowingYou";
 import SupplyView from "../SupplyView";
@@ -9,46 +12,14 @@ import BurnLeaderboard from "../BurnLeaderboard";
 import CumulativeFeeBurn from "../CumulativeFeeBurn";
 import LatestBlocks from "../LatestBlocks";
 import FaqBlock from "../Landing/faq";
-import Link from "next/link";
-import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
-import { weiToGwei } from "../../utils/metric-utils";
-import SpanMoji from "../SpanMoji";
 import IssuanceGauge from "../Gauges/IssuanceGauge";
 import SupplyGrowthGauge from "../Gauges/SupplyGrowthGauge";
 import BurnGauge from "../Gauges/BurnGauge";
-import { useCallback } from "react";
-import { useEthPrices, useFeeData } from "../../api";
-import { formatPercentOneDigitSigned } from "../../format";
-import CountUp from "react-countup";
-
-let startGasPrice = 0;
-let startGasPriceCached = 0;
-let startEthPrice = 0;
-let startEthPriceCached = 0;
 
 const ComingSoon: FC = () => {
   const t = useContext(TranslationsContext);
   const { baseFeePerGas } = useFeeData();
   const [simulateMerge, setSimulateMerge] = useState(false);
-  const { ethPrices } = useEthPrices();
-
-  if (baseFeePerGas && baseFeePerGas !== startGasPrice) {
-    startGasPriceCached = startGasPrice;
-    startGasPrice = baseFeePerGas;
-  }
-
-  if (ethPrices?.usd && ethPrices?.usd !== startEthPrice) {
-    startEthPriceCached = startEthPrice;
-    startEthPrice = ethPrices?.usd;
-  }
-
-  const ethUsd24hChange =
-    ethPrices?.usd24hChange &&
-    formatPercentOneDigitSigned(ethPrices?.usd24hChange / 100);
-  const color =
-    typeof ethPrices?.usd24hChange === "number" && ethPrices?.usd24hChange < 0
-      ? "text-red-400"
-      : "text-green-400";
 
   const toggleSimulateMerge = useCallback(() => {
     setSimulateMerge(!simulateMerge);
@@ -63,46 +34,7 @@ const ComingSoon: FC = () => {
     <div className="wrapper bg-blue-midnightexpress blurred-bg-image">
       <div className="container m-auto">
         <div className="flex justify-between">
-          <div className="w-full flex justify-between md:justify-start p-4">
-            <Link href="/">
-              <img className="relative" src={EthLogo} alt={t.title} />
-            </Link>
-            {ethPrices !== undefined && baseFeePerGas !== undefined && (
-              <div className="flex text-white self-center rounded bg-blue-tangaroa px-3 py-2 text-xs lg:text-sm font-roboto md:ml-4">
-                $
-                <CountUp
-                  decimals={0}
-                  duration={0.8}
-                  separator=","
-                  start={
-                    startEthPriceCached === 0
-                      ? ethPrices?.usd
-                      : startEthPriceCached
-                  }
-                  end={ethPrices?.usd}
-                />
-                <span className={`px-1 ${color}`}>({ethUsd24hChange})</span>
-                <span className="px-1">•</span>
-                <SpanMoji className="px-0.5" emoji="⛽️"></SpanMoji>
-                <span className="">
-                  <CountUp
-                    decimals={0}
-                    duration={0.8}
-                    separator=","
-                    start={
-                      startGasPriceCached === 0
-                        ? weiToGwei(baseFeePerGas)
-                        : weiToGwei(startGasPriceCached)
-                    }
-                    end={weiToGwei(baseFeePerGas)}
-                  />{" "}
-                  <span className="font-extralight text-blue-spindle">
-                    Gwei
-                  </span>
-                </span>
-              </div>
-            )}
-          </div>
+          <GweiDynamicBlock />
           <a
             className="hidden md:block flex self-center whitespace-nowrap px-4 py-1 mr-4 font-medium text-white hover:text-blue-shipcove border-white border-solid border-2 rounded-3xl hover:border-blue-shipcove"
             href="#join-the-fam"

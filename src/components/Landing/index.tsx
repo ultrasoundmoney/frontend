@@ -35,6 +35,7 @@ import { useFeeData } from "../../api";
 import useSWR from "swr";
 import Stepper from "../Navigation/Stepper";
 import { SteppersProvider } from "../../context/StepperContext";
+import GweiDynamicBlock from "../GweiDynamicBlock";
 // import Timeline from "./timeline";
 
 type EthPrice = {
@@ -593,6 +594,7 @@ const LandingPage: React.FC<{}> = () => {
         {/* <div className="container m-auto"> */}
         <Stepper />
         <Navigation />
+        <GweiDynamicBlock />
         <Intro />
         <BeforeGenesis />
         <section data-navigationtrackingblock>
@@ -651,7 +653,7 @@ const LandingPage: React.FC<{}> = () => {
           data-aos-delay="50"
           data-aos-duration="1000"
           data-aos-easing="ease-in-out"
-          className="relative flex px-4 md:px-8 lg:px-0 py-24 z-10"
+          className="relative flex px-4 md:px-8 lg:px-0 py-24"
         >
           <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
             <FollowingYou />
