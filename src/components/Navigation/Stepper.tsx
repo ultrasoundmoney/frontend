@@ -9,7 +9,13 @@ import arrowRight from "../../assets/arrowRight.svg";
 import Steps from "./Steps";
 import { StepperContext } from "../../context/StepperContext";
 import { ActionLogo } from "./types";
-import { getIconOffset, showHideNavBar, setScrollPosition } from "./helpers";
+import {
+  getIconOffset,
+  showHideNavBar,
+  setScrollPosition,
+  setNavBarPosition,
+  MOBILE_VERTICAL_SCROLL_BREAK_POINT,
+} from "./helpers";
 import classes from "./Navigation.module.scss";
 
 const Stepper: React.FC = () => {
@@ -19,7 +25,6 @@ const Stepper: React.FC = () => {
   const [currentActionLogo, setCurrentActionLogo] = useState<ActionLogo>(
     "none"
   );
-  const [memoizedValue, setMemoizedValue] = useState<number>(0);
   const [pageLoad, setPageLoad] = useState(false);
   const handlerActionLogo = (value: ActionLogo) => setCurrentActionLogo(value);
   const controlPoints: any[] = Object.keys(
@@ -29,19 +34,28 @@ const Stepper: React.FC = () => {
   });
 
   const onScroll = useCallback(() => {
-    showHideNavBar(controlPoints, stepsRef.current!);
-    if (
-      currentActionLogo !== "up" &&
-      currentActionLogo !== "move" &&
-      currentActionLogo !== "down" &&
-      stepsRef.current &&
-      steperIconRef.current
-    ) {
-      const logoOffset = getIconOffset(controlPoints, pageLoad);
-      steperIconRef.current.style.left = `${logoOffset}%`;
-      setMemoizedValue(logoOffset);
+    const horizontalNavBar = stepsRef.current!;
+    const stepperIconElem = steperIconRef.current!;
+    showHideNavBar(controlPoints, horizontalNavBar);
+    if (window.innerWidth <= MOBILE_VERTICAL_SCROLL_BREAK_POINT) {
+      setNavBarPosition(
+        horizontalNavBar,
+        stepperIconElem,
+        controlPoints,
+        pageLoad
+      );
+    } else {
+      if (
+        currentActionLogo !== "up" &&
+        currentActionLogo !== "move" &&
+        currentActionLogo !== "down"
+      ) {
+        const logoOffset = getIconOffset(controlPoints, pageLoad);
+        stepperIconElem.style.left = `${logoOffset}%`;
+        horizontalNavBar.style.left = "0";
+      }
     }
-  }, [currentActionLogo, controlPoints]);
+  }, [currentActionLogo, controlPoints, pageLoad]);
   const [isLastTrackingElem, setIsLastTrackingElem] = useState<boolean>(false);
   const isDragging = useRef<boolean>(false);
   const setScrollPosOnLogoMove = (trackWidth: number, logoOffset: number) => {
@@ -71,13 +85,12 @@ const Stepper: React.FC = () => {
   return (
     <nav
       ref={stepsRef}
-      className="stepper_nav sticky top-0 left-0 w-full flex justify-between md:justify-start p-3 bg-blue-tangaroa z-50"
+      className={`${classes.mobileNavBarNav} stepper_nav sticky top-0 left-0 w-full flex justify-between md:justify-start p-3 bg-blue-tangaroa z-50`}
     >
       <div className="w-full px-1 md:px-4 mx-auto flex flex-wrap items-center justify-between">
         <Steps
           onActionLogo={handlerActionLogo}
           activeLogo={currentActionLogo}
-          currentPositionLogo={memoizedValue}
           ref={steperIconRef}
           controlPoints={controlPoints}
           setScroll={setScrollPosOnLogoMove}

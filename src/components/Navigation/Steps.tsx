@@ -5,17 +5,11 @@ import StepperPoint from "./StepperPoint";
 import StepperTrack from "./StepperTrack";
 import { motion } from "framer-motion";
 import { StepsProps, ControlPointMutated } from "./types";
+import { MOBILE_VERTICAL_SCROLL_BREAK_POINT } from "./helpers";
 
 const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
   (
-    {
-      controlPoints,
-      currentPositionLogo,
-      onActionLogo,
-      activeLogo,
-      setScroll,
-      isLastTrackingElem,
-    },
+    { controlPoints, onActionLogo, activeLogo, setScroll, isLastTrackingElem },
     ref
   ) => {
     const [activeBalls, setActiveBalls] = useState<ControlPointMutated[]>();
@@ -64,7 +58,8 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
           ref.current?.style &&
           typeof cord === "object" &&
           e.pageX > cord.left &&
-          e.pageX < cord.right
+          e.pageX < cord.right &&
+          window.innerWidth > MOBILE_VERTICAL_SCROLL_BREAK_POINT
         ) {
           ref.current.style.left = `${e.pageX - marginLeft}px`;
           setScroll(cord.width, e.pageX - marginLeft);
@@ -76,7 +71,9 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
         if (activeLogo !== "move" && activeLogo !== "none") {
           onActionLogo("up");
         } else {
-          onActionLogo("none");
+          setTimeout(() => {
+            onActionLogo("none");
+          }, 500);
         }
         window.removeEventListener("pointermove", handleMoveLogo);
         window.removeEventListener("pointerup", handleUpLogo);
@@ -93,14 +90,7 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
           ref.current.removeEventListener("pointerdown", handleDownLogo);
         }
       };
-    }, [
-      ref,
-      trackWrapper,
-      currentPositionLogo,
-      logoOnDots,
-      onActionLogo,
-      setScroll,
-    ]);
+    }, [ref, trackWrapper, logoOnDots, onActionLogo, setScroll, activeLogo]);
 
     return (
       <div className="w-full h-full md:w-9/12 relative flex justify-around lg:justify-around items-center pt-5">
