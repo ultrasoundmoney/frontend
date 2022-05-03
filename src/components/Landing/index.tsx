@@ -17,7 +17,7 @@ import NftDrop from "../NftDrop/index";
 import FollowingYou from "../FollowingYou";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import SupplyView from "../SupplyView";
+import SupplyView from "../SupplyViewNew";
 import TheBurnedCard from "./theBurnedCard";
 import {
   convertDateStringReadable,
