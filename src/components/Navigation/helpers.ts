@@ -113,3 +113,15 @@ export const showHideNavBar = (
       : stepsRefElem.classList.remove("active");
   }
 };
+
+export const MOBILE_VERTICAL_SCROLL_BREAK_POINT = 500;
+export const setNavBarPosition = (
+  horizontalNavBar: HTMLElement,
+  stepperIconElem: HTMLElement,
+  controlPoints: any[],
+  pageLoad: boolean
+): void => {
+  const logoOffset = getIconOffset(controlPoints, pageLoad);
+  horizontalNavBar.style.left = `-${logoOffset}%`;
+  stepperIconElem.style.left = `${logoOffset}%`;
+};

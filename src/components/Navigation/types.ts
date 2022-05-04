@@ -13,7 +13,6 @@ export type ControlPointMutated = {
 
 export type StepsProps = {
   controlPoints: (ControlPoint | undefined)[];
-  currentPositionLogo: number;
   onActionLogo: (vodue: ActionLogo) => void;
   activeLogo: ActionLogo;
   setScroll: (trackWidth: number, logoOffset: number) => void;
