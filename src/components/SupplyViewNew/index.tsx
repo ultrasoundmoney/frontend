@@ -92,7 +92,7 @@ const SupplyView: React.FC<{}> = () => {
   ).days;
 
   return (
-    <div className="flex">
+    <div className="flex justify-between">
       <div className="w-1/2">
         <Param
           title={t.eth_staked}
@@ -162,14 +162,15 @@ const SupplyView: React.FC<{}> = () => {
           />
         </Param>
       </div>
-      <SupplyChart
-        className="w-1/2"
-        projectedStaking={projectedStaking}
-        projectedBaseGasPrice={projectedBaseGasPrice}
-        projectedMergeDate={projectedMergeDate}
-        showBreakdown={showBreakdown}
-        onPeakProjectedToggle={handleOnPeakProjectedToggle}
-      />
+      <div className="w-1/2">
+        <SupplyChart
+          projectedStaking={projectedStaking}
+          projectedBaseGasPrice={projectedBaseGasPrice}
+          projectedMergeDate={projectedMergeDate}
+          showBreakdown={showBreakdown}
+          onPeakProjectedToggle={handleOnPeakProjectedToggle}
+        />
+      </div>
     </div>
   );
 };
