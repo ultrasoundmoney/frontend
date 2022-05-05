@@ -1,9 +1,5 @@
 @import "../../../styles/base//variables";
 
-.labelUp {
-  position: absolute;
-  top: -25px;
-}
 .linkWrap {
   max-width: fit-content;
 }
@@ -37,4 +33,9 @@
   @media (max-width: 500px) {
     width: 200%;
   }
+}
+
+
+.StepperDots{
+
 }
