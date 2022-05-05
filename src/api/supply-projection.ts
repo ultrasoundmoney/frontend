@@ -8,14 +8,16 @@ type DataPoint = {
 };
 
 type RawSupplyInputs = {
+  inValidators: DataPoint[];
   lockedData: DataPoint[];
-  supplyData: DataPoint[];
   stakedData: DataPoint[];
+  supplyData: DataPoint[];
 };
 
 type SupplyInputs = {
-  stakingData: DataPoint[];
   contractData: DataPoint[];
+  inValidators: DataPoint[];
+  stakingData: DataPoint[];
   supplyData: DataPoint[];
 };
 
@@ -30,8 +32,9 @@ export const useSupplyProjectionInputs = (): SupplyInputs | undefined => {
   }
 
   return {
-    stakingData: data.stakedData,
     contractData: data.lockedData,
+    inValidators: data.inValidators,
+    stakingData: data.stakedData,
     supplyData: data.supplyData,
   };
 };
