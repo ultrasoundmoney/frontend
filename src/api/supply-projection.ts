@@ -15,10 +15,9 @@ type RawSupplyInputs = {
 };
 
 type SupplyInputs = {
-  contractData: DataPoint[];
-  inValidators: DataPoint[];
-  stakingData: DataPoint[];
-  supplyData: DataPoint[];
+  inContractsByDay: DataPoint[];
+  inBeaconValidatorsByDay: DataPoint[];
+  supplyByDay: DataPoint[];
 };
 
 export const useSupplyProjectionInputs = (): SupplyInputs | undefined => {
@@ -32,9 +31,8 @@ export const useSupplyProjectionInputs = (): SupplyInputs | undefined => {
   }
 
   return {
-    contractData: data.lockedData,
-    inValidators: data.inValidators,
-    stakingData: data.stakedData,
-    supplyData: data.supplyData,
+    inContractsByDay: data.lockedData,
+    inBeaconValidatorsByDay: data.inValidators,
+    supplyByDay: data.supplyData,
   };
 };

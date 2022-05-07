@@ -163,15 +163,19 @@ const SupplyChart: React.FC<Props> = ({
       return [[], [], {}];
     }
 
-    const { inValidators, contractData, supplyData } = projectionsInputs;
+    const {
+      inBeaconValidatorsByDay,
+      inContractsByDay,
+      supplyByDay: supplyData,
+    } = projectionsInputs;
 
     const stakingByDate: Record<number, number> = {};
-    inValidators.forEach(({ t, v }) => {
+    inBeaconValidatorsByDay.forEach(({ t, v }) => {
       stakingByDate[t] = v;
     });
 
     const contractByDate: Record<number, number> = {};
-    contractData.forEach(({ t, v }) => {
+    inContractsByDay.forEach(({ t, v }) => {
       contractByDate[t] = v;
     });
 
