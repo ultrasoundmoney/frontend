@@ -80,14 +80,18 @@ const compactNumberOneDigit = new Intl.NumberFormat("en", {
 export const formatCompactOneDigit = (num: number) =>
   compactNumberOneDigit.format(num);
 
-export const gweiFromWei = (wei: number): number => wei / 10 ** 9;
+export const gweiFromWei = (wei: number): number => wei / 1e9;
 
-export const ethFromWei = (wei: number): number => wei / 10 ** 18;
+export const ethFromWei = (wei: number): number => wei / 1e18;
 
 export const ethFromWeiBIUnsafe = (wei: JSBI): number =>
   JSBI.toNumber(
     JSBI.divide(wei, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))),
   );
+
+export const ethFromGwei = (gwei: number): number => gwei / 1e9;
+
+export const gweiFromEth = (eth: number): number => eth * 1e9;
 
 export const followerCountConvert = (num: number) => {
   if (num > 999 && num < 1000000) {

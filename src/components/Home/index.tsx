@@ -16,6 +16,7 @@ import { SectionTitle, TextRoboto } from "../Texts";
 import ToggleSwitch from "../ToggleSwitch";
 import TotalValueSecured from "../TotalValueSecured";
 import TwitterFam from "../TwitterFam";
+import ValidatorRewards from "../ValidatorRewards";
 import WidgetGroup1 from "../widget-group-1";
 import { WidgetTitle } from "../widget-subcomponents";
 import styles from "./Home.module.scss";
@@ -178,10 +179,11 @@ const Home: FC = () => {
             <div className="flex flex-col lg:flex-row gap-y-4 lg:gap-x-4 px-4 md:px-16">
               <div className="flex flex-col basis-1/2 gap-y-4">
                 <Scarcity />
-                <Flippenings />
+                <ValidatorRewards />
               </div>
-              <div className="basis-1/2">
+              <div className="basis-1/2 flex flex-col gap-y-4">
                 <PriceModel />
+                <Flippenings />
               </div>
             </div>
             <div className="flex flex-col px-4 md:px-16">

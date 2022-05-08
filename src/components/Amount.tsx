@@ -11,7 +11,7 @@ type AmountProps = {
   amountPostfix?: string;
   className?: string;
   textSizeClass?: string;
-  unitPostfix: string;
+  unitPostfix?: string;
 };
 
 export const Amount: FC<AmountProps> = ({
@@ -26,8 +26,12 @@ export const Amount: FC<AmountProps> = ({
   >
     {children}
     {amountPostfix}
-    <AmountUnitSpace />
-    <UnitText className={textSizeClass}>{unitPostfix}</UnitText>
+    {unitPostfix && (
+      <>
+        <AmountUnitSpace />
+        <UnitText className={textSizeClass}>{unitPostfix}</UnitText>
+      </>
+    )}
   </TextRoboto>
 );
 
@@ -46,20 +50,23 @@ export const MoneyAmount: FC<MoneyAmountProps> = ({
   skeletonWidth = "3rem",
   textSizeClass,
   unit = "eth",
-}) => (
-  <Amount
-    amountPostfix={amountPostfix}
-    className={className}
-    unitPostfix={unit === "eth" ? "ETH" : unit === "usd" ? "USD" : unit}
-    textSizeClass={textSizeClass}
-  >
-    {children === undefined ? (
-      <Skeleton inline={true} width={skeletonWidth} />
-    ) : (
-      children
-    )}
-  </Amount>
-);
+}) => {
+  const { previewSkeletons } = useContext(FeatureFlagsContext);
+  return (
+    <Amount
+      amountPostfix={amountPostfix}
+      className={className}
+      unitPostfix={unit === "eth" ? "ETH" : unit === "usd" ? "USD" : unit}
+      textSizeClass={textSizeClass}
+    >
+      {children === undefined || previewSkeletons ? (
+        <Skeleton inline={true} width={skeletonWidth} />
+      ) : (
+        children
+      )}
+    </Amount>
+  );
+};
 
 const defaultMoneyAnimationDuration = 0.8;
 type MoneyAmountAnimatedProps = {
