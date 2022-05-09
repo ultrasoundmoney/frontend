@@ -131,20 +131,20 @@ const Home: FC = () => {
             <p className="font-inter font-light text-blue-spindle text-xl md:text-2xl lg:text-3xl text-white text-center mb-16">
               watch ETH become ultra sound money
             </p>
-            <video
-              className="w-full md:w-3/6 lg:w-2/6 mx-auto -mt-32 -mb-4 pr-6 mix-blend-lighten"
-              playsInline
-              autoPlay
-              muted
-              loop
-              poster="/bat-no-wings.png"
-            >
-              <source
-                src="/bat-no-wings.webm"
-                type="video/webm; codecs='vp9'"
-              />
-              <source src="/bat-no-wings.mp4" type="video/mp4" />
-            </video>
+            {/* <video */}
+            {/*   className="w-full md:w-3/6 lg:w-2/6 mx-auto -mt-32 -mb-4 pr-6 mix-blend-lighten" */}
+            {/*   playsInline */}
+            {/*   autoPlay */}
+            {/*   muted */}
+            {/*   loop */}
+            {/*   poster="/bat-no-wings.png" */}
+            {/* > */}
+            {/*   <source */}
+            {/*     src="/bat-no-wings.webm" */}
+            {/*     type="video/webm; codecs='vp9'" */}
+            {/*   /> */}
+            {/*   <source src="/bat-no-wings.mp4" type="video/mp4" /> */}
+            {/* </video> */}
             {/* <video */}
             {/*   className="absolute hidden md:block left-0 -ml-24 md:top-96 lg:top-96 opacity-40 mix-blend-lighten -z-10" */}
             {/*   playsInline */}

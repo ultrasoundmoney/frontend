@@ -35,6 +35,30 @@ export const Amount: FC<AmountProps> = ({
   </TextRoboto>
 );
 
+type PercentAmountProps = {
+  className?: string;
+  textSizeClass?: string;
+  skeletonWidth?: string;
+};
+
+export const PercentAmount: FC<PercentAmountProps> = ({
+  children,
+  className,
+  skeletonWidth = "3rem",
+  textSizeClass,
+}) => {
+  const { previewSkeletons } = useContext(FeatureFlagsContext);
+  return (
+    <Amount className={className} textSizeClass={textSizeClass}>
+      {children === undefined || previewSkeletons ? (
+        <Skeleton inline={true} width={skeletonWidth} />
+      ) : (
+        children
+      )}
+    </Amount>
+  );
+};
+
 type MoneyAmountProps = {
   amountPostfix?: string;
   className?: string;

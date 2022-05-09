@@ -6,36 +6,39 @@ import {
 } from "../api/validator-rewards";
 import Colors from "../colors";
 import * as Format from "../format";
-import { formatNoDigit } from "../format";
 import { flow, O, pipe } from "../fp";
-import { MoneyAmount } from "./Amount";
+import { MoneyAmount, PercentAmount } from "./Amount";
 import { LabelText, TextInter, TextRoboto } from "./Texts";
 import { WidgetBackground, WidgetTitle } from "./widget-subcomponents";
+
+const hideDetailsThreshold = 0.04;
+const skeletonLoadingWidth = 0.1;
 
 type CategorySegmentProps = {
   imgAlt: string;
   imgName: string;
   onHoverCategory: (hovering: boolean) => void;
-  percentOfTotalRewards: number | undefined;
+  percentOfTotalRewards: O.Option<number>;
   rounded?: "left" | "right";
   showHighlight: boolean;
 };
-
-const alwaysShowImgPercentThreshold = 0.04;
-const skeletonLoadingWidth = 0.1;
 
 const CategorySegment: FC<CategorySegmentProps> = ({
   imgAlt,
   imgName,
   onHoverCategory,
-  percentOfTotalRewards: percentOfTotalBurn,
+  percentOfTotalRewards,
   rounded,
   showHighlight,
 }) => (
   <div
     className="flex flex-col items-center select-none"
     style={{
-      width: `${(percentOfTotalBurn ?? skeletonLoadingWidth) * 100}%`,
+      width: pipe(
+        percentOfTotalRewards,
+        O.getOrElse(() => skeletonLoadingWidth),
+        (percent) => `${percent * 100}%`,
+      ),
     }}
     onMouseEnter={() => onHoverCategory(true)}
     onMouseLeave={() => onHoverCategory(false)}
@@ -51,12 +54,13 @@ const CategorySegment: FC<CategorySegmentProps> = ({
           style={{
             height: "21px",
             marginBottom: "12px",
-            visibility:
-              percentOfTotalBurn === undefined
-                ? "hidden"
-                : percentOfTotalBurn < alwaysShowImgPercentThreshold
-                ? "hidden"
-                : "visible",
+            visibility: pipe(
+              percentOfTotalRewards,
+              O.map((percent) =>
+                percent < hideDetailsThreshold ? "hidden" : "visible",
+              ),
+              O.getOrElseW(() => "hidden" as const),
+            ),
           }}
         />
         <img
@@ -66,12 +70,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
           style={{
             height: "21px",
             marginBottom: "12px",
-            visibility:
-              percentOfTotalBurn === undefined
-                ? "hidden"
-                : showHighlight
-                ? "visible"
-                : "hidden",
+            visibility: showHighlight ? "visible" : "hidden",
           }}
         />
       </>
@@ -89,20 +88,20 @@ const CategorySegment: FC<CategorySegmentProps> = ({
       }}
     ></div>
     <div style={{ marginTop: "9px" }}>
-      {percentOfTotalBurn === undefined ? (
+      {O.isNone(percentOfTotalRewards) ? (
         <Skeleton width="1.5rem" />
       ) : (
         <TextRoboto
-          className={`color-animation ${
-            !showHighlight && percentOfTotalBurn < alwaysShowImgPercentThreshold
-              ? "invisible"
-              : "visible"
-          }`}
+          className="color-animation"
           style={{
             color: showHighlight ? Colors.white : Colors.spindle,
           }}
         >
-          {formatNoDigit((percentOfTotalBurn ?? skeletonLoadingWidth) * 100)}%
+          {pipe(
+            percentOfTotalRewards,
+            O.getOrElse(() => skeletonLoadingWidth),
+            Format.formatPercentNoDigit,
+          )}
         </TextRoboto>
       )}
     </div>
@@ -147,23 +146,66 @@ const RewardRow: FC<RewardRowProps> = ({
         O.toUndefined,
       )}
     </MoneyAmount>
-
-    <TextRoboto className="text-right">
+    <PercentAmount className="text-right">
       {pipe(apr, O.map(Format.formatPercentOneDigit), O.toUndefined)}
-    </TextRoboto>
+    </PercentAmount>
   </a>
 );
 
-const getPercentsOfTotal = (validatorRewards: ValidatorRewards) =>
+const getPercentOfTotal = (
+  validatorRewards: O.Option<ValidatorRewards>,
+  field: keyof ValidatorRewards,
+) =>
   pipe(
-    validatorRewards.issuance.annualReward +
-      validatorRewards.tips.annualReward +
-      validatorRewards.mev.annualReward,
-    (total) => ({
-      issuance: validatorRewards.issuance.annualReward / total,
-      tips: validatorRewards.tips.annualReward / total,
-      mev: validatorRewards.mev.annualReward / total,
-    }),
+    validatorRewards,
+    O.map((validatorRewards) =>
+      pipe(
+        validatorRewards.issuance.annualReward +
+          validatorRewards.tips.annualReward +
+          validatorRewards.mev.annualReward,
+        (total) => validatorRewards[field].annualReward / total,
+      ),
+    ),
+  );
+
+const getTotalAnnualReward = (validatorRewards: O.Option<ValidatorRewards>) =>
+  pipe(
+    validatorRewards,
+    O.map(
+      (validatorRewards) =>
+        validatorRewards.issuance.annualReward +
+        validatorRewards.tips.annualReward +
+        validatorRewards.mev.annualReward,
+    ),
+  );
+
+const getTotalApr = (validatorRewards: O.Option<ValidatorRewards>) =>
+  pipe(
+    validatorRewards,
+    O.map(
+      (validatorRewards) =>
+        validatorRewards.issuance.apr +
+        validatorRewards.tips.apr +
+        validatorRewards.mev.apr,
+    ),
+  );
+
+const selectAnnualRewards = (
+  validatorRewards: O.Option<ValidatorRewards>,
+  field: keyof ValidatorRewards,
+) =>
+  pipe(
+    validatorRewards,
+    O.map((validatorRewards) => validatorRewards[field].annualReward),
+  );
+
+const selectApr = (
+  validatorRewards: O.Option<ValidatorRewards>,
+  field: keyof ValidatorRewards,
+) =>
+  pipe(
+    validatorRewards,
+    O.map((validatorRewards) => validatorRewards[field].apr),
   );
 
 const ValidatorRewards = () => {
@@ -171,38 +213,6 @@ const ValidatorRewards = () => {
   const [highlightIssuance, setHighlightIssuance] = useState(false);
   const [highlightTips, setHighlightTips] = useState(false);
   const [highlightMev, setHighlightMev] = useState(false);
-
-  const percentsOfTotal = pipe(
-    validatorRewards,
-    O.map(getPercentsOfTotal),
-    O.toUndefined,
-  );
-
-  const total = pipe(
-    validatorRewards,
-    O.map((validatorRewards) => ({
-      annualReward:
-        validatorRewards.issuance.annualReward +
-        validatorRewards.tips.annualReward +
-        validatorRewards.mev.annualReward,
-      apr:
-        validatorRewards.issuance.apr +
-        validatorRewards.tips.apr +
-        validatorRewards.mev.apr,
-    })),
-  );
-
-  const selectAnnualRewards = (field: keyof ValidatorRewards) =>
-    pipe(
-      validatorRewards,
-      O.map((validatorRewards) => validatorRewards[field].annualReward),
-    );
-
-  const selectApr = (field: keyof ValidatorRewards) =>
-    pipe(
-      validatorRewards,
-      O.map((validatorRewards) => validatorRewards[field].apr),
-    );
 
   return (
     <WidgetBackground>
@@ -221,7 +231,10 @@ const ValidatorRewards = () => {
               }
               imgName={"drop"}
               onHoverCategory={setHighlightIssuance}
-              percentOfTotalRewards={percentsOfTotal?.issuance}
+              percentOfTotalRewards={getPercentOfTotal(
+                validatorRewards,
+                "issuance",
+              )}
               rounded="left"
               showHighlight={highlightIssuance}
             />
@@ -230,7 +243,10 @@ const ValidatorRewards = () => {
               imgAlt={"an ETH coin symbolizing tips paid to block proposers"}
               imgName={"coin"}
               onHoverCategory={setHighlightTips}
-              percentOfTotalRewards={percentsOfTotal?.tips}
+              percentOfTotalRewards={getPercentOfTotal(
+                validatorRewards,
+                "tips",
+              )}
               showHighlight={highlightTips}
             />
             <div className="h-2 bg-blue-dusk w-0.5"></div>
@@ -238,7 +254,7 @@ const ValidatorRewards = () => {
               imgAlt={"a robot symbolizing MEV paid to block proposers"}
               imgName={"mev"}
               onHoverCategory={setHighlightMev}
-              percentOfTotalRewards={percentsOfTotal?.mev}
+              percentOfTotalRewards={getPercentOfTotal(validatorRewards, "mev")}
               rounded="right"
               showHighlight={highlightMev}
             />
@@ -253,40 +269,34 @@ const ValidatorRewards = () => {
         {validatorRewards && (
           <>
             <RewardRow
-              amount={selectAnnualRewards("issuance")}
+              amount={selectAnnualRewards(validatorRewards, "issuance")}
               hovering={highlightIssuance}
-              link="https://beaconcha.in/"
+              link="https://beaconscan.com/stat/validatortotaldailyincome"
               name="issuance"
               setHovering={setHighlightIssuance}
-              apr={selectApr("issuance")}
+              apr={selectApr(validatorRewards, "issuance")}
             />
             <RewardRow
-              amount={selectAnnualRewards("tips")}
+              amount={selectAnnualRewards(validatorRewards, "tips")}
               hovering={highlightTips}
               link="https://dune.com/msilb7/EIP1559-Base-Fee-x-Tip-by-Block"
               name="tips"
               setHovering={setHighlightTips}
-              apr={selectApr("tips")}
+              apr={selectApr(validatorRewards, "tips")}
             />
             <RewardRow
-              amount={selectAnnualRewards("mev")}
+              amount={selectAnnualRewards(validatorRewards, "mev")}
               hovering={highlightMev}
               link="https://explore.flashbots.net/"
-              name="MEV (estimated)"
+              name="MEV estimate"
               setHovering={setHighlightMev}
-              apr={selectApr("mev")}
+              apr={selectApr(validatorRewards, "mev")}
             />
             <hr className="border-blue-shipcove h-[1px]" />
             <RewardRow
-              amount={pipe(
-                total,
-                O.map((total) => total.annualReward),
-              )}
+              amount={getTotalAnnualReward(validatorRewards)}
               name="total"
-              apr={pipe(
-                total,
-                O.map((total) => total.apr),
-              )}
+              apr={getTotalApr(validatorRewards)}
             />
           </>
         )}

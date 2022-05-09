@@ -59,6 +59,14 @@ const percentOneDigit = new Intl.NumberFormat("en-US", {
 export const formatPercentOneDigit = (percent: number): string =>
   percentOneDigit.format(percent);
 
+const percentNoDigit = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 0,
+  style: "percent",
+});
+
+export const formatPercentNoDigit = (percent: number) =>
+  percentNoDigit.format(percent);
+
 const noDigit = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
 
 export const formatNoDigit = (num: number): string => noDigit.format(num);
