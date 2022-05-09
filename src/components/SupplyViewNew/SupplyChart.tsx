@@ -612,38 +612,6 @@ const SupplyChart: React.FC<Props> = ({
           highcharts={Highcharts}
           ref={chartRef}
         />
-        <div className={styles.legend}>
-          {legendItems.map((s) => (
-            <div key={s.id} className={styles.legendItem}>
-              <div
-                className={styles.legendItemColor}
-                style={{
-                  backgroundColor: String(s.color),
-                  opacity: s.fillOpacity,
-                }}
-              />
-              <div
-                className={styles.legendItemName}
-                style={{ color: COLORS.LABEL }}
-              >
-                {s.id === "supply_projected" ? t.projected_supply : s.name}
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className={styles.markerLegend}>
-          {markers.map(([, title, subtitle], i) => (
-            <div key={title} className={styles.markerLegendItem}>
-              <div className={styles.markerLegendCount}>
-                {String.fromCharCode(65 + i)}
-              </div>
-              <div>
-                <div className={styles.markerLegendTitle}>{title}</div>
-                <div className={styles.markerLegendSubtitle}>{subtitle}</div>
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
     </>
   );

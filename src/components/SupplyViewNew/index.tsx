@@ -9,7 +9,6 @@ import {
 } from "../../utils/metric-utils";
 import { useTranslations } from "../../utils/use-translation";
 import styles from "./SupplyView.module.scss";
-import SpanMoji from "../SpanMoji";
 import { formatOneDigit } from "../../format";
 
 const MIN_PROJECTED_ETH_STAKING = 1e6;

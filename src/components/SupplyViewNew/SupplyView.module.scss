@@ -31,6 +31,7 @@
 
 .param {
   min-width: 0;
+  @apply mb-8;
 }
 
 .paramTitle {
@@ -50,7 +51,7 @@
   margin: 2px 0 0;
   line-height: 1.4;
   flex: 0 0 auto;
-  white-space:pre;
+  white-space: pre;
   @media (min-width: 768px) {
     font-size: 1.5rem;
     margin: 2px 0;
