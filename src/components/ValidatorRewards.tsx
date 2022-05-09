@@ -16,7 +16,7 @@ import { MoneyAmount, PercentAmount } from "./Amount";
 import { LabelText, TextInter, TextRoboto } from "./Texts";
 import { WidgetBackground, WidgetTitle } from "./widget-subcomponents";
 
-const hideDetailsThreshold = 0.04;
+const hideDetailsThreshold = 0.06;
 const skeletonLoadingWidth = 0.1;
 
 type CategorySegmentProps = {
@@ -102,6 +102,10 @@ const CategorySegment: FC<CategorySegmentProps> = ({
               className="color-animation"
               style={{
                 color: showHighlight ? Colors.white : Colors.spindle,
+                visibility:
+                  percentOfTotalRewards >= hideDetailsThreshold || showHighlight
+                    ? "visible"
+                    : "hidden",
               }}
             >
               {Format.formatPercentNoDigit(percentOfTotalRewards)}
