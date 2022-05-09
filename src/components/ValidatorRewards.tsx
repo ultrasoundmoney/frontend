@@ -1,6 +1,11 @@
 import { FC, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import {
+  getAnnualRewards,
+  getApr,
+  getPercentOfTotal,
+  getTotalAnnualReward,
+  getTotalApr,
   useValidatorRewards,
   ValidatorRewards,
 } from "../api/validator-rewards";
@@ -88,21 +93,21 @@ const CategorySegment: FC<CategorySegmentProps> = ({
       }}
     ></div>
     <div style={{ marginTop: "9px" }}>
-      {O.isNone(percentOfTotalRewards) ? (
-        <Skeleton width="1.5rem" />
-      ) : (
-        <TextRoboto
-          className="color-animation"
-          style={{
-            color: showHighlight ? Colors.white : Colors.spindle,
-          }}
-        >
-          {pipe(
-            percentOfTotalRewards,
-            O.getOrElse(() => skeletonLoadingWidth),
-            Format.formatPercentNoDigit,
-          )}
-        </TextRoboto>
+      {pipe(
+        percentOfTotalRewards,
+        O.match(
+          () => <Skeleton width="1.5rem" />,
+          (percentOfTotalRewards) => (
+            <TextRoboto
+              className="color-animation"
+              style={{
+                color: showHighlight ? Colors.white : Colors.spindle,
+              }}
+            >
+              {Format.formatPercentNoDigit(percentOfTotalRewards)}
+            </TextRoboto>
+          ),
+        ),
       )}
     </div>
   </div>
@@ -117,10 +122,6 @@ type RewardRowProps = {
   apr: O.Option<number>;
 };
 
-const callIfDefined = function <A>(fn: ((a: A) => void) | undefined, arg: A) {
-  return fn === undefined ? () => undefined : () => fn(arg);
-};
-
 const RewardRow: FC<RewardRowProps> = ({
   amount,
   hovering,
@@ -131,8 +132,8 @@ const RewardRow: FC<RewardRowProps> = ({
 }) => (
   <a
     className="grid grid-cols-3 link-animation"
-    onMouseEnter={callIfDefined(setHovering, true)}
-    onMouseLeave={callIfDefined(setHovering, false)}
+    onMouseEnter={() => setHovering?.(true)}
+    onMouseLeave={() => setHovering?.(false)}
     style={{ opacity: hovering !== undefined && hovering ? 0.6 : 1 }}
     href={link}
     target="_blank"
@@ -151,62 +152,6 @@ const RewardRow: FC<RewardRowProps> = ({
     </PercentAmount>
   </a>
 );
-
-const getPercentOfTotal = (
-  validatorRewards: O.Option<ValidatorRewards>,
-  field: keyof ValidatorRewards,
-) =>
-  pipe(
-    validatorRewards,
-    O.map((validatorRewards) =>
-      pipe(
-        validatorRewards.issuance.annualReward +
-          validatorRewards.tips.annualReward +
-          validatorRewards.mev.annualReward,
-        (total) => validatorRewards[field].annualReward / total,
-      ),
-    ),
-  );
-
-const getTotalAnnualReward = (validatorRewards: O.Option<ValidatorRewards>) =>
-  pipe(
-    validatorRewards,
-    O.map(
-      (validatorRewards) =>
-        validatorRewards.issuance.annualReward +
-        validatorRewards.tips.annualReward +
-        validatorRewards.mev.annualReward,
-    ),
-  );
-
-const getTotalApr = (validatorRewards: O.Option<ValidatorRewards>) =>
-  pipe(
-    validatorRewards,
-    O.map(
-      (validatorRewards) =>
-        validatorRewards.issuance.apr +
-        validatorRewards.tips.apr +
-        validatorRewards.mev.apr,
-    ),
-  );
-
-const selectAnnualRewards = (
-  validatorRewards: O.Option<ValidatorRewards>,
-  field: keyof ValidatorRewards,
-) =>
-  pipe(
-    validatorRewards,
-    O.map((validatorRewards) => validatorRewards[field].annualReward),
-  );
-
-const selectApr = (
-  validatorRewards: O.Option<ValidatorRewards>,
-  field: keyof ValidatorRewards,
-) =>
-  pipe(
-    validatorRewards,
-    O.map((validatorRewards) => validatorRewards[field].apr),
-  );
 
 const ValidatorRewards = () => {
   const validatorRewards = useValidatorRewards();
@@ -269,28 +214,28 @@ const ValidatorRewards = () => {
         {validatorRewards && (
           <>
             <RewardRow
-              amount={selectAnnualRewards(validatorRewards, "issuance")}
+              amount={getAnnualRewards(validatorRewards, "issuance")}
               hovering={highlightIssuance}
               link="https://beaconscan.com/stat/validatortotaldailyincome"
               name="issuance"
               setHovering={setHighlightIssuance}
-              apr={selectApr(validatorRewards, "issuance")}
+              apr={getApr(validatorRewards, "issuance")}
             />
             <RewardRow
-              amount={selectAnnualRewards(validatorRewards, "tips")}
+              amount={getAnnualRewards(validatorRewards, "tips")}
               hovering={highlightTips}
               link="https://dune.com/msilb7/EIP1559-Base-Fee-x-Tip-by-Block"
               name="tips"
               setHovering={setHighlightTips}
-              apr={selectApr(validatorRewards, "tips")}
+              apr={getApr(validatorRewards, "tips")}
             />
             <RewardRow
-              amount={selectAnnualRewards(validatorRewards, "mev")}
+              amount={getAnnualRewards(validatorRewards, "mev")}
               hovering={highlightMev}
               link="https://explore.flashbots.net/"
               name="MEV estimate"
               setHovering={setHighlightMev}
-              apr={selectApr(validatorRewards, "mev")}
+              apr={getApr(validatorRewards, "mev")}
             />
             <hr className="border-blue-shipcove h-[1px]" />
             <RewardRow

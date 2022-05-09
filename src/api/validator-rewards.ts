@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import * as Duration from "../duration";
-import { O } from "../fp";
+import { O, pipe } from "../fp";
 import fetcher from "./default-fetcher";
 import { feesBasePath } from "./fees";
 
@@ -34,3 +34,61 @@ export const useValidatorRewards = (): O.Option<ValidatorRewards> => {
 
   return O.some(data);
 };
+
+export const getPercentOfTotal = (
+  validatorRewards: O.Option<ValidatorRewards>,
+  field: keyof ValidatorRewards,
+) =>
+  pipe(
+    validatorRewards,
+    O.map((validatorRewards) =>
+      pipe(
+        validatorRewards.issuance.annualReward +
+          validatorRewards.tips.annualReward +
+          validatorRewards.mev.annualReward,
+        (total) => validatorRewards[field].annualReward / total,
+      ),
+    ),
+  );
+
+export const getTotalAnnualReward = (
+  validatorRewards: O.Option<ValidatorRewards>,
+) =>
+  pipe(
+    validatorRewards,
+    O.map(
+      (validatorRewards) =>
+        validatorRewards.issuance.annualReward +
+        validatorRewards.tips.annualReward +
+        validatorRewards.mev.annualReward,
+    ),
+  );
+
+export const getTotalApr = (validatorRewards: O.Option<ValidatorRewards>) =>
+  pipe(
+    validatorRewards,
+    O.map(
+      (validatorRewards) =>
+        validatorRewards.issuance.apr +
+        validatorRewards.tips.apr +
+        validatorRewards.mev.apr,
+    ),
+  );
+
+export const getAnnualRewards = (
+  validatorRewards: O.Option<ValidatorRewards>,
+  field: keyof ValidatorRewards,
+) =>
+  pipe(
+    validatorRewards,
+    O.map((validatorRewards) => validatorRewards[field].annualReward),
+  );
+
+export const getApr = (
+  validatorRewards: O.Option<ValidatorRewards>,
+  field: keyof ValidatorRewards,
+) =>
+  pipe(
+    validatorRewards,
+    O.map((validatorRewards) => validatorRewards[field].apr),
+  );
