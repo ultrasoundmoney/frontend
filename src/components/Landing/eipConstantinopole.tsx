@@ -19,7 +19,7 @@ const EIPConstantinopole: React.FC<{}> = () => {
       <section
         data-aos="fade-up"
         data-aos-anchor-placement="top-bottom"
-        data-aos-offset="300"
+        data-aos-offset="400"
         data-aos-delay="100"
         data-aos-duration="1000"
         data-aos-easing="ease-in-out"

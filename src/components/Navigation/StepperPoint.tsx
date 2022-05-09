@@ -21,7 +21,7 @@ const StepperDots: React.FC<StepperPointProps> = ({
         ? objStepperElements[currentKey].offsetY
         : 0;
 
-      const windowHeight = window.innerHeight / 5;
+      const windowHeight = window.innerHeight / 2.6;
       window.scrollTo(0, top - windowHeight);
     }
   };
@@ -52,9 +52,7 @@ const StepperDots: React.FC<StepperPointProps> = ({
   return (
     <div
       onClick={moveToPoint(indexItem)}
-      className={`${classes.StepperDots} ${
-        onElement && classes.opacity
-      } stepper_point transition-opacity text-xs text-blue-shipcove`}
+      className={`${classes.StepperDots} stepper_point transition-opacity text-xs text-blue-shipcove`}
     >
       <div
         className={`${classes.StepperDots__stepperCircle} ${

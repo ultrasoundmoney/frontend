@@ -5,7 +5,7 @@ export const getIconOffset = (
   pageLoad: boolean
 ) => {
   if (!pageLoad) return 0;
-  const trackPosition = window.scrollY + window.innerHeight / 2;
+  const trackPosition = window.scrollY + window.innerHeight / 2.4;
   if (pointsHeights) {
     const pointsQuantity = pointsHeights.length;
     const lastPoint = pointsHeights[pointsQuantity - 1];
@@ -69,7 +69,7 @@ export const setScrollPosition = (
       controllPoints[distanceOrderItem - 1]?.offsetY +
       blockYOffset -
       drawingLineHight;
-    window.scrollTo({ top: offsetValue });
+    offsetValue > 0 && window.scrollTo({ top: offsetValue });
     const isActiveDot =
       iconOffsetInBlock > (distanceWidth / 4) * 3 &&
       distanceOrderItem === distancesNumber;
@@ -105,7 +105,7 @@ export const showHideNavBar = (
   ]?.getBoundingClientRect()?.height;
   if (lastSectionHight && maxOffsetYValue && nextDrawingLineHight) {
     const showStickyHeader: boolean =
-      window.scrollY > offsetYFirstPoint - window.innerHeight / 2 &&
+      window.scrollY > offsetYFirstPoint - window.innerHeight / 2.4 &&
       window.scrollY <
         maxOffsetYValue + lastSectionHight + nextDrawingLineHight;
     showStickyHeader

@@ -235,9 +235,9 @@
 
   .track_wrapper {
     position: absolute;
-    width: calc(100% - 28px);
+    width: 100%;
     height: 100%;
-    left: 20px;
+    left: -8px;
     img {
       margin: 0;
     }
