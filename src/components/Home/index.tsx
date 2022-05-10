@@ -145,17 +145,17 @@ const Home: FC = () => {
             {/*   /> */}
             {/*   <source src="/bat-no-wings.mp4" type="video/mp4" /> */}
             {/* </video> */}
-            {/* <video */}
-            {/*   className="absolute hidden md:block left-0 -ml-24 md:top-96 lg:top-96 opacity-40 mix-blend-lighten -z-10" */}
-            {/*   playsInline */}
-            {/*   autoPlay */}
-            {/*   muted */}
-            {/*   loop */}
-            {/*   poster="/moving-orbs.jpg" */}
-            {/* > */}
-            {/*   <source src="/moving-orbs.mp4" type="video/mp4" /> */}
-            {/*   <source src="/moving-orbs.webm" type="video/webm; codecs='vp9'" /> */}
-            {/* </video> */}
+            <video
+              className="absolute hidden md:block left-0 -ml-24 md:top-96 lg:top-96 opacity-40 -z-10"
+              playsInline
+              autoPlay
+              muted
+              loop
+              poster="/orbs1.jpg"
+            >
+              <source src="/orbs1.webm" type="video/webm; codecs='vp9'" />
+              <source src="/orbs1.mp4" type="video/mp4" />
+            </video>
             <Sentry.ErrorBoundary
               fallback={
                 <div className="bg-blue-tangaroa w-4/6 m-auto p-8 rounded-lg font-roboto text-white text-xl text-center">
@@ -165,6 +165,17 @@ const Home: FC = () => {
             >
               <WidgetGroup1 />
             </Sentry.ErrorBoundary>
+            <video
+              className="absolute w-1/2 right-0 -mt-64 opacity-30 -z-10"
+              playsInline
+              autoPlay
+              muted
+              loop
+              poster="/orbs2.jpg"
+            >
+              <source src="/orbs2.webm" type="video/webm; codecs='vp9'" />
+              <source src="/orbs2.mp4" type="video/mp4" />
+            </video>
             <SectionDivider
               title="total value secured—TVS"
               subtitle="securing the internet of value"
@@ -177,6 +188,17 @@ const Home: FC = () => {
               subtitle="the race to become the most desirable money"
             />
             <div className="flex flex-col lg:flex-row gap-y-4 lg:gap-x-4 px-4 md:px-16">
+              <video
+                className="absolute w-1/2 -left-20 -mt-96 opacity-30 -z-10 -mr-8"
+                playsInline
+                autoPlay
+                muted
+                loop
+                poster="/orbs1.jpg"
+              >
+                <source src="/orbs1.webm" type="video/webm; codecs='vp9'" />
+                <source src="/orbs1.mp4" type="video/mp4" />
+              </video>
               <div className="flex flex-col basis-1/2 gap-y-4">
                 <Scarcity />
                 <ValidatorRewards />
@@ -199,20 +221,17 @@ const Home: FC = () => {
                 className="relative flex px-4 md:px-0 pt-8 pt-40 mb-16"
               >
                 <div className="w-full relative flex flex-col items-center">
-                  {/* <video */}
-                  {/*   className="absolute w-1/2 right-0 -mt-16 opacity-40 mix-blend-lighten" */}
-                  {/*   playsInline */}
-                  {/*   autoPlay */}
-                  {/*   muted */}
-                  {/*   loop */}
-                  {/*   poster="/bat-no-wings.png" */}
-                  {/* > */}
-                  {/*   <source */}
-                  {/*     src="/moving-orbs.webm" */}
-                  {/*     type="video/webm; codecs='vp9'" */}
-                  {/*   /> */}
-                  {/*   <source src="/moving-orbs.mp4" type="video/mp4" /> */}
-                  {/* </video> */}
+                  <video
+                    className="absolute w-2/3 right-0 -mr-16 -mt-48 opacity-40 -z-10 hidden md:block"
+                    playsInline
+                    autoPlay
+                    muted
+                    loop
+                    poster="/orbs2.jpg"
+                  >
+                    <source src="/orbs2.webm" type="video/webm; codecs='vp9'" />
+                    <source src="/orbs2.mp4" type="video/mp4" />
+                  </video>
                   <TwitterFam />
                 </div>
               </div>
