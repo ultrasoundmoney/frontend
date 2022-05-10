@@ -37,8 +37,10 @@ export const handleGraphs = (
       graphsBlockElem.style.top = GRAPH_TOP_VALUE + "px";
     }
   }
+  const delayDistance = window.innerWidth * 0.12;
   for (let i = 0; i <= textBlocksArray.length - 1; i++) {
-    const topValue = textBlocksArray[i].getBoundingClientRect().top;
+    const topValue =
+      textBlocksArray[i].getBoundingClientRect().top + delayDistance;
     if (topValue >= topBreakPointValue) {
       setCryptoType(graphType[i]);
       break;
