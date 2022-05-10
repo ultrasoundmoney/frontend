@@ -146,7 +146,7 @@ const Home: FC = () => {
             {/*   <source src="/bat-no-wings.mp4" type="video/mp4" /> */}
             {/* </video> */}
             <video
-              className="absolute hidden md:block left-0 -ml-24 md:top-96 lg:top-96 opacity-40 -z-10"
+              className="absolute hidden md:block left-0 -ml-24 md:top-96 lg:top-96 opacity-20 -z-10"
               playsInline
               autoPlay
               muted
@@ -166,7 +166,7 @@ const Home: FC = () => {
               <WidgetGroup1 />
             </Sentry.ErrorBoundary>
             <video
-              className="absolute w-1/2 right-0 -mt-64 opacity-30 -z-10"
+              className="absolute w-1/2 right-0 -mt-64 opacity-20 -z-10"
               playsInline
               autoPlay
               muted
@@ -189,7 +189,7 @@ const Home: FC = () => {
             />
             <div className="flex flex-col lg:flex-row gap-y-4 lg:gap-x-4 px-4 md:px-16">
               <video
-                className="absolute w-1/2 -left-20 -mt-96 opacity-30 -z-10 -mr-8"
+                className="absolute w-1/2 -left-20 -mt-96 opacity-20 -z-10 -mr-8"
                 playsInline
                 autoPlay
                 muted
@@ -222,7 +222,7 @@ const Home: FC = () => {
               >
                 <div className="w-full relative flex flex-col items-center">
                   <video
-                    className="absolute w-2/3 right-0 -mr-16 -mt-48 opacity-40 -z-10 hidden md:block"
+                    className="absolute w-2/3 right-0 -mr-16 -mt-48 opacity-20 -z-10 hidden md:block"
                     playsInline
                     autoPlay
                     muted
