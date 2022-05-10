@@ -9,7 +9,6 @@ import EIPConstantinopole from "./eipConstantinopole";
 import EIP1559 from "./eip1559";
 import BlockGoal from "./goal";
 import TheMergeBlock from "./theMerge";
-// import EtherTheUltraSound from "./theUltraSound";
 import EtherTheUltraSound from "./BlockBtcEthUsd";
 import TwitterCommunity from "../TwitterCommunity";
 import FaqBlock from "./faq";

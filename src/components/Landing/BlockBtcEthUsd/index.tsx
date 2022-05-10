@@ -8,10 +8,6 @@ import CurrencyTabs from "./CurrencyTabs";
 import { handleGraphs, setScrollPos } from "./helpers";
 import classes from "./BlockBtcEthUsd.module.scss";
 
-interface Obj {
-  [key: string]: any;
-}
-
 const TheUltraSound: FC<{}> = () => {
   const t = useContext(TranslationsContext);
   const pointRef = useRef(null);
@@ -20,46 +16,11 @@ const TheUltraSound: FC<{}> = () => {
   const graphTextRef = useRef<HTMLDivElement | null>(null);
   const [cryptoType, setCryptoType] = useState<string>("none");
   const tabs = ["none", "btc", "eth", "usd"];
-  let timeoutId: null | ReturnType<typeof setTimeout> = null;
 
-  const step = useRef(0);
-  const allow = useRef(true);
-  const elPosition = useRef<number>(0);
-
-  const changeCryptoType = (wheelEvent: Obj) => {
-    const direction = wheelEvent.deltaY < 0 ? "up" : "down";
-    if (!allow.current) return;
-    if (direction === "up") {
-      if (step.current > 0) {
-        step.current = step.current - 1;
-      }
-    } else {
-      if (step.current <= tabs.length) {
-        step.current = step.current + 1;
-      }
-    }
-    if ((step.current === 0 || step.current === 5) && graphRef.current) {
-      const trigger =
-        elPosition.current -
-        (window.innerHeight / 2 -
-          graphRef.current.getBoundingClientRect().height / 2);
-      if (step.current === 0) {
-        window.scrollTo(0, trigger - 52);
-      } else {
-        window.scrollTo(0, trigger + 102);
-      }
-    }
-
-    if (tabs[step.current - 1]) {
-      setCryptoType(tabs[step.current - 1]);
-    }
-    allow.current = false;
-    timeoutId = setTimeout(() => (allow.current = true), 1500);
-  };
-
+  const currentScroll = useRef(0);
   const onScroll = () => {
+    currentScroll.current = window.scrollY;
     if (graphsBlockRef.current && graphTextRef.current) {
-      window.removeEventListener("wheel", changeCryptoType);
       handleGraphs(graphsBlockRef.current, graphTextRef.current, setCryptoType);
     }
   };
@@ -84,13 +45,11 @@ const TheUltraSound: FC<{}> = () => {
   };
 
   useEffect(() => {
-    const isTouchDevice = "ontouchstart" in window;
-    if (!isTouchDevice) window.addEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll);
     setTextBlicksHeights();
     window.addEventListener("resize", setTextBlicksHeights);
     return () => {
       window.removeEventListener("scroll", onScroll);
-      timeoutId && clearTimeout(timeoutId);
       window.removeEventListener("resize", setTextBlicksHeights);
     };
   }, []);
@@ -137,7 +96,7 @@ const TheUltraSound: FC<{}> = () => {
             ref={graphTextRef}
             className="graph_text_containter w-full md:w-5/12 self-center order-2 md:order-1"
           >
-            <SVGrenderText />
+            <SVGrenderText currentScroll={currentScroll.current} />
           </div>
           <div className="relative w-full md:w-5/12 order-1 md:order-1 mb-6 md:mb-0">
             <div ref={graphsBlockRef} className={classes.graphsBlock}>
