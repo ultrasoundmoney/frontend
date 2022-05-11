@@ -1,7 +1,7 @@
 import React, { FC, memo } from "react";
 import { useAdminToken } from "../../../admin";
 import { useContractsFreshness } from "../../../api/contracts";
-import { useGroupedStats1 } from "../../../api/grouped-stats-1";
+import { useGroupedAnalysis1 } from "../../../api/grouped-analysis-1";
 import { LeaderboardEntry, Leaderboards } from "../../../api/leaderboards";
 import { Unit } from "../../../denomination";
 import scrollbarStyles from "../../../styles/Scrollbar.module.scss";
@@ -78,7 +78,7 @@ type Props = {
 };
 
 const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
-  const leaderboards = useGroupedStats1()?.leaderboards;
+  const leaderboards = useGroupedAnalysis1()?.leaderboards;
   const selectedLeaderboard =
     leaderboards === undefined
       ? undefined

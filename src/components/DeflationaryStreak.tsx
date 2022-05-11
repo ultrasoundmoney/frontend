@@ -4,8 +4,8 @@ import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
 import {
   DeflationaryStreakMode,
-  useGroupedStats1,
-} from "../api/grouped-stats-1";
+  useGroupedAnalysis1,
+} from "../api/grouped-analysis-1";
 import { NEA } from "../fp";
 import { AmountUnitSpace } from "./Spacing";
 import SpanMoji from "./SpanMoji";
@@ -20,8 +20,9 @@ const DeflationaryStreak: FC<{ simulateMerge: boolean }> = ({
 }) => {
   const [timeElapsed, setTimeElapsed] = useState<string>();
   const streakKey = getStreakKey(simulateMerge);
-  const deflationaryStreak = useGroupedStats1()?.deflationaryStreak[streakKey];
-  const latestBlocks = useGroupedStats1()?.latestBlockFees;
+  const deflationaryStreak =
+    useGroupedAnalysis1()?.deflationaryStreak[streakKey];
+  const latestBlocks = useGroupedAnalysis1()?.latestBlockFees;
 
   useEffect(() => {
     if (deflationaryStreak == undefined || latestBlocks === undefined) {

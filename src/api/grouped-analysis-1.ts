@@ -99,30 +99,31 @@ const decodeFeeData = (raw: RawFeeData): FeeData => ({
   }).records,
 });
 
-export const useGroupedStats1 = (): FeeData | undefined => {
+export const useGroupedAnalysis1 = (): FeeData | undefined => {
   const { useWebSockets } = useContext(FeatureFlagsContext);
   const { data } = useSWR<RawFeeData>(`${feesBasePath}/all`, fetcher, {
     refreshInterval: Duration.millisFromSeconds(1),
     isPaused: () => useWebSockets,
   });
-  const dataWs = useGroupedStats1Ws();
-  const [latestGroupedStats1, setLatestGroupedStats1] = useState<FeeData>();
+  const dataWs = useGroupedAnalysis1Ws();
+  const [latestGroupedAnalysis1, setLatestGroupedAnalysis1] =
+    useState<FeeData>();
 
   useEffect(() => {
     if (useWebSockets) {
       if (dataWs !== undefined) {
-        setLatestGroupedStats1(decodeFeeData(dataWs));
+        setLatestGroupedAnalysis1(decodeFeeData(dataWs));
       }
       return undefined;
     }
 
     if (data !== undefined) {
-      setLatestGroupedStats1(decodeFeeData(data));
+      setLatestGroupedAnalysis1(decodeFeeData(data));
       return undefined;
     }
   }, [data, dataWs, useWebSockets]);
 
-  return latestGroupedStats1;
+  return latestGroupedAnalysis1;
 };
 
 type GroupedAnallysis1Envelope = {
@@ -137,10 +138,11 @@ const getIsGroupedAnalysisMessage = (
   typeof (u as GroupedAnallysis1Envelope).id === "string" &&
   (u as GroupedAnallysis1Envelope).id === "grouped-analysis-1";
 
-export const useGroupedStats1Ws = (): // enabled: boolean,
+export const useGroupedAnalysis1Ws = (): // enabled: boolean,
 RawFeeData | undefined => {
   const { useWebSockets } = useContext(FeatureFlagsContext);
-  const [latestGroupedStats1, setLatestGroupedStats1] = useState<RawFeeData>();
+  const [latestGroupedAnalysis1, setLatestGroupedAnalysis1] =
+    useState<RawFeeData>();
   const [socketUrl] = useState(feesWsUrl);
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { lastJsonMessage } = useWebSocket(
@@ -161,19 +163,19 @@ RawFeeData | undefined => {
       return undefined;
     }
 
-    if (latestGroupedStats1 === undefined) {
-      setLatestGroupedStats1(lastJsonMessage.message);
+    if (latestGroupedAnalysis1 === undefined) {
+      setLatestGroupedAnalysis1(lastJsonMessage.message);
       return undefined;
     }
 
     const newBlock = NEA.head(lastJsonMessage.message.latestBlockFees);
     if (
-      newBlock.number > NEA.head(latestGroupedStats1.latestBlockFees).number
+      newBlock.number > NEA.head(latestGroupedAnalysis1.latestBlockFees).number
     ) {
-      setLatestGroupedStats1(lastJsonMessage.message);
+      setLatestGroupedAnalysis1(lastJsonMessage.message);
       return undefined;
     }
-  }, [lastJsonMessage, latestGroupedStats1, setLatestGroupedStats1]);
+  }, [lastJsonMessage, latestGroupedAnalysis1, setLatestGroupedAnalysis1]);
 
-  return latestGroupedStats1;
+  return latestGroupedAnalysis1;
 };

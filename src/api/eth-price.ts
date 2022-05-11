@@ -3,7 +3,7 @@ import * as Duration from "../duration";
 import { TimeFrameNext } from "../time-frames";
 import fetcher from "./default-fetcher";
 import { feesBasePath } from "./fees";
-import { EthPrice } from "./grouped-stats-1";
+import { EthPrice } from "./grouped-analysis-1";
 
 export const useEthPrice = (): EthPrice | undefined => {
   const { data } = useSWR<EthPrice>(`${feesBasePath}/eth-price`, fetcher, {

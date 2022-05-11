@@ -26,7 +26,7 @@ import {
 } from "./historicalData";
 import useSWR from "swr";
 import * as Format from "../../format";
-import { useGroupedStats1 } from "../../api/grouped-stats-1";
+import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 // import Timeline from "./timeline";
 
 type EthPrice = {
@@ -37,7 +37,7 @@ type EthPrice = {
 };
 
 const LandingPage: React.FC = () => {
-  const feesBurned = useGroupedStats1()?.feesBurned;
+  const feesBurned = useGroupedAnalysis1()?.feesBurned;
   const [genesisArr, setGenesisArr] = React.useState(genesis_data[0]);
   const { data } = useSWR<EthPrice>(
     "https://api.ultrasound.money/fees/eth-price",
