@@ -247,7 +247,7 @@
   transition: 0.3s transform;
   transform: translateY(0);
   &.hidden_bar {
-    transform: translateY(-100%);
+    transform: translateY(-200%);
   }
 }
 .the-merge-path {
