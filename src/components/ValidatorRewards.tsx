@@ -16,7 +16,6 @@ import { MoneyAmount, PercentAmount } from "./Amount";
 import { LabelText, TextInter, TextRoboto } from "./Texts";
 import { WidgetBackground, WidgetTitle } from "./widget-subcomponents";
 
-const hideDetailsThreshold = 0.06;
 const skeletonLoadingWidth = 0.1;
 
 type CategorySegmentProps = {
@@ -59,13 +58,6 @@ const CategorySegment: FC<CategorySegmentProps> = ({
           style={{
             height: "21px",
             marginBottom: "12px",
-            visibility: pipe(
-              percentOfTotalRewards,
-              O.map((percent) =>
-                percent < hideDetailsThreshold ? "hidden" : "visible",
-              ),
-              O.getOrElseW(() => "hidden" as const),
-            ),
           }}
         />
         <img
@@ -102,10 +94,6 @@ const CategorySegment: FC<CategorySegmentProps> = ({
               className="color-animation"
               style={{
                 color: showHighlight ? Colors.white : Colors.spindle,
-                visibility:
-                  percentOfTotalRewards >= hideDetailsThreshold || showHighlight
-                    ? "visible"
-                    : "hidden",
               }}
             >
               {Format.formatPercentNoDigit(percentOfTotalRewards)}
@@ -212,7 +200,7 @@ const ValidatorRewards = () => {
       )}
       <div className="flex flex-col gap-y-3">
         <div className="grid grid-cols-3">
-          <LabelText className="col-span-2 text-right">annual reward</LabelText>
+          <LabelText className="col-span-2 text-right">yearly</LabelText>
           <LabelText className="text-right">APR</LabelText>
         </div>
         {validatorRewards && (
@@ -228,7 +216,6 @@ const ValidatorRewards = () => {
             <RewardRow
               amount={getAnnualRewards(validatorRewards, "tips")}
               hovering={highlightTips}
-              link="https://dune.com/msilb7/EIP1559-Base-Fee-x-Tip-by-Block"
               name="tips"
               setHovering={setHighlightTips}
               apr={getApr(validatorRewards, "tips")}
