@@ -7,6 +7,7 @@ import Graphics from "./Graphics";
 import CurrencyTabs from "./CurrencyTabs";
 import { handleGraphs, setScrollPos } from "./helpers";
 import classes from "./BlockBtcEthUsd.module.scss";
+import { WINDOW_BREAK_POINT } from "./helpers";
 
 const TheUltraSound: FC<{}> = () => {
   const t = useContext(TranslationsContext);
@@ -16,14 +17,10 @@ const TheUltraSound: FC<{}> = () => {
   const graphTextRef = useRef<HTMLDivElement | null>(null);
   const [cryptoType, setCryptoType] = useState<string>("none");
   const tabs = ["none", "btc", "eth", "usd"];
+  const GRAPH_TOP_VALUE = 200;
+  const GRAPH_TOP_MOBILE_VALUE = 100;
 
   const currentScroll = useRef(0);
-  const onScroll = () => {
-    currentScroll.current = window.scrollY;
-    if (graphsBlockRef.current && graphTextRef.current) {
-      handleGraphs(graphsBlockRef.current, graphTextRef.current, setCryptoType);
-    }
-  };
 
   const setTextBlicksHeights = () => {
     const graphBlockHeight = graphsBlockRef.current?.getBoundingClientRect()
@@ -45,6 +42,25 @@ const TheUltraSound: FC<{}> = () => {
   };
 
   useEffect(() => {
+    if (!graphsBlockRef.current || !graphTextRef.current) return;
+    const offset = window.innerWidth * 0.12;
+    const topBreakPointValue: number =
+      window.innerWidth <= WINDOW_BREAK_POINT
+        ? GRAPH_TOP_MOBILE_VALUE +
+          graphsBlockRef.current.getBoundingClientRect().height
+        : GRAPH_TOP_VALUE;
+    const textBlocksArray = Array.from(graphTextRef.current.children);
+    const onScroll = () => {
+      currentScroll.current = window.scrollY;
+      if (graphTextRef.current) {
+        handleGraphs(
+          topBreakPointValue,
+          textBlocksArray,
+          offset,
+          setCryptoType
+        );
+      }
+    };
     window.addEventListener("scroll", onScroll);
     setTextBlicksHeights();
     window.addEventListener("resize", setTextBlicksHeights);
@@ -52,7 +68,7 @@ const TheUltraSound: FC<{}> = () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", setTextBlicksHeights);
     };
-  }, []);
+  }, [graphsBlockRef.current, graphTextRef.current]);
 
   const setSpecificTab = (currency = "none") => {
     let index = tabs.indexOf(currency);
@@ -90,7 +106,7 @@ const TheUltraSound: FC<{}> = () => {
         <div
           id="graph_svg"
           ref={graphRef}
-          className="w-full md:w-8/12 flex flex-wrap justify-between ml-auto mr-auto"
+          className="w-full md:w-8/12 flex flex-wrap align-start justify-between ml-auto mr-auto"
         >
           <div
             ref={graphTextRef}
@@ -98,17 +114,15 @@ const TheUltraSound: FC<{}> = () => {
           >
             <SVGrenderText currentScroll={currentScroll.current} />
           </div>
-          <div className="relative w-full md:w-5/12 order-1 md:order-1 mb-6 md:mb-0">
-            <div ref={graphsBlockRef} className={classes.graphsBlock}>
-              <CurrencyTabs
-                setSpecificTab={setSpecificTab}
-                cryptoType={cryptoType}
-              />
-              <Graphics
-                setSpecificTab={setSpecificTab}
-                cryptoType={cryptoType}
-              />
-            </div>
+          <div
+            className={`${classes.graphsBlock} w-full md:w-5/12 order-1 md:order-1 mb-6 md:mb-0`}
+            ref={graphsBlockRef}
+          >
+            <CurrencyTabs
+              setSpecificTab={setSpecificTab}
+              cryptoType={cryptoType}
+            />
+            <Graphics setSpecificTab={setSpecificTab} cryptoType={cryptoType} />
           </div>
         </div>
       </section>
