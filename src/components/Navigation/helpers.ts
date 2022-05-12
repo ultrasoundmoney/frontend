@@ -77,6 +77,7 @@ export const setScrollPosition = (
   } else return false;
 };
 
+const OFFSET_FAQ = 150;
 export const showHideNavBar = (
   controlPoints: (StepperPoint | undefined)[],
   stepsRefElem: HTMLElement
@@ -94,6 +95,7 @@ export const showHideNavBar = (
   );
   const collectionElems = stepsRefElem.parentElement?.children!;
   const childrenElems = Array.from(collectionElems);
+
   const lastSectionIndex: number = childrenElems.findIndex(
     (node) => node.id === "before-genesis"
   )!;
@@ -103,11 +105,18 @@ export const showHideNavBar = (
   const nextDrawingLineHight = childrenElems[
     lastSectionIndex + 1
   ]?.getBoundingClientRect()?.height;
+
+  const faqSectionIndex: { [key: string]: any } = childrenElems.find(
+    (node) => node.id === "faq"
+  )!;
+  const topFaqSection: number = faqSectionIndex.offsetTop;
   if (lastSectionHight && maxOffsetYValue && nextDrawingLineHight) {
     const showStickyHeader: boolean =
       window.scrollY > offsetYFirstPoint - window.innerHeight / 2.4 &&
       window.scrollY <
-        maxOffsetYValue + lastSectionHight + nextDrawingLineHight;
+        maxOffsetYValue + lastSectionHight + nextDrawingLineHight &&
+      window.scrollY < topFaqSection - OFFSET_FAQ;
+
     showStickyHeader
       ? stepsRefElem.classList.add("active")
       : stepsRefElem.classList.remove("active");
