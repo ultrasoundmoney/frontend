@@ -289,13 +289,16 @@ const PriceModel: FC = () => {
                     ratio={linearFromLog(peRatios.INTC)}
                     symbol="INTC"
                   />
-                  <Marker
-                    alt="google logo"
-                    icon="google"
-                    peRatio={peRatios.GOOGL}
-                    ratio={linearFromLog(peRatios.GOOGL)}
-                    symbol="GOOGL"
-                  />
+                  {ethPeRatio === undefined ||
+                    (ethPeRatio - peRatios.GOOGL > 4 && (
+                      <Marker
+                        alt="google logo"
+                        icon="google"
+                        peRatio={peRatios.GOOGL}
+                        ratio={linearFromLog(peRatios.GOOGL)}
+                        symbol="GOOGL"
+                      />
+                    ))}
                   {/* <Marker */}
                   {/*   alt="netflix logo" */}
                   {/*   icon="netflix" */}
