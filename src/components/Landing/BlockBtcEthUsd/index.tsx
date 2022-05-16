@@ -7,7 +7,7 @@ import Graphics from "./Graphics";
 import CurrencyTabs from "./CurrencyTabs";
 import { handleGraphs, setScrollPos } from "./helpers";
 import classes from "./BlockBtcEthUsd.module.scss";
-import { WINDOW_BREAK_POINT } from "./helpers";
+import { WINDOW_BREAK_POINT, graphTypes } from "./helpers";
 
 const TheUltraSound: FC<{}> = () => {
   const t = useContext(TranslationsContext);
@@ -70,13 +70,9 @@ const TheUltraSound: FC<{}> = () => {
     };
   }, [graphsBlockRef.current, graphTextRef.current]);
 
-  const setSpecificTab = (currency = "none") => {
-    let index = tabs.indexOf(currency);
-    if (index < 0) {
-      index = 0;
-    }
-    if (graphsBlockRef.current && graphTextRef.current && graphRef.current) {
-      setScrollPos(graphRef.current, graphTextRef.current, index);
+  const setSpecificTab = (currency: graphTypes = "none") => {
+    if (graphTextRef.current) {
+      setScrollPos(currency, graphTextRef.current);
     }
   };
 

@@ -32,8 +32,9 @@ const SVGrender: React.FC<SVGrenderProps> = ({ currentScroll }) => {
 
   return (
     <>
-      {data.map((item) => (
+      {data.map((item, index) => (
         <BlockText
+          index={index}
           title={item.title}
           text={item.text}
           currentScroll={currentScroll}
