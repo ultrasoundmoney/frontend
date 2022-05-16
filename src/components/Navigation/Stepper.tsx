@@ -103,7 +103,7 @@ const Stepper: React.FC = () => {
             className="px-5 py-2 flex items-center font-medium text-sm  text-white hover:text-blue-shipcove border-white border-solid border-2 rounded-3xl hover:border-blue-shipcove"
             href="#join-the-fam"
           >
-            Join The Community
+            Join the fam
             <img className="ml-6" src={arrowRight} alt="arrow-right" />
           </a>
         </div>
