@@ -1,3 +1,4 @@
+export type graphTypes = "none" | "btc" | "eth" | "usd";
 const OFFSET_TO_SCROLL = 48;
 export const WINDOW_BREAK_POINT = 740;
 const graphType = ["none", "btc", "eth", "usd"];
@@ -18,33 +19,15 @@ export const handleGraphs = (
 };
 
 export const setScrollPos = (
-  graphBlockElem: HTMLElement,
-  graphTextBlockElem: HTMLElement,
-  index: number
+  scrollTo: graphTypes,
+  graphTextBlockElem: HTMLElement
 ) => {
-  const firstParent = graphBlockElem.parentNode!;
-  const topParent = firstParent.parentNode!;
-  const upBlockHeight = firstParent.children[0].getBoundingClientRect().height;
-  const childrenArray = Array.from(topParent.children);
-  let heightToPoint =
-    window.innerWidth <= WINDOW_BREAK_POINT
-      ? upBlockHeight
-      : upBlockHeight - OFFSET_TO_SCROLL;
-  for (let i = 2; i < childrenArray.length - 1; i++) {
-    if (childrenArray[i].id === "enter-ultra-sound") {
-      break;
-    }
-    const { height } = childrenArray[i].getBoundingClientRect();
-    heightToPoint += height;
-  }
-  if (index !== 0) {
-    const textBloksArray = Array.from(graphTextBlockElem.children);
-    for (let i = 0; i < index; i++) {
-      const { height } = textBloksArray[i].getBoundingClientRect();
-      heightToPoint += height;
-    }
-  }
-  window.scrollTo({ top: heightToPoint });
+  const indexScrollElement = graphType.findIndex((el) => el === scrollTo);
+  graphTextBlockElem.children[indexScrollElement].scrollIntoView({
+    behavior: "smooth",
+    block: "center",
+    inline: "center",
+  });
 };
 
 export const ORANGE_COLOR = "#FF891D";

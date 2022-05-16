@@ -4,12 +4,14 @@ type BlockTextProps = {
   title: string;
   text: string;
   currentScroll: number;
+  index: number;
 };
 
 const BlockText: React.FC<BlockTextProps> = ({
   title,
   text,
   currentScroll,
+  index,
 }) => {
   const text_block = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
@@ -25,6 +27,7 @@ const BlockText: React.FC<BlockTextProps> = ({
 
   return (
     <div
+      id={`test_${index}`}
       className="flex flex-col justify-center mb-20"
       style={{ transition: "0.2s" }}
       ref={text_block}
