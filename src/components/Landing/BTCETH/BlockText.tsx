@@ -25,7 +25,7 @@ const BlockText: React.FC<BlockTextProps> = ({
 
   return (
     <div
-      className="flex flex-col justify-center mb-8"
+      className="flex flex-col justify-center mb-20"
       style={{ transition: "0.2s" }}
       ref={text_block}
     >
