@@ -43,7 +43,7 @@ const TheUltraSound: FC<{}> = () => {
 
   useEffect(() => {
     if (!graphsBlockRef.current || !graphTextRef.current) return;
-    const offset = window.innerWidth * 0.12;
+    const offset = window.innerWidth * 0.2;
     const topBreakPointValue: number =
       window.innerWidth <= WINDOW_BREAK_POINT
         ? GRAPH_TOP_MOBILE_VALUE +
