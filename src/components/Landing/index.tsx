@@ -16,7 +16,7 @@ import NftDrop from "../NftDrop/index";
 import FollowingYou from "../FollowingYou";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import SupplyView from "../SupplyView";
+import SupplyView from "../SupplyViewNew";
 import TheBurnedCard from "./theBurnedCard";
 import {
   convertDateStringReadable,
@@ -544,7 +544,7 @@ const LandingPage: React.FC<{}> = () => {
               className="flex flex-col px-4 md:px-0 mt-6 mb-16"
               id="supplyview"
             >
-              <div className="w-full md:w-5/6 lg:w-5/6 md:m-auto relative bg-blue-tangaroa md:px-8 py-4 md:py-16 rounded-xl">
+              <div className="w-full md:w-5/6 lg:w-5/6 md:m-auto relative bg-blue-tangaroa md:px-11 py-4 md:py-11 rounded-xl">
                 <SupplyView />
               </div>
               <div className="flex flex-wrap justify-center pt-20">
