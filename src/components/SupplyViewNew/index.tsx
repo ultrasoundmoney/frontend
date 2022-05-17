@@ -1,7 +1,7 @@
 import * as React from "react";
 import { DateTime } from "luxon";
 import Slider from "../Slider/Slider";
-import SupplyChart from "./SupplyChart";
+import SupplyChart from "./SupplyGraph";
 import {
   estimatedDailyFeeBurn,
   estimatedDailyIssuance,
@@ -10,6 +10,7 @@ import {
 import { useTranslations } from "../../utils/use-translation";
 import styles from "./SupplyView.module.scss";
 import { formatOneDigit } from "../../format";
+import SupplyGraph from "./SupplyGraph";
 
 const MIN_PROJECTED_ETH_STAKING = 1e6;
 const DEFAULT_PROJECTED_ETH_STAKING = 10e6;
@@ -161,14 +162,8 @@ const SupplyView: React.FC<{}> = () => {
           />
         </Param>
       </div>
-      <div className="w-1/2">
-        <SupplyChart
-          projectedStaking={projectedStaking}
-          projectedBaseGasPrice={projectedBaseGasPrice}
-          projectedMergeDate={projectedMergeDate}
-          showBreakdown={showBreakdown}
-          onPeakProjectedToggle={handleOnPeakProjectedToggle}
-        />
+      <div className="w-1/2 flex justify-end">
+        <SupplyGraph />
       </div>
     </div>
   );
