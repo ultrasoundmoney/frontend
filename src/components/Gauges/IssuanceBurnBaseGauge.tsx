@@ -42,8 +42,12 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
 
   const min = 0;
   const max = pipe(
-    unit === "eth" ? 10 : (10 * (ethPrice?.usd ?? 0)) / 10 ** 3,
-    (max) => Math.max(max, value ?? 0),
+    unit === "eth"
+      ? 10
+      : ethPrice === undefined
+      ? 0
+      : (10 * ethPrice.usd) / 10 ** 3,
+    (max) => Math.max(max, unit === "eth" ? 10 : 20 ?? 0),
     Math.round,
   );
 
