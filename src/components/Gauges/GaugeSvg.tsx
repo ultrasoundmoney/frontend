@@ -31,7 +31,7 @@ const GaugeSvg: FC<GaugeSvgProps> = ({
     progressFillColor !== undefined
       ? progressFillColor
       : gradientFillColor !== undefined
-      ? `url(#${gradientFillColor}-gradient)`
+      ? `url(#${gradientFillColor}-gradient-base-gauge)`
       : colors.spindle;
 
   const thickness = 8;
@@ -65,11 +65,12 @@ const GaugeSvg: FC<GaugeSvgProps> = ({
   return (
     <svg width={width} height={height}>
       <defs>
-        <linearGradient y1="1" id="orange-gradient">
+        {/* The linearGradient definitions somehow inherit the display: none CSS of their sibling gauges with the same id, hiding them on the split gauge too. We need to use unique IDs for the different gauges. */}
+        <linearGradient y1="1" id="orange-gradient-base-gauge">
           <stop offset="0%" stopColor="#EDDB36" />
           <stop offset="60%" stopColor="#E79800" />
         </linearGradient>
-        <linearGradient id="blue-gradient">
+        <linearGradient id="blue-gradient-base-gauge">
           <stop offset="0%" stopColor="#5DECD2" />
           <stop offset="100%" stopColor="#5DADEC" />
         </linearGradient>
