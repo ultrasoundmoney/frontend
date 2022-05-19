@@ -21,7 +21,7 @@ export const UnitText: FC<{ className?: string }> = ({
   </TextRoboto>
 );
 
-export const SectionTitle: FC<{ title: string; subtitle: string }> = ({
+export const SectionTitle: FC<{ title: string; subtitle?: string }> = ({
   title,
   subtitle,
 }) => {
@@ -29,21 +29,23 @@ export const SectionTitle: FC<{ title: string; subtitle: string }> = ({
     <>
       <h2
         className={`
-          font-inter font-light
+          font-inter font-extralight
           text-white text-center text-2xl md:text-3xl xl:text-41xl
-          mb-6
         `}
       >
         {title}
       </h2>
-      <p
-        className={`
-          font-inter font-light
-          text-blue-shipcove text-center text-base lg:text-lg
-        `}
-      >
-        {subtitle}
-      </p>
+      {subtitle && (
+        <p
+          className={`
+            font-inter font-light
+            text-blue-shipcove text-center text-base lg:text-lg
+            mt-6
+          `}
+        >
+          {subtitle}
+        </p>
+      )}
     </>
   );
 };

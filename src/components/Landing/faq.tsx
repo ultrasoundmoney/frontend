@@ -1,6 +1,7 @@
 import * as React from "react";
 import Accordion from "../Accordion";
 import { TranslationsContext } from "../../translations-context";
+import { SectionTitle } from "../Texts";
 
 const FaqBlock: React.FC = () => {
   const t = React.useContext(TranslationsContext);
@@ -15,9 +16,7 @@ const FaqBlock: React.FC = () => {
         id="faq"
       >
         <div className="block py-8">
-          <h1 className="text-white text-center text-2xl md:text-3xl xl:text-41xl">
-            {t.faq_section_title}
-          </h1>
+          <SectionTitle title="q&a" />
         </div>
         <div className="w-full lg:w-5/6 mx-auto px-4 md:px-8 lg:px-0">
           <Accordion title={t.faq_question_1} text={t.faq_answer_1} />
@@ -61,23 +60,6 @@ const FaqBlock: React.FC = () => {
             style={{ height: "1px" }}
           ></div>
           <Accordion title={t.faq_question_9} text={t.faq_answer_9} />
-        </div>
-        <div className="w-full mx-auto px-0 flex justify-center mt-16">
-          <span className="flex-initial text-white text-lg font-light self-center px-4">
-            {t.faq_missing_question}
-          </span>
-          <button
-            type="button"
-            className="flex-none px-3 py-2 text-base text-white hover:opacity-75 border-white border-solid border-2 rounded-3xl select-none"
-          >
-            <a
-              href="https://twitter.com/intent/tweet?text=.@ultrasoundmoney%20%5Byour%20question%20here%5D"
-              target="_blank"
-              rel="noreferrer"
-            >
-              {t.faq_btn_text}
-            </a>
-          </button>
         </div>
       </section>
     </>
