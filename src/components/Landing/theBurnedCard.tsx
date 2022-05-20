@@ -1,23 +1,57 @@
-import * as React from "react";
-import Card from "../Card/card";
+import React, { useRef } from "react";
+import FirstVidget from "../Vidgets/FirstVidget";
+import SecondVidget from "../Vidgets/SecondVidget";
+import ThirdVidget from "../Vidgets/ThirdVidget";
+import FourthVidget from "../Vidgets/FourthVidget";
 import { TranslationsContext } from "../../translations-context";
 import { useState, useContext } from "react";
 import { StepperContext } from "../../context/StepperContext";
+import { moneyType } from "../Vidgets/helpers";
+import { historicalData } from "./historicalData";
 
-type FeeBurnedBlockProps = {
-  lineHeight?: string;
-};
-const FeeBurnedBlock: React.FC<FeeBurnedBlockProps> = () => {
+const FeeBurnedBlock = () => {
   const t = React.useContext(TranslationsContext);
   const [isShow, setIsShow] = useState(false);
+  const [numberETHBlock, setNumberETHBlock] = useState(5);
+  const [currentMoneyType, setCurrentMoneyType] = useState<moneyType>(
+    "Infationary"
+  );
   const stepperPoints = useContext(StepperContext);
-
   const controlPoints: any[] = Object.keys(
     stepperPoints?.stepperElements as {}
   ).map((element) => {
     return stepperPoints?.stepperElements[element];
   });
+  const [currentIndexHistorical, setCurrentIndexHistorical] = useState(0);
+
   function onScroll() {
+    //change data vidgets
+    const body = document.body;
+    const currentIndex = Math.round(
+      window.scrollY / Math.round(body.scrollHeight / historicalData.length)
+    );
+    if (currentIndex <= historicalData.length - 1) {
+      setCurrentIndexHistorical(currentIndex);
+    }
+    if (window.scrollY > controlPoints[4].offsetY) {
+      setNumberETHBlock(0);
+      setCurrentMoneyType("Deflationary");
+      return;
+    } else if (window.scrollY > controlPoints[3].offsetY) {
+      setNumberETHBlock(1);
+      setCurrentMoneyType("Infationary");
+      return;
+    } else if (window.scrollY > controlPoints[2].offsetY) {
+      setNumberETHBlock(2);
+      return;
+    } else if (window.scrollY > controlPoints[1].offsetY) {
+      setNumberETHBlock(3);
+      return;
+    } else if (window.scrollY > controlPoints[0].offsetY) {
+      setNumberETHBlock(5);
+      return;
+    }
+    //cahnge visibility vidgets bar
     if (
       window.scrollY >
       controlPoints[0].offsetY - window.innerHeight / 2 + 200
@@ -37,36 +71,24 @@ const FeeBurnedBlock: React.FC<FeeBurnedBlockProps> = () => {
     <>
       <div
         id="eth-card"
-        className={`fixed-fee-burned inset-x-0 bottom-0 grid grid-cols-2 gap-1 sm:gap-2 lg:flex lg:flex-nowrap justify-center w-full max-w-7xl md:mx-auto px-2 lg:px-4 sticky lg:gap-4 pb-2 lg:pb-4 ${
+        className={`fixed-fee-burned z-10 inset-x-0 bottom-0 grid grid-cols-2 gap-1 sm:gap-2 lg:flex lg:flex-nowrap justify-center w-full max-w-7xl md:mx-auto px-2 lg:px-4 sticky lg:gap-4 pb-2 lg:pb-4 ${
           isShow && "active"
         }`}
       >
-        <Card
-          type={1}
-          name={`Status ${t.landing_feeburned_card1_name}`}
-          title={t.landing_feeburned_card1_title}
-          className="burned_1 w-full lg:w-3/12"
+        <FirstVidget
+          date={historicalData[currentIndexHistorical][0]}
+          currentMoneyType={currentMoneyType}
         />
-        <Card
-          type={2}
+        <SecondVidget
           name={t.landing_feeburned_card2_name}
-          title={t.landing_feeburned_card2_title}
-          number={t.landing_feeburned_card2_title1}
-          className="burned_2 w-full lg:w-3/12"
+          cost={historicalData[currentIndexHistorical][1]}
+          number={historicalData[currentIndexHistorical][2]}
         />
-        <Card
-          type={3}
+        <ThirdVidget
+          numberETHBlock={numberETHBlock}
           name={t.landing_feeburned_card3_name}
-          title={t.landing_feeburned_card3_title}
-          eth={true}
-          className="burned_3 w-full lg:w-3/12"
         />
-        <Card
-          type={3}
-          name={t.landing_feeburned_card4_name}
-          title={t.landing_feeburned_card4_title}
-          className="burned_4 w-full lg:w-3/12"
-        />
+        <FourthVidget name={t.landing_feeburned_card4_name} />
       </div>
     </>
   );
