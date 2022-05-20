@@ -1,10 +1,8 @@
 import React, { useContext } from "react";
 import { TranslationsContext } from "../../../translations-context";
 import BlockText from "./BlockText";
-interface SVGrenderProps {
-  currentScroll: number;
-}
-const SVGrender: React.FC<SVGrenderProps> = ({ currentScroll }) => {
+
+const SVGrender = () => {
   const t = useContext(TranslationsContext);
 
   const data = [
@@ -32,13 +30,8 @@ const SVGrender: React.FC<SVGrenderProps> = ({ currentScroll }) => {
 
   return (
     <>
-      {data.map((item, index) => (
-        <BlockText
-          index={index}
-          title={item.title}
-          text={item.text}
-          currentScroll={currentScroll}
-        />
+      {data.map((item) => (
+        <BlockText title={item.title} text={item.text} />
       ))}
     </>
   );
