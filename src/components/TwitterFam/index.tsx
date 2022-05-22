@@ -167,16 +167,9 @@ const TwitterFam: FC = () => {
           <div key={profile?.profileUrl ?? index}>
             <ImageWithTooltip
               className="m-2 w-10 h-10 select-none"
-              description={profile?.bio}
-              famFollowerCount={profile?.famFollowerCount}
-              followerCount={profile?.followersCount}
               imageUrl={profile?.profileImageUrl}
               isDoneLoading={profile !== undefined}
-              links={profile?.links}
               skeletonDiameter="40px"
-              title={profile?.name}
-              tooltipImageUrl={profile?.profileImageUrl}
-              twitterUrl={profile?.profileUrl}
               onMouseEnter={(ref) =>
                 !md || profile === undefined
                   ? () => undefined
