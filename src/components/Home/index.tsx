@@ -9,10 +9,11 @@ import { FeatureFlagsContext } from "../../feature-flags";
 import Flippenings from "../Flippenings";
 import FollowingYou from "../FollowingYou";
 import FaqBlock from "../Landing/faq";
+import Link from "../Link";
 import PriceModel from "../PriceModel";
 import Scarcity from "../Scarcity";
 import SupplyView from "../SupplyView";
-import { SectionTitle, TextInter, TextRoboto } from "../Texts";
+import { SectionTitle, TextInterLink, TextRoboto } from "../Texts";
 import ToggleSwitch from "../ToggleSwitch";
 import TotalValueSecured from "../TotalValueSecured";
 import TwitterFam from "../TwitterFam";
@@ -249,32 +250,28 @@ const Home: FC = () => {
             <div className="w-full flex flex-col items-center pb-40">
               <SectionDivider title="still have questions?" />
               <div className="flex flex-col gap-y-4 justify-start">
-                <a
-                  className="flex items-center gap-x-2 text-white"
+                <Link
+                  className="flex items-center gap-x-2"
                   href="https://twitter.com/intent/tweet?text=@ultrasoundmoney"
-                  target="_blank"
-                  rel="noreferrer"
                 >
                   <img
                     className="w-4"
                     src="/twitter-icon.svg"
                     alt="icon of the twitter bird"
                   />
-                  <TextInter>@ultrasoundmoney</TextInter>
-                </a>
-                <a
-                  className="flex items-center gap-x-2 text-white"
+                  <TextInterLink>@ultrasoundmoney</TextInterLink>
+                </Link>
+                <Link
+                  className="flex items-center gap-x-2"
                   href="mailto:contact@ultrasound.money"
-                  target="_blank"
-                  rel="noreferrer"
                 >
                   <img
                     className="h-4"
                     src="/email-icon.svg"
                     alt="icon of the twitter bird"
                   />
-                  <TextInter>contact@ultrasound.money</TextInter>
-                </a>
+                  <TextInterLink>contact@ultrasound.money</TextInterLink>
+                </Link>
               </div>
             </div>
           </div>

@@ -88,6 +88,14 @@ export const TextInter: FC<{
   );
 };
 
+export const TextInterLink: FC<{
+  className?: string;
+}> = ({ children, className: className = "" }) => (
+  <TextInter className={`text-blue-spindle hover:underline ${className}`}>
+    {children}
+  </TextInter>
+);
+
 export const TextRoboto: FC<{
   className?: string;
   inline?: boolean;
