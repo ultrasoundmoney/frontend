@@ -57,7 +57,7 @@ export const TextInter: FC<{
   skeletonWidth?: string;
 }> = ({
   children,
-  className,
+  className: className = "",
   inline = true,
   style,
   skeletonWidth = "3rem",
@@ -66,7 +66,7 @@ export const TextInter: FC<{
     font-inter font-light
     text-white
     text-base md:text-lg
-    ${className ?? ""}
+    ${className}
   `;
 
   return inline ? (
