@@ -1,5 +1,4 @@
 import * as DateFns from "date-fns";
-import { flow } from "lodash";
 import React, { FC, useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { TransitionGroup } from "react-transition-group";
@@ -8,7 +7,7 @@ import { LatestBlock, useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import { Unit } from "../../denomination";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
-import { NEA, O, OAlt, pipe } from "../../fp";
+import { flow, NEA, O, OAlt, pipe } from "../../fp";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import CSSTransition from "../CSSTransition";
