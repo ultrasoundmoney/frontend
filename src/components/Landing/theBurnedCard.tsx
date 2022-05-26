@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import FirstVidget from "../Vidgets/FirstVidget";
 import SecondVidget from "../Vidgets/SecondVidget";
 import ThirdVidget from "../Vidgets/ThirdVidget";
@@ -26,11 +26,18 @@ const FeeBurnedBlock = () => {
 
   function onScroll() {
     //change data vidgets
-    const body = document.body;
-    const currentIndex = Math.round(
-      window.scrollY / Math.round(body.scrollHeight / historicalData.length)
-    );
-    if (currentIndex <= historicalData.length - 1) {
+    const bodyHeight = document.body.scrollHeight;
+    const breackPointShowVidgets =
+      controlPoints[0].offsetY - window.innerHeight / 2.4;
+    const showVidgets = window.scrollY > breackPointShowVidgets;
+
+    const currentIndex = showVidgets
+      ? Math.round(
+          (window.scrollY - breackPointShowVidgets) /
+            Math.round(bodyHeight / historicalData.length)
+        )
+      : 0;
+    if (currentIndex <= historicalData.length - 1 && currentIndex >= 0) {
       setCurrentIndexHistorical(currentIndex);
     }
     if (window.scrollY > controlPoints[4].offsetY) {
@@ -52,10 +59,7 @@ const FeeBurnedBlock = () => {
       return;
     }
     //cahnge visibility vidgets bar
-    if (
-      window.scrollY >
-      controlPoints[0].offsetY - window.innerHeight / 2 + 200
-    ) {
+    if (showVidgets) {
       setIsShow(true);
     } else {
       setIsShow(false);
