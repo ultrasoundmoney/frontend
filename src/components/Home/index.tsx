@@ -268,7 +268,7 @@ const Home: FC = () => {
                   <img
                     className="h-4"
                     src="/email-icon.svg"
-                    alt="icon of the twitter bird"
+                    alt="icon of an envelope, email"
                   />
                   <TextInterLink>contact@ultrasound.money</TextInterLink>
                 </Link>
