@@ -37,6 +37,7 @@
     "react-transition-group": "^4.4.2",
     "react-use-websocket": "^3.0.0",
     "sanitize-html": "^2.7.0",
+    "sharp": "^0.30.5",
     "twemoji": "^13.1.0"
   },
   "devDependencies": {
