@@ -1,4 +1,4 @@
-FROM node:18 as build
+FROM node:18-alpine as build
 WORKDIR /app
 
 COPY package.json .
@@ -18,7 +18,7 @@ COPY tailwind.config.js .
 RUN ["yarn", "build"]
 RUN ["yarn", "export"]
 
-FROM node:18 as run
+FROM node:18-alpine as run
 WORKDIR /app
 EXPOSE 3000
 
