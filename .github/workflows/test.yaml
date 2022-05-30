@@ -1,0 +1,27 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+    tags:
+      - "stag-*"
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+      - name: install deps
+        run: yarn install
+      - name: check types
+        run: yarn check-types
+      - name: lint
+        run: yarn lint
+      - name: test
+        run: yarn build
