@@ -7,7 +7,6 @@ import {
   getTotalAnnualReward,
   getTotalApr,
   useValidatorRewards,
-  ValidatorRewards,
 } from "../api/validator-rewards";
 import Colors from "../colors";
 import * as Format from "../format";
@@ -145,7 +144,7 @@ const RewardRow: FC<RewardRowProps> = ({
   </a>
 );
 
-const ValidatorRewards = () => {
+const ValidatorRewardsWidget = () => {
   const validatorRewards = useValidatorRewards();
   const [highlightIssuance, setHighlightIssuance] = useState(false);
   const [highlightTips, setHighlightTips] = useState(false);
@@ -241,4 +240,4 @@ const ValidatorRewards = () => {
   );
 };
 
-export default ValidatorRewards;
+export default ValidatorRewardsWidget;
