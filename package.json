@@ -41,6 +41,7 @@
     "twemoji": "^13.1.0"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^12.1.6",
     "@types/aos": "^3.0.4",
     "@types/d3": "^7.1.0",
     "@types/lodash": "^4.14.178",
