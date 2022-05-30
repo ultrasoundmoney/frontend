@@ -4,6 +4,8 @@ WORKDIR /app
 COPY package.json .
 COPY yarn.lock .
 RUN ["yarn", "install"]
+# Next build breaks without this.
+# https://nextjs.org/docs/messages/sharp-missing-in-production
 RUN ["yarn", "add", "sharp"]
 COPY tsconfig.json .
 COPY src/ src
@@ -20,10 +22,9 @@ FROM node:18 as run
 WORKDIR /app
 EXPOSE 3000
 
-COPY package.json .
-COPY yarn.lock .
+COPY package.json.prod package.json
 RUN ["yarn", "install", "--production"]
 
-COPY --from=build /app/ .
+COPY --from=build /app/out out
 
 CMD ["yarn", "start"]
