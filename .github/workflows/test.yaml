@@ -19,9 +19,5 @@ jobs:
           node-version: 16.x
       - name: install deps
         run: yarn install
-      - name: check types
-        run: yarn check-types
-      - name: lint
-        run: yarn lint
       - name: test
         run: yarn build
