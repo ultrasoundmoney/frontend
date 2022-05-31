@@ -15,8 +15,14 @@ COPY next.config.js .
 COPY postcss.config.js .
 COPY public/ public
 COPY tailwind.config.js .
+ENV NEXT_PUBLIC_ENV=staging
 RUN ["yarn", "build"]
 RUN ["yarn", "export"]
+RUN ["mv", "out", "out-stag"]
+ENV NEXT_PUBLIC_ENV=prod
+RUN ["yarn", "build"]
+RUN ["yarn", "export"]
+RUN ["mv", "out", "out-prod"]
 
 FROM node:18-alpine as run
 WORKDIR /app
@@ -25,6 +31,7 @@ EXPOSE 3000
 COPY package.json.prod package.json
 RUN ["yarn", "install", "--production"]
 
-COPY --from=build /app/out out
+COPY --from=build /app/out-stag out-stag
+COPY --from=build /app/out-prod out-prod
 
-CMD ["yarn", "start"]
+CMD ["yarn", "start-prod"]
