@@ -602,8 +602,6 @@ const SupplyChart: React.FC<Props> = ({
     chartSettings,
   ]);
 
-  const legendItems = series.filter((s) => s.showInLegend);
-
   return (
     <>
       <div ref={containerRef} className={styles.supplyChart}>

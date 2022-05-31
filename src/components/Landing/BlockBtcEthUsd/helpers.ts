@@ -1,5 +1,4 @@
 export type graphTypes = "none" | "btc" | "eth" | "usd";
-const OFFSET_TO_SCROLL = 48;
 export const WINDOW_BREAK_POINT = 740;
 const graphType = ["none", "btc", "eth", "usd"];
 

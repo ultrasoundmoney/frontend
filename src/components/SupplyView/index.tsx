@@ -38,7 +38,7 @@ const SupplyView: React.FC<{}> = () => {
   const [projectedMergeDate, setProjectedMergeDate] = React.useState(
     DEFAULT_PROJECTED_MERGE_DATE
   );
-  const [showBreakdown, setShowBreakdown] = React.useState(false);
+  const [showBreakdown] = React.useState(false);
   const [isPeakPresent, setIsPeakPresent] = React.useState(true);
 
   const handleProjectedStakingChange = React.useCallback(
@@ -65,14 +65,6 @@ const SupplyView: React.FC<{}> = () => {
     },
     []
   );
-
-  const handleProjectedStakingPointerDown = React.useCallback(() => {
-    setShowBreakdown(true);
-  }, []);
-
-  const handleProjectedStakingPointerUp = React.useCallback(() => {
-    setShowBreakdown(false);
-  }, []);
 
   const handleOnPeakProjectedToggle = React.useCallback((isPeakPresent) => {
     setIsPeakPresent(isPeakPresent);
@@ -139,8 +131,6 @@ const SupplyView: React.FC<{}> = () => {
             value={projectedStaking}
             step={1e6}
             onChange={handleProjectedStakingChange}
-            onPointerDown={handleProjectedStakingPointerDown}
-            onPointerUp={handleProjectedStakingPointerUp}
           />
         </Param>
 
