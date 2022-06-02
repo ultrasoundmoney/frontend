@@ -11,7 +11,8 @@ import BurnGauge from "../Gauges/BurnGauge";
 import IssuanceGauge from "../Gauges/IssuanceGauge";
 import SupplyGrowthGauge from "../Gauges/SupplyGrowthGauge";
 import LatestBlocks from "../LatestBlocks";
-import { WidgetBackground } from "../widget-subcomponents";
+import ToggleSwitch from "../ToggleSwitch";
+import { WidgetBackground, WidgetTitle } from "../widget-subcomponents";
 import BurnLeaderboard from "./BurnLeaderboard";
 import CurrencyControl from "./controls/CurrencyControl";
 import TimeFrameControl from "./controls/TimeFrameControl";
@@ -73,19 +74,22 @@ const WidgetGroup1: FC = () => {
         <WidgetBackground>
           <div className="flex flex-col gap-y-8 md:flex-row lg:gap-y-0 justify-between">
             <div className="flex flex-col gap-y-4 lg:gap-x-4 lg:flex-row lg:items-center">
-              <p className="font-inter font-light text-blue-spindle text-md uppercase">
-                time frame
-              </p>
+              <WidgetTitle>time frame</WidgetTitle>
               <TimeFrameControl
                 selectedTimeframe={timeFrame}
                 onSetTimeFrame={handleSetTimeFrame}
               />
             </div>
             <div className="flex flex-col gap-y-4 lg:gap-x-4 lg:flex-row lg:items-center">
-              <p className="font-inter font-light text-blue-spindle text-md uppercase md:text-right lg:text-left">
-                currency
-              </p>
+              <WidgetTitle>currency</WidgetTitle>
               <CurrencyControl selectedUnit={unit} onSetUnit={onSetUnit} />
+            </div>
+            <div className="flex flex-col gap-4 md:items-center">
+              <WidgetTitle>simulate merge</WidgetTitle>
+              <ToggleSwitch
+                checked={simulateMerge}
+                onToggle={toggleSimulateMerge}
+              />
             </div>
           </div>
         </WidgetBackground>

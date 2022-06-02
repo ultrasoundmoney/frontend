@@ -34,7 +34,7 @@ const GaugeSvg: FC<GaugeSvgProps> = ({
       ? `url(#${gradientFillColor}-gradient-base-gauge)`
       : colors.spindle;
 
-  const thickness = 8;
+  const thickness = 11;
   const width = 2 * (innerRadius + thickness);
   const height = 2 * (innerRadius + thickness);
   const tau = 2 * Math.PI;

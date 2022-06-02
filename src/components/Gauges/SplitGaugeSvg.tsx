@@ -30,7 +30,7 @@ const SplitGaugeSvg: FC<SplitGaugeSvgProps> = ({
     config: config.gentle,
   });
 
-  const thickness = 8;
+  const thickness = 11;
   const width = 2 * (innerRadius + thickness);
   const height = 2 * (innerRadius + thickness);
   const tau = 2 * Math.PI;

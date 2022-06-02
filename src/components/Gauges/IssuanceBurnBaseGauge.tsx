@@ -8,6 +8,7 @@ import { FeatureFlagsContext } from "../../feature-flags";
 import { formatOneDigit, formatZeroDigit } from "../../format";
 import { pipe } from "../../fp";
 import Twemoji from "../Twemoji";
+import { WidgetTitle } from "../widget-subcomponents";
 import GaugeSvg, { GaugeGradientFill } from "./GaugeSvg";
 
 type BaseGuageProps = {
@@ -57,16 +58,18 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
 
   return (
     <>
-      <Twemoji className="h-10 w-10 select-none" wrapper>
-        {emoji}
-      </Twemoji>
-      <div className="mt-6 md:mt-2 lg:mt-8 transform scale-100 md:scale-75 lg:scale-100 xl:scale-110">
+      <WidgetTitle>{title}</WidgetTitle>
+      {/* <div className="mt-6 md:mt-2 lg:mt-8 transform scale-100 md:scale-75 lg:scale-100 xl:scale-110"> */}
+      <div className="mt-8">
         <GaugeSvg
           gradientFill={gradientFill}
           needleColor={needleColor}
           progress={progress}
         />
-        <div className="font-roboto text-white text-center font-light 2xl:text-lg -mt-20 pt-1">
+        <div
+          className="font-roboto text-white text-center font-light text-3xl -mt-[60px]"
+          style={{ color: needleColor }}
+        >
           {value === undefined || previewSkeletons ? (
             <div className="-mb-2">
               <Skeleton inline width="28px" />
@@ -82,22 +85,14 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
               )}
             </animated.p>
           )}
-          <p className="font-extralight text-blue-spindle">{valueUnit}</p>
-          <div className="-mt-2">
-            <span className="float-left">
-              {min}
-              {gaugeUnit}
-            </span>
-            <span className="float-right">
-              {max}
-              {gaugeUnit}
-            </span>
-          </div>
         </div>
       </div>
-      <p className="font-inter font-light uppercase text-blue-spindle text-md text-center mt-6 md:mt-2 lg:mt-6">
-        {title}
+      <p className="font-roboto font-light text-xs text-blue-spindle select-none mt-[7px] mb-2.5">
+        {valueUnit}
       </p>
+      <Twemoji className="h-6 w-6 select-none" wrapper>
+        {emoji}
+      </Twemoji>
     </>
   );
 };

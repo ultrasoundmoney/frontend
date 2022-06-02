@@ -16,11 +16,16 @@ const CurrencyButton: FC<CurrencyButtonProps> = ({
   unit,
 }) => (
   <button
-    className={`font-roboto font-extralight text-sm md:text-base px-3 py-1 border uppercase select-none ${
-      selectedUnit === unit
-        ? activePeriodClasses
-        : "border-transparent text-blue-spindle"
-    }`}
+    className={`
+      font-roboto font-light
+      text-xs tracking-widest
+      px-3 py-2 border
+      uppercase select-none
+      ${
+        selectedUnit === unit
+          ? activePeriodClasses
+          : "border-transparent text-blue-spindle"
+      }`}
     onClick={() => onClick(unit)}
   >
     {unit}

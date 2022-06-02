@@ -19,7 +19,7 @@ export const WidgetTitle: FC<{
   className?: string;
 }> = ({ className, children }) => (
   <p
-    className={`font-inter font-light text-blue-spindle text-md uppercase ${
+    className={`font-inter font-light text-blue-spindle text-xs uppercase tracking-widest ${
       className ?? ""
     }`}
   >

@@ -250,17 +250,19 @@ const Home: FC = () => {
             <div className="w-full flex flex-col items-center pb-40">
               <SectionDivider title="still have questions?" />
               <div className="flex flex-col gap-y-4 justify-start">
-                <Link
-                  className="flex items-center gap-x-2"
-                  href="https://twitter.com/intent/tweet?text=@ultrasoundmoney"
-                >
+                <div>
                   <img
                     className="w-4"
                     src="/twitter-icon.svg"
                     alt="icon of the twitter bird"
                   />
-                  <TextInterLink>@ultrasoundmoney</TextInterLink>
-                </Link>
+                  <Link
+                    className="flex items-center gap-x-2"
+                    href="https://twitter.com/intent/tweet?text=@ultrasoundmoney"
+                  >
+                    <TextInterLink>@ultrasoundmoney</TextInterLink>
+                  </Link>
+                </div>
                 <Link
                   className="flex items-center gap-x-2"
                   href="mailto:contact@ultrasound.money"

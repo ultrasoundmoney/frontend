@@ -144,6 +144,7 @@ export const AmountAnimatedShell: FC<AmountAnimatedShellProps> = ({
   return (
     <TextRoboto
       className={`
+        font-light
         whitespace-nowrap
         ${textClassName ?? "text-base md:text-lg"}
         ${className}

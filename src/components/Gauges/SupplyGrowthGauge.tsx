@@ -4,12 +4,14 @@ import Skeleton from "react-loading-skeleton";
 import { animated, config, useSpring } from "react-spring";
 import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import { useScarcity } from "../../api/scarcity";
+import colors from "../../colors";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
 import * as StaticEtherData from "../../static-ether-data";
 import { TimeFrameNext } from "../../time-frames";
 import { timeframeBurnRateMap } from "../BurnTotal";
 import ToggleSwitch from "../ToggleSwitch";
+import { WidgetTitle } from "../widget-subcomponents";
 import TimeFrameIndicator from "../widget-subcomponents/TimeFrameIndicator";
 import SplitGaugeSvg from "./SplitGaugeSvg";
 
@@ -93,63 +95,46 @@ const SupplyGrowthGauge: FC<Props> = ({
 
   const { previewSkeletons } = useContext(FeatureFlagsContext);
 
+  const colorStyle = useSpring({
+    from: { color: colors.drop },
+    to: { color: colors.fireOrange },
+    reverse: progress >= 0,
+  });
+
   return (
     <div className="flex flex-col justify-start items-center bg-blue-tangaroa px-4 md:px-0 py-8 pt-7 rounded-lg md:rounded-none lg:rounded-lg">
-      <div className="flex justify-between">
-        <div className="leading-10 z-10 flex items-center">
-          <ToggleSwitch
-            checked={simulateMerge}
-            onToggle={toggleSimulateMerge}
-          />
-          <p
-            className={`
-              leading-10 px-4
-              text-lg text-blue-spindle
-              font-inter font-light
-              flex flex-row items-center justify-end self-center
-            `}
-          >
-            simulate merge
-          </p>
-        </div>
-      </div>
-      <div className="mt-6 md:mt-2 lg:mt-8 transform scale-100 md:scale-75 lg:scale-100 xl:scale-110">
-        <SplitGaugeSvg max={max} progress={progress} />
-        <div className="font-roboto text-white text-center font-light 2xl:text-lg -mt-20 pt-1">
-          {growthRate === undefined || previewSkeletons ? (
-            <div className="-mb-2">
-              <Skeleton inline width="46px" />
-            </div>
-          ) : freezeAnimated ? (
-            <p className="-mb-2">
-              {Format.formatPercentOneDigitSigned(growthRateAnimated.get())}
-            </p>
-          ) : (
-            <animated.p className="-mb-2">
-              {growthRateAnimated.to(toPercentOneDigitSigned)}
-            </animated.p>
-          )}
-          <p className="font-extralight text-blue-spindle">/year</p>
-          <div className="-mt-2">
-            <span className="float-left">{-max}%</span>
-            <span className="float-right">+{max}%</span>
-          </div>
-        </div>
-      </div>
       {/* Height is set to align with sibling gauges */}
-      <div className="flex items-center h-10 mt-6 md:mt-0 lg:mt-4 gap-x-2">
-        <p className="font-inter font-light uppercase sm:text-right text-blue-spindle text-md">
-          supply growth
-        </p>
-        <TimeFrameIndicator
-          showDays={false}
-          onClickTimeFrame={onClickTimeFrame}
-          timeFrame={timeFrame}
-        />
+      <WidgetTitle>supply growth</WidgetTitle>
+      {/* <div className="mt-6 md:mt-2 lg:mt-8 transform scale-100 md:scale-75 lg:scale-100 xl:scale-110"> */}
+      <div className="mt-8">
+        <SplitGaugeSvg max={max} progress={progress} />
       </div>
+      <animated.div
+        className="font-roboto font-light text-3xl -mt-16 pt-1"
+        style={colorStyle}
+      >
+        {growthRate === undefined || previewSkeletons ? (
+          <div className="-mb-2">
+            <Skeleton inline width="46px" />
+          </div>
+        ) : freezeAnimated ? (
+          <p className="-mb-2">
+            {Format.formatPercentOneDigitSigned(growthRateAnimated.get())}
+          </p>
+        ) : (
+          <animated.p className="-mb-2">
+            {growthRateAnimated.to(toPercentOneDigitSigned)}
+          </animated.p>
+        )}
+      </animated.div>
+      <p className="font-roboto font-light text-xs text-blue-spindle select-none mt-1 mb-5">
+        /year
+      </p>
+      {/* </div> */}
+      <TimeFrameIndicator timeFrame={timeFrame} />
       {/* This element is to align the slightly higher "supply growth" label with */}
       {/* the sibling gauges. */}
-      <div className="mt-0 md:-mt-2"></div>
+      <div className=""></div>
     </div>
   );
 };
