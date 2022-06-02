@@ -10,7 +10,6 @@ import * as Format from "../../format";
 import * as StaticEtherData from "../../static-ether-data";
 import { TimeFrameNext } from "../../time-frames";
 import { timeframeBurnRateMap } from "../BurnTotal";
-import ToggleSwitch from "../ToggleSwitch";
 import { WidgetTitle } from "../widget-subcomponents";
 import TimeFrameIndicator from "../widget-subcomponents/TimeFrameIndicator";
 import SplitGaugeSvg from "./SplitGaugeSvg";
@@ -66,7 +65,6 @@ const SupplyGrowthGauge: FC<Props> = ({
   onClickTimeFrame,
   simulateMerge,
   timeFrame,
-  toggleSimulateMerge,
 }) => {
   const growthRate = useGrowthRate(simulateMerge, timeFrame);
   const toPercentOneDigitSigned = useCallback<(n: number) => string>(
@@ -131,7 +129,10 @@ const SupplyGrowthGauge: FC<Props> = ({
         /year
       </p>
       {/* </div> */}
-      <TimeFrameIndicator timeFrame={timeFrame} />
+      <TimeFrameIndicator
+        onClickTimeFrame={onClickTimeFrame}
+        timeFrame={timeFrame}
+      />
       {/* This element is to align the slightly higher "supply growth" label with */}
       {/* the sibling gauges. */}
       <div className=""></div>

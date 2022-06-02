@@ -117,7 +117,11 @@ const BurnTotal: FC<Props> = ({
       : Format.ethFromWei(selectedFeesBurnedEth) / selectedIssuance;
 
   return (
-    <Group1Base timeFrame={timeFrame} title="burn total">
+    <Group1Base
+      onClickTimeFrame={onClickTimeFrame}
+      timeFrame={timeFrame}
+      title="burn total"
+    >
       <div className="flex flex-col gap-y-4 pt-4">
         <div
           className={`

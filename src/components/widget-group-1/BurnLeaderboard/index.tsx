@@ -217,6 +217,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
     <>
       <Group1Base
         backgroundClassName="flex flex-col gap-y-4 h-[32rem] lg:h-full"
+        onClickTimeFrame={onClickTimeFrame}
         title="burn leaderboard"
         timeFrame={timeFrame}
       >

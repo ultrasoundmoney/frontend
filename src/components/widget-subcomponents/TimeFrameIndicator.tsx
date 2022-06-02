@@ -13,10 +13,11 @@ const getFormattedDays = () =>
   );
 
 type Props = {
+  onClickTimeFrame: () => void;
   timeFrame: TimeFrameNext;
 };
 
-const TimeFrameIndicator: FC<Props> = ({ timeFrame }) => {
+const TimeFrameIndicator: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const [daysSinceLondon, setDaysSinceLondon] = useState<string>(
     getFormattedDays(),
   );
@@ -28,7 +29,7 @@ const TimeFrameIndicator: FC<Props> = ({ timeFrame }) => {
   });
 
   return (
-    <div className="flex gap-x-2 items-baseline">
+    <button className="flex gap-x-2 items-baseline" onClick={onClickTimeFrame}>
       <WidgetTitle>time frame</WidgetTitle>
       <p
         className="
@@ -40,7 +41,7 @@ const TimeFrameIndicator: FC<Props> = ({ timeFrame }) => {
           ? daysSinceLondon
           : displayTimeFrameNextMap[timeFrame]}
       </p>
-    </div>
+    </button>
   );
 };
 

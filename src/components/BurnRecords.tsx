@@ -66,7 +66,7 @@ type Props = {
   timeFrame: TimeFrameNext;
 };
 
-const BurnRecords: FC<Props> = ({ timeFrame }) => {
+const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const burnRecords = useGroupedAnalysis1()?.burnRecords;
   const { lg } = useActiveBreakpoint();
 
@@ -76,7 +76,11 @@ const BurnRecords: FC<Props> = ({ timeFrame }) => {
       : burnRecords[timeFrame];
 
   return (
-    <Group1Base timeFrame={timeFrame} title="burn records">
+    <Group1Base
+      onClickTimeFrame={onClickTimeFrame}
+      timeFrame={timeFrame}
+      title="burn records"
+    >
       <div
         className={`
           flex flex-col gap-y-6

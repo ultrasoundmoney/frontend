@@ -29,6 +29,7 @@ export const WidgetTitle: FC<{
 
 type Group1BaseProps = {
   backgroundClassName?: HTMLAttributes<HTMLDivElement>["className"];
+  onClickTimeFrame: () => void;
   timeFrame: TimeFrameNext;
   title: string;
 };
@@ -36,13 +37,17 @@ type Group1BaseProps = {
 export const Group1Base: FC<Group1BaseProps> = ({
   backgroundClassName,
   children,
+  onClickTimeFrame,
   timeFrame,
   title,
 }) => (
   <WidgetBackground className={backgroundClassName}>
     <div className="flex items-center justify-between">
       <WidgetTitle>{title}</WidgetTitle>
-      <TimeFrameIndicator timeFrame={timeFrame} />
+      <TimeFrameIndicator
+        onClickTimeFrame={onClickTimeFrame}
+        timeFrame={timeFrame}
+      />
     </div>
     {children}
   </WidgetBackground>
