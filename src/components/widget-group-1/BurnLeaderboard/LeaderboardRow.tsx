@@ -82,6 +82,7 @@ const LeaderboardRow: FC<Props> = ({
               flex flex-row items-center
               font-inter font-light
               text-white text-base md:text-lg
+              truncate
               ${address !== undefined ? "hover:opacity-60" : ""}
             `}
             href={
