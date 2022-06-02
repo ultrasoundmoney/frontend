@@ -1,9 +1,5 @@
 import { useTotalValueSecured } from "../../api/total-value-secured";
-import {
-  AmountBillionsUsdAnimated,
-  MoneyAmount,
-  MoneyAmountAnimated,
-} from "../Amount";
+import { AmountBillionsUsdAnimated } from "../Amount";
 import { TextInter } from "../Texts";
 import { WidgetBackground, WidgetTitle } from "../widget-subcomponents";
 

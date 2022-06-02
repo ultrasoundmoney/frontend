@@ -388,7 +388,11 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   };
 
   return (
-    <Group1Base title="burn categories" timeFrame={timeFrame}>
+    <Group1Base
+      onClickTimeFrame={onClickTimeFrame}
+      title="burn categories"
+      timeFrame={timeFrame}
+    >
       <div className="relative">
         <div
           className={`
