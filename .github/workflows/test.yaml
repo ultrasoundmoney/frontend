@@ -2,7 +2,6 @@ name: test
 
 on:
   push:
-    branches: [main]
     tags:
       - "stag-*"
   pull_request:
