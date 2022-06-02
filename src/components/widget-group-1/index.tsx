@@ -84,12 +84,15 @@ const WidgetGroup1: FC = () => {
               <WidgetTitle>currency</WidgetTitle>
               <CurrencyControl selectedUnit={unit} onSetUnit={onSetUnit} />
             </div>
-            <div className="flex flex-col gap-4 md:items-center">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
               <WidgetTitle>simulate merge</WidgetTitle>
-              <ToggleSwitch
-                checked={simulateMerge}
-                onToggle={toggleSimulateMerge}
-              />
+              {/* On tablet the vertical alignment looks off without aligning the toggle with the neighboring controls */}
+              <div className="flex items-center h-[34px]">
+                <ToggleSwitch
+                  checked={simulateMerge}
+                  onToggle={toggleSimulateMerge}
+                />
+              </div>
             </div>
           </div>
         </WidgetBackground>
