@@ -250,7 +250,7 @@ const Home: FC = () => {
             <div className="w-full flex flex-col items-center pb-40">
               <SectionDivider title="still have questions?" />
               <div className="flex flex-col gap-y-4 justify-start">
-                <div>
+                <div className="flex gap-2 items-center">
                   <img
                     className="w-4"
                     src="/twitter-icon.svg"
@@ -258,22 +258,24 @@ const Home: FC = () => {
                   />
                   <Link
                     className="flex items-center gap-x-2"
-                    href="https://twitter.com/intent/tweet?text=@ultrasoundmoney"
+                    href="https://twitter.com/ultrasoundmoney/"
                   >
-                    <TextInterLink>@ultrasoundmoney</TextInterLink>
+                    <TextInterLink>DM us @ultrasoundmoney</TextInterLink>
                   </Link>
                 </div>
-                <Link
-                  className="flex items-center gap-x-2"
-                  href="mailto:contact@ultrasound.money"
-                >
+                <div className="flex gap-2 items-center">
                   <img
                     className="h-4"
                     src="/email-icon.svg"
                     alt="icon of an envelope, email"
                   />
-                  <TextInterLink>contact@ultrasound.money</TextInterLink>
-                </Link>
+                  <Link
+                    className="flex items-center gap-x-2"
+                    href="mailto:contact@ultrasound.money"
+                  >
+                    <TextInterLink>contact@ultrasound.money</TextInterLink>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
