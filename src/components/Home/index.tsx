@@ -128,9 +128,9 @@ const Home: FC = () => {
             <div className="px-4 md:px-16">
               <TopBar />
             </div>
-            <Title>Ultra Sound Awakening</Title>
+            <Title>Ultra Sound Money</Title>
             <p className="font-inter font-light text-blue-spindle text-xl md:text-2xl lg:text-3xl text-white text-center mb-16">
-              watch ETH become ultra sound money
+              merge soon™
             </p>
             {/* <video */}
             {/*   className="w-full md:w-3/6 lg:w-2/6 mx-auto -mt-32 -mb-4 pr-6 mix-blend-lighten" */}
