@@ -219,7 +219,6 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
         backgroundClassName="flex flex-col gap-y-4 h-[32rem] lg:h-full"
         title="burn leaderboard"
         timeFrame={timeFrame}
-        onClickTimeFrame={onClickTimeFrame}
       >
         {/* the scrollbar normally hides, to make it appear as if floating to the right of the main content we add a negative right margin. */}
         <div
