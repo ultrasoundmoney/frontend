@@ -20,6 +20,8 @@ module.exports = {
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
     "@typescript-eslint/camelcase": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
     "@typescript-eslint/explicit-function-return-type": ["warn"],
     "prettier/prettier": [
       "error",

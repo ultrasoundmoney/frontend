@@ -11,10 +11,14 @@ const SpanMoji = ({
   <span
     className={className}
     dangerouslySetInnerHTML={{
-      __html: twemoji.parse(emoji, {
-        folder: "svg",
-        ext: ".svg",
-      }),
+      //
+
+      __html: String(
+        twemoji.parse(emoji, {
+          folder: "svg",
+          ext: ".svg",
+        })
+      ),
     }}
   />
 );

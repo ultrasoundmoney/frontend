@@ -13,7 +13,7 @@ type LeaderboardRowProps = {
   fees: number;
   id: string;
   isBot: boolean;
-  name?: string;
+  name: string;
   type: LeaderboardEntry["type"];
   image: string | undefined;
   category: string | null;
@@ -57,30 +57,30 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
       ? `/leaderboard-images/${id}.png`
       : "/leaderboard-images/question-mark-v2.svg";
 
-  const adminToken = getAdminToken();
+  const adminToken: string | undefined = getAdminToken();
 
-  const onSetTwitterHandle = useCallback(() => {
+  const onSetTwitterHandle = useCallback(async () => {
     const handle = window.prompt(`${name} twitter handle`);
     if (adminToken === undefined || handle === null) {
       return;
     }
-    Api.setContractTwitterHandle(adminToken, id, handle);
+    await Api.setContractTwitterHandle(adminToken, id, handle);
   }, [adminToken, id, name]);
 
-  const onSetName = useCallback(() => {
+  const onSetName = useCallback(async () => {
     const nameInput = window.prompt(`${name} name`);
     if (adminToken === undefined || nameInput === null) {
       return;
     }
-    Api.setContractName(adminToken, id, nameInput);
+    await Api.setContractName(adminToken, id, nameInput);
   }, [adminToken, id, name]);
 
-  const onSetCategory = useCallback(() => {
+  const onSetCategory = useCallback(async () => {
     const category = window.prompt(`${name} category`);
     if (adminToken === undefined || category === null) {
       return;
     }
-    Api.setContractCategory(adminToken, id, category);
+    await Api.setContractCategory(adminToken, id, category);
   }, [adminToken, id, name]);
 
   // custom text for contract creations
@@ -135,7 +135,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
         <div className="flex flex-row gap-4">
           <a
             className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
-            onClick={onSetTwitterHandle}
+            onClick={onSetTwitterHandle as any}
             target="_blank"
             rel="noreferrer"
           >
@@ -143,7 +143,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
           </a>
           <a
             className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
-            onClick={onSetName}
+            onClick={onSetName as any}
             target="_blank"
             rel="noreferrer"
           >
@@ -151,7 +151,7 @@ const LeaderboardRow: FC<LeaderboardRowProps> = ({
           </a>
           <a
             className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
-            onClick={onSetCategory}
+            onClick={onSetCategory as any}
             target="_blank"
             rel="noreferrer"
           >

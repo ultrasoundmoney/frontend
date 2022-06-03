@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import twemoji from "twemoji";
 
 type AccordionProps = {
@@ -16,7 +16,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, text }) => {
           }`}
           onClick={() => setOpen(!isOpen)}
           dangerouslySetInnerHTML={{
-            __html: twemoji.parse(title),
+            __html: String(twemoji.parse(title)),
           }}
         />
         <div
@@ -27,7 +27,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, text }) => {
           <div
             className="text-sm accordion-content leading-relaxed pb-6"
             dangerouslySetInnerHTML={{
-              __html: twemoji.parse(text),
+              __html: String(twemoji.parse(text)),
             }}
           />
         </div>

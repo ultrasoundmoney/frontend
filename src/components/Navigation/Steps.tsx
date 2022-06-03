@@ -14,17 +14,24 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
   ) => {
     const [activeBalls, setActiveBalls] = useState<ControlPointMutated[]>();
 
-    const getActiveBalls: any = React.useCallback(() => {
-      return controlPoints.map((item) => {
-        if (item) {
+    const getActiveBalls = React.useCallback(() => {
+      const mapControlPoints: ControlPointMutated[] = controlPoints.map(
+        (item) => {
+          const activeValuePoint: boolean =
+            (item?.offsetY &&
+              window.scrollY > item.offsetY - window.innerHeight / 2.4) ||
+            isLastTrackingElem;
+
+          const namePoint: string = item?.name ? item.name : "";
+          const offsetYPoint: number = item?.offsetY ? item.offsetY : 0;
           return {
-            ...item,
-            active:
-              window.scrollY > item.offsetY - window.innerHeight / 2.4 ||
-              isLastTrackingElem,
+            offsetY: offsetYPoint,
+            name: namePoint,
+            active: activeValuePoint,
           };
         }
-      });
+      );
+      return mapControlPoints;
     }, [controlPoints, isLastTrackingElem]);
 
     const t = React.useContext(TranslationsContext);

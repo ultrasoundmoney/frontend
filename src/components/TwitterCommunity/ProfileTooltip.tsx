@@ -43,14 +43,16 @@ const ProfileTooltip: React.FC<ProfileTooltipProps> = ({ children, item }) => {
         <div
           className="text-white my-3 text-base font-medium tw-profile-text break-words"
           dangerouslySetInnerHTML={{
-            __html: twemoji.parse(item.name),
+            //
+
+            __html: String(twemoji.parse(item.name)),
           }}
         />
         {typeof item.bio === "string" && (
           <p
             className="text-blue-linkwater text-left mb-3 font-light text-xs break-words tw-profile-text"
             dangerouslySetInnerHTML={{
-              __html: twemoji.parse(item.bio),
+              __html: String(twemoji.parse(item.bio)),
             }}
           />
         )}

@@ -3,7 +3,7 @@ import { StepperContext } from "../../context/StepperContext";
 import { TranslationsContext } from "../../translations-context";
 import DrawingLine from "./DrawingLine";
 
-const EIPConstantinopole: React.FC<{}> = () => {
+const EIPConstantinopole: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   const stepperContext = React.useContext(StepperContext);
   const constantinopoleRef = React.useRef<HTMLDivElement | null>(null);

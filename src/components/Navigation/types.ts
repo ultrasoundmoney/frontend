@@ -1,3 +1,5 @@
+import { StepperPoint } from "../../context/StepperContext";
+
 export type ActionLogo = "none" | "down" | "move" | "up";
 
 export type ControlPoint = {
@@ -12,7 +14,7 @@ export type ControlPointMutated = {
 };
 
 export type StepsProps = {
-  controlPoints: (ControlPoint | undefined)[];
+  controlPoints: (StepperPoint | undefined)[];
   onActionLogo: (vodue: ActionLogo) => void;
   activeLogo: ActionLogo;
   setScroll: (trackWidth: number, logoOffset: number) => void;

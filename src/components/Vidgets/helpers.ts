@@ -22,6 +22,7 @@ export const convertDateStringReadable = (date: string | number) => {
     const dateStringToArr = dateString.split(" ");
     return `${dateStringToArr[1]} ${dateStringToArr[2]},${dateStringToArr[3]}`;
   }
+  return "";
 };
 
 export function convertToInternationalCurrencySystem(labelValue: number) {

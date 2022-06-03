@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import arrowRight from "../../assets/arrowRight.svg";
 import Steps from "./Steps";
-import { StepperContext } from "../../context/StepperContext";
+import { StepperContext, StepperPoint } from "../../context/StepperContext";
 import { ActionLogo } from "./types";
 import {
   getIconOffset,
@@ -27,11 +27,12 @@ const Stepper: React.FC = () => {
   );
   const [pageLoad, setPageLoad] = useState(false);
   const handlerActionLogo = (value: ActionLogo) => setCurrentActionLogo(value);
-  const controlPoints: any[] = Object.keys(
-    stepperPoints?.stepperElements as {}
-  ).map((element) => {
-    return stepperPoints?.stepperElements[element];
-  });
+
+  const controlPoints: StepperPoint[] = stepperPoints?.stepperElements
+    ? Object.keys(stepperPoints.stepperElements).map((element) => {
+        return stepperPoints?.stepperElements[element];
+      })
+    : [];
 
   const onScroll = useCallback(() => {
     const horizontalNavBar = stepsRef.current!;

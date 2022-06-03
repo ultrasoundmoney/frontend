@@ -35,7 +35,7 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
           <div
             className={`icon-emoji text-${textAlign || "center"}`}
             dangerouslySetInnerHTML={{
-              __html: twemoji.parse(icon),
+              __html: String(twemoji.parse(icon)),
             }}
           />
         )}
@@ -47,7 +47,7 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
           <span
             className=""
             dangerouslySetInnerHTML={{
-              __html: twemoji.parse(title),
+              __html: String(twemoji.parse(title)),
             }}
           />
         </h1>
@@ -56,7 +56,9 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
             textAlign || "center"
           } text-sm break-words mt-4 whitespace-pre-line leading-relaxed`}
           dangerouslySetInnerHTML={{
-            __html: twemoji.parse(text),
+            //
+
+            __html: String(twemoji.parse(text)),
           }}
         />
       </div>

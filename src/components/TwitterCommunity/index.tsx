@@ -15,7 +15,7 @@ const TwitterCommunity: React.FC = () => {
   const { data } = useSWR(`${famBasePath}/profiles`);
 
   const profiles = data?.profiles;
-  const famCount = data?.count;
+  const famCount: number | undefined = data?.count;
 
   const getText =
     famCount !== undefined

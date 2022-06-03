@@ -73,7 +73,7 @@ const FollowingYou: React.FC = () => {
       >
         {t.teaser_following_you}
       </p>
-      <form className="flex justify-center" onSubmit={handleSubmit}>
+      <form className="flex justify-center" onSubmit={handleSubmit as any}>
         <input
           className="md:w-96 p-4 pr-32 bg-transparent border border-gray-500 rounded-full text-xs text-white"
           type="text"

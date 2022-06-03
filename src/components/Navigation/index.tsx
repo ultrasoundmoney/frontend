@@ -4,7 +4,7 @@ import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 import twemoji from "twemoji";
 import { TranslationsContext } from "../../translations-context";
 
-const Navigation: React.FC<{}> = () => {
+const Navigation: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   const ethPrice = `$2,391.94 <span class="text-green-500 px-2">(+2.13%)</span>• ⛽️ 8 Gwei`;
   const [navbarOpen, setNavbarOpen] = React.useState(false);
@@ -21,7 +21,9 @@ const Navigation: React.FC<{}> = () => {
             <div
               className="flex-initial flex text-white self-center bg-blue-tangaroa px-2 md:px-3 py-2 text-xs lg:text-sm eth-price-gass-emoji"
               dangerouslySetInnerHTML={{
-                __html: twemoji.parse(ethPrice),
+                //
+
+                __html: String(twemoji.parse(ethPrice)),
               }}
             />
           </div>

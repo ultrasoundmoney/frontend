@@ -6,8 +6,7 @@ const LandingPage = dynamic(() => import("../components/Landing"));
 //const LandingPage = dynamic(() => import("../components/Landing/landing"));
 import { TranslationsContext } from "../translations-context";
 
-type IndexPageProps = {};
-const IndexPage: NextPage<IndexPageProps> = () => {
+const IndexPage: NextPage = () => {
   const t = React.useContext(TranslationsContext);
   return (
     <>

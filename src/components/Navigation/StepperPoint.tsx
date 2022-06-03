@@ -56,12 +56,12 @@ const StepperDots: React.FC<StepperPointProps> = ({
     >
       <div
         className={`${classes.StepperDots__stepperCircle} ${
-          active && classes.highlightedBorder
+          active ? classes.highlightedBorder : ""
         } stepper_circle`}
       >
         <div
           className={`${classes.StepperDots__stepperCircle_internal} ${
-            active && classes.highlightedBackground
+            active ? classes.highlightedBackground : ""
           }`}
         ></div>
       </div>

@@ -2,8 +2,7 @@ import * as React from "react";
 import Accordion from "../Accordion";
 import { TranslationsContext } from "../../translations-context";
 
-type FaqBlockPros = {};
-const FaqBlock: React.FC<FaqBlockPros> = () => {
+const FaqBlock: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   return (
     <section

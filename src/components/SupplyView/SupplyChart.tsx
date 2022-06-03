@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import * as React from "react";
 import { DateTime } from "luxon";
 import Highcharts from "highcharts";
@@ -42,7 +43,6 @@ interface HighchartsRef {
   chart: Highcharts.Chart;
   container: React.RefObject<HTMLDivElement>;
 }
-
 let mouseOutTimer: NodeJS.Timeout | null = null;
 
 const LONDON_DATE = DateTime.fromISO("2021-08-05T00:00:00Z");
@@ -181,7 +181,11 @@ const SupplyChart: React.FC<Props> = ({
       if (v > (maxSupply || 0)) {
         maxSupply = v;
         peakSupply = null;
-      } else if (v < maxSupply! && !peakSupply) {
+      } else if (
+        typeof maxSupply === "number" &&
+        v < maxSupply &&
+        !peakSupply
+      ) {
         peakSupply = [timestamp, v];
       }
 
@@ -191,14 +195,14 @@ const SupplyChart: React.FC<Props> = ({
       }
 
       const date = DateTime.fromISO(timestamp, { zone: "utc" });
-      const dateMillis = date.toMillis();
+      const dateMillis: number = date.toMillis();
 
       // Subtract any staking eth from total supply on that date
-      const stakingSupply = stakingByDate[timestamp] || 0;
+      const stakingSupply: number = stakingByDate[timestamp] || 0;
       const nonStakingSupply = v - stakingSupply;
 
       // Calculate contract vs address split
-      const inContractsPct = contractByDate[timestamp];
+      const inContractsPct: number | undefined = contractByDate[timestamp];
       let inContractsValue = 0;
       let inAddressesValue = nonStakingSupply;
       if (inContractsPct !== undefined) {
@@ -564,9 +568,9 @@ const SupplyChart: React.FC<Props> = ({
               `<tr>
               <td>
                 <div class="tt-series">
-                  <div class="tt-series-color" style="background-color:${
-                    p.series.userOptions.color
-                  }"></div>
+                  <div class="tt-series-color" style="background-color:${String(
+                    p?.series?.userOptions?.color
+                  )}"></div>
                   <div class="tt-series-name">${
                     p.series.name.split(" (")[0]
                   }</div>

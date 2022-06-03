@@ -3,7 +3,7 @@ import { StepperContext } from "../../context/StepperContext";
 import { TranslationsContext } from "../../translations-context";
 import DrawingLine from "./DrawingLine";
 
-const EIPByzantium: React.FC<{}> = () => {
+const EIPByzantium: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   const stepperContext = React.useContext(StepperContext);
   const byzantiumRef = React.useRef<HTMLDivElement | null>(null);
