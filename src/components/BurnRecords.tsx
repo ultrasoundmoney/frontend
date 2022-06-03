@@ -86,7 +86,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
           flex flex-col gap-y-6
           mt-4 -mr-3
           overflow-y-auto
-          h-64
+          h-60 md:h-64
           ${scrollbarStyles["styled-scrollbar"]}
         `}
       >
