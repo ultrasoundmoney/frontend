@@ -26,7 +26,7 @@ jobs:
             type=raw,latest
             type=sha,prefix=
       - name: Wait for tests to succeed
-        uses: lewagon/wait-on-check-action@v0.2
+        uses: lewagon/wait-on-check-action@v1.1.1
         with:
           ref: ${{ github.ref }}
           check-name: test
@@ -34,10 +34,10 @@ jobs:
           wait-interval: 10
       - name: Build and push
         id: docker_build
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=registry.digitalocean.com/ultrasoundmoney/serve-web:latest
+          cache-from: type=registry,ref=reg.fr-par.scw.cloud/ultrasoundmoney/serve-web:latest
           cache-to: type=inline
