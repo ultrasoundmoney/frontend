@@ -86,10 +86,9 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
           flex flex-col gap-y-6
           mt-4 -mr-3
           overflow-y-auto
+          h-64
           ${scrollbarStyles["styled-scrollbar"]}
         `}
-        // Custom height to fit three records on desktop and mobile.
-        style={{ height: lg ? "16rem" : "15rem" }}
       >
         {timeFrameRecords.map((record, index) => (
           <div
