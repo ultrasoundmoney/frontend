@@ -10,7 +10,7 @@ import FollowingYou from "../FollowingYou";
 import TheMergeBlock from "./theMerge";
 import StepperNavigator from "../Navigation/StepperNavigator";
 
-const LandingPage: React.FC<{}> = () => {
+const LandingPage: React.FC = () => {
   return (
     <>
       <div className="wrapper bg-blue-midnightexpress blurred-bg-image">

@@ -2,7 +2,7 @@ import * as React from "react";
 import { TranslationsContext } from "../../translations-context";
 import Twemoji from "../Twemoji";
 
-const Intro: React.FC<{}> = () => {
+const Intro: React.FC = () => {
   const t = React.useContext(TranslationsContext);
 
   return (

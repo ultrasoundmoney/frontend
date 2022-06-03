@@ -62,7 +62,8 @@ const CumulativeFeeBurn: FC = () => {
         />
       </div>
       <div className="h-6"></div>
-      {selectedFeesBurned !== undefined && selectedBurnRate !== undefined ? (
+      {typeof selectedFeesBurned === "number" &&
+      typeof selectedBurnRate === "number" ? (
         <>
           <div className="flex justify-between items-center text-3xl md:text-4xl lg:text-3xl xl:text-5xl">
             <p className="font-roboto text-white">

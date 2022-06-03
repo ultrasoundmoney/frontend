@@ -9,9 +9,13 @@ const Twemoji: React.FC<TwemojiProps> = ({ emoji, className }) => (
   <div
     className="emoji_wrapper"
     dangerouslySetInnerHTML={{
-      __html: twemoji.parse(emoji, {
-        className: className !== undefined ? `emoji ${className}` : "emoji",
-      }),
+      //
+
+      __html: String(
+        twemoji.parse(emoji, {
+          className: className !== undefined ? `emoji ${className}` : "emoji",
+        })
+      ),
     }}
   />
 );

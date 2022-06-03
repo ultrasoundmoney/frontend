@@ -6,7 +6,7 @@ import { StepperContext } from "../../context/StepperContext";
 import AnimatedPath from "./AnimatedPath";
 import DrawingLine from "./DrawingLine";
 
-const TheMergeBlock: React.FC<{}> = () => {
+const TheMergeBlock: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   const stepperContext = React.useContext(StepperContext);
   const MergeRef = React.useRef<HTMLDivElement | null>(null);

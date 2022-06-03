@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import styles from "./DrawingLine.module.scss";
-import { StepperContext } from "../../../context/StepperContext";
+import { StepperContext, StepperPoint } from "../../../context/StepperContext";
 
 interface DrawingLineProps {
   pointRef: RefObject<HTMLDivElement> | null;
@@ -57,11 +57,11 @@ const DrawingLine: React.FC<DrawingLineProps> = ({
   }, []);
 
   const stepperPoints = useContext(StepperContext);
-  const controlPoints = Object.keys(stepperPoints?.stepperElements as {}).map(
-    (element) => {
-      return stepperPoints?.stepperElements[element];
-    }
-  );
+  const controlPoints: StepperPoint[] = stepperPoints?.stepperElements
+    ? Object.keys(stepperPoints.stepperElements).map((element) => {
+        return stepperPoints?.stepperElements[element];
+      })
+    : [];
 
   const triggerActivePointScroll: Obj = useRef(0);
   useEffect(() => {
@@ -99,7 +99,7 @@ const DrawingLine: React.FC<DrawingLineProps> = ({
   return (
     <div
       className={`${styles.drawing_line} ${
-        isDone && styles.drawing_line_active
+        isDone ? styles.drawing_line_active : ""
       }`}
     >
       <motion.div className={styles.drawing_line_container} style={{ height }}>

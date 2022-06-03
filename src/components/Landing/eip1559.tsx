@@ -6,7 +6,7 @@ import { StepperContext } from "../../context/StepperContext";
 import { TranslationsContext } from "../../translations-context";
 import DrawingLine from "./DrawingLine";
 
-const EIP1559: React.FC<{}> = () => {
+const EIP1559: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   function imageErrorHandler(e: React.SyntheticEvent<HTMLImageElement, Event>) {
     const el = e.target as HTMLImageElement;

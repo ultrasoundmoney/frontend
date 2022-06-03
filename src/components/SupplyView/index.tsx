@@ -24,7 +24,7 @@ const MIN_PROJECTED_MERGE_DATE = DateTime.utc(2021, 12, 1);
 const DEFAULT_PROJECTED_MERGE_DATE = DateTime.utc(2022, 3, 31);
 const MAX_PROJECTED_MERGE_DATE = DateTime.utc(2022, 12, 1);
 
-const SupplyView: React.FC<{}> = () => {
+const SupplyView: React.FC = () => {
   const { translations: t } = useTranslations();
 
   // TODO Initialize this to current amount of ETH staked
@@ -66,9 +66,12 @@ const SupplyView: React.FC<{}> = () => {
     []
   );
 
-  const handleOnPeakProjectedToggle = React.useCallback((isPeakPresent) => {
-    setIsPeakPresent(isPeakPresent);
-  }, []);
+  const handleOnPeakProjectedToggle = React.useCallback(
+    (isPeakPresent: boolean) => {
+      setIsPeakPresent(isPeakPresent);
+    },
+    []
+  );
 
   const daysUntilProjectedMerge = projectedMergeDate.diff(
     DateTime.utc().startOf("day"),

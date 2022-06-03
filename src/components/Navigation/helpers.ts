@@ -1,7 +1,7 @@
 import { StepperPoint } from "../../context/StepperContext";
 
 export const getIconOffset = (
-  pointsHeights: (StepperPoint | undefined)[],
+  pointsHeights: StepperPoint[],
   pageLoad: boolean
 ) => {
   if (!pageLoad) return 0;
@@ -93,8 +93,10 @@ export const showHideNavBar = (
       item && acc < item.offsetY ? item.offsetY : acc,
     0
   );
-  const collectionElems = stepsRefElem.parentElement?.children!;
-  const childrenElems = Array.from(collectionElems);
+  const collectionElems = stepsRefElem?.parentElement?.children;
+  const childrenElems = collectionElems?.length
+    ? Array.from(collectionElems)
+    : [];
 
   const lastSectionIndex: number = childrenElems.findIndex(
     (node) => node.id === "before-genesis"
@@ -127,7 +129,7 @@ export const MOBILE_VERTICAL_SCROLL_BREAK_POINT = 500;
 export const setNavBarPosition = (
   horizontalNavBar: HTMLElement,
   stepperIconElem: HTMLElement,
-  controlPoints: any[],
+  controlPoints: StepperPoint[],
   pageLoad: boolean
 ): void => {
   const logoOffset = getIconOffset(controlPoints, pageLoad);

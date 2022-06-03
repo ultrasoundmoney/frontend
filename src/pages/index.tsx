@@ -4,8 +4,7 @@ import Head from "next/head";
 import ComingSoon from "../components/ComingSoon";
 import { TranslationsContext } from "../translations-context";
 
-type IndexPageProps = {};
-const IndexPage: NextPage<IndexPageProps> = () => {
+const IndexPage: NextPage = () => {
   const t = React.useContext(TranslationsContext);
   return (
     <>

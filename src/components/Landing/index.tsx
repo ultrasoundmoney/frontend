@@ -15,13 +15,13 @@ import NftDrop from "../NftDrop/index";
 import FollowingYou from "../FollowingYou";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import SupplyView from "../SupplyViewNew";
+import SupplyView from "../SupplyView";
 import TheBurnedCard from "./theBurnedCard";
 import Stepper from "../Navigation/Stepper";
 import { SteppersProvider } from "../../context/StepperContext";
 import GweiDynamicBlock from "../GweiDynamicBlock";
 
-const LandingPage: React.FC<{}> = () => {
+const LandingPage: React.FC = () => {
   React.useEffect(() => {
     AOS.init();
     AOS.refresh();

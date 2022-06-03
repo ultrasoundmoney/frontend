@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { StepperContext } from "../../context/StepperContext";
+import { StepperContext, StepperPoint } from "../../context/StepperContext";
 import classes from "./Navigation.module.scss";
 import { navigationItems } from "../../utils/static";
 
@@ -18,11 +18,11 @@ const Nav = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-  const controlPoints: any[] = Object.keys(
-    stepperPoints?.stepperElements as {}
-  ).map((element) => {
-    return stepperPoints?.stepperElements[element];
-  });
+  const controlPoints: StepperPoint[] = stepperPoints?.stepperElements
+    ? Object.keys(stepperPoints.stepperElements).map((element) => {
+        return stepperPoints?.stepperElements[element];
+      })
+    : [];
   useEffect((): void => {
     if (Array.isArray(controlPoints) && controlPoints.length > 0) {
       if (window.scrollY > controlPoints[0].offsetY - window.innerHeight / 2) {

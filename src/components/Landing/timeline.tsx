@@ -1,7 +1,7 @@
 import * as React from "react";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 
-const Timeline: React.FC<{}> = () => {
+const Timeline: React.FC = () => {
   return (
     <>
       <div className="timeline_wrapper pl-4 md:pl-0 content-center h-96 mb-12">

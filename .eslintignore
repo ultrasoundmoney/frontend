@@ -23,3 +23,5 @@ out/**/**
 .next/static/
 storybook-static
 make-leaderboard-image-list.js
+.eslintrc.js
+declaration.d.ts

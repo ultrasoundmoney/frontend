@@ -1,7 +1,7 @@
 import * as React from "react";
 import SupplyView from "../SupplyView";
 
-const DashboardPage: React.FC<{}> = () => {
+const DashboardPage: React.FC = () => {
   return (
     <>
       <div className="dash-wrapper wrapper bg-blue-midnightexpress min-h-screen text-white">
