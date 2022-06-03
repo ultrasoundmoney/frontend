@@ -29,7 +29,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: serve-web
-          image: registry.digitalocean.com/ultrasoundmoney/serve-web
+          image: rg.fr-par.scw.cloud/ultrasoundmoney/serve-web
           command: ["yarn", "start-stag"]
           ports:
             - containerPort: 3000
