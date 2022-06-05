@@ -21,7 +21,8 @@ export type ValidatorRewards = {
 
 export const useValidatorRewards = (): O.Option<ValidatorRewards> => {
   const { data } = useSWR<ValidatorRewards>(
-    `${feesBasePath}/validator-rewards`,
+    // tmp endpoint to cache bust.
+    `${feesBasePath}/validator-rewards-2`,
     fetcher,
     {
       refreshInterval: Duration.millisFromHours(1),
