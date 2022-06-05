@@ -21,7 +21,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: rg.fr-par.scw.cloud/ultrasoundmoney/serve-web
+          images: rg.fr-par.scw.cloud/ultrasoundmoney/serve-frontend
           tags: |
             type=raw,latest
             type=sha,prefix=
@@ -39,5 +39,5 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=reg.fr-par.scw.cloud/ultrasoundmoney/serve-web:latest
+          cache-from: type=registry,ref=reg.fr-par.scw.cloud/ultrasoundmoney/serve-frontend:latest
           cache-to: type=inline

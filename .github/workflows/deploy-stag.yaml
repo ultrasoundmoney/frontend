@@ -17,8 +17,8 @@ jobs:
           check-name: build
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 10
-  deploy-serve-web:
-    name: deploy serve-web
+  deploy-serve-frontend:
+    name: deploy serve-frontend
     runs-on: ubuntu-latest
     needs: wait-on-build
     steps:
@@ -30,9 +30,9 @@ jobs:
         uses: steebchen/kubectl@v2.0.0
         with:
           config: ${{ secrets.KUBE_CONFIG_DATA_STAG }}
-          command: set image deployment/serve-web serve-web=rg.fr-par.scw.cloud/ultrasoundmoney/serve-web:${{ steps.vars.outputs.sha_short }}
+          command: set image deployment/serve-frontend serve-frontend=rg.fr-par.scw.cloud/ultrasoundmoney/serve-frontend:${{ steps.vars.outputs.sha_short }}
       - name: Verify deployment
         uses: steebchen/kubectl@v2.0.0
         with:
           config: ${{ secrets.KUBE_CONFIG_DATA_STAG }}
-          command: rollout status deployment/serve-web
+          command: rollout status deployment/serve-frontend
