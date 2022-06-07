@@ -53,7 +53,7 @@ const WidgetGroup1: FC = () => {
         <div className="hidden md:block w-1/3">
           <BurnGauge timeFrame={timeFrame} unit={unit} />
         </div>
-        <div className="md:w-1/3">
+        <div className="md:w-1/3 scale-80">
           <SupplyGrowthGauge
             onClickTimeFrame={handleClickTimeFrame}
             simulateMerge={simulateMerge}
