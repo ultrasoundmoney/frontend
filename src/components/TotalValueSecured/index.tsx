@@ -16,7 +16,7 @@ const TotalValueSecured = () => {
           maxHeight="max-h-[23rem] lg:max-h-[564px]"
         />
         <TvsLeaderboard
-          className=""
+          className="-mt-1"
           rows={totalValueSecured?.nftLeaderboard}
           title="nft leaderboard"
           maxHeight="max-h-[224px]"
