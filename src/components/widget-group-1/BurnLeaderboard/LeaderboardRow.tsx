@@ -69,7 +69,7 @@ const LeaderboardRow: FC<Props> = ({
       <div className="pt-2.5 pb-2.5 pr-2">
         <div className="flex text-white">
           <ImageWithTooltip
-            onMouseEnter={onMouseEnterImage}
+            onMouseEnter={isBot ? undefined : onMouseEnterImage}
             onMouseLeave={onMouseLeaveImage}
             onClick={onClickImage}
             className="w-8 h-8 rounded-full select-none"

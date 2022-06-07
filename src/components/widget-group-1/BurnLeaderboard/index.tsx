@@ -101,7 +101,11 @@ const useTooltip = () => {
   const handleImageMouseEnter = useCallback(
     (entry: LeaderboardEntry, ref: RefObject<HTMLImageElement>) => {
       // The ranking data isn't there yet so no tooltip can be shown.
-      if (entry === undefined || entry.type !== "contract") {
+      if (
+        entry === undefined ||
+        entry.type !== "contract" ||
+        entry.isBot === true
+      ) {
         return;
       }
 
