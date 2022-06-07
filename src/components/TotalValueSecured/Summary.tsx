@@ -153,7 +153,7 @@ const Summary: FC<{ className?: string }> = ({ className = "" }) => {
           />
           <AssetType
             amount={totalValueSecured?.nftTotal}
-            href={"https://nftgo.io/overview"}
+            href={"https://nftgo.io/analytics/top-collections"}
             icon="nft"
             title="NFTs"
           />
