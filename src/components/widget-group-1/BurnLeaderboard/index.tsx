@@ -76,7 +76,7 @@ const getLeaderboardsAddresses = (leaderboards: Leaderboards) =>
     )
     .filter((mAddress): mAddress is string => mAddress !== undefined);
 
-const useTooltip = () => {
+export const useTooltip = () => {
   const { md } = useActiveBreakpoint();
 
   // Tooltip logic to be abstracted
@@ -135,6 +135,7 @@ const useTooltip = () => {
 
     const id = window.setTimeout(() => {
       setShowTooltip(false);
+      setSelectedEntry(undefined);
     }, 300);
     setHideTimer(id);
 
@@ -149,6 +150,7 @@ const useTooltip = () => {
   const handleTooltipLeave = useCallback(() => {
     const id = window.setTimeout(() => {
       setShowTooltip(false);
+      setSelectedEntry(undefined);
     }, 100);
     setHideTimer(id);
 
@@ -177,7 +179,7 @@ const useTooltip = () => {
     setPopperEl,
     setSelectedEntry,
     showTooltip,
-    styles,
+    popperStyles: styles,
   };
 };
 
@@ -212,7 +214,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
     setPopperEl,
     setSelectedEntry,
     showTooltip,
-    styles,
+    popperStyles,
   } = useTooltip();
 
   const { md } = useActiveBreakpoint();
@@ -279,7 +281,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
           ref={setPopperEl}
           className="z-20 hidden md:block p-4"
           style={{
-            ...styles.popper,
+            ...popperStyles.popper,
             visibility: showTooltip ? "visible" : "hidden",
           }}
           {...attributes.popper}

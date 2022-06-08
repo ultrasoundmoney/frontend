@@ -1,6 +1,8 @@
-import { FC, useState } from "react";
+import { FC, RefObject, useCallback, useState } from "react";
+import { usePopper } from "react-popper";
 import { famBasePath, FamProfile } from "../../api/fam";
 import { formatNoDigit } from "../../format";
+import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import ImageWithTooltip from "../ImageWithTooltip";
 import Modal from "../Modal";
 import SpanMoji from "../SpanMoji";
@@ -24,15 +26,114 @@ type FollowedByResult =
   | Searching
   | UnknownError;
 
+export const useTooltip = () => {
+  const { md } = useActiveBreakpoint();
+
+  // Tooltip logic to be abstracted
+  // Popper Tooltip
+  const [refEl, setRefEl] = useState<HTMLImageElement | null>(null);
+  const [popperEl, setPopperEl] = useState<HTMLDivElement | null>(null);
+  const { styles, attributes } = usePopper(refEl, popperEl, {
+    placement: "right",
+    modifiers: [
+      {
+        name: "flip",
+      },
+    ],
+  });
+  const [selectedEntry, setSelectedEntry] = useState<FamProfile>();
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [showTimer, setShowTimer] = useState<number>();
+  const [hideTimer, setHideTimer] = useState<number>();
+
+  const handleImageMouseEnter = useCallback(
+    (entry: FamProfile, ref: RefObject<HTMLImageElement>) => {
+      // The ranking data isn't there yet so no tooltip can be shown.
+      if (entry === undefined) {
+        return;
+      }
+
+      // If we were waiting to hide, we're hovering again, so leave the tooltip open.
+      window.clearTimeout(hideTimer);
+
+      const id = window.setTimeout(() => {
+        setRefEl(ref.current);
+        setSelectedEntry(entry);
+        setShowTooltip(true);
+      }, 300);
+      setShowTimer(id);
+
+      return () => window.clearTimeout(id);
+    },
+    [hideTimer],
+  );
+
+  const handleImageMouseLeave = useCallback(() => {
+    // If we were waiting to show, we stopped hovering, so stop waiting and don't show any tooltip.
+    window.clearTimeout(showTimer);
+
+    // If we never made it past waiting and opened the tooltip, there is nothing to hide.
+    if (selectedEntry === undefined) {
+      return;
+    }
+
+    // Hide the tooltip after a small delay.
+    const id = window.setTimeout(() => {
+      setShowTooltip(false);
+      setSelectedEntry(undefined);
+    }, 300);
+    setHideTimer(id);
+
+    return () => window.clearTimeout(id);
+  }, [setHideTimer, showTimer, selectedEntry]);
+
+  const handleTooltipEnter = useCallback(() => {
+    // If we were waiting to hide, we're hovering again, so leave the tooltip open.
+    window.clearTimeout(hideTimer);
+  }, [hideTimer]);
+
+  const handleTooltipLeave = useCallback(() => {
+    const id = window.setTimeout(() => {
+      setShowTooltip(false);
+      setSelectedEntry(undefined);
+    }, 100);
+    setHideTimer(id);
+
+    return () => window.clearTimeout(id);
+  }, []);
+
+  const handleClickImage = useCallback(
+    (ranking: FamProfile | undefined) => {
+      if (md) {
+        return;
+      }
+
+      setSelectedEntry(ranking);
+    },
+    [md, setSelectedEntry],
+  );
+
+  return {
+    attributes,
+    handleClickImage,
+    handleImageMouseEnter,
+    handleImageMouseLeave,
+    handleTooltipEnter,
+    handleTooltipLeave,
+    selectedEntry,
+    setPopperEl,
+    setSelectedEntry,
+    showTooltip,
+    popperStyles: styles,
+  };
+};
+
 const FollowingYou: FC = () => {
+  const { md } = useActiveBreakpoint();
   const [handle, setHandle] = useState<string>("");
   const [followers, setFollowers] = useState<FollowedByResult>({
     type: "empty",
   });
-  const [selectedProfile, setSelectedProfile] = useState<
-    FamProfile | undefined
-  >();
-
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
@@ -68,6 +169,20 @@ const FollowingYou: FC = () => {
 
     setFollowers({ type: "unknownError" });
   };
+
+  const {
+    attributes,
+    handleClickImage,
+    handleTooltipEnter,
+    handleTooltipLeave,
+    handleImageMouseLeave,
+    handleImageMouseEnter,
+    selectedEntry,
+    setPopperEl,
+    setSelectedEntry,
+    showTooltip,
+    popperStyles,
+  } = useTooltip();
 
   return (
     <>
@@ -139,7 +254,11 @@ const FollowingYou: FC = () => {
                     <ImageWithTooltip
                       imageUrl={profile?.profileImageUrl}
                       key={profile.profileUrl}
-                      onClick={() => setSelectedProfile(profile)}
+                      onClick={() => handleClickImage(profile)}
+                      onMouseEnter={(ref) =>
+                        handleImageMouseEnter(profile, ref)
+                      }
+                      onMouseLeave={handleImageMouseLeave}
                     />
                   </div>
                 ))}
@@ -157,23 +276,47 @@ const FollowingYou: FC = () => {
           unknown followers state
         </p>
       )}
-      <Modal
-        onClickBackground={() => setSelectedProfile(undefined)}
-        show={selectedProfile !== undefined}
-      >
-        {selectedProfile !== undefined && (
+      <>
+        <div
+          ref={setPopperEl}
+          className="z-20 hidden md:block p-4"
+          style={{
+            ...popperStyles.popper,
+            visibility: showTooltip ? "visible" : "hidden",
+          }}
+          {...attributes.popper}
+          onMouseOver={handleTooltipEnter}
+          onMouseOut={handleTooltipLeave}
+        >
           <Tooltip
-            description={selectedProfile?.bio}
-            famFollowerCount={selectedProfile?.famFollowerCount}
-            followerCount={selectedProfile?.followersCount}
-            imageUrl={selectedProfile?.profileImageUrl}
-            links={selectedProfile?.links}
-            onClickClose={() => setSelectedProfile(undefined)}
-            title={selectedProfile?.name}
-            twitterUrl={selectedProfile?.profileUrl}
+            description={selectedEntry?.bio}
+            famFollowerCount={selectedEntry?.famFollowerCount}
+            followerCount={selectedEntry?.followersCount}
+            imageUrl={selectedEntry?.profileImageUrl}
+            links={selectedEntry?.links}
+            onClickClose={() => setSelectedEntry(undefined)}
+            title={selectedEntry?.name}
+            twitterUrl={selectedEntry?.profileUrl}
           />
-        )}
-      </Modal>
+        </div>
+        <Modal
+          onClickBackground={() => setSelectedEntry(undefined)}
+          show={!md && selectedEntry !== undefined}
+        >
+          {selectedEntry !== undefined && (
+            <Tooltip
+              description={selectedEntry?.bio}
+              famFollowerCount={selectedEntry?.famFollowerCount}
+              followerCount={selectedEntry?.followersCount}
+              imageUrl={selectedEntry?.profileImageUrl}
+              links={selectedEntry?.links}
+              onClickClose={() => setSelectedEntry(undefined)}
+              title={selectedEntry?.name}
+              twitterUrl={selectedEntry?.profileUrl}
+            />
+          )}
+        </Modal>
+      </>
     </>
   );
 };

@@ -90,6 +90,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
 
     const id = window.setTimeout(() => {
       setShowTooltip(false);
+      setSelectedRanking(undefined);
     }, 300);
     setHideTimer(id);
 
@@ -104,6 +105,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
   const handleTooltipLeave = useCallback(() => {
     const id = window.setTimeout(() => {
       setShowTooltip(false);
+      setSelectedRanking(undefined);
     }, 100);
     setHideTimer(id);
 

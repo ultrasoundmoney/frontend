@@ -64,6 +64,7 @@ const TwitterFam: FC = () => {
 
     const id = window.setTimeout(() => {
       setShowTooltip(false);
+      setSelectedProfile(undefined);
     }, 300);
     setHideTimer(id);
 
@@ -78,6 +79,7 @@ const TwitterFam: FC = () => {
   const handleTooltipLeave = useCallback(() => {
     const id = window.setTimeout(() => {
       setShowTooltip(false);
+      setSelectedProfile(undefined);
     }, 0);
     setHideTimer(id);
 
