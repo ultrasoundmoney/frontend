@@ -19,6 +19,7 @@ const IndexPage: NextPage = () => {
         <meta property="og:url" content={t.og_url} />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:creator" content="@ultrasoundmoney" />
+        <meta name="twitter:site" content="@ultrasoundmoney" />
         <link rel="icon" href="/favicon.png" />
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/favicon.png"></link>
