@@ -9,6 +9,8 @@ const CSSTransition = (props: CSSTransitionProps) => {
   const nodeRef = useRef(null);
 
   return (
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
     <_CSSTransition {...props} nodeRef={nodeRef}>
       <>
         {React.Children.map(props.children, (child) => {

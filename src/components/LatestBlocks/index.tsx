@@ -111,6 +111,8 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
             ${scrollbarStyles["styled-scrollbar"]}
           `}
         >
+          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+          {/* @ts-ignore */}
           <TransitionGroup
             component={null}
             appear={true}

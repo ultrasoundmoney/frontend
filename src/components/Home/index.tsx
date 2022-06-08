@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/react";
-import React, { FC, useContext, useState } from "react";
+import React, { FC, ReactNode, useContext, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useAdminToken } from "../../admin";
@@ -34,7 +34,7 @@ const SectionDivider: FC<{ title: string; subtitle?: string }> = ({
   </>
 );
 
-const Title: FC = ({ children }) => (
+const Title: FC<{ children: ReactNode }> = ({ children }) => (
   <div
     className={`
       bg-transparent

@@ -1,4 +1,4 @@
-import React, { FC, useContext } from "react";
+import React, { FC, ReactNode, useContext } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
 import { Unit } from "../denomination";
@@ -9,6 +9,7 @@ import { TextRoboto, UnitText } from "./Texts";
 
 type AmountProps = {
   amountPostfix?: string;
+  children: ReactNode;
   className?: string;
   textSizeClass?: string;
   unitPostfix?: string;
@@ -36,9 +37,10 @@ export const Amount: FC<AmountProps> = ({
 );
 
 type PercentAmountProps = {
+  children: ReactNode;
   className?: string;
-  textSizeClass?: string;
   skeletonWidth?: string;
+  textSizeClass?: string;
 };
 
 export const PercentAmount: FC<PercentAmountProps> = ({
@@ -61,6 +63,7 @@ export const PercentAmount: FC<PercentAmountProps> = ({
 
 type MoneyAmountProps = {
   amountPostfix?: string;
+  children: ReactNode;
   className?: string;
   skeletonWidth?: string;
   textSizeClass?: string;
@@ -126,6 +129,7 @@ export const MoneyAmountAnimated: FC<MoneyAmountAnimatedProps> = ({
 );
 
 type AmountAnimatedShellProps = {
+  children: ReactNode;
   className?: string;
   skeletonWidth?: string;
   textClassName?: string;

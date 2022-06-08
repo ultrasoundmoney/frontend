@@ -63,6 +63,7 @@ const LandingPage: React.FC = () => {
     data?.usd &&
     Math.floor(feeBurnedinEth * data?.usd);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const afterLodonFork: string[] = [];
   afterLodonFork[0] = new Date().toDateString();
   afterLodonFork[1] = "117.4M";

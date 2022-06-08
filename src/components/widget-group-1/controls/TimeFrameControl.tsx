@@ -1,15 +1,15 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import {
   displayTimeFrameNextMap,
   TimeFrameNext,
   timeFramesNext,
 } from "../../../time-frames";
 
-export const Button: FC<{ isActive: boolean; onClick: () => void }> = ({
-  children,
-  isActive,
-  onClick,
-}) => (
+export const Button: FC<{
+  children: ReactNode;
+  isActive: boolean;
+  onClick: () => void;
+}> = ({ children, isActive, onClick }) => (
   <button
     className={`
       font-roboto font-light

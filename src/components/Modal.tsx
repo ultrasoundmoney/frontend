@@ -1,6 +1,7 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 
 const Modal: FC<{
+  children: ReactNode;
   onClickBackground: () => void;
   show: boolean;
 }> = ({ children, onClickBackground, show }) => (
