@@ -3,6 +3,7 @@ import Head from "next/head";
 import * as React from "react";
 import Home from "../components/Home";
 import { TranslationsContext } from "../translations-context";
+import SiteMetadata from "../site-metadata";
 
 const IndexPage: NextPage = () => {
   const t = React.useContext(TranslationsContext);
@@ -10,11 +11,11 @@ const IndexPage: NextPage = () => {
     <>
       <Head>
         <title>{t.title}</title>
-        <meta name="description" content={t.meta_description} />
+        <meta name="description" content={SiteMetadata.description} />
         <meta name="keywords" content={t.meta_keywords} />
-        <meta property="og:title" content={t.title} />
-        <meta property="og:description" content={t.meta_description} />
-        <meta property="og:image" content={t.og_img} />
+        <meta property="og:title" content={SiteMetadata.title} />
+        <meta property="og:description" content={SiteMetadata.description} />
+        <meta property="og:image" content={SiteMetadata.image} />
         <meta property="og:url" content={t.og_url} />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:creator" content="@ultrasoundmoney" />
