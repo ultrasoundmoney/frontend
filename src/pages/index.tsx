@@ -1,7 +1,6 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import Script from "next/script";
-import "tailwindcss/tailwind.css";
 import Home from "../components/Home";
 import SiteMetadata from "../site-metadata";
 
