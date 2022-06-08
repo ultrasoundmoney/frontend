@@ -282,7 +282,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
           className="z-20 hidden md:block p-4"
           style={{
             ...popperStyles.popper,
-            visibility: showTooltip ? "visible" : "hidden",
+            visibility: showTooltip && md ? "visible" : "hidden",
           }}
           {...attributes.popper}
           onMouseOver={handleTooltipEnter}
