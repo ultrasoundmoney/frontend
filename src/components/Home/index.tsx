@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/react";
-import React, { FC, ReactNode, useContext, useState } from "react";
+import { FC, ReactNode, useContext, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useAdminToken } from "../../admin";
