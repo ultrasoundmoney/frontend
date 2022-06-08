@@ -135,7 +135,6 @@ export const useTooltip = () => {
 
     const id = window.setTimeout(() => {
       setShowTooltip(false);
-      setSelectedEntry(undefined);
     }, 300);
     setHideTimer(id);
 
@@ -150,7 +149,6 @@ export const useTooltip = () => {
   const handleTooltipLeave = useCallback(() => {
     const id = window.setTimeout(() => {
       setShowTooltip(false);
-      setSelectedEntry(undefined);
     }, 100);
     setHideTimer(id);
 
