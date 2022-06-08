@@ -1,5 +1,6 @@
 import { NextPage } from "next";
 import Head from "next/head";
+import Script from "next/script";
 import * as React from "react";
 import Home from "../components/Home";
 import SiteMetadata from "../site-metadata";
@@ -25,17 +26,17 @@ export const SharedHead = () => (
     <link rel="apple-touch-icon" href="/favicon.png"></link>
     <meta name="theme-color" content="#131827" />
     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-    <script
-      defer
-      data-domain="ultrasound.money"
-      src="https://plausible.io/js/plausible.js"
-    ></script>
   </Head>
 );
 
 const IndexPage: NextPage = () => (
   <>
     <SharedHead />
+    <Script
+      defer
+      data-domain="ultrasound.money"
+      src="https://plausible.io/js/plausible.js"
+    ></Script>
     <Home />
   </>
 );
