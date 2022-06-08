@@ -37,8 +37,6 @@ const IndexPage: NextPage = () => (
       data-domain="ultrasound.money"
       src="https://plausible.io/js/plausible.js"
     ></Script>
-    {/* safari is broken, try to load tailwind from cdn */}
-    <Script src="https://cdn.tailwindcss.com"></Script>
     <Home />
   </>
 );
