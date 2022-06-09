@@ -1,5 +1,4 @@
-import { FC, RefObject, useCallback, useState } from "react";
-import { usePopper } from "react-popper";
+import { FC, useState } from "react";
 import { famBasePath, FamProfile } from "../../api/fam";
 import { formatNoDigit } from "../../format";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
@@ -7,6 +6,7 @@ import ImageWithTooltip from "../ImageWithTooltip";
 import Modal from "../Modal";
 import SpanMoji from "../SpanMoji";
 import Tooltip from "../Tooltip";
+import { useTooltip } from "../TwitterFam";
 import styles from "./FollowingYou.module.scss";
 
 type Empty = { type: "empty" };
@@ -25,106 +25,6 @@ type FollowedByResult =
   | Empty
   | Searching
   | UnknownError;
-
-export const useTooltip = () => {
-  const { md } = useActiveBreakpoint();
-
-  // Tooltip logic to be abstracted
-  // Popper Tooltip
-  const [refEl, setRefEl] = useState<HTMLImageElement | null>(null);
-  const [popperEl, setPopperEl] = useState<HTMLDivElement | null>(null);
-  const { styles, attributes } = usePopper(refEl, popperEl, {
-    placement: "right",
-    modifiers: [
-      {
-        name: "flip",
-      },
-    ],
-  });
-  const [selectedEntry, setSelectedEntry] = useState<FamProfile>();
-  const [showTooltip, setShowTooltip] = useState(false);
-  const [showTimer, setShowTimer] = useState<number>();
-  const [hideTimer, setHideTimer] = useState<number>();
-
-  const handleImageMouseEnter = useCallback(
-    (entry: FamProfile, ref: RefObject<HTMLImageElement>) => {
-      // The ranking data isn't there yet so no tooltip can be shown.
-      if (entry === undefined) {
-        return;
-      }
-
-      // If we were waiting to hide, we're hovering again, so leave the tooltip open.
-      window.clearTimeout(hideTimer);
-
-      const id = window.setTimeout(() => {
-        setRefEl(ref.current);
-        setSelectedEntry(entry);
-        setShowTooltip(true);
-      }, 300);
-      setShowTimer(id);
-
-      return () => window.clearTimeout(id);
-    },
-    [hideTimer],
-  );
-
-  const handleImageMouseLeave = useCallback(() => {
-    // If we were waiting to show, we stopped hovering, so stop waiting and don't show any tooltip.
-    window.clearTimeout(showTimer);
-
-    // If we never made it past waiting and opened the tooltip, there is nothing to hide.
-    if (selectedEntry === undefined) {
-      return;
-    }
-
-    // Hide the tooltip after a small delay.
-    const id = window.setTimeout(() => {
-      setShowTooltip(false);
-    }, 300);
-    setHideTimer(id);
-
-    return () => window.clearTimeout(id);
-  }, [setHideTimer, showTimer, selectedEntry]);
-
-  const handleTooltipEnter = useCallback(() => {
-    // If we were waiting to hide, we're hovering again, so leave the tooltip open.
-    window.clearTimeout(hideTimer);
-  }, [hideTimer]);
-
-  const handleTooltipLeave = useCallback(() => {
-    const id = window.setTimeout(() => {
-      setShowTooltip(false);
-    }, 100);
-    setHideTimer(id);
-
-    return () => window.clearTimeout(id);
-  }, []);
-
-  const handleClickImage = useCallback(
-    (ranking: FamProfile | undefined) => {
-      if (md) {
-        return;
-      }
-
-      setSelectedEntry(ranking);
-    },
-    [md, setSelectedEntry],
-  );
-
-  return {
-    attributes,
-    handleClickImage,
-    handleImageMouseEnter,
-    handleImageMouseLeave,
-    handleTooltipEnter,
-    handleTooltipLeave,
-    selectedEntry,
-    setPopperEl,
-    setSelectedEntry,
-    showTooltip,
-    popperStyles: styles,
-  };
-};
 
 const FollowingYou: FC = () => {
   const { md } = useActiveBreakpoint();
@@ -175,9 +75,9 @@ const FollowingYou: FC = () => {
     handleTooltipLeave,
     handleImageMouseLeave,
     handleImageMouseEnter,
-    selectedEntry,
+    selectedItem,
     setPopperEl,
-    setSelectedEntry,
+    setSelectedItem,
     showTooltip,
     popperStyles,
   } = useTooltip();
@@ -292,30 +192,30 @@ const FollowingYou: FC = () => {
           onMouseOut={handleTooltipLeave}
         >
           <Tooltip
-            description={selectedEntry?.bio}
-            famFollowerCount={selectedEntry?.famFollowerCount}
-            followerCount={selectedEntry?.followersCount}
-            imageUrl={selectedEntry?.profileImageUrl}
-            links={selectedEntry?.links}
-            onClickClose={() => setSelectedEntry(undefined)}
-            title={selectedEntry?.name}
-            twitterUrl={selectedEntry?.profileUrl}
+            description={selectedItem?.bio}
+            famFollowerCount={selectedItem?.famFollowerCount}
+            followerCount={selectedItem?.followersCount}
+            imageUrl={selectedItem?.profileImageUrl}
+            links={selectedItem?.links}
+            onClickClose={() => setSelectedItem(undefined)}
+            title={selectedItem?.name}
+            twitterUrl={selectedItem?.profileUrl}
           />
         </div>
         <Modal
-          onClickBackground={() => setSelectedEntry(undefined)}
-          show={!md && selectedEntry !== undefined}
+          onClickBackground={() => setSelectedItem(undefined)}
+          show={!md && selectedItem !== undefined}
         >
-          {selectedEntry !== undefined && (
+          {selectedItem !== undefined && (
             <Tooltip
-              description={selectedEntry?.bio}
-              famFollowerCount={selectedEntry?.famFollowerCount}
-              followerCount={selectedEntry?.followersCount}
-              imageUrl={selectedEntry?.profileImageUrl}
-              links={selectedEntry?.links}
-              onClickClose={() => setSelectedEntry(undefined)}
-              title={selectedEntry?.name}
-              twitterUrl={selectedEntry?.profileUrl}
+              description={selectedItem?.bio}
+              famFollowerCount={selectedItem?.famFollowerCount}
+              followerCount={selectedItem?.followersCount}
+              imageUrl={selectedItem?.profileImageUrl}
+              links={selectedItem?.links}
+              onClickClose={() => setSelectedItem(undefined)}
+              title={selectedItem?.name}
+              twitterUrl={selectedItem?.profileUrl}
             />
           )}
         </Modal>

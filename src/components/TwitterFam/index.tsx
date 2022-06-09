@@ -1,4 +1,4 @@
-import { FC, RefObject, useCallback, useEffect, useState } from "react";
+import { FC, RefObject, useCallback, useEffect, useRef, useState } from "react";
 import Clipboard from "react-clipboard.js";
 import Skeleton from "react-loading-skeleton";
 import { usePopper } from "react-popper";
@@ -10,12 +10,9 @@ import Modal from "../Modal";
 import Tooltip from "../Tooltip";
 import Twemoji from "../Twemoji";
 
-const TwitterFam: FC = () => {
-  const famCount = useProfiles()?.count;
-  const profiles = useProfiles()?.profiles;
+// See if merging with leaderboards tooltip makes sense after making it more generic.
+export const useTooltip = () => {
   const { md } = useActiveBreakpoint();
-
-  // Popper Tooltip
   const [refEl, setRefEl] = useState<HTMLImageElement | null>(null);
   const [popperEl, setPopperEl] = useState<HTMLDivElement | null>(null);
   const { styles, attributes } = usePopper(refEl, popperEl, {
@@ -26,65 +23,96 @@ const TwitterFam: FC = () => {
       },
     ],
   });
-  const [selectedProfile, setSelectedProfile] = useState<FamProfile>();
+  const [selectedItem, setSelectedItem] = useState<FamProfile>();
   const [showTooltip, setShowTooltip] = useState(false);
-  const [showTimer, setShowTimer] = useState<number>();
-  const [hideTimer, setHideTimer] = useState<number>();
+  const onTooltip = useRef<boolean>(false);
+  const onImage = useRef<boolean>(false);
 
   const handleImageMouseEnter = useCallback(
     (profile: FamProfile, ref: RefObject<HTMLImageElement>) => {
-      // The profile data isn't there yet so no tooltip can be shown.
+      // The ranking data isn't there yet so no tooltip can be shown.
       if (profile === undefined) {
         return;
       }
 
-      // If we were waiting to hide, we're hovering again, so leave the tooltip open.
-      window.clearTimeout(hideTimer);
+      onImage.current = true;
 
+      // Delayed show.
       const id = window.setTimeout(() => {
-        setRefEl(ref.current);
-        setSelectedProfile(profile);
-        setShowTooltip(true);
+        if (onImage.current || onTooltip.current) {
+          setRefEl(ref.current);
+          setSelectedItem(profile);
+          setShowTooltip(true);
+        }
       }, 300);
-      setShowTimer(id);
 
       return () => window.clearTimeout(id);
     },
-    [hideTimer],
+    [onImage, onTooltip],
   );
 
   const handleImageMouseLeave = useCallback(() => {
-    // If we were waiting to show, we stopped hovering, so stop waiting and don't show any tooltip.
-    window.clearTimeout(showTimer);
+    onImage.current = false;
 
-    // If we never made it passed waiting and opened the tooltip, there is nothing to hide.
-    if (selectedProfile === undefined) {
-      return;
-    }
-
+    // Delayed hide.
     const id = window.setTimeout(() => {
-      setShowTooltip(false);
-      setSelectedProfile(undefined);
+      if (!onImage.current && !onTooltip.current) {
+        setShowTooltip(false);
+        setSelectedItem(undefined);
+      }
     }, 300);
-    setHideTimer(id);
 
     return () => window.clearTimeout(id);
-  }, [setHideTimer, showTimer, selectedProfile]);
+  }, [onImage, onTooltip]);
 
   const handleTooltipEnter = useCallback(() => {
-    // If we were waiting to hide, we're hovering again, so leave the tooltip open.
-    window.clearTimeout(hideTimer);
-  }, [hideTimer]);
+    onTooltip.current = true;
+  }, []);
 
   const handleTooltipLeave = useCallback(() => {
+    onTooltip.current = false;
+
+    // Delayed hide.
     const id = window.setTimeout(() => {
-      setShowTooltip(false);
-      setSelectedProfile(undefined);
-    }, 0);
-    setHideTimer(id);
+      if (!onImage.current && !onTooltip.current) {
+        setShowTooltip(false);
+        setSelectedItem(undefined);
+      }
+    }, 100);
 
     return () => window.clearTimeout(id);
-  }, []);
+  }, [onImage, onTooltip]);
+
+  const handleClickImage = useCallback(
+    (ranking: FamProfile | undefined) => {
+      if (md) {
+        return;
+      }
+
+      setSelectedItem(ranking);
+    },
+    [md, setSelectedItem],
+  );
+
+  return {
+    attributes,
+    handleClickImage,
+    handleImageMouseEnter,
+    handleImageMouseLeave,
+    handleTooltipEnter,
+    handleTooltipLeave,
+    selectedItem,
+    setPopperEl,
+    setSelectedItem,
+    showTooltip,
+    popperStyles: styles,
+  };
+};
+
+const TwitterFam: FC = () => {
+  const famCount = useProfiles()?.count;
+  const profiles = useProfiles()?.profiles;
+  const { md } = useActiveBreakpoint();
 
   // Copy batsound feedback
   const [isCopiedFeedbackVisible, setIsCopiedFeedbackVisible] = useState(false);
@@ -109,16 +137,19 @@ const TwitterFam: FC = () => {
       ? (new Array(120).fill(undefined) as undefined[])
       : profiles;
 
-  const handleClickProfile = useCallback(
-    (profile: FamProfile | undefined) => {
-      if (md) {
-        return;
-      }
-
-      setSelectedProfile(profile);
-    },
-    [md, setSelectedProfile],
-  );
+  const {
+    attributes,
+    handleClickImage,
+    handleImageMouseEnter,
+    handleImageMouseLeave,
+    handleTooltipEnter,
+    handleTooltipLeave,
+    popperStyles,
+    selectedItem,
+    setPopperEl,
+    setSelectedItem,
+    showTooltip,
+  } = useTooltip();
 
   return (
     <>
@@ -180,11 +211,7 @@ const TwitterFam: FC = () => {
               onMouseLeave={() =>
                 !md ? () => undefined : handleImageMouseLeave()
               }
-              onClick={() =>
-                md || profile === undefined
-                  ? () => undefined
-                  : handleClickProfile(profile)
-              }
+              onClick={() => handleClickImage(profile)}
             />
           </div>
         ))}
@@ -194,37 +221,37 @@ const TwitterFam: FC = () => {
           ref={setPopperEl}
           className="z-10 hidden md:block p-4"
           style={{
-            ...styles.popper,
+            ...popperStyles.popper,
             visibility: showTooltip && md ? "visible" : "hidden",
           }}
           {...attributes.popper}
-          onMouseOver={handleTooltipEnter}
-          onMouseOut={handleTooltipLeave}
+          onMouseEnter={handleTooltipEnter}
+          onMouseLeave={handleTooltipLeave}
         >
           <Tooltip
-            description={selectedProfile?.bio}
-            famFollowerCount={selectedProfile?.famFollowerCount}
-            followerCount={selectedProfile?.followersCount}
-            imageUrl={selectedProfile?.profileImageUrl}
-            links={selectedProfile?.links}
-            title={selectedProfile?.name}
-            twitterUrl={selectedProfile?.profileUrl}
+            description={selectedItem?.bio}
+            famFollowerCount={selectedItem?.famFollowerCount}
+            followerCount={selectedItem?.followersCount}
+            imageUrl={selectedItem?.profileImageUrl}
+            links={selectedItem?.links}
+            title={selectedItem?.name}
+            twitterUrl={selectedItem?.profileUrl}
           />
         </div>
         <Modal
-          onClickBackground={() => setSelectedProfile(undefined)}
-          show={!md && selectedProfile !== undefined}
+          onClickBackground={() => setSelectedItem(undefined)}
+          show={!md && selectedItem !== undefined}
         >
-          {!md && selectedProfile !== undefined && (
+          {!md && selectedItem !== undefined && (
             <Tooltip
-              description={selectedProfile.bio}
-              famFollowerCount={selectedProfile.famFollowerCount}
-              followerCount={selectedProfile.followersCount}
-              imageUrl={selectedProfile.profileImageUrl}
-              links={selectedProfile.links}
-              onClickClose={() => setSelectedProfile(undefined)}
-              title={selectedProfile.name}
-              twitterUrl={selectedProfile.profileUrl}
+              description={selectedItem.bio}
+              famFollowerCount={selectedItem.famFollowerCount}
+              followerCount={selectedItem.followersCount}
+              imageUrl={selectedItem.profileImageUrl}
+              links={selectedItem.links}
+              onClickClose={() => setSelectedItem(undefined)}
+              title={selectedItem.name}
+              twitterUrl={selectedItem.profileUrl}
             />
           )}
         </Modal>
