@@ -29,6 +29,7 @@ module.exports = {
           manatee: "#8888af",
           highlightbg: "#2d344a",
           highlightborder: "#8794b8",
+          dusk: "#464B6F",
         },
         red: {
           ...colors.red,

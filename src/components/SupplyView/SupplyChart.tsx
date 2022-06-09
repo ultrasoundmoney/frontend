@@ -30,13 +30,13 @@ if (typeof window !== "undefined") {
   highchartsAnnotations(Highcharts);
 }
 
-interface Props {
+type Props = {
   projectedStaking: number;
   projectedBaseGasPrice: number;
   projectedMergeDate: DateTime;
   showBreakdown: boolean;
   onPeakProjectedToggle: (isPeakPresent: boolean) => void;
-}
+};
 
 interface HighchartsRef {
   chart: Highcharts.Chart;

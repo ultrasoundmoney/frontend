@@ -3,23 +3,35 @@ import GaugeSvg from "./GaugeSvg";
 import SpanMoji from "../SpanMoji";
 import colors from "../../colors";
 import { animated, config, useSpring } from "react-spring";
-import { formatOneDigit } from "../../format";
+import { formatOneDigit, formatZeroDigit } from "../../format";
+import { clamp } from "lodash";
+import { pipe } from "fp-ts/lib/function";
+import { useEthPrice } from "../../api";
+import { Unit } from "../ComingSoon/CurrencyControl";
 
 type BaseGuageProps = {
+  emoji: string;
+  gaugeUnit: string;
+  needleColor?: string;
   title: string;
   value: number;
   valueFillColor?: string;
-  needleColor?: string;
-  emoji: string;
+  valueUnit: string;
+  unit: Unit;
 };
 
 const BaseGuage: FC<BaseGuageProps> = ({
+  emoji,
+  gaugeUnit,
+  needleColor,
   title,
   value,
   valueFillColor = colors.spindle,
-  needleColor,
-  emoji,
+  valueUnit,
+  unit,
 }) => {
+  const ethPrice = useEthPrice();
+
   const { valueA } = useSpring({
     from: { valueA: 0 },
     to: { valueA: value },
@@ -28,25 +40,42 @@ const BaseGuage: FC<BaseGuageProps> = ({
   });
 
   const min = 0;
-  const max = 6;
+  const max = pipe(
+    unit === "eth" ? 10 : (10 * (ethPrice?.usd ?? 0)) / 10 ** 3,
+    (max) => Math.max(max, value),
+    Math.round
+  );
+
+  const progress = clamp(value, min, max) / (max - min);
 
   return (
     <>
       <SpanMoji className="leading-10 text-4xl" emoji={emoji} />
       <div className="mt-6 md:mt-2 lg:mt-8 transform scale-100 md:scale-75 lg:scale-100 xl:scale-110">
         <GaugeSvg
-          progress={value / (max - min)}
+          progress={progress}
           progressFillColor={valueFillColor}
           needleColor={needleColor}
         />
         <div className="font-roboto text-white text-center font-light 2xl:text-lg -mt-20 pt-1">
           <animated.p className="-mb-2">
-            {valueA.to((n) => `${formatOneDigit(n)}M`)}
+            {valueA.to(
+              (n) =>
+                `${
+                  unit === "eth" ? formatOneDigit(n) : formatZeroDigit(n)
+                }${gaugeUnit}`
+            )}
           </animated.p>
-          <p className="font-extralight text-blue-spindle">ETH/year</p>
+          <p className="font-extralight text-blue-spindle">{valueUnit}</p>
           <div className="-mt-2">
-            <span className="float-left">{min}M</span>
-            <span className="float-right">{max}M</span>
+            <span className="float-left">
+              {min}
+              {gaugeUnit}
+            </span>
+            <span className="float-right">
+              {max}
+              {gaugeUnit}
+            </span>
           </div>
         </div>
       </div>

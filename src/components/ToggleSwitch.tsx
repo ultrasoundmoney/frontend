@@ -4,7 +4,7 @@ import styles from "./ToggleSwitch.module.scss";
 type ToggleSwitchProps = {
   checked: boolean;
   className?: string;
-  onToggle: () => void;
+  onToggle: (enabled: boolean) => void;
 };
 
 const ToggleSwitch: FC<ToggleSwitchProps> = ({
@@ -14,7 +14,7 @@ const ToggleSwitch: FC<ToggleSwitchProps> = ({
 }) => (
   <input
     checked={checked}
-    onChange={onToggle}
+    onChange={(e) => onToggle(e.target.checked)}
     className={`${className} ${styles["toggle-switch"]}`}
     type="checkbox"
   />

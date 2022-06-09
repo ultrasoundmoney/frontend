@@ -1,6 +1,6 @@
 type Env = "dev" | "prod" | "staging";
 
-const parseEnv = (): Env => {
+const getEnv = (): Env => {
   const rawEnv = process.env.NEXT_PUBLIC_ENV;
 
   switch (rawEnv) {
@@ -16,11 +16,13 @@ const parseEnv = (): Env => {
   }
 };
 
-const parseApiEnv = (): Env => {
+export const env = getEnv();
+
+const getApiEnv = (): Env => {
   const rawEnv = process.env.NEXT_PUBLIC_API_ENV;
 
   if (rawEnv === undefined) {
-    const env = parseEnv();
+    const env = getEnv();
     return env === "staging" ? "staging" : "prod";
   }
 
@@ -37,14 +39,4 @@ const parseApiEnv = (): Env => {
   }
 };
 
-type Config = {
-  env: Env;
-  apiEnv: Env;
-};
-
-const config: Config = {
-  env: parseEnv(),
-  apiEnv: parseApiEnv(),
-};
-
-export default config;
+export const apiEnv = getApiEnv();

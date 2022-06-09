@@ -1,19 +1,20 @@
+import * as Config from "./config";
 import useSWR from "swr";
-import config from "./config";
-import { milisFromSeconds } from "./duration";
 import { LeaderboardEntry } from "./components/BurnLeaderboard";
+import * as Duration from "./duration";
+import { TimeFrame } from "./components/TimeFrameControl";
 
 export const famBasePath =
-  config.apiEnv === "staging"
+  Config.apiEnv === "staging"
     ? "https://api-stag.ultrasound.money/fam"
-    : config.apiEnv === "dev"
+    : Config.apiEnv === "dev"
     ? "http://localhost:8080/fam"
     : "https://api.ultrasound.money/fam";
 
 export const feesBasePath =
-  config.apiEnv === "staging"
+  Config.apiEnv === "staging"
     ? "https://api-stag.ultrasound.money/fees"
-    : config.apiEnv === "dev"
+    : Config.apiEnv === "dev"
     ? "http://localhost:8080/fees"
     : "https://api.ultrasound.money/fees";
 
@@ -22,20 +23,32 @@ type Wei = number;
 
 export type BurnRates = {
   burnRate5m: WeiPerMinute;
+  burnRate5mUsd: number;
   burnRate1h: WeiPerMinute;
+  burnRate1hUsd: number;
   burnRate24h: WeiPerMinute;
+  burnRate24hUsd: number;
   burnRate30d: WeiPerMinute;
+  burnRate30dUsd: number;
   burnRate7d: WeiPerMinute;
+  burnRate7dUsd: number;
   burnRateAll: WeiPerMinute;
+  burnRateAllUsd: number;
 };
 
 export type FeesBurned = {
   feesBurned5m: Wei;
+  feesBurned5mUsd: number;
   feesBurned1h: Wei;
+  feesBurned1hUsd: number;
   feesBurned24h: Wei;
+  feesBurned24hUsd: number;
   feesBurned7d: Wei;
+  feesBurned7dUsd: number;
   feesBurned30d: Wei;
+  feesBurned30dUsd: number;
   feesBurnedAll: Wei;
+  feesBurnedAllUsd: number;
 };
 
 export type Leaderboards = {
@@ -46,15 +59,18 @@ export type Leaderboards = {
   leaderboardAll: LeaderboardEntry[];
 };
 
+export type LatestBlockFees = {
+  fees: Wei;
+  feesUsd: number;
+  number: number;
+  baseFeePerGas: Wei;
+  minedAt: string;
+};
+
 export type FeeData = {
   baseFeePerGas: number | undefined;
   burnRates: BurnRates | undefined;
-  latestBlockFees: {
-    fees: Wei;
-    number: number;
-    baseFeePerGas: Wei;
-    minedAt: string;
-  }[];
+  latestBlockFees: LatestBlockFees[];
   number: number | undefined;
   feesBurned: FeesBurned | undefined;
   leaderboards: Leaderboards | undefined;
@@ -62,7 +78,7 @@ export type FeeData = {
 
 export const useFeeData = (): FeeData => {
   const { data } = useSWR(`${feesBasePath}/all`, {
-    refreshInterval: milisFromSeconds(4),
+    refreshInterval: Duration.millisFromSeconds(4),
   });
 
   return data !== undefined
@@ -144,10 +160,70 @@ export type EthPrice = {
   btc24hChange: number;
 };
 
-export const useEthPrices = () => {
+type BaseFeePerGas = {
+  baseFeePerGas: number;
+};
+
+export const useEthPrice = (): EthPrice | undefined => {
   const { data } = useSWR<EthPrice>(`${feesBasePath}/eth-price`, {
-    refreshInterval: milisFromSeconds(4),
+    refreshInterval: Duration.millisFromSeconds(4),
   });
 
-  return data !== undefined ? { ethPrices: data } : { ethPrices: undefined };
+  return data;
+};
+
+export const useBaseFeePerGas = (): number | undefined => {
+  const { data } = useSWR<BaseFeePerGas>(`${feesBasePath}/base-fee-per-gas`, {
+    refreshInterval: Duration.millisFromSeconds(4),
+    refreshWhenHidden: true,
+  });
+
+  return data?.baseFeePerGas;
+};
+
+export type AverageEthPrice = {
+  all: 3536.800133928138;
+  d30: 4090.2621816488527;
+  d7: 4537.676751145321;
+  h1: 4751.528260560356;
+  h24: 4717.513628893767;
+  m5: 4743.869230769231;
+};
+
+export const newTimeframeMap: Record<TimeFrame, keyof AverageEthPrice> = {
+  "5m": "m5",
+  "1h": "h1",
+  "24h": "h24",
+  "7d": "d7",
+  "30d": "d30",
+  all: "all",
+};
+
+export const useAverageEthPrice = (
+  timeFrame: TimeFrame
+): number | undefined => {
+  const { data } = useSWR<AverageEthPrice>(
+    `${feesBasePath}/average-eth-price`,
+    {
+      refreshInterval: Duration.millisFromSeconds(8),
+    }
+  );
+
+  return data === undefined ? undefined : data[newTimeframeMap[timeFrame]];
+};
+
+type MarketCaps = {
+  btcMarketCap: number;
+  ethMarketCap: number;
+  goldMarketCap: number;
+  usdM3MarketCap: number;
+  timestamp: Date;
+};
+
+export const useMarketCaps = (): MarketCaps | undefined => {
+  const { data } = useSWR<MarketCaps>(`${feesBasePath}/market-caps`, {
+    refreshInterval: Duration.millisFromSeconds(8),
+  });
+
+  return data;
 };

@@ -1,7 +1,6 @@
 import * as React from "react";
 import AvatarImg from "../../assets/avatar.webp";
 import ProfileTooltip from "./ProfileTooltip";
-import styles from "./TwitterProfile.module.scss";
 
 type TwitterProfilePros = {
   profileList: TwitterProfile[];
@@ -14,9 +13,7 @@ const TwitterProfile: React.FC<TwitterProfilePros> = ({ profileList }) => {
   }
   return (
     <>
-      <div
-        className={`flex flex-wrap justify-center relative ${styles.profiles}`}
-      >
+      <div className={`flex flex-wrap justify-center relative`}>
         {profileList &&
           profileList
             .slice(0, 120)
