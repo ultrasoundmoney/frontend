@@ -20,7 +20,7 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
   function imageErrorHandler(e: React.SyntheticEvent<HTMLImageElement, Event>) {
     const el = e.target as HTMLImageElement;
     el.onerror = null;
-    el.src = AvatarImg;
+    el.src = AvatarImg as unknown as string;
   }
   const getClassName =
     styles != undefined || styles != null
@@ -44,7 +44,11 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
                 className="text-center mx-auto mb-8"
                 width="30"
                 height="48"
-                src={img !== null && img != undefined ? img : AvatarImg}
+                src={
+                  img !== null && img != undefined
+                    ? img
+                    : (AvatarImg as unknown as string)
+                }
                 alt={title}
                 onError={imageErrorHandler}
               />

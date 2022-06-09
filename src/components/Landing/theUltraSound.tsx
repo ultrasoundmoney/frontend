@@ -4,7 +4,7 @@ import BtcImg from "../../assets/ulr.jpeg";
 import { TranslationsContext } from "../../translations-context";
 import ContentBlockMedia from "../ContentBlock/ContentBlockMedia";
 
-const TheUltraSound: React.FC<{}> = () => {
+const TheUltraSound: React.FC = () => {
   const t = React.useContext(TranslationsContext);
 
   return (
@@ -25,7 +25,7 @@ const TheUltraSound: React.FC<{}> = () => {
           <img
             title={t.eusm_section_title}
             alt={t.eusm_section_title}
-            src={BatImg}
+            src={BatImg as unknown as string}
             className="mx-auto text-center mb-8"
           />
           <div className="ultra-sound-text text-2xl md:text-6xl mb-24">
@@ -59,7 +59,7 @@ const TheUltraSound: React.FC<{}> = () => {
             </div>
           </div>
           <div className="w-full md:w-5/12">
-            <img src={BtcImg} alt="btc" />
+            <img src={BtcImg as unknown as string} alt="btc" />
           </div>
         </div>
       </section>

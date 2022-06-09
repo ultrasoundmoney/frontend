@@ -1,16 +1,17 @@
 import * as DateFns from "date-fns";
 import { flow } from "lodash";
-import React, { FC, memo, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { TransitionGroup } from "react-transition-group";
-import { LatestBlock, useFeeData } from "../../api";
+import { LatestBlock, useGroupedData1 } from "../../api/grouped_stats_1";
+import { Unit } from "../../denomination";
 import * as Format from "../../format";
 import { O, OAlt, pipe } from "../../fp";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
-import { Unit } from "../ComingSoon/CurrencyControl";
 import CSSTransition from "../CSSTransition";
 import { AmountUnitSpace } from "../Spacing";
-import { WidgetBackground } from "../WidgetBits";
+import WidgetBackground from "../widget-subcomponents/WidgetBackground";
+import styles from "./LatestBlocks.module.scss";
 
 const maxBlocks = 7;
 
@@ -18,7 +19,7 @@ const formatGas = flow(
   OAlt.numberFromUnknown,
   O.map(Format.gweiFromWei),
   O.map(Format.formatZeroDigit),
-  O.toUndefined
+  O.toUndefined,
 );
 
 const formatFees = (unit: Unit, fees: unknown, feesUsd: unknown) =>
@@ -27,40 +28,40 @@ const formatFees = (unit: Unit, fees: unknown, feesUsd: unknown) =>
         fees,
         OAlt.numberFromUnknown,
         O.map(Format.formatWeiTwoDigit),
-        O.toUndefined
+        O.toUndefined,
       )
     : pipe(
         feesUsd,
         OAlt.numberFromUnknown,
         O.map((feesUsd) => `${Format.formatOneDigit(feesUsd / 1000)}K`),
-        O.toUndefined
+        O.toUndefined,
       );
 
 const formatTimeElapsed = flow(
   O.fromNullable,
   O.map((num: number) => `${num}s`),
-  O.toUndefined
+  O.toUndefined,
 );
 
 export const formatBlockNumber = (number: unknown) =>
   pipe(
     number,
     O.fromPredicate(
-      (unknown): unknown is number => typeof unknown === "number"
+      (unknown): unknown is number => typeof unknown === "number",
     ),
     O.map(Format.formatNoDigit),
     O.map((str) => `#${str}`),
-    O.toUndefined
+    O.toUndefined,
   );
 
 const latestBlockFeesSkeletons = new Array(maxBlocks).fill(
-  {} as Partial<LatestBlock>
-);
+  {},
+) as Partial<LatestBlock>[];
 
 type Props = { unit: Unit };
 
 const LatestBlocks: FC<Props> = ({ unit }) => {
-  const latestBlockFees = useFeeData()?.latestBlockFees;
+  const latestBlockFees = useGroupedData1()?.latestBlockFees;
   const [timeElapsed, setTimeElapsed] = useState<number>();
   const { md } = useActiveBreakpoint();
 
@@ -72,12 +73,12 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
     const latestMinedBlockDate = new Date(latestBlockFees[0].minedAt);
 
     setTimeElapsed(
-      DateFns.differenceInSeconds(new Date(), latestMinedBlockDate)
+      DateFns.differenceInSeconds(new Date(), latestMinedBlockDate),
     );
 
     const intervalId = window.setInterval(() => {
       setTimeElapsed(
-        DateFns.differenceInSeconds(new Date(), latestMinedBlockDate)
+        DateFns.differenceInSeconds(new Date(), latestMinedBlockDate),
       );
     }, 1000);
 
@@ -108,13 +109,17 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
             {(latestBlockFees || latestBlockFeesSkeletons).map(
               ({ number, fees, feesUsd, baseFeePerGas }, index) => (
                 <CSSTransition
-                  classNames="fee-block"
+                  classNames={{ ...styles }}
                   timeout={2000}
                   key={number || index}
                 >
-                  <div className="fee-block text-base md:text-lg">
+                  <div className="transition-opacity duration-700 font-light text-base md:text-lg">
                     <a
-                      href={`https://etherscan.io/block/${number}`}
+                      href={
+                        number === undefined
+                          ? undefined
+                          : `https://etherscan.io/block/${number}`
+                      }
                       target="_blank"
                       rel="noreferrer"
                     >
@@ -154,12 +159,12 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
                     </a>
                   </div>
                 </CSSTransition>
-              )
+              ),
             )}
           </TransitionGroup>
         </ul>
         {/* spaces need to stay on the font-inter element to keep them consistent */}
-        <span className="text-blue-spindle text-xs md:text-sm font-extralight">
+        <span className="font-inter text-blue-spindle text-xs md:text-sm font-extralight">
           {"latest block "}
           <span className="font-roboto text-white font-light">
             {formatTimeElapsed(timeElapsed) || (
@@ -173,4 +178,4 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
   );
 };
 
-export default memo(LatestBlocks);
+export default LatestBlocks;

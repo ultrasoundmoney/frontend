@@ -1,7 +1,7 @@
 import * as React from "react";
 import { TranslationsContext } from "../../translations-context";
 
-const GenesisBlock: React.FC<{}> = () => {
+const GenesisBlock: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   return (
     <>

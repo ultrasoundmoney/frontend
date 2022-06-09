@@ -1,15 +1,17 @@
 import * as React from "react";
-import TwitterProfile from "../TwitterCommunity/TwitterProfile";
 import SpanMoji from "../SpanMoji";
 import { TranslationsContext } from "../../translations-context";
-import { famBasePath } from "../../api";
 import { formatNoDigit } from "../../format";
+import { famBasePath } from "../../api/fam";
+import styles from "./FollowingYou.module.scss";
+import { TwitterProfile as TwitterProfileT } from "../TwitterCommunity/ProfileTooltip";
+import TwitterProfile from "../TwitterCommunity/TwitterProfile";
 
 type Empty = { type: "empty" };
 type FollowedBy = {
   type: "followers";
   count: number;
-  followers: TwitterProfile[];
+  followers: TwitterProfileT[];
 };
 type HandleNotFound = { type: "handleNotFound" };
 type Searching = { type: "searching" };
@@ -30,7 +32,7 @@ const FollowingYou: React.FC = () => {
   });
 
   const handleSubmit = async (
-    event: React.FormEvent<HTMLFormElement>
+    event: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     event.preventDefault();
 
@@ -46,7 +48,10 @@ const FollowingYou: React.FC = () => {
     }
 
     if (res.status === 200) {
-      const body = await res.json();
+      const body = (await res.json()) as {
+        followers: TwitterProfileT[];
+        count: number;
+      };
       // Somehow clicking show me rapidly can have res 200, but still have body
       // be undefined on mobile.
       if (body.followers !== undefined) {
@@ -83,7 +88,14 @@ const FollowingYou: React.FC = () => {
           onChange={(event) => setHandle(event.target.value)}
         />
         <button
-          className="show-me md:w-32 -ml-28 px-5 text-xs text-white border border-white bg-transparent rounded-full hover:bg-gray-700"
+          className={`
+            ${styles.showMe}
+            md:w-32 -ml-28 px-5
+            text-xs text-white
+            border border-white
+            bg-transparent hover:bg-gray-700
+            rounded-full
+          `}
           type="submit"
         >
           show me →
@@ -106,10 +118,10 @@ const FollowingYou: React.FC = () => {
             </p>
           ) : (
             <>
-              <TwitterProfile profileList={followers.followers} />
+              <TwitterProfile profiles={followers.followers} />
               {followers.count > followers.followers.length && (
                 <p className="text-white text-xl p-8 text-center">{`+${formatNoDigit(
-                  followers.count - followers.followers.length
+                  followers.count - followers.followers.length,
                 )} more!`}</p>
               )}
             </>

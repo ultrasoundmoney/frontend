@@ -1,7 +1,7 @@
 import { useMediaQuery } from "@react-hook/media-query";
 import { useEffect, useState } from "react";
 
-type Breakpoint = {
+type ActiveBreakpoint = {
   sm: boolean;
   md: boolean;
   lg: boolean;
@@ -9,8 +9,8 @@ type Breakpoint = {
   xl2: boolean;
 };
 
-export const useActiveBreakpoint = (): Breakpoint => {
-  const [activeBreakpoints, setActiveBreakpoints] = useState<Breakpoint>({
+export const useActiveBreakpoint = (): ActiveBreakpoint => {
+  const [activeBreakpoints, setActiveBreakpoints] = useState<ActiveBreakpoint>({
     sm: false,
     md: false,
     lg: false,

@@ -1,21 +1,17 @@
-import * as React from "react";
-import useSWR from "swr";
+import { FC, useContext, useEffect, useState } from "react";
 import Clipboard from "react-clipboard.js";
-import TwitterProfile from "./TwitterProfile";
-import SpanMoji from "../SpanMoji";
-import { TranslationsContext } from "../../translations-context";
-import { famBasePath } from "../../api";
+import { useProfiles } from "../../api/fam";
 import { formatNoDigit } from "../../format";
+import { TranslationsContext } from "../../translations-context";
+import SpanMoji from "../SpanMoji";
+import TwitterProfile from "./TwitterProfile";
 
-const TwitterCommunity: React.FC = () => {
-  const t = React.useContext(TranslationsContext);
-  const [isCopiedFeedbackVisible, setIsCopiedFeedbackVisible] = React.useState<
-    boolean
-  >(false);
-  const { data } = useSWR(`${famBasePath}/profiles`);
+const TwitterCommunity: FC = () => {
+  const t = useContext(TranslationsContext);
+  const famCount = useProfiles()?.count;
+  const profiles = useProfiles()?.profiles;
 
-  const profiles = data?.profiles;
-  const famCount = data?.count;
+  const [isCopiedFeedbackVisible, setIsCopiedFeedbackVisible] = useState(false);
 
   const getText =
     famCount !== undefined
@@ -26,6 +22,15 @@ const TwitterCommunity: React.FC = () => {
     setIsCopiedFeedbackVisible(true);
     setTimeout(() => setIsCopiedFeedbackVisible(false), 400);
   };
+
+  // Workaround to try and improve scroll to behavior for #join-the-fam .
+  useEffect(() => {
+    if (window.location.hash === "#join-the-fam" && document !== null) {
+      document
+        .querySelector("#join-the-fam")
+        ?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
 
   return (
     <>
@@ -63,7 +68,7 @@ const TwitterCommunity: React.FC = () => {
         </Clipboard>
       </div>
       <div className="h-16"></div>
-      {Array.isArray(profiles) && <TwitterProfile profileList={profiles} />}
+      <TwitterProfile profiles={profiles} />
     </>
   );
 };

@@ -1,47 +1,54 @@
 import * as DateFns from "date-fns";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
+import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
-import { BurnRecord, useBurnRecords } from "../api";
+import { BurnRecord } from "../api/burn_records";
+import { useGroupedData1 } from "../api/grouped_stats_1";
+import { Unit } from "../denomination";
 import * as Format from "../format";
 import { flow, O, OAlt } from "../fp";
-import { timeFrameFromNext, TimeFrameNext } from "../time_frames";
+import styles from "../styles/Scrollbar.module.scss";
+import { TimeFrameNext } from "../time_frames";
+import { useActiveBreakpoint } from "../utils/use-active-breakpoint";
 import { AmountUnitSpace } from "./Spacing";
 import SpanMoji from "./SpanMoji";
-import { WidgetBackground, WidgetTitle } from "./WidgetBits";
-
-const formatBurnRecordAmount = flow(
-  O.fromPredicate((unknown): unknown is number => typeof unknown === "number"),
-  O.map(Format.ethFromWei),
-  O.map(Format.formatTwoDigit),
-  O.toUndefined
-);
+import { TextInter, TextRoboto } from "./Texts";
+import WidgetBackground from "./widget-subcomponents/WidgetBackground";
+import WidgetTitle from "./widget-subcomponents/WidgetTitle";
 
 const formatBlockNumber = flow(
   O.fromPredicate((unknown): unknown is number => typeof unknown === "number"),
   O.map(Format.formatNoDigit),
   O.map((str) => `#${str}`),
-  O.toUndefined
-);
-
-const formatAge = flow(
-  O.fromPredicate((unknown): unknown is Date => unknown instanceof Date),
-  O.map(DateFns.formatDistanceToNowStrict),
-  O.toUndefined
+  O.toUndefined,
 );
 
 const getBlockPageLink = flow(
   OAlt.numberFromUnknown,
   O.map((num) => `https://etherscan.io/block/${num}`),
-  O.toUndefined
+  O.toUndefined,
 );
 
-const BurnRecordAmount: FC<{ amount: number | undefined }> = ({ amount }) => (
-  <div className="font-roboto  text-2xl md:text-3xl">
-    <span className={"text-white"}>
-      {formatBurnRecordAmount(amount) || (
+const BurnRecordAmount: FC<{ amount: number | undefined; unit: Unit }> = ({
+  amount,
+  unit,
+}) => (
+  <div className="text-2xl md:text-3xl">
+    <TextRoboto>
+      {amount === undefined ? (
         <Skeleton inline={true} width="4rem" />
+      ) : (
+        <CountUp
+          start={0}
+          end={unit === "eth" ? Format.ethFromWei(amount) : amount / 1000}
+          preserveValue={true}
+          separator=","
+          decimals={unit === "eth" ? 2 : 1}
+          duration={0.8}
+          suffix={unit === "eth" ? undefined : "K"}
+        />
       )}
-    </span>
+    </TextRoboto>
     <AmountUnitSpace />
     <span className="text-blue-spindle font-extralight">ETH</span>
   </div>
@@ -49,30 +56,70 @@ const BurnRecordAmount: FC<{ amount: number | undefined }> = ({ amount }) => (
 
 const emojiMap = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
 
+const formatDistance = flow(
+  (dt: Date | undefined) => dt,
+  O.fromNullable,
+  O.map(DateFns.formatDistanceToNowStrict),
+  O.toUndefined,
+);
+
+const Age: FC<{ minedAt: Date | undefined }> = ({ minedAt }) => {
+  const [age, setAge] = useState(formatDistance(minedAt));
+
+  useEffect(() => {
+    if (minedAt === undefined) {
+      return;
+    }
+
+    setAge(DateFns.formatDistanceToNowStrict(minedAt));
+
+    const intervalId = window.setInterval(() => {
+      setAge(DateFns.formatDistanceToNowStrict(minedAt));
+    }, 1000);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [minedAt]);
+
+  return (
+    <TextInter className="md:text-lg">
+      {age || <Skeleton inline={true} width="6rem" />}
+      {" ago"}
+    </TextInter>
+  );
+};
+
 type Props = {
   onClickTimeFrame: () => void;
   timeFrame: TimeFrameNext;
 };
 
 const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
-  const burnRecords = useBurnRecords();
+  const burnRecords = useGroupedData1()?.burnRecords;
+  const { lg } = useActiveBreakpoint();
 
   const timeFrameRecords =
     burnRecords === undefined
       ? (new Array(10).fill({}) as Partial<BurnRecord>[])
-      : burnRecords.records[timeFrame];
+      : burnRecords[timeFrame];
 
   return (
     <WidgetBackground>
       <WidgetTitle
         onClickTimeFrame={onClickTimeFrame}
-        timeFrame={timeFrameFromNext[timeFrame]}
+        timeFrame={timeFrame}
         title="burn records"
       />
       <div
-        className="flex flex-col gap-y-6 mt-3 -mr-3 overflow-y-auto leaderboard-scroller"
-        // Custom height to fit three records on desktop.
-        style={{ height: "17rem" }}
+        className={`
+          flex flex-col gap-y-6
+          mt-4 -mr-3
+          overflow-y-auto
+          ${styles["styled-scrollbar"]}
+        `}
+        // Custom height to fit three records on desktop and mobile.
+        style={{ height: lg ? "16rem" : "15rem" }}
       >
         {timeFrameRecords.map((record, index) => (
           <div
@@ -80,7 +127,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
             key={record.blockNumber || index}
           >
             <div className="flex justify-between w-full">
-              <BurnRecordAmount amount={record.baseFeeSum} />
+              <BurnRecordAmount amount={record.baseFeeSum} unit="eth" />
               <SpanMoji
                 className="text-2xl md:text-3xl"
                 emoji={emojiMap[index]}
@@ -92,15 +139,13 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <span className="font-roboto text-blue-shipcove md:text-lg hover:opacity-60 link-animation">
+                <span className="font-roboto font-light text-blue-shipcove md:text-lg hover:opacity-60 link-animation">
                   {formatBlockNumber(record.blockNumber) || (
                     <Skeleton width="8rem" />
                   )}
                 </span>
               </a>
-              <span className="font-inter font-light text-white md:text-lg">
-                {formatAge(record.minedAt) || <Skeleton width="6rem" />} ago
-              </span>
+              <Age minedAt={record.minedAt} />
             </div>
           </div>
         ))}

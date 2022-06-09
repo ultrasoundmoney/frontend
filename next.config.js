@@ -1,17 +1,15 @@
-const { flow } = require("lodash");
-const withBundleAnalyzer = require("@next/bundle-analyzer")({
-  enabled: process.env.ANALYZE === "true",
-});
-const withImages = require("next-images");
-module.exports = flow([withBundleAnalyzer, withImages])({
+/** @type {import('next').NextConfig} */
+module.exports = {
+  // Fleek recommends this.
+  // See: https://blog.fleek.co/posts/fleek-nextJS
   trailingSlash: true,
   // Without the exportPathMap fleek deployments for /page break.
   exportPathMap: () => ({
     "/": { page: "/" },
     "/landing": { page: "/landing" },
-    "/dashboard": { page: "/dashboard" },
   }),
+  reactStrictMode: true,
   images: {
-    disableStaticImages: true,
+    domains: ["pbs.twimg.com", "lh3.googleusercontent.com"],
   },
-});
+};

@@ -27,10 +27,9 @@ const useNotification = (): UseNotification => {
     };
   }
 
-  const requestPermission = () => {
-    Notification.requestPermission().then((permission) => {
-      setNotificationPermission(permission);
-    });
+  const requestPermission = async () => {
+    const permission = await Notification.requestPermission();
+    setNotificationPermission(permission);
   };
 
   const showNotification = (text: string) => {

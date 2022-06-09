@@ -1,13 +1,13 @@
-import { FC, memo } from "react";
-import GaugeSvg from "./GaugeSvg";
-import SpanMoji from "../SpanMoji";
-import colors from "../../colors";
-import { animated, config, useSpring } from "react-spring";
-import { formatOneDigit, formatZeroDigit } from "../../format";
 import { clamp } from "lodash";
-import { pipe } from "fp-ts/lib/function";
-import { useEthPrice } from "../../api";
-import { Unit } from "../ComingSoon/CurrencyControl";
+import { FC } from "react";
+import { animated, config, useSpring } from "react-spring";
+import { useGroupedData1 } from "../../api/grouped_stats_1";
+import colors from "../../colors";
+import { Unit } from "../../denomination";
+import { formatOneDigit, formatZeroDigit } from "../../format";
+import { pipe } from "../../fp";
+import SpanMoji from "../SpanMoji";
+import GaugeSvg from "./GaugeSvg";
 
 type BaseGuageProps = {
   emoji: string;
@@ -30,7 +30,7 @@ const BaseGuage: FC<BaseGuageProps> = ({
   valueUnit,
   unit,
 }) => {
-  const ethPrice = useEthPrice();
+  const ethPrice = useGroupedData1()?.ethPrice;
 
   const { valueA } = useSpring({
     from: { valueA: 0 },
@@ -43,7 +43,7 @@ const BaseGuage: FC<BaseGuageProps> = ({
   const max = pipe(
     unit === "eth" ? 10 : (10 * (ethPrice?.usd ?? 0)) / 10 ** 3,
     (max) => Math.max(max, value),
-    Math.round
+    Math.round,
   );
 
   const progress = clamp(value, min, max) / (max - min);
@@ -63,7 +63,7 @@ const BaseGuage: FC<BaseGuageProps> = ({
               (n) =>
                 `${
                   unit === "eth" ? formatOneDigit(n) : formatZeroDigit(n)
-                }${gaugeUnit}`
+                }${gaugeUnit}`,
             )}
           </animated.p>
           <p className="font-extralight text-blue-spindle">{valueUnit}</p>
@@ -86,4 +86,4 @@ const BaseGuage: FC<BaseGuageProps> = ({
   );
 };
 
-export default memo(BaseGuage);
+export default BaseGuage;

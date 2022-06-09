@@ -1,24 +1,5 @@
 import { pipe } from "fp-ts/lib/function";
-
-export function formatLargeNumber(
-  n: number,
-  precision: number,
-  i18n: Data
-): string {
-  let abbrev;
-  if (n >= 1e6) {
-    n = n / 1e6;
-    abbrev = i18n.numeric_billion_abbrev;
-  } else if (n >= 1e3) {
-    n = n / 1e3;
-    abbrev = i18n.numeric_thousand_abbrev;
-  }
-  if (precision !== undefined) {
-    // Need to parseFloat again to avoid scientific notation
-    n = parseFloat(n.toPrecision(precision));
-  }
-  return abbrev ? `${n}${abbrev}` : String(n);
-}
+import JSBI from "jsbi";
 
 const intlFormatter = new Intl.NumberFormat();
 export function intlFormat(num: number): string {
@@ -85,6 +66,11 @@ export const formatNoDigit = (num: number): string => noDigit.format(num);
 export const gweiFromWei = (wei: number): number => wei / 10 ** 9;
 
 export const ethFromWei = (wei: number): number => wei / 10 ** 18;
+
+export const ethFromWeiBIUnsafe = (wei: JSBI): number =>
+  JSBI.toNumber(
+    JSBI.divide(wei, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))),
+  );
 
 export const followerCountConvert = (num: number) => {
   if (num > 999 && num < 1000000) {

@@ -16,7 +16,11 @@ const ContentBlockMedia: React.FC<ContentBlockMediaProps> = ({
       {img !== null && img != undefined && (
         <img
           className="text-left mr-auto mb-6"
-          src={img !== null && img != undefined ? img : AvatarImg}
+          src={
+            img !== null && img != undefined
+              ? img
+              : (AvatarImg as unknown as string)
+          }
           alt={title}
         />
       )}

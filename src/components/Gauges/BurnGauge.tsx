@@ -1,16 +1,16 @@
 import { FC } from "react";
-import { useFeeData } from "../../api";
+import { useGroupedData1 } from "../../api/grouped_stats_1";
 import colors from "../../colors";
+import { Unit } from "../../denomination";
 import * as Format from "../../format";
-import { TimeFrame } from "../../time_frames";
-import { Unit } from "../ComingSoon/CurrencyControl";
+import { TimeFrameNext } from "../../time_frames";
 import { timeframeBurnRateMap } from "../FeeBurn";
 import BaseGauge from "./IssuanceBurnBaseGauge";
 
-type BurnGaugeProps = { timeFrame: TimeFrame; unit: Unit };
+type BurnGaugeProps = { timeFrame: TimeFrameNext; unit: Unit };
 
 const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame, unit }) => {
-  const burnRates = useFeeData()?.burnRates;
+  const burnRates = useGroupedData1()?.burnRates;
 
   const selectedBurnRate =
     burnRates !== undefined
@@ -25,7 +25,14 @@ const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame, unit }) => {
       : (selectedBurnRate * 60 * 24 * 365.25) / 10 ** 9;
 
   return (
-    <div className="flex flex-col justify-start items-center bg-blue-tangaroa px-4 md:px-0 py-8 pt-7 rounded-lg md:rounded-r-none lg:rounded-r-lg">
+    <div
+      className={`
+        flex flex-col justify-start items-center
+        bg-blue-tangaroa
+        px-4 md:px-0 py-8 pt-7
+        rounded-lg md:rounded-r-none lg:rounded-r-lg
+      `}
+    >
       <BaseGauge
         title="burn"
         value={burnRate}

@@ -6,13 +6,14 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { useBaseFeePerGas, useEthPrice } from "../api";
+import { useGroupedData1 } from "../api/grouped_stats_1";
 import * as Format from "../format";
 import { O, pipe } from "../fp";
 import { useLocalStorage } from "../use-local-storage";
 import useNotification from "../use-notification";
 import styles from "./AlarmInput.module.scss";
 import { AmountUnitSpace } from "./Spacing";
+import { TextRoboto } from "./Texts";
 import ToggleSwitch from "./ToggleSwitch";
 
 const thresholdToNumber = (threshold: string | undefined): number | undefined =>
@@ -22,7 +23,7 @@ const thresholdToNumber = (threshold: string | undefined): number | undefined =>
     O.map((str) => str.replaceAll(",", "")),
     O.map(Number),
     O.chain((num) => (Number.isNaN(num) ? O.none : O.some(num))),
-    O.toUndefined
+    O.toUndefined,
   );
 
 const safeFormatZeroDigit = (num: number | undefined) =>
@@ -47,9 +48,16 @@ type AlarmType = "gas" | "eth";
 
 type ThresholdType = "GreaterThanOrEqualTo" | "SmallerThan";
 
+const imageMap: Record<AlarmType, JSX.Element> = {
+  gas: <img src="/gas-icon.svg" width="13" height="14" alt="gas pump icon" />,
+
+  eth: (
+    <img src="/eth-icon.svg" alt="Ethereum Ether icon" width="15" height="16" />
+  ),
+};
+
 type AlarmInputProps = {
   isAlarmActive: boolean;
-  icon: string;
   onToggleIsAlarmActive: (isAlarmActive: boolean) => void;
   unit: string;
   type: AlarmType;
@@ -57,22 +65,21 @@ type AlarmInputProps = {
 
 const AlarmInput: FC<AlarmInputProps> = ({
   isAlarmActive,
-  icon,
   onToggleIsAlarmActive,
   unit,
   type,
 }) => {
   const notification = useNotification();
-  const baseFeePerGas = useBaseFeePerGas();
-  const ethPrice = useEthPrice();
+  const baseFeePerGas = useGroupedData1()?.baseFeePerGas;
+  const ethPrice = useGroupedData1()?.ethPrice;
   const [isBusyEditing, setIsBusyEditing] = useState(false);
   const [threshold, setThreshold] = useLocalStorage<string>(
     `${type}-threshold`,
-    "0"
+    "0",
   );
   const [thresholdType, setThresholdType] = useLocalStorage<ThresholdType>(
     `${type}-threshold-type`,
-    "GreaterThanOrEqualTo"
+    "GreaterThanOrEqualTo",
   );
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -81,7 +88,7 @@ const AlarmInput: FC<AlarmInputProps> = ({
     O.fromNullable,
     O.map(Format.gweiFromWei),
     O.map(Math.round),
-    O.toUndefined
+    O.toUndefined,
   );
   const roundedEthPrice = safeRound(ethPrice?.usd);
   const currentValueMap: Record<AlarmType, number | undefined> = {
@@ -118,7 +125,7 @@ const AlarmInput: FC<AlarmInputProps> = ({
       setIsBusyEditing(true);
       setThreshold(event.target.value);
     },
-    [currentValue, setThreshold, setThresholdType]
+    [currentValue, setThreshold, setThresholdType],
   );
 
   const handleDoneEditing = useCallback(() => {
@@ -163,18 +170,18 @@ const AlarmInput: FC<AlarmInputProps> = ({
       onToggleIsAlarmActive,
       setThresholdType,
       threshold,
-    ]
+    ],
   );
 
   useEffect(() => {
     // It's possible someone changed this in another tab and we haven't yet read this from local storage. To make sure we have the latest value we read local storage again. This key is currently hardcoded to match the one in the parent that ows this piece of state.
     const isAlarmActiveLocalStorage = localStorage.getItem(
-      `${type}-alarm-enabled`
+      `${type}-alarm-enabled`,
     );
     const isAlarmActiveSynced =
       isAlarmActiveLocalStorage === null
         ? false
-        : JSON.parse(isAlarmActiveLocalStorage);
+        : (JSON.parse(isAlarmActiveLocalStorage) as boolean);
     onToggleIsAlarmActive(isAlarmActiveSynced);
 
     if (
@@ -219,20 +226,23 @@ const AlarmInput: FC<AlarmInputProps> = ({
 
     inputRef.current.focus();
   }, [inputRef]);
-
   return (
     <div className="flex justify-between items-center pt-4">
       <div
         className={`flex justify-between items-center px-2 py-1 pr-4 border border-gray-500 rounded-full select-none ${styles.alarmInput}`}
         onClick={handleSurroundingInputClick}
       >
-        <div className="flex justify-center ml-1 w-5">
-          <img className="" src={icon} alt="icon of gaspump or eth" />
-        </div>
+        <div className="flex justify-center ml-1 w-5">{imageMap[type]}</div>
         <div className="flex items-center">
           <input
             ref={inputRef}
-            className="font-roboto w-14 bg-transparent text-sm text-white text-right"
+            className={`
+              font-roboto font-light
+              w-14
+              bg-transparent
+              text-sm text-white text-right
+              focus:outline-none
+            `}
             inputMode="numeric"
             pattern="[0-9]"
             value={toThresholdDisplay(threshold)}
@@ -240,9 +250,9 @@ const AlarmInput: FC<AlarmInputProps> = ({
             onBlur={handleDoneEditing}
           />
           <AmountUnitSpace />
-          <span className="font-roboto text-blue-spindle text-sm font-extralight whitespace-pre">
+          <TextRoboto className="text-blue-spindle text-sm font-extralight whitespace-pre">
             {unit}
-          </span>
+          </TextRoboto>
         </div>
       </div>
       <ToggleSwitch

@@ -1,12 +1,14 @@
 import { clamp } from "lodash";
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { animated, config, useSpring } from "react-spring";
-import { useAverageEthPrice, useFeeData } from "../../api";
+import { useScarcity } from "../../api";
+import { useAverageEthPrice } from "../../api/eth_price";
+import { useGroupedData1 } from "../../api/grouped_stats_1";
 import * as Format from "../../format";
 import * as StaticEtherData from "../../static-ether-data";
-import { TimeFrame } from "../../time_frames";
+import { TimeFrameNext } from "../../time_frames";
 import { timeframeBurnRateMap } from "../FeeBurn";
-import TimeframeIndicator from "../TimeframeIndicator";
+import TimeFrameIndicator from "../widget-subcomponents/TimeFrameIndicator";
 import ToggleSwitch from "../ToggleSwitch";
 import SplitGaugeSvg from "./SplitGaugeSvg";
 
@@ -15,9 +17,10 @@ const posIssuanceYear = StaticEtherData.posIssuancePerDay * 365.25;
 
 const useGrowthRate = (
   simulateMerge: boolean,
-  timeFrame: TimeFrame
+  timeFrame: TimeFrameNext,
 ): number => {
-  const burnRates = useFeeData()?.burnRates;
+  const ethSupply = useScarcity()?.ethSupply;
+  const burnRates = useGroupedData1()?.burnRates;
   const [growthRate, setGrowthRate] = useState(0);
   const averageEthPrice = useAverageEthPrice(timeFrame);
 
@@ -36,14 +39,26 @@ const useGrowthRate = (
       : posIssuanceYear + powIssuanceYear;
 
     const growthRate =
-      (issuanceRate - feeBurnYear) / StaticEtherData.totalSupply;
+      ethSupply === undefined
+        ? undefined
+        : (issuanceRate - feeBurnYear) / Format.ethFromWeiBIUnsafe(ethSupply);
 
-    const rateRounded = Math.round(growthRate * 1000) / 1000;
+    const rateRounded =
+      growthRate === undefined
+        ? undefined
+        : Math.round(growthRate * 1000) / 1000;
 
-    if (rateRounded !== growthRate) {
+    if (rateRounded !== undefined && rateRounded !== growthRate) {
       setGrowthRate(rateRounded);
     }
-  }, [burnRates, growthRate, simulateMerge, averageEthPrice, timeFrame]);
+  }, [
+    burnRates,
+    ethSupply,
+    growthRate,
+    simulateMerge,
+    averageEthPrice,
+    timeFrame,
+  ]);
 
   return growthRate;
 };
@@ -51,7 +66,7 @@ const useGrowthRate = (
 type Props = {
   onClickTimeFrame: () => void;
   simulateMerge: boolean;
-  timeFrame: TimeFrame;
+  timeFrame: TimeFrameNext;
   toggleSimulateMerge: () => void;
 };
 
@@ -62,9 +77,9 @@ const SupplyGrowthGauge: FC<Props> = ({
   toggleSimulateMerge,
 }) => {
   const growthRate = useGrowthRate(simulateMerge, timeFrame);
-  const toPercentOneDigitSigned = useCallback(
+  const toPercentOneDigitSigned = useCallback<(n: number) => string>(
     (n) => Format.formatPercentOneDigitSigned(n),
-    []
+    [],
   );
 
   // Workaround as react-spring is breaking our positive number with sign formatting.
@@ -94,7 +109,14 @@ const SupplyGrowthGauge: FC<Props> = ({
             checked={simulateMerge}
             onToggle={toggleSimulateMerge}
           />
-          <p className="leading-10 text-lg font-inter text-blue-spindle flex flex-row items-center justify-end px-4 self-center">
+          <p
+            className={`
+              leading-10 px-4
+              text-lg text-blue-spindle
+              font-inter font-light
+              flex flex-row items-center justify-end self-center
+            `}
+          >
             simulate merge
           </p>
         </div>
@@ -123,7 +145,7 @@ const SupplyGrowthGauge: FC<Props> = ({
         <p className="font-inter font-light uppercase sm:text-right text-blue-spindle text-md">
           supply growth
         </p>
-        <TimeframeIndicator
+        <TimeFrameIndicator
           showDays={false}
           onClickTimeFrame={onClickTimeFrame}
           timeFrame={timeFrame}

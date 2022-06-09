@@ -1,3 +1,7 @@
 .alarmInput:focus-within {
-  border-color: #9ca3af;
+  outline: #9ca3af solid 1px
+}
+
+.innerInput {
+  outline: none;
 }

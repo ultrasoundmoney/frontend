@@ -1,8 +1,8 @@
 import * as React from "react";
 import { TranslationsContext } from "../../translations-context";
-import Twemoji from "../Twemoji";
+import SpanMoji from "../SpanMoji";
 
-const Intro: React.FC<{}> = () => {
+const Intro: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   return (
     <>
@@ -16,7 +16,7 @@ const Intro: React.FC<{}> = () => {
               {t.landing_hero_title_1}
             </div>
             <div className="flex self-center">
-              <Twemoji emoji="🦇🔊" />
+              <SpanMoji emoji="🦇🔊" />
               <span className="text-red-600 text-2xl">*</span>
             </div>
           </div>

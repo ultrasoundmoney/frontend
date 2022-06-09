@@ -1,7 +1,7 @@
-import React, { memo, FC } from "react";
 import * as d3 from "d3";
-import colors from "../../colors";
+import { FC } from "react";
 import { animated, config, useSpring } from "react-spring";
+import colors from "../../colors";
 
 type SplitGaugeSvgProps = {
   innerRadius?: number;
@@ -92,4 +92,4 @@ const SplitGaugeSvg: FC<SplitGaugeSvgProps> = ({
   );
 };
 
-export default memo(SplitGaugeSvg);
+export default SplitGaugeSvg;

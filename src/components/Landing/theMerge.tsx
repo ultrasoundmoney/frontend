@@ -3,7 +3,7 @@ import ContentBlock from "../ContentBlock/ContentBlcok";
 import IconBlock from "../ContentBlock/IconBlock";
 import { TranslationsContext } from "../../translations-context";
 
-const TheMergeBlock: React.FC<{}> = () => {
+const TheMergeBlock: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   return (
     <>

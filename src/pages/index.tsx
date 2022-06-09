@@ -1,23 +1,15 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import * as React from "react";
-import { SkeletonTheme } from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
-import Colors from "../colors";
-import ComingSoon from "../components/ComingSoon";
+import Home from "../components/Home";
 import { TranslationsContext } from "../translations-context";
 
-type IndexPageProps = {};
-const IndexPage: NextPage<IndexPageProps> = () => {
+const IndexPage: NextPage = () => {
   const t = React.useContext(TranslationsContext);
   return (
     <>
       <Head>
         <title>{t.title}</title>
-        <meta httpEquiv="cache-control" content="max-age=0" />
-        <meta httpEquiv="cache-control" content="no-cache" />
-        <meta httpEquiv="expires" content="0" />
-        <meta httpEquiv="pragma" content="no-cache" />
         <meta name="description" content={t.meta_description} />
         <meta name="keywords" content={t.meta_keywords} />
         <meta property="og:title" content={t.title} />
@@ -36,15 +28,7 @@ const IndexPage: NextPage<IndexPageProps> = () => {
           src="https://plausible.io/js/plausible.js"
         ></script>
       </Head>
-      <React.StrictMode>
-        <SkeletonTheme
-          baseColor={Colors.dusk}
-          highlightColor="#565b7f"
-          enableAnimation={true}
-        >
-          <ComingSoon />
-        </SkeletonTheme>
-      </React.StrictMode>
+      <Home />
     </>
   );
 };

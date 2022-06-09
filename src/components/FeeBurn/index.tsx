@@ -1,55 +1,61 @@
 import * as DateFns from "date-fns";
-import React, { FC, memo } from "react";
+import { FC } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
-import { BurnRates, FeesBurned, useFeeData } from "../../api";
+import {
+  BurnRates,
+  FeesBurned,
+  useGroupedData1,
+} from "../../api/grouped_stats_1";
 import { londonHardforkTimestamp } from "../../dates";
+import { Unit } from "../../denomination";
 import * as Duration from "../../duration";
 import * as Format from "../../format";
 import { O, pipe } from "../../fp";
 import * as StaticEtherData from "../../static-ether-data";
-import { TimeFrame } from "../../time_frames";
-import { Unit } from "../ComingSoon/CurrencyControl";
+import { LimitedTimeFrameNext, TimeFrameNext } from "../../time_frames";
 import { AmountUnitSpace } from "../Spacing";
 import SpanMoji from "../SpanMoji";
-import { WidgetBackground, WidgetTitle } from "../WidgetBits";
+import { TextInter, TextRoboto } from "../Texts";
+import WidgetBackground from "../widget-subcomponents/WidgetBackground";
+import WidgetTitle from "../widget-subcomponents/WidgetTitle";
 
 const timeframeFeesBurnedMap: Record<
-  TimeFrame,
+  TimeFrameNext,
   { eth: keyof FeesBurned; usd: keyof FeesBurned }
 > = {
-  "5m": { eth: "feesBurned5m", usd: "feesBurned5mUsd" },
-  "1h": { eth: "feesBurned1h", usd: "feesBurned1hUsd" },
-  "24h": { eth: "feesBurned24h", usd: "feesBurned24hUsd" },
-  "7d": { eth: "feesBurned7d", usd: "feesBurned7dUsd" },
-  "30d": { eth: "feesBurned30d", usd: "feesBurned30dUsd" },
+  m5: { eth: "feesBurned5m", usd: "feesBurned5mUsd" },
+  h1: { eth: "feesBurned1h", usd: "feesBurned1hUsd" },
+  d1: { eth: "feesBurned24h", usd: "feesBurned24hUsd" },
+  d7: { eth: "feesBurned7d", usd: "feesBurned7dUsd" },
+  d30: { eth: "feesBurned30d", usd: "feesBurned30dUsd" },
   all: { eth: "feesBurnedAll", usd: "feesBurnedAllUsd" },
 };
 
 export const timeframeBurnRateMap: Record<
-  TimeFrame,
+  TimeFrameNext,
   { eth: keyof BurnRates; usd: keyof BurnRates }
 > = {
-  "5m": { eth: "burnRate5m", usd: "burnRate5mUsd" },
-  "1h": { eth: "burnRate1h", usd: "burnRate1hUsd" },
-  "24h": { eth: "burnRate24h", usd: "burnRate24hUsd" },
-  "7d": { eth: "burnRate7d", usd: "burnRate7dUsd" },
-  "30d": { eth: "burnRate30d", usd: "burnRate30dUsd" },
+  m5: { eth: "burnRate5m", usd: "burnRate5mUsd" },
+  h1: { eth: "burnRate1h", usd: "burnRate1hUsd" },
+  d1: { eth: "burnRate24h", usd: "burnRate24hUsd" },
+  d7: { eth: "burnRate7d", usd: "burnRate7dUsd" },
+  d30: { eth: "burnRate30d", usd: "burnRate30dUsd" },
   all: { eth: "burnRateAll", usd: "burnRateAllUsd" },
 };
 
-const timeFrameMillisecondsMap = {
-  "30d": Duration.millisFromDays(30),
-  "7d": Duration.millisFromDays(7),
-  "24h": Duration.millisFromHours(24),
-  "1h": Duration.millisFromHours(1),
-  "5m": Duration.millisFromMinutes(5),
+const timeFrameMillisecondsMap: Record<LimitedTimeFrameNext, number> = {
+  d30: Duration.millisFromDays(30),
+  d7: Duration.millisFromDays(7),
+  d1: Duration.millisFromHours(24),
+  h1: Duration.millisFromHours(1),
+  m5: Duration.millisFromMinutes(5),
 };
 
 type Props = {
   onClickTimeFrame: () => void;
   simulateMerge: boolean;
-  timeFrame: TimeFrame;
+  timeFrame: TimeFrameNext;
   unit: Unit;
 };
 
@@ -59,7 +65,7 @@ const CumulativeFeeBurn: FC<Props> = ({
   timeFrame,
   unit,
 }) => {
-  const feeData = useFeeData();
+  const feeData = useGroupedData1();
   const burnRates = feeData?.burnRates;
   const feesBurned = feeData?.feesBurned;
 
@@ -67,9 +73,9 @@ const CumulativeFeeBurn: FC<Props> = ({
     feesBurned,
     O.fromNullable,
     O.map((feesBurned) =>
-      Format.ethFromWei(feesBurned[timeframeFeesBurnedMap[timeFrame]["eth"]])
+      Format.ethFromWei(feesBurned[timeframeFeesBurnedMap[timeFrame]["eth"]]),
     ),
-    O.toUndefined
+    O.toUndefined,
   );
 
   // In ETH or USD K.
@@ -79,11 +85,11 @@ const CumulativeFeeBurn: FC<Props> = ({
     O.map((feesBurned) =>
       unit === "eth"
         ? Format.ethFromWei(
-            feesBurned[timeframeFeesBurnedMap[timeFrame]["eth"]]
+            feesBurned[timeframeFeesBurnedMap[timeFrame]["eth"]],
           )
-        : feesBurned[timeframeFeesBurnedMap[timeFrame][unit]] / 1000
+        : feesBurned[timeframeFeesBurnedMap[timeFrame][unit]] / 1000,
     ),
-    O.toUndefined
+    O.toUndefined,
   );
 
   // In ETH / min or USD K / min.
@@ -104,7 +110,7 @@ const CumulativeFeeBurn: FC<Props> = ({
 
   const millisecondsSinceLondonHardFork = DateFns.differenceInMilliseconds(
     new Date(),
-    londonHardforkTimestamp
+    londonHardforkTimestamp,
   );
 
   // In ETH.
@@ -135,8 +141,13 @@ const CumulativeFeeBurn: FC<Props> = ({
         title="burn total"
       />
       <div className="flex flex-col gap-y-8 pt-2">
-        <div className="flex items-center font-roboto text-2xl md:text-4xl lg:text-3xl xl:text-4xl">
-          <p className="text-white">
+        <div
+          className={`
+            flex items-center
+            text-2xl md:text-4xl lg:text-3xl xl:text-4xl
+          `}
+        >
+          <TextRoboto>
             {selectedFeesBurned !== undefined ? (
               <CountUp
                 decimals={unit === "eth" ? 2 : 1}
@@ -154,15 +165,18 @@ const CumulativeFeeBurn: FC<Props> = ({
             <span className="font-extralight text-blue-spindle">
               {unit === "eth" ? "ETH" : "USD"}
             </span>
-          </p>
+          </TextRoboto>
           <SpanMoji className="ml-4 md:ml-8" emoji="🔥" />
         </div>
         <div className="flex flex-col justify-between md:flex-row gap-y-8">
           <div>
-            <p className="font-inter font-light text-blue-spindle uppercase md:text-md mb-2">
+            <TextInter
+              className="text-blue-spindle uppercase md:text-md mb-2"
+              inline={false}
+            >
               burn rate
-            </p>
-            <p className="font-roboto text-white text-2xl">
+            </TextInter>
+            <TextRoboto className="text-2xl">
               {selectedBurnRate !== undefined ? (
                 <CountUp
                   decimals={unit === "eth" ? 2 : 1}
@@ -176,16 +190,16 @@ const CumulativeFeeBurn: FC<Props> = ({
                 <Skeleton inline={true} width="4rem" />
               )}
               <AmountUnitSpace />
-              <span className="font-extralight text-blue-spindle">
+              <TextRoboto className="font-extralight text-blue-spindle">
                 {unit === "eth" ? "ETH/min" : "USD/min"}
-              </span>
-            </p>
+              </TextRoboto>
+            </TextRoboto>
           </div>
           <div className="md:text-right">
             <p className="font-inter font-light text-blue-spindle uppercase md:text-md mb-2">
               {simulateMerge ? "pos issuance offset" : "issuance offset"}
             </p>
-            <p className="font-roboto text-white text-2xl">
+            <TextRoboto className="text-2xl">
               {selectedBurnRate !== undefined ? (
                 <CountUp
                   decimals={2}
@@ -198,7 +212,7 @@ const CumulativeFeeBurn: FC<Props> = ({
               ) : (
                 <Skeleton inline={true} width="4rem" />
               )}
-            </p>
+            </TextRoboto>
           </div>
         </div>
       </div>
@@ -206,4 +220,4 @@ const CumulativeFeeBurn: FC<Props> = ({
   );
 };
 
-export default memo(CumulativeFeeBurn);
+export default CumulativeFeeBurn;
