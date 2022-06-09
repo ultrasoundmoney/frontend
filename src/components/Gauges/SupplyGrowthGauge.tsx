@@ -4,9 +4,8 @@ import { animated, config, useSpring } from "react-spring";
 import { useAverageEthPrice, useFeeData } from "../../api";
 import * as Format from "../../format";
 import * as StaticEtherData from "../../static-ether-data";
-import { weiToEth } from "../../utils/metric-utils";
+import { TimeFrame } from "../../time_frames";
 import { timeframeBurnRateMap } from "../FeeBurn";
-import { TimeFrame } from "../TimeFrameControl";
 import TimeframeIndicator from "../TimeframeIndicator";
 import ToggleSwitch from "../ToggleSwitch";
 import SplitGaugeSvg from "./SplitGaugeSvg";
@@ -18,7 +17,7 @@ const useGrowthRate = (
   simulateMerge: boolean,
   timeFrame: TimeFrame
 ): number => {
-  const { burnRates } = useFeeData();
+  const burnRates = useFeeData()?.burnRates;
   const [growthRate, setGrowthRate] = useState(0);
   const averageEthPrice = useAverageEthPrice(timeFrame);
 
@@ -30,7 +29,7 @@ const useGrowthRate = (
     const selectedBurnRate = burnRates[timeframeBurnRateMap[timeFrame]["eth"]];
 
     // Convert burn rate from eth/min to eth/year.
-    const feeBurnYear = weiToEth(selectedBurnRate) * 60 * 24 * 365.25;
+    const feeBurnYear = Format.ethFromWei(selectedBurnRate) * 60 * 24 * 365.25;
 
     const issuanceRate = simulateMerge
       ? posIssuanceYear

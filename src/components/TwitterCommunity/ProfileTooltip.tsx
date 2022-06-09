@@ -1,7 +1,7 @@
 import * as React from "react";
 import twemoji from "twemoji";
 import AvatarImg from "../../assets/avatar.webp";
-import { followerCountConvert } from "../Helpers/helper";
+import * as Format from "../../format";
 import { TranslationsContext } from "../../translations-context";
 
 type ProfileTooltipProps = {
@@ -60,7 +60,7 @@ const ProfileTooltip: React.FC<ProfileTooltipProps> = ({ children, item }) => {
               {t.profile_follower}
             </p>
             <p className="text-white text-left font-light text-2xl">
-              {followerCountConvert(item.followersCount)}
+              {Format.followerCountConvert(item.followersCount)}
             </p>
           </div>
           <div>
@@ -68,7 +68,7 @@ const ProfileTooltip: React.FC<ProfileTooltipProps> = ({ children, item }) => {
               FAM FOLLOWERS
             </p>
             <p className="text-white text-left font-light text-2xl">
-              {followerCountConvert(item.famFollowerCount)}
+              {Format.followerCountConvert(item.famFollowerCount)}
             </p>
           </div>
         </div>

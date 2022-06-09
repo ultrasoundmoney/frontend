@@ -19,12 +19,6 @@ import "aos/dist/aos.css";
 import SupplyView from "../SupplyView";
 import TheBurnedCard from "./theBurnedCard";
 import {
-  convertDateStringReadable,
-  convertToInternationalCurrencySystem,
-  followerCountConvert,
-  weiToEth,
-} from "../Helpers/helper";
-import {
   genesis_data,
   byzantium_data,
   constantinople_data,
@@ -32,6 +26,7 @@ import {
 } from "./historicalData";
 import { useFeeData } from "../../api";
 import useSWR from "swr";
+import * as Format from "../../format";
 // import Timeline from "./timeline";
 
 type EthPrice = {
@@ -42,7 +37,7 @@ type EthPrice = {
 };
 
 const LandingPage: React.FC<{}> = () => {
-  const { feesBurned } = useFeeData();
+  const feesBurned = useFeeData()?.feesBurned;
   const [genesisArr, setGenesisArr] = React.useState(genesis_data[0]);
   const { data } = useSWR<EthPrice>(
     "https://api.ultrasound.money/fees/eth-price",
@@ -58,7 +53,9 @@ const LandingPage: React.FC<{}> = () => {
   const [scrolling, setScrolling] = React.useState(false);
   const [scrollTop, setScrollTop] = React.useState(0);
   const feeBurnedinEth =
-    feesBurned !== undefined ? weiToEth(feesBurned.feesBurnedAll) : undefined;
+    feesBurned !== undefined
+      ? Format.ethFromWei(feesBurned.feesBurnedAll)
+      : undefined;
   // const getFeeBurdedinEthToUsd =
   //   data?.usd && ethPriceFormatter.format(getFeeBurdedinEth * data?.usd);
   const getFeeBurdedinEthToUsd =
@@ -122,13 +119,13 @@ const LandingPage: React.FC<{}> = () => {
               ]
             );
             if (genesisArr) {
-              getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+              getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
                 genesisArr[0]
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
                 genesisArr[2]
               ).toFixed(3)}%`;
-              getEthSupply!.innerHTML = `${followerCountConvert(
+              getEthSupply!.innerHTML = `${Format.followerCountConvert(
                 Number(genesisArr[1])
               )}`;
             }
@@ -164,13 +161,13 @@ const LandingPage: React.FC<{}> = () => {
               ]
             );
             if (genesisArr) {
-              getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+              getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
                 genesisArr[0]
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
                 genesisArr[2]
               ).toFixed(3)}%`;
-              getEthSupply!.innerHTML = `${followerCountConvert(
+              getEthSupply!.innerHTML = `${Format.followerCountConvert(
                 Number(genesisArr[1])
               )}`;
             }
@@ -201,13 +198,13 @@ const LandingPage: React.FC<{}> = () => {
               ]
             );
             if (genesisArr) {
-              getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+              getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
                 genesisArr[0]
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
                 genesisArr[2]
               ).toFixed(3)}%`;
-              getEthSupply!.innerHTML = `${followerCountConvert(
+              getEthSupply!.innerHTML = `${Format.followerCountConvert(
                 Number(genesisArr[1])
               )}`;
             }
@@ -243,13 +240,13 @@ const LandingPage: React.FC<{}> = () => {
               ]
             );
             if (genesisArr) {
-              getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+              getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
                 genesisArr[0]
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
                 genesisArr[2]
               ).toFixed(3)}%`;
-              getEthSupply!.innerHTML = `${followerCountConvert(
+              getEthSupply!.innerHTML = `${Format.followerCountConvert(
                 Number(genesisArr[1])
               )}`;
             }
@@ -282,13 +279,13 @@ const LandingPage: React.FC<{}> = () => {
               ]
             );
             if (genesisArr) {
-              getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+              getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
                 genesisArr[0]
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
                 genesisArr[2]
               ).toFixed(3)}%`;
-              getEthSupply!.innerHTML = `${followerCountConvert(
+              getEthSupply!.innerHTML = `${Format.followerCountConvert(
                 Number(genesisArr[1])
               )}`;
             }
@@ -324,13 +321,13 @@ const LandingPage: React.FC<{}> = () => {
               ]
             );
             if (genesisArr) {
-              getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+              getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
                 genesisArr[0]
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
                 genesisArr[2]
               ).toFixed(3)}%`;
-              getEthSupply!.innerHTML = `${followerCountConvert(
+              getEthSupply!.innerHTML = `${Format.followerCountConvert(
                 Number(genesisArr[1])
               )}`;
             }
@@ -355,17 +352,17 @@ const LandingPage: React.FC<{}> = () => {
             ]
           );
           getBlcokReward!.innerHTML = "2 ETH/<span>Block</span>";
-          getFeeBurded!.innerHTML = `$${convertToInternationalCurrencySystem(
+          getFeeBurded!.innerHTML = `$${Format.convertToInternationalCurrencySystem(
             Number(getFeeBurdedinEthToUsd)
           )}`;
           if (genesisArr) {
-            getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+            getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
               genesisArr[0]
             )}`;
             getEthSupplyIncreament!.innerHTML = `+${Number(
               genesisArr[2]
             ).toFixed(3)}%`;
-            getEthSupply!.innerHTML = `${followerCountConvert(
+            getEthSupply!.innerHTML = `${Format.followerCountConvert(
               Number(genesisArr[1])
             )}`;
           }
@@ -383,17 +380,17 @@ const LandingPage: React.FC<{}> = () => {
             ]
           );
           getBlcokReward!.innerHTML = "2 ETH/<span>Block</span>";
-          getFeeBurded!.innerHTML = `$${convertToInternationalCurrencySystem(
+          getFeeBurded!.innerHTML = `$${Format.convertToInternationalCurrencySystem(
             Number(getFeeBurdedinEthToUsd)
           )}`;
           if (genesisArr) {
-            getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+            getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
               genesisArr[0]
             )}`;
             getEthSupplyIncreament!.innerHTML = `+${Number(
               genesisArr[2]
             ).toFixed(3)}%`;
-            getEthSupply!.innerHTML = `${followerCountConvert(
+            getEthSupply!.innerHTML = `${Format.followerCountConvert(
               Number(genesisArr[1])
             )}`;
           }
@@ -408,7 +405,7 @@ const LandingPage: React.FC<{}> = () => {
             document.getElementById(
               "line__supplyview"
             )!.style.height = `${lineHeight}px`;
-            getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+            getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
               afterLodonFork[0]
             )}`;
             getEthSupplyIncreament!.innerHTML = afterLodonFork[2];
@@ -428,7 +425,7 @@ const LandingPage: React.FC<{}> = () => {
             document
               .getElementById("line__supplyview")!
               .classList.remove("eclips__hr-circle");
-            getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+            getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
               afterLodonFork[0]
             )}`;
             getEthSupplyIncreament!.innerHTML = afterLodonFork[2];
@@ -446,7 +443,7 @@ const LandingPage: React.FC<{}> = () => {
             document.getElementById(
               "line__merge"
             )!.style.height = `${lineHeight}px`;
-            getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+            getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
               afterLodonFork[0]
             )}`;
             getEthSupplyIncreament!.innerHTML = afterLodonFork[2];
@@ -468,7 +465,7 @@ const LandingPage: React.FC<{}> = () => {
             document
               .getElementById("line__merge")!
               .classList.remove("eclips__hr-circle");
-            getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+            getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
               afterLodonFork[0]
             )}`;
             getEthSupplyIncreament!.innerHTML = afterLodonFork[2];
@@ -482,7 +479,7 @@ const LandingPage: React.FC<{}> = () => {
           // downscroll code
           setScrolling(false);
           getStatus!.innerHTML = "Money (Deflationary)";
-          getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+          getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
             afterLodonFork[0]
           )}`;
           getEthSupplyIncreament!.innerHTML = afterLodonFork[2];

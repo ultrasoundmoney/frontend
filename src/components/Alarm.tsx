@@ -7,11 +7,10 @@ import React, {
   useState,
 } from "react";
 import { useBaseFeePerGas, useEthPrice } from "../api";
-import { formatZeroDigit } from "../format";
+import * as Format from "../format";
 import { O, pipe } from "../fp";
 import { useLocalStorage } from "../use-local-storage";
 import useNotification from "../use-notification";
-import { weiToGwei } from "../utils/metric-utils";
 import styles from "./AlarmInput.module.scss";
 import { AmountUnitSpace } from "./Spacing";
 import ToggleSwitch from "./ToggleSwitch";
@@ -27,7 +26,7 @@ const thresholdToNumber = (threshold: string | undefined): number | undefined =>
   );
 
 const safeFormatZeroDigit = (num: number | undefined) =>
-  pipe(num, O.fromNullable, O.map(formatZeroDigit), O.toUndefined);
+  pipe(num, O.fromNullable, O.map(Format.formatZeroDigit), O.toUndefined);
 
 const toThresholdDisplay = (str: string | undefined): string | undefined =>
   pipe(str, thresholdToNumber, safeFormatZeroDigit);
@@ -80,7 +79,7 @@ const AlarmInput: FC<AlarmInputProps> = ({
   const roundedGasPriceGwei = pipe(
     baseFeePerGas,
     O.fromNullable,
-    O.map(weiToGwei),
+    O.map(Format.gweiFromWei),
     O.map(Math.round),
     O.toUndefined
   );
@@ -193,9 +192,9 @@ const AlarmInput: FC<AlarmInputProps> = ({
         return undefined;
       }
 
-      const message = `${typeToDisplay(type)} price hit ${formatZeroDigit(
-        currentValue
-      )} ${unit.trimEnd()}`;
+      const typeFormatted = typeToDisplay(type);
+      const currentValueFormatted = Format.formatZeroDigit(currentValue);
+      const message = `${typeFormatted} price hit ${currentValueFormatted} ${unit.trimEnd()}`;
       notification.showNotification(message);
 
       onToggleIsAlarmActive(false);

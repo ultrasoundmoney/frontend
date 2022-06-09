@@ -5,7 +5,6 @@ import * as Format from "../../format";
 import { O, pipe } from "../../fp";
 import { useLocalStorage } from "../../use-local-storage";
 import useNotification from "../../use-notification";
-import { weiToGwei } from "../../utils/metric-utils";
 import AlarmInput from "../Alarm";
 import { AmountUnitSpace } from "../Spacing";
 import { WidgetTitle } from "../WidgetBits";
@@ -64,10 +63,10 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
             separator=","
             start={
               startGasPriceCached === 0
-                ? weiToGwei(baseFeePerGas)
-                : weiToGwei(startGasPriceCached)
+                ? Format.gweiFromWei(baseFeePerGas)
+                : Format.gweiFromWei(startGasPriceCached)
             }
-            end={weiToGwei(baseFeePerGas)}
+            end={Format.gweiFromWei(baseFeePerGas)}
           />
         )}
         <AmountUnitSpace />

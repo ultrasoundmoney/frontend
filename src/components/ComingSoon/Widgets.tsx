@@ -1,21 +1,26 @@
-import React, { FC, useState, useCallback } from "react";
+import React, { FC, useCallback, useState } from "react";
 import { useBaseFeePerGas } from "../../api";
-import { weiToGwei } from "../../utils/metric-utils";
-import TimeFrameControl, { TimeFrame, timeFrames } from "../TimeFrameControl";
+import * as Format from "../../format";
+import {
+  timeFrameFromNext,
+  TimeFrameNext,
+  timeFramesNext,
+} from "../../time_frames";
+import BurnLeaderboard from "../BurnLeaderboard";
+import BurnRecords from "../BurnRecords";
+import FeeBurn from "../FeeBurn";
 import BurnGauge from "../Gauges/BurnGauge";
 import IssuanceGauge from "../Gauges/IssuanceGauge";
 import SupplyGrowthGauge from "../Gauges/SupplyGrowthGauge";
-import BurnLeaderboard from "../BurnLeaderboard";
-import FeeBurn from "../FeeBurn";
 import LatestBlocks from "../LatestBlocks";
+import TimeFrameControl from "../TimeFrameControl";
 import { WidgetBackground } from "../WidgetBits";
 import CurrencyControl, { Unit } from "./CurrencyControl";
-import Flippenings from "./Flippenings";
 
 const Widgets: FC = () => {
   const [simulateMerge, setSimulateMerge] = useState(false);
   const baseFeePerGas = useBaseFeePerGas();
-  const [timeFrame, setTimeFrame] = useState<TimeFrame>("24h");
+  const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
 
   const onSetTimeFrame = useCallback(setTimeFrame, [setTimeFrame]);
@@ -28,37 +33,38 @@ const Widgets: FC = () => {
 
   if (typeof window !== "undefined" && baseFeePerGas !== undefined) {
     document.title =
-      weiToGwei(baseFeePerGas).toFixed(0) + " Gwei | ultrasound.money";
+      Format.gweiFromWei(baseFeePerGas).toFixed(0) + " Gwei | ultrasound.money";
   }
 
   const handleClickTimeFrame = useCallback(() => {
-    const currentTimeFrameIndex = timeFrames.indexOf(timeFrame);
+    const currentTimeFrameIndex = timeFramesNext.indexOf(timeFrame);
     const nextIndex =
-      currentTimeFrameIndex === timeFrames.length - 1
+      currentTimeFrameIndex === timeFramesNext.length - 1
         ? 0
         : currentTimeFrameIndex + 1;
 
-    setTimeFrame(timeFrames[nextIndex]);
+    setTimeFrame(timeFramesNext[nextIndex]);
   }, [timeFrame]);
 
   return (
-    <>
+    // without this the time frame selector on the burn records widget causes big scroll jumps
+    <div style={{ overflowAnchor: "none" }}>
       <div className="w-full flex flex-col md:flex-row md:gap-0 lg:gap-4 px-4 md:px-16 isolate">
         <div className="hidden md:block w-1/3">
-          <BurnGauge timeFrame={timeFrame} unit={unit} />
+          <BurnGauge timeFrame={timeFrameFromNext[timeFrame]} unit={unit} />
         </div>
         <div className="md:w-1/3">
           <SupplyGrowthGauge
             onClickTimeFrame={handleClickTimeFrame}
             simulateMerge={simulateMerge}
-            timeFrame={timeFrame}
+            timeFrame={timeFrameFromNext[timeFrame]}
             toggleSimulateMerge={toggleSimulateMerge}
           />
         </div>
         <div className="hidden md:block w-1/3">
           <IssuanceGauge
             simulateMerge={simulateMerge}
-            timeFrame={timeFrame}
+            timeFrame={timeFrameFromNext[timeFrame]}
             unit={unit}
           />
         </div>
@@ -90,20 +96,23 @@ const Widgets: FC = () => {
         <FeeBurn
           onClickTimeFrame={handleClickTimeFrame}
           simulateMerge={simulateMerge}
-          timeFrame={timeFrame}
+          timeFrame={timeFrameFromNext[timeFrame]}
           unit={unit}
         />
         <div className="lg:col-start-2 lg:row-start-1 lg:row-end-4">
           <BurnLeaderboard
             onClickTimeFrame={handleClickTimeFrame}
-            timeFrame={timeFrame}
+            timeFrame={timeFrameFromNext[timeFrame]}
             unit={unit}
           />
         </div>
         <LatestBlocks unit={unit} />
-        <Flippenings />
+        <BurnRecords
+          onClickTimeFrame={handleClickTimeFrame}
+          timeFrame={timeFrame}
+        />
       </div>
-    </>
+    </div>
   );
 };
 

@@ -1,7 +1,7 @@
 import * as DateFns from "date-fns";
 import { FC } from "react";
 import { londonHardforkTimestamp } from "../dates";
-import { displayTimeFrameMap, TimeFrame } from "./TimeFrameControl";
+import { displayTimeFrameMap, TimeFrame } from "../time_frames";
 
 type Props = {
   onClickTimeFrame: () => void;

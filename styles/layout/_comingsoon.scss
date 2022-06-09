@@ -173,6 +173,13 @@
   transition-duration: 300ms;
 }
 
+.color-animation {
+  transition-property: background-color, color;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+
+}
+
 .leaderboard-image {
   border-radius: 50%;
   border: 1px solid rgb(27, 34, 54);

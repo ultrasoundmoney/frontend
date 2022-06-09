@@ -1,27 +1,27 @@
 import { FC } from "react";
 import { useFeeData } from "../../api";
 import colors from "../../colors";
-import { weiToEth } from "../../utils/metric-utils";
+import * as Format from "../../format";
+import { TimeFrame } from "../../time_frames";
 import { Unit } from "../ComingSoon/CurrencyControl";
 import { timeframeBurnRateMap } from "../FeeBurn";
-import { TimeFrame } from "../TimeFrameControl";
 import BaseGauge from "./IssuanceBurnBaseGauge";
 
 type BurnGaugeProps = { timeFrame: TimeFrame; unit: Unit };
 
-const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame: timeframe, unit }) => {
-  const { burnRates } = useFeeData();
+const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame, unit }) => {
+  const burnRates = useFeeData()?.burnRates;
 
   const selectedBurnRate =
     burnRates !== undefined
-      ? burnRates[timeframeBurnRateMap[timeframe][unit]]
+      ? burnRates[timeframeBurnRateMap[timeFrame][unit]]
       : undefined;
 
   const burnRate =
     selectedBurnRate === undefined
       ? 0
       : unit === "eth"
-      ? weiToEth(selectedBurnRate * 60 * 24 * 365.25) / 10 ** 6
+      ? Format.ethFromWei(selectedBurnRate * 60 * 24 * 365.25) / 10 ** 6
       : (selectedBurnRate * 60 * 24 * 365.25) / 10 ** 9;
 
   return (

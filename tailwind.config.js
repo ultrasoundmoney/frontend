@@ -38,6 +38,9 @@ module.exports = {
         pink: {
           "300": colors.pink["300"],
         },
+        orange: {
+          fire: "#F4900C",
+        },
       },
       width: {
         "w-23": "23%",
