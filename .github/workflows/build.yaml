@@ -14,14 +14,14 @@ jobs:
       - name: Login to Scaleway Registry
         uses: docker/login-action@v2
         with:
-          registry: rg.fr-par.scw.cloud/ultrasoundmoney
+          registry: rg.nl-ams.scw.cloud/ultrasoundmoney
           username: ${{ secrets.SCALEWAY_API_KEY }}
           password: ${{ secrets.SCALEWAY_API_KEY }}
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: rg.fr-par.scw.cloud/ultrasoundmoney/serve-frontend
+          images: rg.nl-ams.scw.cloud/ultrasoundmoney/serve-frontend
           tags: |
             type=raw,latest
             type=sha,prefix=
@@ -39,5 +39,5 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=reg.fr-par.scw.cloud/ultrasoundmoney/serve-frontend:latest
+          cache-from: type=registry,ref=reg.nl-ams.scw.cloud/ultrasoundmoney/serve-frontend:latest
           cache-to: type=inline
