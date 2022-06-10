@@ -5,7 +5,14 @@ export const LabelText: FC<{ children: ReactNode; className?: string }> = ({
   children,
   className,
 }) => (
-  <TextInter className={`text-blue-spindle uppercase ${className ?? ""}`}>
+  <TextInter
+    className={`
+      font-inter font-light
+      text-blue-spindle text-xs md:text-xs
+      uppercase tracking-widest
+      ${className ?? ""}
+    `}
+  >
     {children}
   </TextInter>
 );

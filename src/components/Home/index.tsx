@@ -8,6 +8,7 @@ import * as FeatureFlags from "../../feature-flags";
 import { FeatureFlagsContext } from "../../feature-flags";
 import Flippenings from "../Flippenings";
 import FollowingYou from "../FollowingYou";
+import IssuanceBreakdown from "../IssuanceBreakdown";
 import FaqBlock from "../Landing/faq";
 import Link from "../Link";
 import PriceModel from "../PriceModel";
@@ -203,10 +204,11 @@ const Home: FC = () => {
               <div className="flex flex-col basis-1/2 gap-y-4">
                 <Scarcity />
                 <ValidatorRewardsWidget />
+                <Flippenings />
               </div>
               <div className="basis-1/2 flex flex-col gap-y-4">
                 <PriceModel />
-                <Flippenings />
+                <IssuanceBreakdown />
               </div>
             </div>
             <div className="flex flex-col px-4 md:px-16">
