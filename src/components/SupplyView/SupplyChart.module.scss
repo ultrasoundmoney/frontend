@@ -1,5 +1,6 @@
 // Same as colors in chart-defaults.ts
-$tooltip-bg: #1b2135;
+$tooltip-bg: #1c2236;
+$tooltrip-border: #69769f;
 $chart-label: #8490b5;
 
 $blue-spindle: #b5bddb;
@@ -27,12 +28,38 @@ $tooltip-zindex: 2;
     // Start series with a space, instead of a dash
     stroke-dashoffset: 4px;
   }
+  // hidden some vertical values
+  .highcharts-yaxis-labels text {
+    opacity: 0;
+  }
+  .highcharts-yaxis-labels text:first-child,
+  .highcharts-yaxis-labels text:last-child {
+    opacity: 1;
+  }
+  // hidden some horizontal values
+  .highcharts-xaxis-labels text {
+    opacity: 0;
+  }
+  .highcharts-xaxis-labels text:first-child,
+  .highcharts-xaxis-labels text:nth-child(7),
+  .highcharts-xaxis-labels text:last-child {
+    opacity: 1;
+  }
 
   // Legend
   .highcharts-legend-item {
     pointer-events: none;
   }
-
+  .highcharts-grid-line {
+    display: none;
+  }
+  .highcharts-tick {
+    display: none;
+  }
+  .highcharts-axis-line {
+    stroke: #69769f;
+    stroke-dasharray: 3, 3;
+  }
   // Marker plotlines
   .highcharts-plot-line-label {
     font-weight: bold;
@@ -51,51 +78,28 @@ $tooltip-zindex: 2;
   }
   .tt-root {
     background-color: $tooltip-bg;
-    padding: 24px;
+    padding: 15px;
     border-radius: 10px;
+    border: 2px solid $tooltrip-border;
   }
   .tt-header {
     display: flex;
     align-items: center;
     line-height: 1;
-    margin-bottom: 1rem;
+    margin-bottom: 0.4rem;
   }
   .tt-header-date {
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 11px;
+    font-weight: 400;
     white-space: pre;
   }
-  .tt-header-projected {
-    margin: -2px 0 0 6px;
-    @include projected-label;
-  }
-  .tt-root td {
-    padding: 2px 0;
-  }
-  .tt-root td:last-child {
-    padding-left: 12px;
-    text-align: right;
-    font-weight: bold;
-  }
-  .tt-series {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    line-height: 1.125rem;
-  }
-  .tt-series-color {
-    margin-top: 2px;
-    width: 10px;
-    height: 10px;
-    border-radius: 10px;
-    margin-right: 6px;
-  }
+
   // Style overrides for "total" row
   .tt-total-row td {
     padding-top: 5px;
-  }
-  .tt-total-row .tt-series-name {
-    font-weight: bold;
+    font-size: 16x;
+    font-weight: 400;
+    font-family: "Roboto Mono";
   }
 }
 
@@ -170,6 +174,7 @@ $tooltip-zindex: 2;
 // Annotation
 .supplyChart :global {
   .highcharts-annotation {
+    display: none;
     pointer-events: none;
     z-index: $tooltip-zindex - 1;
   }

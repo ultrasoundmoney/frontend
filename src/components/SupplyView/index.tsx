@@ -1,203 +1,109 @@
 import * as React from "react";
 import { DateTime } from "luxon";
-import Slider from "../Slider/Slider";
 import SupplyChart from "./SupplyChart";
-import {
-  estimatedDailyFeeBurn,
-  estimatedDailyIssuance,
-  formatDate,
-} from "../../utils/metric-utils";
 import { useTranslations } from "../../utils/use-translation";
-import styles from "./SupplyView.module.scss";
-import SpanMoji from "../SpanMoji";
-import { formatOneDigit } from "../../format";
 
-const MIN_PROJECTED_ETH_STAKING = 1e6;
 const DEFAULT_PROJECTED_ETH_STAKING = 10e6;
-const MAX_PROJECTED_ETH_STAKING = 33554432;
-
-const MIN_PROJECTED_BASE_GAS_PRICE = 0;
 const DEFAULT_PROJECTED_BASE_GAS_PRICE = 50;
-const MAX_PROJECTED_BASE_GAS_PRICE = 150;
-
-const MIN_PROJECTED_MERGE_DATE = DateTime.utc(2021, 12, 1);
 const DEFAULT_PROJECTED_MERGE_DATE = DateTime.utc(2022, 3, 31);
-const MAX_PROJECTED_MERGE_DATE = DateTime.utc(2022, 12, 1);
 
 const SupplyView: React.FC = () => {
   const { translations: t } = useTranslations();
-
-  // TODO Initialize this to current amount of ETH staked
-  const [projectedStaking, setProjectedStaking] = React.useState(
-    DEFAULT_PROJECTED_ETH_STAKING
-  );
-  // TODO Initialize this to current base gas price
-  const [projectedBaseGasPrice, setProjectedBaseGasPrice] = React.useState(
-    DEFAULT_PROJECTED_BASE_GAS_PRICE
-  );
-  const [projectedMergeDate, setProjectedMergeDate] = React.useState(
-    DEFAULT_PROJECTED_MERGE_DATE
-  );
   const [showBreakdown] = React.useState(false);
-  const [isPeakPresent, setIsPeakPresent] = React.useState(true);
-
-  const handleProjectedStakingChange = React.useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setProjectedStaking(parseInt(e.target.value));
-    },
-    []
-  );
-
-  const handleProjectedBaseGasPriceChange = React.useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setProjectedBaseGasPrice(parseInt(e.target.value));
-    },
-    []
-  );
-
-  const handleProjectedMergeDateChange = React.useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const numDays: number = parseInt(e.target.value);
-      const projectedDate = DateTime.utc()
-        .startOf("day")
-        .plus({ days: numDays });
-      setProjectedMergeDate(projectedDate);
-    },
-    []
-  );
-
-  const handleOnPeakProjectedToggle = React.useCallback(
-    (isPeakPresent: boolean) => {
-      setIsPeakPresent(isPeakPresent);
-    },
-    []
-  );
-
-  const daysUntilProjectedMerge = projectedMergeDate.diff(
-    DateTime.utc().startOf("day"),
-    "days"
-  ).days;
-  const daysUntilMinProjectedMerge = MIN_PROJECTED_MERGE_DATE.diff(
-    DateTime.utc().startOf("day"),
-    "days"
-  ).days;
-  const daysUntilMaxProjectedMerge = MAX_PROJECTED_MERGE_DATE.diff(
-    DateTime.utc().startOf("day"),
-    "days"
-  ).days;
 
   return (
-    <>
-      <div className={styles.chartHeader}>
-        <div className="text-xl text-white text-left font-light pl-3 pb-8">
-          {t.eth_supply}
-          <span
-            className={`transition-opacity ${
-              isPeakPresent ? "opacity-1" : "opacity-0"
-            }`}
-          >
-            {" "}
-            <SpanMoji emoji="🦇🔊" />
-          </span>
-        </div>
+    <div className="supply_graph_section flex justify-between items-center">
+      <div className="supply_graph_text relative pl-14 w-2/5 box-border">
+        <h1 className="text-white font-light text-base md:text-28xl leading-5 text-left mb-8 font-inter">
+          {t.supplu_chart_title}
+        </h1>
+        <p
+          className="text-blue-shipcove font-light text-sm text-left mb-8 font-inter leading-relaxed"
+          dangerouslySetInnerHTML={{
+            __html: t.sypply_chart_description,
+          }}
+        ></p>
+        <button
+          type="button"
+          style={{ background: "#2D344A", fontSize: "12px" }}
+          className="flex-none px-5 py-2 text-base text-white hover:opacity-75 rounded-3xl"
+        >
+          <a href="#" target="_blank" rel="noreferrer">
+            {t.sypply_chart_button}
+          </a>
+        </button>
       </div>
-      <SupplyChart
-        projectedStaking={projectedStaking}
-        projectedBaseGasPrice={projectedBaseGasPrice}
-        projectedMergeDate={projectedMergeDate}
-        showBreakdown={showBreakdown}
-        onPeakProjectedToggle={handleOnPeakProjectedToggle}
-      />
-
-      <div className={styles.params}>
-        <Param
-          title={t.eth_staked}
-          value={
-            <>
-              {projectedStaking / 1e6}
-              {t.numeric_million_abbrev} ETH
-            </>
-          }
-          subValue={
-            <>
-              {t.pos_issuance}
-              {": "}
-              {formatOneDigit(
-                estimatedDailyIssuance(projectedStaking) / 1000
-              )}K {t.eth_per_day}
-            </>
-          }
+      <div
+        style={{
+          background: "#1C2235",
+          borderRadius: "8px",
+          padding: "30px",
+          boxSizing: "border-box",
+        }}
+        className="supply_graph relative w-1/2 box-border overflow-hidden"
+      >
+        <p
+          style={{
+            fontSize: "12px",
+            color: "#B5BDDB",
+            marginBottom: "40px",
+            marginTop: "10px",
+            marginLeft: "10px",
+          }}
         >
-          <Slider
-            min={MIN_PROJECTED_ETH_STAKING}
-            max={MAX_PROJECTED_ETH_STAKING}
-            value={projectedStaking}
-            step={1e6}
-            onChange={handleProjectedStakingChange}
-          />
-        </Param>
-
-        <Param
-          title={t.base_gas_price}
-          value={<>{projectedBaseGasPrice} Gwei</>}
-          subValue={
-            <>
-              {t.fee_burn}
-              {": "}
-              {formatOneDigit(
-                estimatedDailyFeeBurn(projectedBaseGasPrice) / 1000
-              )}
-              K {t.eth_per_day}
-            </>
-          }
+          ETH SUPPLY
+        </p>
+        {/* blue blure */}
+        <svg
+          className="absolute top-0 left-0 w-full h-full"
+          width="624"
+          height="468"
+          viewBox="0 0 624 468"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <Slider
-            min={MIN_PROJECTED_BASE_GAS_PRICE}
-            max={MAX_PROJECTED_BASE_GAS_PRICE}
-            value={projectedBaseGasPrice}
-            step={1}
-            onChange={handleProjectedBaseGasPriceChange}
-          />
-        </Param>
-
-        <Param
-          title={t.merge_date}
-          value={formatDate(projectedMergeDate.toJSDate())}
-          subValue={`${t.pow_removal}: in ${daysUntilProjectedMerge} ${
-            daysUntilProjectedMerge === 1 ? "day" : "days"
-          }`}
-        >
-          <Slider
-            min={daysUntilMinProjectedMerge}
-            max={daysUntilMaxProjectedMerge}
-            value={daysUntilProjectedMerge}
-            step={1}
-            onChange={handleProjectedMergeDateChange}
-          />
-        </Param>
+          <g opacity="0.14" filter="url(#filter0_f_1633_1005)">
+            <ellipse
+              cx="336.876"
+              cy="254.181"
+              rx="275.876"
+              ry="177.181"
+              fill="#0037FA"
+            />
+          </g>
+          <defs>
+            <filter
+              id="filter0_f_1633_1005"
+              x="-139"
+              y="-123"
+              width="951.752"
+              height="754.361"
+              filterUnits="userSpaceOnUse"
+              colorInterpolationFilters="sRGB"
+            >
+              <feFlood floodOpacity="0" result="BackgroundImageFix" />
+              <feBlend
+                mode="normal"
+                in="SourceGraphic"
+                in2="BackgroundImageFix"
+                result="shape"
+              />
+              <feGaussianBlur
+                stdDeviation="100"
+                result="effect1_foregroundBlur_1633_1005"
+              />
+            </filter>
+          </defs>
+        </svg>
+        <SupplyChart
+          projectedStaking={DEFAULT_PROJECTED_ETH_STAKING}
+          projectedBaseGasPrice={DEFAULT_PROJECTED_BASE_GAS_PRICE}
+          projectedMergeDate={DEFAULT_PROJECTED_MERGE_DATE}
+          showBreakdown={showBreakdown}
+        />
       </div>
-    </>
+    </div>
   );
 };
-
-interface ParamProps {
-  title: React.ReactNode;
-  value: React.ReactNode;
-  subValue: React.ReactNode;
-  children: React.ReactNode;
-}
-
-const Param: React.FC<ParamProps> = ({ title, value, subValue, children }) => (
-  <div className={styles.param}>
-    <div className={`text-blue-spindle ${styles.paramTitle}`}>{title}</div>
-    <div className={styles.paramValue}>{value}</div>
-    <div className={styles.paramChildren}>{children}</div>
-    <div
-      className={`text-blue-spindle text-xs lg:text-base xl:text-lg ${styles.paramSubValue}`}
-    >
-      {subValue}
-    </div>
-  </div>
-);
 
 export default SupplyView;
