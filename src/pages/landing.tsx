@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 // const LandingPage = dynamic(() => import("../components/Landing"));
-const LandingPage = dynamic(() => import("../components/Landing/landing"));
+const LandingPage = dynamic(() => import("../components/Landing"));
 import { TranslationsContext } from "../translations-context";
 
 const IndexPage: NextPage = () => {
