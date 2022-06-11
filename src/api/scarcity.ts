@@ -1,7 +1,7 @@
 import JSBI from "jsbi";
 import useSWR from "swr";
-import { feesBasePath } from "./api/fees";
-import * as Duration from "./duration";
+import * as Duration from "../duration";
+import { feesBasePath } from "./fees";
 
 export type Scarcity = {
   engines: {
@@ -81,38 +81,5 @@ export const useScarcity = (): Scarcity | undefined => {
     },
     ethSupply: jsbiFromBigIntString(data.ethSupply),
     number: data.number,
-  };
-};
-
-type DataPoint = {
-  t: number;
-  v: number;
-};
-
-type RawSupplyInputs = {
-  lockedData: DataPoint[];
-  supplyData: DataPoint[];
-  stakedData: DataPoint[];
-};
-
-type SupplyInputs = {
-  stakingData: DataPoint[];
-  contractData: DataPoint[];
-  supplyData: DataPoint[];
-};
-
-export const useSupplyProjectionInputs = (): SupplyInputs | undefined => {
-  const { data } = useSWR<RawSupplyInputs>(
-    `${feesBasePath}/supply-projection-inputs`
-  );
-
-  if (data === undefined) {
-    return undefined;
-  }
-
-  return {
-    stakingData: data.stakedData,
-    contractData: data.lockedData,
-    supplyData: data.supplyData,
   };
 };

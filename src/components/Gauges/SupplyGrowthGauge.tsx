@@ -1,15 +1,15 @@
 import { clamp } from "lodash";
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { animated, config, useSpring } from "react-spring";
-import { useScarcity } from "../../api";
 import { useAverageEthPrice } from "../../api/eth_price";
 import { useGroupedData1 } from "../../api/grouped_stats_1";
+import { useScarcity } from "../../api/scarcity";
 import * as Format from "../../format";
 import * as StaticEtherData from "../../static-ether-data";
 import { TimeFrameNext } from "../../time_frames";
 import { timeframeBurnRateMap } from "../FeeBurn";
-import TimeFrameIndicator from "../widget-subcomponents/TimeFrameIndicator";
 import ToggleSwitch from "../ToggleSwitch";
+import TimeFrameIndicator from "../widget-subcomponents/TimeFrameIndicator";
 import SplitGaugeSvg from "./SplitGaugeSvg";
 
 const powIssuanceYear = StaticEtherData.powIssuancePerDay * 365.25;

@@ -1,16 +1,12 @@
-import { FC } from "react";
+import { CSSProperties, FC } from "react";
 
 export const LabelText: FC<{ className?: string }> = ({
   children,
   className,
 }) => (
-  <span
-    className={`font-inter font-light text-blue-spindle text-md uppercase ${
-      className ?? ""
-    }`}
-  >
+  <TextInter className={`text-blue-spindle uppercase ${className ?? ""}`}>
     {children}
-  </span>
+  </TextInter>
 );
 
 export const UnitText: FC = ({ children }) => (
@@ -46,11 +42,11 @@ export const SectionTitle: FC<{ title: string; subtitle: string }> = ({
   );
 };
 
-export const TextInter: FC<{ className?: string; inline?: boolean }> = ({
-  children,
-  className,
-  inline = true,
-}) => {
+export const TextInter: FC<{
+  className?: string;
+  inline?: boolean;
+  style?: CSSProperties;
+}> = ({ children, className, inline = true, style }) => {
   const mergedClassName = `
     font-inter font-light
     text-white
@@ -58,17 +54,21 @@ export const TextInter: FC<{ className?: string; inline?: boolean }> = ({
   `;
 
   return inline ? (
-    <span className={mergedClassName}>{children}</span>
+    <span className={mergedClassName} style={style}>
+      {children}
+    </span>
   ) : (
-    <p className={mergedClassName}>{children}</p>
+    <p className={mergedClassName} style={style}>
+      {children}
+    </p>
   );
 };
 
-export const TextRoboto: FC<{ className?: string; inline?: boolean }> = ({
-  children,
-  className,
-  inline = true,
-}) => {
+export const TextRoboto: FC<{
+  className?: string;
+  inline?: boolean;
+  style?: CSSProperties;
+}> = ({ children, className, inline = true, style }) => {
   const mergedClassName = `
     font-roboto font-light
     text-white
@@ -76,8 +76,12 @@ export const TextRoboto: FC<{ className?: string; inline?: boolean }> = ({
   `;
 
   return inline ? (
-    <span className={mergedClassName}>{children}</span>
+    <span className={mergedClassName} style={style}>
+      {children}
+    </span>
   ) : (
-    <p className={mergedClassName}>{children}</p>
+    <p className={mergedClassName} style={style}>
+      {children}
+    </p>
   );
 };

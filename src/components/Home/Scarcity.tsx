@@ -1,7 +1,7 @@
 import * as DateFns from "date-fns";
 import JSBI from "jsbi";
 import React, { FC, useState } from "react";
-import { useScarcity } from "../../api";
+import { useScarcity } from "../../api/scarcity";
 import Colors from "../../colors";
 import * as Format from "../../format";
 import { pipe } from "../../fp";
@@ -287,7 +287,7 @@ const Scarcity: FC = () => {
           hoveringBurned={hoveringBurned}
         />
       )}
-      <div className="flex flex-col gap-y-4">
+      <div className="flex flex-col gap-y-3">
         <div className="grid grid-cols-3">
           <LabelText>engine</LabelText>
           <LabelText className="text-right">amount</LabelText>

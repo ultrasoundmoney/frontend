@@ -2,35 +2,44 @@ import * as DateFns from "date-fns";
 import { FC, ReactEventHandler, useCallback } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
+import { useAdminToken } from "../../../admin";
+import {
+  Category,
+  categoryDisplayMap,
+  getIsKnownCategory,
+} from "../../../api/burn_categories";
 import * as Contracts from "../../../api/contracts";
 import { LeaderboardEntry } from "../../../api/leaderboards";
 import { Unit } from "../../../denomination";
-import { featureFlags } from "../../../feature-flags";
+import { FeatureFlags } from "../../../feature-flags";
 import * as Format from "../../../format";
 import { AmountUnitSpace } from "../../Spacing";
 
-const onSetTwitterHandle = async (address: string) => {
+const onSetTwitterHandle = async (
+  address: string,
+  token: string | undefined,
+) => {
   const handle = window.prompt(`input twitter handle`);
   if (handle === null) {
     return;
   }
-  await Contracts.setContractTwitterHandle(address, handle);
+  await Contracts.setContractTwitterHandle(address, handle, token);
 };
 
-const onSetName = async (address: string) => {
+const onSetName = async (address: string, token: string | undefined) => {
   const nameInput = window.prompt(`input name`);
   if (nameInput === null) {
     return;
   }
-  await Contracts.setContractName(address, nameInput);
+  await Contracts.setContractName(address, nameInput, token);
 };
 
-const onSetCategory = async (address: string) => {
+const onSetCategory = async (address: string, token: string | undefined) => {
   const category = window.prompt(`input category`);
   if (category === null) {
     return;
   }
-  await Contracts.setContractCategory(address, category);
+  await Contracts.setContractCategory(address, category, token);
 };
 
 const getOpacityFromAge = (dt: Date | undefined) =>
@@ -44,78 +53,85 @@ const getOpacityFromAge = (dt: Date | undefined) =>
 const AdminControls: FC<{
   address: string;
   freshness: Contracts.MetadataFreshness | undefined;
-}> = ({ address, freshness }) => (
-  <>
-    <div className="flex flex-row gap-4">
-      <a
-        className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
-        onClick={() => onSetTwitterHandle(address)}
-        target="_blank"
-        rel="noreferrer"
-      >
-        set handle
-      </a>
-      <a
-        className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
-        onClick={() => onSetName(address)}
-        target="_blank"
-        rel="noreferrer"
-      >
-        set name
-      </a>
-      <a
-        className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
-        onClick={() => onSetCategory(address)}
-        target="_blank"
-        rel="noreferrer"
-      >
-        set category
-      </a>
-      <a
-        className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
-        onClick={() => Contracts.setContractLastManuallyVerified(address)}
-        target="_blank"
-        rel="noreferrer"
-      >
-        set verified
-      </a>
-    </div>
-    <div className="flex text-sm text-white gap-x-4 mt-2">
-      <span
-        className="bg-gray-700 rounded-lg py-1 px-2"
-        style={{
-          opacity: getOpacityFromAge(freshness?.openseaContractLastFetch),
-        }}
-      >
-        {freshness?.openseaContractLastFetch === undefined
-          ? "never fetched"
-          : `opensea fetch ${DateFns.formatDistanceToNowStrict(
-              freshness.openseaContractLastFetch,
-            )} ago`}
-      </span>
-      <span
-        className="bg-gray-700 rounded-lg py-1 px-2"
-        style={{
-          opacity: getOpacityFromAge(freshness?.lastManuallyVerified),
-        }}
-      >
-        {freshness?.lastManuallyVerified === undefined
-          ? "never verified"
-          : `last verified ${DateFns.formatDistanceToNowStrict(
-              freshness.lastManuallyVerified,
-            )} ago`}
-      </span>
-    </div>
-  </>
-);
+}> = ({ address, freshness }) => {
+  const adminToken = useAdminToken();
+
+  return (
+    <>
+      <div className="flex flex-row gap-4">
+        <a
+          className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
+          onClick={() => onSetTwitterHandle(address, adminToken)}
+          target="_blank"
+          rel="noreferrer"
+        >
+          set handle
+        </a>
+        <a
+          className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
+          onClick={() => onSetName(address, adminToken)}
+          target="_blank"
+          rel="noreferrer"
+        >
+          set name
+        </a>
+        <a
+          className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
+          onClick={() => onSetCategory(address, adminToken)}
+          target="_blank"
+          rel="noreferrer"
+        >
+          set category
+        </a>
+        <a
+          className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
+          onClick={() =>
+            Contracts.setContractLastManuallyVerified(address, adminToken)
+          }
+          target="_blank"
+          rel="noreferrer"
+        >
+          set verified
+        </a>
+      </div>
+      <div className="flex text-sm text-white gap-x-4 mt-2">
+        <span
+          className="bg-gray-700 rounded-lg py-1 px-2"
+          style={{
+            opacity: getOpacityFromAge(freshness?.openseaContractLastFetch),
+          }}
+        >
+          {freshness?.openseaContractLastFetch === undefined
+            ? "never fetched"
+            : `opensea fetch ${DateFns.formatDistanceToNowStrict(
+                freshness.openseaContractLastFetch,
+              )} ago`}
+        </span>
+        <span
+          className="bg-gray-700 rounded-lg py-1 px-2"
+          style={{
+            opacity: getOpacityFromAge(freshness?.lastManuallyVerified),
+          }}
+        >
+          {freshness?.lastManuallyVerified === undefined
+            ? "never verified"
+            : `last verified ${DateFns.formatDistanceToNowStrict(
+                freshness.lastManuallyVerified,
+              )} ago`}
+        </span>
+      </div>
+    </>
+  );
+};
 
 type Props = {
   address?: string;
   adminToken?: string;
-  category?: string | undefined;
+  category?: Category | string | undefined;
   detail?: string;
   fees: number | undefined;
   freshness?: Contracts.MetadataFreshness;
+  featureFlags: FeatureFlags;
   image?: string | undefined;
   isBot?: boolean | undefined;
   name: string | undefined;
@@ -128,6 +144,7 @@ const LeaderboardRow: FC<Props> = ({
   adminToken,
   category,
   detail,
+  featureFlags,
   fees,
   freshness,
   image,
@@ -195,8 +212,22 @@ const LeaderboardRow: FC<Props> = ({
               )}
             </p>
             {featureFlags.enableCategories && category && (
-              <p className="px-1.5 py-0.5 ml-2 text-sm rounded-sm text-blue-manatee font-normal hidden md:block lg:hidden xl:block bg-blue-highlightbg">
-                {category}
+              <p
+                className={`
+                  px-1.5 py-0.5 ml-2
+                  text-sm text-blue-manatee
+                  font-normal
+                  hidden md:block lg:hidden xl:block
+                  bg-blue-highlightbg
+                  rounded-sm
+                  whitespace-nowrap
+                `}
+              >
+                {featureFlags.showCategorySlugs
+                  ? category
+                  : getIsKnownCategory(category)
+                  ? categoryDisplayMap[category]
+                  : category}
               </p>
             )}
             {detail && (

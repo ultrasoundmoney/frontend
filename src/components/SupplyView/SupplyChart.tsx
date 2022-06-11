@@ -5,7 +5,7 @@ import highchartsAnnotations from "highcharts/modules/annotations";
 import last from "lodash/last";
 import merge from "lodash/merge";
 import * as React from "react";
-import { useSupplyProjectionInputs } from "../../api";
+import { useSupplyProjectionInputs } from "../../api/supply_projection";
 import { formatOneDigit } from "../../format";
 import { pipe } from "../../fp";
 import { TranslationsContext } from "../../translations-context";
@@ -57,11 +57,19 @@ const SupplyChart: React.FC<Props> = ({
   const chartRef = React.useRef<HighchartsRef | null>(null);
 
   React.useEffect(() => {
+    if (containerRef.current === null) {
+      return;
+    }
+
     // Sometimes the chart container resizes to be smaller after
     // the page finishes loading. Force a reflow to handle this.
-    const hc = containerRef.current!.querySelector(".highcharts-container");
-    if (hc!.clientWidth > containerRef.current!.clientWidth) {
-      chartRef.current!.chart.reflow();
+    const hc = containerRef.current.querySelector(".highcharts-container");
+    if (
+      chartRef.current !== null &&
+      hc !== null &&
+      hc.clientWidth > containerRef.current.clientWidth
+    ) {
+      chartRef.current.chart.reflow();
     }
   }, [t]);
 

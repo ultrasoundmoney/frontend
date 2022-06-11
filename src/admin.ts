@@ -1,14 +1,20 @@
-export const getAdminToken = (): string | undefined => {
-  if (typeof window === "undefined") {
-    return undefined;
-  }
+import { useEffect, useState } from "react";
 
-  const urlSearchParams = new URLSearchParams(window.location.search);
-  const adminToken = urlSearchParams.get("admin-token");
+export const useAdminToken = () => {
+  const [adminToken, setAdminToken] = useState<string>();
+  const isWindowPresent = typeof window !== "undefined";
+  const searchQuery = isWindowPresent && window.location.search;
 
-  if (typeof adminToken !== "string" || adminToken.length === 0) {
-    return undefined;
-  }
+  useEffect(() => {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const adminToken = urlSearchParams.get("admin-token");
+
+    if (typeof adminToken !== "string" || adminToken.length === 0) {
+      return undefined;
+    }
+
+    setAdminToken(adminToken);
+  }, [isWindowPresent, searchQuery]);
 
   return adminToken;
 };

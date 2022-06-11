@@ -1,6 +1,8 @@
+import { Category } from "./burn_categories";
+
 type ContractEntry = {
   address: string;
-  category: string | null;
+  category: Category | string | null;
   detail: string | null;
   fees: number;
   feesUsd: number;

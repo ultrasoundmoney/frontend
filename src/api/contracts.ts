@@ -1,20 +1,19 @@
 import * as DateFns from "date-fns";
 import useSWR from "swr";
-import { getAdminToken } from "../admin";
 import { O, pipe, Re } from "../fp";
 import { feesBasePath } from "./fees";
 
 export const setContractTwitterHandle = async (
   address: string,
-  handle: string
+  handle: string,
+  token: string | undefined,
 ) => {
-  const token = getAdminToken();
   if (token === undefined) {
     return;
   }
 
   const res = await fetch(
-    `${feesBasePath}/contracts/admin/set-twitter-handle?address=${address}&token=${token}&handle=${handle}`
+    `${feesBasePath}/contracts/admin/set-twitter-handle?address=${address}&token=${token}&handle=${handle}`,
   );
 
   if (res.status !== 200) {
@@ -25,14 +24,17 @@ export const setContractTwitterHandle = async (
   console.log(`successfully twitter handle ${handle} for ${address}`);
 };
 
-export const setContractName = async (address: string, name: string) => {
-  const token = getAdminToken();
+export const setContractName = async (
+  address: string,
+  name: string,
+  token: string | undefined,
+) => {
   if (token === undefined) {
     return;
   }
 
   const res = await fetch(
-    `${feesBasePath}/contracts/admin/set-name?address=${address}&token=${token}&name=${name}`
+    `${feesBasePath}/contracts/admin/set-name?address=${address}&token=${token}&name=${name}`,
   );
 
   if (res.status !== 200) {
@@ -45,15 +47,15 @@ export const setContractName = async (address: string, name: string) => {
 
 export const setContractCategory = async (
   address: string,
-  category: string
+  category: string,
+  token: string | undefined,
 ) => {
-  const token = getAdminToken();
   if (token === undefined) {
     return;
   }
 
   const res = await fetch(
-    `${feesBasePath}/contracts/admin/set-category?address=${address}&token=${token}&category=${category}`
+    `${feesBasePath}/contracts/admin/set-category?address=${address}&token=${token}&category=${category}`,
   );
 
   if (res.status !== 200) {
@@ -64,14 +66,16 @@ export const setContractCategory = async (
   console.log(`successfully added category ${category} for ${address}`);
 };
 
-export const setContractLastManuallyVerified = async (address: string) => {
-  const token = getAdminToken();
+export const setContractLastManuallyVerified = async (
+  address: string,
+  token: string | undefined,
+) => {
   if (token === undefined) {
     return;
   }
 
   const res = await fetch(
-    `${feesBasePath}/contracts/admin/set-last-manually-verified?address=${address}&token=${token}`
+    `${feesBasePath}/contracts/admin/set-last-manually-verified?address=${address}&token=${token}`,
   );
 
   if (res.status !== 200) {
@@ -98,20 +102,20 @@ const decodeFreshness = (freshness: RawMetadataFreshness) => ({
     freshness.openseaContractLastFetch,
     O.fromNullable,
     O.map(DateFns.parseISO),
-    O.toUndefined
+    O.toUndefined,
   ),
   lastManuallyVerified: pipe(
     freshness.lastManuallyVerified,
     O.fromNullable,
     O.map(DateFns.parseISO),
-    O.toUndefined
+    O.toUndefined,
   ),
 });
 
 export const useContractsFreshness = (
-  addresses: string[] | undefined
+  addresses: string[] | undefined,
+  token: string | undefined,
 ): MetadataFreshnessMap | undefined => {
-  const token = getAdminToken();
   const shouldFetch = addresses !== undefined && token !== undefined;
 
   const fetcher = (url: string) =>
@@ -134,7 +138,7 @@ export const useContractsFreshness = (
     shouldFetch
       ? `${feesBasePath}/contracts/metadata-freshness?token=${token}`
       : null,
-    fetcher
+    fetcher,
   );
 
   return data === undefined ? undefined : pipe(data, Re.map(decodeFreshness));
