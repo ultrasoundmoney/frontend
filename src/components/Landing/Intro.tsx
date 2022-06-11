@@ -4,10 +4,11 @@ import SpanMoji from "../SpanMoji";
 
 const Intro: React.FC = () => {
   const t = React.useContext(TranslationsContext);
+
   return (
     <>
       <section id="hero" className="hero h-screen">
-        <div className="flex flex-wrap flex-col md:pt-32">
+        <div className=" flex flex-wrap flex-col md:pt-32">
           <h1 className="text-white font-extralight text-center leading-none text-2xl md:text-6xl font-inter">
             {t.landing_hero_title}
           </h1>
