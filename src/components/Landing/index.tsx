@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import * as React from "react";
+import Navigation from "../Navigation/Nav";
 import Intro from "./Intro";
 import BeforeGenesis from "./beforeGenesis";
 import GenesisBlock from "./gennesis";
@@ -31,6 +31,7 @@ import {
   constantinople_data,
   london_data,
 } from "./historicalData";
+import { useGroupedData1 } from "../../api/grouped_stats_1";
 import useSWR from "swr";
 import Stepper from "../Navigation/Stepper";
 import { SteppersProvider } from "../../context/StepperContext";
@@ -43,15 +44,15 @@ type EthPrice = {
   btc24hChange: number;
 };
 
-const LandingPage: React.FC = () => {
-  const feesBurned = useGroupedData1()?.feesBurned;
+const LandingPage: React.FC<{}> = () => {
+  const feesBurned = useGroupedData1();
   const [genesisArr, setGenesisArr] = React.useState(genesis_data[0]);
   const { data } = useSWR<EthPrice>(
     "https://api.ultrasound.money/fees/eth-price",
     {
       revalidateOnFocus: true,
       revalidateOnReconnect: true,
-    },
+    }
   );
   React.useEffect(() => {
     AOS.init();
@@ -60,9 +61,7 @@ const LandingPage: React.FC = () => {
   const [scrolling, setScrolling] = React.useState(false);
   const [scrollTop, setScrollTop] = React.useState(0);
   const feeBurnedinEth =
-    feesBurned !== undefined
-      ? Format.ethFromWei(feesBurned.feesBurnedAll)
-      : undefined;
+    feesBurned !== undefined ? weiToEth(feesBurned.feesBurnedAll) : undefined;
   // const getFeeBurdedinEthToUsd =
   //   data?.usd && ethPriceFormatter.format(getFeeBurdedinEth * data?.usd);
   const getFeeBurdedinEthToUsd =
@@ -82,7 +81,7 @@ const LandingPage: React.FC = () => {
     // 2nd Card Eth Supply Increaments
     const getEthSupply = document.querySelector(".burned_2 .eth-supply");
     const getEthSupplyIncreament = document.querySelector(
-      ".burned_2 .eth-supply-incr",
+      ".burned_2 .eth-supply-incr"
     );
     //3rd Card
     const getBlcokReward = document.querySelector(".burned_3 .eth-burn-fee");
@@ -95,7 +94,7 @@ const LandingPage: React.FC = () => {
       const targetByzantium = document.querySelector("#eip-byzantium");
       const targetBeforeGenesis = document.querySelector("#before-genesis");
       const targetConstantinople = document.querySelector(
-        "#eip-constantinople",
+        "#eip-constantinople"
       );
       const target1559 = document.querySelector("#eip-1559");
       const targetSupplyView = document.querySelector("#supplyview");
@@ -194,7 +193,7 @@ const LandingPage: React.FC = () => {
 
           if (lineHeight < 450) {
             document.getElementById(
-              "line__genesis",
+              "line__genesis"
             )!.style.height = `${lineHeight}px`;
             getBlcokReward!.innerHTML = "5 ETH/<span>Block</span>";
             const counter = lineHeight * 3;
@@ -203,17 +202,17 @@ const LandingPage: React.FC = () => {
                 counter > genesis_data.length
                   ? genesis_data.length - 1
                   : counter
-              ],
+              ]
             );
             if (genesisArr) {
-              getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
-                genesisArr[0],
+              getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+                genesisArr[0]
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
-                genesisArr[2],
+                genesisArr[2]
               ).toFixed(3)}%`;
-              getEthSupply!.innerHTML = `${Format.followerCountConvert(
-                Number(genesisArr[1]),
+              getEthSupply!.innerHTML = `${followerCountConvert(
+                Number(genesisArr[1])
               )}`;
             }
           }
@@ -232,7 +231,7 @@ const LandingPage: React.FC = () => {
               : 0;
           if (lineHeight < 450) {
             document.getElementById(
-              "line__genesis",
+              "line__genesis"
             )!.style.height = `${lineHeight}px`;
             document
               .getElementById("line__genesis")!
@@ -245,17 +244,17 @@ const LandingPage: React.FC = () => {
                 counter > genesis_data.length
                   ? genesis_data.length - 1
                   : counter
-              ],
+              ]
             );
             if (genesisArr) {
-              getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
-                genesisArr[0],
+              getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+                genesisArr[0]
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
-                genesisArr[2],
+                genesisArr[2]
               ).toFixed(3)}%`;
-              getEthSupply!.innerHTML = `${Format.followerCountConvert(
-                Number(genesisArr[1]),
+              getEthSupply!.innerHTML = `${followerCountConvert(
+                Number(genesisArr[1])
               )}`;
             }
           }
@@ -273,7 +272,7 @@ const LandingPage: React.FC = () => {
 
           if (lineHeight < 450) {
             document.getElementById(
-              "line__byzantium",
+              "line__byzantium"
             )!.style.height = `${lineHeight}px`;
             getBlcokReward!.innerHTML = "3 ETH/<span>Block</span>";
             const counter = Math.floor(lineHeight * 1.5);
@@ -282,17 +281,17 @@ const LandingPage: React.FC = () => {
                 counter > byzantium_data.length
                   ? byzantium_data.length - 1
                   : counter
-              ],
+              ]
             );
             if (genesisArr) {
-              getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
-                genesisArr[0],
+              getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+                genesisArr[0]
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
-                genesisArr[2],
+                genesisArr[2]
               ).toFixed(3)}%`;
-              getEthSupply!.innerHTML = `${Format.followerCountConvert(
-                Number(genesisArr[1]),
+              getEthSupply!.innerHTML = `${followerCountConvert(
+                Number(genesisArr[1])
               )}`;
             }
           }
@@ -311,7 +310,7 @@ const LandingPage: React.FC = () => {
               : 0;
           if (lineHeight < 450) {
             document.getElementById(
-              "line__byzantium",
+              "line__byzantium"
             )!.style.height = `${lineHeight}px`;
             document
               .getElementById("line__genesis")!
@@ -324,17 +323,17 @@ const LandingPage: React.FC = () => {
                 counter > byzantium_data.length
                   ? byzantium_data.length - 1
                   : counter
-              ],
+              ]
             );
             if (genesisArr) {
-              getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
-                genesisArr[0],
+              getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+                genesisArr[0]
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
-                genesisArr[2],
+                genesisArr[2]
               ).toFixed(3)}%`;
-              getEthSupply!.innerHTML = `${Format.followerCountConvert(
-                Number(genesisArr[1]),
+              getEthSupply!.innerHTML = `${followerCountConvert(
+                Number(genesisArr[1])
               )}`;
             }
           }
@@ -354,7 +353,7 @@ const LandingPage: React.FC = () => {
               : 0;
           if (lineHeight < 450) {
             document.getElementById(
-              "line__constantinople",
+              "line__constantinople"
             )!.style.height = `${lineHeight}px`;
             getBlcokReward!.innerHTML = "2 ETH/<span>Block</span>";
             const counter = lineHeight * 2;
@@ -363,17 +362,17 @@ const LandingPage: React.FC = () => {
                 counter > constantinople_data.length
                   ? constantinople_data.length - 1
                   : counter
-              ],
+              ]
             );
             if (genesisArr) {
-              getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
-                genesisArr[0],
+              getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+                genesisArr[0]
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
-                genesisArr[2],
+                genesisArr[2]
               ).toFixed(3)}%`;
-              getEthSupply!.innerHTML = `${Format.followerCountConvert(
-                Number(genesisArr[1]),
+              getEthSupply!.innerHTML = `${followerCountConvert(
+                Number(genesisArr[1])
               )}`;
             }
           }
@@ -392,7 +391,7 @@ const LandingPage: React.FC = () => {
               : 0;
           if (lineHeight < 450) {
             document.getElementById(
-              "line__constantinople",
+              "line__constantinople"
             )!.style.height = `${lineHeight}px`;
             document
               .getElementById("line__constantinople")!
@@ -405,17 +404,17 @@ const LandingPage: React.FC = () => {
                 counter > constantinople_data.length
                   ? constantinople_data.length - 1
                   : counter
-              ],
+              ]
             );
             if (genesisArr) {
-              getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
-                genesisArr[0],
+              getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+                genesisArr[0]
               )}`;
               getEthSupplyIncreament!.innerHTML = `+${Number(
-                genesisArr[2],
+                genesisArr[2]
               ).toFixed(3)}%`;
-              getEthSupply!.innerHTML = `${Format.followerCountConvert(
-                Number(genesisArr[1]),
+              getEthSupply!.innerHTML = `${followerCountConvert(
+                Number(genesisArr[1])
               )}`;
             }
           }
@@ -436,21 +435,21 @@ const LandingPage: React.FC = () => {
           setGenesisArr(
             genesis_data_re[
               counter > london_data.length ? london_data.length - 1 : counter
-            ],
+            ]
           );
           getBlcokReward!.innerHTML = "2 ETH/<span>Block</span>";
-          getFeeBurded!.innerHTML = `$${Format.convertToInternationalCurrencySystem(
-            Number(getFeeBurdedinEthToUsd),
+          getFeeBurded!.innerHTML = `$${convertToInternationalCurrencySystem(
+            Number(getFeeBurdedinEthToUsd)
           )}`;
           if (genesisArr) {
-            getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
-              genesisArr[0],
+            getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+              genesisArr[0]
             )}`;
             getEthSupplyIncreament!.innerHTML = `+${Number(
-              genesisArr[2],
+              genesisArr[2]
             ).toFixed(3)}%`;
-            getEthSupply!.innerHTML = `${Format.followerCountConvert(
-              Number(genesisArr[1]),
+            getEthSupply!.innerHTML = `${followerCountConvert(
+              Number(genesisArr[1])
             )}`;
           }
         } else {
@@ -464,21 +463,21 @@ const LandingPage: React.FC = () => {
           setGenesisArr(
             london_data[
               counter > london_data.length ? london_data.length - 1 : counter
-            ],
+            ]
           );
           getBlcokReward!.innerHTML = "2 ETH/<span>Block</span>";
-          getFeeBurded!.innerHTML = `$${Format.convertToInternationalCurrencySystem(
-            Number(getFeeBurdedinEthToUsd),
+          getFeeBurded!.innerHTML = `$${convertToInternationalCurrencySystem(
+            Number(getFeeBurdedinEthToUsd)
           )}`;
           if (genesisArr) {
-            getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
-              genesisArr[0],
+            getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+              genesisArr[0]
             )}`;
             getEthSupplyIncreament!.innerHTML = `+${Number(
-              genesisArr[2],
+              genesisArr[2]
             ).toFixed(3)}%`;
-            getEthSupply!.innerHTML = `${Format.followerCountConvert(
-              Number(genesisArr[1]),
+            getEthSupply!.innerHTML = `${followerCountConvert(
+              Number(genesisArr[1])
             )}`;
           }
         }
@@ -490,10 +489,10 @@ const LandingPage: React.FC = () => {
           const lineHeight = Math.floor((currentPosition / 100) * 8);
           if (lineHeight < 450) {
             document.getElementById(
-              "line__supplyview",
+              "line__supplyview"
             )!.style.height = `${lineHeight}px`;
-            getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
-              afterLodonFork[0],
+            getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+              afterLodonFork[0]
             )}`;
             getEthSupplyIncreament!.innerHTML = afterLodonFork[2];
             getEthSupply!.innerHTML = afterLodonFork[1];
@@ -507,13 +506,13 @@ const LandingPage: React.FC = () => {
           const lineHeight = Math.floor((currentPosition / 100) * 8);
           if (lineHeight < 450) {
             document.getElementById(
-              "line__supplyview",
+              "line__supplyview"
             )!.style.height = `${lineHeight}px`;
             document
               .getElementById("line__supplyview")!
               .classList.remove("eclips__hr-circle");
-            getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
-              afterLodonFork[0],
+            getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+              afterLodonFork[0]
             )}`;
             getEthSupplyIncreament!.innerHTML = afterLodonFork[2];
             getEthSupply!.innerHTML = afterLodonFork[1];
@@ -528,10 +527,10 @@ const LandingPage: React.FC = () => {
 
           if (lineHeight < 450) {
             document.getElementById(
-              "line__merge",
+              "line__merge"
             )!.style.height = `${lineHeight}px`;
-            getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
-              afterLodonFork[0],
+            getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+              afterLodonFork[0]
             )}`;
             getEthSupplyIncreament!.innerHTML = afterLodonFork[2];
             getEthSupply!.innerHTML = afterLodonFork[1];
@@ -547,13 +546,13 @@ const LandingPage: React.FC = () => {
           const lineHeight = Math.floor((currentPosition / 100) * 6);
           if (lineHeight < 450) {
             document.getElementById(
-              "line__merge",
+              "line__merge"
             )!.style.height = `${lineHeight}px`;
             document
               .getElementById("line__merge")!
               .classList.remove("eclips__hr-circle");
-            getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
-              afterLodonFork[0],
+            getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+              afterLodonFork[0]
             )}`;
             getEthSupplyIncreament!.innerHTML = afterLodonFork[2];
             getEthSupply!.innerHTML = afterLodonFork[1];
@@ -566,8 +565,8 @@ const LandingPage: React.FC = () => {
           // downscroll code
           setScrolling(false);
           getStatus!.innerHTML = "Money (Deflationary)";
-          getStatusAndDate!.innerHTML = `Status ${Format.convertDateStringReadable(
-            afterLodonFork[0],
+          getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
+            afterLodonFork[0]
           )}`;
           getEthSupplyIncreament!.innerHTML = afterLodonFork[2];
           getEthSupply!.innerHTML = afterLodonFork[1];
