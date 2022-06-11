@@ -8,27 +8,9 @@ import FaqBlock from "./faq";
 import NftDrop from "../NftDrop/index";
 import FollowingYou from "../FollowingYou";
 import TheMergeBlock from "./theMerge";
-import Stepper from "../Navigation/Stepper";
+import StepperNavigator from "../Navigation/StepperNavigator";
 
 const LandingPage: React.FC<{}> = () => {
-  const dummyPoints = [
-    {
-      offsetY: 1000,
-      height: 500,
-    },
-    {
-      offsetY: 2000,
-      height: 800,
-    },
-    {
-      offsetY: 3300,
-      height: 500,
-    },
-    {
-      offsetY: 4200,
-      height: 600,
-    },
-  ];
   return (
     <>
       <div className="wrapper bg-blue-midnightexpress blurred-bg-image">
@@ -38,10 +20,10 @@ const LandingPage: React.FC<{}> = () => {
             <Intro />
           </div>
           <TheMergeBlock />
-          <div className="w-full">
-            <Stepper controlPoints={dummyPoints} />
-          </div>
           <EtherTheUltraSound />
+          <section>
+            <StepperNavigator />
+          </section>
           <FaqBlock />
           <section
             data-aos="fade-up"

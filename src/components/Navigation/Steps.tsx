@@ -2,99 +2,92 @@ import * as React from "react";
 import Link from "next/link";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 import { TranslationsContext } from "../../translations-context";
-
-type BallProps = {
-  pointOffset: number;
-};
+import StepperPoint from "./StepperPoint";
+import StepperTrack from "./StepperTrack";
 
 type ControlPoint = {
   offsetY: number;
-  height: number;
+  name: string;
+};
+
+type ControlPointMutated = {
+  offsetY: number;
+  name: string;
+  active: boolean;
 };
 
 type StepsProps = {
-  iconOffset: number;
-  controlPoints: ControlPoint[];
+  controlPoints: (ControlPoint | undefined)[];
 };
 
-const Steps: React.FC<StepsProps> = ({ iconOffset, controlPoints }) => {
-  const t = React.useContext(TranslationsContext);
-  const Ball: React.FC<BallProps> = ({ pointOffset }) => {
-    const [active, setActive] = React.useState<boolean>();
+const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
+  ({ controlPoints }, ref) => {
+    const [activeBalls, setActiveBalls] = React.useState<
+      (ControlPointMutated | undefined)[] | undefined
+    >();
 
+    const getActiveBalls = React.useCallback(() => {
+      return controlPoints.map((item) => {
+        if (item) {
+          return {
+            ...item,
+            active: window.pageYOffset > item.offsetY - window.innerHeight / 2,
+          };
+        }
+      });
+    }, [controlPoints]);
+
+    const t = React.useContext(TranslationsContext);
     React.useEffect(() => {
-      setActive(window.pageYOffset > pointOffset);
-    }, []);
+      const onScroll = () => {
+        setActiveBalls(getActiveBalls());
+      };
+      window.addEventListener("scroll", onScroll);
+      return () => window.removeEventListener("scroll", onScroll);
+    }, [getActiveBalls]);
+
     return (
-      <div
-        style={{
-          width: "16px",
-          height: "16px",
-          margin: "0 10px",
-          borderRadius: "50%",
-          border: `1px solid ${active ? "#00FFA3" : "#8991AD"}`,
-        }}
-      >
+      <div className="w-full h-full md:w-9/12 relative flex justify-around lg:justify-around">
         <div
+          ref={ref}
           style={{
-            width: "6px",
-            height: "6px",
-            backgroundColor: active ? "#00FFA3" : "#8991AD",
-            borderRadius: "50%",
-            margin: "4px",
+            minWidth: "32px",
+            transition: "0.3s ease-in-out",
           }}
-        ></div>
+          className={`absolute bottom-6`}
+        >
+          <Link href="/">
+            <img style={{ height: "32px" }} src={EthLogo} alt={t.title} />
+          </Link>
+        </div>
+        <div className="flex w-full justify-around items-start">
+          {activeBalls &&
+            activeBalls.map((item, index) => {
+              if (item) {
+                if (index === controlPoints.length - 1) {
+                  return (
+                    <div className="flex h-full items-center" key={`${index}`}>
+                      <StepperPoint name={item.name} active={item.active} />
+                    </div>
+                  );
+                }
+                return (
+                  <div
+                    className="flex w-full h-full items-center"
+                    key={`${index}`}
+                  >
+                    <StepperPoint name={item.name} active={item.active} />
+                    <StepperTrack />
+                  </div>
+                );
+              }
+            })}
+        </div>
       </div>
     );
-  };
-  const Track = () => (
-    <div
-      style={{
-        height: "1px",
-        width: "25%",
-        margin: "0 10px",
-        backgroundImage: "linear-gradient(to right, grey 40%, transparent 40%)",
-        backgroundSize: "10px 1px",
-        backgroundRepeat: "repeat-x",
-      }}
-    ></div>
-  );
+  }
+);
 
-  const containerRef = React.useRef<HTMLDivElement | null>(null);
-  console.log(controlPoints);
-
-  return (
-    <div
-      ref={containerRef}
-      className="w-full md:w-9/12 relative flex justify-around lg:justify-around"
-    >
-      <div
-        style={{
-          left: `${iconOffset}%`,
-          minWidth: "32px",
-        }}
-        className={`absolute -bottom-2`}
-      >
-        <Link href="/">
-          <img
-            className=""
-            style={{ height: "32px" }}
-            src={EthLogo}
-            alt={t.title}
-          />
-        </Link>
-      </div>
-      <div className="flex w-full justify-around items-center">
-        <Ball pointOffset={0} />
-        {controlPoints.map((item) => (
-          <>
-            <Track />
-            <Ball pointOffset={item.offsetY} />
-          </>
-        ))}
-      </div>
-    </div>
-  );
-};
+Steps.displayName = "Steps";
 
 export default Steps;

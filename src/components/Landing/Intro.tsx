@@ -7,7 +7,7 @@ const Intro: React.FC = () => {
 
   return (
     <>
-      <section id="hero" className="hero h-screen">
+      <section id="hero" className="hero h-screen container m-auto">
         <div className=" flex flex-wrap flex-col md:pt-32">
           <h1 className="text-white font-extralight text-center leading-none text-2xl md:text-6xl font-inter">
             {t.landing_hero_title}
