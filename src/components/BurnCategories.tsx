@@ -211,7 +211,7 @@ const CategoryRow: FC<CategoryRowProps> = ({
 }) => (
   <a
     className={`
-      grid ${showCategoryCounts ? "grid-cols-3" : "grid-cols-2"}
+      grid grid-cols-2 ${showCategoryCounts ? "md:grid-cols-3" : ""}
       link-animation
       select-none
     `}
@@ -226,7 +226,7 @@ const CategoryRow: FC<CategoryRowProps> = ({
     <div
       className={`
         text-right
-        col-span-2 md:col-span-1
+        col-span-1 md:col-span-1
         ${showCategoryCounts ? "md:mr-8" : ""}
       `}
     >
@@ -429,14 +429,14 @@ const BurnCategoryWidget: FC<Props> = ({
           <div className="flex flex-col gap-y-3">
             <div
               className={`grid ${
-                showCategoryCounts ? "grid-cols-3" : "grid-cols-2"
+                showCategoryCounts ? "md:grid-cols-3" : "grid-cols-2"
               }`}
             >
               <LabelText>category</LabelText>
               <LabelText
                 className={`
                   text-right
-                  col-span-2 md:col-span-1
+                  ${showCategoryCounts ? "col-span-1" : "col-span-1"}
                   ${showCategoryCounts ? "md:mr-8" : ""}
                 `}
               >

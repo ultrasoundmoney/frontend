@@ -11,9 +11,9 @@ import { londonHardforkTimestamp } from "../../dates";
 import { Unit } from "../../denomination";
 import * as Duration from "../../duration";
 import * as Format from "../../format";
-import { O, pipe } from "../../fp";
 import * as StaticEtherData from "../../static-ether-data";
 import { LimitedTimeFrameNext, TimeFrameNext } from "../../time_frames";
+import { AnimatedAmount } from "../Amount";
 import { AmountUnitSpace } from "../Spacing";
 import SpanMoji from "../SpanMoji";
 import { TextInter, TextRoboto } from "../Texts";
@@ -69,36 +69,26 @@ const CumulativeFeeBurn: FC<Props> = ({
   const burnRates = feeData?.burnRates;
   const feesBurned = feeData?.feesBurned;
 
-  const selectedFeesBurnedEth = pipe(
-    feesBurned,
-    O.fromNullable,
-    O.map((feesBurned) =>
-      Format.ethFromWei(feesBurned[timeframeFeesBurnedMap[timeFrame]["eth"]]),
-    ),
-    O.toUndefined,
-  );
+  const selectedFeesBurnedEth =
+    feesBurned === undefined
+      ? undefined
+      : feesBurned[timeframeFeesBurnedMap[timeFrame]["eth"]];
 
   // In ETH or USD K.
-  const selectedFeesBurned = pipe(
-    feesBurned,
-    O.fromNullable,
-    O.map((feesBurned) =>
-      unit === "eth"
-        ? Format.ethFromWei(
-            feesBurned[timeframeFeesBurnedMap[timeFrame]["eth"]],
-          )
-        : feesBurned[timeframeFeesBurnedMap[timeFrame][unit]] / 1000,
-    ),
-    O.toUndefined,
-  );
+  const selectedFeesBurned =
+    feesBurned === undefined
+      ? undefined
+      : unit === "eth"
+      ? feesBurned[timeframeFeesBurnedMap[timeFrame]["eth"]]
+      : feesBurned[timeframeFeesBurnedMap[timeFrame][unit]];
 
   // In ETH / min or USD K / min.
   const selectedBurnRate =
-    burnRates === undefined || null
+    burnRates === undefined
       ? undefined
       : unit === "eth"
-      ? Format.ethFromWei(burnRates[timeframeBurnRateMap[timeFrame][unit]])
-      : burnRates[timeframeBurnRateMap[timeFrame][unit]] / 1000;
+      ? burnRates[timeframeBurnRateMap[timeFrame][unit]]
+      : burnRates[timeframeBurnRateMap[timeFrame][unit]];
 
   // TODO: issuance changes post-merge, update this to switch to proof of stake issuance on time.
   // In ETH.
@@ -125,13 +115,7 @@ const CumulativeFeeBurn: FC<Props> = ({
   const issuanceOffset =
     selectedFeesBurnedEth === undefined || selectedIssuance === undefined
       ? undefined
-      : selectedFeesBurnedEth / selectedIssuance;
-
-  // Keeps the width of the fees burned amount the same to make the animation look more stable.
-  const startFeesBurned =
-    selectedFeesBurned === undefined
-      ? undefined
-      : 10 ** (selectedFeesBurned.toFixed(0).length - 1);
+      : Format.ethFromWei(selectedFeesBurnedEth) / selectedIssuance;
 
   return (
     <WidgetBackground>
@@ -149,15 +133,7 @@ const CumulativeFeeBurn: FC<Props> = ({
         >
           <TextRoboto>
             {selectedFeesBurned !== undefined ? (
-              <CountUp
-                decimals={unit === "eth" ? 2 : 1}
-                duration={0.8}
-                separator=","
-                start={startFeesBurned}
-                end={selectedFeesBurned}
-                preserveValue={true}
-                suffix={unit === "eth" ? undefined : "K"}
-              />
+              <AnimatedAmount unit={unit}>{selectedFeesBurned}</AnimatedAmount>
             ) : (
               <Skeleton inline={true} width="10rem" />
             )}
@@ -178,14 +154,7 @@ const CumulativeFeeBurn: FC<Props> = ({
             </TextInter>
             <TextRoboto className="text-2xl">
               {selectedBurnRate !== undefined ? (
-                <CountUp
-                  decimals={unit === "eth" ? 2 : 1}
-                  duration={0.8}
-                  separator=","
-                  end={selectedBurnRate}
-                  preserveValue={true}
-                  suffix={unit === "eth" ? undefined : "K"}
-                />
+                <AnimatedAmount unit={unit}>{selectedBurnRate}</AnimatedAmount>
               ) : (
                 <Skeleton inline={true} width="4rem" />
               )}

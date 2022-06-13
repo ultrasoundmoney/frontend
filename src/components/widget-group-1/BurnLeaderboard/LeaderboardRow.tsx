@@ -1,6 +1,5 @@
 import * as DateFns from "date-fns";
 import { FC, ReactEventHandler, useCallback } from "react";
-import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
 import { useAdminToken } from "../../../admin";
 import {
@@ -13,6 +12,7 @@ import { LeaderboardEntry } from "../../../api/leaderboards";
 import { Unit } from "../../../denomination";
 import { FeatureFlags } from "../../../feature-flags";
 import * as Format from "../../../format";
+import { AnimatedAmount } from "../../Amount";
 import { AmountUnitSpace } from "../../Spacing";
 
 const onSetTwitterHandle = async (
@@ -211,25 +211,24 @@ const LeaderboardRow: FC<Props> = ({
                 <Skeleton inline={true} width="12rem" />
               )}
             </p>
-            {featureFlags.enableCategories && category && (
-              <p
-                className={`
-                  px-1.5 py-0.5 ml-2
-                  text-sm text-blue-manatee
-                  font-normal
-                  hidden md:block lg:hidden xl:block
-                  bg-blue-highlightbg
-                  rounded-sm
-                  whitespace-nowrap
-                `}
-              >
-                {featureFlags.showCategorySlugs
-                  ? category
-                  : getIsKnownCategory(category)
-                  ? categoryDisplayMap[category]
-                  : category}
-              </p>
-            )}
+            <p
+              className={`
+                px-1.5 py-0.5 ml-2
+                text-sm text-blue-manatee
+                font-normal
+                bg-blue-highlightbg
+                rounded-sm
+                whitespace-nowrap
+                hidden md:block
+                ${category ? "block" : "md:hidden"}
+              `}
+            >
+              {featureFlags.showCategorySlugs
+                ? category
+                : getIsKnownCategory(category)
+                ? categoryDisplayMap[category]
+                : Format.capitalize(category)}
+            </p>
             {detail && (
               <p className="pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block">
                 {detail}
@@ -239,15 +238,7 @@ const LeaderboardRow: FC<Props> = ({
               {fees === undefined ? (
                 <Skeleton inline={true} width="4rem" />
               ) : (
-                <CountUp
-                  start={0}
-                  end={unit === "eth" ? Format.ethFromWei(fees) : fees / 1000}
-                  preserveValue={true}
-                  separator=","
-                  decimals={unit === "eth" ? 2 : 1}
-                  duration={0.8}
-                  suffix={unit === "eth" ? undefined : "K"}
-                />
+                <AnimatedAmount unit={unit}>{fees}</AnimatedAmount>
               )}
               <AmountUnitSpace />
               <span className="text-blue-spindle font-extralight">

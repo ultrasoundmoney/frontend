@@ -1,6 +1,5 @@
 import * as DateFns from "date-fns";
 import { FC, useEffect, useState } from "react";
-import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
 import { BurnRecord } from "../api/burn_records";
 import { useGroupedData1 } from "../api/grouped_stats_1";
@@ -10,6 +9,7 @@ import { flow, O, OAlt } from "../fp";
 import styles from "../styles/Scrollbar.module.scss";
 import { TimeFrameNext } from "../time_frames";
 import { useActiveBreakpoint } from "../utils/use-active-breakpoint";
+import { AnimatedAmount } from "./Amount";
 import { AmountUnitSpace } from "./Spacing";
 import SpanMoji from "./SpanMoji";
 import { TextInter, TextRoboto } from "./Texts";
@@ -38,15 +38,7 @@ const BurnRecordAmount: FC<{ amount: number | undefined; unit: Unit }> = ({
       {amount === undefined ? (
         <Skeleton inline={true} width="4rem" />
       ) : (
-        <CountUp
-          start={0}
-          end={unit === "eth" ? Format.ethFromWei(amount) : amount / 1000}
-          preserveValue={true}
-          separator=","
-          decimals={unit === "eth" ? 2 : 1}
-          duration={0.8}
-          suffix={unit === "eth" ? undefined : "K"}
-        />
+        <AnimatedAmount unit={unit}>{amount}</AnimatedAmount>
       )}
     </TextRoboto>
     <AmountUnitSpace />
