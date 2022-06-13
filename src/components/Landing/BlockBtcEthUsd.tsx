@@ -22,7 +22,7 @@ const TheUltraSound: React.FC<{}> = () => {
           <img
             title={t.eusm_section_title}
             alt={t.eusm_section_title}
-            src={BatImg}
+            src={BatImg.src}
             className="mx-auto text-center mb-8"
           />
           <div className="ultra-sound-text text-2xl md:text-6xl mb-24">

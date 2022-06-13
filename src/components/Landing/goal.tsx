@@ -34,19 +34,19 @@ const GoalBlcok: React.FC<GoalBlcokProps> = ({ styles }) => {
         />
         <div className="w-full md:flex md:flex-wrap justify-between py-8">
           <ImageBlock
-            image={telescope}
+            image={telescope.src}
             title={t.landing_goal_block1_title}
             text={t.landing_goal_block1_text}
             textAlign="start"
           />
           <ImageBlock
-            image={roket}
+            image={roket.src}
             title={t.landing_goal_block2_title}
             text={t.landing_goal_block2_text}
             textAlign="start"
           />
           <ImageBlock
-            image={smile}
+            image={smile.src}
             title={t.landing_goal_block3_title}
             text={t.landing_goal_block3_text}
             textAlign="start"

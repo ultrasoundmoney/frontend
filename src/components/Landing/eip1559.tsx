@@ -32,13 +32,12 @@ const EIP1559: React.FC = () => {
       ref={EIPRef}
     >
       <div className="block-fee-burn flex flex-col justify-center items-center w-full md:w-6/12 md:mx-auto pt-20 px-4 md:px-0 ">
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         <picture>
           <img
             className="relative text-center mx-auto mb-8"
             width="111"
             height="90"
-            src={EthBurn}
+            src={EthBurn.src}
             alt="eth-brn"
             onError={imageErrorHandler}
           />
