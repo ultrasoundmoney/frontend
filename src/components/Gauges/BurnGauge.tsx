@@ -4,7 +4,7 @@ import colors from "../../colors";
 import { Unit } from "../../denomination";
 import * as Format from "../../format";
 import { TimeFrameNext } from "../../time_frames";
-import { timeframeBurnRateMap } from "../FeeBurn";
+import { timeframeBurnRateMap } from "../BurnTotal";
 import BaseGauge from "./IssuanceBurnBaseGauge";
 
 type BurnGaugeProps = { timeFrame: TimeFrameNext; unit: Unit };

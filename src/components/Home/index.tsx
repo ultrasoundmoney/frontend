@@ -11,6 +11,7 @@ import {
   flags,
   useFeatureFlags,
 } from "../../feature-flags";
+import FairPrice from "../FairPrice";
 import FollowingYou from "../FollowingYou";
 import FaqBlock from "../Landing/faq";
 import SupplyView from "../SupplyView";
@@ -138,8 +139,9 @@ const Home: FC = () => {
           title="monetary premium"
           subtitle="the race to become the most desirable money"
         />
-        <div className="flex items-start flex-col lg:flex-row gap-y-4 lg:gap-4 px-4 md:px-16">
+        <div className="grid grid-cols-2 gap-y-4 lg:gap-4 px-4 md:px-16">
           <Scarcity />
+          {featureFlags.showFairPrice && <FairPrice />}
           <Flippenings />
         </div>
         <div className="flex flex-col px-4 md:px-16">

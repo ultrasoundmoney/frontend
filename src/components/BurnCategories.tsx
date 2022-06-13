@@ -6,7 +6,7 @@ import { FeatureFlags } from "../feature-flags";
 import * as Format from "../format";
 import { A, flow, NEA, O, pipe } from "../fp";
 import { TimeFrameNext } from "../time_frames";
-import { Amount } from "./Amount";
+import { MoneyAmount } from "./Amount";
 import { LabelText, TextInter, TextRoboto } from "./Texts";
 import { Group1Base } from "./widget-subcomponents";
 
@@ -232,7 +232,7 @@ const CategoryRow: FC<CategoryRowProps> = ({
       {amountFormatted === undefined ? (
         <Skeleton width="4rem" />
       ) : (
-        <Amount unit="eth">{amountFormatted}</Amount>
+        <MoneyAmount unit="eth">{amountFormatted}</MoneyAmount>
       )}
     </div>
     <div

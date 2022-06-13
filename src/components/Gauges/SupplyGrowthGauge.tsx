@@ -6,7 +6,7 @@ import { useScarcity } from "../../api/scarcity";
 import * as Format from "../../format";
 import * as StaticEtherData from "../../static-ether-data";
 import { TimeFrameNext } from "../../time_frames";
-import { timeframeBurnRateMap } from "../FeeBurn";
+import { timeframeBurnRateMap } from "../BurnTotal";
 import ToggleSwitch from "../ToggleSwitch";
 import TimeFrameIndicator from "../widget-subcomponents/TimeFrameIndicator";
 import SplitGaugeSvg from "./SplitGaugeSvg";

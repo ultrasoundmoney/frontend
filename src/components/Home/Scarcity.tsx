@@ -5,7 +5,7 @@ import { useScarcity } from "../../api/scarcity";
 import Colors from "../../colors";
 import * as Format from "../../format";
 import { pipe } from "../../fp";
-import { Amount } from "../Amount";
+import { Amount, MoneyAmount } from "../Amount";
 import { LabelText, TextInter, TextRoboto } from "../Texts";
 import { WidgetBackground, WidgetTitle } from "../widget-subcomponents";
 
@@ -245,10 +245,10 @@ const EngineRow: FC<EngineRowProps> = ({
     rel="noreferrer"
   >
     <TextInter>{name}</TextInter>
-    <Amount className="font-light text-right" unitPrefix="M" unit="eth">
+    <MoneyAmount className="font-light text-right" unitPrefix="M" unit="eth">
       {amountFormatted}
-    </Amount>
-    <Amount className="text-right" unit="months">
+    </MoneyAmount>
+    <Amount className="text-right" unitPostfix="months">
       {
         DateFns.formatDistanceStrict(startedOn, new Date(), {
           unit: "month",
