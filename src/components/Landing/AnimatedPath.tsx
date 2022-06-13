@@ -152,7 +152,7 @@ const AnimatedPath: React.FC<{}> = () => {
       <div className="merge-path_animated">
         <motion.img
           className="bg"
-          src={glowBg}
+          src={glowBg.src}
           alt="glow"
           variants={glowVariants}
           animate={glowIsShow ? "visible" : "hidden"}
