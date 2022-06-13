@@ -6,8 +6,8 @@ const AnimatedPath: React.FC<{}> = () => {
   return (
     <div className="merge-path">
       <div className="merge-path_static">
-        <img className="bg" src={blurredBg} alt="img" />
-        <img className="path" src={staticPath} alt="img" />
+        <img className="bg" src={blurredBg.src} alt="img" />
+        <img className="path" src={staticPath.src} alt="img" />
       </div>
     </div>
   );
