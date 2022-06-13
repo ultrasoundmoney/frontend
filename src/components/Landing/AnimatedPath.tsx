@@ -47,7 +47,6 @@ const dots = [
     animatedOn: 0.98,
     isAnimated: false,
   },
-
   {
     x: 120,
     y: 300,
@@ -67,9 +66,50 @@ const dots = [
     isAnimated: false,
   },
 ];
+const dashed = [
+  {
+    points: "20 20 20 215",
+    animatedOn: 0.27,
+    isAnimated: false,
+  },
+  {
+    points: "20 215 20 410",
+    animatedOn: 0.51,
+    isAnimated: false,
+  },
+  {
+    points: "20 410 20 605",
+    animatedOn: 0.78,
+    isAnimated: false,
+  },
+  {
+    points: "20 605 20 800",
+    animatedOn: 0.98,
+    isAnimated: false,
+  },
+  {
+    points: "120 300 120 600",
+    animatedOn: 0.45,
+    isAnimated: false,
+  },
+  {
+    points: "120 600 120 800 20 840",
+    animatedOn: 0.92,
+    isAnimated: false,
+  },
+];
 const dotVariants = {
-  visible: { opacity: 1, scale: 1, duration: ".2s" },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    duration: ".2s",
+    transition: { delay: 0.5 },
+  },
   hidden: { opacity: 0, scale: 0.1, duration: ".2s" },
+};
+const dashedVariants = {
+  visible: { opacity: 1, duration: ".2s", transition: { delay: 0.5 } },
+  hidden: { opacity: 0, duration: ".2s" },
 };
 const glowVariants = {
   visible: { opacity: 1, duration: ".2s", transition: { delay: 0.5 } },
@@ -79,6 +119,7 @@ const glowVariants = {
 const AnimatedPath: React.FC<{}> = () => {
   const pathRef = useRef<null | SVGSVGElement>(null);
   const [dotsState, setDotsState] = useState(dots);
+  const [dashedState, setDashedState] = useState(dashed);
   const [glowIsShow, setGlowIsShow] = useState(false);
   const [scrollYProgress, setScrollYProgress] = useState(0);
   const animationYProgress = useMotionValue(0);
@@ -135,11 +176,23 @@ const AnimatedPath: React.FC<{}> = () => {
           );
         });
 
+        // show dashed path
+        setDashedState((prevState) => {
+          return prevState.map((dashedItem) =>
+            dashedItem.animatedOn < pathLengthProgress
+              ? { ...dashedItem, isAnimated: true }
+              : dashedItem
+          );
+        });
+
         // forced animated
         if (pathLengthProgress > 0.7) {
           animationYProgress.set(1);
           setDotsState((prevState) =>
             prevState.map((dot) => ({ ...dot, isAnimated: true }))
+          );
+          setDashedState((prevState) =>
+            prevState.map((dashedItem) => ({ ...dashedItem, isAnimated: true }))
           );
           // show glow
           setGlowIsShow(true);
@@ -187,28 +240,6 @@ const AnimatedPath: React.FC<{}> = () => {
               pathLength: pathLength,
             }}
           />
-          <motion.polyline
-            points={points.left}
-            fill="transparent"
-            strokeWidth=".5"
-            stroke="#8c8f98"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            style={{
-              pathLength: pathLength,
-            }}
-          />
-          <motion.polyline
-            points={points.right}
-            fill="transparent"
-            strokeWidth=".5"
-            stroke="#8c8f98"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            style={{
-              pathLength: pathLength,
-            }}
-          />
           {dotsState.map((dot, index) => (
             <motion.circle
               key={index}
@@ -218,6 +249,20 @@ const AnimatedPath: React.FC<{}> = () => {
               fill="#00ffa3"
               variants={dotVariants}
               animate={dot.isAnimated ? "visible" : "hidden"}
+            />
+          ))}
+          {dashedState.map((dashedItem, index) => (
+            <motion.polyline
+              key={index}
+              points={dashedItem.points}
+              fill="transparent"
+              strokeWidth=".5"
+              stroke="#8c8f98"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeDasharray="4 4"
+              variants={dashedVariants}
+              animate={dashedItem.isAnimated ? "visible" : "hidden"}
             />
           ))}
         </motion.svg>
