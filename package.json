@@ -21,11 +21,12 @@
     "d3": "^7.3.0",
     "date-fns": "^2.28.0",
     "fp-ts": "^2.11.8",
+    "framer-motion": "^6.2.3",
     "highcharts": "^9.3.2",
     "highcharts-react-official": "^3.1.0",
     "jsbi": "^4.1.0",
     "lodash": "^4.17.21",
-    "next": "12.0.9",
+    "next": "^12.0.9",
     "react": "17.0.2",
     "react-clipboard.js": "^2.0.16",
     "react-countup": "^6.1.1",
@@ -49,11 +50,46 @@
     "eslint": "8.7.0",
     "eslint-config-next": "12.0.9",
     "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-react": "^7.18.3",
+    "eslint-plugin-react-hooks": "^3.0.0",
+    "husky": "^6.0.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "25.0.0",
+    "jest-mock": "^26.1.0",
+    "jest-next-dynamic": "^1.0.1",
+    "lint-staged": ">=10",
+    "mini-css-extract-plugin": "^2.5.3",
     "postcss": "^8.4.5",
     "prettier": "^2.5.1",
     "swr": "^0.4.2",
     "sass": "^1.49.0",
     "tailwindcss": "^3.0.17",
-    "typescript": "^4.5.5"
+    "typescript": "^4.5.5",
+    "webpack": "^5.67.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint",
+    "*.{ts,tsx}": "tsc-files --noEmit"
+  },
+  "standard": {
+    "globals": [
+      "describe",
+      "context",
+      "before",
+      "beforeEach",
+      "after",
+      "afterEach",
+      "it",
+      "expect",
+      "beforeEach",
+      "cy",
+      "contains"
+    ]
   }
 }
