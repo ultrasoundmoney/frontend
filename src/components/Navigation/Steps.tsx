@@ -47,14 +47,14 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
     }, [getActiveBalls]);
 
     return (
-      <div className="w-full h-full md:w-9/12 relative flex justify-around lg:justify-around">
+      <div className="w-full h-full md:w-9/12 relative flex justify-around lg:justify-around items-center relative">
         <div
           ref={ref}
           style={{
             minWidth: "32px",
             transition: "0.3s ease-in-out",
           }}
-          className={`absolute bottom-6`}
+          className={`absolute top-0`}
         >
           <Link href="/">
             <img style={{ height: "32px" }} src={EthLogo.src} alt={t.title} />
@@ -72,10 +72,7 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
                   );
                 }
                 return (
-                  <div
-                    className="flex w-full h-full items-center"
-                    key={`${index}`}
-                  >
+                  <div className="flex w-full h-full" key={`${index}`}>
                     <StepperPoint name={item.name} active={item.active} />
                     <StepperTrack />
                   </div>
