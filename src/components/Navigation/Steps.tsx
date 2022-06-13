@@ -57,7 +57,7 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
           className={`absolute bottom-6`}
         >
           <Link href="/">
-            <img style={{ height: "32px" }} src={EthLogo} alt={t.title} />
+            <img style={{ height: "32px" }} src={EthLogo.src} alt={t.title} />
           </Link>
         </div>
         <div className="flex w-full justify-around items-start">
