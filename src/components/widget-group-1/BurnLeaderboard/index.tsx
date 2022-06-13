@@ -7,7 +7,7 @@ import { Unit } from "../../../denomination";
 import { FeatureFlags } from "../../../feature-flags";
 import styles from "../../../styles/Scrollbar.module.scss";
 import { TimeFrameNext } from "../../../time_frames";
-import Title from "../../widget-subcomponents/WidgetTitle";
+import { WidgetTitle } from "../../widget-subcomponents";
 import LeaderboardRow from "./LeaderboardRow";
 
 const feePeriodToUpdateMap: Record<TimeFrameNext, keyof Leaderboards> = {
@@ -108,11 +108,7 @@ const BurnLeaderboard: FC<Props> = ({
         className="flex flex-col gap-y-4 lg:h-0 lg:min-h-full"
         style={{ height: "32rem" }}
       >
-        <Title
-          onClickTimeFrame={onClickTimeFrame}
-          title="burn leaderboard"
-          timeFrame={timeFrame}
-        />
+        <WidgetTitle>burn leaderboard</WidgetTitle>
         {/* the scrollbar normally hides, to make it appear as if floating to the right of the main content we add a negative right margin. */}
         <div
           className={`

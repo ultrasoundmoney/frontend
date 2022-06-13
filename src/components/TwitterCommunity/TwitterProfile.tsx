@@ -22,7 +22,7 @@ const TwitterProfile: FC<{ profiles: TwitterProfile[] | undefined }> = ({
 
   return (
     <>
-      <div className={`flex flex-wrap justify-center relative`}>
+      <div className={`flex flex-wrap justify-center`}>
         {currentProfiles.map((item, index) => (
           <div key={index} className="m-2 w-10 h-10">
             {item === undefined ? (

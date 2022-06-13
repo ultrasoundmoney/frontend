@@ -18,7 +18,7 @@ import { SectionTitle } from "../Texts";
 import ToggleSwitch from "../ToggleSwitch";
 import TwitterCommunity from "../TwitterCommunity";
 import WidgetGroup1 from "../widget-group-1";
-import WidgetTitle from "../widget-subcomponents/WidgetTitle";
+import { WidgetTitle } from "../widget-subcomponents";
 import Flippenings from "./Flippenings";
 import styles from "./Home.module.scss";
 import Scarcity from "./Scarcity";
@@ -58,8 +58,15 @@ const AdminTools: FC<{
   featureFlags: FeatureFlags;
   setFlag: ({ flag, enabled }: { flag: Flag; enabled: boolean }) => void;
 }> = ({ featureFlags, setFlag }) => (
-  <div className="fixed bottom-4 left-4 bg-blue-tangaroa rounded-lg p-4 z-10">
-    <WidgetTitle title="feature flags"></WidgetTitle>
+  <div
+    className={`
+      fixed bottom-4 left-4
+      bg-blue-tangaroa rounded-lg
+      p-4 z-20
+      border-2 border-slate-600
+    `}
+  >
+    <WidgetTitle>feature flags</WidgetTitle>
     {flags.map((flag) => (
       <div
         key={flag}

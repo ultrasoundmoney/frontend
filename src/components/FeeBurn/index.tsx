@@ -17,8 +17,7 @@ import { AnimatedAmount } from "../Amount";
 import { AmountUnitSpace } from "../Spacing";
 import SpanMoji from "../SpanMoji";
 import { TextInter, TextRoboto } from "../Texts";
-import WidgetBackground from "../widget-subcomponents/WidgetBackground";
-import WidgetTitle from "../widget-subcomponents/WidgetTitle";
+import { Group1Base } from "../widget-subcomponents";
 
 const timeframeFeesBurnedMap: Record<
   TimeFrameNext,
@@ -118,12 +117,11 @@ const CumulativeFeeBurn: FC<Props> = ({
       : Format.ethFromWei(selectedFeesBurnedEth) / selectedIssuance;
 
   return (
-    <WidgetBackground>
-      <WidgetTitle
-        onClickTimeFrame={onClickTimeFrame}
-        timeFrame={timeFrame}
-        title="burn total"
-      />
+    <Group1Base
+      onClickTimeFrame={onClickTimeFrame}
+      timeFrame={timeFrame}
+      title="burn total"
+    >
       <div className="flex flex-col gap-y-8 pt-2">
         <div
           className={`
@@ -185,7 +183,7 @@ const CumulativeFeeBurn: FC<Props> = ({
           </div>
         </div>
       </div>
-    </WidgetBackground>
+    </Group1Base>
   );
 };
 

@@ -8,8 +8,7 @@ import { A, flow, NEA, O, pipe } from "../fp";
 import { TimeFrameNext } from "../time_frames";
 import { Amount } from "./Amount";
 import { LabelText, TextInter, TextRoboto } from "./Texts";
-import WidgetBackground from "./widget-subcomponents/WidgetBackground";
-import WidgetTitle from "./widget-subcomponents/WidgetTitle";
+import { Group1Base } from "./widget-subcomponents";
 
 type CategoryProps = {
   fees: number | undefined;
@@ -40,6 +39,9 @@ type CategorySegmentProps = {
   showHighlight: boolean;
 };
 
+const alwaysShowImgPercentThreshold = 0.08;
+const skeletonLoadingWidth = 0.1;
+
 const CategorySegment: FC<CategorySegmentProps> = ({
   imgAlt,
   imgName,
@@ -51,7 +53,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
   <div
     className="flex flex-col items-center select-none"
     style={{
-      width: `${(percentOfTotalBurn ?? 0.1) * 100}%`,
+      width: `${(percentOfTotalBurn ?? skeletonLoadingWidth) * 100}%`,
     }}
     onMouseEnter={() => onHoverCategory(true)}
     onMouseLeave={() => onHoverCategory(false)}
@@ -70,7 +72,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
             visibility:
               percentOfTotalBurn === undefined
                 ? "hidden"
-                : percentOfTotalBurn < 0.082
+                : percentOfTotalBurn < alwaysShowImgPercentThreshold
                 ? "hidden"
                 : "visible",
           }}
@@ -110,7 +112,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
       ) : (
         <TextRoboto
           className={`font-roboto color-animation ${
-            !showHighlight && percentOfTotalBurn < 0.06
+            !showHighlight && percentOfTotalBurn < alwaysShowImgPercentThreshold
               ? "invisible"
               : "visible"
           }`}
@@ -118,7 +120,10 @@ const CategorySegment: FC<CategorySegmentProps> = ({
             color: showHighlight ? Colors.white : Colors.spindle,
           }}
         >
-          {Format.formatNoDigit((percentOfTotalBurn ?? 0.1) * 100)}%
+          {Format.formatNoDigit(
+            (percentOfTotalBurn ?? skeletonLoadingWidth) * 100,
+          )}
+          %
         </TextRoboto>
       )}
     </div>
@@ -126,14 +131,8 @@ const CategorySegment: FC<CategorySegmentProps> = ({
 );
 
 const CategoryBar: FC<CategoryBarProps> = ({ nft, defi, mev, l2, misc }) => (
-  <div className="relative flex py-4">
-    <div className="flex items-center">
-      <div
-        className="absolute w-full h-2 bg-blue-highlightbg rounded-full color-animation"
-        onMouseEnter={() => undefined}
-        onMouseLeave={() => undefined}
-      ></div>
-    </div>
+  <div className="relative flex py-4 items-center">
+    <div className="absolute w-full h-2 bg-blue-highlightbg rounded-full color-animation"></div>
     <div className="w-full flex flex-row top-0 left-0 items-center z-10">
       {nft && (
         <CategorySegment
@@ -400,12 +399,11 @@ const BurnCategoryWidget: FC<Props> = ({
   };
 
   return (
-    <WidgetBackground>
-      <WidgetTitle
-        onClickTimeFrame={onClickTimeFrame}
-        title="burn categories"
-        timeFrame={timeFrame}
-      />
+    <Group1Base
+      title="burn categories"
+      onClickTimeFrame={onClickTimeFrame}
+      timeFrame={timeFrame}
+    >
       <div className="relative">
         <div
           className={`
@@ -505,7 +503,7 @@ const BurnCategoryWidget: FC<Props> = ({
           </div>
         </div>
       </div>
-    </WidgetBackground>
+    </Group1Base>
   );
 };
 
