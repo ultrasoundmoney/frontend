@@ -295,6 +295,46 @@
             bottom: 0px;
         }
     }
+
+
+    //.merge-path_animated {
+    //    height: 938px;
+    //    width: 210px;
+    //    position: relative;
+    //
+    //    .path {
+    //        transition: height .2s ease;
+    //        position: absolute;
+    //        width: 24px;
+    //        height: 24px;
+    //        border-radius: 20px;
+    //        background-color: #191F32;
+    //
+    //        &_left {
+    //            top: 0;
+    //            left: 0;
+    //        }
+    //
+    //        &_right {
+    //            top: 300px;
+    //            right: 0;
+    //        }
+    //
+    //        &_right_rotate {
+    //            top: 800px;
+    //            right: 0;
+    //            height: 214px;
+    //            transform: rotate(78deg);
+    //            transform-origin: top right;
+    //        }
+    //
+    //        &_right_bottom {
+    //            top: 812px;
+    //            left: 0;
+    //            height: 107px;
+    //        }
+    //    }
+    //}
 }
 
 .hero {
