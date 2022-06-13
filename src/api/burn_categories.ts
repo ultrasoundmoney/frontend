@@ -1,4 +1,5 @@
 import useSWR from "swr";
+import { TimeFrameNext } from "../time_frames";
 import { feesBasePath } from "./fees";
 
 const category = [
@@ -28,7 +29,7 @@ export const categoryDisplayMap: Record<Category, string> = {
 export const getIsKnownCategory = (u: unknown): u is Category =>
   typeof u === "string" && category.includes(u as Category);
 
-type BurnCategory = {
+export type BurnCategory = {
   category: Category;
   fees: number;
   feesUsd: number;
@@ -37,7 +38,7 @@ type BurnCategory = {
   percentOfTotalBurnUsd: number;
 };
 
-export type BurnCategories = BurnCategory[];
+export type BurnCategories = Record<TimeFrameNext, BurnCategory[]>;
 
 export const useBurnCategories = () => {
   const { data } = useSWR<BurnCategories>(`${feesBasePath}/burn-categories`);

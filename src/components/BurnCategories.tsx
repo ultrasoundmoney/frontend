@@ -1,9 +1,11 @@
 import { FC, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import { BurnCategories, useBurnCategories } from "../api/burn_categories";
+import { BurnCategory, useBurnCategories } from "../api/burn_categories";
 import Colors from "../colors";
+import { FeatureFlags } from "../feature-flags";
 import * as Format from "../format";
 import { A, flow, NEA, O, pipe } from "../fp";
+import { TimeFrameNext } from "../time_frames";
 import { Amount } from "./Amount";
 import { LabelText, TextInter, TextRoboto } from "./Texts";
 import WidgetBackground from "./widget-subcomponents/WidgetBackground";
@@ -124,15 +126,15 @@ const CategorySegment: FC<CategorySegmentProps> = ({
 );
 
 const CategoryBar: FC<CategoryBarProps> = ({ nft, defi, mev, l2, misc }) => (
-  <div className="relative">
-    <div className="h-28 flex items-center">
+  <div className="relative flex py-4">
+    <div className="flex items-center">
       <div
         className="absolute w-full h-2 bg-blue-highlightbg rounded-full color-animation"
         onMouseEnter={() => undefined}
         onMouseLeave={() => undefined}
       ></div>
     </div>
-    <div className="absolute h-28 w-full flex flex-row top-0 left-0 items-center">
+    <div className="w-full flex flex-row top-0 left-0 items-center z-10">
       {nft && (
         <CategorySegment
           imgAlt={nft.imgAlt}
@@ -191,10 +193,11 @@ const CategoryBar: FC<CategoryBarProps> = ({ nft, defi, mev, l2, misc }) => (
 type CategoryRowProps = {
   amountFormatted: string | undefined;
   countFormatted: string | undefined;
+  hovering: boolean;
   link?: string;
   name: string;
-  hovering: boolean;
   setHovering: (hovering: boolean) => void;
+  showCategoryCounts: boolean;
 };
 
 const CategoryRow: FC<CategoryRowProps> = ({
@@ -204,9 +207,14 @@ const CategoryRow: FC<CategoryRowProps> = ({
   link,
   name,
   setHovering,
+  showCategoryCounts = false,
 }) => (
   <a
-    className="grid grid-cols-3 link-animation select-none"
+    className={`
+      grid ${showCategoryCounts ? "grid-cols-3" : "grid-cols-2"}
+      link-animation
+      select-none
+    `}
     href={link}
     onMouseEnter={() => setHovering(true)}
     onMouseLeave={() => setHovering(false)}
@@ -215,14 +223,25 @@ const CategoryRow: FC<CategoryRowProps> = ({
     target="_blank"
   >
     <TextInter className="font-inter text-white">{name}</TextInter>
-    <div className="text-right col-span-2 md:col-span-1 md:mr-8">
+    <div
+      className={`
+        text-right
+        col-span-2 md:col-span-1
+        ${showCategoryCounts ? "md:mr-8" : ""}
+      `}
+    >
       {amountFormatted === undefined ? (
         <Skeleton width="4rem" />
       ) : (
         <Amount unit="eth">{amountFormatted}</Amount>
       )}
     </div>
-    <div className="text-right hidden md:block">
+    <div
+      className={`
+        text-right
+        hidden ${showCategoryCounts ? "md:block" : ""}
+      `}
+    >
       {countFormatted === undefined ? (
         <Skeleton width="5rem" />
       ) : (
@@ -247,12 +266,12 @@ const formatCount = flow(
 );
 
 const buildMiscCategory = (
-  burnCategoriesData: BurnCategories,
+  burnCategories: BurnCategory[],
   setHoveringMisc: (bool: boolean) => void,
   hoveringMisc: boolean,
 ) =>
   pipe(
-    NEA.fromArray(burnCategoriesData),
+    NEA.fromArray(burnCategories),
     O.map(
       A.reduce({} as CategoryProps, (sumCategory, category) => ({
         imgName: "misc",
@@ -287,20 +306,43 @@ const buildMiscCategory = (
     ),
   );
 
-const BurnCategoryWidget = () => {
-  const burnCategoriesData = useBurnCategories();
+type Props = {
+  featureFlags: FeatureFlags;
+  onClickTimeFrame: () => void;
+  timeFrame: TimeFrameNext;
+};
+
+const BurnCategoryWidget: FC<Props> = ({
+  featureFlags,
+  onClickTimeFrame,
+  timeFrame,
+}) => {
+  const burnCategories = useBurnCategories();
   const [hoveringNft, setHoveringNft] = useState(false);
   const [hoveringDefi, setHoveringDefi] = useState(false);
   const [hoveringMev, setHoveringMev] = useState(false);
   const [hoveringL2, setHoveringL2] = useState(false);
   const [hoveringMisc, setHoveringMisc] = useState(false);
+  const { showCategoryCounts } = featureFlags;
 
-  const nft = burnCategoriesData?.find(({ category }) => category === "nft");
-  const defi = burnCategoriesData?.find(({ category }) => category === "defi");
-  const mev = burnCategoriesData?.find(({ category }) => category === "mev");
-  const l2 = burnCategoriesData?.find(({ category }) => category === "l2");
+  const selectedBurnCategories =
+    // TODO: our old API returned an array, this element is not visible yet, but trying to access an array like an object does crash the full page, therefore we have this check to make sure not to crash, and can remove it once the new API is deployed in production.
+    burnCategories === undefined || Array.isArray(burnCategories)
+      ? undefined
+      : burnCategories[timeFrame];
+
+  const nft = selectedBurnCategories?.find(
+    ({ category }) => category === "nft",
+  );
+  const defi = selectedBurnCategories?.find(
+    ({ category }) => category === "defi",
+  );
+  const mev = selectedBurnCategories?.find(
+    ({ category }) => category === "mev",
+  );
+  const l2 = selectedBurnCategories?.find(({ category }) => category === "l2");
   const misc = pipe(
-    burnCategoriesData?.filter(
+    selectedBurnCategories?.filter(
       (category) => !["nft", "defi", "mev", "l2"].includes(category.category),
     ),
     O.fromNullable,
@@ -359,73 +401,109 @@ const BurnCategoryWidget = () => {
 
   return (
     <WidgetBackground>
-      <WidgetTitle title="burn categories" />
-      <CategoryBar
-        nft={burnCategoryParts?.nft}
-        defi={burnCategoryParts?.defi}
-        mev={burnCategoryParts?.mev}
-        l2={burnCategoryParts?.l2}
-        misc={misc}
+      <WidgetTitle
+        onClickTimeFrame={onClickTimeFrame}
+        title="burn categories"
+        timeFrame={timeFrame}
       />
-      <div className="flex flex-col gap-y-3">
-        <div className="grid grid-cols-3">
-          <LabelText>category</LabelText>
-          <LabelText className="text-right col-span-2 md:col-span-1 md:mr-8">
-            burn
-          </LabelText>
-          <LabelText className="text-right hidden md:block invisible md:visible">
-            transactions
-          </LabelText>
+      <div className="relative">
+        <div
+          className={`
+          absolute
+          text-blue-spindle text-lg text-center
+          left-0 top-0 w-full h-full
+          flex justify-center items-center
+          ${timeFrame === "m5" ? "visible" : "hidden"}
+        `}
+        >
+          5 minute time frame unavailable
         </div>
-        {
-          <>
-            <CategoryRow
-              amountFormatted={formatFees(burnCategoryParts?.nft.fees)}
-              countFormatted={formatCount(
-                burnCategoryParts?.nft.transactionCount,
-              )}
-              name="NFTs"
-              hovering={hoveringNft}
-              setHovering={setHoveringNft}
-            />
-            <CategoryRow
-              amountFormatted={formatFees(burnCategoryParts?.defi.fees)}
-              countFormatted={formatCount(
-                burnCategoryParts?.defi.transactionCount,
-              )}
-              name="DeFi"
-              hovering={hoveringDefi}
-              setHovering={setHoveringDefi}
-            />
-            <CategoryRow
-              amountFormatted={formatFees(burnCategoryParts?.mev.fees)}
-              countFormatted={formatCount(
-                burnCategoryParts?.mev.transactionCount,
-              )}
-              name="MEV"
-              hovering={hoveringMev}
-              setHovering={setHoveringMev}
-            />
-            <CategoryRow
-              amountFormatted={formatFees(burnCategoryParts?.l2.fees)}
-              countFormatted={formatCount(
-                burnCategoryParts?.l2.transactionCount,
-              )}
-              name="L2"
-              hovering={hoveringL2}
-              setHovering={setHoveringL2}
-            />
-            {misc && (
-              <CategoryRow
-                amountFormatted={formatFees(misc?.fees)}
-                countFormatted={formatCount(misc?.transactionCount)}
-                name="Misc"
-                hovering={hoveringMisc}
-                setHovering={setHoveringMisc}
-              />
-            )}
-          </>
-        }
+        <div className={`${timeFrame === "m5" ? "opacity-0" : "visible"}`}>
+          <CategoryBar
+            nft={burnCategoryParts?.nft}
+            defi={burnCategoryParts?.defi}
+            mev={burnCategoryParts?.mev}
+            l2={burnCategoryParts?.l2}
+            misc={misc}
+          />
+          <div className="flex flex-col gap-y-3">
+            <div
+              className={`grid ${
+                showCategoryCounts ? "grid-cols-3" : "grid-cols-2"
+              }`}
+            >
+              <LabelText>category</LabelText>
+              <LabelText
+                className={`
+                  text-right
+                  col-span-2 md:col-span-1
+                  ${showCategoryCounts ? "md:mr-8" : ""}
+                `}
+              >
+                burn
+              </LabelText>
+              <LabelText
+                className={`text-right hidden ${
+                  showCategoryCounts ? "md:block" : ""
+                }`}
+              >
+                transactions
+              </LabelText>
+            </div>
+            {
+              <>
+                <CategoryRow
+                  amountFormatted={formatFees(burnCategoryParts?.nft.fees)}
+                  countFormatted={formatCount(
+                    burnCategoryParts?.nft.transactionCount,
+                  )}
+                  hovering={hoveringNft}
+                  name="NFTs"
+                  setHovering={setHoveringNft}
+                  showCategoryCounts={showCategoryCounts}
+                />
+                <CategoryRow
+                  amountFormatted={formatFees(burnCategoryParts?.defi.fees)}
+                  countFormatted={formatCount(
+                    burnCategoryParts?.defi.transactionCount,
+                  )}
+                  hovering={hoveringDefi}
+                  name="DeFi"
+                  setHovering={setHoveringDefi}
+                  showCategoryCounts={showCategoryCounts}
+                />
+                <CategoryRow
+                  amountFormatted={formatFees(burnCategoryParts?.mev.fees)}
+                  countFormatted={formatCount(
+                    burnCategoryParts?.mev.transactionCount,
+                  )}
+                  hovering={hoveringMev}
+                  name="MEV"
+                  setHovering={setHoveringMev}
+                  showCategoryCounts={showCategoryCounts}
+                />
+                <CategoryRow
+                  amountFormatted={formatFees(burnCategoryParts?.l2.fees)}
+                  countFormatted={formatCount(
+                    burnCategoryParts?.l2.transactionCount,
+                  )}
+                  hovering={hoveringL2}
+                  name="L2"
+                  setHovering={setHoveringL2}
+                  showCategoryCounts={showCategoryCounts}
+                />
+                <CategoryRow
+                  amountFormatted={formatFees(misc?.fees)}
+                  countFormatted={formatCount(misc?.transactionCount)}
+                  hovering={hoveringMisc}
+                  name="Misc"
+                  setHovering={setHoveringMisc}
+                  showCategoryCounts={showCategoryCounts}
+                />
+              </>
+            }
+          </div>
+        </div>
       </div>
     </WidgetBackground>
   );

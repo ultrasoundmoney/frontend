@@ -120,7 +120,11 @@ const WidgetGroup1: FC<{ featureFlags: FeatureFlags }> = ({ featureFlags }) => {
             featureFlags.enableCategories ? "block" : "hidden"
           }`}
         >
-          <BurnCategories />
+          <BurnCategories
+            featureFlags={featureFlags}
+            onClickTimeFrame={handleClickTimeFrame}
+            timeFrame={timeFrame}
+          />
         </div>
         <div className="col-start-1 lg:row-start-2">
           <LatestBlocks unit={unit} />
