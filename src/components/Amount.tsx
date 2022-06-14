@@ -7,43 +7,50 @@ import { AmountUnitSpace } from "./Spacing";
 import { TextRoboto, UnitText } from "./Texts";
 
 type AmountProps = {
+  amountPostfix?: string;
   className?: string;
+  textSizeClass?: string;
   unitPostfix: string;
-  unitPrefix?: string;
 };
 
 export const Amount: FC<AmountProps> = ({
-  className,
+  amountPostfix,
   children,
-  unitPrefix,
+  className,
+  textSizeClass,
   unitPostfix,
 }) => (
-  <TextRoboto className={`text-base md:text-lg ${className ?? ""}`}>
+  <TextRoboto
+    className={`${className ?? ""} ${textSizeClass ?? "text-base md:text-lg"}`}
+  >
     {children}
-    {unitPrefix}
+    {amountPostfix}
     <AmountUnitSpace />
-    <UnitText>{unitPostfix}</UnitText>
+    <UnitText className={textSizeClass}>{unitPostfix}</UnitText>
   </TextRoboto>
 );
 
 type MoneyAmountProps = {
+  amountPostfix?: string;
   className?: string;
   skeletonWidth?: string;
-  unit: Unit;
-  unitPrefix?: string;
+  textSizeClass?: string;
+  unit: Unit | string;
 };
 
 export const MoneyAmount: FC<MoneyAmountProps> = ({
+  amountPostfix,
   children,
   className,
   skeletonWidth = "3rem",
+  textSizeClass,
   unit = "eth",
-  unitPrefix,
 }) => (
   <Amount
+    amountPostfix={amountPostfix}
     className={className}
     unitPostfix={unit === "eth" ? "ETH" : unit === "usd" ? "USD" : unit}
-    unitPrefix={unitPrefix}
+    textSizeClass={textSizeClass}
   >
     {children === undefined ? (
       <Skeleton inline={true} width={skeletonWidth} />

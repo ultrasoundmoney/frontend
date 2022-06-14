@@ -1,8 +1,9 @@
 import useSWR from "swr";
 import * as Config from "../config";
+import fetcher from "./default-fetcher";
 
-type Profile = {
-  bio: string;
+export type FamProfile = {
+  bio: string | null;
   famFollowerCount: number;
   followersCount: number;
   name: string;
@@ -12,7 +13,7 @@ type Profile = {
 
 type ProfilesResponse = {
   count: number;
-  profiles: Profile[];
+  profiles: FamProfile[];
 };
 
 export const famBasePath =
@@ -23,7 +24,7 @@ export const famBasePath =
     : "https://api.ultrasound.money/fam";
 
 export const useProfiles = () => {
-  const { data } = useSWR<ProfilesResponse>(`${famBasePath}/profiles`);
+  const { data } = useSWR<ProfilesResponse>(`${famBasePath}/profiles`, fetcher);
 
   return data;
 };

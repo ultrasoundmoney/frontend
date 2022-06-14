@@ -1,11 +1,11 @@
 import { FC, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import { BurnCategory, useBurnCategories } from "../api/burn_categories";
+import { BurnCategory, useBurnCategories } from "../api/burn-categories";
 import Colors from "../colors";
 import { FeatureFlags } from "../feature-flags";
 import * as Format from "../format";
 import { A, flow, NEA, O, pipe } from "../fp";
-import { TimeFrameNext } from "../time_frames";
+import { TimeFrameNext } from "../time-frames";
 import { MoneyAmount } from "./Amount";
 import { LabelText, TextInter, TextRoboto } from "./Texts";
 import { Group1Base } from "./widget-subcomponents";
@@ -111,7 +111,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
         <Skeleton width="1.5rem" />
       ) : (
         <TextRoboto
-          className={`font-roboto color-animation ${
+          className={`color-animation ${
             !showHighlight && percentOfTotalBurn < alwaysShowImgPercentThreshold
               ? "invisible"
               : "visible"

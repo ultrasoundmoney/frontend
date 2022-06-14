@@ -11,7 +11,7 @@ import BlockGoal from "./goal";
 import TheMergeBlock from "./theMerge";
 // import EtherTheUltraSound from "./theUltraSound";
 import EtherTheUltraSound from "./BlockBtcEthUsd";
-import TwitterCommunity from "../TwitterCommunity";
+import TwitterFam from "../TwitterFam";
 import FaqBlock from "./faq";
 import NftDrop from "../NftDrop/index";
 import FollowingYou from "../FollowingYou";
@@ -31,10 +31,11 @@ import {
   constantinople_data,
   london_data,
 } from "./historicalData";
-import { useGroupedData1 } from "../../api/grouped_stats_1";
 import useSWR from "swr";
 import Stepper from "../Navigation/Stepper";
 import { SteppersProvider } from "../../context/StepperContext";
+import * as Format from "../../format";
+import { useGroupedStats1 } from "../../api/grouped-stats-1";
 // import Timeline from "./timeline";
 
 type EthPrice = {

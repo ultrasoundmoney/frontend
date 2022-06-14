@@ -1,5 +1,6 @@
 import useSWR from "swr";
 import * as Duration from "../duration";
+import fetcher from "./default-fetcher";
 import { feesBasePath } from "./fees";
 
 type MarketCaps = {
@@ -11,7 +12,7 @@ type MarketCaps = {
 };
 
 export const useMarketCaps = (): MarketCaps | undefined => {
-  const { data } = useSWR<MarketCaps>(`${feesBasePath}/market-caps`, {
+  const { data } = useSWR<MarketCaps>(`${feesBasePath}/market-caps`, fetcher, {
     refreshInterval: Duration.millisFromSeconds(30),
   });
 

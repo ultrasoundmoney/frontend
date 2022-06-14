@@ -1,9 +1,9 @@
 import React, { FC, useCallback, useState } from "react";
-import { useGroupedData1 } from "../../api/grouped_stats_1";
+import { useGroupedStats1 } from "../../api/grouped-stats-1";
 import { Unit } from "../../denomination";
 import { FeatureFlags } from "../../feature-flags";
 import * as Format from "../../format";
-import { TimeFrameNext, timeFramesNext } from "../../time_frames";
+import { TimeFrameNext, timeFramesNext } from "../../time-frames";
 import BurnCategories from "../BurnCategories";
 import BurnRecords from "../BurnRecords";
 import BurnTotal from "../BurnTotal";
@@ -18,7 +18,7 @@ import TimeFrameControl from "./controls/TimeFrameControl";
 
 const WidgetGroup1: FC<{ featureFlags: FeatureFlags }> = ({ featureFlags }) => {
   const [simulateMerge, setSimulateMerge] = useState(false);
-  const baseFeePerGas = useGroupedData1()?.baseFeePerGas;
+  const baseFeePerGas = useGroupedStats1()?.baseFeePerGas;
   const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
 

@@ -1,25 +1,22 @@
 import { clamp } from "lodash";
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { animated, config, useSpring } from "react-spring";
-import { useGroupedData1 } from "../../api/grouped_stats_1";
+import { useGroupedStats1 } from "../../api/grouped-stats-1";
 import { useScarcity } from "../../api/scarcity";
 import * as Format from "../../format";
 import * as StaticEtherData from "../../static-ether-data";
-import { TimeFrameNext } from "../../time_frames";
+import { TimeFrameNext } from "../../time-frames";
 import { timeframeBurnRateMap } from "../BurnTotal";
 import ToggleSwitch from "../ToggleSwitch";
 import TimeFrameIndicator from "../widget-subcomponents/TimeFrameIndicator";
 import SplitGaugeSvg from "./SplitGaugeSvg";
-
-const powIssuanceYear = StaticEtherData.powIssuancePerDay * 365.25;
-const posIssuanceYear = StaticEtherData.posIssuancePerDay * 365.25;
 
 const useGrowthRate = (
   simulateMerge: boolean,
   timeFrame: TimeFrameNext,
 ): number => {
   const ethSupply = useScarcity()?.ethSupply;
-  const burnRates = useGroupedData1()?.burnRates;
+  const burnRates = useGroupedStats1()?.burnRates;
   const [growthRate, setGrowthRate] = useState(0);
 
   useEffect(() => {
@@ -33,8 +30,8 @@ const useGrowthRate = (
     const feeBurnYear = Format.ethFromWei(selectedBurnRate) * 60 * 24 * 365.25;
 
     const issuanceRate = simulateMerge
-      ? posIssuanceYear
-      : posIssuanceYear + powIssuanceYear;
+      ? StaticEtherData.posIssuanceYear
+      : StaticEtherData.posIssuanceYear + StaticEtherData.powIssuanceYear;
 
     const growthRate =
       ethSupply === undefined

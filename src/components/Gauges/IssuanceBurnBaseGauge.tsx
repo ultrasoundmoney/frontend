@@ -1,7 +1,7 @@
 import { clamp } from "lodash";
 import { FC } from "react";
 import { animated, config, useSpring } from "react-spring";
-import { useGroupedData1 } from "../../api/grouped_stats_1";
+import { useGroupedStats1 } from "../../api/grouped-stats-1";
 import colors from "../../colors";
 import { Unit } from "../../denomination";
 import { formatOneDigit, formatZeroDigit } from "../../format";
@@ -30,7 +30,7 @@ const BaseGuage: FC<BaseGuageProps> = ({
   valueUnit,
   unit,
 }) => {
-  const ethPrice = useGroupedData1()?.ethPrice;
+  const ethPrice = useGroupedStats1()?.ethPrice;
 
   const { valueA } = useSpring({
     from: { valueA: 0 },
@@ -50,7 +50,7 @@ const BaseGuage: FC<BaseGuageProps> = ({
 
   return (
     <>
-      <SpanMoji className="leading-10 text-4xl" emoji={emoji} />
+      <SpanMoji className="h-10" emoji={emoji} />
       <div className="mt-6 md:mt-2 lg:mt-8 transform scale-100 md:scale-75 lg:scale-100 xl:scale-110">
         <GaugeSvg
           progress={progress}

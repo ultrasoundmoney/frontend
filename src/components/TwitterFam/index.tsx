@@ -1,22 +1,18 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Clipboard from "react-clipboard.js";
-import { useProfiles } from "../../api/fam";
-import { formatNoDigit } from "../../format";
-import { TranslationsContext } from "../../translations-context";
+import Skeleton from "react-loading-skeleton";
+import { FamProfile, useProfiles } from "../../api/fam";
+import * as Format from "../../format";
 import SpanMoji from "../SpanMoji";
-import TwitterProfile from "./TwitterProfile";
+import FamAvatar from "./FamAvatar";
+import { FamModal, FamModalContent } from "./FamModal";
 
-const TwitterCommunity: FC = () => {
-  const t = useContext(TranslationsContext);
+const TwitterFam: FC = () => {
   const famCount = useProfiles()?.count;
   const profiles = useProfiles()?.profiles;
+  const [selectedProfile, setSelectedProfile] = useState<FamProfile>();
 
   const [isCopiedFeedbackVisible, setIsCopiedFeedbackVisible] = useState(false);
-
-  const getText =
-    famCount !== undefined
-      ? t.title_community.replace("#XXX", formatNoDigit(famCount))
-      : t.title_community;
 
   const onBatSoundCopied = () => {
     setIsCopiedFeedbackVisible(true);
@@ -24,6 +20,7 @@ const TwitterCommunity: FC = () => {
   };
 
   // Workaround to try and improve scroll to behavior for #join-the-fam .
+  // TODO: check if this is still needed.
   useEffect(() => {
     if (window.location.hash === "#join-the-fam" && document !== null) {
       document
@@ -31,6 +28,11 @@ const TwitterCommunity: FC = () => {
         ?.scrollIntoView({ behavior: "smooth" });
     }
   }, []);
+
+  const currentProfiles =
+    profiles === undefined
+      ? (new Array(120).fill(undefined) as undefined[])
+      : profiles;
 
   return (
     <>
@@ -40,10 +42,16 @@ const TwitterCommunity: FC = () => {
           href="https://twitter.com/i/lists/1376636817089396750/members"
           rel="noopener noreferrer"
           role="link"
-          title={t.title_community_hover}
+          title="join the ultra sound Twitter fam"
           className="hover:underline hover:text-blue-spindle relative h-full"
         >
-          {getText}
+          {famCount === undefined ? (
+            <>
+              join <Skeleton inline={true} width="4rem" /> fam members
+            </>
+          ) : (
+            `join ${Format.formatNoDigit(famCount)} fam members`
+          )}
         </a>
       </h1>
       <div className="flex items-center justify-center">
@@ -68,9 +76,30 @@ const TwitterCommunity: FC = () => {
         </Clipboard>
       </div>
       <div className="h-16"></div>
-      <TwitterProfile profiles={profiles} />
+      <div className="flex flex-wrap justify-center">
+        {currentProfiles.map((profile, index) =>
+          profile === undefined ? (
+            <Skeleton key={index} circle={true} height="40px" width="40" />
+          ) : (
+            <FamAvatar
+              key={index}
+              onClick={setSelectedProfile}
+              profile={profile}
+            />
+          ),
+        )}
+      </div>
+      <FamModal
+        onClickBackground={() => setSelectedProfile(undefined)}
+        show={selectedProfile !== undefined}
+      >
+        <FamModalContent
+          onClickClose={() => setSelectedProfile(undefined)}
+          profile={selectedProfile}
+        ></FamModalContent>
+      </FamModal>
     </>
   );
 };
 
-export default TwitterCommunity;
+export default TwitterFam;

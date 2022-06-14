@@ -1,4 +1,4 @@
-import { Category } from "./burn_categories";
+import { Category } from "./burn-categories";
 
 type ContractEntry = {
   address: string;

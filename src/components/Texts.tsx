@@ -9,8 +9,13 @@ export const LabelText: FC<{ className?: string }> = ({
   </TextInter>
 );
 
-export const UnitText: FC = ({ children }) => (
-  <TextRoboto className="text-blue-spindle font-extralight text-base md:text-lg">
+export const UnitText: FC<{ className?: string }> = ({
+  className,
+  children,
+}) => (
+  <TextRoboto
+    className={`text-blue-spindle font-extralight ${className ?? ""}`}
+  >
     {children}
   </TextRoboto>
 );

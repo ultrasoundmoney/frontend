@@ -2,4 +2,7 @@
 export const powIssuancePerDay = 13500;
 
 // amount in ETH, from: https://beaconscan.com/stat/validatortotaldailyincome
-export const posIssuancePerDay = 1300;
+export const posIssuancePerDay = 1352;
+
+export const powIssuanceYear = powIssuancePerDay * 365.25;
+export const posIssuanceYear = posIssuancePerDay * 365.25;

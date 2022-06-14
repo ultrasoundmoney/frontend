@@ -3,7 +3,7 @@ import {
   displayTimeFrameNextMap,
   TimeFrameNext,
   timeFramesNext,
-} from "../../../time_frames";
+} from "../../../time-frames";
 
 export const Button: FC<{ isActive: boolean; onClick: () => void }> = ({
   children,
