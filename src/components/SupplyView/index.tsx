@@ -5,7 +5,6 @@ import { pipe } from "../../fp";
 import {
   estimatedDailyFeeBurn,
   estimatedDailyIssuance,
-  formatDate,
 } from "../../utils/metric-utils";
 import { useTranslations } from "../../utils/use-translation";
 import Slider from "../Slider/Slider";
@@ -14,16 +13,16 @@ import SupplyChart from "./SupplyChart";
 import styles from "./SupplyView.module.scss";
 
 const MIN_PROJECTED_ETH_STAKING = 1e6;
-const DEFAULT_PROJECTED_ETH_STAKING = 10e6;
+const DEFAULT_PROJECTED_ETH_STAKING = 15e6;
 const MAX_PROJECTED_ETH_STAKING = 33554432;
 
 const MIN_PROJECTED_BASE_GAS_PRICE = 0;
-const DEFAULT_PROJECTED_BASE_GAS_PRICE = 50;
-const MAX_PROJECTED_BASE_GAS_PRICE = 150;
+const DEFAULT_PROJECTED_BASE_GAS_PRICE = 100;
+const MAX_PROJECTED_BASE_GAS_PRICE = 200;
 
-const MIN_PROJECTED_MERGE_DATE = DateFns.parseISO("2021-12-01T00:00:00Z");
-const DEFAULT_PROJECTED_MERGE_DATE = DateFns.parseISO("2022-03-31T00:00:00Z");
-const MAX_PROJECTED_MERGE_DATE = DateFns.parseISO("2022-12-01T00:00:00Z");
+const MIN_PROJECTED_MERGE_DATE = DateFns.parseISO("2021-01-01T00:00:00Z");
+const DEFAULT_PROJECTED_MERGE_DATE = DateFns.parseISO("2022-07-01T00:00:00Z");
+const MAX_PROJECTED_MERGE_DATE = DateFns.parseISO("2022-12-31T00:00:00Z");
 
 const SupplyView: React.FC = () => {
   const { translations: t } = useTranslations();
@@ -167,7 +166,7 @@ const SupplyView: React.FC = () => {
 
         <Param
           title={t.merge_date}
-          value={formatDate(projectedMergeDate)}
+          value={DateFns.format(projectedMergeDate, "d MMM yyyy")}
           subValue={`${t.pow_removal}: in ${daysUntilProjectedMerge} ${
             daysUntilProjectedMerge === 1 ? "day" : "days"
           }`}
