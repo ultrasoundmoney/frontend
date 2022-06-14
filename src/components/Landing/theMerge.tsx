@@ -18,7 +18,7 @@ const TheMergeBlock: React.FC<{}> = () => {
   }, []);
   return (
     <>
-      <DrawingLine pointRef={MergeRef} />
+      <DrawingLine pointRef={MergeRef} indexTopSection={4} />
       <section id="next-merge" ref={MergeRef}>
         <ContentBlock
           title={t.landing_themerge_title}

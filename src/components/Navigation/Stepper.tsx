@@ -1,32 +1,48 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import arrowRight from "../../assets/arrowRight.svg";
 import Steps from "./Steps";
 import { StepperContext, StepperPoint } from "../../context/StepperContext";
+import { throttle } from "lodash";
 
-const getIconOffset = (pointsHeights: (StepperPoint | undefined)[]) => {
+const getIconOffset = (
+  pointsHeights: (StepperPoint | undefined)[],
+  pageLoad: boolean
+) => {
+  if (!pageLoad) return 0;
+  const trackPosition = window.scrollY + window.innerHeight / 2;
   if (pointsHeights) {
     const pointsQuantity = pointsHeights.length;
-    const trackPosition = window.scrollY + window.innerHeight / 2;
-    let offset = 0;
-    pointsHeights.forEach((point) => {
-      if (point && trackPosition >= point.offsetY) {
-        if (trackPosition >= point.offsetY + point.height) {
-          offset += 100 / pointsQuantity;
-          return;
-        }
-        offset +=
-          (((trackPosition - point.offsetY) / point.height) * 100) /
-          pointsQuantity;
+    const lastPoint = pointsHeights[pointsQuantity - 1];
+    const distanceBetweenPoints = 100 / (pointsHeights.length - 1);
+    let globalPercent = 0;
+
+    if (lastPoint && trackPosition > lastPoint?.offsetY) return 100;
+    for (let index = 0; index < pointsHeights.length; index++) {
+      const nextPoint = pointsHeights[index + 1]?.offsetY;
+      const currentPoint = pointsHeights[index]?.offsetY;
+      if (
+        currentPoint &&
+        nextPoint &&
+        trackPosition > currentPoint &&
+        trackPosition < nextPoint
+      ) {
+        const from = trackPosition - currentPoint;
+        const to = nextPoint - currentPoint;
+        const percent = (from / to) * 100;
+        globalPercent =
+          distanceBetweenPoints * index +
+          (percent * distanceBetweenPoints) / 100;
       }
-    });
-    return offset;
+    }
+    return globalPercent;
   }
   return 0;
 };
 
 const Stepper: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrollYProgress, setScrollYProgress] = useState(0);
   const stepsRef = useRef<HTMLElement | null>(null);
   const steperIconRef = useRef<HTMLDivElement | null>(null);
   const stepperPoints = useContext(StepperContext);
@@ -36,26 +52,43 @@ const Stepper: React.FC = () => {
     }
   );
 
+  const onScroll = () => {
+    setScrollYProgress(window.scrollY + window.innerHeight / 2);
+  };
+
+  const throttledScroll = throttle(onScroll, 300);
+
+  const [pageLoad, setPageLoad] = useState(false);
+  const memoizedValue = useMemo(() => getIconOffset(controlPoints, pageLoad), [
+    controlPoints,
+    pageLoad,
+  ]);
+
   useEffect(() => {
-    // const offsetTop = stepsRef.current?.offsetTop;
-    // show sticky header
-    window.scrollY > window.innerHeight
+    let offsetYFirstPoint = 2;
+    controlPoints.forEach((el, index) => {
+      if (index === 0 && typeof el?.offsetY === "number") {
+        offsetYFirstPoint = el?.offsetY;
+      }
+    });
+
+    const showStickyHeader: boolean =
+      window.scrollY > offsetYFirstPoint - window.innerHeight / 2;
+    showStickyHeader
       ? stepsRef.current?.classList.add("active")
       : stepsRef.current?.classList.remove("active");
-    const onScroll = () => {
-      // console.log(window.scrollY)
-      // console.log(controlPoints)
-      // if (offsetTop) {
-      if (steperIconRef && steperIconRef.current) {
-        steperIconRef.current.style.left = `${getIconOffset(controlPoints)}%`;
-      }
-      // }
-    };
-    window.addEventListener("scroll", onScroll);
+    if (steperIconRef && steperIconRef.current) {
+      steperIconRef.current.style.left = `${memoizedValue}%`;
+    }
+  }, [controlPoints, scrollYProgress]);
+
+  useEffect(() => {
+    setPageLoad(true);
+    window.addEventListener("scroll", throttledScroll);
     return () => {
-      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("scroll", throttledScroll);
     };
-  }, [controlPoints]);
+  }, []);
 
   return (
     <nav

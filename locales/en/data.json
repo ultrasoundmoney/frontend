@@ -79,8 +79,8 @@
   "landing_feeburned_card3_name": "block reward",
   "landing_feeburned_card3_title": "3 ETH/<span>block</span>",
 
-  "landing_feeburned_card4_name": "block reward 🔥",
-  "landing_feeburned_card4_title": "$314.55",
+  "landing_feeburned_card4_name":"fees burned 🔥",
+  "landing_feeburned_card4_title":"$314.55",
 
   "landing_themerge_title": "What's Next?",
   "landing_themerge_text": "\"The Merge\" is an upgrade to Ethereum that swaps out the current proof-of-work (PoW) consensus mechanism with a more eco-friendly, efficient, and secure proof-of-stake (PoS) consensus mechanism.",
