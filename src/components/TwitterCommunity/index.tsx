@@ -46,7 +46,7 @@ const TwitterCommunity: FC = () => {
           {getText}
         </a>
       </h1>
-      <div className="flex items-center">
+      <div className="flex items-center justify-center">
         <p className="text-blue-shipcove md:text-lg">wear the bat signal</p>
         <div className="w-4"></div>
         <Clipboard data-clipboard-text={"🦇🔊"} onSuccess={onBatSoundCopied}>

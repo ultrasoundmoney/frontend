@@ -32,6 +32,18 @@ const Accordion: React.FC<AccordionProps> = ({ title, text }) => {
             __html: twemoji.parse(text),
           }}
         />
+        <div
+          className={`accordion-item break-words ${
+            !isOpen ? "collapsed animateOut" : "animateIn"
+          }`}
+        >
+          <div
+            className="text-sm accordion-content leading-relaxed pb-6"
+            dangerouslySetInnerHTML={{
+              __html: twemoji.parse(text),
+            }}
+          />
+        </div>
       </div>
     </div>
   );
