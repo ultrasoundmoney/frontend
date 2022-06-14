@@ -38,11 +38,13 @@ const Stepper: React.FC = () => {
 
   useEffect(() => {
     // const offsetTop = stepsRef.current?.offsetTop;
-    controlPoints[0] &&
-    controlPoints[0]?.offsetY < window.scrollY + window.innerHeight / 2
+    // show sticky header
+    window.scrollY > window.innerHeight
       ? stepsRef.current?.classList.add("active")
       : stepsRef.current?.classList.remove("active");
     const onScroll = () => {
+      // console.log(window.scrollY)
+      // console.log(controlPoints)
       // if (offsetTop) {
       if (steperIconRef && steperIconRef.current) {
         steperIconRef.current.style.left = `${getIconOffset(controlPoints)}%`;
