@@ -46,7 +46,7 @@ type EthPrice = {
 };
 
 const LandingPage: React.FC<{}> = () => {
-  const feesBurned = useGroupedData1();
+  const feesBurned = useGroupedStats1();
   const [genesisArr, setGenesisArr] = React.useState(genesis_data[0]);
   const { data } = useSWR<EthPrice>(
     "https://api.ultrasound.money/fees/eth-price",
@@ -631,7 +631,7 @@ const LandingPage: React.FC<{}> = () => {
           id="join-the-fam"
         >
           <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
-            <TwitterCommunity />
+            <TwitterFam />
           </div>
         </section>
         <section
