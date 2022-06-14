@@ -40,7 +40,7 @@ const EIP1559: React.FC = () => {
               className="relative text-center mx-auto mb-8"
               width="111"
               height="90"
-              src={EthBurn}
+              src={EthBurn.src}
               alt="eth-brn"
               onError={imageErrorHandler}
             />
