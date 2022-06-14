@@ -591,9 +591,9 @@ const LandingPage: React.FC<{}> = () => {
     <SteppersProvider>
       <div className="wrapper bg-blue-midnightexpress">
         {/* <div className="container m-auto"> */}
+        <Stepper />
         <Navigation />
         <Intro />
-        <Stepper />
         <BeforeGenesis />
         <GenesisBlock />
         <EIPByzantium />
