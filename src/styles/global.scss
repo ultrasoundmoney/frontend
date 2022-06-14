@@ -55,6 +55,19 @@ a:hover {
   padding-top: 120px;
 }
 
+.stepper_nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  transition: all .2s ease;
+  transform: translateY(-100%);
+
+  &.active {
+      transform: translateY(0);
+  }
+}
+
 .the-merge-path {
   position: relative;
 
