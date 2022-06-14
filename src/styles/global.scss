@@ -2,6 +2,10 @@
 // See: https://nextjs.org/docs/basic-features/built-in-css-support#adding-component-level-css
 
 // Makes overscrolling look better by filling in the default white with our background color.
+html {
+  width: 100vw;
+}
+
 body {
   background-color: #131827;
 }
@@ -56,11 +60,16 @@ a:hover {
   padding-top: 120px;
 }
 
+.four_vidgets {
+  width: 100vw;
+}
+
 .stepper_nav {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
+  width: 100vw;
   transition: all .2s ease;
   transform: translateY(-100%);
 
