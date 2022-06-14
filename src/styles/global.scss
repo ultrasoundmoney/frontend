@@ -70,9 +70,9 @@ a:hover {
 
   .track_wrapper {
     position: absolute;
-    width: calc(100% - 64px);
+    width: calc(100% - 84px);
     height: 100%;
-    left: 0;
+    left: 20px;
 
     & > div {
         transform: translateX(-50%);
@@ -536,6 +536,98 @@ a:hover {
 
   & > *:not(video) {
     z-index: 2;
+  }
+}
+
+#enter-ultra-sound {
+  path#eth {
+    // stroke: blue;
+    fill: none;
+    stroke-width: 2;
+    stroke-dasharray: 900 900;
+    animation: strokeAni 2.7s linear;
+  }
+
+  path#btc {
+    // stroke: yellow;
+    fill: none;
+    stroke-width: 2;
+    stroke-dasharray: 900 900;
+    animation: strokeAni 2.7s linear;
+  }
+
+  path#usd {
+    // stroke: green;
+    fill: none;
+    stroke-width: 2;
+    stroke-dasharray: 900 900;
+    animation: strokeAni 2.7s linear;
+  }
+
+  @keyframes strokeAni {
+    0% {
+      stroke-dashoffset: 900;
+    }
+
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes draw2 {
+    20% {
+      stroke-dashoffset: 10;
+    }
+
+    40%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .span--btc {
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 14px;
+      left: 20px;
+      width: 12px;
+      height: 12px;
+      background: #ff891d;
+      border-radius: 100%;
+    }
+  }
+
+  .span--eth {
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 14px;
+      left: 20px;
+      width: 12px;
+      height: 12px;
+      background: #5474f4;
+      border-radius: 100%;
+    }
+  }
+
+  .span--usd {
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 14px;
+      left: 20px;
+      width: 12px;
+      height: 12px;
+      background: #a3d972;
+      border-radius: 100%;
+    }
   }
 }
 
