@@ -1,69 +1,59 @@
-import * as React from "react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useContext, FC } from "react";
 import BatImg from "../../assets/bat.png";
 import { TranslationsContext } from "../../translations-context";
 import SVGrenderText from "./BTCETH/generateText";
 import DrawingLine from "./DrawingLine";
 
-const TheUltraSound: React.FC<{}> = () => {
-  const t = React.useContext(TranslationsContext);
+const TheUltraSound: FC<{}> = () => {
+  const t = useContext(TranslationsContext);
   const pointRef = useRef(null);
-  const graphRef = useRef<HTMLDivElement>(null);
-  const [cryptoType, setCryptoType] = React.useState<string>("none");
-  const [step, setStep] = React.useState<number>(0);
-  const [allow, setAllow] = React.useState<boolean>(true);
-  const [event, setEvent] = React.useState<WheelEvent | null>(null);
+  const graphRef = useRef<HTMLDivElement | null>(null);
+  const [cryptoType, setCryptoType] = useState<string>("none");
   const tabs = ["none", "btc", "eth", "usd"];
   let timeoutId: null | ReturnType<typeof setTimeout> = null;
 
-  const onScroll = (e: WheelEvent) => {
-    if (graphRef?.current) {
-      const rect = graphRef.current.getBoundingClientRect();
-      const elPosition = window.scrollY + rect.top;
-      const from = elPosition - window.innerHeight / 2;
-      const to = elPosition + (window.innerHeight - window.innerHeight / 3);
-      const scrollTriggerStart = window.scrollY < to && window.scrollY > from;
-      scrollTriggerStart && setEvent(e);
-      if (
-        scrollTriggerStart &&
-        graphRef?.current.classList.contains("disable_scroll")
-      ) {
-        e.stopPropagation();
-        e.preventDefault();
-      }
+  const step = useRef(0);
+  const allow = useRef(true);
+  const eventWheel = useRef<null | WheelEvent>(null);
+
+  const onChangeCryptoType = (currentDirection: "up" | "down") => {
+    if (allow.current) {
+      currentDirection === "up"
+        ? (step.current = step.current <= 0 ? 0 : step.current - 1)
+        : (step.current =
+            step.current > tabs.length ? step.current : step.current + 1);
+      if (tabs[step.current - 1]) setCryptoType(tabs[step.current - 1]);
+      allow.current = false;
+      timeoutId = setTimeout(() => (allow.current = true), 1500);
     }
   };
 
-  useEffect(() => {
-    if (event) {
+  const blockedScroll = (event: WheelEvent, el: HTMLElement) => {
+    if (el) {
+      graphRef?.current?.scrollIntoView({ block: "center" });
+      event.stopPropagation();
+      event.preventDefault();
+    }
+  };
+
+  const onScroll = (event: WheelEvent, important?: boolean) => {
+    eventWheel.current = event;
+    if (graphRef?.current) {
+      const rect = graphRef.current.getBoundingClientRect();
+      const trigger = window.scrollY + window.innerHeight / 2 - rect.height / 3;
+      const elPosition = window.scrollY + rect.top;
+      const scrollTriggerStart =
+        elPosition < trigger + 120 && elPosition > trigger - 120;
       const direction = event.deltaY < 0 ? "up" : "down";
-      // block wheel event
       const disableScroll =
-        (direction === "down" && step <= tabs.length) ||
-        (direction === "up" && step >= 1);
-      // setDisableScroll(disableScroll);
-      disableScroll && graphRef?.current?.scrollIntoView({ block: "center" });
-      if (graphRef?.current) {
-        disableScroll
-          ? graphRef?.current.classList.add("disable_scroll")
-          : graphRef?.current.classList.remove("disable_scroll");
+        (direction === "down" && step.current <= tabs.length) ||
+        (direction === "up" && step.current >= 1);
+      if ((scrollTriggerStart && disableScroll) || important) {
+        blockedScroll(event, graphRef?.current);
+        onChangeCryptoType(direction);
       }
     }
-    // set new step
-    if (allow && event) {
-      event.deltaY < 0
-        ? setStep((prevState) => (prevState <= 0 ? 0 : prevState - 1))
-        : setStep((prevState) =>
-            prevState > tabs.length ? prevState : prevState + 1
-          );
-    }
-  }, [event]);
-
-  useEffect(() => {
-    if (tabs[step - 1]) setCryptoType(tabs[step - 1]);
-    setAllow(false);
-    timeoutId = setTimeout(() => setAllow(true), 1500);
-  }, [step]);
+  };
 
   useEffect(() => {
     window.addEventListener("wheel", onScroll, { passive: false });
@@ -75,7 +65,10 @@ const TheUltraSound: React.FC<{}> = () => {
 
   const setSpecificTab = (currency = "none") => {
     const index = tabs.indexOf(currency);
-    index && setStep(index + 1);
+    if (index && eventWheel.current) {
+      step.current = index + 2;
+      onScroll(eventWheel.current, true);
+    }
   };
 
   return (
@@ -115,7 +108,7 @@ const TheUltraSound: React.FC<{}> = () => {
                 onClick={() => {
                   setSpecificTab("btc");
                 }}
-                className={`pl-10 pr-6 py-3 text-sm text-white rounded-lg font-roboto leading-none span--btc transition-all delay-200 duration-100 mx-2 ${
+                className={`pl-10 pr-6 cursor-pointer py-3 text-sm text-white rounded-lg font-roboto leading-none span--btc transition-all delay-200 duration-100 mx-2 ${
                   cryptoType === "btc"
                     ? "bg-blue-tangaroa hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
                     : "bg-transparent hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
@@ -127,7 +120,7 @@ const TheUltraSound: React.FC<{}> = () => {
                 onClick={() => {
                   setSpecificTab("eth");
                 }}
-                className={`pl-10 pr-6 py-3 text-sm text-white rounded-lg font-roboto leading-none span--eth transition-all delay-200 duration-100 mx-2 ${
+                className={`pl-10 pr-6 cursor-pointer py-3 text-sm text-white rounded-lg font-roboto leading-none span--eth transition-all delay-200 duration-100 mx-2 ${
                   cryptoType === "eth"
                     ? "bg-blue-tangaroa hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
                     : "bg-transparent hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
@@ -139,7 +132,7 @@ const TheUltraSound: React.FC<{}> = () => {
                 onClick={() => {
                   setSpecificTab("usd");
                 }}
-                className={`pl-10 pr-6 py-3 text-sm text-white rounded-lg font-roboto leading-none span--usd transition-all delay-200 duration-100 mx-2 ${
+                className={`pl-10 pr-6 cursor-pointer py-3 text-sm text-white rounded-lg font-roboto leading-none span--usd transition-all delay-200 duration-100 mx-2 ${
                   cryptoType === "usd"
                     ? "bg-blue-tangaroa hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
                     : "bg-transparent hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
@@ -223,7 +216,7 @@ const TheUltraSound: React.FC<{}> = () => {
                 </defs>
                 <use href="#ethpoint" x="-150" y="-150" fill="#5474F4">
                   <animateMotion
-                    dur="2.5s"
+                    dur="1.34s"
                     repeatCount="1"
                     fill="freeze"
                     path="M1 350.988C16.192 300.494 61.7406 208.495 100.651 197.613C146.59 184.765 236.969 201.16 359.555 217.361"
@@ -322,7 +315,7 @@ const TheUltraSound: React.FC<{}> = () => {
                   </linearGradient>
                 </defs>
                 <use href="#btcpoint" x="-148" y="-150" fill="#5474F4">
-                  <animateMotion dur="2.8s" repeatCount="1" fill="freeze">
+                  <animateMotion dur="1.5s" repeatCount="1" fill="freeze">
                     <mpath href="#btc" />
                   </animateMotion>
                 </use>
@@ -403,7 +396,7 @@ const TheUltraSound: React.FC<{}> = () => {
                   </linearGradient>
                 </defs>
                 <use href="#usdcpoint" x="-150" y="-150" fill="#5474F4">
-                  <animateMotion dur="2.5s" repeatCount="1" fill="freeze">
+                  <animateMotion dur="1.34s" repeatCount="1" fill="freeze">
                     <mpath href="#usd" />
                   </animateMotion>
                 </use>
@@ -423,7 +416,6 @@ const TheUltraSound: React.FC<{}> = () => {
             )}
             {cryptoType === "none" && (
               <>
-                <div className="chart_bg"></div>
                 <svg
                   className="overflow-visible"
                   viewBox="0 0 435 394"
