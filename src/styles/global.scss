@@ -34,6 +34,7 @@ a:hover {
 
 .ultra-sound-text {
   background-image: linear-gradient(45deg, #ff01e6 0%, #ff5f51 39%, #00ffa3);
+  // font-size: 56px;
   font-weight: 200;
   font-stretch: normal;
   font-style: normal;
@@ -65,6 +66,29 @@ a:hover {
 
   &.active {
       transform: translateY(0);
+  }
+
+  .track_wrapper {
+    position: absolute;
+    width: calc(100% - 64px);
+    height: 100%;
+    left: 0;
+
+    & > div {
+        transform: translateX(-50%);
+    }
+
+    img {
+        margin: 0;
+    }
+  }
+}
+
+.default_bar {
+  transition: 0.3s transform;
+  transform: translateY(0);
+  &.hiddenBar {
+    transform: translateY(-100%);
   }
 }
 
@@ -259,13 +283,22 @@ a:hover {
   // }
 }
 
-.fixed-fee-burned {
-  @media (min-width: 767px) {
-    position: sticky;
+@media (min-width: 767px) {
+  .fixed-fee-burned {
+      position: fixed;
     left: 0;
-    bottom: 10px;
+    right: 0;
+    //bottom: -100%;
+    bottom: 0;
     width: 100%;
     z-index: 999;
+    flex-wrap: nowrap;
+    transition: all .2s ease;
+    transform: translateY(100%);
+
+    &.active {
+      transform: translateY(0);
+    }
   }
 }
 
@@ -477,18 +510,32 @@ a:hover {
 .block-fee-burn {
   position: relative;
 
-  &::before {
+  //&::before {
+    //    position: absolute;
+    //    content: '';
+    //    background-image: url("../../src/assets/bat-bg/Blurredbg.png");
+    //    background-repeat: no-repeat;
+    //    background-position: center;
+    //    background-size: contain;
+    //    width: 100%;
+    //    height: 100%;
+    //    bottom: 30px;
+    //    left: 0px;
+    //    z-index: 0;
+    //}
+
+    .eip_bg {
     position: absolute;
-    content: "";
-    background-image: url("../assets/bat-bg/Blurredbg.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    width: 100%;
-    height: 100%;
-    bottom: 30px;
-    left: 0px;
-    z-index: 0;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -20%);
+    z-index: 1;
+    opacity: .7;
+    max-width: 500px;
+  }
+
+  & > *:not(video) {
+    z-index: 2;
   }
 }
 
@@ -564,11 +611,15 @@ a:hover {
   }
 }
 
+.emoji_wrapper {
+  display: inline;
+  display: inline;
+}
+
 .emoji {
-  display: inline-block;
-  width: auto;
-  height: 1em;
-  vertical-align: -0.125em;
+  isplay: inline-block;
+  width: 30px;
+  margin: auto 4px;
 }
 
 .show-me {
