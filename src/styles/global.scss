@@ -58,6 +58,22 @@ a:hover {
   margin-right: auto;
 }
 
+.graph_text_containter {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  & .graph_text_eth {
+    position: absolute;
+    width: 100%;
+    padding: inherit;
+    opacity: 0;
+    max-width: 400px;
+    box-sizing: content-box;
+  }
+}
+
 .h-screen-90 {
   height: 90vh;
 }
