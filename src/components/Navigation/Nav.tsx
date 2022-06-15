@@ -64,7 +64,7 @@ const Nav = () => {
         <div className="w-full md:w-6/12 relative flex justify-start lg:static lg:justify-start">
           <div className="flex-initial pr-2 lg:pr-8">
             <Link href="/">
-              <img className="max-w-max" src={EthLogo} alt={t.title} />
+              <img className="max-w-max" src={EthLogo.src} alt={t.title} />
             </Link>
           </div>
           <div

@@ -128,7 +128,7 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
             <img
               style={{ height: "32px", cursor: "ew-resize" }}
               draggable="true"
-              src={EthLogo}
+              src={EthLogo.src}
               alt={t.title}
             />
           </motion.div>
