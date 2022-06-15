@@ -55,6 +55,12 @@ a:hover {
   -webkit-text-fill-color: transparent;
 }
 
+.ultra-sound-text.current-gradient {
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .h-screen-90 {
   height: 90vh;
 }
@@ -84,7 +90,7 @@ a:hover {
 
   .track_wrapper {
     position: absolute;
-    width: calc(100% - 84px);
+    width: calc(100% - 28px);
     height: 100%;
     left: 20px;
 
@@ -266,6 +272,19 @@ a:hover {
   //        }
   //    }
   //}
+}
+
+.stepper_point .stepper_circle {
+  transition: 0.4s;
+  & div {
+    transition: 0.4s;
+  }
+}
+.stepper_point:hover .stepper_circle {
+  border: 1px solid #00ffa3 !important;
+}
+.stepper_point:hover .stepper_circle div {
+  background: #00ffa3 !important;
 }
 
 .hero {
