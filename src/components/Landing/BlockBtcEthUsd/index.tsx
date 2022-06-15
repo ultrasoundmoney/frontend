@@ -110,7 +110,7 @@ const TheUltraSound: FC<{}> = () => {
             data-aos-easing="ease-in-out"
             title={t.eusm_section_title}
             alt={t.eusm_section_title}
-            src={BatImg}
+            src={BatImg.src}
             className="mx-auto text-center mb-8"
           />
           {/* <video
