@@ -15,8 +15,6 @@
     #ff5f51 41.52%,
     #00ffa3 102.19%
   );
-
-  // font-size: 56px;
   font-weight: 200;
   font-stretch: normal;
   font-style: normal;
@@ -26,6 +24,11 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+.ultra-sound-text.current-gradient {
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
 }
 .graph_text_containter {
   position: relative;
@@ -232,7 +235,7 @@
 
   .track_wrapper {
     position: absolute;
-    width: calc(100% - 84px);
+    width: calc(100% - 28px);
     height: 100%;
     left: 20px;
     img {
@@ -369,7 +372,18 @@
     }
   }
 }
-
+.stepper_point .stepper_circle {
+  transition: 0.4s;
+  & div {
+    transition: 0.4s;
+  }
+}
+.stepper_point:hover .stepper_circle {
+  border: 1px solid #00ffa3 !important;
+}
+.stepper_point:hover .stepper_circle div {
+  background: #00ffa3 !important;
+}
 .hero {
   z-index: 1;
   width: 100%;

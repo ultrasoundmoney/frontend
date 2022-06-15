@@ -5,6 +5,8 @@ import Steps from "./Steps";
 import { StepperContext, StepperPoint } from "../../context/StepperContext";
 import { throttle } from "lodash";
 
+export type ActionLogo = "none" | "down" | "move" | "up";
+
 const getIconOffset = (
   pointsHeights: (StepperPoint | undefined)[],
   pageLoad: boolean
@@ -46,6 +48,10 @@ const Stepper: React.FC = () => {
   const stepsRef = useRef<HTMLElement | null>(null);
   const steperIconRef = useRef<HTMLDivElement | null>(null);
   const stepperPoints = useContext(StepperContext);
+  const [currentActionLogo, setCurrentActionLogo] = useState<ActionLogo>(
+    "none"
+  );
+  const handlerActionLogo = (value: ActionLogo) => setCurrentActionLogo(value);
   const controlPoints = Object.keys(stepperPoints?.stepperElements as {}).map(
     (element) => {
       return stepperPoints?.stepperElements[element];
@@ -71,13 +77,12 @@ const Stepper: React.FC = () => {
         offsetYFirstPoint = el?.offsetY;
       }
     });
-
     const showStickyHeader: boolean =
       window.scrollY > offsetYFirstPoint - window.innerHeight / 2;
     showStickyHeader
       ? stepsRef.current?.classList.add("active")
       : stepsRef.current?.classList.remove("active");
-    if (steperIconRef && steperIconRef.current) {
+    if (currentActionLogo !== "up" && steperIconRef && steperIconRef.current) {
       steperIconRef.current.style.left = `${memoizedValue}%`;
     }
   }, [controlPoints, scrollYProgress]);
@@ -96,7 +101,13 @@ const Stepper: React.FC = () => {
       className="stepper_nav sticky top-0 left-0 w-full flex justify-between md:justify-start p-3 bg-blue-tangaroa z-50"
     >
       <div className="w-full px-1 md:px-4 mx-auto flex flex-wrap items-center justify-between">
-        <Steps ref={steperIconRef} controlPoints={controlPoints} />
+        <Steps
+          onActionLogo={handlerActionLogo}
+          activeLogo={currentActionLogo}
+          currentPositionLogo={memoizedValue}
+          ref={steperIconRef}
+          controlPoints={controlPoints}
+        />
         <div className="w-full md:w-3/12 hidden md:block py-1" id="menu">
           <ul className="flex flex-col md:flex-row justify-end list-none mt-4 md:mt-0 relative">
             <li className="nav-item lg:px-4 xl:px-8 justify-center">
