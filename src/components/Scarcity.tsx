@@ -1,13 +1,13 @@
 import * as DateFns from "date-fns";
 import JSBI from "jsbi";
 import React, { FC, useState } from "react";
-import { useScarcity } from "../../api/scarcity";
-import Colors from "../../colors";
-import * as Format from "../../format";
-import { pipe } from "../../fp";
-import { Amount, MoneyAmount } from "../Amount";
-import { LabelText, TextInter, TextRoboto } from "../Texts";
-import { WidgetBackground, WidgetTitle } from "../widget-subcomponents";
+import { useScarcity } from "../api/scarcity";
+import Colors from "../colors";
+import * as Format from "../format";
+import { pipe } from "../fp";
+import { Amount, MoneyAmount } from "./Amount";
+import { LabelText, TextInter, TextRoboto } from "./Texts";
+import { WidgetBackground, WidgetTitle } from "./widget-subcomponents";
 
 type ScarcityBarProps = {
   staked: number;
@@ -45,7 +45,6 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
 
   const stakedPercent = (staked / supply) * 100;
   const lockedPercent = (locked / supply) * 100;
-  const stakedPlusLocked = ((staked + locked) / supply) * 100;
 
   return (
     <div className="relative">
@@ -118,7 +117,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
         <div
           className="absolute h-2 bg-blue-dusk z-10 w-0.5"
           style={{
-            left: `${stakedPlusLocked / 2}%`,
+            left: `${stakedPercent}%`,
           }}
         ></div>
         <div

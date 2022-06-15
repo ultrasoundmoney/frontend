@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
+    "check-types": "yarn tsc --noEmit",
     "dev": "next dev",
     "export": "next export",
     "lint": "next lint",
@@ -36,6 +37,7 @@
     "react-popper": "^2.2.5",
     "react-spring": "^9.4.2",
     "react-transition-group": "^4.4.2",
+    "react-use-websocket": "^3.0.0",
     "twemoji": "^13.1.0"
   },
   "devDependencies": {

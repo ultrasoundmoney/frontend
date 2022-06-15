@@ -1,9 +1,12 @@
+import { useEffect, useState } from "react";
+import useWebSocket from "react-use-websocket";
 import useSWR from "swr";
 import * as Duration from "../duration";
+import { getUseWebSockets } from "../feature-flags";
 import { NEA } from "../fp";
 import { BurnRecords, decodeBurnRecords, RawBurnRecords } from "./burn-records";
 import fetcher from "./default-fetcher";
-import { feesBasePath } from "./fees";
+import { feesBasePath, feesWsUrl } from "./fees";
 import { Leaderboards } from "./leaderboards";
 
 type WeiPerMinute = number;
@@ -56,7 +59,7 @@ export type EthPrice = {
 
 export type DeflationaryStreakMode = "preMerge" | "postMerge";
 export type DeflationaryStreak = {
-  from: string;
+  startedOn: string;
   count: number;
 };
 export type DeflationaryStreakState = Record<
@@ -97,9 +100,80 @@ const decodeFeeData = (raw: RawFeeData): FeeData => ({
 });
 
 export const useGroupedStats1 = (): FeeData | undefined => {
+  const useWebSockets = getUseWebSockets();
   const { data } = useSWR<RawFeeData>(`${feesBasePath}/all`, fetcher, {
-    refreshInterval: Duration.millisFromSeconds(4),
+    refreshInterval: Duration.millisFromSeconds(1),
+    isPaused: () => getUseWebSockets(),
   });
+  const dataWs = useGroupedStats1Ws(useWebSockets);
+  const [latestGroupedStats1, setLatestGroupedStats1] = useState<FeeData>();
 
-  return data === undefined ? undefined : decodeFeeData(data);
+  useEffect(() => {
+    if (useWebSockets) {
+      if (dataWs !== undefined) {
+        setLatestGroupedStats1(decodeFeeData(dataWs));
+      }
+      return undefined;
+    }
+
+    if (data !== undefined) {
+      setLatestGroupedStats1(decodeFeeData(data));
+      return undefined;
+    }
+  }, [data, dataWs, useWebSockets]);
+
+  return latestGroupedStats1;
+};
+
+type GroupedAnallysis1Envelope = {
+  id: "grouped-analysis-1";
+  message: RawFeeData;
+};
+
+const getIsGroupedAnalysisMessage = (
+  u: unknown,
+): u is GroupedAnallysis1Envelope =>
+  u != null &&
+  typeof (u as GroupedAnallysis1Envelope).id === "string" &&
+  (u as GroupedAnallysis1Envelope).id === "grouped-analysis-1";
+
+export const useGroupedStats1Ws = (
+  enabled: boolean,
+): RawFeeData | undefined => {
+  const [latestGroupedStats1, setLatestGroupedStats1] = useState<RawFeeData>();
+  const [socketUrl] = useState(feesWsUrl);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const { lastJsonMessage } = useWebSocket(
+    socketUrl,
+    {
+      onOpen: () => console.log("ws opened"),
+      onClose: () => console.log("ws closed"),
+      onError: (event) => console.log("ws error", event),
+      //Will attempt to reconnect on all close events, such as server shutting down
+      shouldReconnect: () => true,
+      share: true,
+    },
+    enabled,
+  );
+
+  useEffect(() => {
+    if (!getIsGroupedAnalysisMessage(lastJsonMessage)) {
+      return undefined;
+    }
+
+    if (latestGroupedStats1 === undefined) {
+      setLatestGroupedStats1(lastJsonMessage.message);
+      return undefined;
+    }
+
+    const newBlock = NEA.head(lastJsonMessage.message.latestBlockFees);
+    if (
+      newBlock.number > NEA.head(latestGroupedStats1.latestBlockFees).number
+    ) {
+      setLatestGroupedStats1(lastJsonMessage.message);
+      return undefined;
+    }
+  }, [lastJsonMessage, latestGroupedStats1, setLatestGroupedStats1]);
+
+  return latestGroupedStats1;
 };

@@ -1,4 +1,4 @@
-export default {
+const colors = {
   cloudyblue: "#AAAAD2",
   drop: "#5DADEC",
   dusk: "#464B6F",
@@ -14,3 +14,5 @@ export default {
   twilight: "#59588D",
   white: "#FFFFFF",
 };
+
+export default colors;

@@ -2,10 +2,10 @@ import { clamp } from "lodash";
 import { FC, useState } from "react";
 import CountUp from "react-countup";
 import { animated, useSpring } from "react-spring";
-import { useMarketCaps } from "../../api/market-caps";
-import colors from "../../colors";
-import { TextInter, TextRoboto } from "../Texts";
-import { WidgetBackground, WidgetTitle } from "../widget-subcomponents";
+import { useMarketCaps } from "../api/market-caps";
+import colors from "../colors";
+import { TextInter, TextRoboto } from "./Texts";
+import { WidgetBackground, WidgetTitle } from "./widget-subcomponents";
 
 type Icon = "btc" | "gold" | "usd";
 
@@ -116,7 +116,7 @@ const Flippenings: FC = () => {
       : marketCaps.ethMarketCap / marketCaps.usdM3MarketCap;
 
   return (
-    <WidgetBackground className="self-start">
+    <WidgetBackground>
       <WidgetTitle>flippenings</WidgetTitle>
       <div className="flex flex-col gap-y-4 mt-4">
         <Row

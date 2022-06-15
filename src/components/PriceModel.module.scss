@@ -6,6 +6,35 @@
   width: 14px;
 }
 
-.customSlider::-webkit-slider-thumb:hover {
+.customSlider::-moz-range-thumb {
+  appearance: none;
+  background: #b5bddb;
+  border-radius: 50%;
+  height: 14px;
+  width: 14px;
+  border: none;
+}
+
+.thumbInvisible::-webkit-slider-thumb {
+  display: none;
+}
+
+.thumbInvisible::-moz-range-thumb {
+  display: none;
+}
+
+.customSlider::-webkit-slider-thumb:active {
   background: #ffffff;
+}
+
+.customSlider::-moz-range-thumb:active {
+  background: #ffffff;
+}
+
+.customSlider::-webkit-slider-thumb:hover {
+  filter: brightness(90%);
+}
+
+.customSlider::-moz-range-thumb:hover {
+  filter: brightness(90%);
 }

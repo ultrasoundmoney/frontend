@@ -14,31 +14,32 @@ import { TextInter, TextRoboto } from "./Texts";
 import { WidgetBackground, WidgetTitle } from "./widget-subcomponents";
 
 type SliderProps = {
-  className?: InputHTMLAttributes<HTMLInputElement>["className"];
+  children: number | undefined;
   max: InputHTMLAttributes<HTMLInputElement>["max"];
   min: InputHTMLAttributes<HTMLInputElement>["min"];
   onChange: (num: number) => void;
   step: InputHTMLAttributes<HTMLInputElement>["step"];
-  children: number;
+  thumbVisible?: boolean;
 };
 
 const Slider: FC<SliderProps> = ({
-  className,
-  min,
-  max,
-  step,
   children,
+  max,
+  min,
   onChange,
+  step,
+  thumbVisible = true,
 }) => (
   <input
     className={`
+      absolute
       appearance-none
-      w-full h-2
+      w-full h-2 z-10
       bg-blue-dusk
       rounded-full
       cursor-pointer
+      ${thumbVisible ? "" : styles.thumbInvisible}
       ${styles.customSlider}
-      ${className ?? ""}
     `}
     type="range"
     min={min}
@@ -68,11 +69,13 @@ const Marker: FC<{
     >
       <div className="[min-height:3px] w-3 bg-blue-shipcove mb-3 -translate-x-1/2"></div>
       <a
-        title={peRatio.toFixed(1)}
+        title={`${peRatio.toFixed(1)} P/E`}
         className="absolute pointer-events-auto top-4 -translate-x-1/2"
         href={
           symbol === undefined
             ? undefined
+            : symbol === "DIS"
+            ? "https://www.google.com/finance/quote/DIS:NYSE"
             : `https://www.google.com/finance/quote/${symbol}:NASDAQ`
         }
         target="_blank"
@@ -103,8 +106,8 @@ const MarkerText: FC<{ ratio: number }> = ({ ratio, children }) => (
     // For unclear reasons the left 89% position for TSLA is closer to notch 91 on the actual slider. We manually adjust.
     style={{ transform: `translateX(${ratio * 100}%)` }}
   >
-    <div className="[min-height:3px] w-3 bg-blue-shipcove mb-3 -translate-x-1/2"></div>
-    <TextRoboto className="absolute top-4 text-blue-spindle -translate-x-1/2">
+    <div className="[min-height:3px] w-3 bg-blue-shipcove -translate-x-1/2"></div>
+    <TextRoboto className="absolute top-3 text-blue-spindle -translate-x-1/2">
       {children}
     </TextRoboto>
   </div>
@@ -115,13 +118,13 @@ const monetaryPremiumMax = 20;
 const monetaryPremiumRange = monetaryPremiumMax - monetaryPremiumMin;
 const monetaryPremiumStepSize = 0.01;
 
-const growthProfileMin = 5;
-const growthProfileMax = 300;
+const growthProfileMin = 6;
+const growthProfileMax = 250;
 const growthProfileLogMin = Math.log(growthProfileMin);
 const growthProfileLogMax = Math.log(growthProfileMax);
 const logRange = growthProfileLogMax - growthProfileLogMin;
 
-// Converts from a linear scale between 0 and 1 to a log scale between 1 and 300.
+// Converts from a linear scale between 0 and 1 to a log scale between 6 and 250.
 const logFromLinear = (position: number) =>
   pipe(
     position * logRange,
@@ -129,7 +132,7 @@ const logFromLinear = (position: number) =>
     (shiftedPosition) => Math.exp(shiftedPosition),
   );
 
-// Converts from a log scale between 1 and 300 to a linear scale between 0 and 1
+// Converts from a log scale between 6 and 250 to a linear scale between 0 and 1
 const linearFromLog = (num: number) =>
   pipe(
     Math.log(num),
@@ -176,11 +179,11 @@ const calcProjectedPrice = (
 
 const PriceModel: FC = () => {
   const peRatios = usePeRatios();
-  const burnRateAll = useGroupedStats1()?.burnRates.burnRateAll;
+  const burnRateAll = useGroupedStats1()?.burnRates.burnRateAllUsd;
   const ethPrice = useGroupedStats1()?.ethPrice?.usd;
   const ethSupply = useScarcity()?.ethSupply;
   const [peRatio, setPeRatio] = useState<number>();
-  const [peRatioPosition, setPeRatioPosition] = useState<number>(0);
+  const [peRatioPosition, setPeRatioPosition] = useState<number>();
   const [monetaryPremium, setMonetaryPremium] = useState(1);
   const [initialPeSet, setInitialPeSet] = useState(false);
   const averageEthPrice = useAverageEthPrice()?.all;
@@ -189,7 +192,7 @@ const PriceModel: FC = () => {
   const annualizedRevenue =
     burnRateAll === undefined || averageEthPrice === undefined
       ? undefined
-      : Format.ethFromWei(burnRateAll * 60 * 24 * 365.25) * averageEthPrice;
+      : burnRateAll * 60 * 24 * 365.25;
   const annualizedCosts =
     averageEthPrice === undefined
       ? undefined
@@ -238,13 +241,17 @@ const PriceModel: FC = () => {
   );
 
   useEffect(() => {
+    if (peRatioPosition === undefined) {
+      return undefined;
+    }
+
     setPeRatio(logFromLinear(peRatioPosition));
   }, [peRatioPosition]);
 
   return (
     <WidgetBackground>
       <WidgetTitle>price model (post-merge)</WidgetTitle>
-      <div className="flex flex-col gap-4 mt-4 overflow-hidden">
+      <div className="flex flex-col gap-y-4 mt-4 overflow-hidden">
         <div className="flex justify-between">
           <TextInter>annualized profits</TextInter>
           <MoneyAmount amountPostfix="B" unit="usd">
@@ -253,7 +260,7 @@ const PriceModel: FC = () => {
               : Format.formatOneDigit(annualizedEarnings / 1e9)}
           </MoneyAmount>
         </div>
-        <div>
+        <div className="flex flex-col gap-y-2">
           <div className="flex justify-between">
             <TextInter>growth profile</TextInter>
             <MoneyAmount unit="P/E">
@@ -264,17 +271,17 @@ const PriceModel: FC = () => {
               )}
             </MoneyAmount>
           </div>
-          <div className="relative mb-8">
+          <div className="relative mb-12">
             <Slider
-              className="relative w-full z-10"
               step={0.001}
               min={0}
               max={1}
               onChange={setPeRatioPosition}
+              thumbVisible={peRatioPosition !== undefined}
             >
               {peRatioPosition}
             </Slider>
-            <div className="absolute top-2 w-full [margin-top:10px] select-none">
+            <div className="absolute w-full top-2 select-none">
               {peRatios !== undefined && (
                 // Because the actual slider does not span the entire visual slider, overlaying an element and setting the left is not perfect. We manually adjust values to match the slider more precisely. To improve this look into off-the-shelf components that allow for styled markers.
                 <>
@@ -334,16 +341,15 @@ const PriceModel: FC = () => {
             </div>
           </div>
         </div>
-        <div>
+        <div className="flex flex-col gap-y-2">
           <div className="flex justify-between">
             <TextInter>monetary premium</TextInter>
             <TextRoboto>{`${Format.formatOneDigit(
               monetaryPremium,
             )}x`}</TextRoboto>
           </div>
-          <div className="relative mb-8">
+          <div className="relative mb-10">
             <Slider
-              className="relative z-10"
               step={monetaryPremiumStepSize}
               min={monetaryPremiumMin}
               max={monetaryPremiumMax}
@@ -352,7 +358,7 @@ const PriceModel: FC = () => {
               {monetaryPremium}
             </Slider>
             {/* Because a slider range is not exactly the visual width of the element positioning using absolute children with a left is not exactly right. we add small amounts to try fudge them into the right place. */}
-            <div className="absolute top-2 bottom-0 w-full flex [margin-top:10px] pointer-events-none">
+            <div className="absolute w-full flex top-2 pointer-events-none">
               <MarkerText
                 ratio={(2 + 0.3 - monetaryPremiumMin) / monetaryPremiumRange}
               >
@@ -378,16 +384,21 @@ const PriceModel: FC = () => {
         </div>
         <div className="flex flex-col gap-y-2 text-center">
           <WidgetTitle>implied eth price</WidgetTitle>
-          <MoneyAmount
-            amountPostfix="K"
-            skeletonWidth="3rem"
-            textSizeClass="text-2xl md:text-3xl"
-            unit="usd"
+          <span
+            title={`profits = revenue (burn) - expenses (issuance)
+price = profits * P/E ratio * monetary premium`}
           >
-            {projectedPrice === undefined
-              ? undefined
-              : Format.formatOneDigit(projectedPrice / 1000)}
-          </MoneyAmount>
+            <MoneyAmount
+              amountPostfix="K"
+              skeletonWidth="3rem"
+              textSizeClass="text-2xl md:text-3xl"
+              unit="usd"
+            >
+              {projectedPrice === undefined
+                ? undefined
+                : Format.formatOneDigit(projectedPrice / 1000)}
+            </MoneyAmount>
+          </span>
         </div>
       </div>
     </WidgetBackground>
