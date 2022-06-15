@@ -12,7 +12,7 @@ const ContentBlockMedia: React.FC<ContentBlockMediaProps> = ({
   text,
 }) => {
   return (
-    <>
+    <div>
       {img !== null && img != undefined && (
         <img
           className="text-left mr-auto mb-6"
@@ -36,7 +36,7 @@ const ContentBlockMedia: React.FC<ContentBlockMediaProps> = ({
           __html: text,
         }}
       />
-    </>
+    </div>
   );
 };
 
