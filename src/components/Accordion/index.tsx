@@ -34,15 +34,6 @@ const Accordion: React.FC<AccordionProps> = ({ title, text }) => {
       >
         <Twemoji imageClassName="inline h-6">
           <p
-            __html: twemoji.parse(text),
-          }}
-        />
-        <div
-          className={`accordion-item break-words ${
-            !isOpen ? "collapsed animateOut" : "animateIn"
-          }`}
-        >
-          <div
             className={`${styles.content} leading-relaxed pb-6`}
             dangerouslySetInnerHTML={{
               __html: text,
