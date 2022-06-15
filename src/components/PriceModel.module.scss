@@ -2,7 +2,10 @@
   appearance: none;
   background: #b5bddb;
   border-radius: 50%;
-  cursor: pointer;
   height: 14px;
   width: 14px;
+}
+
+.customSlider::-webkit-slider-thumb:hover {
+  background: #ffffff;
 }

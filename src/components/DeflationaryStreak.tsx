@@ -1,40 +1,42 @@
 import * as DateFns from "date-fns";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
-import { useGroupedStats1 } from "../api/grouped-stats-1";
+import {
+  DeflationaryStreakMode,
+  useGroupedStats1,
+} from "../api/grouped-stats-1";
+import { NEA } from "../fp";
 import { AmountUnitSpace } from "./Spacing";
 import SpanMoji from "./SpanMoji";
 import { TextRoboto } from "./Texts";
 import { WidgetBackground, WidgetTitle } from "./widget-subcomponents";
 
-const DeflationaryStreak = () => {
+const getStreakKey = (simulateMerge: boolean): DeflationaryStreakMode =>
+  simulateMerge ? "postMerge" : "preMerge";
+
+const DeflationaryStreak: FC<{ simulateMerge: boolean }> = ({
+  simulateMerge,
+}) => {
   const [timeElapsed, setTimeElapsed] = useState<string>();
-  const deflationaryStreak = useGroupedStats1()?.deflationaryStreak;
+  const streakKey = getStreakKey(simulateMerge);
+  const deflationaryStreak = useGroupedStats1()?.deflationaryStreak[streakKey];
+  const latestBlocks = useGroupedStats1()?.latestBlockFees;
 
   useEffect(() => {
-    if (deflationaryStreak == undefined) {
+    if (deflationaryStreak == undefined || latestBlocks === undefined) {
       return;
     }
 
+    const lastBlock = NEA.head(latestBlocks);
+
     setTimeElapsed(
-      DateFns.formatDistanceToNowStrict(
+      DateFns.formatDistanceStrict(
+        DateFns.parseISO(lastBlock.minedAt),
         DateFns.parseISO(deflationaryStreak.from),
       ),
     );
-
-    const intervalId = window.setInterval(() => {
-      setTimeElapsed(
-        DateFns.formatDistanceToNowStrict(
-          DateFns.parseISO(deflationaryStreak.from),
-        ),
-      );
-    }, 1000);
-
-    return () => {
-      window.clearInterval(intervalId);
-    };
-  }, [deflationaryStreak]);
+  }, [deflationaryStreak, latestBlocks]);
 
   return (
     <WidgetBackground>
@@ -55,7 +57,7 @@ const DeflationaryStreak = () => {
                   end={deflationaryStreak.count}
                   preserveValue={true}
                   separator=","
-                  suffix={" blocks"}
+                  suffix={deflationaryStreak.count === 1 ? " block" : " blocks"}
                 />
                 <AmountUnitSpace />
               </TextRoboto>
@@ -65,14 +67,13 @@ const DeflationaryStreak = () => {
             <TextRoboto>0 blocks</TextRoboto>
           )}
         </div>
-        {/* spaces need to stay on the font-inter element to keep them consistent */}
         <span className="font-inter text-blue-spindle text-xs md:text-sm font-extralight">
           {deflationaryStreak == null ? (
             "awaiting deflationary block"
           ) : (
             <>
-              {"over "}
-              <span className="font-roboto text-white font-light [word-spacing:-4px]">
+              spanning
+              <span className="font-roboto text-white font-light ml-1 [word-spacing:-4px]">
                 {timeElapsed || <Skeleton inline={true} width="2rem" />}
               </span>
             </>

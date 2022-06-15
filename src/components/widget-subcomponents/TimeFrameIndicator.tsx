@@ -1,12 +1,12 @@
 import * as DateFns from "date-fns";
 import { FC } from "react";
-import { londonHardforkTimestamp } from "../../dates";
+import { londonHardfork } from "../../dates";
 import { pipe } from "../../fp";
 import { displayTimeFrameNextMap, TimeFrameNext } from "../../time-frames";
 
 const getFormattedDays = () =>
   pipe(
-    DateFns.differenceInDays(new Date(), londonHardforkTimestamp),
+    DateFns.differenceInDays(new Date(), londonHardfork),
     (daysCount) => `${daysCount}d`,
   );
 

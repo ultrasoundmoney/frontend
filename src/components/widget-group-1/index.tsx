@@ -123,7 +123,7 @@ const WidgetGroup1: FC<{ featureFlags: FeatureFlags }> = ({ featureFlags }) => {
           <LatestBlocks unit={unit} />
         </div>
         <div className="lg:row-start-3">
-          <DeflationaryStreak />
+          <DeflationaryStreak simulateMerge={simulateMerge} />
         </div>
         <div className="lg:row-end-5">
           <BurnRecords
