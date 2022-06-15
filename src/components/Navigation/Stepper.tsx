@@ -1,99 +1,73 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
 import Link from "next/link";
 import arrowRight from "../../assets/arrowRight.svg";
 import Steps from "./Steps";
-import { StepperContext, StepperPoint } from "../../context/StepperContext";
-import { throttle } from "lodash";
-
-export type ActionLogo = "none" | "down" | "move" | "up";
-
-const getIconOffset = (
-  pointsHeights: (StepperPoint | undefined)[],
-  pageLoad: boolean
-) => {
-  if (!pageLoad) return 0;
-  const trackPosition = window.scrollY + window.innerHeight / 2;
-  if (pointsHeights) {
-    const pointsQuantity = pointsHeights.length;
-    const lastPoint = pointsHeights[pointsQuantity - 1];
-    const distanceBetweenPoints = 100 / (pointsHeights.length - 1);
-    let globalPercent = 0;
-
-    if (lastPoint && trackPosition > lastPoint?.offsetY) return 100;
-    for (let index = 0; index < pointsHeights.length; index++) {
-      const nextPoint = pointsHeights[index + 1]?.offsetY;
-      const currentPoint = pointsHeights[index]?.offsetY;
-      if (
-        currentPoint &&
-        nextPoint &&
-        trackPosition > currentPoint &&
-        trackPosition < nextPoint
-      ) {
-        const from = trackPosition - currentPoint;
-        const to = nextPoint - currentPoint;
-        const percent = (from / to) * 100;
-        globalPercent =
-          distanceBetweenPoints * index +
-          (percent * distanceBetweenPoints) / 100;
-      }
-    }
-    return globalPercent;
-  }
-  return 0;
-};
+import { StepperContext } from "../../context/StepperContext";
+import { ActionLogo } from "./types";
+import { getIconOffset, showHideNavBar, setScrollPosition } from "./helpers";
 
 const Stepper: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrollYProgress, setScrollYProgress] = useState(0);
   const stepsRef = useRef<HTMLElement | null>(null);
   const steperIconRef = useRef<HTMLDivElement | null>(null);
   const stepperPoints = useContext(StepperContext);
   const [currentActionLogo, setCurrentActionLogo] = useState<ActionLogo>(
     "none"
   );
-  const handlerActionLogo = (value: ActionLogo) => setCurrentActionLogo(value);
-  const controlPoints = Object.keys(stepperPoints?.stepperElements as {}).map(
-    (element) => {
-      return stepperPoints?.stepperElements[element];
-    }
-  );
-
-  const onScroll = () => {
-    setScrollYProgress(window.scrollY + window.innerHeight / 2);
-  };
-
-  const throttledScroll = throttle(onScroll, 300);
-
+  const [memoizedValue, setMemoizedValue] = useState<number>(0);
   const [pageLoad, setPageLoad] = useState(false);
-  const memoizedValue = useMemo(() => getIconOffset(controlPoints, pageLoad), [
-    controlPoints,
-    pageLoad,
-  ]);
+  const handlerActionLogo = (value: ActionLogo) => setCurrentActionLogo(value);
+  const controlPoints: any[] = Object.keys(
+    stepperPoints?.stepperElements as {}
+  ).map((element) => {
+    return stepperPoints?.stepperElements[element];
+  });
 
-  useEffect(() => {
-    let offsetYFirstPoint = 2;
-    controlPoints.forEach((el, index) => {
-      if (index === 0 && typeof el?.offsetY === "number") {
-        offsetYFirstPoint = el?.offsetY;
-      }
-    });
-    const showStickyHeader: boolean =
-      window.scrollY > offsetYFirstPoint - window.innerHeight / 2;
-    showStickyHeader
-      ? stepsRef.current?.classList.add("active")
-      : stepsRef.current?.classList.remove("active");
-    if (currentActionLogo !== "up" && steperIconRef && steperIconRef.current) {
-      steperIconRef.current.style.left = `${memoizedValue}%`;
+  const onScroll = useCallback(() => {
+    showHideNavBar(controlPoints, stepsRef.current!);
+    if (
+      currentActionLogo !== "up" &&
+      currentActionLogo !== "move" &&
+      currentActionLogo !== "down" &&
+      stepsRef.current &&
+      steperIconRef.current
+    ) {
+      const logoOffset = getIconOffset(controlPoints, pageLoad);
+      steperIconRef.current.style.left = `${logoOffset}%`;
+      setMemoizedValue(logoOffset);
     }
-  }, [controlPoints, scrollYProgress]);
+  }, [currentActionLogo, controlPoints]);
+  const [isLastTrackingElem, setIsLastTrackingElem] = useState<boolean>(false);
+  const isDragging = useRef<boolean>(false);
+  const setScrollPosOnLogoMove = (trackWidth: number, logoOffset: number) => {
+    if (stepsRef.current && pageLoad && !isDragging.current) {
+      isDragging.current = true;
+      const isHighlightDot = setScrollPosition(
+        controlPoints,
+        trackWidth,
+        logoOffset,
+        stepsRef.current
+      );
+      setIsLastTrackingElem(isHighlightDot);
+      setTimeout(() => {
+        isDragging.current = false;
+      }, 200);
+    }
+  };
 
   useEffect(() => {
     setPageLoad(true);
-    window.addEventListener("scroll", throttledScroll);
+    window.addEventListener("scroll", onScroll);
     return () => {
-      window.removeEventListener("scroll", throttledScroll);
+      window.removeEventListener("scroll", onScroll);
     };
-  }, []);
+  }, [onScroll]);
 
   return (
     <nav
@@ -107,6 +81,8 @@ const Stepper: React.FC = () => {
           currentPositionLogo={memoizedValue}
           ref={steperIconRef}
           controlPoints={controlPoints}
+          setScroll={setScrollPosOnLogoMove}
+          isLastTrackingElem={isLastTrackingElem}
         />
         <div className="w-full md:w-3/12 hidden md:block py-1" id="menu">
           <ul className="flex flex-col md:flex-row justify-end list-none mt-4 md:mt-0 relative">

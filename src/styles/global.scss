@@ -316,22 +316,12 @@ a:hover {
   // }
 }
 
-@media (min-width: 767px) {
-  .fixed-fee-burned {
-      position: fixed;
-    left: 0;
-    right: 0;
-    //bottom: -100%;
-    bottom: 0;
-    //width: 100%;
-    z-index: 999;
-    flex-wrap: nowrap;
-    transition: all .2s ease;
-    transform: translateY(100%);
+.fixed-fee-burned {
+  transition: all 0.2s ease;
+  transform: translateY(100%);
 
-    &.active {
-      transform: translateY(0);
-    }
+  &.active {
+    transform: translateY(0);
   }
 }
 
@@ -563,8 +553,9 @@ a:hover {
     left: 50%;
     transform: translate(-50%, -20%);
     z-index: 1;
-    opacity: .7;
+    opacity: 0.5;
     max-width: 500px;
+    width: 100%;
   }
 
   & > *:not(video) {
