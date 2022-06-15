@@ -5,7 +5,7 @@ import { Unit } from "../../denomination";
 import * as Format from "../../format";
 import { TimeFrameNext } from "../../time-frames";
 import { timeframeBurnRateMap } from "../BurnTotal";
-import BaseGauge from "./IssuanceBurnBaseGauge";
+import IssuanceBurnBaseGauge from "./IssuanceBurnBaseGauge";
 
 type BurnGaugeProps = { timeFrame: TimeFrameNext; unit: Unit };
 
@@ -19,7 +19,7 @@ const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame, unit }) => {
 
   const burnRate =
     selectedBurnRate === undefined
-      ? 0
+      ? undefined
       : unit === "eth"
       ? Format.ethFromWei(selectedBurnRate * 60 * 24 * 365.25) / 10 ** 6
       : (selectedBurnRate * 60 * 24 * 365.25) / 10 ** 9;
@@ -33,15 +33,15 @@ const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame, unit }) => {
         rounded-lg md:rounded-r-none lg:rounded-r-lg
       `}
     >
-      <BaseGauge
-        title="burn"
-        value={burnRate}
-        valueFillColor={colors.fireOrange}
-        needleColor={colors.fireOrange}
+      <IssuanceBurnBaseGauge
         emoji="🔥"
         gaugeUnit={unit === "eth" ? "M" : "B"}
-        valueUnit={unit === "eth" ? "ETH/year" : "USD/year"}
+        gradientFill="orange"
+        needleColor={colors.fireOrange}
+        title="burn"
         unit={unit}
+        value={burnRate}
+        valueUnit={unit === "eth" ? "ETH/year" : "USD/year"}
       />
     </div>
   );

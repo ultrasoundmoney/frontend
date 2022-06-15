@@ -1,19 +1,91 @@
-import { FC, useEffect, useState } from "react";
+import { FC, RefObject, useCallback, useEffect, useState } from "react";
 import Clipboard from "react-clipboard.js";
 import Skeleton from "react-loading-skeleton";
+import { usePopper } from "react-popper";
 import { FamProfile, useProfiles } from "../../api/fam";
 import * as Format from "../../format";
-import SpanMoji from "../SpanMoji";
-import FamAvatar from "./FamAvatar";
-import { FamModal, FamModalContent } from "./FamModal";
+import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
+import ImageWithTooltip from "../ImageWithTooltip";
+import Modal from "../Modal";
+import Tooltip from "../Tooltip";
+import Twemoji from "../Twemoji";
 
 const TwitterFam: FC = () => {
   const famCount = useProfiles()?.count;
   const profiles = useProfiles()?.profiles;
+  const { md } = useActiveBreakpoint();
+
+  // Popper Tooltip
+  const [refEl, setRefEl] = useState<HTMLImageElement | null>(null);
+  const [popperEl, setPopperEl] = useState<HTMLDivElement | null>(null);
+  const { styles, attributes } = usePopper(refEl, popperEl, {
+    placement: "right",
+    modifiers: [
+      {
+        name: "flip",
+      },
+    ],
+  });
   const [selectedProfile, setSelectedProfile] = useState<FamProfile>();
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [showTimer, setShowTimer] = useState<number>();
+  const [hideTimer, setHideTimer] = useState<number>();
 
+  const handleImageMouseEnter = useCallback(
+    (profile: FamProfile, ref: RefObject<HTMLImageElement>) => {
+      // The profile data isn't there yet so no tooltip can be shown.
+      if (profile === undefined) {
+        return;
+      }
+
+      // If we were waiting to hide, we're hovering again, so leave the tooltip open.
+      window.clearTimeout(hideTimer);
+
+      const id = window.setTimeout(() => {
+        setRefEl(ref.current);
+        setSelectedProfile(profile);
+        setShowTooltip(true);
+      }, 300);
+      setShowTimer(id);
+
+      return () => window.clearTimeout(id);
+    },
+    [hideTimer],
+  );
+
+  const handleImageMouseLeave = useCallback(() => {
+    // If we were waiting to show, we stopped hovering, so stop waiting and don't show any tooltip.
+    window.clearTimeout(showTimer);
+
+    // If we never made it passed waiting and opened the tooltip, there is nothing to hide.
+    if (selectedProfile === undefined) {
+      return;
+    }
+
+    const id = window.setTimeout(() => {
+      setShowTooltip(false);
+    }, 300);
+    setHideTimer(id);
+
+    return () => window.clearTimeout(id);
+  }, [setHideTimer, showTimer, selectedProfile]);
+
+  const handleTooltipEnter = useCallback(() => {
+    // If we were waiting to hide, we're hovering again, so leave the tooltip open.
+    window.clearTimeout(hideTimer);
+  }, [hideTimer]);
+
+  const handleTooltipLeave = useCallback(() => {
+    const id = window.setTimeout(() => {
+      setShowTooltip(false);
+    }, 0);
+    setHideTimer(id);
+
+    return () => window.clearTimeout(id);
+  }, []);
+
+  // Copy batsound feedback
   const [isCopiedFeedbackVisible, setIsCopiedFeedbackVisible] = useState(false);
-
   const onBatSoundCopied = () => {
     setIsCopiedFeedbackVisible(true);
     setTimeout(() => setIsCopiedFeedbackVisible(false), 400);
@@ -29,10 +101,22 @@ const TwitterFam: FC = () => {
     }
   }, []);
 
+  // Support profile skeletons.
   const currentProfiles =
     profiles === undefined
       ? (new Array(120).fill(undefined) as undefined[])
       : profiles;
+
+  const handleClickProfile = useCallback(
+    (profile: FamProfile | undefined) => {
+      if (md) {
+        return;
+      }
+
+      setSelectedProfile(profile);
+    },
+    [md, setSelectedProfile],
+  );
 
   return (
     <>
@@ -59,8 +143,10 @@ const TwitterFam: FC = () => {
         <div className="w-4"></div>
         <Clipboard data-clipboard-text={"🦇🔊"} onSuccess={onBatSoundCopied}>
           <span className="relative bg-blue-midnightexpress border border-gray-700 rounded-full p-2 pl-5 flex w-48 mx-auto justify-between items-center text-2xl isolate clipboard-emoji">
-            <SpanMoji emoji="🦇🔊" />
-            <span className="font-light text-base copy-container rounded-full bg-green-mediumspring text-blue-midnightexpress px-5 py-1 isolate">
+            <Twemoji className="flex gap-x-1" imageClassName="w-7" wrapper>
+              🦇🔊
+            </Twemoji>
+            <span className="font-light text-base copy-container rounded-full bg-green-mediumspring text-blue-midnightexpress px-5 py-1 isolate select-none">
               copy
             </span>
             <span
@@ -77,27 +163,77 @@ const TwitterFam: FC = () => {
       </div>
       <div className="h-16"></div>
       <div className="flex flex-wrap justify-center">
-        {currentProfiles.map((profile, index) =>
-          profile === undefined ? (
-            <Skeleton key={index} circle={true} height="40px" width="40" />
-          ) : (
-            <FamAvatar
-              key={index}
-              onClick={setSelectedProfile}
-              profile={profile}
+        {currentProfiles.map((profile, index) => (
+          <div className="m-2 w-10 h-10" key={profile?.profileUrl ?? index}>
+            <ImageWithTooltip
+              className="select-none"
+              description={profile?.bio}
+              famFollowerCount={profile?.famFollowerCount}
+              followerCount={profile?.followersCount}
+              imageUrl={profile?.profileImageUrl}
+              isDoneLoading={profile !== undefined}
+              links={profile?.links}
+              skeletonDiameter="40px"
+              title={profile?.name}
+              tooltipImageUrl={profile?.profileImageUrl}
+              twitterUrl={profile?.profileUrl}
+              onMouseEnter={(ref) =>
+                !md || profile === undefined
+                  ? () => undefined
+                  : handleImageMouseEnter(profile, ref)
+              }
+              onMouseLeave={() =>
+                !md ? () => undefined : handleImageMouseLeave()
+              }
+              onClick={() =>
+                md || profile === undefined
+                  ? () => undefined
+                  : handleClickProfile(profile)
+              }
             />
-          ),
-        )}
+          </div>
+        ))}
       </div>
-      <FamModal
-        onClickBackground={() => setSelectedProfile(undefined)}
-        show={selectedProfile !== undefined}
-      >
-        <FamModalContent
-          onClickClose={() => setSelectedProfile(undefined)}
-          profile={selectedProfile}
-        ></FamModalContent>
-      </FamModal>
+      <>
+        <div
+          ref={setPopperEl}
+          className="z-10 hidden md:block p-4"
+          style={{
+            ...styles.popper,
+            visibility: showTooltip ? "visible" : "hidden",
+          }}
+          {...attributes.popper}
+          onMouseOver={handleTooltipEnter}
+          onMouseOut={handleTooltipLeave}
+        >
+          <Tooltip
+            description={selectedProfile?.bio}
+            famFollowerCount={selectedProfile?.famFollowerCount}
+            followerCount={selectedProfile?.followersCount}
+            imageUrl={selectedProfile?.profileImageUrl}
+            links={selectedProfile?.links}
+            title={selectedProfile?.name}
+            twitterUrl={selectedProfile?.profileUrl}
+          />
+        </div>
+        <Modal
+          onClickBackground={() => setSelectedProfile(undefined)}
+          show={!md && selectedProfile !== undefined}
+        >
+          {!md && selectedProfile !== undefined && (
+            <Tooltip
+              description={selectedProfile.bio}
+              famFollowerCount={selectedProfile.famFollowerCount}
+              followerCount={selectedProfile.followersCount}
+              imageUrl={selectedProfile.profileImageUrl}
+              links={selectedProfile.links}
+              onClickClose={() => setSelectedProfile(undefined)}
+              title={selectedProfile.name}
+              twitterUrl={selectedProfile.profileUrl}
+            />
+          )}
+        </Modal>
+      </>
     </>
   );
 };

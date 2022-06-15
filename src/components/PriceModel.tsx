@@ -1,6 +1,5 @@
 import JSBI from "jsbi";
-import { FC, InputHTMLAttributes, useEffect, useState } from "react";
-import Skeleton from "react-loading-skeleton";
+import { FC, useEffect, useState } from "react";
 import { useAverageEthPrice } from "../api/eth-price";
 import { useGroupedStats1 } from "../api/grouped-stats-1";
 import { usePeRatios } from "../api/pe-ratios";
@@ -14,11 +13,11 @@ import { TextInter, TextRoboto } from "./Texts";
 import { WidgetBackground, WidgetTitle } from "./widget-subcomponents";
 
 type SliderProps = {
-  children: number | undefined;
-  max: InputHTMLAttributes<HTMLInputElement>["max"];
-  min: InputHTMLAttributes<HTMLInputElement>["min"];
+  children: number;
+  max: number;
+  min: number;
   onChange: (num: number) => void;
-  step: InputHTMLAttributes<HTMLInputElement>["step"];
+  step: number;
   thumbVisible?: boolean;
 };
 
@@ -54,7 +53,7 @@ const Slider: FC<SliderProps> = ({
 const Marker: FC<{
   alt?: string;
   icon: string;
-  peRatio: number;
+  peRatio: number | undefined;
   ratio: number;
   symbol?: string;
 }> = ({ alt, icon, peRatio, ratio, symbol }) => {
@@ -69,7 +68,7 @@ const Marker: FC<{
     >
       <div className="[min-height:3px] w-3 bg-blue-shipcove mb-3 -translate-x-1/2"></div>
       <a
-        title={`${peRatio.toFixed(1)} P/E`}
+        title={`${peRatio?.toFixed(1) ?? "-"} P/E`}
         className="absolute pointer-events-auto top-4 -translate-x-1/2"
         href={
           symbol === undefined
@@ -183,7 +182,7 @@ const PriceModel: FC = () => {
   const ethPrice = useGroupedStats1()?.ethPrice?.usd;
   const ethSupply = useScarcity()?.ethSupply;
   const [peRatio, setPeRatio] = useState<number>();
-  const [peRatioPosition, setPeRatioPosition] = useState<number>();
+  const [peRatioPosition, setPeRatioPosition] = useState<number>(0);
   const [monetaryPremium, setMonetaryPremium] = useState(1);
   const [initialPeSet, setInitialPeSet] = useState(false);
   const averageEthPrice = useAverageEthPrice()?.all;
@@ -254,7 +253,7 @@ const PriceModel: FC = () => {
       <div className="flex flex-col gap-y-4 mt-4 overflow-hidden">
         <div className="flex justify-between">
           <TextInter>annualized profits</TextInter>
-          <MoneyAmount amountPostfix="B" unit="usd">
+          <MoneyAmount amountPostfix="B" unit="usd" skeletonWidth="2rem">
             {annualizedEarnings === undefined
               ? undefined
               : Format.formatOneDigit(annualizedEarnings / 1e9)}
@@ -263,12 +262,10 @@ const PriceModel: FC = () => {
         <div className="flex flex-col gap-y-2">
           <div className="flex justify-between">
             <TextInter>growth profile</TextInter>
-            <MoneyAmount unit="P/E">
-              {peRatio === undefined ? (
-                <Skeleton inline width="3rem" />
-              ) : (
-                Format.formatOneDigit(peRatio)
-              )}
+            <MoneyAmount unit="P/E" skeletonWidth="3rem">
+              {peRatio !== undefined && initialPeSet
+                ? Format.formatOneDigit(peRatio)
+                : undefined}
             </MoneyAmount>
           </div>
           <div className="relative mb-12">
@@ -277,7 +274,7 @@ const PriceModel: FC = () => {
               min={0}
               max={1}
               onChange={setPeRatioPosition}
-              thumbVisible={peRatioPosition !== undefined}
+              thumbVisible={initialPeSet}
             >
               {peRatioPosition}
             </Slider>
@@ -315,13 +312,16 @@ const PriceModel: FC = () => {
                     />
                   )}
 
-                  <Marker
-                    alt="amazon logo"
-                    icon="amazon"
-                    peRatio={peRatios.AMZN}
-                    ratio={linearFromLog(peRatios.AMZN)}
-                    symbol="AMZN"
-                  />
+                  {ethPeRatio === undefined ||
+                    (peRatios.AMZN - ethPeRatio > 4 && (
+                      <Marker
+                        alt="amazon logo"
+                        icon="amazon"
+                        peRatio={peRatios.AMZN}
+                        ratio={linearFromLog(peRatios.AMZN)}
+                        symbol="AMZN"
+                      />
+                    ))}
                   <Marker
                     alt="disney logo"
                     icon="disney"

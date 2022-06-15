@@ -61,10 +61,16 @@ const DeflationaryStreak: FC<{ simulateMerge: boolean }> = ({
                 />
                 <AmountUnitSpace />
               </TextRoboto>
-              <SpanMoji className="ml-4 md:ml-8" emoji="🦇🔊" />
+              <SpanMoji
+                className="flex items-center gap-x-1 ml-4"
+                imageClassName="h-8"
+                emoji="🦇🔊"
+              />
             </>
           ) : (
-            <TextRoboto>0 blocks</TextRoboto>
+            <>
+              <TextRoboto>0 blocks</TextRoboto>
+            </>
           )}
         </div>
         <span className="font-inter text-blue-spindle text-xs md:text-sm font-extralight">

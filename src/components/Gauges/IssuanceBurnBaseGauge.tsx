@@ -1,32 +1,33 @@
 import { clamp } from "lodash";
-import { FC } from "react";
+import { FC, useContext } from "react";
+import Skeleton from "react-loading-skeleton";
 import { animated, config, useSpring } from "react-spring";
 import { useGroupedStats1 } from "../../api/grouped-stats-1";
-import colors from "../../colors";
 import { Unit } from "../../denomination";
+import { FeatureFlagsContext } from "../../feature-flags";
 import { formatOneDigit, formatZeroDigit } from "../../format";
 import { pipe } from "../../fp";
-import SpanMoji from "../SpanMoji";
-import GaugeSvg from "./GaugeSvg";
+import Twemoji from "../Twemoji";
+import GaugeSvg, { GaugeGradientFill } from "./GaugeSvg";
 
 type BaseGuageProps = {
   emoji: string;
   gaugeUnit: string;
   needleColor?: string;
   title: string;
-  value: number;
-  valueFillColor?: string;
+  value: number | undefined;
+  gradientFill: GaugeGradientFill;
   valueUnit: string;
   unit: Unit;
 };
 
-const BaseGuage: FC<BaseGuageProps> = ({
+const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
   emoji,
   gaugeUnit,
   needleColor,
   title,
   value,
-  valueFillColor = colors.spindle,
+  gradientFill,
   valueUnit,
   unit,
 }) => {
@@ -42,30 +43,41 @@ const BaseGuage: FC<BaseGuageProps> = ({
   const min = 0;
   const max = pipe(
     unit === "eth" ? 10 : (10 * (ethPrice?.usd ?? 0)) / 10 ** 3,
-    (max) => Math.max(max, value),
+    (max) => Math.max(max, value ?? 0),
     Math.round,
   );
 
-  const progress = clamp(value, min, max) / (max - min);
+  const progress = clamp(value ?? 0, min, max) / (max - min);
+
+  const { previewSkeletons } = useContext(FeatureFlagsContext);
 
   return (
     <>
-      <SpanMoji className="h-10" emoji={emoji} />
+      <Twemoji className="h-10 w-10 select-none" wrapper>
+        {emoji}
+      </Twemoji>
       <div className="mt-6 md:mt-2 lg:mt-8 transform scale-100 md:scale-75 lg:scale-100 xl:scale-110">
         <GaugeSvg
-          progress={progress}
-          progressFillColor={valueFillColor}
+          gradientFill={gradientFill}
           needleColor={needleColor}
+          progress={progress}
         />
         <div className="font-roboto text-white text-center font-light 2xl:text-lg -mt-20 pt-1">
-          <animated.p className="-mb-2">
-            {valueA.to(
-              (n) =>
-                `${
-                  unit === "eth" ? formatOneDigit(n) : formatZeroDigit(n)
-                }${gaugeUnit}`,
-            )}
-          </animated.p>
+          {value === undefined || previewSkeletons ? (
+            <div className="-mb-2">
+              <Skeleton inline width="28px" />
+              <span>{gaugeUnit}</span>
+            </div>
+          ) : (
+            <animated.p className="-mb-2">
+              {valueA.to(
+                (n) =>
+                  `${
+                    unit === "eth" ? formatOneDigit(n) : formatZeroDigit(n)
+                  }${gaugeUnit}`,
+              )}
+            </animated.p>
+          )}
           <p className="font-extralight text-blue-spindle">{valueUnit}</p>
           <div className="-mt-2">
             <span className="float-left">
@@ -86,4 +98,4 @@ const BaseGuage: FC<BaseGuageProps> = ({
   );
 };
 
-export default BaseGuage;
+export default IssuanceBurnBaseGauge;

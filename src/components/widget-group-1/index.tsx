@@ -1,7 +1,6 @@
 import React, { FC, useCallback, useState } from "react";
 import { useGroupedStats1 } from "../../api/grouped-stats-1";
 import { Unit } from "../../denomination";
-import { FeatureFlags } from "../../feature-flags";
 import * as Format from "../../format";
 import { TimeFrameNext, timeFramesNext } from "../../time-frames";
 import BurnCategories from "../BurnCategories";
@@ -17,7 +16,7 @@ import BurnLeaderboard from "./BurnLeaderboard";
 import CurrencyControl from "./controls/CurrencyControl";
 import TimeFrameControl from "./controls/TimeFrameControl";
 
-const WidgetGroup1: FC<{ featureFlags: FeatureFlags }> = ({ featureFlags }) => {
+const WidgetGroup1: FC = () => {
   const [simulateMerge, setSimulateMerge] = useState(false);
   const baseFeePerGas = useGroupedStats1()?.baseFeePerGas;
   const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
@@ -104,17 +103,13 @@ const WidgetGroup1: FC<{ featureFlags: FeatureFlags }> = ({ featureFlags }) => {
           timeFrame={timeFrame}
           unit={unit}
         />
-        <div className="lg:col-start-2 lg:row-span-2 max-h-[694px]">
+        <div className="lg:col-start-2 lg:row-start-1 lg:row-end-5 lg:h-[714px] xl:h-[731px] flex flex-col gap-y-4">
           <BurnLeaderboard
-            featureFlags={featureFlags}
             onClickTimeFrame={handleClickTimeFrame}
             timeFrame={timeFrame}
             unit={unit}
           />
-        </div>
-        <div className="lg:col-start-2 lg:row-start-3 lg:row-end-5">
           <BurnCategories
-            featureFlags={featureFlags}
             onClickTimeFrame={handleClickTimeFrame}
             timeFrame={timeFrame}
           />

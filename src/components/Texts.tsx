@@ -1,4 +1,6 @@
-import { CSSProperties, FC } from "react";
+import { CSSProperties, FC, useContext } from "react";
+import Skeleton from "react-loading-skeleton";
+import { FeatureFlagsContext } from "../feature-flags";
 
 export const LabelText: FC<{ className?: string }> = ({
   children,
@@ -51,20 +53,36 @@ export const TextInter: FC<{
   className?: string;
   inline?: boolean;
   style?: CSSProperties;
-}> = ({ children, className, inline = true, style }) => {
+  skeletonWidth?: string;
+}> = ({
+  children,
+  className,
+  inline = true,
+  style,
+  skeletonWidth = "3rem",
+}) => {
   const mergedClassName = `
     font-inter font-light
     text-white
+    text-base md:text-lg
     ${className ?? ""}
   `;
 
   return inline ? (
     <span className={mergedClassName} style={style}>
-      {children}
+      {children === undefined ? (
+        <Skeleton inline width={skeletonWidth} />
+      ) : (
+        children
+      )}
     </span>
   ) : (
     <p className={mergedClassName} style={style}>
-      {children}
+      {children === undefined ? (
+        <Skeleton inline width={skeletonWidth} />
+      ) : (
+        children
+      )}
     </p>
   );
 };
@@ -73,7 +91,8 @@ export const TextRoboto: FC<{
   className?: string;
   inline?: boolean;
   style?: CSSProperties;
-}> = ({ children, className, inline = true, style }) => {
+  tooltip?: string;
+}> = ({ children, className, inline = true, style, tooltip }) => {
   const mergedClassName = `
     font-roboto font-light
     text-white
@@ -81,11 +100,11 @@ export const TextRoboto: FC<{
   `;
 
   return inline ? (
-    <span className={mergedClassName} style={style}>
+    <span className={mergedClassName} style={style} title={tooltip}>
       {children}
     </span>
   ) : (
-    <p className={mergedClassName} style={style}>
+    <p className={mergedClassName} style={style} title={tooltip}>
       {children}
     </p>
   );

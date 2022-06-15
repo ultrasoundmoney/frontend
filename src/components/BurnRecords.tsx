@@ -3,16 +3,14 @@ import { FC, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { BurnRecord } from "../api/burn-records";
 import { useGroupedStats1 } from "../api/grouped-stats-1";
-import { Unit } from "../denomination";
 import * as Format from "../format";
 import { flow, O, OAlt } from "../fp";
-import styles from "../styles/Scrollbar.module.scss";
+import scrollbarStyles from "../styles/Scrollbar.module.scss";
 import { TimeFrameNext } from "../time-frames";
 import { useActiveBreakpoint } from "../utils/use-active-breakpoint";
 import { MoneyAmountAnimated } from "./Amount";
-import { AmountUnitSpace } from "./Spacing";
 import SpanMoji from "./SpanMoji";
-import { TextInter, TextRoboto } from "./Texts";
+import { TextInter } from "./Texts";
 import { Group1Base } from "./widget-subcomponents";
 
 const formatBlockNumber = flow(
@@ -26,23 +24,6 @@ const getBlockPageLink = flow(
   OAlt.numberFromUnknown,
   O.map((num) => `https://etherscan.io/block/${num}`),
   O.toUndefined,
-);
-
-const BurnRecordAmount: FC<{ amount: number | undefined; unit: Unit }> = ({
-  amount,
-  unit,
-}) => (
-  <div className="text-2xl md:text-3xl">
-    <TextRoboto>
-      {amount === undefined ? (
-        <Skeleton inline={true} width="4rem" />
-      ) : (
-        <MoneyAmountAnimated unit={unit}>{amount}</MoneyAmountAnimated>
-      )}
-    </TextRoboto>
-    <AmountUnitSpace />
-    <span className="text-blue-spindle font-extralight">ETH</span>
-  </div>
 );
 
 const emojiMap = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
@@ -74,9 +55,8 @@ const Age: FC<{ minedAt: Date | undefined }> = ({ minedAt }) => {
   }, [minedAt]);
 
   return (
-    <TextInter className="md:text-lg">
-      {age || <Skeleton inline={true} width="6rem" />}
-      {" ago"}
+    <TextInter className="md:text-lg" skeletonWidth="6rem">
+      {age === undefined ? undefined : `${age} ago`}
     </TextInter>
   );
 };
@@ -106,7 +86,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
           flex flex-col gap-y-6
           mt-4 -mr-3
           overflow-y-auto
-          ${styles["styled-scrollbar"]}
+          ${scrollbarStyles["styled-scrollbar"]}
         `}
         // Custom height to fit three records on desktop and mobile.
         style={{ height: lg ? "16rem" : "15rem" }}
@@ -117,9 +97,16 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
             key={record.blockNumber || index}
           >
             <div className="flex justify-between w-full">
-              <BurnRecordAmount amount={record.baseFeeSum} unit="eth" />
+              <MoneyAmountAnimated
+                skeletonWidth="4rem"
+                textClassName="text-2xl md:text-3xl"
+                unit="eth"
+                unitText="ETH"
+              >
+                {record.baseFeeSum}
+              </MoneyAmountAnimated>
               <SpanMoji
-                className="text-2xl md:text-3xl"
+                className="text-2xl md:text-3xl select-none"
                 emoji={emojiMap[index]}
               />
             </div>

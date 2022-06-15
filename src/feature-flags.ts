@@ -1,8 +1,11 @@
-import { useEffect, useReducer } from "react";
+import { createContext, useReducer } from "react";
 
 export const flags = [
+  "enableTooltips",
+  "previewSkeletons",
   "showCategoryCounts",
   "showCategorySlugs",
+  "showMetadataTools",
   "useWebSockets",
 ] as const;
 export type Flag = typeof flags[number];
@@ -10,14 +13,20 @@ export type Flag = typeof flags[number];
 export type FeatureFlags = Record<Flag, boolean>;
 
 export const defaults: FeatureFlags = {
+  enableTooltips: false,
+  previewSkeletons: false,
   showCategoryCounts: false,
   showCategorySlugs: false,
+  showMetadataTools: false,
   useWebSockets: false,
 };
 
 export const displayFlagMap: Record<Flag, string> = {
+  enableTooltips: "enable tooltips",
+  previewSkeletons: "preview skeletons",
   showCategoryCounts: "show category counts",
   showCategorySlugs: "show category slugs",
+  showMetadataTools: "show metadata tools",
   useWebSockets: "use websockets",
 };
 
@@ -28,13 +37,7 @@ const reducer = (
 
 export const useFeatureFlags = () => {
   const [featureFlags, setFlag] = useReducer(reducer, defaults);
-
-  useEffect(() => {
-    useWebSockets = featureFlags.useWebSockets;
-  }, [featureFlags]);
   return { featureFlags, setFlag };
 };
 
-// React makes it hard to switch to toggle websockets easily. We use some dark magic.
-let useWebSockets = false;
-export const getUseWebSockets = () => useWebSockets;
+export const FeatureFlagsContext = createContext(defaults);

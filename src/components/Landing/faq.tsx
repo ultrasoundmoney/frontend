@@ -68,7 +68,7 @@ const FaqBlock: React.FC = () => {
           </span>
           <button
             type="button"
-            className="flex-none px-3 py-2 text-base text-white hover:opacity-75 border-white border-solid border-2 rounded-3xl"
+            className="flex-none px-3 py-2 text-base text-white hover:opacity-75 border-white border-solid border-2 rounded-3xl select-none"
           >
             <a
               href="https://twitter.com/intent/tweet?text=.@ultrasoundmoney%20%5Byour%20question%20here%5D"

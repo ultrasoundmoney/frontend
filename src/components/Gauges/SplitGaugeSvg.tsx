@@ -56,30 +56,40 @@ const SplitGaugeSvg: FC<SplitGaugeSvgProps> = ({
         ...arcBase,
         startAngle: 0,
         endAngle: (1 / 3) * tau * foregroundArcFraction * x,
-      }) ?? ""
+      }) ?? "",
   );
 
   const needlePath = "M 0 -4 L 64 0 L 64 0 L 0 4 A 1 1 0 0 1 0 -4";
 
   return (
     <svg width={width} height={height}>
+      <defs>
+        <linearGradient id="orange-gradient-2">
+          <stop offset="0%" stopColor="#F4900C" />
+          <stop offset="100%" stopColor="#F4DD0C" />
+        </linearGradient>
+        <linearGradient id="blue-gradient">
+          <stop offset="0%" stopColor="#5DECD2" />
+          <stop offset="100%" stopColor="#5DADEC" />
+        </linearGradient>
+      </defs>
       <g transform={`translate(${width / 2},${height / 2})`}>
         <path style={{ fill: colors.dusk }} d={backgroundArc}></path>
         <animated.path
-          style={{ fill: colors.drop }}
-          opacity={stylesBlue.opacity}
           d={foregroundArc}
+          fill="url(#blue-gradient)"
+          opacity={stylesBlue.opacity}
         ></animated.path>
         <animated.path
-          style={{ fill: colors.fireOrange }}
+          d={foregroundArc}
+          fill="url(#orange-gradient-2)"
           opacity={stylesOrange.opacity}
-          d={foregroundArc}
         ></animated.path>
         <animated.path
-          transform={x.to((x) => `rotate(${-90 + x * 120})`)}
+          d={needlePath}
           opacity={stylesBlue.opacity}
           style={{ fill: colors.drop }}
-          d={needlePath}
+          transform={x.to((x) => `rotate(${-90 + x * 120})`)}
         ></animated.path>
         <animated.path
           transform={x.to((x) => `rotate(${-90 + x * 120})`)}

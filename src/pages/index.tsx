@@ -22,6 +22,7 @@ const IndexPage: NextPage = () => {
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/favicon.png"></link>
         <meta name="theme-color" content="#131827" />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <script
           defer
           data-domain="ultrasound.money"

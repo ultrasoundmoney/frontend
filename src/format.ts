@@ -63,6 +63,23 @@ const noDigit = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
 
 export const formatNoDigit = (num: number): string => noDigit.format(num);
 
+const compactNumber = new Intl.NumberFormat("en", {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 2,
+  notation: "compact",
+});
+
+export const formatCompact = (num: number) => compactNumber.format(num);
+
+const compactNumberOneDigit = new Intl.NumberFormat("en", {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 1,
+  notation: "compact",
+});
+
+export const formatCompactOneDigit = (num: number) =>
+  compactNumberOneDigit.format(num);
+
 export const gweiFromWei = (wei: number): number => wei / 10 ** 9;
 
 export const ethFromWei = (wei: number): number => wei / 10 ** 18;

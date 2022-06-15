@@ -16,11 +16,11 @@
 }
 
 .thumbInvisible::-webkit-slider-thumb {
-  display: none;
+  visibility: hidden;
 }
 
 .thumbInvisible::-moz-range-thumb {
-  display: none;
+  visibility: hidden;
 }
 
 .customSlider::-webkit-slider-thumb:active {

@@ -61,12 +61,12 @@ const Row: FC<RowProps> = ({ highlightColor, title, progress, icon }) => {
       onMouseLeave={() => setHovering(false)}
     >
       <img
-        className={`${blueishVisibleCss}`}
+        className={`select-none ${blueishVisibleCss}`}
         src={`/${icon}-blueish.svg`}
         alt={`${icon} icon`}
       />
       <img
-        className={`absolute ${colorVisibleCss}`}
+        className={`absolute select-none ${colorVisibleCss}`}
         src={`/${icon}-color.svg`}
         alt={`${icon} icon`}
       />

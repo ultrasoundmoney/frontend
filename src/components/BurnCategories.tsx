@@ -1,14 +1,14 @@
-import { FC, useState } from "react";
+import { FC, useContext, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { BurnCategory, useBurnCategories } from "../api/burn-categories";
 import Colors from "../colors";
-import { FeatureFlags } from "../feature-flags";
+import { FeatureFlagsContext } from "../feature-flags";
 import * as Format from "../format";
 import { A, flow, NEA, O, pipe } from "../fp";
 import { TimeFrameNext } from "../time-frames";
 import { MoneyAmount } from "./Amount";
 import { LabelText, TextInter, TextRoboto } from "./Texts";
-import { Group1Base } from "./widget-subcomponents";
+import { Group1Base, WidgetTitle } from "./widget-subcomponents";
 
 type CategoryProps = {
   fees: number | undefined;
@@ -203,25 +203,19 @@ const CategoryRow: FC<CategoryRowProps> = ({
   amountFormatted,
   countFormatted,
   hovering,
-  link,
   name,
   setHovering,
   showCategoryCounts = false,
 }) => (
-  <a
+  <div
     className={`
       grid grid-cols-2 ${showCategoryCounts ? "md:grid-cols-3" : ""}
-      link-animation
-      select-none
     `}
-    href={link}
     onMouseEnter={() => setHovering(true)}
     onMouseLeave={() => setHovering(false)}
-    rel="noreferrer"
     style={{ opacity: hovering ? 0.6 : 1 }}
-    target="_blank"
   >
-    <TextInter className="font-inter text-white">{name}</TextInter>
+    <TextInter className="">{name}</TextInter>
     <div
       className={`
         text-right
@@ -247,7 +241,7 @@ const CategoryRow: FC<CategoryRowProps> = ({
         <TextRoboto className="text-right">{countFormatted}</TextRoboto>
       )}
     </div>
-  </a>
+  </div>
 );
 
 const formatFees = flow(
@@ -306,23 +300,18 @@ const buildMiscCategory = (
   );
 
 type Props = {
-  featureFlags: FeatureFlags;
   onClickTimeFrame: () => void;
   timeFrame: TimeFrameNext;
 };
 
-const BurnCategoryWidget: FC<Props> = ({
-  featureFlags,
-  onClickTimeFrame,
-  timeFrame,
-}) => {
+const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const burnCategories = useBurnCategories();
   const [hoveringNft, setHoveringNft] = useState(false);
   const [hoveringDefi, setHoveringDefi] = useState(false);
   const [hoveringMev, setHoveringMev] = useState(false);
   const [hoveringL2, setHoveringL2] = useState(false);
   const [hoveringMisc, setHoveringMisc] = useState(false);
-  const { showCategoryCounts } = featureFlags;
+  const { showCategoryCounts } = useContext(FeatureFlagsContext);
 
   const selectedBurnCategories =
     // TODO: our old API returned an array, this element is not visible yet, but trying to access an array like an object does crash the full page, therefore we have this check to make sure not to crash, and can remove it once the new API is deployed in production.
@@ -430,16 +419,16 @@ const BurnCategoryWidget: FC<Props> = ({
                 showCategoryCounts ? "md:grid-cols-3" : "grid-cols-2"
               }`}
             >
-              <LabelText>category</LabelText>
-              <LabelText
+              <WidgetTitle>category</WidgetTitle>
+              <div
                 className={`
                   text-right
                   ${showCategoryCounts ? "col-span-1" : "col-span-1"}
                   ${showCategoryCounts ? "md:mr-8" : ""}
                 `}
               >
-                burn
-              </LabelText>
+                <WidgetTitle>burn</WidgetTitle>
+              </div>
               <LabelText
                 className={`text-right hidden ${
                   showCategoryCounts ? "md:block" : ""
@@ -456,7 +445,7 @@ const BurnCategoryWidget: FC<Props> = ({
                     burnCategoryParts?.nft.transactionCount,
                   )}
                   hovering={hoveringNft}
-                  name="NFTs"
+                  name="NFT"
                   setHovering={setHoveringNft}
                   showCategoryCounts={showCategoryCounts}
                 />
@@ -466,7 +455,7 @@ const BurnCategoryWidget: FC<Props> = ({
                     burnCategoryParts?.defi.transactionCount,
                   )}
                   hovering={hoveringDefi}
-                  name="DeFi"
+                  name="defi"
                   setHovering={setHoveringDefi}
                   showCategoryCounts={showCategoryCounts}
                 />
@@ -494,7 +483,7 @@ const BurnCategoryWidget: FC<Props> = ({
                   amountFormatted={formatFees(misc?.fees)}
                   countFormatted={formatCount(misc?.transactionCount)}
                   hovering={hoveringMisc}
-                  name="Misc"
+                  name="misc"
                   setHovering={setHoveringMisc}
                   showCategoryCounts={showCategoryCounts}
                 />
