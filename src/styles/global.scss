@@ -3,6 +3,10 @@
 
 // Makes overscrolling look better by filling in the default white with our background color.
 
+// colors === st rt
+$white: #fff;
+//colors === end
+
 body {
   background-color: #131827;
 }
@@ -95,7 +99,7 @@ a:hover {
   right: 0;
   width: 100vw;
   transition: all .2s ease;
-  transform: translateY(-100%);
+  transform: translateY(-130%);
 
   &.active {
       transform: translateY(0);
@@ -1175,7 +1179,7 @@ a:hover {
 .hamburger-menu {
   position: fixed;
   right: 10px;
-  top: 30px;
+  top: 0;
   height: 34px;
   padding: 8px;
   z-index: 99;
