@@ -3,7 +3,7 @@ import Link from "next/link";
 import CountUp from "react-countup";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 import { TranslationsContext } from "../../translations-context";
-import { useEthPrices, useFeeData } from "../../api";
+import { useGroupedStats1 } from "../../api/grouped-stats-1";
 import { formatPercentOneDigitSigned } from "../../format";
 import { weiToGwei } from "../../utils/metric-utils";
 
@@ -16,8 +16,8 @@ let startEthPriceCached = 0;
 
 const GweiDynamicBlock: React.FC = () => {
   const t = useContext(TranslationsContext);
-  const { ethPrices } = useEthPrices();
-  const { baseFeePerGas } = useFeeData();
+  const ethPrices = useGroupedStats1()?.ethPrice;
+  const baseFeePerGas = useGroupedStats1()?.baseFeePerGas;
   const ethUsd24hChange =
     ethPrices?.usd24hChange &&
     formatPercentOneDigitSigned(ethPrices?.usd24hChange / 100);
