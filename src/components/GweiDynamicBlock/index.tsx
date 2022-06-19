@@ -55,8 +55,14 @@ const GweiDynamicBlock: React.FC = () => {
           />
           <span className={`px-1 ${color}`}>({ethUsd24hChange})</span>
           <span className="px-1">•</span>
-          <SpanMoji className="px-0.5" emoji="⛽️"></SpanMoji>
-          <span className="">
+          <img
+            className="select-none"
+            src="/gas-icon.svg"
+            alt="gas pump icon"
+            width="13"
+            height="14"
+          />
+          <span className="pl-1">
             <CountUp
               decimals={0}
               duration={0.8}
