@@ -96,7 +96,7 @@ const SupplyGrowthGauge: FC<Props> = ({
   const colorStyle = useSpring({
     from: { color: colors.drop },
     to: { color: colors.fireOrange },
-    reverse: progress >= 0,
+    reverse: progress > 0,
   });
 
   return (
