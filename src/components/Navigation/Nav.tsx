@@ -62,7 +62,7 @@ const Nav = () => {
           </ul>
         </div>
         <div className="-mr-2 flex md:hidden fixed right-5 -top-1">
-          <Image
+          <img
             onClick={openCloseNavHandler}
             src="/images/burger_menu_icon.svg"
             width={24}
@@ -78,7 +78,7 @@ const Nav = () => {
       >
         <div className="px-2 pt-20 pb-3 space-y-1 sm:px-3 relative">
           <div className="absolute right-5 top-2">
-            <Image
+            <img
               onClick={openCloseNavHandler}
               src="/images/cross_icon.svg"
               width={24}
