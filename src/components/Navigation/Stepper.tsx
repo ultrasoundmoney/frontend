@@ -91,7 +91,7 @@ const Stepper: React.FC = () => {
             href="#join-the-fam"
           >
             Join The Community
-            <img className="ml-6" src={arrowRight} alt="arrow-right" />
+            <img className="ml-6" src={arrowRight.src} alt="arrow-right" />
           </a>
         </div>
       </div>
