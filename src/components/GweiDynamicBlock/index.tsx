@@ -35,7 +35,7 @@ const GweiDynamicBlock: React.FC = () => {
     startEthPrice = ethPrices?.usd;
   }
   return (
-    <div className="w-full flex justify-between md:justify-start p-4">
+    <div className="w-full flex justify-between md:justify-start p-4 z-10 relative">
       <div className="hidden md:block">
         <Link href="/">
           <img className="relative" src={EthLogo.src} alt={t.title} />
