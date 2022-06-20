@@ -146,28 +146,30 @@ const TopBar: FC = () => {
   const [showAlarmDialog, setShowAlarmDialog] = useState(false);
   const notification = useNotification();
   const dialogRef = useRef<HTMLDivElement>(null);
+  const alarmButtonRef = useRef<HTMLButtonElement>(null);
 
   const isAlarmActive = gasAlarmActive || ethAlarmActive;
 
   const checkIfClickedOutside = useCallback(
     (e: MouseEvent) => {
       if (
-        showAlarmDialog &&
-        dialogRef.current &&
-        !dialogRef.current.contains(e.target as Node | null)
+        !showAlarmDialog ||
+        e.target === null ||
+        (dialogRef.current !== null &&
+          dialogRef.current.contains(e.target as Node)) ||
+        (alarmButtonRef.current !== null &&
+          alarmButtonRef.current.contains(e.target as Node))
       ) {
-        setShowAlarmDialog(false);
+        return;
       }
+
+      setShowAlarmDialog(false);
     },
     [showAlarmDialog],
   );
 
   const handleClickAlarm = useCallback(() => {
-    if (showAlarmDialog === false) {
-      setShowAlarmDialog(true);
-    }
-
-    // Any click outside the dialog closes the dialog. There is no need to close in response to the button click event.
+    setShowAlarmDialog(!showAlarmDialog);
   }, [showAlarmDialog]);
 
   const showAlarmDialogCss = showAlarmDialog ? "visible" : "invisible";
@@ -189,6 +191,7 @@ const TopBar: FC = () => {
         <PriceGasWidget baseFeePerGas={baseFeePerGas} ethPrice={ethPrice} />
 
         <button
+          ref={alarmButtonRef}
           className={`
             flex items-center
             px-3 py-2 ml-4
@@ -237,7 +240,7 @@ const TopBar: FC = () => {
         </div>
       </div>
       <a
-        className="hidden md:block flex px-4 py-1 font-medium text-white hover:text-blue-shipcove border-white border-solid border-2 rounded-3xl hover:border-blue-shipcove select-none"
+        className="hidden md:block px-4 py-1 font-medium text-white hover:text-blue-shipcove border-white border-solid border-2 rounded-3xl hover:border-blue-shipcove select-none"
         href="#join-the-fam"
       >
         join the fam
