@@ -16,11 +16,8 @@ const TheUltraSound: FC<{}> = () => {
   const graphsBlockRef = useRef<HTMLDivElement | null>(null);
   const graphTextRef = useRef<HTMLDivElement | null>(null);
   const [cryptoType, setCryptoType] = useState<string>("none");
-  const tabs = ["none", "btc", "eth", "usd"];
   const GRAPH_TOP_VALUE = 200;
   const GRAPH_TOP_MOBILE_VALUE = 100;
-
-  const currentScroll = useRef(0);
 
   const setTextBlicksHeights = () => {
     const graphBlockHeight = graphsBlockRef.current?.getBoundingClientRect()
@@ -51,7 +48,6 @@ const TheUltraSound: FC<{}> = () => {
         : GRAPH_TOP_VALUE;
     const textBlocksArray = Array.from(graphTextRef.current.children);
     const onScroll = () => {
-      currentScroll.current = window.scrollY;
       if (graphTextRef.current) {
         handleGraphs(
           topBreakPointValue,
@@ -108,7 +104,7 @@ const TheUltraSound: FC<{}> = () => {
             ref={graphTextRef}
             className="graph_text_containter w-full md:w-5/12 self-center order-2 md:order-1"
           >
-            <SVGrenderText currentScroll={currentScroll.current} />
+            <SVGrenderText />
           </div>
           <div
             className={`${classes.graphsBlock} w-full md:w-5/12 order-1 md:order-1 mb-6 md:mb-0`}
