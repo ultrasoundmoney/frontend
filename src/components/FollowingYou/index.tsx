@@ -71,14 +71,21 @@ const FollowingYou: FC = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center mb-8">
-        <h1 className="text-white font-light text-center text-2xl md:text-3xl xl:text-41xl">
+      <div className="flex justify-center items-center">
+        <h2
+          className={`
+            flex items-center
+            font-inter font-light
+            text-white text-center text-2xl md:text-3xl xl:text-41xl
+            mb-6
+          `}
+        >
           me & the fam
-        </h1>
-        <SpanMoji imageClassName="h-[30px] ml-2" emoji="👀" />
+          <SpanMoji imageClassName="h-[30px] ml-2" emoji="👀" />
+        </h2>
       </div>
       <p
-        className={`text-blue-shipcove leading-6 md:leading-none text-center font-light text-base lg:text-lg mb-14`}
+        className={`text-blue-shipcove leading-6 md:leading-none text-center font-light text-base lg:text-lg mb-16`}
       >
         do we know each other? find out how many of us follow you.
       </p>
@@ -130,15 +137,9 @@ const FollowingYou: FC = () => {
                     key={profile.profileUrl ?? index}
                   >
                     <ImageWithTooltip
-                      description={profile?.bio}
-                      famFollowerCount={profile?.famFollowerCount}
-                      followerCount={profile?.followersCount}
                       imageUrl={profile?.profileImageUrl}
                       key={profile.profileUrl}
-                      links={profile?.links}
                       onClick={() => setSelectedProfile(profile)}
-                      title={profile?.name}
-                      tooltipImageUrl={profile.profileImageUrl}
                     />
                   </div>
                 ))}

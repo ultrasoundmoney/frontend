@@ -12,7 +12,7 @@ import FaqBlock from "../Landing/faq";
 import PriceModel from "../PriceModel";
 import Scarcity from "../Scarcity";
 import SupplyView from "../SupplyView";
-import { SectionTitle, TextRoboto } from "../Texts";
+import { SectionTitle, TextInter, TextRoboto } from "../Texts";
 import ToggleSwitch from "../ToggleSwitch";
 import TotalValueSecured from "../TotalValueSecured";
 import TwitterFam from "../TwitterFam";
@@ -22,7 +22,7 @@ import { WidgetTitle } from "../widget-subcomponents";
 import styles from "./Home.module.scss";
 import TopBar from "./TopBar";
 
-const SectionDivider: FC<{ title: string; subtitle: string }> = ({
+const SectionDivider: FC<{ title: string; subtitle?: string }> = ({
   title,
   subtitle,
 }) => (
@@ -240,10 +240,41 @@ const Home: FC = () => {
                   <FollowingYou />
                 </div>
               </div>
-              <div className="flex px-4 md:px-0 pt-8 pb-60">
+              <div className="flex px-4 md:px-0 pt-8">
                 <div className="w-full lg:w-2/3 md:m-auto relative">
                   <FaqBlock />
                 </div>
+              </div>
+            </div>
+            <div className="w-full flex flex-col items-center pb-40">
+              <SectionDivider title="still have questions?" />
+              <div className="flex flex-col gap-y-4 justify-start">
+                <a
+                  className="flex items-center gap-x-2 text-white"
+                  href="https://twitter.com/intent/tweet?text=@ultrasoundmoney"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <img
+                    className="w-4"
+                    src="/twitter-icon.svg"
+                    alt="icon of the twitter bird"
+                  />
+                  <TextInter>@ultrasoundmoney</TextInter>
+                </a>
+                <a
+                  className="flex items-center gap-x-2 text-white"
+                  href="mailto:contact@ultrasound.money"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <img
+                    className="h-4"
+                    src="/email-icon.svg"
+                    alt="icon of the twitter bird"
+                  />
+                  <TextInter>contact@ultrasound.money</TextInter>
+                </a>
               </div>
             </div>
           </div>

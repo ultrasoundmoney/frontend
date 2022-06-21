@@ -377,6 +377,22 @@ const PriceModel: FC = () => {
               >
                 8x
               </MarkerText>
+              <div
+                className="absolute w-full flex flex-col pointer-events-none"
+                style={{
+                  transform: `translateX(47.5%)`,
+                }}
+              >
+                <div className="[min-height:3px] w-3 bg-blue-shipcove mb-3 -translate-x-1/2"></div>
+                <div className="absolute pointer-events-auto top-4 -translate-x-1/2">
+                  <img
+                    title="gold"
+                    src={`/gold-icon.svg`}
+                    alt={"icon of a gold bar"}
+                    className={`relative`}
+                  />
+                </div>
+              </div>
               <MarkerText
                 ratio={(16 - 0.3 - monetaryPremiumMin) / monetaryPremiumRange}
               >

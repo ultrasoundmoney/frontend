@@ -48,7 +48,7 @@ const SplitGaugeSvg: FC<SplitGaugeSvgProps> = ({
       ...arcBase,
       startAngle: -tau / 3,
       endAngle: backgroundStartAngle + backgroundArcFraction * tau,
-    }) ?? undefined;
+    }) ?? "";
 
   const foregroundArc = x.to(
     (x) =>
@@ -64,11 +64,12 @@ const SplitGaugeSvg: FC<SplitGaugeSvgProps> = ({
   return (
     <svg width={width} height={height}>
       <defs>
-        <linearGradient id="orange-gradient-2">
+        {/* The linearGradient definitions somehow inherit the display: none CSS of their sibling gauges with the same id, hiding them on the split gauge too. We need to use unique IDs for the different gauges. */}
+        <linearGradient id="orange-gradient-split-gauge">
           <stop offset="0%" stopColor="#F4900C" />
           <stop offset="100%" stopColor="#F4DD0C" />
         </linearGradient>
-        <linearGradient id="blue-gradient">
+        <linearGradient id="blue-gradient-split-gauge">
           <stop offset="0%" stopColor="#5DECD2" />
           <stop offset="100%" stopColor="#5DADEC" />
         </linearGradient>
@@ -77,12 +78,12 @@ const SplitGaugeSvg: FC<SplitGaugeSvgProps> = ({
         <path style={{ fill: colors.dusk }} d={backgroundArc}></path>
         <animated.path
           d={foregroundArc}
-          fill="url(#blue-gradient)"
+          fill="url(#blue-gradient-split-gauge)"
           opacity={stylesBlue.opacity}
         ></animated.path>
         <animated.path
           d={foregroundArc}
-          fill="url(#orange-gradient-2)"
+          fill="url(#orange-gradient-split-gauge)"
           opacity={stylesOrange.opacity}
         ></animated.path>
         <animated.path
