@@ -1,0 +1,72 @@
+@mixin clip-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chartHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.params {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr;
+  grid-gap: 2.5rem;
+  margin-top: 3rem;
+  padding: 0 1rem;
+
+  @media (min-width: 640px) {
+    grid-template-columns: 1fr 1fr 1fr;
+    text-align: left;
+    justify-content: space-between;
+    grid-gap: 1rem;
+  }
+
+  @media (min-width: 1024px) {
+    grid-gap: 4rem;
+  }
+}
+
+.param {
+  min-width: 0;
+  @apply mb-8;
+}
+
+.paramTitle {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  line-height: 1;
+  font-weight: 300;
+  margin-bottom: 0.5rem;
+  @include clip-text;
+}
+
+.paramValue {
+  font-size: 1.25rem;
+  color: white;
+  font-weight: 300;
+  @include clip-text;
+  margin: 2px 0 0;
+  line-height: 1.4;
+  flex: 0 0 auto;
+  white-space: pre;
+  @media (min-width: 768px) {
+    font-size: 1.5rem;
+    margin: 2px 0;
+  }
+}
+
+.paramSubValue {
+  font-weight: 300;
+  margin-top: -4px;
+  @include clip-text;
+}
+
+.paramChildren {
+  margin-top: -2px;
+  @media (min-width: 640px) {
+    margin-top: 2px;
+  }
+}

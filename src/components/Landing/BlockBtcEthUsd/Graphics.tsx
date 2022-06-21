@@ -1,18 +1,9 @@
 import React, { useRef, useState } from "react";
 import classes from "./BlockBtcEthUsd.module.scss";
-import {
-  onHoverFunctionality,
-  onSvgMouseOut,
-  BTC_DOT_COORDS_STATIC,
-  BTC_DOT_COORDS_ANIM,
-  ETH_DOT_COORDS_STATIC,
-  ETH_DOT_COORDS_ANIM,
-  USD_DOT_COORDS_STATIC,
-  USD_DOT_COORDS_ANIM,
-} from "./helpers";
+import { onHoverFunctionality, onSvgMouseOut, graphTypes } from "./helpers";
 
 type NoneSvgProps = {
-  setSpecificTab: (val: string) => void;
+  setSpecificTab: (val: graphTypes) => void;
   cryptoType: string;
 };
 
@@ -62,25 +53,6 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab, cryptoType }) => {
     setSpecificTab(elem.dataset.graph);
   };
 
-  const BTC_DOT_C =
-    cryptoType === "btc"
-      ? BTC_DOT_COORDS_ANIM
-      : hoverElem === "btc"
-      ? BTC_DOT_COORDS_ANIM
-      : BTC_DOT_COORDS_STATIC;
-  const ETH_DOT_C =
-    cryptoType == "eth"
-      ? ETH_DOT_COORDS_ANIM
-      : hoverElem === "eth"
-      ? ETH_DOT_COORDS_ANIM
-      : ETH_DOT_COORDS_STATIC;
-  const USD_DOT_C =
-    cryptoType === "usd"
-      ? USD_DOT_COORDS_ANIM
-      : hoverElem === "usd"
-      ? USD_DOT_COORDS_ANIM
-      : USD_DOT_COORDS_STATIC;
-
   return (
     <svg
       className="overflow-visible"
@@ -123,7 +95,7 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab, cryptoType }) => {
         stroke="url(#usd_gDefault)"
         data-graph="usd"
         ref={usdPathRef}
-        className={`${classes.pathDefault} ${
+        className={`${classes.pathDefault} ${classes.path_usd} ${
           cryptoType === "usd" && classes.pathStrokeAnim
         }`}
         id="usd_none"
@@ -156,18 +128,18 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab, cryptoType }) => {
       </defs>
       <use
         href="#usdcpointDefault"
-        x={USD_DOT_C[0]}
-        y={USD_DOT_C[1]}
+        x="-150"
+        y="-150"
         fill="#5474F4"
         data-graph="usd"
         onMouseEnter={cryptoType !== "usd" ? onHoverhandler : undefined}
         onMouseDown={cryptoType !== "usd" ? onGraphClickHandler : undefined}
         ref={usdUseRef}
-        className={`${classes.pointer} ${
+        className={`${classes.pointer} ${classes.usd_pointer} ${
           cryptoType === "usd"
-            ? classes.usd_none_circle
+            ? classes.show
             : hoverElem === "usd"
-            ? classes.usd_none_circle
+            ? classes.show
             : classes.novisible
         }`}
       />
@@ -200,7 +172,7 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab, cryptoType }) => {
         stroke="url(#btc_g)"
         ref={btcPathRef}
         id="btc_none"
-        className={`${classes.pathDefault} ${
+        className={`${classes.pathDefault} ${classes.path_btc} ${
           cryptoType === "btc" && classes.pathStrokeAnim
         }`}
         data-graph="btc"
@@ -233,18 +205,18 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab, cryptoType }) => {
       </defs>
       <use
         href="#btcpointDefault"
-        x={BTC_DOT_C[0]}
-        y={BTC_DOT_C[1]}
+        x="-148"
+        y="-150"
         fill="#5474F4"
         data-graph="btc"
         ref={btcUseRef}
         onMouseEnter={cryptoType !== "btc" ? onHoverhandler : undefined}
         onMouseDown={cryptoType !== "btc" ? onGraphClickHandler : undefined}
-        className={`${classes.pointer} ${
+        className={`${classes.pointer} ${classes.btc_pointer} ${
           cryptoType === "btc"
-            ? classes.btc_none_circle
+            ? classes.show
             : hoverElem === "btc"
-            ? classes.btc_none_circle
+            ? classes.show
             : classes.novisible
         }`}
       />
@@ -277,7 +249,7 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab, cryptoType }) => {
         stroke="url(#paint0_linear)"
         data-graph="eth"
         ref={ethPathRef}
-        className={`${classes.pathDefault} ${
+        className={`${classes.pathDefault} ${classes.path_eth} ${
           cryptoType === "eth" && classes.pathStrokeAnim
         }`}
         id="eth_none"
@@ -310,18 +282,18 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab, cryptoType }) => {
       </defs>
       <use
         href="#ethpointDefault"
-        x={ETH_DOT_C[0]}
-        y={ETH_DOT_C[1]}
+        x="-150"
+        y="-150"
         fill="#5474F4"
         data-graph="eth"
         onMouseEnter={cryptoType !== "eth" ? onHoverhandler : undefined}
         onMouseDown={cryptoType !== "eth" ? onGraphClickHandler : undefined}
         ref={ethUseRef}
-        className={`${classes.pointer} ${
+        className={`${classes.pointer} ${classes.eth_pointer} ${
           cryptoType === "eth"
-            ? classes.eth_none_circle
+            ? classes.show
             : hoverElem === "eth"
-            ? classes.eth_none_circle
+            ? classes.show
             : classes.novisible
         }`}
       />

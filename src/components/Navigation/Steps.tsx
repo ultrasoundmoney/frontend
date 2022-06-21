@@ -5,17 +5,11 @@ import StepperPoint from "./StepperPoint";
 import StepperTrack from "./StepperTrack";
 import { motion } from "framer-motion";
 import { StepsProps, ControlPointMutated } from "./types";
+import { MOBILE_VERTICAL_SCROLL_BREAK_POINT } from "./helpers";
 
 const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
   (
-    {
-      controlPoints,
-      currentPositionLogo,
-      onActionLogo,
-      activeLogo,
-      setScroll,
-      isLastTrackingElem,
-    },
+    { controlPoints, onActionLogo, activeLogo, setScroll, isLastTrackingElem },
     ref
   ) => {
     const [activeBalls, setActiveBalls] = useState<ControlPointMutated[]>();
@@ -26,7 +20,7 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
           return {
             ...item,
             active:
-              window.scrollY > item.offsetY - window.innerHeight / 2 ||
+              window.scrollY > item.offsetY - window.innerHeight / 2.4 ||
               isLastTrackingElem,
           };
         }
@@ -59,24 +53,27 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
 
       const handleMoveLogo = (e: MouseEvent) => {
         const cord = trackWrapper.current?.getBoundingClientRect();
-        const marginLeft = cord ? cord.left : 50;
+        const marginLeft = cord ? cord.left : 30;
         if (
           ref.current?.style &&
           typeof cord === "object" &&
           e.pageX > cord.left &&
-          e.pageX < cord.right
+          e.pageX < cord.right &&
+          window.innerWidth > MOBILE_VERTICAL_SCROLL_BREAK_POINT
         ) {
           ref.current.style.left = `${e.pageX - marginLeft}px`;
-          setScroll(cord.width, e.pageX - marginLeft);
+          setScroll(cord.width, e.pageX + window.innerWidth * 0.022);
         }
         onActionLogo("move");
-        setPositinLogo(e.pageX);
+        setPositinLogo(e.pageX - marginLeft);
       };
       const handleUpLogo = () => {
         if (activeLogo !== "move" && activeLogo !== "none") {
           onActionLogo("up");
         } else {
-          onActionLogo("none");
+          setTimeout(() => {
+            onActionLogo("none");
+          }, 500);
         }
         window.removeEventListener("pointermove", handleMoveLogo);
         window.removeEventListener("pointerup", handleUpLogo);
@@ -93,14 +90,7 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
           ref.current.removeEventListener("pointerdown", handleDownLogo);
         }
       };
-    }, [
-      ref,
-      trackWrapper,
-      currentPositionLogo,
-      logoOnDots,
-      onActionLogo,
-      setScroll,
-    ]);
+    }, [ref, trackWrapper, logoOnDots, onActionLogo, setScroll, activeLogo]);
 
     return (
       <div className="w-full h-full md:w-9/12 relative flex justify-around lg:justify-around items-center pt-5">
@@ -108,6 +98,7 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
           <motion.div
             ref={ref}
             style={{
+              width: "fit-content",
               minWidth: "32px",
               willChange: "left",
               transform: "translateX(-50%)",

@@ -2,10 +2,6 @@
 $white: #fff;
 //colors === end
 
-.labelUp {
-  position: absolute;
-  top: -25px;
-}
 .linkWrap {
   max-width: fit-content;
 }
@@ -32,4 +28,16 @@ $white: #fff;
     line-height: 19px;
     text-align: center;
   }
+}
+
+.mobileNavBarNav {
+  width: 100%;
+  @media (max-width: 500px) {
+    width: 200%;
+  }
+}
+
+
+.StepperDots{
+
 }

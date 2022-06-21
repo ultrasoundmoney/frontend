@@ -1,0 +1,53 @@
+.StepperDots {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 16px;
+  height: 100%;
+  white-space: nowrap;
+  transition: 2s;
+  text-align: center;
+  &:hover > div {
+    border-color: #00ffa3;
+    cursor: pointer;
+  }
+  &__stepperCircle {
+    display: flex;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    position: relative;
+    border: 1px solid #8991ad;
+    z-index: 1;
+    &_internal {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin: 4px;
+      background-color: #8991ad;
+    }
+  }
+
+  &__stepperCircle:hover {
+    border-color: #00ffa3;
+    cursor: pointer;
+  }
+  &__labelUp {
+    position: absolute;
+    top: -25px;
+  }
+}
+
+.opacity {
+  opacity: 0.4;
+}
+.highlightedBorder {
+  border-color: #00ffa3;
+}
+.highlightedBackground {
+  background-color: #00ffa3;
+}

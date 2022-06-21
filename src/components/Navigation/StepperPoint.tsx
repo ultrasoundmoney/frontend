@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useEffect, useState } from "react";
 import { StepperContext } from "../../context/StepperContext";
 import { StepperPointProps } from "./types";
-import classes from "./Navigation.module.scss";
+import classes from "./StepperDots.module.scss";
 
 const StepperDots: React.FC<StepperPointProps> = ({
   active,
@@ -21,7 +21,7 @@ const StepperDots: React.FC<StepperPointProps> = ({
         ? objStepperElements[currentKey].offsetY
         : 0;
 
-      const windowHeight = window.innerHeight / 5;
+      const windowHeight = window.innerHeight / 2.6;
       window.scrollTo(0, top - windowHeight);
     }
   };
@@ -49,42 +49,24 @@ const StepperDots: React.FC<StepperPointProps> = ({
 
   useEffect(() => onLogoOnDots(onElement), [onElement]);
 
-  const pointBorderColor = active ? "#00FFA3" : "#8991AD";
-
   return (
     <div
       onClick={moveToPoint(indexItem)}
-      style={{
-        width: "16px",
-        transition: ".2s",
-        opacity: onElement ? ".4" : "1",
-      }}
-      className="stepper_point relative flex flex-col items-center transition-opacity cursor-pointer h-full justify-center whitespace-nowrap text-xs text-center text-blue-shipcove hover:opacity-60"
+      className={`${classes.StepperDots} stepper_point transition-opacity text-xs text-blue-shipcove`}
     >
       <div
-        className="stepper_circle"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          width: "16px",
-          height: "16px",
-          borderRadius: "50%",
-          position: "relative",
-          border: `1px solid ${pointBorderColor}`,
-        }}
+        className={`${classes.StepperDots__stepperCircle} ${
+          active && classes.highlightedBorder
+        } stepper_circle`}
       >
         <div
-          style={{
-            width: "6px",
-            height: "6px",
-            backgroundColor: pointBorderColor,
-            borderRadius: "50%",
-            margin: "4px",
-          }}
+          className={`${classes.StepperDots__stepperCircle_internal} ${
+            active && classes.highlightedBackground
+          }`}
         ></div>
       </div>
       <div
-        className={`mt-1 ${indexItem % 2 && classes.labelUp}`}
+        className={`mt-1 ${indexItem % 2 && classes.StepperDots__labelUp}`}
         ref={textPoint}
       >
         {name}

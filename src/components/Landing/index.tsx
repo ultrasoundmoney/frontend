@@ -9,7 +9,6 @@ import EIPConstantinopole from "./eipConstantinopole";
 import EIP1559 from "./eip1559";
 import BlockGoal from "./goal";
 import TheMergeBlock from "./theMerge";
-// import EtherTheUltraSound from "./theUltraSound";
 import EtherTheUltraSound from "./BlockBtcEthUsd";
 import TwitterFam from "../TwitterFam";
 import FaqBlock from "./faq";
@@ -17,7 +16,7 @@ import NftDrop from "../NftDrop/index";
 import FollowingYou from "../FollowingYou";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import SupplyView from "../SupplyView";
+import SupplyView from "../SupplyViewNew";
 import TheBurnedCard from "./theBurnedCard";
 import {
   convertDateStringReadable,
@@ -115,9 +114,6 @@ const LandingPage: React.FC<{}> = () => {
               ? Math.floor((currentPosition - window.innerHeight) * 0.7)
               : 0;
           if (lineHeight < 450) {
-            // document.getElementById(
-            //   "line__before__genesis"
-            // )!.style.height = `${lineHeight}px`;
             getBlcokReward!.innerHTML = "5 ETH/<span>Block</span>";
             const counter = lineHeight * 3;
             setGenesisArr(
@@ -140,9 +136,6 @@ const LandingPage: React.FC<{}> = () => {
             }
           }
           if (lineHeight > 450) {
-            // document
-            //   .getElementById("line__before__genesis")!
-            //   .classList.add("eclips__hr-circle");
             setGenesisArr(genesis_data[genesis_data.length - 1]);
           }
         } else {
@@ -153,12 +146,6 @@ const LandingPage: React.FC<{}> = () => {
               ? Math.floor((currentPosition - window.innerHeight) * 0.7)
               : 0;
           if (lineHeight < 630) {
-            // document.getElementById(
-            //   "line__before__genesis"
-            // )!.style.height = `${lineHeight}px`;
-            // document
-            //   .getElementById("line__before__genesis")!
-            //   .classList.remove("eclips__hr-circle");
             getBlcokReward!.innerHTML = "5 ETH/<span>Block</span>";
             const genesis_data_re = genesis_data.reverse();
             const counter = lineHeight * 3;
@@ -194,9 +181,6 @@ const LandingPage: React.FC<{}> = () => {
               : 0;
 
           if (lineHeight < 450) {
-            // document.getElementById(
-            //   "line__genesis"
-            // )!.style.height = `${lineHeight}px`;
             getBlcokReward!.innerHTML = "5 ETH/<span>Block</span>";
             const counter = lineHeight * 3;
             setGenesisArr(
@@ -219,9 +203,6 @@ const LandingPage: React.FC<{}> = () => {
             }
           }
           if (lineHeight > 450) {
-            // document
-            //   .getElementById("line__genesis")!
-            //   .classList.add("eclips__hr-circle");
             setGenesisArr(genesis_data[genesis_data.length - 1]);
           }
         } else {
@@ -232,12 +213,6 @@ const LandingPage: React.FC<{}> = () => {
               ? Math.floor((currentPosition - window.innerHeight) * 0.5)
               : 0;
           if (lineHeight < 450) {
-            // document.getElementById(
-            //   "line__genesis"
-            // )!.style.height = `${lineHeight}px`;
-            // document
-            //   .getElementById("line__genesis")!
-            //   .classList.remove("eclips__hr-circle");
             getBlcokReward!.innerHTML = "5 ETH/<span>Block</span>";
             const genesis_data_re = genesis_data.reverse();
             const counter = lineHeight * 3;
@@ -273,9 +248,6 @@ const LandingPage: React.FC<{}> = () => {
               : 0;
 
           if (lineHeight < 450) {
-            // document.getElementById(
-            //   "line__byzantium"
-            // )!.style.height = `${lineHeight}px`;
             getBlcokReward!.innerHTML = "3 ETH/<span>Block</span>";
             const counter = Math.floor(lineHeight * 1.5);
             setGenesisArr(
@@ -298,9 +270,6 @@ const LandingPage: React.FC<{}> = () => {
             }
           }
           if (lineHeight > 450) {
-            // document
-            //   .getElementById("line__byzantium")!
-            //   .classList.add("eclips__hr-circle");
             setGenesisArr(byzantium_data[byzantium_data.length - 1]);
           }
         } else {
@@ -311,12 +280,6 @@ const LandingPage: React.FC<{}> = () => {
               ? Math.floor((currentPosition - window.innerHeight) * 0.3)
               : 0;
           if (lineHeight < 450) {
-            // document.getElementById(
-            //   "line__byzantium"
-            // )!.style.height = `${lineHeight}px`;
-            // document
-            //   .getElementById("line__genesis")!
-            //   .classList.remove("eclips__hr-circle");
             getBlcokReward!.innerHTML = "5 ETH/<span>Block</span>";
             const genesis_data_re = byzantium_data.reverse();
             const counter = Math.floor(lineHeight * 1.5);
@@ -354,9 +317,6 @@ const LandingPage: React.FC<{}> = () => {
               ? Math.floor((currentPosition - window.innerHeight) * 0.18)
               : 0;
           if (lineHeight < 450) {
-            // document.getElementById(
-            //   "line__constantinople"
-            // )!.style.height = `${lineHeight}px`;
             getBlcokReward!.innerHTML = "2 ETH/<span>Block</span>";
             const counter = lineHeight * 2;
             setGenesisArr(
@@ -379,9 +339,6 @@ const LandingPage: React.FC<{}> = () => {
             }
           }
           if (lineHeight > 450) {
-            // document
-            //   .getElementById("line__constantinople")!
-            //   .classList.add("eclips__hr-circle");
             setGenesisArr(constantinople_data[constantinople_data.length - 1]);
           }
         } else {
@@ -392,12 +349,6 @@ const LandingPage: React.FC<{}> = () => {
               ? Math.floor((currentPosition - window.innerHeight) * 0.18)
               : 0;
           if (lineHeight < 450) {
-            // document.getElementById(
-            //   "line__constantinople"
-            // )!.style.height = `${lineHeight}px`;
-            // document
-            //   .getElementById("line__constantinople")!
-            //   .classList.remove("eclips__hr-circle");
             getBlcokReward!.innerHTML = "5 ETH/<span>Block</span>";
             const genesis_data_re = constantinople_data.reverse();
             const counter = lineHeight * 2;
@@ -490,29 +441,15 @@ const LandingPage: React.FC<{}> = () => {
         if (currentPosition > scrollTop) {
           const lineHeight = Math.floor((currentPosition / 100) * 8);
           if (lineHeight < 450) {
-            // document.getElementById(
-            //   "line__supplyview"
-            // )!.style.height = `${lineHeight}px`;
             getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
               afterLodonFork[0]
             )}`;
             getEthSupplyIncreament!.innerHTML = afterLodonFork[2];
             getEthSupply!.innerHTML = afterLodonFork[1];
           }
-          // if (lineHeight > 450) {
-          //   document
-          //     .getElementById("line__supplyview")!
-          //     .classList.add("eclips__hr-circle");
-          // }
         } else {
           const lineHeight = Math.floor((currentPosition / 100) * 8);
           if (lineHeight < 450) {
-            // document.getElementById(
-            //   "line__supplyview"
-            // )!.style.height = `${lineHeight}px`;
-            // document
-            //   .getElementById("line__supplyview")!
-            //   .classList.remove("eclips__hr-circle");
             getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
               afterLodonFork[0]
             )}`;
@@ -528,31 +465,17 @@ const LandingPage: React.FC<{}> = () => {
           const lineHeight = Math.floor((currentPosition / 100) * 6);
 
           if (lineHeight < 450) {
-            // document.getElementById(
-            //   "line__merge"
-            // )!.style.height = `${lineHeight}px`;
             getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
               afterLodonFork[0]
             )}`;
             getEthSupplyIncreament!.innerHTML = afterLodonFork[2];
             getEthSupply!.innerHTML = afterLodonFork[1];
           }
-          // if (lineHeight > 450) {
-          //   document
-          //     .getElementById("line__merge")!
-          //     .classList.add("eclips__hr-circle");
-          // }
         } else {
           // upscroll code
           setScrolling(true);
           const lineHeight = Math.floor((currentPosition / 100) * 6);
           if (lineHeight < 450) {
-            // document.getElementById(
-            //   "line__merge"
-            // )!.style.height = `${lineHeight}px`;
-            // document
-            //   .getElementById("line__merge")!
-            //   .classList.remove("eclips__hr-circle");
             getStatusAndDate!.innerHTML = `Status ${convertDateStringReadable(
               afterLodonFork[0]
             )}`;
@@ -562,7 +485,6 @@ const LandingPage: React.FC<{}> = () => {
         }
       }
       if (targetUltraSound!.getBoundingClientRect().top < window.innerHeight) {
-        // if (currentPosition > scrollTop && !scrolling) {
         if (currentPosition > scrollTop) {
           // downscroll code
           setScrolling(false);
@@ -623,7 +545,7 @@ const LandingPage: React.FC<{}> = () => {
               className="flex flex-col px-4 md:px-0 mt-6 mb-16"
               id="supplyview"
             >
-              <div className="w-full md:w-5/6 lg:w-5/6 md:m-auto relative bg-blue-tangaroa md:px-8 py-4 md:py-16 rounded-xl">
+              <div className="w-full md:w-5/6 lg:w-5/6 md:m-auto relative bg-blue-tangaroa md:px-11 py-4 md:py-11 rounded-xl">
                 <SupplyView />
               </div>
               <div className="flex flex-wrap justify-center pt-20">

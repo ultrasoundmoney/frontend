@@ -7,10 +7,7 @@ import Graphics from "./Graphics";
 import CurrencyTabs from "./CurrencyTabs";
 import { handleGraphs, setScrollPos } from "./helpers";
 import classes from "./BlockBtcEthUsd.module.scss";
-
-interface Obj {
-  [key: string]: any;
-}
+import { WINDOW_BREAK_POINT, graphTypes } from "./helpers";
 
 const TheUltraSound: FC<{}> = () => {
   const t = useContext(TranslationsContext);
@@ -20,49 +17,10 @@ const TheUltraSound: FC<{}> = () => {
   const graphTextRef = useRef<HTMLDivElement | null>(null);
   const [cryptoType, setCryptoType] = useState<string>("none");
   const tabs = ["none", "btc", "eth", "usd"];
-  let timeoutId: null | ReturnType<typeof setTimeout> = null;
+  const GRAPH_TOP_VALUE = 200;
+  const GRAPH_TOP_MOBILE_VALUE = 100;
 
-  const step = useRef(0);
-  const allow = useRef(true);
-  const elPosition = useRef<number>(0);
-
-  const changeCryptoType = (wheelEvent: Obj) => {
-    const direction = wheelEvent.deltaY < 0 ? "up" : "down";
-    if (!allow.current) return;
-    if (direction === "up") {
-      if (step.current > 0) {
-        step.current = step.current - 1;
-      }
-    } else {
-      if (step.current <= tabs.length) {
-        step.current = step.current + 1;
-      }
-    }
-    if ((step.current === 0 || step.current === 5) && graphRef.current) {
-      const trigger =
-        elPosition.current -
-        (window.innerHeight / 2 -
-          graphRef.current.getBoundingClientRect().height / 2);
-      if (step.current === 0) {
-        window.scrollTo(0, trigger - 52);
-      } else {
-        window.scrollTo(0, trigger + 102);
-      }
-    }
-
-    if (tabs[step.current - 1]) {
-      setCryptoType(tabs[step.current - 1]);
-    }
-    allow.current = false;
-    timeoutId = setTimeout(() => (allow.current = true), 1500);
-  };
-
-  const onScroll = () => {
-    if (graphsBlockRef.current && graphTextRef.current) {
-      window.removeEventListener("wheel", changeCryptoType);
-      handleGraphs(graphsBlockRef.current, graphTextRef.current, setCryptoType);
-    }
-  };
+  const currentScroll = useRef(0);
 
   const setTextBlicksHeights = () => {
     const graphBlockHeight = graphsBlockRef.current?.getBoundingClientRect()
@@ -84,24 +42,37 @@ const TheUltraSound: FC<{}> = () => {
   };
 
   useEffect(() => {
-    const isTouchDevice = "ontouchstart" in window;
-    if (!isTouchDevice) window.addEventListener("scroll", onScroll);
+    if (!graphsBlockRef.current || !graphTextRef.current) return;
+    const offset = window.innerWidth * 0.2;
+    const topBreakPointValue: number =
+      window.innerWidth <= WINDOW_BREAK_POINT
+        ? GRAPH_TOP_MOBILE_VALUE +
+          graphsBlockRef.current.getBoundingClientRect().height
+        : GRAPH_TOP_VALUE;
+    const textBlocksArray = Array.from(graphTextRef.current.children);
+    const onScroll = () => {
+      currentScroll.current = window.scrollY;
+      if (graphTextRef.current) {
+        handleGraphs(
+          topBreakPointValue,
+          textBlocksArray,
+          offset,
+          setCryptoType
+        );
+      }
+    };
+    window.addEventListener("scroll", onScroll);
     setTextBlicksHeights();
     window.addEventListener("resize", setTextBlicksHeights);
     return () => {
       window.removeEventListener("scroll", onScroll);
-      timeoutId && clearTimeout(timeoutId);
       window.removeEventListener("resize", setTextBlicksHeights);
     };
-  }, []);
+  }, [graphsBlockRef.current, graphTextRef.current]);
 
-  const setSpecificTab = (currency = "none") => {
-    let index = tabs.indexOf(currency);
-    if (index < 0) {
-      index = 0;
-    }
-    if (graphsBlockRef.current && graphTextRef.current && graphRef.current) {
-      setScrollPos(graphRef.current, graphTextRef.current, index);
+  const setSpecificTab = (currency: graphTypes = "none") => {
+    if (graphTextRef.current) {
+      setScrollPos(currency, graphTextRef.current);
     }
   };
 
@@ -131,25 +102,23 @@ const TheUltraSound: FC<{}> = () => {
         <div
           id="graph_svg"
           ref={graphRef}
-          className="w-full md:w-8/12 flex flex-wrap justify-between ml-auto mr-auto"
+          className="w-full md:w-8/12 flex flex-wrap align-start justify-between ml-auto mr-auto"
         >
           <div
             ref={graphTextRef}
             className="graph_text_containter w-full md:w-5/12 self-center order-2 md:order-1"
           >
-            <SVGrenderText />
+            <SVGrenderText currentScroll={currentScroll.current} />
           </div>
-          <div className="relative w-full md:w-5/12 order-1 md:order-1 mb-6 md:mb-0">
-            <div ref={graphsBlockRef} className={classes.graphsBlock}>
-              <CurrencyTabs
-                setSpecificTab={setSpecificTab}
-                cryptoType={cryptoType}
-              />
-              <Graphics
-                setSpecificTab={setSpecificTab}
-                cryptoType={cryptoType}
-              />
-            </div>
+          <div
+            className={`${classes.graphsBlock} w-full md:w-5/12 order-1 md:order-1 mb-6 md:mb-0`}
+            ref={graphsBlockRef}
+          >
+            <CurrencyTabs
+              setSpecificTab={setSpecificTab}
+              cryptoType={cryptoType}
+            />
+            <Graphics setSpecificTab={setSpecificTab} cryptoType={cryptoType} />
           </div>
         </div>
       </section>

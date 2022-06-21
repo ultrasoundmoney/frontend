@@ -235,9 +235,9 @@
 
   .track_wrapper {
     position: absolute;
-    width: calc(100% - 28px);
+    width: 100%;
     height: 100%;
-    left: 20px;
+    left: -8px;
     img {
       margin: 0;
     }
@@ -247,7 +247,7 @@
   transition: 0.3s transform;
   transform: translateY(0);
   &.hidden_bar {
-    transform: translateY(-100%);
+    transform: translateY(-200%);
   }
 }
 .the-merge-path {

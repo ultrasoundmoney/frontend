@@ -1,44 +1,16 @@
-const GRAPH_TOP_VALUE = 250;
-const GRAPH_TOP_MOBILE_VALUE = 100;
+export type graphTypes = "none" | "btc" | "eth" | "usd";
 const OFFSET_TO_SCROLL = 48;
-const WINDOW_BREAK_POINT = 740;
+export const WINDOW_BREAK_POINT = 740;
 const graphType = ["none", "btc", "eth", "usd"];
 
 export const handleGraphs = (
-  graphsBlockElem: HTMLElement,
-  graphTextElem: HTMLElement,
+  topBreakPointValue: number,
+  arrayBlocksText: Element[],
+  offset: number,
   setCryptoType: (val: string) => void
 ) => {
-  const graphTextElemData = graphTextElem.getBoundingClientRect();
-  const textBlockToBottom = graphTextElemData.bottom;
-  const textBlockToHeight = graphTextElemData.height;
-  const bottomHeight = textBlockToHeight + GRAPH_TOP_VALUE;
-  const heightCoeffValue = (textBlockToBottom - bottomHeight) / 2;
-  const textBlocksArray = Array.from(graphTextElem.children);
-  const topBreakPointValue =
-    window.innerWidth <= WINDOW_BREAK_POINT
-      ? GRAPH_TOP_MOBILE_VALUE + graphsBlockElem.getBoundingClientRect().height
-      : GRAPH_TOP_VALUE;
-  if (window.innerWidth <= WINDOW_BREAK_POINT) {
-    const graphsBlockParentElem = graphsBlockElem.parentElement!;
-    if (
-      textBlockToBottom > heightCoeffValue &&
-      graphsBlockParentElem.style.position !== "sticky"
-    ) {
-      graphsBlockParentElem.style.position = "sticky";
-      graphsBlockParentElem.style.top = GRAPH_TOP_MOBILE_VALUE + "px";
-    }
-  } else {
-    if (
-      textBlockToBottom > heightCoeffValue &&
-      graphsBlockElem.style.position !== "sticky"
-    ) {
-      graphsBlockElem.style.position = "sticky";
-      graphsBlockElem.style.top = GRAPH_TOP_VALUE + "px";
-    }
-  }
-  for (let i = 0; i <= textBlocksArray.length - 1; i++) {
-    const topValue = textBlocksArray[i].getBoundingClientRect().top;
+  for (let i = 0; i <= arrayBlocksText.length - 1; i++) {
+    const topValue = arrayBlocksText[i].getBoundingClientRect().top + offset;
     if (topValue >= topBreakPointValue) {
       setCryptoType(graphType[i]);
       break;
@@ -47,41 +19,17 @@ export const handleGraphs = (
 };
 
 export const setScrollPos = (
-  graphBlockElem: HTMLElement,
-  graphTextBlockElem: HTMLElement,
-  index: number
+  scrollTo: graphTypes,
+  graphTextBlockElem: HTMLElement
 ) => {
-  const firstParent = graphBlockElem.parentNode!;
-  const topParent = firstParent.parentNode!;
-  const upBlockHeight = firstParent.children[0].getBoundingClientRect().height;
-  const childrenArray = Array.from(topParent.children);
-  let heightToPoint =
-    window.innerWidth <= WINDOW_BREAK_POINT
-      ? upBlockHeight
-      : upBlockHeight - OFFSET_TO_SCROLL;
-  for (let i = 2; i < childrenArray.length - 1; i++) {
-    if (childrenArray[i].id === "enter-ultra-sound") {
-      break;
-    }
-    const { height } = childrenArray[i].getBoundingClientRect();
-    heightToPoint += height;
-  }
-  if (index !== 0) {
-    const textBloksArray = Array.from(graphTextBlockElem.children);
-    for (let i = 0; i < index; i++) {
-      const { height } = textBloksArray[i].getBoundingClientRect();
-      heightToPoint += height;
-    }
-  }
-  window.scrollTo({ top: heightToPoint });
+  const indexScrollElement = graphType.findIndex((el) => el === scrollTo);
+  graphTextBlockElem.children[indexScrollElement].scrollIntoView({
+    behavior: "smooth",
+    block: "center",
+    inline: "center",
+  });
 };
 
-export const BTC_DOT_COORDS_STATIC = ["205", "-40"];
-export const BTC_DOT_COORDS_ANIM = ["-148", "-150"];
-export const ETH_DOT_COORDS_STATIC = ["210", "67"];
-export const ETH_DOT_COORDS_ANIM = ["-150", "-150"];
-export const USD_DOT_COORDS_STATIC = ["200", "-8"];
-export const USD_DOT_COORDS_ANIM = ["-150", "-150"];
 export const ORANGE_COLOR = "#FF891D";
 export const BLUE_COLOR = "#5474F4";
 export const GREEN_COLOR = "#A3D972";
@@ -102,13 +50,13 @@ export const onHoverFunctionality = (
     const elem: any = e.target;
     const hoverElem: string = elem.dataset.graph;
     if (hoverElem === "btc") {
-      btcPathRefEl.style.strokeDashoffset = "0";
+      btcPathRefEl.style.strokeDashoffset = "410";
       setHoverElem("btc");
     } else if (hoverElem === "eth") {
-      ethPathRefEl.style.strokeDashoffset = "0";
+      ethPathRefEl.style.strokeDashoffset = "455";
       setHoverElem("eth");
     } else {
-      usdPathRefEl.style.strokeDashoffset = "0";
+      usdPathRefEl.style.strokeDashoffset = "455";
       setHoverElem("usd");
     }
   }

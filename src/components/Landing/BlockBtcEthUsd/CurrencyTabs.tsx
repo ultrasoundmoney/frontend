@@ -1,5 +1,6 @@
+import { graphTypes } from "./helpers";
 type CurrencyTabsProps = {
-  setSpecificTab: (type: string) => void;
+  setSpecificTab: (type: graphTypes) => void;
   cryptoType: string;
 };
 

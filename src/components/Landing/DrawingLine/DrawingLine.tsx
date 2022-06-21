@@ -73,7 +73,6 @@ const DrawingLine: React.FC<DrawingLineProps> = ({
     ) {
       triggerActivePointScroll.current =
         controlPoints[indexTopSection]?.offsetY;
-      indexTopSection === 0 && console.log(triggerActivePointScroll.current);
     }
   }, [controlPoints]);
 
@@ -86,7 +85,7 @@ const DrawingLine: React.FC<DrawingLineProps> = ({
       animationYProgress.set(progress);
       if (typeof indexTopSection === "number" && indexTopSection >= 0) {
         window.scrollY >
-        triggerActivePointScroll.current - window.innerHeight / 2
+        triggerActivePointScroll.current - window.innerHeight / 2.4
           ? setIsDone(true)
           : setIsDone(false);
       } else {

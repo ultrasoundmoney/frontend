@@ -5,7 +5,7 @@ export const getIconOffset = (
   pageLoad: boolean
 ) => {
   if (!pageLoad) return 0;
-  const trackPosition = window.scrollY + window.innerHeight / 2;
+  const trackPosition = window.scrollY + window.innerHeight / 2.4;
   if (pointsHeights) {
     const pointsQuantity = pointsHeights.length;
     const lastPoint = pointsHeights[pointsQuantity - 1];
@@ -69,7 +69,7 @@ export const setScrollPosition = (
       controllPoints[distanceOrderItem - 1]?.offsetY +
       blockYOffset -
       drawingLineHight;
-    window.scrollTo({ top: offsetValue });
+    offsetValue > 0 && window.scrollTo({ top: offsetValue });
     const isActiveDot =
       iconOffsetInBlock > (distanceWidth / 4) * 3 &&
       distanceOrderItem === distancesNumber;
@@ -77,6 +77,7 @@ export const setScrollPosition = (
   } else return false;
 };
 
+const OFFSET_FAQ = 150;
 export const showHideNavBar = (
   controlPoints: (StepperPoint | undefined)[],
   stepsRefElem: HTMLElement
@@ -94,6 +95,7 @@ export const showHideNavBar = (
   );
   const collectionElems = stepsRefElem.parentElement?.children!;
   const childrenElems = Array.from(collectionElems);
+
   const lastSectionIndex: number = childrenElems.findIndex(
     (node) => node.id === "before-genesis"
   )!;
@@ -103,13 +105,32 @@ export const showHideNavBar = (
   const nextDrawingLineHight = childrenElems[
     lastSectionIndex + 1
   ]?.getBoundingClientRect()?.height;
+
+  const faqSectionIndex: { [key: string]: any } = childrenElems.find(
+    (node) => node.id === "faq"
+  )!;
+  const topFaqSection: number = faqSectionIndex.offsetTop;
   if (lastSectionHight && maxOffsetYValue && nextDrawingLineHight) {
     const showStickyHeader: boolean =
-      window.scrollY > offsetYFirstPoint - window.innerHeight / 2 &&
+      window.scrollY > offsetYFirstPoint - window.innerHeight / 2.4 &&
       window.scrollY <
-        maxOffsetYValue + lastSectionHight + nextDrawingLineHight;
+        maxOffsetYValue + lastSectionHight + nextDrawingLineHight &&
+      window.scrollY < topFaqSection - OFFSET_FAQ;
+
     showStickyHeader
       ? stepsRefElem.classList.add("active")
       : stepsRefElem.classList.remove("active");
   }
+};
+
+export const MOBILE_VERTICAL_SCROLL_BREAK_POINT = 500;
+export const setNavBarPosition = (
+  horizontalNavBar: HTMLElement,
+  stepperIconElem: HTMLElement,
+  controlPoints: any[],
+  pageLoad: boolean
+): void => {
+  const logoOffset = getIconOffset(controlPoints, pageLoad);
+  horizontalNavBar.style.left = `-${logoOffset}%`;
+  stepperIconElem.style.left = `${logoOffset}%`;
 };
