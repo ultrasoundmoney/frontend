@@ -1,14 +1,14 @@
-import { FC, HTMLAttributes } from "react";
+import { FC } from "react";
 
-type LinkProps = {
-  className?: HTMLAttributes<HTMLAnchorElement>["className"];
+type Props = {
+  className?: string;
   enableHover?: boolean;
   href: string | undefined;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
 };
 
-const Link: FC<LinkProps> = ({
+const Link: FC<Props> = ({
   children,
   className = "",
   enableHover = true,
@@ -18,6 +18,8 @@ const Link: FC<LinkProps> = ({
 }) => (
   <a
     className={`
+      active:brightness-90
+      cursor-pointer
       ${enableHover ? "hover:opacity-60" : ""}
       ${className}
     `}

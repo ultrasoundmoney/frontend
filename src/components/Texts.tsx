@@ -57,7 +57,7 @@ export const TextInter: FC<{
   skeletonWidth?: string;
 }> = ({
   children,
-  className,
+  className: className = "",
   inline = true,
   style,
   skeletonWidth = "3rem",
@@ -66,7 +66,7 @@ export const TextInter: FC<{
     font-inter font-light
     text-white
     text-base md:text-lg
-    ${className ?? ""}
+    ${className}
   `;
 
   return inline ? (
@@ -87,6 +87,14 @@ export const TextInter: FC<{
     </p>
   );
 };
+
+export const TextInterLink: FC<{
+  className?: string;
+}> = ({ children, className: className = "" }) => (
+  <TextInter className={`text-blue-spindle hover:underline ${className}`}>
+    {children}
+  </TextInter>
+);
 
 export const TextRoboto: FC<{
   className?: string;
