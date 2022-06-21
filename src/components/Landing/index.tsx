@@ -19,21 +19,9 @@ import SupplyView from "../SupplyViewNew";
 import TheBurnedCard from "./theBurnedCard";
 import Stepper from "../Navigation/Stepper";
 import { SteppersProvider } from "../../context/StepperContext";
-import * as Format from "../../format";
 import GweiDynamicBlock from "../GweiDynamicBlock";
-import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
-// import Timeline from "./timeline";
 
 const LandingPage: React.FC<{}> = () => {
-  const feesBurned = useGroupedAnalysis1();
-  const [genesisArr, setGenesisArr] = React.useState(genesis_data[0]);
-  const { data } = useSWR<EthPrice>(
-    "https://api.ultrasound.money/fees/eth-price",
-    {
-      revalidateOnFocus: true,
-      revalidateOnReconnect: true,
-    }
-  );
   React.useEffect(() => {
     AOS.init();
     AOS.refresh();
