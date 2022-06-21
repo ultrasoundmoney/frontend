@@ -25,14 +25,14 @@ const SupplyGraph = () => {
           <path
             d="M164.309 242.299C176.608 198.489 213.486 118.669 244.989 109.227C282.182 98.08 305.184 162.488 451.727 161.621"
             stroke="url(#paint0_linear_1549_1925)"
-            stroke-width="2"
+            strokeWidth="2"
           />
         </g>
         <path
           d="M164.309 242.299C176.608 198.489 213.486 118.669 244.989 109.227C282.182 98.08 305.184 162.488 451.727 161.621"
           stroke="url(#paint1_linear_1549_1925)"
-          stroke-width="2"
-          stroke-linecap="round"
+          strokeWidth="2"
+          strokeLinecap="round"
         />
         <ellipse
           cx="452.309"
@@ -40,7 +40,7 @@ const SupplyGraph = () => {
           rx="9"
           ry="8.99176"
           fill="#5376C8"
-          fill-opacity="0.16"
+          fillOpacity="0.16"
         />
         <ellipse
           opacity="0.2"
@@ -67,9 +67,9 @@ const SupplyGraph = () => {
           width="310.387"
           height="157.64"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -88,9 +88,9 @@ const SupplyGraph = () => {
           width="744.846"
           height="621.009"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -110,14 +110,10 @@ const SupplyGraph = () => {
           y2="193.715"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#6A54F4" />
-          <stop
-            offset="0.420081"
-            stop-color="#5487F4"
-            stop-opacity="0.926406"
-          />
-          <stop offset="0.752508" stop-color="#54C4F4" stop-opacity="0.69" />
-          <stop offset="1" stop-color="#00FFFB" />
+          <stop stopColor="#6A54F4" />
+          <stop offset="0.420081" stopColor="#5487F4" stopOpacity="0.926406" />
+          <stop offset="0.752508" stopColor="#54C4F4" stopOpacity="0.69" />
+          <stop offset="1" stopColor="#00FFFB" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_1549_1925"
@@ -127,14 +123,10 @@ const SupplyGraph = () => {
           y2="193.715"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#6A54F4" />
-          <stop
-            offset="0.420081"
-            stop-color="#5487F4"
-            stop-opacity="0.926406"
-          />
-          <stop offset="0.752508" stop-color="#54C4F4" stop-opacity="0.69" />
-          <stop offset="1" stop-color="#00FFFB" />
+          <stop stopColor="#6A54F4" />
+          <stop offset="0.420081" stopColor="#5487F4" stopOpacity="0.926406" />
+          <stop offset="0.752508" stopColor="#54C4F4" stopOpacity="0.69" />
+          <stop offset="1" stopColor="#00FFFB" />
         </linearGradient>
       </defs>
     </svg>

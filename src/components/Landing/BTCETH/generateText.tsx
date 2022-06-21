@@ -30,8 +30,12 @@ const SVGrender = () => {
 
   return (
     <>
-      {data.map((item) => (
-        <BlockText title={item.title} text={item.text} />
+      {data.map((item, index) => (
+        <BlockText
+          key={`${index}_textBlock`}
+          title={item.title}
+          text={item.text}
+        />
       ))}
     </>
   );
