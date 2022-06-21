@@ -35,7 +35,7 @@ import Stepper from "../Navigation/Stepper";
 import { SteppersProvider } from "../../context/StepperContext";
 import * as Format from "../../format";
 import GweiDynamicBlock from "../GweiDynamicBlock";
-import { useGroupedStats1 } from "../../api/grouped-stats-1";
+import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 // import Timeline from "./timeline";
 
 type EthPrice = {
@@ -46,7 +46,7 @@ type EthPrice = {
 };
 
 const LandingPage: React.FC<{}> = () => {
-  const feesBurned = useGroupedStats1();
+  const feesBurned = useGroupedAnalysis1();
   const [genesisArr, setGenesisArr] = React.useState(genesis_data[0]);
   const { data } = useSWR<EthPrice>(
     "https://api.ultrasound.money/fees/eth-price",
