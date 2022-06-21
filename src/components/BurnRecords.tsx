@@ -2,7 +2,7 @@ import * as DateFns from "date-fns";
 import { FC, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { BurnRecord } from "../api/burn-records";
-import { useGroupedStats1 } from "../api/grouped-stats-1";
+import { useGroupedAnalysis1 } from "../api/grouped-analysis-1";
 import * as Format from "../format";
 import { flow, O, OAlt } from "../fp";
 import scrollbarStyles from "../styles/Scrollbar.module.scss";
@@ -67,7 +67,7 @@ type Props = {
 };
 
 const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
-  const burnRecords = useGroupedStats1()?.burnRecords;
+  const burnRecords = useGroupedAnalysis1()?.burnRecords;
   const { lg } = useActiveBreakpoint();
 
   const timeFrameRecords =

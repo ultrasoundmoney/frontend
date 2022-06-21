@@ -1,7 +1,7 @@
 import JSBI from "jsbi";
 import { FC, useEffect, useState } from "react";
 import { useAverageEthPrice } from "../api/eth-price";
-import { useGroupedStats1 } from "../api/grouped-stats-1";
+import { useGroupedAnalysis1 } from "../api/grouped-analysis-1";
 import { usePeRatios } from "../api/pe-ratios";
 import { useScarcity } from "../api/scarcity";
 import * as Format from "../format";
@@ -178,8 +178,8 @@ const calcProjectedPrice = (
 
 const PriceModel: FC = () => {
   const peRatios = usePeRatios();
-  const burnRateAll = useGroupedStats1()?.burnRates.burnRateAllUsd;
-  const ethPrice = useGroupedStats1()?.ethPrice?.usd;
+  const burnRateAll = useGroupedAnalysis1()?.burnRates.burnRateAllUsd;
+  const ethPrice = useGroupedAnalysis1()?.ethPrice?.usd;
   const ethSupply = useScarcity()?.ethSupply;
   const [peRatio, setPeRatio] = useState<number>();
   const [peRatioPosition, setPeRatioPosition] = useState<number>(0);
@@ -289,13 +289,16 @@ const PriceModel: FC = () => {
                     ratio={linearFromLog(peRatios.INTC)}
                     symbol="INTC"
                   />
-                  <Marker
-                    alt="google logo"
-                    icon="google"
-                    peRatio={peRatios.GOOGL}
-                    ratio={linearFromLog(peRatios.GOOGL)}
-                    symbol="GOOGL"
-                  />
+                  {ethPeRatio === undefined ||
+                    (ethPeRatio - peRatios.GOOGL > 4 && (
+                      <Marker
+                        alt="google logo"
+                        icon="google"
+                        peRatio={peRatios.GOOGL}
+                        ratio={linearFromLog(peRatios.GOOGL)}
+                        symbol="GOOGL"
+                      />
+                    ))}
                   {/* <Marker */}
                   {/*   alt="netflix logo" */}
                   {/*   icon="netflix" */}

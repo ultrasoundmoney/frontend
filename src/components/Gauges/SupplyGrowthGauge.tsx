@@ -2,7 +2,7 @@ import { clamp } from "lodash";
 import React, { FC, useCallback, useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { animated, config, useSpring } from "react-spring";
-import { useGroupedStats1 } from "../../api/grouped-stats-1";
+import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import { useScarcity } from "../../api/scarcity";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
@@ -18,7 +18,7 @@ const useGrowthRate = (
   timeFrame: TimeFrameNext,
 ): number | undefined => {
   const ethSupply = useScarcity()?.ethSupply;
-  const burnRates = useGroupedStats1()?.burnRates;
+  const burnRates = useGroupedAnalysis1()?.burnRates;
   const [growthRate, setGrowthRate] = useState<number>();
 
   useEffect(() => {

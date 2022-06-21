@@ -4,7 +4,7 @@ import React, { FC, useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { TransitionGroup } from "react-transition-group";
 import { useBlockLag } from "../../api/block-lag";
-import { LatestBlock, useGroupedStats1 } from "../../api/grouped-stats-1";
+import { LatestBlock, useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import { Unit } from "../../denomination";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
@@ -67,7 +67,7 @@ const latestBlockFeesSkeletons = new Array(maxBlocks).fill(
 type Props = { unit: Unit };
 
 const LatestBlocks: FC<Props> = ({ unit }) => {
-  const latestBlockFees = useGroupedStats1()?.latestBlockFees;
+  const latestBlockFees = useGroupedAnalysis1()?.latestBlockFees;
   const blockLag = useBlockLag()?.blockLag;
   const [timeElapsed, setTimeElapsed] = useState<number>();
   const { md } = useActiveBreakpoint();

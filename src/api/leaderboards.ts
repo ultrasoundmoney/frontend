@@ -1,17 +1,22 @@
 import { Category } from "./burn-categories";
+import { Linkables } from "./fam";
 
 type ContractEntry = {
   address: string;
-  category: Category | string | null;
-  detail: string | null;
+  category: Category | string | null | undefined;
+  detail: string | null | undefined;
+  famFollowerCount: number | undefined;
   fees: number;
   feesUsd: number;
-  image: string | null;
+  followerCount: number | undefined;
+  image: string | null | undefined;
   isBot: boolean;
-  name: string | null;
-  twitterDescription: string | null;
-  twitterHandle: string | null;
-  twitterName: string | null;
+  name: string | null | undefined;
+  twitterBio: string | undefined;
+  twitterHandle: string | undefined;
+  twitterLinks: Linkables | undefined;
+  twitterName: string | undefined;
+  twitterUrl: string | undefined;
   type: "contract";
   /**
    * @deprecated

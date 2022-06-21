@@ -113,7 +113,7 @@
   "peak_supply": "supply peak",
   "supply_chart_series_address": "in accounts",
   "supply_chart_series_contracts": "in contracts",
-  "supply_chart_series_staking": "staking",
+  "supply_chart_series_staking": "in validators",
   "marker_genesis": "genesis",
   "marker_phase_0": "phase 0",
   "marker_merge": "merge",

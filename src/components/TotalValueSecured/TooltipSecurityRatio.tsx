@@ -9,12 +9,12 @@ import { FeatureFlagsContext } from "../../feature-flags";
 import { useScarcity } from "../../api/scarcity";
 import JSBI from "jsbi";
 import { pipe } from "../../fp";
-import { useGroupedStats1 } from "../../api/grouped-stats-1";
+import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 
 const TooltipSecurityRatio: FC<{ onClickClose: () => void }> = ({
   onClickClose,
 }) => {
-  const ethPrice = useGroupedStats1()?.ethPrice;
+  const ethPrice = useGroupedAnalysis1()?.ethPrice;
   const totalValueSecured = useTotalValueSecured();
   const ethStaked = useScarcity()?.engines.staked;
   const { previewSkeletons } = useContext(FeatureFlagsContext);

@@ -2,7 +2,7 @@ import { clamp } from "lodash";
 import { FC, useContext } from "react";
 import Skeleton from "react-loading-skeleton";
 import { animated, config, useSpring } from "react-spring";
-import { useGroupedStats1 } from "../../api/grouped-stats-1";
+import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import { Unit } from "../../denomination";
 import { FeatureFlagsContext } from "../../feature-flags";
 import { formatOneDigit, formatZeroDigit } from "../../format";
@@ -31,7 +31,7 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
   valueUnit,
   unit,
 }) => {
-  const ethPrice = useGroupedStats1()?.ethPrice;
+  const ethPrice = useGroupedAnalysis1()?.ethPrice;
 
   const { valueA } = useSpring({
     from: { valueA: 0 },

@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
-import { EthPrice, useGroupedStats1 } from "../../api/grouped-stats-1";
+import { EthPrice, useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
 import { O, pipe } from "../../fp";
@@ -133,8 +133,8 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
 };
 
 const TopBar: FC = () => {
-  const baseFeePerGas = useGroupedStats1()?.baseFeePerGas;
-  const ethPrice = useGroupedStats1()?.ethPrice;
+  const baseFeePerGas = useGroupedAnalysis1()?.baseFeePerGas;
+  const ethPrice = useGroupedAnalysis1()?.ethPrice;
   const [gasAlarmActive, setGasAlarmActive] = useLocalStorage(
     "gas-alarm-enabled",
     false,

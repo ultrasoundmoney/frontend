@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useState } from "react";
-import { useGroupedStats1 } from "../../api/grouped-stats-1";
+import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import { Unit } from "../../denomination";
 import * as Format from "../../format";
 import { TimeFrameNext, timeFramesNext } from "../../time-frames";
@@ -18,7 +18,7 @@ import TimeFrameControl from "./controls/TimeFrameControl";
 
 const WidgetGroup1: FC = () => {
   const [simulateMerge, setSimulateMerge] = useState(false);
-  const baseFeePerGas = useGroupedStats1()?.baseFeePerGas;
+  const baseFeePerGas = useGroupedAnalysis1()?.baseFeePerGas;
   const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
 

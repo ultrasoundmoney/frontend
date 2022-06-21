@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import * as DateFns from "date-fns";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
@@ -162,15 +163,19 @@ const SupplyChart: React.FC<Props> = ({
       return [[], [], {}];
     }
 
-    const { stakingData, contractData, supplyData } = projectionsInputs;
+    const {
+      inBeaconValidatorsByDay,
+      inContractsByDay,
+      supplyByDay: supplyData,
+    } = projectionsInputs;
 
     const stakingByDate: Record<number, number> = {};
-    stakingData.forEach(({ t, v }) => {
+    inBeaconValidatorsByDay.forEach(({ t, v }) => {
       stakingByDate[t] = v;
     });
 
     const contractByDate: Record<number, number> = {};
-    contractData.forEach(({ t, v }) => {
+    inContractsByDay.forEach(({ t, v }) => {
       contractByDate[t] = v;
     });
 
@@ -556,12 +561,12 @@ const SupplyChart: React.FC<Props> = ({
           // Historical & projected overlap at current date; only show historical on that date
           if (points.length > 4) {
             points = points.filter(
-              (p) => !p.series.userOptions.id!.includes("projected"),
+              (p) => !p.series.userOptions.id?.includes("projected"),
             );
           }
 
           const isProjected =
-            points[0].series.userOptions.id!.includes("projected");
+            points[0].series.userOptions.id?.includes("projected");
 
           const dt = new Date(this.x);
           const header = `<div class="tt-header"><div class="tt-header-date text-blue-spindle">${formatDate(
@@ -578,7 +583,7 @@ const SupplyChart: React.FC<Props> = ({
               <td>
                 <div class="tt-series">
                   <div class="tt-series-color" style="background-color:${
-                    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-explicit-any
                     p.series.userOptions.color as any
                   }"></div>
                   <div class="tt-series-name">${

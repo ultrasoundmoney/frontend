@@ -5,8 +5,8 @@ import Skeleton from "react-loading-skeleton";
 import {
   BurnRates,
   FeesBurned,
-  useGroupedStats1,
-} from "../api/grouped-stats-1";
+  useGroupedAnalysis1,
+} from "../api/grouped-analysis-1";
 import { londonHardfork } from "../dates";
 import { Unit } from "../denomination";
 import * as Duration from "../duration";
@@ -64,8 +64,8 @@ const BurnTotal: FC<Props> = ({
   timeFrame,
   unit,
 }) => {
-  const burnRates = useGroupedStats1()?.burnRates;
-  const feesBurned = useGroupedStats1()?.feesBurned;
+  const burnRates = useGroupedAnalysis1()?.burnRates;
+  const feesBurned = useGroupedAnalysis1()?.feesBurned;
   const { previewSkeletons } = useContext(FeatureFlagsContext);
 
   const selectedFeesBurnedEth =

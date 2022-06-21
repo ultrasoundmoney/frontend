@@ -7,20 +7,14 @@ type DataPoint = {
   v: number;
 };
 
-type RawSupplyInputs = {
-  lockedData: DataPoint[];
-  supplyData: DataPoint[];
-  stakedData: DataPoint[];
-};
-
 type SupplyInputs = {
-  stakingData: DataPoint[];
-  contractData: DataPoint[];
-  supplyData: DataPoint[];
+  inContractsByDay: DataPoint[];
+  inBeaconValidatorsByDay: DataPoint[];
+  supplyByDay: DataPoint[];
 };
 
 export const useSupplyProjectionInputs = (): SupplyInputs | undefined => {
-  const { data } = useSWR<RawSupplyInputs>(
+  const { data } = useSWR<SupplyInputs>(
     `${feesBasePath}/supply-projection-inputs`,
     fetcher,
   );
@@ -30,8 +24,8 @@ export const useSupplyProjectionInputs = (): SupplyInputs | undefined => {
   }
 
   return {
-    stakingData: data.stakedData,
-    contractData: data.lockedData,
-    supplyData: data.supplyData,
+    inContractsByDay: data.inContractsByDay,
+    inBeaconValidatorsByDay: data.inBeaconValidatorsByDay,
+    supplyByDay: data.supplyByDay,
   };
 };

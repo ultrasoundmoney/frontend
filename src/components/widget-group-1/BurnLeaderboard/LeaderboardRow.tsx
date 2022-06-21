@@ -1,4 +1,4 @@
-import { FC, ReactEventHandler, useCallback, useContext } from "react";
+import { FC, RefObject, useContext } from "react";
 import Skeleton from "react-loading-skeleton";
 import {
   Category,
@@ -11,6 +11,7 @@ import { Unit } from "../../../denomination";
 import { FeatureFlagsContext } from "../../../feature-flags";
 import * as Format from "../../../format";
 import { MoneyAmountAnimated } from "../../Amount";
+import ImageWithTooltip from "../../ImageWithTooltip";
 import AdminControls from "./AdminControls";
 
 type Props = {
@@ -18,13 +19,17 @@ type Props = {
   adminToken?: string;
   category?: Category | string | undefined;
   detail?: string;
-  fees: number | undefined;
+  fees?: number;
   freshness?: Contracts.MetadataFreshness;
+  onClickImage?: () => void;
+  onMouseEnterImage?: (ref: RefObject<HTMLImageElement>) => void;
+  onMouseLeaveImage?: () => void;
+  tooltipDescirption?: string;
   image?: string | undefined;
   isBot?: boolean | undefined;
-  name: string | undefined;
-  type: LeaderboardEntry["type"] | undefined;
-  unit: Unit;
+  name?: string;
+  type?: LeaderboardEntry["type"];
+  unit?: Unit;
 };
 
 const LeaderboardRow: FC<Props> = ({
@@ -34,6 +39,9 @@ const LeaderboardRow: FC<Props> = ({
   detail,
   fees,
   freshness,
+  onClickImage,
+  onMouseLeaveImage,
+  onMouseEnterImage,
   image,
   isBot,
   name,
@@ -42,6 +50,7 @@ const LeaderboardRow: FC<Props> = ({
 }) => {
   const { showCategorySlugs, showMetadataTools } =
     useContext(FeatureFlagsContext);
+
   const imgSrc =
     typeof image === "string"
       ? image
@@ -55,46 +64,34 @@ const LeaderboardRow: FC<Props> = ({
 
   const isDoneLoading = type !== undefined;
 
-  //Your handler Component
-  const onImageError = useCallback<ReactEventHandler<HTMLImageElement>>((e) => {
-    (e.target as HTMLImageElement).src =
-      "/leaderboard-images/question-mark-v2.svg";
-  }, []);
-
-  const { previewSkeletons } = useContext(FeatureFlagsContext);
-
   return (
     <>
       <div className="pt-2.5 pb-2.5 pr-2">
-        <a
-          href={
-            address === undefined
-              ? undefined
-              : `https://etherscan.io/address/${address}`
-          }
-          target="_blank"
-          rel="noreferrer"
-        >
-          <div
+        <div className="flex text-white">
+          <ImageWithTooltip
+            onMouseEnter={onMouseEnterImage}
+            onMouseLeave={onMouseLeaveImage}
+            onClick={onClickImage}
+            className="w-8 h-8 rounded-full select-none"
+            isDoneLoading={isDoneLoading}
+            imageUrl={imgSrc ?? "/leaderboard-images/question-mark-v2.svg"}
+          />
+          <a
             className={`
-              hover:opacity-60
+              w-full
               flex flex-row items-center
               font-inter font-light
               text-white text-base md:text-lg
+              ${address !== undefined ? "hover:opacity-60" : ""}
             `}
+            href={
+              address === undefined
+                ? undefined
+                : `https://etherscan.io/address/${address}`
+            }
+            target="_blank"
+            rel="noreferrer"
           >
-            {(imgSrc === undefined && !isDoneLoading) || previewSkeletons ? (
-              <div className="leading-4">
-                <Skeleton circle height="32px" width="32px" />
-              </div>
-            ) : (
-              <img
-                className="w-8 h-8 rounded-full select-none"
-                src={imgSrc ?? "/leaderboard-images/question-mark-v2.svg"}
-                alt=""
-                onError={onImageError}
-              />
-            )}
             <p className="pl-4 truncate">
               {typeof name === "string" ? (
                 name
@@ -136,15 +133,15 @@ const LeaderboardRow: FC<Props> = ({
                 <Skeleton inline={true} width="4rem" />
               ) : (
                 <MoneyAmountAnimated
-                  unit={unit}
+                  unit={unit || "eth"}
                   unitText={unit === "eth" ? "ETH" : "USD"}
                 >
                   {fees}
                 </MoneyAmountAnimated>
               )}
             </p>
-          </div>
-        </a>
+          </a>
+        </div>
         {adminToken !== undefined &&
           address !== undefined &&
           showMetadataTools && (

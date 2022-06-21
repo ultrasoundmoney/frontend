@@ -154,15 +154,8 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
               <li className="text-white flex items-center">
                 <ImageWithTooltip
                   className="w-8 h-8 select-none"
-                  coingeckoUrl={row?.coinGeckoUrl}
-                  contractAddresses={row?.contractAddresses}
-                  description={row?.tooltipDescription}
-                  famFollowerCount={row?.famFollowerCount}
-                  followerCount={row?.followerCount}
                   imageUrl={row?.imageUrl}
-                  links={row?.links}
                   isDoneLoading={row !== undefined}
-                  nftGoUrl={row?.nftGoUrl}
                   onMouseEnter={(ref) =>
                     !md || row === undefined
                       ? () => undefined
@@ -176,9 +169,6 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
                       ? () => undefined
                       : handleClickProfile(row)
                   }
-                  title={row?.tooltipName?.split(":")[0]}
-                  tooltipImageUrl={row?.imageUrl}
-                  twitterUrl={row?.twitterUrl}
                 />
                 <Link
                   className="flex justify-between ml-4 w-full overflow-hidden"
