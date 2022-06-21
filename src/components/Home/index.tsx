@@ -17,7 +17,7 @@ import { SectionTitle, TextInterLink, TextRoboto } from "../Texts";
 import ToggleSwitch from "../ToggleSwitch";
 import TotalValueSecured from "../TotalValueSecured";
 import TwitterFam from "../TwitterFam";
-import ValidatorRewards from "../ValidatorRewards";
+import ValidatorRewardsWidget from "../ValidatorRewards";
 import WidgetGroup1 from "../widget-group-1";
 import { WidgetTitle } from "../widget-subcomponents";
 import styles from "./Home.module.scss";
@@ -202,7 +202,7 @@ const Home: FC = () => {
               {/* </video> */}
               <div className="flex flex-col basis-1/2 gap-y-4">
                 <Scarcity />
-                <ValidatorRewards />
+                <ValidatorRewardsWidget />
               </div>
               <div className="basis-1/2 flex flex-col gap-y-4">
                 <PriceModel />
@@ -268,7 +268,7 @@ const Home: FC = () => {
                   <img
                     className="h-4"
                     src="/email-icon.svg"
-                    alt="icon of the twitter bird"
+                    alt="icon of an envelope, email"
                   />
                   <TextInterLink>contact@ultrasound.money</TextInterLink>
                 </Link>

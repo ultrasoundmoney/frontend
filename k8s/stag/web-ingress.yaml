@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    service.beta.kubernetes.io/do-loadbalancer-size-unit: "1"
+    service.beta.kubernetes.io/do-loadbalancer-name: "usm-i7x0.ultrasound.money"
+spec:
+  defaultBackend:
+    service:
+      name: serve-web
+      port:
+        number: 80
+  tls:
+    - hosts:
+        - usm-i7x0.ultrasound.money
+      secretName: cf-usm-tls
+  rules:
+    - host: usm-i7x0.ultrasound.money
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: serve-web
+                port:
+                  number: 80
