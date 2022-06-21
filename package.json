@@ -46,6 +46,7 @@
     "@types/aos": "^3.0.4",
     "@types/d3": "^7.1.0",
     "@types/lodash": "^4.14.178",
+    "@types/luxon": "^1.27.0",
     "@types/node": "17.0.12",
     "@types/react": "17.0.38",
     "@types/react-dom": "^17.0.11",

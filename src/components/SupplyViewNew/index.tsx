@@ -1,7 +1,6 @@
 import * as React from "react";
 import { DateTime } from "luxon";
 import Slider from "../Slider/Slider";
-import SupplyChart from "./SupplyGraph";
 import {
   estimatedDailyFeeBurn,
   estimatedDailyIssuance,
@@ -38,8 +37,6 @@ const SupplyView: React.FC<{}> = () => {
   const [projectedMergeDate, setProjectedMergeDate] = React.useState(
     DEFAULT_PROJECTED_MERGE_DATE
   );
-  const [showBreakdown, setShowBreakdown] = React.useState(false);
-  const [isPeakPresent, setIsPeakPresent] = React.useState(true);
 
   const handleProjectedStakingChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,18 +62,6 @@ const SupplyView: React.FC<{}> = () => {
     },
     []
   );
-
-  const handleProjectedStakingPointerDown = React.useCallback(() => {
-    setShowBreakdown(true);
-  }, []);
-
-  const handleProjectedStakingPointerUp = React.useCallback(() => {
-    setShowBreakdown(false);
-  }, []);
-
-  const handleOnPeakProjectedToggle = React.useCallback((isPeakPresent) => {
-    setIsPeakPresent(isPeakPresent);
-  }, []);
 
   const daysUntilProjectedMerge = projectedMergeDate.diff(
     DateTime.utc().startOf("day"),
@@ -118,8 +103,6 @@ const SupplyView: React.FC<{}> = () => {
             value={projectedStaking}
             step={1e6}
             onChange={handleProjectedStakingChange}
-            onPointerDown={handleProjectedStakingPointerDown}
-            onPointerUp={handleProjectedStakingPointerUp}
           />
         </Param>
 

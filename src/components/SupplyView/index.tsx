@@ -17,15 +17,24 @@ const DEFAULT_PROJECTED_ETH_STAKING = 15e6;
 const MAX_PROJECTED_ETH_STAKING = 33554432;
 
 const MIN_PROJECTED_BASE_GAS_PRICE = 0;
-const DEFAULT_PROJECTED_BASE_GAS_PRICE = 80;
+const DEFAULT_PROJECTED_BASE_GAS_PRICE = 70;
 const MAX_PROJECTED_BASE_GAS_PRICE = 200;
 
-const MIN_PROJECTED_MERGE_DATE = DateFns.parseISO("2022-05-01T00:00:00Z");
-const DEFAULT_PROJECTED_MERGE_DATE = DateFns.parseISO("2022-08-15T00:00:00Z");
+const MIN_PROJECTED_MERGE_DATE = DateFns.startOfDay(new Date());
+const DEFAULT_PROJECTED_MERGE_DATE = DateFns.max([
+  DateFns.parseISO("2022-08-31T00:00:00Z"),
+  MIN_PROJECTED_MERGE_DATE,
+]);
 const MAX_PROJECTED_MERGE_DATE = DateFns.parseISO("2022-12-31T00:00:00Z");
+
+const getDaysUntil = (dt: Date) =>
+  DateFns.differenceInDays(dt, DateFns.startOfDay(new Date()));
 
 const SupplyView: React.FC = () => {
   const { translations: t } = useTranslations();
+  const [daysUntilMaxProjectedMergeDate, setMaxDaysUntilMerge] = React.useState(
+    getDaysUntil(MAX_PROJECTED_MERGE_DATE),
+  );
 
   // TODO Initialize this to current amount of ETH staked
   const [projectedStaking, setProjectedStaking] = React.useState(
@@ -57,13 +66,20 @@ const SupplyView: React.FC = () => {
 
   const handleProjectedMergeDateChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (
+        getDaysUntil(MAX_PROJECTED_MERGE_DATE) !==
+        daysUntilMaxProjectedMergeDate
+      ) {
+        setMaxDaysUntilMerge(getDaysUntil(MAX_PROJECTED_MERGE_DATE));
+      }
+
       const numDays: number = parseInt(e.target.value);
       const projectedDate = pipe(new Date(), DateFns.startOfDay, (dt) =>
         DateFns.addDays(dt, numDays),
       );
       setProjectedMergeDate(projectedDate);
     },
-    [],
+    [daysUntilMaxProjectedMergeDate],
   );
 
   const handleProjectedStakingPointerDown = React.useCallback(() => {
@@ -81,12 +97,8 @@ const SupplyView: React.FC = () => {
     [],
   );
 
-  const getDaysUntil = (dt: Date) =>
-    DateFns.differenceInDays(dt, DateFns.startOfDay(new Date()));
-
   const daysUntilProjectedMerge = getDaysUntil(projectedMergeDate);
   const daysUntilMinProjectedMerge = getDaysUntil(MIN_PROJECTED_MERGE_DATE);
-  const daysUntilMaxProjectedMerge = getDaysUntil(MAX_PROJECTED_MERGE_DATE);
 
   return (
     <>
@@ -174,7 +186,7 @@ const SupplyView: React.FC = () => {
         >
           <Slider
             min={daysUntilMinProjectedMerge}
-            max={daysUntilMaxProjectedMerge}
+            max={daysUntilMaxProjectedMergeDate}
             value={daysUntilProjectedMerge}
             step={1}
             onChange={handleProjectedMergeDateChange}
