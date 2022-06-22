@@ -36,7 +36,7 @@ const NftDrop: React.FC = () => {
               autoPlay
               muted
               loop
-              poster={nftDropPoster as unknown as string}
+              poster={nftDropPoster.src as unknown as string}
             >
               <source src="/nft-drop.mp4" type="video/mp4" />
               <source src="/nft-drop.webm" type="video/webm" />

@@ -41,7 +41,7 @@ const EIP1559: React.FC = () => {
             autoPlay
             muted
             loop
-            poster={posterBg}
+            poster={posterBg.src}
           >
             <source src="/eip_compressed.mp4" type="video/mp4" />
           </video>
