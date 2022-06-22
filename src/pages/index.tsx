@@ -18,9 +18,6 @@ export const SharedHead = () => (
     <meta property="og:description" content={SiteMetadata.description} />
     <meta property="og:image" content={SiteMetadata.image} />
     <meta property="og:url" content="https://ultrasound.money" />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:creator" content="@ultrasoundmoney" />
-    <meta name="twitter:site" content="@ultrasoundmoney" />
     <link rel="icon" href="/favicon.png" />
     <link rel="manifest" href="/manifest.json" />
     <link rel="apple-touch-icon" href="/favicon.png"></link>
