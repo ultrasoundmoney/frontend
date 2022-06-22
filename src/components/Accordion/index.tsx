@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { TextInter } from "../Texts";
 import Twemoji from "../Twemoji";
 import styles from "./Accordion.module.scss";
@@ -20,7 +20,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, text }) => {
         <Twemoji imageClassName="inline h-6 ml-1">
           <p
             dangerouslySetInnerHTML={{
-              __html: title,
+              __html: String(title),
             }}
           ></p>
         </Twemoji>
@@ -36,7 +36,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, text }) => {
           <p
             className={`${styles.content} leading-relaxed pb-6`}
             dangerouslySetInnerHTML={{
-              __html: text,
+              __html: String(text),
             }}
           ></p>
         </Twemoji>

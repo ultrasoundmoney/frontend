@@ -9,7 +9,7 @@ import { handleGraphs, setScrollPos } from "./helpers";
 import classes from "./BlockBtcEthUsd.module.scss";
 import { WINDOW_BREAK_POINT, graphTypes } from "./helpers";
 
-const TheUltraSound: FC<{}> = () => {
+const TheUltraSound: FC = () => {
   const t = useContext(TranslationsContext);
   const pointRef = useRef(null);
   const graphRef = useRef<HTMLDivElement | null>(null);
@@ -32,7 +32,7 @@ const TheUltraSound: FC<{}> = () => {
       } else {
         for (let i = 0; i <= blocks.length - 1; i++) {
           const el: any = blocks[i];
-          el.style.minHeight = graphBlockHeight + "px";
+          el.style.minHeight = `${graphBlockHeight ? graphBlockHeight : 0}px`;
         }
       }
     }

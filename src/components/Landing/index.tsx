@@ -22,7 +22,7 @@ import Stepper from "../Navigation/Stepper";
 import { SteppersProvider } from "../../context/StepperContext";
 import GweiDynamicBlock from "../GweiDynamicBlock";
 
-const LandingPage: React.FC<{}> = () => {
+const LandingPage: React.FC = () => {
   React.useEffect(() => {
     AOS.init();
     AOS.refresh();

@@ -114,7 +114,7 @@ const glowVariants = {
   hidden: { opacity: 0, duration: ".2s" },
 };
 
-const AnimatedPath: React.FC<{}> = () => {
+const AnimatedPath: React.FC = () => {
   const pathRef = useRef<null | SVGSVGElement>(null);
   const [dotsState, setDotsState] = useState(dots);
   const [dashedState, setDashedState] = useState(dashed);

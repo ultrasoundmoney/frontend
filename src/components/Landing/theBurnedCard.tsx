@@ -5,7 +5,7 @@ import ThirdVidget from "../Vidgets/ThirdVidget";
 import FourthVidget from "../Vidgets/FourthVidget";
 import { TranslationsContext } from "../../translations-context";
 import { useState, useContext } from "react";
-import { StepperContext } from "../../context/StepperContext";
+import { StepperContext, StepperPoint } from "../../context/StepperContext";
 import { moneyType } from "../Vidgets/helpers";
 import { historicalData } from "./historicalData";
 
@@ -17,11 +17,11 @@ const FeeBurnedBlock = () => {
     "Infationary"
   );
   const stepperPoints = useContext(StepperContext);
-  const controlPoints: any[] = Object.keys(
-    stepperPoints?.stepperElements as {}
-  ).map((element) => {
-    return stepperPoints?.stepperElements[element];
-  });
+  const controlPoints: StepperPoint[] = stepperPoints?.stepperElements
+    ? Object.keys(stepperPoints.stepperElements).map((element) => {
+        return stepperPoints?.stepperElements[element];
+      })
+    : [];
   const [currentIndexHistorical, setCurrentIndexHistorical] = useState(0);
 
   function onScroll() {
@@ -76,7 +76,7 @@ const FeeBurnedBlock = () => {
       <div
         id="eth-card"
         className={`fixed-fee-burned z-10 inset-x-0 bottom-0 grid grid-cols-2 gap-1 sm:gap-2 lg:flex lg:flex-nowrap justify-center w-full max-w-7xl md:mx-auto px-2 lg:px-4 sticky lg:gap-4 pb-2 lg:pb-4 ${
-          isShow && "active"
+          isShow ? "active" : ""
         }`}
       >
         <FirstVidget
