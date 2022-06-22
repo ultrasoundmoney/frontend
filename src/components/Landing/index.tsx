@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import React from "react";
 import Navigation from "../Navigation/Nav";
 import Intro from "./Intro";
