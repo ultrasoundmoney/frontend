@@ -28,7 +28,7 @@ const FeeBurnedBlock = () => {
     //change data vidgets
     const bodyHeight = document.body.scrollHeight;
     const breackPointShowVidgets =
-      controlPoints[0].offsetY - window.innerHeight / 2.4;
+      controlPoints[0]?.offsetY - window.innerHeight / 2.4;
     const showVidgets = window.scrollY > breackPointShowVidgets;
 
     const currentIndex = showVidgets
@@ -40,21 +40,21 @@ const FeeBurnedBlock = () => {
     if (currentIndex <= historicalData.length - 1 && currentIndex >= 0) {
       setCurrentIndexHistorical(currentIndex);
     }
-    if (window.scrollY > controlPoints[4].offsetY) {
+    if (window.scrollY > controlPoints[4]?.offsetY) {
       setNumberETHBlock(0);
       setCurrentMoneyType("Deflationary");
       return;
-    } else if (window.scrollY > controlPoints[3].offsetY) {
+    } else if (window.scrollY > controlPoints[3]?.offsetY) {
       setNumberETHBlock(1);
       setCurrentMoneyType("Infationary");
       return;
-    } else if (window.scrollY > controlPoints[2].offsetY) {
+    } else if (window.scrollY > controlPoints[2]?.offsetY) {
       setNumberETHBlock(2);
       return;
-    } else if (window.scrollY > controlPoints[1].offsetY) {
+    } else if (window.scrollY > controlPoints[1]?.offsetY) {
       setNumberETHBlock(3);
       return;
-    } else if (window.scrollY > controlPoints[0].offsetY) {
+    } else if (window.scrollY > controlPoints[0]?.offsetY) {
       setNumberETHBlock(5);
       return;
     }
