@@ -60,7 +60,7 @@ const LandingPage: React.FC<{}> = () => {
               className="flex flex-col px-4 md:px-0 mt-6 mb-16"
               id="supplyview"
             >
-              <div className="w-full md:w-5/6 lg:w-5/6 md:m-auto relative bg-blue-tangaroa md:px-11 py-4 md:py-11 rounded-xl">
+              <div className="wrapper_supply_graph_section relative w-5/6 m-auto px-11 py-11 rounded-xl">
                 <SupplyView />
               </div>
               <div className="flex flex-wrap justify-center pt-20">

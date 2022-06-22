@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import * as React from "react";
 import { DateTime } from "luxon";
 import Highcharts from "highcharts";
@@ -5,6 +6,9 @@ import highchartsAnnotations from "highcharts/modules/annotations";
 import HighchartsReact from "highcharts-react-official";
 import merge from "lodash/merge";
 import last from "lodash/last";
+// TODO load these from API
+import supplyData from "./supply-total.json";
+import stakingData from "./supply-staking.json";
 
 import { useDebounce } from "../../utils/use-debounce";
 import {
@@ -14,12 +18,7 @@ import {
   formatDate,
 } from "../../utils/metric-utils";
 import { useOnResize } from "../../utils/use-on-resize";
-import { defaultOptions, COLORS } from "../../utils/chart-defaults";
-
-// TODO load these from API
-import supplyData from "./supply-total.json";
-import stakingData from "./supply-staking.json";
-import contractData from "./supply-in-smart-contracts.json";
+import { defaultOptions } from "../../utils/chart-defaults";
 
 import styles from "./SupplyChart.module.scss";
 import { TranslationsContext } from "../../translations-context";
@@ -30,12 +29,15 @@ if (typeof window !== "undefined") {
   highchartsAnnotations(Highcharts);
 }
 
+interface sypplyDataObj {
+  t: string;
+  v: number;
+}
 interface Props {
   projectedStaking: number;
   projectedBaseGasPrice: number;
   projectedMergeDate: DateTime;
   showBreakdown: boolean;
-  onPeakProjectedToggle: (isPeakPresent: boolean) => void;
 }
 
 interface HighchartsRef {
@@ -43,11 +45,9 @@ interface HighchartsRef {
   container: React.RefObject<HTMLDivElement>;
 }
 
-let mouseOutTimer: NodeJS.Timeout | null = null;
-
 const LONDON_DATE = DateTime.fromISO("2021-08-05T00:00:00Z");
 const NUM_DAYS_PER_POINT = 7;
-const COMPACT_MARKERS_BELOW_WIDTH = 1440;
+const COMPACT_MARKERS_BELOW_WIDTH = 1040;
 const COMPACT_CHART_BELOW_WIDTH = 640;
 
 const SupplyChart: React.FC<Props> = ({
@@ -55,7 +55,6 @@ const SupplyChart: React.FC<Props> = ({
   projectedStaking,
   projectedMergeDate,
   showBreakdown: forceShowBreakdown,
-  onPeakProjectedToggle,
 }) => {
   const t = React.useContext(TranslationsContext);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
@@ -70,24 +69,6 @@ const SupplyChart: React.FC<Props> = ({
       chartRef.current!.chart.reflow();
     }
   }, [t]);
-
-  // Show / hide supply breakdown on hover
-  const [showBreakdown, setShowBreakdown] = React.useState(false);
-  const handleChartMouseOut = React.useCallback(() => {
-    if (mouseOutTimer !== null) {
-      clearTimeout(mouseOutTimer);
-    }
-    mouseOutTimer = setTimeout(() => {
-      setShowBreakdown(false);
-    }, 200);
-  }, []);
-
-  const handleChartMouseOver = React.useCallback(() => {
-    if (mouseOutTimer !== null) {
-      clearTimeout(mouseOutTimer);
-    }
-    setShowBreakdown(true);
-  }, []);
 
   // Responsive helpers
   const [useCompactMarkers, setUseCompactMarkers] = React.useState(
@@ -118,7 +99,7 @@ const SupplyChart: React.FC<Props> = ({
       projectedBaseGasPrice,
       projectedStaking,
       projectedMergeDate,
-      showBreakdown: showBreakdown || forceShowBreakdown,
+      showBreakdown: false || forceShowBreakdown,
       useCompactChart,
       useCompactMarkers,
     }),
@@ -126,7 +107,6 @@ const SupplyChart: React.FC<Props> = ({
       projectedBaseGasPrice,
       projectedStaking,
       projectedMergeDate,
-      showBreakdown,
       forceShowBreakdown,
       useCompactChart,
       useCompactMarkers,
@@ -134,83 +114,34 @@ const SupplyChart: React.FC<Props> = ({
   );
   const chartSettings = useDebounce(_chartSettings, 100);
 
-  // Define the event markers that we'll plot on the chart
-  const markers = React.useMemo(
-    // prettier-ignore
-    (): [DateTime | null, string, string][] => ([
-      [DateTime.fromISO("2015-07-31T00:00:00Z"), t.marker_genesis, `5 ETH/${t.marker_block}`],
-      [DateTime.fromISO("2017-10-16T00:00:00Z"), "byzantium", `3 ETH/${t.marker_block}`],
-      [DateTime.fromISO("2019-02-27T00:00:00Z"), "constantinople", `2 ETH/${t.marker_block}`],
-      [DateTime.fromISO("2020-12-01T00:00:00Z"), t.marker_phase_0, t.marker_pos],
-      [LONDON_DATE, "london", "burn"],
-      [chartSettings.projectedMergeDate, t.marker_merge, t.marker_pow_removal],
-    ]),
-    [chartSettings, t]
-  );
-
   // Transform our input data into series that we'll pass to highcharts
-  const [series, annotations, totalSupplyByDate] = React.useMemo((): [
-    Highcharts.SeriesAreaOptions[],
-    Highcharts.AnnotationsLabelsOptions[],
+  const [series, totalSupplyByDate] = React.useMemo((): [
+    Highcharts.SeriesLineOptions[],
     Record<string, number>
   ] => {
     const stakingByDate = {};
-    stakingData.forEach(({ t, v }) => {
+    stakingData.forEach(({ t, v }: { t: string; v: number }) => {
       stakingByDate[t] = v;
     });
-
-    const contractByDate = {};
-    contractData.forEach(({ t, v }) => {
-      contractByDate[t] = v;
-    });
-
     const supplyByDate: Record<string, number> = {};
 
     const supplySeriesData: number[][] = [];
-    const contractSeriesData: number[][] = [];
-    const addressSeriesData: number[][] = [];
     const stakingSeriesData: number[][] = [];
 
     const numSupplyDataPoints = supplyData.length;
 
-    let maxSupply: number | null = null;
-    let peakSupply: [string, number] | null = null;
-
-    supplyData.forEach(({ t: timestamp, v }, i) => {
-      // Calculate peak supply
-      if (v > (maxSupply || 0)) {
-        maxSupply = v;
-        peakSupply = null;
-      } else if (v < maxSupply! && !peakSupply) {
-        peakSupply = [timestamp, v];
-      }
-
+    supplyData.forEach(({ t: timestamp, v }: sypplyDataObj, i: number) => {
       // Only render every Nth point for chart performance
       if (i % NUM_DAYS_PER_POINT !== 0 && i < numSupplyDataPoints - 1) {
         return;
       }
 
       const date = DateTime.fromISO(timestamp, { zone: "utc" });
-      const dateMillis = date.toMillis();
+      const dateMillis: number = date.toMillis();
 
       // Subtract any staking eth from total supply on that date
-      const stakingSupply = stakingByDate[timestamp] || 0;
-      const nonStakingSupply = v - stakingSupply;
+      const stakingSupply: number = stakingByDate[timestamp] || 0;
 
-      // Calculate contract vs address split
-      const inContractsPct = contractByDate[timestamp];
-      let inContractsValue = 0;
-      let inAddressesValue = nonStakingSupply;
-      if (inContractsPct !== undefined) {
-        // Glassnode's ETH in contract data includes staked ETH, so we need
-        // to subtract staked ETH here since we render it as its own series
-        inContractsValue = inContractsPct * v - stakingSupply;
-        inAddressesValue -= inContractsValue;
-      }
-
-      // Add data points to series
-      addressSeriesData.push([dateMillis, inAddressesValue]);
-      contractSeriesData.push([dateMillis, inContractsValue]);
       stakingSeriesData.push([dateMillis, stakingSupply]);
       supplySeriesData.push([dateMillis, v]);
       supplyByDate[dateMillis] = v;
@@ -221,25 +152,20 @@ const SupplyChart: React.FC<Props> = ({
      */
     const lastSupplyPoint = last(supplySeriesData);
     const lastStakingPoint = last(stakingSeriesData);
-    const lastAddressPoint = last(addressSeriesData);
-    const lastContractPoint = last(contractSeriesData);
 
     // Projection should be 1/3 of chart
     const firstDate = DateTime.fromISO(supplyData[0].t, { zone: "utc" });
-    const lastDate = DateTime.fromISO(last(supplyData)!.t, { zone: "utc" });
+    const lastDate = DateTime.fromISO(supplyData[supplyData.length - 1].t, {
+      zone: "utc",
+    });
     const daysOfData = lastDate.diff(firstDate, "days").days;
     const daysOfProjection = Math.floor(daysOfData / 2);
 
-    const contractProj: number[][] = [lastContractPoint!];
-    const addressProj: number[][] = [lastAddressPoint!];
-    const stakingProj: number[][] = [lastStakingPoint!];
     const supplyProj: number[][] = [lastSupplyPoint!];
     const mergeDate = chartSettings.projectedMergeDate.toSeconds();
 
     let supplyValue = lastSupplyPoint![1];
     let stakingValue = lastStakingPoint![1];
-
-    const maxIssuance = estimatedDailyIssuance(chartSettings.projectedStaking);
 
     for (let i = 0; i < daysOfProjection; i++) {
       const projDate = lastDate.plus({ days: i + 1 }).startOf("day");
@@ -272,37 +198,8 @@ const SupplyChart: React.FC<Props> = ({
       }
 
       supplyValue = Math.max(supplyValue + newIssuance - burn, 0);
-
-      const nonStakingValue = Math.max(supplyValue - stakingValue, 0);
-
-      let inContractValue = Math.min(lastContractPoint![1], nonStakingValue);
-      let inAddressesValue = nonStakingValue - inContractValue;
-      // Make sure ETH in addresses doesn't dip way below ETH in contracts
-      if (inAddressesValue < inContractValue * 0.5) {
-        inContractValue = Math.floor((nonStakingValue * 2) / 3);
-        inAddressesValue = nonStakingValue - inContractValue;
-      }
-
       // Make sure our total supply value can't dip below the amount staked
       const adjustedSupplyValue = Math.max(supplyValue, stakingValue);
-
-      // Issuance is a function of ETH staked, but delayed over time.
-      // Therefore, we may see a local peak where burn outpaces issuance
-      // temporarily. We want our peak to be non-local, we filter the local
-      // case.
-      const isLongTermContractingSupply = burn > maxIssuance;
-
-      // Calculate peak supply
-      if (adjustedSupplyValue > (maxSupply || 0)) {
-        maxSupply = adjustedSupplyValue;
-        peakSupply = null;
-      } else if (
-        adjustedSupplyValue < maxSupply! &&
-        !peakSupply &&
-        isLongTermContractingSupply
-      ) {
-        peakSupply = [projDate.toISO(), adjustedSupplyValue];
-      }
 
       // Only render every Nth point for chart performance
       if (i % NUM_DAYS_PER_POINT !== 0) {
@@ -310,225 +207,90 @@ const SupplyChart: React.FC<Props> = ({
       }
 
       const projDateMillis = projDate.toMillis();
-      contractProj.push([projDateMillis, inContractValue]);
-      addressProj.push([projDateMillis, inAddressesValue]);
-      stakingProj.push([projDateMillis, stakingValue]);
       supplyProj.push([projDateMillis, adjustedSupplyValue]);
       supplyByDate[projDateMillis] = adjustedSupplyValue;
     }
 
-    const projSeriesOptions: Partial<Highcharts.SeriesAreaOptions> = {
-      fillOpacity: 0.25,
-      dashStyle: "Dash",
-      showInLegend: false,
-      marker: { symbol: "circle" },
-    };
-
-    let series: Highcharts.SeriesAreaOptions[] = [];
-    const hiddenStyles: Partial<Highcharts.SeriesAreaOptions> = {
-      opacity: 0,
-      showInLegend: false,
-    };
-    const visibleStyles: Partial<Highcharts.SeriesAreaOptions> = {
-      opacity: 1,
-      showInLegend: true,
-    };
-    series = [
+    const series: Highcharts.SeriesLineOptions[] = [
       {
-        id: "supply",
-        type: "area",
+        id: "supply_line_1",
+        type: "line",
         name: t.historical_supply,
-        color: COLORS.SERIES[0],
-        data: supplySeriesData,
-        enableMouseTracking: false,
-        ...(chartSettings.showBreakdown ? hiddenStyles : visibleStyles),
-      },
-      {
-        id: "supply_projected",
-        type: "area",
-        name: `${t.eth_supply} (${t.projected})`,
-        data: supplyProj,
-        color: COLORS.SERIES[0],
-        enableMouseTracking: false,
-        ...projSeriesOptions,
-        showInLegend: true,
-        ...(chartSettings.showBreakdown ? hiddenStyles : visibleStyles),
-      },
-      {
-        id: "addresses",
-        type: "area",
-        name: t.supply_chart_series_address,
-        color: COLORS.SERIES[1],
-        data: addressSeriesData,
-        marker: { symbol: "circle" },
-        stack: "historical",
-        ...(chartSettings.showBreakdown ? visibleStyles : hiddenStyles),
-      },
-      {
-        id: "contracts",
-        type: "area",
-        name: t.supply_chart_series_contracts,
-        color: COLORS.SERIES[2],
-        data: contractSeriesData,
-        marker: { symbol: "circle" },
-        stack: "historical",
-        ...(chartSettings.showBreakdown ? visibleStyles : hiddenStyles),
-      },
-      {
-        id: "staking",
-        type: "area",
-        name: t.supply_chart_series_staking,
-        color: COLORS.SERIES[5],
-        data: stakingSeriesData,
-        marker: { symbol: "circle" },
-        stack: "historical",
-        ...(chartSettings.showBreakdown ? visibleStyles : hiddenStyles),
-      },
-      {
-        id: "addresses_projected",
-        type: "area",
-        name: `${t.supply_chart_series_address} (${t.projected})`,
-        data: addressProj,
-        color: COLORS.SERIES[1],
-        stack: "projected",
-        ...(chartSettings.showBreakdown ? visibleStyles : hiddenStyles),
-        ...projSeriesOptions,
-      },
-      {
-        id: "contracts_projected",
-        type: "area",
-        name: `${t.supply_chart_series_contracts} (${t.projected})`,
-        data: contractProj,
-        color: COLORS.SERIES[2],
-        stack: "projected",
-        ...(chartSettings.showBreakdown ? visibleStyles : hiddenStyles),
-        ...projSeriesOptions,
-      },
-      {
-        id: "staking_projected",
-        type: "area",
-        name: `${t.supply_chart_series_staking} (${t.projected})`,
-        data: stakingProj,
-        color: COLORS.SERIES[5],
-        stack: "projected",
-        ...(chartSettings.showBreakdown ? visibleStyles : hiddenStyles),
-        ...projSeriesOptions,
+        color: {
+          linearGradient: {
+            x1: 0,
+            y1: 1,
+            x2: 1,
+            y2: 0,
+          },
+          stops: [
+            [0, "#1FD0E1"],
+            [1, "#6758F3"],
+          ],
+        },
+        data: [
+          ...supplySeriesData,
+          ...supplyProj,
+          //end point
+          {
+            x: supplyProj[supplyProj.length - 1][0],
+            y: supplyProj[supplyProj.length - 1][1],
+            marker: {
+              symbol: `url(/dot_supply_graph.svg)`,
+              enabled: true,
+            },
+          },
+        ],
+        shadow: {
+          color: "rgba(75, 144, 219, 0.2)",
+          width: 15,
+        },
+        marker: {
+          lineColor: "white",
+          fillColor: "#4B90DB",
+          radius: 5,
+          symbol: "circle",
+        },
       },
     ];
 
-    // If we found a peak supply value, render an annotation at the peak
-    const annotations: Highcharts.AnnotationsLabelsOptions[] = [];
-    if (peakSupply) {
-      const peakSupplyDate = DateTime.fromISO(peakSupply[0], { zone: "utc" });
-      const isProjected = peakSupplyDate.toMillis() > DateTime.utc().toMillis();
-      const annotation: Highcharts.AnnotationsLabelsOptions = {
-        point: {
-          xAxis: 0,
-          yAxis: 0,
-          x: DateTime.fromISO(peakSupply[0], { zone: "utc" }).toMillis(),
-          y: maxSupply!,
-        },
-        text: `<div class="ann-root">
-          <div class="ann-title">${t.peak_supply}</div>
-          ${isProjected ? `<div class="ann-proj">(Projected)</div>` : ""}
-          <div class="ann-value">${formatOneDigit(
-            peakSupply[1] / 1e6
-          )}M ETH</div>
-          </div>`,
-        padding: 10,
-        borderRadius: 10,
-        useHTML: true,
-      };
-      annotations.push(annotation);
-      onPeakProjectedToggle(true);
-    } else {
-      onPeakProjectedToggle(false);
-    }
-
-    return [series, annotations, supplyByDate];
-  }, [chartSettings, onPeakProjectedToggle, t]);
+    return [series, supplyByDate];
+  }, [chartSettings, t]);
 
   // Now build up the Highcharts configuration object
   const options = React.useMemo((): Highcharts.Options => {
     // Animate only after mounting
     const animate = Boolean(chartRef.current);
-
-    if (typeof window !== "undefined") {
-      Highcharts.setOptions({
-        lang: {
-          thousandsSep: t.chart_thousands_sep,
-          decimalPoint: t.chart_decimal_point,
-        },
-      });
-    }
-
     const chartOptions: Highcharts.Options = {
       annotations: [
         {
           draggable: "",
-          labelOptions: {
-            backgroundColor: COLORS.TOOLTIP_BG,
-            borderWidth: 0,
-            // Display above chart
-            // verticalAlign: "bottom",
-            // y: -7,
-            verticalAlign: "top",
-            y: 7,
-          },
-          labels: annotations,
         },
       ],
       chart: {
         animation: animate,
-        height: chartSettings.useCompactChart ? 300 : 380,
-      },
-      plotOptions: {
-        area: {
-          animation: animate,
-          events: {
-            mouseOver: handleChartMouseOver,
-            mouseOut: handleChartMouseOut,
-          },
-        },
+        height: 420,
+        showAxes: true,
       },
       legend: {
-        // Usinga custom legend for more control over responsiveness
         enabled: false,
       },
       series,
       xAxis: {
         type: "datetime",
         minPadding: 0,
-        maxPadding: 0,
+        maxPadding: 0.03,
         tickInterval: 365.25 * 24 * 3600 * 1000, // always use 1 year intervals
-        plotLines: markers.map(([date, title, subtitle], i) => ({
-          value: date!.toMillis(),
-          color: COLORS.PLOT_LINE,
-          width: 1,
-          label: {
-            rotation: 0,
-            text: chartSettings.useCompactMarkers
-              ? String.fromCharCode(65 + i) // A, B, C, D, etc.
-              : `${title}<br><b>${subtitle}</b>`,
-            style: {
-              color: "#b5bddb",
-              whiteSpace: "normal",
-              fontSize: "11px",
-            },
-            y: 18,
-            x: 6,
-          },
-          zIndex: 3,
-        })),
       },
       yAxis: {
         min: 0,
-        max: 160e6,
+        max: 140e6,
         tickInterval: 20e6,
         title: {
           text: undefined,
         },
       },
+      //settings marker
       tooltip: {
         shared: true,
         backgroundColor: "transparent",
@@ -537,73 +299,24 @@ const SupplyChart: React.FC<Props> = ({
         xDateFormat: "%Y-%m-%d",
         useHTML: true,
         formatter: function () {
-          let points = (this.points || []).slice(0);
-
-          // Historical & projected overlap at current date; only show historical on that date
-          if (points.length > 4) {
-            points = points.filter(
-              (p) => !p.series.userOptions.id!.includes("projected")
-            );
-          }
-
-          const isProjected = points[0].series.userOptions.id!.includes(
-            "projected"
-          );
-
           const dt = DateTime.fromMillis(this.x, { zone: "utc" });
           const header = `<div class="tt-header"><div class="tt-header-date text-blue-spindle">${formatDate(
             dt.toJSDate()
-          )}</div>${
-            isProjected
-              ? `<div class="tt-header-projected">(${t.projected})</div>`
-              : ""
-          }</div>`;
+          )}</div></div>`;
 
-          const rows = points.map(
-            (p) =>
-              `<tr>
-              <td>
-                <div class="tt-series">
-                  <div class="tt-series-color" style="background-color:${
-                    p.series.userOptions.color
-                  }"></div>
-                  <div class="tt-series-name">${
-                    p.series.name.split(" (")[0]
-                  }</div>
-                </div>
-              </td>
-              <td class="text-white">${formatOneDigit(p.y / 1e6)}M ETH</td>
-              </tr>`
-          );
-
-          // Show total supply last
           const total = totalSupplyByDate[this.x];
-          rows.push(
-            `<tr class="tt-total-row">
-              <td><div class="tt-series-name">${t.total_supply}</div></td>
-              <td class="text-white">${formatOneDigit(total / 1e6)}M ETH</td>
-            </tr>`
-          );
-
-          const table = `<table><tbody>${rows.join("")}</tbody></table>`;
+          const table = `<table><tbody><tr class="tt-total-row">
+              <td class="text-white">${formatOneDigit(total / 1e6)}M</td>
+            </tr></tbody></table>`;
           return `<div class="tt-root">${header}${table}</div>`;
         },
       },
     };
     return merge({}, defaultOptions, chartOptions);
-  }, [
-    annotations,
-    handleChartMouseOver,
-    handleChartMouseOut,
-    markers,
-    series,
-    t,
-    totalSupplyByDate,
-    chartSettings,
-  ]);
+  }, [series, t, totalSupplyByDate, chartSettings]);
 
   return (
-    <>
+    <div>
       <div ref={containerRef} className={styles.supplyChart}>
         <HighchartsReact
           options={options}
@@ -611,7 +324,7 @@ const SupplyChart: React.FC<Props> = ({
           ref={chartRef}
         />
       </div>
-    </>
+    </div>
   );
 };
 

@@ -1321,6 +1321,38 @@ a:hover {
   }
 }
 
+@media screen and (max-width: 1300px) {
+  .wrapper_supply_graph_section {
+    width: 100% !important;
+  }
+  .supply_graph {
+    width: 60%;
+  }
+  .supply_graph_text {
+    padding-left: 0;
+  }
+}
+@media screen and (max-width: 1050px) {
+  .supply_graph_section {
+    flex-direction: column-reverse;
+  }
+  .wrapper_supply_graph_section {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .supply_graph {
+    width: 100%;
+    margin-bottom: 50px;
+  }
+  .supply_graph_text {
+    width: 100%;
+    text-align: center;
+  }
+  .supply_graph_text * {
+    text-align: center;
+  }
+}
+
 .eclips {
   flex: 1 1 0%;
   position: relative;
