@@ -11,27 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Wait for build to succeed
-        uses: lewagon/wait-on-check-action@v0.2
+        uses: lewagon/wait-on-check-action@v1.1.1
         with:
           ref: ${{ github.ref }}
           check-name: build
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 10
-  deploy-k8s-resources:
-    name: deploy k8s resources
+  deploy-serve-frontend:
+    name: deploy serve-frontend
     runs-on: ubuntu-latest
     needs: wait-on-build
-    steps:
-      - uses: actions/checkout@master
-      - name: deploy
-        uses: steebchen/kubectl@v2.0.0
-        with:
-          config: ${{ secrets.KUBE_CONFIG_DATA_PROD }}
-          command: apply -f k8s/prod
-  deploy-serve-web:
-    name: deploy serve-web
-    runs-on: ubuntu-latest
-    needs: deploy-k8s-resources
     steps:
       - uses: actions/checkout@master
       - name: Make short SHA available
@@ -41,9 +30,9 @@ jobs:
         uses: steebchen/kubectl@v2.0.0
         with:
           config: ${{ secrets.KUBE_CONFIG_DATA_PROD }}
-          command: set image deployment/serve-web serve-web=registry.digitalocean.com/ultrasoundmoney/gas-analysis:${{ steps.vars.outputs.sha_short }}
+          command: set image deployment/serve-frontend serve-frontend=rg.nl-ams.scw.cloud/ultrasoundmoney/serve-frontend:${{ steps.vars.outputs.sha_short }}
       - name: Verify deployment
         uses: steebchen/kubectl@v2.0.0
         with:
           config: ${{ secrets.KUBE_CONFIG_DATA_PROD }}
-          command: rollout status deployment/serve-web
+          command: rollout status deployment/serve-frontend

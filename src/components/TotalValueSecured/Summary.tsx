@@ -79,7 +79,7 @@ const Summary: FC<{ className?: string }> = ({ className = "" }) => {
   return (
     <>
       <WidgetBackground className={`h-min ${className}`}>
-        <div className="flex flex-col gap-y-4">
+        <div className="flex flex-col gap-y-4 -mt-1 mb-2">
           <div className="flex flex-col  gap-y-4 md:flex-row md:justify-between">
             <div
               className="flex flex-col gap-y-4"
@@ -153,7 +153,7 @@ const Summary: FC<{ className?: string }> = ({ className = "" }) => {
           />
           <AssetType
             amount={totalValueSecured?.nftTotal}
-            href={"https://nftgo.io/overview"}
+            href={"https://nftgo.io/analytics/top-collections"}
             icon="nft"
             title="NFTs"
           />

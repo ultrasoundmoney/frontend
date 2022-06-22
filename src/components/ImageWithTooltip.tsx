@@ -39,7 +39,7 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
   return (
     <>
       {(imageUrl === undefined && !isDoneLoading) || previewSkeletons ? (
-        <div className="leading-4">
+        <div className="leading-4 m-2">
           <Skeleton
             circle={true}
             height={skeletonDiameter}

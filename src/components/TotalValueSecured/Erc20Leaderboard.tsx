@@ -1,15 +1,11 @@
 import { FC, ReactEventHandler, useCallback } from "react";
 import { useTotalValueSecured } from "../../api/total-value-secured";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
-import { AmountBillionsUsdAnimated, MoneyAmountAnimated } from "../Amount";
+import { AmountBillionsUsdAnimated } from "../Amount";
 import { TextInter } from "../Texts";
 import { WidgetBackground, WidgetTitle } from "../widget-subcomponents";
 
-type Row = {
-  name: string;
-  imageUrl: string | undefined;
-};
-const Erc20Leaderboard: FC<{ rows: Row[] }> = (rows) => {
+const Erc20Leaderboard: FC = () => {
   const totalValueSecured = useTotalValueSecured();
   const onImageError = useCallback<ReactEventHandler<HTMLImageElement>>((e) => {
     (e.target as HTMLImageElement).src =

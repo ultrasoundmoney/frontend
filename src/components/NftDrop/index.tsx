@@ -18,7 +18,11 @@ const NftDrop: React.FC = () => {
       <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
         <div className="flex flex-col md:flex-row bg-blue-tangaroa px-4 py-8 md:px-24 md:py-16 rounded-xl">
           <div className="flex flex-col order-2 md:order-1">
+            <img
+              alt="logo of a poap token"
+              className="w-16"
             <img className="w-16" src={poapLogo.src as unknown as string} />
+            />
             <h2 className="text-white text-2xl md:text-3xl font-light my-8">
               {t.title_nft_drop}
             </h2>

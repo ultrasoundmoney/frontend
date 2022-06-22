@@ -1,6 +1,8 @@
 import * as DateFns from "date-fns";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
+import { WidgetTitle } from ".";
 import { londonHardfork } from "../../dates";
+import { millisFromHours } from "../../duration";
 import { pipe } from "../../fp";
 import { displayTimeFrameNextMap, TimeFrameNext } from "../../time-frames";
 
@@ -12,43 +14,35 @@ const getFormattedDays = () =>
 
 type Props = {
   onClickTimeFrame: () => void;
-  showDays?: boolean;
   timeFrame: TimeFrameNext;
 };
 
-const TimeFrameIndicator: FC<Props> = ({
-  onClickTimeFrame,
-  showDays = true,
-  timeFrame,
-}) => (
-  <div className="flex gap-x-2 md:gap-x-4 items-center">
-    <span
-      className={`
-        font-roboto font-extralight
-        text-blue-shipcove
-        transition-opacity
-        ${timeFrame === "all" ? "visible" : "invisible"}
-        ${showDays === false ? "hidden" : ""}
-      `}
-    >
-      {getFormattedDays()}
-    </span>
-    {timeFrame !== undefined && (
-      <button
-        className={`
-          font-roboto font-extralight
-          px-3 py-1
-          text-white
-          border border-blue-highlightborder rounded-sm
-          bg-blue-highlightbg
-          select-none
-        `}
-        onClick={onClickTimeFrame}
+const TimeFrameIndicator: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
+  const [daysSinceLondon, setDaysSinceLondon] = useState<string>(
+    getFormattedDays(),
+  );
+
+  useEffect(() => {
+    setTimeout(() => {
+      setDaysSinceLondon(getFormattedDays());
+    }, millisFromHours(1));
+  });
+
+  return (
+    <button className="flex gap-x-2 items-baseline" onClick={onClickTimeFrame}>
+      <WidgetTitle>time frame</WidgetTitle>
+      <p
+        className="
+  font-roboto font-light
+  text-white text-xs
+  "
       >
-        {displayTimeFrameNextMap[timeFrame]}
-      </button>
-    )}
-  </div>
-);
+        {timeFrame === "all"
+          ? daysSinceLondon
+          : displayTimeFrameNextMap[timeFrame]}
+      </p>
+    </button>
+  );
+};
 
 export default TimeFrameIndicator;

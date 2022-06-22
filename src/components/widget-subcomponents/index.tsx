@@ -1,27 +1,36 @@
-import { FC, HTMLAttributes } from "react";
+import { FC, HTMLAttributes, ReactNode } from "react";
 import { TimeFrameNext } from "../../time-frames";
 import TimeFrameIndicator from "./TimeFrameIndicator";
 
 type BackgroundProps = {
+  children: ReactNode;
   className?: HTMLAttributes<HTMLDivElement>["className"];
 };
 
 export const WidgetBackground: FC<BackgroundProps> = ({
-  className,
   children,
+  className,
 }) => (
-  <div className={`bg-blue-tangaroa rounded-lg p-8 ${className ?? ""}`}>
+  <div
+    className={`
+      bg-blue-tangaroa rounded-lg p-8 ${className ?? ""}
+    `}
+  >
     {children}
   </div>
 );
 
 export const WidgetTitle: FC<{
+  children: ReactNode;
   className?: string;
 }> = ({ className, children }) => (
   <p
-    className={`font-inter font-light text-blue-spindle text-md uppercase ${
-      className ?? ""
-    }`}
+    className={`
+      font-inter font-light
+      text-blue-spindle text-xs
+      uppercase tracking-widest
+      ${className ?? ""}
+    `}
   >
     {children}
   </p>
@@ -29,6 +38,7 @@ export const WidgetTitle: FC<{
 
 type Group1BaseProps = {
   backgroundClassName?: HTMLAttributes<HTMLDivElement>["className"];
+  children: ReactNode;
   onClickTimeFrame: () => void;
   timeFrame: TimeFrameNext;
   title: string;

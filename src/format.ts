@@ -1,4 +1,5 @@
 import { pipe } from "fp-ts/lib/function";
+import * as DateFns from "date-fns";
 import JSBI from "jsbi";
 
 const intlFormatter = new Intl.NumberFormat();
@@ -139,3 +140,38 @@ export const capitalize = (str: unknown) =>
   typeof str === "string"
     ? `${str[0]?.toUpperCase()}${str.slice(1)}`
     : undefined;
+
+export const formatDistance = (dt: Date) => {
+  const monthsDelta = DateFns.differenceInMonths(new Date(), dt);
+  const weeksDelta = DateFns.differenceInWeeks(new Date(), dt);
+  const daysDelta = DateFns.differenceInDays(new Date(), dt);
+  const hoursDelta = DateFns.differenceInHours(new Date(), dt);
+  const minutesDelta = DateFns.differenceInMinutes(new Date(), dt);
+  const secondsDelta = DateFns.differenceInSeconds(new Date(), dt);
+
+  if (monthsDelta > 0) {
+    return `${monthsDelta}M`;
+  }
+
+  if (weeksDelta > 0) {
+    return `${weeksDelta}w`;
+  }
+
+  if (daysDelta > 0) {
+    return `${daysDelta}d`;
+  }
+
+  if (hoursDelta > 0) {
+    return `${hoursDelta}h`;
+  }
+
+  if (minutesDelta > 0) {
+    return `${minutesDelta}m`;
+  }
+
+  if (secondsDelta > 0) {
+    return `${secondsDelta}s`;
+  }
+
+  return "??";
+};

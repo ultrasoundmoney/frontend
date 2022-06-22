@@ -1,20 +1,20 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import {
   displayTimeFrameNextMap,
   TimeFrameNext,
   timeFramesNext,
 } from "../../../time-frames";
 
-export const Button: FC<{ isActive: boolean; onClick: () => void }> = ({
-  children,
-  isActive,
-  onClick,
-}) => (
+export const Button: FC<{
+  children: ReactNode;
+  isActive: boolean;
+  onClick: () => void;
+}> = ({ children, isActive, onClick }) => (
   <button
     className={`
-      font-roboto font-extralight
-      text-sm md:text-base
-      px-3 py-1
+      font-roboto font-light
+      text-xs tracking-widest
+      px-3 py-2
       select-none
       border
       ${
@@ -35,7 +35,7 @@ type Props = {
 };
 
 const TimeFrameControl: FC<Props> = ({ selectedTimeframe, onSetTimeFrame }) => (
-  <div className="flex flex-row items-center lg:gap-x-2">
+  <div className="flex flex-row items-baseline lg:gap-x-1">
     {timeFramesNext.map((timeFrame) => (
       <Button
         key={timeFrame}

@@ -4,6 +4,7 @@ import {
   RefObject,
   useCallback,
   useContext,
+  useRef,
   useState,
 } from "react";
 import { usePopper } from "react-popper";
@@ -40,7 +41,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
   const { md } = useActiveBreakpoint();
   const adminToken = useAdminToken();
 
-  // Tooltip logic to be abstracted
+  // Tooltip logic should be abstracted. See BurnLeaderboard tooltip. The abstraction over there could also be made more generic to support this if that makes sense instead of copying.
   // Popper Tooltip
   const [refEl, setRefEl] = useState<HTMLImageElement | null>(null);
   const [popperEl, setPopperEl] = useState<HTMLDivElement | null>(null);
@@ -54,8 +55,8 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
   });
   const [selectedRanking, setSelectedRanking] = useState<TvsRanking>();
   const [showTooltip, setShowTooltip] = useState(false);
-  const [showTimer, setShowTimer] = useState<number>();
-  const [hideTimer, setHideTimer] = useState<number>();
+  const onTooltip = useRef<boolean>(false);
+  const onImage = useRef<boolean>(false);
 
   const handleImageMouseEnter = useCallback(
     (ranking: TvsRanking, ref: RefObject<HTMLImageElement>) => {
@@ -64,48 +65,45 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
         return;
       }
 
-      // If we were waiting to hide, we're hovering again, so leave the tooltip open.
-      window.clearTimeout(hideTimer);
+      onImage.current = true;
 
       const id = window.setTimeout(() => {
         setRefEl(ref.current);
         setSelectedRanking(ranking);
         setShowTooltip(true);
       }, 300);
-      setShowTimer(id);
 
       return () => window.clearTimeout(id);
     },
-    [hideTimer],
+    [],
   );
 
   const handleImageMouseLeave = useCallback(() => {
-    // If we were waiting to show, we stopped hovering, so stop waiting and don't show any tooltip.
-    window.clearTimeout(showTimer);
-
-    // If we never made it passed waiting and opened the tooltip, there is nothing to hide.
-    if (selectedRanking === undefined) {
-      return;
-    }
+    onImage.current = false;
 
     const id = window.setTimeout(() => {
-      setShowTooltip(false);
+      if (!onImage.current && !onTooltip.current) {
+        setShowTooltip(false);
+        setSelectedRanking(undefined);
+      }
     }, 300);
-    setHideTimer(id);
 
     return () => window.clearTimeout(id);
-  }, [setHideTimer, showTimer, selectedRanking]);
+  }, []);
 
   const handleTooltipEnter = useCallback(() => {
-    // If we were waiting to hide, we're hovering again, so leave the tooltip open.
-    window.clearTimeout(hideTimer);
-  }, [hideTimer]);
+    onTooltip.current = true;
+  }, []);
 
   const handleTooltipLeave = useCallback(() => {
+    onTooltip.current = false;
+
     const id = window.setTimeout(() => {
-      setShowTooltip(false);
+      if (!onImage.current && !onTooltip.current) {
+        setShowTooltip(false);
+        setSelectedRanking(undefined);
+      }
     }, 100);
-    setHideTimer(id);
 
     return () => window.clearTimeout(id);
   }, []);
@@ -218,7 +216,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
           className="z-20 hidden md:block p-4"
           style={{
             ...styles.popper,
-            visibility: showTooltip ? "visible" : "hidden",
+            visibility: showTooltip && md ? "visible" : "hidden",
           }}
           {...attributes.popper}
           onMouseOver={handleTooltipEnter}

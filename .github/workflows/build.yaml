@@ -11,22 +11,22 @@ jobs:
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-      - name: Login to DigitalOcean Registry
-        uses: docker/login-action@v1
+      - name: Login to Scaleway Registry
+        uses: docker/login-action@v2
         with:
-          registry: registry.digitalocean.com/ultrasoundmoney
-          username: ${{ secrets.DO_REGISTRY_USERNAME }}
-          password: ${{ secrets.DO_REGISTRY_TOKEN }}
+          registry: rg.nl-ams.scw.cloud/ultrasoundmoney
+          username: ${{ secrets.SCALEWAY_API_KEY }}
+          password: ${{ secrets.SCALEWAY_API_KEY }}
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: registry.digitalocean.com/ultrasoundmoney/serve-web
+          images: rg.nl-ams.scw.cloud/ultrasoundmoney/serve-frontend
           tags: |
             type=raw,latest
             type=sha,prefix=
       - name: Wait for tests to succeed
-        uses: lewagon/wait-on-check-action@v0.2
+        uses: lewagon/wait-on-check-action@v1.1.1
         with:
           ref: ${{ github.ref }}
           check-name: test
@@ -34,10 +34,10 @@ jobs:
           wait-interval: 10
       - name: Build and push
         id: docker_build
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=registry.digitalocean.com/ultrasoundmoney/serve-web:latest
+          cache-from: type=registry,ref=reg.nl-ams.scw.cloud/ultrasoundmoney/serve-frontend:latest
           cache-to: type=inline

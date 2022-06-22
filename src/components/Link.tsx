@@ -1,6 +1,7 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 
 type Props = {
+  children: ReactNode;
   className?: string;
   enableHover?: boolean;
   href: string | undefined;

@@ -568,7 +568,7 @@ const SupplyChart: React.FC<Props> = ({
           const isProjected =
             points[0].series.userOptions.id?.includes("projected");
 
-          const dt = new Date(this.x);
+          const dt = new Date(this.x || 0);
           const header = `<div class="tt-header"><div class="tt-header-date text-blue-spindle">${formatDate(
             dt,
           )}</div>${
@@ -591,12 +591,14 @@ const SupplyChart: React.FC<Props> = ({
                   }</div>
                 </div>
               </td>
-              <td class="text-white">${formatOneDigit(p.y / 1e6)}M ETH</td>
+              <td class="text-white">${formatOneDigit(
+                (p.y || 0) / 1e6,
+              )}M ETH</td>
               </tr>`,
           );
 
           // Show total supply last
-          const total = totalSupplyByDate[this.x];
+          const total = totalSupplyByDate[this.x || 0];
           rows.push(
             `<tr class="tt-total-row">
               <td><div class="tt-series-name">${t.total_supply}</div></td>

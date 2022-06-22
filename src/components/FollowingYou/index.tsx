@@ -1,10 +1,12 @@
 import { FC, useState } from "react";
 import { famBasePath, FamProfile } from "../../api/fam";
 import { formatNoDigit } from "../../format";
+import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import ImageWithTooltip from "../ImageWithTooltip";
 import Modal from "../Modal";
 import SpanMoji from "../SpanMoji";
 import Tooltip from "../Tooltip";
+import { useTooltip } from "../TwitterFam";
 import styles from "./FollowingYou.module.scss";
 
 type Empty = { type: "empty" };
@@ -25,14 +27,11 @@ type FollowedByResult =
   | UnknownError;
 
 const FollowingYou: FC = () => {
+  const { md } = useActiveBreakpoint();
   const [handle, setHandle] = useState<string>("");
   const [followers, setFollowers] = useState<FollowedByResult>({
     type: "empty",
   });
-  const [selectedProfile, setSelectedProfile] = useState<
-    FamProfile | undefined
-  >();
-
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
@@ -69,6 +68,20 @@ const FollowingYou: FC = () => {
     setFollowers({ type: "unknownError" });
   };
 
+  const {
+    attributes,
+    handleClickImage,
+    handleTooltipEnter,
+    handleTooltipLeave,
+    handleImageMouseLeave,
+    handleImageMouseEnter,
+    selectedItem,
+    setPopperEl,
+    setSelectedItem,
+    showTooltip,
+    popperStyles,
+  } = useTooltip();
+
   return (
     <>
       <div className="flex justify-center items-center">
@@ -89,7 +102,12 @@ const FollowingYou: FC = () => {
       >
         do we know each other? find out how many of us follow you.
       </p>
-      <form className="flex justify-center" onSubmit={handleSubmit}>
+      <form
+        className="flex justify-center"
+        onSubmit={(event) => {
+          handleSubmit(event).catch(console.error);
+        }}
+      >
         <input
           className="md:w-96 p-4 pr-32 bg-transparent border border-gray-500 rounded-full text-xs text-white"
           type="text"
@@ -139,7 +157,11 @@ const FollowingYou: FC = () => {
                     <ImageWithTooltip
                       imageUrl={profile?.profileImageUrl}
                       key={profile.profileUrl}
-                      onClick={() => setSelectedProfile(profile)}
+                      onClick={() => handleClickImage(profile)}
+                      onMouseEnter={(ref) =>
+                        handleImageMouseEnter(profile, ref)
+                      }
+                      onMouseLeave={handleImageMouseLeave}
                     />
                   </div>
                 ))}
@@ -157,23 +179,47 @@ const FollowingYou: FC = () => {
           unknown followers state
         </p>
       )}
-      <Modal
-        onClickBackground={() => setSelectedProfile(undefined)}
-        show={selectedProfile !== undefined}
-      >
-        {selectedProfile !== undefined && (
+      <>
+        <div
+          ref={setPopperEl}
+          className="z-20 hidden md:block p-4"
+          style={{
+            ...popperStyles.popper,
+            visibility: showTooltip && md ? "visible" : "hidden",
+          }}
+          {...attributes.popper}
+          onMouseOver={handleTooltipEnter}
+          onMouseOut={handleTooltipLeave}
+        >
           <Tooltip
-            description={selectedProfile?.bio}
-            famFollowerCount={selectedProfile?.famFollowerCount}
-            followerCount={selectedProfile?.followersCount}
-            imageUrl={selectedProfile?.profileImageUrl}
-            links={selectedProfile?.links}
-            onClickClose={() => setSelectedProfile(undefined)}
-            title={selectedProfile?.name}
-            twitterUrl={selectedProfile?.profileUrl}
+            description={selectedItem?.bio}
+            famFollowerCount={selectedItem?.famFollowerCount}
+            followerCount={selectedItem?.followersCount}
+            imageUrl={selectedItem?.profileImageUrl}
+            links={selectedItem?.links}
+            onClickClose={() => setSelectedItem(undefined)}
+            title={selectedItem?.name}
+            twitterUrl={selectedItem?.profileUrl}
           />
-        )}
-      </Modal>
+        </div>
+        <Modal
+          onClickBackground={() => setSelectedItem(undefined)}
+          show={!md && selectedItem !== undefined}
+        >
+          {selectedItem !== undefined && (
+            <Tooltip
+              description={selectedItem?.bio}
+              famFollowerCount={selectedItem?.famFollowerCount}
+              followerCount={selectedItem?.followersCount}
+              imageUrl={selectedItem?.profileImageUrl}
+              links={selectedItem?.links}
+              onClickClose={() => setSelectedItem(undefined)}
+              title={selectedItem?.name}
+              twitterUrl={selectedItem?.profileUrl}
+            />
+          )}
+        </Modal>
+      </>
     </>
   );
 };

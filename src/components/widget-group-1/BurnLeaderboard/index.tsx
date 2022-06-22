@@ -1,4 +1,12 @@
-import React, { FC, memo, RefObject, useCallback, useState } from "react";
+import React, {
+  FC,
+  memo,
+  RefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { usePopper } from "react-popper";
 import { useAdminToken } from "../../../admin";
 import { useContractsFreshness } from "../../../api/contracts";
@@ -78,9 +86,6 @@ const getLeaderboardsAddresses = (leaderboards: Leaderboards) =>
 
 const useTooltip = () => {
   const { md } = useActiveBreakpoint();
-
-  // Tooltip logic to be abstracted
-  // Popper Tooltip
   const [refEl, setRefEl] = useState<HTMLImageElement | null>(null);
   const [popperEl, setPopperEl] = useState<HTMLDivElement | null>(null);
   const { styles, attributes } = usePopper(refEl, popperEl, {
@@ -95,61 +100,67 @@ const useTooltip = () => {
     LeaderboardEntry & { type: "contract" }
   >();
   const [showTooltip, setShowTooltip] = useState(false);
-  const [showTimer, setShowTimer] = useState<number>();
-  const [hideTimer, setHideTimer] = useState<number>();
+  const onTooltip = useRef<boolean>(false);
+  const onImage = useRef<boolean>(false);
 
   const handleImageMouseEnter = useCallback(
     (entry: LeaderboardEntry, ref: RefObject<HTMLImageElement>) => {
       // The ranking data isn't there yet so no tooltip can be shown.
-      if (entry === undefined || entry.type !== "contract") {
+      if (
+        entry === undefined ||
+        entry.type !== "contract" ||
+        entry.isBot === true
+      ) {
         return;
       }
 
-      // If we were waiting to hide, we're hovering again, so leave the tooltip open.
-      window.clearTimeout(hideTimer);
+      onImage.current = true;
 
+      // Delayed show.
       const id = window.setTimeout(() => {
-        setRefEl(ref.current);
-        setSelectedEntry(entry);
-        setShowTooltip(true);
+        if (onImage.current || onTooltip.current) {
+          setRefEl(ref.current);
+          setSelectedEntry(entry);
+          setShowTooltip(true);
+        }
       }, 300);
-      setShowTimer(id);
 
       return () => window.clearTimeout(id);
     },
-    [hideTimer],
+    [onImage, onTooltip],
   );
 
   const handleImageMouseLeave = useCallback(() => {
-    // If we were waiting to show, we stopped hovering, so stop waiting and don't show any tooltip.
-    window.clearTimeout(showTimer);
+    onImage.current = false;
 
-    // If we never made it passed waiting and opened the tooltip, there is nothing to hide.
-    if (selectedEntry === undefined) {
-      return;
-    }
-
+    // Delayed hide.
     const id = window.setTimeout(() => {
-      setShowTooltip(false);
+      if (!onImage.current && !onTooltip.current) {
+        setShowTooltip(false);
+        setSelectedEntry(undefined);
+      }
     }, 300);
-    setHideTimer(id);
 
     return () => window.clearTimeout(id);
-  }, [setHideTimer, showTimer, selectedEntry]);
+  }, [onImage, onTooltip]);
 
   const handleTooltipEnter = useCallback(() => {
-    // If we were waiting to hide, we're hovering again, so leave the tooltip open.
-    window.clearTimeout(hideTimer);
-  }, [hideTimer]);
+    onTooltip.current = true;
+  }, []);
 
   const handleTooltipLeave = useCallback(() => {
+    onTooltip.current = false;
+
+    // Delayed hide.
     const id = window.setTimeout(() => {
-      setShowTooltip(false);
+      if (!onImage.current && !onTooltip.current) {
+        setShowTooltip(false);
+        setSelectedEntry(undefined);
+      }
     }, 100);
-    setHideTimer(id);
 
     return () => window.clearTimeout(id);
-  }, []);
+  }, [onImage, onTooltip]);
 
   const handleClickImage = useCallback(
     (ranking: LeaderboardEntry | undefined) => {
@@ -173,7 +184,7 @@ const useTooltip = () => {
     setPopperEl,
     setSelectedEntry,
     showTooltip,
-    styles,
+    popperStyles: styles,
   };
 };
 
@@ -208,7 +219,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
     setPopperEl,
     setSelectedEntry,
     showTooltip,
-    styles,
+    popperStyles,
   } = useTooltip();
 
   const { md } = useActiveBreakpoint();
@@ -217,9 +228,9 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
     <>
       <Group1Base
         backgroundClassName="flex flex-col gap-y-4 h-[32rem] lg:h-full"
+        onClickTimeFrame={onClickTimeFrame}
         title="burn leaderboard"
         timeFrame={timeFrame}
-        onClickTimeFrame={onClickTimeFrame}
       >
         {/* the scrollbar normally hides, to make it appear as if floating to the right of the main content we add a negative right margin. */}
         <div
@@ -275,12 +286,12 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
           ref={setPopperEl}
           className="z-20 hidden md:block p-4"
           style={{
-            ...styles.popper,
-            visibility: showTooltip ? "visible" : "hidden",
+            ...popperStyles.popper,
+            visibility: showTooltip && md ? "visible" : "hidden",
           }}
           {...attributes.popper}
-          onMouseOver={handleTooltipEnter}
-          onMouseOut={handleTooltipLeave}
+          onMouseEnter={handleTooltipEnter}
+          onMouseLeave={handleTooltipLeave}
         >
           <Tooltip
             contractAddresses={pipe(

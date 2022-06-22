@@ -1,16 +1,23 @@
-import { CSSProperties, FC } from "react";
+import { CSSProperties, FC, ReactNode } from "react";
 import Skeleton from "react-loading-skeleton";
 
-export const LabelText: FC<{ className?: string }> = ({
+export const LabelText: FC<{ children: ReactNode; className?: string }> = ({
   children,
   className,
 }) => (
-  <TextInter className={`text-blue-spindle uppercase ${className ?? ""}`}>
+  <TextInter
+    className={`
+      font-inter font-light
+      text-blue-spindle text-xs md:text-xs
+      uppercase tracking-widest
+      ${className ?? ""}
+    `}
+  >
     {children}
   </TextInter>
 );
 
-export const UnitText: FC<{ className?: string }> = ({
+export const UnitText: FC<{ children: ReactNode; className?: string }> = ({
   className,
   children,
 }) => (
@@ -51,10 +58,11 @@ export const SectionTitle: FC<{ title: string; subtitle?: string }> = ({
 };
 
 export const TextInter: FC<{
+  children: ReactNode;
   className?: string;
   inline?: boolean;
-  style?: CSSProperties;
   skeletonWidth?: string;
+  style?: CSSProperties;
 }> = ({
   children,
   className: className = "",
@@ -89,6 +97,7 @@ export const TextInter: FC<{
 };
 
 export const TextInterLink: FC<{
+  children: ReactNode;
   className?: string;
 }> = ({ children, className: className = "" }) => (
   <TextInter className={`text-blue-spindle hover:underline ${className}`}>
@@ -97,6 +106,7 @@ export const TextInterLink: FC<{
 );
 
 export const TextRoboto: FC<{
+  children: ReactNode;
   className?: string;
   inline?: boolean;
   style?: CSSProperties;

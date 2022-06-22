@@ -11,7 +11,8 @@ import BurnGauge from "../Gauges/BurnGauge";
 import IssuanceGauge from "../Gauges/IssuanceGauge";
 import SupplyGrowthGauge from "../Gauges/SupplyGrowthGauge";
 import LatestBlocks from "../LatestBlocks";
-import { WidgetBackground } from "../widget-subcomponents";
+import ToggleSwitch from "../ToggleSwitch";
+import { WidgetBackground, WidgetTitle } from "../widget-subcomponents";
 import BurnLeaderboard from "./BurnLeaderboard";
 import CurrencyControl from "./controls/CurrencyControl";
 import TimeFrameControl from "./controls/TimeFrameControl";
@@ -52,7 +53,7 @@ const WidgetGroup1: FC = () => {
         <div className="hidden md:block w-1/3">
           <BurnGauge timeFrame={timeFrame} unit={unit} />
         </div>
-        <div className="md:w-1/3">
+        <div className="md:w-1/3 scale-80">
           <SupplyGrowthGauge
             onClickTimeFrame={handleClickTimeFrame}
             simulateMerge={simulateMerge}
@@ -71,21 +72,27 @@ const WidgetGroup1: FC = () => {
       <div className="w-4 h-4" />
       <div className="px-4 md:px-16">
         <WidgetBackground>
-          <div className="flex flex-col gap-y-8 md:flex-row lg:gap-y-0 justify-between">
-            <div className="flex flex-col gap-y-4 lg:gap-x-4 lg:flex-row lg:items-center">
-              <p className="font-inter font-light text-blue-spindle text-md uppercase">
-                time frame
-              </p>
+          <div className="grid grid-cols-2 md:flex md:justify-between flex-col gap-y-8 md:flex-row lg:gap-y-0 ">
+            <div className="row-start-1 flex flex-col gap-4 lg:gap-x-4 lg:flex-row lg:items-center">
+              <WidgetTitle>time frame</WidgetTitle>
               <TimeFrameControl
                 selectedTimeframe={timeFrame}
                 onSetTimeFrame={handleSetTimeFrame}
               />
             </div>
-            <div className="flex flex-col gap-y-4 lg:gap-x-4 lg:flex-row lg:items-center">
-              <p className="font-inter font-light text-blue-spindle text-md uppercase md:text-right lg:text-left">
-                currency
-              </p>
+            <div className="row-start-2 md:row-start-1 flex flex-col gap-y-4 lg:gap-x-4 lg:flex-row lg:items-center">
+              <WidgetTitle>currency</WidgetTitle>
               <CurrencyControl selectedUnit={unit} onSetUnit={onSetUnit} />
+            </div>
+            <div className="row-start-2 md:row-start-1 flex flex-col gap-4 lg:flex-row lg:items-center text-right">
+              <WidgetTitle>simulate merge</WidgetTitle>
+              {/* On tablet the vertical alignment looks off without aligning the toggle with the neighboring controls */}
+              <div className="flex items-center h-[34px] self-end">
+                <ToggleSwitch
+                  checked={simulateMerge}
+                  onToggle={toggleSimulateMerge}
+                />
+              </div>
             </div>
           </div>
         </WidgetBackground>
@@ -103,7 +110,7 @@ const WidgetGroup1: FC = () => {
           timeFrame={timeFrame}
           unit={unit}
         />
-        <div className="lg:col-start-2 lg:row-start-1 lg:row-end-5 lg:h-[714px] xl:h-[731px] flex flex-col gap-y-4">
+        <div className="lg:col-start-2 lg:row-start-1 lg:row-end-5 lg:h-[684px] xl:h-[702px] flex flex-col gap-y-4">
           <BurnLeaderboard
             onClickTimeFrame={handleClickTimeFrame}
             timeFrame={timeFrame}

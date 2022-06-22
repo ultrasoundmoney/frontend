@@ -1,5 +1,5 @@
 import JSBI from "jsbi";
-import { FC, useEffect, useState } from "react";
+import { FC, ReactNode, useEffect, useState } from "react";
 import { useAverageEthPrice } from "../api/eth-price";
 import { useGroupedAnalysis1 } from "../api/grouped-analysis-1";
 import { usePeRatios } from "../api/pe-ratios";
@@ -99,7 +99,10 @@ const Marker: FC<{
   );
 };
 
-const MarkerText: FC<{ ratio: number }> = ({ ratio, children }) => (
+const MarkerText: FC<{ children: ReactNode; ratio: number }> = ({
+  ratio,
+  children,
+}) => (
   <div
     className="absolute w-full flex flex-col pointer-events-none"
     // For unclear reasons the left 89% position for TSLA is closer to notch 91 on the actual slider. We manually adjust.

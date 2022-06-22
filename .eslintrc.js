@@ -13,6 +13,7 @@ module.exports = {
   plugins: ["@typescript-eslint"],
   rules: {
     "@next/next/no-img-element": "off",
+    "@typescript-eslint/restrict-template-expressions": "off",
   },
   // rules: {
   //   "react-hooks/rules-of-hooks": "error",

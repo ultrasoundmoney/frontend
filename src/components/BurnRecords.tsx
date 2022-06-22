@@ -1,4 +1,3 @@
-import * as DateFns from "date-fns";
 import { FC, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { BurnRecord } from "../api/burn-records";
@@ -7,10 +6,9 @@ import * as Format from "../format";
 import { flow, O, OAlt } from "../fp";
 import scrollbarStyles from "../styles/Scrollbar.module.scss";
 import { TimeFrameNext } from "../time-frames";
-import { useActiveBreakpoint } from "../utils/use-active-breakpoint";
 import { MoneyAmountAnimated } from "./Amount";
 import SpanMoji from "./SpanMoji";
-import { TextInter } from "./Texts";
+import { TextInter, TextRoboto } from "./Texts";
 import { Group1Base } from "./widget-subcomponents";
 
 const formatBlockNumber = flow(
@@ -31,7 +29,7 @@ const emojiMap = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣", "6️⃣", "7️
 const formatDistance = flow(
   (dt: Date | undefined) => dt,
   O.fromNullable,
-  O.map(DateFns.formatDistanceToNowStrict),
+  O.map(Format.formatDistance),
   O.toUndefined,
 );
 
@@ -42,12 +40,9 @@ const Age: FC<{ minedAt: Date | undefined }> = ({ minedAt }) => {
     if (minedAt === undefined) {
       return;
     }
-
-    setAge(DateFns.formatDistanceToNowStrict(minedAt));
-
     const intervalId = window.setInterval(() => {
-      setAge(DateFns.formatDistanceToNowStrict(minedAt));
-    }, 1000);
+      setAge(Format.formatDistance(minedAt));
+    }, 500);
 
     return () => {
       window.clearInterval(intervalId);
@@ -56,7 +51,12 @@ const Age: FC<{ minedAt: Date | undefined }> = ({ minedAt }) => {
 
   return (
     <TextInter className="md:text-lg" skeletonWidth="6rem">
-      {age === undefined ? undefined : `${age} ago`}
+      {age === undefined ? undefined : (
+        <>
+          <TextRoboto>{age}</TextRoboto>
+          {" ago"}
+        </>
+      )}
     </TextInter>
   );
 };
@@ -68,7 +68,6 @@ type Props = {
 
 const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const burnRecords = useGroupedAnalysis1()?.burnRecords;
-  const { lg } = useActiveBreakpoint();
 
   const timeFrameRecords =
     burnRecords === undefined
@@ -86,10 +85,9 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
           flex flex-col gap-y-6
           mt-4 -mr-3
           overflow-y-auto
+          h-60 md:h-64
           ${scrollbarStyles["styled-scrollbar"]}
         `}
-        // Custom height to fit three records on desktop and mobile.
-        style={{ height: lg ? "16rem" : "15rem" }}
       >
         {timeFrameRecords.map((record, index) => (
           <div

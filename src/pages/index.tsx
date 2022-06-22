@@ -1,36 +1,44 @@
 import { NextPage } from "next";
 import Head from "next/head";
+import Script from "next/script";
 import * as React from "react";
 import Home from "../components/Home";
-import { TranslationsContext } from "../translations-context";
+import SiteMetadata from "../site-metadata";
 
-const IndexPage: NextPage = () => {
-  const t = React.useContext(TranslationsContext);
-  return (
-    <>
-      <Head>
-        <title>{t.title}</title>
-        <meta name="description" content={t.meta_description} />
-        <meta name="keywords" content={t.meta_keywords} />
-        <meta property="og:title" content={t.title} />
-        <meta property="og:description" content={t.meta_description} />
-        <meta property="og:image" content={t.og_img} />
-        <meta property="og:url" content={t.og_url} />
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:creator" content="@ultrasoundmoney" />
-        <link rel="icon" href="/favicon.png" />
-        <link rel="manifest" href="/manifest.json" />
-        <link rel="apple-touch-icon" href="/favicon.png"></link>
-        <meta name="theme-color" content="#131827" />
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <script
-          defer
-          data-domain="ultrasound.money"
-          src="https://plausible.io/js/plausible.js"
-        ></script>
-      </Head>
-      <Home />
-    </>
-  );
-};
+// Could this be moved to one of Next's magical wrappers _app or _document?
+export const SharedHead = () => (
+  <Head>
+    <title>ultrasound.money</title>
+    <meta name="description" content={SiteMetadata.description} />
+    <meta
+      name="keywords"
+      content="ultra sound money, ethereum, ETH, sound money, fee burn, EIP-1559"
+    />
+    <meta property="og:title" content={SiteMetadata.title} />
+    <meta property="og:description" content={SiteMetadata.description} />
+    <meta property="og:image" content={SiteMetadata.image} />
+    <meta property="og:url" content="https://ultrasound.money" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:creator" content="@ultrasoundmoney" />
+    <meta name="twitter:site" content="@ultrasoundmoney" />
+    <link rel="icon" href="/favicon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/favicon.png"></link>
+    <meta name="theme-color" content="#131827" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  </Head>
+);
+
+const IndexPage: NextPage = () => (
+  <>
+    <SharedHead />
+    <Script
+      defer
+      data-domain="ultrasound.money"
+      src="https://plausible.io/js/plausible.js"
+    ></Script>
+    <Home />
+  </>
+);
+
 export default IndexPage;

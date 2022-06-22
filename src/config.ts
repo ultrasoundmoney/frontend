@@ -10,13 +10,13 @@ const getEnv = (): Env => {
       return "dev";
     case "staging":
       return "staging";
+    case "stag":
+      return "staging";
     default:
       console.warn("no ENV in env, defaulting to dev");
       return "dev";
   }
 };
-
-export const env = getEnv();
 
 const getApiEnv = (): Env => {
   const rawEnv = process.env.NEXT_PUBLIC_API_ENV;
@@ -32,6 +32,8 @@ const getApiEnv = (): Env => {
     case "dev":
       return "dev";
     case "staging":
+      return "staging";
+    case "stag":
       return "staging";
     default:
       console.warn("no ENV in env, defaulting to dev");

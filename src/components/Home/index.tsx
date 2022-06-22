@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/react";
-import React, { FC, useContext, useState } from "react";
+import React, { FC, ReactNode, useContext, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useAdminToken } from "../../admin";
@@ -8,6 +8,7 @@ import * as FeatureFlags from "../../feature-flags";
 import { FeatureFlagsContext } from "../../feature-flags";
 import Flippenings from "../Flippenings";
 import FollowingYou from "../FollowingYou";
+import IssuanceBreakdown from "../IssuanceBreakdown";
 import FaqBlock from "../Landing/faq";
 import Link from "../Link";
 import PriceModel from "../PriceModel";
@@ -34,7 +35,7 @@ const SectionDivider: FC<{ title: string; subtitle?: string }> = ({
   </>
 );
 
-const Title: FC = ({ children }) => (
+const Title: FC<{ children: ReactNode }> = ({ children }) => (
   <div
     className={`
       bg-transparent
@@ -128,9 +129,9 @@ const Home: FC = () => {
             <div className="px-4 md:px-16">
               <TopBar />
             </div>
-            <Title>Ultra Sound Awakening</Title>
+            <Title>Ultra Sound Money</Title>
             <p className="font-inter font-light text-blue-spindle text-xl md:text-2xl lg:text-3xl text-white text-center mb-16">
-              watch ETH become ultra sound money
+              merge soon™
             </p>
             {/* <video */}
             {/*   className="w-full md:w-3/6 lg:w-2/6 mx-auto -mt-32 -mb-4 pr-6 mix-blend-lighten" */}
@@ -203,10 +204,11 @@ const Home: FC = () => {
               <div className="flex flex-col basis-1/2 gap-y-4">
                 <Scarcity />
                 <ValidatorRewardsWidget />
+                <Flippenings />
               </div>
               <div className="basis-1/2 flex flex-col gap-y-4">
                 <PriceModel />
-                <Flippenings />
+                <IssuanceBreakdown />
               </div>
             </div>
             <div className="flex flex-col px-4 md:px-16">
@@ -250,28 +252,32 @@ const Home: FC = () => {
             <div className="w-full flex flex-col items-center pb-40">
               <SectionDivider title="still have questions?" />
               <div className="flex flex-col gap-y-4 justify-start">
-                <Link
-                  className="flex items-center gap-x-2"
-                  href="https://twitter.com/intent/tweet?text=@ultrasoundmoney"
-                >
+                <div className="flex gap-2 items-center">
                   <img
                     className="w-4"
                     src="/twitter-icon.svg"
                     alt="icon of the twitter bird"
                   />
-                  <TextInterLink>@ultrasoundmoney</TextInterLink>
-                </Link>
-                <Link
-                  className="flex items-center gap-x-2"
-                  href="mailto:contact@ultrasound.money"
-                >
+                  <Link
+                    className="flex items-center gap-x-2"
+                    href="https://twitter.com/ultrasoundmoney/"
+                  >
+                    <TextInterLink>DM us @ultrasoundmoney</TextInterLink>
+                  </Link>
+                </div>
+                <div className="flex gap-2 items-center">
                   <img
                     className="h-4"
                     src="/email-icon.svg"
                     alt="icon of an envelope, email"
                   />
-                  <TextInterLink>contact@ultrasound.money</TextInterLink>
-                </Link>
+                  <Link
+                    className="flex items-center gap-x-2"
+                    href="mailto:contact@ultrasound.money"
+                  >
+                    <TextInterLink>contact@ultrasound.money</TextInterLink>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

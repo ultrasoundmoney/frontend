@@ -1,17 +1,13 @@
 import { FC } from "react";
 import styles from "./ToggleSwitch.module.scss";
 
-type ToggleSwitchProps = {
+type Props = {
   checked: boolean;
   className?: string;
   onToggle: (enabled: boolean) => void;
 };
 
-const ToggleSwitch: FC<ToggleSwitchProps> = ({
-  checked,
-  className,
-  onToggle,
-}) => (
+const ToggleSwitch: FC<Props> = ({ checked, className, onToggle }) => (
   <input
     checked={checked}
     onChange={(e) => onToggle(e.target.checked)}

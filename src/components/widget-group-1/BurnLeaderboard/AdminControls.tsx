@@ -49,7 +49,9 @@ const AdminControls: FC<{
       <div className="flex flex-row gap-4 opacity-80">
         <a
           className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
-          onClick={() => onSetTwitterHandle(address, adminToken)}
+          onClick={() => {
+            onSetTwitterHandle(address, adminToken).catch(console.error);
+          }}
           target="_blank"
           rel="noreferrer"
         >
@@ -57,7 +59,9 @@ const AdminControls: FC<{
         </a>
         <a
           className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
-          onClick={() => onSetName(address, adminToken)}
+          onClick={() => {
+            onSetName(address, adminToken).catch(console.error);
+          }}
           target="_blank"
           rel="noreferrer"
         >
@@ -65,7 +69,9 @@ const AdminControls: FC<{
         </a>
         <a
           className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
-          onClick={() => onSetCategory(address, adminToken)}
+          onClick={() => {
+            onSetCategory(address, adminToken).catch(console.error);
+          }}
           target="_blank"
           rel="noreferrer"
         >
@@ -73,9 +79,12 @@ const AdminControls: FC<{
         </a>
         <a
           className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
-          onClick={() =>
-            Contracts.setContractLastManuallyVerified(address, adminToken)
-          }
+          onClick={() => {
+            Contracts.setContractLastManuallyVerified(
+              address,
+              adminToken,
+            ).catch(console.error);
+          }}
           target="_blank"
           rel="noreferrer"
         >

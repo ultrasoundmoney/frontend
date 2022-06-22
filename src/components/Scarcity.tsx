@@ -1,6 +1,6 @@
 import * as DateFns from "date-fns";
 import JSBI from "jsbi";
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { useScarcity } from "../api/scarcity";
 import Colors from "../colors";
 import * as Format from "../format";
@@ -247,12 +247,10 @@ const EngineRow: FC<EngineRowProps> = ({
     <MoneyAmount className="font-light text-right" amountPostfix="M" unit="eth">
       {amountFormatted}
     </MoneyAmount>
-    <Amount className="text-right" unitPostfix="months">
-      {
-        DateFns.formatDistanceStrict(startedOn, new Date(), {
-          unit: "month",
-        }).split(" ")[0]
-      }
+    <Amount className="text-right" unitPostfix="years">
+      {Format.formatOneDigit(
+        DateFns.differenceInDays(new Date(), startedOn) / 365.25,
+      )}
     </Amount>
   </a>
 );
