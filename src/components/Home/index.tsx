@@ -130,7 +130,7 @@ const Home: FC = () => {
               <TopBar />
             </div>
             <Title>Ultra Sound Money</Title>
-            <p className="font-inter font-light text-blue-spindle text-xl md:text-2xl lg:text-3xl text-white text-center mb-16">
+            <p className="font-inter font-light text-blue-spindle text-xl md:text-2xl lg:text-3xl text-center mb-16">
               merge soon™
             </p>
             {/* <video */}
@@ -221,7 +221,7 @@ const Home: FC = () => {
               </div>
               <div
                 id="join-the-fam"
-                className="relative flex px-4 md:px-0 pt-8 pt-40 mb-16"
+                className="relative flex px-4 md:px-0 pt-40 mb-16"
               >
                 <div className="w-full relative flex flex-col items-center">
                   {/* <video */}
