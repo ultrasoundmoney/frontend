@@ -21,7 +21,7 @@ const NftDrop: React.FC = () => {
             <img
               alt="logo of a poap token"
               className="w-16"
-            <img className="w-16" src={poapLogo.src as unknown as string} />
+              src={poapLogo.src as unknown as string}
             />
             <h2 className="text-white text-2xl md:text-3xl font-light my-8">
               {t.title_nft_drop}
