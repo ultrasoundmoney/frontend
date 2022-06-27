@@ -1,10 +1,14 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { StepperContext, StepperPoint } from "../../context/StepperContext";
 import classes from "./Navigation.module.scss";
 import { navigationItems } from "../../utils/static";
 import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import { useLocalStorage } from "../../use-local-storage";
+import useNotification from "../../use-notification";
 import PriceGasWidget from "../PriceGasWidget";
+import AlarmInput from "../AlarmInput";
+import { WidgetTitle } from "../widget-subcomponents";
 
 const Nav = () => {
   const baseFeePerGas = useGroupedAnalysis1()?.baseFeePerGas;
@@ -13,6 +17,56 @@ const Nav = () => {
   const [scrollYProgress, setScrollYProgress] = useState(0);
   const defaultBar = useRef<null | HTMLDivElement>(null);
   const stepperPoints = useContext(StepperContext);
+
+  const [gasAlarmActive, setGasAlarmActive] = useLocalStorage(
+    "gas-alarm-enabled",
+    false,
+  );
+  const [ethAlarmActive, setEthAlarmActive] = useLocalStorage(
+    "eth-alarm-enabled",
+    false,
+  );
+  const [showAlarmDialog, setShowAlarmDialog] = useState(false);
+  const notification = useNotification();
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const alarmButtonRef = useRef<HTMLButtonElement>(null);
+
+  const isAlarmActive = gasAlarmActive || ethAlarmActive;
+
+  const checkIfClickedOutside = useCallback(
+    (e: MouseEvent) => {
+      if (
+        !showAlarmDialog ||
+        e.target === null ||
+        (dialogRef.current !== null &&
+          dialogRef.current.contains(e.target as Node)) ||
+        (alarmButtonRef.current !== null &&
+          alarmButtonRef.current.contains(e.target as Node))
+      ) {
+        return;
+      }
+
+      setShowAlarmDialog(false);
+    },
+    [showAlarmDialog],
+  );
+
+  const handleClickAlarm = useCallback(() => {
+    setShowAlarmDialog(!showAlarmDialog);
+  }, [showAlarmDialog]);
+
+  const showAlarmDialogCss = showAlarmDialog ? "visible" : "invisible";
+
+  const isAlarmValuesAvailable =
+    typeof baseFeePerGas === "number" && typeof ethPrice?.usd === "number";
+
+  useEffect(() => {
+    document.addEventListener("click", checkIfClickedOutside);
+
+    return () => {
+      document.removeEventListener("click", checkIfClickedOutside);
+    };
+  });
 
   const handleScroll = () => setScrollYProgress(window.scrollY);
   useEffect(() => {
@@ -43,10 +97,58 @@ const Nav = () => {
     <nav className="fixed w-full flex flex-wrap items-center justify-between px-2 py-6 bg-transparent mb-3 z-10">
       <div
         ref={defaultBar}
-        className="default_bar container px-1 md:px-4 mx-auto flex items-center justify-end"
+        className="default_bar container px-1 md:px-4 mx-auto flex items-center justify-between"
       >
-        <div className="flex w-full">
+        <div className="flex relative">
           <PriceGasWidget baseFeePerGas={baseFeePerGas} ethPrice={ethPrice} />
+          <button
+            ref={alarmButtonRef}
+            className={`
+              flex items-center
+              px-3 py-2 ml-4
+              bg-blue-tangaroa rounded
+              select-none
+              border border-transparent
+              ${
+                notification.type === "Supported" && isAlarmValuesAvailable
+                  ? "visible"
+                  : "invisible"
+              }
+              ${
+                isAlarmActive
+                  ? "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg"
+                  : ""
+              }
+            `}
+            onClick={handleClickAlarm}
+          >
+            <img src="/alarm-icon.svg" alt="bell icon" width="12" height="14" />
+          </button>
+
+          <div
+            ref={dialogRef}
+            className={`absolute w-full bg-blue-tangaroa rounded p-8 top-12 md:top-12 ${showAlarmDialogCss}`}
+          >
+            <WidgetTitle>price alerts</WidgetTitle>
+            <AlarmInput
+              isAlarmActive={gasAlarmActive}
+              onToggleIsAlarmActive={setGasAlarmActive}
+              unit="Gwei"
+              type="gas"
+            />
+            <AlarmInput
+              isAlarmActive={ethAlarmActive}
+              onToggleIsAlarmActive={setEthAlarmActive}
+              unit="USD "
+              type="eth"
+            />
+            {notification.type === "Supported" &&
+              notification.notificationPermission === "denied" && (
+                <p className="text-sm text-red-400 mt-4">
+                  notifications disabled, please grant notification permission.
+                </p>
+              )}
+          </div>
         </div>
         <div className="w-full md:w-6/12 hidden md:block" id="menu">
           <ul className="flex flex-col items-center md:flex-row justify-end list-none mt-4 md:mt-0 relative text-sm">
