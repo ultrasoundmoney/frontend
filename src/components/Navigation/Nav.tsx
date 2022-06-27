@@ -3,8 +3,12 @@ import Image from "next/image";
 import { StepperContext, StepperPoint } from "../../context/StepperContext";
 import classes from "./Navigation.module.scss";
 import { navigationItems } from "../../utils/static";
+import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import PriceGasWidget from "../PriceGasWidget";
 
 const Nav = () => {
+  const baseFeePerGas = useGroupedAnalysis1()?.baseFeePerGas;
+  const ethPrice = useGroupedAnalysis1()?.ethPrice;
   const [isOpen, setIsOpen] = useState(false);
   const [scrollYProgress, setScrollYProgress] = useState(0);
   const defaultBar = useRef<null | HTMLDivElement>(null);
@@ -41,6 +45,9 @@ const Nav = () => {
         ref={defaultBar}
         className="default_bar container px-1 md:px-4 mx-auto flex items-center justify-end"
       >
+        <div className="flex w-full">
+          <PriceGasWidget baseFeePerGas={baseFeePerGas} ethPrice={ethPrice} />
+        </div>
         <div className="w-full md:w-6/12 hidden md:block" id="menu">
           <ul className="flex flex-col items-center md:flex-row justify-end list-none mt-4 md:mt-0 relative text-sm">
             <li className="nav-item pl-6 justify-center">
@@ -61,7 +68,7 @@ const Nav = () => {
             </li>
           </ul>
         </div>
-        <div className="-mr-2 flex md:hidden fixed right-5 -top-1">
+        <div className="-mr-2 flex md:hidden fixed right-5">
           <img
             onClick={openCloseNavHandler}
             src="/images/burger_menu_icon.svg"

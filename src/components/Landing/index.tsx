@@ -20,9 +20,8 @@ import SupplyView from "../SupplyViewNew";
 import TheBurnedCard from "./theBurnedCard";
 import Stepper from "../Navigation/Stepper";
 import { SteppersProvider } from "../../context/StepperContext";
-import GweiDynamicBlock from "../GweiDynamicBlock";
 
-const LandingPage: React.FC = () => {
+const LandingPage: React.FC = () => {  
   React.useEffect(() => {
     AOS.init();
     AOS.refresh();
@@ -33,7 +32,6 @@ const LandingPage: React.FC = () => {
       <div className="wrapper bg-blue-midnightexpress">
         <Stepper />
         <Navigation />
-        <GweiDynamicBlock />
         <Intro />
         <BeforeGenesis />
         <section data-navigationtrackingblock>
