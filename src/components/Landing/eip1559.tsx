@@ -11,7 +11,7 @@ const EIP1559: React.FC = () => {
   function imageErrorHandler(e: React.SyntheticEvent<HTMLImageElement, Event>) {
     const el = e.target as HTMLImageElement;
     el.onerror = null;
-    el.src = AvatarImg;
+    el.src = AvatarImg.src;
   }
   const stepperContext = React.useContext(StepperContext);
   const EIPRef = React.useRef<HTMLDivElement | null>(null);
