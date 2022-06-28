@@ -3,7 +3,7 @@ import Accordion from "../Accordion";
 import { TranslationsContext } from "../../translations-context";
 import { SectionTitle } from "../Texts";
 
-const FaqBlock: React.FC = () => {
+const FaqBlock: React.FC<{styles: any}> = () => {
   const t = React.useContext(TranslationsContext);
   return (
     <section
@@ -14,7 +14,7 @@ const FaqBlock: React.FC = () => {
       data-aos-easing="ease-in-out"
       id="faq"
     >
-      <div className="four_vidgets max-w-3xl md:m-auto px-4 md:px-8 lg:px-0 ">
+      <div className="w-screen max-w-3xl md:m-auto px-4 md:px-8 lg:px-0 ">
         <div className="block py-8">
           <SectionTitle title="q&a" />
         </div>

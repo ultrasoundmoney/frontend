@@ -1,4 +1,5 @@
 import { StepperPoint } from "../../context/StepperContext";
+import classes from "./Navigation.module.scss";
 
 export const getIconOffset = (
   pointsHeights: StepperPoint[],
@@ -120,8 +121,8 @@ export const showHideNavBar = (
       window.scrollY < topFaqSection - OFFSET_FAQ;
 
     showStickyHeader
-      ? stepsRefElem.classList.add("active")
-      : stepsRefElem.classList.remove("active");
+      ? stepsRefElem.classList.add(classes.active)
+      : stepsRefElem.classList.remove(classes.active);
   }
 };
 

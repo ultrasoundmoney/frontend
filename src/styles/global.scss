@@ -3,14 +3,6 @@
 
 // Makes overscrolling look better by filling in the default white with our background color.
 
-body {
-  background-color: #131827;
-}
-
-a:hover {
-  color: inherit;
-}
-
 .link-animation {
   transition-property: opacity;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -31,90 +23,6 @@ a:hover {
   display: inline-block;
   width: 30px;
   margin: auto 4px;
-}
-
-.ultra-sound-text {
-  background: linear-gradient(
-    90.4deg,
-    #ff01e6 0.98%,
-    #ff5f51 41.52%,
-    #00ffa3 102.19%
-  );
-  // font-size: 56px;
-  font-weight: 200;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.3 !important;
-  letter-spacing: normal;
-  text-align: center;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.ultra-sound-text.current-gradient {
-  width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.graph_text_containter {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  & .graph_text_eth {
-    position: absolute;
-    width: 100%;
-    padding: inherit;
-    opacity: 0;
-    max-width: 400px;
-    box-sizing: content-box;
-  }
-}
-
-.h-screen-90 {
-  height: 90vh;
-}
-
-.timeline_wrapper {
-  display: flex;
-  width: 100%;
-  padding-top: 120px;
-}
-
-.four_vidgets {
-  width: 100vw;
-}
-
-.stepper_nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100vw;
-  transition: all .2s ease;
-  transform: translateY(-130%);
-
-  &.active {
-      transform: translateY(0);
-  }
-
-  .track_wrapper {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: -8px;
-
-    & > div {
-        transform: translateX(-50%);
-    }
-
-    img {
-        margin: 0;
-    }
-  }
 }
 
 .default_bar {
@@ -786,18 +694,6 @@ a:hover {
   outline: white solid 1px
 }
 
-.link-animation {
-  transition-property: opacity;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 300ms;
-}
-
-.color-animation {
-  transition-property: background-color, color;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 300ms;
-}
-
 .leaderboard-image {
   border-radius: 50%;
   border: 1px solid rgb(27, 34, 54);
@@ -862,18 +758,6 @@ a:hover {
 
 .fee-block-appear-active {
   opacity: 1;
-}
-
-.link-animation {
-  transition-property: opacity;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 300ms;
-}
-
-.color-animation {
-  transition-property: background-color, color;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 300ms;
 }
 
 .leaderboard-image {
@@ -1046,18 +930,6 @@ a:hover {
 
 .fee-block-appear-active {
   opacity: 1;
-}
-
-.link-animation {
-  transition-property: opacity;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 300ms;
-}
-
-.color-animation {
-  transition-property: background-color, color;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 300ms;
 }
 
 .leaderboard-image {

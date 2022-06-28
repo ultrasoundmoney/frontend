@@ -71,7 +71,7 @@ const LandingPage: React.FC = () => {
           </div>
         </section>
         <EtherTheUltraSound styles={styles} />
-        <FaqBlock />
+        <FaqBlock styles={styles} />
         <section
           data-aos="fade-up"
           data-aos-anchor-placement="top-center"

@@ -1,0 +1,32 @@
+.ultraSoundText {
+    background: linear-gradient(
+      90.4deg,
+      #ff01e6 0.98%,
+      #ff5f51 41.52%,
+      #00ffa3 102.19%
+    );
+    // font-size: 56px;
+    font-weight: 200;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.3 !important;
+    letter-spacing: normal;
+    text-align: center;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    &.currentGradient {
+        width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+.graphTextContainter {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

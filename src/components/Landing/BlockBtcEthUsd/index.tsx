@@ -91,7 +91,7 @@ const TheUltraSound: FC<{styles: any}> = ({styles}) => {
             src={BatImg.src}
             className="mx-auto text-center mb-8"
           />
-          <div className={`${styles.ultraSoundText} current-gradient text-2xl md:text-6xl mb-24`}>
+          <div className={`${styles.ultraSoundText} ${styles.currentGradient} text-2xl md:text-6xl mb-24`}>
             {t.eusm_section_title}
           </div>
         </div>
@@ -102,7 +102,7 @@ const TheUltraSound: FC<{styles: any}> = ({styles}) => {
         >
           <div
             ref={graphTextRef}
-            className="graph_text_containter w-full md:w-5/12 self-center order-2 md:order-1"
+            className={`${styles.graphTextContainter} w-full md:w-5/12 self-center order-2 md:order-1`}
           >
             <SVGrenderText />
           </div>

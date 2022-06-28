@@ -37,7 +37,31 @@ $white: #fff;
   }
 }
 
+.stepperNav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  transition: all .2s ease;
+  transform: translateY(-130%);
 
-.StepperDots{
+  &.active {
+      transform: translateY(0);
+  }
 
+  .trackWrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: -8px;
+
+    & > div {
+        transform: translateX(-50%);
+    }
+
+    img {
+        margin: 0;
+    }
+  }
 }

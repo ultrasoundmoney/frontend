@@ -6,6 +6,7 @@ import StepperTrack from "./StepperTrack";
 import { motion } from "framer-motion";
 import { StepsProps, ControlPointMutated } from "./types";
 import { MOBILE_VERTICAL_SCROLL_BREAK_POINT } from "./helpers";
+import classes from "./Navigation.module.scss";
 
 const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
   (
@@ -101,7 +102,7 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
 
     return (
       <div className="w-full h-full md:w-9/12 relative flex justify-around lg:justify-around items-center pt-5">
-        <div className="track_wrapper" ref={trackWrapper}>
+        <div className={`${classes.trackWrapper}`} ref={trackWrapper}>
           <motion.div
             ref={ref}
             style={{
