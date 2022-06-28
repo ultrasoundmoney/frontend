@@ -174,7 +174,7 @@ const SupplyChart: React.FC<Props> = ({
       stakingByDate[t] = v;
     });
 
-    const contractByDate: Record<number, number> = {};
+    const contractByDate: Record<number, number | undefined> = {};
     inContractsByDay.forEach(({ t, v }) => {
       contractByDate[t] = v;
     });
@@ -221,11 +221,11 @@ const SupplyChart: React.FC<Props> = ({
         // to subtract staked ETH here since we render it as its own series
         inContractsValue = inContractsPct * v - stakingSupply;
         inAddressesValue -= inContractsValue;
+        contractSeriesData.push([dateMillis, inContractsValue]);
       }
 
       // Add data points to series
       addressSeriesData.push([dateMillis, inAddressesValue]);
-      contractSeriesData.push([dateMillis, inContractsValue]);
       stakingSeriesData.push([dateMillis, stakingSupply]);
       supplySeriesData.push([dateMillis, v]);
       supplyByDate[dateMillis] = v;
