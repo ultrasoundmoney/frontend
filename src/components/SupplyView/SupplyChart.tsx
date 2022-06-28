@@ -214,18 +214,18 @@ const SupplyChart: React.FC<Props> = ({
 
       // Calculate contract vs address split
       const inContractsPct = contractByDate[timestamp];
-      let inContractsValue = 0;
-      let inAddressesValue = nonStakingSupply;
       if (inContractsPct !== undefined) {
         // Glassnode's ETH in contract data includes staked ETH, so we need
         // to subtract staked ETH here since we render it as its own series
-        inContractsValue = inContractsPct * v - stakingSupply;
-        inAddressesValue -= inContractsValue;
+        const inContractsValue = inContractsPct * v - stakingSupply;
+        const inAddressesValue = nonStakingSupply - inContractsValue;
         contractSeriesData.push([dateMillis, inContractsValue]);
+        addressSeriesData.push([dateMillis, inAddressesValue]);
+      } else {
+        addressSeriesData.push([dateMillis, nonStakingSupply]);
       }
 
       // Add data points to series
-      addressSeriesData.push([dateMillis, inAddressesValue]);
       stakingSeriesData.push([dateMillis, stakingSupply]);
       supplySeriesData.push([dateMillis, v]);
       supplyByDate[dateMillis] = v;
