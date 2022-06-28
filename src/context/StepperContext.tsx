@@ -1,12 +1,10 @@
-import { createContext, FC, MutableRefObject, useState } from "react";
+import { createContext, FC, MutableRefObject, useState, ReactNode } from "react";
 
 export type StepperPoint = {
   offsetY: number;
   name: string;
   height: number;
 };
-
-type StepperProps = {children: any}
 
 const StepperContext = createContext<{
   stepperElements: {
@@ -18,7 +16,7 @@ const StepperContext = createContext<{
   ) => void;
 } | null>(null);
 
-const SteppersProvider: FC<StepperProps> = ({ children }) => {
+const SteppersProvider: FC<{children: ReactNode}> = ({ children }) => {
   const [stepperElements, setStepperElements] = useState<{
     [key: string]: StepperPoint;
   }>({});
