@@ -6,6 +6,8 @@ export type StepperPoint = {
   height: number;
 };
 
+type StepperProps = {children: any}
+
 const StepperContext = createContext<{
   stepperElements: {
     [key: string]: StepperPoint;
@@ -16,7 +18,7 @@ const StepperContext = createContext<{
   ) => void;
 } | null>(null);
 
-const SteppersProvider: FC = ({ children }) => {
+const SteppersProvider: FC<StepperProps> = ({ children }) => {
   const [stepperElements, setStepperElements] = useState<{
     [key: string]: StepperPoint;
   }>({});
