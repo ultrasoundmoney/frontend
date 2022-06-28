@@ -17,8 +17,7 @@ export const SharedHead = () => (
     {/* When Justin shares the site on twitter, twitter adds our metadata, this adds little value, so Justin removes it. To not spend a lot of time removing our metadata from every shared link we're disabling twitter metadata for now. */}
     <meta property="og:title" content={SiteMetadata.title} />
     <meta property="og:description" content={SiteMetadata.description} />
-    {/* We need a better image. The cut / look for this one is not good enough. Maybe try square instead too. */}
-    {/* <meta property="og:image" content={SiteMetadata.image} /> */}
+    <meta property="og:image" content={SiteMetadata.image} />
     <meta property="og:url" content="https://ultrasound.money" />
     <link rel="icon" href="/favicon.png" />
     <link rel="manifest" href="/manifest.json" />
