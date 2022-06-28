@@ -2,7 +2,7 @@ import * as React from "react";
 import { TranslationsContext } from "../../translations-context";
 import SpanMoji from "../SpanMoji";
 
-const Intro: React.FC = () => {
+const Intro: React.FC<{styles: any}> = ({styles}) => {
   const t = React.useContext(TranslationsContext);
 
   return (
@@ -22,7 +22,7 @@ const Intro: React.FC = () => {
           {t.landing_hero_title}
         </h1>
         <div className="mx-4 flex flex-wrap justify-center mb-8 gap-4">
-          <div className="ultra-sound-text text-4xl md:text-6xl font-inter font-extralight leading-loose">
+          <div className={`${styles.ultraSoundText} text-4xl md:text-6xl font-inter font-extralight leading-loose`}>
             {t.landing_hero_title_1}
           </div>
           <div className="flex self-center">

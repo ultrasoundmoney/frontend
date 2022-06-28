@@ -9,7 +9,7 @@ import { handleGraphs, setScrollPos } from "./helpers";
 import classes from "./BlockBtcEthUsd.module.scss";
 import { WINDOW_BREAK_POINT, graphTypes } from "./helpers";
 
-const TheUltraSound: FC = () => {
+const TheUltraSound: FC<{styles: any}> = ({styles}) => {
   const t = useContext(TranslationsContext);
   const pointRef = useRef(null);
   const graphRef = useRef<HTMLDivElement | null>(null);
@@ -91,7 +91,7 @@ const TheUltraSound: FC = () => {
             src={BatImg.src}
             className="mx-auto text-center mb-8"
           />
-          <div className="ultra-sound-text current-gradient text-2xl md:text-6xl mb-24">
+          <div className={`${styles.ultraSoundText} current-gradient text-2xl md:text-6xl mb-24`}>
             {t.eusm_section_title}
           </div>
         </div>

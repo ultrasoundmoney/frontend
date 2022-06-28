@@ -20,6 +20,7 @@ import SupplyView from "../SupplyViewNew";
 import TheBurnedCard from "./theBurnedCard";
 import Stepper from "../Navigation/Stepper";
 import { SteppersProvider } from "../../context/StepperContext";
+import styles from "./Landing.module.scss";
 
 const LandingPage: React.FC = () => {  
   React.useEffect(() => {
@@ -32,7 +33,7 @@ const LandingPage: React.FC = () => {
       <div className="wrapper">
         <Stepper />
         <Navigation />
-        <Intro />
+        <Intro styles={styles} />
         <BeforeGenesis />
         <section data-navigationtrackingblock>
           <div>
@@ -69,7 +70,7 @@ const LandingPage: React.FC = () => {
             <TheMergeBlock />
           </div>
         </section>
-        <EtherTheUltraSound />
+        <EtherTheUltraSound styles={styles} />
         <FaqBlock />
         <section
           data-aos="fade-up"
