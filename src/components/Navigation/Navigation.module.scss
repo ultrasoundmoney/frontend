@@ -46,6 +46,13 @@ $white: #fff;
   transition: all .2s ease;
   transform: translateY(-130%);
 
+  &.mobileNavBarNav {
+    width: 100%;
+    @media (max-width: 500px) {
+      width: 200%;
+    }
+  }
+
   &.active {
       transform: translateY(0);
   }
