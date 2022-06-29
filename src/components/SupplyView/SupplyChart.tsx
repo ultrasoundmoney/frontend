@@ -169,12 +169,12 @@ const SupplyChart: React.FC<Props> = ({
       supplyByDay: supplyData,
     } = projectionsInputs;
 
-    const stakingByDate: Record<number, number> = {};
+    const stakingByDate: Record<number, number | undefined> = {};
     inBeaconValidatorsByDay.forEach(({ t, v }) => {
       stakingByDate[t] = v;
     });
 
-    const contractByDate: Record<number, number> = {};
+    const contractByDate: Record<number, number | undefined> = {};
     inContractsByDay.forEach(({ t, v }) => {
       contractByDate[t] = v;
     });
@@ -190,6 +190,8 @@ const SupplyChart: React.FC<Props> = ({
 
     let maxSupply: number | null = null;
     let peakSupply: [number, number] | null = null;
+
+    let lastInContractsIterValue: number | undefined = undefined;
 
     supplyData.forEach(({ t: timestamp, v }, i) => {
       // Calculate peak supply
@@ -209,24 +211,30 @@ const SupplyChart: React.FC<Props> = ({
       const dateMillis = DateFns.getTime(date);
 
       // Subtract any staking eth from total supply on that date
-      const stakingSupply = stakingByDate[timestamp] || 0;
-      const nonStakingSupply = v - stakingSupply;
+      const stakingSupply = stakingByDate[timestamp];
 
-      // Calculate contract vs address split
-      const inContractsPct = contractByDate[timestamp];
-      let inContractsValue = 0;
-      let inAddressesValue = nonStakingSupply;
-      if (inContractsPct !== undefined) {
-        // Glassnode's ETH in contract data includes staked ETH, so we need
-        // to subtract staked ETH here since we render it as its own series
-        inContractsValue = inContractsPct * v - stakingSupply;
-        inAddressesValue -= inContractsValue;
+      if (stakingSupply !== undefined) {
+        stakingSeriesData.push([dateMillis, stakingSupply]);
       }
 
-      // Add data points to series
-      addressSeriesData.push([dateMillis, inAddressesValue]);
-      contractSeriesData.push([dateMillis, inContractsValue]);
-      stakingSeriesData.push([dateMillis, stakingSupply]);
+      const nonStakingSupply =
+        stakingSupply === undefined ? v : v - stakingSupply;
+
+      // Calculate contract vs address split
+      const inContractsPercent =
+        contractByDate[timestamp] || lastInContractsIterValue;
+
+      if (inContractsPercent !== undefined) {
+        lastInContractsIterValue = inContractsPercent;
+        // Glassnode's ETH in contract data includes staked ETH, so we need
+        // to subtract staked ETH here since we render it as its own series
+        const inContractsValue = inContractsPercent * v - (stakingSupply ?? 0);
+        contractSeriesData.push([dateMillis, inContractsValue]);
+
+        const inAddressesValue = (nonStakingSupply ?? v) - inContractsValue;
+        addressSeriesData.push([dateMillis, inAddressesValue]);
+      }
+
       supplySeriesData.push([dateMillis, v]);
       supplyByDate[dateMillis] = v;
     });
