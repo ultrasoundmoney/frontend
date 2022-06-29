@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useSpring, useMotionValue } from "framer-motion";
 import glowBg from "../../assets/blurred-bg1.png";
+import styles from "./Landing.module.scss";
 
 const isElementInViewport = (el: SVGSVGElement) => {
   const rect = el.getBoundingClientRect();
@@ -203,17 +204,17 @@ const AnimatedPath: React.FC = () => {
   }, [scrollYProgress, pathRef]);
 
   return (
-    <div className="merge-path">
-      <div className="merge-path_animated">
+    <div className={`${styles.mergePath}`}>
+      <div className={`${styles.mergePath_animated}`}>
         <motion.img
-          className="bg"
+          className={`${styles.bg}`}
           src={glowBg.src}
           alt="glow"
           variants={glowVariants}
           animate={glowIsShow ? "visible" : "hidden"}
         />
         <motion.svg
-          className="path"
+          className={`${styles.path}`}
           ref={pathRef}
           xmlns="http://www.w3.org/2000/svg"
           width="210"

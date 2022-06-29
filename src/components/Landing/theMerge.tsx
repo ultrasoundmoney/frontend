@@ -5,6 +5,7 @@ import { TranslationsContext } from "../../translations-context";
 import { StepperContext } from "../../context/StepperContext";
 import AnimatedPath from "./AnimatedPath";
 import DrawingLine from "./DrawingLine";
+import styles from "./Landing.module.scss";
 
 const TheMergeBlock: React.FC = () => {
   const t = React.useContext(TranslationsContext);
@@ -28,7 +29,7 @@ const TheMergeBlock: React.FC = () => {
         />
         <div
           id="the-merge"
-          className="the-merge-path flex flex-col w-full sm:w-9/12 mx-auto max-w-4xl"
+          className={`${styles.theMergePath} flex flex-col w-full sm:w-9/12 mx-auto max-w-4xl`}
         >
           <div
             data-aos="fade-up"
@@ -36,7 +37,7 @@ const TheMergeBlock: React.FC = () => {
             data-aos-delay="50"
             data-aos-duration="1000"
             data-aos-easing="ease-in-out"
-            className="w-6/12 md:w-4/12 md:absolute md:mr-auto py-16 merge-icon-block"
+            className={`w-6/12 md:w-4/12 md:absolute md:mr-auto py-16 ${styles.mergeIconBlock}`}
           >
             <IconBlock
               icon={`${t.landing_themerge_pow_icon}`}
@@ -50,7 +51,7 @@ const TheMergeBlock: React.FC = () => {
             data-aos-delay="50"
             data-aos-duration="1000"
             data-aos-easing="ease-in-out"
-            className="w-6/12 md:w-4/12 md:absolute md:ml-auto merge-icon-block"
+            className={`w-6/12 md:w-4/12 md:absolute md:ml-auto ${styles.mergeIconBlock}`}
           >
             <IconBlock
               icon={t.landing_themerge_pos_icon}

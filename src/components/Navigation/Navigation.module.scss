@@ -65,3 +65,11 @@ $white: #fff;
     }
   }
 }
+
+.defaultBar {
+  transition: 0.3s transform;
+  transform: translateY(0);
+  &.hiddenBar {
+    transform: translateY(-200%);
+  }
+}

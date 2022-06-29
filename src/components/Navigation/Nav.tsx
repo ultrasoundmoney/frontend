@@ -97,7 +97,7 @@ const Nav = () => {
     <nav className="fixed w-full flex flex-wrap items-center justify-between px-2 py-6 bg-transparent mb-3 z-10">
       <div
         ref={defaultBar}
-        className="default_bar container px-1 md:px-4 mx-auto flex items-center justify-between"
+        className={`${classes.defaultBar} container px-1 md:px-4 mx-auto flex items-center justify-between`}
       >
         <div className="flex relative">
           <PriceGasWidget baseFeePerGas={baseFeePerGas} ethPrice={ethPrice} />
