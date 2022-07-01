@@ -3,7 +3,7 @@ import classes from "./Navigation.module.scss";
 
 export const getIconOffset = (
   pointsHeights: StepperPoint[],
-  pageLoad: boolean
+  pageLoad: boolean,
 ) => {
   if (!pageLoad) return 0;
   const trackPosition = window.scrollY + window.innerHeight / 2.4;
@@ -40,14 +40,14 @@ export const setScrollPosition = (
   controllPoints: StepperPoint[],
   trackWidth: number,
   iconOffset: number,
-  stepsRefElem: HTMLElement
+  stepsRefElem: HTMLElement,
 ): boolean => {
   const distancesNumber = controllPoints.length - 1;
   const distanceWidth = trackWidth / distancesNumber;
   const distanceOrderItem = Math.ceil(iconOffset / distanceWidth);
   const parentBlock = stepsRefElem.parentElement!;
   const trackingChildrenBlock = Array.from(parentBlock.children).find(
-    (elem: any) => elem.dataset.navigationtrackingblock
+    (elem: any) => elem.dataset.navigationtrackingblock,
   );
   if (trackingChildrenBlock) {
     const allTrackingChildren = Array.from(trackingChildrenBlock.children);
@@ -64,8 +64,8 @@ export const setScrollPosition = (
     const percentOffsetBlock = iconOffsetInBlock / distanceWidth;
     const certainBlockHeight = blocksHeights[distanceOrderItem];
     const blockYOffset = certainBlockHeight * percentOffsetBlock;
-    const drawingLineHight = allTrackingChildren[0].children[0].getBoundingClientRect()
-      .height;
+    const drawingLineHight =
+      allTrackingChildren[0].children[0].getBoundingClientRect().height;
     const offsetValue =
       controllPoints[distanceOrderItem - 1]?.offsetY +
       blockYOffset -
@@ -78,10 +78,10 @@ export const setScrollPosition = (
   } else return false;
 };
 
-const OFFSET_FAQ = 150;
+export const OFFSET_FAQ = 150;
 export const showHideNavBar = (
   controlPoints: (StepperPoint | undefined)[],
-  stepsRefElem: HTMLElement
+  stepsRefElem: HTMLElement,
 ) => {
   let offsetYFirstPoint = 2;
   controlPoints.forEach((el, index) => {
@@ -92,7 +92,7 @@ export const showHideNavBar = (
   const maxOffsetYValue = controlPoints.reduce(
     (acc: number, item: StepperPoint | undefined) =>
       item && acc < item.offsetY ? item.offsetY : acc,
-    0
+    0,
   );
   const collectionElems = stepsRefElem?.parentElement?.children;
   const childrenElems = collectionElems?.length
@@ -100,19 +100,20 @@ export const showHideNavBar = (
     : [];
 
   const lastSectionIndex: number = childrenElems.findIndex(
-    (node) => node.id === "before-genesis"
+    (node) => node.id === "before-genesis",
   )!;
-  const lastSectionHight = childrenElems[
-    lastSectionIndex
-  ]?.getBoundingClientRect()?.height;
-  const nextDrawingLineHight = childrenElems[
-    lastSectionIndex + 1
-  ]?.getBoundingClientRect()?.height;
+  const lastSectionHight =
+    childrenElems[lastSectionIndex]?.getBoundingClientRect()?.height;
+  const nextDrawingLineHight =
+    childrenElems[lastSectionIndex + 1]?.getBoundingClientRect()?.height;
 
   const faqSectionIndex: { [key: string]: any } = childrenElems.find(
-    (node) => node.id === "faq"
+    (node) => node.id === "faq",
   )!;
-  const topFaqSection: number = faqSectionIndex.offsetTop;
+  const topFaqSection: number =
+    typeof faqSectionIndex?.offsetTop === "number"
+      ? faqSectionIndex?.offsetTop
+      : 0;
   if (lastSectionHight && maxOffsetYValue && nextDrawingLineHight) {
     const showStickyHeader: boolean =
       window.scrollY > offsetYFirstPoint - window.innerHeight / 2.4 &&
@@ -131,7 +132,7 @@ export const setNavBarPosition = (
   horizontalNavBar: HTMLElement,
   stepperIconElem: HTMLElement,
   controlPoints: StepperPoint[],
-  pageLoad: boolean
+  pageLoad: boolean,
 ): void => {
   const logoOffset = getIconOffset(controlPoints, pageLoad);
   horizontalNavBar.style.left = `-${logoOffset}%`;
