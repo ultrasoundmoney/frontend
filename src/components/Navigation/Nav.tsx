@@ -1,4 +1,10 @@
-import React, { useContext, useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useContext,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Image from "next/image";
 import { StepperContext, StepperPoint } from "../../context/StepperContext";
 import classes from "./Navigation.module.scss";
@@ -14,9 +20,7 @@ const Nav = () => {
   const baseFeePerGas = useGroupedAnalysis1()?.baseFeePerGas;
   const ethPrice = useGroupedAnalysis1()?.ethPrice;
   const [isOpen, setIsOpen] = useState(false);
-  const [scrollYProgress, setScrollYProgress] = useState(0);
   const defaultBar = useRef<null | HTMLDivElement>(null);
-  const stepperPoints = useContext(StepperContext);
 
   const [gasAlarmActive, setGasAlarmActive] = useLocalStorage(
     "gas-alarm-enabled",
@@ -67,29 +71,6 @@ const Nav = () => {
       document.removeEventListener("click", checkIfClickedOutside);
     };
   });
-
-  const handleScroll = () => setScrollYProgress(window.scrollY);
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-  const controlPoints: StepperPoint[] = stepperPoints?.stepperElements
-    ? Object.keys(stepperPoints.stepperElements).map((element) => {
-        return stepperPoints?.stepperElements[element];
-      })
-    : [];
-  useEffect((): void => {
-    if (Array.isArray(controlPoints) && controlPoints.length > 0) {
-      if (window.scrollY > controlPoints[0].offsetY - window.innerHeight / 2) {
-        defaultBar.current?.classList.add("hidden_bar");
-      } else {
-        defaultBar.current?.classList.remove("hidden_bar");
-      }
-    }
-  }, [scrollYProgress]);
 
   const openCloseNavHandler = () => setIsOpen((prevVal) => !prevVal);
 

@@ -22,9 +22,8 @@ const Stepper: React.FC = () => {
   const stepsRef = useRef<HTMLElement | null>(null);
   const steperIconRef = useRef<HTMLDivElement | null>(null);
   const stepperPoints = useContext(StepperContext);
-  const [currentActionLogo, setCurrentActionLogo] = useState<ActionLogo>(
-    "none"
-  );
+  const [currentActionLogo, setCurrentActionLogo] =
+    useState<ActionLogo>("none");
   const [pageLoad, setPageLoad] = useState(false);
   const handlerActionLogo = (value: ActionLogo) => setCurrentActionLogo(value);
   const controlPoints: StepperPoint[] = stepperPoints?.stepperElements
@@ -42,7 +41,7 @@ const Stepper: React.FC = () => {
         horizontalNavBar,
         stepperIconElem,
         controlPoints,
-        pageLoad
+        pageLoad,
       );
     } else {
       if (
@@ -65,7 +64,7 @@ const Stepper: React.FC = () => {
         controlPoints,
         trackWidth,
         logoOffset,
-        stepsRef.current
+        stepsRef.current,
       );
       setIsLastTrackingElem(isHighlightDot);
       setTimeout(() => {

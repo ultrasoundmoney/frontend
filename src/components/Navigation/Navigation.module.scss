@@ -43,7 +43,7 @@ $white: #fff;
   left: 0;
   right: 0;
   width: 100vw;
-  transition: all .2s ease;
+  transition: all 0.2s ease;
   transform: translateY(-130%);
 
   &.mobileNavBarNav {
@@ -54,7 +54,7 @@ $white: #fff;
   }
 
   &.active {
-      transform: translateY(0);
+    transform: translateY(0);
   }
 
   .trackWrapper {
@@ -64,11 +64,11 @@ $white: #fff;
     left: -8px;
 
     & > div {
-        transform: translateX(-50%);
+      transform: translateX(-50%);
     }
 
     img {
-        margin: 0;
+      margin: 0;
     }
   }
 }
