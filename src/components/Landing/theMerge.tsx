@@ -24,7 +24,7 @@ const TheMergeBlock: React.FC = () => {
         <ContentBlock
           title={t.landing_themerge_title}
           text={t.landing_themerge_text}
-          styles="block-fee-burn"
+          styles={`${styles.blockFeeBurn}`}
           id="what-next"
         />
         <div

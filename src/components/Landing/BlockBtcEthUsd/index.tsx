@@ -8,8 +8,9 @@ import CurrencyTabs from "./CurrencyTabs";
 import { handleGraphs, setScrollPos } from "./helpers";
 import classes from "./BlockBtcEthUsd.module.scss";
 import { WINDOW_BREAK_POINT, graphTypes } from "./helpers";
+import styles from "../Landing.module.scss";
 
-const TheUltraSound: FC<{styles: any}> = ({styles}) => {
+const TheUltraSound: FC = () => {
   const t = useContext(TranslationsContext);
   const pointRef = useRef(null);
   const graphRef = useRef<HTMLDivElement | null>(null);
@@ -77,7 +78,7 @@ const TheUltraSound: FC<{styles: any}> = ({styles}) => {
       <DrawingLine pointRef={pointRef} />
       <section
         id="enter-ultra-sound"
-        className="enther-ultr-sound py-8 px-4 md:px-8 lg:px-0 relative"
+        className="py-8 px-4 md:px-8 lg:px-0 relative"
       >
         <div className="block pt-16 relative">
           <img

@@ -78,3 +78,12 @@
     top: 100px;
   }
 }
+
+.fixedFeeBurned {
+  transition: all 0.2s ease;
+  transform: translateY(100%);
+
+  &.active {
+    transform: translateY(0);
+  }
+}

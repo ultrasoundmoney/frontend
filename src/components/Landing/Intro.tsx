@@ -1,14 +1,15 @@
 import * as React from "react";
 import { TranslationsContext } from "../../translations-context";
 import SpanMoji from "../SpanMoji";
+import styles from "./Landing.module.scss";
 
-const Intro: React.FC<{styles: any}> = ({styles}) => {
+const Intro: React.FC = () => {
   const t = React.useContext(TranslationsContext);
 
   return (
-    <section id="hero" className="hero h-auto container m-auto">
+    <section id="hero" className={`${styles.hero} h-auto container m-auto`}>
       <video
-        className="hero_bg"
+        className={`${styles.hero_bg}`}
         playsInline
         autoPlay
         muted

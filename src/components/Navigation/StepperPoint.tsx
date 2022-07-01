@@ -52,12 +52,12 @@ const StepperDots: React.FC<StepperPointProps> = ({
   return (
     <div
       onClick={moveToPoint(indexItem)}
-      className={`${classes.StepperDots} stepper_point transition-opacity text-xs text-blue-shipcove`}
+      className={`${classes.StepperDots} ${classes.stepperPoint} transition-opacity text-xs text-blue-shipcove`}
     >
       <div
         className={`${classes.StepperDots__stepperCircle} ${
           active ? classes.highlightedBorder : ""
-        } stepper_circle`}
+        } ${classes.stepperCircle}`}
       >
         <div
           className={`${classes.StepperDots__stepperCircle_internal} ${

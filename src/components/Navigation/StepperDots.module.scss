@@ -51,3 +51,16 @@
 .highlightedBackground {
   background-color: #00ffa3;
 }
+
+.stepperPoint .stepperCircle {
+  transition: 0.4s;
+  & div {
+    transition: 0.4s;
+  }
+}
+.stepperPoint:hover .stepperCircle {
+  border: 1px solid #00ffa3 !important;
+}
+.stepperPoint:hover .stepperCircle div {
+  background: #00ffa3 !important;
+}

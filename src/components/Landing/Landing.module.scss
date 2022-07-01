@@ -152,3 +152,47 @@
         }
     }
   }
+
+  .hero {
+    z-index: 1;
+    width: 100%;
+    transition: all 300ms;
+  
+    &_bg {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 100%;
+      transform: translate(-50%,-50%);
+      opacity: 0.5;
+      max-width: 1200px;
+    }
+  }
+
+  .fixedFeeBurned {
+    transition: all 0.2s ease;
+    transform: translateY(100%);
+  
+    &.active {
+      transform: translateY(0);
+    }
+  }
+
+  .blockFeeBurn {
+    position: relative;
+  
+      .eipBg {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -20%);
+      z-index: 1;
+      opacity: 0.5;
+      max-width: 500px;
+      width: 100%;
+    }
+  
+    & > *:not(video) {
+      z-index: 2;
+    }
+  }
