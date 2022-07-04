@@ -1,5 +1,4 @@
 import * as React from "react";
-import ContentBlock from "../ContentBlock/ContentBlcok";
 import IconBlock from "../ContentBlock/IconBlock";
 import { TranslationsContext } from "../../translations-context";
 import { StepperContext } from "../../context/StepperContext";
@@ -21,12 +20,19 @@ const TheMergeBlock: React.FC = () => {
     <>
       <DrawingLine pointRef={MergeRef} indexTopSection={4} />
       <section id="next-merge" ref={MergeRef}>
-        <ContentBlock
-          title={t.landing_themerge_title}
-          text={t.landing_themerge_text}
-          styles={`${styles.blockFeeBurn}`}
-          id="what-next"
-        />
+        <section
+          data-aos="fade-up"
+          data-aos-anchor-placement="top-bottom"
+          data-aos-offset="100"
+          data-aos-delay="50"
+          data-aos-duration="1000"
+          data-aos-easing="ease-in-out"
+          id="what-next">
+          <div className={`${styles.blockFeeBurn} flex flex-col justify-center w-full lg:w-6/12 md:m-auto px-4 md:px-8 lg:px-0`}>
+            <h3 className="text-white font-light text-base md:text-3xl leading-normal text-center mb-6">{t.landing_themerge_title}</h3>
+            <p className="text-blue-shipcove font-light text-sm text-center mb-10">{t.landing_themerge_text}</p>
+          </div>
+        </section>
         <div
           id="the-merge"
           className={`${styles.theMergePath} flex flex-col w-full sm:w-9/12 mx-auto max-w-4xl`}
@@ -61,12 +67,19 @@ const TheMergeBlock: React.FC = () => {
           </div>
           <AnimatedPath />
         </div>
-        <ContentBlock
-          title={t.landing_themerge_title2}
-          text={t.landing_themerge_text2}
-          styles="pt-10"
-          id="the-merge"
-        />
+        <section
+          data-aos="fade-up"
+          data-aos-anchor-placement="top-bottom"
+          data-aos-offset="100"
+          data-aos-delay="50"
+          data-aos-duration="1000"
+          data-aos-easing="ease-in-out"
+          id="the-merge">
+            <div className="flex flex-col justify-center w-full lg:w-6/12 md:m-auto px-4 md:px-8 lg:px-0 pt-10">
+                <h3 className="text-white font-light text-base md:text-3xl leading-normal text-center mb-6">{t.landing_themerge_title2}</h3>
+                <p className="text-blue-shipcove font-light text-sm text-center mb-10">{t.landing_themerge_text2}</p>
+            </div>
+        </section>
         <div
           id="the-merge-line"
           className="flex flex-wrap justify-center w-full md:w-7/12 md:mx-auto mb-20"
