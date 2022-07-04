@@ -198,3 +198,29 @@ $tooltip-zindex: 2;
     margin-bottom: 2px;
   }
 }
+
+@media screen and (max-width: 1300px) {
+  .supplyGraph {
+    width: 60%;
+  }
+  .supplyGraphText {
+    padding-left: 0;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .supplyGraph {
+    width: 100%;
+    margin-bottom: 50px;
+  }
+  .supplyGraphText {
+    width: 100%;
+    text-align: center;
+  }
+  .supplyGraphText * {
+    text-align: center;
+  }
+  .supplyGraphSection {
+    flex-direction: column-reverse;
+  }
+}

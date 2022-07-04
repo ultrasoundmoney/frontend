@@ -20,6 +20,7 @@ import SupplyView from "../SupplyViewNew";
 import TheBurnedCard from "./theBurnedCard";
 import Stepper from "../Navigation/Stepper";
 import { SteppersProvider } from "../../context/StepperContext";
+import styles from "./Landing.module.scss";
 
 const LandingPage: React.FC = () => {  
   React.useEffect(() => {
@@ -59,11 +60,11 @@ const LandingPage: React.FC = () => {
               className="flex flex-col px-4 md:px-0 mt-6 mb-16"
               id="supplyview"
             >
-              <div className="w-full md:w-5/6 lg:w-5/6 md:m-auto relative bg-blue-tangaroa md:px-11 py-4 md:py-11 rounded-xl">
+              <div className="w-full md:w-5/6 lg:w-5/6 md:m-auto relative md:px-11 py-4 md:py-11 rounded-xl">
                 <SupplyView />
               </div>
               <div className="flex flex-wrap justify-center pt-20">
-                <div id="line__supplyview" className="eclips-hr" />
+                <div id="line__supplyview" className={`${styles.eclipsHr}`} />
               </div>
             </div>
             <TheMergeBlock />

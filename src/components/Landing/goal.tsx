@@ -24,7 +24,7 @@ const GoalBlcok: React.FC<GoalBlcokProps> = ({ styles }) => {
         id="goal"
       >
         <h1
-          className="text-white font-light text-base md:text-32xl leading-normal text-center mb-6 leading-title"
+          className="text-white font-light text-base md:text-32xl leading-normal text-center mb-6"
           dangerouslySetInnerHTML={{
             __html: t.landing_goal_title,
           }}

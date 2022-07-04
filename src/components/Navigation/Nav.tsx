@@ -162,7 +162,7 @@ const Nav = () => {
       </div>
       <div
         className={
-          "sidebar w-full" + (isOpen ? " block sidebar-open" : " sidebar-close")
+          `${classes.sidebar} w-full` + (isOpen ? ` block ${classes.open}` : '')
         }
         id="mobile-menu"
       >

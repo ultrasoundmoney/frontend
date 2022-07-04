@@ -55,7 +55,7 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
             </picture>
           )}
           <h1
-            className="text-white font-light text-base md:text-3xl leading-normal text-center mb-6 leading-title"
+            className="text-white font-light text-base md:text-3xl leading-normal text-center mb-6"
             dangerouslySetInnerHTML={{
               __html: title,
             }}

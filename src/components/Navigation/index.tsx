@@ -3,6 +3,7 @@ import Link from "next/link";
 import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 import twemoji from "twemoji";
 import { TranslationsContext } from "../../translations-context";
+import styles from "./Navigation.module.scss";
 
 const Navigation: React.FC = () => {
   const t = React.useContext(TranslationsContext);
@@ -72,7 +73,7 @@ const Navigation: React.FC = () => {
             </ul>
           </div>
           <button
-            className="hamburger-menu text-white cursor-pointer text-xl leading-none border border-solid border-white rounded bg-transparent block md:hidden outline-none focus:outline-none"
+            className={`${styles.hamburgerMenu} text-white cursor-pointer text-xl leading-none border border-solid border-white rounded bg-transparent block md:hidden outline-none focus:outline-none`}
             type="button"
             onClick={() => setNavbarOpen(!navbarOpen)}
           >

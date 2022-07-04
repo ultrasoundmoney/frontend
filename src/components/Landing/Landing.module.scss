@@ -157,6 +157,7 @@
     z-index: 1;
     width: 100%;
     transition: all 300ms;
+    padding-top: 80px;
   
     &_bg {
       position: absolute;
@@ -180,6 +181,8 @@
 
   .blockFeeBurn {
     position: relative;
+    padding-bottom: 4rem;
+    padding-top: 10rem;
   
       .eipBg {
       position: absolute;
@@ -195,4 +198,15 @@
     & > *:not(video) {
       z-index: 2;
     }
+  }
+
+  .leadingTitle {
+    line-height: 1.5 !important;
+  }
+
+  .eclipsHr {
+    position: relative;
+      border-left-width: 1px;
+      border-style: dashed;
+      border-color: rgb(112 112 112);
   }

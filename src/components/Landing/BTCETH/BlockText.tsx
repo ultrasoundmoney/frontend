@@ -29,7 +29,7 @@ const BlockText: React.FC<BlockTextProps> = ({ title, text }) => {
       ref={text_block}
     >
       <h1
-        className="text-white font-light text-base md:text-2xl leading-normal text-center md:text-left mb-6 leading-title"
+        className="text-white font-light text-base md:text-2xl leading-normal text-center md:text-left mb-6"
         dangerouslySetInnerHTML={{
           __html: title,
         }}

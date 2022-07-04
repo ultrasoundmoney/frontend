@@ -2,6 +2,7 @@ import * as React from "react";
 import { DateTime } from "luxon";
 import SupplyChart from "./SupplyChart";
 import { useTranslations } from "../../utils/use-translation";
+import styles from "./SupplyChart.module.scss";
 
 const DEFAULT_PROJECTED_ETH_STAKING = 10e6;
 const DEFAULT_PROJECTED_BASE_GAS_PRICE = 50;
@@ -12,8 +13,8 @@ const SupplyView: React.FC = () => {
   const [showBreakdown] = React.useState(false);
 
   return (
-    <div className="supply_graph_section flex justify-between items-center">
-      <div className="supply_graph_text relative pl-14 w-2/5 box-border">
+    <div className={`${styles.supplyGraphSection} flex justify-between items-center`}>
+      <div className={`${styles.supplyGraphText} relative pl-14 w-2/5 box-border`}>
         <h1 className="text-white font-light text-base md:text-28xl leading-5 text-left mb-8 font-inter">
           {t.supplu_chart_title}
         </h1>
@@ -40,7 +41,7 @@ const SupplyView: React.FC = () => {
           padding: "30px",
           boxSizing: "border-box",
         }}
-        className="supply_graph relative w-1/2 box-border overflow-hidden"
+        className={`${styles.supplyGraph} relative w-1/2 box-border overflow-hidden`}
       >
         <p
           style={{

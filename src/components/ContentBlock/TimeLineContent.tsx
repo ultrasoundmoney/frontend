@@ -36,7 +36,7 @@ const TimeLineContentBlock: React.FC<TimeLineContentBlockProps> = ({
           <p className="text-blue-shipcove font-light text-sm text-center mb-6 font-inter">
             {blockNrAndTime}
           </p>
-          <h1 className="text-white font-light text-base md:text-3xl leading-normal text-center mb-6 leading-title font-inter">
+          <h1 className="text-white font-light text-base md:text-3xl leading-normal text-center mb-6 font-inter">
             {title}
           </h1>
           <p
