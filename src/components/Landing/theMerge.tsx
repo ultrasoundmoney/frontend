@@ -1,10 +1,10 @@
 import * as React from "react";
-import IconBlock from "../ContentBlock/IconBlock";
 import { TranslationsContext } from "../../translations-context";
 import { StepperContext } from "../../context/StepperContext";
 import AnimatedPath from "./AnimatedPath";
 import DrawingLine from "./DrawingLine";
 import styles from "./Landing.module.scss";
+import Twemoji from "../Twemoji";
 
 const TheMergeBlock: React.FC = () => {
   const t = React.useContext(TranslationsContext);
@@ -45,11 +45,14 @@ const TheMergeBlock: React.FC = () => {
             data-aos-easing="ease-in-out"
             className={`w-6/12 md:w-4/12 md:absolute md:mr-auto py-16 ${styles.mergeIconBlock}`}
           >
-            <IconBlock
-              icon={`${t.landing_themerge_pow_icon}`}
-              title={t.landing_themerge_pow_title}
-              text={t.landing_themerge_pow_text}
-            />
+            <div className="flex-none md:flex-1 text-center md:text-left px-3">
+              <div className="flex">
+                <Twemoji imageClassName="h-6 lg:h-8 select-none mr-2" wrapper>🏭</Twemoji>
+                <Twemoji imageClassName="h-6 lg:h-8 select-none" wrapper>⚡</Twemoji>
+              </div>
+              <h3 className="text-white font-light text-base text-center mb-4 mt-4">{t.landing_themerge_pow_title}</h3>
+              <p className="text-blue-shipcove font-light text-center text-sm break-words mt-4 whitespace-pre-line leading-relaxed">{t.landing_themerge_pow_text}</p>
+            </div>
           </div>
           <div
             data-aos="fade-up"
@@ -59,11 +62,13 @@ const TheMergeBlock: React.FC = () => {
             data-aos-easing="ease-in-out"
             className={`w-6/12 md:w-4/12 md:absolute md:ml-auto ${styles.mergeIconBlock}`}
           >
-            <IconBlock
-              icon={t.landing_themerge_pos_icon}
-              title={t.landing_themerge_pos_title}
-              text={t.landing_themerge_pos_text}
-            />
+            <div className="flex-none md:flex-1 text-center md:text-left px-3">
+              <div className="flex">
+                <Twemoji imageClassName="h-6 lg:h-8 select-none" wrapper>🌿</Twemoji>
+              </div>
+              <h3 className="text-white font-light text-base text-center mb-4 mt-4">{t.landing_themerge_pos_title}</h3>
+              <p className="text-blue-shipcove font-light text-center text-sm break-words mt-4 whitespace-pre-line leading-relaxed">{t.landing_themerge_pos_text}</p>
+            </div>
           </div>
           <AnimatedPath />
         </div>
