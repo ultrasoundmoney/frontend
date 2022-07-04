@@ -25,7 +25,7 @@ const FeeBurnedBlock = () => {
     : [];
   const [currentIndexHistorical, setCurrentIndexHistorical] = useState(0);
 
-  const vidgets = useRef<HTMLElement | null>(null);
+  const vidgets = useRef<HTMLDivElement>(null); 
   function onScroll() {
     //change data vidgets
     const bodyHeight = document.body.scrollHeight;
