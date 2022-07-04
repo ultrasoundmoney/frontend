@@ -18,8 +18,6 @@ const FouthVidget: React.FC<VidgetProps> = ({ name }) => {
     },
   );
 
-  console.log(data);
-
   const feeBurnedinEth =
     feesBurned !== undefined ? weiToEth(feesBurned.feesBurnedAll) : undefined;
 
