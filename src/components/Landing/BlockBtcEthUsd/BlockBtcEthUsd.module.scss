@@ -87,3 +87,48 @@
     transform: translateY(0);
   }
 }
+
+.spanBtc {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 14px;
+    left: 20px;
+    width: 12px;
+    height: 12px;
+    background: #ff891d;
+    border-radius: 100%;
+  }
+}
+
+.spanEth {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 14px;
+    left: 20px;
+    width: 12px;
+    height: 12px;
+    background: #5474f4;
+    border-radius: 100%;
+  }
+}
+
+.spanUsd {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 14px;
+    left: 20px;
+    width: 12px;
+    height: 12px;
+    background: #a3d972;
+    border-radius: 100%;
+  }
+}
