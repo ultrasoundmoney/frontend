@@ -119,7 +119,7 @@ const SupplyChart: React.FC<Props> = ({
     Highcharts.SeriesLineOptions[],
     Record<string, number>
   ] => {
-    const stakingByDate = {};
+    const stakingByDate:any = {};
     stakingData.forEach(({ t, v }: { t: string; v: number }) => {
       stakingByDate[t] = v;
     });
@@ -299,12 +299,13 @@ const SupplyChart: React.FC<Props> = ({
         xDateFormat: "%Y-%m-%d",
         useHTML: true,
         formatter: function () {
-          const dt = DateTime.fromMillis(this.x, { zone: "utc" });
+          const x: number = this.x !== undefined? Number(this.x): 0;
+          const dt = DateTime.fromMillis(x, { zone: "utc" });
           const header = `<div class="tt-header"><div class="tt-header-date text-blue-spindle">${formatDate(
             dt.toJSDate()
           )}</div></div>`;
 
-          const total = totalSupplyByDate[this.x];
+          const total = totalSupplyByDate[x];
           const table = `<table><tbody><tr class="tt-total-row">
               <td class="text-white">${formatOneDigit(total / 1e6)}M</td>
             </tr></tbody></table>`;
