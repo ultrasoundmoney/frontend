@@ -13,7 +13,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "@fullpage/react-fullpage": "^0.1.19",
     "@popperjs/core": "^2.11.2",
     "@react-hook/media-query": "^1.1.1",
     "@sentry/react": "^7.1.1",
