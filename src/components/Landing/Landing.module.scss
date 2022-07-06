@@ -1,211 +1,205 @@
 .ultraSoundText {
-    background: linear-gradient(
-      90.4deg,
-      #ff01e6 0.98%,
-      #ff5f51 41.52%,
-      #00ffa3 102.19%
-    );
-    // font-size: 56px;
-    font-weight: 200;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.3 !important;
-    letter-spacing: normal;
-    text-align: center;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+  background: linear-gradient(
+    90.4deg,
+    #ff01e6 0.98%,
+    #ff5f51 41.52%,
+    #00ffa3 102.19%
+  );
+  // font-size: 56px;
+  font-weight: 200;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.3 !important;
+  letter-spacing: normal;
+  text-align: center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 
-    &.currentGradient {
-        width: fit-content;
-        margin-left: auto;
-        margin-right: auto;
-    }
-}
-
-.graphTextContainter {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  &.currentGradient {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 .theMergePath {
-    position: relative;
-  
-    .mergePath {
-        width: 100%;
-        text-align: center;
-  
-        &_static {
-            position: relative;
-            margin: auto;
-            width: 210px;
-  
-            .path {
-                position: relative;
-            }
-  
-            .bg {
-                position: absolute;
-                bottom: 20px;
-                transform: translateX(-46%);
-            }
-        }
-  
-        &_animated {
-            position: relative;
-            margin: auto;
-            width: 210px;
-  
-            .path {
-                position: relative;
-            }
-  
-            .bg {
-                position: absolute;
-                bottom: 20px;
-                transform: translateX(-46%);
-            }
-        }
-    }
-  
-    .mergeIconBlock {
-        &:nth-child(2) {
-            right: 0;
-            top: 300px;
-        }
-  
-        .icon-emoji, h1, h3, p {
-            text-align: left;
-        }
-  
-        img {
-            max-width: 20px;
-        }
-  
-        h1 {
-            margin-bottom: 20px;
-        }
-  
-        p {
-            margin: 0;
-        }
-    }
-  
-    @media screen and (min-width: 768px){
-      .mergePath_animated {
-          left: calc(50% - 20px);
-          margin: initial;
-      }
-      .mergeIconBlock {
-          max-width: 240px;
-  
-          &:nth-child(1) {
-              right: calc(50% + 30px);
-          }
-  
-          &:nth-child(2) {
-              top: 70px;
-              left: calc(50% + 30px);
-          }
-        }
-    }
-  
-    @media screen and (min-width: 1172px){
-      .mergeIconBlock {
-        &:nth-child(2) {
-          top: 300px;
-          left: calc(50% + 210px);
-        }
-      }
-    }
-  
-    @media (max-width: 1024px) {
-        .mergePathStatic {
-            width: 190px;
-        }
-    }
-  
-    @media (min-width: 380px) and (max-width: 768px) {
-        .mergeIconBlock {
-            &:nth-child(2) {
-                align-self: end;
-                margin-bottom: -200px;
-            }
-  
-        }
-    }
-  
-    @media screen and (max-width: 380px) {
-        .mergeIconBlock {
-            width: 100%;
-        }
-    }
-  
-    @media (max-width: 767px) {
-        background-size: contain;
-  
-        &::after {
-            bottom: 0px;
-        }
-    }
-  }
+  position: relative;
 
-  .hero {
-    z-index: 1;
+  .mergePath {
     width: 100%;
-    transition: all 300ms;
-    padding-top: 80px;
-  
-    &_bg {
-      position: absolute;
-      top: 0;
-      left: 50%;
+    text-align: center;
+
+    &_static {
+      position: relative;
+      margin: auto;
+      width: 210px;
+
+      .path {
+        position: relative;
+      }
+
+      .bg {
+        position: absolute;
+        bottom: 20px;
+        transform: translateX(-46%);
+      }
+    }
+
+    &_animated {
+      position: relative;
+      margin: auto;
+      width: 210px;
+
+      .path {
+        position: relative;
+      }
+
+      .bg {
+        position: absolute;
+        bottom: 20px;
+        transform: translateX(-46%);
+      }
+    }
+  }
+
+  .mergeIconBlock {
+    &:nth-child(2) {
+      right: 0;
+      top: 300px;
+    }
+
+    .icon-emoji,
+    h1,
+    h3,
+    p {
+      text-align: left;
+    }
+
+    img {
+      max-width: 20px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    .mergePath_animated {
+      left: calc(50% - 20px);
+      margin: initial;
+    }
+    .mergeIconBlock {
+      max-width: 240px;
+
+      &:nth-child(1) {
+        right: calc(50% + 30px);
+      }
+
+      &:nth-child(2) {
+        top: 70px;
+        left: calc(50% + 30px);
+      }
+    }
+  }
+
+  @media screen and (min-width: 1172px) {
+    .mergeIconBlock {
+      &:nth-child(2) {
+        top: 300px;
+        left: calc(50% + 210px);
+      }
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .mergePathStatic {
+      width: 190px;
+    }
+  }
+
+  @media (min-width: 380px) and (max-width: 768px) {
+    .mergeIconBlock {
+      &:nth-child(2) {
+        align-self: end;
+        margin-bottom: -200px;
+      }
+    }
+  }
+
+  @media screen and (max-width: 380px) {
+    .mergeIconBlock {
       width: 100%;
-      transform: translate(-50%,-50%);
-      opacity: 0.5;
-      max-width: 1200px;
     }
   }
 
-  .fixedFeeBurned {
-    transition: all 0.2s ease;
-    transform: translateY(100%);
-  
-    &.active {
-      transform: translateY(0);
+  @media (max-width: 767px) {
+    background-size: contain;
+
+    &::after {
+      bottom: 0px;
     }
   }
+}
 
-  .blockFeeBurn {
-    position: relative;
-    padding-bottom: 4rem;
-    
-      .eipBg {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translate(-50%, -20%);
-      z-index: 1;
-      opacity: 0.5;
-      max-width: 500px;
-      width: 100%;
-    }
-  
-    & > *:not(video) {
-      z-index: 2;
-    }
+.hero {
+  z-index: 1;
+  width: 100%;
+  transition: all 300ms;
+  padding-top: 80px;
+
+  &_bg {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+    opacity: 0.5;
+    max-width: 1200px;
+  }
+}
+
+.fixedFeeBurned {
+  transition: all 0.2s ease;
+  transform: translateY(100%);
+
+  &.active {
+    transform: translateY(0);
+  }
+}
+
+.blockFeeBurn {
+  position: relative;
+  padding-bottom: 4rem;
+
+  .eipBg {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -20%);
+    z-index: 1;
+    opacity: 0.5;
+    max-width: 500px;
+    width: 100%;
   }
 
-  .leadingTitle {
-    line-height: 1.5 !important;
+  & > *:not(video) {
+    z-index: 2;
   }
+}
 
-  .eclipsHr {
-    position: relative;
-      border-left-width: 1px;
-      border-style: dashed;
-      border-color: rgb(112 112 112);
-  }
+.leadingTitle {
+  line-height: 1.5 !important;
+}
+
+.eclipsHr {
+  position: relative;
+  border-left-width: 1px;
+  border-style: dashed;
+  border-color: rgb(112 112 112);
+}
