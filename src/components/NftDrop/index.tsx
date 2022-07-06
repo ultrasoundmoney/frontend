@@ -1,7 +1,5 @@
 import nftDropPoster from "../../assets/nft-drop.jpg";
-import GlowBackground from "../../assets/Glow.svg";
 import React from "react";
-import poapLogo from "../../assets/poap-logo.svg";
 import { TranslationsContext } from "../../translations-context";
 
 const NftDrop: React.FC = () => {
@@ -13,7 +11,7 @@ const NftDrop: React.FC = () => {
       className="relative w-full md:w-auto md:flex px-4 md:px-0 pt-32 pb-40"
     >
       <div className="absolute -top-32 left-0">
-        <img src={GlowBackground.src} alt="glow" />
+        <img src={`/glow.svg`} alt="glow" />
       </div>
       <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
         <div className="flex flex-col md:flex-row bg-blue-tangaroa px-4 py-8 md:px-24 md:py-16 rounded-xl">
@@ -21,7 +19,7 @@ const NftDrop: React.FC = () => {
             <img
               alt="logo of a poap token"
               className="w-16"
-              src={poapLogo.src as unknown as string}
+              src={`/poap-logo.svg`}
             />
             <h2 className="text-white text-2xl md:text-3xl font-light my-8">
               {t.title_nft_drop}

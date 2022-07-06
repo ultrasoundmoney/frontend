@@ -5,7 +5,6 @@ import React, {
   useState,
   useCallback,
 } from "react";
-import arrowRight from "../../assets/arrowRight.svg";
 import Steps from "./Steps";
 import { StepperContext, StepperPoint } from "../../context/StepperContext";
 import { ActionLogo } from "./types";
@@ -103,7 +102,7 @@ const Stepper: React.FC = () => {
             href="#join-the-fam"
           >
             Join The Community
-            <img className="ml-6" src={arrowRight.src} alt="arrow-right" />
+            <img className="ml-6" src={`/arrowRight.svg`} alt="arrow-right" />
           </a>
         </div>
       </div>

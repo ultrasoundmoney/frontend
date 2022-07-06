@@ -119,7 +119,7 @@ const SupplyChart: React.FC<Props> = ({
     Highcharts.SeriesLineOptions[],
     Record<string, number>
   ] => {
-    const stakingByDate:any = {};
+    const stakingByDate: Record<string, number> = {};
     stakingData.forEach(({ t, v }: { t: string; v: number }) => {
       stakingByDate[t] = v;
     });

@@ -49,7 +49,7 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab, cryptoType }) => {
   const onGraphClickHandler = (
     e: React.MouseEvent<SVGPathElement | SVGUseElement>
   ) => {
-    const elem: any = e.target;
+    const elem = e.target as HTMLInputElement;
     const correctSpecificTab = (str: string) => {
       switch (str) {
         case "btc":
@@ -67,7 +67,7 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab, cryptoType }) => {
       }
     };
     if (elem?.dataset?.graph && typeof elem.dataset.graph === "string") {
-      correctSpecificTab(elem.dataset.graph as string);
+      correctSpecificTab(elem.dataset.graph);
     }
   };
 

@@ -1,7 +1,4 @@
 import * as React from "react";
-import AvatarImg from "../../assets/avatar.webp";
-import EthBurn from "../../assets/eth-burn.svg";
-import posterBg from "../../assets/bat-bg/Blurredbg.png";
 import { StepperContext } from "../../context/StepperContext";
 import { TranslationsContext } from "../../translations-context";
 import DrawingLine from "./DrawingLine";
@@ -12,7 +9,7 @@ const EIP1559: React.FC = () => {
   function imageErrorHandler(e: React.SyntheticEvent<HTMLImageElement, Event>) {
     const el = e.target as HTMLImageElement;
     el.onerror = null;
-    el.src = AvatarImg.src;
+    el.src = `/avatar.webp`;
   }
   const stepperContext = React.useContext(StepperContext);
   const EIPRef = React.useRef<HTMLDivElement | null>(null);
@@ -42,7 +39,7 @@ const EIP1559: React.FC = () => {
             autoPlay
             muted
             loop
-            poster={posterBg.src}
+            poster={`/bat-bg/Blurredbg.png`}
           >
             <source src="/eip_compressed.mp4" type="video/mp4" />
           </video>
@@ -51,7 +48,7 @@ const EIP1559: React.FC = () => {
               className="relative text-center mx-auto mb-8"
               width="111"
               height="90"
-              src={EthBurn.src}
+              src={`/eth-burn.svg`}
               alt="eth-brn"
               onError={imageErrorHandler}
             />

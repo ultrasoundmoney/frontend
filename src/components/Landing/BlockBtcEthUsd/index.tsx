@@ -27,12 +27,12 @@ const TheUltraSound: FC = () => {
       const blocks = graphTextRef.current.children;
       if (window.innerWidth <= 740) {
         for (let i = 0; i <= blocks.length - 1; i++) {
-          const el: any = blocks[i];
+          const el = blocks[i] as HTMLDivElement;
           el.style.minHeight = "auto";
         }
       } else {
         for (let i = 0; i <= blocks.length - 1; i++) {
-          const el: any = blocks[i];
+          const el = blocks[i] as HTMLDivElement;
           el.style.minHeight = `${graphBlockHeight ? graphBlockHeight : 0}px`;
         }
       }

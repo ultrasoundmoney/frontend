@@ -47,8 +47,12 @@ export const setScrollPosition = (
   const distanceOrderItem = Math.ceil(iconOffset / distanceWidth);
   const parentBlock = stepsRefElem.parentElement!;
   const trackingChildrenBlock = Array.from(parentBlock.children).find(
-    (elem: any) => elem.dataset.navigationtrackingblock,
+    (elem: Element) => {
+      const t = elem as HTMLElement;
+      return t.dataset.navigationtrackingblock;
+    },
   );
+
   if (trackingChildrenBlock) {
     const allTrackingChildren = Array.from(trackingChildrenBlock.children);
     const blocksHeights = allTrackingChildren.map((elem) => {

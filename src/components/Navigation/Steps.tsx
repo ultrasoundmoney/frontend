@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 import { TranslationsContext } from "../../translations-context";
 import StepperPoint from "./StepperPoint";
 import StepperTrack from "./StepperTrack";
@@ -122,7 +121,7 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
                 cursor: "ew-resize",
               }}
               draggable="true"
-              src={EthLogo.src}
+              src={`/ethereum-logo-2014-5.svg`}
               alt={t.title}
             />
           </motion.div>

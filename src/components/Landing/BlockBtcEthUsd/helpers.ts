@@ -46,8 +46,8 @@ export const onHoverFunctionality = (
     usdPathRefEl.style.strokeDashoffset = "900";
     setHoverElem(null);
   } else {
-    const elem: any = e.target;
-    const hoverElem: string = elem.dataset.graph;
+    const elem = e.target as HTMLInputElement;
+    const hoverElem: string | undefined = elem.dataset.graph;
     if (hoverElem === "btc") {
       btcPathRefEl.style.strokeDashoffset = "410";
       setHoverElem("btc");

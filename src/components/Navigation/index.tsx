@@ -1,6 +1,5 @@
 import * as React from "react";
 import Link from "next/link";
-import EthLogo from "../../assets/ethereum-logo-2014-5.svg";
 import twemoji from "twemoji";
 import { TranslationsContext } from "../../translations-context";
 import styles from "./Navigation.module.scss";
@@ -16,7 +15,7 @@ const Navigation: React.FC = () => {
           <div className="w-full md:w-5/12 relative flex justify-start lg:static lg:justify-start">
             <div className="flex-initial pr-2 lg:pr-8">
               <Link href="/">
-                <img className="max-w-max" src={EthLogo} alt={t.title} />
+                <img className="max-w-max" src={`/ethereum-logo-2014-5.svg`} alt={t.title} />
               </Link>
             </div>
             <div
@@ -38,7 +37,6 @@ const Navigation: React.FC = () => {
                 <Link href="/">
                   <a
                     className="px-3 py-2 flex items-center leading-snug text-blue-shipcove hover:opacity-75 hover:text-white"
-                    href="/"
                   >
                     dashboard
                   </a>
@@ -48,7 +46,6 @@ const Navigation: React.FC = () => {
                 <Link href="/">
                   <a
                     className="px-3 py-2 flex items-center leading-snug text-blue-shipcove hover:opacity-75 hover:text-white"
-                    href="/"
                   >
                     q&a
                   </a>
