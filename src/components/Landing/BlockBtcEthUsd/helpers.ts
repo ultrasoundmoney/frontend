@@ -6,7 +6,7 @@ export const handleGraphs = (
   topBreakPointValue: number,
   arrayBlocksText: Element[],
   offset: number,
-  setCryptoType: (val: string) => void
+  setCryptoType: (val: string) => void,
 ) => {
   for (let i = 0; i <= arrayBlocksText.length - 1; i++) {
     const topValue = arrayBlocksText[i].getBoundingClientRect().top + offset;
@@ -19,7 +19,7 @@ export const handleGraphs = (
 
 export const setScrollPos = (
   scrollTo: graphTypes,
-  graphTextBlockElem: HTMLElement
+  graphTextBlockElem: HTMLElement,
 ) => {
   const indexScrollElement = graphType.findIndex((el) => el === scrollTo);
   graphTextBlockElem.children[indexScrollElement].scrollIntoView({
@@ -38,7 +38,7 @@ export const onHoverFunctionality = (
   ethPathRefEl: SVGPathElement,
   usdPathRefEl: SVGPathElement,
   btcPathRefEl: SVGPathElement,
-  setHoverElem: (val: string | null) => void
+  setHoverElem: (val: string | null) => void,
 ) => {
   if (e.type === "mouseout") {
     btcPathRefEl.style.strokeDashoffset = "900";
@@ -65,7 +65,7 @@ export const onSvgMouseOut = (
   ethPathRefEl: SVGPathElement,
   usdPathRefEl: SVGPathElement,
   btcPathRefEl: SVGPathElement,
-  setHoverElem: (val: string | null) => void
+  setHoverElem: (val: string | null) => void,
 ) => {
   btcPathRefEl.style.strokeDashoffset = "900";
   ethPathRefEl.style.strokeDashoffset = "900";

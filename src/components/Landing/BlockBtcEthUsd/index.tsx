@@ -21,11 +21,11 @@ const TheUltraSound: FC = () => {
   const GRAPH_TOP_MOBILE_VALUE = 100;
 
   const setTextBlicksHeights = () => {
-    const graphBlockHeight = graphsBlockRef.current?.getBoundingClientRect()
-      .height;
+    const graphBlockHeight =
+      graphsBlockRef.current?.getBoundingClientRect().height;
     if (graphTextRef.current) {
       const blocks = graphTextRef.current.children;
-      if (window.innerWidth <= 740) {
+      if (window.innerWidth <= 1000) {
         for (let i = 0; i <= blocks.length - 1; i++) {
           const el = blocks[i] as HTMLDivElement;
           el.style.minHeight = "auto";
@@ -54,7 +54,7 @@ const TheUltraSound: FC = () => {
           topBreakPointValue,
           textBlocksArray,
           offset,
-          setCryptoType
+          setCryptoType,
         );
       }
     };
@@ -92,7 +92,9 @@ const TheUltraSound: FC = () => {
             src={BatImg.src}
             className="mx-auto text-center mb-8"
           />
-          <div className={`${styles.ultraSoundText} ${styles.currentGradient} text-2xl md:text-6xl mb-24`}>
+          <div
+            className={`${styles.ultraSoundText} ${styles.currentGradient} text-2xl md:text-6xl mb-24`}
+          >
             {t.eusm_section_title}
           </div>
         </div>
@@ -103,12 +105,12 @@ const TheUltraSound: FC = () => {
         >
           <div
             ref={graphTextRef}
-            className={`${styles.graphTextContainter} w-full md:w-5/12 self-center order-2 md:order-1`}
+            className={`${classes.graphTextContainter} w-5/12 self-center order-1`}
           >
             <SVGrenderText />
           </div>
           <div
-            className={`${classes.graphsBlock} w-full md:w-5/12 order-1 md:order-1 mb-6 md:mb-0`}
+            className={`${classes.graphsBlock} w-5/12 order-1 mb-6 md:mb-0`}
             ref={graphsBlockRef}
           >
             <CurrencyTabs

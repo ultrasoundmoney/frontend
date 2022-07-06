@@ -10,12 +10,16 @@ const BlockText: React.FC<BlockTextProps> = ({ title, text }) => {
   useEffect(() => {
     const onScroll = () => {
       if (text_block.current) {
-        const currentTop = text_block.current.getBoundingClientRect().top;
-        const offsetBottom = 300;
-        const opacityBlock = (
-          -(currentTop - window.innerHeight + offsetBottom) / 200
-        ).toFixed(2);
-        text_block.current.style.opacity = `${opacityBlock}`;
+        if (window.innerWidth > 1000) {
+          const currentTop = text_block.current.getBoundingClientRect().top;
+          const offsetBottom = 300;
+          const opacityBlock = (
+            -(currentTop - window.innerHeight + offsetBottom) / 200
+          ).toFixed(2);
+          text_block.current.style.opacity = `${opacityBlock}`;
+        } else {
+          text_block.current.style.opacity = "1";
+        }
       }
     };
     window.addEventListener("scroll", onScroll);
