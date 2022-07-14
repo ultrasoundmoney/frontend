@@ -47,8 +47,7 @@ const WidgetGroup1: FC = () => {
   }, [timeFrame]);
 
   return (
-    // without this the time frame selector on the burn records widget causes big scroll jumps
-    <div style={{ overflowAnchor: "none" }}>
+    <div>
       <div className="w-full flex flex-col md:flex-row md:gap-0 lg:gap-4 px-4 md:px-16 isolate">
         <div className="hidden md:block w-1/3">
           <BurnGauge timeFrame={timeFrame} unit={unit} />
