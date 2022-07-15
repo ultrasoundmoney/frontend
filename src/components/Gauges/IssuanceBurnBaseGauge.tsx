@@ -8,7 +8,7 @@ import { FeatureFlagsContext } from "../../feature-flags";
 import { formatOneDigit, formatZeroDigit } from "../../format";
 import { pipe } from "../../fp";
 import Twemoji from "../Twemoji";
-import { WidgetTitle } from "../widget-subcomponents";
+import { WidgetTitle } from "../WidgetSubcomponents";
 import GaugeSvg, { GaugeGradientFill } from "./GaugeSvg";
 
 type BaseGuageProps = {

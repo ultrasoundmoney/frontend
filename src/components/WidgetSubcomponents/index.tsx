@@ -1,6 +1,6 @@
 import { FC, HTMLAttributes, ReactNode } from "react";
 import { TimeFrameNext } from "../../time-frames";
-import TimeFrameIndicator from "./TimeFrameIndicator";
+import TimeFrameIndicator from "../TimeFrameIndicator";
 
 type BackgroundProps = {
   children: ReactNode;
@@ -44,7 +44,7 @@ type Group1BaseProps = {
   title: string;
 };
 
-export const Group1Base: FC<Group1BaseProps> = ({
+export const BurnGroupBase: FC<Group1BaseProps> = ({
   backgroundClassName,
   children,
   onClickTimeFrame,

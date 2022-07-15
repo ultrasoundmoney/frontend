@@ -9,7 +9,7 @@ import { TimeFrameNext } from "../time-frames";
 import { MoneyAmountAnimated } from "./Amount";
 import SpanMoji from "./SpanMoji";
 import { TextInter, TextRoboto } from "./Texts";
-import { Group1Base } from "./widget-subcomponents";
+import { BurnGroupBase } from "./WidgetSubcomponents";
 
 const formatBlockNumber = flow(
   O.fromPredicate((unknown): unknown is number => typeof unknown === "number"),
@@ -75,7 +75,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
       : burnRecords[timeFrame];
 
   return (
-    <Group1Base
+    <BurnGroupBase
       onClickTimeFrame={onClickTimeFrame}
       timeFrame={timeFrame}
       title="burn records"
@@ -125,7 +125,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
           </div>
         ))}
       </div>
-    </Group1Base>
+    </BurnGroupBase>
   );
 };
 

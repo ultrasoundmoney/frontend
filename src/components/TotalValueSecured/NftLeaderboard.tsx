@@ -1,7 +1,7 @@
 import { useTotalValueSecured } from "../../api/total-value-secured";
 import { AmountBillionsUsdAnimated } from "../Amount";
 import { TextInter } from "../Texts";
-import { WidgetBackground, WidgetTitle } from "../widget-subcomponents";
+import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 
 const NftLeaderboard = () => {
   const totalValueSecured = useTotalValueSecured();

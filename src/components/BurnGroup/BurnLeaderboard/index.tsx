@@ -19,7 +19,7 @@ import { TimeFrameNext } from "../../../time-frames";
 import { useActiveBreakpoint } from "../../../utils/use-active-breakpoint";
 import Modal from "../../Modal";
 import Tooltip from "../../Tooltip";
-import { Group1Base } from "../../widget-subcomponents";
+import { BurnGroupBase } from "../../WidgetSubcomponents";
 import LeaderboardRow from "./LeaderboardRow";
 
 const feePeriodToUpdateMap: Record<TimeFrameNext, keyof Leaderboards> = {
@@ -226,7 +226,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
 
   return (
     <>
-      <Group1Base
+      <BurnGroupBase
         backgroundClassName="flex flex-col gap-y-4 h-[32rem] lg:h-full"
         onClickTimeFrame={onClickTimeFrame}
         title="burn leaderboard"
@@ -280,7 +280,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
                 ),
               )}
         </div>
-      </Group1Base>
+      </BurnGroupBase>
       <>
         <div
           ref={setPopperEl}

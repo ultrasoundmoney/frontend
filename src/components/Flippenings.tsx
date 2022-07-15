@@ -5,7 +5,7 @@ import { animated, useSpring } from "react-spring";
 import { useMarketCaps } from "../api/market-caps";
 import colors from "../colors";
 import { TextInter, TextRoboto } from "./Texts";
-import { WidgetBackground, WidgetTitle } from "./widget-subcomponents";
+import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
 type Icon = "btc" | "gold" | "usd";
 

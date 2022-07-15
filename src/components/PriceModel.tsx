@@ -10,7 +10,7 @@ import * as StaticEtherData from "../static-ether-data";
 import { MoneyAmount } from "./Amount";
 import styles from "./PriceModel.module.scss";
 import { TextInter, TextRoboto } from "./Texts";
-import { WidgetBackground, WidgetTitle } from "./widget-subcomponents";
+import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
 type SliderProps = {
   children: number;

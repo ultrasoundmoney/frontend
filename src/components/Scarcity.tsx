@@ -7,7 +7,7 @@ import * as Format from "../format";
 import { pipe } from "../fp";
 import { Amount, MoneyAmount } from "./Amount";
 import { LabelText, TextInter, TextRoboto } from "./Texts";
-import { WidgetBackground, WidgetTitle } from "./widget-subcomponents";
+import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
 type ScarcityBarProps = {
   staked: number;
