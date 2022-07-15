@@ -6,16 +6,13 @@ import { TimeFrameNext, timeFramesNext } from "../../time-frames";
 import BurnCategories from "../BurnCategories";
 import BurnRecords from "../BurnRecords";
 import BurnTotal from "../BurnTotal";
+import CurrencyControl from "../CurrencyControl";
 import DeflationaryStreak from "../DeflationaryStreak";
-import BurnGauge from "../Gauges/BurnGauge";
-import IssuanceGauge from "../Gauges/IssuanceGauge";
-import SupplyGrowthGauge from "../Gauges/SupplyGrowthGauge";
 import LatestBlocks from "../LatestBlocks";
+import TimeFrameControl from "../TimeFrameControl";
 import ToggleSwitch from "../ToggleSwitch";
 import { WidgetTitle } from "../WidgetSubcomponents";
 import BurnLeaderboard from "./BurnLeaderboard";
-import CurrencyControl from "./controls/CurrencyControl";
-import TimeFrameControl from "./controls/TimeFrameControl";
 
 const WidgetGroup1: FC = () => {
   const [simulateMerge, setSimulateMerge] = useState(false);
@@ -49,28 +46,8 @@ const WidgetGroup1: FC = () => {
   return (
     <div className="flex flex-col gap-4 px-4 md:px-16 ">
       <div>
-        <div className="w-full flex flex-col md:flex-row md:gap-0 lg:gap-4 isolate">
-          <div className="hidden md:block w-1/3">
-            <BurnGauge timeFrame={timeFrame} unit={unit} />
-          </div>
-          <div className="md:w-1/3 scale-80">
-            <SupplyGrowthGauge
-              onClickTimeFrame={handleClickTimeFrame}
-              simulateMerge={simulateMerge}
-              timeFrame={timeFrame}
-              toggleSimulateMerge={toggleSimulateMerge}
-            />
-          </div>
-          <div className="hidden md:block w-1/3">
-            <IssuanceGauge
-              simulateMerge={simulateMerge}
-              timeFrame={timeFrame}
-              unit={unit}
-            />
-          </div>
-        </div>
         <div className="">
-          <div className={`bg-blue-tangaroa rounded-bl-lg rounded-br-lg p-8`}>
+          <div className={`bg-blue-tangaroa rounded-lg p-8`}>
             <div className="grid grid-cols-2 md:flex md:justify-between flex-col gap-y-8 md:flex-row lg:gap-y-0 ">
               <div className="row-start-1 flex flex-col gap-4 lg:gap-x-4 lg:flex-row lg:items-center">
                 <WidgetTitle>time frame</WidgetTitle>
