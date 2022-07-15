@@ -95,9 +95,10 @@ export const MoneyAmount: FC<MoneyAmountProps> = ({
   );
 };
 
-const defaultMoneyAnimationDuration = 0.8;
+export const defaultMoneyAnimationDuration = 0.8;
 type MoneyAmountAnimatedProps = {
   children: number | undefined;
+  decimals?: number;
   skeletonWidth?: string;
   textClassName?: HTMLDivElement["className"];
   unit: Unit;
@@ -106,6 +107,7 @@ type MoneyAmountAnimatedProps = {
 
 export const MoneyAmountAnimated: FC<MoneyAmountAnimatedProps> = ({
   children,
+  decimals = 2,
   skeletonWidth,
   textClassName,
   unit,
@@ -118,7 +120,7 @@ export const MoneyAmountAnimated: FC<MoneyAmountAnimatedProps> = ({
   >
     {children && (
       <CountUp
-        decimals={unit === "eth" ? 2 : 0}
+        decimals={decimals}
         duration={defaultMoneyAnimationDuration}
         end={unit === "eth" ? Format.ethFromWei(children) : children}
         preserveValue={true}
