@@ -17,7 +17,7 @@ import { LimitedTimeFrameNext, TimeFrameNext } from "../time-frames";
 import { AmountAnimatedShell } from "./Amount";
 import { TextRoboto } from "./Texts";
 import Twemoji from "./Twemoji";
-import { Group1Base, WidgetTitle } from "./widget-subcomponents";
+import { BurnGroupBase, WidgetTitle } from "./WidgetSubcomponents";
 
 const timeframeFeesBurnedMap: Record<
   TimeFrameNext,
@@ -117,7 +117,7 @@ const BurnTotal: FC<Props> = ({
       : Format.ethFromWei(selectedFeesBurnedEth) / selectedIssuance;
 
   return (
-    <Group1Base
+    <BurnGroupBase
       onClickTimeFrame={onClickTimeFrame}
       timeFrame={timeFrame}
       title="burn total"
@@ -199,7 +199,7 @@ const BurnTotal: FC<Props> = ({
           </div>
         </div>
       </div>
-    </Group1Base>
+    </BurnGroupBase>
   );
 };
 

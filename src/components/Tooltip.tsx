@@ -5,7 +5,7 @@ import scrollbarStyles from "../styles/Scrollbar.module.scss";
 import { TextInter, TextRoboto } from "./Texts";
 import Twemoji from "./Twemoji";
 import BioWithLinks from "./Twitter/BioWithLinks";
-import { WidgetTitle } from "./widget-subcomponents";
+import { WidgetTitle } from "./WidgetSubcomponents";
 
 type ExternalLinkProps = {
   alt: string;

@@ -4,7 +4,7 @@ import Skeleton from "react-loading-skeleton";
 import { useTotalValueSecured } from "../../api/total-value-secured";
 import { AmountUnitSpace } from "../Spacing";
 import { TextInter, TextRoboto, UnitText } from "../Texts";
-import { WidgetTitle } from "../widget-subcomponents";
+import { WidgetTitle } from "../WidgetSubcomponents";
 import { FeatureFlagsContext } from "../../feature-flags";
 import { useScarcity } from "../../api/scarcity";
 import JSBI from "jsbi";
