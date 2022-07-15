@@ -3,7 +3,7 @@ import {
   displayTimeFrameNextMap,
   TimeFrameNext,
   timeFramesNext,
-} from "../../../time-frames";
+} from "../time-frames";
 
 export const Button: FC<{
   children: ReactNode;
@@ -30,8 +30,9 @@ export const Button: FC<{
 );
 
 type Props = {
-  selectedTimeframe: TimeFrameNext;
   onSetTimeFrame: (timeframe: TimeFrameNext) => void;
+  selectedTimeframe: TimeFrameNext;
+  topCornersRounded?: boolean;
 };
 
 const TimeFrameControl: FC<Props> = ({ selectedTimeframe, onSetTimeFrame }) => (
