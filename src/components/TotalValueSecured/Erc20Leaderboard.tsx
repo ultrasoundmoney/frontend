@@ -3,7 +3,7 @@ import { useTotalValueSecured } from "../../api/total-value-secured";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import { AmountBillionsUsdAnimated } from "../Amount";
 import { TextInter } from "../Texts";
-import { WidgetBackground, WidgetTitle } from "../widget-subcomponents";
+import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 
 const Erc20Leaderboard: FC = () => {
   const totalValueSecured = useTotalValueSecured();

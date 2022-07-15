@@ -22,8 +22,8 @@ import Link from "../Link";
 import Modal from "../Modal";
 import { TextInter } from "../Texts";
 import Tooltip from "../Tooltip";
-import AdminControls from "../widget-group-1/BurnLeaderboard/AdminControls";
-import { WidgetBackground, WidgetTitle } from "../widget-subcomponents";
+import AdminControls from "../BurnGroup/BurnLeaderboard/AdminControls";
+import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 
 type TvsLeaderboardProps = {
   className?: HTMLAttributes<HTMLDivElement>["className"];

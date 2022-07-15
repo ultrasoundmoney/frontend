@@ -11,7 +11,7 @@ import {
 import Link from "../Link";
 import Modal from "../Modal";
 import { TextInter } from "../Texts";
-import { WidgetBackground, WidgetTitle } from "../widget-subcomponents";
+import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 import TooltipSecurityRatio from "./TooltipSecurityRatio";
 
 const AssetType: FC<{

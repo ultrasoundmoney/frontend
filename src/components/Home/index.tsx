@@ -19,8 +19,8 @@ import ToggleSwitch from "../ToggleSwitch";
 import TotalValueSecured from "../TotalValueSecured";
 import TwitterFam from "../TwitterFam";
 import ValidatorRewardsWidget from "../ValidatorRewards";
-import WidgetGroup1 from "../widget-group-1";
-import { WidgetTitle } from "../widget-subcomponents";
+import WidgetGroup1 from "../BurnGroup";
+import { WidgetTitle } from "../WidgetSubcomponents";
 import styles from "./Home.module.scss";
 import TopBar from "./TopBar";
 

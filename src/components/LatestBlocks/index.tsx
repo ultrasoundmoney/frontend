@@ -13,7 +13,7 @@ import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import CSSTransition from "../CSSTransition";
 import { AmountUnitSpace } from "../Spacing";
 import { TextInter, TextRoboto } from "../Texts";
-import { WidgetBackground, WidgetTitle } from "../widget-subcomponents";
+import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 import styles from "./LatestBlocks.module.scss";
 
 const maxBlocks = 20;

@@ -10,8 +10,8 @@ import * as Format from "../../format";
 import * as StaticEtherData from "../../static-ether-data";
 import { TimeFrameNext } from "../../time-frames";
 import { timeframeBurnRateMap } from "../BurnTotal";
-import { WidgetTitle } from "../widget-subcomponents";
-import TimeFrameIndicator from "../widget-subcomponents/TimeFrameIndicator";
+import { WidgetTitle } from "../WidgetSubcomponents";
+import TimeFrameIndicator from "../TimeFrameIndicator";
 import SplitGaugeSvg from "./SplitGaugeSvg";
 
 const useGrowthRate = (

@@ -13,7 +13,7 @@ import * as Format from "../format";
 import { flow, O, pipe } from "../fp";
 import { MoneyAmount, PercentAmount } from "./Amount";
 import { LabelText, TextInter, TextRoboto } from "./Texts";
-import { WidgetBackground, WidgetTitle } from "./widget-subcomponents";
+import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
 const skeletonLoadingWidth = 0.1;
 

@@ -1,15 +1,9 @@
-import React, {
-  FC,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import { useLocalStorage } from "../../use-local-storage";
 import useNotification from "../../use-notification";
 import AlarmInput from "../AlarmInput";
-import { WidgetTitle } from "../widget-subcomponents";
+import { WidgetTitle } from "../WidgetSubcomponents";
 import PriceGasWidget from "../PriceGasWidget";
 
 const TopBar: FC = () => {
