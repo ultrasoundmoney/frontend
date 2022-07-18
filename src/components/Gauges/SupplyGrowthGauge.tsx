@@ -100,7 +100,7 @@ const SupplyGrowthGauge: FC<Props> = ({
   });
 
   return (
-    <div className="flex flex-col justify-start items-center bg-blue-tangaroa px-4 md:px-0 py-8 pt-7 rounded-lg md:rounded-none lg:rounded-lg">
+    <div className="flex flex-col justify-start items-center bg-blue-tangaroa px-4 md:px-0 py-8 pt-7 rounded-tl-lg rounded-tr-lg">
       {/* Height is set to align with sibling gauges */}
       <WidgetTitle>supply growth</WidgetTitle>
       {/* <div className="mt-6 md:mt-2 lg:mt-8 transform scale-100 md:scale-75 lg:scale-100 xl:scale-110"> */}
