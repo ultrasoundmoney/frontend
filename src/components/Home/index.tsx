@@ -14,6 +14,7 @@ import Link from "../Link";
 import PriceModel from "../PriceModel";
 import Scarcity from "../Scarcity";
 import SupplyView from "../SupplyView";
+import SupplyWidgets from "../SupplyWidgets";
 import { SectionTitle, TextInterLink, TextRoboto } from "../Texts";
 import ToggleSwitch from "../ToggleSwitch";
 import TotalValueSecured from "../TotalValueSecured";
@@ -177,6 +178,9 @@ const Home: FC = () => {
             {/*   <source src="/orbs1.mp4" type="video/mp4" /> */}
             {/* </video> */}
             <StyledErrorBoundary>
+              <SupplyWidgets />
+            </StyledErrorBoundary>
+            <StyledErrorBoundary>
               <WidgetGroup1 />
             </StyledErrorBoundary>
             {/* <video */}
@@ -228,13 +232,6 @@ const Home: FC = () => {
               </div>
             </StyledErrorBoundary>
             <div className="flex flex-col px-4 md:px-16">
-              <SectionDivider
-                title="project the supply"
-                subtitle="get ready for a peakening"
-              />
-              <div className="w-full md:m-auto relative bg-blue-tangaroa px-2 md:px-4 xl:px-12 py-4 md:py-8 xl:py-12 rounded-xl">
-                <SupplyView />
-              </div>
               <div
                 id="join-the-fam"
                 className="relative flex px-4 md:px-0 pt-40 mb-16"
