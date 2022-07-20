@@ -131,7 +131,7 @@ const RewardRow: FC<RewardRowProps> = ({
     rel="noreferrer"
   >
     <TextInter>{name}</TextInter>
-    <MoneyAmount className="font-light text-right" unit="eth">
+    <MoneyAmount className="font-light text-right">
       {pipe(
         amount,
         O.map(flow(Format.ethFromGwei, Format.formatOneDigit)),

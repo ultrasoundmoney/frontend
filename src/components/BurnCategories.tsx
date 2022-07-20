@@ -226,7 +226,7 @@ const CategoryRow: FC<CategoryRowProps> = ({
       {amountFormatted === undefined ? (
         <Skeleton width="4rem" />
       ) : (
-        <MoneyAmount unit="eth">{amountFormatted}</MoneyAmount>
+        <MoneyAmount>{amountFormatted}</MoneyAmount>
       )}
     </div>
     <div
