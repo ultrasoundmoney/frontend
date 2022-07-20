@@ -89,7 +89,7 @@ const Digits: FC<{ children: JSBI }> = ({ children }) => (
 const PreciseEth: FC<{ children?: JSBI }> = ({ children }) => (
   <AmountAnimatedShell
     className="flex items-center tracking-tight"
-    textClassName="text-[1.73rem]"
+    textClassName="text-[1.70rem]"
     skeletonWidth={"3rem"}
     unitText={"ETH"}
   >
