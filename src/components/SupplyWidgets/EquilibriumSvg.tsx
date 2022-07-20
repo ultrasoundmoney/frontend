@@ -46,6 +46,8 @@ const EquilibriumGraph: FC<{ points: Point[] }> = ({ points }) => {
 
   return (
     <svg
+      width={WIDTH}
+      height={HEIGHT}
       viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
