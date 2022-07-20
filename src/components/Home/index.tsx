@@ -13,7 +13,6 @@ import FaqBlock from "../Landing/faq";
 import Link from "../Link";
 import PriceModel from "../PriceModel";
 import Scarcity from "../Scarcity";
-import SupplyView from "../SupplyView";
 import SupplyWidgets from "../SupplyWidgets";
 import { SectionTitle, TextInterLink, TextRoboto } from "../Texts";
 import ToggleSwitch from "../ToggleSwitch";
@@ -180,6 +179,10 @@ const Home: FC = () => {
             <StyledErrorBoundary>
               <SupplyWidgets />
             </StyledErrorBoundary>
+            <SectionDivider
+              title="the burn"
+              subtitle="it's getting hot in here"
+            />
             <StyledErrorBoundary>
               <WidgetGroup1 />
             </StyledErrorBoundary>
