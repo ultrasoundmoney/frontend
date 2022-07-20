@@ -3,14 +3,18 @@ import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import { Unit } from "../../denomination";
 import * as Format from "../../format";
 import { TimeFrameNext, timeFramesNext } from "../../time-frames";
+import { MoneyAmount } from "../Amount";
 import CurrencyControl from "../CurrencyControl";
 import BurnGauge from "../Gauges/BurnGauge";
 import IssuanceGauge from "../Gauges/IssuanceGauge";
 import SupplyGrowthGauge from "../Gauges/SupplyGrowthGauge";
+import Slider from "../Slider/Slider";
 import SupplyView from "../SupplyView";
+import { TextInter, TextRoboto } from "../Texts";
 import TimeFrameControl from "../TimeFrameControl";
 import ToggleSwitch from "../ToggleSwitch";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
+import EquilibriumGraph from "./EquilibriumSvg";
 import EthSupplyWidget from "./EthSupplyWidget";
 import PeakSupplyWidget from "./PeakSupplyWidget";
 
@@ -19,6 +23,8 @@ const SupplyWidgets = () => {
   const baseFeePerGas = useGroupedAnalysis1()?.baseFeePerGas;
   const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
+  const [stakingAmount, setStakingAmount] = useState(30);
+  const [liquidSupplyBurn, setLiquidSupplyBurn] = useState(0.029);
 
   const handleSetTimeFrame = useCallback(setTimeFrame, [setTimeFrame]);
 
@@ -44,7 +50,7 @@ const SupplyWidgets = () => {
   }, [timeFrame]);
 
   return (
-    <div className="flex flex-col gap-4 px-4 md:px-16 mb-24">
+    <div className="flex flex-col gap-4 px-4 md:px-16">
       <div>
         <div className="w-full flex flex-col md:flex-row isolate">
           <div className="hidden md:block w-1/3">
@@ -94,7 +100,7 @@ const SupplyWidgets = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col md:flex-row gap-x-4">
+      <div className="flex flex-col md:flex-row gap-4">
         <div className="w-full">
           <EthSupplyWidget></EthSupplyWidget>
         </div>
@@ -105,8 +111,83 @@ const SupplyWidgets = () => {
       <div className="w-full md:m-auto relative bg-blue-tangaroa px-2 md:px-4 xl:px-12 py-4 md:py-8 xl:py-12 rounded-xl">
         <SupplyView />
       </div>
-      <WidgetBackground>
-        <WidgetTitle>supply equilibrium</WidgetTitle>
+      <WidgetBackground className="flex flex-col md:flex-row-reverse gap-x-4">
+        <div className="md:w-1/2 flex">
+          <EquilibriumGraph points={[[stakingAmount, liquidSupplyBurn]]} />
+        </div>
+        <div className="md:w-1/2 flex flex-col gap-y-8">
+          <div>
+            <div className="flex justify-between">
+              <WidgetTitle>supply equilibrium</WidgetTitle>
+              <WidgetTitle className="text-right">
+                cashflows equilibrium
+              </WidgetTitle>
+            </div>
+            <div className="flex justify-between">
+              <MoneyAmount
+                amountPostfix="M"
+                textSizeClass="text-xl lg:text-3xl"
+              >
+                70.5
+              </MoneyAmount>
+              <MoneyAmount
+                amountPostfix="M"
+                unitText="ETH/year"
+                textSizeClass="text-xl lg:text-3xl"
+              >
+                1.0
+              </MoneyAmount>
+            </div>
+          </div>
+          <div>
+            <div className="flex justify-between -mb-1">
+              <WidgetTitle>staking apr</WidgetTitle>
+              <TextRoboto>
+                {Format.formatPercentOneDigit(stakingAmount / 100)}/year
+              </TextRoboto>
+            </div>
+            <Slider
+              min={1}
+              max={100}
+              value={stakingAmount}
+              step={0.1}
+              onChange={(e) => setStakingAmount(Number(e.target.value))}
+              onPointerDown={console.log}
+              onPointerUp={console.log}
+            />
+            <div className="flex justify-between -mt-2">
+              <TextInter>staking amount</TextInter>
+              <MoneyAmount amountPostfix="M" unitText="ETH">
+                {Format.formatOneDigit(stakingAmount)}
+              </MoneyAmount>
+            </div>
+          </div>
+          <div>
+            <div className="flex justify-between -mb-1">
+              <WidgetTitle>liquid supply burn</WidgetTitle>
+              <TextRoboto>
+                {Format.formatPercentOneDigit(liquidSupplyBurn)}/year
+              </TextRoboto>
+            </div>
+            <Slider
+              min={0}
+              max={0.05}
+              value={liquidSupplyBurn}
+              step={0.001}
+              onChange={(e) => setLiquidSupplyBurn(Number(e.target.value))}
+              onPointerDown={console.log}
+              onPointerUp={console.log}
+            />
+            <div className="flex justify-between -mt-2">
+              <TextInter className="truncate">
+                liquid supply equilibrium
+              </TextInter>
+              <MoneyAmount amountPostfix="M" unitText="ETH">
+                {Format.formatOneDigit(liquidSupplyBurn * 900)}
+              </MoneyAmount>
+            </div>
+          </div>
+        </div>
       </WidgetBackground>
     </div>
   );
