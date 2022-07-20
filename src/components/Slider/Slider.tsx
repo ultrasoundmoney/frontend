@@ -51,4 +51,4 @@ const Slider: React.FC<Props> = ({
   );
 };
 
-export default React.memo(Slider);
+export default Slider;
