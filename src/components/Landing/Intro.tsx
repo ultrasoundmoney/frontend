@@ -7,7 +7,7 @@ const Intro: React.FC = () => {
   const t = React.useContext(TranslationsContext);
 
   return (
-    <section id="hero" className={`${styles.hero} h-auto container m-auto`}>
+    <section id="hero" className={`${styles.hero} h-screen container m-auto`}>
       <video
         className={`${styles.hero_bg}`}
         playsInline
