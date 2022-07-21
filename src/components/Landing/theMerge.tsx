@@ -27,10 +27,17 @@ const TheMergeBlock: React.FC = () => {
           data-aos-delay="50"
           data-aos-duration="1000"
           data-aos-easing="ease-in-out"
-          id="what-next">
-          <div className={`${styles.blockFeeBurn} flex flex-col justify-center w-full lg:w-6/12 md:m-auto px-4 md:px-8 lg:px-0`}>
-            <h3 className="text-white font-light text-base md:text-3xl leading-normal text-center mb-6">{t.landing_themerge_title}</h3>
-            <p className="text-blue-shipcove font-light text-sm text-center mb-10">{t.landing_themerge_text}</p>
+          id="what-next"
+        >
+          <div
+            className={`${styles.blockFeeBurn} flex flex-col justify-center w-full lg:w-6/12 md:m-auto px-4 md:px-8 lg:px-0 pt-16`}
+          >
+            <h3 className="text-white font-light text-base md:text-3xl leading-normal text-center mb-6">
+              {t.landing_themerge_title}
+            </h3>
+            <p className="text-blue-shipcove font-light text-sm text-center mb-10">
+              {t.landing_themerge_text}
+            </p>
           </div>
         </section>
         <div
@@ -47,11 +54,19 @@ const TheMergeBlock: React.FC = () => {
           >
             <div className="flex-none md:flex-1 text-center md:text-left px-3">
               <div className="flex">
-                <Twemoji imageClassName="h-6 lg:h-8 select-none mr-2" wrapper>🏭</Twemoji>
-                <Twemoji imageClassName="h-6 lg:h-8 select-none" wrapper>⚡</Twemoji>
+                <Twemoji imageClassName="h-6 lg:h-8 select-none mr-2" wrapper>
+                  🏭
+                </Twemoji>
+                <Twemoji imageClassName="h-6 lg:h-8 select-none" wrapper>
+                  ⚡
+                </Twemoji>
               </div>
-              <h3 className="text-white font-light text-base text-center mb-4 mt-4">{t.landing_themerge_pow_title}</h3>
-              <p className="text-blue-shipcove font-light text-center text-sm break-words mt-4 whitespace-pre-line leading-relaxed">{t.landing_themerge_pow_text}</p>
+              <h3 className="text-white font-light text-base text-center mb-4 mt-4">
+                {t.landing_themerge_pow_title}
+              </h3>
+              <p className="text-blue-shipcove font-light text-center text-sm break-words mt-4 whitespace-pre-line leading-relaxed">
+                {t.landing_themerge_pow_text}
+              </p>
             </div>
           </div>
           <div
@@ -64,10 +79,16 @@ const TheMergeBlock: React.FC = () => {
           >
             <div className="flex-none md:flex-1 text-center md:text-left px-3">
               <div className="flex">
-                <Twemoji imageClassName="h-6 lg:h-8 select-none" wrapper>🌿</Twemoji>
+                <Twemoji imageClassName="h-6 lg:h-8 select-none" wrapper>
+                  🌿
+                </Twemoji>
               </div>
-              <h3 className="text-white font-light text-base text-center mb-4 mt-4">{t.landing_themerge_pos_title}</h3>
-              <p className="text-blue-shipcove font-light text-center text-sm break-words mt-4 whitespace-pre-line leading-relaxed">{t.landing_themerge_pos_text}</p>
+              <h3 className="text-white font-light text-base text-center mb-4 mt-4">
+                {t.landing_themerge_pos_title}
+              </h3>
+              <p className="text-blue-shipcove font-light text-center text-sm break-words mt-4 whitespace-pre-line leading-relaxed">
+                {t.landing_themerge_pos_text}
+              </p>
             </div>
           </div>
           <AnimatedPath />
@@ -79,11 +100,16 @@ const TheMergeBlock: React.FC = () => {
           data-aos-delay="50"
           data-aos-duration="1000"
           data-aos-easing="ease-in-out"
-          id="the-merge">
-            <div className="flex flex-col justify-center w-full lg:w-6/12 md:m-auto px-4 md:px-8 lg:px-0 pt-10">
-                <h3 className="text-white font-light text-base md:text-3xl leading-normal text-center mb-6">{t.landing_themerge_title2}</h3>
-                <p className="text-blue-shipcove font-light text-sm text-center mb-10">{t.landing_themerge_text2}</p>
-            </div>
+          id="the-merge"
+        >
+          <div className="flex flex-col justify-center w-full lg:w-6/12 md:m-auto px-4 md:px-8 lg:px-0 pt-10">
+            <h3 className="text-white font-light text-base md:text-3xl leading-normal text-center mb-6">
+              {t.landing_themerge_title2}
+            </h3>
+            <p className="text-blue-shipcove font-light text-sm text-center mb-10">
+              {t.landing_themerge_text2}
+            </p>
+          </div>
         </section>
         <div
           id="the-merge-line"
