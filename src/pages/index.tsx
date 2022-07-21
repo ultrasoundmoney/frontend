@@ -33,8 +33,8 @@ const IndexPage: NextPage = () => (
     <Script
       defer
       data-domain="ultrasound.money"
-      data-api="https://blue-morning.usm6117.workers.dev/cfw/event"
-      src="https://blue-morning.usm6117.workers.dev/cfw/script.js"
+      data-api="/cfw/event"
+      src="/cfw/script.js"
     />
     <Home />
   </>
