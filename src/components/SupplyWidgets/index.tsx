@@ -3,6 +3,7 @@ import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import { Unit } from "../../denomination";
 import * as Format from "../../format";
 import { TimeFrameNext, timeFramesNext } from "../../time-frames";
+import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { MoneyAmount } from "../Amount";
 import CurrencyControl from "../CurrencyControl";
 import BurnGauge from "../Gauges/BurnGauge";
@@ -25,6 +26,7 @@ const SupplyWidgets = () => {
   const [unit, setUnit] = useState<Unit>("eth");
   const [stakingAmount, setStakingAmount] = useState(30);
   const [liquidSupplyBurn, setLiquidSupplyBurn] = useState(0.029);
+  const { md, lg } = useActiveBreakpoint();
 
   const handleSetTimeFrame = useCallback(setTimeFrame, [setTimeFrame]);
 
@@ -111,11 +113,34 @@ const SupplyWidgets = () => {
       <div className="w-full md:m-auto relative bg-blue-tangaroa px-2 md:px-4 xl:px-12 py-4 md:py-8 xl:py-12 rounded-xl">
         <SupplyView />
       </div>
-      <WidgetBackground className="flex flex-col md:flex-row-reverse gap-x-4">
-        <div className="md:w-1/2 flex">
-          <EquilibriumGraph points={[[stakingAmount, liquidSupplyBurn]]} />
+      <WidgetBackground
+        className={`relative flex flex-col md:flex-row-reverse gap-x-4 gap-y-8 overflow-hidden`}
+      >
+        <div
+          className={`
+            absolute top-0 right-0
+            w-3/5 h-full
+            opacity-[0.25]
+            blur-[100px]
+          `}
+        >
+          <div
+            className={`
+            absolute md:bottom-[3.0rem] md:-right-[1.0rem]
+            w-4/5 h-3/5 rounded-[35%]
+            bg-[#0037FA]
+          `}
+          ></div>
         </div>
-        <div className="md:w-1/2 flex flex-col gap-y-8">
+        {/* Higher z-level to bypass the background blur of our sibling. */}
+        <div className="md:w-1/2 flex justify-center items-center z-10">
+          <EquilibriumGraph
+            points={[[stakingAmount, liquidSupplyBurn]]}
+            width={lg ? 370 : md ? 250 : 279}
+            height={lg ? 220 : 160}
+          />
+        </div>
+        <div className="md:w-1/2 flex flex-col gap-y-8 z-10">
           <div>
             <div className="flex justify-between">
               <WidgetTitle>supply equilibrium</WidgetTitle>
