@@ -37,7 +37,7 @@ const EthSupplyTooltip: FC<{ onClickClose: () => void }> = ({
       <WidgetTitle>formula</WidgetTitle>
       <div className="flex flex-col">
         <TextInter>supply = EVM balances +</TextInter>
-        <div className="ml-[69px]">
+        <div className="ml-[69px] md:ml-[77px]">
           <TextInter inline={false}>beacon balances -</TextInter>
           <TextInter>beacon chain deposits</TextInter>
         </div>
