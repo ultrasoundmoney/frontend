@@ -23,17 +23,19 @@ const Intro: React.FC = () => {
           {t.landing_hero_title}
         </h1>
         <div className="mx-4 flex flex-wrap justify-center mb-8 gap-4">
-          <div className={`${styles.ultraSoundText} text-4xl md:text-6xl font-inter font-extralight leading-loose`}>
+          <div
+            className={`${styles.ultraSoundText} text-4xl md:text-6xl font-inter font-extralight leading-loose`}
+          >
             {t.landing_hero_title_1}
           </div>
           <div className="flex self-center">
-            <SpanMoji emoji="🦇" className="mr-1"/>
+            <SpanMoji emoji="🦇" className="mr-1" />
             <SpanMoji emoji="🔊" />
             <span className="text-red-600 text-2xl">*</span>
           </div>
         </div>
         <video
-          className="w-full md:w-3/6 lg:w-2/6 mx-auto mix-blend-lighten md:-mt-6 lg:-mt-28 xl:-mt-24 2xl:-mt-20"
+          className="w-full md:w-3/6 lg:w-2/6 mx-auto mix-blend-lighten md:-mt-6 lg:-mt-28 xl:-mt-24 2xl:-mt-20 relative r-4"
           playsInline
           autoPlay
           muted
