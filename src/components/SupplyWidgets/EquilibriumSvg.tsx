@@ -3,54 +3,68 @@ import { FC, useEffect, useState } from "react";
 
 export type Point = [number, number];
 
+// How many points we generate, also our maxX.
 const POINT_COUNT = 20;
+// The variance in Y for each consecutive randomly generated point.
 const VARIANCE = 5;
 
-const genCurvePoints = () => {
-  const points: Point[] = [[0, POINT_COUNT * 0.7]];
-  for (let i = 1; i < POINT_COUNT - 0.1 * POINT_COUNT; i++) {
+const genCurvePoints = (pointCount: number, variance: number) => {
+  const points: Point[] = [[0, pointCount * 0.3]];
+  for (let i = 1; i < pointCount; i++) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const [, lastPointY] = _.last(points)!;
-    const randomY = lastPointY + (VARIANCE * Math.random() - VARIANCE / 2);
-    const randomYClamped = _.clamp(randomY, 0, POINT_COUNT);
+    const randomY = lastPointY + (variance * Math.random() - variance / 2);
+    const randomYClamped = _.clamp(randomY, 0, pointCount);
     points.push([i, randomYClamped]);
   }
   return points;
 };
 
+const translatePoints = (
+  width: number,
+  height: number,
+  points: Point[],
+): Point[] =>
+  points.map((point) => [
+    (point[0] * width) / points.length,
+    // To get a (0, 0) _bottom_ left coordinate system we inverse our y-coordinates and shift the viewbox by -height.
+    (point[1] * height * -1) / points.length,
+  ]);
+
 const getPointsString = (points: Point[]): string =>
-  points
-    .map((point) =>
-      [
-        (point[0] * WIDTH) / POINT_COUNT,
-        (point[1] * HEIGHT) / POINT_COUNT,
-      ].join(","),
-    )
-    .join(" ");
+  points.map((point) => point.join(",")).join(" ");
 
-const WIDTH = 279;
-const HEIGHT = 160;
+const EquilibriumGraph: FC<{
+  points: Point[];
+  width?: number;
+  height?: number;
+}> = ({ points, width = 279, height = 160 }) => {
+  const [pointsData, setPointsData] = useState(
+    genCurvePoints(POINT_COUNT, VARIANCE),
+  );
 
-const EquilibriumGraph: FC<{ points: Point[] }> = ({ points }) => {
-  const [pointsData, setPointsData] = useState(genCurvePoints());
-
+  const translatedPoints = translatePoints(width, height, pointsData);
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const dotX = (_.last(pointsData)![0] * WIDTH) / POINT_COUNT;
+  const lastPoint = _.last(translatedPoints)!;
+  const dotX = lastPoint[0];
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const dotY = (_.last(pointsData)![1] * HEIGHT) / POINT_COUNT;
-  const pointsString = getPointsString(pointsData);
+  const dotY = lastPoint[1];
+  const pointsString = getPointsString(
+    translatePoints(width, height, pointsData),
+  );
 
+  // Generate a new graph whenever we move the sliders.
   useEffect(() => {
-    setPointsData(genCurvePoints());
+    setPointsData(genCurvePoints(POINT_COUNT, VARIANCE));
   }, [points]);
 
   return (
     <svg
-      width={WIDTH}
-      height={HEIGHT}
-      viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-      xmlns="http://www.w3.org/2000/svg"
       fill="none"
+      height={height}
+      viewBox={`0 ${-height} ${width} ${height}`}
+      width={width}
+      xmlns="http://www.w3.org/2000/svg"
     >
       <g filter="url(#filter0_f_1549_1804)">
         {/* <path */}
