@@ -33,8 +33,9 @@ const IndexPage: NextPage = () => (
     <Script
       defer
       data-domain="ultrasound.money"
-      src="https://plausible.io/js/plausible.js"
-    ></Script>
+      data-api="https://blue-morning.usm6117.workers.dev/cfw/event"
+      src="https://blue-morning.usm6117.workers.dev/cfw/script.js"
+    />
     <Home />
   </>
 );
