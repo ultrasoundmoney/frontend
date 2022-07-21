@@ -13,9 +13,13 @@ const SupplyView: React.FC = () => {
   const [showBreakdown] = React.useState(false);
 
   return (
-    <div className={`${styles.supplyGraphSection} flex justify-between items-center`}>
-      <div className={`${styles.supplyGraphText} relative pl-14 w-2/5 box-border`}>
-        <h1 className="text-white font-light text-base md:text-28xl leading-5 text-left mb-8 font-inter">
+    <div
+      className={`${styles.supplyGraphSection} flex justify-between items-center`}
+    >
+      <div
+        className={`${styles.supplyGraphText} relative pl-14 w-2/5 box-border`}
+      >
+        <h1 className="text-white font-light text-base md:text-28xl leading-normal text-left mb-8 font-inter">
           {t.supplu_chart_title}
         </h1>
         <p
