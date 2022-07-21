@@ -13,14 +13,12 @@ import TheMergeBlock from "./theMerge";
 import EtherTheUltraSound from "./BlockBtcEthUsd";
 import TwitterFam from "../TwitterFam";
 import FaqBlock from "./faq";
-import NftDrop from "../NftDrop/index";
 import FollowingYou from "../FollowingYou";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import SupplyViewNew from "../SupplyViewNew";
 import TheBurnedCard from "./theBurnedCard";
 import Stepper from "../Navigation/Stepper";
-import { SectionTitle, TextInterLink, TextRoboto } from "../Texts";
 import { SteppersProvider } from "../../context/StepperContext";
 import styles from "./Landing.module.scss";
 
@@ -100,7 +98,6 @@ const LandingPage: React.FC = () => {
             <FollowingYou />
           </div>
         </section>
-        <NftDrop />
         <TheBurnedCard />
       </div>
     </SteppersProvider>
