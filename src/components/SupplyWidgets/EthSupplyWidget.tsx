@@ -38,14 +38,14 @@ const EthSupplyWidget = () => {
     );
 
     setTimeElapsed(
-      DateFns.differenceInMinutes(new Date(), lastAnalyzedSlotDateTime),
+      DateFns.differenceInSeconds(new Date(), lastAnalyzedSlotDateTime),
     );
 
     const intervalId = window.setInterval(() => {
       setTimeElapsed(
-        DateFns.differenceInMinutes(new Date(), lastAnalyzedSlotDateTime),
+        DateFns.differenceInSeconds(new Date(), lastAnalyzedSlotDateTime),
       );
-    }, 60000);
+    }, 1000);
 
     return () => {
       window.clearInterval(intervalId);
@@ -81,7 +81,7 @@ const EthSupplyWidget = () => {
               {ethSupply === undefined || previewSkeletons ? (
                 <Skeleton inline={true} width="2rem" />
               ) : (
-                `${timeElapsed} minutes`
+                `${timeElapsed} seconds`
               )}
             </span>
             {" ago"}
