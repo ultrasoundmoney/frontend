@@ -31,7 +31,7 @@ const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame, unit }) => {
         flex flex-col justify-start items-center
         bg-blue-tangaroa
         px-4 md:px-0 py-8 pt-7
-        rounded-lg md:rounded-r-none lg:rounded-r-lg
+        rounded-lg md:rounded-none md:rounded-tl-lg
       `}
     >
       <IssuanceBurnBaseGauge

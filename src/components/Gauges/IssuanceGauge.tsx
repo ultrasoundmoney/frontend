@@ -37,7 +37,13 @@ const IssuanceGauge: FC<Props> = ({ simulateMerge, timeFrame, unit }) => {
   );
 
   return (
-    <div className="flex flex-col justify-start items-center bg-blue-tangaroa px-4 md:px-0 py-8 pt-7 rounded-lg md:rounded-l-none lg:rounded-l-lg">
+    <div
+      className={`
+        flex flex-col justify-start items-center
+        bg-blue-tangaroa
+        px-4 md:px-0 py-8 pt-7
+        rounded-lg md:rounded-none md:rounded-tr-lg`}
+    >
       <BaseGauge
         emoji="💧"
         gaugeUnit={unit === "eth" ? "M" : "B"}
