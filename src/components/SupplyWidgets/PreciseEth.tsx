@@ -61,6 +61,7 @@ const Digits: FC<{ children: JSBI }> = ({ children }) => (
           separator=","
           end={ethOnlyDecimals(children)}
           formattingFn={formatDecimals}
+          preserveValue={true}
         />
       )}
     </div>
@@ -80,6 +81,7 @@ const Digits: FC<{ children: JSBI }> = ({ children }) => (
           separator=","
           end={ethOnlyDecimals(children)}
           formattingFn={formatDecimals}
+          preserveValue={true}
         />
       )}
     </div>
