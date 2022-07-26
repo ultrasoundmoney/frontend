@@ -1,35 +1,47 @@
 import JSBI from "jsbi";
-import { FC } from "react";
+import { A, pipe } from "../../fp";
+import { FC, useCallback } from "react";
 import CountUp from "react-countup";
-import { pipe } from "../../fp";
 import { AmountAnimatedShell, defaultMoneyAnimationDuration } from "../Amount";
 
-const ethNoDecimals = (ethSupplySum: JSBI) =>
+// For a wei number 119,144,277,858,326,743,920,488,300 we want to display the
+// full number, and animate it. For display we could use strings, but for
+// animation we need numbers. Numbers are sufficiently large where we run
+// against low level limits (IEEE 754), and can't work with the full number. We
+// split the number into three parts, to enable both precision and animation.
+
+const ethNoDecimals = (ethSupplySum: JSBI): number =>
   pipe(
-    JSBI.divide(
-      ethSupplySum,
-      JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)),
-    ),
-    (ethSupplySumEth) => JSBI.toNumber(ethSupplySumEth),
+    ethSupplySum.toString().split(""),
+    A.dropRight(18),
+    (str) => str.join(""),
+    (str) => JSBI.BigInt(str),
+    (num) => JSBI.toNumber(num),
   );
 
-const ethOnlyDecimals = (ethSupplySum: JSBI) => {
-  const ethNoDecimals = pipe(
-    JSBI.divide(
-      ethSupplySum,
-      JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)),
-    ),
-    (num) =>
-      JSBI.multiply(num, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))),
+// The last six digits in the number.
+const ethLastSixDecimals = (ethSupplySum: JSBI): number =>
+  pipe(
+    ethSupplySum.toString().split(""),
+    A.takeRight(6),
+    (str) => str.join(""),
+    (str) => JSBI.BigInt(str),
+    (num) => JSBI.toNumber(num),
   );
 
-  const ethOnlyDecimals = JSBI.subtract(ethSupplySum, ethNoDecimals);
+// Everything that is left from the fractional part when written in ETH instead of Wei. This is always twelve digits.
+const ethFirstTwelveDecimals = (ethSupplySum: JSBI): number =>
+  pipe(
+    ethSupplySum.toString().split(""),
+    A.dropRight(6),
+    A.takeRight(12),
+    (str) => str.join(""),
+    (str) => JSBI.BigInt(str),
+    (num) => JSBI.toNumber(num),
+  );
 
-  return JSBI.toNumber(ethOnlyDecimals);
-};
-
-const formatDecimals = (num: number): string => {
-  const numsAsStrings = num.toString().padStart(18, "0").split("");
+const formatDecimals = (num: number, padTo: number): string => {
+  const numsAsStrings = num.toString().padStart(padTo, "0").split("");
   const result = [];
   for (let i = 0; i < numsAsStrings.length; i++) {
     if (i !== 0 && i % 3 === 0) {
@@ -41,52 +53,85 @@ const formatDecimals = (num: number): string => {
   return result.join("");
 };
 
-const Digits: FC<{ children: JSBI }> = ({ children }) => (
-  <div className="relative w-9">
-    <div
-      // We need whitespace-normal to counteract the whitespace-nowrap from our parent.
-      className={`
-        text-[8px] leading-[0.5rem] text-white
-        block break-all
-        whitespace-normal
-        absolute
-        overflow-hidden
-        w-3 h-2
-      `}
-    >
-      {ethOnlyDecimals(children) === 0 ? (
-        <span>000,000,000,000,000,000</span>
-      ) : (
-        <CountUp
-          separator=","
-          end={ethOnlyDecimals(children)}
-          formattingFn={formatDecimals}
-          preserveValue={true}
-        />
-      )}
+const Digits: FC<{ children: JSBI }> = ({ children }) => {
+  const formattingFn12 = useCallback((num: number) => {
+    return formatDecimals(num, 12);
+  }, []);
+
+  const formattingFn6 = useCallback((num: number) => {
+    return formatDecimals(num, 6);
+  }, []);
+
+  return (
+    <div className="relative w-9 -mr-1">
+      <div
+        // We need whitespace-normal to counteract the whitespace-nowrap from our parent.
+        className={`
+          text-[8px] leading-[0.5rem] text-white
+          block break-all
+          whitespace-normal
+          absolute
+          overflow-hidden
+          w-3 h-2
+        `}
+      >
+        {ethFirstTwelveDecimals(children) == 0 ? (
+          <span>000,000,000,000,</span>
+        ) : (
+          <CountUp
+            separator=","
+            end={ethFirstTwelveDecimals(children)}
+            formattingFn={formattingFn12}
+            preserveValue={true}
+            useEasing={false}
+          />
+        )}
+      </div>
+      <div
+        // We need whitespace-normal to counteract the whitespace-nowrap from our parent.
+        className={`
+          text-[8px] leading-[0.5rem] text-blue-spindle
+          block break-all
+          whitespace-normal
+          left-0
+        `}
+      >
+        {ethFirstTwelveDecimals(children) == 0 ? (
+          <span>000,000,000,000,</span>
+        ) : (
+          <CountUp
+            separator=","
+            end={ethFirstTwelveDecimals(children)}
+            formattingFn={formattingFn12}
+            preserveValue={true}
+            useEasing={false}
+          />
+        )}
+      </div>
+      <div
+        // We need whitespace-normal to counteract the whitespace-nowrap from our parent.
+        className={`
+          text-[8px] leading-[0.5rem] text-blue-spindle
+          block break-all
+          whitespace-normal
+          left-0
+        `}
+      >
+        {ethLastSixDecimals(children) == 0 ? (
+          <span>000,000</span>
+        ) : (
+          <CountUp
+            separator=","
+            end={ethLastSixDecimals(children)}
+            formattingFn={formattingFn6}
+            preserveValue={true}
+            useEasing={false}
+          />
+        )}
+      </div>
     </div>
-    <div
-      // We need whitespace-normal to counteract the whitespace-nowrap from our parent.
-      className={`
-        text-[8px] leading-[0.5rem] text-blue-spindle
-        block break-all
-        whitespace-normal
-        left-0
-      `}
-    >
-      {ethOnlyDecimals(children) === 0 ? (
-        <span>000,000,000,000,000,000</span>
-      ) : (
-        <CountUp
-          separator=","
-          end={ethOnlyDecimals(children)}
-          formattingFn={formatDecimals}
-          preserveValue={true}
-        />
-      )}
-    </div>
-  </div>
-);
+  );
+};
 
 const PreciseEth: FC<{ children?: JSBI }> = ({ children }) => (
   <AmountAnimatedShell
