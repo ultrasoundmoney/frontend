@@ -133,8 +133,6 @@ const SupplyGrowthGauge: FC<Props> = ({
         onClickTimeFrame={onClickTimeFrame}
         timeFrame={timeFrame}
       />
-      {/* This element is to align the with sibling gauges */}
-      <div className="mt-[0.5px]"></div>
     </div>
   );
 };
