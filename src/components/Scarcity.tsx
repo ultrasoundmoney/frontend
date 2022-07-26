@@ -306,7 +306,7 @@ const Scarcity: FC = () => {
               )}
               hovering={hoveringLocked}
               link="https://defipulse.com/"
-              name="defi"
+              name="defi (stale)"
               setHovering={setHoveringLocked}
               startedOn={scarcity.engines.locked.startedOn}
             />
