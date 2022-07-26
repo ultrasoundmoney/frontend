@@ -105,9 +105,8 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
             }}
           ></div>
           <TextRoboto
-            className="color-animation"
+            className="color-animation text-sm mt-[12px] md:text-base md:mt-[9px]"
             style={{
-              marginTop: "9px",
               color: hoveringStaked ? Colors.white : Colors.spindle,
             }}
           >
@@ -155,9 +154,8 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
             }}
           ></div>
           <TextRoboto
-            className="font-roboto color-animation"
+            className="font-roboto color-animation text-sm mt-[12px] md:text-base md:mt-[9px]"
             style={{
-              marginTop: "9px",
               color: hoveringLocked ? Colors.white : Colors.spindle,
             }}
           >
