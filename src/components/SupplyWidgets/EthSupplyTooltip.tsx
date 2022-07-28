@@ -43,15 +43,15 @@ const EthSupplyTooltip: FC<{ onClickClose: () => void }> = ({
         </div>
       </div>
       <WidgetTitle>EVM balances</WidgetTitle>
-      <PreciseEth justify="end">
+      <PreciseEth justify="justify-end">
         {ethSupply?.executionBalancesSum.balancesSum}
       </PreciseEth>
       <WidgetTitle>beacon chain balances</WidgetTitle>
-      <PreciseEth justify="end">
+      <PreciseEth justify="justify-end">
         {ethSupply?.beaconBalancesSum.balancesSum}
       </PreciseEth>
       <WidgetTitle>beacon chain deposits</WidgetTitle>
-      <PreciseEth justify="end">
+      <PreciseEth justify="justify-end">
         {ethSupply?.beaconDepositsSum.depositsSum}
       </PreciseEth>
     </div>
