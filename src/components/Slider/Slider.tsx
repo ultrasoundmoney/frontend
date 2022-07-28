@@ -4,7 +4,7 @@ import styles from "./Slider.module.scss";
 interface Props {
   min: number;
   max: number;
-  value: number;
+  value?: number;
   step?: number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onPointerDown?: () => void;
@@ -27,8 +27,12 @@ const Slider: React.FC<Props> = ({
   onPointerDown,
   onPointerUp,
 }) => {
-  const percent = ((value - min) / (max - min)) * 100;
-  const offset = Math.floor((percent * THUMB_WIDTH) / 100);
+  const percent =
+    value !== undefined ? ((value - min) / (max - min)) * 100 : undefined;
+  const offset =
+    percent !== undefined
+      ? Math.floor((percent * THUMB_WIDTH) / 100)
+      : undefined;
   return (
     <div className={`${styles.slider} slider`}>
       <input

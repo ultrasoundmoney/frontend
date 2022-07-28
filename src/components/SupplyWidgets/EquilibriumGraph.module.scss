@@ -1,0 +1,56 @@
+// Same as colors in chart-defaults.ts
+$tooltip-bg: #1c2236;
+$tooltip-border: #69769f;
+$tooltip-zindex: 20;
+$chart-label: #8490b5;
+
+$blue-spindle: #b5bddb;
+
+.equilibriumChart :global {
+  // Chart series
+  .highcharts-series {
+    // Start series with a space, instead of a dash
+    stroke-dashoffset: 4px;
+  }
+
+
+  // Tooltip
+  .tt-root {
+    background-color: $tooltip-bg;
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid $tooltip-border;
+  }
+  .tt-header {
+    display: flex;
+    align-items: center;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+  .tt-header-date {
+    font-size: 11px;
+    font-weight: 400;
+    white-space: pre;
+  }
+
+  // Style overrides for "total" row
+  .tt-total-row td {
+    padding-top: 5px;
+    font-size: 16x;
+    font-weight: 400;
+    font-family: "Roboto Mono";
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .supplyGraph {
+    width: 60%;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .supplyGraph {
+    width: 100%;
+    margin-bottom: 50px;
+  }
+}
