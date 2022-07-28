@@ -133,14 +133,14 @@ const Digits: FC<{ children: JSBI }> = ({ children }) => {
   );
 };
 
-const PreciseEth: FC<{ children?: JSBI; justify?: string }> = ({
+const PreciseEth: FC<{ children?: JSBI; align?: "right" | "left" }> = ({
   children,
-  justify = "start",
+  align = "left",
 }) => (
   <AmountAnimatedShell
     className={`
       flex items-center
-      justify-${justify}
+      ${align === "right" ? "justify-end" : ""}
       tracking-tight
     `}
     textClassName="text-[1.70rem]"
