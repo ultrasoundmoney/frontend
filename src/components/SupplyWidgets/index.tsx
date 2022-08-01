@@ -171,14 +171,14 @@ const SupplyWidgets = () => {
       }
     | undefined => {
     if (
-      supplyProjectionInputs === undefined ||
       stakedSupply === undefined ||
-      nonStakedSupplyBurnFraction === undefined
+      nonStakedSupplyBurnFraction === undefined ||
+      supplyProjectionInputs === undefined
     ) {
       return undefined;
     }
 
-    const supplyEquilibriumSeries = pipe(
+    const reducedSupplyByDay = pipe(
       supplyProjectionInputs.supplyByDay,
       A.filterWithIndex(
         (i) =>
@@ -188,6 +188,10 @@ const SupplyWidgets = () => {
       (arr) => arr as NEA.NonEmptyArray<DataPoint>,
       NEA.map((point) => [point.t, point.v] as Point),
     );
+
+    const supplyEquilibriumSeries = [
+      ...reducedSupplyByDay,
+    ] as NEA.NonEmptyArray<Point>;
 
     // Now calculate n years into the future to paint an equilibrium.
     let supply = NEA.last(supplyEquilibriumSeries);
@@ -228,7 +232,7 @@ const SupplyWidgets = () => {
       supplyEquilibriumMap,
       supplyEquilibriumSeries,
     };
-  }, [nonStakedSupplyBurnFraction, stakedSupply, supplyProjectionInputs]);
+  }, [stakedSupply, nonStakedSupplyBurnFraction, supplyProjectionInputs]);
 
   return (
     <div className="flex flex-col gap-4 px-4 md:px-16">
