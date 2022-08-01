@@ -321,6 +321,7 @@ const SupplyWidgets = () => {
             <EquilibriumGraph
               supplyEquilibriumSeries={equilibriums.supplyEquilibriumSeries}
               supplyEquilibriumMap={equilibriums.supplyEquilibriumMap}
+              // Move below props inside
               widthMin={lg ? 0.4 : md ? 0.7 : undefined}
               widthMax={lg ? 0.4 : md ? 0.7 : undefined}
               height={lg ? 220 : 160}
