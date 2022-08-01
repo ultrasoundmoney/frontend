@@ -59,6 +59,14 @@ $thumb-width: 14px;
   @include slider-thumb;
 }
 
+.thumbInvisible::-webkit-slider-thumb {
+  visibility: hidden;
+}
+
+.thumbInvisible::-moz-range-thumb {
+  visibility: hidden;
+}
+
 // Custom visual track/slider (smaller tap area)
 .sliderTrack {
   position: absolute;

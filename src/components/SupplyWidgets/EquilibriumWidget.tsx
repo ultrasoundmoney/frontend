@@ -279,6 +279,7 @@ const EquilibriumWidget = () => {
             value={stakedSupply}
             step={1e5}
             onChange={(e) => setStakedSupply(Number(e.target.value))}
+            thumbVisible={initialEquilibriumInputsSet}
           />
           <div className="flex justify-between items-center -mt-2">
             <TextInter className="">staking amount</TextInter>
@@ -308,6 +309,7 @@ const EquilibriumWidget = () => {
             onChange={(e) =>
               setNonStakedSupplyBurnFraction(Number(e.target.value))
             }
+            thumbVisible={initialEquilibriumInputsSet}
           />
           <div className="flex justify-between items-center -mt-2">
             <TextInter className="truncate">non-staked equilibrium</TextInter>

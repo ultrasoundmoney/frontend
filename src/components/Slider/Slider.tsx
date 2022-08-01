@@ -9,6 +9,7 @@ interface Props {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onPointerDown?: () => void;
   onPointerUp?: () => void;
+  thumbVisible?: boolean;
 }
 
 const THUMB_WIDTH = 14;
@@ -26,6 +27,7 @@ const Slider: React.FC<Props> = ({
   onChange,
   onPointerDown,
   onPointerUp,
+  thumbVisible = true,
 }) => {
   const percent =
     value !== undefined ? ((value - min) / (max - min)) * 100 : undefined;
@@ -42,7 +44,10 @@ const Slider: React.FC<Props> = ({
         value={value}
         step={step}
         onChange={onChange}
-        className={styles.sliderInput}
+        className={`
+         ${styles.sliderInput}
+         ${thumbVisible ? "" : styles.thumbInvisible}
+        `}
         onPointerDown={onPointerDown}
         onPointerUp={onPointerUp}
       />
