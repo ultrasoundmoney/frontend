@@ -147,8 +147,6 @@ const EquilibriumGraph: FC<Props> = ({
     widthMin,
   ]);
 
-  console.log(options);
-
   return (
     <div className={`${styles.equilibriumChart}`}>
       <HighchartsReact highcharts={Highcharts} options={options} />

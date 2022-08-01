@@ -27,6 +27,8 @@ import EquilibriumGraph from "./EquilibriumGraph";
 import EthSupplyWidget from "./EthSupplyWidget";
 import PeakSupplyWidget from "./PeakSupplyWidget";
 
+type Point = [number, number];
+
 const YEAR_IN_MINUTES = 365.25 * 24 * 60;
 
 const burnAsFraction = (
@@ -152,7 +154,6 @@ const SupplyWidgets = () => {
     }
 
     setInitialEquilibriumInputsSet(true);
-    console.log(supplyProjectionInputs.inBeaconValidatorsByDay);
     setStakedSupply(getStakingSupply(supplyProjectionInputs));
     const nonStakedSupply = getNonStakingSupply(supplyProjectionInputs);
     setNonStakedSupplyBurnFraction(
@@ -166,7 +167,7 @@ const SupplyWidgets = () => {
         nonStakedSupplyEquilibrium: number;
         supplyEquilibrium: number;
         supplyEquilibriumMap: Record<number, number>;
-        supplyEquilibriumSeries: NEA.NonEmptyArray<[number, number]>;
+        supplyEquilibriumSeries: NEA.NonEmptyArray<Point>;
       }
     | undefined => {
     if (
@@ -185,7 +186,7 @@ const SupplyWidgets = () => {
           i % 500 === 0 || i === supplyProjectionInputs.supplyByDay.length - 1,
       ),
       (arr) => arr as NEA.NonEmptyArray<DataPoint>,
-      NEA.map((point) => [point.t, point.v] as [number, number]),
+      NEA.map((point) => [point.t, point.v] as Point),
     );
 
     // Now calculate n years into the future to paint an equilibrium.
