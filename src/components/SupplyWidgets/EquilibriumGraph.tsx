@@ -81,6 +81,7 @@ type Props = {
   widthMax?: number;
   height: number;
 };
+
 const EquilibriumGraph: FC<Props> = ({
   height,
   supplyEquilibriumMap,
