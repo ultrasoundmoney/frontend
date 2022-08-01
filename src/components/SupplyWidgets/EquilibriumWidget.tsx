@@ -1,14 +1,14 @@
 import * as DateFns from "date-fns";
+import _ from "lodash";
 import { useEffect, useMemo, useState } from "react";
 import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import {
-  DataPoint,
   SupplyInputs,
   useSupplyProjectionInputs,
 } from "../../api/supply-projection";
 import { GWEI_PER_ETH, WEI_PER_ETH } from "../../eth-units";
 import * as Format from "../../format";
-import { A, NEA, pipe } from "../../fp";
+import { NEA, pipe } from "../../fp";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { MoneyAmount } from "../Amount";
 import Slider from "../Slider/Slider";
@@ -20,13 +20,8 @@ type Point = [number, number];
 
 const YEAR_IN_MINUTES = 365.25 * 24 * 60;
 
-const burnAsFraction = (
-  nonStakingSupply: number | undefined,
-  weiBurnPerMinute: number | undefined,
-) =>
-  nonStakingSupply !== undefined && weiBurnPerMinute !== undefined
-    ? ((weiBurnPerMinute / WEI_PER_ETH) * YEAR_IN_MINUTES) / nonStakingSupply
-    : undefined;
+const burnAsFraction = (nonStakingSupply: number, weiBurnPerMinute: number) =>
+  ((weiBurnPerMinute / WEI_PER_ETH) * YEAR_IN_MINUTES) / nonStakingSupply;
 
 const getStakingSupply = (supplyProjectionInputs: SupplyInputs): number =>
   pipe(
@@ -35,9 +30,7 @@ const getStakingSupply = (supplyProjectionInputs: SupplyInputs): number =>
     (dataPoint) => dataPoint.v,
   );
 
-const getNonStakingSupply = (
-  supplyProjectionInputs: SupplyInputs,
-): number | undefined => {
+const getNonStakingSupply = (supplyProjectionInputs: SupplyInputs): number => {
   const supply = NEA.last(supplyProjectionInputs.supplyByDay).v;
   const staked = NEA.last(supplyProjectionInputs.inBeaconValidatorsByDay).v;
   return supply - staked;
@@ -66,28 +59,7 @@ const getIssuance = (effective_balance_sum: number) => {
   );
   const max_issuance_per_year = max_issuance_per_epoch * EPOCHS_PER_YEAR;
 
-  const annual_reward = max_issuance_per_year / active_validators;
-
-  return annual_reward / GWEI_PER_ETH;
-};
-
-const getIssuanceApr = (effective_balance_sum: number) => {
-  const total_effective_balance = effective_balance_sum * GWEI_PER_ETH;
-
-  const active_validators = total_effective_balance / GWEI_PER_ETH / 32;
-
-  // Balance at stake (Gwei)
-  const max_balance_at_stake = active_validators * MAX_EFFECTIVE_BALANCE;
-
-  const max_issuance_per_epoch = Math.trunc(
-    (BASE_REWARD_FACTOR * max_balance_at_stake) /
-      Math.floor(Math.sqrt(max_balance_at_stake)),
-  );
-  const max_issuance_per_year = max_issuance_per_epoch * EPOCHS_PER_YEAR;
-
-  const apr = max_issuance_per_year / total_effective_balance;
-
-  return apr;
+  return max_issuance_per_year / GWEI_PER_ETH;
 };
 
 const getBurn = (
@@ -100,9 +72,9 @@ const EquilibriumWidget = () => {
   const supplyProjectionInputs = useSupplyProjectionInputs();
   const [initialEquilibriumInputsSet, setInitialEquilibriumInputsSet] =
     useState(false);
-  const [stakedSupply, setStakedSupply] = useState<number>();
+  const [stakedSupply, setStakedSupply] = useState<number>(0);
   const [nonStakedSupplyBurnFraction, setNonStakedSupplyBurnFraction] =
-    useState<number>();
+    useState<number>(0);
   const { md, lg } = useActiveBreakpoint();
 
   // Only runs once because of initialEquilibriumInputsSet, after data loads.
@@ -123,6 +95,39 @@ const EquilibriumWidget = () => {
     );
   }, [burnRateAll, initialEquilibriumInputsSet, supplyProjectionInputs]);
 
+  const historicSupplyByMonth = useMemo(():
+    | NEA.NonEmptyArray<Point>
+    | undefined => {
+    if (supplyProjectionInputs === undefined) {
+      return undefined;
+    }
+
+    const list = supplyProjectionInputs.supplyByDay.reduce(
+      (list: Point[], point) => {
+        const last = _.last(list);
+
+        // First loop there is no last to compare to.
+        if (last === undefined) {
+          return [[point.t, point.v] as Point];
+        }
+
+        // If we don't have a point from this month yet, add it.
+        if (
+          DateFns.getMonth(DateFns.fromUnixTime(last[0])) !==
+          DateFns.getMonth(DateFns.fromUnixTime(point.t))
+        ) {
+          return [...list, [point.t, point.v] as Point];
+        }
+
+        // If we already have a point from a given month, don't add another.
+        return list;
+      },
+      [],
+    );
+
+    return list as NEA.NonEmptyArray<Point>;
+  }, [supplyProjectionInputs]);
+
   const equilibriums = useMemo(():
     | {
         cashFlowsEquilibrium: number;
@@ -130,29 +135,20 @@ const EquilibriumWidget = () => {
         supplyEquilibrium: number;
         supplyEquilibriumMap: Record<number, number>;
         supplyEquilibriumSeries: NEA.NonEmptyArray<Point>;
+        yearlyIssuanceFraction: number;
       }
     | undefined => {
     if (
       stakedSupply === undefined ||
       nonStakedSupplyBurnFraction === undefined ||
-      supplyProjectionInputs === undefined
+      supplyProjectionInputs === undefined ||
+      historicSupplyByMonth === undefined
     ) {
       return undefined;
     }
 
-    const reducedSupplyByDay = pipe(
-      supplyProjectionInputs.supplyByDay,
-      A.filterWithIndex(
-        (i) =>
-          // Reduce the number of points in the historical data, but never the last point.
-          i % 500 === 0 || i === supplyProjectionInputs.supplyByDay.length - 1,
-      ),
-      (arr) => arr as NEA.NonEmptyArray<DataPoint>,
-      NEA.map((point) => [point.t, point.v] as Point),
-    );
-
     const supplyEquilibriumSeries = [
-      ...reducedSupplyByDay,
+      ...historicSupplyByMonth,
     ] as NEA.NonEmptyArray<Point>;
 
     // Now calculate n years into the future to paint an equilibrium.
@@ -161,7 +157,7 @@ const EquilibriumWidget = () => {
     let nonStaked = supply[1] - staked;
     const issuance = getIssuance(staked);
 
-    for (let i = 0; i < 32; i++) {
+    for (let i = 0; i < 200; i++) {
       const nextYear = DateFns.addYears(DateFns.fromUnixTime(supply[0]), 1);
       const burn = getBurn(nonStakedSupplyBurnFraction, nonStaked);
 
@@ -186,6 +182,7 @@ const EquilibriumWidget = () => {
     const supplyEquilibrium = supply[1];
     const nonStakedSupplyEquilibrium = nonStaked;
     const cashFlowsEquilibrium = getIssuance(staked);
+    const yearlyIssuanceFraction = getIssuance(staked) / staked;
 
     return {
       cashFlowsEquilibrium,
@@ -193,8 +190,14 @@ const EquilibriumWidget = () => {
       supplyEquilibrium,
       supplyEquilibriumMap,
       supplyEquilibriumSeries,
+      yearlyIssuanceFraction,
     };
-  }, [stakedSupply, nonStakedSupplyBurnFraction, supplyProjectionInputs]);
+  }, [
+    stakedSupply,
+    nonStakedSupplyBurnFraction,
+    supplyProjectionInputs,
+    historicSupplyByMonth,
+  ]);
 
   return (
     <WidgetBackground
@@ -257,18 +260,18 @@ const EquilibriumWidget = () => {
               textSizeClass="text-xl lg:text-3xl"
             >
               {equilibriums !== undefined
-                ? Format.formatOneDigit(equilibriums.cashFlowsEquilibrium)
+                ? Format.formatOneDigit(equilibriums.cashFlowsEquilibrium / 1e6)
                 : undefined}
             </MoneyAmount>
           </div>
         </div>
         <div>
           <div className="flex justify-between items-center -mb-1">
-            <WidgetTitle>staking apr</WidgetTitle>
+            <WidgetTitle>staking issuance</WidgetTitle>
             <TextRoboto>
-              {stakedSupply !== undefined
+              {equilibriums !== undefined
                 ? `${Format.formatPercentOneDigit(
-                    getIssuanceApr(stakedSupply),
+                    equilibriums.yearlyIssuanceFraction,
                   )}/year`
                 : undefined}
             </TextRoboto>
