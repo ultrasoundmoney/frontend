@@ -143,9 +143,15 @@ const Home: FC = () => {
       >
         <div className={styles.blurredBgImage}>
           <div className="container mx-auto">
-            {adminToken && <AdminTools setFlag={setFlag} />}
+            {adminToken && (
+              <StyledErrorBoundary>
+                <AdminTools setFlag={setFlag} />
+              </StyledErrorBoundary>
+            )}
             <div className="px-4 md:px-16">
-              <TopBar />
+              <StyledErrorBoundary>
+                <TopBar />
+              </StyledErrorBoundary>
             </div>
             <Title>Ultra Sound Money</Title>
             <p className="font-inter font-light text-blue-spindle text-xl md:text-2xl lg:text-3xl text-center mb-16">
@@ -234,37 +240,39 @@ const Home: FC = () => {
                 </div>
               </div>
             </StyledErrorBoundary>
-            <div className="flex flex-col px-4 md:px-16">
-              <div
-                id="join-the-fam"
-                className="relative flex px-4 md:px-0 pt-40 mb-16"
-              >
-                <div className="w-full relative flex flex-col items-center">
-                  {/* <video */}
-                  {/*   className="absolute w-2/3 right-0 -mr-16 -mt-48 opacity-100 -z-10 hidden md:block" */}
-                  {/*   playsInline */}
-                  {/*   autoPlay */}
-                  {/*   muted */}
-                  {/*   loop */}
-                  {/*   poster="/orbs2.jpg" */}
-                  {/* > */}
-                  {/*   <source src="/orbs2.webm" type="video/webm; codecs='vp9'" /> */}
-                  {/*   <source src="/orbs2.mp4" type="video/mp4" /> */}
-                  {/* </video> */}
-                  <TwitterFam />
+            <StyledErrorBoundary>
+              <div className="flex flex-col px-4 md:px-16">
+                <div
+                  id="join-the-fam"
+                  className="relative flex px-4 md:px-0 pt-40 mb-16"
+                >
+                  <div className="w-full relative flex flex-col items-center">
+                    {/* <video */}
+                    {/*   className="absolute w-2/3 right-0 -mr-16 -mt-48 opacity-100 -z-10 hidden md:block" */}
+                    {/*   playsInline */}
+                    {/*   autoPlay */}
+                    {/*   muted */}
+                    {/*   loop */}
+                    {/*   poster="/orbs2.jpg" */}
+                    {/* > */}
+                    {/*   <source src="/orbs2.webm" type="video/webm; codecs='vp9'" /> */}
+                    {/*   <source src="/orbs2.mp4" type="video/mp4" /> */}
+                    {/* </video> */}
+                    <TwitterFam />
+                  </div>
+                </div>
+                <div className="flex px-4 md:px-0 pt-20 pb-20">
+                  <div className="w-full lg:w-2/3 md:m-auto relative">
+                    <FollowingYou />
+                  </div>
+                </div>
+                <div className="flex px-4 md:px-0 pt-8">
+                  <div className="w-full lg:w-2/3 md:m-auto relative">
+                    <FaqBlock />
+                  </div>
                 </div>
               </div>
-              <div className="flex px-4 md:px-0 pt-20 pb-20">
-                <div className="w-full lg:w-2/3 md:m-auto relative">
-                  <FollowingYou />
-                </div>
-              </div>
-              <div className="flex px-4 md:px-0 pt-8">
-                <div className="w-full lg:w-2/3 md:m-auto relative">
-                  <FaqBlock />
-                </div>
-              </div>
-            </div>
+            </StyledErrorBoundary>
             <div className="w-full flex flex-col items-center pb-40">
               <SectionDivider title="still have questions?" />
               <div className="flex flex-col gap-y-4 justify-start">
