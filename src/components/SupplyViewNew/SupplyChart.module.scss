@@ -199,6 +199,10 @@ $tooltip-zindex: 2;
   }
 }
 
+.supplyGraph {
+  background-color: #1c2235;
+}
+
 @media screen and (max-width: 1300px) {
   .supplyGraph {
     width: 60%;

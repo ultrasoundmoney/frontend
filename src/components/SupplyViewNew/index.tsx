@@ -39,13 +39,7 @@ const SupplyView: React.FC = () => {
         </button>
       </div>
       <div
-        style={{
-          background: "#1C2235",
-          borderRadius: "8px",
-          padding: "30px",
-          boxSizing: "border-box",
-        }}
-        className={`${styles.supplyGraph} relative w-1/2 box-border overflow-hidden`}
+        className={`${styles.supplyGraph} relative w-1/2 box-border overflow-hidden p-3 md:p-7 rounded-lg`}
       >
         <p
           style={{
