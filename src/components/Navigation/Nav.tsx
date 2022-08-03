@@ -1,12 +1,4 @@
-import React, {
-  useContext,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import Image from "next/image";
-import { StepperContext, StepperPoint } from "../../context/StepperContext";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import classes from "./Navigation.module.scss";
 import { navigationItems } from "../../utils/static";
 import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
@@ -14,7 +6,7 @@ import { useLocalStorage } from "../../use-local-storage";
 import useNotification from "../../use-notification";
 import PriceGasWidget from "../PriceGasWidget";
 import AlarmInput from "../AlarmInput";
-import { WidgetTitle } from "../widget-subcomponents";
+import { WidgetTitle } from "../WidgetSubcomponents";
 
 const Nav = () => {
   const baseFeePerGas = useGroupedAnalysis1()?.baseFeePerGas;
@@ -162,7 +154,7 @@ const Nav = () => {
       </div>
       <div
         className={
-          `${classes.sidebar} w-full` + (isOpen ? ` block ${classes.open}` : '')
+          `${classes.sidebar} w-full` + (isOpen ? ` block ${classes.open}` : "")
         }
         id="mobile-menu"
       >
