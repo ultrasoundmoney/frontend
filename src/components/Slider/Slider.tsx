@@ -22,7 +22,6 @@ const THUMB_WIDTH = 14;
 const Slider: React.FC<Props> = ({
   min,
   max,
-  value,
   onChange,
   onPointerDown,
   onPointerUp,
