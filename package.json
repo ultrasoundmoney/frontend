@@ -75,29 +75,5 @@
     "typescript": "^4.7.3",
     "webpack": "^5.67.0",
     "webpack-cli": "^4.9.2"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": "eslint",
-    "*.{ts,tsx}": "tsc-files --noEmit"
-  },
-  "standard": {
-    "globals": [
-      "describe",
-      "context",
-      "before",
-      "beforeEach",
-      "after",
-      "afterEach",
-      "it",
-      "expect",
-      "beforeEach",
-      "cy",
-      "contains"
-    ]
   }
 }
