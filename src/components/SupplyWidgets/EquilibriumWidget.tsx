@@ -194,7 +194,7 @@ const EquilibriumWidget = () => {
     let nonStaked = supply[1] - staked;
     const issuance = getIssuancePerYear(stakingAprFraction);
 
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < 300; i++) {
       const nextYear = pipe(
         supply[0],
         DateFns.fromUnixTime,
@@ -265,9 +265,11 @@ const EquilibriumWidget = () => {
           <EquilibriumGraph
             supplyEquilibriumSeries={equilibriums.supplyEquilibriumSeries}
             supplyEquilibriumMap={equilibriums.supplyEquilibriumMap}
+            staking={getStakedFromApr(stakingAprFraction)}
+            width={lg ? 400 : md ? 250 : 300}
             // Move below props inside
-            widthMin={lg ? 0.4 : md ? 0.7 : undefined}
-            widthMax={lg ? 0.4 : md ? 0.7 : undefined}
+            // widthMin={lg ? 0.4 : md ? 0.7 : undefined}
+            // widthMax={lg ? 0.4 : md ? 0.7 : undefined}
             height={lg ? 220 : 160}
           />
         ) : (

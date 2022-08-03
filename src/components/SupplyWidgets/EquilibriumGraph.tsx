@@ -3,6 +3,7 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import _ from "lodash";
 import { FC, useMemo } from "react";
+import colors from "../../colors";
 import { formatOneDigit } from "../../format";
 import { NEA } from "../../fp";
 import { formatDate } from "../../utils/metric-utils";
@@ -19,15 +20,13 @@ const defaultOptions: Highcharts.Options = {
   title: undefined,
   xAxis: {
     type: "datetime",
-    minPadding: 0.43,
-    maxPadding: 0.5,
     tickInterval: 365.25 * 24 * 3600 * 1000, // always use 1 year intervals
     lineWidth: 0,
     labels: { enabled: false },
     tickWidth: 0,
   },
   yAxis: {
-    min: 0,
+    min: 10e6,
     max: 160e6,
     tickInterval: 20e6,
     title: { text: undefined },
@@ -79,32 +78,32 @@ type Props = {
   supplyEquilibriumMap: Record<number, number>;
   widthMin?: number;
   widthMax?: number;
+  staking: number;
   height: number;
+  width: number;
 };
 
 const EquilibriumGraph: FC<Props> = ({
   height,
   supplyEquilibriumMap,
   supplyEquilibriumSeries,
-  widthMax = 0.7,
-  widthMin = 0.65,
+  staking,
+  widthMax = 0,
+  widthMin = 0,
+  width,
 }) => {
   const options = useMemo((): Highcharts.Options => {
     const nextOptions: Highcharts.Options = {
-      chart: { height },
-      xAxis: {
-        maxPadding: widthMax,
-        minPadding: widthMin,
-      },
+      chart: { width: width, height },
       series: [
         {
           type: "spline",
           data: [
-            ...supplyEquilibriumSeries,
+            ...supplyEquilibriumSeries.slice(0, 200),
             //end point
             {
-              x: NEA.last(supplyEquilibriumSeries)[0],
-              y: NEA.last(supplyEquilibriumSeries)[1],
+              x: supplyEquilibriumSeries[199][0],
+              y: supplyEquilibriumSeries[199][1],
               marker: {
                 symbol: `url(/dot_supply_graph.svg)`,
                 enabled: true,
@@ -113,6 +112,30 @@ const EquilibriumGraph: FC<Props> = ({
           ],
         },
       ],
+      yAxis: {
+        plotLines: [
+          {
+            color: colors.spindle,
+            label: {
+              align: "right",
+              text: "equilibrium",
+              style: { color: colors.spindle, fontFamily: "Roboto Mono" },
+              y: 15,
+            },
+            value: NEA.last(supplyEquilibriumSeries)[1],
+          },
+          {
+            color: colors.spindle,
+            label: {
+              align: "right",
+              text: "staking",
+              style: { color: colors.spindle },
+              y: 15,
+            },
+            value: staking,
+          },
+        ],
+      },
       tooltip: {
         formatter: function () {
           const x = typeof this.x === "number" ? this.x : undefined;
