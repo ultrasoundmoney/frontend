@@ -30,26 +30,38 @@ const GoalBlcok: React.FC<GoalBlcokProps> = ({ styles }) => {
           }}
         />
         <div className="w-full md:flex md:flex-wrap justify-between py-8">
-          <div className="flex-none md:flex-1 text-start md:text-left px-3 mb-10">
+          <div className="flex-none md:flex-1 text-start md:text-left px-3 mb-16">
             <Twemoji imageClassName="h-6 lg:h-8 select-none" wrapper>
               🔭
             </Twemoji>
-            <h3 className="text-white font-light text-base text-start mb-4 mt-4">{t.landing_goal_block1_title}</h3>
-            <p className="text-blue-shipcove font-light text-start text-sm break-words mt-4 whitespace-pre-line leading-relaxed">{t.landing_goal_block1_text}</p>
+            <h3 className="text-white font-light text-base text-start mb-4 mt-4">
+              {t.landing_goal_block1_title}
+            </h3>
+            <p className="text-blue-shipcove font-light text-start text-sm break-words mt-4 whitespace-pre-line leading-relaxed">
+              {t.landing_goal_block1_text}
+            </p>
           </div>
-          <div className="flex-none md:flex-1 text-start md:text-left px-3 mb-10">
+          <div className="flex-none md:flex-1 text-start md:text-left px-3 mb-16">
             <Twemoji imageClassName="h-6 lg:h-8 select-none" wrapper>
               🚀
             </Twemoji>
-            <h3 className="text-white font-light text-base text-start mb-4 mt-4">{t.landing_goal_block2_title}</h3>
-            <p className="text-blue-shipcove font-light text-start text-sm break-words mt-4 whitespace-pre-line leading-relaxed">{t.landing_goal_block2_text}</p>
+            <h3 className="text-white font-light text-base text-start mb-4 mt-4">
+              {t.landing_goal_block2_title}
+            </h3>
+            <p className="text-blue-shipcove font-light text-start text-sm break-words mt-4 whitespace-pre-line leading-relaxed">
+              {t.landing_goal_block2_text}
+            </p>
           </div>
-          <div className="flex-none md:flex-1 text-start md:text-left px-3">
+          <div className="flex-none md:flex-1 text-start md:text-left px-3 mb-16">
             <Twemoji imageClassName="h-6 lg:h-8 select-none" wrapper>
               😃
             </Twemoji>
-            <h3 className="text-white font-light text-base text-start mb-4 mt-4">{t.landing_goal_block3_title}</h3>
-            <p className="text-blue-shipcove font-light text-start text-sm break-words mt-4 whitespace-pre-line leading-relaxed">{t.landing_goal_block3_text}</p>
+            <h3 className="text-white font-light text-base text-start mb-4 mt-4">
+              {t.landing_goal_block3_title}
+            </h3>
+            <p className="text-blue-shipcove font-light text-start text-sm break-words mt-4 whitespace-pre-line leading-relaxed">
+              {t.landing_goal_block3_text}
+            </p>
           </div>
         </div>
       </section>
