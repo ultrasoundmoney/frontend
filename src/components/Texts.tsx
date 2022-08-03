@@ -31,32 +31,40 @@ export const UnitText: FC<{ children: ReactNode; className?: string }> = ({
 export const SectionTitle: FC<{ title: string; subtitle?: string }> = ({
   title,
   subtitle,
-}) => {
-  return (
-    <>
-      <h2
+}) => (
+  <>
+    <h2
+      className={`
+      font-inter font-extralight
+      text-white text-center text-2xl md:text-3xl xl:text-41xl
+      `}
+    >
+      {title}
+    </h2>
+    {subtitle && (
+      <p
         className={`
-          font-inter font-extralight
-          text-white text-center text-2xl md:text-3xl xl:text-41xl
-        `}
+      font-inter font-light
+      text-blue-shipcove text-center text-base lg:text-lg
+      mt-6
+      `}
       >
-        {title}
-      </h2>
-      {subtitle && (
-        <p
-          className={`
-            font-inter font-light
-            text-blue-shipcove text-center text-base lg:text-lg
-            mt-6
-          `}
-        >
-          {subtitle}
-        </p>
-      )}
-    </>
-  );
-};
+        {subtitle}
+      </p>
+    )}
+  </>
+);
 
+export const BodyText: FC<{ children: ReactNode; className?: string }> = ({
+  children,
+  className = "",
+}) => (
+  <TextInter className={`text-base md:text-lg ${className}`}>
+    {children}
+  </TextInter>
+);
+
+// This component should not have text size styling. Replace all call-sites that don't overwrite the size with a more specific higher order component. Probably BodyText.
 export const TextInter: FC<{
   children: ReactNode;
   className?: string;
@@ -128,3 +136,14 @@ export const TextRoboto: FC<{
     </p>
   );
 };
+
+export const TimeFrameText: FC<{ children: ReactNode; className?: string }> = ({
+  children,
+  className = "",
+}) => (
+  <TextRoboto
+    className={`font-roboto font-light text-xs tracking-widest ${className}`}
+  >
+    {children}
+  </TextRoboto>
+);

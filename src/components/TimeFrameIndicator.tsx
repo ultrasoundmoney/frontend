@@ -31,12 +31,7 @@ const TimeFrameIndicator: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   return (
     <button className="flex gap-x-2 items-baseline" onClick={onClickTimeFrame}>
       <WidgetTitle>time frame</WidgetTitle>
-      <p
-        className="
-  font-roboto font-light
-  text-white text-xs
-  "
-      >
+      <p className="font-roboto font-light text-white text-xs">
         {timeFrame === "all"
           ? daysSinceLondon
           : displayTimeFrameNextMap[timeFrame]}
