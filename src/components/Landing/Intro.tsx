@@ -35,7 +35,7 @@ const Intro: React.FC = () => {
           </div>
         </div>
         <video
-          className="w-full md:w-3/6 lg:w-2/6 mx-auto mix-blend-lighten md:-mt-6 lg:-mt-28 xl:-mt-24 2xl:-mt-20 relative r-4"
+          className="w-full md:w-3/6 lg:w-2/6 mx-auto mix-blend-lighten md:-mt-6 lg:-mt-28 xl:-mt-24 2xl:-mt-20 relative right-4"
           playsInline
           autoPlay
           muted
