@@ -1,4 +1,5 @@
 import * as React from "react";
+import Link from "next/link";
 import { DateTime } from "luxon";
 import SupplyChart from "./SupplyChart";
 import { useTranslations } from "../../utils/use-translation";
@@ -33,9 +34,9 @@ const SupplyView: React.FC = () => {
           style={{ background: "#2D344A", fontSize: "12px" }}
           className="flex-none px-5 py-2 text-base text-white hover:opacity-75 rounded-3xl"
         >
-          <a href="#" target="_blank" rel="noreferrer">
-            {t.sypply_chart_button}
-          </a>
+          <Link href="/dashboard">
+            <a rel="noreferrer">{t.sypply_chart_button}</a>
+          </Link>
         </button>
       </div>
       <div
