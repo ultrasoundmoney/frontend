@@ -1,5 +1,5 @@
 $track-bg: #293350;
-$thumb-bg: #8194ce;
+$thumb-bg: #b5bddb;
 
 $thumb-width: 14px;
 
@@ -57,6 +57,14 @@ $thumb-width: 14px;
 }
 .sliderInput::-moz-range-thumb {
   @include slider-thumb;
+}
+
+.thumbInvisible::-webkit-slider-thumb {
+  visibility: hidden;
+}
+
+.thumbInvisible::-moz-range-thumb {
+  visibility: hidden;
 }
 
 // Custom visual track/slider (smaller tap area)

@@ -13,7 +13,7 @@ import * as Format from "../format";
 import { flow, O, pipe } from "../fp";
 import { MoneyAmount, PercentAmount } from "./Amount";
 import { LabelText, TextInter, TextRoboto } from "./Texts";
-import { WidgetBackground, WidgetTitle } from "./widget-subcomponents";
+import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
 const skeletonLoadingWidth = 0.1;
 
@@ -131,7 +131,7 @@ const RewardRow: FC<RewardRowProps> = ({
     rel="noreferrer"
   >
     <TextInter>{name}</TextInter>
-    <MoneyAmount className="font-light text-right" unit="eth">
+    <MoneyAmount className="font-light text-right">
       {pipe(
         amount,
         O.map(flow(Format.ethFromGwei, Format.formatOneDigit)),

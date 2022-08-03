@@ -4,11 +4,12 @@ import styles from "./Slider.module.scss";
 interface Props {
   min: number;
   max: number;
-  value: number;
+  value?: number;
   step?: number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onPointerDown?: () => void;
   onPointerUp?: () => void;
+  thumbVisible?: boolean;
 }
 
 const THUMB_WIDTH = 14;
@@ -19,16 +20,22 @@ const THUMB_WIDTH = 14;
  * transparent slider and use a custom UI in front of it.
  */
 const Slider: React.FC<Props> = ({
-  max,
   min,
+  max,
+  value,
   onChange,
   onPointerDown,
   onPointerUp,
   step,
+  thumbVisible = true,
   value,
 }) => {
-  const percent = ((value - min) / (max - min)) * 100;
-  const offset = Math.floor((percent * THUMB_WIDTH) / 100);
+  const percent =
+    value !== undefined ? ((value - min) / (max - min)) * 100 : undefined;
+  const offset =
+    percent !== undefined
+      ? Math.floor((percent * THUMB_WIDTH) / 100)
+      : undefined;
   return (
     <div className={`${styles.slider} slider`}>
       <input
@@ -38,9 +45,12 @@ const Slider: React.FC<Props> = ({
         value={value}
         step={step}
         onChange={onChange}
-        className={styles.sliderInput}
-        onPointerUp={onPointerUp}
+        className={`
+         ${styles.sliderInput}
+         ${thumbVisible ? "" : styles.thumbInvisible}
+        `}
         onPointerDown={onPointerDown}
+        onPointerUp={onPointerUp}
       />
       <div className={styles.sliderTrack}></div>
       <div
@@ -51,4 +61,4 @@ const Slider: React.FC<Props> = ({
   );
 };
 
-export default React.memo(Slider);
+export default Slider;

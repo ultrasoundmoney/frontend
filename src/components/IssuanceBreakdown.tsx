@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { flow, pipe } from "../fp";
-import { WidgetBackground, WidgetTitle } from "./widget-subcomponents";
+import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 import Colors from "../colors";
 import { LabelText, TextInter, TextRoboto } from "./Texts";
 import * as Format from "../format";
@@ -142,7 +142,7 @@ const RewardRow: FC<RewardRowProps> = ({
     rel="noreferrer"
   >
     <TextInter>{name}</TextInter>
-    <MoneyAmount className="font-light text-right" unit="eth">
+    <MoneyAmount className="font-light text-right">
       {typeof amount === "number" ? millionEthFromGwei(amount) : undefined}
     </MoneyAmount>
   </a>

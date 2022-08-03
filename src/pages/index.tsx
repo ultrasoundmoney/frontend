@@ -30,11 +30,13 @@ export const SharedHead = () => (
 const IndexPage: NextPage = () => (
   <>
     <SharedHead />
+    {/* This serves our Plausible analytics script. We use cloudflare workers to make this possible. */}
     <Script
       defer
       data-domain="ultrasound.money"
-      src="https://plausible.io/js/plausible.js"
-    ></Script>
+      data-api="/cfw/event"
+      src="/cfw/script.js"
+    />
     <Home />
   </>
 );

@@ -7,7 +7,7 @@ import * as Format from "../format";
 import { pipe } from "../fp";
 import { Amount, MoneyAmount } from "./Amount";
 import { LabelText, TextInter, TextRoboto } from "./Texts";
-import { WidgetBackground, WidgetTitle } from "./widget-subcomponents";
+import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
 type ScarcityBarProps = {
   staked: number;
@@ -105,9 +105,8 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
             }}
           ></div>
           <TextRoboto
-            className="color-animation"
+            className="color-animation text-sm mt-[12px] md:text-base md:mt-[9px]"
             style={{
-              marginTop: "9px",
               color: hoveringStaked ? Colors.white : Colors.spindle,
             }}
           >
@@ -155,9 +154,8 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
             }}
           ></div>
           <TextRoboto
-            className="font-roboto color-animation"
+            className="font-roboto color-animation text-sm mt-[12px] md:text-base md:mt-[9px]"
             style={{
-              marginTop: "9px",
               color: hoveringLocked ? Colors.white : Colors.spindle,
             }}
           >
@@ -244,7 +242,7 @@ const EngineRow: FC<EngineRowProps> = ({
     rel="noreferrer"
   >
     <TextInter>{name}</TextInter>
-    <MoneyAmount className="font-light text-right" amountPostfix="M" unit="eth">
+    <MoneyAmount className="font-light text-right" amountPostfix="M">
       {amountFormatted}
     </MoneyAmount>
     <Amount className="text-right" unitPostfix="years">
@@ -306,7 +304,7 @@ const Scarcity: FC = () => {
               )}
               hovering={hoveringLocked}
               link="https://defipulse.com/"
-              name="defi"
+              name="defi (stale)"
               setHovering={setHoveringLocked}
               startedOn={scarcity.engines.locked.startedOn}
             />

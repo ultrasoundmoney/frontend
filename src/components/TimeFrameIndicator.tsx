@@ -1,10 +1,10 @@
 import * as DateFns from "date-fns";
 import { FC, useEffect, useState } from "react";
-import { WidgetTitle } from ".";
-import { londonHardfork } from "../../dates";
-import { millisFromHours } from "../../duration";
-import { pipe } from "../../fp";
-import { displayTimeFrameNextMap, TimeFrameNext } from "../../time-frames";
+import { WidgetTitle } from "./WidgetSubcomponents";
+import { londonHardfork } from "../dates";
+import { millisFromHours } from "../duration";
+import { pipe } from "../fp";
+import { displayTimeFrameNextMap, TimeFrameNext } from "../time-frames";
 
 const getFormattedDays = () =>
   pipe(

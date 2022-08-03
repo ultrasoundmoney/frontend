@@ -13,14 +13,14 @@ import FaqBlock from "../Landing/faq";
 import Link from "../Link";
 import PriceModel from "../PriceModel";
 import Scarcity from "../Scarcity";
-import SupplyView from "../SupplyView";
+import SupplyWidgets from "../SupplyWidgets";
 import { SectionTitle, TextInterLink, TextRoboto } from "../Texts";
 import ToggleSwitch from "../ToggleSwitch";
 import TotalValueSecured from "../TotalValueSecured";
 import TwitterFam from "../TwitterFam";
 import ValidatorRewardsWidget from "../ValidatorRewards";
-import WidgetGroup1 from "../widget-group-1";
-import { WidgetTitle } from "../widget-subcomponents";
+import WidgetGroup1 from "../BurnGroup";
+import { WidgetTitle } from "../WidgetSubcomponents";
 import styles from "./Home.module.scss";
 import TopBar from "./TopBar";
 
@@ -112,6 +112,24 @@ const AdminTools: FC<{
   );
 };
 
+const StyledErrorBoundary: FC<{ children: ReactNode }> = ({ children }) => (
+  <Sentry.ErrorBoundary
+    fallback={
+      <div
+        className={`
+          w-5/6 m-auto p-8 rounded-lg font-roboto text-white text-base text-center
+          border border-red-400
+        `}
+      >
+        an error occured we did not foresee, if this does not change soon,
+        please tell us!
+      </div>
+    }
+  >
+    {children}
+  </Sentry.ErrorBoundary>
+);
+
 const Home: FC = () => {
   const { featureFlags, setFlag } = FeatureFlags.useFeatureFlags();
   const adminToken = useAdminToken();
@@ -125,9 +143,15 @@ const Home: FC = () => {
       >
         <div className={styles.blurredBgImage}>
           <div className="container mx-auto">
-            {adminToken && <AdminTools setFlag={setFlag} />}
+            {adminToken && (
+              <StyledErrorBoundary>
+                <AdminTools setFlag={setFlag} />
+              </StyledErrorBoundary>
+            )}
             <div className="px-4 md:px-16">
-              <TopBar />
+              <StyledErrorBoundary>
+                <TopBar />
+              </StyledErrorBoundary>
             </div>
             <Title>Ultra Sound Money</Title>
             <p className="font-inter font-light text-blue-spindle text-xl md:text-2xl lg:text-3xl text-center mb-16">
@@ -158,15 +182,16 @@ const Home: FC = () => {
             {/*   <source src="/orbs1.webm" type="video/webm; codecs='vp9'" /> */}
             {/*   <source src="/orbs1.mp4" type="video/mp4" /> */}
             {/* </video> */}
-            <Sentry.ErrorBoundary
-              fallback={
-                <div className="bg-blue-tangaroa w-4/6 m-auto p-8 rounded-lg font-roboto text-white text-xl text-center">
-                  an unexpected exception occured, devs have been notified.
-                </div>
-              }
-            >
+            <StyledErrorBoundary>
+              <SupplyWidgets />
+            </StyledErrorBoundary>
+            <SectionDivider
+              title="the burn"
+              subtitle="it's getting hot in here"
+            />
+            <StyledErrorBoundary>
               <WidgetGroup1 />
-            </Sentry.ErrorBoundary>
+            </StyledErrorBoundary>
             {/* <video */}
             {/*   className="absolute w-1/2 right-0 -mt-64 opacity-20 -z-10" */}
             {/*   playsInline */}
@@ -182,73 +207,72 @@ const Home: FC = () => {
               title="total value secured—TVS"
               subtitle="securing the internet of value"
             />
-            <div className="flex flex-col px-4 md:px-16">
-              <TotalValueSecured></TotalValueSecured>
-            </div>
+            <StyledErrorBoundary>
+              <div className="flex flex-col px-4 md:px-16">
+                <TotalValueSecured></TotalValueSecured>
+              </div>
+            </StyledErrorBoundary>
             <SectionDivider
               title="monetary premium"
               subtitle="the race to become the most desirable money"
             />
-            <div className="flex flex-col lg:flex-row gap-y-4 lg:gap-x-4 px-4 md:px-16">
-              {/* <video */}
-              {/*   className="absolute w-1/2 -left-20 -mt-96 opacity-20 -z-10 -mr-8" */}
-              {/*   playsInline */}
-              {/*   autoPlay */}
-              {/*   muted */}
-              {/*   loop */}
-              {/*   poster="/orbs1.jpg" */}
-              {/* > */}
-              {/*   <source src="/orbs1.webm" type="video/webm; codecs='vp9'" /> */}
-              {/*   <source src="/orbs1.mp4" type="video/mp4" /> */}
-              {/* </video> */}
-              <div className="flex flex-col basis-1/2 gap-y-4">
-                <Scarcity />
-                <ValidatorRewardsWidget />
-                <Flippenings />
-              </div>
-              <div className="basis-1/2 flex flex-col gap-y-4">
-                <PriceModel />
-                <IssuanceBreakdown />
-              </div>
-            </div>
-            <div className="flex flex-col px-4 md:px-16">
-              <SectionDivider
-                title="project the supply"
-                subtitle="get ready for a peakening"
-              />
-              <div className="w-full md:m-auto relative bg-blue-tangaroa px-2 md:px-4 xl:px-12 py-4 md:py-8 xl:py-12 rounded-xl">
-                <SupplyView />
-              </div>
-              <div
-                id="join-the-fam"
-                className="relative flex px-4 md:px-0 pt-40 mb-16"
-              >
-                <div className="w-full relative flex flex-col items-center">
-                  {/* <video */}
-                  {/*   className="absolute w-2/3 right-0 -mr-16 -mt-48 opacity-100 -z-10 hidden md:block" */}
-                  {/*   playsInline */}
-                  {/*   autoPlay */}
-                  {/*   muted */}
-                  {/*   loop */}
-                  {/*   poster="/orbs2.jpg" */}
-                  {/* > */}
-                  {/*   <source src="/orbs2.webm" type="video/webm; codecs='vp9'" /> */}
-                  {/*   <source src="/orbs2.mp4" type="video/mp4" /> */}
-                  {/* </video> */}
-                  <TwitterFam />
+            <StyledErrorBoundary>
+              <div className="flex flex-col lg:flex-row gap-y-4 lg:gap-x-4 px-4 md:px-16">
+                {/* <video */}
+                {/*   className="absolute w-1/2 -left-20 -mt-96 opacity-20 -z-10 -mr-8" */}
+                {/*   playsInline */}
+                {/*   autoPlay */}
+                {/*   muted */}
+                {/*   loop */}
+                {/*   poster="/orbs1.jpg" */}
+                {/* > */}
+                {/*   <source src="/orbs1.webm" type="video/webm; codecs='vp9'" /> */}
+                {/*   <source src="/orbs1.mp4" type="video/mp4" /> */}
+                {/* </video> */}
+                <div className="flex flex-col basis-1/2 gap-y-4">
+                  <Scarcity />
+                  <ValidatorRewardsWidget />
+                  <Flippenings />
+                </div>
+                <div className="basis-1/2 flex flex-col gap-y-4">
+                  <PriceModel />
+                  <IssuanceBreakdown />
                 </div>
               </div>
-              <div className="flex px-4 md:px-0 pt-20 pb-20">
-                <div className="w-full lg:w-2/3 md:m-auto relative">
-                  <FollowingYou />
+            </StyledErrorBoundary>
+            <StyledErrorBoundary>
+              <div className="flex flex-col px-4 md:px-16">
+                <div
+                  id="join-the-fam"
+                  className="relative flex px-4 md:px-0 pt-40 mb-16"
+                >
+                  <div className="w-full relative flex flex-col items-center">
+                    {/* <video */}
+                    {/*   className="absolute w-2/3 right-0 -mr-16 -mt-48 opacity-100 -z-10 hidden md:block" */}
+                    {/*   playsInline */}
+                    {/*   autoPlay */}
+                    {/*   muted */}
+                    {/*   loop */}
+                    {/*   poster="/orbs2.jpg" */}
+                    {/* > */}
+                    {/*   <source src="/orbs2.webm" type="video/webm; codecs='vp9'" /> */}
+                    {/*   <source src="/orbs2.mp4" type="video/mp4" /> */}
+                    {/* </video> */}
+                    <TwitterFam />
+                  </div>
+                </div>
+                <div className="flex px-4 md:px-0 pt-20 pb-20">
+                  <div className="w-full lg:w-2/3 md:m-auto relative">
+                    <FollowingYou />
+                  </div>
+                </div>
+                <div className="flex px-4 md:px-0 pt-8">
+                  <div className="w-full lg:w-2/3 md:m-auto relative">
+                    <FaqBlock />
+                  </div>
                 </div>
               </div>
-              <div className="flex px-4 md:px-0 pt-8">
-                <div className="w-full lg:w-2/3 md:m-auto relative">
-                  <FaqBlock />
-                </div>
-              </div>
-            </div>
+            </StyledErrorBoundary>
             <div className="w-full flex flex-col items-center pb-40">
               <SectionDivider title="still have questions?" />
               <div className="flex flex-col gap-y-4 justify-start">

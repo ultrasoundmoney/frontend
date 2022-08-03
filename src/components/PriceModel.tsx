@@ -10,7 +10,7 @@ import * as StaticEtherData from "../static-ether-data";
 import { MoneyAmount } from "./Amount";
 import styles from "./PriceModel.module.scss";
 import { TextInter, TextRoboto } from "./Texts";
-import { WidgetBackground, WidgetTitle } from "./widget-subcomponents";
+import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
 type SliderProps = {
   children: number;
@@ -256,7 +256,7 @@ const PriceModel: FC = () => {
       <div className="flex flex-col gap-y-4 mt-4 overflow-hidden">
         <div className="flex justify-between">
           <TextInter>annualized profits</TextInter>
-          <MoneyAmount amountPostfix="B" unit="usd" skeletonWidth="2rem">
+          <MoneyAmount amountPostfix="B" unitText="USD" skeletonWidth="2rem">
             {annualizedEarnings === undefined
               ? undefined
               : Format.formatOneDigit(annualizedEarnings / 1e9)}
@@ -265,7 +265,7 @@ const PriceModel: FC = () => {
         <div className="flex flex-col gap-y-2">
           <div className="flex justify-between">
             <TextInter>growth profile</TextInter>
-            <MoneyAmount unit="P/E" skeletonWidth="3rem">
+            <MoneyAmount unitText="P/E" skeletonWidth="3rem">
               {peRatio !== undefined && initialPeSet
                 ? Format.formatOneDigit(peRatio)
                 : undefined}
@@ -414,7 +414,7 @@ price = profits * P/E ratio * monetary premium`}
               amountPostfix="K"
               skeletonWidth="3rem"
               textSizeClass="text-2xl md:text-3xl"
-              unit="usd"
+              unitText="USD"
             >
               {projectedPrice === undefined
                 ? undefined

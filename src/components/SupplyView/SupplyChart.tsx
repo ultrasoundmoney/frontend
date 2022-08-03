@@ -7,6 +7,7 @@ import last from "lodash/last";
 import merge from "lodash/merge";
 import * as React from "react";
 import { useSupplyProjectionInputs } from "../../api/supply-projection";
+import { LONDON_HARDFORK_DATE_TIME } from "../../eth-time";
 import { formatOneDigit } from "../../format";
 import { pipe } from "../../fp";
 import { TranslationsContext } from "../../translations-context";
@@ -41,7 +42,6 @@ interface HighchartsRef {
 
 let mouseOutTimer: NodeJS.Timeout | null = null;
 
-const LONDON_DATE = DateFns.parseISO("2021-08-05T00:00:00Z");
 const NUM_DAYS_PER_POINT = 7;
 const COMPACT_MARKERS_BELOW_WIDTH = 1440;
 const COMPACT_CHART_BELOW_WIDTH = 640;
@@ -145,7 +145,7 @@ const SupplyChart: React.FC<Props> = ({
       [DateFns.parseISO("2017-10-16T00:00:00Z"), "byzantium", `3 ETH/${t.marker_block}`],
       [DateFns.parseISO("2019-02-27T00:00:00Z"), "constantinople", `2 ETH/${t.marker_block}`],
       [DateFns.parseISO("2020-12-01T00:00:00Z"), t.marker_phase_0, t.marker_pos],
-      [LONDON_DATE, "london", "burn"],
+      [LONDON_HARDFORK_DATE_TIME, "london", "burn"],
       [chartSettings.projectedMergeDate, t.marker_merge, t.marker_pow_removal],
     ]),
     [chartSettings, t],
@@ -294,7 +294,7 @@ const SupplyChart: React.FC<Props> = ({
       }
       // If this is after EIP-1559 calculate the fee burn
       let burn = 0;
-      if (DateFns.isAfter(projDate, LONDON_DATE)) {
+      if (DateFns.isAfter(projDate, LONDON_HARDFORK_DATE_TIME)) {
         burn = estimatedDailyFeeBurn(chartSettings.projectedBaseGasPrice);
       }
 
