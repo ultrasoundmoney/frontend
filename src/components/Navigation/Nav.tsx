@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import classes from "./Navigation.module.scss";
 import { navigationItems } from "../../utils/static";
 import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
@@ -7,8 +8,10 @@ import useNotification from "../../use-notification";
 import PriceGasWidget from "../PriceGasWidget";
 import AlarmInput from "../AlarmInput";
 import { WidgetTitle } from "../WidgetSubcomponents";
+import { TranslationsContext } from "../../translations-context";
 
-const Nav = () => {
+const Nav: React.FC = () => {
+  const t = React.useContext(TranslationsContext);
   const baseFeePerGas = useGroupedAnalysis1()?.baseFeePerGas;
   const ethPrice = useGroupedAnalysis1()?.ethPrice;
   const [isOpen, setIsOpen] = useState(false);
@@ -126,20 +129,23 @@ const Nav = () => {
         <div className="w-full md:w-6/12 hidden md:block" id="menu">
           <ul className="flex flex-col items-center md:flex-row justify-end list-none mt-4 md:mt-0 relative text-sm">
             <li className="nav-item pl-6 justify-center">
-              <a
-                className="px-3 py-2 flex items-center leading-snug text-blue-shipcove hover:opacity-75 hover:text-white hover:cursor-pointer"
-                href="#faq"
-              >
-                FAQ
-              </a>
+              <Link href="#faq">
+                <a className="px-3 py-2 flex items-center leading-snug text-blue-shipcove hover:opacity-75 hover:text-white hover:cursor-pointer">
+                  {t.landing_faq_link}
+                </a>
+              </Link>
             </li>
             <li className="nav-item justify-center" style={{ paddingLeft: 75 }}>
-              <a
-                className="px-5 py-2 flex items-center font-medium text-white hover:text-blue-shipcove border-white border-solid border-2 rounded-3xl hover:border-blue-shipcove"
-                href="#join-the-fam"
-              >
-                Join the fam
-              </a>
+              <Link href="/dashboard">
+                <a className="px-5 py-2 flex items-center font-medium text-sm  text-white hover:text-blue-shipcove border-white border-solid border-2 rounded-3xl hover:border-blue-shipcove">
+                  {t.landing_dashboard_link}
+                  <img
+                    className="ml-6"
+                    src={`/arrowRight.svg`}
+                    alt="arrow-right"
+                  />
+                </a>
+              </Link>
             </li>
           </ul>
         </div>

@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import React from "react";
-import * as Sentry from "@sentry/react";
 import Navigation from "../Navigation/Nav";
 import Intro from "./Intro";
 import BeforeGenesis from "./beforeGenesis";

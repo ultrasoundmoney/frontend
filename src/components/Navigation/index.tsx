@@ -15,7 +15,11 @@ const Navigation: React.FC = () => {
           <div className="w-full md:w-5/12 relative flex justify-start lg:static lg:justify-start">
             <div className="flex-initial pr-2 lg:pr-8">
               <Link href="/">
-                <img className="max-w-max" src={`/ethereum-logo-2014-5.svg`} alt={t.title} />
+                <img
+                  className="max-w-max"
+                  src={`/ethereum-logo-2014-5.svg`}
+                  alt={t.title}
+                />
               </Link>
             </div>
             <div
@@ -35,18 +39,14 @@ const Navigation: React.FC = () => {
             <ul className="flex flex-col md:flex-row  list-none lg:ml-auto mt-4 md:mt-0">
               <li className="nav-item lg:px-4 xl:px-8 justify-center">
                 <Link href="/">
-                  <a
-                    className="px-3 py-2 flex items-center leading-snug text-blue-shipcove hover:opacity-75 hover:text-white"
-                  >
+                  <a className="px-3 py-2 flex items-center leading-snug text-blue-shipcove hover:opacity-75 hover:text-white">
                     dashboard
                   </a>
                 </Link>
               </li>
               <li className="nav-item lg:px-4 xl:px-8 justify-center">
                 <Link href="/">
-                  <a
-                    className="px-3 py-2 flex items-center leading-snug text-blue-shipcove hover:opacity-75 hover:text-white"
-                  >
+                  <a className="px-3 py-2 flex items-center leading-snug text-blue-shipcove hover:opacity-75 hover:text-white">
                     q&a
                   </a>
                 </Link>

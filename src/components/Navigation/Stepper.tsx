@@ -5,8 +5,10 @@ import React, {
   useState,
   useCallback,
 } from "react";
+import Link from "next/link";
 import Steps from "./Steps";
 import { StepperContext, StepperPoint } from "../../context/StepperContext";
+import { TranslationsContext } from "../../translations-context";
 import { ActionLogo } from "./types";
 import {
   getIconOffset,
@@ -18,6 +20,7 @@ import {
 import classes from "./Navigation.module.scss";
 
 const Stepper: React.FC = () => {
+  const t = React.useContext(TranslationsContext);
   const stepsRef = useRef<HTMLElement | null>(null);
   const steperIconRef = useRef<HTMLDivElement | null>(null);
   const stepperPoints = useContext(StepperContext);
@@ -97,13 +100,12 @@ const Stepper: React.FC = () => {
         <div
           className={`${classes.linkWrap} w-full md:w-3/12 hidden md:block py-1`}
         >
-          <a
-            className="px-5 py-2 flex items-center font-medium text-sm  text-white hover:text-blue-shipcove border-white border-solid border-2 rounded-3xl hover:border-blue-shipcove"
-            href="#join-the-fam"
-          >
-            Join The Community
-            <img className="ml-6" src={`/arrowRight.svg`} alt="arrow-right" />
-          </a>
+          <Link href="/dashboard">
+            <a className="px-5 py-2 flex items-center font-medium text-sm  text-white hover:text-blue-shipcove border-white border-solid border-2 rounded-3xl hover:border-blue-shipcove">
+              {t.landing_dashboard_link}
+              <img className="ml-6" src={`/arrowRight.svg`} alt="arrow-right" />
+            </a>
+          </Link>
         </div>
       </div>
     </nav>
