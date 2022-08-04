@@ -244,7 +244,7 @@ const EquilibriumWidget = () => {
 
   return (
     <WidgetBackground
-      className={`relative flex flex-col md:flex-row-reverse gap-x-4 gap-y-8 overflow-hidden`}
+      className={`relative flex flex-col md:flex-row-reverse gap-x-4 gap-y-8 overflow-hidden p-0`}
     >
       <div
         className={`
@@ -274,7 +274,7 @@ const EquilibriumWidget = () => {
             // Move below props inside
             // widthMin={lg ? 0.4 : md ? 0.7 : undefined}
             // widthMax={lg ? 0.4 : md ? 0.7 : undefined}
-            height={lg ? 220 : 160}
+            height={lg ? 333 : 160}
           />
         ) : (
           <TextRoboto
@@ -286,7 +286,7 @@ const EquilibriumWidget = () => {
           </TextRoboto>
         )}
       </div>
-      <div className="md:w-1/2 flex flex-col gap-y-8 z-10">
+      <div className="md:w-1/2 flex flex-col gap-y-8 z-10 p-8">
         <div>
           <div className="flex justify-between">
             <WidgetTitle>supply equilibrium</WidgetTitle>
