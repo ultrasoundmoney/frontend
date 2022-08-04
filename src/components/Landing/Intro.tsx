@@ -9,7 +9,7 @@ const Intro: React.FC = () => {
   return (
     <section id="hero" className={`${styles.hero} h-screen container m-auto`}>
       <video
-        className={`${styles.hero_bg}`}
+        className={`${styles.hero_bg} mix-blend-lighten`}
         playsInline
         autoPlay
         muted
