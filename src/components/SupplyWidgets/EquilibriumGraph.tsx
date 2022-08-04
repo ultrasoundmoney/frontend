@@ -71,7 +71,7 @@ const defaultOptions: Highcharts.Options = {
       color: {
         linearGradient: {
           x1: 0,
-          y1: 1,
+          y1: 0,
           x2: 1,
           y2: 0,
         },
