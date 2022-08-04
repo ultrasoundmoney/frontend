@@ -1,5 +1,5 @@
 import * as DateFns from "date-fns";
-import Highcharts from "highcharts";
+import Highcharts, { Axis } from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import _ from "lodash";
 import { FC, useMemo } from "react";
@@ -16,6 +16,28 @@ const defaultOptions: Highcharts.Options = {
     animation: false,
     backgroundColor: "transparent",
     showAxes: false,
+    events: {
+      redraw: function () {
+        const yAxis0 = this.yAxis[0] as Highcharts.Axis & {
+          plotLinesAndBands: { svgElem: { element: SVGElement } }[];
+        };
+
+        yAxis0.plotLinesAndBands.forEach(function (lineOrBand) {
+          const svg = lineOrBand.svgElem.element;
+          const d = svg.getAttribute("d");
+          if (d === null) {
+            return;
+          }
+          const dArr = d.split(" ");
+          const widthReduction = 200;
+
+          const newStartX = Number(dArr[1]) + widthReduction;
+          dArr[1] = String(newStartX);
+
+          svg.setAttribute("d", dArr.join(" "));
+        });
+      },
+    },
   },
   title: undefined,
   xAxis: {
