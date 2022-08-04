@@ -196,8 +196,7 @@ const EquilibriumWidget = () => {
     let nonStaked = supply[1] - staked;
     const issuance = getIssuancePerYear(staked);
 
-    for (let i = 0; i < 150; i++) {
-      console.log(issuance);
+    for (let i = 0; i < 200; i++) {
       const nextYear = pipe(
         supply[0],
         DateFns.fromUnixTime,
