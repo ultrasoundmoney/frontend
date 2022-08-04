@@ -49,7 +49,7 @@ const defaultOptions: Highcharts.Options = {
   },
   yAxis: {
     min: 10e6,
-    max: 160e6,
+    max: 200e6,
     tickInterval: 20e6,
     title: { text: undefined },
     labels: { enabled: false },
