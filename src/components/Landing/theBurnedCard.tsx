@@ -25,7 +25,7 @@ const FeeBurnedBlock = () => {
     : [];
   const [currentIndexHistorical, setCurrentIndexHistorical] = useState(0);
 
-  const vidgets = useRef<HTMLDivElement>(null); 
+  const vidgets = useRef<HTMLDivElement>(null);
   function onScroll() {
     //change data vidgets
     const bodyHeight = document.body.scrollHeight;
@@ -104,7 +104,7 @@ const FeeBurnedBlock = () => {
         id="eth-card"
         className={`${
           styles.fixedFeeBurned
-        } z-10 inset-x-0 bottom-0 grid grid-cols-2 gap-1 sm:gap-2 lg:flex lg:flex-nowrap justify-center w-full max-w-7xl md:mx-auto px-2 lg:px-4 sticky lg:gap-4 pb-2 lg:pb-4 ${
+        } z-10 inset-x-0 bottom-0 grid grid-cols-2 gap-1 sm:gap-2 lg:flex lg:flex-nowrap justify-center w-full md:mx-auto px-2 lg:px-4 sticky lg:gap-4 pb-2 lg:pb-4 ${
           isShow ? styles.active : ""
         }`}
       >

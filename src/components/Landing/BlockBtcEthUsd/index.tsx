@@ -101,7 +101,7 @@ const TheUltraSound: FC = () => {
         <div
           id="graph_svg"
           ref={graphRef}
-          className="w-full md:w-8/12 flex flex-wrap align-start justify-between ml-auto mr-auto"
+          className="w-full md:w-5/6 flex flex-wrap align-start justify-between ml-auto mr-auto"
         >
           <div
             ref={graphTextRef}
