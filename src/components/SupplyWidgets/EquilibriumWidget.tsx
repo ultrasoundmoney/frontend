@@ -310,74 +310,76 @@ const EquilibriumWidget = () => {
             </MoneyAmount>
           </div>
         </div>
-        <div>
-          <div className="flex justify-between items-center -mb-1">
-            <div className="flex items-center truncate">
-              <WidgetTitle>issuance rewards</WidgetTitle>
-              <BodyText className="lg:text-xs invisible lg:visible">
-                —for staked ETH
-              </BodyText>
+        <div className="flex flex-col gap-y-5">
+          <div>
+            <div className="flex justify-between items-center -mb-1">
+              <div className="flex items-center truncate">
+                <WidgetTitle>issuance rewards</WidgetTitle>
+                <BodyText className="lg:text-xs invisible lg:visible">
+                  —for staked ETH
+                </BodyText>
+              </div>
+              <Amount className="text-base lg:text-lg">
+                {stakingAprFraction !== undefined
+                  ? `${Format.formatPercentOneDigit(stakingAprFraction)}/year`
+                  : undefined}
+              </Amount>
             </div>
-            <Amount className="text-base lg:text-lg">
-              {stakingAprFraction !== undefined
-                ? `${Format.formatPercentOneDigit(stakingAprFraction)}/year`
-                : undefined}
-            </Amount>
-          </div>
-          <div className="relative">
-            <Slider
-              min={0.01}
-              max={0.1}
-              value={stakingAprFraction}
-              step={0.001}
-              onChange={(e) => setStakedAprFraction(Number(e.target.value))}
-              thumbVisible={initialEquilibriumInputsSet ?? false}
-            />
-            <div
-              className={`
+            <div className="relative">
+              <Slider
+                min={0.01}
+                max={0.1}
+                value={stakingAprFraction}
+                step={0.001}
+                onChange={(e) => setStakedAprFraction(Number(e.target.value))}
+                thumbVisible={initialEquilibriumInputsSet ?? false}
+              />
+              <div
+                className={`
                 absolute top-[14px] -translate-x-1/2
                 flex flex-col items-center
                 ${nowMarker !== undefined ? "visible" : "hidden"}
               `}
-              style={{
-                left: `calc(${
-                  (((nowMarker ?? 0) - 0.01) / 0.09) * 100
-                }% - ${Math.floor(
-                  ((((nowMarker ?? 0) - 0.01) / 0.09) * 2 - 1) * 7,
-                )}px)`,
-              }}
-            >
-              <div className="w-0.5 h-2 bg-blue-spindle"></div>
-              <TimeFrameText className="text-blue-spindle">now</TimeFrameText>
+                style={{
+                  left: `calc(${
+                    (((nowMarker ?? 0) - 0.01) / 0.09) * 100
+                  }% - ${Math.floor(
+                    ((((nowMarker ?? 0) - 0.01) / 0.09) * 2 - 1) * 7,
+                  )}px)`,
+                }}
+              >
+                <div className="w-0.5 h-2 bg-blue-spindle"></div>
+                <TimeFrameText className="text-blue-spindle">now</TimeFrameText>
+              </div>
             </div>
           </div>
-        </div>
-        <div>
-          <div className="flex justify-between items-center -mb-1">
-            <div className="flex items-center truncate">
-              <WidgetTitle>burn rate</WidgetTitle>
-              <BodyText className="lg:text-xs invisible lg:visible">
-                —for non-staked ETH
-              </BodyText>
+          <div>
+            <div className="flex justify-between items-center -mb-1">
+              <div className="flex items-center truncate">
+                <WidgetTitle>burn rate</WidgetTitle>
+                <BodyText className="lg:text-xs invisible lg:visible">
+                  —for non-staked ETH
+                </BodyText>
+              </div>
+              <Amount>
+                {nonStakedSupplyBurnFraction !== undefined
+                  ? `${Format.formatPercentOneDigit(
+                      nonStakedSupplyBurnFraction,
+                    )}/year`
+                  : undefined}
+              </Amount>
             </div>
-            <Amount>
-              {nonStakedSupplyBurnFraction !== undefined
-                ? `${Format.formatPercentOneDigit(
-                    nonStakedSupplyBurnFraction,
-                  )}/year`
-                : undefined}
-            </Amount>
+            <Slider
+              min={0.001}
+              max={0.05}
+              value={nonStakedSupplyBurnFraction}
+              step={0.001}
+              onChange={(e) =>
+                setNonStakedSupplyBurnFraction(Number(e.target.value))
+              }
+              thumbVisible={initialEquilibriumInputsSet}
+            />
           </div>
-          <Slider
-            min={0.001}
-            max={0.05}
-            value={nonStakedSupplyBurnFraction}
-            step={0.001}
-            onChange={(e) =>
-              setNonStakedSupplyBurnFraction(Number(e.target.value))
-            }
-            thumbVisible={initialEquilibriumInputsSet}
-          />
         </div>
 
         <div className="flex justify-between items-center">
