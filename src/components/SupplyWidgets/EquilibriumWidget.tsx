@@ -317,7 +317,7 @@ const EquilibriumWidget = () => {
               <div className="flex items-center truncate">
                 <WidgetTitle>issuance rewards</WidgetTitle>
                 <BodyText className="lg:text-xs invisible lg:visible">
-                  —for staked ETH
+                  &nbsp;for stakers
                 </BodyText>
               </div>
               <Amount className="text-base lg:text-lg">
@@ -359,7 +359,7 @@ const EquilibriumWidget = () => {
               <div className="flex items-center truncate">
                 <WidgetTitle>burn rate</WidgetTitle>
                 <BodyText className="lg:text-xs invisible lg:visible">
-                  —for non-staked ETH
+                  &nbsp;for non-stakers
                 </BodyText>
               </div>
               <Amount>
