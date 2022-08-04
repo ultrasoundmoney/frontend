@@ -192,9 +192,10 @@ const EquilibriumWidget = () => {
     let supply = NEA.last(supplyEquilibriumSeries);
     const staked = getStakedFromApr(stakingAprFraction);
     let nonStaked = supply[1] - staked;
-    const issuance = getIssuancePerYear(stakingAprFraction);
+    const issuance = getIssuancePerYear(staked);
 
-    for (let i = 0; i < 300; i++) {
+    for (let i = 0; i < 150; i++) {
+      console.log(issuance);
       const nextYear = pipe(
         supply[0],
         DateFns.fromUnixTime,
@@ -219,7 +220,8 @@ const EquilibriumWidget = () => {
       {},
     );
 
-    const supplyEquilibrium = supply[1];
+    const supplyEquilibrium =
+      getIssuancePerYear(staked) / nonStakedSupplyBurnFraction + staked;
     const nonStakedSupplyEquilibrium = nonStaked;
     const cashFlowsEquilibrium = getIssuancePerYear(staked);
     const yearlyIssuanceFraction = getIssuanceApr(staked) / staked;
@@ -265,6 +267,7 @@ const EquilibriumWidget = () => {
           <EquilibriumGraph
             supplyEquilibriumSeries={equilibriums.supplyEquilibriumSeries}
             supplyEquilibriumMap={equilibriums.supplyEquilibriumMap}
+            supplyEquilibrium={equilibriums.supplyEquilibrium}
             staking={getStakedFromApr(stakingAprFraction)}
             width={lg ? 400 : md ? 250 : 300}
             // Move below props inside

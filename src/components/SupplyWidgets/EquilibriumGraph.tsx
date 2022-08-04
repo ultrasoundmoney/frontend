@@ -98,6 +98,7 @@ type Props = {
   supplyEquilibriumSeries: NEA.NonEmptyArray<Point>;
   // A map used for fast-lookup of the Y in the series above by X.
   supplyEquilibriumMap: Record<number, number>;
+  supplyEquilibrium: number;
   widthMin?: number;
   widthMax?: number;
   staking: number;
@@ -108,6 +109,7 @@ type Props = {
 const EquilibriumGraph: FC<Props> = ({
   height,
   supplyEquilibriumMap,
+  supplyEquilibrium,
   supplyEquilibriumSeries,
   staking,
   widthMax = 0,
@@ -121,11 +123,11 @@ const EquilibriumGraph: FC<Props> = ({
         {
           type: "spline",
           data: [
-            ...supplyEquilibriumSeries.slice(0, 200),
+            ...supplyEquilibriumSeries,
             //end point
             {
-              x: supplyEquilibriumSeries[199][0],
-              y: supplyEquilibriumSeries[199][1],
+              x: supplyEquilibriumSeries[supplyEquilibriumSeries.length - 1][0],
+              y: supplyEquilibriumSeries[supplyEquilibriumSeries.length - 1][1],
               marker: {
                 symbol: `url(/dot_supply_graph.svg)`,
                 enabled: true,
@@ -145,7 +147,7 @@ const EquilibriumGraph: FC<Props> = ({
               y: 18,
               x: 1,
             },
-            value: NEA.last(supplyEquilibriumSeries)[1],
+            value: supplyEquilibrium,
           },
           {
             color: colors.spindle,
