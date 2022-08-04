@@ -123,9 +123,7 @@ const EquilibriumGraph: FC<Props> = ({
         {
           type: "spline",
           data: [
-            ...supplyEquilibriumSeries.slice(
-              supplyEquilibriumSeries.length - 200,
-            ),
+            ...supplyEquilibriumSeries,
             //end point
             {
               x: supplyEquilibriumSeries[supplyEquilibriumSeries.length - 1][0],
@@ -135,16 +133,6 @@ const EquilibriumGraph: FC<Props> = ({
                 enabled: true,
               },
             },
-          ],
-          dashStyle: "Dash",
-        },
-        {
-          type: "spline",
-          data: [
-            ...supplyEquilibriumSeries.slice(
-              0,
-              supplyEquilibriumSeries.length - 200,
-            ),
           ],
         },
       ],
