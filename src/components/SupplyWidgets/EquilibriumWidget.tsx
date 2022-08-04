@@ -109,6 +109,7 @@ const EquilibriumWidget = () => {
   const [nonStakedSupplyBurnFraction, setNonStakedSupplyBurnFraction] =
     useState<number>(0);
   const [nowMarker, setNowMarker] = useState<number>();
+  const [allMarker, setAllMarker] = useState<number>();
   const { md, lg } = useActiveBreakpoint();
 
   // Only runs once because of initialEquilibriumInputsSet, after data loads.
@@ -130,6 +131,7 @@ const EquilibriumWidget = () => {
       burnAsFraction(nonStakedSupply, burnRateAll),
     );
     setNowMarker(getIssuanceApr(getStakingSupply(supplyProjectionInputs)));
+    setAllMarker(burnAsFraction(nonStakedSupply, burnRateAll));
   }, [burnRateAll, initialEquilibriumInputsSet, supplyProjectionInputs]);
 
   const historicSupplyByMonth = useMemo(():
@@ -369,16 +371,35 @@ const EquilibriumWidget = () => {
                   : undefined}
               </Amount>
             </div>
-            <Slider
-              min={0.001}
-              max={0.05}
-              value={nonStakedSupplyBurnFraction}
-              step={0.001}
-              onChange={(e) =>
-                setNonStakedSupplyBurnFraction(Number(e.target.value))
-              }
-              thumbVisible={initialEquilibriumInputsSet}
-            />
+            <div className="relative">
+              <Slider
+                min={0.001}
+                max={0.05}
+                value={nonStakedSupplyBurnFraction}
+                step={0.001}
+                onChange={(e) =>
+                  setNonStakedSupplyBurnFraction(Number(e.target.value))
+                }
+                thumbVisible={initialEquilibriumInputsSet}
+              />
+              <div
+                className={`
+                absolute top-[14px] -translate-x-1/2
+                flex flex-col items-center
+                ${nowMarker !== undefined ? "visible" : "hidden"}
+              `}
+                style={{
+                  left: `calc(${
+                    (((allMarker ?? 0) - 0.001) / 0.049) * 100
+                  }% - ${Math.floor(
+                    ((((allMarker ?? 0) - 0.001) / 0.049) * 2 - 1) * 7,
+                  )}px)`,
+                }}
+              >
+                <div className="w-0.5 h-2 bg-blue-spindle"></div>
+                <TimeFrameText className="text-blue-spindle">all</TimeFrameText>
+              </div>
+            </div>
           </div>
         </div>
 

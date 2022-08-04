@@ -193,10 +193,11 @@ const EquilibriumGraph: FC<Props> = ({
     return _.merge({}, defaultOptions, nextOptions);
   }, [
     height,
+    staking,
+    supplyEquilibrium,
     supplyEquilibriumMap,
     supplyEquilibriumSeries,
-    widthMax,
-    widthMin,
+    width,
   ]);
 
   return (
