@@ -160,6 +160,7 @@ const EquilibriumGraph: FC<Props> = ({
               x: 1,
             },
             value: supplyEquilibrium,
+            width: 2,
           },
           {
             color: colors.spindle,
@@ -171,6 +172,7 @@ const EquilibriumGraph: FC<Props> = ({
               x: 1,
             },
             value: staking,
+            width: 2,
           },
         ],
       },
