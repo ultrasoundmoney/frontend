@@ -13,7 +13,6 @@ $blue-spindle: #b5bddb;
     stroke-dashoffset: 4px;
   }
 
-
   // Tooltip
   .tt-root {
     background-color: $tooltip-bg;
@@ -39,6 +38,13 @@ $blue-spindle: #b5bddb;
     font-size: 16x;
     font-weight: 400;
     font-family: "Roboto Mono";
+  }
+
+  .highcharts-plot-line-label {
+    font-family: "Inter";
+    font-size: "12px";
+    letter-spacing: 0.1em;
+    font-weight: 300;
   }
 }
 
