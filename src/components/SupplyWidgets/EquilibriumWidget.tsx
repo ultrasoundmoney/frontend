@@ -329,10 +329,10 @@ const EquilibriumWidget = () => {
             </div>
             <div className="relative">
               <Slider
-                min={0.01}
-                max={0.1}
+                min={0.02}
+                max={0.07}
                 value={stakingAprFraction}
-                step={0.001}
+                step={0.0001}
                 onChange={(e) => setStakedAprFraction(Number(e.target.value))}
                 thumbVisible={initialEquilibriumInputsSet ?? false}
               />
@@ -344,9 +344,9 @@ const EquilibriumWidget = () => {
               `}
                 style={{
                   left: `calc(${
-                    (((nowMarker ?? 0) - 0.01) / 0.09) * 100
+                    (((nowMarker ?? 0) - 0.02) / 0.05) * 100
                   }% - ${Math.floor(
-                    ((((nowMarker ?? 0) - 0.01) / 0.09) * 2 - 1) * 7,
+                    ((((nowMarker ?? 0) - 0.02) / 0.05) * 2 - 1) * 7,
                   )}px)`,
                 }}
               >
