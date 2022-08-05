@@ -67,7 +67,7 @@ const TooltipSecurityRatio: FC<{ onClickClose: () => void }> = ({
           <TextInter>value securing Ethereum</TextInter>
         </div>
       </div>
-      <div className="flex items-center text-base md:text-md">
+      <div className="flex items-center text-base">
         <TextInter>=</TextInter>
         <div className="flex flex-col ml-2">
           <div>
