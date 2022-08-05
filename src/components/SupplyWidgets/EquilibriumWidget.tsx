@@ -106,8 +106,7 @@ const EquilibriumWidget = () => {
   const [initialEquilibriumInputsSet, setInitialEquilibriumInputsSet] =
     useState(false);
   const [stakingAprFraction, setStakedAprFraction] = useState<number>(0);
-  const [nonStakedSupplyBurnFraction, setNonStakedSupplyBurnFraction] =
-    useState<number>(0);
+  const [nonStakedBurnFraction, setNonStakedBurnFraction] = useState<number>(0);
   const [nowMarker, setNowMarker] = useState<number>();
   const [allMarker, setAllMarker] = useState<number>();
   const { md, lg } = useActiveBreakpoint();
@@ -127,9 +126,7 @@ const EquilibriumWidget = () => {
       getIssuanceApr(getStakingSupply(supplyProjectionInputs)),
     );
     const nonStakedSupply = getNonStakingSupply(supplyProjectionInputs);
-    setNonStakedSupplyBurnFraction(
-      burnAsFraction(nonStakedSupply, burnRateAll),
-    );
+    setNonStakedBurnFraction(burnAsFraction(nonStakedSupply, burnRateAll));
     setNowMarker(getIssuanceApr(getStakingSupply(supplyProjectionInputs)));
     setAllMarker(burnAsFraction(nonStakedSupply, burnRateAll));
   }, [burnRateAll, initialEquilibriumInputsSet, supplyProjectionInputs]);
@@ -150,10 +147,12 @@ const EquilibriumWidget = () => {
           return [[point.t, point.v] as Point];
         }
 
+        const cmp = md ? DateFns.getMonth : DateFns.getYear;
+
         // If we don't have a point from this month yet, add it.
         if (
-          DateFns.getMonth(DateFns.fromUnixTime(last[0])) !==
-          DateFns.getMonth(DateFns.fromUnixTime(point.t))
+          cmp(DateFns.fromUnixTime(last[0])) !==
+          cmp(DateFns.fromUnixTime(point.t))
         ) {
           return [...list, [point.t, point.v] as Point];
         }
@@ -165,7 +164,7 @@ const EquilibriumWidget = () => {
     );
 
     return list as NEA.NonEmptyArray<Point>;
-  }, [supplyProjectionInputs]);
+  }, [md, supplyProjectionInputs]);
 
   const equilibriums = useMemo(():
     | {
@@ -179,7 +178,7 @@ const EquilibriumWidget = () => {
     | undefined => {
     if (
       stakingAprFraction === undefined ||
-      nonStakedSupplyBurnFraction === undefined ||
+      nonStakedBurnFraction === undefined ||
       supplyProjectionInputs === undefined ||
       historicSupplyByMonth === undefined
     ) {
@@ -196,14 +195,16 @@ const EquilibriumWidget = () => {
     let nonStaked = supply[1] - staked;
     const issuance = getIssuancePerYear(staked);
 
-    for (let i = 0; i < 200; i++) {
+    const YEARS_TO_SIMULATE = md ? 200 : 50;
+
+    for (let i = 0; i < YEARS_TO_SIMULATE; i++) {
       const nextYear = pipe(
         supply[0],
         DateFns.fromUnixTime,
         (dt) => DateFns.addYears(dt, 1),
         DateFns.getUnixTime,
       );
-      const burn = getBurn(nonStakedSupplyBurnFraction, nonStaked);
+      const burn = getBurn(nonStakedBurnFraction, nonStaked);
       const nextSupply = supply[1] + issuance - burn;
 
       supply = [nextYear, nextSupply] as Point;
@@ -222,7 +223,7 @@ const EquilibriumWidget = () => {
     );
 
     const supplyEquilibrium =
-      getIssuancePerYear(staked) / nonStakedSupplyBurnFraction + staked;
+      getIssuancePerYear(staked) / nonStakedBurnFraction + staked;
     const nonStakedSupplyEquilibrium = nonStaked;
     const cashFlowsEquilibrium = getIssuancePerYear(staked);
     const yearlyIssuanceFraction = getIssuanceApr(staked) / staked;
@@ -237,9 +238,10 @@ const EquilibriumWidget = () => {
     };
   }, [
     stakingAprFraction,
-    nonStakedSupplyBurnFraction,
+    nonStakedBurnFraction,
     supplyProjectionInputs,
     historicSupplyByMonth,
+    md,
   ]);
 
   return (
@@ -363,9 +365,9 @@ const EquilibriumWidget = () => {
                 </BodyText>
               </div>
               <Amount>
-                {nonStakedSupplyBurnFraction !== undefined
+                {nonStakedBurnFraction !== undefined
                   ? `${Format.formatPercentOneDigit(
-                      nonStakedSupplyBurnFraction,
+                      nonStakedBurnFraction,
                     )}/year`
                   : undefined}
               </Amount>
@@ -374,10 +376,10 @@ const EquilibriumWidget = () => {
               <Slider
                 min={0.001}
                 max={0.05}
-                value={nonStakedSupplyBurnFraction}
+                value={nonStakedBurnFraction}
                 step={0.001}
                 onChange={(e) =>
-                  setNonStakedSupplyBurnFraction(Number(e.target.value))
+                  setNonStakedBurnFraction(Number(e.target.value))
                 }
                 thumbVisible={initialEquilibriumInputsSet}
               />
