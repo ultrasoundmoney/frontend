@@ -334,7 +334,9 @@ const EquilibriumWidget = () => {
                 max={0.07}
                 value={stakingAprFraction}
                 step={0.0001}
-                onChange={(e) => setStakedAprFraction(Number(e.target.value))}
+                onChange={(event) =>
+                  setStakedAprFraction(Number(event.target.value))
+                }
                 thumbVisible={initialEquilibriumInputsSet ?? false}
               />
               <div
@@ -378,8 +380,8 @@ const EquilibriumWidget = () => {
                 max={0.05}
                 value={nonStakedBurnFraction}
                 step={0.001}
-                onChange={(e) =>
-                  setNonStakedBurnFraction(Number(e.target.value))
+                onChange={(event) =>
+                  setNonStakedBurnFraction(Number(event.target.value))
                 }
                 thumbVisible={initialEquilibriumInputsSet ?? false}
               />
