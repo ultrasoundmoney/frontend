@@ -8,46 +8,9 @@ import * as Format from "../format";
 import { pipe } from "../fp";
 import * as StaticEtherData from "../static-ether-data";
 import { MoneyAmount } from "./Amount";
-import styles from "./PriceModel.module.scss";
+import Slider2 from "./Slider2";
 import { TextInter, TextRoboto } from "./Texts";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
-
-type SliderProps = {
-  children: number;
-  max: number;
-  min: number;
-  onChange: (num: number) => void;
-  step: number;
-  thumbVisible?: boolean;
-};
-
-const Slider: FC<SliderProps> = ({
-  children,
-  max,
-  min,
-  onChange,
-  step,
-  thumbVisible = true,
-}) => (
-  <input
-    className={`
-      absolute
-      appearance-none
-      w-full h-2 z-10
-      bg-blue-dusk
-      rounded-full
-      cursor-pointer
-      ${thumbVisible ? "" : styles.thumbInvisible}
-      ${styles.customSlider}
-    `}
-    type="range"
-    min={min}
-    max={max}
-    value={children}
-    onChange={(event) => onChange(Number(event.target.value))}
-    step={step}
-  />
-);
 
 // Markers are positioned absolutely, manipulating their 'left' relatively to the full width bar which should be positioned relatively as their parent. Marker width
 const Marker: FC<{
@@ -272,15 +235,14 @@ const PriceModel: FC = () => {
             </MoneyAmount>
           </div>
           <div className="relative mb-12">
-            <Slider
+            <Slider2
               step={0.001}
               min={0}
               max={1}
               onChange={setPeRatioPosition}
               thumbVisible={initialPeSet}
-            >
-              {peRatioPosition}
-            </Slider>
+              value={peRatioPosition}
+            />
             <div className="absolute w-full top-2 select-none">
               {peRatios !== undefined && (
                 // Because the actual slider does not span the entire visual slider, overlaying an element and setting the left is not perfect. We manually adjust values to match the slider more precisely. To improve this look into off-the-shelf components that allow for styled markers.
@@ -355,14 +317,13 @@ const PriceModel: FC = () => {
             )}x`}</TextRoboto>
           </div>
           <div className="relative mb-10">
-            <Slider
+            <Slider2
               step={monetaryPremiumStepSize}
               min={monetaryPremiumMin}
               max={monetaryPremiumMax}
               onChange={setMonetaryPremium}
-            >
-              {monetaryPremium}
-            </Slider>
+              value={monetaryPremium}
+            />
             {/* Because a slider range is not exactly the visual width of the element positioning using absolute children with a left is not exactly right. we add small amounts to try fudge them into the right place. */}
             <div className="absolute w-full flex top-2 pointer-events-none">
               <MarkerText
