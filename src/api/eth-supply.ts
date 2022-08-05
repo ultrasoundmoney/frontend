@@ -3,6 +3,7 @@ import useSWR from "swr";
 import { WEI_PER_GWEI_JSBI } from "../eth-units";
 import { feesBasePath } from "./fees";
 import * as Duration from "../duration";
+import { useMemo } from "react";
 
 type EthSupplyF = {
   beaconBalancesSum: {
@@ -38,30 +39,33 @@ const fetcher = <A>(url: RequestInfo) =>
   fetch(url).then((res) => res.json() as Promise<A>);
 
 export const useEthSupply = (): EthSupply | undefined => {
-  let { data } = useSWR<EthSupplyF>(`${feesBasePath}/eth-supply`, fetcher, {
+  const { data } = useSWR<EthSupplyF>(`${feesBasePath}/eth-supply`, fetcher, {
     refreshInterval: Duration.millisFromSeconds(4),
   });
 
-  return data === undefined
-    ? undefined
-    : {
-        beaconDepositsSum: {
-          slot: data.beaconDepositsSum.slot,
-          depositsSum: JSBI.multiply(
-            JSBI.BigInt(data.beaconDepositsSum.depositsSum),
-            WEI_PER_GWEI_JSBI,
-          ),
-        },
-        beaconBalancesSum: {
-          slot: data.beaconBalancesSum.slot,
-          balancesSum: JSBI.multiply(
-            JSBI.BigInt(data.beaconBalancesSum.balancesSum),
-            WEI_PER_GWEI_JSBI,
-          ),
-        },
-        executionBalancesSum: {
-          balancesSum: JSBI.BigInt(data.executionBalancesSum.balancesSum),
-          blockNumber: data.executionBalancesSum.blockNumber,
-        },
-      };
+  return useMemo(() => {
+    if (data === undefined) {
+      return undefined;
+    }
+    return {
+      beaconDepositsSum: {
+        slot: data.beaconDepositsSum.slot,
+        depositsSum: JSBI.multiply(
+          JSBI.BigInt(data.beaconDepositsSum.depositsSum),
+          WEI_PER_GWEI_JSBI,
+        ),
+      },
+      beaconBalancesSum: {
+        slot: data.beaconBalancesSum.slot,
+        balancesSum: JSBI.multiply(
+          JSBI.BigInt(data.beaconBalancesSum.balancesSum),
+          WEI_PER_GWEI_JSBI,
+        ),
+      },
+      executionBalancesSum: {
+        balancesSum: JSBI.BigInt(data.executionBalancesSum.balancesSum),
+        blockNumber: data.executionBalancesSum.blockNumber,
+      },
+    };
+  }, [data]);
 };
