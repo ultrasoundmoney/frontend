@@ -305,7 +305,7 @@ const EquilibriumWidget = () => {
               unitText="ETH"
               textSizeClass="text-xl lg:text-3xl"
             >
-              {stakingAprFraction !== undefined
+              {stakingAprFraction !== undefined && initialEquilibriumInputsSet
                 ? Format.formatOneDigit(
                     getStakedFromApr(stakingAprFraction) / 1e6,
                   )
@@ -381,7 +381,7 @@ const EquilibriumWidget = () => {
                 onChange={(e) =>
                   setNonStakedBurnFraction(Number(e.target.value))
                 }
-                thumbVisible={initialEquilibriumInputsSet}
+                thumbVisible={initialEquilibriumInputsSet ?? false}
               />
               <div
                 className={`
