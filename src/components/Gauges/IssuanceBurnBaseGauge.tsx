@@ -59,7 +59,6 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
   return (
     <>
       <WidgetTitle>{title}</WidgetTitle>
-      {/* <div className="mt-6 md:mt-2 lg:mt-8 transform scale-100 md:scale-75 lg:scale-100 xl:scale-110"> */}
       <div className="mt-8 scale-90 lg:scale-100">
         <GaugeSvg
           gradientFill={gradientFill}
