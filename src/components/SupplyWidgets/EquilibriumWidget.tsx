@@ -100,6 +100,14 @@ const getBurn = (
   nonStakedSupply: number,
 ) => yearlyNonStakedBurnFraction * nonStakedSupply;
 
+const STAKING_MIN = 0.02;
+const STAKING_MAX = 0.05;
+const STAKING_RANGE = STAKING_MAX - STAKING_MIN;
+
+const BURN_RATE_MIN = 0.01;
+const BURN_RATE_MAX = 0.05;
+const BURN_RATE_RANGE = BURN_RATE_MAX - BURN_RATE_MIN;
+
 const EquilibriumWidget: FC = () => {
   const burnRateAll = useGroupedAnalysis1()?.burnRates.burnRateAll;
   const supplyProjectionInputs = useSupplyProjectionInputs();
@@ -241,6 +249,16 @@ const EquilibriumWidget: FC = () => {
     historicSupplyByMonth,
   ]);
 
+  const nowMarkerPercent =
+    nowMarker !== undefined
+      ? ((nowMarker - STAKING_MIN) / STAKING_RANGE) * 100
+      : undefined;
+
+  const allMarkerPercent =
+    allMarker !== undefined
+      ? ((allMarker - BURN_RATE_MIN) / BURN_RATE_RANGE) * 100
+      : undefined;
+
   return (
     <WidgetBackground
       className={`relative flex flex-col md:flex-row-reverse gap-x-4 gap-y-8 overflow-hidden p-0`}
@@ -333,23 +351,25 @@ const EquilibriumWidget: FC = () => {
                 }
                 thumbVisible={initialEquilibriumInputsSet ?? false}
               />
-              <div
-                className={`
-                absolute top-[14px] -translate-x-1/2
-                flex flex-col items-center
-                ${nowMarker !== undefined ? "visible" : "hidden"}
-              `}
-                style={{
-                  left: `calc(${
-                    (((nowMarker ?? 0) - 0.02) / 0.03) * 100
-                  }% - ${Math.floor(
-                    ((((nowMarker ?? 0) - 0.02) / 0.03) * 2 - 1) * 7,
-                  )}px)`,
-                }}
-              >
-                <div className="w-0.5 h-2 bg-blue-spindle"></div>
-                <TimeFrameText className="text-blue-spindle">now</TimeFrameText>
-              </div>
+              {nowMarker !== undefined && nowMarkerPercent !== undefined && (
+                <div
+                  className={`
+                  relative top-[14px] -translate-x-1/2
+                  flex flex-col items-center
+                `}
+                  style={{
+                    // Positions the marker along the track whilst compensating for the thumb width as the browser natively does. 7 being half the thumb width.
+                    left: `calc(${nowMarkerPercent}% - ${
+                      ((nowMarkerPercent / 100) * 2 - 1) * 7
+                    }px)`,
+                  }}
+                >
+                  <div className="w-0.5 h-2 rounded-b-full bg-blue-spindle -mt-0.5"></div>
+                  <TimeFrameText className="text-blue-spindle mt-0.5">
+                    now
+                  </TimeFrameText>
+                </div>
+              )}
             </div>
           </div>
           <div>
@@ -370,33 +390,35 @@ const EquilibriumWidget: FC = () => {
               </PercentAmount>
             </div>
             <div className="relative">
-                min={0.0001}
-                max={0.05}
-                value={nonStakedBurnFraction}
               <Slider2
+                min={BURN_RATE_MIN}
+                max={BURN_RATE_MAX}
+                value={nonStakingBurnFraction}
                 step={0.0001}
                 onChange={(event) =>
                   setNonStakedBurnFraction(Number(event.target.value))
                 }
                 thumbVisible={initialEquilibriumInputsSet ?? false}
               />
-              <div
-                className={`
-                absolute top-[14px] -translate-x-1/2
-                flex flex-col items-center
-                ${nowMarker !== undefined ? "visible" : "hidden"}
-              `}
-                style={{
-                  left: `calc(${
-                    (((allMarker ?? 0) - 0.001) / 0.049) * 100
-                  }% - ${Math.floor(
-                    ((((allMarker ?? 0) - 0.001) / 0.049) * 2 - 1) * 7,
-                  )}px)`,
-                }}
-              >
-                <div className="w-0.5 h-2 bg-blue-spindle"></div>
-                <TimeFrameText className="text-blue-spindle">all</TimeFrameText>
-              </div>
+              {allMarker !== undefined && allMarkerPercent !== undefined && (
+                <div
+                  className={`
+                  relative top-[14px] -translate-x-1/2
+                  flex flex-col items-center
+                `}
+                  // Positions the marker along the track whilst compensating for the thumb width as the browser natively does. 7 being half the thumb width.
+                  style={{
+                    left: `calc(${allMarkerPercent}% - ${
+                      ((allMarkerPercent / 100) * 2 - 1) * 7
+                    }px)`,
+                  }}
+                >
+                  <div className="w-0.5 h-2 rounded-b-full bg-blue-spindle -mt-0.5"></div>
+                  <TimeFrameText className="text-blue-spindle mt-1">
+                    all
+                  </TimeFrameText>
+                </div>
+              )}
             </div>
           </div>
         </div>
