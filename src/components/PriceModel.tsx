@@ -239,7 +239,9 @@ const PriceModel: FC = () => {
               step={0.001}
               min={0}
               max={1}
-              onChange={setPeRatioPosition}
+              onChange={(event) =>
+                setPeRatioPosition(Number(event.target.value))
+              }
               thumbVisible={initialPeSet}
               value={peRatioPosition}
             />
@@ -321,7 +323,9 @@ const PriceModel: FC = () => {
               step={monetaryPremiumStepSize}
               min={monetaryPremiumMin}
               max={monetaryPremiumMax}
-              onChange={setMonetaryPremium}
+              onChange={(event) =>
+                setMonetaryPremium(Number(event.target.value))
+              }
               value={monetaryPremium}
             />
             {/* Because a slider range is not exactly the visual width of the element positioning using absolute children with a left is not exactly right. we add small amounts to try fudge them into the right place. */}
