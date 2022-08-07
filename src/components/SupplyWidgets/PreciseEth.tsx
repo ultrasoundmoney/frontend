@@ -60,7 +60,7 @@ const Digits: FC<{ children: JSBI }> = ({ children }) => {
   );
 
   const padSixteenDecimals = useCallback(
-    (num: number) => `&nbsp;&nbsp;${formatDecimals(num, 16)}`,
+    (num: number) => formatDecimals(num, 16),
     [],
   );
 
@@ -77,7 +77,7 @@ const Digits: FC<{ children: JSBI }> = ({ children }) => {
           w-3 h-2
         `}
       >
-        {ethFirstTwoDecimals(children) == 0 ? (
+        {ethFirstTwoDecimals(children) === 0 ? (
           <span>00</span>
         ) : (
           <CountUp
@@ -99,7 +99,8 @@ const Digits: FC<{ children: JSBI }> = ({ children }) => {
           left-0
         `}
       >
-        {ethLastSixteenDecimals(children) == 0 ? (
+        &nbsp;&nbsp;
+        {ethLastSixteenDecimals(children) === 0 ? (
           <span>0,000,000,000,000,000</span>
         ) : (
           <CountUp
