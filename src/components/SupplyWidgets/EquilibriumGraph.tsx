@@ -242,13 +242,44 @@ const EquilibriumGraph: FC<Props> = ({
           },
         ],
       },
+      tooltip: {
+        formatter: function () {
+          const x = typeof this.x === "number" ? this.x : undefined;
+          if (x === undefined) {
+            return;
+          }
+
+          const dt = DateFns.fromUnixTime(x);
+          const header = `<div class="tt-header"><div class="tt-header-date text-blue-spindle">${formatDate(
+            dt,
+          )}</div></div>`;
+
+          const total = supplyEquilibriumMap[x];
+          if (total === undefined) {
+            return;
+          }
+
+          const table = `<table><tbody><tr class="tt-total-row">
+              <td class="text-white">${Format.formatOneDecimal(
+                total / 1e6,
+              )}M <span class="text-blue-spindle">ETH</span></td>
+            </tr></tbody></table>`;
+
+          return `<div class="tt-root">${header}${table}</div>`;
+        },
+      },
     };
 
     if (!isRendering.current) {
       isRendering.current = true;
       setOptions((currentOptions) => _.merge({}, currentOptions, nextOptions));
     }
-  }, [staking, supplyEquilibrium, supplyEquilibriumSeries]);
+  }, [
+    staking,
+    supplyEquilibrium,
+    supplyEquilibriumMap,
+    supplyEquilibriumSeries,
+  ]);
 
   return (
     <div className={`${styles.equilibriumChart}`}>
