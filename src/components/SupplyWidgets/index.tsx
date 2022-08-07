@@ -13,7 +13,7 @@ import ToggleSwitch from "../ToggleSwitch";
 import { WidgetTitle } from "../WidgetSubcomponents";
 import EquilibriumWidget from "./EquilibriumWidget";
 import EthSupplyWidget from "./EthSupplyWidget";
-import PeakSupplyWidget from "./PeakSupplyWidget";
+import MergeEstimationWidget from "./MergeEstimationWidget";
 
 const SupplyWidgets = () => {
   const [simulateMerge, setSimulateMerge] = useState(false);
@@ -93,12 +93,12 @@ const SupplyWidgets = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col md:flex-row gap-4">
+      <div className="flex flex-col lg:flex-row gap-4">
         <div className="w-full">
           <EthSupplyWidget></EthSupplyWidget>
         </div>
         <div className="w-full">
-          <PeakSupplyWidget></PeakSupplyWidget>
+          <MergeEstimationWidget></MergeEstimationWidget>
         </div>
       </div>
       <EquilibriumWidget />
