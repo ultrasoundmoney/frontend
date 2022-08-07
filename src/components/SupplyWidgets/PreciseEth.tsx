@@ -20,28 +20,28 @@ const ethNoDecimals = (ethSupplySum: JSBI): number =>
   );
 
 // The last six digits in the number.
-const ethLastSixDecimals = (ethSupplySum: JSBI): number =>
+const ethLastSixteenDecimals = (ethSupplySum: JSBI): number =>
   pipe(
     ethSupplySum.toString().split(""),
-    A.takeRight(6),
+    A.takeRight(16),
     (str) => str.join(""),
     (str) => JSBI.BigInt(str),
     (num) => JSBI.toNumber(num),
   );
 
 // Everything that is left from the fractional part when written in ETH instead of Wei. This is always twelve digits.
-const ethFirstTwelveDecimals = (ethSupplySum: JSBI): number =>
+const ethFirstTwoDecimals = (ethSupplySum: JSBI): number =>
   pipe(
     ethSupplySum.toString().split(""),
-    A.dropRight(6),
-    A.takeRight(12),
+    A.dropRight(16),
+    A.takeRight(2),
     (str) => str.join(""),
     (str) => JSBI.BigInt(str),
     (num) => JSBI.toNumber(num),
   );
 
 const formatDecimals = (num: number, padTo: number): string => {
-  const numsAsStrings = num.toString().padStart(padTo, "0").split("");
+  const numsAsStrings = num.toString().padStart(padTo, "0").split("").reverse();
   const result = [];
   for (let i = 0; i < numsAsStrings.length; i++) {
     if (i !== 0 && i % 3 === 0) {
@@ -50,17 +50,19 @@ const formatDecimals = (num: number, padTo: number): string => {
 
     result.push(numsAsStrings[i]);
   }
-  return result.join("");
+  return result.reverse().join("");
 };
 
 const Digits: FC<{ children: JSBI }> = ({ children }) => {
-  const formattingFn12 = useCallback((num: number) => {
-    return formatDecimals(num, 12);
-  }, []);
+  const padTwoDecimals = useCallback(
+    (num: number) => formatDecimals(num, 2),
+    [],
+  );
 
-  const formattingFn6 = useCallback((num: number) => {
-    return formatDecimals(num, 6);
-  }, []);
+  const padSixteenDecimals = useCallback(
+    (num: number) => `&nbsp;&nbsp;${formatDecimals(num, 16)}`,
+    [],
+  );
 
   return (
     <div className="relative w-9 -mr-1">
@@ -75,15 +77,16 @@ const Digits: FC<{ children: JSBI }> = ({ children }) => {
           w-3 h-2
         `}
       >
-        {ethFirstTwelveDecimals(children) == 0 ? (
-          <span>000,000,000,000,</span>
+        {ethFirstTwoDecimals(children) == 0 ? (
+          <span>00</span>
         ) : (
           <CountUp
             separator=","
-            end={ethFirstTwelveDecimals(children)}
-            formattingFn={formattingFn12}
+            end={ethFirstTwoDecimals(children)}
+            formattingFn={padTwoDecimals}
             preserveValue={true}
             useEasing={false}
+            duration={0.5}
           />
         )}
       </div>
@@ -96,34 +99,13 @@ const Digits: FC<{ children: JSBI }> = ({ children }) => {
           left-0
         `}
       >
-        {ethFirstTwelveDecimals(children) == 0 ? (
-          <span>000,000,000,000,</span>
+        {ethLastSixteenDecimals(children) == 0 ? (
+          <span>0,000,000,000,000,000</span>
         ) : (
           <CountUp
             separator=","
-            end={ethFirstTwelveDecimals(children)}
-            formattingFn={formattingFn12}
-            preserveValue={true}
-            useEasing={false}
-          />
-        )}
-      </div>
-      <div
-        // We need whitespace-normal to counteract the whitespace-nowrap from our parent.
-        className={`
-          text-[8px] leading-[0.5rem] text-blue-spindle
-          block break-all
-          whitespace-normal
-          left-0
-        `}
-      >
-        {ethLastSixDecimals(children) == 0 ? (
-          <span>000,000</span>
-        ) : (
-          <CountUp
-            separator=","
-            end={ethLastSixDecimals(children)}
-            formattingFn={formattingFn6}
+            end={ethLastSixteenDecimals(children)}
+            formattingFn={padSixteenDecimals}
             preserveValue={true}
             useEasing={false}
           />
