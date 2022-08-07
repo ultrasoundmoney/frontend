@@ -264,22 +264,24 @@ const EquilibriumWidget: FC = () => {
     <WidgetBackground
       className={`relative flex flex-col md:flex-row-reverse gap-x-4 gap-y-8 overflow-hidden p-0`}
     >
-      {/* <div */}
-      {/*   className={` */}
-      {/*       absolute top-0 right-0 */}
-      {/*       w-3/5 h-full */}
-      {/*       opacity-[0.25] */}
-      {/*       blur-[100px] */}
-      {/*     `} */}
-      {/* > */}
-      {/*   <div */}
-      {/*     className={` */}
-      {/*         absolute md:bottom-[3.0rem] md:-right-[1.0rem] */}
-      {/*         w-4/5 h-3/5 rounded-[35%] */}
-      {/*         bg-[#0037FA] */}
-      {/*       `} */}
-      {/*   ></div> */}
-      {/* </div> */}
+      <div
+        // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
+        className={`
+            absolute top-0 right-0
+            w-3/5 h-full
+            opacity-[0.25]
+            blur-[100px]
+            will-change-transform
+          `}
+      >
+        <div
+          className={`
+              absolute md:bottom-[3.0rem] md:-right-[1.0rem]
+              w-4/5 h-3/5 rounded-[35%]
+              bg-[#0037FA]
+            `}
+        ></div>
+      </div>
       {/* Higher z-level to bypass the background blur of our sibling. */}
       <div className="md:w-1/2 flex justify-center items-center z-20">
         {equilibriums !== undefined ? (
