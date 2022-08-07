@@ -11,7 +11,7 @@ import * as Format from "../../format";
 import { NEA, pipe } from "../../fp";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { MoneyAmount, PercentAmount } from "../Amount";
-import Slider from "../Slider/Slider";
+import Slider2 from "../Slider2";
 import { BodyText, TextRoboto, TimeFrameText } from "../Texts";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 import EquilibriumGraph from "./EquilibriumGraph";
@@ -323,7 +323,7 @@ const EquilibriumWidget = () => {
               </PercentAmount>
             </div>
             <div className="relative">
-              <Slider
+              <Slider2
                 min={0.02}
                 max={0.05}
                 value={stakingAprFraction}
@@ -370,10 +370,10 @@ const EquilibriumWidget = () => {
               </PercentAmount>
             </div>
             <div className="relative">
-              <Slider
                 min={0.0001}
                 max={0.05}
                 value={nonStakedBurnFraction}
+              <Slider2
                 step={0.0001}
                 onChange={(event) =>
                   setNonStakedBurnFraction(Number(event.target.value))
