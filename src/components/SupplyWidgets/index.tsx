@@ -67,29 +67,27 @@ const SupplyWidgets = () => {
             />
           </div>
         </div>
-        <div className="">
-          <div className={`bg-blue-tangaroa rounded-bl-lg rounded-br-lg p-8`}>
-            <div className="grid grid-cols-2 md:flex md:justify-between flex-col gap-y-8 md:flex-row lg:gap-y-0 ">
-              <div className="row-start-1 flex flex-col gap-4 lg:gap-x-4 lg:flex-row lg:items-center">
-                <WidgetTitle>time frame</WidgetTitle>
-                <TimeFrameControl
-                  selectedTimeframe={timeFrame}
-                  onSetTimeFrame={handleSetTimeFrame}
+        <div className={`bg-blue-tangaroa rounded-bl-lg rounded-br-lg p-8`}>
+          <div className="grid grid-cols-2 md:flex md:justify-between flex-col gap-y-8 md:flex-row lg:gap-y-0 ">
+            <div className="row-start-1 flex flex-col gap-4 lg:gap-x-4 lg:flex-row lg:items-center">
+              <WidgetTitle>time frame</WidgetTitle>
+              <TimeFrameControl
+                selectedTimeframe={timeFrame}
+                onSetTimeFrame={handleSetTimeFrame}
+              />
+            </div>
+            <div className="row-start-2 md:row-start-1 flex flex-col gap-y-4 lg:gap-x-4 lg:flex-row lg:items-center">
+              <WidgetTitle>currency</WidgetTitle>
+              <CurrencyControl selectedUnit={unit} onSetUnit={onSetUnit} />
+            </div>
+            <div className="row-start-2 md:row-start-1 flex flex-col gap-4 lg:flex-row lg:items-center text-right">
+              <WidgetTitle>simulate merge</WidgetTitle>
+              {/* On tablet the vertical alignment looks off without aligning the toggle with the neighboring controls */}
+              <div className="flex items-center h-[34px] self-end">
+                <ToggleSwitch
+                  checked={simulateMerge}
+                  onToggle={toggleSimulateMerge}
                 />
-              </div>
-              <div className="row-start-2 md:row-start-1 flex flex-col gap-y-4 lg:gap-x-4 lg:flex-row lg:items-center">
-                <WidgetTitle>currency</WidgetTitle>
-                <CurrencyControl selectedUnit={unit} onSetUnit={onSetUnit} />
-              </div>
-              <div className="row-start-2 md:row-start-1 flex flex-col gap-4 lg:flex-row lg:items-center text-right">
-                <WidgetTitle>simulate merge</WidgetTitle>
-                {/* On tablet the vertical alignment looks off without aligning the toggle with the neighboring controls */}
-                <div className="flex items-center h-[34px] self-end">
-                  <ToggleSwitch
-                    checked={simulateMerge}
-                    onToggle={toggleSimulateMerge}
-                  />
-                </div>
               </div>
             </div>
           </div>
