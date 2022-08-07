@@ -113,8 +113,9 @@ const EquilibriumWidget: FC = () => {
   const supplyProjectionInputs = useSupplyProjectionInputs();
   const [initialEquilibriumInputsSet, setInitialEquilibriumInputsSet] =
     useState(false);
-  const [stakingAprFraction, setStakedAprFraction] = useState<number>(0);
-  const [nonStakedBurnFraction, setNonStakedBurnFraction] = useState<number>(0);
+  const [stakingAprFraction, setStakingAprFraction] = useState<number>(0);
+  const [nonStakingBurnFraction, setNonStakingBurnFraction] =
+    useState<number>(0);
   const [nowMarker, setNowMarker] = useState<number>();
   const [allMarker, setAllMarker] = useState<number>();
   const { md, lg } = useActiveBreakpoint();
@@ -129,11 +130,11 @@ const EquilibriumWidget: FC = () => {
       return;
     }
 
-    setStakedAprFraction(
+    setStakingAprFraction(
       getIssuanceApr(getStakingSupply(supplyProjectionInputs)),
     );
     const nonStakedSupply = getNonStakingSupply(supplyProjectionInputs);
-    setNonStakedBurnFraction(burnAsFraction(nonStakedSupply, burnRateAll));
+    setNonStakingBurnFraction(burnAsFraction(nonStakedSupply, burnRateAll));
     setNowMarker(getIssuanceApr(getStakingSupply(supplyProjectionInputs)));
     setAllMarker(burnAsFraction(nonStakedSupply, burnRateAll));
     setInitialEquilibriumInputsSet(true);
@@ -184,7 +185,7 @@ const EquilibriumWidget: FC = () => {
     | undefined => {
     if (
       stakingAprFraction === undefined ||
-      nonStakedBurnFraction === undefined ||
+      nonStakingBurnFraction === undefined ||
       supplyProjectionInputs === undefined ||
       historicSupplyByMonth === undefined
     ) {
@@ -210,7 +211,7 @@ const EquilibriumWidget: FC = () => {
         (dt) => DateFns.addYears(dt, 1),
         DateFns.getUnixTime,
       );
-      const burn = getBurn(nonStakedBurnFraction, nonStaked);
+      const burn = getBurn(nonStakingBurnFraction, nonStaked);
       const nextSupply = supply[1] + issuance - burn;
 
       supply = [nextYear, nextSupply] as Point;
@@ -229,7 +230,7 @@ const EquilibriumWidget: FC = () => {
     );
 
     const supplyEquilibrium =
-      getIssuancePerYear(staked) / nonStakedBurnFraction + staked;
+      getIssuancePerYear(staked) / nonStakingBurnFraction + staked;
     const nonStakedSupplyEquilibrium = nonStaked;
     const cashFlowsEquilibrium = getIssuancePerYear(staked);
     const yearlyIssuanceFraction = getIssuanceApr(staked) / staked;
@@ -244,7 +245,7 @@ const EquilibriumWidget: FC = () => {
     };
   }, [
     stakingAprFraction,
-    nonStakedBurnFraction,
+    nonStakingBurnFraction,
     supplyProjectionInputs,
     historicSupplyByMonth,
   ]);
@@ -347,7 +348,7 @@ const EquilibriumWidget: FC = () => {
                 value={stakingAprFraction}
                 step={0.0001}
                 onChange={(event) =>
-                  setStakedAprFraction(Number(event.target.value))
+                  setStakingAprFraction(Number(event.target.value))
                 }
                 thumbVisible={initialEquilibriumInputsSet}
               />
@@ -381,10 +382,10 @@ const EquilibriumWidget: FC = () => {
                 </BodyText>
               </div>
               <PercentAmount>
-                {nonStakedBurnFraction !== undefined &&
+                {nonStakingBurnFraction !== undefined &&
                 initialEquilibriumInputsSet
                   ? `${Format.formatPercentOneDigit(
-                      nonStakedBurnFraction,
+                      nonStakingBurnFraction,
                     )}/year`
                   : undefined}
               </PercentAmount>
@@ -396,7 +397,7 @@ const EquilibriumWidget: FC = () => {
                 value={nonStakingBurnFraction}
                 step={0.0001}
                 onChange={(event) =>
-                  setNonStakedBurnFraction(Number(event.target.value))
+                  setNonStakingBurnFraction(Number(event.target.value))
                 }
                 thumbVisible={initialEquilibriumInputsSet}
               />
