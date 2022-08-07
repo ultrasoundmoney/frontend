@@ -374,7 +374,7 @@ const EquilibriumWidget = () => {
                 min={0.0001}
                 max={0.05}
                 value={nonStakedBurnFraction}
-                step={0.001}
+                step={0.0001}
                 onChange={(event) =>
                   setNonStakedBurnFraction(Number(event.target.value))
                 }
