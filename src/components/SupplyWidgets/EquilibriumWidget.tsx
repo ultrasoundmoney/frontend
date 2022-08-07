@@ -13,6 +13,7 @@ import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { MoneyAmount, PercentAmount } from "../Amount";
 import Slider2 from "../Slider2";
 import { BodyText, TextRoboto, TimeFrameText } from "../Texts";
+import Twemoji from "../Twemoji";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 import EquilibriumGraph from "./EquilibriumGraph";
 
@@ -47,19 +48,6 @@ const EPOCHS_PER_YEAR: number = 365.25 * EPOCHS_PER_DAY;
 const BASE_REWARD_FACTOR = 64;
 
 type Eth = number;
-
-// let active_validators = effective_balance_sum as f64 / GWEI_PER_ETH_F64 / 32f64;
-
-// // Balance at stake (Gwei)
-// let max_balance_at_stake = active_validators * MAX_EFFECTIVE_BALANCE;
-
-// let max_issuance_per_epoch = ((BASE_REWARD_FACTOR as f64 * max_balance_at_stake)
-//     / max_balance_at_stake.sqrt().floor())
-// .trunc();
-// let max_issuance_per_year = max_issuance_per_epoch * EPOCHS_PER_YEAR;
-
-// let annual_reward = max_issuance_per_year / active_validators;
-// let apr = max_issuance_per_year / effective_balance_sum as f64;
 
 const getIssuancePerYear = (effective_balance_sum: Eth): number => {
   const balance_sum_gwei = effective_balance_sum * GWEI_PER_ETH;
@@ -104,12 +92,68 @@ const STAKING_MIN = 0.02;
 const STAKING_MAX = 0.05;
 const STAKING_RANGE = STAKING_MAX - STAKING_MIN;
 
-const BURN_RATE_MIN = 0.01;
+const BURN_RATE_MIN = 0.001;
 const BURN_RATE_MAX = 0.05;
 const BURN_RATE_RANGE = BURN_RATE_MAX - BURN_RATE_MIN;
 
+type BurnMarkers = {
+  all: number;
+  ultrasound: number;
+  d30: number;
+  d7: number;
+  d1: number;
+  h1: number;
+  m5: number;
+};
+
+const BurnMarkers: FC<{ burnMarkers: BurnMarkers }> = ({ burnMarkers }) => {
+  const markerList = [
+    { label: "all", value: burnMarkers.all },
+    { label: "🦇🔊", value: burnMarkers.ultrasound },
+    { label: "1d", value: burnMarkers.d1 },
+    { label: "7d", value: burnMarkers.d7 },
+    { label: "30d", value: burnMarkers.d30 },
+    { label: "1h", value: burnMarkers.h1 },
+    { label: "5m", value: burnMarkers.m5 },
+  ].sort((m1, m2) => m1.value - m2.value);
+
+  return (
+    <div>
+      {markerList.map((marker, index) => {
+        const percent =
+          ((marker.value - BURN_RATE_MIN) / BURN_RATE_RANGE) * 100;
+        return (
+          <div
+            key={marker.label}
+            className={`
+                  absolute top-[14px] -translate-x-1/2
+                  flex flex-col items-center
+                `}
+            // Positions the marker along the track whilst compensating for the thumb width as the browser natively does. 7 being half the thumb width.
+            style={{
+              left: `calc(${percent}% - ${((percent / 100) * 2 - 1) * 7}px)`,
+            }}
+          >
+            <div
+              className={`
+                w-0.5 rounded-b-full bg-blue-spindle -mt-0.5
+                ${index % 2 === 0 ? "h-2" : "h-6"}
+              `}
+            ></div>
+            <TimeFrameText className="text-blue-spindle mt-1">
+              <Twemoji className="flex" imageClassName="mt-0.5 h-3" wrapper>
+                {marker.label}
+              </Twemoji>
+            </TimeFrameText>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
 const EquilibriumWidget: FC = () => {
-  const burnRateAll = useGroupedAnalysis1()?.burnRates.burnRateAll;
+  const burnRates = useGroupedAnalysis1()?.burnRates;
   const supplyProjectionInputs = useSupplyProjectionInputs();
   const [initialEquilibriumInputsSet, setInitialEquilibriumInputsSet] =
     useState(false);
@@ -117,13 +161,13 @@ const EquilibriumWidget: FC = () => {
   const [nonStakingBurnFraction, setNonStakingBurnFraction] =
     useState<number>(0);
   const [nowMarker, setNowMarker] = useState<number>();
-  const [allMarker, setAllMarker] = useState<number>();
+  const [burnMarkers, setBurnMarkers] = useState<BurnMarkers>();
   const { md, lg } = useActiveBreakpoint();
 
   // Only runs once because of initialEquilibriumInputsSet, after data loads.
   useEffect(() => {
     if (
-      burnRateAll === undefined ||
+      burnRates === undefined ||
       supplyProjectionInputs === undefined ||
       initialEquilibriumInputsSet
     ) {
@@ -134,11 +178,23 @@ const EquilibriumWidget: FC = () => {
       getIssuanceApr(getStakingSupply(supplyProjectionInputs)),
     );
     const nonStakedSupply = getNonStakingSupply(supplyProjectionInputs);
-    setNonStakingBurnFraction(burnAsFraction(nonStakedSupply, burnRateAll));
+    setNonStakingBurnFraction(
+      burnAsFraction(nonStakedSupply, burnRates.burnRateAll),
+    );
     setNowMarker(getIssuanceApr(getStakingSupply(supplyProjectionInputs)));
-    setAllMarker(burnAsFraction(nonStakedSupply, burnRateAll));
+    setBurnMarkers({
+      all: burnAsFraction(nonStakedSupply, burnRates.burnRateAll),
+      d1: burnAsFraction(nonStakedSupply, burnRates.burnRate24h),
+      d30: burnAsFraction(nonStakedSupply, burnRates.burnRate30d),
+      d7: burnAsFraction(nonStakedSupply, burnRates.burnRate7d),
+      h1: burnAsFraction(nonStakedSupply, burnRates.burnRate1h),
+      m5: burnAsFraction(nonStakedSupply, burnRates.burnRate5m),
+      ultrasound:
+        getIssuancePerYear(getStakingSupply(supplyProjectionInputs)) /
+        nonStakedSupply,
+    });
     setInitialEquilibriumInputsSet(true);
-  }, [burnRateAll, initialEquilibriumInputsSet, supplyProjectionInputs]);
+  }, [burnRates, initialEquilibriumInputsSet, supplyProjectionInputs]);
 
   const historicSupplyByMonth = useMemo(():
     | NEA.NonEmptyArray<Point>
@@ -253,11 +309,6 @@ const EquilibriumWidget: FC = () => {
   const nowMarkerPercent =
     nowMarker !== undefined
       ? ((nowMarker - STAKING_MIN) / STAKING_RANGE) * 100
-      : undefined;
-
-  const allMarkerPercent =
-    allMarker !== undefined
-      ? ((allMarker - BURN_RATE_MIN) / BURN_RATE_RANGE) * 100
       : undefined;
 
   return (
@@ -395,7 +446,7 @@ const EquilibriumWidget: FC = () => {
                   : undefined}
               </PercentAmount>
             </div>
-            <div className="relative">
+            <div className="relative mb-12">
               <Slider2
                 min={BURN_RATE_MIN}
                 max={BURN_RATE_MAX}
@@ -406,24 +457,8 @@ const EquilibriumWidget: FC = () => {
                 }
                 thumbVisible={initialEquilibriumInputsSet}
               />
-              {allMarker !== undefined && allMarkerPercent !== undefined && (
-                <div
-                  className={`
-                  relative top-[14px] -translate-x-1/2
-                  flex flex-col items-center
-                `}
-                  // Positions the marker along the track whilst compensating for the thumb width as the browser natively does. 7 being half the thumb width.
-                  style={{
-                    left: `calc(${allMarkerPercent}% - ${
-                      ((allMarkerPercent / 100) * 2 - 1) * 7
-                    }px)`,
-                  }}
-                >
-                  <div className="w-0.5 h-2 rounded-b-full bg-blue-spindle -mt-0.5"></div>
-                  <TimeFrameText className="text-blue-spindle mt-1">
-                    all
-                  </TimeFrameText>
-                </div>
+              {burnMarkers !== undefined && (
+                <BurnMarkers burnMarkers={burnMarkers} />
               )}
             </div>
           </div>
