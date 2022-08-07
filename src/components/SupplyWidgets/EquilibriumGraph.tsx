@@ -249,23 +249,26 @@ const EquilibriumGraph: FC<Props> = ({
             return;
           }
 
-          const dt = DateFns.fromUnixTime(x);
-          const header = `<div class="tt-header"><div class="tt-header-date text-blue-spindle">${formatDate(
-            dt,
-          )}</div></div>`;
-
           const total = supplyEquilibriumMap[x];
           if (total === undefined) {
             return;
           }
 
-          const table = `<table><tbody><tr class="tt-total-row">
-              <td class="text-white">${Format.formatOneDecimal(
-                total / 1e6,
-              )}M <span class="text-blue-spindle">ETH</span></td>
-            </tr></tbody></table>`;
+          const dt = DateFns.fromUnixTime(x);
+          const formattedDate = DateFns.format(dt, "LLL y");
 
-          return `<div class="tt-root">${header}${table}</div>`;
+          return `
+            <div class="font-roboto font-light bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
+              <div class="text-blue-spindle">
+                ${formattedDate}
+              </div>
+              <div class="text-white">
+                ${Format.formatOneDecimal(
+                  total / 1e6,
+                )}M <span class="text-blue-spindle">ETH</span>
+              </div>
+            </div>
+          `;
         },
       },
     };
