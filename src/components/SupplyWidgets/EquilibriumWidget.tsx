@@ -310,7 +310,7 @@ const EquilibriumWidget = () => {
         </div>
         <div className="flex flex-col gap-y-5">
           <div>
-            <div className="flex justify-between items-center -mb-1">
+            <div className="flex justify-between items-baseline -mb-1">
               <div className="flex items-center truncate">
                 <WidgetTitle>issuance rewards</WidgetTitle>
                 <BodyText className="lg:text-xs invisible lg:visible">
@@ -354,7 +354,7 @@ const EquilibriumWidget = () => {
             </div>
           </div>
           <div>
-            <div className="flex justify-between items-center -mb-1">
+            <div className="flex justify-between items-baseline -mb-1">
               <div className="flex items-center truncate">
                 <WidgetTitle>burn rate</WidgetTitle>
                 <BodyText className="lg:text-xs invisible lg:visible">
