@@ -7,12 +7,6 @@ $chart-label: #8490b5;
 $blue-spindle: #b5bddb;
 
 .equilibriumChart :global {
-  // Chart series
-  .highcharts-series {
-    // Start series with a space, instead of a dash
-    stroke-dashoffset: 4px;
-  }
-
   // Tooltip
   .tt-root {
     background-color: $tooltip-bg;
