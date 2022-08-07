@@ -1,6 +1,6 @@
 import * as DateFns from "date-fns";
 import _ from "lodash";
-import { useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import {
   SupplyInputs,
@@ -100,7 +100,7 @@ const getBurn = (
   nonStakedSupply: number,
 ) => yearlyNonStakedBurnFraction * nonStakedSupply;
 
-const EquilibriumWidget = () => {
+const EquilibriumWidget: FC = () => {
   const burnRateAll = useGroupedAnalysis1()?.burnRates.burnRateAll;
   const supplyProjectionInputs = useSupplyProjectionInputs();
   const [initialEquilibriumInputsSet, setInitialEquilibriumInputsSet] =
