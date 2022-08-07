@@ -30,6 +30,7 @@ export const defaultLegendOptions: Highcharts.LegendOptions = {
 };
 
 export const defaultOptions: Highcharts.Options = {
+  accessibility: { enabled: false },
   chart: defaultChartOptions,
   colors: COLORS.SERIES,
   credits: {
