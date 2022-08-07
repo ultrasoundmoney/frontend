@@ -1,15 +1,15 @@
 import { FC, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import { flow, pipe } from "../fp";
-import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
-import Colors from "../colors";
-import { LabelText, TextInter, TextRoboto } from "./Texts";
-import * as Format from "../format";
 import {
   getPercentOfTotal,
   useIssuanceBreakdown,
 } from "../api/issuance-breakdown";
+import Colors from "../colors";
+import * as Format from "../format";
+import { flow, pipe } from "../fp";
 import { MoneyAmount } from "./Amount";
+import { BodyText, LabelText, TextRoboto } from "./Texts";
+import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
 const skeletonLoadingWidth = 0.1;
 
@@ -141,7 +141,7 @@ const RewardRow: FC<RewardRowProps> = ({
     target="_blank"
     rel="noreferrer"
   >
-    <TextInter>{name}</TextInter>
+    <BodyText>{name}</BodyText>
     <MoneyAmount className="font-light text-right">
       {typeof amount === "number" ? millionEthFromGwei(amount) : undefined}
     </MoneyAmount>

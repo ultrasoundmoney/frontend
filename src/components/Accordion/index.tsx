@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TextInter } from "../Texts";
+import { BodyText } from "../Texts";
 import Twemoji from "../Twemoji";
 import styles from "./Accordion.module.scss";
 
@@ -10,7 +10,7 @@ type AccordionProps = {
 const Accordion: React.FC<AccordionProps> = ({ title, text }) => {
   const [isOpen, setOpen] = React.useState(false);
   return (
-    <TextInter className={styles["wrapper"]}>
+    <BodyText className={styles["wrapper"]}>
       <div
         className={`${styles.title} text-lg py-6 break-words ${
           isOpen ? `${styles.open}` : ""
@@ -41,7 +41,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, text }) => {
           ></p>
         </Twemoji>
       </div>
-    </TextInter>
+    </BodyText>
   );
 };
 

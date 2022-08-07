@@ -8,8 +8,8 @@ import {
 } from "../../utils/metric-utils";
 import { useTranslations } from "../../utils/use-translation";
 import Slider from "../Slider/Slider";
+import { TextInter } from "../Texts";
 import Twemoji from "../Twemoji";
-import { WidgetTitle } from "../WidgetSubcomponents";
 import SupplyChart from "./SupplyChart";
 import styles from "./SupplyView.module.scss";
 
@@ -104,7 +104,10 @@ const SupplyView: React.FC = () => {
   return (
     <>
       <div className={styles.chartHeader}>
-        <WidgetTitle className="flex items-center text-white text-left font-light pl-3 pb-8">
+        <TextInter
+          className="font-light text-blue-spindle text-xs uppercase tracking-widest flex items-center pl-3 pb-8"
+          inline
+        >
           historical supply
           <span
             className={`transition-opacity ${
@@ -115,7 +118,7 @@ const SupplyView: React.FC = () => {
               🦇🔊
             </Twemoji>
           </span>
-        </WidgetTitle>
+        </TextInter>
       </div>
       <SupplyChart
         projectedStaking={projectedStaking}

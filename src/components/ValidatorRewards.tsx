@@ -12,7 +12,7 @@ import Colors from "../colors";
 import * as Format from "../format";
 import { flow, O, pipe } from "../fp";
 import { MoneyAmount, PercentAmount } from "./Amount";
-import { LabelText, TextInter, TextRoboto } from "./Texts";
+import { BodyText, LabelText, TextRoboto } from "./Texts";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
 const skeletonLoadingWidth = 0.1;
@@ -130,7 +130,7 @@ const RewardRow: FC<RewardRowProps> = ({
     target="_blank"
     rel="noreferrer"
   >
-    <TextInter>{name}</TextInter>
+    <BodyText>{name}</BodyText>
     <MoneyAmount className="font-light text-right">
       {pipe(
         amount,

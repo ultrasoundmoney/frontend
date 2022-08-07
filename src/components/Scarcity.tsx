@@ -6,7 +6,7 @@ import Colors from "../colors";
 import * as Format from "../format";
 import { pipe } from "../fp";
 import { Amount, MoneyAmount } from "./Amount";
-import { LabelText, TextInter, TextRoboto } from "./Texts";
+import { BodyText, LabelText, TextRoboto } from "./Texts";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
 type ScarcityBarProps = {
@@ -241,7 +241,7 @@ const EngineRow: FC<EngineRowProps> = ({
     target="_blank"
     rel="noreferrer"
   >
-    <TextInter>{name}</TextInter>
+    <BodyText>{name}</BodyText>
     <MoneyAmount className="font-light text-right" amountPostfix="M">
       {amountFormatted}
     </MoneyAmount>

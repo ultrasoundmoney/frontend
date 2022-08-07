@@ -9,7 +9,7 @@ import { pipe } from "../fp";
 import * as StaticEtherData from "../static-ether-data";
 import { MoneyAmount } from "./Amount";
 import Slider2 from "./Slider2";
-import { TextInter, TextRoboto } from "./Texts";
+import { BodyText, TextRoboto } from "./Texts";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
 // Markers are positioned absolutely, manipulating their 'left' relatively to the full width bar which should be positioned relatively as their parent. Marker width
@@ -218,7 +218,7 @@ const PriceModel: FC = () => {
       <WidgetTitle>price model (post-merge)</WidgetTitle>
       <div className="flex flex-col gap-y-4 mt-4 overflow-hidden">
         <div className="flex justify-between">
-          <TextInter>annualized profits</TextInter>
+          <BodyText>annualized profits</BodyText>
           <MoneyAmount amountPostfix="B" unitText="USD" skeletonWidth="2rem">
             {annualizedEarnings === undefined
               ? undefined
@@ -227,7 +227,7 @@ const PriceModel: FC = () => {
         </div>
         <div className="flex flex-col gap-y-2">
           <div className="flex justify-between">
-            <TextInter>growth profile</TextInter>
+            <BodyText>growth profile</BodyText>
             <MoneyAmount unitText="P/E" skeletonWidth="3rem">
               {peRatio !== undefined && initialPeSet
                 ? Format.formatOneDecimal(peRatio)
@@ -313,7 +313,7 @@ const PriceModel: FC = () => {
         </div>
         <div className="flex flex-col gap-y-2">
           <div className="flex justify-between">
-            <TextInter>monetary premium</TextInter>
+            <BodyText>monetary premium</BodyText>
             <TextRoboto>{`${Format.formatOneDecimal(
               monetaryPremium,
             )}x`}</TextRoboto>

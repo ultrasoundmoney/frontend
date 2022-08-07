@@ -1,6 +1,6 @@
 import { useTotalValueSecured } from "../../api/total-value-secured";
 import { AmountBillionsUsdAnimated } from "../Amount";
-import { TextInter } from "../Texts";
+import { BodyText } from "../Texts";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 
 const NftLeaderboard = () => {
@@ -15,7 +15,7 @@ const NftLeaderboard = () => {
               className="text-white w-12 flex justify-between truncate"
               key={row.name}
             >
-              <TextInter>{row.name}</TextInter>
+              <BodyText>{row.name}</BodyText>
               <AmountBillionsUsdAnimated>
                 {row.marketCap}
               </AmountBillionsUsdAnimated>
