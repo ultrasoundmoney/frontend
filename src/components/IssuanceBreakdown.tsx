@@ -109,7 +109,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
   </div>
 );
 
-type RewardRowProps = {
+type IssuanceRowProps = {
   amount: number | undefined;
   hovering: boolean;
   link?: string;
@@ -125,7 +125,7 @@ const millionEthFromGwei = flow(
   (numberStr) => `${numberStr}M`,
 );
 
-const RewardRow: FC<RewardRowProps> = ({
+const IssuanceRow: FC<IssuanceRowProps> = ({
   amount,
   hovering,
   link,
@@ -242,31 +242,31 @@ const IssuanceBreakdown = () => {
           <LabelText>category</LabelText>
           <LabelText className="text-right">amount</LabelText>
         </div>
-        <RewardRow
+        <IssuanceRow
           amount={issuanceBreakdown?.crowdSale}
           hovering={highlightCrowdSale}
           name="Bitcoin crowd sale"
           setHovering={setHighlightCrowdSale}
         />
-        <RewardRow
+        <IssuanceRow
           amount={issuanceBreakdown?.proofOfWork}
           hovering={highlightProofOfWork}
           name="proof of work"
           setHovering={setHighlightProofOfWork}
         />
-        <RewardRow
+        <IssuanceRow
           amount={issuanceBreakdown?.ethereumFoundation}
           hovering={highlightEthereumFoundation}
           name="Ethereum Foundation"
           setHovering={setHighlightEthereumFoundation}
         />
-        <RewardRow
+        <IssuanceRow
           amount={issuanceBreakdown?.earlyContributors}
           hovering={highlightEarlyContributors}
           name="early contributors"
           setHovering={setHighlightEarlyContributors}
         />
-        <RewardRow
+        <IssuanceRow
           amount={issuanceBreakdown?.proofOfStake}
           hovering={highlightProofOfStake}
           name="proof of stake"
