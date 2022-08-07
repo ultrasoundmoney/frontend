@@ -60,7 +60,7 @@ const AssetType: FC<{
         tooltip={pipe(
           amount,
           O.fromNullable,
-          O.map(flow(Format.formatZeroDigit, (str) => `${str} USD`)),
+          O.map(flow(Format.formatZeroDecimals, (str) => `${str} USD`)),
           O.toUndefined,
         )}
       >
@@ -86,7 +86,7 @@ const Summary: FC<{ className?: string }> = ({ className = "" }) => {
               title={pipe(
                 totalValueSecured?.sum,
                 O.fromNullable,
-                O.map(Format.formatZeroDigit),
+                O.map(Format.formatZeroDecimals),
                 O.map((str) => `${str} USD`),
                 O.toUndefined,
               )}

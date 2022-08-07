@@ -5,7 +5,7 @@ import { animated, config, useSpring } from "react-spring";
 import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import { Unit } from "../../denomination";
 import { FeatureFlagsContext } from "../../feature-flags";
-import { formatOneDigit, formatZeroDigit } from "../../format";
+import * as Format from "../../format";
 import { pipe } from "../../fp";
 import Twemoji from "../Twemoji";
 import { WidgetTitle } from "../WidgetSubcomponents";
@@ -79,7 +79,9 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
               {valueA.to(
                 (n) =>
                   `${
-                    unit === "eth" ? formatOneDigit(n) : formatZeroDigit(n)
+                    unit === "eth"
+                      ? Format.formatOneDecimal(n)
+                      : Format.formatZeroDecimals(n)
                   }${gaugeUnit}`,
               )}
             </animated.p>

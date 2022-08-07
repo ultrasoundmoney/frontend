@@ -222,7 +222,7 @@ const PriceModel: FC = () => {
           <MoneyAmount amountPostfix="B" unitText="USD" skeletonWidth="2rem">
             {annualizedEarnings === undefined
               ? undefined
-              : Format.formatOneDigit(annualizedEarnings / 1e9)}
+              : Format.formatOneDecimal(annualizedEarnings / 1e9)}
           </MoneyAmount>
         </div>
         <div className="flex flex-col gap-y-2">
@@ -230,7 +230,7 @@ const PriceModel: FC = () => {
             <TextInter>growth profile</TextInter>
             <MoneyAmount unitText="P/E" skeletonWidth="3rem">
               {peRatio !== undefined && initialPeSet
-                ? Format.formatOneDigit(peRatio)
+                ? Format.formatOneDecimal(peRatio)
                 : undefined}
             </MoneyAmount>
           </div>
@@ -314,7 +314,7 @@ const PriceModel: FC = () => {
         <div className="flex flex-col gap-y-2">
           <div className="flex justify-between">
             <TextInter>monetary premium</TextInter>
-            <TextRoboto>{`${Format.formatOneDigit(
+            <TextRoboto>{`${Format.formatOneDecimal(
               monetaryPremium,
             )}x`}</TextRoboto>
           </div>
@@ -383,7 +383,7 @@ price = profits * P/E ratio * monetary premium`}
             >
               {projectedPrice === undefined
                 ? undefined
-                : Format.formatOneDigit(projectedPrice / 1000)}
+                : Format.formatOneDecimal(projectedPrice / 1000)}
             </MoneyAmount>
           </span>
         </div>

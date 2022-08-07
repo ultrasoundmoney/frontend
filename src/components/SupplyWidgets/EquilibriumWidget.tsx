@@ -310,7 +310,7 @@ const EquilibriumWidget: FC = () => {
           <div className="flex justify-between">
             <MoneyAmount amountPostfix="M" textSizeClass="text-xl lg:text-3xl">
               {equilibriums !== undefined
-                ? Format.formatOneDigit(equilibriums.supplyEquilibrium / 1e6)
+                ? Format.formatOneDecimal(equilibriums.supplyEquilibrium / 1e6)
                 : undefined}
             </MoneyAmount>
             <MoneyAmount
@@ -319,7 +319,7 @@ const EquilibriumWidget: FC = () => {
               textSizeClass="text-xl lg:text-3xl"
             >
               {stakingAprFraction !== undefined && initialEquilibriumInputsSet
-                ? Format.formatOneDigit(
+                ? Format.formatOneDecimal(
                     getStakedFromApr(stakingAprFraction) / 1e6,
                   )
                 : undefined}
@@ -337,7 +337,7 @@ const EquilibriumWidget: FC = () => {
               </div>
               <PercentAmount className="text-base lg:text-lg">
                 {stakingAprFraction !== undefined && initialEquilibriumInputsSet
-                  ? `${Format.formatPercentOneDigit(stakingAprFraction)}/year`
+                  ? `${Format.formatPercentOneDecimal(stakingAprFraction)}/year`
                   : undefined}
               </PercentAmount>
             </div>
@@ -384,7 +384,7 @@ const EquilibriumWidget: FC = () => {
               <PercentAmount>
                 {nonStakingBurnFraction !== undefined &&
                 initialEquilibriumInputsSet
-                  ? `${Format.formatPercentOneDigit(
+                  ? `${Format.formatPercentOneDecimal(
                       nonStakingBurnFraction,
                     )}/year`
                   : undefined}
@@ -428,7 +428,7 @@ const EquilibriumWidget: FC = () => {
           <WidgetTitle>issuance and burn match</WidgetTitle>
           <MoneyAmount amountPostfix="K" unitText="ETH/year">
             {equilibriums !== undefined
-              ? Format.formatNoDigit(equilibriums.cashFlowsEquilibrium / 1e3)
+              ? Format.formatNoDecimals(equilibriums.cashFlowsEquilibrium / 1e3)
               : undefined}
           </MoneyAmount>
         </div>

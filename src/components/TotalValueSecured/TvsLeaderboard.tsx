@@ -188,7 +188,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
                     tooltip={pipe(
                       row?.marketCap,
                       O.fromNullable,
-                      O.map(Format.formatZeroDigit),
+                      O.map(Format.formatZeroDecimals),
                       O.map((str) => `${str} USD`),
                       O.toUndefined,
                     )}

@@ -13,7 +13,7 @@ import { BurnGroupBase } from "./WidgetSubcomponents";
 
 const formatBlockNumber = flow(
   O.fromPredicate((unknown): unknown is number => typeof unknown === "number"),
-  O.map(Format.formatNoDigit),
+  O.map(Format.formatNoDecimals),
   O.map((str) => `#${str}`),
   O.toUndefined,
 );

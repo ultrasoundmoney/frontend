@@ -99,7 +99,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
               color: showHighlight ? Colors.white : Colors.spindle,
             }}
           >
-            {Format.formatPercentNoDigit(percentOfTotalRewards)}
+            {Format.formatPercentNoDecimals(percentOfTotalRewards)}
           </TextRoboto>
         ) : (
           <Skeleton width="1.5rem" />
@@ -121,7 +121,7 @@ const millionEthFromGwei = flow(
   Format.ethFromGwei,
   // in M of ETH.
   (eth) => eth / 1_000_000,
-  Format.formatOneDigit,
+  Format.formatOneDecimal,
   (numberStr) => `${numberStr}M`,
 );
 

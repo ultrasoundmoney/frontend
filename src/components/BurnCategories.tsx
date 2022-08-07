@@ -120,7 +120,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
             color: showHighlight ? Colors.white : Colors.spindle,
           }}
         >
-          {Format.formatNoDigit(
+          {Format.formatNoDecimals(
             (percentOfTotalBurn ?? skeletonLoadingWidth) * 100,
           )}
           %
@@ -247,14 +247,14 @@ const CategoryRow: FC<CategoryRowProps> = ({
 const formatFees = flow(
   (num: number | undefined) => O.fromNullable(num),
   O.map(Format.ethFromWei),
-  O.map((num) => Format.formatZeroDigit(num)),
+  O.map((num) => Format.formatZeroDecimals(num)),
   O.toUndefined,
 );
 
 const formatCount = flow(
   (count: number | undefined) => O.fromNullable(count),
   O.map((num) => num / 10 ** 3),
-  O.map((num) => Format.formatOneDigit(num) + "K"),
+  O.map((num) => Format.formatOneDecimal(num) + "K"),
   O.toUndefined,
 );
 

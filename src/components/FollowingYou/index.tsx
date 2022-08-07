@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { famBasePath, FamProfile } from "../../api/fam";
-import { formatNoDigit } from "../../format";
+import { formatNoDecimals } from "../../format";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import ImageWithTooltip from "../ImageWithTooltip";
 import Modal from "../Modal";
@@ -167,7 +167,7 @@ const FollowingYou: FC = () => {
                 ))}
               </div>
               {followers.count > followers.followers.length && (
-                <p className="text-white text-xl p-8 text-center">{`+${formatNoDigit(
+                <p className="text-white text-xl p-8 text-center">{`+${formatNoDecimals(
                   followers.count - followers.followers.length,
                 )} more!`}</p>
               )}

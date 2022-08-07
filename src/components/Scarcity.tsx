@@ -110,7 +110,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
               color: hoveringStaked ? Colors.white : Colors.spindle,
             }}
           >
-            {Format.formatNoDigit(stakedPercent)}%
+            {Format.formatNoDecimals(stakedPercent)}%
           </TextRoboto>
         </div>
         <div
@@ -159,7 +159,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
               color: hoveringLocked ? Colors.white : Colors.spindle,
             }}
           >
-            {Format.formatNoDigit(lockedPercent)}%
+            {Format.formatNoDecimals(lockedPercent)}%
           </TextRoboto>
         </div>
       </div>
@@ -210,10 +210,10 @@ const floorOneDigit = (num: number) =>
   );
 
 const mEthFromWeiFormatted = (num: JSBI): string =>
-  pipe(num, mEthFromWei, floorOneDigit, Format.formatOneDigit);
+  pipe(num, mEthFromWei, floorOneDigit, Format.formatOneDecimal);
 
 const mEthFromEthFormatted = (num: number): string =>
-  pipe(num, (num) => num / 10 ** 6, floorOneDigit, Format.formatOneDigit);
+  pipe(num, (num) => num / 10 ** 6, floorOneDigit, Format.formatOneDecimal);
 
 type EngineRowProps = {
   amountFormatted: string;
@@ -246,7 +246,7 @@ const EngineRow: FC<EngineRowProps> = ({
       {amountFormatted}
     </MoneyAmount>
     <Amount className="text-right" unitPostfix="years">
-      {Format.formatOneDigit(
+      {Format.formatOneDecimal(
         DateFns.differenceInDays(new Date(), startedOn) / 365.25,
       )}
     </Amount>

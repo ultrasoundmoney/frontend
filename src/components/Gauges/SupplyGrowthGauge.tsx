@@ -68,7 +68,7 @@ const SupplyGrowthGauge: FC<Props> = ({
 }) => {
   const growthRate = useGrowthRate(simulateMerge, timeFrame);
   const toPercentOneDigitSigned = useCallback<(n: number) => string>(
-    (n) => Format.formatPercentOneDigitSigned(n),
+    (n) => Format.formatPercentOneDecimalSigned(n),
     [],
   );
 
@@ -124,7 +124,7 @@ const SupplyGrowthGauge: FC<Props> = ({
           </div>
         ) : freezeAnimated ? (
           <p className="-mb-2">
-            {Format.formatPercentOneDigitSigned(growthRateAnimated.get())}
+            {Format.formatPercentOneDecimalSigned(growthRateAnimated.get())}
           </p>
         ) : (
           <animated.p className="-mb-2">

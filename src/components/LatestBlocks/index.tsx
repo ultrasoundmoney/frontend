@@ -21,7 +21,7 @@ const maxBlocks = 20;
 const formatGas = flow(
   OAlt.numberFromUnknown,
   O.map(Format.gweiFromWei),
-  O.map(Format.formatZeroDigit),
+  O.map(Format.formatZeroDecimals),
   O.toUndefined,
 );
 
@@ -36,7 +36,7 @@ const formatFees = (unit: Unit, fees: unknown, feesUsd: unknown) =>
     : pipe(
         feesUsd,
         OAlt.numberFromUnknown,
-        O.map((feesUsd) => `${Format.formatZeroDigit(feesUsd)}`),
+        O.map((feesUsd) => `${Format.formatZeroDecimals(feesUsd)}`),
         O.toUndefined,
       );
 
@@ -54,7 +54,7 @@ export const formatBlockNumber = (number: unknown) =>
     O.fromPredicate(
       (unknown): unknown is number => typeof unknown === "number",
     ),
-    O.map(Format.formatNoDigit),
+    O.map(Format.formatNoDecimals),
     O.map((str) => `#${str}`),
     O.toUndefined,
   );

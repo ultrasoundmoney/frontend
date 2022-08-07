@@ -95,7 +95,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
                 color: showHighlight ? Colors.white : Colors.spindle,
               }}
             >
-              {Format.formatPercentNoDigit(percentOfTotalRewards)}
+              {Format.formatPercentNoDecimals(percentOfTotalRewards)}
             </TextRoboto>
           ),
         ),
@@ -134,12 +134,12 @@ const RewardRow: FC<RewardRowProps> = ({
     <MoneyAmount className="font-light text-right">
       {pipe(
         amount,
-        O.map(flow(Format.ethFromGwei, Format.formatOneDigit)),
+        O.map(flow(Format.ethFromGwei, Format.formatOneDecimal)),
         O.toUndefined,
       )}
     </MoneyAmount>
     <PercentAmount className="text-right">
-      {pipe(apr, O.map(Format.formatPercentOneDigit), O.toUndefined)}
+      {pipe(apr, O.map(Format.formatPercentOneDecimal), O.toUndefined)}
     </PercentAmount>
   </a>
 );

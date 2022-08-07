@@ -169,7 +169,7 @@ const EquilibriumGraph: FC<Props> = ({
           }
 
           const table = `<table><tbody><tr class="tt-total-row">
-              <td class="text-white">${Format.formatOneDigit(
+              <td class="text-white">${Format.formatOneDecimal(
                 total / 1e6,
               )}M <span class="text-blue-spindle">ETH</span></td>
             </tr></tbody></table>`;

@@ -1,6 +1,6 @@
 import * as DateFns from "date-fns";
 import * as React from "react";
-import { formatOneDigit } from "../../format";
+import { formatOneDecimal } from "../../format";
 import { pipe } from "../../fp";
 import {
   estimatedDailyFeeBurn,
@@ -137,7 +137,7 @@ const SupplyView: React.FC = () => {
             <>
               {t.pos_issuance}
               {": "}
-              {formatOneDigit(
+              {formatOneDecimal(
                 estimatedDailyIssuance(projectedStaking) / 1000,
               )}K {t.eth_per_day}
             </>
@@ -161,7 +161,7 @@ const SupplyView: React.FC = () => {
             <>
               {t.fee_burn}
               {": "}
-              {formatOneDigit(
+              {formatOneDecimal(
                 estimatedDailyFeeBurn(projectedBaseGasPrice) / 1000,
               )}
               K {t.eth_per_day}

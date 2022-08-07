@@ -123,7 +123,7 @@ const Tooltip: FC<TooltipProps> = ({
           <TextRoboto className="font-extralight text-2xl">
             {followerCount === undefined
               ? "-"
-              : Format.formatCompactOneDigit(followerCount)}
+              : Format.formatCompactOneDecimal(followerCount)}
           </TextRoboto>
         </div>
         <div className="flex flex-col gap-y-4 items-end">
@@ -131,7 +131,7 @@ const Tooltip: FC<TooltipProps> = ({
           <TextRoboto className="font-extralight text-2xl">
             {famFollowerCount === undefined
               ? "-"
-              : Format.formatZeroDigit(famFollowerCount)}
+              : Format.formatZeroDecimals(famFollowerCount)}
           </TextRoboto>
         </div>
       </div>
