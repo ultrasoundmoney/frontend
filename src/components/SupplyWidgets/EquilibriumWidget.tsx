@@ -424,7 +424,7 @@ const EquilibriumWidget: FC = () => {
           </div>
         </div>
 
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-baseline">
           <WidgetTitle>issuance and burn match</WidgetTitle>
           <MoneyAmount amountPostfix="M" unitText="ETH/year">
             {equilibriums !== undefined
