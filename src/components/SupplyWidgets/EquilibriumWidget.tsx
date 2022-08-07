@@ -183,8 +183,6 @@ const EquilibriumWidget = () => {
       return undefined;
     }
 
-    console.log("rebuilding projection");
-
     const supplyEquilibriumSeries = [
       ...historicSupplyByMonth,
     ] as NEA.NonEmptyArray<Point>;
