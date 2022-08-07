@@ -9,6 +9,7 @@ import {
 import { useTranslations } from "../../utils/use-translation";
 import Slider from "../Slider/Slider";
 import Twemoji from "../Twemoji";
+import { WidgetTitle } from "../WidgetSubcomponents";
 import SupplyChart from "./SupplyChart";
 import styles from "./SupplyView.module.scss";
 
@@ -103,8 +104,8 @@ const SupplyView: React.FC = () => {
   return (
     <>
       <div className={styles.chartHeader}>
-        <div className="text-xl text-white text-left font-light pl-3 pb-8 flex">
-          {t.eth_supply}
+        <WidgetTitle className="flex items-center text-white text-left font-light pl-3 pb-8">
+          historical supply
           <span
             className={`transition-opacity ${
               isPeakPresent ? "opacity-1" : "opacity-0"
@@ -114,7 +115,7 @@ const SupplyView: React.FC = () => {
               🦇🔊
             </Twemoji>
           </span>
-        </div>
+        </WidgetTitle>
       </div>
       <SupplyChart
         projectedStaking={projectedStaking}
@@ -139,7 +140,8 @@ const SupplyView: React.FC = () => {
               {": "}
               {formatOneDecimal(
                 estimatedDailyIssuance(projectedStaking) / 1000,
-              )}K {t.eth_per_day}
+              )}
+              K {t.eth_per_day}
             </>
           }
         >
