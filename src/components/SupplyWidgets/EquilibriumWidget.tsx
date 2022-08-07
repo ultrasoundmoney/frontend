@@ -349,7 +349,7 @@ const EquilibriumWidget: FC = () => {
                 onChange={(event) =>
                   setStakedAprFraction(Number(event.target.value))
                 }
-                thumbVisible={initialEquilibriumInputsSet ?? false}
+                thumbVisible={initialEquilibriumInputsSet}
               />
               {nowMarker !== undefined && nowMarkerPercent !== undefined && (
                 <div
@@ -398,7 +398,7 @@ const EquilibriumWidget: FC = () => {
                 onChange={(event) =>
                   setNonStakedBurnFraction(Number(event.target.value))
                 }
-                thumbVisible={initialEquilibriumInputsSet ?? false}
+                thumbVisible={initialEquilibriumInputsSet}
               />
               {allMarker !== undefined && allMarkerPercent !== undefined && (
                 <div
