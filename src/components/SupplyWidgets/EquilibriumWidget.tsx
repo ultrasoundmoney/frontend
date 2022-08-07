@@ -239,7 +239,6 @@ const EquilibriumWidget = () => {
     nonStakedBurnFraction,
     supplyProjectionInputs,
     historicSupplyByMonth,
-    md,
   ]);
 
   return (
