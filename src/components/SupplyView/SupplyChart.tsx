@@ -23,7 +23,7 @@ import { useOnResize } from "../../utils/use-on-resize";
 import styles from "./SupplyChart.module.scss";
 
 if (typeof window !== "undefined") {
-  // Initialize highchats annotations module (onlly on browser, doesn't work on server)
+  // Initialize highchats annotations module (only on browser, doesn't work on server)
   highchartsAnnotations(Highcharts);
 }
 
