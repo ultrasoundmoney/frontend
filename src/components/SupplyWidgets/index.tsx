@@ -101,10 +101,10 @@ const SupplyWidgets = () => {
           <PeakSupplyWidget></PeakSupplyWidget>
         </div>
       </div>
+      <EquilibriumWidget />
       <div className="w-full md:m-auto relative bg-blue-tangaroa px-2 md:px-4 xl:px-12 py-4 md:py-8 xl:py-12 rounded-xl">
         <SupplyView />
       </div>
-      <EquilibriumWidget />
     </div>
   );
 };
