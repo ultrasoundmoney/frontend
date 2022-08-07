@@ -325,7 +325,7 @@ const EquilibriumWidget = () => {
             <div className="relative">
               <Slider
                 min={0.02}
-                max={0.07}
+                max={0.05}
                 value={stakingAprFraction}
                 step={0.0001}
                 onChange={(event) =>
@@ -341,9 +341,9 @@ const EquilibriumWidget = () => {
               `}
                 style={{
                   left: `calc(${
-                    (((nowMarker ?? 0) - 0.02) / 0.05) * 100
+                    (((nowMarker ?? 0) - 0.02) / 0.03) * 100
                   }% - ${Math.floor(
-                    ((((nowMarker ?? 0) - 0.02) / 0.05) * 2 - 1) * 7,
+                    ((((nowMarker ?? 0) - 0.02) / 0.03) * 2 - 1) * 7,
                   )}px)`,
                 }}
               >
