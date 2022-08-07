@@ -147,12 +147,10 @@ const EquilibriumWidget = () => {
           return [[point.t, point.v] as Point];
         }
 
-        const cmp = md ? DateFns.getMonth : DateFns.getYear;
-
         // If we don't have a point from this month yet, add it.
         if (
-          cmp(DateFns.fromUnixTime(last[0])) !==
-          cmp(DateFns.fromUnixTime(point.t))
+          DateFns.getMonth(DateFns.fromUnixTime(last[0])) !==
+          DateFns.getMonth(DateFns.fromUnixTime(point.t))
         ) {
           return [...list, [point.t, point.v] as Point];
         }
@@ -164,7 +162,7 @@ const EquilibriumWidget = () => {
     );
 
     return list as NEA.NonEmptyArray<Point>;
-  }, [md, supplyProjectionInputs]);
+  }, [supplyProjectionInputs]);
 
   const equilibriums = useMemo(():
     | {
@@ -185,6 +183,8 @@ const EquilibriumWidget = () => {
       return undefined;
     }
 
+    console.log("rebuilding projection");
+
     const supplyEquilibriumSeries = [
       ...historicSupplyByMonth,
     ] as NEA.NonEmptyArray<Point>;
@@ -195,7 +195,7 @@ const EquilibriumWidget = () => {
     let nonStaked = supply[1] - staked;
     const issuance = getIssuancePerYear(staked);
 
-    const YEARS_TO_SIMULATE = md ? 200 : 50;
+    const YEARS_TO_SIMULATE = 200;
 
     for (let i = 0; i < YEARS_TO_SIMULATE; i++) {
       const nextYear = pipe(
@@ -248,22 +248,22 @@ const EquilibriumWidget = () => {
     <WidgetBackground
       className={`relative flex flex-col md:flex-row-reverse gap-x-4 gap-y-8 overflow-hidden p-0`}
     >
-      <div
-        className={`
-            absolute top-0 right-0
-            w-3/5 h-full
-            opacity-[0.25]
-            blur-[100px]
-          `}
-      >
-        <div
-          className={`
-              absolute md:bottom-[3.0rem] md:-right-[1.0rem]
-              w-4/5 h-3/5 rounded-[35%]
-              bg-[#0037FA]
-            `}
-        ></div>
-      </div>
+      {/* <div */}
+      {/*   className={` */}
+      {/*       absolute top-0 right-0 */}
+      {/*       w-3/5 h-full */}
+      {/*       opacity-[0.25] */}
+      {/*       blur-[100px] */}
+      {/*     `} */}
+      {/* > */}
+      {/*   <div */}
+      {/*     className={` */}
+      {/*         absolute md:bottom-[3.0rem] md:-right-[1.0rem] */}
+      {/*         w-4/5 h-3/5 rounded-[35%] */}
+      {/*         bg-[#0037FA] */}
+      {/*       `} */}
+      {/*   ></div> */}
+      {/* </div> */}
       {/* Higher z-level to bypass the background blur of our sibling. */}
       <div className="md:w-1/2 flex justify-center items-center z-20">
         {equilibriums !== undefined ? (
@@ -273,9 +273,6 @@ const EquilibriumWidget = () => {
             supplyEquilibrium={equilibriums.supplyEquilibrium}
             staking={getStakedFromApr(stakingAprFraction)}
             width={lg ? 400 : md ? 250 : 300}
-            // Move below props inside
-            // widthMin={lg ? 0.4 : md ? 0.7 : undefined}
-            // widthMax={lg ? 0.4 : md ? 0.7 : undefined}
             height={lg ? 333 : 160}
           />
         ) : (
