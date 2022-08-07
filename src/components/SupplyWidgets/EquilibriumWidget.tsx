@@ -283,7 +283,10 @@ const EquilibriumWidget: FC = () => {
         ></div>
       </div>
       {/* Higher z-level to bypass the background blur of our sibling. */}
-      <div className="md:w-1/2 flex justify-center items-center z-20">
+      <div className="relative md:w-1/2 flex justify-center items-center">
+        <WidgetTitle className="absolute top-8 left-8">
+          ETH supply—200y projection
+        </WidgetTitle>
         {equilibriums !== undefined ? (
           <EquilibriumGraph
             supplyEquilibriumSeries={equilibriums.supplyEquilibriumSeries}
