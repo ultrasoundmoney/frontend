@@ -105,9 +105,12 @@ type BurnMarkers = {
   h1: number;
   m5: number;
 };
+type BurnMarker = { label: string; value: number };
 
 const BurnMarkers: FC<{ burnMarkers: BurnMarkers }> = ({ burnMarkers }) => {
-  const markerList = [
+  const { lg } = useActiveBreakpoint();
+
+  const markerList: BurnMarker[] = [
     { label: "all", value: burnMarkers.all },
     { label: "🦇🔊", value: burnMarkers.ultrasound },
     { label: "1d", value: burnMarkers.d1 },
@@ -115,7 +118,23 @@ const BurnMarkers: FC<{ burnMarkers: BurnMarkers }> = ({ burnMarkers }) => {
     { label: "30d", value: burnMarkers.d30 },
     { label: "1h", value: burnMarkers.h1 },
     { label: "5m", value: burnMarkers.m5 },
-  ].sort((m1, m2) => m1.value - m2.value);
+  ]
+    .sort((m1, m2) => m1.value - m2.value)
+    .reduce((list: BurnMarker[], marker) => {
+      const last = _.last(list);
+
+      if (last === undefined) {
+        return [marker];
+      }
+
+      const distance = marker.value - last.value;
+      if (distance < (lg ? 0.001 : 0.002)) {
+        return list;
+      } else {
+        list.push(marker);
+        return list;
+      }
+    }, []);
 
   return (
     <div>
