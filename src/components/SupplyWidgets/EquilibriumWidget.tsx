@@ -129,7 +129,6 @@ const EquilibriumWidget: FC = () => {
       return;
     }
 
-    setInitialEquilibriumInputsSet(true);
     setStakedAprFraction(
       getIssuanceApr(getStakingSupply(supplyProjectionInputs)),
     );
@@ -137,6 +136,7 @@ const EquilibriumWidget: FC = () => {
     setNonStakedBurnFraction(burnAsFraction(nonStakedSupply, burnRateAll));
     setNowMarker(getIssuanceApr(getStakingSupply(supplyProjectionInputs)));
     setAllMarker(burnAsFraction(nonStakedSupply, burnRateAll));
+    setInitialEquilibriumInputsSet(true);
   }, [burnRateAll, initialEquilibriumInputsSet, supplyProjectionInputs]);
 
   const historicSupplyByMonth = useMemo(():
