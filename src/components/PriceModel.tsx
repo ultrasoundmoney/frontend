@@ -245,7 +245,7 @@ const PriceModel: FC = () => {
               thumbVisible={initialPeSet}
               value={peRatioPosition}
             />
-            <div className="absolute w-full top-2 select-none">
+            <div className="absolute w-full top-3 select-none">
               {peRatios !== undefined && (
                 // Because the actual slider does not span the entire visual slider, overlaying an element and setting the left is not perfect. We manually adjust values to match the slider more precisely. To improve this look into off-the-shelf components that allow for styled markers.
                 <>
@@ -329,7 +329,7 @@ const PriceModel: FC = () => {
               value={monetaryPremium}
             />
             {/* Because a slider range is not exactly the visual width of the element positioning using absolute children with a left is not exactly right. we add small amounts to try fudge them into the right place. */}
-            <div className="absolute w-full flex top-2 pointer-events-none">
+            <div className="absolute w-full flex top-3 pointer-events-none">
               <MarkerText
                 ratio={(2 + 0.3 - monetaryPremiumMin) / monetaryPremiumRange}
               >

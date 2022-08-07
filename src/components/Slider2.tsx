@@ -23,6 +23,7 @@ const Slider: FC<SliderProps> = ({
       absolute
       appearance-none
       w-full h-2 z-10
+      my-1
       bg-blue-highlightbg
       rounded-full
       cursor-pointer
