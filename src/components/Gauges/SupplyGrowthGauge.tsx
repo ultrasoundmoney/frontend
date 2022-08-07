@@ -100,8 +100,16 @@ const SupplyGrowthGauge: FC<Props> = ({
   });
 
   return (
-    <div className="flex flex-col justify-start items-center bg-blue-tangaroa px-4 md:px-0 py-8 pt-7 rounded-tl-lg rounded-tr-lg">
-      {/* Height is set to align with sibling gauges */}
+    <div
+      // HACK: At some zoom levels for some screen sizes we see a single pixel wide gap below this component, to alleviate this issue we make the component a full pixel higher without taking the extra space.
+      className={`
+        flex flex-col justify-start items-center
+        bg-blue-tangaroa
+        px-4 md:px-0 py-8 pt-7
+        rounded-tl-lg rounded-tr-lg md:rounded-none
+        pb-[33px] -mb-[1px]
+      `}
+    >
       <WidgetTitle>supply growth</WidgetTitle>
       <div className="mt-8 md:scale-90 lg:scale-100">
         <SplitGaugeSvg max={max} progress={progress} />
