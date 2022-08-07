@@ -2,7 +2,7 @@ import { FC, ReactEventHandler, useCallback } from "react";
 import { useTotalValueSecured } from "../../api/total-value-secured";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import { AmountBillionsUsdAnimated } from "../Amount";
-import { TextInter } from "../Texts";
+import { BodyText, TextInter } from "../Texts";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 
 const Erc20Leaderboard: FC = () => {
@@ -36,7 +36,7 @@ const Erc20Leaderboard: FC = () => {
                   alt="logo of an ERC20 token"
                   onError={onImageError}
                 />
-                <TextInter className="ml-2 truncate">{row.name}</TextInter>
+                <BodyText className="ml-2 truncate">{row.name}</BodyText>
               </div>
               <AmountBillionsUsdAnimated>
                 {row.marketCap}

@@ -7,7 +7,7 @@ import * as Format from "../format";
 import { A, flow, NEA, O, pipe } from "../fp";
 import { TimeFrameNext } from "../time-frames";
 import { MoneyAmount } from "./Amount";
-import { LabelText, TextInter, TextRoboto } from "./Texts";
+import { BodyText, LabelText, TextRoboto } from "./Texts";
 import { BurnGroupBase, WidgetTitle } from "./WidgetSubcomponents";
 
 type CategoryProps = {
@@ -215,7 +215,7 @@ const CategoryRow: FC<CategoryRowProps> = ({
     onMouseLeave={() => setHovering(false)}
     style={{ opacity: hovering ? 0.6 : 1 }}
   >
-    <TextInter className="">{name}</TextInter>
+    <BodyText>{name}</BodyText>
     <div
       className={`
         text-right

@@ -10,7 +10,7 @@ import {
 } from "../Amount";
 import Link from "../Link";
 import Modal from "../Modal";
-import { TextInter } from "../Texts";
+import { BodyText, TextInter } from "../Texts";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 import TooltipSecurityRatio from "./TooltipSecurityRatio";
 
@@ -44,13 +44,14 @@ const AssetType: FC<{
           src={`/round-${icon}-coloron.svg`}
           alt={alt}
         />
-        <TextInter
+        <BodyText
           className={`
             ml-4
-            ${isHovering ? "opacity-60" : ""}`}
+            ${isHovering ? "opacity-60" : ""}
+          `}
         >
           {title}
-        </TextInter>
+        </BodyText>
       </div>
       <AmountBillionsUsdAnimated
         textClassName={`

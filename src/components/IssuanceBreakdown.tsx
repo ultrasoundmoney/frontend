@@ -3,7 +3,7 @@ import Skeleton from "react-loading-skeleton";
 import { flow, pipe } from "../fp";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 import Colors from "../colors";
-import { LabelText, TextInter, TextRoboto } from "./Texts";
+import { BodyText, LabelText, TextInter, TextRoboto } from "./Texts";
 import * as Format from "../format";
 import {
   getPercentOfTotal,
@@ -141,7 +141,7 @@ const RewardRow: FC<RewardRowProps> = ({
     target="_blank"
     rel="noreferrer"
   >
-    <TextInter>{name}</TextInter>
+    <BodyText>{name}</BodyText>
     <MoneyAmount className="font-light text-right">
       {typeof amount === "number" ? millionEthFromGwei(amount) : undefined}
     </MoneyAmount>

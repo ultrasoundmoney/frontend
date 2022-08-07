@@ -55,7 +55,7 @@ const EthSupplyWidget = () => {
   return (
     <>
       <WidgetBackground>
-        <div className="flex flex-col gap-y-4">
+        <div className="flex flex-col gap-y-6">
           <button
             className="flex items-center"
             onMouseEnter={() => setIsHoveringNerd(true)}

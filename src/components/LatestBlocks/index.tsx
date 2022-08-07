@@ -12,7 +12,7 @@ import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import CSSTransition from "../CSSTransition";
 import { AmountUnitSpace } from "../Spacing";
-import { TextInter, TextRoboto } from "../Texts";
+import { BodyText, TextInter, TextRoboto } from "../Texts";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 import styles from "./LatestBlocks.module.scss";
 
@@ -203,9 +203,9 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
           {" block lag"}
         </span>
         {typeof timeElapsed === "number" && timeElapsed > 1800 ? (
-          <TextInter className="text-xs md:text-sm text-red-400">
-            {"node failed, busy resyncing..."}
-          </TextInter>
+          <BodyText className="text-xs md:text-sm text-red-400">
+            node error, busy resyncing...
+          </BodyText>
         ) : null}
       </div>
     </WidgetBackground>

@@ -20,7 +20,7 @@ import { AmountBillionsUsdAnimated } from "../Amount";
 import ImageWithTooltip from "../ImageWithTooltip";
 import Link from "../Link";
 import Modal from "../Modal";
-import { TextInter } from "../Texts";
+import { BodyText, TextInter } from "../Texts";
 import Tooltip from "../Tooltip";
 import AdminControls from "../BurnGroup/BurnLeaderboard/AdminControls";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
@@ -172,18 +172,18 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
                   className="flex justify-between ml-4 w-full overflow-hidden"
                   href={row?.coinGeckoUrl || row?.nftGoUrl}
                 >
-                  <TextInter skeletonWidth="6rem" className="truncate">
+                  <BodyText skeletonWidth="6rem" className="truncate">
                     {row?.name?.split(":")[0]}
-                  </TextInter>
-                  <TextInter
+                  </BodyText>
+                  <BodyText
                     className={`
-                    font-extralight text-blue-shipcove uppercase
-                    pr-2 ml-2 mr-auto
-                    hidden ${row?.detail !== undefined ? "md:inline" : ""}
-                  `}
+                      font-extralight text-blue-shipcove uppercase
+                      pr-2 ml-2 mr-auto
+                      hidden ${row?.detail !== undefined ? "md:inline" : ""}
+                    `}
                   >
                     {row?.detail}
-                  </TextInter>
+                  </BodyText>
                   <AmountBillionsUsdAnimated
                     tooltip={pipe(
                       row?.marketCap,

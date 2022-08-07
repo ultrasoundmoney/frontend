@@ -3,7 +3,7 @@ import * as Format from "../../format";
 import Skeleton from "react-loading-skeleton";
 import { useTotalValueSecured } from "../../api/total-value-secured";
 import { AmountUnitSpace } from "../Spacing";
-import { TextInter, TextRoboto, UnitText } from "../Texts";
+import { BodyText, TextInter, TextRoboto, UnitText } from "../Texts";
 import { WidgetTitle } from "../WidgetSubcomponents";
 import { FeatureFlagsContext } from "../../feature-flags";
 import { useScarcity } from "../../api/scarcity";
@@ -43,32 +43,32 @@ const TooltipSecurityRatio: FC<{ onClickClose: () => void }> = ({
         className="w-20 h-20 mx-auto rounded-full select-none"
         src={"/round-nerd-large.svg"}
       />
-      <TextInter className="font-semibold">Security ratio</TextInter>
+      <BodyText className="font-semibold">Security ratio</BodyText>
       <div>
-        <TextInter className="whitespace-pre-wrap md:leading-normal">
+        <BodyText className="whitespace-pre-wrap md:leading-normal">
           The ratio of total value secured (TVS) to economic security. It
           measures attacker leverage—lower is better.
-        </TextInter>
+        </BodyText>
       </div>
       <WidgetTitle>formula</WidgetTitle>
       <div className="flex items-center">
-        <TextInter>=</TextInter>
+        <BodyText>=</BodyText>
         <div className="flex flex-col ml-2">
-          <TextInter>total value secured</TextInter>
+          <BodyText>total value secured</BodyText>
           <hr className="h-[1px]" />
-          <TextInter>economic security</TextInter>
+          <BodyText>economic security</BodyText>
         </div>
       </div>
       <div className="flex items-center">
-        <TextInter>=</TextInter>
+        <BodyText>=</BodyText>
         <div className="flex flex-col ml-2">
-          <TextInter>value secured by Ethereum</TextInter>
+          <BodyText>value secured by Ethereum</BodyText>
           <hr className="h-[1px]" />
-          <TextInter>value securing Ethereum</TextInter>
+          <BodyText>value securing Ethereum</BodyText>
         </div>
       </div>
       <div className="flex items-center text-base">
-        <TextInter>=</TextInter>
+        <BodyText>=</BodyText>
         <div className="flex flex-col ml-2">
           <div>
             <TextRoboto>
@@ -82,7 +82,7 @@ const TooltipSecurityRatio: FC<{ onClickClose: () => void }> = ({
             <AmountUnitSpace />
             <UnitText>USD</UnitText>
             <AmountUnitSpace />
-            <TextInter className="font-inter text-white font-extralight text-blue-spindle text-base md:text-base">
+            <TextInter className="font-inter font-extralight text-blue-spindle">
               in ETH, ERC20s, NFTs
             </TextInter>
           </div>
@@ -118,7 +118,7 @@ const TooltipSecurityRatio: FC<{ onClickClose: () => void }> = ({
               <AmountUnitSpace />
               <UnitText>USD</UnitText>
               <AmountUnitSpace />
-              <TextInter className="font-inter text-white font-extralight text-blue-spindle text-base md:text-base">
+              <TextInter className="font-inter font-extralight text-blue-spindle">
                 in staked ETH
               </TextInter>
             </div>
