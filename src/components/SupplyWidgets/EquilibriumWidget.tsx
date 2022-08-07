@@ -325,7 +325,7 @@ const EquilibriumWidget: FC = () => {
             </MoneyAmount>
           </div>
         </div>
-        <div className="flex flex-col gap-y-4">
+        <div className="flex flex-col gap-y-5">
           <div>
             <div className="flex justify-between items-baseline -mb-1">
               <div className="flex items-center truncate">
