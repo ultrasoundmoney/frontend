@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { BurnRecord } from "../api/burn-records";
-import { FeeData, useGroupedAnalysis1 } from "../api/grouped-analysis-1";
+import { useGroupedAnalysis1 } from "../api/grouped-analysis-1";
 import * as Format from "../format";
 import { flow, O, OAlt } from "../fp";
 import scrollbarStyles from "../styles/Scrollbar.module.scss";
