@@ -10,7 +10,7 @@ import { GWEI_PER_ETH, WEI_PER_ETH } from "../../eth-units";
 import * as Format from "../../format";
 import { NEA, pipe } from "../../fp";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
-import { Amount, MoneyAmount } from "../Amount";
+import { MoneyAmount, PercentAmount } from "../Amount";
 import Slider from "../Slider/Slider";
 import { BodyText, TextRoboto, TimeFrameText } from "../Texts";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
@@ -316,11 +316,11 @@ const EquilibriumWidget = () => {
                   &nbsp;for stakers
                 </BodyText>
               </div>
-              <Amount className="text-base lg:text-lg">
-                {stakingAprFraction !== undefined
+              <PercentAmount className="text-base lg:text-lg">
+                {stakingAprFraction !== undefined && initialEquilibriumInputsSet
                   ? `${Format.formatPercentOneDigit(stakingAprFraction)}/year`
                   : undefined}
-              </Amount>
+              </PercentAmount>
             </div>
             <div className="relative">
               <Slider
@@ -360,13 +360,14 @@ const EquilibriumWidget = () => {
                   &nbsp;for non-stakers
                 </BodyText>
               </div>
-              <Amount>
-                {nonStakedBurnFraction !== undefined
+              <PercentAmount>
+                {nonStakedBurnFraction !== undefined &&
+                initialEquilibriumInputsSet
                   ? `${Format.formatPercentOneDigit(
                       nonStakedBurnFraction,
                     )}/year`
                   : undefined}
-              </Amount>
+              </PercentAmount>
             </div>
             <div className="relative">
               <Slider
@@ -402,11 +403,11 @@ const EquilibriumWidget = () => {
 
         <div className="flex justify-between items-center">
           <WidgetTitle>issuance and burn match</WidgetTitle>
-          <Amount amountPostfix="M" unitPostfix="ETH/year">
+          <MoneyAmount amountPostfix="M" unitText="ETH/year">
             {equilibriums !== undefined
               ? Format.formatOneDigit(equilibriums.cashFlowsEquilibrium / 1e6)
               : undefined}
-          </Amount>
+          </MoneyAmount>
         </div>
       </div>
     </WidgetBackground>
