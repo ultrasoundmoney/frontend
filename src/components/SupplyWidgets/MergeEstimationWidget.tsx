@@ -60,26 +60,26 @@ const MergeEstimateWidget = () => {
             </Twemoji>
           </div>
         ) : (
-          <div className="flex gap-x-4 md:gap-x-12 lg:gap-x-8 mx-auto ">
-            <div className="flex flex-col items-center gap-y-2">
+          <div className="flex gap-x-4 md:gap-x-8 mx-auto ">
+            <div className="flex flex-col items-center gap-y-2 w-[44px]">
               <TextRoboto className="text-2xl">
                 {timeLeft?.days ?? 0}
               </TextRoboto>
               <LabelText>{timeLeft?.days === 1 ? "day" : "days"}</LabelText>
             </div>
-            <div className="flex flex-col items-center gap-y-2">
+            <div className="flex flex-col items-center gap-y-2 w-[44px]">
               <TextRoboto className="text-2xl">
                 {timeLeft?.hours ?? 0}
               </TextRoboto>
               <LabelText>{timeLeft?.hours === 1 ? "hour" : "hours"}</LabelText>
             </div>
-            <div className="flex flex-col items-center gap-y-2">
+            <div className="flex flex-col items-center gap-y-2 w-[44px]">
               <TextRoboto className="text-2xl">
                 {timeLeft?.minutes ?? 0}
               </TextRoboto>
               <LabelText>{timeLeft?.minutes === 1 ? "min" : "mins"}</LabelText>
             </div>
-            <div className="flex flex-col items-center gap-y-2">
+            <div className="flex flex-col items-center gap-y-2 w-[44px]">
               <TextRoboto className="text-2xl">
                 {timeLeft?.seconds ?? 0}
               </TextRoboto>
