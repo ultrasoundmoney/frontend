@@ -1,12 +1,5 @@
-// import * as DateFns from "date-fns";
-// import { useContext } from "react";
-// import Skeleton from "react-loading-skeleton";
-// import { FeatureFlagsContext } from "../../feature-flags";
-// import { pipe } from "../../fp";
-// import { MoneyAmount } from "../Amount";
 import { LabelText, StatusText, TextRoboto } from "../Texts";
 import { WidgetBackground } from "../WidgetSubcomponents";
-// import PreciseEth from "./PreciseEth";
 import * as DateFns from "date-fns";
 import { useEffect, useState } from "react";
 import Twemoji from "../Twemoji";
