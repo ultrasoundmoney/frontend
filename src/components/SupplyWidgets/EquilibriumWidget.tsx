@@ -180,7 +180,7 @@ const EquilibriumWidget: FC = () => {
     useState<number>(0);
   const [nowMarker, setNowMarker] = useState<number>();
   const [burnMarkers, setBurnMarkers] = useState<BurnMarkers>();
-  const { md, lg } = useActiveBreakpoint();
+  const { lg } = useActiveBreakpoint();
 
   // Only runs once because of initialEquilibriumInputsSet, after data loads.
   useEffect(() => {
@@ -330,7 +330,7 @@ const EquilibriumWidget: FC = () => {
 
   return (
     <WidgetBackground
-      className={`relative flex flex-col lg:flex-row-reverse gap-x-4 gap-y-8 overflow-hidden p-0`}
+      className={`relative flex-col lg:flex-row-reverse gap-x-4 overflow-hidden p-0`}
     >
       <div
         // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
@@ -344,37 +344,13 @@ const EquilibriumWidget: FC = () => {
       >
         <div
           className={`
-              absolute lg:bottom-[3.0rem] lg:-right-[1.0rem]
-              w-4/5 h-3/5 rounded-[35%]
-              bg-[#0037FA]
-            `}
+            absolute lg:bottom-[3.0rem] lg:-right-[1.0rem]
+            w-4/5 h-3/5 rounded-[35%]
+            bg-[#0037FA]
+          `}
         ></div>
       </div>
-      {/* Higher z-level to bypass the background blur of our sibling. */}
-      <div className="relative lg:w-1/2 flex justify-center items-center">
-        <WidgetTitle className="absolute top-8 left-8">
-          ETH supply—200y projection
-        </WidgetTitle>
-        {equilibriums !== undefined ? (
-          <EquilibriumGraph
-            supplyEquilibriumSeries={equilibriums.supplyEquilibriumSeries}
-            supplyEquilibriumMap={equilibriums.supplyEquilibriumMap}
-            supplyEquilibrium={equilibriums.supplyEquilibrium}
-            staking={getStakedFromApr(stakingAprFraction)}
-            width={lg ? 400 : md ? 400 : 280}
-            height={lg ? 333 : 200}
-          />
-        ) : (
-          <TextRoboto
-            className={`text-blue-spindle flex items-center ${
-              lg ? "h-[220px]" : "h-[160px]"
-            }`}
-          >
-            loading...
-          </TextRoboto>
-        )}
-      </div>
-      <div className="lg:w-1/2 flex flex-col gap-y-8 z-10 p-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-8 gap-x-4 p-8">
         <div>
           <div className="flex justify-between">
             <WidgetTitle>supply equilibrium</WidgetTitle>
@@ -398,6 +374,25 @@ const EquilibriumWidget: FC = () => {
                 : undefined}
             </MoneyAmount>
           </div>
+        </div>
+        <div className="lg:col-start-2 row-span-3">
+          <WidgetTitle className="">ETH supply—200y projection</WidgetTitle>
+          {equilibriums !== undefined ? (
+            <EquilibriumGraph
+              supplyEquilibriumSeries={equilibriums.supplyEquilibriumSeries}
+              supplyEquilibriumMap={equilibriums.supplyEquilibriumMap}
+              supplyEquilibrium={equilibriums.supplyEquilibrium}
+              staking={getStakedFromApr(stakingAprFraction)}
+            />
+          ) : (
+            <TextRoboto
+              className={`text-blue-spindle flex items-center ${
+                lg ? "h-[220px]" : "h-[160px]"
+              }`}
+            >
+              loading...
+            </TextRoboto>
+          )}
         </div>
         <div className="flex flex-col gap-y-5">
           <div>

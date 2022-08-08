@@ -6,7 +6,7 @@ import { FC, useEffect, useRef, useState } from "react";
 import colors from "../../colors";
 import * as Format from "../../format";
 import { NEA } from "../../fp";
-import { formatDate } from "../../utils/metric-utils";
+import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import styles from "./EquilibriumGraph.module.scss";
 
 export type Point = [number, number];
@@ -17,28 +17,6 @@ const baseOptions: Highcharts.Options = {
     animation: false,
     backgroundColor: "transparent",
     showAxes: false,
-    events: {
-      redraw: function () {
-        const yAxis0 = this.yAxis[0] as Highcharts.Axis & {
-          plotLinesAndBands: { svgElem: { element: SVGElement } }[];
-        };
-
-        yAxis0.plotLinesAndBands.forEach(function (lineOrBand) {
-          const svg = lineOrBand.svgElem.element;
-          const d = svg.getAttribute("d");
-          if (d === null) {
-            return;
-          }
-          const dArr = d.split(" ");
-          const widthReduction = 200;
-
-          const newStartX = Number(dArr[1]) + widthReduction;
-          dArr[1] = String(newStartX);
-
-          svg.setAttribute("d", dArr.join(" "));
-        });
-      },
-    },
   },
   title: undefined,
   xAxis: {
@@ -63,8 +41,8 @@ const baseOptions: Highcharts.Options = {
           align: "right",
           text: "EQUILIBRIUM",
           style: { color: colors.spindle },
-          y: 18,
-          x: 1,
+          y: 5,
+          x: 20,
         },
         width: 2,
         zIndex: 10,
@@ -129,19 +107,18 @@ type Props = {
   supplyEquilibriumMap: Record<number, number>;
   supplyEquilibrium: number;
   staking: number;
-  height: number;
-  width: number;
 };
 
 const EquilibriumGraph: FC<Props> = ({
-  height,
-  supplyEquilibriumMap,
-  supplyEquilibrium,
-  supplyEquilibriumSeries,
   staking,
-  width,
+  supplyEquilibrium,
+  supplyEquilibriumMap,
+  supplyEquilibriumSeries,
 }) => {
   const isRendering = useRef(true);
+  const { lg, md, xl, xl2 } = useActiveBreakpoint();
+  const width = xl2 ? 660 : xl ? 530 : lg ? 400 : md ? 570 : 280;
+  const height = lg ? 333 : 200;
   const [options, setOptions] = useState<Highcharts.Options>(() =>
     _.merge({}, baseOptions, {
       chart: {
@@ -194,12 +171,6 @@ const EquilibriumGraph: FC<Props> = ({
           ],
         },
       ],
-      yAxis: {
-        plotLines: [
-          { id: "equilibrium", value: supplyEquilibrium },
-          { id: "staking", value: staking },
-        ],
-      },
     } as Highcharts.Options),
   );
 
@@ -209,12 +180,67 @@ const EquilibriumGraph: FC<Props> = ({
         width,
         height,
       },
+      xAxis: {
+        minPadding: 0.03,
+      },
     };
     setOptions((currentOptions) => _.merge({}, currentOptions, nextOptions));
-  }, [height, width]);
+  }, [height, md, staking, supplyEquilibrium, width]);
 
   useEffect(() => {
+    const lastPoint = _.last(supplyEquilibriumSeries);
+    if (lastPoint === undefined) {
+      return;
+    }
+
+    const maxX = xl2
+      ? DateFns.getUnixTime(
+          DateFns.addYears(DateFns.fromUnixTime(lastPoint[0]), 80),
+        )
+      : xl
+      ? DateFns.getUnixTime(
+          DateFns.addYears(DateFns.fromUnixTime(lastPoint[0]), 100),
+        )
+      : lg
+      ? DateFns.getUnixTime(
+          DateFns.addYears(DateFns.fromUnixTime(lastPoint[0]), 140),
+        )
+      : md
+      ? DateFns.getUnixTime(
+          DateFns.addYears(DateFns.fromUnixTime(lastPoint[0]), 90),
+        )
+      : DateFns.getUnixTime(
+          DateFns.addYears(DateFns.fromUnixTime(lastPoint[0]), 50),
+        );
+
     const nextOptions: Highcharts.Options = {
+      chart: {
+        events: {
+          redraw: function () {
+            const yAxis0 = this.yAxis[0] as Highcharts.Axis & {
+              plotLinesAndBands: { svgElem: { element: SVGElement } }[];
+            };
+
+            yAxis0.plotLinesAndBands.forEach(function (lineOrBand) {
+              const svg = lineOrBand.svgElem.element;
+              const d = svg.getAttribute("d");
+              if (d === null) {
+                return;
+              }
+              const dArr = d.split(" ");
+              const widthReductionLeft = xl ? 500 : lg ? 250 : md ? 420 : 230;
+              const widthReductionRight = md ? 90 : 0;
+
+              const newStartX = Number(dArr[1]) + widthReductionLeft;
+              const newStopX = Number(dArr[4]) - widthReductionRight;
+              dArr[1] = String(newStartX);
+              dArr[4] = String(newStopX);
+
+              svg.setAttribute("d", dArr.join(" "));
+            });
+          },
+        },
+      },
       series: [
         {
           id: "supply-series",
@@ -232,13 +258,28 @@ const EquilibriumGraph: FC<Props> = ({
           ],
         },
       ],
+      xAxis: {
+        max: maxX,
+      },
       yAxis: {
+        max: Math.min(Math.max(SUPPLY_MAX, supplyEquilibrium), 400e6),
         plotLines: [
           {
+            id: "equilibrium",
             value: supplyEquilibrium,
+            label: {
+              x: 10,
+              text: md ? "EQUILIBRIUM" : "",
+            },
           },
           {
+            id: "staking",
             value: staking,
+            label: {
+              x: -19,
+              y: 4,
+              text: md ? "STAKING" : "",
+            },
           },
         ],
       },
@@ -278,10 +319,14 @@ const EquilibriumGraph: FC<Props> = ({
       setOptions((currentOptions) => _.merge({}, currentOptions, nextOptions));
     }
   }, [
+    lg,
+    md,
     staking,
     supplyEquilibrium,
     supplyEquilibriumMap,
     supplyEquilibriumSeries,
+    xl,
+    xl2,
   ]);
 
   return (
