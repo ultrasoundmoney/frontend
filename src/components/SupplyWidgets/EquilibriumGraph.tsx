@@ -205,7 +205,15 @@ const EquilibriumGraph: FC<Props> = ({
                 return;
               }
               const dArr = d.split(" ");
-              const widthReductionLeft = xl ? 500 : lg ? 250 : md ? 420 : 230;
+              const widthReductionLeft = xl2
+                ? 500
+                : xl
+                ? 380
+                : lg
+                ? 250
+                : md
+                ? 420
+                : 230;
               const widthReductionRight = md ? 90 : 0;
 
               const newStartX = Number(dArr[1]) + widthReductionLeft;

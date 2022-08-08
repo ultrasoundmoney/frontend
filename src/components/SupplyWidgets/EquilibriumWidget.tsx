@@ -387,17 +387,9 @@ const EquilibriumWidget: FC = () => {
               supplyEquilibrium={equilibriums.supplyEquilibrium}
               staking={getStakedFromApr(stakingAprFraction)}
             />
-          ) : (
-            <TextRoboto
-              className={`text-blue-spindle flex items-center ${
-                lg ? "h-[220px]" : "h-[160px]"
-              }`}
-            >
-              loading...
-            </TextRoboto>
-          )}
+          ) : null}
         </div>
-        <div className="flex flex-col gap-y-5">
+        <div className="flex flex-col gap-y-7">
           <div>
             <div className="flex justify-between items-baseline -mb-1">
               <div className="flex items-center truncate">
@@ -423,17 +415,18 @@ const EquilibriumWidget: FC = () => {
                 }
                 thumbVisible={initialEquilibriumInputsSet}
               />
-              {nowMarker !== undefined && nowMarkerPercent !== undefined && (
+              {
                 <div
                   className={`
                     relative top-[14px] -translate-x-1/2
                     flex flex-col items-center
                     select-none
+                    ${nowMarkerPercent === undefined ? "invisible" : "visible"}
                   `}
                   style={{
                     // Positions the marker along the track whilst compensating for the thumb width as the browser natively does. 7 being half the thumb width.
                     left: `calc(${nowMarkerPercent}% - ${
-                      ((nowMarkerPercent / 100) * 2 - 1) * 7
+                      (((nowMarkerPercent ?? 0) / 100) * 2 - 1) * 7
                     }px)`,
                   }}
                 >
@@ -442,7 +435,7 @@ const EquilibriumWidget: FC = () => {
                     now
                   </TimeFrameText>
                 </div>
-              )}
+              }
             </div>
           </div>
           <div>
@@ -480,7 +473,7 @@ const EquilibriumWidget: FC = () => {
           </div>
         </div>
 
-        <div className="flex justify-between items-baseline">
+        <div className="flex justify-between items-center">
           <WidgetTitle>issuance and burn match at</WidgetTitle>
           <MoneyAmount amountPostfix="K" unitText="ETH/year">
             {equilibriums !== undefined
