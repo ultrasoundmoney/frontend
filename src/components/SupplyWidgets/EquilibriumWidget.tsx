@@ -111,13 +111,12 @@ const BurnMarkers: FC<{ burnMarkers: BurnMarkers }> = ({ burnMarkers }) => {
 
   const markerList: BurnMarker[] = [
     { label: "all", value: burnMarkers.all },
-    { label: "🦇🔊", value: burnMarkers.ultrasound },
-    { label: "1d", value: burnMarkers.d1 },
-    { label: "7d", value: burnMarkers.d7 },
     { label: "30d", value: burnMarkers.d30 },
+    { label: "🦇🔊", value: burnMarkers.ultrasound },
+    { label: "7d", value: burnMarkers.d7 },
+    { label: "1d", value: burnMarkers.d1 },
     { label: "1h", value: burnMarkers.h1 },
   ]
-    .sort((m1, m2) => m1.value - m2.value)
     .reduce((list: BurnMarker[], marker) => {
       const last = _.last(list);
 
@@ -125,14 +124,15 @@ const BurnMarkers: FC<{ burnMarkers: BurnMarkers }> = ({ burnMarkers }) => {
         return [marker];
       }
 
-      const distance = marker.value - last.value;
-      if (distance < (md ? 0.001 : 0.002)) {
+      const distance = Math.abs(marker.value - last.value);
+      if (distance < (lg ? 0.002 : md ? 0.001 : 0.002)) {
         return list;
       } else {
         list.push(marker);
         return list;
       }
-    }, []);
+    }, [])
+    .sort((m1, m2) => m1.value - m2.value);
 
   return (
     <>
