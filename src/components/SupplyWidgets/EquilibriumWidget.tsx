@@ -1,6 +1,7 @@
 import * as DateFns from "date-fns";
 import _ from "lodash";
 import { FC, useEffect, useMemo, useState } from "react";
+import { useEffectiveBalanceSum } from "../../api/effective-balance-sum";
 import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import {
   SupplyInputs,
@@ -12,7 +13,7 @@ import { NEA, pipe } from "../../fp";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { MoneyAmount, PercentAmount } from "../Amount";
 import Slider2 from "../Slider2";
-import { BodyText, TextRoboto, TimeFrameText } from "../Texts";
+import { BodyText, TimeFrameText } from "../Texts";
 import Twemoji from "../Twemoji";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 import EquilibriumGraph from "./EquilibriumGraph";
@@ -48,6 +49,7 @@ const EPOCHS_PER_YEAR: number = 365.25 * EPOCHS_PER_DAY;
 const BASE_REWARD_FACTOR = 64;
 
 type Eth = number;
+type Gwei = number;
 
 const getIssuancePerYear = (effective_balance_sum: Eth): number => {
   const balance_sum_gwei = effective_balance_sum * GWEI_PER_ETH;
@@ -59,8 +61,8 @@ const getIssuancePerYear = (effective_balance_sum: Eth): number => {
   return issuancePerYear / GWEI_PER_ETH;
 };
 
-const getIssuanceApr = (effective_balance_sum: Eth): number => {
-  const balance_sum_gwei = effective_balance_sum * GWEI_PER_ETH;
+const getIssuanceApr = (effective_balance_sum: Gwei): number => {
+  const balance_sum_gwei = effective_balance_sum;
   const max_issuance_per_epoch = Math.trunc(
     (BASE_REWARD_FACTOR * balance_sum_gwei) /
       Math.floor(Math.sqrt(balance_sum_gwei)),
@@ -173,6 +175,7 @@ const BurnMarkers: FC<{ burnMarkers: BurnMarkers }> = ({ burnMarkers }) => {
 const EquilibriumWidget: FC = () => {
   const burnRates = useGroupedAnalysis1()?.burnRates;
   const supplyProjectionInputs = useSupplyProjectionInputs();
+  const effectiveBalanceSum = useEffectiveBalanceSum();
   const [initialEquilibriumInputsSet, setInitialEquilibriumInputsSet] =
     useState(false);
   const [stakingAprFraction, setStakingAprFraction] = useState<number>(0);
@@ -180,26 +183,24 @@ const EquilibriumWidget: FC = () => {
     useState<number>(0);
   const [nowMarker, setNowMarker] = useState<number>();
   const [burnMarkers, setBurnMarkers] = useState<BurnMarkers>();
-  const { lg } = useActiveBreakpoint();
 
   // Only runs once because of initialEquilibriumInputsSet, after data loads.
   useEffect(() => {
     if (
       burnRates === undefined ||
       supplyProjectionInputs === undefined ||
+      effectiveBalanceSum === undefined ||
       initialEquilibriumInputsSet
     ) {
       return;
     }
 
-    setStakingAprFraction(
-      getIssuanceApr(getStakingSupply(supplyProjectionInputs)),
-    );
+    setStakingAprFraction(getIssuanceApr(effectiveBalanceSum));
     const nonStakedSupply = getNonStakingSupply(supplyProjectionInputs);
     setNonStakingBurnFraction(
       burnAsFraction(nonStakedSupply, burnRates.burnRateAll),
     );
-    setNowMarker(getIssuanceApr(getStakingSupply(supplyProjectionInputs)));
+    setNowMarker(getIssuanceApr(effectiveBalanceSum));
     setBurnMarkers({
       all: burnAsFraction(nonStakedSupply, burnRates.burnRateAll),
       d1: burnAsFraction(nonStakedSupply, burnRates.burnRate24h),
@@ -211,7 +212,12 @@ const EquilibriumWidget: FC = () => {
         nonStakedSupply,
     });
     setInitialEquilibriumInputsSet(true);
-  }, [burnRates, initialEquilibriumInputsSet, supplyProjectionInputs]);
+  }, [
+    burnRates,
+    effectiveBalanceSum,
+    initialEquilibriumInputsSet,
+    supplyProjectionInputs,
+  ]);
 
   const historicSupplyByMonth = useMemo(():
     | NEA.NonEmptyArray<Point>
