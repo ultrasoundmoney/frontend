@@ -65,25 +65,25 @@ const MergeEstimateWidget = () => {
               <TextRoboto className="text-2xl">
                 {timeLeft?.days ?? 0}
               </TextRoboto>
-              <LabelText>days</LabelText>
+              <LabelText>{timeLeft?.days === 1 ? "day" : "days"}</LabelText>
             </div>
             <div className="flex flex-col items-center gap-y-2">
               <TextRoboto className="text-2xl">
                 {timeLeft?.hours ?? 0}
               </TextRoboto>
-              <LabelText>hours</LabelText>
+              <LabelText>{timeLeft?.hours === 1 ? "hour" : "hours"}</LabelText>
             </div>
             <div className="flex flex-col items-center gap-y-2">
               <TextRoboto className="text-2xl">
                 {timeLeft?.minutes ?? 0}
               </TextRoboto>
-              <LabelText className="truncate">minutes</LabelText>
+              <LabelText>{timeLeft?.minutes === 1 ? "min" : "mins"}</LabelText>
             </div>
             <div className="flex flex-col items-center gap-y-2">
               <TextRoboto className="text-2xl">
                 {timeLeft?.seconds ?? 0}
               </TextRoboto>
-              <LabelText className="truncate">seconds</LabelText>
+              <LabelText>{timeLeft?.seconds === 1 ? "sec" : "secs"}</LabelText>
             </div>
           </div>
         )}
