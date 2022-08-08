@@ -92,7 +92,7 @@ const STAKING_MIN = 0.02;
 const STAKING_MAX = 0.05;
 const STAKING_RANGE = STAKING_MAX - STAKING_MIN;
 
-const BURN_RATE_MIN = 0.001;
+const BURN_RATE_MIN = 0.0;
 const BURN_RATE_MAX = 0.05;
 const BURN_RATE_RANGE = BURN_RATE_MAX - BURN_RATE_MIN;
 
@@ -357,7 +357,10 @@ const EquilibriumWidget: FC = () => {
             <WidgetTitle className="text-right">staking</WidgetTitle>
           </div>
           <div className="flex justify-between">
-            <MoneyAmount amountPostfix="M" textSizeClass="text-xl lg:text-3xl">
+            <MoneyAmount
+              amountPostfix={nonStakingBurnFraction === 0 ? "" : "M"}
+              textSizeClass="text-xl lg:text-3xl"
+            >
               {equilibriums !== undefined
                 ? Format.formatOneDecimal(equilibriums.supplyEquilibrium / 1e6)
                 : undefined}

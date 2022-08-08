@@ -11,6 +11,9 @@ import styles from "./EquilibriumGraph.module.scss";
 
 export type Point = [number, number];
 
+const SUPPLY_MIN = 10e6;
+const SUPPLY_MAX = 150e6;
+
 const baseOptions: Highcharts.Options = {
   accessibility: { enabled: false },
   chart: {
@@ -27,8 +30,8 @@ const baseOptions: Highcharts.Options = {
     tickWidth: 0,
   },
   yAxis: {
-    min: 10e6,
-    max: 200e6,
+    min: SUPPLY_MIN,
+    max: SUPPLY_MAX,
     tickInterval: 20e6,
     title: { text: undefined },
     labels: { enabled: false },
