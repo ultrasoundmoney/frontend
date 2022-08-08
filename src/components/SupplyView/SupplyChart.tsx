@@ -248,10 +248,10 @@ const SupplyChart: React.FC<Props> = ({
     const lastContractPoint = last(contractSeriesData);
 
     // Projection should be 1/3 of chart
-    const firstDate = DateFns.fromUnixTime(supplyData[0].t);
+    // const firstDate = DateFns.fromUnixTime(supplyData[0].t);
     const lastDate = DateFns.fromUnixTime(last(supplyData)!.t);
-    const daysOfData = DateFns.differenceInDays(lastDate, firstDate);
-    const daysOfProjection = Math.floor(daysOfData / 2);
+    // const daysOfData = DateFns.differenceInDays(lastDate, firstDate);
+    const daysOfProjection = 365 * 2;
 
     const contractProj: number[][] = [lastContractPoint!];
     const addressProj: number[][] = [lastAddressPoint!];
