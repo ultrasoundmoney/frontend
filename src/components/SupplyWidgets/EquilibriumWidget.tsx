@@ -103,7 +103,6 @@ type BurnMarkers = {
   d7: number;
   d1: number;
   h1: number;
-  m5: number;
 };
 type BurnMarker = { label: string; value: number };
 
@@ -117,7 +116,6 @@ const BurnMarkers: FC<{ burnMarkers: BurnMarkers }> = ({ burnMarkers }) => {
     { label: "7d", value: burnMarkers.d7 },
     { label: "30d", value: burnMarkers.d30 },
     { label: "1h", value: burnMarkers.h1 },
-    { label: "5m", value: burnMarkers.m5 },
   ]
     .sort((m1, m2) => m1.value - m2.value)
     .reduce((list: BurnMarker[], marker) => {
@@ -207,7 +205,6 @@ const EquilibriumWidget: FC = () => {
       d30: burnAsFraction(nonStakedSupply, burnRates.burnRate30d),
       d7: burnAsFraction(nonStakedSupply, burnRates.burnRate7d),
       h1: burnAsFraction(nonStakedSupply, burnRates.burnRate1h),
-      m5: burnAsFraction(nonStakedSupply, burnRates.burnRate5m),
       ultrasound:
         getIssuancePerYear(getStakingSupply(supplyProjectionInputs)) /
         nonStakedSupply,
