@@ -135,7 +135,7 @@ const BurnMarkers: FC<{ burnMarkers: BurnMarkers }> = ({ burnMarkers }) => {
     }, []);
 
   return (
-    <div>
+    <>
       {markerList.map((marker, index) => {
         const percent =
           ((marker.value - BURN_RATE_MIN) / BURN_RATE_RANGE) * 100;
@@ -166,7 +166,7 @@ const BurnMarkers: FC<{ burnMarkers: BurnMarkers }> = ({ burnMarkers }) => {
           </div>
         );
       })}
-    </div>
+    </>
   );
 };
 
