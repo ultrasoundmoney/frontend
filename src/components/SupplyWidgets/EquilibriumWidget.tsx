@@ -361,7 +361,7 @@ const EquilibriumWidget: FC = () => {
           <div className="flex justify-between">
             <MoneyAmount
               amountPostfix={nonStakingBurnFraction === 0 ? "" : "M"}
-              textSizeClass="text-xl lg:text-3xl"
+              textSizeClass="text-2xl md:text-3xl"
             >
               {equilibriums !== undefined
                 ? Format.formatOneDecimal(equilibriums.supplyEquilibrium / 1e6)
@@ -370,7 +370,7 @@ const EquilibriumWidget: FC = () => {
             <MoneyAmount
               amountPostfix="M"
               unitText="ETH"
-              textSizeClass="text-xl lg:text-3xl"
+              textSizeClass="text-2xl md:text-3xl"
             >
               {stakingAprFraction !== undefined && initialEquilibriumInputsSet
                 ? Format.formatOneDecimal(
