@@ -108,7 +108,7 @@ const SupplyView: React.FC = () => {
           className="font-light text-blue-spindle text-xs uppercase tracking-widest flex items-center pl-3 pb-8"
           inline
         >
-          historical supply
+          ETH supply — 3y projection
           <span
             className={`transition-opacity ${
               isPeakPresent ? "opacity-1" : "opacity-0"
