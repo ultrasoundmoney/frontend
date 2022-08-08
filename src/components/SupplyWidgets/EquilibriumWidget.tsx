@@ -107,7 +107,7 @@ type BurnMarkers = {
 type BurnMarker = { label: string; value: number };
 
 const BurnMarkers: FC<{ burnMarkers: BurnMarkers }> = ({ burnMarkers }) => {
-  const { lg } = useActiveBreakpoint();
+  const { lg, md } = useActiveBreakpoint();
 
   const markerList: BurnMarker[] = [
     { label: "all", value: burnMarkers.all },
@@ -126,7 +126,7 @@ const BurnMarkers: FC<{ burnMarkers: BurnMarkers }> = ({ burnMarkers }) => {
       }
 
       const distance = marker.value - last.value;
-      if (distance < (lg ? 0.001 : 0.002)) {
+      if (distance < (md ? 0.001 : 0.002)) {
         return list;
       } else {
         list.push(marker);
@@ -330,7 +330,7 @@ const EquilibriumWidget: FC = () => {
 
   return (
     <WidgetBackground
-      className={`relative flex flex-col md:flex-row-reverse gap-x-4 gap-y-8 overflow-hidden p-0`}
+      className={`relative flex flex-col lg:flex-row-reverse gap-x-4 gap-y-8 overflow-hidden p-0`}
     >
       <div
         // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
@@ -344,14 +344,14 @@ const EquilibriumWidget: FC = () => {
       >
         <div
           className={`
-              absolute md:bottom-[3.0rem] md:-right-[1.0rem]
+              absolute lg:bottom-[3.0rem] lg:-right-[1.0rem]
               w-4/5 h-3/5 rounded-[35%]
               bg-[#0037FA]
             `}
         ></div>
       </div>
       {/* Higher z-level to bypass the background blur of our sibling. */}
-      <div className="relative md:w-1/2 flex justify-center items-center">
+      <div className="relative lg:w-1/2 flex justify-center items-center">
         <WidgetTitle className="absolute top-8 left-8">
           ETH supply—200y projection
         </WidgetTitle>
@@ -361,8 +361,8 @@ const EquilibriumWidget: FC = () => {
             supplyEquilibriumMap={equilibriums.supplyEquilibriumMap}
             supplyEquilibrium={equilibriums.supplyEquilibrium}
             staking={getStakedFromApr(stakingAprFraction)}
-            width={lg ? 400 : md ? 250 : 300}
-            height={lg ? 333 : 160}
+            width={lg ? 400 : md ? 400 : 280}
+            height={lg ? 333 : 200}
           />
         ) : (
           <TextRoboto
@@ -374,7 +374,7 @@ const EquilibriumWidget: FC = () => {
           </TextRoboto>
         )}
       </div>
-      <div className="md:w-1/2 flex flex-col gap-y-8 z-10 p-8">
+      <div className="lg:w-1/2 flex flex-col gap-y-8 z-10 p-8">
         <div>
           <div className="flex justify-between">
             <WidgetTitle>supply equilibrium</WidgetTitle>
