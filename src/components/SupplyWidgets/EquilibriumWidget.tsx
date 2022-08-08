@@ -154,6 +154,7 @@ const BurnMarkers: FC<{ burnMarkers: BurnMarkers }> = ({ burnMarkers }) => {
             <div
               className={`
                 w-0.5 rounded-b-full bg-blue-spindle -mt-0.5
+                select-none
                 ${index % 2 === 0 ? "h-2" : "h-6"}
               `}
             ></div>
@@ -427,9 +428,10 @@ const EquilibriumWidget: FC = () => {
               {nowMarker !== undefined && nowMarkerPercent !== undefined && (
                 <div
                   className={`
-                  relative top-[14px] -translate-x-1/2
-                  flex flex-col items-center
-                `}
+                    relative top-[14px] -translate-x-1/2
+                    flex flex-col items-center
+                    select-none
+                  `}
                   style={{
                     // Positions the marker along the track whilst compensating for the thumb width as the browser natively does. 7 being half the thumb width.
                     left: `calc(${nowMarkerPercent}% - ${
