@@ -13,7 +13,8 @@ export const WidgetBackground: FC<BackgroundProps> = ({
 }) => (
   <div
     className={`
-      bg-blue-tangaroa rounded-lg p-8 ${className ?? ""}
+      bg-slateus-700 rounded-lg p-8
+      ${className ?? ""}
     `}
   >
     {children}
