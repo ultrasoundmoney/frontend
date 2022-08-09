@@ -107,16 +107,20 @@ type BurnMarkers = {
 };
 type BurnMarker = { label: string; value: number };
 
-const BurnMarkers: FC<{ burnMarkers: BurnMarkers }> = ({ burnMarkers }) => {
+const BurnMarkers: FC<{ burnMarkers?: BurnMarkers }> = ({ burnMarkers }) => {
   const { lg, md } = useActiveBreakpoint();
 
-  const markerList: BurnMarker[] = [
-    { label: "all", value: burnMarkers.all },
-    { label: "30d", value: burnMarkers.d30 },
-    { label: "🦇🔊", value: burnMarkers.ultrasound },
-    { label: "7d", value: burnMarkers.d7 },
-    { label: "1d", value: burnMarkers.d1 },
-  ]
+  const markerList: BurnMarker[] = (
+    burnMarkers !== undefined
+      ? [
+          { label: "all", value: burnMarkers.all },
+          { label: "30d", value: burnMarkers.d30 },
+          { label: "🦇🔊", value: burnMarkers.ultrasound },
+          { label: "7d", value: burnMarkers.d7 },
+          { label: "1d", value: burnMarkers.d1 },
+        ]
+      : []
+  )
     .reduce((list: BurnMarker[], marker) => {
       const last = _.last(list);
 
@@ -467,9 +471,7 @@ const EquilibriumWidget: FC = () => {
                 }
                 thumbVisible={initialEquilibriumInputsSet}
               />
-              {burnMarkers !== undefined && (
-                <BurnMarkers burnMarkers={burnMarkers} />
-              )}
+              <BurnMarkers burnMarkers={burnMarkers} />
             </div>
           </div>
         </div>
