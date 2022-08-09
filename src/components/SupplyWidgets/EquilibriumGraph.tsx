@@ -315,7 +315,7 @@ const EquilibriumGraph: FC<Props> = ({
   ]);
 
   return (
-    <div className={`${styles.equilibriumChart}`}>
+    <div className={`flex justify-center ${styles.equilibriumChart}`}>
       <HighchartsReact highcharts={Highcharts} options={options} />
     </div>
   );
