@@ -399,7 +399,7 @@ const EquilibriumWidget: FC = () => {
             <div className="flex justify-between items-baseline">
               <div className="flex items-center truncate">
                 <WidgetTitle>issuance rewards</WidgetTitle>
-                <BodyText className="text-xs lg:text-xs invisible lg:visible">
+                <BodyText className="text-xs md:text-xs invisible lg:visible">
                   &nbsp;for stakers
                 </BodyText>
               </div>
@@ -450,7 +450,7 @@ const EquilibriumWidget: FC = () => {
             <div className="flex justify-between items-baseline">
               <div className="flex items-center truncate">
                 <WidgetTitle>burn rate</WidgetTitle>
-                <BodyText className="text-xs lg:text-xs">
+                <BodyText className="text-xs md:text-xs">
                   &nbsp;for non-stakers
                 </BodyText>
               </div>
