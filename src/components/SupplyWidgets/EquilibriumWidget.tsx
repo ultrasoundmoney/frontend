@@ -413,10 +413,10 @@ const EquilibriumWidget: FC = () => {
             </div>
             <div className="relative">
               <Slider2
-                min={0.02}
-                max={0.05}
+                min={STAKING_MIN}
+                max={STAKING_MAX}
                 value={stakingAprFraction}
-                step={0.0001}
+                step={0.001}
                 onChange={(event) =>
                   setStakingAprFraction(Number(event.target.value))
                 }
@@ -463,7 +463,7 @@ const EquilibriumWidget: FC = () => {
                 min={BURN_RATE_MIN}
                 max={BURN_RATE_MAX}
                 value={nonStakingBurnFraction}
-                step={0.0001}
+                step={0.001}
                 onChange={(event) =>
                   setNonStakingBurnFraction(Number(event.target.value))
                 }
