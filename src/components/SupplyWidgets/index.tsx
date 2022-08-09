@@ -13,7 +13,7 @@ import ToggleSwitch from "../ToggleSwitch";
 import { WidgetTitle } from "../WidgetSubcomponents";
 import EquilibriumWidget from "./EquilibriumWidget";
 import EthSupplyWidget from "./EthSupplyWidget";
-import MergeEstimationWidget from "./MergeEstimationWidget";
+import MergeCountdownWidget from "./MergeCountdownWidget";
 
 const SupplyWidgets = () => {
   const [simulateMerge, setSimulateMerge] = useState(false);
@@ -98,7 +98,7 @@ const SupplyWidgets = () => {
           <EthSupplyWidget></EthSupplyWidget>
         </div>
         <div className="w-full">
-          <MergeEstimationWidget></MergeEstimationWidget>
+          <MergeCountdownWidget />
         </div>
       </div>
       <EquilibriumWidget />

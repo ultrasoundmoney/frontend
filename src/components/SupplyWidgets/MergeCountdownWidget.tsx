@@ -38,7 +38,7 @@ const MergeEstimateWidget = () => {
       <div className="flex flex-col gap-y-4">
         {/* Keeps the height of this widget equal to the adjacent one. */}
         <LabelText className="flex items-center min-h-[21px]">
-          merge estimate
+          merge countdown
         </LabelText>
         {DateFns.isPast(MERGE_TIMESTAMP_ESTIMATED) ? (
           <div className="flex gap-x-8 mx-auto items-center h-14">
