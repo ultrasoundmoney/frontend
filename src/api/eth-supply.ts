@@ -1,9 +1,10 @@
 import JSBI from "jsbi";
+import * as DateFns from "date-fns";
 import useSWR from "swr";
 import { WEI_PER_GWEI_JSBI } from "../eth-units";
 import { feesBasePath } from "./fees";
 import * as Duration from "../duration";
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type EthSupplyF = {
   beaconBalancesSum: {
@@ -69,3 +70,39 @@ export const useEthSupply = (): EthSupply | undefined => {
     };
   }, [data]);
 };
+
+export const useEthSupplyImprecise = (): number | undefined => {
+  const ethSupply = useEthSupply();
+  const lastRefresh = useRef<Date>();
+  const [lastEthSupply, setLastEthSupply] = useState<number>();
+
+  useEffect(() => {
+    if (ethSupply === undefined) {
+      return undefined;
+    }
+
+    if (
+      lastRefresh.current === undefined ||
+      DateFns.differenceInSeconds(lastRefresh.current, new Date()) > 60
+    ) {
+      lastRefresh.current = new Date();
+      setLastEthSupply(getEthSupplyImprecise(ethSupply));
+    }
+  }, [ethSupply]);
+
+  return lastEthSupply;
+};
+
+export const getEthSupplyImprecise = (ethSupply: EthSupply): number =>
+  JSBI.toNumber(
+    JSBI.divide(
+      JSBI.subtract(
+        JSBI.add(
+          ethSupply.executionBalancesSum.balancesSum,
+          ethSupply.beaconBalancesSum.balancesSum,
+        ),
+        ethSupply.beaconDepositsSum.depositsSum,
+      ),
+      JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)),
+    ),
+  );
