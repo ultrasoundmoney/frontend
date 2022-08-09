@@ -71,7 +71,7 @@ export const useEthSupply = (): EthSupply | undefined => {
   }, [data]);
 };
 
-export const useEthSupplyImprecise = (): number | undefined => {
+export const useImpreciseEthSupply = (): number | undefined => {
   const ethSupply = useEthSupply();
   const lastRefresh = useRef<Date>();
   const [lastEthSupply, setLastEthSupply] = useState<number>();
@@ -83,7 +83,7 @@ export const useEthSupplyImprecise = (): number | undefined => {
 
     if (
       lastRefresh.current === undefined ||
-      DateFns.differenceInSeconds(lastRefresh.current, new Date()) > 60
+      DateFns.differenceInSeconds(new Date(), lastRefresh.current) > 60
     ) {
       lastRefresh.current = new Date();
       setLastEthSupply(getEthSupplyImprecise(ethSupply));

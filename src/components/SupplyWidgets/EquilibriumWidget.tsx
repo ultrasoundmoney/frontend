@@ -2,7 +2,7 @@ import * as DateFns from "date-fns";
 import _ from "lodash";
 import { FC, useEffect, useMemo, useState } from "react";
 import { useEffectiveBalanceSum } from "../../api/effective-balance-sum";
-import { useEthSupplyImprecise } from "../../api/eth-supply";
+import { useImpreciseEthSupply } from "../../api/eth-supply";
 import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import { useSupplyProjectionInputs } from "../../api/supply-projection";
 import { GWEI_PER_ETH, WEI_PER_ETH } from "../../eth-units";
@@ -158,7 +158,7 @@ const BurnMarkers: FC<{ burnMarkers?: BurnMarkers }> = ({ burnMarkers }) => {
 const EquilibriumWidget: FC = () => {
   const burnRates = useGroupedAnalysis1()?.burnRates;
   const supplyProjectionInputs = useSupplyProjectionInputs();
-  const ethSupply = useEthSupplyImprecise();
+  const ethSupply = useImpreciseEthSupply();
   const effectiveBalanceSum = useEffectiveBalanceSum();
   const [initialEquilibriumInputsSet, setInitialEquilibriumInputsSet] =
     useState(false);
