@@ -10,7 +10,6 @@ import {
 import { GWEI_PER_ETH, WEI_PER_ETH } from "../../eth-units";
 import * as Format from "../../format";
 import { NEA, pipe } from "../../fp";
-import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { MoneyAmount, PercentAmount } from "../Amount";
 import Slider2 from "../Slider2";
 import { BodyText, TimeFrameText } from "../Texts";
@@ -95,7 +94,7 @@ const STAKING_MAX = 0.05;
 const STAKING_RANGE = STAKING_MAX - STAKING_MIN;
 
 const BURN_RATE_MIN = 0.0;
-const BURN_RATE_MAX = 0.05;
+const BURN_RATE_MAX = 0.04;
 const BURN_RATE_RANGE = BURN_RATE_MAX - BURN_RATE_MIN;
 
 type BurnMarkers = {
