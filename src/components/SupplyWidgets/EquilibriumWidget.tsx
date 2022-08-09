@@ -382,7 +382,9 @@ const EquilibriumWidget: FC = () => {
           </div>
         </div>
         <div className="lg:col-start-2 row-span-3">
-          <WidgetTitle className="">ETH supply—200y projection</WidgetTitle>
+          <WidgetTitle className="lg:ml-8">
+            ETH supply—200y projection
+          </WidgetTitle>
           {equilibriums !== undefined ? (
             <EquilibriumGraph
               supplyEquilibriumSeries={equilibriums.supplyEquilibriumSeries}
