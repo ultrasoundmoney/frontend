@@ -229,20 +229,20 @@ const EquilibriumGraph: FC<Props> = ({
       series: [
         {
           id: "supply-series",
-          type: "area",
-          fillColor: {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            linearGradient: [
-              0,
-              0,
-              0,
-              lg ? 280 : md ? 180 : 170,
-            ] as unknown as Highcharts.LinearGradientColorObject,
-            stops: [
-              [0, "#5487F420"],
-              [1, "#5487F400"],
-            ],
-          },
+          type: "spline",
+          // fillColor: {
+          //   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          //   linearGradient: [
+          //     0,
+          //     0,
+          //     0,
+          //     lg ? 280 : md ? 180 : 170,
+          //   ] as unknown as Highcharts.LinearGradientColorObject,
+          //   stops: [
+          //     [0, "#5487F420"],
+          //     [1, "#5487F400"],
+          //   ],
+          // },
           data: [
             ...supplyEquilibriumSeries,
             {
