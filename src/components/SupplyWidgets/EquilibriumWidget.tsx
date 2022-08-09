@@ -393,9 +393,9 @@ const EquilibriumWidget: FC = () => {
             />
           ) : null}
         </div>
-        <div className="flex flex-col gap-y-7 -mt-4 lg:mt-0">
+        <div className="flex flex-col gap-y-7 -mt-4 lg:mt-6">
           <div>
-            <div className="flex justify-between items-baseline -mb-1">
+            <div className="flex justify-between items-baseline">
               <div className="flex items-center truncate">
                 <WidgetTitle>issuance rewards</WidgetTitle>
                 <BodyText className="text-xs invisible lg:visible">
@@ -446,7 +446,7 @@ const EquilibriumWidget: FC = () => {
             </div>
           </div>
           <div>
-            <div className="flex justify-between items-baseline -mb-1">
+            <div className="flex justify-between items-baseline">
               <div className="flex items-center truncate">
                 <WidgetTitle>burn rate</WidgetTitle>
                 <BodyText className="text-xs">&nbsp;for non-stakers</BodyText>
@@ -474,13 +474,17 @@ const EquilibriumWidget: FC = () => {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between items-baseline">
-          <WidgetTitle>issuance and burn at equilibrium</WidgetTitle>
-          <MoneyAmount amountPostfix="K" unitText="ETH/year">
-            {equilibriums !== undefined
-              ? Format.formatNoDecimals(equilibriums.cashFlowsEquilibrium / 1e3)
-              : undefined}
-          </MoneyAmount>
+        <div className="flex items-end">
+          <div className="flex flex-col md:flex-row w-full justify-between items-baseline mt-2">
+            <WidgetTitle>issuance and burn at equilibrium</WidgetTitle>
+            <MoneyAmount amountPostfix="K" unitText="ETH/year">
+              {equilibriums !== undefined
+                ? Format.formatNoDecimals(
+                    equilibriums.cashFlowsEquilibrium / 1e3,
+                  )
+                : undefined}
+            </MoneyAmount>
+          </div>
         </div>
       </div>
     </WidgetBackground>
