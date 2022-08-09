@@ -335,6 +335,7 @@ const EquilibriumWidget: FC = () => {
             w-3/5 h-full
             opacity-[0.25]
             blur-[100px]
+            pointer-events-none
             will-change-transform
           `}
       >
@@ -343,16 +344,14 @@ const EquilibriumWidget: FC = () => {
             absolute lg:bottom-[3.0rem] lg:-right-[1.0rem]
             w-4/5 h-3/5 rounded-[35%]
             bg-[#0037FA]
+            pointer-events-none
           `}
         ></div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-8 gap-x-8 p-8">
-        <div>
-          <div className="flex justify-between">
+        <div className="flex justify-between">
+          <div className="flex flex-col">
             <WidgetTitle>supply equilibrium</WidgetTitle>
-            <WidgetTitle className="text-right">staking</WidgetTitle>
-          </div>
-          <div className="flex justify-between">
             <MoneyAmount
               amountPostfix={nonStakingBurnFraction === 0 ? "" : "M"}
               textSizeClass="text-2xl md:text-3xl"
@@ -361,6 +360,9 @@ const EquilibriumWidget: FC = () => {
                 ? Format.formatOneDecimal(equilibriums.supplyEquilibrium / 1e6)
                 : undefined}
             </MoneyAmount>
+          </div>
+          <div className="flex flex-col">
+            <WidgetTitle className="text-right">staking</WidgetTitle>
             <MoneyAmount
               amountPostfix="M"
               unitText="ETH"
