@@ -407,7 +407,8 @@ const EquilibriumWidget: FC = () => {
                   : undefined}
               </PercentAmount>
             </div>
-            <div className="relative">
+            {/* Thumb appears behind the track without the z-10. */}
+            <div className="relative z-10">
               <Slider2
                 min={STAKING_MIN}
                 max={STAKING_MAX}
@@ -418,27 +419,25 @@ const EquilibriumWidget: FC = () => {
                 }
                 thumbVisible={initialEquilibriumInputsSet}
               />
-              {
-                <div
-                  className={`
-                    relative top-[14px] -translate-x-1/2
-                    flex flex-col items-center
-                    select-none
-                    ${nowMarkerPercent === undefined ? "invisible" : "visible"}
-                  `}
-                  style={{
-                    // Positions the marker along the track whilst compensating for the thumb width as the browser natively does. 7 being half the thumb width.
-                    left: `calc(${nowMarkerPercent}% - ${
-                      (((nowMarkerPercent ?? 0) / 100) * 2 - 1) * 7
-                    }px)`,
-                  }}
-                >
-                  <div className="w-0.5 h-2 rounded-b-full bg-blue-spindle -mt-0.5"></div>
-                  <TimeFrameText className="text-blue-spindle mt-0.5">
-                    now
-                  </TimeFrameText>
-                </div>
-              }
+              <div
+                className={`
+                  relative top-[14px] -translate-x-1/2
+                  flex flex-col items-center
+                  select-none
+                  ${nowMarkerPercent === undefined ? "invisible" : "visible"}
+                `}
+                style={{
+                  // Positions the marker along the track whilst compensating for the thumb width as the browser natively does. 7 being half the thumb width.
+                  left: `calc(${nowMarkerPercent}% - ${
+                    (((nowMarkerPercent ?? 0) / 100) * 2 - 1) * 7
+                  }px)`,
+                }}
+              >
+                <div className="w-0.5 h-2 rounded-b-full bg-blue-spindle -mt-0.5"></div>
+                <TimeFrameText className="text-blue-spindle mt-0.5">
+                  now
+                </TimeFrameText>
+              </div>
             </div>
           </div>
           <div>
