@@ -108,8 +108,6 @@ type BurnMarkers = {
 type BurnMarker = { label: string; value: number };
 
 const BurnMarkers: FC<{ burnMarkers?: BurnMarkers }> = ({ burnMarkers }) => {
-  const { lg, md } = useActiveBreakpoint();
-
   const markerList: BurnMarker[] = (
     burnMarkers !== undefined
       ? [
@@ -129,7 +127,7 @@ const BurnMarkers: FC<{ burnMarkers?: BurnMarkers }> = ({ burnMarkers }) => {
       }
 
       const distance = Math.abs(marker.value - last.value);
-      if (distance < (lg ? 0.002 : md ? 0.001 : 0.002)) {
+      if (distance < 0.002) {
         return list;
       } else {
         list.push(marker);
