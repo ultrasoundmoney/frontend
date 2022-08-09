@@ -111,11 +111,11 @@ const SupplyGrowthGauge: FC<Props> = ({
       `}
     >
       <WidgetTitle>supply growth</WidgetTitle>
-      <div className="mt-8 md:scale-90 lg:scale-100">
+      <div className="mt-8 mb-1 md:scale-90 lg:scale-100">
         <SplitGaugeSvg max={max} progress={progress} />
       </div>
       <animated.div
-        className="font-roboto font-light text-3xl -mt-16 pt-1"
+        className="font-roboto font-light text-3xl -mt-16"
         style={colorStyle}
       >
         {growthRate === undefined || previewSkeletons ? (
