@@ -260,7 +260,7 @@ const EquilibriumGraph: FC<Props> = ({
         max: maxX,
       },
       yAxis: {
-        max: Math.min(Math.max(SUPPLY_MAX, supplyEquilibrium), 400e6),
+        max: Math.min(Math.max(SUPPLY_MAX, supplyEquilibrium), 600e6),
         plotLines: [
           {
             id: "equilibrium",
