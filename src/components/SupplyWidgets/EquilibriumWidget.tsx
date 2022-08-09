@@ -89,7 +89,7 @@ const getBurn = (
   nonStakedSupply: number,
 ) => yearlyNonStakedBurnFraction * nonStakedSupply;
 
-const STAKING_MIN = 0.02;
+const STAKING_MIN = 0.025;
 const STAKING_MAX = 0.05;
 const STAKING_RANGE = STAKING_MAX - STAKING_MIN;
 
