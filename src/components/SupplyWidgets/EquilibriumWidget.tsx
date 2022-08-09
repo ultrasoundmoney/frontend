@@ -346,7 +346,7 @@ const EquilibriumWidget: FC = () => {
           `}
         ></div>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-8 gap-x-4 p-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-8 gap-x-8 p-8">
         <div>
           <div className="flex justify-between">
             <WidgetTitle>supply equilibrium</WidgetTitle>
@@ -375,7 +375,7 @@ const EquilibriumWidget: FC = () => {
           </div>
         </div>
         <div className="lg:col-start-2 row-span-3">
-          <WidgetTitle className="lg:ml-8">
+          <WidgetTitle className="lg:ml-6">
             ETH supply—200y projection
           </WidgetTitle>
           {equilibriums !== undefined ? (
