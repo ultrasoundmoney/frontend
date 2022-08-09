@@ -394,7 +394,7 @@ const EquilibriumWidget: FC = () => {
             />
           ) : null}
         </div>
-        <div className="flex flex-col gap-y-7 -mt-4 lg:mt-6">
+        <div className="flex flex-col gap-y-7">
           <div>
             <div className="flex justify-between items-baseline">
               <div className="flex items-center truncate">
@@ -461,7 +461,7 @@ const EquilibriumWidget: FC = () => {
                   : undefined}
               </PercentAmount>
             </div>
-            <div className="relative mb-12">
+            <div className="relative mb-10">
               <Slider2
                 min={BURN_RATE_MIN}
                 max={BURN_RATE_MAX}
@@ -477,17 +477,13 @@ const EquilibriumWidget: FC = () => {
           </div>
         </div>
 
-        <div className="flex items-end">
-          <div className="flex flex-col md:flex-row w-full justify-between items-baseline mt-2">
-            <WidgetTitle>issuance and burn at equilibrium</WidgetTitle>
-            <MoneyAmount amountPostfix="K" unitText="ETH/year">
-              {equilibriums !== undefined
-                ? Format.formatNoDecimals(
-                    equilibriums.cashFlowsEquilibrium / 1e3,
-                  )
-                : undefined}
-            </MoneyAmount>
-          </div>
+        <div className="flex flex-col md:flex-row w-full justify-between items-baseline mt-2 -mb-2">
+          <WidgetTitle>issuance and burn at equilibrium</WidgetTitle>
+          <MoneyAmount amountPostfix="K" unitText="ETH/year">
+            {equilibriums !== undefined
+              ? Format.formatNoDecimals(equilibriums.cashFlowsEquilibrium / 1e3)
+              : undefined}
+          </MoneyAmount>
         </div>
       </div>
     </WidgetBackground>
