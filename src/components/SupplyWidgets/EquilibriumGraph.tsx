@@ -231,12 +231,13 @@ const EquilibriumGraph: FC<Props> = ({
           id: "supply-series",
           type: "area",
           fillColor: {
-            linearGradient: {
-              x1: 0,
-              x2: 0,
-              y1: 0,
-              y2: lg ? 280 : md ? 180 : 170,
-            },
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            linearGradient: [
+              0,
+              0,
+              0,
+              lg ? 280 : md ? 180 : 170,
+            ] as unknown as Highcharts.LinearGradientColorObject,
             stops: [
               [0, "#5487F420"],
               [1, "#5487F400"],
