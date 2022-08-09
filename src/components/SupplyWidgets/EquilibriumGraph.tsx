@@ -12,7 +12,7 @@ import styles from "./EquilibriumGraph.module.scss";
 export type Point = [number, number];
 
 const SUPPLY_MIN = 0;
-const SUPPLY_MAX = 150e6;
+const SUPPLY_MAX = 140e6;
 
 const baseOptions: Highcharts.Options = {
   accessibility: { enabled: false },
