@@ -400,9 +400,12 @@ const EquilibriumWidget: FC = () => {
                   &nbsp;for stakers
                 </BodyText>
               </div>
-              <PercentAmount className="text-base lg:text-lg">
+              <PercentAmount
+                amountPostfix="/year"
+                className="text-base lg:text-lg"
+              >
                 {stakingAprFraction !== undefined && initialEquilibriumInputsSet
-                  ? `${Format.formatPercentOneDecimal(stakingAprFraction)}/year`
+                  ? Format.formatPercentOneDecimal(stakingAprFraction)
                   : undefined}
               </PercentAmount>
             </div>
@@ -448,12 +451,10 @@ const EquilibriumWidget: FC = () => {
                   &nbsp;for non-stakers
                 </BodyText>
               </div>
-              <PercentAmount>
+              <PercentAmount amountPostfix="/year">
                 {nonStakingBurnFraction !== undefined &&
                 initialEquilibriumInputsSet
-                  ? `${Format.formatPercentOneDecimal(
-                      nonStakingBurnFraction,
-                    )}/year`
+                  ? Format.formatPercentOneDecimal(nonStakingBurnFraction)
                   : undefined}
               </PercentAmount>
             </div>
