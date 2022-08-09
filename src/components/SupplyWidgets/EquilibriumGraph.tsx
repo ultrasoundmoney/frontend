@@ -120,7 +120,7 @@ const EquilibriumGraph: FC<Props> = ({
 }) => {
   const isRendering = useRef(true);
   const { lg, md, xl, xl2 } = useActiveBreakpoint();
-  const width = xl2 ? 660 : xl ? 530 : lg ? 400 : md ? 570 : 280;
+  const width = xl2 ? 650 : xl ? 530 : lg ? 400 : md ? 570 : 280;
   const height = lg ? 320 : 200;
   const [options, setOptions] = useState<Highcharts.Options>(() =>
     _.merge({}, baseOptions, {
