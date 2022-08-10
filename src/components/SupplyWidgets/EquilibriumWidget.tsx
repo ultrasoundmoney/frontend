@@ -97,7 +97,7 @@ const BurnMarkers: FC<{ burnMarkers?: BurnMarkers }> = ({ burnMarkers }) => {
       ? [
           { label: "all", value: burnMarkers.all },
           { label: "30d", value: burnMarkers.d30 },
-          // { label: "🦇🔊", value: burnMarkers.ultrasound },
+          { label: "🦇🔊", value: burnMarkers.ultrasound },
           { label: "7d", value: burnMarkers.d7 },
           { label: "1d", value: burnMarkers.d1 },
         ]
@@ -179,14 +179,30 @@ const EquilibriumWidget: FC = () => {
       return;
     }
 
-    setStakingAprFraction(getIssuanceApr(effectiveBalanceSum));
-    const nonStakedSupply = ethSupply - effectiveBalanceSum / 1e9;
+    const initialStakingApr = getIssuanceApr(effectiveBalanceSum);
+    const staked = effectiveBalanceSum / 1e9;
+    const nonStakedSupply = ethSupply - staked;
+
+    setInitialEquilibriumInputsSet(true);
+    setStakingAprFraction(initialStakingApr);
+    setNowMarker(initialStakingApr);
     setNonStakingBurnFraction(
       burnAsFraction(nonStakedSupply, burnRates.burnRateAll),
     );
-    setNowMarker(getIssuanceApr(effectiveBalanceSum));
-    setInitialEquilibriumInputsSet(true);
-  }, [burnRates, effectiveBalanceSum, ethSupply, initialEquilibriumInputsSet]);
+    setBurnMarkers({
+      all: burnAsFraction(nonStakedSupply, burnRates.burnRateAll),
+      d1: burnAsFraction(nonStakedSupply, burnRates.burnRate24h),
+      d30: burnAsFraction(nonStakedSupply, burnRates.burnRate30d),
+      d7: burnAsFraction(nonStakedSupply, burnRates.burnRate7d),
+      ultrasound: getIssuancePerYear(staked) / nonStakedSupply,
+    });
+  }, [
+    burnRates,
+    effectiveBalanceSum,
+    ethSupply,
+    initialEquilibriumInputsSet,
+    stakingAprFraction,
+  ]);
 
   useEffect(() => {
     if (
@@ -196,17 +212,18 @@ const EquilibriumWidget: FC = () => {
     ) {
       return;
     }
-
-    const nonStakedSupply = ethSupply - effectiveBalanceSum / 1e9;
-    setBurnMarkers({
-      all: burnAsFraction(nonStakedSupply, burnRates.burnRateAll),
-      d1: burnAsFraction(nonStakedSupply, burnRates.burnRate24h),
-      d30: burnAsFraction(nonStakedSupply, burnRates.burnRate30d),
-      d7: burnAsFraction(nonStakedSupply, burnRates.burnRate7d),
-      ultrasound:
-        getIssuancePerYear(getStakedFromApr(stakingAprFraction)) /
-        nonStakedSupply,
-    });
+    const issuancePerYear = getIssuancePerYear(
+      getStakedFromApr(stakingAprFraction),
+    );
+    const nonStakedSupply = ethSupply - getStakedFromApr(stakingAprFraction);
+    setBurnMarkers((burnMarkers) =>
+      burnMarkers !== undefined
+        ? {
+            ...burnMarkers,
+            ultrasound: issuancePerYear / nonStakedSupply,
+          }
+        : undefined,
+    );
   }, [burnRates, effectiveBalanceSum, ethSupply, stakingAprFraction]);
 
   const historicSupplyByMonth = useMemo(():
