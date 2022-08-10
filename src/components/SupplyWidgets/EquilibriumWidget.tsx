@@ -8,6 +8,7 @@ import { useSupplyProjectionInputs } from "../../api/supply-projection";
 import { GWEI_PER_ETH, WEI_PER_ETH } from "../../eth-units";
 import * as Format from "../../format";
 import { NEA, pipe } from "../../fp";
+import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { MoneyAmount, PercentAmount } from "../Amount";
 import Slider2 from "../Slider2";
 import { BodyText, TimeFrameText } from "../Texts";
@@ -153,6 +154,7 @@ const BurnMarkers: FC<{ burnMarkers?: BurnMarkers }> = ({ burnMarkers }) => {
 };
 
 const EquilibriumWidget: FC = () => {
+  const { md } = useActiveBreakpoint();
   const burnRates = useGroupedAnalysis1()?.burnRates;
   const supplyProjectionInputs = useSupplyProjectionInputs();
   const ethSupply = useImpreciseEthSupply();
@@ -365,7 +367,9 @@ const EquilibriumWidget: FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-8 gap-x-8 p-8">
         <div className="flex justify-between">
           <div className="flex flex-col">
-            <WidgetTitle>supply equilibrium</WidgetTitle>
+            <WidgetTitle>
+              {md ? "supply equilibrium" : "equilibrium (A)"}
+            </WidgetTitle>
             <MoneyAmount
               amountPostfix={nonStakingBurnFraction === 0 ? "" : "M"}
               textSizeClass="text-2xl md:text-3xl"
@@ -376,7 +380,9 @@ const EquilibriumWidget: FC = () => {
             </MoneyAmount>
           </div>
           <div className="flex flex-col">
-            <WidgetTitle className="text-right">staking</WidgetTitle>
+            <WidgetTitle className="text-right">
+              {md ? "staking" : "staking (B)"}
+            </WidgetTitle>
             <MoneyAmount
               amountPostfix="M"
               unitText="ETH"

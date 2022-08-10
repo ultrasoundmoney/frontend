@@ -214,7 +214,7 @@ const EquilibriumGraph: FC<Props> = ({
                 : md
                 ? 420
                 : 230;
-              const widthReductionRight = md ? 90 : 0;
+              const widthReductionRight = md ? 90 : 15;
 
               const newStartX = Number(dArr[1]) + widthReductionLeft;
               const newStopX = Number(dArr[4]) - widthReductionRight;
@@ -267,16 +267,16 @@ const EquilibriumGraph: FC<Props> = ({
             value: supplyEquilibrium,
             label: {
               x: 10,
-              text: md ? "EQUILIBRIUM" : "",
+              text: md ? "EQUILIBRIUM" : "(A)",
             },
           },
           {
             id: "staking",
             value: staking,
             label: {
-              x: -19,
+              x: md ? -19 : 10,
               y: 4,
-              text: md ? "STAKING" : "",
+              text: md ? "STAKING" : "(B)",
             },
           },
         ],
