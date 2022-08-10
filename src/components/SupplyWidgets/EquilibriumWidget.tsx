@@ -92,7 +92,7 @@ type BurnMarkers = {
 type BurnMarker = { label: string; value: number };
 
 const BurnMarkers: FC<{ burnMarkers?: BurnMarkers }> = ({ burnMarkers }) => {
-  const markerList: BurnMarker[] = (
+  const markerList: BurnMarker[] =
     burnMarkers !== undefined
       ? [
           { label: "all", value: burnMarkers.all },
@@ -101,28 +101,25 @@ const BurnMarkers: FC<{ burnMarkers?: BurnMarkers }> = ({ burnMarkers }) => {
           { label: "7d", value: burnMarkers.d7 },
           { label: "1d", value: burnMarkers.d1 },
         ]
-      : []
-  )
+      : [];
+
+  const shownList = markerList
     .reduce((list: BurnMarker[], marker) => {
-      const last = _.last(list);
+      const someConflict = list.some(
+        (shownMarker) => Math.abs(shownMarker.value - marker.value) < 0.0017,
+      );
 
-      if (last === undefined) {
-        return [marker];
-      }
-
-      const distance = Math.abs(marker.value - last.value);
-      if (distance < 0.002) {
-        return list;
-      } else {
-        list.push(marker);
+      if (someConflict) {
         return list;
       }
+
+      return [...list, marker];
     }, [])
     .sort((m1, m2) => m1.value - m2.value);
 
   return (
     <>
-      {markerList.map((marker, index) => {
+      {shownList.map((marker, index) => {
         const percent =
           ((marker.value - BURN_RATE_MIN) / BURN_RATE_RANGE) * 100;
         return (
