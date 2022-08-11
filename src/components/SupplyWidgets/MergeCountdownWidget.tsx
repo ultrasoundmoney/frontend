@@ -4,7 +4,7 @@ import * as DateFns from "date-fns";
 import { useEffect, useState } from "react";
 import Twemoji from "../Twemoji";
 
-const MERGE_TIMESTAMP_ESTIMATED = new Date("2022-09-19T12:00:00Z");
+const MERGE_TIMESTAMP_ESTIMATED = new Date("2022-09-16T00:00:00Z");
 
 type TimeLeft = {
   days: number;
