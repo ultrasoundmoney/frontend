@@ -17,60 +17,61 @@ export const formatWeiTwoDigit = (wei: number): string =>
 
 export const formatTwoDigit = (num: number): string => twoDigit.format(num);
 
-const zeroDigit = new Intl.NumberFormat("en-US", {
+const zeroDecimals = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 0,
   maximumFractionDigits: 0,
 });
 
-export const formatZeroDigit = (num: number): string => zeroDigit.format(num);
+export const formatZeroDecimals = (num: number): string =>
+  zeroDecimals.format(num);
 
-const oneDigit = new Intl.NumberFormat("en-US", {
+const oneDecimal = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 1,
   maximumFractionDigits: 1,
 });
 
-export const formatOneDigit = (num: number): string => oneDigit.format(num);
+export const formatOneDecimal = (num: number): string => oneDecimal.format(num);
 
-const usdZeroDigit = new Intl.NumberFormat("en-US", {
+const usdZeroDecimals = new Intl.NumberFormat("en-US", {
   currency: "usd",
   style: "currency",
   minimumFractionDigits: 0,
   maximumFractionDigits: 0,
 });
 
-export const formatUsdZeroDigit = (num: number): string =>
-  usdZeroDigit.format(num);
+export const formatUsdZeroDecimals = (num: number): string =>
+  usdZeroDecimals.format(num);
 
-const percentOneDigitSigned = new Intl.NumberFormat("en-US", {
+const percentOneDecimalSigned = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 1,
   maximumFractionDigits: 1,
   signDisplay: "always",
   style: "percent",
 });
 
-export const formatPercentOneDigitSigned = (percent: number): string =>
-  percentOneDigitSigned.format(percent);
+export const formatPercentOneDecimalSigned = (percent: number): string =>
+  percentOneDecimalSigned.format(percent);
 
-const percentOneDigit = new Intl.NumberFormat("en-US", {
+const percentOneDecimal = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 1,
   maximumFractionDigits: 1,
   style: "percent",
 });
 
-export const formatPercentOneDigit = (percent: number): string =>
-  percentOneDigit.format(percent);
+export const formatPercentOneDecimal = (percent: number): string =>
+  percentOneDecimal.format(percent);
 
-const percentNoDigit = new Intl.NumberFormat("en-US", {
+const percentNoDecimals = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 0,
   style: "percent",
 });
 
-export const formatPercentNoDigit = (percent: number) =>
-  percentNoDigit.format(percent);
+export const formatPercentNoDecimals = (percent: number) =>
+  percentNoDecimals.format(percent);
 
 const noDigit = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
 
-export const formatNoDigit = (num: number): string => noDigit.format(num);
+export const formatNoDecimals = (num: number): string => noDigit.format(num);
 
 const compactNumber = new Intl.NumberFormat("en", {
   minimumFractionDigits: 0,
@@ -80,14 +81,14 @@ const compactNumber = new Intl.NumberFormat("en", {
 
 export const formatCompact = (num: number) => compactNumber.format(num);
 
-const compactNumberOneDigit = new Intl.NumberFormat("en", {
+const compactNumberOneDecimal = new Intl.NumberFormat("en", {
   minimumFractionDigits: 0,
   maximumFractionDigits: 1,
   notation: "compact",
 });
 
-export const formatCompactOneDigit = (num: number) =>
-  compactNumberOneDigit.format(num);
+export const formatCompactOneDecimal = (num: number) =>
+  compactNumberOneDecimal.format(num);
 
 export const gweiFromWei = (wei: number): number => wei / 1e9;
 

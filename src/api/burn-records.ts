@@ -1,10 +1,6 @@
 import * as DateFns from "date-fns";
-import useSWR from "swr";
-import * as Duration from "../duration";
 import { A, pipe, Re } from "../fp";
 import { TimeFrameNext } from "../time-frames";
-import fetcher from "./default-fetcher";
-import { feesBasePath } from "./fees";
 
 export type BurnRecord = {
   blockNumber: number;
@@ -41,15 +37,3 @@ export const decodeBurnRecords = (rawBurnRecords: RawBurnRecords) =>
       ),
     ),
   });
-
-export const useBurnRecords = (): BurnRecords | undefined => {
-  const { data } = useSWR<RawBurnRecords>(
-    `${feesBasePath}/burn-records`,
-    fetcher,
-    {
-      refreshInterval: Duration.millisFromSeconds(4),
-    },
-  );
-
-  return data === undefined ? undefined : decodeBurnRecords(data);
-};

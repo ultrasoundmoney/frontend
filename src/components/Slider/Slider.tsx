@@ -35,6 +35,7 @@ const Slider: React.FC<Props> = ({
     percent !== undefined
       ? Math.floor((percent * THUMB_WIDTH) / 100)
       : undefined;
+
   return (
     <div className={`${styles.slider} slider`}>
       <input

@@ -24,9 +24,5 @@ export const useSupplyProjectionInputs = (): SupplyInputs | undefined => {
     return undefined;
   }
 
-  return {
-    inContractsByDay: data.inContractsByDay,
-    inBeaconValidatorsByDay: data.inBeaconValidatorsByDay,
-    supplyByDay: data.supplyByDay,
-  };
+  return data;
 };

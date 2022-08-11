@@ -37,6 +37,7 @@ export const Amount: FC<AmountProps> = ({
 );
 
 type PercentAmountProps = {
+  amountPostfix?: string;
   children: ReactNode;
   className?: string;
   skeletonWidth?: string;
@@ -44,6 +45,7 @@ type PercentAmountProps = {
 };
 
 export const PercentAmount: FC<PercentAmountProps> = ({
+  amountPostfix = "",
   children,
   className,
   skeletonWidth = "3rem",
@@ -51,7 +53,11 @@ export const PercentAmount: FC<PercentAmountProps> = ({
 }) => {
   const { previewSkeletons } = useContext(FeatureFlagsContext);
   return (
-    <Amount className={className} textSizeClass={textSizeClass}>
+    <Amount
+      amountPostfix={amountPostfix}
+      className={className}
+      textSizeClass={textSizeClass}
+    >
       {children === undefined || previewSkeletons ? (
         <Skeleton inline={true} width={skeletonWidth} />
       ) : (

@@ -10,7 +10,7 @@ import {
 } from "../Amount";
 import Link from "../Link";
 import Modal from "../Modal";
-import { TextInter } from "../Texts";
+import { BodyText } from "../Texts";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 import TooltipSecurityRatio from "./TooltipSecurityRatio";
 
@@ -44,13 +44,14 @@ const AssetType: FC<{
           src={`/round-${icon}-coloron.svg`}
           alt={alt}
         />
-        <TextInter
+        <BodyText
           className={`
             ml-4
-            ${isHovering ? "opacity-60" : ""}`}
+            ${isHovering ? "opacity-60" : ""}
+          `}
         >
           {title}
-        </TextInter>
+        </BodyText>
       </div>
       <AmountBillionsUsdAnimated
         textClassName={`
@@ -60,7 +61,7 @@ const AssetType: FC<{
         tooltip={pipe(
           amount,
           O.fromNullable,
-          O.map(flow(Format.formatZeroDigit, (str) => `${str} USD`)),
+          O.map(flow(Format.formatZeroDecimals, (str) => `${str} USD`)),
           O.toUndefined,
         )}
       >
@@ -86,7 +87,7 @@ const Summary: FC<{ className?: string }> = ({ className = "" }) => {
               title={pipe(
                 totalValueSecured?.sum,
                 O.fromNullable,
-                O.map(Format.formatZeroDigit),
+                O.map(Format.formatZeroDecimals),
                 O.map((str) => `${str} USD`),
                 O.toUndefined,
               )}

@@ -27,7 +27,7 @@ const thresholdToNumber = (threshold: string | undefined): number | undefined =>
   );
 
 const safeFormatZeroDigit = (num: number | undefined) =>
-  pipe(num, O.fromNullable, O.map(Format.formatZeroDigit), O.toUndefined);
+  pipe(num, O.fromNullable, O.map(Format.formatZeroDecimals), O.toUndefined);
 
 const toThresholdDisplay = (str: string | undefined): string | undefined =>
   pipe(str, thresholdToNumber, safeFormatZeroDigit);
@@ -200,7 +200,7 @@ const AlarmInput: FC<AlarmInputProps> = ({
       }
 
       const typeFormatted = typeToDisplay(type);
-      const currentValueFormatted = Format.formatZeroDigit(currentValue);
+      const currentValueFormatted = Format.formatZeroDecimals(currentValue);
       const message = `${typeFormatted} price hit ${currentValueFormatted} ${unit.trimEnd()}`;
       notification.showNotification(message);
 

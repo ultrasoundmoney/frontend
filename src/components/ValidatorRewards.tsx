@@ -12,7 +12,7 @@ import Colors from "../colors";
 import * as Format from "../format";
 import { flow, O, pipe } from "../fp";
 import { MoneyAmount, PercentAmount } from "./Amount";
-import { LabelText, TextInter, TextRoboto } from "./Texts";
+import { BodyText, LabelText, TextRoboto } from "./Texts";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
 const skeletonLoadingWidth = 0.1;
@@ -95,7 +95,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
                 color: showHighlight ? Colors.white : Colors.spindle,
               }}
             >
-              {Format.formatPercentNoDigit(percentOfTotalRewards)}
+              {Format.formatPercentNoDecimals(percentOfTotalRewards)}
             </TextRoboto>
           ),
         ),
@@ -130,16 +130,16 @@ const RewardRow: FC<RewardRowProps> = ({
     target="_blank"
     rel="noreferrer"
   >
-    <TextInter>{name}</TextInter>
+    <BodyText>{name}</BodyText>
     <MoneyAmount className="font-light text-right">
       {pipe(
         amount,
-        O.map(flow(Format.ethFromGwei, Format.formatOneDigit)),
+        O.map(flow(Format.ethFromGwei, Format.formatOneDecimal)),
         O.toUndefined,
       )}
     </MoneyAmount>
     <PercentAmount className="text-right">
-      {pipe(apr, O.map(Format.formatPercentOneDigit), O.toUndefined)}
+      {pipe(apr, O.map(Format.formatPercentOneDecimal), O.toUndefined)}
     </PercentAmount>
   </a>
 );

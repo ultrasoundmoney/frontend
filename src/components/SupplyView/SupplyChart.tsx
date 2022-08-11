@@ -8,7 +8,7 @@ import merge from "lodash/merge";
 import * as React from "react";
 import { useSupplyProjectionInputs } from "../../api/supply-projection";
 import { LONDON_HARDFORK_DATE_TIME } from "../../eth-time";
-import { formatOneDigit } from "../../format";
+import { formatOneDecimal } from "../../format";
 import { pipe } from "../../fp";
 import { TranslationsContext } from "../../translations-context";
 import { COLORS, defaultOptions } from "../../utils/chart-defaults";
@@ -23,7 +23,7 @@ import { useOnResize } from "../../utils/use-on-resize";
 import styles from "./SupplyChart.module.scss";
 
 if (typeof window !== "undefined") {
-  // Initialize highchats annotations module (onlly on browser, doesn't work on server)
+  // Initialize highchats annotations module (only on browser, doesn't work on server)
   highchartsAnnotations(Highcharts);
 }
 
@@ -248,10 +248,10 @@ const SupplyChart: React.FC<Props> = ({
     const lastContractPoint = last(contractSeriesData);
 
     // Projection should be 1/3 of chart
-    const firstDate = DateFns.fromUnixTime(supplyData[0].t);
+    // const firstDate = DateFns.fromUnixTime(supplyData[0].t);
     const lastDate = DateFns.fromUnixTime(last(supplyData)!.t);
-    const daysOfData = DateFns.differenceInDays(lastDate, firstDate);
-    const daysOfProjection = Math.floor(daysOfData / 2);
+    // const daysOfData = DateFns.differenceInDays(lastDate, firstDate);
+    const daysOfProjection = 365 * 2;
 
     const contractProj: number[][] = [lastContractPoint!];
     const addressProj: number[][] = [lastAddressPoint!];
@@ -458,7 +458,7 @@ const SupplyChart: React.FC<Props> = ({
         text: `<div class="ann-root">
           <div class="ann-title">${t.peak_supply}</div>
           ${isProjected ? `<div class="ann-proj">(Projected)</div>` : ""}
-          <div class="ann-value">${formatOneDigit(
+          <div class="ann-value">${formatOneDecimal(
             peakSupply[1] / 1e6,
           )}M ETH</div>
           </div>`,
@@ -599,7 +599,7 @@ const SupplyChart: React.FC<Props> = ({
                   }</div>
                 </div>
               </td>
-              <td class="text-white">${formatOneDigit(
+              <td class="text-white">${formatOneDecimal(
                 (p.y || 0) / 1e6,
               )}M ETH</td>
               </tr>`,
@@ -610,7 +610,7 @@ const SupplyChart: React.FC<Props> = ({
           rows.push(
             `<tr class="tt-total-row">
               <td><div class="tt-series-name">${t.total_supply}</div></td>
-              <td class="text-white">${formatOneDigit(total / 1e6)}M ETH</td>
+              <td class="text-white">${formatOneDecimal(total / 1e6)}M ETH</td>
             </tr>`,
           );
 

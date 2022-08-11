@@ -68,7 +68,7 @@ const SupplyGrowthGauge: FC<Props> = ({
 }) => {
   const growthRate = useGrowthRate(simulateMerge, timeFrame);
   const toPercentOneDigitSigned = useCallback<(n: number) => string>(
-    (n) => Format.formatPercentOneDigitSigned(n),
+    (n) => Format.formatPercentOneDecimalSigned(n),
     [],
   );
 
@@ -100,15 +100,22 @@ const SupplyGrowthGauge: FC<Props> = ({
   });
 
   return (
-    <div className="flex flex-col justify-start items-center bg-blue-tangaroa px-4 md:px-0 py-8 pt-7 rounded-tl-lg rounded-tr-lg">
-      {/* Height is set to align with sibling gauges */}
+    <div
+      // HACK: on tablet the growth gauge is a different height from the burn and issuance gauges so we do some nasty margin hacking to try and align them.
+      className={`
+        flex flex-col justify-start items-center
+        bg-blue-tangaroa
+        px-4 md:px-0 py-8 pt-7
+        rounded-tl-lg rounded-tr-lg md:rounded-none
+        pb-[36px] -mb-[4px]
+      `}
+    >
       <WidgetTitle>supply growth</WidgetTitle>
-      {/* <div className="mt-6 md:mt-2 lg:mt-8 transform scale-100 md:scale-75 lg:scale-100 xl:scale-110"> */}
-      <div className="mt-8 md:scale-90 lg:scale-100">
+      <div className="mt-8 lg:mt-9 md:scale-90 lg:scale-100">
         <SplitGaugeSvg max={max} progress={progress} />
       </div>
       <animated.div
-        className="font-roboto font-light text-3xl -mt-16 pt-1"
+        className="font-roboto font-light text-3xl -mt-16"
         style={colorStyle}
       >
         {growthRate === undefined || previewSkeletons ? (
@@ -117,7 +124,7 @@ const SupplyGrowthGauge: FC<Props> = ({
           </div>
         ) : freezeAnimated ? (
           <p className="-mb-2">
-            {Format.formatPercentOneDigitSigned(growthRateAnimated.get())}
+            {Format.formatPercentOneDecimalSigned(growthRateAnimated.get())}
           </p>
         ) : (
           <animated.p className="-mb-2">
@@ -125,10 +132,9 @@ const SupplyGrowthGauge: FC<Props> = ({
           </animated.p>
         )}
       </animated.div>
-      <p className="font-roboto font-light text-xs text-blue-spindle select-none mt-1 mb-5">
+      <p className="font-roboto font-light text-xs text-blue-spindle select-none mb-7 lg:mb-6">
         /year
       </p>
-      {/* </div> */}
       <TimeFrameIndicator
         onClickTimeFrame={onClickTimeFrame}
         timeFrame={timeFrame}

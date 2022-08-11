@@ -30,6 +30,16 @@ module.exports = {
           highlightborder: "#8794b8",
           dusk: "#464B6F",
         },
+        slateus: {
+          800: "#131827",
+          700: "#1B2236",
+          600: "#2D344A",
+          500: "#464B6F",
+          450: "#8888af",
+          400: "#8991AD",
+          200: "#B5BDDB",
+          100: "#C8CBD9",
+        },
         red: {
           ...colors.red,
           pinkish: "#f85a89",

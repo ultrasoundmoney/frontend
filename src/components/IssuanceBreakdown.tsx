@@ -1,15 +1,15 @@
 import { FC, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import { flow, pipe } from "../fp";
-import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
-import Colors from "../colors";
-import { LabelText, TextInter, TextRoboto } from "./Texts";
-import * as Format from "../format";
 import {
   getPercentOfTotal,
   useIssuanceBreakdown,
 } from "../api/issuance-breakdown";
+import Colors from "../colors";
+import * as Format from "../format";
+import { flow, pipe } from "../fp";
 import { MoneyAmount } from "./Amount";
+import { BodyText, LabelText, TextRoboto } from "./Texts";
+import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
 const skeletonLoadingWidth = 0.1;
 
@@ -99,7 +99,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
               color: showHighlight ? Colors.white : Colors.spindle,
             }}
           >
-            {Format.formatPercentNoDigit(percentOfTotalRewards)}
+            {Format.formatPercentNoDecimals(percentOfTotalRewards)}
           </TextRoboto>
         ) : (
           <Skeleton width="1.5rem" />
@@ -109,7 +109,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
   </div>
 );
 
-type RewardRowProps = {
+type IssuanceRowProps = {
   amount: number | undefined;
   hovering: boolean;
   link?: string;
@@ -121,11 +121,11 @@ const millionEthFromGwei = flow(
   Format.ethFromGwei,
   // in M of ETH.
   (eth) => eth / 1_000_000,
-  Format.formatOneDigit,
+  Format.formatOneDecimal,
   (numberStr) => `${numberStr}M`,
 );
 
-const RewardRow: FC<RewardRowProps> = ({
+const IssuanceRow: FC<IssuanceRowProps> = ({
   amount,
   hovering,
   link,
@@ -141,7 +141,7 @@ const RewardRow: FC<RewardRowProps> = ({
     target="_blank"
     rel="noreferrer"
   >
-    <TextInter>{name}</TextInter>
+    <BodyText>{name}</BodyText>
     <MoneyAmount className="font-light text-right">
       {typeof amount === "number" ? millionEthFromGwei(amount) : undefined}
     </MoneyAmount>
@@ -242,31 +242,31 @@ const IssuanceBreakdown = () => {
           <LabelText>category</LabelText>
           <LabelText className="text-right">amount</LabelText>
         </div>
-        <RewardRow
+        <IssuanceRow
           amount={issuanceBreakdown?.crowdSale}
           hovering={highlightCrowdSale}
           name="Bitcoin crowd sale"
           setHovering={setHighlightCrowdSale}
         />
-        <RewardRow
+        <IssuanceRow
           amount={issuanceBreakdown?.proofOfWork}
           hovering={highlightProofOfWork}
           name="proof of work"
           setHovering={setHighlightProofOfWork}
         />
-        <RewardRow
+        <IssuanceRow
           amount={issuanceBreakdown?.ethereumFoundation}
           hovering={highlightEthereumFoundation}
           name="Ethereum Foundation"
           setHovering={setHighlightEthereumFoundation}
         />
-        <RewardRow
+        <IssuanceRow
           amount={issuanceBreakdown?.earlyContributors}
           hovering={highlightEarlyContributors}
           name="early contributors"
           setHovering={setHighlightEarlyContributors}
         />
-        <RewardRow
+        <IssuanceRow
           amount={issuanceBreakdown?.proofOfStake}
           hovering={highlightProofOfStake}
           name="proof of stake"

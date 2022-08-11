@@ -167,7 +167,7 @@ const TwitterFam: FC = () => {
               join <Skeleton inline={true} width="4rem" /> fam members
             </>
           ) : (
-            `join ${Format.formatNoDigit(famCount)}${
+            `join ${Format.formatNoDecimals(famCount)}${
               famCount >= 5000 ? "+" : ""
             } fam members`
           )}

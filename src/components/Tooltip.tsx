@@ -2,7 +2,7 @@ import { FC, ReactEventHandler, useCallback, useState } from "react";
 import { Linkables } from "../api/fam";
 import * as Format from "../format";
 import scrollbarStyles from "../styles/Scrollbar.module.scss";
-import { TextInter, TextRoboto } from "./Texts";
+import { BodyText, TextRoboto } from "./Texts";
 import Twemoji from "./Twemoji";
 import BioWithLinks from "./Twitter/BioWithLinks";
 import { WidgetTitle } from "./WidgetSubcomponents";
@@ -98,15 +98,15 @@ const Tooltip: FC<TooltipProps> = ({
         onError={onImageError}
         src={imageUrl ?? "/leaderboard-images/question-mark-v2.svg"}
       />
-      <TextInter className="font-semibold">
+      <BodyText className="font-semibold">
         <Twemoji imageClassName="inline-block align-middle h-5 ml-1" wrapper>
           {title}
         </Twemoji>
-      </TextInter>
+      </BodyText>
       <div
         className={`max-h-64 overflow-y-auto ${scrollbarStyles["styled-scrollbar"]}`}
       >
-        <TextInter className="whitespace-pre-wrap md:leading-normal">
+        <BodyText className="whitespace-pre-wrap md:leading-normal">
           {description === undefined ? null : (
             <BioWithLinks
               bio={description}
@@ -115,7 +115,7 @@ const Tooltip: FC<TooltipProps> = ({
               }
             ></BioWithLinks>
           )}
-        </TextInter>
+        </BodyText>
       </div>
       <div className="flex justify-between">
         <div className="flex flex-col gap-y-4">
@@ -123,7 +123,7 @@ const Tooltip: FC<TooltipProps> = ({
           <TextRoboto className="font-extralight text-2xl">
             {followerCount === undefined
               ? "-"
-              : Format.formatCompactOneDigit(followerCount)}
+              : Format.formatCompactOneDecimal(followerCount)}
           </TextRoboto>
         </div>
         <div className="flex flex-col gap-y-4 items-end">
@@ -131,7 +131,7 @@ const Tooltip: FC<TooltipProps> = ({
           <TextRoboto className="font-extralight text-2xl">
             {famFollowerCount === undefined
               ? "-"
-              : Format.formatZeroDigit(famFollowerCount)}
+              : Format.formatZeroDecimals(famFollowerCount)}
           </TextRoboto>
         </div>
       </div>

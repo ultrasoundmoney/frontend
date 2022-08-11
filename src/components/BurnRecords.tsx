@@ -8,12 +8,12 @@ import scrollbarStyles from "../styles/Scrollbar.module.scss";
 import { TimeFrameNext } from "../time-frames";
 import { MoneyAmountAnimated } from "./Amount";
 import SpanMoji from "./SpanMoji";
-import { TextInter, TextRoboto } from "./Texts";
+import { BodyText, TextRoboto } from "./Texts";
 import { BurnGroupBase } from "./WidgetSubcomponents";
 
 const formatBlockNumber = flow(
   O.fromPredicate((unknown): unknown is number => typeof unknown === "number"),
-  O.map(Format.formatNoDigit),
+  O.map(Format.formatNoDecimals),
   O.map((str) => `#${str}`),
   O.toUndefined,
 );
@@ -50,14 +50,14 @@ const Age: FC<{ minedAt: Date | undefined }> = ({ minedAt }) => {
   }, [minedAt]);
 
   return (
-    <TextInter className="md:text-lg" skeletonWidth="6rem">
+    <BodyText skeletonWidth="6rem">
       {age === undefined ? undefined : (
         <>
           <TextRoboto>{age}</TextRoboto>
           {" ago"}
         </>
       )}
-    </TextInter>
+    </BodyText>
   );
 };
 

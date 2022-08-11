@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useEthSupply } from "../../api/eth-supply";
-import { TextInter } from "../Texts";
+import { BodyText } from "../Texts";
 import { WidgetTitle } from "../WidgetSubcomponents";
 import PreciseEth from "./PreciseEth";
 
@@ -33,13 +33,13 @@ const EthSupplyTooltip: FC<{ onClickClose: () => void }> = ({
         className="w-20 h-20 mx-auto rounded-full select-none"
         src={"/round-nerd-large.svg"}
       />
-      <TextInter className="font-semibold">ETH supply breakdown</TextInter>
+      <BodyText className="font-semibold">ETH supply breakdown</BodyText>
       <WidgetTitle>formula</WidgetTitle>
       <div className="flex flex-col">
-        <TextInter>supply = EVM balances +</TextInter>
+        <BodyText>supply = EVM balances +</BodyText>
         <div className="ml-[69px] md:ml-[77px]">
-          <TextInter inline={false}>beacon balances -</TextInter>
-          <TextInter>beacon chain deposits</TextInter>
+          <BodyText inline={false}>beacon balances -</BodyText>
+          <BodyText>beacon chain deposits</BodyText>
         </div>
       </div>
       <WidgetTitle>EVM balances</WidgetTitle>

@@ -1,5 +1,5 @@
 import * as DateFns from "date-fns";
-import React, { FC, useContext, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { TransitionGroup } from "react-transition-group";
 import { useBlockLag } from "../../api/block-lag";
@@ -12,7 +12,7 @@ import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import CSSTransition from "../CSSTransition";
 import { AmountUnitSpace } from "../Spacing";
-import { TextInter, TextRoboto } from "../Texts";
+import { BodyText, TextRoboto } from "../Texts";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 import styles from "./LatestBlocks.module.scss";
 
@@ -21,7 +21,7 @@ const maxBlocks = 20;
 const formatGas = flow(
   OAlt.numberFromUnknown,
   O.map(Format.gweiFromWei),
-  O.map(Format.formatZeroDigit),
+  O.map(Format.formatZeroDecimals),
   O.toUndefined,
 );
 
@@ -36,7 +36,7 @@ const formatFees = (unit: Unit, fees: unknown, feesUsd: unknown) =>
     : pipe(
         feesUsd,
         OAlt.numberFromUnknown,
-        O.map((feesUsd) => `${Format.formatZeroDigit(feesUsd)}`),
+        O.map((feesUsd) => `${Format.formatZeroDecimals(feesUsd)}`),
         O.toUndefined,
       );
 
@@ -54,7 +54,7 @@ export const formatBlockNumber = (number: unknown) =>
     O.fromPredicate(
       (unknown): unknown is number => typeof unknown === "number",
     ),
-    O.map(Format.formatNoDigit),
+    O.map(Format.formatNoDecimals),
     O.map((str) => `#${str}`),
     O.toUndefined,
   );
@@ -203,9 +203,9 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
           {" block lag"}
         </span>
         {typeof timeElapsed === "number" && timeElapsed > 1800 ? (
-          <TextInter className="text-xs md:text-sm text-red-400">
-            {"node failed, busy resyncing..."}
-          </TextInter>
+          <BodyText className="text-xs md:text-sm text-red-400">
+            node error, busy resyncing...
+          </BodyText>
         ) : null}
       </div>
     </WidgetBackground>

@@ -1,6 +1,6 @@
 import * as DateFns from "date-fns";
 import * as React from "react";
-import { formatOneDigit } from "../../format";
+import { formatOneDecimal } from "../../format";
 import { pipe } from "../../fp";
 import {
   estimatedDailyFeeBurn,
@@ -8,21 +8,22 @@ import {
 } from "../../utils/metric-utils";
 import { useTranslations } from "../../utils/use-translation";
 import Slider from "../Slider/Slider";
+import { TextInter } from "../Texts";
 import Twemoji from "../Twemoji";
 import SupplyChart from "./SupplyChart";
 import styles from "./SupplyView.module.scss";
 
 const MIN_PROJECTED_ETH_STAKING = 1e6;
-const DEFAULT_PROJECTED_ETH_STAKING = 15e6;
+const DEFAULT_PROJECTED_ETH_STAKING = 14e6;
 const MAX_PROJECTED_ETH_STAKING = 33554432;
 
 const MIN_PROJECTED_BASE_GAS_PRICE = 0;
-const DEFAULT_PROJECTED_BASE_GAS_PRICE = 70;
+const DEFAULT_PROJECTED_BASE_GAS_PRICE = 74;
 const MAX_PROJECTED_BASE_GAS_PRICE = 200;
 
 const MIN_PROJECTED_MERGE_DATE = DateFns.startOfDay(new Date());
 const DEFAULT_PROJECTED_MERGE_DATE = DateFns.max([
-  DateFns.parseISO("2022-08-31T00:00:00Z"),
+  DateFns.parseISO("2022-09-19T00:00:00Z"),
   MIN_PROJECTED_MERGE_DATE,
 ]);
 const MAX_PROJECTED_MERGE_DATE = DateFns.parseISO("2022-12-31T00:00:00Z");
@@ -103,8 +104,11 @@ const SupplyView: React.FC = () => {
   return (
     <>
       <div className={styles.chartHeader}>
-        <div className="text-xl text-white text-left font-light pl-3 pb-8 flex">
-          {t.eth_supply}
+        <TextInter
+          className="font-light text-blue-spindle text-xs uppercase tracking-widest flex items-center pl-3 pb-8"
+          inline
+        >
+          ETH supply—2y projection
           <span
             className={`transition-opacity ${
               isPeakPresent ? "opacity-1" : "opacity-0"
@@ -114,7 +118,7 @@ const SupplyView: React.FC = () => {
               🦇🔊
             </Twemoji>
           </span>
-        </div>
+        </TextInter>
       </div>
       <SupplyChart
         projectedStaking={projectedStaking}
@@ -137,9 +141,10 @@ const SupplyView: React.FC = () => {
             <>
               {t.pos_issuance}
               {": "}
-              {formatOneDigit(
+              {formatOneDecimal(
                 estimatedDailyIssuance(projectedStaking) / 1000,
-              )}K {t.eth_per_day}
+              )}
+              K {t.eth_per_day}
             </>
           }
         >
@@ -161,7 +166,7 @@ const SupplyView: React.FC = () => {
             <>
               {t.fee_burn}
               {": "}
-              {formatOneDigit(
+              {formatOneDecimal(
                 estimatedDailyFeeBurn(projectedBaseGasPrice) / 1000,
               )}
               K {t.eth_per_day}
