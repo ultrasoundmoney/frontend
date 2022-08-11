@@ -1,0 +1,55 @@
+$line_height: 600px;
+$wrap_height: $line_height + 34px;
+$color_point: #00ffa3;
+
+.drawing_line {
+  height: $wrap_height;
+  position: relative;
+  z-index: 3;
+
+  &_container {
+    overflow: hidden;
+    height: 100%;
+  }
+
+  &_path {
+    height: $line_height;
+    position: relative;
+    width: 1px;
+    margin: auto;
+    background-image: linear-gradient(grey 40%, transparent 40%);
+    background-size: 1px 12px;
+    background-repeat: repeat-y;
+  }
+
+  &_point {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid $color_point;
+    margin: 10px auto 0;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.2s ease;
+    opacity: 0;
+
+    &:after {
+      content: "";
+      height: 8px;
+      width: 8px;
+      border-radius: 50%;
+      background-color: $color_point;
+    }
+  }
+
+  &_active {
+    .drawing_line_point {
+      opacity: 1;
+    }
+  }
+}

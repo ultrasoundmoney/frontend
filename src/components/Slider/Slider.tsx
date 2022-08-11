@@ -22,12 +22,12 @@ const THUMB_WIDTH = 14;
 const Slider: React.FC<Props> = ({
   min,
   max,
-  value,
-  step,
   onChange,
   onPointerDown,
   onPointerUp,
+  step,
   thumbVisible = true,
+  value,
 }) => {
   const percent =
     value !== undefined ? ((value - min) / (max - min)) * 100 : undefined;

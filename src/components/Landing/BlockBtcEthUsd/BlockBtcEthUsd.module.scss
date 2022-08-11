@@ -1,0 +1,164 @@
+.visible {
+  opacity: 0;
+  animation: makevisible 0.3s linear forwards;
+}
+.pointer {
+  cursor: pointer;
+}
+
+@keyframes makevisible {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.pathDefault {
+  stroke-width: 2px;
+  fill: none;
+  transition: 1.8s;
+  transition-timing-function: ease-in-out;
+  stroke-dasharray: 900 900;
+  stroke-dashoffset: 900;
+}
+.path_btc.pathStrokeAnim {
+  stroke-dashoffset: 410 !important;
+}
+.path_usd.pathStrokeAnim {
+  stroke-dashoffset: 455 !important;
+}
+.path_eth.pathStrokeAnim {
+  stroke-dashoffset: 455 !important;
+}
+
+// circles
+.btc_pointer,
+.usd_pointer,
+.eth_pointer {
+  transition: 1.8s ease-in-out, opacity 0.7s;
+}
+.btc_pointer {
+  offset-path: path(
+    "M1 350.104C29.3714 212.367 41.8762 186.944 99.2632 149.658C156.649 112.371 327.989 109.855 355.152 110.006"
+  );
+}
+.usd_pointer {
+  offset-path: path("M0 350.887C302.916 350.887 349.72 193.647 349.72 144");
+}
+.eth_pointer {
+  offset-path: path(
+    "M1 350.988C16.192 300.494 61.7406 208.495 100.651 197.613C146.59 184.765 236.969 201.16 359.555 217.361"
+  );
+}
+.btc_pointer.show,
+.usd_pointer.show,
+.eth_pointer.show {
+  offset-distance: 100%;
+  opacity: 1;
+}
+.btc_pointer.novisible,
+.usd_pointer.novisible,
+.eth_pointer.novisible {
+  opacity: 0;
+  offset-distance: 0%;
+}
+.graphsWrap {
+  display: flex;
+}
+.graphsBlock {
+  position: sticky;
+  top: 200px;
+  height: fit-content;
+  background-color: rgba(20, 26, 47, var(--tw-bg-opacity));
+}
+.graphTextContainter {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (max-width: 1000px) {
+  .graphsBlock {
+    top: 60px;
+    padding-top: 30px;
+  }
+  .graphsBlock::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 30px;
+    bottom: 0;
+    left: 0;
+    transform: translateY(95%);
+    background: linear-gradient(
+      rgba(20, 26, 47, var(--tw-bg-opacity)),
+      transparent
+    );
+  }
+  .graphTextContainter {
+    margin-top: 70px;
+    order: 2;
+    width: 100% !important;
+  }
+  .graphsBlock {
+    width: 100%;
+  }
+}
+
+.fixedFeeBurned {
+  transition: all 0.2s ease;
+  transform: translateY(100%);
+
+  &.active {
+    transform: translateY(0);
+  }
+}
+
+.spanBtc {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 14px;
+    left: 20px;
+    width: 12px;
+    height: 12px;
+    background: #ff891d;
+    border-radius: 100%;
+  }
+}
+
+.spanEth {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 14px;
+    left: 20px;
+    width: 12px;
+    height: 12px;
+    background: #5474f4;
+    border-radius: 100%;
+  }
+}
+
+.spanUsd {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 14px;
+    left: 20px;
+    width: 12px;
+    height: 12px;
+    background: #a3d972;
+    border-radius: 100%;
+  }
+}

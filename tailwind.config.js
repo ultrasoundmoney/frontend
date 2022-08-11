@@ -20,7 +20,7 @@ module.exports = {
         },
         blue: {
           ...colors.blue,
-          midnightexpress: "#131827",
+          midnightexpress: "#141A2F",
           tangaroa: "#1b2236",
           spindle: "#b5bddb",
           linkwater: "#c8cbd9",
@@ -54,6 +54,10 @@ module.exports = {
       width: {
         "w-23": "23%",
         "w-21": "21%",
+        "w-38": "38%",
+        "w-34": "34%",
+        "w-32": "30%",
+        "w-55": "55%",
       },
       spacing: {
         42: "165px",
@@ -75,14 +79,20 @@ module.exports = {
         outline: "0 0 0 1px rgba(229, 103, 86, 0.4)",
       },
       fontSize: {
+        "2xs": "0.65rem",
         "41xl": "2.5rem",
         "21xl": "1.87rem",
+        "32xl": "2rem",
+        "28xl": "1.75rem",
       },
       inset: {
         128: "32rem",
       },
       scale: {
         "gauge-md": "0.65",
+      },
+      padding: {
+        "26": "104px",
       },
     },
   },

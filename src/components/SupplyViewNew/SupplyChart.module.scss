@@ -1,0 +1,230 @@
+// Same as colors in chart-defaults.ts
+$tooltip-bg: #1c2236;
+$tooltrip-border: #69769f;
+$chart-label: #8490b5;
+
+$blue-spindle: #b5bddb;
+
+$tooltip-zindex: 2;
+
+@mixin projected-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  font-weight: bold;
+  color: white;
+  opacity: 0.7;
+}
+
+.supplyChart {
+  position: relative;
+  // Fixes opacity flicker caused by countdown.
+  backface-visibility: hidden;
+}
+
+.supplyChart :global {
+  // Chart series
+  .highcharts-series {
+    // Start series with a space, instead of a dash
+    stroke-dashoffset: 4px;
+  }
+  // hidden some vertical values
+  .highcharts-yaxis-labels text {
+    opacity: 0;
+  }
+  .highcharts-yaxis-labels text:first-child,
+  .highcharts-yaxis-labels text:last-child {
+    opacity: 1;
+  }
+  // hidden some horizontal values
+  .highcharts-xaxis-labels text {
+    opacity: 0;
+  }
+  .highcharts-xaxis-labels text:first-child,
+  .highcharts-xaxis-labels text:nth-child(7),
+  .highcharts-xaxis-labels text:last-child {
+    opacity: 1;
+  }
+
+  // Legend
+  .highcharts-legend-item {
+    pointer-events: none;
+  }
+  .highcharts-grid-line {
+    display: none;
+  }
+  .highcharts-tick {
+    display: none;
+  }
+  .highcharts-axis-line {
+    stroke: #69769f;
+    stroke-dasharray: 3, 3;
+  }
+  // Marker plotlines
+  .highcharts-plot-line-label {
+    font-weight: bold;
+  }
+
+  .highcharts-plot-line-label tspan[style] {
+    // (hacky css selector using style attribute to target
+    //  the subtitle only)
+    fill: white;
+    font-weight: 300 !important;
+  }
+
+  // Tooltip
+  .highcharts-tooltip {
+    z-index: $tooltip-zindex;
+  }
+  .tt-root {
+    background-color: $tooltip-bg;
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid $tooltrip-border;
+  }
+  .tt-header {
+    display: flex;
+    align-items: center;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+  .tt-header-date {
+    font-size: 11px;
+    font-weight: 400;
+    white-space: pre;
+  }
+
+  // Style overrides for "total" row
+  .tt-total-row td {
+    padding-top: 5px;
+    font-size: 16x;
+    font-weight: 400;
+    font-family: "Roboto Mono";
+  }
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  flex-wrap: nowrap;
+  max-width: 100%;
+  margin: 0 2px 20px;
+}
+.legendItem {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  & + & {
+    margin-left: 16px;
+  }
+}
+.legendItemColor {
+  width: 12px;
+  height: 12px;
+  border-radius: 10px;
+  margin: 2px 5px 0 0;
+  flex: 0 0 auto;
+}
+.legendItemName {
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 1;
+  color: $chart-label;
+  @media (min-width: 400px) {
+    font-size: 12px;
+  }
+}
+
+// Legend describing the line markers on mobile
+.markerLegend {
+  margin: 0 20px 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 10px;
+  align-items: center;
+  @media (min-width: 640px) {
+    grid-template-columns: auto auto auto auto auto auto;
+  }
+  // Keep this breakpoint in sync with COMPACT_MARKERS_BELOW_WIDTH
+  @media (min-width: 1440px) {
+    display: none;
+  }
+}
+.markerLegendItem {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  font-size: 11px;
+  color: white;
+  white-space: nowrap;
+}
+.markerLegendCount {
+  margin: 1px 8px 0 0;
+  font-size: 10px;
+  font-weight: bold;
+  color: $blue-spindle;
+}
+.markerLegendTitle {
+  font-weight: bold;
+  color: $chart-label;
+}
+
+// Annotation
+.supplyChart :global {
+  .highcharts-annotation {
+    display: none;
+    pointer-events: none;
+    z-index: $tooltip-zindex - 1;
+  }
+  .ann-root {
+    width: 100px;
+    text-align: center;
+  }
+  .ann-title {
+    color: $blue-spindle;
+    font-weight: bold;
+    margin-bottom: 2px;
+  }
+  .ann-proj {
+    @include projected-label;
+    font-size: 9px;
+    margin-bottom: 6px;
+  }
+  .ann-value {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 2px;
+  }
+}
+
+.supplyGraph {
+  background-color: #1c2235;
+}
+
+@media screen and (max-width: 1300px) {
+  .supplyGraph {
+    width: 60%;
+  }
+  .supplyGraphText {
+    padding-left: 0;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .supplyGraph {
+    width: 100%;
+    margin-bottom: 50px;
+  }
+  .supplyGraphText {
+    width: 100%;
+    text-align: center;
+  }
+  .supplyGraphText * {
+    text-align: center;
+  }
+  .supplyGraphSection {
+    flex-direction: column-reverse;
+  }
+}

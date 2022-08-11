@@ -10,7 +10,7 @@ module.exports = withBundleAnalyzer({
   // Without the exportPathMap fleek deployments for /page break.
   exportPathMap: () => ({
     "/": { page: "/" },
-    "/landing": { page: "/landing" },
+    "/dashboard": { page: "/dashboard" },
   }),
   reactStrictMode: true,
   images: {

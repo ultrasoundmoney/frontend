@@ -17,5 +17,5 @@
     "target": "es5"
   },
   "exclude": ["node_modules", "locales/**/*.json"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/Landing/BTCETH/slider.js"]
 }

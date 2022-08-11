@@ -1,0 +1,109 @@
+// colors === st rt
+$white: #fff;
+//colors === end
+
+.linkWrap {
+  max-width: fit-content;
+}
+
+.mobileNavList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  &__item {
+    padding: 20px 45px;
+    font-size: 39px;
+    & > a {
+      color: $white;
+      display: block;
+    }
+  }
+  &__item:last-child > a {
+    border: 1px solid $white;
+    border-radius: 50px;
+    padding: 20px 0;
+    font-family: "Inter";
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+  }
+}
+
+.mobileNavBarNav {
+  width: 100%;
+  @media (max-width: 500px) {
+    width: 200%;
+  }
+}
+
+.stepperNav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  transition: all 0.2s ease;
+  transform: translateY(-130%);
+
+  &.mobileNavBarNav {
+    width: 100%;
+    @media (max-width: 500px) {
+      width: 200%;
+    }
+  }
+
+  &.active {
+    transform: translateY(0);
+  }
+
+  .trackWrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: -8px;
+
+    & > div {
+      transform: translateX(-50%);
+    }
+
+    img {
+      margin: 0;
+    }
+  }
+}
+
+.defaultBar {
+  transition: 0.3s transform;
+  transform: translateY(0);
+  &.hiddenBar {
+    transform: translateY(-200%);
+  }
+}
+
+.hamburgerMenu {
+  position: fixed;
+  right: 10px;
+  top: 0;
+  height: 34px;
+  padding: 8px;
+  z-index: 99;
+}
+
+.sidebar {
+  background-color: rgba(27, 34, 54, 1);
+  position: fixed;
+  top: 0;
+  right: 0px;
+  height: 100%;
+  //width: 240px;
+  padding-top: 1.5rem;
+  transition: transform 0.3s ease-in-out 0s;
+  transform: translateX(100%);
+  z-index: 9;
+  text-align: center;
+}
+
+.open {
+  transform: translateX(0px);
+}

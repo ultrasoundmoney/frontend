@@ -16,12 +16,14 @@
   "click_to_join": "click to join...",
   "profile_follower": "Followers",
   "landing_hero_title": "ETH is becoming",
-  "landing_hero_title_1": "ultra sound money",
-  "landing_before_genesis_title": "historical ETH supply",
-  "landing_before_genesis_text": "monetary hardening for maximum viable scarcity",
+  "landing_dashboard_link": "Dashboard",
+  "landing_faq_link": "FAQ",
+  "landing_hero_title_1": "Ultra Sound Money",
+  "landing_before_genesis_title": "Before we get into Ultra Sound Money, let’s talk about how we got here",
+  "landing_before_genesis_text": "Section for brief historical events and and current ETH state to set the scene for Ultrasound money. Graphics, Light data and simple carts",
 
   "landing_genesis_date": "block 0, Jul 31, 2015",
-  "landing_genesis_title": "genesis",
+  "landing_genesis_title": "Ethereum  Genesis",
   "landing_genesis_text": "Ethereum is open access to digital money and data-friendly services for everyone – no matter your background or location. It's a community-built technology behind the cryptocurrency ether (ETH)",
   "landing_genesis_card_name": "Jul 31, 2015",
   "landing_genesis_card_title": "inflationary",
@@ -32,8 +34,8 @@
   "landing_genesis_card3_title": "3 ETH/<span>block</span>",
 
   "landing_byzantium_date": "block 4,370,000, Oct 16, 2017",
-  "landing_byzantium_title": "byzantium",
-  "landing_byzantium_text": "<span>EIP (Ethereum Imprevement Proposal)</span> is open access to digital money and data-friendly services for everyone – no matter your background or location. It's a community-built technology behind the cryptocurrency ether (ETH)",
+  "landing_byzantium_title": "EIP Byzantium",
+  "landing_byzantium_text": "<span class=\"text-white\">EIP (Ethereum Imprevement Proposal)</span> is open access to digital money and data-friendly services for everyone – no matter your background or location. It's a community-built technology behind the cryptocurrency ether (ETH)",
   "landing_byzantium_card_name": "Oct 16, 2017",
   "landing_byzantium_card_title": "inflationary",
   "landing_byzantium_card2_name": "ETH supply",
@@ -43,8 +45,8 @@
   "landing_byzantium_card3_title": "3 ETH/<span>block</span>",
 
   "landing_constantinopole_date": "block 4,370,000, Oct 16, 2017",
-  "landing_constantinopole_title": "constantinopole",
-  "landing_constantinopole_text": "<span>EIP (Ethereum Imprevement Proposal)</span> is open access to digital money and data-friendly services for everyone – no matter your background or location. It's a community-built technology behind the cryptocurrency ether (ETH)",
+  "landing_constantinopole_title": "EIP Constantinopole",
+  "landing_constantinopole_text": "<span class=\"text-white\">EIP (Ethereum Imprevement Proposal)</span> is open access to digital money and data-friendly services for everyone – no matter your background or location. It's a community-built technology behind the cryptocurrency ether (ETH)",
   "landing_constantinopole_card_name": "Oct 16, 2017",
   "landing_constantinopole_card_title": "inflationary",
   "landing_constantinopole_card2_name": "ETH supply",
@@ -53,21 +55,21 @@
   "landing_constantinopole_card3_name": "block reward",
   "landing_constantinopole_card3_title": "3 ETH/<span>block</span>",
 
-  "landing_eip1559_title": "🔥 fee burn 🔥",
-  "landing_eip1559_text": "introduced via EIP-1559",
+  "landing_eip1559_title": "EIP 1559 aka (The Fee 🔥 Burn)",
+  "landing_eip1559_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud e ",
 
-  "landing_goal_title": "EIP-1559 benefits",
-  "landing_goal_block1_icon": "😃",
-  "landing_goal_block1_title": "UX",
-  "landing_goal_block1_text": "<span class='rounded-lg py-1 text-blue-spindle'>quoted gas prices</span>\n\n &bull; reduced fee uncertainty \n &bull; reduced fee mispricing\n\n<span class='rounded-lg py-1 text-blue-spindle'>dynamic block sizes</span>\n\n &bull; reduced inclusion delays \n &bull; demand spike smoothing",
+  "landing_goal_title": "It’ Goals?",
+  "landing_goal_block1_icon": "\uD83D\uDD2D",
+  "landing_goal_block1_title": "Predictable Transaction Fees",
+  "landing_goal_block1_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
 
-  "landing_goal_block2_icon": "🔒",
-  "landing_goal_block2_title": "security",
-  "landing_goal_block2_text": "<span class='rounded-lg py-1 text-blue-spindle'>reduced MEV</span>\n\n &bull; reduced reorg incentives \n &bull; steadier security budget \n\n<span class='rounded-lg py-1 text-blue-spindle'>gas price oracles</span>\n\n &bull; trustless and accurate \n &bull; robust gas refunds",
+  "landing_goal_block2_icon": "\uD83D\uDE80",
+  "landing_goal_block2_title": "Reduced Delays",
+  "landing_goal_block2_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
 
-  "landing_goal_block3_icon": "🦇",
-  "landing_goal_block3_title": "economics",
-  "landing_goal_block3_text": "<span class='rounded-lg py-1 text-blue-spindle'>enshrined ETH</span>\n\n &bull; reinforced moneyness \n &bull; no economic abstraction \n\n<span class='rounded-lg py-1 text-blue-spindle'>fee burn</span>\n\n &bull; reduced sell pressure \n &bull; less security overspend",
+  "landing_goal_block3_icon": "\uD83D\uDE03",
+  "landing_goal_block3_title": "Improved User Experience",
+  "landing_goal_block3_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
 
   "landing_feeburned_card1_name": "status Jul 31, 2015",
   "landing_feeburned_card1_title": "inflationary",
@@ -77,19 +79,19 @@
   "landing_feeburned_card2_title1": "↑+5.3%",
 
   "landing_feeburned_card3_name": "block reward",
-  "landing_feeburned_card3_title": "3 ETH/<span>block</span>",
+  "landing_feeburned_card3_title": "3 ETH/Block",
 
-  "landing_feeburned_card4_name": "block reward 🔥",
+  "landing_feeburned_card4_name": "fees burned 🔥",
   "landing_feeburned_card4_title": "$314.55",
 
   "landing_themerge_title": "What's Next?",
   "landing_themerge_text": "\"The Merge\" is an upgrade to Ethereum that swaps out the current proof-of-work (PoW) consensus mechanism with a more eco-friendly, efficient, and secure proof-of-stake (PoS) consensus mechanism.",
 
-  "landing_themerge_pow_icon": "",
+  "landing_themerge_pow_icon": "\uD83C\uDFED ⚡",
   "landing_themerge_pow_title": "Proof of Work",
   "landing_themerge_pow_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
 
-  "landing_themerge_pos_icon": "",
+  "landing_themerge_pos_icon": "\uD83C\uDF3F",
   "landing_themerge_pos_title": "Proof of Stake",
   "landing_themerge_pos_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
 
@@ -114,6 +116,9 @@
   "supply_chart_series_address": "in accounts",
   "supply_chart_series_contracts": "in contracts",
   "supply_chart_series_staking": "in validators",
+  "supplu_chart_title": "an ultra sound supply curve?",
+  "sypply_chart_description": "Lorem ipsum dolor sit amet, consectetur <br/> adipiscing elit, sed do eiusmod tempor incididunt <br/> Lorem ipsum dolor sit amet, consect.",
+  "sypply_chart_button": "explore the data",
   "marker_genesis": "genesis",
   "marker_phase_0": "phase 0",
   "marker_merge": "merge",
@@ -155,15 +160,15 @@
   "faq_answer_9": "The bat signal is a visual expression of the ultra sound money meme, a playful nod to bat ultrasounds.\n\nThe ultra sound fam wears the bat signal to spread the meme.",
 
   "eusm_section_title": "Enter The Ultra Sound Money",
-  "eusm_row_1_left_col_title": "WTF is an Ultra Sound Money and why should I even care",
+  "eusm_row_1_left_col_title": "WTF is an Ultra Sound Money <br> and why should I even care",
   "eusm_row_1_left_col_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate",
   "eusm_row_1_right_col_title": "ETH - Deflationary",
   "eusm_row_1_right_col_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
 
-  "eusm_row_2_title": "USD - Un-Sound Money - Inflationary",
+  "eusm_row_2_title": "ETH - Ultrasound Money",
   "eusm_row_2_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate ",
 
-  "eusm_row_3_title": "USD - Un-Sound Money - Inflationary",
+  "eusm_row_3_title": "BTC - Sound Money - Inflationary",
   "eusm_row_3_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate ",
 
   "eusm_row_4_title": "USD - Un-Sound Money - Inflationary",
