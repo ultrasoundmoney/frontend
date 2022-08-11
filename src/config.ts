@@ -21,14 +21,13 @@ const getEnv = (): Env => {
 export const env = getEnv();
 
 const getApiEnv = (): Env => {
-  const rawEnv = process.env.NEXT_PUBLIC_API_ENV;
+  const apiEnv = process.env.NEXT_PUBLIC_API_ENV;
 
-  if (rawEnv === undefined) {
-    const env = getEnv();
+  if (apiEnv === undefined) {
     return env === "staging" ? "staging" : "prod";
   }
 
-  switch (rawEnv) {
+  switch (apiEnv) {
     case "prod":
       return "prod";
     case "dev":
