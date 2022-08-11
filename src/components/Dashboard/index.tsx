@@ -21,8 +21,8 @@ import TwitterFam from "../TwitterFam";
 import ValidatorRewardsWidget from "../ValidatorRewards";
 import WidgetGroup1 from "../BurnGroup";
 import { WidgetTitle } from "../WidgetSubcomponents";
-import styles from "./Home.module.scss";
-import TopBar from "./TopBar";
+import styles from "./Dashboard.module.scss";
+import TopBar from "../TopBar";
 
 const SectionDivider: FC<{ title: string; subtitle?: string }> = ({
   title,
@@ -130,7 +130,7 @@ const StyledErrorBoundary: FC<{ children: ReactNode }> = ({ children }) => (
   </Sentry.ErrorBoundary>
 );
 
-const Home: FC = () => {
+const Dashboard: FC = () => {
   const { featureFlags, setFlag } = FeatureFlags.useFeatureFlags();
   const adminToken = useAdminToken();
 
@@ -311,4 +311,4 @@ const Home: FC = () => {
   );
 };
 
-export default Home;
+export default Dashboard;

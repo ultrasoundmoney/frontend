@@ -2,6 +2,7 @@ import { AppProps } from "next/app";
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
 import "tailwindcss/tailwind.css";
+import Head from "next/head";
 
 Sentry.init({
   dsn: "https://3ef07f75a826463a94510b8d676fd7e3@o920717.ingest.sentry.io/5866579",
@@ -12,6 +13,11 @@ Sentry.init({
 });
 
 const MyApp = ({ Component, pageProps }: AppProps) => (
-  <Component {...pageProps} />
+  <>
+    <Head>
+      <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    </Head>
+    <Component {...pageProps} />
+  </>
 );
 export default MyApp;

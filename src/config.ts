@@ -18,6 +18,8 @@ const getEnv = (): Env => {
   }
 };
 
+export const env = getEnv();
+
 const getApiEnv = (): Env => {
   const rawEnv = process.env.NEXT_PUBLIC_API_ENV;
 
