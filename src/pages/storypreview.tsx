@@ -1,7 +1,6 @@
 import { NextPage } from "next";
-import dynamic from "next/dynamic";
 import Head from "next/head";
-const Story = dynamic(() => import("../components/Landing"));
+import Story from "../components/Landing";
 
 const StoryPreview: NextPage = () => {
   return (
