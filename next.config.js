@@ -11,6 +11,7 @@ module.exports = withBundleAnalyzer({
   exportPathMap: () => ({
     "/": { page: "/" },
     "/dashboard": { page: "/dashboard" },
+    "/storypreview": { page: "/storypreview" },
   }),
   reactStrictMode: true,
   images: {
