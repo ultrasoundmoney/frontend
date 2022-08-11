@@ -22,7 +22,7 @@ import { defaultOptions } from "../../utils/chart-defaults";
 
 import styles from "./SupplyChart.module.scss";
 import { TranslationsContext } from "../../translations-context";
-import { formatOneDigit } from "../../format";
+import { formatOneDecimal } from "../../format";
 
 if (typeof window !== "undefined") {
   // Initialize highchats annotations module (onlly on browser, doesn't work on server)
@@ -73,11 +73,11 @@ const SupplyChart: React.FC<Props> = ({
   // Responsive helpers
   const [useCompactMarkers, setUseCompactMarkers] = React.useState(
     typeof window !== "undefined" &&
-      window.innerWidth < COMPACT_MARKERS_BELOW_WIDTH
+      window.innerWidth < COMPACT_MARKERS_BELOW_WIDTH,
   );
   const [useCompactChart, setUseCompactChart] = React.useState(
     typeof window !== "undefined" &&
-      window.innerWidth < COMPACT_CHART_BELOW_WIDTH
+      window.innerWidth < COMPACT_CHART_BELOW_WIDTH,
   );
 
   useOnResize((resizeProps) => {
@@ -110,14 +110,14 @@ const SupplyChart: React.FC<Props> = ({
       forceShowBreakdown,
       useCompactChart,
       useCompactMarkers,
-    ]
+    ],
   );
   const chartSettings = useDebounce(_chartSettings, 100);
 
   // Transform our input data into series that we'll pass to highcharts
   const [series, totalSupplyByDate] = React.useMemo((): [
     Highcharts.SeriesLineOptions[],
-    Record<string, number>
+    Record<string, number>,
   ] => {
     const stakingByDate: Record<string, number> = {};
     stakingData.forEach(({ t, v }: { t: string; v: number }) => {
@@ -175,13 +175,13 @@ const SupplyChart: React.FC<Props> = ({
         // Add ETH to approach projected staking value
         stakingValue = Math.min(
           chartSettings.projectedStaking,
-          stakingValue + estimatedDailyStakeChange(stakingValue)
+          stakingValue + estimatedDailyStakeChange(stakingValue),
         );
       } else if (stakingValue > chartSettings.projectedStaking) {
         // Subtract ETH to approach projected staking value
         stakingValue = Math.max(
           chartSettings.projectedStaking,
-          stakingValue - estimatedDailyStakeChange(stakingValue)
+          stakingValue - estimatedDailyStakeChange(stakingValue),
         );
       }
 
@@ -299,22 +299,22 @@ const SupplyChart: React.FC<Props> = ({
         xDateFormat: "%Y-%m-%d",
         useHTML: true,
         formatter: function () {
-          const x: number = this.x !== undefined? Number(this.x): 0;
+          const x: number = this.x !== undefined ? Number(this.x) : 0;
           const dt = DateTime.fromMillis(x, { zone: "utc" });
           const header = `<div class="tt-header"><div class="tt-header-date text-blue-spindle">${formatDate(
-            dt.toJSDate()
+            dt.toJSDate(),
           )}</div></div>`;
 
           const total = totalSupplyByDate[x];
           const table = `<table><tbody><tr class="tt-total-row">
-              <td class="text-white">${formatOneDigit(total / 1e6)}M</td>
+              <td class="text-white">${formatOneDecimal(total / 1e6)}M</td>
             </tr></tbody></table>`;
           return `<div class="tt-root">${header}${table}</div>`;
         },
       },
     };
     return merge({}, defaultOptions, chartOptions);
-  }, [series, t, totalSupplyByDate, chartSettings]);
+  }, [series, totalSupplyByDate]);
 
   return (
     <div>
