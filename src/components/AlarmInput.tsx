@@ -141,12 +141,12 @@ const AlarmInput: FC<AlarmInputProps> = ({
 
       if (
         notification.type !== "Supported" ||
-        notification.notificationPermission === "denied"
+        notification.permission === "denied"
       ) {
         return undefined;
       }
 
-      if (notification.notificationPermission === "default") {
+      if (notification.permission === "default") {
         notification.requestPermission();
         return;
       }
@@ -186,7 +186,7 @@ const AlarmInput: FC<AlarmInputProps> = ({
 
     if (
       notification.type === "Supported" &&
-      notification.notificationPermission === "granted" &&
+      notification.permission === "granted" &&
       isAlarmActiveSynced &&
       typeof currentValue === "number" &&
       typeof thresholdNum === "number" &&

@@ -63,7 +63,6 @@ const TopBar: FC = () => {
     <div className="flex justify-between pt-4 md:pt-8">
       <div className="relative flex">
         <PriceGasWidget baseFeePerGas={baseFeePerGas} ethPrice={ethPrice} />
-
         <button
           ref={alarmButtonRef}
           className={`
@@ -106,7 +105,7 @@ const TopBar: FC = () => {
             type="eth"
           />
           {notification.type === "Supported" &&
-            notification.notificationPermission === "denied" && (
+            notification.permission === "denied" && (
               <p className="text-sm text-red-400 mt-4">
                 notifications disabled, please grant notification permission.
               </p>

@@ -6,7 +6,7 @@ export type NotificationState =
     }
   | {
       type: "Supported";
-      notificationPermission: "default" | "granted" | "denied";
+      permission: NotificationPermission;
       requestPermission: () => Promise<void>;
       showNotification: (title: string, body?: string) => void;
     };
@@ -14,52 +14,68 @@ export type NotificationState =
 const useNotification = (): NotificationState => {
   const [isNotificationSupported, setIsNotificationSupported] =
     useState<boolean>();
-  const [notificationPermission, setNotificationPermission] =
-    useState<NotificationPermission>();
+  const [permission, setPermission] = useState<NotificationPermission>();
 
   useEffect(() => {
-    const isNotificationSupported =
-      typeof window !== "undefined" && "Notification" in window;
-    setIsNotificationSupported(isNotificationSupported);
-    if (isNotificationSupported) {
-      setNotificationPermission(Notification.permission);
+    if (typeof window === "undefined" || !("Notification" in window)) {
+      setIsNotificationSupported(false);
+      return undefined;
     }
+
+    setIsNotificationSupported(true);
+    setPermission(Notification.permission);
   }, []);
+
+  // Notification permission may change without this component rerendering, to catch that we periodically chcek.
+  useEffect(() => {
+    if (!isNotificationSupported) {
+      return undefined;
+    }
+
+    const id = setInterval(() => {
+      if (permission !== Notification.permission) {
+        setPermission(Notification.permission);
+      }
+    }, 2000);
+    return () => clearInterval(id);
+  });
 
   const requestPermission = useCallback(async () => {
     if (!isNotificationSupported) {
       return undefined;
     }
 
-    const permission = await Notification.requestPermission();
-    setNotificationPermission(permission);
+    const permission = await Notification.requestPermission().catch((err) => {
+      throw err;
+    });
+    setPermission(permission);
   }, [isNotificationSupported]);
 
   const showNotification = useCallback(
     (title: string, body?: string) => {
-      if (notificationPermission !== "granted") {
+      if (permission !== "granted") {
         return;
       }
 
       new Notification(title, { body });
     },
-    [notificationPermission],
+    [permission],
   );
 
   const notificationState = useMemo((): NotificationState => {
-    if (!isNotificationSupported || notificationPermission === undefined) {
+    if (!isNotificationSupported || permission === undefined) {
       return { type: "Unsupported" } as const;
     }
 
     return {
       type: "Supported",
-      notificationPermission,
+      permission: permission,
       requestPermission,
       showNotification,
     } as const;
   }, [
     isNotificationSupported,
-    notificationPermission,
+    permission,
     requestPermission,
     showNotification,
   ]);
