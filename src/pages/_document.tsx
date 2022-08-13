@@ -1,6 +1,7 @@
 import * as React from "react";
 import Document, { Html, Head, Main, NextScript } from "next/document";
 import SiteMetadata from "../site-metadata";
+import { env } from "../config";
 
 class MyDocument extends Document {
   render() {
@@ -33,6 +34,15 @@ class MyDocument extends Document {
           <link rel="manifest" href="/manifest.json" />
           <link rel="apple-touch-icon" href="/favicon.png"></link>
           <meta name="theme-color" content="#131827" />
+          {/* This serves our Plausible analytics script. We use cloudflare workers to make this possible. The name is intentionally vague as suggested in the Plausible docs. */}
+          {env !== "dev" ? (
+            <script
+              defer
+              data-domain="ultrasound.money"
+              data-api="/cfw/event"
+              src="/cfw/script.js"
+            />
+          ) : null}
         </Head>
         <body className="bg-blue-midnightexpress">
           <Main />
