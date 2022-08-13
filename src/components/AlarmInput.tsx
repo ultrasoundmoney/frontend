@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { useGroupedAnalysis1 } from "../api/grouped-analysis-1";
 import * as Format from "../format";
-import { O, pipe } from "../fp";
+import { O, pipe, S } from "../fp";
 import { useLocalStorage } from "../use-local-storage";
 import useNotification from "../use-notification";
 import styles from "./AlarmInput.module.scss";
@@ -20,7 +20,7 @@ const thresholdToNumber = (threshold: string | undefined): number | undefined =>
   pipe(
     threshold,
     O.fromNullable,
-    O.map((str) => str.replaceAll(",", "")),
+    O.map(S.replace(",", "")),
     O.map(Number),
     O.chain((num) => (Number.isNaN(num) ? O.none : O.some(num))),
     O.toUndefined,
