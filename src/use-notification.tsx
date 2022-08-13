@@ -45,9 +45,7 @@ const useNotification = (): NotificationState => {
       return undefined;
     }
 
-    const permission = await Notification.requestPermission().catch((err) => {
-      throw err;
-    });
+    const permission = await Notification.requestPermission();
     setPermission(permission);
   }, [isNotificationSupported]);
 

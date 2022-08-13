@@ -147,7 +147,9 @@ const AlarmInput: FC<AlarmInputProps> = ({
       }
 
       if (notification.permission === "default") {
-        notification.requestPermission();
+        notification.requestPermission().catch((err) => {
+          throw err;
+        });
         return;
       }
 
