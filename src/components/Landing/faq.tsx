@@ -15,7 +15,7 @@ const FaqBlock: React.FC = () => {
       data-aos-easing="ease-in-out"
       id="faq"
     >
-      <div className="w-screen max-w-3xl md:m-auto px-4 md:px-8 lg:px-0 ">
+      <div className="max-w-3xl md:m-auto md:px-4 lg:px-0 ">
         <div className="block py-8">
           <SectionTitle title="q&a" />
         </div>
