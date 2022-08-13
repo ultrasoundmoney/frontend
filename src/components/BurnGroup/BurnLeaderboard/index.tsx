@@ -251,11 +251,15 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
                     category={entry.category || undefined}
                     detail={formatDetail(entry.name, entry.detail)}
                     fees={unit === "eth" ? entry.fees : entry.feesUsd}
-                    onClickImage={() => handleClickImage(entry)}
-                    onMouseEnterImage={(ref) =>
-                      handleImageMouseEnter(entry, ref)
+                    onClickImage={() =>
+                      md ? () => undefined : handleClickImage(entry)
                     }
-                    onMouseLeaveImage={handleImageMouseLeave}
+                    onMouseEnterImage={(ref) =>
+                      !md ? () => undefined : handleImageMouseEnter(entry, ref)
+                    }
+                    onMouseLeaveImage={() =>
+                      !md ? () => undefined : handleImageMouseLeave()
+                    }
                     freshness={
                       entry.address === undefined || freshnessMap === undefined
                         ? undefined
