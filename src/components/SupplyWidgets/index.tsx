@@ -1,7 +1,5 @@
 import { useCallback, useState } from "react";
-import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import { Unit } from "../../denomination";
-import * as Format from "../../format";
 import { TimeFrameNext, timeFramesNext } from "../../time-frames";
 import CurrencyControl from "../CurrencyControl";
 import BurnGauge from "../Gauges/BurnGauge";
@@ -17,7 +15,6 @@ import MergeCountdownWidget from "./MergeCountdownWidget";
 
 const SupplyWidgets = () => {
   const [simulateMerge, setSimulateMerge] = useState(false);
-  const baseFeePerGas = useGroupedAnalysis1()?.baseFeePerGas;
   const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
 
@@ -28,11 +25,6 @@ const SupplyWidgets = () => {
   const toggleSimulateMerge = useCallback(() => {
     setSimulateMerge(!simulateMerge);
   }, [simulateMerge]);
-
-  if (typeof window !== "undefined" && baseFeePerGas !== undefined) {
-    document.title =
-      Format.gweiFromWei(baseFeePerGas).toFixed(0) + " Gwei | ultrasound.money";
-  }
 
   const handleClickTimeFrame = useCallback(() => {
     const currentTimeFrameIndex = timeFramesNext.indexOf(timeFrame);

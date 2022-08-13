@@ -1,11 +1,14 @@
 import * as Sentry from "@sentry/react";
-import React, { FC, ReactNode, useContext, useState } from "react";
+import { FC, ReactNode, useContext, useEffect, useRef, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useAdminToken } from "../../admin";
+import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import Colors from "../../colors";
 import * as FeatureFlags from "../../feature-flags";
 import { FeatureFlagsContext } from "../../feature-flags";
+import * as Format from "../../format";
+import WidgetGroup1 from "../BurnGroup";
 import Flippenings from "../Flippenings";
 import FollowingYou from "../FollowingYou";
 import IssuanceBreakdown from "../IssuanceBreakdown";
@@ -16,13 +19,12 @@ import Scarcity from "../Scarcity";
 import SupplyWidgets from "../SupplyWidgets";
 import { SectionTitle, TextInterLink, TextRoboto } from "../Texts";
 import ToggleSwitch from "../ToggleSwitch";
+import TopBar from "../TopBar";
 import TotalValueSecured from "../TotalValueSecured";
 import TwitterFam from "../TwitterFam";
 import ValidatorRewardsWidget from "../ValidatorRewards";
-import WidgetGroup1 from "../BurnGroup";
 import { WidgetTitle } from "../WidgetSubcomponents";
 import styles from "./Dashboard.module.scss";
-import TopBar from "../TopBar";
 
 const SectionDivider: FC<{
   link?: string;
@@ -133,9 +135,29 @@ const StyledErrorBoundary: FC<{ children: ReactNode }> = ({ children }) => (
   </Sentry.ErrorBoundary>
 );
 
+const useGasTitle = () => {
+  const originalTitle = useRef<string>();
+  const baseFeePerGas = useGroupedAnalysis1()?.baseFeePerGas;
+
+  useEffect(() => {
+    if (typeof window === "undefined" || baseFeePerGas === undefined) {
+      return undefined;
+    }
+
+    if (originalTitle.current === undefined) {
+      originalTitle.current = document.title;
+    }
+
+    const gasFormatted = Format.gweiFromWei(baseFeePerGas).toFixed(0);
+    const newTitle = `${gasFormatted} Gwei | ${originalTitle.current}`;
+    document.title = newTitle;
+  }, [baseFeePerGas]);
+};
+
 const Dashboard: FC = () => {
   const { featureFlags, setFlag } = FeatureFlags.useFeatureFlags();
   const adminToken = useAdminToken();
+  useGasTitle();
 
   return (
     <FeatureFlagsContext.Provider value={featureFlags}>

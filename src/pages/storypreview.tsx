@@ -5,7 +5,7 @@ import Story from "../components/Landing";
 const StoryPreview: NextPage = () => (
   <>
     <Head>
-      <title>home - ultrasound.money</title>
+      <title>ultrasound.money</title>
     </Head>
     <Story />
   </>

@@ -5,7 +5,7 @@ import Dashboard from "../components/Dashboard";
 const DashboardPage: NextPage = () => (
   <>
     <Head>
-      <title>dashboard - ultrasound.money</title>
+      <title>dashboard | ultrasound.money</title>
     </Head>
     <Dashboard />
   </>
