@@ -28,26 +28,37 @@ export const UnitText: FC<{ children: ReactNode; className?: string }> = ({
   </TextRoboto>
 );
 
-export const SectionTitle: FC<{ title: string; subtitle?: string }> = ({
-  title,
-  subtitle,
-}) => (
+export const SectionTitle: FC<{
+  link?: string;
+  title: string;
+  subtitle?: string;
+}> = ({ link, title, subtitle }) => (
   <>
-    <h2
-      className={`
-      font-inter font-extralight
-      text-white text-center text-2xl md:text-3xl xl:text-41xl
-      `}
-    >
-      {title}
-    </h2>
-    {subtitle && (
+    <div className="flex justify-center items-center gap-x-4">
+      <h2
+        className={`
+          font-inter font-extralight
+          text-white text-center text-2xl md:text-3xl xl:text-41xl
+        `}
+      >
+        {title}
+      </h2>
+      {link !== undefined && (
+        <a className="text-white" href={`#${link}`}>
+          <img
+            src="/emoji-link.svg"
+            alt="emoji of a chain link symbolizing a section anchor for easy linking"
+          />
+        </a>
+      )}
+    </div>
+    {subtitle !== undefined && (
       <p
         className={`
-      font-inter font-light
-      text-blue-shipcove text-center text-base lg:text-lg
-      mt-6
-      `}
+          font-inter font-light
+          text-blue-shipcove text-center text-base lg:text-lg
+          mt-6
+        `}
       >
         {subtitle}
       </p>

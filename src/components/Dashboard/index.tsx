@@ -24,13 +24,16 @@ import { WidgetTitle } from "../WidgetSubcomponents";
 import styles from "./Dashboard.module.scss";
 import TopBar from "../TopBar";
 
-const SectionDivider: FC<{ title: string; subtitle?: string }> = ({
-  title,
-  subtitle,
-}) => (
+const SectionDivider: FC<{
+  link?: string;
+  subtitle?: string;
+  title: string;
+}> = ({ link, title, subtitle }) => (
   <>
-    <div className="h-32"></div>
-    <SectionTitle title={title} subtitle={subtitle} />
+    <div className="h-16"></div>
+    {/* We use two h-16 divs because it makes the page look better when linking to the section */}
+    <div className="h-16" id={link}></div>
+    <SectionTitle link={link} title={title} subtitle={subtitle} />
     <div className="h-16"></div>
   </>
 );
@@ -186,8 +189,9 @@ const Dashboard: FC = () => {
               <SupplyWidgets />
             </StyledErrorBoundary>
             <SectionDivider
-              title="the burn"
+              link="burn"
               subtitle="it's getting hot in here"
+              title="the burn"
             />
             <StyledErrorBoundary>
               <WidgetGroup1 />
