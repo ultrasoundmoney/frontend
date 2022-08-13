@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import { Unit } from "../../denomination";
 import * as Format from "../../format";
@@ -28,10 +28,14 @@ const WidgetGroup1: FC = () => {
     setSimulateMerge(!simulateMerge);
   }, [simulateMerge]);
 
-  if (typeof window !== "undefined" && baseFeePerGas !== undefined) {
+  useEffect(() => {
+    if (typeof window === "undefined" || baseFeePerGas === undefined) {
+      return undefined;
+    }
+
     document.title =
       Format.gweiFromWei(baseFeePerGas).toFixed(0) + " Gwei | ultrasound.money";
-  }
+  }, [baseFeePerGas]);
 
   const handleClickTimeFrame = useCallback(() => {
     const currentTimeFrameIndex = timeFramesNext.indexOf(timeFrame);
