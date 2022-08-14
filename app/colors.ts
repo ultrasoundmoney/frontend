@@ -1,0 +1,17 @@
+const colors = {
+  cloudyblue: "#AAAAD2",
+  drop: "#5DADEC",
+  dusk: "#464B6F",
+  fireHighlight: "#FFCC4D",
+  fireOrange: "#F4900C",
+  linkwater: "#c8cbd9",
+  manatee: "#8888af",
+  midnightexpress: "#131827",
+  shipcove: "#8991ad",
+  spindle: "#b5bddb",
+  tangaroa: "#1b2236",
+  twilight: "#59588D",
+  white: "#FFFFFF",
+};
+
+export default colors;

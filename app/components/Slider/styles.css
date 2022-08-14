@@ -1,0 +1,100 @@
+:root {
+  --track-bg: #293350;
+  --thumb-bg: #b5bddb;
+
+  --thumb-width: 14px;
+
+  /* We can't combine the vendor selectors into one ruleset due how
+   * browsers parse the styles, so instead we use a sass mixin to reuse
+   * the styles */
+  --slider-track: {
+    width: 100%;
+    height: 20px;
+    cursor: pointer;
+    box-shadow: none;
+    background: transparent;
+    border-radius: 4px;
+    border: none;
+  }
+
+  --slider-thumb: {
+    box-shadow: none;
+    border: none;
+    height: 20px;
+    width: 20px;
+    background: transparent;
+    cursor: pointer;
+    @media (max-width: 768px) {
+      // Larger tap target on mobile
+      width: 40px;
+    }
+  }
+}
+
+.slider {
+  position: relative;
+}
+
+.sliderInput {
+  -webkit-appearance: none;
+  padding: 1px 0;
+  width: 100%;
+  background: transparent;
+  opacity: 0;
+}
+.sliderInput:focus {
+  outline: none;
+}
+
+.sliderInput::-webkit-slider-runnable-track {
+  @apply --slider-track;
+}
+.sliderInput:focus::-webkit-slider-runnable-track {
+  background: transparent;
+}
+.sliderInput::-moz-range-track {
+  @apply --slider-track;
+}
+
+.sliderInput::-webkit-slider-thumb {
+  @apply --slider-thumb;
+  -webkit-appearance: none;
+}
+.sliderInput::-moz-range-thumb {
+  @apply --slider-thumb;
+}
+
+.thumbInvisible::-webkit-slider-thumb {
+  visibility: hidden;
+}
+
+.thumbInvisible::-moz-range-thumb {
+  visibility: hidden;
+}
+
+/* Custom visual track/slider (smaller tap area) */
+.sliderTrack {
+  background: var(--track-bg);
+  border-radius: 4px;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+  height: 6px;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 8px;
+}
+
+.sliderThumb {
+  background: var(--thumb-bg);
+  border-radius: var(--thumb-width);
+  cursor: pointer;
+  height: var(--thumb-width);
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 4px;
+  width: var(--thumb-width);
+}

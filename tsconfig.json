@@ -1,21 +1,22 @@
 {
   "compilerOptions": {
     "allowJs": true,
+    "baseUrl": ".",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "incremental": true,
     "isolatedModules": true,
-    "jsx": "preserve",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "esnext",
+    "jsx": "react-jsx",
+    "lib": ["DOM", "DOM.Iterable", "ES2019"],
     "moduleResolution": "node",
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "~/*": ["./app/*"]
+    },
     "resolveJsonModule": true,
-    "skipLibCheck": true,
     "strict": true,
-    "target": "es5"
+    "target": "ES2019"
   },
-  "exclude": ["node_modules", "locales/**/*.json"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/Landing/BTCETH/slider.js"]
+  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"]
 }

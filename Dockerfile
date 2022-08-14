@@ -2,36 +2,28 @@ FROM node:18-alpine as build
 WORKDIR /app
 
 COPY package.json .
-COPY yarn.lock .
-RUN ["yarn", "install"]
-# Next build breaks without this.
-# https://nextjs.org/docs/messages/sharp-missing-in-production
-RUN ["yarn", "add", "sharp"]
+COPY package-lock.json .
+RUN ["npm", "install"]
 COPY tsconfig.json .
-COPY src/ src
+COPY app/ app
 COPY locales/ locales
-COPY next-env.d.ts .
-COPY next.config.js .
+COPY remix.config.js .
+COPY remix.env.d.ts .
+COPY globals.d.ts .
 COPY postcss.config.js .
-COPY public/ public
 COPY tailwind.config.js .
-ENV NEXT_PUBLIC_ENV=staging
-RUN ["yarn", "build"]
-RUN ["yarn", "export"]
-RUN ["mv", "out", "out-stag"]
-ENV NEXT_PUBLIC_ENV=prod
-RUN ["yarn", "build"]
-RUN ["yarn", "export"]
-RUN ["mv", "out", "out-prod"]
+COPY public/ public
+RUN ["npm", "run", "build"]
 
 FROM node:18-alpine as run
 WORKDIR /app
 EXPOSE 3000
 
-COPY package.json.prod package.json
-RUN ["yarn", "install", "--production"]
+COPY package.json .
+COPY package-lock.json .
+RUN ["npm", "install", "--omit=dev"]
 
-COPY --from=build /app/out-stag out-stag
-COPY --from=build /app/out-prod out-prod
+COPY --from=build /app/build .
+COPY --from=build /app/public .
 
-CMD ["yarn", "start-prod"]
+CMD ["npm", "start"]
