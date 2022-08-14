@@ -1,13 +1,11 @@
 import * as React from "react";
 import Link from "next/link";
-import { DateTime } from "luxon";
 import SupplyChart from "./SupplyChart";
 import { useTranslations } from "../../utils/use-translation";
 import styles from "./SupplyChart.module.scss";
 
 const DEFAULT_PROJECTED_ETH_STAKING = 10e6;
 const DEFAULT_PROJECTED_BASE_GAS_PRICE = 50;
-const DEFAULT_PROJECTED_MERGE_DATE = DateTime.utc(2022, 3, 31);
 
 const SupplyView: React.FC = () => {
   const { translations: t } = useTranslations();
@@ -98,7 +96,6 @@ const SupplyView: React.FC = () => {
         <SupplyChart
           projectedStaking={DEFAULT_PROJECTED_ETH_STAKING}
           projectedBaseGasPrice={DEFAULT_PROJECTED_BASE_GAS_PRICE}
-          projectedMergeDate={DEFAULT_PROJECTED_MERGE_DATE}
           showBreakdown={showBreakdown}
         />
       </div>
