@@ -4,7 +4,6 @@ module.exports = {
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "prettier",
   ],
   ignorePatterns: [".eslintrc.js", "next.config.js"],
   parserOptions: {
@@ -14,6 +13,7 @@ module.exports = {
   rules: {
     "@next/next/no-img-element": "off",
     "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/consistent-type-imports": "warn",
   },
   // rules: {
   //   "react-hooks/rules-of-hooks": "error",

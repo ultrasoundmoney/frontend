@@ -3,35 +3,40 @@ WORKDIR /app
 
 COPY package.json .
 COPY yarn.lock .
-RUN ["yarn", "install"]
-# Next build breaks without this.
-# https://nextjs.org/docs/messages/sharp-missing-in-production
-RUN ["yarn", "add", "sharp"]
+RUN ["yarn", "install", "--frozen-lockfile"]
 COPY tsconfig.json .
 COPY src/ src
 COPY locales/ locales
 COPY next-env.d.ts .
 COPY next.config.js .
 COPY postcss.config.js .
-COPY public/ public
 COPY tailwind.config.js .
-ENV NEXT_PUBLIC_ENV=staging
+COPY public/ public
+ENV NEXT_PUBLIC_ENV=stag
 RUN ["yarn", "build"]
-RUN ["yarn", "export"]
-RUN ["mv", "out", "out-stag"]
+RUN ["mv", ".next/standalone", "standalone-stag"]
+RUN ["mv", ".next/static", "static-stag"]
 ENV NEXT_PUBLIC_ENV=prod
 RUN ["yarn", "build"]
-RUN ["yarn", "export"]
-RUN ["mv", "out", "out-prod"]
+RUN ["mv", ".next/standalone", "standalone-prod"]
+RUN ["mv", ".next/static", "static-prod"]
 
 FROM node:18-alpine as run
 WORKDIR /app
+ENV NODE_ENV production
+
+# You only need to copy next.config.js if you are NOT using the default configuration
+# COPY --from=builder /app/next.config.js ./
+COPY --from=build /app/package.json ./package.json
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=build /app/standalone-stag ./standalone-stag
+COPY --from=build /app/standalone-prod ./standalone-prod
+COPY --from=build /app/public ./standalone-stag/public
+COPY --from=build /app/public ./standalone-prod/public
+COPY --from=build /app/static-stag ./standalone-stag/.next/static
+COPY --from=build /app/static-prod ./standalone-prod/.next/static
+
 EXPOSE 3000
-
-COPY package.json.prod package.json
-RUN ["yarn", "install", "--production"]
-
-COPY --from=build /app/out-stag out-stag
-COPY --from=build /app/out-prod out-prod
-
-CMD ["yarn", "start-prod"]
+CMD ["yarn", "start:stag"]
