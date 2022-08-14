@@ -1,6 +1,7 @@
 import JSBI from "jsbi";
 import { A, pipe } from "../../fp";
-import { FC, useCallback } from "react";
+import type { FC} from "react";
+import { useCallback } from "react";
 import CountUp from "react-countup";
 import { AmountAnimatedShell, defaultMoneyAnimationDuration } from "../Amount";
 
