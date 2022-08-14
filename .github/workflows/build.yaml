@@ -25,6 +25,8 @@ jobs:
           tags: |
             type=raw,latest
             type=sha,prefix=
+          secrets: |
+            "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}"
       - name: Wait for tests to succeed
         uses: lewagon/wait-on-check-action@v1.1.2
         with:

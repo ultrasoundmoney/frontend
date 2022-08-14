@@ -17,19 +17,19 @@ jobs:
           check-name: build
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 10
-  make-sentry-release:
-    name: make sentry release
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Create Sentry release
-        uses: getsentry/action-release@v1
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ultrasoundmoney
-          SENTRY_PROJECT: ultrasoundmoney
-        with:
-          environment: prod
+  # make-sentry-release:
+  #   name: make sentry release
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Create Sentry release
+  #       uses: getsentry/action-release@v1
+  #       env:
+  #         SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+  #         SENTRY_ORG: ultrasoundmoney
+  #         SENTRY_PROJECT: ultrasoundmoney
+  #       with:
+  #         environment: prod
   deploy-serve-frontend:
     name: deploy serve-frontend
     runs-on: ubuntu-latest

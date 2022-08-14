@@ -12,6 +12,9 @@ COPY next.config.js .
 COPY postcss.config.js .
 COPY tailwind.config.js .
 COPY public/ public
+# Allows us to pass the sentry auth token in GitHub CI
+RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN \
+  export SENTRY_AUTH_TOKEN=$(cat /run/secrets/SENTRY_AUTH_TOKEN)
 ENV NEXT_PUBLIC_ENV=stag
 RUN ["yarn", "build"]
 RUN ["mv", ".next/standalone", "standalone-stag"]
