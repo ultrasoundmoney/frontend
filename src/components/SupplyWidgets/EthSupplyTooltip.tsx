@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 import { useEthSupply } from "../../api/eth-supply";
 import { BodyText } from "../Texts";
 import { WidgetTitle } from "../WidgetSubcomponents";

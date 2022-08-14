@@ -1,7 +1,8 @@
-import React, { FC, useContext } from "react";
+import type { FC} from "react";
+import React, { useContext } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
-import { EthPrice } from "../api/grouped-analysis-1";
+import type { EthPrice } from "../api/grouped-analysis-1";
 import { FeatureFlagsContext } from "../feature-flags";
 import * as Format from "../format";
 import { O, pipe } from "../fp";

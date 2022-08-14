@@ -1,4 +1,4 @@
-import { StepperPoint } from "../../context/StepperContext";
+import type { StepperPoint } from "../../context/StepperContext";
 import classes from "./Navigation.module.scss";
 
 export const getIconOffset = (

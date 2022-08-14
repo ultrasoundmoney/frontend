@@ -1,11 +1,12 @@
-import { FC, useEffect, useState } from "react";
+import type { FC} from "react";
+import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import { BurnRecord } from "../api/burn-records";
+import type { BurnRecord } from "../api/burn-records";
 import { useGroupedAnalysis1 } from "../api/grouped-analysis-1";
 import * as Format from "../format";
 import { flow, O, OAlt } from "../fp";
 import scrollbarStyles from "../styles/Scrollbar.module.scss";
-import { TimeFrameNext } from "../time-frames";
+import type { TimeFrameNext } from "../time-frames";
 import { MoneyAmountAnimated } from "./Amount";
 import SpanMoji from "./SpanMoji";
 import { BodyText, TextRoboto } from "./Texts";

@@ -1,7 +1,8 @@
-import React, {
+import type {
   FC,
+  RefObject} from "react";
+import React, {
   memo,
-  RefObject,
   useCallback,
   useRef,
   useState,
@@ -10,11 +11,11 @@ import { usePopper } from "react-popper";
 import { useAdminToken } from "../../../admin";
 import { useContractsFreshness } from "../../../api/contracts";
 import { useGroupedAnalysis1 } from "../../../api/grouped-analysis-1";
-import { LeaderboardEntry, Leaderboards } from "../../../api/leaderboards";
-import { Unit } from "../../../denomination";
+import type { LeaderboardEntry, Leaderboards } from "../../../api/leaderboards";
+import type { Unit } from "../../../denomination";
 import { NEA, O, pipe } from "../../../fp";
 import scrollbarStyles from "../../../styles/Scrollbar.module.scss";
-import { TimeFrameNext } from "../../../time-frames";
+import type { TimeFrameNext } from "../../../time-frames";
 import { useActiveBreakpoint } from "../../../utils/use-active-breakpoint";
 import Modal from "../../Modal";
 import Tooltip from "../../Tooltip";

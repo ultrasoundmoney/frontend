@@ -1,4 +1,5 @@
-import { FC, ReactEventHandler, useCallback } from "react";
+import type { FC, ReactEventHandler} from "react";
+import { useCallback } from "react";
 import { useTotalValueSecured } from "../../api/total-value-secured";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import { AmountBillionsUsdAnimated } from "../Amount";

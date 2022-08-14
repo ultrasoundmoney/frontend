@@ -1,5 +1,5 @@
 import * as DateFns from "date-fns";
-import { FC } from "react";
+import type { FC } from "react";
 import { useAdminToken } from "../../../admin";
 import * as Contracts from "../../../api/contracts";
 

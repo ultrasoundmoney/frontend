@@ -1,5 +1,7 @@
-import { FC, useState } from "react";
-import { famBasePath, FamProfile } from "../../api/fam";
+import type { FC} from "react";
+import { useState } from "react";
+import type { FamProfile } from "../../api/fam";
+import { famBasePath } from "../../api/fam";
 import { formatNoDecimals } from "../../format";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import ImageWithTooltip from "../ImageWithTooltip";

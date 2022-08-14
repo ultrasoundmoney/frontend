@@ -1,10 +1,12 @@
 import * as DateFns from "date-fns";
-import { FC, useContext, useEffect, useState } from "react";
+import type { FC} from "react";
+import { useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { TransitionGroup } from "react-transition-group";
 import { useBlockLag } from "../../api/block-lag";
-import { LatestBlock, useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
-import { Unit } from "../../denomination";
+import type { LatestBlock} from "../../api/grouped-analysis-1";
+import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import type { Unit } from "../../denomination";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
 import { flow, NEA, O, OAlt, pipe } from "../../fp";

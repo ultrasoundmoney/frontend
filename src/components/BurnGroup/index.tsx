@@ -1,6 +1,8 @@
-import { FC, useCallback, useState } from "react";
-import { Unit } from "../../denomination";
-import { TimeFrameNext, timeFramesNext } from "../../time-frames";
+import type { FC} from "react";
+import { useCallback, useState } from "react";
+import type { Unit } from "../../denomination";
+import type { TimeFrameNext} from "../../time-frames";
+import { timeFramesNext } from "../../time-frames";
 import BurnCategories from "../BurnCategories";
 import BurnRecords from "../BurnRecords";
 import BurnTotal from "../BurnTotal";

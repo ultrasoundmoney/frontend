@@ -1,4 +1,4 @@
-import { ChangeEvent, FC } from "react";
+import type { ChangeEvent, FC } from "react";
 import styles from "./Slider2.module.scss";
 
 type SliderProps = {

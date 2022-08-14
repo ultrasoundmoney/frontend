@@ -1,4 +1,5 @@
-import { FC, useState } from "react";
+import type { FC} from "react";
+import { useState } from "react";
 import CountUp from "react-countup";
 import { useTotalValueSecured } from "../../api/total-value-secured";
 import * as Format from "../../format";

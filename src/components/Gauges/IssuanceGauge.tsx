@@ -1,10 +1,10 @@
-import { FC } from "react";
+import type { FC } from "react";
 import { useAverageEthPrice } from "../../api/eth-price";
 import colors from "../../colors";
-import { Unit } from "../../denomination";
+import type { Unit } from "../../denomination";
 import { O, pipe } from "../../fp";
 import * as StaticEtherData from "../../static-ether-data";
-import { TimeFrameNext } from "../../time-frames";
+import type { TimeFrameNext } from "../../time-frames";
 import BaseGauge from "./IssuanceBurnBaseGauge";
 
 type Props = {

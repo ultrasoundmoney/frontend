@@ -1,7 +1,8 @@
-import { FC, ReactNode } from "react";
+import type { FC, ReactNode } from "react";
+import type {
+  TimeFrameNext} from "../time-frames";
 import {
   displayTimeFrameNextMap,
-  TimeFrameNext,
   timeFramesNext,
 } from "../time-frames";
 

@@ -1,5 +1,5 @@
-import * as d3 from "d3";
-import { FC } from "react";
+import * as d3 from "d3-shape";
+import type { FC } from "react";
 import { animated, config, useSpring } from "react-spring";
 import colors from "../../colors";
 

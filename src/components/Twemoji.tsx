@@ -1,8 +1,9 @@
-import React, {
-  Children,
+import type {
   FC,
   ReactHTML,
-  ReactNode,
+  ReactNode} from "react";
+import React, {
+  Children,
   useEffect,
   useRef,
   useState,

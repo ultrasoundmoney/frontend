@@ -1,5 +1,5 @@
-import { FC } from "react";
-import { Unit } from "../denomination";
+import type { FC } from "react";
+import type { Unit } from "../denomination";
 
 const activePeriodClasses =
   "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg";

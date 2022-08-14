@@ -1,6 +1,7 @@
-import React, {
+import type {
   ChangeEvent,
-  FC,
+  FC} from "react";
+import React, {
   useCallback,
   useEffect,
   useRef,

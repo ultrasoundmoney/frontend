@@ -1,13 +1,16 @@
 import * as DateFns from "date-fns";
 import _ from "lodash";
-import { FC, useEffect, useMemo, useState } from "react";
+import type { FC } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useEffectiveBalanceSum } from "../../api/effective-balance-sum";
 import { useImpreciseEthSupply } from "../../api/eth-supply";
 import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import { useSupplyProjectionInputs } from "../../api/supply-projection";
+import type { Eth, Gwei } from "../../eth-units";
 import { GWEI_PER_ETH, WEI_PER_ETH } from "../../eth-units";
 import * as Format from "../../format";
-import { NEA, pipe } from "../../fp";
+import type { NEA } from "../../fp";
+import { pipe } from "../../fp";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { MoneyAmount, PercentAmount } from "../Amount";
 import Slider2 from "../Slider2";

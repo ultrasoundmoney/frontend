@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
-import { Unit } from "../../denomination";
-import { TimeFrameNext, timeFramesNext } from "../../time-frames";
+import type { Unit } from "../../denomination";
+import type { TimeFrameNext} from "../../time-frames";
+import { timeFramesNext } from "../../time-frames";
 import CurrencyControl from "../CurrencyControl";
 import BurnGauge from "../Gauges/BurnGauge";
 import IssuanceGauge from "../Gauges/IssuanceGauge";

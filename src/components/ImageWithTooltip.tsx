@@ -1,7 +1,8 @@
-import {
+import type {
   FC,
   ReactEventHandler,
-  RefObject,
+  RefObject} from "react";
+import {
   useCallback,
   useContext,
   useRef,

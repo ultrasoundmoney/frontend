@@ -1,7 +1,7 @@
-import { FC } from "react";
 import sanitizeHtml from "sanitize-html";
+import type { FC } from "react";
 import twemoji from "twemoji";
-import {
+import type {
   LinkableCashtag,
   LinkableHashtag,
   LinkableMention,

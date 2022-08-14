@@ -1,9 +1,11 @@
 import * as DateFns from "date-fns";
-import { FC, useEffect, useState } from "react";
+import type { FC} from "react";
+import { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
+import type {
+  DeflationaryStreakMode} from "../api/grouped-analysis-1";
 import {
-  DeflationaryStreakMode,
   useGroupedAnalysis1,
 } from "../api/grouped-analysis-1";
 import { NEA } from "../fp";

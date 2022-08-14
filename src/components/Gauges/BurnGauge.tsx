@@ -1,10 +1,10 @@
-import { FC } from "react";
+import type { FC } from "react";
 import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import colors from "../../colors";
-import { Unit } from "../../denomination";
+import type { Unit } from "../../denomination";
 import * as Format from "../../format";
 import { O, pipe } from "../../fp";
-import { TimeFrameNext } from "../../time-frames";
+import type { TimeFrameNext } from "../../time-frames";
 import { timeframeBurnRateMap } from "../BurnTotal";
 import IssuanceBurnBaseGauge from "./IssuanceBurnBaseGauge";
 

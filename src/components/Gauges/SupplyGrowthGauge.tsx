@@ -1,5 +1,6 @@
 import { clamp } from "lodash";
-import React, { FC, useCallback, useContext, useEffect, useState } from "react";
+import type { FC} from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { animated, config, useSpring } from "react-spring";
 import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
@@ -8,7 +9,7 @@ import colors from "../../colors";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
 import * as StaticEtherData from "../../static-ether-data";
-import { TimeFrameNext } from "../../time-frames";
+import type { TimeFrameNext } from "../../time-frames";
 import { timeframeBurnRateMap } from "../BurnTotal";
 import { WidgetTitle } from "../WidgetSubcomponents";
 import TimeFrameIndicator from "../TimeFrameIndicator";

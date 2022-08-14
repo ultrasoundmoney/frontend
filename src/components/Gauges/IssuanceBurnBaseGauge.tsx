@@ -1,15 +1,17 @@
 import { clamp } from "lodash";
-import { FC, useContext } from "react";
+import type { FC} from "react";
+import { useContext } from "react";
 import Skeleton from "react-loading-skeleton";
 import { animated, config, useSpring } from "react-spring";
 import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
-import { Unit } from "../../denomination";
+import type { Unit } from "../../denomination";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
 import { pipe } from "../../fp";
 import Twemoji from "../Twemoji";
 import { WidgetTitle } from "../WidgetSubcomponents";
-import GaugeSvg, { GaugeGradientFill } from "./GaugeSvg";
+import type { GaugeGradientFill } from "./GaugeSvg";
+import GaugeSvg from "./GaugeSvg";
 
 type BaseGuageProps = {
   emoji: string;

@@ -1,19 +1,21 @@
 import * as DateFns from "date-fns";
-import { FC, useContext } from "react";
+import type { FC} from "react";
+import { useContext } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
-import {
+import type {
   BurnRates,
-  FeesBurned,
+  FeesBurned} from "../api/grouped-analysis-1";
+import {
   useGroupedAnalysis1,
 } from "../api/grouped-analysis-1";
 import { londonHardfork } from "../dates";
-import { Unit } from "../denomination";
+import type { Unit } from "../denomination";
 import * as Duration from "../duration";
 import { FeatureFlagsContext } from "../feature-flags";
 import * as Format from "../format";
 import * as StaticEtherData from "../static-ether-data";
-import { LimitedTimeFrameNext, TimeFrameNext } from "../time-frames";
+import type { LimitedTimeFrameNext, TimeFrameNext } from "../time-frames";
 import { AmountAnimatedShell } from "./Amount";
 import { TextRoboto } from "./Texts";
 import Twemoji from "./Twemoji";

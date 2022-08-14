@@ -1,7 +1,8 @@
-import {
+import type {
   FC,
   HTMLAttributes,
-  RefObject,
+  RefObject} from "react";
+import {
   useCallback,
   useContext,
   useRef,
@@ -10,7 +11,7 @@ import {
 import { usePopper } from "react-popper";
 import { useAdminToken } from "../../admin";
 import { useContractsFreshness } from "../../api/contracts";
-import { TvsRanking } from "../../api/total-value-secured";
+import type { TvsRanking } from "../../api/total-value-secured";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
 import { A, NEA, O, pipe } from "../../fp";

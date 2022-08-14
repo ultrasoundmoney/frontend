@@ -1,10 +1,15 @@
 import * as Sentry from "@sentry/react";
-import { FC, ReactNode, useContext, useEffect, useRef, useState } from "react";
+import type { FC, ReactNode } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useAdminToken } from "../../admin";
-import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import {
+  GroupedAnalysis1,
+  useGroupedAnalysis1,
+} from "../../api/grouped-analysis-1";
 import Colors from "../../colors";
+import type { Gwei } from "../../eth-units";
 import * as FeatureFlags from "../../feature-flags";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
@@ -135,9 +140,8 @@ const StyledErrorBoundary: FC<{ children: ReactNode }> = ({ children }) => (
   </Sentry.ErrorBoundary>
 );
 
-const useGasTitle = () => {
+const useGasTitle = (baseFeePerGas: Gwei | undefined) => {
   const originalTitle = useRef<string>();
-  const baseFeePerGas = useGroupedAnalysis1()?.baseFeePerGas;
 
   useEffect(() => {
     if (typeof window === "undefined" || baseFeePerGas === undefined) {
@@ -155,9 +159,10 @@ const useGasTitle = () => {
 };
 
 const Dashboard: FC = () => {
+  const groupedAnalysis1 = useGroupedAnalysis1();
   const { featureFlags, setFlag } = FeatureFlags.useFeatureFlags();
   const adminToken = useAdminToken();
-  useGasTitle();
+  useGasTitle(groupedAnalysis1?.baseFeePerGas);
 
   return (
     <StyledErrorBoundary>

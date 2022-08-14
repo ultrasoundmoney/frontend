@@ -7,9 +7,10 @@ import React, {
 } from "react";
 import Link from "next/link";
 import Steps from "./Steps";
-import { StepperContext, StepperPoint } from "../../context/StepperContext";
+import type { StepperPoint } from "../../context/StepperContext";
+import { StepperContext } from "../../context/StepperContext";
 import { TranslationsContext } from "../../translations-context";
-import { ActionLogo } from "./types";
+import type { ActionLogo } from "./types";
 import {
   getIconOffset,
   showHideNavBar,

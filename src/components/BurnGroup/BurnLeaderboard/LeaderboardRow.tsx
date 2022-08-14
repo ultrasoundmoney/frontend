@@ -1,13 +1,15 @@
-import { FC, RefObject, useContext } from "react";
+import type { FC, RefObject} from "react";
+import { useContext } from "react";
 import Skeleton from "react-loading-skeleton";
+import type {
+  Category} from "../../../api/burn-categories";
 import {
-  Category,
   categoryDisplayMap,
   getIsKnownCategory,
 } from "../../../api/burn-categories";
-import * as Contracts from "../../../api/contracts";
-import { LeaderboardEntry } from "../../../api/leaderboards";
-import { Unit } from "../../../denomination";
+import type * as Contracts from "../../../api/contracts";
+import type { LeaderboardEntry } from "../../../api/leaderboards";
+import type { Unit } from "../../../denomination";
 import { FeatureFlagsContext } from "../../../feature-flags";
 import * as Format from "../../../format";
 import { MoneyAmountAnimated } from "../../Amount";

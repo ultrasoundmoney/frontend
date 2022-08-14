@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState, useContext, FC } from "react";
+import type { FC } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import BatImg from "../../../assets/bat.png";
 import { TranslationsContext } from "../../../translations-context";
 import SVGrenderText from "../BTCETH/generateText";
@@ -7,7 +8,8 @@ import Graphics from "./Graphics";
 import CurrencyTabs from "./CurrencyTabs";
 import { handleGraphs, setScrollPos } from "./helpers";
 import classes from "./BlockBtcEthUsd.module.scss";
-import { WINDOW_BREAK_POINT, graphTypes } from "./helpers";
+import type { graphTypes } from "./helpers";
+import { WINDOW_BREAK_POINT } from "./helpers";
 import styles from "../Landing.module.scss";
 
 const TheUltraSound: FC = () => {

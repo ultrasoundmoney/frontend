@@ -1,4 +1,4 @@
-import { CSSProperties, FC, ReactNode } from "react";
+import type { CSSProperties, FC, ReactNode } from "react";
 import Skeleton from "react-loading-skeleton";
 
 export const LabelText: FC<{ children: ReactNode; className?: string }> = ({

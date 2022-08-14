@@ -1,7 +1,7 @@
 import React from "react";
 import { followerCountConvert } from "../Helpers/helper";
 import Card from "./card";
-import { SecondVidgetProps } from "./helpers";
+import type { SecondVidgetProps } from "./helpers";
 
 const SecondVidget: React.FC<SecondVidgetProps> = ({ name, cost, number }) => {
   return (

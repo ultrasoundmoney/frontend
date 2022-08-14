@@ -1,7 +1,8 @@
-import React, { FC, ReactNode, useContext } from "react";
+import type { FC, ReactNode} from "react";
+import React, { useContext } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
-import { Unit } from "../denomination";
+import type { Unit } from "../denomination";
 import { FeatureFlagsContext } from "../feature-flags";
 import * as Format from "../format";
 import { AmountUnitSpace } from "./Spacing";

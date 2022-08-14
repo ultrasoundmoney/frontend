@@ -1,4 +1,4 @@
-import { StepperPoint } from "../../context/StepperContext";
+import type { StepperPoint } from "../../context/StepperContext";
 
 export type ActionLogo = "none" | "down" | "move" | "up";
 

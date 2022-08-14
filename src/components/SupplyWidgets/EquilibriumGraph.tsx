@@ -2,12 +2,14 @@ import * as DateFns from "date-fns";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import _ from "lodash";
-import { FC, useEffect, useRef, useState } from "react";
+import type { FC} from "react";
+import { useEffect, useRef, useState } from "react";
 import colors from "../../colors";
 import * as Format from "../../format";
-import { NEA } from "../../fp";
+import type { NEA } from "../../fp";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import styles from "./EquilibriumGraph.module.scss";
+import equilibriumDot from "./dot_supply_graph.svg";
 
 export type Point = [number, number];
 

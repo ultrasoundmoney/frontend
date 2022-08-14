@@ -1,5 +1,6 @@
-import { FC, ReactEventHandler, useCallback, useState } from "react";
-import { Linkables } from "../api/fam";
+import type { FC, ReactEventHandler} from "react";
+import { useCallback, useState } from "react";
+import type { Linkables } from "../api/fam";
 import * as Format from "../format";
 import scrollbarStyles from "../styles/Scrollbar.module.scss";
 import { BodyText, TextRoboto } from "./Texts";

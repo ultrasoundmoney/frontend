@@ -1,6 +1,7 @@
 import React from "react";
 import Card from "./card";
-import { FirstVidgetProps, convertDateStringReadable } from "./helpers";
+import type { FirstVidgetProps} from "./helpers";
+import { convertDateStringReadable } from "./helpers";
 
 const FirstVidget: React.FC<FirstVidgetProps> = ({
   date,

@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import * as React from "react";
-import { DateTime } from "luxon";
 import Highcharts from "highcharts";
 import highchartsAnnotations from "highcharts/modules/annotations";
 import HighchartsReact from "highcharts-react-official";
@@ -12,13 +11,12 @@ import stakingData from "./supply-staking.json";
 
 import { useDebounce } from "../../utils/use-debounce";
 import {
-  estimatedDailyFeeBurn,
-  estimatedDailyIssuance,
   estimatedDailyStakeChange,
   formatDate,
 } from "../../utils/metric-utils";
 import { useOnResize } from "../../utils/use-on-resize";
 import { defaultOptions } from "../../utils/chart-defaults";
+import * as DateFns from "date-fns";
 
 import styles from "./SupplyChart.module.scss";
 import { TranslationsContext } from "../../translations-context";
@@ -36,7 +34,6 @@ interface sypplyDataObj {
 interface Props {
   projectedStaking: number;
   projectedBaseGasPrice: number;
-  projectedMergeDate: DateTime;
   showBreakdown: boolean;
 }
 
@@ -45,7 +42,7 @@ interface HighchartsRef {
   container: React.RefObject<HTMLDivElement>;
 }
 
-const LONDON_DATE = DateTime.fromISO("2021-08-05T00:00:00Z");
+const LONDON_DATE = DateFns.parseISO("2021-08-05T00:00:00Z");
 const NUM_DAYS_PER_POINT = 7;
 const COMPACT_MARKERS_BELOW_WIDTH = 1040;
 const COMPACT_CHART_BELOW_WIDTH = 640;
@@ -53,7 +50,6 @@ const COMPACT_CHART_BELOW_WIDTH = 640;
 const SupplyChart: React.FC<Props> = ({
   projectedBaseGasPrice,
   projectedStaking,
-  projectedMergeDate,
   showBreakdown: forceShowBreakdown,
 }) => {
   const t = React.useContext(TranslationsContext);
@@ -98,7 +94,6 @@ const SupplyChart: React.FC<Props> = ({
     () => ({
       projectedBaseGasPrice,
       projectedStaking,
-      projectedMergeDate,
       showBreakdown: false || forceShowBreakdown,
       useCompactChart,
       useCompactMarkers,
@@ -106,7 +101,6 @@ const SupplyChart: React.FC<Props> = ({
     [
       projectedBaseGasPrice,
       projectedStaking,
-      projectedMergeDate,
       forceShowBreakdown,
       useCompactChart,
       useCompactMarkers,
@@ -136,8 +130,8 @@ const SupplyChart: React.FC<Props> = ({
         return;
       }
 
-      const date = DateTime.fromISO(timestamp, { zone: "utc" });
-      const dateMillis: number = date.toMillis();
+      const date = DateFns.parseISO(timestamp);
+      const dateMillis: number = DateFns.getTime(date);
 
       // Subtract any staking eth from total supply on that date
       const stakingSupply: number = stakingByDate[timestamp] || 0;
@@ -154,62 +148,12 @@ const SupplyChart: React.FC<Props> = ({
     const lastStakingPoint = last(stakingSeriesData);
 
     // Projection should be 1/3 of chart
-    const firstDate = DateTime.fromISO(supplyData[0].t, { zone: "utc" });
-    const lastDate = DateTime.fromISO(supplyData[supplyData.length - 1].t, {
-      zone: "utc",
-    });
-    const daysOfData = lastDate.diff(firstDate, "days").days;
+    const firstDate = DateFns.parseISO(supplyData[0].t);
+    const lastDate = DateFns.parseISO(supplyData[supplyData.length - 1].t);
+    const daysOfData = DateFns.differenceInDays(lastDate, firstDate);
     const daysOfProjection = Math.floor(daysOfData / 2);
 
     const supplyProj: number[][] = [lastSupplyPoint!];
-    const mergeDate = chartSettings.projectedMergeDate.toSeconds();
-
-    let supplyValue = lastSupplyPoint![1];
-    let stakingValue = lastStakingPoint![1];
-
-    for (let i = 0; i < daysOfProjection; i++) {
-      const projDate = lastDate.plus({ days: i + 1 }).startOf("day");
-
-      // Calculate new ETH staking on this day
-      if (stakingValue < chartSettings.projectedStaking) {
-        // Add ETH to approach projected staking value
-        stakingValue = Math.min(
-          chartSettings.projectedStaking,
-          stakingValue + estimatedDailyStakeChange(stakingValue),
-        );
-      } else if (stakingValue > chartSettings.projectedStaking) {
-        // Subtract ETH to approach projected staking value
-        stakingValue = Math.max(
-          chartSettings.projectedStaking,
-          stakingValue - estimatedDailyStakeChange(stakingValue),
-        );
-      }
-
-      // Add in PoS issuance
-      let newIssuance = estimatedDailyIssuance(stakingValue);
-      // If this is berfore the merge, add PoW issuance
-      if (projDate.toSeconds() < mergeDate) {
-        newIssuance += 13500;
-      }
-      // If this is after EIP-1559 calculate the fee burn
-      let burn = 0;
-      if (projDate.toSeconds() >= LONDON_DATE.toSeconds()) {
-        burn = estimatedDailyFeeBurn(chartSettings.projectedBaseGasPrice);
-      }
-
-      supplyValue = Math.max(supplyValue + newIssuance - burn, 0);
-      // Make sure our total supply value can't dip below the amount staked
-      const adjustedSupplyValue = Math.max(supplyValue, stakingValue);
-
-      // Only render every Nth point for chart performance
-      if (i % NUM_DAYS_PER_POINT !== 0) {
-        continue;
-      }
-
-      const projDateMillis = projDate.toMillis();
-      supplyProj.push([projDateMillis, adjustedSupplyValue]);
-      supplyByDate[projDateMillis] = adjustedSupplyValue;
-    }
 
     const series: Highcharts.SeriesLineOptions[] = [
       {
@@ -300,9 +244,9 @@ const SupplyChart: React.FC<Props> = ({
         useHTML: true,
         formatter: function () {
           const x: number = this.x !== undefined ? Number(this.x) : 0;
-          const dt = DateTime.fromMillis(x, { zone: "utc" });
+          const dt = new Date(x);
           const header = `<div class="tt-header"><div class="tt-header-date text-blue-spindle">${formatDate(
-            dt.toJSDate(),
+            dt,
           )}</div></div>`;
 
           const total = totalSupplyByDate[x];

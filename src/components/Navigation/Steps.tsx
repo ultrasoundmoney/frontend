@@ -3,7 +3,7 @@ import { TranslationsContext } from "../../translations-context";
 import StepperPoint from "./StepperPoint";
 import StepperTrack from "./StepperTrack";
 import { motion } from "framer-motion";
-import { StepsProps, ControlPointMutated } from "./types";
+import type { StepsProps, ControlPointMutated } from "./types";
 import { MOBILE_VERTICAL_SCROLL_BREAK_POINT } from "./helpers";
 import classes from "./Navigation.module.scss";
 

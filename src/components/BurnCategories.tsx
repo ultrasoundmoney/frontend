@@ -1,11 +1,13 @@
-import { FC, useContext, useState } from "react";
+import type { FC} from "react";
+import { useContext, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import { BurnCategory, useBurnCategories } from "../api/burn-categories";
+import type { BurnCategory} from "../api/burn-categories";
+import { useBurnCategories } from "../api/burn-categories";
 import Colors from "../colors";
 import { FeatureFlagsContext } from "../feature-flags";
 import * as Format from "../format";
 import { A, flow, NEA, O, pipe } from "../fp";
-import { TimeFrameNext } from "../time-frames";
+import type { TimeFrameNext } from "../time-frames";
 import { MoneyAmount } from "./Amount";
 import { BodyText, LabelText, TextRoboto } from "./Texts";
 import { BurnGroupBase, WidgetTitle } from "./WidgetSubcomponents";

@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import classes from "./BlockBtcEthUsd.module.scss";
-import { onHoverFunctionality, onSvgMouseOut, graphTypes } from "./helpers";
+import type { graphTypes } from "./helpers";
+import { onHoverFunctionality, onSvgMouseOut } from "./helpers";
 
 type NoneSvgProps = {
   setSpecificTab: (val: graphTypes) => void;

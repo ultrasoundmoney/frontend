@@ -1,4 +1,5 @@
-import { FC, useContext } from "react";
+import type { FC} from "react";
+import { useContext } from "react";
 import * as Format from "../../format";
 import Skeleton from "react-loading-skeleton";
 import { useTotalValueSecured } from "../../api/total-value-secured";

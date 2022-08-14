@@ -1,6 +1,6 @@
 import React from "react";
 import Card from "./card";
-import { ThirdVidgetProps } from "./helpers";
+import type { ThirdVidgetProps } from "./helpers";
 
 const ThirdVidget: React.FC<ThirdVidgetProps> = ({ name, numberETHBlock }) => {
   return (

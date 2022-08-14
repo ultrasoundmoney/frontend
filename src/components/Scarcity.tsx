@@ -1,6 +1,7 @@
 import * as DateFns from "date-fns";
 import JSBI from "jsbi";
-import { FC, useState } from "react";
+import type { FC} from "react";
+import { useState } from "react";
 import { useScarcity } from "../api/scarcity";
 import Colors from "../colors";
 import * as Format from "../format";

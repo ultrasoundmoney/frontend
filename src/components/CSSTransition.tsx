@@ -1,6 +1,7 @@
-import React, { ReactElement, useRef } from "react";
+import type { ReactElement} from "react";
+import React, { useRef } from "react";
 import { CSSTransition as _CSSTransition } from "react-transition-group";
-import { CSSTransitionProps } from "react-transition-group/CSSTransition";
+import type { CSSTransitionProps } from "react-transition-group/CSSTransition";
 
 // We have our own CSSTransition wrapper as the library is doing deprecated things.
 // See: https://github.com/reactjs/react-transition-group/issues/668
