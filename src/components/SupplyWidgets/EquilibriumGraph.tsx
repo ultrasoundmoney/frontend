@@ -143,7 +143,7 @@ const EquilibriumGraph: FC<Props> = ({
               x: _.last(supplyEquilibriumSeries)?.[0],
               y: _.last(supplyEquilibriumSeries)?.[1],
               marker: {
-                symbol: `url(/dot_supply_graph.svg)`,
+                symbol: `url(${equilibriumDot})`,
                 enabled: true,
               },
             },
