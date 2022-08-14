@@ -1,4 +1,4 @@
-import * as Highcharts from "highcharts";
+import type * as Highcharts from "highcharts";
 
 export const COLORS = {
   GRID: "#262e48",

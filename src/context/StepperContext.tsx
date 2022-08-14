@@ -1,4 +1,5 @@
-import { createContext, FC, MutableRefObject, useState, ReactNode } from "react";
+import type { FC, MutableRefObject, ReactNode } from "react";
+import { createContext, useState } from "react";
 
 export type StepperPoint = {
   offsetY: number;

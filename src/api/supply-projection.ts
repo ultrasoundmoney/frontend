@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { NEA } from "../fp";
+import type { NEA } from "../fp";
 import fetcher from "./default-fetcher";
 import { feesBasePath } from "./fees";
 

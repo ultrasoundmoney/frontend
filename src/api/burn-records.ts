@@ -1,6 +1,6 @@
 import * as DateFns from "date-fns";
 import { A, pipe, Re } from "../fp";
-import { TimeFrameNext } from "../time-frames";
+import type { TimeFrameNext } from "../time-frames";
 
 export type BurnRecord = {
   blockNumber: number;

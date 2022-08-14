@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { TimeFrameNext } from "../time-frames";
+import type { TimeFrameNext } from "../time-frames";
 import fetcher from "./default-fetcher";
 import { feesBasePath } from "./fees";
 

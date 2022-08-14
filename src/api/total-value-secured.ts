@@ -1,8 +1,8 @@
 import useSWR from "swr";
 import * as Duration from "../duration";
-import { NEA } from "../fp";
+import type { NEA } from "../fp";
 import fetcher from "./default-fetcher";
-import { Linkables } from "./fam";
+import type { Linkables } from "./fam";
 import { feesBasePath } from "./fees";
 
 export type TvsRanking = {
