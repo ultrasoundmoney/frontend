@@ -1,6 +1,6 @@
-type Env = "dev" | "prod" | "staging";
+type Env = "dev" | "prod" | "stag";
 
-const getEnv = (): Env => {
+export const getEnv = (): Env => {
   const rawEnv = process.env.NEXT_PUBLIC_ENV;
 
   switch (rawEnv) {
@@ -9,22 +9,20 @@ const getEnv = (): Env => {
     case "dev":
       return "dev";
     case "staging":
-      return "staging";
+      return "stag";
     case "stag":
-      return "staging";
+      return "stag";
     default:
       console.warn("no ENV in env, defaulting to dev");
       return "dev";
   }
 };
 
-export const env = getEnv();
-
-const getApiEnv = (): Env => {
+export const getApiEnv = (): Env => {
   const apiEnv = process.env.NEXT_PUBLIC_API_ENV;
 
   if (apiEnv === undefined) {
-    return env === "staging" ? "staging" : "prod";
+    return getEnv() === "stag" ? "stag" : "prod";
   }
 
   switch (apiEnv) {
@@ -33,13 +31,11 @@ const getApiEnv = (): Env => {
     case "dev":
       return "dev";
     case "staging":
-      return "staging";
+      return "stag";
     case "stag":
-      return "staging";
+      return "stag";
     default:
       console.warn("no ENV in env, defaulting to dev");
       return "dev";
   }
 };
-
-export const apiEnv = getApiEnv();

@@ -42,9 +42,9 @@ type ProfilesResponse = {
 };
 
 export const famBasePath =
-  Config.apiEnv === "staging"
+  Config.getApiEnv() === "stag"
     ? "https://api-stag.ultrasound.money/fam"
-    : Config.apiEnv === "dev"
+    : Config.getApiEnv() === "dev"
     ? "http://localhost:8082/fam"
     : "https://api.ultrasound.money/fam";
 

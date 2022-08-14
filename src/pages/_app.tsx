@@ -9,7 +9,7 @@ Sentry.init({
   enabled: process.env.ENV !== "dev",
   environment: process.env.ENV,
   integrations: [new BrowserTracing()],
-  tracesSampleRate: process.env.ENV === "staging" ? 1 : 0.1,
+  tracesSampleRate: process.env.ENV === "stag" ? 1 : 0.1,
 });
 
 const MyApp = ({ Component, pageProps }: AppProps) => (
