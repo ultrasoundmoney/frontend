@@ -36,9 +36,6 @@ const EPOCHS_PER_YEAR: number = 365.25 * EPOCHS_PER_DAY;
 
 const BASE_REWARD_FACTOR = 64;
 
-type Eth = number;
-type Gwei = number;
-
 const getIssuancePerYear = (effective_balance_sum: Eth): number => {
   const balance_sum_gwei = effective_balance_sum * GWEI_PER_ETH;
   const max_issuance_per_epoch = Math.trunc(
