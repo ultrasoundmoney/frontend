@@ -1,16 +1,17 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import useSWR from "swr";
 import * as Duration from "../duration";
+import type { Wei } from "../eth-units";
 import { FeatureFlagsContext } from "../feature-flags";
 import { NEA } from "../fp";
-import { BurnRecords, decodeBurnRecords, RawBurnRecords } from "./burn-records";
+import type { BurnRecords, BurnRecordsF } from "./burn-records";
+import { decodeBurnRecords } from "./burn-records";
 import fetcher from "./default-fetcher";
 import { feesBasePath, feesWsUrl } from "./fees";
-import { Leaderboards } from "./leaderboards";
+import type { Leaderboards } from "./leaderboards";
 
 type WeiPerMinute = number;
-type Wei = number;
 
 export type BurnRates = {
   burnRate5m: WeiPerMinute;
@@ -66,7 +67,7 @@ export type DeflationaryStreakState = Record<
   DeflationaryStreakMode,
   DeflationaryStreak | null
 >;
-export type FeeData = {
+export type GroupedAnalysis1 = {
   baseFeePerGas: number;
   burnRates: BurnRates;
   burnRecords: BurnRecords["records"];
@@ -78,57 +79,44 @@ export type FeeData = {
   number: number;
 };
 
-type RawFeeData = {
+export type GroupedAnalysis1F = {
   baseFeePerGas: number;
   burnRates: BurnRates;
-  burnRecords: RawBurnRecords["records"];
+  burnRecords: BurnRecordsF["records"];
   deflationaryStreak: DeflationaryStreakState;
-  ethPrice: EthPrice | null;
+  ethPrice: EthPrice | undefined;
   feesBurned: FeesBurned;
   latestBlockFees: NEA.NonEmptyArray<LatestBlock>;
   leaderboards: Leaderboards;
   number: number;
 };
 
-const decodeFeeData = (raw: RawFeeData): FeeData => ({
+export const decodeGroupedAnalysis1 = (
+  raw: GroupedAnalysis1F,
+): GroupedAnalysis1 => ({
   ...raw,
-  ethPrice: raw.ethPrice ?? undefined,
   burnRecords: decodeBurnRecords({
     number: raw.number,
     records: raw.burnRecords,
   }).records,
 });
 
-export const useGroupedAnalysis1 = (): FeeData | undefined => {
-  const { useWebSockets } = useContext(FeatureFlagsContext);
-  const { data } = useSWR<RawFeeData>(`${feesBasePath}/all`, fetcher, {
+export const useGroupedAnalysis1 = (): GroupedAnalysis1 | undefined => {
+  const { data } = useSWR<GroupedAnalysis1F>(`${feesBasePath}/all`, fetcher, {
     refreshInterval: Duration.millisFromSeconds(1),
-    isPaused: () => useWebSockets,
   });
-  const dataWs = useGroupedAnalysis1Ws();
-  const [latestGroupedAnalysis1, setLatestGroupedAnalysis1] =
-    useState<FeeData>();
 
-  useEffect(() => {
-    if (useWebSockets) {
-      if (dataWs !== undefined) {
-        setLatestGroupedAnalysis1(decodeFeeData(dataWs));
-      }
+  return useMemo(() => {
+    if (data === undefined) {
       return undefined;
     }
-
-    if (data !== undefined) {
-      setLatestGroupedAnalysis1(decodeFeeData(data));
-      return undefined;
-    }
-  }, [data, dataWs, useWebSockets]);
-
-  return latestGroupedAnalysis1;
+    return decodeGroupedAnalysis1(data);
+  }, [data]);
 };
 
 type GroupedAnallysis1Envelope = {
   id: "grouped-analysis-1";
-  message: RawFeeData;
+  message: GroupedAnalysis1F;
 };
 
 const getIsGroupedAnalysisMessage = (
@@ -139,10 +127,10 @@ const getIsGroupedAnalysisMessage = (
   (u as GroupedAnallysis1Envelope).id === "grouped-analysis-1";
 
 export const useGroupedAnalysis1Ws = (): // enabled: boolean,
-RawFeeData | undefined => {
+GroupedAnalysis1F | undefined => {
   const { useWebSockets } = useContext(FeatureFlagsContext);
   const [latestGroupedAnalysis1, setLatestGroupedAnalysis1] =
-    useState<RawFeeData>();
+    useState<GroupedAnalysis1F>();
   const [socketUrl] = useState(feesWsUrl);
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { lastJsonMessage } = useWebSocket(

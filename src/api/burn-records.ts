@@ -13,18 +13,18 @@ export type BurnRecords = {
   records: Record<TimeFrameNext, BurnRecord[]>;
 };
 
-type RawBurnRecord = {
+type BurnRecordF = {
   blockNumber: number;
   baseFeeSum: number;
   minedAt: string;
 };
 
-export type RawBurnRecords = {
+export type BurnRecordsF = {
   number: number;
-  records: Record<TimeFrameNext, RawBurnRecord[]>;
+  records: Record<TimeFrameNext, BurnRecordF[]>;
 };
 
-export const decodeBurnRecords = (rawBurnRecords: RawBurnRecords) =>
+export const decodeBurnRecords = (rawBurnRecords: BurnRecordsF) =>
   pipe({
     ...rawBurnRecords,
     records: pipe(
