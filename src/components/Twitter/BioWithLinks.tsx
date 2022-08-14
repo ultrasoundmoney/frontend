@@ -1,4 +1,3 @@
-import sanitizeHtml from "sanitize-html";
 import type { FC } from "react";
 import twemoji from "twemoji";
 import type {
@@ -85,16 +84,7 @@ const BioWithLinks: FC<{ bio: string; linkables: Linkables }> = ({
         instruction.type === "text" ? (
           <span
             dangerouslySetInnerHTML={{
-              __html: sanitizeHtml(insertTwemoji(instruction.text.join("")), {
-                allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
-                allowedAttributes: {
-                  img: [
-                    ...sanitizeHtml.defaults.allowedAttributes["img"],
-                    "class",
-                    "draggable",
-                  ],
-                },
-              }),
+              __html: insertTwemoji(instruction.text.join("")),
             }}
             key={index}
           ></span>
