@@ -10,8 +10,8 @@ export const Button: FC<{
   <button
     className={`
       font-roboto font-light
-      text-xs tracking-widest
-      px-3 py-2
+      text-xs md:tracking-widest
+      px-[10px] [@media(min-width:354px)]:px-3 py-2
       select-none
       border
       ${
@@ -19,7 +19,7 @@ export const Button: FC<{
           ? "text-white bg-blue-highlightbg border-blue-highlightborder rounded-sm"
           : "text-blue-spindle border-transparent"
       }
-      `}
+    `}
     onClick={onClick}
   >
     {children}

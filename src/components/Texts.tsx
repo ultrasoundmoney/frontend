@@ -1,10 +1,12 @@
 import type { CSSProperties, FC, ReactNode } from "react";
+import React from "react";
 import Skeleton from "react-loading-skeleton";
+import { AmountUnitSpace } from "./Spacing";
 
-export const LabelText: FC<{ children: ReactNode; className?: string }> = ({
-  children,
-  className,
-}) => (
+export const LabelText: FC<{
+  children: ReactNode;
+  className?: string;
+}> = ({ children, className }) => (
   <TextInter
     className={`
       font-light
@@ -173,4 +175,32 @@ export const StatusText: FC<{ className?: string; children: ReactNode }> = ({
   >
     {children}
   </TextInter>
+);
+
+export const TooltipTitle: FC<{ children: ReactNode }> = ({ children }) => (
+  <TextInter className="font-normal text-base md:text-lg">{children}</TextInter>
+);
+
+type QuantifyTextProps = {
+  amountPostfix?: string;
+  children: ReactNode;
+  className?: string;
+  unitPostfix?: string;
+};
+export const QuantifyText: FC<QuantifyTextProps> = ({
+  amountPostfix,
+  children,
+  className = "",
+  unitPostfix,
+}) => (
+  <TextRoboto className={className}>
+    {children}
+    {amountPostfix}
+    {unitPostfix && (
+      <>
+        <AmountUnitSpace />
+        <UnitText>{unitPostfix}</UnitText>
+      </>
+    )}
+  </TextRoboto>
 );
