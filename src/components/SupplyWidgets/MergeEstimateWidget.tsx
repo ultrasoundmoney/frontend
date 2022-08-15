@@ -153,7 +153,7 @@ const MergeEstimateWidget = () => {
                 md:justify-end
                 cursor-pointer
                 [&_.gray-nerd]:hover:opacity-0
-                [&_.color-nerd]:active:brightness-90
+                [&_.color-nerd]:active:brightness-75
               `}
               onClick={() => setShowNerdTooltip(true)}
             >

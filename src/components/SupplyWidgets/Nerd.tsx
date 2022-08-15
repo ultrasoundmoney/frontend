@@ -11,7 +11,7 @@ const Nerd: FC = () => (
         relative
         gray-nerd
         flex ml-2 select-none z-10
-        hover:opacity-0 [&+.color-nerd]:active:brightness-90`}
+        hover:opacity-0 [&+.color-nerd]:active:brightness-75`}
     >
       <Image
         alt="a nerd emoji offering deeper explanation of a nearby metric"
