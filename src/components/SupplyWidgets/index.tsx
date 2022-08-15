@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import type { Unit } from "../../denomination";
-import type { TimeFrameNext} from "../../time-frames";
+import type { TimeFrameNext } from "../../time-frames";
 import { timeFramesNext } from "../../time-frames";
 import CurrencyControl from "../CurrencyControl";
 import BurnGauge from "../Gauges/BurnGauge";
@@ -12,7 +12,7 @@ import ToggleSwitch from "../ToggleSwitch";
 import { WidgetTitle } from "../WidgetSubcomponents";
 import EquilibriumWidget from "./EquilibriumWidget";
 import EthSupplyWidget from "./EthSupplyWidget";
-import MergeCountdownWidget from "./MergeCountdownWidget";
+import MergeEstimateWidget from "./MergeEstimateWidget";
 
 const SupplyWidgets = () => {
   const [simulateMerge, setSimulateMerge] = useState(false);
@@ -91,7 +91,7 @@ const SupplyWidgets = () => {
           <EthSupplyWidget></EthSupplyWidget>
         </div>
         <div className="w-full">
-          <MergeCountdownWidget />
+          <MergeEstimateWidget />
         </div>
       </div>
       <EquilibriumWidget />
