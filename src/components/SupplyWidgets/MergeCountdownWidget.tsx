@@ -80,7 +80,7 @@ const MergeEstimateWidget = () => {
             </div>
           </div>
         )}
-        <StatusText className="">
+        <StatusText>
           on{" "}
           <span className="text-white">
             {DateFns.format(MERGE_TIMESTAMP_ESTIMATED, "MMMM d")}
