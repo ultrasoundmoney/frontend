@@ -1,6 +1,8 @@
 import * as DateFns from "date-fns";
+import type { FC } from "react";
 import { useContext, useEffect, useState } from "react";
 import CountUp from "react-countup";
+import Skeleton from "react-loading-skeleton";
 import { useMergeEstimate } from "../../api/merge-estimate";
 import { FeatureFlagsContext } from "../../feature-flags";
 import { O, pipe } from "../../fp";
@@ -29,6 +31,14 @@ const shiftDateTimeByTimeZone = (dateTime: Date): Date =>
   new Date(dateTime.toISOString().slice(0, -1));
 
 export const TOTAL_TERMINAL_DIFFICULTY = 58750000000;
+
+const CountdownNumber: FC<{ children: number | undefined }> = ({
+  children,
+}) => (
+  <TextRoboto className="text-[1.7rem]">
+    {children !== undefined ? children : <Skeleton width="2rem"></Skeleton>}
+  </TextRoboto>
+);
 
 const MergeEstimateWidget = () => {
   const mergeEstimate = useMergeEstimate();
@@ -65,7 +75,7 @@ const MergeEstimateWidget = () => {
   // shorten the number by truncating thousands.
   const blocksToTTD =
     mergeEstimate === undefined
-      ? 0
+      ? undefined
       : mergeEstimate.blocksLeft > 1000
       ? mergeEstimate.blocksLeft / 1e3
       : mergeEstimate.blocksLeft;
@@ -82,9 +92,15 @@ const MergeEstimateWidget = () => {
         <div className="relative flex flex-col md:flex-row justify-between gap-y-8 gap-x-2">
           <div className="flex flex-col gap-y-4">
             {/* Keeps the height of this widget equal to the adjacent one. */}
-            <LabelText className="flex items-center min-h-[21px]">
-              {`merge${md ? " estimate" : ""}—${mergeEstimateFormatted} UTC`}
-            </LabelText>
+            {mergeEstimate !== undefined ? (
+              <LabelText className="flex items-center min-h-[21px]">
+                {`merge${md ? " estimate" : ""}—${mergeEstimateFormatted} UTC`}
+              </LabelText>
+            ) : (
+              <LabelText className="flex items-center min-h-[21px]">
+                merge estimate
+              </LabelText>
+            )}
             {(mergeEstimate !== undefined &&
               Number(mergeEstimate.totalDifficulty) / 1e12 >=
                 TOTAL_TERMINAL_DIFFICULTY) ||
@@ -103,33 +119,26 @@ const MergeEstimateWidget = () => {
             ) : (
               <div className="flex gap-x-6 md:gap-x-7">
                 <div className="flex flex-col items-center gap-y-2 ">
-                  <TextRoboto className="text-[1.7rem]">
-                    {timeLeft?.days ?? 0}
-                  </TextRoboto>
+                  <CountdownNumber>{timeLeft?.days}</CountdownNumber>
                   <LabelText className="text-slateus-400">
                     {timeLeft?.days === 1 ? "day" : "days"}
                   </LabelText>
                 </div>
                 <div className="flex flex-col items-center gap-y-2 ">
-                  <TextRoboto className="text-[1.7rem]">
-                    {timeLeft?.hours ?? 0}
-                  </TextRoboto>
+                  <CountdownNumber>{timeLeft?.hours}</CountdownNumber>
+
                   <LabelText className="text-slateus-400">
                     {timeLeft?.hours === 1 ? "hour" : "hours"}
                   </LabelText>
                 </div>
                 <div className="flex flex-col items-center gap-y-2 ">
-                  <TextRoboto className="text-[1.7rem]">
-                    {timeLeft?.minutes ?? 0}
-                  </TextRoboto>
+                  <CountdownNumber>{timeLeft?.minutes}</CountdownNumber>
                   <LabelText className="text-slateus-400">
                     {timeLeft?.minutes === 1 ? "min" : "mins"}
                   </LabelText>
                 </div>
                 <div className="flex flex-col items-center gap-y-2 ">
-                  <TextRoboto className="text-[1.7rem]">
-                    {timeLeft?.seconds ?? 0}
-                  </TextRoboto>
+                  <CountdownNumber>{timeLeft?.seconds}</CountdownNumber>
                   <LabelText className="text-slateus-400">
                     {timeLeft?.seconds === 1 ? "sec" : "secs"}
                   </LabelText>
@@ -171,12 +180,16 @@ const MergeEstimateWidget = () => {
             <div className="flex md:justify-end">
               <div className="flex flex-col gap-y-2 items-center">
                 <TextRoboto className="text-[1.7rem]">
-                  <CountUp
-                    separator=","
-                    end={blocksToTTD}
-                    suffix={blocksToTTDSuffix ? "K" : ""}
-                    preserveValue
-                  />
+                  {blocksToTTD !== undefined ? (
+                    <CountUp
+                      separator=","
+                      end={blocksToTTD}
+                      suffix={blocksToTTDSuffix ? "K" : ""}
+                      preserveValue
+                    />
+                  ) : (
+                    <Skeleton width="4rem"></Skeleton>
+                  )}
                 </TextRoboto>
                 <LabelText className="text-slateus-400">blocks</LabelText>
               </div>

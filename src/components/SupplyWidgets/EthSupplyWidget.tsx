@@ -84,8 +84,10 @@ const EthSupplyWidget = () => {
             <div className="flex gap-x-1 items-center">
               <LabelText className="text-slateus-400">updated</LabelText>
               <div className="flex items-baseline">
-                <LabelUnitText>
-                  {!previewSkeletons ? timeElapsed : undefined}
+                <LabelUnitText skeletonWidth="1rem">
+                  {!previewSkeletons && timeElapsed !== undefined
+                    ? timeElapsed
+                    : undefined}
                 </LabelUnitText>
                 <LabelText className="ml-1">seconds</LabelText>
               </div>

@@ -4,7 +4,7 @@ import Skeleton from "react-loading-skeleton";
 import { AmountUnitSpace } from "./Spacing";
 
 export const LabelText: FC<{
-  children: ReactNode;
+  children: ReactNode | undefined;
   className?: string;
   skeletonWidth?: string;
 }> = ({ children, className = "", skeletonWidth = "3rem" }) => (
@@ -25,10 +25,10 @@ export const LabelText: FC<{
 );
 
 export const LabelUnitText: FC<{
-  children: ReactNode;
+  children: ReactNode | undefined;
   className?: string;
   skeletonWidth?: string;
-}> = ({ children, className, skeletonWidth }) => (
+}> = ({ children, className, skeletonWidth = "3rem" }) => (
   <TextRoboto
     className={`
       font-light
