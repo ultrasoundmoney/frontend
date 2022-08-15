@@ -1,6 +1,6 @@
 import JSBI from "jsbi";
 import { A, pipe } from "../../fp";
-import type { FC} from "react";
+import type { FC } from "react";
 import { useCallback } from "react";
 import CountUp from "react-countup";
 import { AmountAnimatedShell, defaultMoneyAnimationDuration } from "../Amount";
@@ -66,11 +66,13 @@ const Digits: FC<{ children: JSBI }> = ({ children }) => {
   );
 
   return (
-    <div className="relative w-9 -mr-1">
+    <div className="relative w-[26px] [@media(min-width:375px)]:w-9 -mr-1">
       <div
         // We need whitespace-normal to counteract the whitespace-nowrap from our parent.
         className={`
-          text-[8px] leading-[0.5rem] text-white
+          text-[6px] [@media(min-width:375px)]:text-[8px]
+          leading-[0.4rem] [@media(min-width:375px)]:leading-[0.5rem]
+          text-white
           block break-all
           whitespace-normal
           absolute
@@ -94,7 +96,9 @@ const Digits: FC<{ children: JSBI }> = ({ children }) => {
       <div
         // We need whitespace-normal to counteract the whitespace-nowrap from our parent.
         className={`
-          text-[8px] leading-[0.5rem] text-blue-spindle
+          text-[6px] [@media(min-width:375px)]:text-[8px]
+          leading-[0.4rem] [@media(min-width:375px)]:leading-[0.5rem]
+          text-blue-spindle
           block break-all
           whitespace-normal
           left-0
@@ -127,7 +131,7 @@ const PreciseEth: FC<{ children?: JSBI; justify?: "justify-end" }> = ({
       ${justify !== undefined ? justify : ""}
       tracking-tight
     `}
-    textClassName="text-[1.70rem]"
+    textClassName="text-[1.30rem] [@media(min-width:375px)]:text-[1.70rem]"
     skeletonWidth={"3rem"}
     unitText={"ETH"}
   >
