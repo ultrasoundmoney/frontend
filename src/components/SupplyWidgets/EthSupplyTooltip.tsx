@@ -1,7 +1,6 @@
 import type { FC } from "react";
 import { useEthSupply } from "../../api/eth-supply";
-import { BodyText } from "../Texts";
-import { WidgetTitle } from "../WidgetSubcomponents";
+import { BodyText, LabelText, TooltipTitle } from "../Texts";
 import PreciseEth from "./PreciseEth";
 
 const EthSupplyTooltip: FC<{ onClickClose: () => void }> = ({
@@ -33,8 +32,8 @@ const EthSupplyTooltip: FC<{ onClickClose: () => void }> = ({
         className="w-20 h-20 mx-auto rounded-full select-none"
         src={"/round-nerd-large.svg"}
       />
-      <BodyText className="font-semibold">ETH supply breakdown</BodyText>
-      <WidgetTitle>formula</WidgetTitle>
+      <TooltipTitle>ETH supply breakdown</TooltipTitle>
+      <LabelText>formula</LabelText>
       <div className="flex flex-col">
         <BodyText>supply = EVM balances +</BodyText>
         <div className="ml-[69px] md:ml-[77px]">
@@ -42,15 +41,15 @@ const EthSupplyTooltip: FC<{ onClickClose: () => void }> = ({
           <BodyText>beacon chain deposits</BodyText>
         </div>
       </div>
-      <WidgetTitle>EVM balances</WidgetTitle>
+      <LabelText>EVM balances</LabelText>
       <PreciseEth justify="justify-end">
         {ethSupply?.executionBalancesSum.balancesSum}
       </PreciseEth>
-      <WidgetTitle>beacon chain balances</WidgetTitle>
+      <LabelText>beacon chain balances</LabelText>
       <PreciseEth justify="justify-end">
         {ethSupply?.beaconBalancesSum.balancesSum}
       </PreciseEth>
-      <WidgetTitle>beacon chain deposits</WidgetTitle>
+      <LabelText>beacon chain deposits</LabelText>
       <PreciseEth justify="justify-end">
         {ethSupply?.beaconDepositsSum.depositsSum}
       </PreciseEth>
