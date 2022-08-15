@@ -1,18 +1,13 @@
-import { LabelText, StatusText, TextRoboto } from "../Texts";
-import { WidgetBackground } from "../WidgetSubcomponents";
 import * as DateFns from "date-fns";
 import { useEffect, useState } from "react";
-import Twemoji from "../Twemoji";
-import { MERGE_TIMESTAMP_ESTIMATED } from "../../eth-time";
+import CountUp from "react-countup";
 import { useMergeEstimate } from "../../api/merge-estimate";
 import { O, pipe } from "../../fp";
-import Modal from "../Modal";
-import MergeEstimateTooltip from "./MergeEstimateTooltip";
-import { Amount } from "../Amount";
-import CountUp from "react-countup";
-import { merge } from "highcharts";
-import { estimatedDailyFeeBurn } from "../../utils/metric-utils";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
+import { LabelText, TextRoboto } from "../Texts";
+import Twemoji from "../Twemoji";
+import { WidgetBackground } from "../WidgetSubcomponents";
+import MergeEstimateTooltip from "./MergeEstimateTooltip";
 
 type TimeLeft = {
   days: number;
@@ -31,11 +26,13 @@ const getTimeLeft = (estimatedDateTime: Date) => ({
 const shiftDateTimeByTimeZone = (dateTime: Date): Date =>
   new Date(dateTime.toISOString().slice(0, -1));
 
+export const TOTAL_TERMINAL_DIFFICULTY = 58750000000;
+
 const MergeEstimateWidget = () => {
   const mergeEstimate = useMergeEstimate();
   const [timeLeft, setTimeLeft] = useState<TimeLeft>();
   const [isHoveringNerd, setIsHoveringNerd] = useState(false);
-  const { md } = useActiveBreakpoint();
+  const { lg, xl } = useActiveBreakpoint();
 
   useEffect(() => {
     if (mergeEstimate === undefined) {
@@ -58,16 +55,40 @@ const MergeEstimateWidget = () => {
     O.toUndefined,
   );
 
+  // If we don't have data, show a zero.
+  // If we have data and we're not dealing with the two column layout on a
+  // smaller screen (lg && !xl), show the full number.
+  // If we are dealing with the two column layout and are on a small screen,
+  // shorten the number by truncating thousands.
+  const blocksToTTD =
+    mergeEstimate === undefined
+      ? 0
+      : !(lg && !xl)
+      ? mergeEstimate.blocksLeft
+      : mergeEstimate.blocksLeft > 1000
+      ? mergeEstimate.blocksLeft / 1e3
+      : mergeEstimate.blocksLeft;
+  const blocksToTTDSuffix =
+    mergeEstimate === undefined
+      ? false
+      : !(lg && !xl)
+      ? false
+      : mergeEstimate.blocksLeft > 1000
+      ? true
+      : false;
+
   return (
     <>
       <WidgetBackground>
-        <div className="relative flex flex-col md:flex-row justify-between gap-y-8">
+        <div className="relative flex flex-col md:flex-row justify-between gap-y-8 gap-x-2">
           <div className="flex flex-col gap-y-4">
             {/* Keeps the height of this widget equal to the adjacent one. */}
-            <LabelText className="flex items-center min-h-[21px]">
+            <LabelText className="flex items-center min-h-[21px] truncate">
               {`merge estimate—${mergeEstimateFormatted} UTC`}
             </LabelText>
-            {DateFns.isPast(MERGE_TIMESTAMP_ESTIMATED) ? (
+            {mergeEstimate !== undefined &&
+            Number(mergeEstimate.totalDifficulty) / 1e12 >=
+              TOTAL_TERMINAL_DIFFICULTY ? (
               <div className="flex gap-x-8 mx-auto items-center h-14">
                 <Twemoji className="flex gap-x-2" imageClassName="h-10" wrapper>
                   🎉
@@ -80,34 +101,36 @@ const MergeEstimateWidget = () => {
                 </Twemoji>
               </div>
             ) : (
-              <div className="flex gap-x-4 md:gap-x-8 mx-auto ">
-                <div className="flex flex-col items-center gap-y-2 w-[44px]">
-                  <TextRoboto className="text-4xl">
+              <div className="flex gap-x-4 md:gap-x-6 mx-auto ">
+                <div className="flex flex-col items-center gap-y-2 w-[40px]">
+                  <TextRoboto className="text-[1.7rem]">
                     {timeLeft?.days ?? 0}
                   </TextRoboto>
-                  <LabelText>{timeLeft?.days === 1 ? "day" : "days"}</LabelText>
+                  <LabelText className="text-slateus-400">
+                    {timeLeft?.days === 1 ? "day" : "days"}
+                  </LabelText>
                 </div>
-                <div className="flex flex-col items-center gap-y-2 w-[44px]">
-                  <TextRoboto className="text-4xl">
+                <div className="flex flex-col items-center gap-y-2 w-[40px]">
+                  <TextRoboto className="text-[1.7rem]">
                     {timeLeft?.hours ?? 0}
                   </TextRoboto>
-                  <LabelText>
+                  <LabelText className="text-slateus-400">
                     {timeLeft?.hours === 1 ? "hour" : "hours"}
                   </LabelText>
                 </div>
-                <div className="flex flex-col items-center gap-y-2 w-[44px]">
-                  <TextRoboto className="text-4xl">
+                <div className="flex flex-col items-center gap-y-2 w-[40px]">
+                  <TextRoboto className="text-[1.7rem]">
                     {timeLeft?.minutes ?? 0}
                   </TextRoboto>
-                  <LabelText>
+                  <LabelText className="text-slateus-400">
                     {timeLeft?.minutes === 1 ? "min" : "mins"}
                   </LabelText>
                 </div>
-                <div className="flex flex-col items-center gap-y-2 w-[44px]">
-                  <TextRoboto className="text-4xl">
+                <div className="flex flex-col items-center gap-y-2 w-[40px]">
+                  <TextRoboto className="text-[1.7rem]">
                     {timeLeft?.seconds ?? 0}
                   </TextRoboto>
-                  <LabelText>
+                  <LabelText className="text-slateus-400">
                     {timeLeft?.seconds === 1 ? "sec" : "secs"}
                   </LabelText>
                 </div>
@@ -116,11 +139,20 @@ const MergeEstimateWidget = () => {
           </div>
           <div className="flex flex-col gap-y-4">
             <div
-              className="flex items-center [&_.tooltip]:hover:block pr-8 md:pr-0 cursor-pointer md:justify-end"
+              // Uses CSS to show the tooltip.
+              // Expands element invisibly using padding and negative margin to
+              // keep the tooltip open.
+              className={`
+                flex items-center
+                [&_.tooltip]:hover:block
+                md:pl-5 md:-ml-5 md:pb-4 md:-mb-4 md:pt-4 md:-mt-4
+                cursor-pointer
+                md:justify-end
+              `}
               onMouseEnter={() => setIsHoveringNerd(true)}
               onMouseLeave={() => setIsHoveringNerd(false)}
             >
-              <LabelText>blocks to ttd</LabelText>
+              <LabelText className="truncate">blocks to ttd</LabelText>
               <img
                 alt="an emoji of a nerd"
                 className={`ml-2 select-none ${isHoveringNerd ? "hidden" : ""}`}
@@ -135,27 +167,31 @@ const MergeEstimateWidget = () => {
                 className={`
                   tooltip hidden absolute
                   top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-                  w-[calc(100% + 96px)] max-w-xs
+                  w-[calc(100% + 96px)] max-w-sm
                   whitespace-nowrap
                   z-10
+                  cursor-default
                 `}
               >
                 <MergeEstimateTooltip
-                  fancyFormulaFormatting={md}
                   latestBlockDifficulty={mergeEstimate?.difficulty}
                   totalDifficulty={mergeEstimate?.totalDifficulty}
+                  totalTerminalDifficulty={TOTAL_TERMINAL_DIFFICULTY}
                 />
               </div>
             </div>
             <div className="flex flex-col gap-y-2 md:items-center">
-              <TextRoboto className="text-4xl">
+              <TextRoboto className="text-[1.7rem]">
                 <CountUp
                   separator=","
-                  end={mergeEstimate?.blocksLeft ?? 0}
+                  end={blocksToTTD}
+                  suffix={blocksToTTDSuffix ? "K" : ""}
                   preserveValue
                 />
               </TextRoboto>
-              <LabelText className="hidden md:block">blocks</LabelText>
+              <LabelText className="hidden md:block text-slateus-400">
+                blocks
+              </LabelText>
             </div>
           </div>
         </div>

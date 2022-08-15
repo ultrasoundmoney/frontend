@@ -5,26 +5,27 @@ import roundNerdLarge from "./round-nerd-large.svg";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 
-const TOTAL_TERMINAL_DIFFICULTY = 58750000000;
-
 type Props = {
   className?: string;
-  fancyFormulaFormatting: boolean;
   latestBlockDifficulty: string | undefined;
   onClickClose?: () => void;
   totalDifficulty: string | undefined;
+  totalTerminalDifficulty: number;
 };
 
 const MergeEstimateTooltip: FC<Props> = ({
   className = "",
   latestBlockDifficulty,
   totalDifficulty,
+  totalTerminalDifficulty,
 }) => (
   <div
     onClick={(e) => {
       e.stopPropagation();
     }}
-    // Somehow this absolute element has lost selectability and cursor-text, we hack it back in.
+    // Because this element is rendered as a child of a button it has
+    // select-none and cursor-pointer. We force overwrite so text is selectable
+    // and changes the cursor.
     className={`
       relative
       flex flex-col gap-y-4
@@ -46,14 +47,14 @@ const MergeEstimateTooltip: FC<Props> = ({
     <TooltipTitle>blocks til merge (estimate)</TooltipTitle>
     <LabelText>formula</LabelText>
     <div className="flex flex-col">
-      <BodyText>blocks = (TTD - Total Difficulty)</BodyText>
+      <BodyText>blocks = (TTD - total difficulty)</BodyText>
       <div className="ml-[69px] md:ml-[77px]">
         <BodyText inline={false}>/ latest block difficulty</BodyText>
       </div>
     </div>
     <LabelText>Total Terminal Difficulty (TTD)</LabelText>
     <QuantifyText amountPostfix="T" className="text-right text-xl">
-      {Format.formatZeroDecimals(TOTAL_TERMINAL_DIFFICULTY)}
+      {Format.formatZeroDecimals(totalTerminalDifficulty)}
     </QuantifyText>
     <LabelText>total difficulty</LabelText>
     <QuantifyText amountPostfix="T" className="text-right text-xl">
