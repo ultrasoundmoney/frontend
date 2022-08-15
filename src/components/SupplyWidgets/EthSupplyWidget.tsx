@@ -4,16 +4,15 @@ import { useContext, useEffect, useState } from "react";
 import { useEthSupply } from "../../api/eth-supply";
 import { getDateTimeFromSlot } from "../../beacon-time";
 import { FeatureFlagsContext } from "../../feature-flags";
-import Modal from "../Modal";
-import { LabelText } from "../Texts";
+import { LabelText, LabelUnitText } from "../Texts";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 import EthSupplyTooltip from "./EthSupplyTooltip";
+import Nerd from "./Nerd";
 import PreciseEth from "./PreciseEth";
 
 const EthSupplyWidget = () => {
   const ethSupply = useEthSupply();
-  const [isHoveringNerd, setIsHoveringNerd] = useState(false);
-  const [showEthSupplyTooltip, setShowEthSupplyTooltip] = useState(false);
+  const [showNerdTooltip, setShowNerdTooltip] = useState(false);
   const [timeElapsed, setTimeElapsed] = useState<number>();
   const { previewSkeletons } = useContext(FeatureFlagsContext);
 
@@ -55,33 +54,39 @@ const EthSupplyWidget = () => {
   return (
     <>
       <WidgetBackground>
-        <div className="flex flex-col gap-y-4">
-          <button
-            className="flex items-center"
-            onMouseEnter={() => setIsHoveringNerd(true)}
-            onMouseLeave={() => setIsHoveringNerd(false)}
-            onClick={() => setShowEthSupplyTooltip(true)}
+        <div className="relative flex flex-col gap-y-4">
+          <div
+            className={`
+                flex items-center
+                cursor-pointer
+                [&>.gray-nerd]:hover:opacity-0
+                [&>.color-nerd]:active:brightness-90
+            `}
+            onClick={() => setShowNerdTooltip(true)}
           >
             <WidgetTitle>eth supply</WidgetTitle>
-            <img
-              alt="an emoji of a nerd"
-              className={`ml-2 select-none ${isHoveringNerd ? "hidden" : ""}`}
-              src={`/nerd-coloroff.svg`}
-            />
-            <img
-              alt="an colored emoji of a nerd"
-              className={`ml-2 select-none ${isHoveringNerd ? "" : "hidden"}`}
-              src={`/nerd-coloron.svg`}
-            />
-          </button>
+            <Nerd />
+          </div>
+          <div
+            className={`
+              tooltip ${showNerdTooltip ? "block" : "hidden"} absolute
+              top-3/4 left-1/2 -translate-x-1/2 -translate-y-1/2
+              w-[calc(100% + 96px)] max-w-sm
+              whitespace-nowrap
+              cursor-auto
+              z-30
+            `}
+          >
+            <EthSupplyTooltip onClickClose={() => setShowNerdTooltip(false)} />
+          </div>
           <div className="flex flex-col gap-y-2">
             <PreciseEth>{ethSupplySum}</PreciseEth>
             <div className="flex gap-x-1 items-center">
               <LabelText className="text-slateus-400">updated</LabelText>
-              <div className="flex">
-                <LabelText skeletonWidth="1rem">
+              <div className="flex items-baseline">
+                <LabelUnitText>
                   {!previewSkeletons ? timeElapsed : undefined}
-                </LabelText>
+                </LabelUnitText>
                 <LabelText className="ml-1">seconds</LabelText>
               </div>
               <LabelText className="text-slateus-400">ago</LabelText>
@@ -89,12 +94,17 @@ const EthSupplyWidget = () => {
           </div>
         </div>
       </WidgetBackground>
-      <Modal
-        onClickBackground={() => setShowEthSupplyTooltip(false)}
-        show={showEthSupplyTooltip}
-      >
-        <EthSupplyTooltip onClickClose={() => setShowEthSupplyTooltip(false)} />
-      </Modal>
+      <div
+        className={`
+          fixed top-0 left-0 bottom-0 right-0
+          flex justify-center items-center
+          z-20
+          bg-slateus-700/60
+          backdrop-blur-sm
+          ${showNerdTooltip ? "" : "hidden"}
+        `}
+        onClick={() => setShowNerdTooltip(false)}
+      ></div>
     </>
   );
 };

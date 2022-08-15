@@ -4,6 +4,7 @@ import * as Format from "../../format";
 import roundNerdLarge from "./round-nerd-large.svg";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
+import closeSvg from "../../assets/close.svg";
 
 type Props = {
   className?: string;
@@ -16,6 +17,7 @@ type Props = {
 const MergeEstimateTooltip: FC<Props> = ({
   className = "",
   latestBlockDifficulty,
+  onClickClose,
   totalDifficulty,
   totalTerminalDifficulty,
 }) => (
@@ -32,14 +34,29 @@ const MergeEstimateTooltip: FC<Props> = ({
       bg-blue-tangaroa p-8 rounded-lg
       border border-blue-shipcove
       text-left
-      select-text
-      [&>*]:cursor-text
       ${className}
     `}
   >
+    <button
+      className={`
+        flex w-6
+        active:brightness-90 hover:brightness-110
+        select-none self-end
+      `}
+    >
+      <Image
+        alt="a close button, circular with an x in the middle"
+        draggable={false}
+        height={24}
+        layout="fixed"
+        onClick={onClickClose}
+        src={closeSvg as StaticImageData}
+        width={24}
+      />
+    </button>
     <Image
-      alt=""
-      className="w-20 h-20 mx-auto rounded-full select-none [&]:cursor-default"
+      alt="a nerd emoji symbolizing a knowledge deep-dive"
+      className="w-20 h-20 mx-auto rounded-full select-none"
       src={roundNerdLarge as StaticImageData}
       height={80}
       width={80}
@@ -52,7 +69,7 @@ const MergeEstimateTooltip: FC<Props> = ({
         <BodyText inline={false}>/ latest block difficulty</BodyText>
       </div>
     </div>
-    <LabelText>Total Terminal Difficulty (TTD)</LabelText>
+    <LabelText>Terminal Total Difficulty (TTD)</LabelText>
     <QuantifyText amountPostfix="T" className="text-right text-xl">
       {Format.formatZeroDecimals(totalTerminalDifficulty)}
     </QuantifyText>

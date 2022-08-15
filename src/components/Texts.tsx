@@ -24,6 +24,27 @@ export const LabelText: FC<{
   </TextInter>
 );
 
+export const LabelUnitText: FC<{
+  children: ReactNode;
+  className?: string;
+  skeletonWidth?: string;
+}> = ({ children, className, skeletonWidth }) => (
+  <TextRoboto
+    className={`
+      font-light
+      text-slateus-200 text-xs
+      uppercase tracking-widest
+      ${className}
+    `}
+  >
+    {children !== undefined ? (
+      children
+    ) : (
+      <Skeleton inline width={skeletonWidth}></Skeleton>
+    )}
+  </TextRoboto>
+);
+
 export const UnitText: FC<{ children: ReactNode; className?: string }> = ({
   className,
   children,

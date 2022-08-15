@@ -9,6 +9,7 @@ import { LabelText, TextRoboto } from "../Texts";
 import Twemoji from "../Twemoji";
 import { WidgetBackground } from "../WidgetSubcomponents";
 import MergeEstimateTooltip from "./MergeEstimateTooltip";
+import Nerd from "./Nerd";
 
 type TimeLeft = {
   days: number;
@@ -32,9 +33,9 @@ export const TOTAL_TERMINAL_DIFFICULTY = 58750000000;
 const MergeEstimateWidget = () => {
   const mergeEstimate = useMergeEstimate();
   const [timeLeft, setTimeLeft] = useState<TimeLeft>();
-  const [isHoveringNerd, setIsHoveringNerd] = useState(false);
   const { md } = useActiveBreakpoint();
   const featureFlags = useContext(FeatureFlagsContext);
+  const [showNerdTooltip, setShowNerdTooltip] = useState(false);
 
   useEffect(() => {
     if (mergeEstimate === undefined) {
@@ -138,42 +139,30 @@ const MergeEstimateWidget = () => {
           </div>
           <div className="flex flex-col gap-y-4">
             <div
-              // Uses CSS to show the tooltip.
-              // Expands element invisibly using padding and negative margin to
-              // keep the tooltip open.
               className={`
                 flex items-center
-                [&_.tooltip]:hover:block
-                md:pl-5 md:-ml-5 md:pb-4 md:-mb-4 md:pt-4 md:-mt-4
-                cursor-pointer
                 md:justify-end
+                cursor-pointer
+                [&>.gray-nerd]:hover:opacity-0
+                [&>.color-nerd]:active:brightness-90
               `}
-              onMouseEnter={() => setIsHoveringNerd(true)}
-              onMouseLeave={() => setIsHoveringNerd(false)}
+              onClick={() => setShowNerdTooltip(true)}
             >
               <LabelText className="truncate">wen TTD</LabelText>
-              <img
-                alt="an emoji of a nerd"
-                className={`ml-2 select-none ${isHoveringNerd ? "hidden" : ""}`}
-                src={`/nerd-coloroff.svg`}
-              />
-              <img
-                alt="an colored emoji of a nerd"
-                className={`ml-2 select-none ${isHoveringNerd ? "" : "hidden"}`}
-                src={`/nerd-coloron.svg`}
-              />
+              <Nerd />
               <div
                 className={`
-                  tooltip hidden absolute
+                  tooltip ${showNerdTooltip ? "block" : "hidden"} absolute
                   top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
                   w-[calc(100% + 96px)] max-w-sm
                   whitespace-nowrap
-                  z-10
-                  cursor-default
+                  cursor-auto
+                  z-30
                 `}
               >
                 <MergeEstimateTooltip
                   latestBlockDifficulty={mergeEstimate?.difficulty}
+                  onClickClose={() => setShowNerdTooltip(false)}
                   totalDifficulty={mergeEstimate?.totalDifficulty}
                   totalTerminalDifficulty={TOTAL_TERMINAL_DIFFICULTY}
                 />
@@ -195,6 +184,17 @@ const MergeEstimateWidget = () => {
           </div>
         </div>
       </WidgetBackground>
+      <div
+        className={`
+          fixed top-0 left-0 bottom-0 right-0
+          flex justify-center items-center
+          z-20
+          bg-slateus-700/60
+          backdrop-blur-sm
+          ${showNerdTooltip ? "" : "hidden"}
+        `}
+        onClick={() => setShowNerdTooltip(false)}
+      ></div>
     </>
   );
 };
