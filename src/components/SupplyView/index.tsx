@@ -105,7 +105,7 @@ const SupplyView: React.FC = () => {
     <>
       <div className={styles.chartHeader}>
         <TextInter
-          className="font-light text-blue-spindle text-xs uppercase tracking-widest flex items-center pl-3 pb-8"
+          className="font-light text-blue-spindle text-xs uppercase tracking-widest flex items-center px-3 pb-8"
           inline
         >
           ETH supply—2y projection
@@ -114,7 +114,7 @@ const SupplyView: React.FC = () => {
               isPeakPresent ? "opacity-1" : "opacity-0"
             }`}
           >
-            <Twemoji imageClassName="inline ml-1 h-6" wrapper>
+            <Twemoji className="flex" imageClassName="inline ml-1 h-6" wrapper>
               🦇🔊
             </Twemoji>
           </span>
