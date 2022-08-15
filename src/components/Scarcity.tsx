@@ -111,7 +111,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
               color: hoveringStaked ? Colors.white : Colors.spindle,
             }}
           >
-            {Format.formatNoDecimals(stakedPercent)}%
+            {Format.formatZeroDecimals(stakedPercent)}%
           </TextRoboto>
         </div>
         <div
@@ -160,7 +160,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
               color: hoveringLocked ? Colors.white : Colors.spindle,
             }}
           >
-            {Format.formatNoDecimals(lockedPercent)}%
+            {Format.formatZeroDecimals(lockedPercent)}%
           </TextRoboto>
         </div>
       </div>

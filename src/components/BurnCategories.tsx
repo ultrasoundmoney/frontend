@@ -122,7 +122,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
             color: showHighlight ? Colors.white : Colors.spindle,
           }}
         >
-          {Format.formatNoDecimals(
+          {Format.formatZeroDecimals(
             (percentOfTotalBurn ?? skeletonLoadingWidth) * 100,
           )}
           %

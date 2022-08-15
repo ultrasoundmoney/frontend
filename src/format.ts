@@ -18,7 +18,6 @@ export const formatWeiTwoDigit = (wei: number): string =>
 export const formatTwoDigit = (num: number): string => twoDigit.format(num);
 
 const zeroDecimals = new Intl.NumberFormat("en-US", {
-  minimumFractionDigits: 0,
   maximumFractionDigits: 0,
 });
 
@@ -35,7 +34,6 @@ export const formatOneDecimal = (num: number): string => oneDecimal.format(num);
 const usdZeroDecimals = new Intl.NumberFormat("en-US", {
   currency: "usd",
   style: "currency",
-  minimumFractionDigits: 0,
   maximumFractionDigits: 0,
 });
 
@@ -68,10 +66,6 @@ const percentNoDecimals = new Intl.NumberFormat("en-US", {
 
 export const formatPercentNoDecimals = (percent: number) =>
   percentNoDecimals.format(percent);
-
-const noDigit = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
-
-export const formatNoDecimals = (num: number): string => noDigit.format(num);
 
 const compactNumber = new Intl.NumberFormat("en", {
   minimumFractionDigits: 0,

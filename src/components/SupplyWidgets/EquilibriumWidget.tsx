@@ -495,7 +495,9 @@ const EquilibriumWidget: FC = () => {
           <WidgetTitle>issuance and burn at equilibrium</WidgetTitle>
           <MoneyAmount amountPostfix="K" unitText="ETH/year">
             {equilibriums !== undefined
-              ? Format.formatNoDecimals(equilibriums.cashFlowsEquilibrium / 1e3)
+              ? Format.formatZeroDecimals(
+                  equilibriums.cashFlowsEquilibrium / 1e3,
+                )
               : undefined}
           </MoneyAmount>
         </div>

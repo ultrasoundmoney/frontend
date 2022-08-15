@@ -2,7 +2,7 @@ import type { FC } from "react";
 import { useState } from "react";
 import type { FamProfile } from "../../api/fam";
 import { famBasePath } from "../../api/fam";
-import { formatNoDecimals } from "../../format";
+import { formatZeroDecimals } from "../../format";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import ImageWithTooltip from "../ImageWithTooltip";
 import Modal from "../Modal";
@@ -169,7 +169,7 @@ const FollowingYou: FC = () => {
                 ))}
               </div>
               {followers.count > followers.followers.length && (
-                <p className="text-white text-xl p-8 text-center">{`+${formatNoDecimals(
+                <p className="text-white text-xl p-8 text-center">{`+${formatZeroDecimals(
                   followers.count - followers.followers.length,
                 )} more!`}</p>
               )}

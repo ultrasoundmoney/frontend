@@ -56,7 +56,7 @@ export const formatBlockNumber = (number: unknown) =>
     O.fromPredicate(
       (unknown): unknown is number => typeof unknown === "number",
     ),
-    O.map(Format.formatNoDecimals),
+    O.map(Format.formatZeroDecimals),
     O.map((str) => `#${str}`),
     O.toUndefined,
   );
