@@ -6,16 +6,21 @@ import { AmountUnitSpace } from "./Spacing";
 export const LabelText: FC<{
   children: ReactNode;
   className?: string;
-}> = ({ children, className }) => (
+  skeletonWidth?: string;
+}> = ({ children, className = "", skeletonWidth = "3rem" }) => (
   <TextInter
     className={`
       font-light
-      text-blue-spindle text-xs
+      text-slateus-200 text-xs
       uppercase tracking-widest
-      ${className ?? ""}
+      ${className}
     `}
   >
-    {children}
+    {children !== undefined ? (
+      children
+    ) : (
+      <Skeleton inline width={skeletonWidth}></Skeleton>
+    )}
   </TextInter>
 );
 
