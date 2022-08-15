@@ -1,11 +1,11 @@
 import * as DateFns from "date-fns";
 import JSBI from "jsbi";
 import { useContext, useEffect, useState } from "react";
-import Skeleton from "react-loading-skeleton";
 import { useEthSupply } from "../../api/eth-supply";
 import { getDateTimeFromSlot } from "../../beacon-time";
 import { FeatureFlagsContext } from "../../feature-flags";
 import Modal from "../Modal";
+import { LabelText } from "../Texts";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 import EthSupplyTooltip from "./EthSupplyTooltip";
 import PreciseEth from "./PreciseEth";
@@ -55,7 +55,7 @@ const EthSupplyWidget = () => {
   return (
     <>
       <WidgetBackground>
-        <div className="flex flex-col gap-y-6">
+        <div className="flex flex-col gap-y-4">
           <button
             className="flex items-center"
             onMouseEnter={() => setIsHoveringNerd(true)}
@@ -74,18 +74,19 @@ const EthSupplyWidget = () => {
               src={`/nerd-coloron.svg`}
             />
           </button>
-          <PreciseEth>{ethSupplySum}</PreciseEth>
-          <span className="font-inter text-blue-spindle text-xs md:text-sm font-extralight">
-            {"updated "}
-            <span className="font-roboto text-white font-light [word-spacing:-0.3em]">
-              {ethSupply === undefined || previewSkeletons ? (
-                <Skeleton inline={true} width="2rem" />
-              ) : (
-                `${timeElapsed} seconds`
-              )}
-            </span>
-            {" ago"}
-          </span>
+          <div className="flex flex-col gap-y-2">
+            <PreciseEth>{ethSupplySum}</PreciseEth>
+            <div className="flex gap-x-1 items-center">
+              <LabelText className="text-slateus-400">updated</LabelText>
+              <div className="flex">
+                <LabelText skeletonWidth="1rem">
+                  {!previewSkeletons ? timeElapsed : undefined}
+                </LabelText>
+                <LabelText className="ml-1">seconds</LabelText>
+              </div>
+              <LabelText className="text-slateus-400">ago</LabelText>
+            </div>
+          </div>
         </div>
       </WidgetBackground>
       <Modal
