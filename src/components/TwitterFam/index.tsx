@@ -1,9 +1,9 @@
-import type { FC, RefObject} from "react";
+import type { FC, RefObject } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Clipboard from "react-clipboard.js";
 import Skeleton from "react-loading-skeleton";
 import { usePopper } from "react-popper";
-import type { FamProfile} from "../../api/fam";
+import type { FamProfile } from "../../api/fam";
 import { useProfiles } from "../../api/fam";
 import * as Format from "../../format";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
@@ -169,9 +169,7 @@ const TwitterFam: FC = () => {
               join <Skeleton inline={true} width="4rem" /> fam members
             </>
           ) : (
-            `join ${Format.formatNoDecimals(famCount)}${
-              famCount >= 5000 ? "+" : ""
-            } fam members`
+            `join 5000+ fam members`
           )}
         </a>
       </h1>
