@@ -6,6 +6,7 @@ export const flags = [
   "showCategorySlugs",
   "showMetadataTools",
   "useWebSockets",
+  "simulatePostMerge",
 ] as const;
 export type Flag = typeof flags[number];
 
@@ -17,6 +18,7 @@ export const defaults: FeatureFlags = {
   showCategorySlugs: false,
   showMetadataTools: false,
   useWebSockets: false,
+  simulatePostMerge: false,
 };
 
 export const displayFlagMap: Record<Flag, string> = {
@@ -25,6 +27,7 @@ export const displayFlagMap: Record<Flag, string> = {
   showCategorySlugs: "show category slugs",
   showMetadataTools: "show metadata tools",
   useWebSockets: "use websockets",
+  simulatePostMerge: "simulate post-merge",
 };
 
 const reducer = (

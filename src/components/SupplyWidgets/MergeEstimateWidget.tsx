@@ -1,7 +1,8 @@
 import * as DateFns from "date-fns";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import CountUp from "react-countup";
 import { useMergeEstimate } from "../../api/merge-estimate";
+import { FeatureFlagsContext } from "../../feature-flags";
 import { O, pipe } from "../../fp";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { LabelText, TextRoboto } from "../Texts";
@@ -33,6 +34,7 @@ const MergeEstimateWidget = () => {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>();
   const [isHoveringNerd, setIsHoveringNerd] = useState(false);
   const { lg, xl } = useActiveBreakpoint();
+  const featureFlags = useContext(FeatureFlagsContext);
 
   useEffect(() => {
     if (mergeEstimate === undefined) {
