@@ -59,8 +59,8 @@ const EthSupplyWidget = () => {
             className={`
                 flex items-center
                 cursor-pointer
-                [&>.gray-nerd]:hover:opacity-0
-                [&>.color-nerd]:active:brightness-90
+                [&_.gray-nerd]:hover:opacity-0
+                [&_.color-nerd]:active:brightness-90
             `}
             onClick={() => setShowNerdTooltip(true)}
           >
