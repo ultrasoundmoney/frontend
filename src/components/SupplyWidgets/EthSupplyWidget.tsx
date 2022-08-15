@@ -69,8 +69,8 @@ const EthSupplyWidget = () => {
           </div>
           <div
             className={`
-              tooltip ${showNerdTooltip ? "block" : "hidden"} absolute
-              top-3/4 left-1/2 -translate-x-1/2 -translate-y-1/2
+              tooltip ${showNerdTooltip ? "block" : "hidden"} fixed
+              top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
               w-[calc(100% + 96px)] max-w-sm
               whitespace-nowrap
               cursor-auto
