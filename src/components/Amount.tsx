@@ -1,4 +1,4 @@
-import type { FC, ReactNode} from "react";
+import type { FC, ReactNode } from "react";
 import React, { useContext } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
