@@ -1,5 +1,6 @@
 import * as DateFns from "date-fns";
 import * as React from "react";
+import { MERGE_TIMESTAMP_ESTIMATED } from "../../eth-time";
 import { formatOneDecimal } from "../../format";
 import { pipe } from "../../fp";
 import {
@@ -23,7 +24,7 @@ const MAX_PROJECTED_BASE_GAS_PRICE = 200;
 
 const MIN_PROJECTED_MERGE_DATE = DateFns.startOfDay(new Date());
 const DEFAULT_PROJECTED_MERGE_DATE = DateFns.max([
-  DateFns.parseISO("2022-09-19T00:00:00Z"),
+  MERGE_TIMESTAMP_ESTIMATED,
   MIN_PROJECTED_MERGE_DATE,
 ]);
 const MAX_PROJECTED_MERGE_DATE = DateFns.parseISO("2022-12-31T00:00:00Z");
