@@ -142,7 +142,11 @@ const BurnMarkers: FC<{ burnMarkers?: BurnMarkers }> = ({ burnMarkers }) => {
               `}
             ></div>
             <TimeFrameText className="text-blue-spindle mt-1 select-none">
-              <Twemoji className="flex" imageClassName="mt-0.5 h-3" wrapper>
+              <Twemoji
+                className="flex gap-x-1"
+                imageClassName="mt-0.5 h-3"
+                wrapper
+              >
                 {marker.label}
               </Twemoji>
             </TimeFrameText>
