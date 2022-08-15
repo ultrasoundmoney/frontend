@@ -366,7 +366,7 @@ const EquilibriumWidget: FC = () => {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-8 gap-x-8 p-8">
         <div className="flex justify-between">
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-y-4">
             <WidgetTitle>
               {md ? "supply equilibrium" : "equilibrium (A)"}
             </WidgetTitle>
@@ -379,7 +379,7 @@ const EquilibriumWidget: FC = () => {
                 : undefined}
             </MoneyAmount>
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-y-4">
             <WidgetTitle className="text-right">
               {md ? "staking" : "staking (B)"}
             </WidgetTitle>

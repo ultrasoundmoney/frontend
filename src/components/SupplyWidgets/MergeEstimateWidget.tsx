@@ -33,7 +33,7 @@ const MergeEstimateWidget = () => {
   const mergeEstimate = useMergeEstimate();
   const [timeLeft, setTimeLeft] = useState<TimeLeft>();
   const [isHoveringNerd, setIsHoveringNerd] = useState(false);
-  const { lg, xl } = useActiveBreakpoint();
+  const { md } = useActiveBreakpoint();
   const featureFlags = useContext(FeatureFlagsContext);
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const MergeEstimateWidget = () => {
     O.fromNullable,
     O.map((mergeEstimate) => mergeEstimate.estimatedDateTime),
     O.map(shiftDateTimeByTimeZone),
-    O.map((dateTime) => DateFns.format(dateTime, "MMM d, haaa")),
+    O.map((dateTime) => DateFns.format(dateTime, "MMM d, ~haaa")),
     O.toUndefined,
   );
 
@@ -65,15 +65,11 @@ const MergeEstimateWidget = () => {
   const blocksToTTD =
     mergeEstimate === undefined
       ? 0
-      : !(lg && !xl)
-      ? mergeEstimate.blocksLeft
       : mergeEstimate.blocksLeft > 1000
       ? mergeEstimate.blocksLeft / 1e3
       : mergeEstimate.blocksLeft;
   const blocksToTTDSuffix =
     mergeEstimate === undefined
-      ? false
-      : !(lg && !xl)
       ? false
       : mergeEstimate.blocksLeft > 1000
       ? true
@@ -85,12 +81,13 @@ const MergeEstimateWidget = () => {
         <div className="relative flex flex-col md:flex-row justify-between gap-y-8 gap-x-2">
           <div className="flex flex-col gap-y-4">
             {/* Keeps the height of this widget equal to the adjacent one. */}
-            <LabelText className="flex items-center min-h-[21px] truncate">
-              {`merge estimate—${mergeEstimateFormatted} UTC`}
+            <LabelText className="flex items-center min-h-[21px]">
+              {`merge${md ? " estimate" : ""}—${mergeEstimateFormatted} UTC`}
             </LabelText>
-            {mergeEstimate !== undefined &&
-            Number(mergeEstimate.totalDifficulty) / 1e12 >=
-              TOTAL_TERMINAL_DIFFICULTY ? (
+            {(mergeEstimate !== undefined &&
+              Number(mergeEstimate.totalDifficulty) / 1e12 >=
+                TOTAL_TERMINAL_DIFFICULTY) ||
+            featureFlags.simulatePostMerge ? (
               <div className="flex gap-x-8 mx-auto items-center h-14">
                 <Twemoji className="flex gap-x-2" imageClassName="h-10" wrapper>
                   🎉
@@ -103,8 +100,8 @@ const MergeEstimateWidget = () => {
                 </Twemoji>
               </div>
             ) : (
-              <div className="flex gap-x-4 md:gap-x-6 mx-auto ">
-                <div className="flex flex-col items-center gap-y-2 w-[40px]">
+              <div className="flex gap-x-6 md:gap-x-7">
+                <div className="flex flex-col items-center gap-y-2 ">
                   <TextRoboto className="text-[1.7rem]">
                     {timeLeft?.days ?? 0}
                   </TextRoboto>
@@ -112,7 +109,7 @@ const MergeEstimateWidget = () => {
                     {timeLeft?.days === 1 ? "day" : "days"}
                   </LabelText>
                 </div>
-                <div className="flex flex-col items-center gap-y-2 w-[40px]">
+                <div className="flex flex-col items-center gap-y-2 ">
                   <TextRoboto className="text-[1.7rem]">
                     {timeLeft?.hours ?? 0}
                   </TextRoboto>
@@ -120,7 +117,7 @@ const MergeEstimateWidget = () => {
                     {timeLeft?.hours === 1 ? "hour" : "hours"}
                   </LabelText>
                 </div>
-                <div className="flex flex-col items-center gap-y-2 w-[40px]">
+                <div className="flex flex-col items-center gap-y-2 ">
                   <TextRoboto className="text-[1.7rem]">
                     {timeLeft?.minutes ?? 0}
                   </TextRoboto>
@@ -128,7 +125,7 @@ const MergeEstimateWidget = () => {
                     {timeLeft?.minutes === 1 ? "min" : "mins"}
                   </LabelText>
                 </div>
-                <div className="flex flex-col items-center gap-y-2 w-[40px]">
+                <div className="flex flex-col items-center gap-y-2 ">
                   <TextRoboto className="text-[1.7rem]">
                     {timeLeft?.seconds ?? 0}
                   </TextRoboto>
@@ -154,7 +151,7 @@ const MergeEstimateWidget = () => {
               onMouseEnter={() => setIsHoveringNerd(true)}
               onMouseLeave={() => setIsHoveringNerd(false)}
             >
-              <LabelText className="truncate">blocks to ttd</LabelText>
+              <LabelText className="truncate">wen TTD</LabelText>
               <img
                 alt="an emoji of a nerd"
                 className={`ml-2 select-none ${isHoveringNerd ? "hidden" : ""}`}
@@ -182,18 +179,18 @@ const MergeEstimateWidget = () => {
                 />
               </div>
             </div>
-            <div className="flex flex-col gap-y-2 md:items-center">
-              <TextRoboto className="text-[1.7rem]">
-                <CountUp
-                  separator=","
-                  end={blocksToTTD}
-                  suffix={blocksToTTDSuffix ? "K" : ""}
-                  preserveValue
-                />
-              </TextRoboto>
-              <LabelText className="hidden md:block text-slateus-400">
-                blocks
-              </LabelText>
+            <div className="flex md:justify-end">
+              <div className="flex flex-col gap-y-2 items-center">
+                <TextRoboto className="text-[1.7rem]">
+                  <CountUp
+                    separator=","
+                    end={blocksToTTD}
+                    suffix={blocksToTTDSuffix ? "K" : ""}
+                    preserveValue
+                  />
+                </TextRoboto>
+                <LabelText className="text-slateus-400">blocks</LabelText>
+              </div>
             </div>
           </div>
         </div>
