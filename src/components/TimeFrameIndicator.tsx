@@ -1,5 +1,5 @@
 import * as DateFns from "date-fns";
-import type { FC} from "react";
+import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { WidgetTitle } from "./WidgetSubcomponents";
 import { londonHardfork } from "../dates";

@@ -1,4 +1,4 @@
-import type { FC} from "react";
+import type { FC } from "react";
 import React, { useContext } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
@@ -123,4 +123,3 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
 };
 
 export default PriceGasWidget;
-

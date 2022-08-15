@@ -1,13 +1,5 @@
-import type {
-  FC,
-  ReactHTML,
-  ReactNode} from "react";
-import React, {
-  Children,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import type { FC, ReactHTML, ReactNode } from "react";
+import React, { Children, useEffect, useRef, useState } from "react";
 import twemoji from "twemoji";
 
 const parseChild = (

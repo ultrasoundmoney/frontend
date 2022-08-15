@@ -10,7 +10,7 @@ import classes from "./Navigation.module.scss";
 const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
   (
     { controlPoints, onActionLogo, activeLogo, setScroll, isLastTrackingElem },
-    ref
+    ref,
   ) => {
     const [activeBalls, setActiveBalls] = useState<ControlPointMutated[]>();
 
@@ -29,9 +29,9 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
             name: namePoint,
             active: activeValuePoint,
           };
-        }
-        );
-        return mapControlPoints;
+        },
+      );
+      return mapControlPoints;
     }, [controlPoints, isLastTrackingElem]);
 
     const t = React.useContext(TranslationsContext);
@@ -162,7 +162,7 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
         </div>
       </div>
     );
-  }
+  },
 );
 
 Steps.displayName = "Steps";

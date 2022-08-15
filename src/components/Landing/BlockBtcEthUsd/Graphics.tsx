@@ -21,7 +21,7 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab, cryptoType }) => {
   const [hoverElem, setHoverElem] = useState<string | null>(null);
 
   const onHoverhandler = (
-    e: React.MouseEvent<SVGPathElement | SVGUseElement>
+    e: React.MouseEvent<SVGPathElement | SVGUseElement>,
   ): void => {
     if (ethPathRef.current && usdPathRef.current && btcPathRef.current) {
       onHoverFunctionality(
@@ -29,7 +29,7 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab, cryptoType }) => {
         ethPathRef.current,
         usdPathRef.current,
         btcPathRef.current,
-        setHoverElem
+        setHoverElem,
       );
     }
   };
@@ -43,12 +43,12 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab, cryptoType }) => {
         ethPathRef.current,
         usdPathRef.current,
         btcPathRef.current,
-        setHoverElem
+        setHoverElem,
       );
     }
   };
   const onGraphClickHandler = (
-    e: React.MouseEvent<SVGPathElement | SVGUseElement>
+    e: React.MouseEvent<SVGPathElement | SVGUseElement>,
   ) => {
     const elem = e.target as HTMLInputElement;
     const correctSpecificTab = (str: string) => {

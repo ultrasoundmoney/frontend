@@ -1,4 +1,4 @@
-import type { FC} from "react";
+import type { FC } from "react";
 import { useState } from "react";
 import type { FamProfile } from "../../api/fam";
 import { famBasePath } from "../../api/fam";

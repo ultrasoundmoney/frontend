@@ -1,10 +1,6 @@
 import type { FC, ReactNode } from "react";
-import type {
-  TimeFrameNext} from "../time-frames";
-import {
-  displayTimeFrameNextMap,
-  timeFramesNext,
-} from "../time-frames";
+import type { TimeFrameNext } from "../time-frames";
+import { displayTimeFrameNextMap, timeFramesNext } from "../time-frames";
 
 export const Button: FC<{
   children: ReactNode;

@@ -1,7 +1,7 @@
-import type { FC} from "react";
+import type { FC } from "react";
 import { useContext, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import type { BurnCategory} from "../api/burn-categories";
+import type { BurnCategory } from "../api/burn-categories";
 import { useBurnCategories } from "../api/burn-categories";
 import Colors from "../colors";
 import { FeatureFlagsContext } from "../feature-flags";

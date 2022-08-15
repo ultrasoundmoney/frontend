@@ -1,8 +1,7 @@
-import type { FC, RefObject} from "react";
+import type { FC, RefObject } from "react";
 import { useContext } from "react";
 import Skeleton from "react-loading-skeleton";
-import type {
-  Category} from "../../../api/burn-categories";
+import type { Category } from "../../../api/burn-categories";
 import {
   categoryDisplayMap,
   getIsKnownCategory,

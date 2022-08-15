@@ -1,4 +1,4 @@
-import type { FC} from "react";
+import type { FC } from "react";
 import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import type { BurnRecord } from "../api/burn-records";

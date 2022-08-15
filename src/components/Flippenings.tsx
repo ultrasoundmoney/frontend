@@ -1,5 +1,5 @@
 import { clamp } from "lodash";
-import type { FC} from "react";
+import type { FC } from "react";
 import { useState } from "react";
 import CountUp from "react-countup";
 import { animated, useSpring } from "react-spring";

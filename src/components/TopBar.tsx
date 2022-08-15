@@ -1,4 +1,4 @@
-import type { FC} from "react";
+import type { FC } from "react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useGroupedAnalysis1 } from "../api/grouped-analysis-1";
 import { useLocalStorage } from "../use-local-storage";

@@ -13,18 +13,18 @@ const StepperContext = createContext<{
   };
   addStepperELement: (
     newElementRef: MutableRefObject<HTMLDivElement | null>,
-    elementName: string
+    elementName: string,
   ) => void;
 } | null>(null);
 
-const SteppersProvider: FC<{children: ReactNode}> = ({ children }) => {
+const SteppersProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [stepperElements, setStepperElements] = useState<{
     [key: string]: StepperPoint;
   }>({});
 
   const addStepperELement = (
     newElementRef: MutableRefObject<HTMLDivElement | null>,
-    elementName: string
+    elementName: string,
   ) => {
     if (newElementRef && newElementRef.current) {
       const rect = newElementRef.current?.getBoundingClientRect();

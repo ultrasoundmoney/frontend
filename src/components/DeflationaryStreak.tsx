@@ -1,13 +1,10 @@
 import * as DateFns from "date-fns";
-import type { FC} from "react";
+import type { FC } from "react";
 import { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
-import type {
-  DeflationaryStreakMode} from "../api/grouped-analysis-1";
-import {
-  useGroupedAnalysis1,
-} from "../api/grouped-analysis-1";
+import type { DeflationaryStreakMode } from "../api/grouped-analysis-1";
+import { useGroupedAnalysis1 } from "../api/grouped-analysis-1";
 import { NEA } from "../fp";
 import { AmountUnitSpace } from "./Spacing";
 import SpanMoji from "./SpanMoji";

@@ -2,7 +2,7 @@ import * as DateFns from "date-fns";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import _ from "lodash";
-import type { FC} from "react";
+import type { FC } from "react";
 import { useEffect, useRef, useState } from "react";
 import colors from "../../colors";
 import * as Format from "../../format";

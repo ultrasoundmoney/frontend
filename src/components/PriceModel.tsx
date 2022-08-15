@@ -1,5 +1,5 @@
 import type JSBI from "jsbi";
-import type { FC, ReactNode} from "react";
+import type { FC, ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { useAverageEthPrice } from "../api/eth-price";
 import { useGroupedAnalysis1 } from "../api/grouped-analysis-1";

@@ -1,11 +1,5 @@
-import type {
-  RefObject} from "react";
-import React, {
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import type { RefObject } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import styles from "./DrawingLine.module.scss";
 import type { StepperPoint } from "../../../context/StepperContext";

@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import Card from "./card";
 import { weiToEth } from "../Helpers/helper";
-import type { VidgetProps} from "./helpers";
+import type { VidgetProps } from "./helpers";
 import { convertToInternationalCurrencySystem } from "./helpers";
-import type { EthPrice} from "../../api/grouped-analysis-1";
+import type { EthPrice } from "../../api/grouped-analysis-1";
 import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import useSWR from "swr";
 import fetcher from "../../api/default-fetcher";

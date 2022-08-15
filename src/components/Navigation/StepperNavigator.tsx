@@ -16,7 +16,7 @@ const StepperNavigator = () => {
         ) {
           // console.log(navigatorRef);
           setIconOffsetTop(
-            window.pageYOffset + window.innerHeight / 2 - offsetTop
+            window.pageYOffset + window.innerHeight / 2 - offsetTop,
           );
         }
       }

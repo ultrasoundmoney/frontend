@@ -1,4 +1,4 @@
-import type { ReactElement} from "react";
+import type { ReactElement } from "react";
 import React, { useRef } from "react";
 import { CSSTransition as _CSSTransition } from "react-transition-group";
 import type { CSSTransitionProps } from "react-transition-group/CSSTransition";

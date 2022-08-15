@@ -32,7 +32,9 @@ const EIP1559: React.FC = () => {
         data-aos-easing="ease-in-out"
         id="eip-1559"
       >
-        <div className={`${styles.blockFeeBurn} flex flex-col justify-center items-center w-full md:w-6/12 md:mx-auto pt-20 px-4 md:px-0`}>
+        <div
+          className={`${styles.blockFeeBurn} flex flex-col justify-center items-center w-full md:w-6/12 md:mx-auto pt-20 px-4 md:px-0`}
+        >
           <video
             className={`${styles.eipBg}`}
             playsInline

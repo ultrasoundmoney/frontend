@@ -1,12 +1,5 @@
-import type {
-  ChangeEvent,
-  FC} from "react";
-import React, {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import type { ChangeEvent, FC } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useGroupedAnalysis1 } from "../api/grouped-analysis-1";
 import * as Format from "../format";
 import { O, pipe, S } from "../fp";

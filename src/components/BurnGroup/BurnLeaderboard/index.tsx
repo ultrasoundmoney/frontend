@@ -1,12 +1,5 @@
-import type {
-  FC,
-  RefObject} from "react";
-import React, {
-  memo,
-  useCallback,
-  useRef,
-  useState,
-} from "react";
+import type { FC, RefObject } from "react";
+import React, { memo, useCallback, useRef, useState } from "react";
 import { usePopper } from "react-popper";
 import { useAdminToken } from "../../../admin";
 import { useContractsFreshness } from "../../../api/contracts";

@@ -1,14 +1,10 @@
 import * as DateFns from "date-fns";
-import type { FC} from "react";
+import type { FC } from "react";
 import { useContext } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
-import type {
-  BurnRates,
-  FeesBurned} from "../api/grouped-analysis-1";
-import {
-  useGroupedAnalysis1,
-} from "../api/grouped-analysis-1";
+import type { BurnRates, FeesBurned } from "../api/grouped-analysis-1";
+import { useGroupedAnalysis1 } from "../api/grouped-analysis-1";
 import { londonHardfork } from "../dates";
 import type { Unit } from "../denomination";
 import * as Duration from "../duration";

@@ -1,12 +1,5 @@
-import type {
-  FC,
-  ReactEventHandler,
-  RefObject} from "react";
-import {
-  useCallback,
-  useContext,
-  useRef,
-} from "react";
+import type { FC, ReactEventHandler, RefObject } from "react";
+import { useCallback, useContext, useRef } from "react";
 import Skeleton from "react-loading-skeleton";
 import { FeatureFlagsContext } from "../feature-flags";
 

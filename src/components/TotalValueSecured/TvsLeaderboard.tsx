@@ -1,13 +1,5 @@
-import type {
-  FC,
-  HTMLAttributes,
-  RefObject} from "react";
-import {
-  useCallback,
-  useContext,
-  useRef,
-  useState,
-} from "react";
+import type { FC, HTMLAttributes, RefObject } from "react";
+import { useCallback, useContext, useRef, useState } from "react";
 import { usePopper } from "react-popper";
 import { useAdminToken } from "../../admin";
 import { useContractsFreshness } from "../../api/contracts";

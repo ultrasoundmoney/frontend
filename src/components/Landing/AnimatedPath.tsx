@@ -169,7 +169,7 @@ const AnimatedPath: React.FC = () => {
           return prevState.map((dot) =>
             dot.animatedOn < progress
               ? { ...dot, isAnimated: true }
-              : { ...dot, isAnimated: false }
+              : { ...dot, isAnimated: false },
           );
         });
 
@@ -178,7 +178,7 @@ const AnimatedPath: React.FC = () => {
           return prevState.map((dashedItem) =>
             dashedItem.animatedOn < progress
               ? { ...dashedItem, isAnimated: true }
-              : { ...dashedItem, isAnimated: false }
+              : { ...dashedItem, isAnimated: false },
           );
         });
 
@@ -194,10 +194,13 @@ const AnimatedPath: React.FC = () => {
           animationYProgress2.set(1);
           animationYProgress.set(1);
           setDotsState((prevState) =>
-            prevState.map((dot) => ({ ...dot, isAnimated: true }))
+            prevState.map((dot) => ({ ...dot, isAnimated: true })),
           );
           setDashedState((prevState) =>
-            prevState.map((dashedItem) => ({ ...dashedItem, isAnimated: true }))
+            prevState.map((dashedItem) => ({
+              ...dashedItem,
+              isAnimated: true,
+            })),
           );
         }
       }

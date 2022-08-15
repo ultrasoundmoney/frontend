@@ -16,11 +16,16 @@ const CurrencyTabs: React.FC<CurrencyTabsProps> = ({
         onClick={() => {
           setSpecificTab("btc");
         }}
-        className={`pl-10 pr-6 cursor-pointer py-3 text-sm text-white rounded-lg font-roboto leading-none ${styles.spanBtc} transition-all duration-100 mx-2 ${
-          cryptoType === "btc"
-            ? "bg-blue-tangaroa hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
-            : "bg-transparent hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
-        }`}
+        className={`
+          pl-10 pr-6 cursor-pointer py-3
+          text-sm text-white rounded-lg font-roboto leading-none
+          ${styles.spanBtc} transition-all duration-100 mx-2
+          ${
+            cryptoType === "btc"
+              ? "bg-blue-tangaroa hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
+              : "bg-transparent hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
+          }
+        `}
       >
         BTC
       </div>
@@ -28,11 +33,15 @@ const CurrencyTabs: React.FC<CurrencyTabsProps> = ({
         onClick={() => {
           setSpecificTab("eth");
         }}
-        className={`pl-10 pr-6 cursor-pointer py-3 text-sm text-white rounded-lg font-roboto leading-none ${styles.spanEth} transition-all duration-100 mx-2 ${
-          cryptoType === "eth"
-            ? "bg-blue-tangaroa hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
-            : "bg-transparent hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
-        }`}
+        className={`pl-10 pr-6 cursor-pointer py-3
+          text-sm text-white rounded-lg font-roboto leading-none
+          ${styles.spanEth} transition-all duration-100 mx-2
+          ${
+            cryptoType === "eth"
+              ? "bg-blue-tangaroa hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
+              : "bg-transparent hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
+          }
+        `}
       >
         ETH
       </div>
@@ -40,11 +49,15 @@ const CurrencyTabs: React.FC<CurrencyTabsProps> = ({
         onClick={() => {
           setSpecificTab("usd");
         }}
-        className={`pl-10 pr-6 cursor-pointer py-3 text-sm text-white rounded-lg font-roboto leading-none ${styles.spanUsd} transition-all duration-100 mx-2 ${
-          cryptoType === "usd"
-            ? "bg-blue-tangaroa hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
-            : "bg-transparent hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
-        }`}
+        className={`pl-10 pr-6 cursor-pointer py-3
+          text-sm text-white rounded-lg font-roboto leading-none
+          ${styles.spanUsd} transition-all duration-100 mx-2
+          ${
+            cryptoType === "usd"
+              ? "bg-blue-tangaroa hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
+              : "bg-transparent hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
+          }
+        `}
       >
         USD
       </div>

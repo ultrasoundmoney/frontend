@@ -1,4 +1,4 @@
-import type { FC, ReactEventHandler} from "react";
+import type { FC, ReactEventHandler } from "react";
 import { useCallback, useState } from "react";
 import type { Linkables } from "../api/fam";
 import * as Format from "../format";

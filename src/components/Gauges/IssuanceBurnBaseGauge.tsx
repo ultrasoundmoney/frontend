@@ -1,5 +1,5 @@
 import { clamp } from "lodash";
-import type { FC} from "react";
+import type { FC } from "react";
 import { useContext } from "react";
 import Skeleton from "react-loading-skeleton";
 import { animated, config, useSpring } from "react-spring";
