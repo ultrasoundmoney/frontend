@@ -98,7 +98,8 @@ export const showHideNavBar = (
       item && acc < item.offsetY ? item.offsetY : acc,
     0,
   );
-  const collectionElems = stepsRefElem?.parentElement?.children;
+  const collectionElems = stepsRefElem?.parentElement?.children[2].children;
+
   const childrenElems = collectionElems?.length
     ? Array.from(collectionElems)
     : [];
