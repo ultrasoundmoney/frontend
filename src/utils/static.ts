@@ -13,12 +13,12 @@ export const navigationItems: Array<navItemType> = [
   {
     id: "join the fam1 temporal",
     label: "join the fam",
-    anchor: "#join-the-fam",
+    anchor: "#fam",
   },
   {
     id: "join the fam2 temporal",
     label: "join the fam",
-    anchor: "#join-the-fam",
+    anchor: "#fam",
   },
   {
     id: "NFT drop",
@@ -28,6 +28,6 @@ export const navigationItems: Array<navItemType> = [
   {
     id: "join the fam",
     label: "join the fam",
-    anchor: "#join-the-fam",
+    anchor: "#fam",
   },
 ];

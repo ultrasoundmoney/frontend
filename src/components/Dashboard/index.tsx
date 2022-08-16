@@ -4,10 +4,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useAdminToken } from "../../admin";
-import {
-  GroupedAnalysis1,
-  useGroupedAnalysis1,
-} from "../../api/grouped-analysis-1";
+import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import Colors from "../../colors";
 import type { Gwei } from "../../eth-units";
 import * as FeatureFlags from "../../feature-flags";
@@ -275,7 +272,7 @@ const Dashboard: FC = () => {
               <StyledErrorBoundary>
                 <div className="flex flex-col px-4 md:px-16">
                   <div
-                    id="join-the-fam"
+                    id="fam"
                     className="relative flex px-4 md:px-0 pt-40 mb-16"
                   >
                     <div className="w-full relative flex flex-col items-center">

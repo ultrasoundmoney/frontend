@@ -80,7 +80,7 @@ const LandingPage: React.FC = () => {
             data-aos-duration="1000"
             data-aos-easing="ease-in-out"
             className="flex px-4 md:px-8 lg:px-0 py-8 md:py-40"
-            id="join-the-fam"
+            id="fam"
           >
             <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
               <TwitterFam />
