@@ -1,4 +1,5 @@
 import * as DateFns from "date-fns";
+import _ from "lodash";
 import type { FC } from "react";
 import { useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
@@ -7,9 +8,9 @@ import { useBlockLag } from "../../api/block-lag";
 import type { LatestBlock } from "../../api/grouped-analysis-1";
 import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import type { Unit } from "../../denomination";
+import { WEI_PER_GWEI } from "../../eth-units";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
-import { flow, NEA, O, OAlt, pipe } from "../../fp";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import CSSTransition from "../CSSTransition";
@@ -20,46 +21,30 @@ import styles from "./LatestBlocks.module.scss";
 
 const maxBlocks = 20;
 
-const formatGas = flow(
-  OAlt.numberFromUnknown,
-  O.map(Format.gweiFromWei),
-  O.map(Format.formatZeroDecimals),
-  O.toUndefined,
+const formatGas = _.flow((u: unknown) =>
+  typeof u !== "number"
+    ? undefined
+    : Format.formatZeroDecimals(u / WEI_PER_GWEI),
 );
 
-const formatFees = (unit: Unit, fees: unknown, feesUsd: unknown) =>
-  unit === "eth"
-    ? pipe(
-        fees,
-        OAlt.numberFromUnknown,
-        O.map(Format.formatWeiTwoDigit),
-        O.toUndefined,
-      )
-    : pipe(
-        feesUsd,
-        OAlt.numberFromUnknown,
-        O.map((feesUsd) => `${Format.formatZeroDecimals(feesUsd)}`),
-        O.toUndefined,
-      );
+const formatFees = (unit: Unit, fees: unknown, feesUsd: unknown) => {
+  if (unit === "eth") {
+    return typeof fees === "number"
+      ? Format.formatWeiTwoDigit(fees)
+      : undefined;
+  }
+  return typeof feesUsd === "number"
+    ? `${Format.formatZeroDecimals(feesUsd)}`
+    : undefined;
+};
 
 const formatTimeElapsed = (num: number | undefined) =>
-  pipe(
-    num,
-    O.fromNullable,
-    O.map((num: number) => `${num}s`),
-    O.toUndefined,
-  );
+  num === undefined ? undefined : `${num}s`;
 
 export const formatBlockNumber = (number: unknown) =>
-  pipe(
-    number,
-    O.fromPredicate(
-      (unknown): unknown is number => typeof unknown === "number",
-    ),
-    O.map(Format.formatZeroDecimals),
-    O.map((str) => `#${str}`),
-    O.toUndefined,
-  );
+  typeof number === "number"
+    ? `#${Format.formatZeroDecimals(number)}`
+    : undefined;
 
 const latestBlockFeesSkeletons = new Array(maxBlocks).fill(
   {},
@@ -78,7 +63,7 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
       return;
     }
 
-    const latestMinedBlockDate = new Date(NEA.head(latestBlockFees).minedAt);
+    const latestMinedBlockDate = new Date(latestBlockFees[0].minedAt);
 
     setTimeElapsed(
       DateFns.differenceInSeconds(new Date(), latestMinedBlockDate),

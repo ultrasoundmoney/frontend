@@ -6,6 +6,7 @@ export const WEI_PER_GWEI_JSBI = JSBI.exponentiate(
 );
 
 export const WEI_PER_ETH = 1e18;
+export const WEI_PER_GWEI = 1e9;
 
 export const GWEI_PER_ETH = 1e9;
 

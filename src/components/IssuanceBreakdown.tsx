@@ -1,3 +1,4 @@
+import _ from "lodash";
 import type { FC } from "react";
 import { useState } from "react";
 import Skeleton from "react-loading-skeleton";
@@ -7,7 +8,6 @@ import {
 } from "../api/issuance-breakdown";
 import Colors from "../colors";
 import * as Format from "../format";
-import { flow, pipe } from "../fp";
 import { MoneyAmount } from "./Amount";
 import { BodyText, LabelText, TextRoboto } from "./Texts";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
@@ -92,19 +92,17 @@ const CategorySegment: FC<CategorySegmentProps> = ({
             : "hidden",
       }}
     >
-      {pipe(
-        percentOfTotalRewards ? (
-          <TextRoboto
-            className="color-animation"
-            style={{
-              color: showHighlight ? Colors.white : Colors.spindle,
-            }}
-          >
-            {Format.formatPercentNoDecimals(percentOfTotalRewards)}
-          </TextRoboto>
-        ) : (
-          <Skeleton width="1.5rem" />
-        ),
+      {percentOfTotalRewards ? (
+        <TextRoboto
+          className="color-animation"
+          style={{
+            color: showHighlight ? Colors.white : Colors.spindle,
+          }}
+        >
+          {Format.formatPercentNoDecimals(percentOfTotalRewards)}
+        </TextRoboto>
+      ) : (
+        <Skeleton width="1.5rem" />
       )}
     </div>
   </div>
@@ -118,7 +116,7 @@ type IssuanceRowProps = {
   setHovering?: (bool: boolean) => void;
 };
 
-const millionEthFromGwei = flow(
+const millionEthFromGwei = _.flow(
   Format.ethFromGwei,
   // in M of ETH.
   (eth) => eth / 1_000_000,

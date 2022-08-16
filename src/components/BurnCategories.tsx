@@ -1,12 +1,13 @@
+import _ from "lodash";
 import type { FC } from "react";
 import { useContext, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import type { BurnCategory } from "../api/burn-categories";
 import { useBurnCategories } from "../api/burn-categories";
 import Colors from "../colors";
+import { WEI_PER_ETH } from "../eth-units";
 import { FeatureFlagsContext } from "../feature-flags";
 import * as Format from "../format";
-import { A, flow, NEA, O, pipe } from "../fp";
 import type { TimeFrameNext } from "../time-frames";
 import { MoneyAmount } from "./Amount";
 import { BodyText, LabelText, TextRoboto } from "./Texts";
@@ -246,29 +247,33 @@ const CategoryRow: FC<CategoryRowProps> = ({
   </div>
 );
 
-const formatFees = flow(
-  (num: number | undefined) => O.fromNullable(num),
-  O.map(Format.ethFromWei),
-  O.map((num) => Format.formatZeroDecimals(num)),
-  O.toUndefined,
-);
+const formatFees = (num: number | undefined): string | undefined =>
+  num === undefined
+    ? undefined
+    : _.flow(
+        (num: number) => num / WEI_PER_ETH,
+        Format.formatZeroDecimals,
+      )(num);
 
-const formatCount = flow(
-  (count: number | undefined) => O.fromNullable(count),
-  O.map((num) => num / 10 ** 3),
-  O.map((num) => Format.formatOneDecimal(num) + "K"),
-  O.toUndefined,
-);
+const formatCount = (num: number | undefined): string | undefined =>
+  num === undefined
+    ? undefined
+    : _.flow(
+        (num: number) => num / 10 ** 3,
+        (num) => Format.formatOneDecimal(num) + "K",
+      )(num);
 
 const buildMiscCategory = (
   burnCategories: BurnCategory[],
   setHoveringMisc: (bool: boolean) => void,
   hoveringMisc: boolean,
 ) =>
-  pipe(
-    NEA.fromArray(burnCategories),
-    O.map(
-      A.reduce({} as CategoryProps, (sumCategory, category) => ({
+  burnCategories
+    .filter(
+      (category) => !["nft", "defi", "mev", "l2"].includes(category.category),
+    )
+    .reduce(
+      (sumCategory, category) => ({
         imgName: "misc",
         imgAlt:
           "three dots, signaling the summing of other contracts that have been categorized",
@@ -283,10 +288,8 @@ const buildMiscCategory = (
           category.percentOfTotalBurnUsd,
         onHoverCategory: setHoveringMisc,
         showHighlight: hoveringMisc,
-      })),
-    ),
-    O.getOrElse(
-      (): CategoryProps => ({
+      }),
+      {
         imgName: "misc",
         imgAlt:
           "three dots, signaling the summing of other contracts that have been categorized",
@@ -297,9 +300,8 @@ const buildMiscCategory = (
         percentOfTotalBurnUsd: undefined,
         onHoverCategory: setHoveringMisc,
         showHighlight: hoveringMisc,
-      }),
-    ),
-  );
+      } as CategoryProps,
+    );
 
 type Props = {
   onClickTimeFrame: () => void;
@@ -315,11 +317,7 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const [hoveringMisc, setHoveringMisc] = useState(false);
   const { showCategoryCounts } = useContext(FeatureFlagsContext);
 
-  const selectedBurnCategories =
-    // TODO: our old API returned an array, this element is not visible yet, but trying to access an array like an object does crash the full page, therefore we have this check to make sure not to crash, and can remove it once the new API is deployed in production.
-    burnCategories === undefined || Array.isArray(burnCategories)
-      ? undefined
-      : burnCategories[timeFrame];
+  const selectedBurnCategories = burnCategories?.[timeFrame];
 
   const nft = selectedBurnCategories?.find(
     ({ category }) => category === "nft",
@@ -331,16 +329,10 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
     ({ category }) => category === "mev",
   );
   const l2 = selectedBurnCategories?.find(({ category }) => category === "l2");
-  const misc = pipe(
-    selectedBurnCategories?.filter(
-      (category) => !["nft", "defi", "mev", "l2"].includes(category.category),
-    ),
-    O.fromNullable,
-    O.map((categories) =>
-      buildMiscCategory(categories, setHoveringMisc, hoveringMisc),
-    ),
-    O.toUndefined,
-  );
+  const misc =
+    selectedBurnCategories !== undefined
+      ? buildMiscCategory(selectedBurnCategories, setHoveringMisc, hoveringMisc)
+      : undefined;
 
   const burnCategoryParts = {
     nft: {
@@ -442,7 +434,7 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
             {
               <>
                 <CategoryRow
-                  amountFormatted={formatFees(burnCategoryParts?.nft.fees)}
+                  amountFormatted={formatFees(burnCategoryParts.nft.fees)}
                   countFormatted={formatCount(
                     burnCategoryParts?.nft.transactionCount,
                   )}

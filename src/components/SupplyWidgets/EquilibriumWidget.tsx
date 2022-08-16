@@ -9,8 +9,6 @@ import { useSupplyProjectionInputs } from "../../api/supply-projection";
 import type { Eth, Gwei } from "../../eth-units";
 import { GWEI_PER_ETH, WEI_PER_ETH } from "../../eth-units";
 import * as Format from "../../format";
-import type { NEA } from "../../fp";
-import { pipe } from "../../fp";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { MoneyAmount, PercentAmount } from "../Amount";
 import Slider2 from "../Slider2";
@@ -229,9 +227,7 @@ const EquilibriumWidget: FC = () => {
     );
   }, [burnRates, effectiveBalanceSum, ethSupply, stakingAprFraction]);
 
-  const historicSupplyByMonth = useMemo(():
-    | NEA.NonEmptyArray<Point>
-    | undefined => {
+  const historicSupplyByMonth = useMemo((): Point[] | undefined => {
     if (supplyProjectionInputs === undefined) {
       return undefined;
     }
@@ -259,7 +255,7 @@ const EquilibriumWidget: FC = () => {
       [],
     );
 
-    return list as NEA.NonEmptyArray<Point>;
+    return list;
   }, [supplyProjectionInputs]);
 
   const equilibriums = useMemo(():
@@ -268,7 +264,7 @@ const EquilibriumWidget: FC = () => {
         nonStakedSupplyEquilibrium: number;
         supplyEquilibrium: number;
         supplyEquilibriumMap: Record<number, number>;
-        supplyEquilibriumSeries: NEA.NonEmptyArray<Point>;
+        supplyEquilibriumSeries: Point[];
         yearlyIssuanceFraction: number;
       }
     | undefined => {
@@ -281,9 +277,7 @@ const EquilibriumWidget: FC = () => {
       return undefined;
     }
 
-    const supplyEquilibriumSeries = [
-      ...historicSupplyByMonth,
-    ] as NEA.NonEmptyArray<Point>;
+    const supplyEquilibriumSeries = [...historicSupplyByMonth];
 
     // Now calculate n years into the future to paint an equilibrium.
     let supply: Point = [DateFns.getUnixTime(new Date()), ethSupply];
@@ -294,12 +288,8 @@ const EquilibriumWidget: FC = () => {
     const YEARS_TO_SIMULATE = 200;
 
     for (let i = 0; i < YEARS_TO_SIMULATE; i++) {
-      const nextYear = pipe(
-        supply[0],
-        DateFns.fromUnixTime,
-        (dt) => DateFns.addYears(dt, 1),
-        DateFns.getUnixTime,
-      );
+      const yearDateTime = DateFns.fromUnixTime(supply[0]);
+      const nextYear = DateFns.getUnixTime(DateFns.addYears(yearDateTime, 1));
       const burn = getBurn(nonStakingBurnFraction, nonStaked);
       const nextSupply = supply[1] + issuance - burn;
 

@@ -5,7 +5,6 @@ import Skeleton from "react-loading-skeleton";
 import type { EthPrice } from "../api/grouped-analysis-1";
 import { FeatureFlagsContext } from "../feature-flags";
 import * as Format from "../format";
-import { O, pipe } from "../fp";
 import { AmountUnitSpace } from "./Spacing";
 import { TextRoboto } from "./Texts";
 
@@ -33,13 +32,10 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
     startEthPrice = ethPrice?.usd;
   }
 
-  const ethUsd24hChange = pipe(
-    ethPrice?.usd24hChange,
-    O.fromNullable,
-    O.map((num) => num / 100),
-    O.map(Format.formatPercentOneDecimalSigned),
-    O.toUndefined,
-  );
+  const ethUsd24hChange =
+    ethPrice === undefined
+      ? undefined
+      : Format.formatPercentOneDecimalSigned(ethPrice.usd24hChange / 100);
 
   const color =
     typeof ethPrice?.usd24hChange === "number" && ethPrice?.usd24hChange < 0

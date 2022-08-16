@@ -1,4 +1,5 @@
 import type JSBI from "jsbi";
+import _ from "lodash";
 import type { FC, ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { useAverageEthPrice } from "../api/eth-price";
@@ -6,7 +7,6 @@ import { useGroupedAnalysis1 } from "../api/grouped-analysis-1";
 import { usePeRatios } from "../api/pe-ratios";
 import { useScarcity } from "../api/scarcity";
 import * as Format from "../format";
-import { pipe } from "../fp";
 import * as StaticEtherData from "../static-ether-data";
 import { MoneyAmount } from "./Amount";
 import Slider2 from "./Slider2";
@@ -91,23 +91,21 @@ const growthProfileLogMax = Math.log(growthProfileMax);
 const logRange = growthProfileLogMax - growthProfileLogMin;
 
 // Converts from a linear scale between 0 and 1 to a log scale between 6 and 250.
-const logFromLinear = (position: number) =>
-  pipe(
-    position * logRange,
-    (positionInRange) => positionInRange + growthProfileLogMin,
-    (shiftedPosition) => Math.exp(shiftedPosition),
-  );
+const logFromLinear = _.flow(
+  (position: number) => position * logRange,
+  (positionInRange) => positionInRange + growthProfileLogMin,
+  (shiftedPosition) => Math.exp(shiftedPosition),
+);
 
 // Converts from a log scale between 6 and 250 to a linear scale between 0 and 1
-const linearFromLog = (num: number) =>
-  pipe(
-    Math.log(num),
-    (linearPosition) => linearPosition - growthProfileLogMin,
-    (peInRange) => peInRange / logRange,
-    // Clamp
-    (ratio) => Math.min(1, ratio),
-    (ratio) => Math.max(0, ratio),
-  );
+const linearFromLog = _.flow(
+  Math.log,
+  (linearPosition) => linearPosition - growthProfileLogMin,
+  (peInRange) => peInRange / logRange,
+  // Clamp
+  (ratio) => Math.min(1, ratio),
+  (ratio) => Math.max(0, ratio),
+);
 
 const calcEarningsPerShare = (
   annualizedEarnings: number | undefined,

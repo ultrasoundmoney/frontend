@@ -7,10 +7,29 @@ import { AmountUnitSpace } from "../Spacing";
 import { BodyText, TextInter, TextRoboto, UnitText } from "../Texts";
 import { WidgetTitle } from "../WidgetSubcomponents";
 import { FeatureFlagsContext } from "../../feature-flags";
+import type { Scarcity } from "../../api/scarcity";
 import { useScarcity } from "../../api/scarcity";
 import JSBI from "jsbi";
-import { pipe } from "../../fp";
+import type { EthPrice } from "../../api/grouped-analysis-1";
 import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import _ from "lodash";
+
+const formatEthPrice = (
+  ethPrice: EthPrice,
+  ethStaked: Scarcity["engines"]["staked"],
+) =>
+  _.flow(
+    // We scale up a little, the numbers are huge, let's not drop precision we have.
+    () => Math.round(ethPrice.usd * 1e2),
+    (ethPriceCentsFloat) => JSBI.BigInt(ethPriceCentsFloat),
+    (ethPriceCentsBI) => JSBI.multiply(ethStaked.amount, ethPriceCentsBI),
+    // 1e18 is Wei -> ETH, 1e12 is displaying in trillions, 1e2 is scaling down from using cents not dollars above.
+    // We then leave four orders of size, because we expect a number < 0, which a bigint cannot hold.
+    (num) => JSBI.divide(num, JSBI.BigInt(1e12 * 1e18 * 1e2 * 1e-4)),
+    // We then leave
+    (num) => JSBI.toNumber(num) / 1e4,
+    Format.formatTwoDigit,
+  )();
 
 const TooltipSecurityRatio: FC<{ onClickClose: () => void }> = ({
   onClickClose,
@@ -98,21 +117,7 @@ const TooltipSecurityRatio: FC<{ onClickClose: () => void }> = ({
                 previewSkeletons ? (
                   <Skeleton inline width="2.4rem" />
                 ) : (
-                  pipe(
-                    ethPrice.usd,
-                    // We scale up a little, the numbers are huge, let's not drop precision we have.
-                    (ethPrice) => Math.round(ethPrice * 1e2),
-                    (ethPriceCentsFloat) => JSBI.BigInt(ethPriceCentsFloat),
-                    (ethPriceCentsBI) =>
-                      JSBI.multiply(ethStaked.amount, ethPriceCentsBI),
-                    // 1e18 is Wei -> ETH, 1e12 is displaying in trillions, 1e2 is scaling down from using cents not dollars above.
-                    // We then leave four orders of size, because we expect a number < 0, which a bigint cannot hold.
-                    (num) =>
-                      JSBI.divide(num, JSBI.BigInt(1e12 * 1e18 * 1e2 * 1e-4)),
-                    // We then leave
-                    (num) => JSBI.toNumber(num) / 1e4,
-                    Format.formatTwoDigit,
-                  )
+                  formatEthPrice(ethPrice, ethStaked)
                 )}
                 T
               </TextRoboto>

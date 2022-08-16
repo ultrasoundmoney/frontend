@@ -1,10 +1,10 @@
+import _ from "lodash";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import type { BurnRecord } from "../api/burn-records";
 import { useGroupedAnalysis1 } from "../api/grouped-analysis-1";
 import * as Format from "../format";
-import { flow, O, OAlt } from "../fp";
 import scrollbarStyles from "../styles/Scrollbar.module.scss";
 import type { TimeFrameNext } from "../time-frames";
 import { MoneyAmountAnimated } from "./Amount";
@@ -12,27 +12,18 @@ import SpanMoji from "./SpanMoji";
 import { BodyText, TextRoboto } from "./Texts";
 import { BurnGroupBase } from "./WidgetSubcomponents";
 
-const formatBlockNumber = flow(
-  O.fromPredicate((unknown): unknown is number => typeof unknown === "number"),
-  O.map(Format.formatZeroDecimals),
-  O.map((str) => `#${str}`),
-  O.toUndefined,
-);
+const formatBlockNumber = (u: unknown): string | undefined =>
+  typeof u !== "number"
+    ? undefined
+    : _.flow(Format.formatZeroDecimals, (str) => `#${str}`)(u);
 
-const getBlockPageLink = flow(
-  OAlt.numberFromUnknown,
-  O.map((num) => `https://etherscan.io/block/${num}`),
-  O.toUndefined,
-);
+const getBlockPageLink = (u: unknown): string | undefined =>
+  typeof u === undefined ? undefined : `https://etherscan.io/block/${u}`;
 
 const emojiMap = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
 
-const formatDistance = flow(
-  (dt: Date | undefined) => dt,
-  O.fromNullable,
-  O.map(Format.formatDistance),
-  O.toUndefined,
-);
+const formatDistance = (dt: Date | undefined): string | undefined =>
+  dt === undefined ? undefined : Format.formatDistance(dt);
 
 const Age: FC<{ minedAt: Date | undefined }> = ({ minedAt }) => {
   const [age, setAge] = useState(formatDistance(minedAt));

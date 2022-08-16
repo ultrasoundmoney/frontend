@@ -1,5 +1,5 @@
 import * as DateFns from "date-fns";
-import { A, pipe, Re } from "../fp";
+import _ from "lodash";
 import type { TimeFrameNext } from "../time-frames";
 
 export type BurnRecord = {
@@ -24,16 +24,14 @@ export type BurnRecordsF = {
   records: Record<TimeFrameNext, BurnRecordF[]>;
 };
 
-export const decodeBurnRecords = (rawBurnRecords: BurnRecordsF) =>
-  pipe({
-    ...rawBurnRecords,
-    records: pipe(
-      rawBurnRecords.records,
-      Re.map(
-        A.map((rawBurnRecord) => ({
-          ...rawBurnRecord,
-          minedAt: DateFns.parseISO(rawBurnRecord.minedAt),
-        })),
-      ),
-    ),
-  });
+export const decodeBurnRecords = (
+  rawBurnRecords: BurnRecordsF,
+): BurnRecords => ({
+  ...rawBurnRecords,
+  records: _.mapValues(rawBurnRecords.records, (records) =>
+    records.map((record) => ({
+      ...record,
+      minedAt: DateFns.parseISO(record.minedAt),
+    })),
+  ),
+});

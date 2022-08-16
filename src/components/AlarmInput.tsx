@@ -1,8 +1,9 @@
+import _ from "lodash";
 import type { ChangeEvent, FC } from "react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useGroupedAnalysis1 } from "../api/grouped-analysis-1";
+import { WEI_PER_GWEI } from "../eth-units";
 import * as Format from "../format";
-import { O, pipe, S } from "../fp";
 import { useLocalStorage } from "../use-local-storage";
 import useNotification from "../use-notification";
 import styles from "./AlarmInput.module.scss";
@@ -10,24 +11,25 @@ import { AmountUnitSpace } from "./Spacing";
 import { TextRoboto } from "./Texts";
 import ToggleSwitch from "./ToggleSwitch";
 
-const thresholdToNumber = (threshold: string | undefined): number | undefined =>
-  pipe(
-    threshold,
-    O.fromNullable,
-    O.map(S.replace(",", "")),
-    O.map(Number),
-    O.chain((num) => (Number.isNaN(num) ? O.none : O.some(num))),
-    O.toUndefined,
-  );
+const thresholdToNumber = (
+  threshold: string | undefined,
+): number | undefined => {
+  if (threshold === undefined) {
+    return undefined;
+  }
+
+  const num = Number(_.replace(threshold, ",", ""));
+  return Number.isNaN(num) ? undefined : num;
+};
 
 const safeFormatZeroDigit = (num: number | undefined) =>
-  pipe(num, O.fromNullable, O.map(Format.formatZeroDecimals), O.toUndefined);
+  num === undefined ? undefined : Format.formatZeroDecimals(num);
 
 const toThresholdDisplay = (str: string | undefined): string | undefined =>
-  pipe(str, thresholdToNumber, safeFormatZeroDigit);
+  safeFormatZeroDigit(thresholdToNumber(str));
 
 const safeRound = (num: number | undefined) =>
-  pipe(num, O.fromNullable, O.map(Math.round), O.toUndefined);
+  num === undefined ? undefined : Math.round(num);
 
 type CrossThresholdFn = (current: number, threshold: number) => boolean;
 
@@ -77,13 +79,11 @@ const AlarmInput: FC<AlarmInputProps> = ({
   );
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const roundedGasPriceGwei = pipe(
-    baseFeePerGas,
-    O.fromNullable,
-    O.map(Format.gweiFromWei),
-    O.map(Math.round),
-    O.toUndefined,
-  );
+  const roundedGasPriceGwei =
+    baseFeePerGas === undefined
+      ? undefined
+      : Math.round(baseFeePerGas / WEI_PER_GWEI);
+
   const roundedEthPrice = safeRound(ethPrice?.usd);
   const currentValueMap: Record<AlarmType, number | undefined> = {
     gas: roundedGasPriceGwei,

@@ -3,7 +3,6 @@ import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import colors from "../../colors";
 import type { Unit } from "../../denomination";
 import * as Format from "../../format";
-import { O, pipe } from "../../fp";
 import type { TimeFrameNext } from "../../time-frames";
 import { timeframeBurnRateMap } from "../BurnTotal";
 import IssuanceBurnBaseGauge from "./IssuanceBurnBaseGauge";
@@ -13,17 +12,13 @@ type BurnGaugeProps = { timeFrame: TimeFrameNext; unit: Unit };
 const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame, unit }) => {
   const burnRates = useGroupedAnalysis1()?.burnRates;
 
-  const burnRate = pipe(
-    burnRates,
-    O.fromNullable,
-    O.map((burnRates) => burnRates[timeframeBurnRateMap[timeFrame][unit]]),
-    O.map((burnRate) =>
-      unit === "eth"
-        ? Format.ethFromWei(burnRate * 60 * 24 * 365.25) / 10 ** 6
-        : (burnRate * 60 * 24 * 365.25) / 10 ** 9,
-    ),
-    O.toUndefined,
-  );
+  const preBurnRate = burnRates?.[timeframeBurnRateMap[timeFrame][unit]];
+  const burnRate =
+    preBurnRate === undefined
+      ? undefined
+      : unit === "eth"
+      ? Format.ethFromWei(preBurnRate * 60 * 24 * 365.25) / 10 ** 6
+      : (preBurnRate * 60 * 24 * 365.25) / 10 ** 9;
 
   return (
     <div

@@ -6,7 +6,6 @@ import { useContractsFreshness } from "../../api/contracts";
 import type { TvsRanking } from "../../api/total-value-secured";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
-import { A, NEA, O, pipe } from "../../fp";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { AmountBillionsUsdAnimated } from "../Amount";
@@ -114,12 +113,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
 
   const leaderboardSkeletons = new Array(100).fill({}) as undefined[];
 
-  const addresses = pipe(
-    rows,
-    O.fromNullable,
-    O.map(A.map((row) => row.contractAddresses[0])),
-    O.toUndefined,
-  );
+  const addresses = rows?.map((row) => row.contractAddresses[0]);
   const freshnessMap = useContractsFreshness(addresses, adminToken);
   const { showMetadataTools } = useContext(FeatureFlagsContext);
 
@@ -178,13 +172,11 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
                     {row?.detail}
                   </BodyText>
                   <AmountBillionsUsdAnimated
-                    tooltip={pipe(
-                      row?.marketCap,
-                      O.fromNullable,
-                      O.map(Format.formatZeroDecimals),
-                      O.map((str) => `${str} USD`),
-                      O.toUndefined,
-                    )}
+                    tooltip={
+                      row !== undefined
+                        ? `${Format.formatZeroDecimals(row.marketCap)} USD`
+                        : undefined
+                    }
                   >
                     {row?.marketCap}
                   </AmountBillionsUsdAnimated>
@@ -195,8 +187,12 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
                 freshnessMap !== undefined &&
                 showMetadataTools && (
                   <AdminControls
-                    address={NEA.head(row?.contractAddresses)}
-                    freshness={freshnessMap[row?.contractAddresses[0]]}
+                    address={row.contractAddresses[0]}
+                    freshness={
+                      row !== undefined
+                        ? freshnessMap[row.contractAddresses[0]]
+                        : undefined
+                    }
                   />
                 )}
             </div>

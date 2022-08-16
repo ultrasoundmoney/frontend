@@ -1,11 +1,11 @@
 import * as DateFns from "date-fns";
 import JSBI from "jsbi";
+import _ from "lodash";
 import type { FC } from "react";
 import { useState } from "react";
 import { useScarcity } from "../api/scarcity";
 import Colors from "../colors";
 import * as Format from "../format";
-import { pipe } from "../fp";
 import { Amount, MoneyAmount } from "./Amount";
 import { BodyText, LabelText, TextRoboto } from "./Texts";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
@@ -194,27 +194,31 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
   );
 };
 
-const mEthFromWei = (num: JSBI) =>
-  pipe(
-    num,
-    (num) => JSBI.toNumber(num),
-    Format.ethFromWei,
-    (num) => num / 10 ** 6,
-  );
+const mEthFromWei = _.flow(
+  (num: JSBI) => JSBI.toNumber(num),
+  Format.ethFromWei,
+  (num) => num / 10 ** 6,
+);
 
-const floorOneDigit = (num: number) =>
-  pipe(
-    num,
-    (num) => num * 10,
-    Math.floor,
-    (num) => num / 10,
-  );
+const floorOneDigit = _.flow(
+  (num: number) => num * 10,
+  Math.floor,
+  (num) => num / 10,
+);
 
-const mEthFromWeiFormatted = (num: JSBI): string =>
-  pipe(num, mEthFromWei, floorOneDigit, Format.formatOneDecimal);
+const mEthFromWeiFormatted = _.flow(
+  (num: JSBI) => num,
+  mEthFromWei,
+  floorOneDigit,
+  Format.formatOneDecimal,
+);
 
-const mEthFromEthFormatted = (num: number): string =>
-  pipe(num, (num) => num / 10 ** 6, floorOneDigit, Format.formatOneDecimal);
+const mEthFromEthFormatted = _.flow(
+  (num: number) => num,
+  (num) => num / 10 ** 6,
+  floorOneDigit,
+  Format.formatOneDecimal,
+);
 
 type EngineRowProps = {
   amountFormatted: string;

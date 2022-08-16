@@ -9,7 +9,6 @@ import * as React from "react";
 import { useSupplyProjectionInputs } from "../../api/supply-projection";
 import { LONDON_HARDFORK_DATE_TIME } from "../../eth-time";
 import { formatOneDecimal } from "../../format";
-import { pipe } from "../../fp";
 import { TranslationsContext } from "../../translations-context";
 import { COLORS, defaultOptions } from "../../utils/chart-defaults";
 import {
@@ -265,11 +264,7 @@ const SupplyChart: React.FC<Props> = ({
     const maxIssuance = estimatedDailyIssuance(chartSettings.projectedStaking);
 
     for (let i = 0; i < daysOfProjection; i++) {
-      const projDate = pipe(
-        lastDate,
-        (dt) => DateFns.addDays(dt, i + 1),
-        DateFns.startOfDay,
-      );
+      const projDate = DateFns.startOfDay(DateFns.addDays(lastDate, i + 1));
 
       // Calculate new ETH staking on this day
       if (stakingValue < chartSettings.projectedStaking) {

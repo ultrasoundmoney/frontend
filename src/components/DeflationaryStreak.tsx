@@ -5,7 +5,6 @@ import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
 import type { DeflationaryStreakMode } from "../api/grouped-analysis-1";
 import { useGroupedAnalysis1 } from "../api/grouped-analysis-1";
-import { NEA } from "../fp";
 import { AmountUnitSpace } from "./Spacing";
 import SpanMoji from "./SpanMoji";
 import { TextRoboto } from "./Texts";
@@ -28,7 +27,7 @@ const DeflationaryStreak: FC<{ simulateMerge: boolean }> = ({
       return;
     }
 
-    const lastBlock = NEA.head(latestBlocks);
+    const lastBlock = latestBlocks[0];
 
     setTimeElapsed(
       DateFns.formatDistanceStrict(

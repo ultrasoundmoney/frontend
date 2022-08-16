@@ -1,6 +1,6 @@
-import { pipe } from "fp-ts/lib/function";
 import * as DateFns from "date-fns";
 import JSBI from "jsbi";
+import { WEI_PER_ETH } from "./eth-units";
 
 const intlFormatter = new Intl.NumberFormat();
 export function intlFormat(num: number): string {
@@ -13,7 +13,7 @@ const twoDigit = new Intl.NumberFormat("en-US", {
 });
 
 export const formatWeiTwoDigit = (wei: number): string =>
-  pipe(wei, ethFromWei, (num) => twoDigit.format(num));
+  twoDigit.format(wei / WEI_PER_ETH);
 
 export const formatTwoDigit = (num: number): string => twoDigit.format(num);
 

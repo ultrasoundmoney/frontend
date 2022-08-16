@@ -7,7 +7,6 @@ import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import type { Unit } from "../../denomination";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
-import { pipe } from "../../fp";
 import Twemoji from "../Twemoji";
 import { WidgetTitle } from "../WidgetSubcomponents";
 import type { GaugeGradientFill } from "./GaugeSvg";
@@ -44,15 +43,13 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
   });
 
   const min = 0;
-  const max = pipe(
+  const preMax =
     unit === "eth"
       ? 10
       : ethPrice === undefined
       ? 0
-      : (10 * ethPrice.usd) / 10 ** 3,
-    (max) => Math.max(max, unit === "eth" ? 10 : 20 ?? 0),
-    Math.round,
-  );
+      : (10 * ethPrice.usd) / 10 ** 3;
+  const max = Math.round(Math.max(preMax, unit === "eth" ? 10 : 20 ?? 0));
 
   const progress = clamp(value ?? 0, min, max) / (max - min);
 

@@ -5,7 +5,6 @@ import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
 import { useMergeEstimate } from "../../api/merge-estimate";
 import { FeatureFlagsContext } from "../../feature-flags";
-import { O, pipe } from "../../fp";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { LabelText, TextRoboto } from "../Texts";
 import Twemoji from "../Twemoji";
@@ -59,14 +58,13 @@ const MergeEstimateWidget = () => {
     return () => clearInterval(id);
   }, [mergeEstimate]);
 
-  const mergeEstimateFormatted = pipe(
-    mergeEstimate,
-    O.fromNullable,
-    O.map((mergeEstimate) => mergeEstimate.estimatedDateTime),
-    O.map(shiftDateTimeByTimeZone),
-    O.map((dateTime) => DateFns.format(dateTime, "MMM d, ~haaa")),
-    O.toUndefined,
-  );
+  const mergeEstimateFormatted =
+    mergeEstimate === undefined
+      ? undefined
+      : DateFns.format(
+          shiftDateTimeByTimeZone(mergeEstimate.estimatedDateTime),
+          "MMM d, ~haaa",
+        );
 
   // If we don't have data, show a zero.
   // If we have data and we're not dealing with the two column layout on a

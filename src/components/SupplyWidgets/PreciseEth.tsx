@@ -1,5 +1,5 @@
 import JSBI from "jsbi";
-import { A, pipe } from "../../fp";
+import _ from "lodash";
 import type { FC } from "react";
 import { useCallback } from "react";
 import CountUp from "react-countup";
@@ -11,35 +11,32 @@ import { AmountAnimatedShell, defaultMoneyAnimationDuration } from "../Amount";
 // against low level limits (IEEE 754), and can't work with the full number. We
 // split the number into three parts, to enable both precision and animation.
 
-const ethNoDecimals = (ethSupplySum: JSBI): number =>
-  pipe(
-    ethSupplySum.toString().split(""),
-    A.dropRight(18),
-    (str) => str.join(""),
-    (str) => JSBI.BigInt(str),
-    (num) => JSBI.toNumber(num),
-  );
+const ethNoDecimals = _.flow(
+  (ethSupplySum: JSBI) => ethSupplySum.toString().split(""),
+  (chars) => _.dropRight(chars, 18),
+  (str) => str.join(""),
+  (str) => JSBI.BigInt(str),
+  (num) => JSBI.toNumber(num),
+);
 
 // The last six digits in the number.
-const ethLastSixteenDecimals = (ethSupplySum: JSBI): number =>
-  pipe(
-    ethSupplySum.toString().split(""),
-    A.takeRight(16),
-    (str) => str.join(""),
-    (str) => JSBI.BigInt(str),
-    (num) => JSBI.toNumber(num),
-  );
+const ethLastSixteenDecimals = _.flow(
+  (ethSupplySum: JSBI) => ethSupplySum.toString().split(""),
+  (chars) => _.takeRight(chars, 16),
+  (str) => str.join(""),
+  (str) => JSBI.BigInt(str),
+  (num) => JSBI.toNumber(num),
+);
 
 // Everything that is left from the fractional part when written in ETH instead of Wei. This is always twelve digits.
-const ethFirstTwoDecimals = (ethSupplySum: JSBI): number =>
-  pipe(
-    ethSupplySum.toString().split(""),
-    A.dropRight(16),
-    A.takeRight(2),
-    (str) => str.join(""),
-    (str) => JSBI.BigInt(str),
-    (num) => JSBI.toNumber(num),
-  );
+const ethFirstTwoDecimals = _.flow(
+  (ethSupplySum: JSBI) => ethSupplySum.toString().split(""),
+  (chars) => _.dropRight(chars, 16),
+  (chars) => _.takeRight(chars, 2),
+  (str) => str.join(""),
+  (str) => JSBI.BigInt(str),
+  (num) => JSBI.toNumber(num),
+);
 
 const formatDecimals = (num: number, padTo: number): string => {
   const numsAsStrings = num.toString().padStart(padTo, "0").split("").reverse();

@@ -1,6 +1,5 @@
 import useSWR from "swr";
 import * as Duration from "../duration";
-import { pipe } from "../fp";
 import fetcher from "./default-fetcher";
 import { feesBasePath } from "./fees";
 
@@ -28,12 +27,12 @@ export const useIssuanceBreakdown = (): IssuanceBreakdown | undefined => {
 export const getPercentOfTotal = (
   issuanceBreakdown: IssuanceBreakdown,
   field: keyof IssuanceBreakdown,
-) =>
-  pipe(
+): number => {
+  const total =
     issuanceBreakdown.crowdSale +
-      issuanceBreakdown.ethereumFoundation +
-      issuanceBreakdown.earlyContributors +
-      issuanceBreakdown.proofOfStake +
-      issuanceBreakdown.proofOfWork,
-    (total) => issuanceBreakdown[field] / total,
-  );
+    issuanceBreakdown.ethereumFoundation +
+    issuanceBreakdown.earlyContributors +
+    issuanceBreakdown.proofOfStake +
+    issuanceBreakdown.proofOfWork;
+  return issuanceBreakdown[field] / total;
+};

@@ -2,7 +2,6 @@ import * as DateFns from "date-fns";
 import * as React from "react";
 import { MERGE_TIMESTAMP_ESTIMATED } from "../../eth-time";
 import { formatOneDecimal } from "../../format";
-import { pipe } from "../../fp";
 import {
   estimatedDailyFeeBurn,
   estimatedDailyIssuance,
@@ -76,8 +75,9 @@ const SupplyView: React.FC = () => {
       }
 
       const numDays: number = parseInt(e.target.value);
-      const projectedDate = pipe(new Date(), DateFns.startOfDay, (dt) =>
-        DateFns.addDays(dt, numDays),
+      const projectedDate = DateFns.addDays(
+        DateFns.startOfDay(new Date()),
+        numDays,
       );
       setProjectedMergeDate(projectedDate);
     },

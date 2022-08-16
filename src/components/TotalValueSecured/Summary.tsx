@@ -3,7 +3,6 @@ import { useState } from "react";
 import CountUp from "react-countup";
 import { useTotalValueSecured } from "../../api/total-value-secured";
 import * as Format from "../../format";
-import { flow, O, pipe } from "../../fp";
 import {
   AmountAnimatedShell,
   AmountBillionsUsdAnimated,
@@ -59,12 +58,11 @@ const AssetType: FC<{
           text-base md:text-lg
           ${isHovering ? "opacity-60" : ""}
         `}
-        tooltip={pipe(
-          amount,
-          O.fromNullable,
-          O.map(flow(Format.formatZeroDecimals, (str) => `${str} USD`)),
-          O.toUndefined,
-        )}
+        tooltip={
+          amount === undefined
+            ? undefined
+            : `${Format.formatZeroDecimals(amount)} USD`
+        }
       >
         {amount}
       </AmountBillionsUsdAnimated>
@@ -85,13 +83,11 @@ const Summary: FC<{ className?: string }> = ({ className = "" }) => {
           <div className="flex flex-col  gap-y-4 md:flex-row md:justify-between">
             <div
               className="flex flex-col gap-y-4"
-              title={pipe(
-                totalValueSecured?.sum,
-                O.fromNullable,
-                O.map(Format.formatZeroDecimals),
-                O.map((str) => `${str} USD`),
-                O.toUndefined,
-              )}
+              title={
+                totalValueSecured === undefined
+                  ? undefined
+                  : `${Format.formatZeroDecimals(totalValueSecured.sum)} USD`
+              }
             >
               <WidgetTitle>total value secured</WidgetTitle>
               <AmountTrillionsUsdAnimated

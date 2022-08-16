@@ -2,7 +2,6 @@ import type { FC } from "react";
 import { useAverageEthPrice } from "../../api/eth-price";
 import colors from "../../colors";
 import type { Unit } from "../../denomination";
-import { O, pipe } from "../../fp";
 import * as StaticEtherData from "../../static-ether-data";
 import type { TimeFrameNext } from "../../time-frames";
 import BaseGauge from "./IssuanceBurnBaseGauge";
@@ -16,25 +15,18 @@ type Props = {
 const IssuanceGauge: FC<Props> = ({ simulateMerge, timeFrame, unit }) => {
   const averageEthPrice = useAverageEthPrice();
 
-  const selectedAverageEthPrice = pipe(
-    averageEthPrice,
-    O.fromNullable,
-    O.map((averageEthPrice) => averageEthPrice[timeFrame]),
-  );
+  const selectedAverageEthPrice = averageEthPrice?.[timeFrame];
 
   const issuancePerDay = simulateMerge
     ? StaticEtherData.posIssuancePerDay
     : StaticEtherData.powIssuancePerDay + StaticEtherData.posIssuancePerDay;
 
-  const issuance = pipe(
-    selectedAverageEthPrice,
-    O.map((selectedAverageEthPrice) =>
-      unit === "eth"
-        ? (issuancePerDay * 365.25) / 1_000_000
-        : (issuancePerDay * 365.25 * selectedAverageEthPrice) / 1_000_000_000,
-    ),
-    O.toUndefined,
-  );
+  const issuance =
+    selectedAverageEthPrice === undefined
+      ? undefined
+      : unit === "eth"
+      ? (issuancePerDay * 365.25) / 1_000_000
+      : (issuancePerDay * 365.25 * selectedAverageEthPrice) / 1_000_000_000;
 
   return (
     <div

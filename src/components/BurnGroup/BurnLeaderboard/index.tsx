@@ -1,3 +1,4 @@
+import _ from "lodash";
 import type { FC, RefObject } from "react";
 import React, { memo, useCallback, useRef, useState } from "react";
 import { usePopper } from "react-popper";
@@ -6,7 +7,6 @@ import { useContractsFreshness } from "../../../api/contracts";
 import { useGroupedAnalysis1 } from "../../../api/grouped-analysis-1";
 import type { LeaderboardEntry, Leaderboards } from "../../../api/leaderboards";
 import type { Unit } from "../../../denomination";
-import { NEA, O, pipe } from "../../../fp";
 import scrollbarStyles from "../../../styles/Scrollbar.module.scss";
 import type { TimeFrameNext } from "../../../time-frames";
 import { useActiveBreakpoint } from "../../../utils/use-active-breakpoint";
@@ -234,9 +234,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
           `}
         >
           {selectedLeaderboard === undefined
-            ? NEA.range(0, 100).map((_, index) => (
-                <LeaderboardRow key={index} />
-              ))
+            ? _.range(0, 100).map((_, index) => <LeaderboardRow key={index} />)
             : selectedLeaderboard.map((entry, index) =>
                 entry.type === "contract" ? (
                   <LeaderboardRow
@@ -291,12 +289,9 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
           onMouseLeave={handleTooltipLeave}
         >
           <Tooltip
-            contractAddresses={pipe(
-              selectedEntry?.address,
-              O.fromNullable,
-              O.map((address) => [address]),
-              O.getOrElseW(() => []),
-            )}
+            contractAddresses={
+              selectedEntry === undefined ? undefined : [selectedEntry.address]
+            }
             description={selectedEntry?.twitterBio}
             links={selectedEntry?.twitterLinks}
             famFollowerCount={selectedEntry?.famFollowerCount}
@@ -313,12 +308,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
         >
           {!md && selectedEntry !== undefined && (
             <Tooltip
-              contractAddresses={pipe(
-                selectedEntry.address,
-                O.fromNullable,
-                O.map((address) => [address]),
-                O.getOrElseW(() => []),
-              )}
+              contractAddresses={[selectedEntry.address]}
               description={selectedEntry.twitterBio}
               famFollowerCount={selectedEntry.famFollowerCount}
               followerCount={selectedEntry.followerCount}

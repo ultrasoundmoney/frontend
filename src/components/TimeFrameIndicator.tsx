@@ -4,15 +4,14 @@ import { useEffect, useState } from "react";
 import { WidgetTitle } from "./WidgetSubcomponents";
 import { londonHardfork } from "../dates";
 import { millisFromHours } from "../duration";
-import { pipe } from "../fp";
 import type { TimeFrameNext } from "../time-frames";
 import { displayTimeFrameNextMap } from "../time-frames";
+import _ from "lodash";
 
-const getFormattedDays = () =>
-  pipe(
-    DateFns.differenceInDays(new Date(), londonHardfork),
-    (daysCount) => `${daysCount}d`,
-  );
+const getFormattedDays = _.flow(
+  () => DateFns.differenceInDays(new Date(), londonHardfork),
+  (daysCount) => `${daysCount}d`,
+);
 
 type Props = {
   onClickTimeFrame: () => void;

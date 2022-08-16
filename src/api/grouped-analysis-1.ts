@@ -4,7 +4,6 @@ import useSWR from "swr";
 import * as Duration from "../duration";
 import type { Wei } from "../eth-units";
 import { FeatureFlagsContext } from "../feature-flags";
-import { NEA } from "../fp";
 import type { BurnRecords, BurnRecordsF } from "./burn-records";
 import { decodeBurnRecords } from "./burn-records";
 import fetcher from "./default-fetcher";
@@ -74,7 +73,7 @@ export type GroupedAnalysis1 = {
   deflationaryStreak: DeflationaryStreakState;
   ethPrice: EthPrice | undefined;
   feesBurned: FeesBurned;
-  latestBlockFees: NEA.NonEmptyArray<LatestBlock>;
+  latestBlockFees: LatestBlock[];
   leaderboards: Leaderboards;
   number: number;
 };
@@ -86,7 +85,7 @@ export type GroupedAnalysis1F = {
   deflationaryStreak: DeflationaryStreakState;
   ethPrice: EthPrice | undefined;
   feesBurned: FeesBurned;
-  latestBlockFees: NEA.NonEmptyArray<LatestBlock>;
+  latestBlockFees: LatestBlock[];
   leaderboards: Leaderboards;
   number: number;
 };
@@ -156,10 +155,8 @@ GroupedAnalysis1F | undefined => {
       return undefined;
     }
 
-    const newBlock = NEA.head(lastJsonMessage.message.latestBlockFees);
-    if (
-      newBlock.number > NEA.head(latestGroupedAnalysis1.latestBlockFees).number
-    ) {
+    const newBlock = lastJsonMessage.message.latestBlockFees[0];
+    if (newBlock.number > latestGroupedAnalysis1.latestBlockFees[0].number) {
       setLatestGroupedAnalysis1(lastJsonMessage.message);
       return undefined;
     }

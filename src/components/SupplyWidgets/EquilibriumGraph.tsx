@@ -6,7 +6,6 @@ import type { FC } from "react";
 import { useEffect, useRef, useState } from "react";
 import colors from "../../colors";
 import * as Format from "../../format";
-import type { NEA } from "../../fp";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import styles from "./EquilibriumGraph.module.scss";
 import equilibriumDot from "./dot_supply_graph.svg";
@@ -107,7 +106,7 @@ const baseOptions: Highcharts.Options = {
 };
 
 type Props = {
-  supplyEquilibriumSeries: NEA.NonEmptyArray<Point>;
+  supplyEquilibriumSeries: Point[];
   // A map used for fast-lookup of the Y in the series above by X.
   supplyEquilibriumMap: Record<number, number>;
   supplyEquilibrium: number;

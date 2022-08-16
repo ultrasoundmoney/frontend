@@ -1,6 +1,6 @@
 import * as DateFns from "date-fns";
+import _ from "lodash";
 import useSWR from "swr";
-import { O, pipe, Re } from "../fp";
 import { feesBasePath } from "./fees";
 
 export const setContractTwitterHandle = async (
@@ -98,18 +98,14 @@ export type MetadataFreshness = {
 export type MetadataFreshnessMap = Record<string, MetadataFreshness>;
 
 const decodeFreshness = (freshness: RawMetadataFreshness) => ({
-  openseaContractLastFetch: pipe(
-    freshness.openseaContractLastFetch,
-    O.fromNullable,
-    O.map(DateFns.parseISO),
-    O.toUndefined,
-  ),
-  lastManuallyVerified: pipe(
-    freshness.lastManuallyVerified,
-    O.fromNullable,
-    O.map(DateFns.parseISO),
-    O.toUndefined,
-  ),
+  openseaContractLastFetch:
+    freshness.openseaContractLastFetch == null
+      ? undefined
+      : DateFns.parseISO(freshness.openseaContractLastFetch),
+  lastManuallyVerified:
+    freshness.lastManuallyVerified == null
+      ? undefined
+      : DateFns.parseISO(freshness.lastManuallyVerified),
 });
 
 export const useContractsFreshness = (
@@ -141,5 +137,5 @@ export const useContractsFreshness = (
     fetcher,
   );
 
-  return data === undefined ? undefined : pipe(data, Re.map(decodeFreshness));
+  return data === undefined ? undefined : _.mapValues(data, decodeFreshness);
 };

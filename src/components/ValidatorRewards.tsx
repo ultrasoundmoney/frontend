@@ -10,8 +10,8 @@ import {
   useValidatorRewards,
 } from "../api/validator-rewards";
 import Colors from "../colors";
+import { GWEI_PER_ETH } from "../eth-units";
 import * as Format from "../format";
-import { flow, O, pipe } from "../fp";
 import { MoneyAmount, PercentAmount } from "./Amount";
 import { BodyText, LabelText, TextRoboto } from "./Texts";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
@@ -22,7 +22,7 @@ type CategorySegmentProps = {
   imgAlt: string;
   imgName: string;
   onHoverCategory: (hovering: boolean) => void;
-  percentOfTotalRewards: O.Option<number>;
+  percentOfTotalRewards: number | undefined;
   rounded?: "left" | "right";
   showHighlight: boolean;
 };
@@ -38,11 +38,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
   <div
     className="flex flex-col items-center select-none"
     style={{
-      width: pipe(
-        percentOfTotalRewards,
-        O.getOrElse(() => skeletonLoadingWidth),
-        (percent) => `${percent * 100}%`,
-      ),
+      width: `${(percentOfTotalRewards ?? skeletonLoadingWidth) * 100}%`,
     }}
     onMouseEnter={() => onHoverCategory(true)}
     onMouseLeave={() => onHoverCategory(false)}
@@ -85,33 +81,29 @@ const CategorySegment: FC<CategorySegmentProps> = ({
       }}
     ></div>
     <div style={{ marginTop: "9px" }}>
-      {pipe(
-        percentOfTotalRewards,
-        O.match(
-          () => <Skeleton width="1.5rem" />,
-          (percentOfTotalRewards) => (
-            <TextRoboto
-              className="color-animation"
-              style={{
-                color: showHighlight ? Colors.white : Colors.spindle,
-              }}
-            >
-              {Format.formatPercentNoDecimals(percentOfTotalRewards)}
-            </TextRoboto>
-          ),
-        ),
+      {percentOfTotalRewards !== undefined ? (
+        <TextRoboto
+          className="color-animation"
+          style={{
+            color: showHighlight ? Colors.white : Colors.spindle,
+          }}
+        >
+          {Format.formatPercentNoDecimals(percentOfTotalRewards)}
+        </TextRoboto>
+      ) : (
+        <Skeleton width="1.5rem" />
       )}
     </div>
   </div>
 );
 
 type RewardRowProps = {
-  amount: O.Option<number>;
+  amount: number | undefined;
   hovering?: boolean;
   link?: string;
   name: string;
   setHovering?: (bool: boolean) => void;
-  apr: O.Option<number>;
+  apr: number | undefined;
 };
 
 const RewardRow: FC<RewardRowProps> = ({
@@ -133,14 +125,12 @@ const RewardRow: FC<RewardRowProps> = ({
   >
     <BodyText>{name}</BodyText>
     <MoneyAmount className="font-light text-right">
-      {pipe(
-        amount,
-        O.map(flow(Format.ethFromGwei, Format.formatOneDecimal)),
-        O.toUndefined,
-      )}
+      {amount === undefined
+        ? undefined
+        : Format.formatOneDecimal(amount / GWEI_PER_ETH)}
     </MoneyAmount>
     <PercentAmount className="text-right">
-      {pipe(apr, O.map(Format.formatPercentOneDecimal), O.toUndefined)}
+      {apr === undefined ? undefined : Format.formatPercentOneDecimal(apr)}
     </PercentAmount>
   </a>
 );
