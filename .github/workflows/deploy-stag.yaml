@@ -20,6 +20,7 @@ jobs:
   make-sentry-release:
     name: make sentry release
     runs-on: ubuntu-latest
+    needs: wait-on-build
     steps:
       - uses: actions/checkout@v2
       - name: Create Sentry release
