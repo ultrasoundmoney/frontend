@@ -31,7 +31,7 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
   const imageRef = useRef<HTMLImageElement>(null);
   const { previewSkeletons } = useContext(FeatureFlagsContext);
   const [imgSrc, setImgSrc] = useState<string | StaticImageData | undefined>(
-    imageUrl ?? undefined,
+    imageUrl,
   );
 
   const onImageError = useCallback(() => {
