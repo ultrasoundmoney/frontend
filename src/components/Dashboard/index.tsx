@@ -37,7 +37,7 @@ const SectionDivider: FC<{
   title: string;
 }> = ({ link, title, subtitle }) => (
   <>
-    <div className="h-32"></div>
+    <div className="h-16"></div>
     <SectionTitle link={link} title={title} subtitle={subtitle} />
     <div className="h-16"></div>
   </>
@@ -235,6 +235,7 @@ const Dashboard: FC = () => {
               <SupplyWidgets />
             </BasicErrorBoundary>
 
+            <div className="h-16"></div>
             <div id="burn">
               <SectionDivider
                 link="burn"
@@ -256,6 +257,7 @@ const Dashboard: FC = () => {
             {/*   <source src="/orbs2.webm" type="video/webm; codecs='vp9'" /> */}
             {/*   <source src="/orbs2.mp4" type="video/mp4" /> */}
             {/* </video> */}
+            <div className="h-16"></div>
             <SectionDivider
               title="total value secured—TVS"
               subtitle="securing the internet of value"
@@ -265,6 +267,7 @@ const Dashboard: FC = () => {
                 <TotalValueSecured></TotalValueSecured>
               </div>
             </BasicErrorBoundary>
+            <div className="h-16"></div>
             <SectionDivider
               title="monetary premium"
               subtitle="the race to become the most desirable money"

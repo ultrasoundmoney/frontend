@@ -1,6 +1,8 @@
 import type { CSSProperties, FC, ReactNode } from "react";
 import React from "react";
 import Skeleton from "react-loading-skeleton";
+import { useActiveBreakpoint } from "../utils/use-active-breakpoint";
+import { WhiteEmoji } from "./Emoji";
 import { AmountUnitSpace } from "./Spacing";
 
 export const LabelText: FC<{
@@ -60,39 +62,43 @@ export const SectionTitle: FC<{
   link?: string;
   title: string;
   subtitle?: string;
-}> = ({ link, title, subtitle }) => (
-  <>
-    <div className="flex justify-center items-center gap-x-4">
-      <a className="text-white" href={`#${link}`}>
-        <h2
+}> = ({ link, title, subtitle }) => {
+  const { md } = useActiveBreakpoint();
+  return (
+    <>
+      <div className="flex justify-center items-center gap-x-4">
+        <a className="flex items-center gap-x-4 text-white" href={`#${link}`}>
+          <h2
+            className={`
+              font-inter font-extralight
+              text-white text-center text-2xl md:text-3xl xl:text-4xl
+            `}
+          >
+            {title}
+          </h2>
+          {link !== undefined && (
+            <WhiteEmoji
+              alt="emoji of a chain link symbolizing a section anchor for easy linking"
+              name="link"
+              width={md ? 24 : 16}
+            />
+          )}
+        </a>
+      </div>
+      {subtitle !== undefined && (
+        <p
           className={`
-          font-inter font-extralight
-          text-white text-center text-2xl md:text-3xl xl:text-41xl
-        `}
-        >
-          {title}
-        </h2>
-        {link !== undefined && (
-          <img
-            src="/emoji-link.svg"
-            alt="emoji of a chain link symbolizing a section anchor for easy linking"
-          />
-        )}
-      </a>
-    </div>
-    {subtitle !== undefined && (
-      <p
-        className={`
           font-inter font-light
           text-blue-shipcove text-center text-base lg:text-lg
           mt-6
         `}
-      >
-        {subtitle}
-      </p>
-    )}
-  </>
-);
+        >
+          {subtitle}
+        </p>
+      )}
+    </>
+  );
+};
 
 export const BodyText: FC<{
   children: ReactNode;
