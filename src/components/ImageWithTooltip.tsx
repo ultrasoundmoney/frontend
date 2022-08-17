@@ -43,28 +43,31 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
           />
         </div>
       ) : (
-        <Image
-          className={`
-            rounded-full
-            active:brightness-125 md:active:brightness-100
-            cursor-pointer md:cursor-auto
-            ${onMouseEnter !== undefined ? "hover:opacity-60" : ""}
-            ${className}
-          `}
-          src={imageUrl ?? "/leaderboard-images/question-mark-v2.svg"}
-          alt="logo of an ERC20 token"
-          onError={onImageError}
-          onClick={onClick}
+        <span
           ref={imageRef}
-          width={32}
-          height={32}
           onMouseEnter={() =>
             onMouseEnter === undefined ? undefined : onMouseEnter(imageRef)
           }
           onMouseLeave={() =>
             onMouseLeave === undefined ? undefined : onMouseLeave(imageRef)
           }
-        />
+        >
+          <Image
+            className={`
+            rounded-full
+            active:brightness-125 md:active:brightness-100
+            cursor-pointer md:cursor-auto
+            ${onMouseEnter !== undefined ? "hover:opacity-60" : ""}
+            ${className}
+          `}
+            src={imageUrl ?? "/leaderboard-images/question-mark-v2.svg"}
+            alt="logo of an ERC20 token"
+            onError={onImageError}
+            onClick={onClick}
+            width={32}
+            height={32}
+          />
+        </span>
       )}
     </>
   );
