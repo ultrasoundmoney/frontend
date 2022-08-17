@@ -1,11 +1,14 @@
-import type { FC, ReactEventHandler, RefObject } from "react";
-import { useCallback, useContext, useRef } from "react";
-import Skeleton from "react-loading-skeleton";
-import { FeatureFlagsContext } from "../feature-flags";
+import type { StaticImageData } from "next/image";
 import Image from "next/image";
+import type { FC, RefObject } from "react";
+import { useCallback, useContext, useRef, useState } from "react";
+import Skeleton from "react-loading-skeleton";
+import questionMarkSvg from "../assets/question-mark-v2.svg";
+import { FeatureFlagsContext } from "../feature-flags";
 
 type ImageWithTooltipProps = {
   className?: HTMLImageElement["className"];
+  height: number;
   imageUrl: string | undefined;
   isDoneLoading?: boolean;
   onClick?: () => void;
@@ -13,36 +16,36 @@ type ImageWithTooltipProps = {
   onMouseLeave?: (ref: RefObject<HTMLImageElement>) => void;
   skeletonDiameter?: string;
   width: number;
-  height: number;
 };
 
 const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
   className = "",
+  height,
   imageUrl,
   isDoneLoading = true,
   onClick,
   onMouseEnter,
   onMouseLeave,
   width,
-  height,
-  skeletonDiameter = "32px",
 }) => {
   const imageRef = useRef<HTMLImageElement>(null);
   const { previewSkeletons } = useContext(FeatureFlagsContext);
+  const [imgSrc, setImgSrc] = useState<string | StaticImageData | undefined>(
+    imageUrl ?? undefined,
+  );
 
-  const onImageError = useCallback<ReactEventHandler<HTMLImageElement>>((e) => {
-    (e.target as HTMLImageElement).src =
-      "/leaderboard-images/question-mark-v2.svg";
+  const onImageError = useCallback(() => {
+    setImgSrc(questionMarkSvg as StaticImageData);
   }, []);
 
   return (
     <>
-      {(imageUrl === undefined && !isDoneLoading) || previewSkeletons ? (
+      {!isDoneLoading || previewSkeletons ? (
         <div className="leading-4 m-2">
           <Skeleton
             circle={true}
-            height={skeletonDiameter}
-            width={skeletonDiameter}
+            height={`${height}px`}
+            width={`${width}px`}
             inline
           />
         </div>
@@ -55,16 +58,16 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
           onMouseLeave={() =>
             onMouseLeave === undefined ? undefined : onMouseLeave(imageRef)
           }
-          className={className}
+          className={`${className}`}
         >
           <Image
             className={`
-            rounded-full
-            active:brightness-125 md:active:brightness-100
-            cursor-pointer md:cursor-auto
-            ${onMouseEnter !== undefined ? "hover:opacity-60" : ""}
-          `}
-            src={imageUrl ?? "/leaderboard-images/question-mark-v2.svg"}
+              rounded-full
+              active:brightness-125 md:active:brightness-100
+              cursor-pointer md:cursor-auto
+              ${onMouseEnter !== undefined ? "hover:opacity-60" : ""}
+            `}
+            src={imgSrc ?? (questionMarkSvg as StaticImageData)}
             alt="logo of an ERC20 token"
             onError={onImageError}
             onClick={onClick}

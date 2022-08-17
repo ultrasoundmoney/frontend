@@ -233,6 +233,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
             ${scrollbarStyles["styled-scrollbar"]}
           `}
         >
+          {/* Instead of rendering skeletons LeaderboardRow should be updated to accomadate a skeleton view. */}
           {selectedLeaderboard === undefined
             ? _.range(0, 100).map((_, index) => <LeaderboardRow key={index} />)
             : selectedLeaderboard.map((entry, index) =>

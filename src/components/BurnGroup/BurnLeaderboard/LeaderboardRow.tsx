@@ -73,11 +73,11 @@ const LeaderboardRow: FC<Props> = ({
             onMouseEnter={isBot ? undefined : onMouseEnterImage}
             onMouseLeave={onMouseLeaveImage}
             onClick={onClickImage}
-            className="w-8 h-8 rounded-full select-none"
+            className="rounded-full select-none"
             isDoneLoading={isDoneLoading}
             imageUrl={imgSrc ?? "/leaderboard-images/question-mark-v2.svg"}
-            width={40}
-            height={40}
+            width={32}
+            height={32}
           />
           <a
             className={`
