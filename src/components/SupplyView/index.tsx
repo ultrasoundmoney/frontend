@@ -1,4 +1,5 @@
 import * as DateFns from "date-fns";
+import dynamic from "next/dynamic";
 import * as React from "react";
 import { MERGE_TIMESTAMP_ESTIMATED } from "../../eth-time";
 import { formatOneDecimal } from "../../format";
@@ -10,8 +11,8 @@ import { useTranslations } from "../../utils/use-translation";
 import Slider from "../Slider/Slider";
 import { TextInter } from "../Texts";
 import Twemoji from "../Twemoji";
-import SupplyChart from "./SupplyChart";
 import styles from "./SupplyView.module.scss";
+const SupplyChart = dynamic(() => import("./SupplyChart"));
 
 const MIN_PROJECTED_ETH_STAKING = 1e6;
 const DEFAULT_PROJECTED_ETH_STAKING = 14e6;

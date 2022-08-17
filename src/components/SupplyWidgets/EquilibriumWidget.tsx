@@ -1,5 +1,6 @@
 import * as DateFns from "date-fns";
 import _ from "lodash";
+import dynamic from "next/dynamic";
 import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { useEffectiveBalanceSum } from "../../api/effective-balance-sum";
@@ -16,7 +17,7 @@ import { BodyText, TimeFrameText } from "../Texts";
 import Twemoji from "../Twemoji";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
-import EquilibriumGraph from "./EquilibriumGraph";
+const EquilibriumGraph = dynamic(() => import("./EquilibriumGraph"));
 
 type UnixTimestamp = number;
 type Point = [UnixTimestamp, number];
