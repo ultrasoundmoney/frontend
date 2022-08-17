@@ -37,9 +37,7 @@ const SectionDivider: FC<{
   title: string;
 }> = ({ link, title, subtitle }) => (
   <>
-    <div className="h-16"></div>
-    {/* We use two h-16 divs because it makes the page look better when linking to the section */}
-    <div className="h-16" id={link}></div>
+    <div className="h-32"></div>
     <SectionTitle link={link} title={title} subtitle={subtitle} />
     <div className="h-16"></div>
   </>
@@ -122,7 +120,7 @@ const AdminTools: FC<{
   );
 };
 
-const StyledErrorBoundary: FC<{ children: ReactNode }> = ({ children }) => (
+const BasicErrorBoundary: FC<{ children: ReactNode }> = ({ children }) => (
   <Sentry.ErrorBoundary
     fallback={
       <div
@@ -165,56 +163,13 @@ const Dashboard: FC = () => {
   useGasTitle(groupedAnalysis1?.baseFeePerGas);
 
   return (
-    <StyledErrorBoundary>
+    <BasicErrorBoundary>
       <FeatureFlagsContext.Provider value={featureFlags}>
         <SkeletonTheme
           baseColor={Colors.dusk}
           highlightColor="#565b7f"
           enableAnimation={true}
         >
-            <div className="container mx-auto">
-              {adminToken && (
-                <StyledErrorBoundary>
-                  <AdminTools setFlag={setFlag} />
-                </StyledErrorBoundary>
-              )}
-              <div className="px-4 md:px-16">
-                <StyledErrorBoundary>
-                  <TopBar />
-                </StyledErrorBoundary>
-              </div>
-              <Title>Ultra Sound Money</Title>
-              <p className="font-inter font-light text-blue-spindle text-xl md:text-2xl lg:text-3xl text-center mb-16">
-                merge soon™
-              </p>
-              {/* <video */}
-              {/*   className="w-full md:w-3/6 lg:w-2/6 mx-auto -mt-32 -mb-4 pr-6 mix-blend-lighten" */}
-              {/*   playsInline */}
-              {/*   autoPlay */}
-              {/*   muted */}
-              {/*   loop */}
-              {/*   poster="/bat-no-wings.png" */}
-              {/* > */}
-              {/*   <source */}
-              {/*     src="/bat-no-wings.webm" */}
-              {/*     type="video/webm; codecs='vp9'" */}
-              {/*   /> */}
-              {/*   <source src="/bat-no-wings.mp4" type="video/mp4" /> */}
-              {/* </video> */}
-              {/* <video */}
-              {/*   className="absolute hidden md:block left-0 -ml-24 md:top-96 lg:top-96 opacity-20 -z-10" */}
-              {/*   playsInline */}
-              {/*   autoPlay */}
-              {/*   muted */}
-              {/*   loop */}
-              {/*   poster="/orbs1.jpg" */}
-              {/* > */}
-              {/*   <source src="/orbs1.webm" type="video/webm; codecs='vp9'" /> */}
-              {/*   <source src="/orbs1.mp4" type="video/mp4" /> */}
-              {/* </video> */}
-              <StyledErrorBoundary>
-                <SupplyWidgets />
-              </StyledErrorBoundary>
           <div
             className={`
               absolute
@@ -236,131 +191,178 @@ const Dashboard: FC = () => {
               objectFit="cover"
             />
           </div>
+          <div className="container mx-auto">
+            {adminToken && (
+              <BasicErrorBoundary>
+                <AdminTools setFlag={setFlag} />
+              </BasicErrorBoundary>
+            )}
+            <div className="px-4 md:px-16">
+              <BasicErrorBoundary>
+                <TopBar />
+              </BasicErrorBoundary>
+            </div>
+            <Title>Ultra Sound Money</Title>
+            <p className="font-inter font-light text-blue-spindle text-xl md:text-2xl lg:text-3xl text-center mb-16">
+              merge soon™
+            </p>
+            {/* <video */}
+            {/*   className="w-full md:w-3/6 lg:w-2/6 mx-auto -mt-32 -mb-4 pr-6 mix-blend-lighten" */}
+            {/*   playsInline */}
+            {/*   autoPlay */}
+            {/*   muted */}
+            {/*   loop */}
+            {/*   poster="/bat-no-wings.png" */}
+            {/* > */}
+            {/*   <source */}
+            {/*     src="/bat-no-wings.webm" */}
+            {/*     type="video/webm; codecs='vp9'" */}
+            {/*   /> */}
+            {/*   <source src="/bat-no-wings.mp4" type="video/mp4" /> */}
+            {/* </video> */}
+            {/* <video */}
+            {/*   className="absolute hidden md:block left-0 -ml-24 md:top-96 lg:top-96 opacity-20 -z-10" */}
+            {/*   playsInline */}
+            {/*   autoPlay */}
+            {/*   muted */}
+            {/*   loop */}
+            {/*   poster="/orbs1.jpg" */}
+            {/* > */}
+            {/*   <source src="/orbs1.webm" type="video/webm; codecs='vp9'" /> */}
+            {/*   <source src="/orbs1.mp4" type="video/mp4" /> */}
+            {/* </video> */}
+            <BasicErrorBoundary>
+              <SupplyWidgets />
+            </BasicErrorBoundary>
+
+            <div id="burn">
               <SectionDivider
                 link="burn"
                 subtitle="it's getting hot in here"
                 title="the burn"
               />
-              <StyledErrorBoundary>
+              <BasicErrorBoundary>
                 <WidgetGroup1 />
-              </StyledErrorBoundary>
-              {/* <video */}
-              {/*   className="absolute w-1/2 right-0 -mt-64 opacity-20 -z-10" */}
-              {/*   playsInline */}
-              {/*   autoPlay */}
-              {/*   muted */}
-              {/*   loop */}
-              {/*   poster="/orbs2.jpg" */}
-              {/* > */}
-              {/*   <source src="/orbs2.webm" type="video/webm; codecs='vp9'" /> */}
-              {/*   <source src="/orbs2.mp4" type="video/mp4" /> */}
-              {/* </video> */}
-              <SectionDivider
-                title="total value secured—TVS"
-                subtitle="securing the internet of value"
-              />
-              <StyledErrorBoundary>
-                <div className="flex flex-col px-4 md:px-16">
-                  <TotalValueSecured></TotalValueSecured>
+              </BasicErrorBoundary>
+            </div>
+            {/* <video */}
+            {/*   className="absolute w-1/2 right-0 -mt-64 opacity-20 -z-10" */}
+            {/*   playsInline */}
+            {/*   autoPlay */}
+            {/*   muted */}
+            {/*   loop */}
+            {/*   poster="/orbs2.jpg" */}
+            {/* > */}
+            {/*   <source src="/orbs2.webm" type="video/webm; codecs='vp9'" /> */}
+            {/*   <source src="/orbs2.mp4" type="video/mp4" /> */}
+            {/* </video> */}
+            <SectionDivider
+              title="total value secured—TVS"
+              subtitle="securing the internet of value"
+            />
+            <BasicErrorBoundary>
+              <div className="flex flex-col px-4 md:px-16">
+                <TotalValueSecured></TotalValueSecured>
+              </div>
+            </BasicErrorBoundary>
+            <SectionDivider
+              title="monetary premium"
+              subtitle="the race to become the most desirable money"
+            />
+            <BasicErrorBoundary>
+              <div className="flex flex-col lg:flex-row gap-y-4 lg:gap-x-4 px-4 md:px-16">
+                {/* <video */}
+                {/*   className="absolute w-1/2 -left-20 -mt-96 opacity-20 -z-10 -mr-8" */}
+                {/*   playsInline */}
+                {/*   autoPlay */}
+                {/*   muted */}
+                {/*   loop */}
+                {/*   poster="/orbs1.jpg" */}
+                {/* > */}
+                {/*   <source src="/orbs1.webm" type="video/webm; codecs='vp9'" /> */}
+                {/*   <source src="/orbs1.mp4" type="video/mp4" /> */}
+                {/* </video> */}
+                <div className="flex flex-col basis-1/2 gap-y-4">
+                  <Scarcity />
+                  <ValidatorRewardsWidget />
+                  <Flippenings />
                 </div>
-              </StyledErrorBoundary>
-              <SectionDivider
-                title="monetary premium"
-                subtitle="the race to become the most desirable money"
-              />
-              <StyledErrorBoundary>
-                <div className="flex flex-col lg:flex-row gap-y-4 lg:gap-x-4 px-4 md:px-16">
-                  {/* <video */}
-                  {/*   className="absolute w-1/2 -left-20 -mt-96 opacity-20 -z-10 -mr-8" */}
-                  {/*   playsInline */}
-                  {/*   autoPlay */}
-                  {/*   muted */}
-                  {/*   loop */}
-                  {/*   poster="/orbs1.jpg" */}
-                  {/* > */}
-                  {/*   <source src="/orbs1.webm" type="video/webm; codecs='vp9'" /> */}
-                  {/*   <source src="/orbs1.mp4" type="video/mp4" /> */}
-                  {/* </video> */}
-                  <div className="flex flex-col basis-1/2 gap-y-4">
-                    <Scarcity />
-                    <ValidatorRewardsWidget />
-                    <Flippenings />
-                  </div>
-                  <div className="basis-1/2 flex flex-col gap-y-4">
-                    <PriceModel />
-                    <IssuanceBreakdown />
+                <div className="basis-1/2 flex flex-col gap-y-4">
+                  <PriceModel />
+                  <IssuanceBreakdown />
+                </div>
+              </div>
+            </BasicErrorBoundary>
+            <BasicErrorBoundary>
+              <div className="flex flex-col px-4 md:px-16">
+                <div
+                  id="fam"
+                  className="relative flex px-4 md:px-0 pt-40 mb-16"
+                >
+                  <div className="w-full relative flex flex-col items-center">
+                    {/* <video */}
+                    {/*   className="absolute w-2/3 right-0 -mr-16 -mt-48 opacity-100 -z-10 hidden md:block" */}
+                    {/*   playsInline */}
+                    {/*   autoPlay */}
+                    {/*   muted */}
+                    {/*   loop */}
+                    {/*   poster="/orbs2.jpg" */}
+                    {/* > */}
+                    {/*   <source src="/orbs2.webm" type="video/webm; codecs='vp9'" /> */}
+                    {/*   <source src="/orbs2.mp4" type="video/mp4" /> */}
+                    {/* </video> */}
+                    <TwitterFam />
                   </div>
                 </div>
-              </StyledErrorBoundary>
-              <StyledErrorBoundary>
-                <div className="flex flex-col px-4 md:px-16">
-                  <div
-                    id="fam"
-                    className="relative flex px-4 md:px-0 pt-40 mb-16"
+                <div className="flex px-4 md:px-0 pt-20 pb-20">
+                  <div className="w-full lg:w-2/3 md:m-auto relative">
+                    <FollowingYou />
+                  </div>
+                </div>
+                <div className="flex px-4 md:px-0 pt-8">
+                  <div className="w-full lg:w-2/3 md:m-auto relative">
+                    <FaqBlock />
+                  </div>
+                </div>
+              </div>
+            </BasicErrorBoundary>
+            <div className="w-full flex flex-col items-center pb-40">
+              <SectionDivider title="still have questions?" />
+              <div className="flex flex-col gap-y-4 justify-start">
+                <div className="flex gap-2 items-center">
+                  <img
+                    className="w-4"
+                    src="/twitter-icon.svg"
+                    alt="icon of the twitter bird"
+                  />
+                  <Link
+                    className="flex items-center gap-x-2"
+                    enableHover={false}
+                    href="https://twitter.com/ultrasoundmoney/"
                   >
-                    <div className="w-full relative flex flex-col items-center">
-                      {/* <video */}
-                      {/*   className="absolute w-2/3 right-0 -mr-16 -mt-48 opacity-100 -z-10 hidden md:block" */}
-                      {/*   playsInline */}
-                      {/*   autoPlay */}
-                      {/*   muted */}
-                      {/*   loop */}
-                      {/*   poster="/orbs2.jpg" */}
-                      {/* > */}
-                      {/*   <source src="/orbs2.webm" type="video/webm; codecs='vp9'" /> */}
-                      {/*   <source src="/orbs2.mp4" type="video/mp4" /> */}
-                      {/* </video> */}
-                      <TwitterFam />
-                    </div>
-                  </div>
-                  <div className="flex px-4 md:px-0 pt-20 pb-20">
-                    <div className="w-full lg:w-2/3 md:m-auto relative">
-                      <FollowingYou />
-                    </div>
-                  </div>
-                  <div className="flex px-4 md:px-0 pt-8">
-                    <div className="w-full lg:w-2/3 md:m-auto relative">
-                      <FaqBlock />
-                    </div>
-                  </div>
+                    <TextInterLink>DM us @ultrasoundmoney</TextInterLink>
+                  </Link>
                 </div>
-              </StyledErrorBoundary>
-              <div className="w-full flex flex-col items-center pb-40">
-                <SectionDivider title="still have questions?" />
-                <div className="flex flex-col gap-y-4 justify-start">
-                  <div className="flex gap-2 items-center">
-                    <img
-                      className="w-4"
-                      src="/twitter-icon.svg"
-                      alt="icon of the twitter bird"
-                    />
-                    <Link
-                      className="flex items-center gap-x-2"
-                      href="https://twitter.com/ultrasoundmoney/"
-                    >
-                      <TextInterLink>DM us @ultrasoundmoney</TextInterLink>
-                    </Link>
-                  </div>
-                  <div className="flex gap-2 items-center">
-                    <img
-                      className="h-4"
-                      src="/email-icon.svg"
-                      alt="icon of an envelope, email"
-                    />
-                    <Link
-                      className="flex items-center gap-x-2"
-                      href="mailto:contact@ultrasound.money"
-                    >
-                      <TextInterLink>contact@ultrasound.money</TextInterLink>
-                    </Link>
-                  </div>
+                <div className="flex gap-2 items-center">
+                  <img
+                    className="h-4"
+                    src="/email-icon.svg"
+                    alt="icon of an envelope, email"
+                  />
+                  <Link
+                    className="flex items-center gap-x-2"
+                    enableHover={false}
+                    href="mailto:contact@ultrasound.money"
+                  >
+                    <TextInterLink>contact@ultrasound.money</TextInterLink>
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
         </SkeletonTheme>
       </FeatureFlagsContext.Provider>
-    </StyledErrorBoundary>
+    </BasicErrorBoundary>
   );
 };
 

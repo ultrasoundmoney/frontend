@@ -8,6 +8,7 @@ import { FeatureFlagsContext } from "../../feature-flags";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { LabelText, TextRoboto } from "../Texts";
 import Twemoji from "../Twemoji";
+import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
 import MergeEstimateTooltip from "./MergeEstimateTooltip";
 import Nerd from "./Nerd";
@@ -85,7 +86,7 @@ const MergeEstimateWidget = () => {
       : false;
 
   return (
-    <>
+    <WidgetErrorBoundary title="merge estimate">
       <WidgetBackground>
         <div className="relative flex flex-col md:flex-row justify-between gap-y-8 gap-x-2">
           <div className="flex flex-col gap-y-4">
@@ -206,7 +207,7 @@ const MergeEstimateWidget = () => {
         `}
         onClick={() => setShowNerdTooltip(false)}
       ></div>
-    </>
+    </WidgetErrorBoundary>
   );
 };
 

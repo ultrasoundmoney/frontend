@@ -15,6 +15,7 @@ import type { LimitedTimeFrameNext, TimeFrameNext } from "../time-frames";
 import { AmountAnimatedShell } from "./Amount";
 import { TextRoboto } from "./Texts";
 import Twemoji from "./Twemoji";
+import WidgetErrorBoundary, { ErrorWidget } from "./WidgetErrorBoundary";
 import { BurnGroupBase, WidgetTitle } from "./WidgetSubcomponents";
 
 const timeframeFeesBurnedMap: Record<
@@ -115,89 +116,91 @@ const BurnTotal: FC<Props> = ({
       : Format.ethFromWei(selectedFeesBurnedEth) / selectedIssuance;
 
   return (
-    <BurnGroupBase
-      onClickTimeFrame={onClickTimeFrame}
-      timeFrame={timeFrame}
-      title="burn total"
-    >
-      <div className="flex flex-col gap-y-4 pt-4">
-        <div
-          className={`
+    <WidgetErrorBoundary title="burn total">
+      <BurnGroupBase
+        onClickTimeFrame={onClickTimeFrame}
+        timeFrame={timeFrame}
+        title="burn total"
+      >
+        <div className="flex flex-col gap-y-4 pt-4">
+          <div
+            className={`
             flex items-center
             text-2xl md:text-3xl lg:text-3xl xl:text-4xl
           `}
-        >
-          <AmountAnimatedShell
-            skeletonWidth="9rem"
-            textClassName=""
-            unitText={unit === "eth" ? "ETH" : "USD"}
           >
-            {selectedFeesBurned && (
-              <CountUp
-                decimals={unit === "eth" ? 2 : 0}
-                duration={0.8}
-                end={
-                  unit === "eth"
-                    ? Format.ethFromWei(selectedFeesBurned)
-                    : selectedFeesBurned
-                }
-                preserveValue={true}
-                separator=","
-              />
-            )}
-          </AmountAnimatedShell>
-          <div className="ml-4 md:ml-8">
-            <Twemoji imageClassName="h-6 lg:h-8 select-none" wrapper>
-              🔥
-            </Twemoji>
-          </div>
-        </div>
-        <div className="flex flex-col gap-y-4 justify-between lg:flex-row">
-          <div className="flex flex-col gap-y-4">
-            <WidgetTitle>burn rate</WidgetTitle>
             <AmountAnimatedShell
-              skeletonWidth="4rem"
-              textClassName="text-2xl md:text-3xl lg:text-2xl xl:text-4xl"
-              unitText={unit === "eth" ? "ETH/min" : "USD/min"}
+              skeletonWidth="9rem"
+              textClassName=""
+              unitText={unit === "eth" ? "ETH" : "USD"}
             >
-              {selectedBurnRate && (
+              {selectedFeesBurned && (
                 <CountUp
-                  decimals={unit === "eth" ? 2 : 1}
+                  decimals={unit === "eth" ? 2 : 0}
                   duration={0.8}
                   end={
                     unit === "eth"
-                      ? Format.ethFromWei(selectedBurnRate)
-                      : selectedBurnRate / 1000
+                      ? Format.ethFromWei(selectedFeesBurned)
+                      : selectedFeesBurned
                   }
                   preserveValue={true}
                   separator=","
-                  suffix={unit === "usd" ? "K" : ""}
                 />
               )}
             </AmountAnimatedShell>
+            <div className="ml-4 md:ml-8">
+              <Twemoji imageClassName="h-6 lg:h-8 select-none" wrapper>
+                🔥
+              </Twemoji>
+            </div>
           </div>
-          <div className="lg:text-right flex flex-col gap-y-4">
-            <WidgetTitle>
-              {simulateMerge ? "pos issuance offset" : "issuance offset"}
-            </WidgetTitle>
-            <TextRoboto className="text-2xl md:text-3xl lg:text-2xl xl:text-4xl">
-              {selectedBurnRate === undefined || previewSkeletons ? (
-                <Skeleton inline={true} width="4rem" />
-              ) : (
-                <CountUp
-                  decimals={2}
-                  duration={0.8}
-                  separator=","
-                  end={issuanceOffset ?? 0}
-                  preserveValue={true}
-                  suffix={"x"}
-                />
-              )}
-            </TextRoboto>
+          <div className="flex flex-col gap-y-4 justify-between lg:flex-row">
+            <div className="flex flex-col gap-y-4">
+              <WidgetTitle>burn rate</WidgetTitle>
+              <AmountAnimatedShell
+                skeletonWidth="4rem"
+                textClassName="text-2xl md:text-3xl lg:text-2xl xl:text-4xl"
+                unitText={unit === "eth" ? "ETH/min" : "USD/min"}
+              >
+                {selectedBurnRate && (
+                  <CountUp
+                    decimals={unit === "eth" ? 2 : 1}
+                    duration={0.8}
+                    end={
+                      unit === "eth"
+                        ? Format.ethFromWei(selectedBurnRate)
+                        : selectedBurnRate / 1000
+                    }
+                    preserveValue={true}
+                    separator=","
+                    suffix={unit === "usd" ? "K" : ""}
+                  />
+                )}
+              </AmountAnimatedShell>
+            </div>
+            <div className="lg:text-right flex flex-col gap-y-4">
+              <WidgetTitle>
+                {simulateMerge ? "pos issuance offset" : "issuance offset"}
+              </WidgetTitle>
+              <TextRoboto className="text-2xl md:text-3xl lg:text-2xl xl:text-4xl">
+                {selectedBurnRate === undefined || previewSkeletons ? (
+                  <Skeleton inline={true} width="4rem" />
+                ) : (
+                  <CountUp
+                    decimals={2}
+                    duration={0.8}
+                    separator=","
+                    end={issuanceOffset ?? 0}
+                    preserveValue={true}
+                    suffix={"x"}
+                  />
+                )}
+              </TextRoboto>
+            </div>
           </div>
         </div>
-      </div>
-    </BurnGroupBase>
+      </BurnGroupBase>
+    </WidgetErrorBoundary>
   );
 };
 

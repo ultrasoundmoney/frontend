@@ -12,6 +12,7 @@ import type { TimeFrameNext } from "../../../time-frames";
 import { useActiveBreakpoint } from "../../../utils/use-active-breakpoint";
 import Modal from "../../Modal";
 import Tooltip from "../../Tooltip";
+import WidgetErrorBoundary from "../../WidgetErrorBoundary";
 import { BurnGroupBase } from "../../WidgetSubcomponents";
 import LeaderboardRow from "./LeaderboardRow";
 
@@ -218,7 +219,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
   const { md } = useActiveBreakpoint();
 
   return (
-    <>
+    <WidgetErrorBoundary title="burn total">
       <BurnGroupBase
         backgroundClassName="flex flex-col gap-y-4 h-[32rem] lg:h-full"
         onClickTimeFrame={onClickTimeFrame}
@@ -321,7 +322,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
           )}
         </Modal>
       </>
-    </>
+    </WidgetErrorBoundary>
   );
 };
 

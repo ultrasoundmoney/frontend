@@ -14,6 +14,7 @@ import { MoneyAmount, PercentAmount } from "../Amount";
 import Slider2 from "../Slider2";
 import { BodyText, TimeFrameText } from "../Texts";
 import Twemoji from "../Twemoji";
+import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 import EquilibriumGraph from "./EquilibriumGraph";
 
@@ -335,12 +336,13 @@ const EquilibriumWidget: FC = () => {
       : undefined;
 
   return (
-    <WidgetBackground
-      className={`relative flex-col lg:flex-row-reverse gap-x-4 overflow-hidden p-0`}
-    >
-      <div
-        // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
-        className={`
+    <WidgetErrorBoundary title="supply equilibrium">
+      <WidgetBackground
+        className={`relative flex-col lg:flex-row-reverse gap-x-4 overflow-hidden p-0`}
+      >
+        <div
+          // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
+          className={`
             absolute top-0 right-0
             w-3/5 h-full
             opacity-[0.25]
@@ -348,155 +350,159 @@ const EquilibriumWidget: FC = () => {
             pointer-events-none
             will-change-transform
           `}
-      >
-        <div
-          className={`
+        >
+          <div
+            className={`
             absolute lg:bottom-[3.0rem] lg:-right-[1.0rem]
             w-4/5 h-3/5 rounded-[35%]
             bg-[#0037FA]
             pointer-events-none
           `}
-        ></div>
-      </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-8 gap-x-8 p-8">
-        <div className="flex justify-between">
-          <div className="flex flex-col gap-y-4">
-            <WidgetTitle>
-              {md ? "supply equilibrium" : "equilibrium (A)"}
-            </WidgetTitle>
-            <MoneyAmount
-              amountPostfix={nonStakingBurnFraction === 0 ? "" : "M"}
-              textSizeClass="text-2xl md:text-3xl"
-            >
-              {equilibriums !== undefined
-                ? Format.formatOneDecimal(equilibriums.supplyEquilibrium / 1e6)
-                : undefined}
-            </MoneyAmount>
-          </div>
-          <div className="flex flex-col gap-y-4">
-            <WidgetTitle className="text-right">
-              {md ? "staking" : "staking (B)"}
-            </WidgetTitle>
-            <MoneyAmount
-              amountPostfix="M"
-              unitText="ETH"
-              textSizeClass="text-2xl md:text-3xl"
-            >
-              {stakingAprFraction !== undefined && initialEquilibriumInputsSet
-                ? Format.formatOneDecimal(
-                    getStakedFromApr(stakingAprFraction) / 1e6,
-                  )
-                : undefined}
-            </MoneyAmount>
-          </div>
+          ></div>
         </div>
-        <div className="lg:col-start-2 row-span-3">
-          <WidgetTitle className="lg:ml-6">
-            ETH supply—200y projection
-          </WidgetTitle>
-          {equilibriums !== undefined ? (
-            <EquilibriumGraph
-              supplyEquilibriumSeries={equilibriums.supplyEquilibriumSeries}
-              supplyEquilibriumMap={equilibriums.supplyEquilibriumMap}
-              supplyEquilibrium={equilibriums.supplyEquilibrium}
-              staking={getStakedFromApr(stakingAprFraction)}
-            />
-          ) : null}
-        </div>
-        <div className="flex flex-col gap-y-7">
-          <div>
-            <div className="flex justify-between items-baseline">
-              <div className="flex items-center truncate">
-                <WidgetTitle>issuance rewards</WidgetTitle>
-                <BodyText className="text-xs md:text-xs invisible lg:visible">
-                  &nbsp;for stakers
-                </BodyText>
-              </div>
-              <PercentAmount
-                amountPostfix="/year"
-                className="text-base lg:text-lg"
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-8 gap-x-8 p-8">
+          <div className="flex justify-between">
+            <div className="flex flex-col gap-y-4">
+              <WidgetTitle>
+                {md ? "supply equilibrium" : "equilibrium (A)"}
+              </WidgetTitle>
+              <MoneyAmount
+                amountPostfix={nonStakingBurnFraction === 0 ? "" : "M"}
+                textSizeClass="text-2xl md:text-3xl"
+              >
+                {equilibriums !== undefined
+                  ? Format.formatOneDecimal(
+                      equilibriums.supplyEquilibrium / 1e6,
+                    )
+                  : undefined}
+              </MoneyAmount>
+            </div>
+            <div className="flex flex-col gap-y-4">
+              <WidgetTitle className="text-right">
+                {md ? "staking" : "staking (B)"}
+              </WidgetTitle>
+              <MoneyAmount
+                amountPostfix="M"
+                unitText="ETH"
+                textSizeClass="text-2xl md:text-3xl"
               >
                 {stakingAprFraction !== undefined && initialEquilibriumInputsSet
-                  ? Format.formatPercentOneDecimal(stakingAprFraction)
+                  ? Format.formatOneDecimal(
+                      getStakedFromApr(stakingAprFraction) / 1e6,
+                    )
                   : undefined}
-              </PercentAmount>
+              </MoneyAmount>
             </div>
-            {/* Thumb appears behind the track without the z-10. */}
-            <div className="relative z-10">
-              <Slider2
-                min={STAKING_MIN}
-                max={STAKING_MAX}
-                value={stakingAprFraction}
-                step={0.001}
-                onChange={(event) =>
-                  setStakingAprFraction(Number(event.target.value))
-                }
-                thumbVisible={initialEquilibriumInputsSet}
+          </div>
+          <div className="lg:col-start-2 row-span-3">
+            <WidgetTitle className="lg:ml-6">
+              ETH supply—200y projection
+            </WidgetTitle>
+            {equilibriums !== undefined ? (
+              <EquilibriumGraph
+                supplyEquilibriumSeries={equilibriums.supplyEquilibriumSeries}
+                supplyEquilibriumMap={equilibriums.supplyEquilibriumMap}
+                supplyEquilibrium={equilibriums.supplyEquilibrium}
+                staking={getStakedFromApr(stakingAprFraction)}
               />
-              <div
-                className={`
+            ) : null}
+          </div>
+          <div className="flex flex-col gap-y-7">
+            <div>
+              <div className="flex justify-between items-baseline">
+                <div className="flex items-center truncate">
+                  <WidgetTitle>issuance rewards</WidgetTitle>
+                  <BodyText className="text-xs md:text-xs invisible lg:visible">
+                    &nbsp;for stakers
+                  </BodyText>
+                </div>
+                <PercentAmount
+                  amountPostfix="/year"
+                  className="text-base lg:text-lg"
+                >
+                  {stakingAprFraction !== undefined &&
+                  initialEquilibriumInputsSet
+                    ? Format.formatPercentOneDecimal(stakingAprFraction)
+                    : undefined}
+                </PercentAmount>
+              </div>
+              {/* Thumb appears behind the track without the z-10. */}
+              <div className="relative z-10">
+                <Slider2
+                  min={STAKING_MIN}
+                  max={STAKING_MAX}
+                  value={stakingAprFraction}
+                  step={0.001}
+                  onChange={(event) =>
+                    setStakingAprFraction(Number(event.target.value))
+                  }
+                  thumbVisible={initialEquilibriumInputsSet}
+                />
+                <div
+                  className={`
                   relative top-[14px] -translate-x-1/2
                   flex flex-col items-center
                   select-none
                   ${nowMarkerPercent === undefined ? "invisible" : "visible"}
                 `}
-                style={{
-                  // Positions the marker along the track whilst compensating for the thumb width as the browser natively does. 7 being half the thumb width.
-                  left: `calc(${nowMarkerPercent}% - ${
-                    (((nowMarkerPercent ?? 0) / 100) * 2 - 1) * 7
-                  }px)`,
-                }}
-              >
-                <div className="w-0.5 h-2 rounded-b-full bg-blue-spindle -mt-0.5"></div>
-                <TimeFrameText className="text-blue-spindle mt-0.5">
-                  now
-                </TimeFrameText>
+                  style={{
+                    // Positions the marker along the track whilst compensating for the thumb width as the browser natively does. 7 being half the thumb width.
+                    left: `calc(${nowMarkerPercent}% - ${
+                      (((nowMarkerPercent ?? 0) / 100) * 2 - 1) * 7
+                    }px)`,
+                  }}
+                >
+                  <div className="w-0.5 h-2 rounded-b-full bg-blue-spindle -mt-0.5"></div>
+                  <TimeFrameText className="text-blue-spindle mt-0.5">
+                    now
+                  </TimeFrameText>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between items-baseline">
+                <div className="flex items-center truncate">
+                  <WidgetTitle>burn rate</WidgetTitle>
+                  <BodyText className="text-xs md:text-xs">
+                    &nbsp;for non-stakers
+                  </BodyText>
+                </div>
+                <PercentAmount amountPostfix="/year">
+                  {nonStakingBurnFraction !== undefined &&
+                  initialEquilibriumInputsSet
+                    ? Format.formatPercentOneDecimal(nonStakingBurnFraction)
+                    : undefined}
+                </PercentAmount>
+              </div>
+              <div className="relative mb-10">
+                <Slider2
+                  min={BURN_RATE_MIN}
+                  max={BURN_RATE_MAX}
+                  value={nonStakingBurnFraction}
+                  step={0.001}
+                  onChange={(event) =>
+                    setNonStakingBurnFraction(Number(event.target.value))
+                  }
+                  thumbVisible={initialEquilibriumInputsSet}
+                />
+                <BurnMarkers burnMarkers={burnMarkers} />
               </div>
             </div>
           </div>
-          <div>
-            <div className="flex justify-between items-baseline">
-              <div className="flex items-center truncate">
-                <WidgetTitle>burn rate</WidgetTitle>
-                <BodyText className="text-xs md:text-xs">
-                  &nbsp;for non-stakers
-                </BodyText>
-              </div>
-              <PercentAmount amountPostfix="/year">
-                {nonStakingBurnFraction !== undefined &&
-                initialEquilibriumInputsSet
-                  ? Format.formatPercentOneDecimal(nonStakingBurnFraction)
-                  : undefined}
-              </PercentAmount>
-            </div>
-            <div className="relative mb-10">
-              <Slider2
-                min={BURN_RATE_MIN}
-                max={BURN_RATE_MAX}
-                value={nonStakingBurnFraction}
-                step={0.001}
-                onChange={(event) =>
-                  setNonStakingBurnFraction(Number(event.target.value))
-                }
-                thumbVisible={initialEquilibriumInputsSet}
-              />
-              <BurnMarkers burnMarkers={burnMarkers} />
-            </div>
-          </div>
-        </div>
 
-        <div className="flex flex-col md:flex-row w-full justify-between items-baseline mt-2 -mb-2">
-          <WidgetTitle>issuance and burn at equilibrium</WidgetTitle>
-          <MoneyAmount amountPostfix="K" unitText="ETH/year">
-            {equilibriums !== undefined
-              ? Format.formatZeroDecimals(
-                  equilibriums.cashFlowsEquilibrium / 1e3,
-                )
-              : undefined}
-          </MoneyAmount>
+          <div className="flex flex-col md:flex-row w-full justify-between items-baseline mt-2 -mb-2">
+            <WidgetTitle>issuance and burn at equilibrium</WidgetTitle>
+            <MoneyAmount amountPostfix="K" unitText="ETH/year">
+              {equilibriums !== undefined
+                ? Format.formatZeroDecimals(
+                    equilibriums.cashFlowsEquilibrium / 1e3,
+                  )
+                : undefined}
+            </MoneyAmount>
+          </div>
         </div>
-      </div>
-    </WidgetBackground>
+      </WidgetBackground>
+    </WidgetErrorBoundary>
   );
 };
 
