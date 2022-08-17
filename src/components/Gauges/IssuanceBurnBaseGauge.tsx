@@ -7,13 +7,16 @@ import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import type { Unit } from "../../denomination";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
-import Twemoji from "../Twemoji";
 import { WidgetTitle } from "../WidgetSubcomponents";
 import type { GaugeGradientFill } from "./GaugeSvg";
 import GaugeSvg from "./GaugeSvg";
+import dropletSvg from "./droplet.svg";
+import flameSvg from "./flame.svg";
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
 
 type BaseGuageProps = {
-  emoji: string;
+  emoji: "flame" | "droplet";
   gaugeUnit: string;
   needleColor?: string;
   title: string;
@@ -90,9 +93,23 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
       <p className="font-roboto font-light text-xs text-blue-spindle select-none mt-[7px] mb-2.5">
         {valueUnit}
       </p>
-      <Twemoji className="h-6 w-6 select-none" wrapper>
-        {emoji}
-      </Twemoji>
+      {emoji === "flame" ? (
+        <Image
+          alt="image of a flame signifying ETH burned"
+          height={24}
+          priority
+          src={flameSvg as StaticImageData}
+          width={24}
+        ></Image>
+      ) : emoji === "droplet" ? (
+        <Image
+          alt="image of a droplet signifying ETH issued"
+          height={24}
+          priority
+          src={dropletSvg as StaticImageData}
+          width={24}
+        ></Image>
+      ) : null}
     </>
   );
 };

@@ -37,7 +37,7 @@ const IssuanceGauge: FC<Props> = ({ simulateMerge, timeFrame, unit }) => {
         rounded-lg md:rounded-none md:rounded-tr-lg`}
     >
       <BaseGauge
-        emoji="💧"
+        emoji="droplet"
         gaugeUnit={unit === "eth" ? "M" : "B"}
         gradientFill="blue"
         needleColor={colors.drop}
