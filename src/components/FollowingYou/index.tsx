@@ -152,20 +152,16 @@ const FollowingYou: FC = () => {
             <>
               <div className="flex flex-wrap justify-center">
                 {followers.followers.map((profile, index) => (
-                  <div
-                    className="m-2 w-10 h-10"
+                  <ImageWithTooltip
                     key={profile.profileUrl ?? index}
-                  >
-                    <ImageWithTooltip
-                      imageUrl={profile?.profileImageUrl}
-                      key={profile.profileUrl}
-                      onClick={() => handleClickImage(profile)}
-                      onMouseEnter={(ref) =>
-                        handleImageMouseEnter(profile, ref)
-                      }
-                      onMouseLeave={handleImageMouseLeave}
-                    />
-                  </div>
+                    className="m-2 w-10 h-10"
+                    imageUrl={profile?.profileImageUrl}
+                    onClick={() => handleClickImage(profile)}
+                    onMouseEnter={(ref) => handleImageMouseEnter(profile, ref)}
+                    onMouseLeave={handleImageMouseLeave}
+                    height={40}
+                    width={40}
+                  />
                 ))}
               </div>
               {followers.count > followers.followers.length && (

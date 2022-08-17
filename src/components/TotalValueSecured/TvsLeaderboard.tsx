@@ -154,6 +154,8 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
                       ? () => undefined
                       : handleClickProfile(row)
                   }
+                  height={32}
+                  width={32}
                 />
                 <Link
                   className="flex justify-between ml-4 w-full overflow-hidden"
