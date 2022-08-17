@@ -260,6 +260,7 @@ const Dashboard: FC = () => {
             <div className="h-16"></div>
             <SectionDivider
               title="total value secured—TVS"
+              link="tvs"
               subtitle="securing the internet of value"
             />
             <BasicErrorBoundary>
@@ -270,6 +271,7 @@ const Dashboard: FC = () => {
             <div className="h-16"></div>
             <SectionDivider
               title="monetary premium"
+              link="monetary-premium"
               subtitle="the race to become the most desirable money"
             />
             <BasicErrorBoundary>
