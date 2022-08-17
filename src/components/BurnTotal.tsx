@@ -15,7 +15,7 @@ import type { LimitedTimeFrameNext, TimeFrameNext } from "../time-frames";
 import { AmountAnimatedShell } from "./Amount";
 import { TextRoboto } from "./Texts";
 import Twemoji from "./Twemoji";
-import WidgetErrorBoundary, { ErrorWidget } from "./WidgetErrorBoundary";
+import WidgetErrorBoundary from "./WidgetErrorBoundary";
 import { BurnGroupBase, WidgetTitle } from "./WidgetSubcomponents";
 
 const timeframeFeesBurnedMap: Record<
