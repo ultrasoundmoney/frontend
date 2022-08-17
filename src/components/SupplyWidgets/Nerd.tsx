@@ -16,6 +16,7 @@ const Nerd: FC = () => (
       <Image
         alt="a nerd emoji offering deeper explanation of a nearby metric"
         height={21}
+        priority
         src={nerdColorOff as StaticImageData}
         width={21}
       />
