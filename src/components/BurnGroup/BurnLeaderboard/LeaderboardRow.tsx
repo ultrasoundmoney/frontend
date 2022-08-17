@@ -76,6 +76,8 @@ const LeaderboardRow: FC<Props> = ({
             className="w-8 h-8 rounded-full select-none"
             isDoneLoading={isDoneLoading}
             imageUrl={imgSrc ?? "/leaderboard-images/question-mark-v2.svg"}
+            width={40}
+            height={40}
           />
           <a
             className={`

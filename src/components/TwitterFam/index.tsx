@@ -189,23 +189,24 @@ const TwitterFam: FC = () => {
       <div className="h-16"></div>
       <div className="flex flex-wrap justify-center">
         {currentProfiles.map((profile, index) => (
-          <div key={profile?.profileUrl ?? index}>
-            <ImageWithTooltip
-              className="m-2 w-10 h-10 select-none"
-              imageUrl={profile?.profileImageUrl}
-              isDoneLoading={profile !== undefined}
-              skeletonDiameter="40px"
-              onMouseEnter={(ref) =>
-                !md || profile === undefined
-                  ? () => undefined
-                  : handleImageMouseEnter(profile, ref)
-              }
-              onMouseLeave={() =>
-                !md ? () => undefined : handleImageMouseLeave()
-              }
-              onClick={() => handleClickImage(profile)}
-            />
-          </div>
+          <ImageWithTooltip
+            key={profile?.profileUrl ?? index}
+            className="m-2 w-10 h-10 select-none"
+            imageUrl={profile?.profileImageUrl}
+            isDoneLoading={profile !== undefined}
+            skeletonDiameter="40px"
+            onMouseEnter={(ref) =>
+              !md || profile === undefined
+                ? () => undefined
+                : handleImageMouseEnter(profile, ref)
+            }
+            onMouseLeave={() =>
+              !md ? () => undefined : handleImageMouseLeave()
+            }
+            onClick={() => handleClickImage(profile)}
+            height={40}
+            width={40}
+          />
         ))}
       </div>
       <>

@@ -12,6 +12,8 @@ type ImageWithTooltipProps = {
   onMouseEnter?: (ref: RefObject<HTMLImageElement>) => void;
   onMouseLeave?: (ref: RefObject<HTMLImageElement>) => void;
   skeletonDiameter?: string;
+  width: number;
+  height: number;
 };
 
 const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
@@ -21,6 +23,8 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
   onClick,
   onMouseEnter,
   onMouseLeave,
+  width,
+  height,
   skeletonDiameter = "32px",
 }) => {
   const imageRef = useRef<HTMLImageElement>(null);
@@ -43,7 +47,7 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
           />
         </div>
       ) : (
-        <span
+        <div
           ref={imageRef}
           onMouseEnter={() =>
             onMouseEnter === undefined ? undefined : onMouseEnter(imageRef)
@@ -51,6 +55,7 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
           onMouseLeave={() =>
             onMouseLeave === undefined ? undefined : onMouseLeave(imageRef)
           }
+          className={className}
         >
           <Image
             className={`
@@ -58,16 +63,15 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
             active:brightness-125 md:active:brightness-100
             cursor-pointer md:cursor-auto
             ${onMouseEnter !== undefined ? "hover:opacity-60" : ""}
-            ${className}
           `}
             src={imageUrl ?? "/leaderboard-images/question-mark-v2.svg"}
             alt="logo of an ERC20 token"
             onError={onImageError}
             onClick={onClick}
-            width={32}
-            height={32}
+            width={width}
+            height={height}
           />
-        </span>
+        </div>
       )}
     </>
   );
