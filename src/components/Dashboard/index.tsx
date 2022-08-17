@@ -174,10 +174,10 @@ const Dashboard: FC = () => {
             className={`
               absolute
               w-full
-              h-[500px] -mt-[50px]
+              h-[600px] -mt-[50px]
               lg:h-[700px]
               xl:h-[800px]
-              2xl:h-[800px]
+              2xl:h-[1600px] 2xl:-mt-[350px]
               -z-10
             `}
           >
