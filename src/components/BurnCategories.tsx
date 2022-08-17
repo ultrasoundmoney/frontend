@@ -1,4 +1,4 @@
-import _ from "lodash";
+import flow from "lodash/flow";
 import type { FC } from "react";
 import { useContext, useState } from "react";
 import Skeleton from "react-loading-skeleton";
@@ -250,15 +250,12 @@ const CategoryRow: FC<CategoryRowProps> = ({
 const formatFees = (num: number | undefined): string | undefined =>
   num === undefined
     ? undefined
-    : _.flow(
-        (num: number) => num / WEI_PER_ETH,
-        Format.formatZeroDecimals,
-      )(num);
+    : flow((num: number) => num / WEI_PER_ETH, Format.formatZeroDecimals)(num);
 
 const formatCount = (num: number | undefined): string | undefined =>
   num === undefined
     ? undefined
-    : _.flow(
+    : flow(
         (num: number) => num / 10 ** 3,
         (num) => Format.formatOneDecimal(num) + "K",
       )(num);

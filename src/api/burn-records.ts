@@ -1,5 +1,5 @@
 import * as DateFns from "date-fns";
-import _ from "lodash";
+import mapValues from "lodash/mapValues";
 import type { TimeFrameNext } from "../time-frames";
 
 export type BurnRecord = {
@@ -28,7 +28,7 @@ export const decodeBurnRecords = (
   rawBurnRecords: BurnRecordsF,
 ): BurnRecords => ({
   ...rawBurnRecords,
-  records: _.mapValues(rawBurnRecords.records, (records) =>
+  records: mapValues(rawBurnRecords.records, (records) =>
     records.map((record) => ({
       ...record,
       minedAt: DateFns.parseISO(record.minedAt),

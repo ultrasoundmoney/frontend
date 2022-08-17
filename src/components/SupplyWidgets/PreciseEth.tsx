@@ -1,5 +1,7 @@
 import JSBI from "jsbi";
-import _ from "lodash";
+import dropRight from "lodash/dropRight";
+import flow from "lodash/flow";
+import takeRight from "lodash/takeRight";
 import type { FC } from "react";
 import { useCallback } from "react";
 import CountUp from "react-countup";
@@ -11,28 +13,28 @@ import { AmountAnimatedShell, defaultMoneyAnimationDuration } from "../Amount";
 // against low level limits (IEEE 754), and can't work with the full number. We
 // split the number into three parts, to enable both precision and animation.
 
-const ethNoDecimals = _.flow(
+const ethNoDecimals = flow(
   (ethSupplySum: JSBI) => ethSupplySum.toString().split(""),
-  (chars) => _.dropRight(chars, 18),
+  (chars) => dropRight(chars, 18),
   (str) => str.join(""),
   (str) => JSBI.BigInt(str),
   (num) => JSBI.toNumber(num),
 );
 
 // The last six digits in the number.
-const ethLastSixteenDecimals = _.flow(
+const ethLastSixteenDecimals = flow(
   (ethSupplySum: JSBI) => ethSupplySum.toString().split(""),
-  (chars) => _.takeRight(chars, 16),
+  (chars) => takeRight(chars, 16),
   (str) => str.join(""),
   (str) => JSBI.BigInt(str),
   (num) => JSBI.toNumber(num),
 );
 
 // Everything that is left from the fractional part when written in ETH instead of Wei. This is always twelve digits.
-const ethFirstTwoDecimals = _.flow(
+const ethFirstTwoDecimals = flow(
   (ethSupplySum: JSBI) => ethSupplySum.toString().split(""),
-  (chars) => _.dropRight(chars, 16),
-  (chars) => _.takeRight(chars, 2),
+  (chars) => dropRight(chars, 16),
+  (chars) => takeRight(chars, 2),
   (str) => str.join(""),
   (str) => JSBI.BigInt(str),
   (num) => JSBI.toNumber(num),

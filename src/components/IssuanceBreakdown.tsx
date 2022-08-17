@@ -1,4 +1,4 @@
-import _ from "lodash";
+import flow from "lodash/flow";
 import type { FC } from "react";
 import { useState } from "react";
 import Skeleton from "react-loading-skeleton";
@@ -116,7 +116,7 @@ type IssuanceRowProps = {
   setHovering?: (bool: boolean) => void;
 };
 
-const millionEthFromGwei = _.flow(
+const millionEthFromGwei = flow(
   Format.ethFromGwei,
   // in M of ETH.
   (eth) => eth / 1_000_000,

@@ -1,6 +1,6 @@
 import * as DateFns from "date-fns";
 import JSBI from "jsbi";
-import _ from "lodash";
+import flow from "lodash/flow";
 import type { FC } from "react";
 import { useState } from "react";
 import { useScarcity } from "../api/scarcity";
@@ -194,26 +194,26 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
   );
 };
 
-const mEthFromWei = _.flow(
+const mEthFromWei = flow(
   (num: JSBI) => JSBI.toNumber(num),
   Format.ethFromWei,
   (num) => num / 10 ** 6,
 );
 
-const floorOneDigit = _.flow(
+const floorOneDigit = flow(
   (num: number) => num * 10,
   Math.floor,
   (num) => num / 10,
 );
 
-const mEthFromWeiFormatted = _.flow(
+const mEthFromWeiFormatted = flow(
   (num: JSBI) => num,
   mEthFromWei,
   floorOneDigit,
   Format.formatOneDecimal,
 );
 
-const mEthFromEthFormatted = _.flow(
+const mEthFromEthFormatted = flow(
   (num: number) => num,
   (num) => num / 10 ** 6,
   floorOneDigit,

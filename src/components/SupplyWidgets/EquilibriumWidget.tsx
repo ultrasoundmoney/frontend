@@ -1,5 +1,5 @@
 import * as DateFns from "date-fns";
-import _ from "lodash";
+import _last from "lodash/last";
 import dynamic from "next/dynamic";
 import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
@@ -236,7 +236,7 @@ const EquilibriumWidget: FC = () => {
 
     const list = supplyProjectionInputs.supplyByDay.reduce(
       (list: Point[], point) => {
-        const last = _.last(list);
+        const last = _last(list);
 
         // First loop there is no last to compare to.
         if (last === undefined) {

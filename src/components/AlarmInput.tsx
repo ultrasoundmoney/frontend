@@ -1,4 +1,4 @@
-import _ from "lodash";
+import replace from "lodash/replace";
 import type { ChangeEvent, FC } from "react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useGroupedAnalysis1 } from "../api/grouped-analysis-1";
@@ -18,7 +18,7 @@ const thresholdToNumber = (
     return undefined;
   }
 
-  const num = Number(_.replace(threshold, ",", ""));
+  const num = Number(replace(threshold, ",", ""));
   return Number.isNaN(num) ? undefined : num;
 };
 

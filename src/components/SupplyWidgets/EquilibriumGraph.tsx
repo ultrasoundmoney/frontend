@@ -1,14 +1,15 @@
 import * as DateFns from "date-fns";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import _ from "lodash";
+import _last from "lodash/last";
+import merge from "lodash/merge";
 import type { FC } from "react";
 import { useEffect, useRef, useState } from "react";
 import colors from "../../colors";
 import * as Format from "../../format";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
-import styles from "./EquilibriumGraph.module.scss";
 import equilibriumDot from "./dot_supply_graph.svg";
+import styles from "./EquilibriumGraph.module.scss";
 
 export type Point = [number, number];
 
@@ -124,7 +125,7 @@ const EquilibriumGraph: FC<Props> = ({
   const width = xl2 ? 650 : xl ? 530 : lg ? 400 : md ? 570 : 280;
   const height = lg ? 320 : 200;
   const [options, setOptions] = useState<Highcharts.Options>(() =>
-    _.merge({}, baseOptions, {
+    merge({}, baseOptions, {
       chart: {
         events: {
           render: function () {
@@ -139,8 +140,8 @@ const EquilibriumGraph: FC<Props> = ({
           data: [
             ...supplyEquilibriumSeries,
             {
-              x: _.last(supplyEquilibriumSeries)?.[0],
-              y: _.last(supplyEquilibriumSeries)?.[1],
+              x: _last(supplyEquilibriumSeries)?.[0],
+              y: _last(supplyEquilibriumSeries)?.[1],
               marker: {
                 symbol: `url(${equilibriumDot})`,
                 enabled: true,
@@ -162,11 +163,11 @@ const EquilibriumGraph: FC<Props> = ({
         minPadding: 0.03,
       },
     };
-    setOptions((currentOptions) => _.merge({}, currentOptions, nextOptions));
+    setOptions((currentOptions) => merge({}, currentOptions, nextOptions));
   }, [height, md, staking, supplyEquilibrium, width]);
 
   useEffect(() => {
-    const lastPoint = _.last(supplyEquilibriumSeries);
+    const lastPoint = _last(supplyEquilibriumSeries);
     if (lastPoint === undefined) {
       return;
     }
@@ -247,8 +248,8 @@ const EquilibriumGraph: FC<Props> = ({
           data: [
             ...supplyEquilibriumSeries,
             {
-              x: _.last(supplyEquilibriumSeries)?.[0],
-              y: _.last(supplyEquilibriumSeries)?.[1],
+              x: _last(supplyEquilibriumSeries)?.[0],
+              y: _last(supplyEquilibriumSeries)?.[1],
               marker: {
                 symbol: `url(/dot_supply_graph.svg)`,
                 enabled: true,
@@ -315,7 +316,7 @@ const EquilibriumGraph: FC<Props> = ({
 
     if (!isRendering.current) {
       isRendering.current = true;
-      setOptions((currentOptions) => _.merge({}, currentOptions, nextOptions));
+      setOptions((currentOptions) => merge({}, currentOptions, nextOptions));
     }
   }, [
     lg,

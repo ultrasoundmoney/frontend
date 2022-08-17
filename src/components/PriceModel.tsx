@@ -1,5 +1,5 @@
 import type JSBI from "jsbi";
-import _ from "lodash";
+import flow from "lodash/flow";
 import type { FC, ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { useAverageEthPrice } from "../api/eth-price";
@@ -91,14 +91,14 @@ const growthProfileLogMax = Math.log(growthProfileMax);
 const logRange = growthProfileLogMax - growthProfileLogMin;
 
 // Converts from a linear scale between 0 and 1 to a log scale between 6 and 250.
-const logFromLinear = _.flow(
+const logFromLinear = flow(
   (position: number) => position * logRange,
   (positionInRange) => positionInRange + growthProfileLogMin,
   (shiftedPosition) => Math.exp(shiftedPosition),
 );
 
 // Converts from a log scale between 6 and 250 to a linear scale between 0 and 1
-const linearFromLog = _.flow(
+const linearFromLog = flow(
   Math.log,
   (linearPosition) => linearPosition - growthProfileLogMin,
   (peInRange) => peInRange / logRange,

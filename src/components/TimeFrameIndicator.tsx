@@ -1,14 +1,14 @@
 import * as DateFns from "date-fns";
+import flow from "lodash/flow";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
-import { WidgetTitle } from "./WidgetSubcomponents";
 import { londonHardfork } from "../dates";
 import { millisFromHours } from "../duration";
 import type { TimeFrameNext } from "../time-frames";
 import { displayTimeFrameNextMap } from "../time-frames";
-import _ from "lodash";
+import { WidgetTitle } from "./WidgetSubcomponents";
 
-const getFormattedDays = _.flow(
+const getFormattedDays = flow(
   () => DateFns.differenceInDays(new Date(), londonHardfork),
   (daysCount) => `${daysCount}d`,
 );

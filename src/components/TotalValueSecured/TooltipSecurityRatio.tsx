@@ -1,24 +1,24 @@
+import JSBI from "jsbi";
+import flow from "lodash/flow";
 import type { FC } from "react";
 import { useContext } from "react";
-import * as Format from "../../format";
 import Skeleton from "react-loading-skeleton";
+import type { EthPrice } from "../../api/grouped-analysis-1";
+import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import type { Scarcity } from "../../api/scarcity";
+import { useScarcity } from "../../api/scarcity";
 import { useTotalValueSecured } from "../../api/total-value-secured";
+import { FeatureFlagsContext } from "../../feature-flags";
+import * as Format from "../../format";
 import { AmountUnitSpace } from "../Spacing";
 import { BodyText, TextInter, TextRoboto, UnitText } from "../Texts";
 import { WidgetTitle } from "../WidgetSubcomponents";
-import { FeatureFlagsContext } from "../../feature-flags";
-import type { Scarcity } from "../../api/scarcity";
-import { useScarcity } from "../../api/scarcity";
-import JSBI from "jsbi";
-import type { EthPrice } from "../../api/grouped-analysis-1";
-import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
-import _ from "lodash";
 
 const formatEthPrice = (
   ethPrice: EthPrice,
   ethStaked: Scarcity["engines"]["staked"],
 ) =>
-  _.flow(
+  flow(
     // We scale up a little, the numbers are huge, let's not drop precision we have.
     () => Math.round(ethPrice.usd * 1e2),
     (ethPriceCentsFloat) => JSBI.BigInt(ethPriceCentsFloat),

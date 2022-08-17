@@ -1,4 +1,4 @@
-import _ from "lodash";
+import flow from "lodash/flow";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
@@ -15,7 +15,7 @@ import { BurnGroupBase } from "./WidgetSubcomponents";
 const formatBlockNumber = (u: unknown): string | undefined =>
   typeof u !== "number"
     ? undefined
-    : _.flow(Format.formatZeroDecimals, (str) => `#${str}`)(u);
+    : flow(Format.formatZeroDecimals, (str) => `#${str}`)(u);
 
 const getBlockPageLink = (u: unknown): string | undefined =>
   typeof u === undefined ? undefined : `https://etherscan.io/block/${u}`;

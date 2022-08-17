@@ -1,6 +1,6 @@
-import _ from "lodash";
+import range from "lodash/range";
 import type { FC, RefObject } from "react";
-import React, { memo, useCallback, useRef, useState } from "react";
+import { memo, useCallback, useRef, useState } from "react";
 import { usePopper } from "react-popper";
 import { useAdminToken } from "../../../admin";
 import { useContractsFreshness } from "../../../api/contracts";
@@ -236,7 +236,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
         >
           {/* Instead of rendering skeletons LeaderboardRow should be updated to accomadate a skeleton view. */}
           {selectedLeaderboard === undefined
-            ? _.range(0, 100).map((_, index) => <LeaderboardRow key={index} />)
+            ? range(0, 100).map((_, index) => <LeaderboardRow key={index} />)
             : selectedLeaderboard.map((entry, index) =>
                 entry.type === "contract" ? (
                   <LeaderboardRow

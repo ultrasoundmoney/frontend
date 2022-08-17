@@ -1,4 +1,4 @@
-import { clamp } from "lodash";
+import clamp from "lodash/clamp";
 import type { FC } from "react";
 import { useState } from "react";
 import CountUp from "react-countup";

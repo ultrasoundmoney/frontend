@@ -1,5 +1,5 @@
 import * as DateFns from "date-fns";
-import _ from "lodash";
+import mapValues from "lodash/mapValues";
 import useSWR from "swr";
 import { feesBasePath } from "./fees";
 
@@ -137,5 +137,5 @@ export const useContractsFreshness = (
     fetcher,
   );
 
-  return data === undefined ? undefined : _.mapValues(data, decodeFreshness);
+  return data === undefined ? undefined : mapValues(data, decodeFreshness);
 };

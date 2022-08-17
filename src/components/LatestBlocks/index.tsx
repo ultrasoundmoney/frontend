@@ -1,5 +1,5 @@
 import * as DateFns from "date-fns";
-import _ from "lodash";
+import flow from "lodash/flow";
 import type { FC } from "react";
 import { useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
@@ -21,7 +21,7 @@ import styles from "./LatestBlocks.module.scss";
 
 const maxBlocks = 20;
 
-const formatGas = _.flow((u: unknown) =>
+const formatGas = flow((u: unknown) =>
   typeof u !== "number"
     ? undefined
     : Format.formatZeroDecimals(u / WEI_PER_GWEI),
