@@ -10,7 +10,12 @@ const nextConfig = withBundleAnalyzer({
   // NOTE: enabled for hydration debugging purposes
   productionBrowserSourceMaps: true,
   images: {
-    domains: ["pbs.twimg.com", "abs.twimg.com", "openseauserdata.com"],
+    domains: [
+      "pbs.twimg.com",
+      "abs.twimg.com",
+      "openseauserdata.com",
+      "lh3.googleusercontent.com",
+    ],
   },
 });
 
