@@ -9,10 +9,9 @@ const nextConfig = withBundleAnalyzer({
   swcMinify: true,
   // NOTE: enabled for hydration debugging purposes
   productionBrowserSourceMaps: true,
-  // images: {
-  //   loader: "custom",
-  //   // domains: ["pbs.twimg.com", "lh3.googleusercontent.com"],
-  // },
+  images: {
+    domains: ["pbs.twimg.com", "abs.twimg.com", "openseauserdata.com"],
+  },
 });
 
 module.exports = nextConfig;

@@ -2,6 +2,7 @@ import type { FC, ReactEventHandler, RefObject } from "react";
 import { useCallback, useContext, useRef } from "react";
 import Skeleton from "react-loading-skeleton";
 import { FeatureFlagsContext } from "../feature-flags";
+import Image from "next/image";
 
 type ImageWithTooltipProps = {
   className?: HTMLImageElement["className"];
@@ -42,7 +43,7 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
           />
         </div>
       ) : (
-        <img
+        <Image
           className={`
             rounded-full
             active:brightness-125 md:active:brightness-100
@@ -55,6 +56,8 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
           onError={onImageError}
           onClick={onClick}
           ref={imageRef}
+          width={32}
+          height={32}
           onMouseEnter={() =>
             onMouseEnter === undefined ? undefined : onMouseEnter(imageRef)
           }
