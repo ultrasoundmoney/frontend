@@ -27,6 +27,9 @@ import TwitterFam from "../TwitterFam";
 import ValidatorRewardsWidget from "../ValidatorRewards";
 import { WidgetTitle } from "../WidgetSubcomponents";
 import styles from "./Dashboard.module.scss";
+import Image from "next/image";
+import headerGlowSvg from "./blurred-bg.svg";
+import type { StaticImageData } from "next/image";
 
 const SectionDivider: FC<{
   link?: string;
@@ -169,7 +172,6 @@ const Dashboard: FC = () => {
           highlightColor="#565b7f"
           enableAnimation={true}
         >
-          <div className={styles.blurredBgImage}>
             <div className="container mx-auto">
               {adminToken && (
                 <StyledErrorBoundary>
@@ -213,6 +215,27 @@ const Dashboard: FC = () => {
               <StyledErrorBoundary>
                 <SupplyWidgets />
               </StyledErrorBoundary>
+          <div
+            className={`
+              absolute
+              w-full
+              h-[500px] -mt-[50px]
+              lg:h-[700px]
+              xl:h-[800px]
+              2xl:h-[800px]
+              -z-10
+            `}
+          >
+            <Image
+              className=""
+              alt=""
+              src={headerGlowSvg as StaticImageData}
+              layout="fill"
+              priority
+              quality={100}
+              objectFit="cover"
+            />
+          </div>
               <SectionDivider
                 link="burn"
                 subtitle="it's getting hot in here"
