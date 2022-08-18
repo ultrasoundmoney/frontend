@@ -17,7 +17,7 @@
     "@popperjs/core": "^2.11.6",
     "@react-hook/media-query": "^1.1.1",
     "@sentry/nextjs": "^7.10.0",
-    "@sentry/react": "^7.10.0",
+    "@sentry/react": "^7.11.1",
     "@sentry/tracing": "^7.10.0",
     "aos": "^2.3.4",
     "d3-shape": "^3.1.0",
