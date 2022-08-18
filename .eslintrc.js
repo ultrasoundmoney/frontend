@@ -5,7 +5,7 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
   ],
-  ignorePatterns: [".eslintrc.js", "next.config.js"],
+  ignorePatterns: ["next.config.js", "tailwind.config.js"],
   parserOptions: {
     project: ["tsconfig.json"],
   },
