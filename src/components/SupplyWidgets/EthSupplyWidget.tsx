@@ -81,7 +81,7 @@ const EthSupplyWidget = () => {
           </div>
           <div className="flex flex-col gap-y-2">
             <PreciseEth>{ethSupplySum}</PreciseEth>
-            <div className="flex gap-x-1 items-center">
+            <div className="flex gap-x-1 items-baseline">
               <LabelText className="text-slateus-400">updated</LabelText>
               <div className="flex items-baseline">
                 <LabelUnitText skeletonWidth="1rem">

@@ -13,7 +13,7 @@ import * as Format from "../../format";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { AmountUnitSpace } from "../Spacing";
-import { BodyText, TextRoboto } from "../Texts";
+import { BodyText, LabelText, LabelUnitText, TextRoboto } from "../Texts";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 
 const maxBlocks = 20;
@@ -155,27 +155,28 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
             </div>
           ))}
         </ul>
-        {/* spaces need to stay on the font-inter element to keep them consistent */}
-        <span className="font-inter text-blue-spindle text-xs md:text-sm font-extralight">
-          {"latest block "}
-          <span className="font-roboto text-white font-light">
-            {formatTimeElapsed(timeElapsed) === undefined ||
-            previewSkeletons ? (
-              <Skeleton inline={true} width="2rem" />
-            ) : (
-              formatTimeElapsed(timeElapsed)
-            )}
-          </span>
-          {" old, "}
-          <span className="font-roboto text-white font-light">
-            {blockLag === undefined || previewSkeletons ? (
-              <Skeleton inline={true} width="1rem" />
-            ) : (
-              blockLag
-            )}
-          </span>
-          {" block lag"}
-        </span>
+        <div className="flex justify-between flex-wrap">
+          <div className="flex gap-x-2 items-baseline">
+            <LabelText className="text-slateus-400">latest block</LabelText>
+            <div className="flex items-baseline">
+              <LabelUnitText skeletonWidth="1rem">
+                {!previewSkeletons && timeElapsed !== undefined
+                  ? timeElapsed
+                  : undefined}
+              </LabelUnitText>
+              <LabelText>s</LabelText>
+            </div>
+            <LabelText className="text-slateus-400">old</LabelText>
+          </div>
+          <div className="flex gap-x-2 items-baseline">
+            <LabelUnitText skeletonWidth="1rem">
+              {!previewSkeletons && blockLag !== undefined
+                ? blockLag
+                : undefined}
+            </LabelUnitText>
+            <LabelText className="text-slateus-400">block lag</LabelText>
+          </div>
+        </div>
         {typeof timeElapsed === "number" && timeElapsed > 1800 ? (
           <BodyText className="text-xs md:text-sm text-red-400">
             node error, busy resyncing...
