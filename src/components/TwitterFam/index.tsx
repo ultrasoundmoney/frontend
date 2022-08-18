@@ -1,6 +1,6 @@
 import type { FC, RefObject } from "react";
 import { useCallback, useRef, useState } from "react";
-import Clipboard from "react-clipboard.js";
+import CopyToClipboard from "react-copy-to-clipboard";
 import Skeleton from "react-loading-skeleton";
 import { usePopper } from "react-popper";
 import type { FamProfile } from "../../api/fam";
@@ -165,7 +165,7 @@ const TwitterFam: FC = () => {
       <div className="flex items-center justify-center">
         <p className="text-blue-shipcove md:text-lg">wear the bat signal</p>
         <div className="w-4"></div>
-        <Clipboard data-clipboard-text={"🦇🔊"} onSuccess={onBatSoundCopied}>
+        <CopyToClipboard text={"🦇🔊"} onCopy={onBatSoundCopied}>
           <span className="relative bg-blue-midnightexpress border border-gray-700 rounded-full p-2 pl-5 flex w-48 mx-auto justify-between items-center text-2xl isolate clipboard-emoji">
             <Twemoji className="flex gap-x-1" imageClassName="w-7" wrapper>
               🦇🔊
@@ -183,7 +183,7 @@ const TwitterFam: FC = () => {
               </p>
             </span>
           </span>
-        </Clipboard>
+        </CopyToClipboard>
       </div>
       <div className="h-16"></div>
       <div className="flex flex-wrap justify-center">
