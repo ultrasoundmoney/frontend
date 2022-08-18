@@ -122,6 +122,16 @@ const TwitterFam: FC = () => {
     setTimeout(() => setIsCopiedFeedbackVisible(false), 400);
   };
 
+  // Workaround to try and improve scroll to behavior for #join-the-fam .
+  // TODO: check if this is still needed.
+  useEffect(() => {
+    if (window.location.hash === "#join-the-fam" && document !== null) {
+      document
+        .querySelector("#join-the-fam")
+        ?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
+
   // Support profile skeletons.
   const currentProfiles =
     profiles === undefined
