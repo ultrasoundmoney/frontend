@@ -6,8 +6,9 @@ export default NextAuth({
   providers: [
     // OAuth authentication providers
     TwitterProvider({
-      clientId: process.env.TWITTER_CLIENT_ID,
-      clientSecret: process.env.TWITTER_CLIENT_SECRET,
+      // These are string | undefined during testing failing our CI build.
+      clientId: process.env.TWITTER_CLIENT_ID as string,
+      clientSecret: process.env.TWITTER_CLIENT_SECRET as string,
     }),
   ],
 });
