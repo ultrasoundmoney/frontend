@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { CSSProperties, FC, ReactNode } from "react";
 import React from "react";
 import Skeleton from "react-loading-skeleton";
@@ -67,23 +68,25 @@ export const SectionTitle: FC<{
   return (
     <>
       <div className="flex justify-center items-center gap-x-4">
-        <a className="flex items-center gap-x-4 text-white" href={`#${link}`}>
-          <h2
-            className={`
+        <Link href={`#${link}`}>
+          <a className="flex items-center gap-x-4 text-white">
+            <h2
+              className={`
               font-inter font-extralight
               text-white text-center text-2xl md:text-3xl xl:text-4xl
             `}
-          >
-            {title}
-          </h2>
-          {link !== undefined && (
-            <WhiteEmoji
-              alt="emoji of a chain link symbolizing a section anchor for easy linking"
-              name="link"
-              width={md ? 24 : 16}
-            />
-          )}
-        </a>
+            >
+              {title}
+            </h2>
+            {link !== undefined && (
+              <WhiteEmoji
+                alt="emoji of a chain link symbolizing a section anchor for easy linking"
+                name="link"
+                width={md ? 24 : 16}
+              />
+            )}
+          </a>
+        </Link>
       </div>
       {subtitle !== undefined && (
         <p
