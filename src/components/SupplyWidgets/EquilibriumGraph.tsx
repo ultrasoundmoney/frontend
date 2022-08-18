@@ -8,7 +8,6 @@ import { useEffect, useRef, useState } from "react";
 import colors from "../../colors";
 import * as Format from "../../format";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
-import equilibriumDot from "./dot_supply_graph.svg";
 import styles from "./EquilibriumGraph.module.scss";
 
 export type Point = [number, number];
@@ -143,7 +142,7 @@ const EquilibriumGraph: FC<Props> = ({
               x: _last(supplyEquilibriumSeries)?.[0],
               y: _last(supplyEquilibriumSeries)?.[1],
               marker: {
-                symbol: `url(${equilibriumDot})`,
+                symbol: `url(/dot_supply_graph.svg)`,
                 enabled: true,
               },
             },
