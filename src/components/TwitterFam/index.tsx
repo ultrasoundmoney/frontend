@@ -180,7 +180,7 @@ const TwitterFam: FC = () => {
             <Twemoji className="flex gap-x-1" imageClassName="w-7" wrapper>
               🦇🔊
             </Twemoji>
-            <span className="font-light text-base copy-container rounded-full bg-green-mediumspring text-blue-midnightexpress px-5 py-1 isolate select-none">
+            <span className="font-light text-base copy-container rounded-full bg-mediumspring text-blue-midnightexpress px-5 py-1 isolate select-none">
               copy
             </span>
             <span

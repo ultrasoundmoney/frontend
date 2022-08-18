@@ -5,19 +5,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        black: {
-          ...colors.black,
-        },
-        gray: {
-          ...colors.gray,
-        },
-        green: {
-          ...colors.green,
-          mediumspring: "#00FFA3",
-        },
         blue: {
           ...colors.blue,
-          midnightexpress: "#141A2F",
+          midnightexpress: "#141a2f",
           tangaroa: "#1b2236",
           spindle: "#b5bddb",
           linkwater: "#c8cbd9",
@@ -25,27 +15,19 @@ module.exports = {
           manatee: "#8888af",
           highlightbg: "#2d344a",
           highlightborder: "#8794b8",
-          dusk: "#464B6F",
+          dusk: "#464b6f",
         },
+        fire: "#f4900c",
+        mediumspring: "#00ffa3",
         slateus: {
           800: "#131827",
-          700: "#1B2236",
-          600: "#2D344A",
-          500: "#464B6F",
+          700: "#1b2236",
+          600: "#2d344a",
+          500: "#464b6f",
           450: "#8888af",
-          400: "#8991AD",
-          200: "#B5BDDB",
-          100: "#C8CBD9",
-        },
-        red: {
-          ...colors.red,
-          pinkish: "#f85a89",
-        },
-        pink: {
-          300: colors.pink["300"],
-        },
-        orange: {
-          fire: "#F4900C",
+          400: "#8991ad",
+          200: "#b5bddb",
+          100: "#c8cbd9",
         },
       },
       width: {
