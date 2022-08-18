@@ -1,33 +1,36 @@
 import { createContext, useReducer } from "react";
 
 export const flags = [
+  "joinDiscord",
   "previewSkeletons",
   "showCategoryCounts",
   "showCategorySlugs",
   "showMetadataTools",
-  "useWebSockets",
   "simulatePostMerge",
+  "useWebSockets",
 ] as const;
 export type Flag = typeof flags[number];
 
 export type FeatureFlags = Record<Flag, boolean>;
 
 export const defaults: FeatureFlags = {
+  joinDiscord: false,
   previewSkeletons: false,
   showCategoryCounts: false,
   showCategorySlugs: false,
   showMetadataTools: false,
-  useWebSockets: false,
   simulatePostMerge: false,
+  useWebSockets: false,
 };
 
 export const displayFlagMap: Record<Flag, string> = {
+  joinDiscord: "join discord",
   previewSkeletons: "preview skeletons",
   showCategoryCounts: "show category counts",
   showCategorySlugs: "show category slugs",
   showMetadataTools: "show metadata tools",
-  useWebSockets: "use websockets",
   simulatePostMerge: "simulate post-merge",
+  useWebSockets: "use websockets",
 };
 
 const reducer = (

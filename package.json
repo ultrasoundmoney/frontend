@@ -28,6 +28,7 @@
     "jsbi": "^4.3.0",
     "lodash": "^4.17.21",
     "next": "^12.2.5",
+    "next-auth": "^4.10.3",
     "react": "^18.2.0",
     "react-copy-to-clipboard": "^5.1.0",
     "react-countup": "^6.3.0",

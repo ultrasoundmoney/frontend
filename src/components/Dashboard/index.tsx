@@ -1,11 +1,13 @@
 import * as Sentry from "@sentry/react";
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
 import type { FC, ReactNode } from "react";
 import { useContext, useEffect, useRef, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useAdminToken } from "../../admin";
 import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
-import Colors from "../../colors";
+import colors from "../../colors";
 import type { Gwei } from "../../eth-units";
 import * as FeatureFlags from "../../feature-flags";
 import { FeatureFlagsContext } from "../../feature-flags";
@@ -14,6 +16,7 @@ import WidgetGroup1 from "../BurnGroup";
 import Flippenings from "../Flippenings";
 import FollowingYou from "../FollowingYou";
 import IssuanceBreakdown from "../IssuanceBreakdown";
+import JoinDiscordWidget from "../JoinDiscordWidget";
 import FaqBlock from "../Landing/faq";
 import Link from "../Link";
 import PriceModel from "../PriceModel";
@@ -26,10 +29,8 @@ import TotalValueSecured from "../TotalValueSecured";
 import TwitterFam from "../TwitterFam";
 import ValidatorRewardsWidget from "../ValidatorRewards";
 import { WidgetTitle } from "../WidgetSubcomponents";
-import styles from "./Dashboard.module.scss";
-import Image from "next/image";
 import headerGlowSvg from "./blurred-bg.svg";
-import type { StaticImageData } from "next/image";
+import styles from "./Dashboard.module.scss";
 
 const SectionDivider: FC<{
   link?: string;
@@ -182,8 +183,8 @@ const Dashboard: FC = () => {
     <BasicErrorBoundary>
       <FeatureFlagsContext.Provider value={featureFlags}>
         <SkeletonTheme
-          baseColor={Colors.dusk}
-          highlightColor="#565b7f"
+          baseColor={colors.slateus500}
+          highlightColor={"#565b7f"}
           enableAnimation={true}
         >
           <div
@@ -340,6 +341,7 @@ const Dashboard: FC = () => {
                     <FollowingYou />
                   </div>
                 </div>
+                {featureFlags.joinDiscord && <JoinDiscordWidget />}
                 <div className="flex px-4 md:px-0 pt-8">
                   <div className="w-full lg:w-2/3 md:m-auto relative">
                     <FaqBlock />
