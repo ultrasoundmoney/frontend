@@ -99,8 +99,6 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
             ? latestBlockFeesSkeletons
             : latestBlockFees
           ).map(({ number, fees, feesUsd, baseFeePerGas }, index) => (
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
             <div
               className="transition-opacity duration-700 font-light text-base md:text-lg animate-fade-in"
               key={number || index}
