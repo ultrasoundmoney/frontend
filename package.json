@@ -35,7 +35,6 @@
     "react-loading-skeleton": "^3.1.0",
     "react-popper": "^2.3.0",
     "react-spring": "^9.5.2",
-    "react-transition-group": "^4.4.5",
     "react-use-websocket": "^4.2.0",
     "sharp": "^0.30.7",
     "twemoji": "^14.0.2"
@@ -49,7 +48,6 @@
     "@types/react": "18.0.17",
     "@types/react-copy-to-clipboard": "^5.0.4",
     "@types/react-dom": "^18.0.6",
-    "@types/react-transition-group": "^4.4.5",
     "@typescript-eslint/eslint-plugin": "^5.33.1",
     "autoprefixer": "^10.4.8",
     "eslint": "8.22.0",

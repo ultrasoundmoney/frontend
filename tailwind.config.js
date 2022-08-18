@@ -52,6 +52,19 @@ module.exports = {
         "32xl": "2rem",
         "28xl": "1.75rem",
       },
+      animation: {
+        "fade-in": "fade-in 1s ease-in 0s",
+      },
+      keyframes: {
+        "fade-in": {
+          "0%": {
+            opacity: 0,
+          },
+          "100%": {
+            opacity: 100,
+          },
+        },
+      },
     },
   },
   plugins: [],

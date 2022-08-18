@@ -3,7 +3,6 @@ import flow from "lodash/flow";
 import type { FC } from "react";
 import { useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import { TransitionGroup } from "react-transition-group";
 import { useBlockLag } from "../../api/block-lag";
 import type { LatestBlock } from "../../api/grouped-analysis-1";
 import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
@@ -13,11 +12,9 @@ import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
-import CSSTransition from "../CSSTransition";
 import { AmountUnitSpace } from "../Spacing";
 import { BodyText, TextRoboto } from "../Texts";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
-import styles from "./LatestBlocks.module.scss";
 
 const maxBlocks = 20;
 
@@ -98,75 +95,65 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
             ${scrollbarStyles["styled-scrollbar"]}
           `}
         >
-          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-          {/* @ts-ignore */}
-          <TransitionGroup
-            component={null}
-            appear={true}
-            enter={true}
-            exit={false}
-          >
-            {(latestBlockFees === undefined || previewSkeletons
-              ? latestBlockFeesSkeletons
-              : latestBlockFees
-            ).map(({ number, fees, feesUsd, baseFeePerGas }, index) => (
-              <CSSTransition
-                classNames={{ ...styles }}
-                timeout={2000}
-                key={number || index}
+          {(latestBlockFees === undefined || previewSkeletons
+            ? latestBlockFeesSkeletons
+            : latestBlockFees
+          ).map(({ number, fees, feesUsd, baseFeePerGas }, index) => (
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            <div
+              className="transition-opacity duration-700 font-light text-base md:text-lg animate-fade-in"
+              key={number || index}
+            >
+              <a
+                href={
+                  number === undefined
+                    ? undefined
+                    : `https://etherscan.io/block/${number}`
+                }
+                target="_blank"
+                rel="noreferrer"
               >
-                <div className="transition-opacity duration-700 font-light text-base md:text-lg">
-                  <a
-                    href={
-                      number === undefined
-                        ? undefined
-                        : `https://etherscan.io/block/${number}`
-                    }
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <li className="grid grid-cols-3 hover:opacity-60">
-                      <span className="font-roboto text-white">
-                        {formatBlockNumber(number) || (
-                          <Skeleton inline={true} width="7rem" />
-                        )}
-                      </span>
-                      <div className="text-right mr-1">
-                        <TextRoboto className="font-roboto text-white">
-                          {formatGas(baseFeePerGas) || (
-                            <Skeleton
-                              className="-mr-0.5 md:mr-0"
-                              inline={true}
-                              width="1rem"
-                            />
-                          )}
-                        </TextRoboto>
-                        {md && (
-                          <>
-                            <span className="font-inter">&thinsp;</span>
-                            <span className="font-roboto text-blue-spindle font-extralight">
-                              Gwei
-                            </span>
-                          </>
-                        )}
-                      </div>
-                      <div className="text-right">
-                        <TextRoboto className="font-roboto text-white">
-                          {formatFees(unit, fees, feesUsd) || (
-                            <Skeleton inline={true} width="2rem" />
-                          )}
-                        </TextRoboto>
-                        <AmountUnitSpace />
+                <li className="grid grid-cols-3 hover:opacity-60">
+                  <span className="font-roboto text-white">
+                    {formatBlockNumber(number) || (
+                      <Skeleton inline={true} width="7rem" />
+                    )}
+                  </span>
+                  <div className="text-right mr-1">
+                    <TextRoboto className="font-roboto text-white">
+                      {formatGas(baseFeePerGas) || (
+                        <Skeleton
+                          className="-mr-0.5 md:mr-0"
+                          inline={true}
+                          width="1rem"
+                        />
+                      )}
+                    </TextRoboto>
+                    {md && (
+                      <>
+                        <span className="font-inter">&thinsp;</span>
                         <span className="font-roboto text-blue-spindle font-extralight">
-                          {unit === "eth" ? "ETH" : "USD"}
+                          Gwei
                         </span>
-                      </div>
-                    </li>
-                  </a>
-                </div>
-              </CSSTransition>
-            ))}
-          </TransitionGroup>
+                      </>
+                    )}
+                  </div>
+                  <div className="text-right">
+                    <TextRoboto className="font-roboto text-white">
+                      {formatFees(unit, fees, feesUsd) || (
+                        <Skeleton inline={true} width="2rem" />
+                      )}
+                    </TextRoboto>
+                    <AmountUnitSpace />
+                    <span className="font-roboto text-blue-spindle font-extralight">
+                      {unit === "eth" ? "ETH" : "USD"}
+                    </span>
+                  </div>
+                </li>
+              </a>
+            </div>
+          ))}
         </ul>
         {/* spaces need to stay on the font-inter element to keep them consistent */}
         <span className="font-inter text-blue-spindle text-xs md:text-sm font-extralight">
