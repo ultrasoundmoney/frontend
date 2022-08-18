@@ -156,11 +156,27 @@ const useGasTitle = (baseFeePerGas: Gwei | undefined) => {
   }, [baseFeePerGas]);
 };
 
+// By default a browser doesn't scroll to a section with a given ID matching the # in the URL.
+const useScrollOnLoad = () => {
+  useEffect(() => {
+    if (
+      typeof document !== "undefined" &&
+      typeof window !== "undefined" &&
+      window.location.hash.length > 0
+    ) {
+      document
+        .querySelector(window.location.hash)
+        ?.scrollIntoView({ behavior: "auto", block: "start" });
+    }
+  }, []);
+};
+
 const Dashboard: FC = () => {
   const groupedAnalysis1 = useGroupedAnalysis1();
   const { featureFlags, setFlag } = FeatureFlags.useFeatureFlags();
   const adminToken = useAdminToken();
   useGasTitle(groupedAnalysis1?.baseFeePerGas);
+  useScrollOnLoad();
 
   return (
     <BasicErrorBoundary>
