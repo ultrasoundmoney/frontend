@@ -1,10 +1,7 @@
 const colors = require("tailwindcss/colors");
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./public/**/*.html",
-    "./src/pages/**/*.{js,ts,jsx,tsx}",
-    "./src/components/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
@@ -52,15 +49,9 @@ module.exports = {
         },
       },
       width: {
-        "w-23": "23%",
-        "w-21": "21%",
-        "w-38": "38%",
         "w-34": "34%",
         "w-32": "30%",
         "w-55": "55%",
-      },
-      spacing: {
-        42: "165px",
       },
       lineHeight: {
         2: "2",
@@ -72,27 +63,12 @@ module.exports = {
         roboto: ["Roboto Mono", "monospace"],
         inter: ["Inter", "sans-serif"],
       },
-      transitionTimingFunction: {
-        "ease-out-quint": "cubic-bezier(0.23, 1, 0.32, 1)",
-      },
-      boxShadow: {
-        outline: "0 0 0 1px rgba(229, 103, 86, 0.4)",
-      },
       fontSize: {
         "2xs": "0.65rem",
         "41xl": "2.5rem",
         "21xl": "1.87rem",
         "32xl": "2rem",
         "28xl": "1.75rem",
-      },
-      inset: {
-        128: "32rem",
-      },
-      scale: {
-        "gauge-md": "0.65",
-      },
-      padding: {
-        "26": "104px",
       },
     },
   },
