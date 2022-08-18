@@ -75,7 +75,7 @@ const LeaderboardRow: FC<Props> = ({
             onClick={onClickImage}
             className="rounded-full select-none"
             isDoneLoading={isDoneLoading}
-            imageUrl={imgSrc ?? "/leaderboard-images/question-mark-v2.svg"}
+            imageUrl={imgSrc}
             width={32}
             height={32}
           />
