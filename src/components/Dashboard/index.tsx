@@ -280,46 +280,50 @@ const Dashboard: FC = () => {
             {/*   <source src="/orbs2.mp4" type="video/mp4" /> */}
             {/* </video> */}
             <div className="h-16"></div>
-            <SectionDivider
-              title="total value secured—TVS"
-              link="tvs"
-              subtitle="securing the internet of value"
-            />
-            <BasicErrorBoundary>
-              <div className="flex flex-col px-4 md:px-16">
-                <TotalValueSecured></TotalValueSecured>
-              </div>
-            </BasicErrorBoundary>
+            <div className="px-4 md:px-16" id="tvs">
+              <SectionDivider
+                title="total value secured—TVS"
+                link="tvs"
+                subtitle="securing the internet of value"
+              />
+              <BasicErrorBoundary>
+                <div className="flex flex-col" id="tvs">
+                  <TotalValueSecured></TotalValueSecured>
+                </div>
+              </BasicErrorBoundary>
+            </div>
             <div className="h-16"></div>
-            <SectionDivider
-              title="monetary premium"
-              link="monetary-premium"
-              subtitle="the race to become the most desirable money"
-            />
-            <BasicErrorBoundary>
-              <div className="flex flex-col lg:flex-row gap-y-4 lg:gap-x-4 px-4 md:px-16">
-                {/* <video */}
-                {/*   className="absolute w-1/2 -left-20 -mt-96 opacity-20 -z-10 -mr-8" */}
-                {/*   playsInline */}
-                {/*   autoPlay */}
-                {/*   muted */}
-                {/*   loop */}
-                {/*   poster="/orbs1.jpg" */}
-                {/* > */}
-                {/*   <source src="/orbs1.webm" type="video/webm; codecs='vp9'" /> */}
-                {/*   <source src="/orbs1.mp4" type="video/mp4" /> */}
-                {/* </video> */}
-                <div className="flex flex-col basis-1/2 gap-y-4">
-                  <Scarcity />
-                  <ValidatorRewardsWidget />
-                  <Flippenings />
+            <div className="px-4 md:px-16" id="monetary-premium">
+              <SectionDivider
+                title="monetary premium"
+                link="monetary-premium"
+                subtitle="the race to become the most desirable money"
+              />
+              <BasicErrorBoundary>
+                <div className="flex flex-col lg:flex-row gap-y-4 lg:gap-x-4">
+                  {/* <video */}
+                  {/*   className="absolute w-1/2 -left-20 -mt-96 opacity-20 -z-10 -mr-8" */}
+                  {/*   playsInline */}
+                  {/*   autoPlay */}
+                  {/*   muted */}
+                  {/*   loop */}
+                  {/*   poster="/orbs1.jpg" */}
+                  {/* > */}
+                  {/*   <source src="/orbs1.webm" type="video/webm; codecs='vp9'" /> */}
+                  {/*   <source src="/orbs1.mp4" type="video/mp4" /> */}
+                  {/* </video> */}
+                  <div className="flex flex-col basis-1/2 gap-y-4">
+                    <Scarcity />
+                    <ValidatorRewardsWidget />
+                    <Flippenings />
+                  </div>
+                  <div className="basis-1/2 flex flex-col gap-y-4">
+                    <PriceModel />
+                    <IssuanceBreakdown />
+                  </div>
                 </div>
-                <div className="basis-1/2 flex flex-col gap-y-4">
-                  <PriceModel />
-                  <IssuanceBreakdown />
-                </div>
-              </div>
-            </BasicErrorBoundary>
+              </BasicErrorBoundary>
+            </div>
             <BasicErrorBoundary>
               <div className="flex flex-col px-4 md:px-16">
                 <div
