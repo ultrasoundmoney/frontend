@@ -135,7 +135,7 @@ const EquilibriumGraph: FC<Props> = ({
       series: [
         {
           id: "supply-series",
-          type: "area",
+          type: "spline",
           data: [
             ...supplyEquilibriumSeries,
             {
