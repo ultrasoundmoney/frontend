@@ -136,7 +136,7 @@ const Nav: React.FC = () => {
               </Link>
             </li>
             <li className="nav-item justify-center" style={{ paddingLeft: 75 }}>
-              <Link href="/dashboard">
+              <Link href="/">
                 <a className="px-5 py-2 flex items-center font-medium text-sm  text-white hover:text-blue-shipcove border-white border-solid border-2 rounded-3xl hover:border-blue-shipcove">
                   {t.landing_dashboard_link}
                   <img

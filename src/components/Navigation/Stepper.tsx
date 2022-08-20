@@ -101,7 +101,7 @@ const Stepper: React.FC = () => {
         <div
           className={`${classes.linkWrap} w-full md:w-3/12 hidden md:block py-1`}
         >
-          <Link href="/dashboard">
+          <Link href="/">
             <a className="px-5 py-2 flex items-center font-medium text-sm  text-white hover:text-blue-shipcove border-white border-solid border-2 rounded-3xl hover:border-blue-shipcove">
               {t.landing_dashboard_link}
               <img className="ml-6" src={`/arrowRight.svg`} alt="arrow-right" />
