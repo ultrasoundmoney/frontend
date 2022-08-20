@@ -1,4 +1,5 @@
 import * as Sentry from "@sentry/react";
+import Head from "next/head";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import type { FC, ReactNode } from "react";
@@ -139,22 +140,20 @@ const BasicErrorBoundary: FC<{ children: ReactNode }> = ({ children }) => (
   </Sentry.ErrorBoundary>
 );
 
-const useGasTitle = (baseFeePerGas: Gwei | undefined) => {
+const useGasTitle = (defaultTitle: string, baseFeePerGas: Gwei | undefined) => {
   const originalTitle = useRef<string>();
+  const [gasTitle, setGasTitle] = useState<string>();
 
   useEffect(() => {
     if (typeof window === "undefined" || baseFeePerGas === undefined) {
       return undefined;
     }
-
-    if (originalTitle.current === undefined) {
-      originalTitle.current = document.title;
-    }
-
     const gasFormatted = Format.gweiFromWei(baseFeePerGas).toFixed(0);
-    const newTitle = `${gasFormatted} Gwei | ${originalTitle.current}`;
-    document.title = newTitle;
+    const newTitle = `${gasFormatted} Gwei | ${defaultTitle}`;
+    setGasTitle(newTitle);
   }, [baseFeePerGas]);
+
+  return gasTitle;
 };
 
 // By default a browser doesn't scroll to a section with a given ID matching the # in the URL.
@@ -176,7 +175,10 @@ const Dashboard: FC = () => {
   const groupedAnalysis1 = useGroupedAnalysis1();
   const { featureFlags, setFlag } = FeatureFlags.useFeatureFlags();
   const adminToken = useAdminToken();
-  useGasTitle(groupedAnalysis1?.baseFeePerGas);
+  const gasTitle = useGasTitle(
+    "dashboard | ultrasound.money",
+    groupedAnalysis1?.baseFeePerGas,
+  );
   useScrollOnLoad();
 
   return (
@@ -187,6 +189,9 @@ const Dashboard: FC = () => {
           highlightColor={"#565b7f"}
           enableAnimation={true}
         >
+          <Head>
+            <title>{gasTitle}</title>
+          </Head>
           <div
             className={`
               absolute
