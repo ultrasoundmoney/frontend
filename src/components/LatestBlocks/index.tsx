@@ -162,7 +162,7 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
                   ? timeElapsed
                   : undefined}
               </LabelUnitText>
-              <LabelText>s</LabelText>
+              <LabelText className="lowercase">s</LabelText>
             </div>
             <LabelText className="text-slateus-400">old</LabelText>
           </div>
