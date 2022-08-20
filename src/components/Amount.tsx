@@ -17,7 +17,7 @@ type AmountProps = {
 };
 
 export const Amount: FC<AmountProps> = ({
-  amountPostfix,
+  amountPostfix = "",
   children,
   className,
   textSizeClass,

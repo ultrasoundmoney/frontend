@@ -223,7 +223,7 @@ type QuantifyTextProps = {
   unitPostfix?: string;
 };
 export const QuantifyText: FC<QuantifyTextProps> = ({
-  amountPostfix,
+  amountPostfix = "",
   children,
   className = "",
   unitPostfix,
