@@ -256,7 +256,6 @@ const Dashboard: FC = () => {
             <BasicErrorBoundary>
               <SupplyWidgets />
             </BasicErrorBoundary>
-
             <div className="h-16"></div>
             <div id="burn">
               <SectionDivider
