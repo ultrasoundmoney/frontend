@@ -115,7 +115,9 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab, cryptoType }) => {
         data-graph="usd"
         ref={usdPathRef}
         className={`${classes.pathDefault} ${classes.path_usd} ${
-          cryptoType === "usd" ? classes.pathStrokeAnim : ""
+          cryptoType === "usd" || hoverElem === "usd"
+            ? classes.pathStrokeAnim
+            : ""
         }`}
         id="usd_none"
       />
@@ -192,7 +194,9 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab, cryptoType }) => {
         ref={btcPathRef}
         id="btc_none"
         className={`${classes.pathDefault} ${classes.path_btc} ${
-          cryptoType === "btc" ? classes.pathStrokeAnim : ""
+          cryptoType === "btc" || hoverElem === "btc"
+            ? classes.pathStrokeAnim
+            : ""
         }`}
         data-graph="btc"
       />
@@ -269,7 +273,9 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab, cryptoType }) => {
         data-graph="eth"
         ref={ethPathRef}
         className={`${classes.pathDefault} ${classes.path_eth} ${
-          cryptoType === "eth" ? classes.pathStrokeAnim : ""
+          cryptoType === "eth" || hoverElem === "eth"
+            ? classes.pathStrokeAnim
+            : ""
         }`}
         id="eth_none"
       />

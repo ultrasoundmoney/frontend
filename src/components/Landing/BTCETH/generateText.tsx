@@ -17,14 +17,14 @@ const SVGrender = () => {
       type: "btc",
     },
     {
-      title: t.eusm_row_2_title,
-      text: t.eusm_row_2_text,
-      type: "eth",
-    },
-    {
       title: t.eusm_row_4_title,
       text: t.eusm_row_4_text,
       type: "usd",
+    },
+    {
+      title: t.eusm_row_2_title,
+      text: t.eusm_row_2_text,
+      type: "eth",
     },
   ];
 

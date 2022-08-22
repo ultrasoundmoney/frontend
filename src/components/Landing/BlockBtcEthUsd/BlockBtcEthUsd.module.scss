@@ -27,6 +27,7 @@
   stroke-dashoffset: 410 !important;
 }
 .path_usd.pathStrokeAnim {
+  transition-delay: 0.4s;
   stroke-dashoffset: 455 !important;
 }
 .path_eth.pathStrokeAnim {
@@ -51,6 +52,10 @@
   offset-path: path(
     "M1 350.988C16.192 300.494 61.7406 208.495 100.651 197.613C146.59 184.765 236.969 201.16 359.555 217.361"
   );
+}
+
+.usd_pointer.show {
+  transition-delay: 0.4s;
 }
 .btc_pointer.show,
 .usd_pointer.show,

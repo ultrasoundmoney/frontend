@@ -1,6 +1,6 @@
 export type graphTypes = "none" | "btc" | "eth" | "usd";
 export const WINDOW_BREAK_POINT = 740;
-const graphType = ["none", "btc", "eth", "usd"];
+const graphType = ["none", "btc", "usd", "eth"];
 
 export const handleGraphs = (
   topBreakPointValue: number,
@@ -49,13 +49,10 @@ export const onHoverFunctionality = (
     const elem = e.target as HTMLInputElement;
     const hoverElem: string | undefined = elem.dataset.graph;
     if (hoverElem === "btc") {
-      btcPathRefEl.style.strokeDashoffset = "410";
       setHoverElem("btc");
     } else if (hoverElem === "eth") {
-      ethPathRefEl.style.strokeDashoffset = "455";
       setHoverElem("eth");
     } else {
-      usdPathRefEl.style.strokeDashoffset = "455";
       setHoverElem("usd");
     }
   }
