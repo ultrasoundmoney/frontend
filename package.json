@@ -22,7 +22,7 @@
     "aos": "^2.3.4",
     "d3-shape": "^3.1.0",
     "date-fns": "^2.29.1",
-    "framer-motion": "^6.2.3",
+    "framer-motion": "^7.2.0",
     "highcharts": "^10.2.0",
     "highcharts-react-official": "^3.1.0",
     "jsbi": "^4.3.0",
