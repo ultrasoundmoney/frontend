@@ -1,7 +1,5 @@
 import * as Sentry from "@sentry/nextjs";
 import { BrowserTracing } from "@sentry/tracing";
-import type { Session } from "next-auth";
-import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import "tailwindcss/tailwind.css";
@@ -19,9 +17,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
     <Head>
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     </Head>
-    <SessionProvider session={(pageProps as { session: Session }).session}>
-      <Component {...pageProps} />
-    </SessionProvider>
+    <Component {...pageProps} />
   </>
 );
 export default MyApp;

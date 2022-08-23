@@ -3,7 +3,7 @@ import Head from "next/head";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import type { FC, ReactNode } from "react";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useAdminToken } from "../../admin";
@@ -17,7 +17,6 @@ import WidgetGroup1 from "../BurnGroup";
 import Flippenings from "../Flippenings";
 import FollowingYou from "../FollowingYou";
 import IssuanceBreakdown from "../IssuanceBreakdown";
-import JoinDiscordWidget from "../JoinDiscordWidget";
 import FaqBlock from "../Landing/faq";
 import Link from "../Link";
 import PriceModel from "../PriceModel";
@@ -32,6 +31,7 @@ import ValidatorRewardsWidget from "../ValidatorRewards";
 import { WidgetTitle } from "../WidgetSubcomponents";
 import headerGlowSvg from "./blurred-bg.svg";
 import styles from "./Dashboard.module.scss";
+import JoinDiscordSection from "./JoinDiscordSection";
 
 const SectionDivider: FC<{
   link?: string;
@@ -141,7 +141,6 @@ const BasicErrorBoundary: FC<{ children: ReactNode }> = ({ children }) => (
 );
 
 const useGasTitle = (defaultTitle: string, baseFeePerGas: Gwei | undefined) => {
-  const originalTitle = useRef<string>();
   const [gasTitle, setGasTitle] = useState<string>();
 
   useEffect(() => {
@@ -151,7 +150,7 @@ const useGasTitle = (defaultTitle: string, baseFeePerGas: Gwei | undefined) => {
     const gasFormatted = Format.gweiFromWei(baseFeePerGas).toFixed(0);
     const newTitle = `${gasFormatted} Gwei | ${defaultTitle}`;
     setGasTitle(newTitle);
-  }, [baseFeePerGas]);
+  }, [baseFeePerGas, defaultTitle]);
 
   return gasTitle;
 };
@@ -324,7 +323,7 @@ const Dashboard: FC = () => {
               </BasicErrorBoundary>
             </div>
             <BasicErrorBoundary>
-              <div className="flex flex-col px-4 md:px-16">
+              <div className="flex flex-col xs:px-4 md:px-16">
                 <div
                   id="fam"
                   className="relative flex px-4 md:px-0 pt-40 mb-16"
@@ -349,7 +348,7 @@ const Dashboard: FC = () => {
                     <FollowingYou />
                   </div>
                 </div>
-                {featureFlags.joinDiscord && <JoinDiscordWidget />}
+                <JoinDiscordSection />
                 <div className="flex px-4 md:px-0 pt-8">
                   <div className="w-full lg:w-2/3 md:m-auto relative">
                     <FaqBlock />
