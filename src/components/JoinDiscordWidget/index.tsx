@@ -25,15 +25,15 @@ const DiscordStatusText: FC<{ status: QueueingStatus }> = ({ status }) =>
       invalid handle
     </BodyText>
   ) : status === "error" ? (
-    <BodyText className="whitespace-nowrap text-red-400" size="xs">
+    <BodyText className="whitespace-nowrap text-red-400 text-xs md:text-base">
       error
     </BodyText>
   ) : status === "sending" ? (
-    <BodyText className="whitespace-nowrap text-white animate-pulse" size="xs">
+    <BodyText className="whitespace-nowrap text-white animate-pulse text-xs md:text-base">
       sending...
     </BodyText>
   ) : status === "done" ? (
-    <BodyText className="whitespace-nowrap text-green-400" size="xs">
+    <BodyText className="whitespace-nowrap text-green-400 text-xs md:text-base">
       done!
     </BodyText>
   ) : null;
