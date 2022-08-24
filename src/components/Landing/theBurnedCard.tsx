@@ -105,7 +105,7 @@ const FeeBurnedBlock = () => {
         id="eth-card"
         className={`${
           styles.fixedFeeBurned
-        } z-10 inset-x-0 bottom-0 grid grid-cols-2 gap-1 sm:gap-2 lg:flex lg:flex-nowrap justify-center w-full md:mx-auto px-2 lg:px-4 sticky lg:gap-4 pb-2 lg:pb-4 ${
+        } fixed z-10 inset-x-0 bottom-0 grid grid-cols-2 gap-1 sm:gap-2 lg:flex lg:flex-nowrap justify-center w-full max-w-screen-2xl md:mx-auto px-2 lg:px-4 lg:gap-4 pb-2 lg:pb-4 ${
           isShow ? styles.active : ""
         }`}
       >
