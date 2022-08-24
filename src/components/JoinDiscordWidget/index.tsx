@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { FC } from "react";
+import type { FC, FormEvent } from "react";
 import { useEffect } from "react";
 import { useCallback, useState } from "react";
 import { BodyText, LabelText } from "../Texts";
@@ -88,39 +88,48 @@ const JoinDiscordWidget: FC = () => {
     });
   }, []);
 
-  const handleSubmit = useCallback(async () => {
-    if (twitterAuthStatus !== "verified") {
-      console.error("tried to submit without twitter auth");
-      return;
-    }
+  const handleSubmit = useCallback(
+    (event: FormEvent) => {
+      event.preventDefault();
+      const submit = async () => {
+        if (twitterAuthStatus !== "verified") {
+          console.error("tried to submit without twitter auth");
+          return;
+        }
 
-    setQueueStatus("sending");
-    const res = await fetch("/api/fam/queue-for-discord", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ discordIdOrUsername: discordUsername }),
-    });
+        setQueueStatus("sending");
+        const res = await fetch("/api/fam/queue-for-discord", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ discordIdOrUsername: discordUsername }),
+        });
 
-    if (res.status === 200) {
-      setQueueStatus("done");
-      return;
-    }
+        if (res.status === 200) {
+          setQueueStatus("done");
+          return;
+        }
 
-    if (res.status === 400) {
-      setQueueStatus("invalid-handle");
-      return;
-    }
+        if (res.status === 400) {
+          setQueueStatus("invalid-handle");
+          return;
+        }
 
-    setQueueStatus("error");
-    try {
-      const body = (await res.json()) as { message?: string };
-      if (typeof body.message === "string") {
-        throw new Error(body.message);
-      }
-    } catch {
-      console.error("failed to decode any discord queueing response body");
-    }
-  }, [discordUsername, twitterAuthStatus]);
+        setQueueStatus("error");
+        try {
+          const body = (await res.json()) as { message?: string };
+          if (typeof body.message === "string") {
+            throw new Error(body.message);
+          }
+        } catch {
+          console.error("failed to decode any discord queueing response body");
+        }
+      };
+      submit().catch((err) => {
+        throw err;
+      });
+    },
+    [discordUsername, twitterAuthStatus],
+  );
 
   return (
     <WidgetErrorBoundary title="join discord queue">
@@ -186,9 +195,7 @@ const JoinDiscordWidget: FC = () => {
                   : "pointer-events-none"
               }
             `}
-              onSubmit={() => {
-                handleSubmit().catch(console.error);
-              }}
+              onSubmit={handleSubmit}
             >
               <input
                 className={`
