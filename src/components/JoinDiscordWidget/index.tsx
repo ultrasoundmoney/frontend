@@ -50,9 +50,9 @@ const DiscordStatusText: FC<{ status: QueueingStatus }> = ({ status }) =>
 
 const JoinDiscordWidget: FC = () => {
   const [discordUsername, setDiscordUsername] = useState<string>();
-  const [queueStatus, setQueueStatus] = useState<QueueingStatus>("init");
   const [twitterAuthStatus, setTwitterAuthStatus] =
     useState<TwitterAuthStatus>("init");
+  const [queueStatus, setQueueStatus] = useState<QueueingStatus>("init");
 
   useEffect(() => {
     const checkAuthStatus = async (): Promise<void> => {
@@ -145,25 +145,25 @@ const JoinDiscordWidget: FC = () => {
         </div>
         <div className="flex flex-col gap-y-8 md:flex-row md:justify-between md:gap-x-8">
           <div className="flex flex-col gap-y-4 md:w-1/2">
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center md:min-h-[24px]">
               <LabelText>1. your twitter</LabelText>
               <TwitterStatusText status={twitterAuthStatus} />
             </div>
             <Link href="/api/auth/twitter">
               <a
                 className={`
-                w-full
-                flex justify-center py-[6px] px-3
-                bg-slateus-600 hover:brightness-110 active:brightness-90
-                border border-slateus-200 rounded-full
-                outline-slateus-200
-                select-none
-                ${
-                  twitterAuthStatus === "verified"
-                    ? "opacity-50"
-                    : "opacity-100"
-                }
-              `}
+                  w-full
+                  flex justify-center py-[6px] md:py-[7px] px-3
+                  bg-slateus-600 hover:brightness-110 active:brightness-90
+                  border border-slateus-200 rounded-full
+                  outline-slateus-200
+                  select-none
+                  ${
+                    twitterAuthStatus === "verified"
+                      ? "opacity-50"
+                      : "opacity-100"
+                  }
+                `}
               >
                 <BodyText className="text-xs md:text-base">
                   authenticate
@@ -178,7 +178,7 @@ const JoinDiscordWidget: FC = () => {
             ${twitterAuthStatus === "verified" ? "opacity-100" : "opacity-50"}
           `}
           >
-            <div className="flex justify-between gap-x-1">
+            <div className="flex justify-between items-center gap-x-1 md:min-h-[24px]">
               <LabelText className="truncate">2. your discord handle</LabelText>
               <DiscordStatusText status={queueStatus} />
             </div>
@@ -199,14 +199,14 @@ const JoinDiscordWidget: FC = () => {
             >
               <input
                 className={`
-                w-full
-                bg-transparent
-                text-xs md:text-base text-white
-                pl-4
-                placeholder-slateus-400
-                rounded-full
-                outline-none
-              `}
+                  w-full
+                  bg-transparent
+                  text-xs md:text-base text-white
+                  pl-4
+                  placeholder-slateus-400
+                  rounded-full
+                  outline-none
+                `}
                 onChange={(event) => setDiscordUsername(event.target.value)}
                 pattern="[0-9]{16}|.{2,32}#[0-9]{4}"
                 placeholder="discord_user#8615"
@@ -217,15 +217,15 @@ const JoinDiscordWidget: FC = () => {
               />
               <button
                 className={`
-                relative
-                bg-gradient-to-tr from-cyan-400 to-indigo-600
-                rounded-full
-                px-4 py-2
-                text-white
-                font-light
-                flex
-                group
-              `}
+                  relative
+                  bg-gradient-to-tr from-cyan-400 to-indigo-600
+                  rounded-full
+                  px-4 py-2
+                  text-white
+                  font-light
+                  flex
+                  group
+                `}
                 type="submit"
               >
                 <BodyText className="z-10 text-white text-xs md:text-base">
