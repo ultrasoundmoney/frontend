@@ -6,7 +6,7 @@ import { formatZeroDecimals } from "../../format";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import ImageWithTooltip from "../ImageWithTooltip";
 import Modal from "../Modal";
-import SpanMoji from "../SpanMoji";
+import { SectionTitle } from "../Texts";
 import Tooltip from "../Tooltip";
 import { useTooltip } from "../TwitterFam";
 import styles from "./FollowingYou.module.scss";
@@ -86,24 +86,12 @@ const FollowingYou: FC = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center">
-        <h2
-          className={`
-            flex items-center
-            font-inter font-light
-            text-white text-center text-2xl md:text-3xl xl:text-41xl
-            mb-6
-          `}
-        >
-          me & the fam
-          <SpanMoji imageClassName="h-[30px] ml-2" emoji="👀" />
-        </h2>
-      </div>
+      <SectionTitle subtitle="do we know each other? find out how many of us follow you.">
+        me & the fam
+      </SectionTitle>
       <p
         className={`text-blue-shipcove leading-6 md:leading-none text-center font-light text-base lg:text-lg mb-16`}
-      >
-        do we know each other? find out how many of us follow you.
-      </p>
+      ></p>
       <form
         className="flex justify-center"
         onSubmit={(event) => {

@@ -40,7 +40,9 @@ const SectionDivider: FC<{
 }> = ({ link, title, subtitle }) => (
   <>
     <div className="h-16"></div>
-    <SectionTitle link={link} title={title} subtitle={subtitle} />
+    <SectionTitle link={link} subtitle={subtitle}>
+      {title}
+    </SectionTitle>
     <div className="h-16"></div>
   </>
 );
@@ -121,6 +123,14 @@ const AdminTools: FC<{
     </div>
   );
 };
+
+const QandASection: FC = () => (
+  <div className="flex px-4 md:px-0 mt-32">
+    <div className="w-full lg:w-2/3 md:m-auto relative">
+      <FaqBlock />
+    </div>
+  </div>
+);
 
 const BasicErrorBoundary: FC<{ children: ReactNode }> = ({ children }) => (
   <Sentry.ErrorBoundary
@@ -343,17 +353,13 @@ const Dashboard: FC = () => {
                     <TwitterFam />
                   </div>
                 </div>
-                <div className="flex px-4 md:px-0 pt-20 pb-20">
+                <div className="flex px-4 md:px-0 pt-20">
                   <div className="w-full lg:w-2/3 md:m-auto relative">
                     <FollowingYou />
                   </div>
                 </div>
                 <JoinDiscordSection />
-                <div className="flex px-4 md:px-0 pt-8">
-                  <div className="w-full lg:w-2/3 md:m-auto relative">
-                    <FaqBlock />
-                  </div>
-                </div>
+                <QandASection />
               </div>
             </BasicErrorBoundary>
             <div className="w-full flex flex-col items-center pb-40">

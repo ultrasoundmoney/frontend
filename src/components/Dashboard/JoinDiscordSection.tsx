@@ -8,8 +8,8 @@ import { SectionTitle } from "../Texts";
 const JoinDiscordSection: FC = () => {
   const { md } = useActiveBreakpoint();
   return (
-    <div id="join-discord">
-      <div className="flex justify-center items-center gap-x-4">
+    <div className="mt-32" id="join-discord">
+      <div className="flex justify-center items-center gap-x-4 mb-16">
         <Link href={`#join-discord`}>
           <a className="flex items-center gap-x-4 text-white">
             <h2

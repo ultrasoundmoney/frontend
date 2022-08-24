@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { FC, FormEvent } from "react";
+import type { FC, FormEvent, ReactNode } from "react";
 import { useEffect } from "react";
 import { useCallback, useState } from "react";
 import { BodyText, LabelText } from "../Texts";
@@ -8,6 +8,29 @@ import { WidgetBackground } from "../WidgetSubcomponents";
 import Image from "next/image";
 import discordLogo from "./discord-logo.png";
 
+const LoadingText: FC<{ children: ReactNode }> = ({ children }) => (
+  <BodyText className="text-white animate-pulse text-xs md:text-base">
+    {children}
+  </BodyText>
+);
+
+const PositiveText: FC<{ children: ReactNode }> = ({ children }) => (
+  <BodyText className="text-green-400 text-xs md:text-base">
+    {children}
+  </BodyText>
+);
+
+const NegativeText: FC<{ children: ReactNode }> = ({ children }) => (
+  <BodyText className="whitespace-nowrap text-red-400 text-xs md:text-base">
+    {children}
+  </BodyText>
+);
+
+// Dummy item to fix baseline alignment between sections on md
+const AlignmentText: FC = () => (
+  <BodyText className="select-none text-xs md:text-base">&nbsp;</BodyText>
+);
+
 type TwitterAuthStatusResponse = {
   message: string;
   status: "verified" | "not-verified";
@@ -15,44 +38,32 @@ type TwitterAuthStatusResponse = {
 type TwitterAuthStatus = "verified" | "init" | "error" | "checking";
 const TwitterStatusText: FC<{ status: TwitterAuthStatus }> = ({ status }) =>
   status === "verified" ? (
-    <BodyText className="text-green-400 text-xs md:text-base">
-      verified
-    </BodyText>
+    <PositiveText>verified</PositiveText>
   ) : status === "checking" ? (
-    <BodyText className="text-white animate-pulse text-xs md:text-base">
-      checking...
-    </BodyText>
+    <LoadingText>checking...</LoadingText>
   ) : status === "error" ? (
-    <BodyText className="whitespace-nowrap text-red-400 text-xs md:text-base">
-      error
-    </BodyText>
-  ) : null;
+    <NegativeText>error</NegativeText>
+  ) : (
+    <AlignmentText />
+  );
 
 type QueueingStatus = "init" | "invalid-handle" | "done" | "sending" | "error";
 const DiscordStatusText: FC<{ status: QueueingStatus }> = ({ status }) =>
   status === "invalid-handle" ? (
-    <BodyText className="whitespace-nowrap text-red-400 text-xs md:text-base">
-      invalid handle
-    </BodyText>
+    <NegativeText>invalid handle</NegativeText>
   ) : status === "error" ? (
-    <BodyText className="whitespace-nowrap text-red-400 text-xs md:text-base">
-      error
-    </BodyText>
+    <NegativeText>error</NegativeText>
   ) : status === "sending" ? (
-    <BodyText className="whitespace-nowrap text-white animate-pulse text-xs md:text-base">
-      sending...
-    </BodyText>
+    <LoadingText>sending...</LoadingText>
   ) : status === "done" ? (
-    <BodyText className="whitespace-nowrap text-green-400 text-xs md:text-base">
-      done!
-    </BodyText>
-  ) : null;
+    <PositiveText>done!</PositiveText>
+  ) : (
+    <AlignmentText />
+  );
 
-const JoinDiscordWidget: FC = () => {
-  const [discordUsername, setDiscordUsername] = useState<string>();
+const useTwitterAuthStatus = () => {
   const [twitterAuthStatus, setTwitterAuthStatus] =
     useState<TwitterAuthStatus>("init");
-  const [queueStatus, setQueueStatus] = useState<QueueingStatus>("init");
 
   useEffect(() => {
     const checkAuthStatus = async (): Promise<void> => {
@@ -87,6 +98,14 @@ const JoinDiscordWidget: FC = () => {
       throw err;
     });
   }, []);
+
+  return twitterAuthStatus;
+};
+
+const JoinDiscordWidget: FC = () => {
+  const [discordUsername, setDiscordUsername] = useState<string>();
+  const [queueStatus, setQueueStatus] = useState<QueueingStatus>("init");
+  const twitterAuthStatus = useTwitterAuthStatus();
 
   const handleSubmit = useCallback(
     (event: FormEvent) => {
@@ -133,10 +152,10 @@ const JoinDiscordWidget: FC = () => {
 
   return (
     <WidgetErrorBoundary title="join discord queue">
-      <WidgetBackground className="flex flex-col gap-y-8">
+      <WidgetBackground className="flex flex-col gap-y-8 max-w-3xl mx-auto">
         <div className="relative flex justify-between items-center">
           <LabelText>join discord queue</LabelText>
-          <div className="w-8 md:w-16 md:absolute md:-right-12 md:-top-12">
+          <div className="w-8 md:w-16 md:absolute md:-right-12 md:-top-12 select-none">
             <Image
               alt="the discord logo, a community communication app"
               src={discordLogo}
@@ -145,7 +164,7 @@ const JoinDiscordWidget: FC = () => {
         </div>
         <div className="flex flex-col gap-y-8 md:flex-row md:justify-between md:gap-x-8">
           <div className="flex flex-col gap-y-4 md:w-1/2">
-            <div className="flex justify-between items-center md:min-h-[24px]">
+            <div className="flex justify-between items-baseline">
               <LabelText>1. your twitter</LabelText>
               <TwitterStatusText status={twitterAuthStatus} />
             </div>
@@ -153,7 +172,7 @@ const JoinDiscordWidget: FC = () => {
               <a
                 className={`
                   w-full
-                  flex justify-center py-[6px] md:py-[7px] px-3
+                  flex justify-center py-1.5 md:py-2 px-3
                   bg-slateus-600 hover:brightness-110 active:brightness-90
                   border border-slateus-200 rounded-full
                   outline-slateus-200
@@ -162,6 +181,11 @@ const JoinDiscordWidget: FC = () => {
                     twitterAuthStatus === "verified"
                       ? "opacity-50"
                       : "opacity-100"
+                  }
+                  ${
+                    twitterAuthStatus === "checking"
+                      ? "pointer-events-none"
+                      : "pointer-events-auto"
                   }
                 `}
               >
@@ -178,23 +202,23 @@ const JoinDiscordWidget: FC = () => {
             ${twitterAuthStatus === "verified" ? "opacity-100" : "opacity-50"}
           `}
           >
-            <div className="flex justify-between items-center gap-x-1 md:min-h-[24px]">
+            <div className="flex justify-between items-baseline gap-x-1">
               <LabelText className="truncate">2. your discord handle</LabelText>
               <DiscordStatusText status={queueStatus} />
             </div>
             <form
               className={`
-              flex justify-center
-              bg-slateus-800
-              border border-slateus-500 rounded-full
-              focus-within:border-slateus-400
-              focus-within:invalid:border-red-300
-              ${
-                twitterAuthStatus === "verified"
-                  ? "pointer-events-auto"
-                  : "pointer-events-none"
-              }
-            `}
+                flex justify-center
+                bg-slateus-800
+                border border-slateus-500 rounded-full
+                focus-within:border-slateus-400
+                focus-within:invalid:border-red-300
+                ${
+                  twitterAuthStatus === "verified"
+                    ? "pointer-events-auto"
+                    : "pointer-events-none"
+                }
+              `}
               onSubmit={handleSubmit}
             >
               <input
@@ -220,11 +244,13 @@ const JoinDiscordWidget: FC = () => {
                   relative
                   bg-gradient-to-tr from-cyan-400 to-indigo-600
                   rounded-full
-                  px-4 py-2
+                  px-4 py-1.5
+                  md:py-1.5 md:m-0.5
                   text-white
                   font-light
                   flex
                   group
+                  select-none
                 `}
                 type="submit"
               >
@@ -233,11 +259,11 @@ const JoinDiscordWidget: FC = () => {
                 </BodyText>
                 <div
                   className={`
-                  discord-submit
-                  absolute left-1 right-1 top-1 bottom-1
-                  bg-slateus-700 rounded-full
-                  group-hover:hidden
-                `}
+                    discord-submit
+                    absolute left-[1px] right-[1px] top-[1px] bottom-[1px]
+                    bg-slateus-700 rounded-full
+                    group-hover:hidden
+                  `}
                 ></div>
               </button>
             </form>

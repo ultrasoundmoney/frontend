@@ -15,7 +15,7 @@ const FaqBlock: React.FC = () => {
       id="faq"
     >
       <div className="max-w-3xl md:m-auto md:px-4 lg:px-0 ">
-        <div className="block py-8">
+        <div className="block pb-8">
           <SectionTitle title="q&a" />
         </div>
         <div className="w-full px-4 md:px-8 lg:px-0">

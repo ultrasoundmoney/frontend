@@ -60,10 +60,10 @@ export const UnitText: FC<{ children: ReactNode; className?: string }> = ({
 );
 
 export const SectionTitle: FC<{
+  children: ReactNode;
   link?: string;
-  title: string;
   subtitle?: string;
-}> = ({ link, title, subtitle }) => {
+}> = ({ link, children, subtitle }) => {
   const { md } = useActiveBreakpoint();
   return (
     <>
@@ -76,7 +76,7 @@ export const SectionTitle: FC<{
               text-white text-center text-2xl md:text-3xl xl:text-4xl
             `}
             >
-              {title}
+              {children}
             </h2>
             {link !== undefined && (
               <WhiteEmoji
