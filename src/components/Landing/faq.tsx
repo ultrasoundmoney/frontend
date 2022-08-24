@@ -16,7 +16,7 @@ const FaqBlock: React.FC = () => {
     >
       <div className="max-w-3xl md:m-auto md:px-4 lg:px-0 ">
         <div className="block pb-8">
-          <SectionTitle title="q&a" />
+          <SectionTitle>q&a</SectionTitle>
         </div>
         <div className="w-full px-4 md:px-8 lg:px-0">
           <Accordion title={t.faq_question_1} text={t.faq_answer_1} />
