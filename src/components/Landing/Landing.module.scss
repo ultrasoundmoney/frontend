@@ -203,6 +203,9 @@
 }
 
 @media screen and (max-width: 380px) {
+  .firstTextBlock {
+    width: 65%;
+  }
   .secondTextBlock {
     position: absolute;
     right: 0;
