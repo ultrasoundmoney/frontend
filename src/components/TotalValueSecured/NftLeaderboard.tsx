@@ -1,6 +1,6 @@
 import { useTotalValueSecured } from "../../api/total-value-secured";
 import { AmountBillionsUsdAnimated } from "../Amount";
-import { BodyText } from "../Texts";
+import BodyText from "../TextsNext/BodyText";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 
 const NftLeaderboard = () => {
