@@ -52,7 +52,9 @@ const TheMergeBlock: React.FC = () => {
             data-aos-easing="ease-in-out"
             className={`w-6/12 md:w-4/12 md:absolute md:mr-auto py-16 ${styles.mergeIconBlock}`}
           >
-            <div className="flex-none md:flex-1 text-center md:text-left px-3">
+            <div
+              className={`${styles.firstTextBlock} flex-none md:flex-1 text-center md:text-left px-3`}
+            >
               <div className="flex">
                 <Twemoji imageClassName="h-6 lg:h-8 select-none mr-2" wrapper>
                   🏭
