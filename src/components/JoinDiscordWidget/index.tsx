@@ -1,12 +1,13 @@
 import Link from "next/link";
-import type { FC, FormEvent, ReactNode } from "react";
-import { useEffect } from "react";
-import { useCallback, useState } from "react";
-import { BodyText, LabelText } from "../Texts";
+import type { Dispatch, FC, FormEvent, ReactNode, SetStateAction } from "react";
+import { useEffect, useCallback, useState, useMemo } from "react";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
 import Image from "next/image";
 import discordLogo from "./discord-logo.png";
+import BodyText from "../TextsNext/BodyText";
+import LabelText from "../TextsNext/LabelText";
+import BodyTextV2 from "../TextsNext/BodyTextV2";
 
 const LoadingText: FC<{ children: ReactNode }> = ({ children }) => (
   <BodyText className="text-white animate-pulse text-xs md:text-base">
@@ -33,14 +34,21 @@ const AlignmentText: FC = () => (
 
 type TwitterAuthStatusResponse = {
   message: string;
-  status: "verified" | "not-verified";
+  status: "authenticated" | "not-authenticated";
 };
-type TwitterAuthStatus = "verified" | "init" | "error" | "checking";
+type TwitterAuthStatus =
+  | "authenticated"
+  | "authenticating"
+  | "checking"
+  | "error"
+  | "init";
 const TwitterStatusText: FC<{ status: TwitterAuthStatus }> = ({ status }) =>
-  status === "verified" ? (
-    <PositiveText>verified</PositiveText>
+  status === "authenticated" ? (
+    <PositiveText>authenticated</PositiveText>
   ) : status === "checking" ? (
     <LoadingText>checking...</LoadingText>
+  ) : status === "authenticating" ? (
+    <LoadingText>authenticating...</LoadingText>
   ) : status === "error" ? (
     <NegativeText>error</NegativeText>
   ) : (
@@ -74,12 +82,12 @@ const useTwitterAuthStatus = () => {
       if (res.status === 200) {
         const body = (await res.json()) as TwitterAuthStatusResponse;
 
-        if (body.status === "verified") {
-          setTwitterAuthStatus("verified");
+        if (body.status === "authenticated") {
+          setTwitterAuthStatus("authenticated");
           return;
         }
 
-        if (body.status === "not-verified") {
+        if (body.status === "not-authenticated") {
           setTwitterAuthStatus("init");
           return;
         }
@@ -99,19 +107,26 @@ const useTwitterAuthStatus = () => {
     });
   }, []);
 
-  return twitterAuthStatus;
+  return useMemo(
+    () =>
+      [twitterAuthStatus, setTwitterAuthStatus] as [
+        TwitterAuthStatus,
+        Dispatch<SetStateAction<TwitterAuthStatus>>,
+      ],
+    [twitterAuthStatus],
+  );
 };
 
 const JoinDiscordWidget: FC = () => {
   const [discordUsername, setDiscordUsername] = useState<string>();
   const [queueStatus, setQueueStatus] = useState<QueueingStatus>("init");
-  const twitterAuthStatus = useTwitterAuthStatus();
+  const [twitterAuthStatus, setTwitterAuthStatus] = useTwitterAuthStatus();
 
   const handleSubmit = useCallback(
     (event: FormEvent) => {
       event.preventDefault();
       const submit = async () => {
-        if (twitterAuthStatus !== "verified") {
+        if (twitterAuthStatus !== "authenticated") {
           console.error("tried to submit without twitter auth");
           return;
         }
@@ -171,14 +186,13 @@ const JoinDiscordWidget: FC = () => {
             <Link href="/api/auth/twitter">
               <a
                 className={`
-                  w-full
                   flex justify-center py-1.5 md:py-2 px-3
                   bg-slateus-600 hover:brightness-110 active:brightness-90
                   border border-slateus-200 rounded-full
                   outline-slateus-200
                   select-none
                   ${
-                    twitterAuthStatus === "verified"
+                    twitterAuthStatus === "authenticated"
                       ? "opacity-50"
                       : "opacity-100"
                   }
@@ -188,10 +202,11 @@ const JoinDiscordWidget: FC = () => {
                       : "pointer-events-auto"
                   }
                 `}
+                onClick={() => {
+                  setTwitterAuthStatus("authenticating");
+                }}
               >
-                <BodyText className="text-xs md:text-base">
-                  authenticate
-                </BodyText>
+                <BodyTextV2>authenticate</BodyTextV2>
               </a>
             </Link>
           </div>
@@ -199,7 +214,11 @@ const JoinDiscordWidget: FC = () => {
             className={`
             flex flex-col gap-y-4
               md:w-1/2
-            ${twitterAuthStatus === "verified" ? "opacity-100" : "opacity-50"}
+            ${
+              twitterAuthStatus === "authenticated"
+                ? "opacity-100"
+                : "opacity-50"
+            }
           `}
           >
             <div className="flex justify-between items-baseline gap-x-1">
@@ -214,7 +233,7 @@ const JoinDiscordWidget: FC = () => {
                 focus-within:border-slateus-400
                 focus-within:invalid:border-red-300
                 ${
-                  twitterAuthStatus === "verified"
+                  twitterAuthStatus === "authenticated"
                     ? "pointer-events-auto"
                     : "pointer-events-none"
                 }
@@ -244,7 +263,9 @@ const JoinDiscordWidget: FC = () => {
                   relative
                   bg-gradient-to-tr from-cyan-400 to-indigo-600
                   rounded-full
-                  px-4 py-1.5
+                  px-4 py-[5px]
+                  my-px
+                  mr-px
                   md:py-1.5 md:m-0.5
                   text-white
                   font-light
@@ -254,9 +275,7 @@ const JoinDiscordWidget: FC = () => {
                 `}
                 type="submit"
               >
-                <BodyText className="z-10 text-white text-xs md:text-base">
-                  submit
-                </BodyText>
+                <BodyTextV2 className="z-10">submit</BodyTextV2>
                 <div
                   className={`
                     discord-submit
