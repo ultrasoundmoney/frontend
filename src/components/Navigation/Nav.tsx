@@ -73,7 +73,7 @@ const Nav: React.FC = () => {
     const faqSection = document.querySelector("#faq");
 
     if (faqSection) {
-      faqSection.scrollIntoView({ behavior: "smooth", block: "center" });
+      faqSection.scrollIntoView({ block: "center" });
     } else {
       return console.error("Faq section not found");
     }
