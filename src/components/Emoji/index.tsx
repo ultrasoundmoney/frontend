@@ -40,7 +40,17 @@ export const WhiteEmoji: FC<WhiteEmojiProps> = ({
   layout,
   name,
   width,
-}) => <Image alt={alt} layout={layout} src={whiteMap[name]} width={width} />;
+}) => (
+  <span className="flex select-none">
+    <Image
+      alt={alt}
+      layout={layout}
+      src={whiteMap[name]}
+      height={width}
+      width={width}
+    />
+  </span>
+);
 
 type ColoredEmojiProps = {
   alt: ImageProps["alt"];
