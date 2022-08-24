@@ -17,6 +17,18 @@ const nextConfig = withBundleAnalyzer({
       "lh3.googleusercontent.com",
     ],
   },
+  rewrites: async () => [
+    {
+      source: "/api/:path*",
+      has: [
+        {
+          type: "host",
+          value: "oyfy.tunnelto.dev",
+        },
+      ],
+      destination: "http://127.0.0.1:8080/api/:path*",
+    },
+  ],
 });
 
 module.exports = nextConfig;
