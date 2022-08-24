@@ -8,13 +8,23 @@ import { WidgetBackground } from "../WidgetSubcomponents";
 import Image from "next/image";
 import discordLogo from "./discord-logo.png";
 
-const VERIFIED_TWITTER_ID_COOKIE_KEY = "VERIFIED_TWITTER_ID";
-
-type TwitterAuthStatus = "verified" | "init";
+type TwitterAuthStatusResponse = {
+  message: string;
+  status: "verified" | "not-verified";
+};
+type TwitterAuthStatus = "verified" | "init" | "error" | "checking";
 const TwitterStatusText: FC<{ status: TwitterAuthStatus }> = ({ status }) =>
   status === "verified" ? (
     <BodyText className="text-green-400 text-xs md:text-base">
       verified
+    </BodyText>
+  ) : status === "checking" ? (
+    <BodyText className="text-white animate-pulse text-xs md:text-base">
+      checking...
+    </BodyText>
+  ) : status === "error" ? (
+    <BodyText className="whitespace-nowrap text-red-400 text-xs md:text-base">
+      error
     </BodyText>
   ) : null;
 
@@ -38,9 +48,6 @@ const DiscordStatusText: FC<{ status: QueueingStatus }> = ({ status }) =>
     </BodyText>
   ) : null;
 
-const getCookieValue = (name: string): string | undefined =>
-  document.cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)")?.pop();
-
 const JoinDiscordWidget: FC = () => {
   const [discordUsername, setDiscordUsername] = useState<string>();
   const [queueStatus, setQueueStatus] = useState<QueueingStatus>("init");
@@ -48,16 +55,39 @@ const JoinDiscordWidget: FC = () => {
     useState<TwitterAuthStatus>("init");
 
   useEffect(() => {
-    if (typeof document !== "undefined") {
-      const verifiedTwitterId = getCookieValue(VERIFIED_TWITTER_ID_COOKIE_KEY);
-      console.log("verifiedTwitterId", verifiedTwitterId);
-      if (typeof verifiedTwitterId === "string") {
-        setTwitterAuthStatus("verified");
+    const checkAuthStatus = async (): Promise<void> => {
+      setTwitterAuthStatus("checking");
+
+      const res = await fetch("/api/auth/status");
+
+      if (res.status === 200) {
+        const body = (await res.json()) as TwitterAuthStatusResponse;
+
+        if (body.status === "verified") {
+          setTwitterAuthStatus("verified");
+          return;
+        }
+
+        if (body.status === "not-verified") {
+          setTwitterAuthStatus("init");
+          return;
+        }
+
+        setTwitterAuthStatus("error");
+        throw new Error(body.message || "failed to check auth status");
       }
-    }
+
+      setTwitterAuthStatus("error");
+      throw new Error(
+        `failed to check auth status, response status: ${res.status}`,
+      );
+    };
+
+    checkAuthStatus().catch((err) => {
+      throw err;
+    });
   }, []);
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   const handleSubmit = useCallback(async () => {
     if (twitterAuthStatus !== "verified") {
       console.error("tried to submit without twitter auth");
@@ -65,8 +95,9 @@ const JoinDiscordWidget: FC = () => {
     }
 
     setQueueStatus("sending");
-    const res = await fetch("/fam/queue-for-discord", {
+    const res = await fetch("/api/fam/queue-for-discord", {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ discordIdOrUsername: discordUsername }),
     });
 
