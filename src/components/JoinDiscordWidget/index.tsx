@@ -1,13 +1,15 @@
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import type { Dispatch, FC, FormEvent, ReactNode, SetStateAction } from "react";
-import { useEffect, useCallback, useState, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import BodyText from "../TextsNext/BodyText";
+import BodyTextV2 from "../TextsNext/BodyTextV2";
+import LabelText from "../TextsNext/LabelText";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
-import Image from "next/image";
 import discordLogo from "./discord-logo.png";
-import BodyText from "../TextsNext/BodyText";
-import LabelText from "../TextsNext/LabelText";
-import BodyTextV2 from "../TextsNext/BodyTextV2";
+import logoTwitterWhite from "./logo-twitter-white.svg";
 
 const LoadingText: FC<{ children: ReactNode }> = ({ children }) => (
   <BodyText className="text-white animate-pulse text-xs md:text-base">
@@ -186,7 +188,9 @@ const JoinDiscordWidget: FC = () => {
             <Link href="/api/auth/twitter">
               <a
                 className={`
-                  flex justify-center py-1.5 md:py-2 px-3
+                  flex py-1.5 md:py-2 px-3
+                  self-center
+                  gap-x-2
                   bg-slateus-600 hover:brightness-110 active:brightness-90
                   border border-slateus-200 rounded-full
                   outline-slateus-200
@@ -207,6 +211,12 @@ const JoinDiscordWidget: FC = () => {
                 }}
               >
                 <BodyTextV2>authenticate</BodyTextV2>
+                <Image
+                  alt="twitte logo in white"
+                  src={logoTwitterWhite as StaticImageData}
+                  height={16}
+                  width={16}
+                />
               </a>
             </Link>
           </div>
