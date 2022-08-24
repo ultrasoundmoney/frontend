@@ -6,7 +6,7 @@ import { formatZeroDecimals } from "../../format";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import ImageWithTooltip from "../ImageWithTooltip";
 import Modal from "../Modal";
-import { SectionTitle } from "../Texts";
+import { SectionTitle } from "../TextsNext/SectionTitle";
 import Tooltip from "../Tooltip";
 import { useTooltip } from "../TwitterFam";
 import styles from "./FollowingYou.module.scss";

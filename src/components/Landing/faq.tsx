@@ -1,7 +1,7 @@
 import * as React from "react";
 import Accordion from "../Accordion";
 import { TranslationsContext } from "../../translations-context";
-import { SectionTitle } from "../Texts";
+import { SectionTitle } from "../TextsNext/SectionTitle";
 
 const FaqBlock: React.FC = () => {
   const t = React.useContext(TranslationsContext);
