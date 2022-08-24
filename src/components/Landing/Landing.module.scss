@@ -201,3 +201,11 @@
   border-style: dashed;
   border-color: rgb(112 112 112);
 }
+
+@media screen and (max-width: 380px) {
+  .secondTextBlock {
+    position: absolute;
+    right: 0;
+    width: 65%;
+  }
+}
