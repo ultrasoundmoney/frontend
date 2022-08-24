@@ -238,31 +238,6 @@ const Dashboard: FC = () => {
             <p className="font-inter font-light text-blue-spindle text-xl md:text-2xl lg:text-3xl text-center mb-16">
               merge soon™
             </p>
-            {/* <video */}
-            {/*   className="w-full md:w-3/6 lg:w-2/6 mx-auto -mt-32 -mb-4 pr-6 mix-blend-lighten" */}
-            {/*   playsInline */}
-            {/*   autoPlay */}
-            {/*   muted */}
-            {/*   loop */}
-            {/*   poster="/bat-no-wings.png" */}
-            {/* > */}
-            {/*   <source */}
-            {/*     src="/bat-no-wings.webm" */}
-            {/*     type="video/webm; codecs='vp9'" */}
-            {/*   /> */}
-            {/*   <source src="/bat-no-wings.mp4" type="video/mp4" /> */}
-            {/* </video> */}
-            {/* <video */}
-            {/*   className="absolute hidden md:block left-0 -ml-24 md:top-96 lg:top-96 opacity-20 -z-10" */}
-            {/*   playsInline */}
-            {/*   autoPlay */}
-            {/*   muted */}
-            {/*   loop */}
-            {/*   poster="/orbs1.jpg" */}
-            {/* > */}
-            {/*   <source src="/orbs1.webm" type="video/webm; codecs='vp9'" /> */}
-            {/*   <source src="/orbs1.mp4" type="video/mp4" /> */}
-            {/* </video> */}
             <BasicErrorBoundary>
               <SupplyWidgets />
             </BasicErrorBoundary>
@@ -277,17 +252,6 @@ const Dashboard: FC = () => {
                 <WidgetGroup1 />
               </BasicErrorBoundary>
             </div>
-            {/* <video */}
-            {/*   className="absolute w-1/2 right-0 -mt-64 opacity-20 -z-10" */}
-            {/*   playsInline */}
-            {/*   autoPlay */}
-            {/*   muted */}
-            {/*   loop */}
-            {/*   poster="/orbs2.jpg" */}
-            {/* > */}
-            {/*   <source src="/orbs2.webm" type="video/webm; codecs='vp9'" /> */}
-            {/*   <source src="/orbs2.mp4" type="video/mp4" /> */}
-            {/* </video> */}
             <div className="h-16"></div>
             <div className="px-4 md:px-16" id="tvs">
               <SectionDivider

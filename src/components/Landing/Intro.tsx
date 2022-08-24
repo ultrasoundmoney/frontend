@@ -14,7 +14,6 @@ const Intro: React.FC = () => {
         autoPlay
         muted
         loop
-        poster="/bat-no-wings.png"
       >
         <source src="/hero_compressed.mp4" type="video/mp4" />
       </video>
