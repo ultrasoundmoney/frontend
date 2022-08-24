@@ -10,7 +10,8 @@ import * as Format from "../format";
 import * as StaticEtherData from "../static-ether-data";
 import { MoneyAmount } from "./Amount";
 import Slider2 from "./Slider2";
-import { BodyText, TextRoboto } from "./Texts";
+import { TextRoboto } from "./Texts";
+import BodyText from "./TextsNext/BodyText";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
 // Markers are positioned absolutely, manipulating their 'left' relatively to the full width bar which should be positioned relatively as their parent. Marker width

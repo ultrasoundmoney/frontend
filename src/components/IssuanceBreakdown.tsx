@@ -9,7 +9,9 @@ import {
 import Colors from "../colors";
 import * as Format from "../format";
 import { MoneyAmount } from "./Amount";
-import { BodyText, LabelText, TextRoboto } from "./Texts";
+import { TextRoboto } from "./Texts";
+import BodyText from "./TextsNext/BodyText";
+import LabelText from "./TextsNext/LabelText";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
 const skeletonLoadingWidth = 0.1;

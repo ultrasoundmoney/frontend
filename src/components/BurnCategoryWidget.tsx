@@ -10,7 +10,9 @@ import { FeatureFlagsContext } from "../feature-flags";
 import * as Format from "../format";
 import type { TimeFrameNext } from "../time-frames";
 import { MoneyAmount } from "./Amount";
-import { BodyText, LabelText, TextRoboto } from "./Texts";
+import { TextRoboto } from "./Texts";
+import BodyText from "./TextsNext/BodyText";
+import LabelText from "./TextsNext/LabelText";
 import { BurnGroupBase, WidgetTitle } from "./WidgetSubcomponents";
 
 type CategoryProps = {

@@ -1,27 +1,7 @@
 import type { CSSProperties, FC, ReactNode } from "react";
 import Skeleton from "react-loading-skeleton";
 import { AmountUnitSpace } from "./Spacing";
-
-export const LabelText: FC<{
-  children: ReactNode | undefined;
-  className?: string;
-  skeletonWidth?: string;
-}> = ({ children, className = "", skeletonWidth = "3rem" }) => (
-  <TextInter
-    className={`
-      font-light
-      text-slateus-200 text-xs
-      uppercase tracking-widest
-      ${className}
-    `}
-  >
-    {children !== undefined ? (
-      children
-    ) : (
-      <Skeleton inline width={skeletonWidth}></Skeleton>
-    )}
-  </TextInter>
-);
+import BodyText from "./TextsNext/BodyText";
 
 export const LabelUnitText: FC<{
   children: ReactNode | undefined;
@@ -53,21 +33,6 @@ export const UnitText: FC<{ children: ReactNode; className?: string }> = ({
   >
     {children}
   </TextRoboto>
-);
-
-export const BodyText: FC<{
-  children: ReactNode;
-  className?: string;
-  inline?: boolean;
-  skeletonWidth?: string;
-}> = ({ children, className = "", inline, skeletonWidth }) => (
-  <TextInter
-    className={`text-base md:text-lg ${className}`}
-    inline={inline}
-    skeletonWidth={skeletonWidth}
-  >
-    {children}
-  </TextInter>
 );
 
 // This component should not have text size styling. Replace all call-sites that don't overwrite the size with a more specific higher order component. Probably BodyText.

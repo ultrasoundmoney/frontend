@@ -13,7 +13,7 @@ import AdminControls from "../BurnGroup/BurnLeaderboard/AdminControls";
 import ImageWithTooltip from "../ImageWithTooltip";
 import Link from "../Link";
 import Modal from "../Modal";
-import { BodyText } from "../Texts";
+import BodyText from "../TextsNext/BodyText";
 import Tooltip from "../Tooltip";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 

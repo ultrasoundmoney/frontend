@@ -7,7 +7,9 @@ import { useScarcity } from "../api/scarcity";
 import Colors from "../colors";
 import * as Format from "../format";
 import { Amount, MoneyAmount } from "./Amount";
-import { BodyText, LabelText, TextRoboto } from "./Texts";
+import { TextRoboto } from "./Texts";
+import BodyText from "./TextsNext/BodyText";
+import LabelText from "./TextsNext/LabelText";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
 type ScarcityBarProps = {

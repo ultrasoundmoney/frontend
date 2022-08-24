@@ -9,7 +9,8 @@ import scrollbarStyles from "../styles/Scrollbar.module.scss";
 import type { TimeFrameNext } from "../time-frames";
 import { MoneyAmountAnimated } from "./Amount";
 import SpanMoji from "./SpanMoji";
-import { BodyText, TextRoboto } from "./Texts";
+import { TextRoboto } from "./Texts";
+import BodyText from "./TextsNext/BodyText";
 import { BurnGroupBase } from "./WidgetSubcomponents";
 
 const formatBlockNumber = (u: unknown): string | undefined =>

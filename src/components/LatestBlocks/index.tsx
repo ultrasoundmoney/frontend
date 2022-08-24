@@ -13,7 +13,9 @@ import * as Format from "../../format";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { AmountUnitSpace } from "../Spacing";
-import { BodyText, LabelText, LabelUnitText, TextRoboto } from "../Texts";
+import { LabelUnitText, TextRoboto } from "../Texts";
+import BodyText from "../TextsNext/BodyText";
+import LabelText from "../TextsNext/LabelText";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 
 const maxBlocks = 20;
@@ -34,9 +36,6 @@ const formatFees = (unit: Unit, fees: unknown, feesUsd: unknown) => {
     ? `${Format.formatZeroDecimals(feesUsd)}`
     : undefined;
 };
-
-const formatTimeElapsed = (num: number | undefined) =>
-  num === undefined ? undefined : `${num}s`;
 
 export const formatBlockNumber = (number: unknown) =>
   typeof number === "number"

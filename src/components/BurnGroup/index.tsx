@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import type { Unit } from "../../denomination";
 import type { TimeFrameNext } from "../../time-frames";
 import { timeFramesNext } from "../../time-frames";
-import BurnCategories from "../BurnCategories";
+import BurnCategoryWidget from "../BurnCategoryWidget";
 import BurnRecords from "../BurnRecords";
 import BurnTotal from "../BurnTotal";
 import CurrencyControl from "../CurrencyControl";
@@ -86,7 +86,7 @@ const WidgetGroup1: FC = () => {
             timeFrame={timeFrame}
             unit={unit}
           />
-          <BurnCategories
+          <BurnCategoryWidget
             onClickTimeFrame={handleClickTimeFrame}
             timeFrame={timeFrame}
           />

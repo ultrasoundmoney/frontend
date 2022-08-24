@@ -10,7 +10,7 @@ import {
 } from "../Amount";
 import Link from "../Link";
 import Modal from "../Modal";
-import { BodyText } from "../Texts";
+import BodyText from "../TextsNext/BodyText";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 import TooltipSecurityRatio from "./TooltipSecurityRatio";
 

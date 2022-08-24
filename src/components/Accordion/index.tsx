@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BodyText } from "../Texts";
+import BodyText from "../TextsNext/BodyText";
 import Twemoji from "../Twemoji";
 import styles from "./Accordion.module.scss";
 

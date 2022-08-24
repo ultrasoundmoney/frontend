@@ -1,6 +1,8 @@
 import type { FC } from "react";
 import { useEthSupply } from "../../api/eth-supply";
-import { BodyText, LabelText, TooltipTitle } from "../Texts";
+import { TooltipTitle } from "../Texts";
+import BodyText from "../TextsNext/BodyText";
+import LabelText from "../TextsNext/LabelText";
 import PreciseEth from "./PreciseEth";
 
 const EthSupplyTooltip: FC<{ onClickClose: () => void }> = ({

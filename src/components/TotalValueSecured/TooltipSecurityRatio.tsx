@@ -11,7 +11,8 @@ import { useTotalValueSecured } from "../../api/total-value-secured";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
 import { AmountUnitSpace } from "../Spacing";
-import { BodyText, TextInter, TextRoboto, UnitText } from "../Texts";
+import { TextInter, TextRoboto, UnitText } from "../Texts";
+import BodyText from "../TextsNext/BodyText";
 import { WidgetTitle } from "../WidgetSubcomponents";
 
 const formatEthPrice = (
