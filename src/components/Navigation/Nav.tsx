@@ -69,6 +69,16 @@ const Nav: React.FC = () => {
 
   const openCloseNavHandler = () => setIsOpen((prevVal) => !prevVal);
 
+  const moveToFaq = () => {
+    const faqSection = document.querySelector("#faq");
+
+    if (faqSection) {
+      faqSection.scrollIntoView({ behavior: "smooth", block: "center" });
+    } else {
+      return console.error("Faq section not found");
+    }
+  };
+
   return (
     <nav className="fixed w-full flex flex-wrap items-center justify-between px-2 py-6 bg-transparent mb-3 z-10">
       <div
@@ -129,11 +139,12 @@ const Nav: React.FC = () => {
         <div className="w-full md:w-6/12 hidden md:block" id="menu">
           <ul className="flex flex-col items-center md:flex-row justify-end list-none mt-4 md:mt-0 relative text-sm">
             <li className="nav-item pl-6 justify-center">
-              <Link href="#faq">
-                <a className="px-3 py-2 flex items-center leading-snug text-blue-shipcove hover:opacity-75 hover:text-white hover:cursor-pointer">
-                  {t.landing_faq_link}
-                </a>
-              </Link>
+              <button
+                onClick={moveToFaq}
+                className="px-3 py-2 flex items-center leading-snug text-blue-shipcove hover:opacity-75 hover:text-white hover:cursor-pointer"
+              >
+                {t.landing_faq_link}
+              </button>
             </li>
             <li className="nav-item justify-center" style={{ paddingLeft: 75 }}>
               <Link href="/dashboard">
