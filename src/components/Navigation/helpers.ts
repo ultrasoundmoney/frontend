@@ -1,4 +1,5 @@
 import type { StepperPoint } from "../../context/StepperContext";
+import { calcCenterElement } from "../../utils/calcCenterElement";
 import classes from "./Navigation.module.scss";
 
 export const getIconOffset = (
@@ -112,19 +113,24 @@ export const showHideNavBar = (
   const nextDrawingLineHight =
     childrenElems[lastSectionIndex + 1]?.getBoundingClientRect()?.height;
 
-  const faqSectionIndex: { [key: string]: any } = childrenElems.find(
-    (node) => node.id === "faq",
-  )!;
-  const topFaqSection: number =
-    typeof faqSectionIndex?.offsetTop === "number"
-      ? faqSectionIndex?.offsetTop
-      : 0;
-  if (lastSectionHight && maxOffsetYValue && nextDrawingLineHight) {
+  const downTextMergeSection: HTMLElement | null = document.querySelector(
+    "#the-merge-bottom-text",
+  );
+
+  if (
+    lastSectionHight &&
+    maxOffsetYValue &&
+    nextDrawingLineHight &&
+    downTextMergeSection
+  ) {
+    const centerDownTextMergeSection: number =
+      calcCenterElement(downTextMergeSection) || 10000;
+
     const showStickyHeader: boolean =
       window.scrollY > offsetYFirstPoint - window.innerHeight / 2.4 &&
       window.scrollY <
         maxOffsetYValue + lastSectionHight + nextDrawingLineHight &&
-      window.scrollY < topFaqSection - OFFSET_FAQ;
+      window.scrollY < centerDownTextMergeSection;
 
     showStickyHeader
       ? stepsRefElem.classList.add(classes.active)
