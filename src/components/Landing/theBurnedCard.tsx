@@ -11,6 +11,7 @@ import type { moneyType } from "../Vidgets/helpers";
 import { historicalData } from "./historicalData";
 import styles from "./Landing.module.scss";
 import { OFFSET_FAQ } from "../Navigation/helpers";
+import { calcCenterElement } from "../../utils/calcCenterElement";
 
 const FeeBurnedBlock = () => {
   const t = React.useContext(TranslationsContext);
@@ -33,25 +34,16 @@ const FeeBurnedBlock = () => {
     const breackPointShowVidgets =
       controlPoints[0]?.offsetY - window.innerHeight / 2.4;
 
-    //faq position
-    const collectionElems = vidgets?.current?.parentElement?.children;
-    const childrenElems = collectionElems?.length
-      ? Array.from(collectionElems)
-      : [];
-    const faqSectionIndex: { [key: string]: any } | undefined =
-      childrenElems.find((node) => {
-        return node.id === "faq";
-      });
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const topFaqSection: number = faqSectionIndex?.offsetTop
-      ? faqSectionIndex.offsetTop
-      : 0;
+    const downTextMergeSection: HTMLElement | null = document.querySelector(
+      "#the-merge-bottom-text",
+    );
+    const centerDownTextMergeSection: number =
+      (downTextMergeSection && calcCenterElement(downTextMergeSection)) ||
+      10000;
 
-    const beforeFaqSection = window.scrollY < topFaqSection - OFFSET_FAQ;
     const showVidgets =
-      topFaqSection !== 0
-        ? window.scrollY > breackPointShowVidgets && beforeFaqSection
-        : window.scrollY > breackPointShowVidgets;
+      window.scrollY > breackPointShowVidgets &&
+      window.scrollY < centerDownTextMergeSection;
 
     const currentIndexData = showVidgets
       ? Math.round(

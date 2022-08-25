@@ -104,7 +104,7 @@ const TheMergeBlock: React.FC = () => {
           data-aos-delay="50"
           data-aos-duration="1000"
           data-aos-easing="ease-in-out"
-          id="the-merge"
+          id="the-merge-bottom-text"
         >
           <div className="flex flex-col justify-center w-full lg:w-6/12 md:m-auto px-4 md:px-8 lg:px-0 pt-10">
             <h3 className="text-white font-light text-base md:text-3xl leading-normal text-center mb-6">
