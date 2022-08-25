@@ -238,6 +238,19 @@ const Dashboard: FC = () => {
             <p className="font-inter font-light text-blue-spindle text-xl md:text-2xl lg:text-3xl text-center mb-16">
               merge soon™
             </p>
+            {featureFlags.showBackgroundOrbs && (
+              <video
+                className="absolute hidden md:block left-0 -ml-24 md:top-96 lg:top-96 opacity-20 -z-10"
+                playsInline
+                autoPlay
+                muted
+                loop
+                poster="/orbs1.jpg"
+              >
+                <source src="/orbs1.webm" type="video/webm; codecs='vp9'" />
+                <source src="/orbs1.mp4" type="video/mp4" />
+              </video>
+            )}
             <BasicErrorBoundary>
               <SupplyWidgets />
             </BasicErrorBoundary>
@@ -252,6 +265,19 @@ const Dashboard: FC = () => {
                 <WidgetGroup1 />
               </BasicErrorBoundary>
             </div>
+            {featureFlags.showBackgroundOrbs && (
+              <video
+                className="absolute w-1/2 right-0 -mt-64 opacity-20 -z-10"
+                playsInline
+                autoPlay
+                muted
+                loop
+                poster="/orbs2.jpg"
+              >
+                <source src="/orbs2.webm" type="video/webm; codecs='vp9'" />
+                <source src="/orbs2.mp4" type="video/mp4" />
+              </video>
+            )}
             <div className="h-16"></div>
             <div className="px-4 md:px-16" id="tvs">
               <SectionDivider
@@ -274,17 +300,22 @@ const Dashboard: FC = () => {
               />
               <BasicErrorBoundary>
                 <div className="flex flex-col lg:flex-row gap-y-4 lg:gap-x-4">
-                  {/* <video */}
-                  {/*   className="absolute w-1/2 -left-20 -mt-96 opacity-20 -z-10 -mr-8" */}
-                  {/*   playsInline */}
-                  {/*   autoPlay */}
-                  {/*   muted */}
-                  {/*   loop */}
-                  {/*   poster="/orbs1.jpg" */}
-                  {/* > */}
-                  {/*   <source src="/orbs1.webm" type="video/webm; codecs='vp9'" /> */}
-                  {/*   <source src="/orbs1.mp4" type="video/mp4" /> */}
-                  {/* </video> */}
+                  {featureFlags.showBackgroundOrbs && (
+                    <video
+                      className="absolute w-1/2 -left-20 -mt-96 opacity-20 -z-10 -mr-8"
+                      playsInline
+                      autoPlay
+                      muted
+                      loop
+                      poster="/orbs1.jpg"
+                    >
+                      <source
+                        src="/orbs1.webm"
+                        type="video/webm; codecs='vp9'"
+                      />
+                      <source src="/orbs1.mp4" type="video/mp4" />
+                    </video>
+                  )}
                   <div className="flex flex-col basis-1/2 gap-y-4">
                     <Scarcity />
                     <ValidatorRewardsWidget />
@@ -304,17 +335,22 @@ const Dashboard: FC = () => {
                   className="relative flex px-4 md:px-0 pt-40 mb-16"
                 >
                   <div className="w-full relative flex flex-col items-center">
-                    {/* <video */}
-                    {/*   className="absolute w-2/3 right-0 -mr-16 -mt-48 opacity-100 -z-10 hidden md:block" */}
-                    {/*   playsInline */}
-                    {/*   autoPlay */}
-                    {/*   muted */}
-                    {/*   loop */}
-                    {/*   poster="/orbs2.jpg" */}
-                    {/* > */}
-                    {/*   <source src="/orbs2.webm" type="video/webm; codecs='vp9'" /> */}
-                    {/*   <source src="/orbs2.mp4" type="video/mp4" /> */}
-                    {/* </video> */}
+                    {featureFlags.showBackgroundOrbs && (
+                      <video
+                        className="absolute w-2/3 right-0 -mr-16 -mt-48 opacity-100 -z-10 hidden md:block"
+                        playsInline
+                        autoPlay
+                        muted
+                        loop
+                        poster="/orbs2.jpg"
+                      >
+                        <source
+                          src="/orbs2.webm"
+                          type="video/webm; codecs='vp9'"
+                        />
+                        <source src="/orbs2.mp4" type="video/mp4" />
+                      </video>
+                    )}
                     <TwitterFam />
                   </div>
                 </div>
