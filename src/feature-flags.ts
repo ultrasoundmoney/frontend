@@ -2,6 +2,7 @@ import { createContext, useReducer } from "react";
 
 export const flags = [
   "previewSkeletons",
+  "showBackgroundOrbs",
   "showCategoryCounts",
   "showCategorySlugs",
   "showMetadataTools",
@@ -14,6 +15,7 @@ export type FeatureFlags = Record<Flag, boolean>;
 
 export const defaults: FeatureFlags = {
   previewSkeletons: false,
+  showBackgroundOrbs: false,
   showCategoryCounts: false,
   showCategorySlugs: false,
   showMetadataTools: false,
@@ -23,6 +25,7 @@ export const defaults: FeatureFlags = {
 
 export const displayFlagMap: Record<Flag, string> = {
   previewSkeletons: "preview skeletons",
+  showBackgroundOrbs: "show background orbs",
   showCategoryCounts: "show category counts",
   showCategorySlugs: "show category slugs",
   showMetadataTools: "show metadata tools",
