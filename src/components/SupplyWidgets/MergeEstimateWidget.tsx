@@ -94,7 +94,8 @@ const MergeEstimateWidget = () => {
             {/* Keeps the height of this widget equal to the adjacent one. */}
             {mergeEstimate !== undefined ? (
               <LabelText className="flex items-center min-h-[21px]">
-                {`merge${md ? " estimate" : ""}—${mergeEstimateFormatted} UTC`}
+                {`merge${md ? " estimate" : ""}:`}
+                <span className="ml-1 text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-indigo-500">{`${mergeEstimateFormatted} UTC`}</span>
               </LabelText>
             ) : (
               <LabelText className="flex items-center min-h-[21px]">
