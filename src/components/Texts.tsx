@@ -1,10 +1,9 @@
 import type { CSSProperties, FC, ReactNode } from "react";
 import Skeleton from "react-loading-skeleton";
-import { AmountUnitSpace } from "./Spacing";
 import BodyText from "./TextsNext/BodyText";
 
 export const LabelUnitText: FC<{
-  children: ReactNode | undefined;
+  children: string | undefined;
   className?: string;
   skeletonWidth?: string;
 }> = ({ children, className, skeletonWidth = "3rem" }) => (
@@ -24,13 +23,11 @@ export const LabelUnitText: FC<{
   </TextRoboto>
 );
 
-export const UnitText: FC<{ children: ReactNode; className?: string }> = ({
-  className,
+export const UnitText: FC<{ children: string; className?: string }> = ({
+  className = "",
   children,
 }) => (
-  <TextRoboto
-    className={`text-blue-spindle font-extralight ${className ?? ""}`}
-  >
+  <TextRoboto className={`text-blue-spindle font-extralight ${className}`}>
     {children}
   </TextRoboto>
 );
@@ -131,28 +128,4 @@ export const StatusText: FC<{ className?: string; children: ReactNode }> = ({
 
 export const TooltipTitle: FC<{ children: ReactNode }> = ({ children }) => (
   <TextInter className="font-normal text-base md:text-lg">{children}</TextInter>
-);
-
-type QuantifyTextProps = {
-  amountPostfix?: string;
-  children: ReactNode;
-  className?: string;
-  unitPostfix?: string;
-};
-export const QuantifyText: FC<QuantifyTextProps> = ({
-  amountPostfix = "",
-  children,
-  className = "",
-  unitPostfix,
-}) => (
-  <TextRoboto className={className}>
-    {children}
-    {amountPostfix}
-    {unitPostfix && (
-      <>
-        <AmountUnitSpace />
-        <UnitText>{unitPostfix}</UnitText>
-      </>
-    )}
-  </TextRoboto>
 );

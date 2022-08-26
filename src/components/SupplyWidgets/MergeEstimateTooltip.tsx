@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { QuantifyText, TooltipTitle } from "../Texts";
+import { TooltipTitle } from "../Texts";
 import * as Format from "../../format";
 import roundNerdLarge from "./round-nerd-large.svg";
 import type { StaticImageData } from "next/image";
@@ -7,6 +7,7 @@ import Image from "next/image";
 import closeSvg from "../../assets/close.svg";
 import LabelText from "../TextsNext/LabelText";
 import BodyText from "../TextsNext/BodyText";
+import QuantifyText from "../TextsNext/QuantifyText";
 
 type Props = {
   className?: string;

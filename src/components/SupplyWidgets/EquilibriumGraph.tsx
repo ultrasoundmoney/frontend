@@ -10,7 +10,8 @@ import * as Format from "../../format";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import styles from "./EquilibriumGraph.module.scss";
 
-export type Point = [number, number];
+type UnixTimestamp = number;
+type Point = [UnixTimestamp, number];
 
 const SUPPLY_MIN = 0;
 const SUPPLY_MAX = 140e6;
