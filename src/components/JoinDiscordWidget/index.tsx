@@ -221,7 +221,7 @@ const JoinDiscordWidget: FC = () => {
       });
 
       if (res.status === 200) {
-        setDiscordUsername(undefined);
+        setDiscordUsername("");
         setQueueStatus("init");
         setTwitterAuthStatus({ type: "init" });
         return;
