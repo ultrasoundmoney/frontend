@@ -20,26 +20,25 @@ const nextConfig = withBundleAnalyzer({
   rewrites: async () => [
     // To test locally with the fam-analysis api running and a local tunnel to receive the oauth2 callback, use the below rewrite.
     // {
-    //   source: "/api/:path*",
+    //   source: "/api/auth/:path*",
     //   has: [
     //     {
     //       type: "host",
     //       value: "oyfy.tunnelto.dev",
     //     },
     //   ],
-    //   destination: "http://127.0.0.1:8080/api/:path*",
+    //   destination: "http://127.0.0.1:3001/api/auth/:path*",
     // },
-    // To do frontend dev accepting that an oauth2 callback won't work, but without our auth routes blowing up, use the below rewrite.
-    {
-      source: "/api/:path*",
-      has: [
-        {
-          type: "host",
-          value: "localhost",
-        },
-      ],
-      destination: "https://ultrasound.money/api/:path*",
-    },
+    // {
+    //   source: "/api/fam/queue-for-discord",
+    //   has: [
+    //     {
+    //       type: "host",
+    //       value: "oyfy.tunnelto.dev",
+    //     },
+    //   ],
+    //   destination: "http://127.0.0.1:3001/api/fam/queue-for-discord",
+    // },
   ],
 });
 

@@ -1,7 +1,14 @@
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import Link from "next/link";
-import type { Dispatch, FC, FormEvent, ReactNode, SetStateAction } from "react";
+import type {
+  ChangeEvent,
+  Dispatch,
+  FC,
+  FormEvent,
+  ReactNode,
+  SetStateAction,
+} from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import BodyText from "../TextsNext/BodyText";
 import BodyTextV2 from "../TextsNext/BodyTextV2";
@@ -34,25 +41,38 @@ const AlignmentText: FC = () => (
   <BodyText className="select-none text-xs md:text-base">&nbsp;</BodyText>
 );
 
-type TwitterAuthStatusResponse = {
-  message: string;
-  status: "authenticated" | "not-authenticated";
+type AuthBody = {
+  id: string;
+  handle: string;
 };
+type AuthError = {
+  message?: string;
+};
+type TwitterAuthStatusResponse = AuthBody | AuthError;
+const getIsAuthBody = (u: unknown): u is AuthBody =>
+  typeof (u as AuthBody)?.id === "string";
+
 type TwitterAuthStatus =
-  | "authenticated"
-  | "authenticating"
-  | "checking"
-  | "error"
-  | "init";
+  | { type: "access-denied" }
+  | { type: "authenticated"; id: string; handle: string }
+  | { type: "authenticating" }
+  | { type: "checking" }
+  | { type: "error"; message: string }
+  | { type: "init" }
+  | { type: "signing-out" };
 const TwitterStatusText: FC<{ status: TwitterAuthStatus }> = ({ status }) =>
-  status === "authenticated" ? (
+  status.type === "authenticated" ? (
     <PositiveText>authenticated</PositiveText>
-  ) : status === "checking" ? (
+  ) : status.type === "checking" ? (
     <LoadingText>checking...</LoadingText>
-  ) : status === "authenticating" ? (
+  ) : status.type === "authenticating" ? (
     <LoadingText>authenticating...</LoadingText>
-  ) : status === "error" ? (
+  ) : status.type === "signing-out" ? (
+    <LoadingText>signing out...</LoadingText>
+  ) : status.type === "error" ? (
     <NegativeText>error</NegativeText>
+  ) : status.type === "access-denied" ? (
+    <NegativeText>access denied</NegativeText>
   ) : (
     <AlignmentText />
   );
@@ -72,37 +92,57 @@ const DiscordStatusText: FC<{ status: QueueingStatus }> = ({ status }) =>
   );
 
 const useTwitterAuthStatus = () => {
-  const [twitterAuthStatus, setTwitterAuthStatus] =
-    useState<TwitterAuthStatus>("init");
+  const [twitterAuthStatus, setTwitterAuthStatus] = useState<TwitterAuthStatus>(
+    { type: "init" },
+  );
 
   useEffect(() => {
     const checkAuthStatus = async (): Promise<void> => {
-      setTwitterAuthStatus("checking");
+      setTwitterAuthStatus({ type: "checking" });
 
-      const res = await fetch("/api/auth/status");
+      const res = await fetch("/api/auth/twitter/session");
 
       if (res.status === 200) {
         const body = (await res.json()) as TwitterAuthStatusResponse;
 
-        if (body.status === "authenticated") {
-          setTwitterAuthStatus("authenticated");
+        if (getIsAuthBody(body)) {
+          setTwitterAuthStatus({
+            type: "authenticated",
+            id: body.id,
+            handle: body.handle,
+          });
           return;
+        } else {
+          const message =
+            body.message ??
+            "get twitter auth status got 200 response, but no auth body";
+          setTwitterAuthStatus({
+            type: "error",
+            message,
+          });
+          throw new Error(message);
         }
-
-        if (body.status === "not-authenticated") {
-          setTwitterAuthStatus("init");
-          return;
-        }
-
-        setTwitterAuthStatus("error");
-        throw new Error(body.message || "failed to check auth status");
       }
 
-      setTwitterAuthStatus("error");
-      throw new Error(
-        `failed to check auth status, response status: ${res.status}`,
-      );
+      if (res.status === 404) {
+        setTwitterAuthStatus({ type: "init" });
+        return;
+      }
+
+      const message = `failed to check auth status, response status: ${res.status}`;
+      setTwitterAuthStatus({ type: "error", message });
+      throw new Error(message);
     };
+
+    // Because we get redirected back, it's possible the backend tried to communicate a response to us by setting a query param when the user cancelled.
+    if (typeof document !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const authStatus = urlParams.get("auth");
+      if (authStatus !== null && authStatus === "access_denied") {
+        setTwitterAuthStatus({ type: "access-denied" });
+        return;
+      }
+    }
 
     checkAuthStatus().catch((err) => {
       throw err;
@@ -128,12 +168,12 @@ const JoinDiscordWidget: FC = () => {
     (event: FormEvent) => {
       event.preventDefault();
       const submit = async () => {
-        if (twitterAuthStatus !== "authenticated") {
-          console.error("tried to submit without twitter auth");
-          return;
+        if (twitterAuthStatus.type !== "authenticated") {
+          throw new Error("tried to submit without twitter auth");
         }
 
         setQueueStatus("sending");
+
         const res = await fetch("/api/fam/queue-for-discord", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -185,9 +225,10 @@ const JoinDiscordWidget: FC = () => {
               <LabelText>1. your twitter</LabelText>
               <TwitterStatusText status={twitterAuthStatus} />
             </div>
-            <Link href="/api/auth/twitter">
-              <a
-                className={`
+            {twitterAuthStatus.type !== "authenticated" ? (
+              <Link href="/api/auth/twitter">
+                <a
+                  className={`
                   flex py-1.5 md:py-2 px-3
                   self-center
                   gap-x-2
@@ -196,36 +237,69 @@ const JoinDiscordWidget: FC = () => {
                   outline-slateus-200
                   select-none
                   ${
-                    twitterAuthStatus === "authenticated"
-                      ? "opacity-50"
-                      : "opacity-100"
-                  }
-                  ${
-                    twitterAuthStatus === "checking"
-                      ? "pointer-events-none"
+                    twitterAuthStatus.type === "checking" ||
+                    twitterAuthStatus.type === "authenticating"
+                      ? "opacity-50 pointer-events-none"
                       : "pointer-events-auto"
                   }
                 `}
+                  onClick={() => {
+                    setTwitterAuthStatus({ type: "authenticating" });
+                  }}
+                >
+                  <BodyTextV2>authenticate</BodyTextV2>
+                  <Image
+                    alt="twitte logo in white"
+                    src={logoTwitterWhite as StaticImageData}
+                    height={16}
+                    width={16}
+                  />
+                </a>
+              </Link>
+            ) : (
+              <button
+                className={`
+                  flex py-1.5 md:py-2 px-3
+                  self-center
+                  gap-x-2
+                  bg-slateus-600 hover:brightness-125 active:brightness-90
+                  border border-slateus-200 rounded-full
+                  outline-slateus-200
+                  select-none
+                `}
                 onClick={() => {
-                  setTwitterAuthStatus("authenticating");
+                  const signOut = async () => {
+                    const res = await fetch("/api/auth/twitter", {
+                      method: "DELETE",
+                    });
+                    if (res.status === 200) {
+                      setTwitterAuthStatus({ type: "init" });
+                      return;
+                    }
+
+                    setTwitterAuthStatus({
+                      type: "error",
+                      message: "failed to sign out",
+                    });
+                    throw new Error("failed to sign out");
+                  };
+
+                  setTwitterAuthStatus({ type: "signing-out" });
+                  signOut().catch((err) => {
+                    throw err;
+                  });
                 }}
               >
-                <BodyTextV2>authenticate</BodyTextV2>
-                <Image
-                  alt="twitte logo in white"
-                  src={logoTwitterWhite as StaticImageData}
-                  height={16}
-                  width={16}
-                />
-              </a>
-            </Link>
+                <BodyTextV2>sign out @{twitterAuthStatus.handle}</BodyTextV2>
+              </button>
+            )}
           </div>
           <div
             className={`
             flex flex-col gap-y-4
               md:w-1/2
             ${
-              twitterAuthStatus === "authenticated"
+              twitterAuthStatus.type === "authenticated"
                 ? "opacity-100"
                 : "opacity-50"
             }
@@ -241,9 +315,11 @@ const JoinDiscordWidget: FC = () => {
                 bg-slateus-800
                 border border-slateus-500 rounded-full
                 focus-within:border-slateus-400
-                focus-within:invalid:border-red-300
+                valid:border-emerald-400
+                focus-within:valid:border-emerald-400
+                [&_button]:invalid:opacity-50
                 ${
-                  twitterAuthStatus === "authenticated"
+                  twitterAuthStatus.type === "authenticated"
                     ? "pointer-events-auto"
                     : "pointer-events-none"
                 }
