@@ -2,14 +2,20 @@ import * as DateFns from "date-fns";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import _last from "lodash/last";
-import type { FC } from "react";
+import { FC, RefObject, useEffect, useRef, useState } from "react";
 import { useMemo } from "react";
 import colors from "../../colors";
 import * as Format from "../../format";
 import LabelText from "../TextsNext/LabelText";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
-import styles from "./PercentageToTTDGraph.module.scss";
+import highchartsAnnotations from "highcharts/modules/annotations";
+
+// Somehow resolves an error thrown by the annotation lib
+if (typeof window !== "undefined") {
+  // Initialize highchats annotations module (only on browser, doesn't work on server)
+  highchartsAnnotations(Highcharts);
+}
 
 type UnixTimestamp = number;
 type Point = [UnixTimestamp, number];
@@ -43,7 +49,7 @@ const baseOptions: Highcharts.Options = {
   },
   tooltip: {
     backgroundColor: "transparent",
-    xDateFormat: "%Y-%m-%d",
+    xDateFormat: "%m-%d",
     useHTML: true,
     borderWidth: 0,
     shadow: false,
@@ -66,6 +72,11 @@ const baseOptions: Highcharts.Options = {
   },
 };
 
+type HighchartsRef = {
+  chart: Highcharts.Chart;
+  container: RefObject<HTMLDivElement>;
+};
+
 type Props = {
   difficultySeries: Point[];
   // A map used for fast-lookup of the Y in the series above by X.
@@ -82,8 +93,10 @@ const PercentageToTTDWidget: FC<Props> = ({
   difficultySeries,
 }) => {
   console.log("rendering PercentageToTTDWidget");
-  const options = useMemo(
-    (): Highcharts.Options => ({
+
+  const options = useMemo(() => {
+    const lastPoint = _last(difficultyProjectionSeries);
+    const nextOptions: Highcharts.Options = {
       ...baseOptions,
       ...({
         series: [
@@ -124,17 +137,20 @@ const PercentageToTTDWidget: FC<Props> = ({
                 [1, "#6A54F4"],
               ],
             },
-            data: [
-              ...difficultyProjectionSeries,
-              {
-                x: _last(difficultyProjectionSeries)?.[0],
-                y: _last(difficultyProjectionSeries)?.[1],
-                marker: {
-                  symbol: `url(/graph-dot-panda.svg)`,
-                  enabled: true,
-                },
-              },
-            ],
+            data:
+              lastPoint === undefined
+                ? difficultyProjectionSeries
+                : [
+                    ...difficultyProjectionSeries,
+                    {
+                      x: lastPoint?.[0],
+                      y: lastPoint?.[1],
+                      marker: {
+                        symbol: `url(/graph-dot-panda.svg)`,
+                        enabled: true,
+                      },
+                    },
+                  ],
           },
           {
             id: "difficulty-projection-series-shadow",
@@ -152,49 +168,51 @@ const PercentageToTTDWidget: FC<Props> = ({
           formatter: function () {
             const x = typeof this.x === "number" ? this.x : undefined;
             if (x === undefined) {
-              return;
+              return undefined;
             }
 
             const total = difficultyMap[x] || difficultyProjectionMap[x];
             if (total === undefined) {
-              return;
+              return undefined;
             }
 
             const dt = DateFns.fromUnixTime(x);
             const formattedDate = DateFns.format(dt, "LLL y");
 
             return `
-            <div class="font-roboto font-light bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
-              <div class="text-blue-spindle">
-                ${formattedDate}
-              </div>
-            <div class="text-white">
-              ${Format.formatOneDecimal(
-                total / 1e6,
-              )}M <span class="text-blue-spindle">ETH</span>
-              </div>
-            </div>
+                <div class="font-roboto font-light bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
+                  <div class="text-blue-spindle">
+                    ${formattedDate}
+                  </div>
+                  <div class="text-white">
+                    ${Format.formatOneDecimal(
+                      total / 1e6,
+                    )}M <span class="text-blue-spindle">ETH</span>
+                  </div>
+                </div>
             `;
           },
         },
       } as Highcharts.Options),
-    }),
-    [
-      difficultyMap,
-      difficultyProjectionMap,
-      difficultyProjectionSeries,
-      difficultySeries,
-    ],
-  );
+    };
+
+    return nextOptions;
+  }, [
+    difficultyMap,
+    difficultyProjectionMap,
+    difficultyProjectionSeries,
+    difficultySeries,
+  ]);
 
   return (
     <WidgetErrorBoundary title="percentage to TTD">
-      <WidgetBackground className="flex flex-col gap-y-8">
+      <WidgetBackground className="w-full flex flex-col gap-y-8">
         <LabelText className="flex items-center min-h-[21px]">
           percentage to ttd
         </LabelText>
         <div
-          className={`h-full flex justify-center select-none ${styles.percentageToTTDGraph}`}
+          // flex-grow fixes bug where highcharts doesn't take full width.
+          className={`w-full h-full flex justify-center select-none percent-chart-container overflow-hidden [&>div]:flex-grow`}
         >
           <HighchartsReact highcharts={Highcharts} options={options} />
         </div>
