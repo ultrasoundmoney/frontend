@@ -164,6 +164,13 @@ const JoinDiscordWidget: FC = () => {
   const [queueStatus, setQueueStatus] = useState<QueueingStatus>("init");
   const [twitterAuthStatus, setTwitterAuthStatus] = useTwitterAuthStatus();
 
+  const handleDiscordInputChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>): void => {
+      setDiscordUsername(event.target.value);
+    },
+    [],
+  );
+
   const handleSubmit = useCallback(
     (event: FormEvent) => {
       event.preventDefault();
@@ -336,9 +343,9 @@ const JoinDiscordWidget: FC = () => {
                   rounded-full
                   outline-none
                 `}
-                onChange={(event) => setDiscordUsername(event.target.value)}
-                pattern="[0-9]{16}|.{2,32}#[0-9]{4}"
-                placeholder="discord_user#8615"
+                onChange={handleDiscordInputChange}
+                pattern="^\d{16}|.{2,32}#\d{4}$"
+                placeholder="discord_user#1559"
                 required
                 spellCheck="false"
                 type="text"
