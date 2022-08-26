@@ -152,17 +152,17 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
             </div>
           ))}
         </ul>
-        <div className="flex justify-between flex-wrap">
-          <div className="flex gap-x-2 items-baseline">
-            <LabelText className="text-slateus-400">latest block</LabelText>
-            <div className="flex items-baseline">
-              <LabelUnitText skeletonWidth="1rem">
-                {!previewSkeletons && timeElapsed !== undefined
-                  ? String(timeElapsed)
-                  : undefined}
-              </LabelUnitText>
-              <LabelText className="lowercase">s</LabelText>
-            </div>
+        <div className="flex justify-between flex-wrap gap-y-2">
+          <div className="flex gap-x-2 items-baseline truncate">
+            <LabelText className="text-slateus-400 whitespace-nowrap">
+              latest block
+            </LabelText>
+            <LabelUnitText skeletonWidth="1rem">
+              {!previewSkeletons && timeElapsed !== undefined
+                ? timeElapsed
+                : undefined}
+            </LabelUnitText>
+            <LabelText className="truncate">seconds</LabelText>
             <LabelText className="text-slateus-400">old</LabelText>
           </div>
           <div className="flex gap-x-2 items-baseline">
