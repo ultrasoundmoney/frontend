@@ -19,12 +19,15 @@ import {
   MOBILE_VERTICAL_SCROLL_BREAK_POINT,
 } from "./helpers";
 import classes from "./Navigation.module.scss";
+import { NavigationContext } from "../../context/NavigationContext";
 
 const Stepper: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   const stepsRef = useRef<HTMLElement | null>(null);
   const steperIconRef = useRef<HTMLDivElement | null>(null);
   const stepperPoints = useContext(StepperContext);
+  const { hidingNavigationPosition } = useContext(NavigationContext);
+
   const [currentActionLogo, setCurrentActionLogo] =
     useState<ActionLogo>("none");
   const [pageLoad, setPageLoad] = useState(false);
@@ -38,7 +41,7 @@ const Stepper: React.FC = () => {
   const onScroll = useCallback(() => {
     const horizontalNavBar = stepsRef.current!;
     const stepperIconElem = steperIconRef.current!;
-    showHideNavBar(controlPoints, horizontalNavBar);
+    showHideNavBar(controlPoints, horizontalNavBar, hidingNavigationPosition);
     if (window.innerWidth <= MOBILE_VERTICAL_SCROLL_BREAK_POINT) {
       setNavBarPosition(
         horizontalNavBar,

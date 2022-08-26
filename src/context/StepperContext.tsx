@@ -38,7 +38,7 @@ const SteppersProvider: FC<{ children: ReactNode }> = ({ children }) => {
       }));
     }
   };
-  // console.log(stepperElements);
+
   return (
     <StepperContext.Provider value={{ stepperElements, addStepperELement }}>
       {children}
