@@ -38,7 +38,7 @@ const WidgetGroup1: FC = () => {
   }, [timeFrame]);
 
   return (
-    <div className="flex flex-col gap-4 px-4 md:px-16 ">
+    <div className="flex flex-col gap-4 xs:px-4 md:px-16 ">
       <div>
         <div className="">
           <div className={`bg-blue-tangaroa rounded-lg p-8`}>

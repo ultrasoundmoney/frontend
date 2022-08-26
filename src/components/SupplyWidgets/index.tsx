@@ -11,8 +11,6 @@ import TimeFrameControl from "../TimeFrameControl";
 import ToggleSwitch from "../ToggleSwitch";
 import { WidgetTitle } from "../WidgetSubcomponents";
 import EquilibriumWidget from "./EquilibriumWidget";
-import EthSupplyWidget from "./EthSupplyWidget";
-import MergeEstimateWidget from "./MergeEstimateWidget";
 
 const SupplyWidgets = () => {
   const [simulateMerge, setSimulateMerge] = useState(false);
@@ -38,7 +36,7 @@ const SupplyWidgets = () => {
   }, [timeFrame]);
 
   return (
-    <div className="flex flex-col gap-4 px-4 md:px-16">
+    <div className="flex flex-col gap-4 xs:px-4 md:px-16">
       <div>
         <div className="w-full flex flex-col md:flex-row isolate">
           <div className="hidden md:block w-1/3">
@@ -84,14 +82,6 @@ const SupplyWidgets = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div className="flex flex-col lg:flex-row gap-4">
-        <div className="w-full">
-          <EthSupplyWidget></EthSupplyWidget>
-        </div>
-        <div className="w-full">
-          <MergeEstimateWidget />
         </div>
       </div>
       <EquilibriumWidget />

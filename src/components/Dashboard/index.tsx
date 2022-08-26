@@ -8,6 +8,7 @@ import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useAdminToken } from "../../admin";
 import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import { useMergeEstimate } from "../../api/merge-estimate";
 import colors from "../../colors";
 import type { Gwei } from "../../eth-units";
 import * as FeatureFlags from "../../feature-flags";
@@ -33,6 +34,7 @@ import { WidgetTitle } from "../WidgetSubcomponents";
 import headerGlowSvg from "./blurred-bg.svg";
 import styles from "./Dashboard.module.scss";
 import JoinDiscordSection from "./JoinDiscordSection";
+import MergeSection from "./MergeSection";
 
 const SectionDivider: FC<{
   link?: string;
@@ -190,6 +192,7 @@ const Dashboard: FC = () => {
     groupedAnalysis1?.baseFeePerGas,
   );
   useScrollOnLoad();
+  const mergeEstimate = useMergeEstimate();
 
   return (
     <BasicErrorBoundary>
@@ -229,7 +232,7 @@ const Dashboard: FC = () => {
                 <AdminTools setFlag={setFlag} />
               </BasicErrorBoundary>
             )}
-            <div className="px-4 md:px-16">
+            <div className="px-4 xs:px-4 md:px-16">
               <BasicErrorBoundary>
                 <TopBar />
               </BasicErrorBoundary>
@@ -252,6 +255,16 @@ const Dashboard: FC = () => {
               </video>
             )}
             <BasicErrorBoundary>
+              <MergeSection
+                totalDifficulty={Number(mergeEstimate?.totalDifficulty) / 1e12}
+              />
+            </BasicErrorBoundary>
+            <BasicErrorBoundary>
+              <SectionDivider
+                link="projection"
+                subtitle="ultra sound money for years to come"
+                title="supply projections"
+              />
               <SupplyWidgets />
             </BasicErrorBoundary>
             <div className="h-16"></div>
@@ -279,7 +292,7 @@ const Dashboard: FC = () => {
               </video>
             )}
             <div className="h-16"></div>
-            <div className="px-4 md:px-16" id="tvs">
+            <div className="xs:px-4 md:px-16" id="tvs">
               <SectionDivider
                 title="total value secured—TVS"
                 link="tvs"
@@ -292,7 +305,7 @@ const Dashboard: FC = () => {
               </BasicErrorBoundary>
             </div>
             <div className="h-16"></div>
-            <div className="px-4 md:px-16" id="monetary-premium">
+            <div className="xs:px-4 md:px-16" id="monetary-premium">
               <SectionDivider
                 title="monetary premium"
                 link="monetary-premium"
