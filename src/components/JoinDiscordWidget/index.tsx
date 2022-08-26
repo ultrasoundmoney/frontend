@@ -211,8 +211,34 @@ const JoinDiscordWidget: FC = () => {
         throw err;
       });
     },
-    [discordUsername, twitterAuthStatus],
+    [discordUsername, twitterAuthStatus, setQueueStatus],
   );
+
+  const handleSignOut = useCallback(() => {
+    const signOut = async () => {
+      const res = await fetch("/api/auth/twitter", {
+        method: "DELETE",
+      });
+
+      if (res.status === 200) {
+        setDiscordUsername(undefined);
+        setQueueStatus("init");
+        setTwitterAuthStatus({ type: "init" });
+        return;
+      }
+
+      setTwitterAuthStatus({
+        type: "error",
+        message: "failed to sign out",
+      });
+      throw new Error("failed to sign out");
+    };
+
+    setTwitterAuthStatus({ type: "signing-out" });
+    signOut().catch((err) => {
+      throw err;
+    });
+  }, [setTwitterAuthStatus, setDiscordUsername, setQueueStatus]);
 
   return (
     <WidgetErrorBoundary title="join discord queue">
@@ -274,28 +300,7 @@ const JoinDiscordWidget: FC = () => {
                   outline-slateus-200
                   select-none
                 `}
-                onClick={() => {
-                  const signOut = async () => {
-                    const res = await fetch("/api/auth/twitter", {
-                      method: "DELETE",
-                    });
-                    if (res.status === 200) {
-                      setTwitterAuthStatus({ type: "init" });
-                      return;
-                    }
-
-                    setTwitterAuthStatus({
-                      type: "error",
-                      message: "failed to sign out",
-                    });
-                    throw new Error("failed to sign out");
-                  };
-
-                  setTwitterAuthStatus({ type: "signing-out" });
-                  signOut().catch((err) => {
-                    throw err;
-                  });
-                }}
+                onClick={handleSignOut}
               >
                 <BodyTextV2>sign out @{twitterAuthStatus.handle}</BodyTextV2>
               </button>
