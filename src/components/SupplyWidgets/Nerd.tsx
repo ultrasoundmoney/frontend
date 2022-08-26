@@ -11,7 +11,8 @@ const Nerd: FC = () => (
         relative
         gray-nerd
         flex ml-2 select-none z-10
-        hover:opacity-0 [&+.color-nerd]:active:brightness-75`}
+        hover:opacity-0 [&+.color-nerd]:active:brightness-75
+      `}
     >
       <Image
         alt="a nerd emoji offering deeper explanation of a nearby metric"
@@ -21,7 +22,7 @@ const Nerd: FC = () => (
         width={21}
       />
     </div>
-    <div className={`color-nerd absolute top-0 ml-2 select-none`}>
+    <div className="color-nerd absolute top-0 ml-2 select-none">
       <Image
         alt="a colored nerd emoji offering deeper explanation of a nearby metric"
         height={21}
