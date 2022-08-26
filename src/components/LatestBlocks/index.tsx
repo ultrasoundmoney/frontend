@@ -158,7 +158,7 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
             <div className="flex items-baseline">
               <LabelUnitText skeletonWidth="1rem">
                 {!previewSkeletons && timeElapsed !== undefined
-                  ? timeElapsed
+                  ? String(timeElapsed)
                   : undefined}
               </LabelUnitText>
               <LabelText className="lowercase">s</LabelText>
@@ -168,7 +168,7 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
           <div className="flex gap-x-2 items-baseline">
             <LabelUnitText skeletonWidth="1rem">
               {!previewSkeletons && blockLag !== undefined
-                ? blockLag
+                ? String(blockLag)
                 : undefined}
             </LabelUnitText>
             <LabelText className="text-slateus-400">block lag</LabelText>
