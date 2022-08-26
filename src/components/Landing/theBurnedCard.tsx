@@ -12,6 +12,7 @@ import { historicalData } from "./historicalData";
 import styles from "./Landing.module.scss";
 import { OFFSET_FAQ } from "../Navigation/helpers";
 import { calcCenterElement } from "../../utils/calcCenterElement";
+import { NavigationContext } from "../../context/NavigationContext";
 
 const FeeBurnedBlock = () => {
   const t = React.useContext(TranslationsContext);
@@ -20,6 +21,7 @@ const FeeBurnedBlock = () => {
   const [currentMoneyType, setCurrentMoneyType] =
     useState<moneyType>("Infationary");
   const stepperPoints = useContext(StepperContext);
+  const { hidingNavigationPosition } = useContext(NavigationContext);
   const controlPoints: StepperPoint[] = stepperPoints?.stepperElements
     ? Object.keys(stepperPoints.stepperElements).map((element) => {
         return stepperPoints?.stepperElements[element];
@@ -34,16 +36,9 @@ const FeeBurnedBlock = () => {
     const breackPointShowVidgets =
       controlPoints[0]?.offsetY - window.innerHeight / 2.4;
 
-    const downTextMergeSection: HTMLElement | null = document.querySelector(
-      "#the-merge-bottom-text",
-    );
-    const centerDownTextMergeSection: number =
-      (downTextMergeSection && calcCenterElement(downTextMergeSection)) ||
-      10000;
-
     const showVidgets =
       window.scrollY > breackPointShowVidgets &&
-      window.scrollY < centerDownTextMergeSection;
+      window.scrollY < hidingNavigationPosition;
 
     const currentIndexData = showVidgets
       ? Math.round(

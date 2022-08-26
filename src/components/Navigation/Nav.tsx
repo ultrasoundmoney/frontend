@@ -9,6 +9,7 @@ import PriceGasWidget from "../PriceGasWidget";
 import AlarmInput from "../AlarmInput";
 import { WidgetTitle } from "../WidgetSubcomponents";
 import { TranslationsContext } from "../../translations-context";
+import { NavigationContext } from "../../context/NavigationContext";
 
 const Nav: React.FC = () => {
   const t = React.useContext(TranslationsContext);
@@ -16,6 +17,7 @@ const Nav: React.FC = () => {
   const ethPrice = useGroupedAnalysis1()?.ethPrice;
   const [isOpen, setIsOpen] = useState(false);
   const defaultBar = useRef<null | HTMLDivElement>(null);
+  const { faqPosition } = React.useContext(NavigationContext);
 
   const [gasAlarmActive, setGasAlarmActive] = useLocalStorage(
     "gas-alarm-enabled",
@@ -69,15 +71,7 @@ const Nav: React.FC = () => {
 
   const openCloseNavHandler = () => setIsOpen((prevVal) => !prevVal);
 
-  const moveToFaq = () => {
-    const faqSection = document.querySelector("#faq");
-
-    if (faqSection) {
-      faqSection.scrollIntoView({ block: "center" });
-    } else {
-      return console.error("Faq section not found");
-    }
-  };
+  const moveToFaq = () => window.scrollTo(0, faqPosition);
 
   return (
     <nav className="fixed w-full flex flex-wrap items-center justify-between px-2 py-6 bg-transparent mb-3 z-10">
@@ -141,7 +135,7 @@ const Nav: React.FC = () => {
             <li className="nav-item pl-6 justify-center">
               <button
                 onClick={moveToFaq}
-                className="px-3 py-2 flex items-center leading-snug text-blue-shipcove hover:opacity-75 hover:text-white hover:cursor-pointer"
+                className="px-3 py-2 outline-none flex items-center leading-snug text-blue-shipcove hover:opacity-75 hover:text-white hover:cursor-pointer"
               >
                 {t.landing_faq_link}
               </button>

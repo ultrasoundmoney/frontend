@@ -5,17 +5,41 @@ import AnimatedPath from "./AnimatedPath";
 import DrawingLine from "./DrawingLine";
 import styles from "./Landing.module.scss";
 import Twemoji from "../Twemoji";
+import { NavigationContext } from "../../context/NavigationContext";
+import { calcCenterElement } from "../../utils/calcCenterElement";
 
 const TheMergeBlock: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   const stepperContext = React.useContext(StepperContext);
   const MergeRef = React.useRef<HTMLDivElement | null>(null);
 
+  const { changeHidingNavigationPosition } =
+    React.useContext(NavigationContext);
+
   React.useEffect(() => {
     if (stepperContext && MergeRef.current) {
       stepperContext.addStepperELement(MergeRef, "Merge");
     }
   }, []);
+
+  const bottomTextMergeSection = React.useRef<HTMLElement | null>(null);
+
+  React.useEffect(() => {
+    const resizeFun = () => {
+      if (bottomTextMergeSection.current) {
+        const centerBlock: number = calcCenterElement(
+          bottomTextMergeSection.current,
+        );
+        changeHidingNavigationPosition(centerBlock);
+      }
+    };
+
+    resizeFun();
+    window.addEventListener("resize", resizeFun);
+
+    return () => window.removeEventListener("resize", resizeFun);
+  }, [bottomTextMergeSection.current]);
+
   return (
     <>
       <DrawingLine pointRef={MergeRef} indexTopSection={4} />
@@ -98,6 +122,7 @@ const TheMergeBlock: React.FC = () => {
           <AnimatedPath />
         </div>
         <section
+          ref={bottomTextMergeSection}
           data-aos="fade-up"
           data-aos-anchor-placement="top-bottom"
           data-aos-offset="100"

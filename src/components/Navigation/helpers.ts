@@ -87,6 +87,7 @@ export const OFFSET_FAQ = 150;
 export const showHideNavBar = (
   controlPoints: (StepperPoint | undefined)[],
   stepsRefElem: HTMLElement,
+  hidingNavigationPosition: number,
 ) => {
   let offsetYFirstPoint = 2;
   controlPoints.forEach((el, index) => {
@@ -113,24 +114,12 @@ export const showHideNavBar = (
   const nextDrawingLineHight =
     childrenElems[lastSectionIndex + 1]?.getBoundingClientRect()?.height;
 
-  const downTextMergeSection: HTMLElement | null = document.querySelector(
-    "#the-merge-bottom-text",
-  );
-
-  if (
-    lastSectionHight &&
-    maxOffsetYValue &&
-    nextDrawingLineHight &&
-    downTextMergeSection
-  ) {
-    const centerDownTextMergeSection: number =
-      calcCenterElement(downTextMergeSection) || 10000;
-
+  if (lastSectionHight && maxOffsetYValue && nextDrawingLineHight) {
     const showStickyHeader: boolean =
       window.scrollY > offsetYFirstPoint - window.innerHeight / 2.4 &&
       window.scrollY <
         maxOffsetYValue + lastSectionHight + nextDrawingLineHight &&
-      window.scrollY < centerDownTextMergeSection;
+      window.scrollY < hidingNavigationPosition;
 
     showStickyHeader
       ? stepsRefElem.classList.add(classes.active)

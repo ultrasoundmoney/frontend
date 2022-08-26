@@ -2,11 +2,31 @@ import * as React from "react";
 import Accordion from "../Accordion";
 import { TranslationsContext } from "../../translations-context";
 import { SectionTitle } from "../TextsNext/SectionTitle";
+import { NavigationContext } from "../../context/NavigationContext";
+import { calcCenterElement } from "../../utils/calcCenterElement";
 
 const FaqBlock: React.FC = () => {
   const t = React.useContext(TranslationsContext);
+  const { changeFaqPosition } = React.useContext(NavigationContext);
+  const faqSection = React.useRef<HTMLElement | null>(null);
+
+  React.useEffect(() => {
+    const resizeFun = () => {
+      if (faqSection.current) {
+        const centerBlock: number = calcCenterElement(faqSection.current);
+        changeFaqPosition(centerBlock);
+      }
+    };
+
+    resizeFun();
+    window.addEventListener("resize", resizeFun);
+
+    return () => window.removeEventListener("resize", resizeFun);
+  }, [faqSection.current]);
+
   return (
     <section
+      ref={faqSection}
       data-aos="fade-up"
       data-aos-anchor-placement="top-center"
       data-aos-delay="50"
