@@ -87,7 +87,7 @@ const EthSupplyWidget = () => {
               <div className="flex items-baseline">
                 <LabelUnitText skeletonWidth="1rem">
                   {!previewSkeletons && timeElapsed !== undefined
-                    ? timeElapsed
+                    ? String(timeElapsed)
                     : undefined}
                 </LabelUnitText>
                 <LabelText className="ml-1">seconds</LabelText>
