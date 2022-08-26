@@ -219,7 +219,7 @@ const JoinDiscordWidget: FC = () => {
       <WidgetBackground className="flex flex-col gap-y-8 max-w-3xl mx-auto">
         <div className="relative flex justify-between items-center">
           <LabelText>join discord queue</LabelText>
-          <div className="w-8 md:w-16 md:absolute md:-right-12 md:-top-12 select-none">
+          <div className="w-10 md:w-16 md:absolute md:-right-12 md:-top-12 select-none">
             <Image
               alt="the discord logo, a community communication app"
               src={discordLogo}
