@@ -22,8 +22,8 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: rg.nl-ams.scw.cloud/ultrasoundmoney/serve-frontend
+          # type=raw,latest
           tags: |
-            type=raw,latest
             type=sha,prefix=
           secrets: |
             "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}"
