@@ -43,7 +43,7 @@ const MergeSection: FC<Props> = ({ mergeEstimate }) => {
       className="mt-32 mb-32 flex flex-col gap-y-4 xs:px-4 md:px-16"
       id="merge"
     >
-      <div className="flex flex-col md:flex-row gap-x-4 gap-y-4">
+      <div className="flex flex-col lg:flex-row gap-x-4 gap-y-4">
         <div className="flex flex-col gap-y-4 md:min-w-fit">
           <TotalDifficultyProgressWidget progress={progress} />
           <MergeEstimateWidget />
