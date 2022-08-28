@@ -159,7 +159,7 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
             </LabelText>
             <LabelUnitText skeletonWidth="1rem">
               {!previewSkeletons && timeElapsed !== undefined
-                ? timeElapsed
+                ? String(timeElapsed)
                 : undefined}
             </LabelUnitText>
             <LabelText className="truncate">seconds</LabelText>
