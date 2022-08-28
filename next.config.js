@@ -18,6 +18,11 @@ const nextConfig = withBundleAnalyzer({
     ],
   },
   rewrites: async () => [
+    {
+      source: "/api/v2/fees/:path*",
+      has: [{ type: "host", value: "localhost" }],
+      destination: "https://ultrasound.money/api/v2/fees/:path*",
+    },
     // To test locally with the fam-analysis api running and a local tunnel to receive the oauth2 callback, use the below rewrite.
     // {
     //   source: "/api/auth/:path*",

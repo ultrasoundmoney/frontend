@@ -31,7 +31,7 @@ const getTimeLeft = (estimatedDateTime: Date) => ({
 const shiftDateTimeByTimeZone = (dateTime: Date): Date =>
   new Date(dateTime.toISOString().slice(0, -1));
 
-export const TOTAL_TERMINAL_DIFFICULTY = 58750000000;
+export const TOTAL_TERMINAL_DIFFICULTY = 5.875e22;
 
 const CountdownNumber: FC<{ children: number | undefined }> = ({
   children,

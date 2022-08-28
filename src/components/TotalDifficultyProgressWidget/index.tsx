@@ -11,7 +11,7 @@ import pandaSlateus from "./panda-slateus.svg";
 
 type Props = {
   /** a fraction between 0 and 1 */
-  progress: number;
+  progress: number | undefined;
 };
 
 const TotalDifficultyProgressWidget: FC<Props> = ({ progress }) => (
@@ -56,7 +56,7 @@ const TotalDifficultyProgressWidget: FC<Props> = ({ progress }) => (
               left-0 top-0 h-4 rounded-full
               bg-gradient-to-r from-cyan-300 to-indigo-500
             `}
-            style={{ right: `${(1 - progress) * 100}%` }}
+            style={{ right: `${(1 - (progress ?? 0)) * 100}%` }}
           ></div>
           <div
             className={`
@@ -66,11 +66,11 @@ const TotalDifficultyProgressWidget: FC<Props> = ({ progress }) => (
               animate-[pulse_4s_ease-in-out_infinite]
               bg-gradient-to-r from-cyan-300 to-indigo-500
             `}
-            style={{ right: `${(1 - progress) * 100}%` }}
+            style={{ right: `${(1 - (progress ?? 0)) * 100}%` }}
           ></div>
         </div>
         <QuantifyText className="w-full text-center text-lg">
-          {`${Format.formatPercentTwoDecimals(progress)} of TTD`}
+          {`${Format.formatPercentTwoDecimals(progress ?? 0)} of TTD`}
         </QuantifyText>
       </div>
     </WidgetBackground>
