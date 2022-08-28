@@ -37,7 +37,7 @@ const baseOptions: Highcharts.Options = {
     tickWidth: 0,
   },
   yAxis: {
-    min: 93,
+    min: 94,
     max: 100,
     // tickInterval: 20e6,
     title: { text: undefined },
