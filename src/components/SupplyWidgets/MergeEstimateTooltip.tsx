@@ -74,7 +74,7 @@ const MergeEstimateTooltip: FC<Props> = ({
     </div>
     <LabelText>Terminal Total Difficulty (TTD)</LabelText>
     <QuantifyText amountPostfix="T" className="text-right text-xl">
-      {Format.formatZeroDecimals(totalTerminalDifficulty)}
+      {Format.formatZeroDecimals(totalTerminalDifficulty / 1e12)}
     </QuantifyText>
     <LabelText>total difficulty</LabelText>
     <QuantifyText amountPostfix="T" className="text-right text-xl">
