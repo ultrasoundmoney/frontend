@@ -57,6 +57,7 @@ const baseOptions: Highcharts.Options = {
   credits: { enabled: false },
   plotOptions: {
     series: {
+      enableMouseTracking: false,
       // shadow: {
       //   color: "rgba(75, 144, 219, 0.2)",
       //   width: 15,
@@ -70,11 +71,6 @@ const baseOptions: Highcharts.Options = {
       },
     },
   },
-};
-
-type HighchartsRef = {
-  chart: Highcharts.Chart;
-  container: RefObject<HTMLDivElement>;
 };
 
 type Props = {

@@ -255,9 +255,7 @@ const Dashboard: FC = () => {
               </video>
             )}
             <BasicErrorBoundary>
-              <MergeSection
-                totalDifficulty={Number(mergeEstimate?.totalDifficulty) / 1e12}
-              />
+              <MergeSection mergeEstimate={mergeEstimate} />
             </BasicErrorBoundary>
             <BasicErrorBoundary>
               <SectionDivider

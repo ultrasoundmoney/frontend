@@ -14,7 +14,7 @@ type MergeEstimateF = {
   totalDifficulty: string;
 };
 
-type MergeEstimate = {
+export type MergeEstimate = {
   blockNumber: number;
   blocksLeft: number;
   difficulty: string;
