@@ -258,12 +258,14 @@ const Dashboard: FC = () => {
               <MergeSection mergeEstimate={mergeEstimate} />
             </BasicErrorBoundary>
             <BasicErrorBoundary>
-              <SectionDivider
-                link="projection"
-                subtitle="ultra sound money for years to come"
-                title="supply projections"
-              />
-              <SupplyWidgets />
+              <div id="projection">
+                <SectionDivider
+                  link="projection"
+                  subtitle="ultra sound money for years to come"
+                  title="supply projections"
+                />
+                <SupplyWidgets />
+              </div>
             </BasicErrorBoundary>
             <div className="h-16"></div>
             <div id="burn">
