@@ -2,7 +2,7 @@ import * as DateFns from "date-fns";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import _last from "lodash/last";
-import { FC, RefObject, useEffect, useRef, useState } from "react";
+import type { FC } from "react";
 import { useMemo } from "react";
 import colors from "../../colors";
 import * as Format from "../../format";
@@ -208,9 +208,32 @@ const PercentageToTTDWidget: FC<Props> = ({
         </LabelText>
         <div
           // flex-grow fixes bug where highcharts doesn't take full width.
-          className={`w-full h-full flex justify-center select-none percent-chart-container overflow-hidden [&>div]:flex-grow`}
+          className={`
+            w-full h-full
+            flex justify-center
+            select-none
+            overflow-hidden
+            [&>div]:flex-grow
+            blur-[2px]
+          `}
         >
           <HighchartsReact highcharts={Highcharts} options={options} />
+        </div>
+        <div className="flex justify-between">
+          <LabelText className="text-orange-300 animate-slow-pulse opacity-90">
+            analyzing.. check back later
+          </LabelText>
+          <LabelText className="">
+            inspired by{" "}
+            <a
+              className="hover:underline"
+              href="https://bordel.wtf"
+              rel="noreferrer"
+              target="_blank"
+            >
+              bordel.wtf
+            </a>
+          </LabelText>
         </div>
       </WidgetBackground>
     </WidgetErrorBoundary>
