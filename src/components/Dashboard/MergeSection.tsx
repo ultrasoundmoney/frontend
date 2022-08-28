@@ -12,8 +12,8 @@ import * as DateFns from "date-fns";
 
 type Props = {
   mergeEstimate: MergeEstimate | undefined;
-  totalDifficulty: number;
 };
+
 const MergeSection: FC<Props> = ({ mergeEstimate }) => {
   const totalDifficultyByDay = useTotalDifficultyProgress();
   const lastTotalDifficultyPoint = _last(totalDifficultyByDay);
