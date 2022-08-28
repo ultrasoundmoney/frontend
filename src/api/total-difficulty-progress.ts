@@ -10,12 +10,12 @@ type Point = [JsTimestamp, number];
 type DifficultyByDay = {
   number: number;
   timestamp: DateTimeString;
-  total_difficulty: number;
+  totalDifficulty: number;
 };
 
 type TotalDifficultyProgressResponse = {
-  block_number: number;
-  total_difficulty_by_day: DifficultyByDay[];
+  blockNumber: number;
+  totalDifficultyByDay: DifficultyByDay[];
 };
 
 type TotalDifficultyProgress = Point[];
@@ -33,12 +33,10 @@ export const useTotalDifficultyProgress = ():
     () =>
       data === undefined
         ? undefined
-        : data.total_difficulty_by_day.map(
-            ({ timestamp, total_difficulty }) => [
-              DateFns.getTime(DateFns.parseISO(timestamp)),
-              (total_difficulty / TOTAL_TERMINAL_DIFFICULTY) * 100,
-            ],
-          ),
+        : data.totalDifficultyByDay.map(({ timestamp, totalDifficulty }) => [
+            DateFns.getTime(DateFns.parseISO(timestamp)),
+            (totalDifficulty / TOTAL_TERMINAL_DIFFICULTY) * 100,
+          ]),
     [data],
   );
 };
