@@ -1,12 +1,12 @@
 import JSBI from "jsbi";
 import * as DateFns from "date-fns";
 import useSWR from "swr";
-import { WEI_PER_GWEI_JSBI } from "../eth-units";
+import { Eth, WEI_PER_GWEI_JSBI } from "../eth-units";
 import { feesBasePath } from "./fees";
 import * as Duration from "../duration";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-type EthSupplyF = {
+export type EthSupplyF = {
   beaconBalancesSum: {
     balancesSum: string;
     slot: number;
@@ -21,7 +21,7 @@ type EthSupplyF = {
   };
 };
 
-type EthSupply = {
+export type EthSupply = {
   beaconBalancesSum: {
     balancesSum: JSBI;
     slot: number;
@@ -36,39 +36,36 @@ type EthSupply = {
   };
 };
 
+export const decodeEthSupply = (ethSupply: EthSupplyF): EthSupply => ({
+  beaconDepositsSum: {
+    slot: ethSupply.beaconDepositsSum.slot,
+    depositsSum: JSBI.multiply(
+      JSBI.BigInt(ethSupply.beaconDepositsSum.depositsSum),
+      WEI_PER_GWEI_JSBI,
+    ),
+  },
+  beaconBalancesSum: {
+    slot: ethSupply.beaconBalancesSum.slot,
+    balancesSum: JSBI.multiply(
+      JSBI.BigInt(ethSupply.beaconBalancesSum.balancesSum),
+      WEI_PER_GWEI_JSBI,
+    ),
+  },
+  executionBalancesSum: {
+    balancesSum: JSBI.BigInt(ethSupply.executionBalancesSum.balancesSum),
+    blockNumber: ethSupply.executionBalancesSum.blockNumber,
+  },
+});
+
 const fetcher = <A>(url: RequestInfo) =>
   fetch(url).then((res) => res.json() as Promise<A>);
 
-export const useEthSupply = (): EthSupply | undefined => {
+export const useEthSupply = (): EthSupplyF | undefined => {
   const { data } = useSWR<EthSupplyF>(`${feesBasePath}/eth-supply`, fetcher, {
     refreshInterval: Duration.millisFromSeconds(4),
   });
 
-  return useMemo(() => {
-    if (data === undefined) {
-      return undefined;
-    }
-    return {
-      beaconDepositsSum: {
-        slot: data.beaconDepositsSum.slot,
-        depositsSum: JSBI.multiply(
-          JSBI.BigInt(data.beaconDepositsSum.depositsSum),
-          WEI_PER_GWEI_JSBI,
-        ),
-      },
-      beaconBalancesSum: {
-        slot: data.beaconBalancesSum.slot,
-        balancesSum: JSBI.multiply(
-          JSBI.BigInt(data.beaconBalancesSum.balancesSum),
-          WEI_PER_GWEI_JSBI,
-        ),
-      },
-      executionBalancesSum: {
-        balancesSum: JSBI.BigInt(data.executionBalancesSum.balancesSum),
-        blockNumber: data.executionBalancesSum.blockNumber,
-      },
-    };
-  }, [data]);
+  return data;
 };
 
 export const useImpreciseEthSupply = (): number | undefined => {
@@ -86,7 +83,7 @@ export const useImpreciseEthSupply = (): number | undefined => {
       DateFns.differenceInSeconds(new Date(), lastRefresh.current) > 60
     ) {
       lastRefresh.current = new Date();
-      setLastEthSupply(getEthSupplyImprecise(ethSupply));
+      setLastEthSupply(getEthSupplyImprecise(decodeEthSupply(ethSupply)));
     }
   }, [ethSupply]);
 

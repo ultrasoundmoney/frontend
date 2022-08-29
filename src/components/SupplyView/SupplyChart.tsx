@@ -586,8 +586,7 @@ const SupplyChart: React.FC<Props> = ({
               <td>
                 <div class="tt-series">
                   <div class="tt-series-color" style="background-color:${
-                    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-explicit-any
-                    p.series.userOptions.color as any
+                    p.series.userOptions.color
                   }"></div>
                   <div class="tt-series-name">${
                     p.series.name.split(" (")[0]

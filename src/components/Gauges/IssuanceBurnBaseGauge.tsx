@@ -3,7 +3,6 @@ import type { FC } from "react";
 import { useContext } from "react";
 import Skeleton from "react-loading-skeleton";
 import { animated, config, useSpring } from "react-spring";
-import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import type { Unit } from "../../denomination";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
@@ -14,29 +13,32 @@ import dropletSvg from "./droplet.svg";
 import flameSvg from "./flame.svg";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
+import type { GroupedAnalysis1 } from "../../api/grouped-analysis-1";
 
 type BaseGuageProps = {
   emoji: "flame" | "droplet";
   gaugeUnit: string;
+  gradientFill: GaugeGradientFill;
+  groupedAnalysis1: GroupedAnalysis1;
   needleColor?: string;
   title: string;
-  value: number | undefined;
-  gradientFill: GaugeGradientFill;
-  valueUnit: string;
   unit: Unit;
+  value: number | undefined;
+  valueUnit: string;
 };
 
 const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
   emoji,
   gaugeUnit,
+  gradientFill,
+  groupedAnalysis1,
   needleColor,
   title,
-  value,
-  gradientFill,
-  valueUnit,
   unit,
+  value,
+  valueUnit,
 }) => {
-  const ethPrice = useGroupedAnalysis1()?.ethPrice;
+  const ethPrice = groupedAnalysis1?.ethPrice;
 
   const { valueA } = useSpring({
     from: { valueA: 0 },
@@ -97,7 +99,6 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
         <Image
           alt="image of a flame signifying ETH burned"
           height={24}
-          priority
           src={flameSvg as StaticImageData}
           width={24}
         ></Image>
@@ -105,7 +106,6 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
         <Image
           alt="image of a droplet signifying ETH issued"
           height={24}
-          priority
           src={dropletSvg as StaticImageData}
           width={24}
         ></Image>

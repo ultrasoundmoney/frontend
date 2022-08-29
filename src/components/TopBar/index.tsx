@@ -1,15 +1,23 @@
+import dynamic from "next/dynamic";
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
 import type { FC } from "react";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useGroupedAnalysis1 } from "../api/grouped-analysis-1";
-import { useLocalStorage } from "../use-local-storage";
-import useNotification from "../use-notification";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { GroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import { useLocalStorage } from "../../use-local-storage";
+import useNotification from "../../use-notification";
+import { WidgetTitle } from "../WidgetSubcomponents";
 import AlarmInput from "./AlarmInput";
-import { WidgetTitle } from "./WidgetSubcomponents";
-import PriceGasWidget from "./PriceGasWidget";
+import bellSvg from "./bell-slateus.svg";
+const PriceGasWidget = dynamic(() => import("./PriceGasWidget"), {
+  ssr: false,
+});
 
-const TopBar: FC = () => {
-  const baseFeePerGas = useGroupedAnalysis1()?.baseFeePerGas;
-  const ethPrice = useGroupedAnalysis1()?.ethPrice;
+type Props = { groupedAnalysis1: GroupedAnalysis1 | undefined };
+
+const TopBar: FC<Props> = ({ groupedAnalysis1 }) => {
+  const baseFeePerGas = groupedAnalysis1?.baseFeePerGas;
+  const ethPrice = groupedAnalysis1?.ethPrice;
   const [gasAlarmActive, setGasAlarmActive] = useLocalStorage(
     "gas-alarm-enabled",
     false,
@@ -85,7 +93,12 @@ const TopBar: FC = () => {
           `}
           onClick={handleClickAlarm}
         >
-          <img src="/alarm-icon.svg" alt="bell icon" width="12" height="14" />
+          <Image
+            src={bellSvg as StaticImageData}
+            alt="bell icon"
+            width="14"
+            height="14"
+          />
         </button>
 
         <div
@@ -94,12 +107,14 @@ const TopBar: FC = () => {
         >
           <WidgetTitle>price alerts</WidgetTitle>
           <AlarmInput
+            groupedAnalysis1={groupedAnalysis1}
             isAlarmActive={gasAlarmActive}
             onToggleIsAlarmActive={setGasAlarmActive}
             unit="Gwei"
             type="gas"
           />
           <AlarmInput
+            groupedAnalysis1={groupedAnalysis1}
             isAlarmActive={ethAlarmActive}
             onToggleIsAlarmActive={setEthAlarmActive}
             unit="USD "

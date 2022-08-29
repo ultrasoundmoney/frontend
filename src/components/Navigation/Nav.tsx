@@ -1,17 +1,23 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import classes from "./Navigation.module.scss";
-import { navigationItems } from "../../utils/static";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import type { GroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import { NavigationContext } from "../../context/NavigationContext";
+import { TranslationsContext } from "../../translations-context";
 import { useLocalStorage } from "../../use-local-storage";
 import useNotification from "../../use-notification";
-import PriceGasWidget from "../PriceGasWidget";
-import AlarmInput from "../AlarmInput";
+import { navigationItems } from "../../utils/static";
+import AlarmInput from "../TopBar/AlarmInput";
 import { WidgetTitle } from "../WidgetSubcomponents";
-import { TranslationsContext } from "../../translations-context";
-import { NavigationContext } from "../../context/NavigationContext";
+import classes from "./Navigation.module.scss";
+const PriceGasWidget = dynamic(() => import("../TopBar/PriceGasWidget"), {
+  ssr: false,
+});
 
-const Nav: React.FC = () => {
+const Nav: React.FC<{ groupedAnalysis1: GroupedAnalysis1 | undefined }> = ({
+  groupedAnalysis1,
+}) => {
   const t = React.useContext(TranslationsContext);
   const baseFeePerGas = useGroupedAnalysis1()?.baseFeePerGas;
   const ethPrice = useGroupedAnalysis1()?.ethPrice;
@@ -111,12 +117,14 @@ const Nav: React.FC = () => {
           >
             <WidgetTitle>price alerts</WidgetTitle>
             <AlarmInput
+              groupedAnalysis1={groupedAnalysis1}
               isAlarmActive={gasAlarmActive}
               onToggleIsAlarmActive={setGasAlarmActive}
               unit="Gwei"
               type="gas"
             />
             <AlarmInput
+              groupedAnalysis1={groupedAnalysis1}
               isAlarmActive={ethAlarmActive}
               onToggleIsAlarmActive={setEthAlarmActive}
               unit="USD "
@@ -156,6 +164,7 @@ const Nav: React.FC = () => {
         </div>
         <div className="-mr-2 flex md:hidden fixed right-5">
           <img
+            alt="icon indicating a hamburger or navigation menu"
             onClick={openCloseNavHandler}
             src="/images/burger_menu_icon.svg"
             width={24}
@@ -172,6 +181,7 @@ const Nav: React.FC = () => {
         <div className="px-2 pt-20 pb-3 space-y-1 sm:px-3 relative">
           <div className="absolute right-5 top-2">
             <img
+              alt="cross icon indicating a hamburger or navigation menu"
               onClick={openCloseNavHandler}
               src="/images/cross_icon.svg"
               width={24}

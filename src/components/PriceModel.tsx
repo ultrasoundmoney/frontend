@@ -3,7 +3,7 @@ import flow from "lodash/flow";
 import type { FC, ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { useAverageEthPrice } from "../api/eth-price";
-import { useGroupedAnalysis1 } from "../api/grouped-analysis-1";
+import type { GroupedAnalysis1 } from "../api/grouped-analysis-1";
 import { usePeRatios } from "../api/pe-ratios";
 import { useScarcity } from "../api/scarcity";
 import * as Format from "../format";
@@ -142,10 +142,12 @@ const calcProjectedPrice = (
   return earningsPerShare * peRatio * monetaryPremium;
 };
 
-const PriceModel: FC = () => {
+const PriceModel: FC<{ groupedAnalysis1: GroupedAnalysis1 }> = ({
+  groupedAnalysis1,
+}) => {
   const peRatios = usePeRatios();
-  const burnRateAll = useGroupedAnalysis1()?.burnRates.burnRateAllUsd;
-  const ethPrice = useGroupedAnalysis1()?.ethPrice?.usd;
+  const burnRateAll = groupedAnalysis1?.burnRates.burnRateAllUsd;
+  const ethPrice = groupedAnalysis1?.ethPrice?.usd;
   const ethSupply = useScarcity()?.ethSupply;
   const [peRatio, setPeRatio] = useState<number>();
   const [peRatioPosition, setPeRatioPosition] = useState<number>(0);

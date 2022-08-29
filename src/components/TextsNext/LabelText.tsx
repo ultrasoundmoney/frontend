@@ -3,7 +3,7 @@ import Skeleton from "react-loading-skeleton";
 import { TextInter } from "../Texts";
 
 type Props = {
-  children: ReactNode | undefined;
+  children: ReactNode;
   className?: string;
   skeletonWidth?: string;
 };

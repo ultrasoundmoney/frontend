@@ -5,3 +5,7 @@ export const millisFromMinutes = (minutes: number) => minutes * 60 * 1000;
 export const millisFromHours = (hours: number) => hours * 60 * 60 * 1000;
 
 export const millisFromDays = (days: number) => days * 24 * 60 * 60 * 1000;
+
+export const secsFromDays = (days: number) => days * 24 * 60 * 60;
+
+export const secsFromMinutes = (minutes: number) => minutes * 60;

@@ -39,8 +39,7 @@ export function estimatedDailyStakeChange(ethStaked: number): number {
   return max_validator_churn_per_epoch * MAX_ETH_PER_VALIDATOR * EPOCHS_PER_DAY;
 }
 
-export function formatDate(d: Date): string {
-  const date = new Date(d);
+export function formatDate(date: Date): string {
   const months = [
     "Jan",
     "Feb",

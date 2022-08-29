@@ -1,17 +1,17 @@
 import * as DateFns from "date-fns";
 import flow from "lodash/flow";
 import type { FC } from "react";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useBlockLag } from "../../api/block-lag";
-import type { LatestBlock } from "../../api/grouped-analysis-1";
-import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import type {
+  GroupedAnalysis1,
+  LatestBlock,
+} from "../../api/grouped-analysis-1";
 import type { Unit } from "../../denomination";
 import { WEI_PER_GWEI } from "../../eth-units";
-import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
-import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { AmountUnitSpace } from "../Spacing";
 import { LabelUnitText, TextRoboto } from "../Texts";
 import BodyText from "../TextsNext/BodyText";
@@ -46,20 +46,25 @@ const latestBlockFeesSkeletons = new Array(maxBlocks).fill(
   {},
 ) as Partial<LatestBlock>[];
 
-type Props = { unit: Unit };
+const Resyncing = () => (
+  <BodyText className="text-xs md:text-sm text-red-400 animate-slow-pulse">
+    node error, busy resyncing...
+  </BodyText>
+);
 
-const LatestBlocks: FC<Props> = ({ unit }) => {
-  const latestBlockFees = useGroupedAnalysis1()?.latestBlockFees;
-  const blockLag = useBlockLag()?.blockLag;
+const LatestBlockAge: FC<{ groupedAnalysis1: GroupedAnalysis1 }> = ({
+  groupedAnalysis1,
+}) => {
   const [timeElapsed, setTimeElapsed] = useState<number>();
-  const { md } = useActiveBreakpoint();
 
   useEffect(() => {
-    if (latestBlockFees === undefined) {
+    if (groupedAnalysis1 === undefined) {
       return;
     }
 
-    const latestMinedBlockDate = new Date(latestBlockFees[0].minedAt);
+    const latestMinedBlockDate = new Date(
+      groupedAnalysis1.latestBlockFees[0].minedAt,
+    );
 
     setTimeElapsed(
       DateFns.differenceInSeconds(new Date(), latestMinedBlockDate),
@@ -74,9 +79,29 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
     return () => {
       window.clearInterval(intervalId);
     };
-  }, [latestBlockFees]);
+  }, [groupedAnalysis1]);
 
-  const { previewSkeletons } = useContext(FeatureFlagsContext);
+  return typeof timeElapsed === "number" && timeElapsed > 1800 ? (
+    <Resyncing />
+  ) : (
+    <div className="flex gap-x-2 items-baseline truncate">
+      <LabelText className="text-slateus-400 whitespace-nowrap">
+        latest block
+      </LabelText>
+      <LabelUnitText skeletonWidth="1rem">
+        {timeElapsed !== undefined ? String(timeElapsed) : undefined}
+      </LabelUnitText>
+      <LabelText className="truncate">seconds</LabelText>
+      <LabelText className="text-slateus-400">old</LabelText>
+    </div>
+  );
+};
+
+type Props = { groupedAnalysis1: GroupedAnalysis1; unit: Unit };
+
+const LatestBlocks: FC<Props> = ({ groupedAnalysis1, unit }) => {
+  const latestBlockFees = groupedAnalysis1.latestBlockFees;
+  const blockLag = useBlockLag()?.blockLag;
 
   return (
     <WidgetBackground>
@@ -94,7 +119,7 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
             ${scrollbarStyles["styled-scrollbar"]}
           `}
         >
-          {(latestBlockFees === undefined || previewSkeletons
+          {(latestBlockFees === undefined
             ? latestBlockFeesSkeletons
             : latestBlockFees
           ).map(({ number, fees, feesUsd, baseFeePerGas }, index) => (
@@ -127,14 +152,12 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
                         />
                       )}
                     </TextRoboto>
-                    {md && (
-                      <>
-                        <span className="font-inter">&thinsp;</span>
-                        <span className="font-roboto text-blue-spindle font-extralight">
-                          Gwei
-                        </span>
-                      </>
-                    )}
+                    <div className="hidden md:inline">
+                      <span className="font-inter">&thinsp;</span>
+                      <span className="font-roboto text-blue-spindle font-extralight">
+                        Gwei
+                      </span>
+                    </div>
                   </div>
                   <div className="text-right">
                     <TextRoboto className="font-roboto text-white">
@@ -153,32 +176,14 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
           ))}
         </ul>
         <div className="flex justify-between flex-wrap gap-y-2">
-          <div className="flex gap-x-2 items-baseline truncate">
-            <LabelText className="text-slateus-400 whitespace-nowrap">
-              latest block
-            </LabelText>
-            <LabelUnitText skeletonWidth="1rem">
-              {!previewSkeletons && timeElapsed !== undefined
-                ? String(timeElapsed)
-                : undefined}
-            </LabelUnitText>
-            <LabelText className="truncate">seconds</LabelText>
-            <LabelText className="text-slateus-400">old</LabelText>
-          </div>
+          <LatestBlockAge groupedAnalysis1={groupedAnalysis1} />
           <div className="flex gap-x-2 items-baseline">
             <LabelUnitText skeletonWidth="1rem">
-              {!previewSkeletons && blockLag !== undefined
-                ? String(blockLag)
-                : undefined}
+              {blockLag !== undefined ? String(blockLag) : undefined}
             </LabelUnitText>
             <LabelText className="text-slateus-400">block lag</LabelText>
           </div>
         </div>
-        {typeof timeElapsed === "number" && timeElapsed > 1800 ? (
-          <BodyText className="text-xs md:text-sm text-red-400">
-            node error, busy resyncing...
-          </BodyText>
-        ) : null}
       </div>
     </WidgetBackground>
   );

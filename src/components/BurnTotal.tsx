@@ -1,10 +1,14 @@
 import * as DateFns from "date-fns";
 import type { FC } from "react";
+import { useEffect, useState } from "react";
 import { useContext } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
-import type { BurnRates, FeesBurned } from "../api/grouped-analysis-1";
-import { useGroupedAnalysis1 } from "../api/grouped-analysis-1";
+import type {
+  BurnRates,
+  FeesBurned,
+  GroupedAnalysis1,
+} from "../api/grouped-analysis-1";
 import { londonHardfork } from "../dates";
 import type { Unit } from "../denomination";
 import * as Duration from "../duration";
@@ -51,6 +55,7 @@ const timeFrameMillisecondsMap: Record<LimitedTimeFrameNext, number> = {
 };
 
 type Props = {
+  groupedAnalysis1: GroupedAnalysis1;
   onClickTimeFrame: () => void;
   simulateMerge: boolean;
   timeFrame: TimeFrameNext;
@@ -58,14 +63,17 @@ type Props = {
 };
 
 const BurnTotal: FC<Props> = ({
+  groupedAnalysis1,
   onClickTimeFrame,
   simulateMerge,
   timeFrame,
   unit,
 }) => {
-  const burnRates = useGroupedAnalysis1()?.burnRates;
-  const feesBurned = useGroupedAnalysis1()?.feesBurned;
+  const burnRates = groupedAnalysis1.burnRates;
+  const feesBurned = groupedAnalysis1.feesBurned;
   const { previewSkeletons } = useContext(FeatureFlagsContext);
+  const [millisecondsSinceLondonHardFork, setMillisecondsSinceLondonHardfork] =
+    useState<number>();
 
   const selectedFeesBurnedEth =
     feesBurned === undefined
@@ -96,14 +104,16 @@ const BurnTotal: FC<Props> = ({
       : StaticEtherData.powIssuancePerDay + StaticEtherData.posIssuancePerDay) /
     Duration.millisFromDays(1);
 
-  const millisecondsSinceLondonHardFork = DateFns.differenceInMilliseconds(
-    new Date(),
-    londonHardfork,
-  );
+  useEffect(() => {
+    setMillisecondsSinceLondonHardfork(
+      DateFns.differenceInMilliseconds(new Date(), londonHardfork),
+    );
+  }, []);
 
   // In ETH.
   const selectedIssuance =
-    selectedFeesBurned === undefined
+    selectedFeesBurned === undefined ||
+    millisecondsSinceLondonHardFork === undefined
       ? undefined
       : timeFrame === "all"
       ? issuancePerMillisecond * millisecondsSinceLondonHardFork

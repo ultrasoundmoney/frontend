@@ -1,5 +1,6 @@
 import type { FC } from "react";
 import { useAverageEthPrice } from "../../api/eth-price";
+import type { GroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import colors from "../../colors";
 import type { Unit } from "../../denomination";
 import * as StaticEtherData from "../../static-ether-data";
@@ -7,12 +8,18 @@ import type { TimeFrameNext } from "../../time-frames";
 import BaseGauge from "./IssuanceBurnBaseGauge";
 
 type Props = {
+  groupedAnalysis1: GroupedAnalysis1;
   simulateMerge: boolean;
   timeFrame: TimeFrameNext;
   unit: Unit;
 };
 
-const IssuanceGauge: FC<Props> = ({ simulateMerge, timeFrame, unit }) => {
+const IssuanceGauge: FC<Props> = ({
+  groupedAnalysis1,
+  simulateMerge,
+  timeFrame,
+  unit,
+}) => {
   const averageEthPrice = useAverageEthPrice();
 
   const selectedAverageEthPrice = averageEthPrice?.[timeFrame];
@@ -40,6 +47,7 @@ const IssuanceGauge: FC<Props> = ({ simulateMerge, timeFrame, unit }) => {
         emoji="droplet"
         gaugeUnit={unit === "eth" ? "M" : "B"}
         gradientFill="blue"
+        groupedAnalysis1={groupedAnalysis1}
         needleColor={colors.drop}
         title="issuance"
         unit={unit}

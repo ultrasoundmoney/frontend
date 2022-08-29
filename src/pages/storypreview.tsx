@@ -1,6 +1,7 @@
-import type { NextPage } from "next";
+import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Story from "../components/Landing";
+import { getDomain } from "../config";
 
 const StoryPreview: NextPage = () => (
   <>

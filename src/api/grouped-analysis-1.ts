@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import useSWR from "swr";
 import * as Duration from "../duration";
@@ -100,17 +100,13 @@ export const decodeGroupedAnalysis1 = (
   }).records,
 });
 
-export const useGroupedAnalysis1 = (): GroupedAnalysis1 | undefined => {
+export const useGroupedAnalysis1 = (): GroupedAnalysis1F | undefined => {
   const { data } = useSWR<GroupedAnalysis1F>(`${feesBasePath}/all`, fetcher, {
     refreshInterval: Duration.millisFromSeconds(1),
+    suspense: true,
   });
 
-  return useMemo(() => {
-    if (data === undefined) {
-      return undefined;
-    }
-    return decodeGroupedAnalysis1(data);
-  }, [data]);
+  return data;
 };
 
 type GroupedAnallysis1Envelope = {

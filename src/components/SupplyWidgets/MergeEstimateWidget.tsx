@@ -1,11 +1,10 @@
 import * as DateFns from "date-fns";
-import type { FC } from "react";
-import { useContext, useEffect, useState } from "react";
+import { formatInTimeZone } from "date-fns-tz";
+import { FC, useContext, useEffect, useState } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
-import { useMergeEstimate } from "../../api/merge-estimate";
+import type { MergeEstimate } from "../../api/merge-estimate";
 import { FeatureFlagsContext } from "../../feature-flags";
-import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { TextRoboto } from "../Texts";
 import LabelText from "../TextsNext/LabelText";
 import Twemoji from "../Twemoji";
@@ -21,15 +20,12 @@ type TimeLeft = {
   seconds: number;
 };
 
-const getTimeLeft = (estimatedDateTime: Date) => ({
-  days: DateFns.differenceInDays(estimatedDateTime, new Date()),
-  hours: DateFns.differenceInHours(estimatedDateTime, new Date()) % 24,
-  minutes: DateFns.differenceInMinutes(estimatedDateTime, new Date()) % 60,
-  seconds: DateFns.differenceInSeconds(estimatedDateTime, new Date()) % 60,
+const getTimeLeft = (now: Date, estimatedDateTime: Date) => ({
+  days: DateFns.differenceInDays(estimatedDateTime, now),
+  hours: DateFns.differenceInHours(estimatedDateTime, now) % 24,
+  minutes: DateFns.differenceInMinutes(estimatedDateTime, now) % 60,
+  seconds: DateFns.differenceInSeconds(estimatedDateTime, now) % 60,
 });
-
-const shiftDateTimeByTimeZone = (dateTime: Date): Date =>
-  new Date(dateTime.toISOString().slice(0, -1));
 
 export const TOTAL_TERMINAL_DIFFICULTY = 5.875e22;
 
@@ -41,32 +37,92 @@ const CountdownNumber: FC<{ children: number | undefined }> = ({
   </TextRoboto>
 );
 
-const MergeEstimateWidget = () => {
-  const mergeEstimate = useMergeEstimate();
+const Celebration = () => (
+  <div className="flex gap-x-8 mx-auto items-center h-14">
+    <Twemoji className="flex gap-x-2" imageClassName="h-10" wrapper>
+      🎉
+    </Twemoji>
+    <Twemoji className="flex gap-x-2" imageClassName="h-10" wrapper>
+      🦇🔊🐼
+    </Twemoji>
+    <Twemoji className="flex gap-x-2" imageClassName="h-10" wrapper>
+      🎉
+    </Twemoji>
+  </div>
+);
+
+const Countdown: FC<{ mergeEstimate: MergeEstimate }> = ({ mergeEstimate }) => {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>();
-  const { md } = useActiveBreakpoint();
   const featureFlags = useContext(FeatureFlagsContext);
-  const [showNerdTooltip, setShowNerdTooltip] = useState(false);
 
   useEffect(() => {
-    if (mergeEstimate === undefined) {
-      return undefined;
-    }
-
     const id = setInterval(() => {
-      setTimeLeft(getTimeLeft(mergeEstimate.estimatedDateTime));
+      setTimeLeft(
+        getTimeLeft(
+          new Date(),
+          DateFns.parseISO(mergeEstimate.estimatedDateTime),
+        ),
+      );
     }, 1000);
 
     return () => clearInterval(id);
   }, [mergeEstimate]);
 
-  const mergeEstimateFormatted =
-    mergeEstimate === undefined
-      ? undefined
-      : DateFns.format(
-          shiftDateTimeByTimeZone(mergeEstimate.estimatedDateTime),
-          "MMM d, ~haaa",
-        );
+  useEffect(() => {
+    setTimeLeft(
+      getTimeLeft(
+        new Date(),
+        DateFns.parseISO(mergeEstimate.estimatedDateTime),
+      ),
+    );
+  }, [mergeEstimate.estimatedDateTime]);
+
+  return Number(mergeEstimate.totalDifficulty) / 1e12 >=
+    TOTAL_TERMINAL_DIFFICULTY || featureFlags.simulatePostMerge ? (
+    <Celebration />
+  ) : (
+    <div className="flex gap-x-6 md:gap-x-7">
+      <div className="flex flex-col items-center gap-y-2 ">
+        <CountdownNumber>{timeLeft?.days}</CountdownNumber>
+        <LabelText className="text-slateus-400">
+          {timeLeft?.days === 1 ? "day" : "days"}
+        </LabelText>
+      </div>
+      <div className="flex flex-col items-center gap-y-2 ">
+        <CountdownNumber>{timeLeft?.hours}</CountdownNumber>
+
+        <LabelText className="text-slateus-400">
+          {timeLeft?.hours === 1 ? "hour" : "hours"}
+        </LabelText>
+      </div>
+      <div className="flex flex-col items-center gap-y-2 ">
+        <CountdownNumber>{timeLeft?.minutes}</CountdownNumber>
+        <LabelText className="text-slateus-400">
+          {timeLeft?.minutes === 1 ? "min" : "mins"}
+        </LabelText>
+      </div>
+      <div className="flex flex-col items-center gap-y-2 ">
+        <CountdownNumber>{timeLeft?.seconds}</CountdownNumber>
+        <LabelText className="text-slateus-400">
+          {timeLeft?.seconds === 1 ? "sec" : "secs"}
+        </LabelText>
+      </div>
+    </div>
+  );
+};
+
+type Props = {
+  mergeEstimate: MergeEstimate;
+};
+
+const MergeEstimateWidget: FC<Props> = ({ mergeEstimate }) => {
+  const [showNerdTooltip, setShowNerdTooltip] = useState(false);
+
+  const mergeEstimateFormatted = formatInTimeZone(
+    mergeEstimate.estimatedDateTime,
+    "UTC",
+    "MMM d, ~haaa",
+  );
 
   // If we don't have data, show a zero.
   // If we have data and we're not dealing with the two column layout on a
@@ -74,17 +130,10 @@ const MergeEstimateWidget = () => {
   // If we are dealing with the two column layout and are on a small screen,
   // shorten the number by truncating thousands.
   const blocksToTTD =
-    mergeEstimate === undefined
-      ? undefined
-      : mergeEstimate.blocksLeft > 1000
+    mergeEstimate.blocksLeft > 1000
       ? mergeEstimate.blocksLeft / 1e3
       : mergeEstimate.blocksLeft;
-  const blocksToTTDSuffix =
-    mergeEstimate === undefined
-      ? false
-      : mergeEstimate.blocksLeft > 1000
-      ? true
-      : false;
+  const blocksToTTDSuffix = mergeEstimate.blocksLeft > 1000 ? true : false;
 
   return (
     <WidgetErrorBoundary title="merge estimate">
@@ -93,59 +142,20 @@ const MergeEstimateWidget = () => {
           <div className="flex flex-col gap-y-4">
             {/* Keeps the height of this widget equal to the adjacent one. */}
             {mergeEstimate !== undefined ? (
-              <LabelText className="flex items-center min-h-[21px]">
-                {`merge${md ? " estimate" : ""}:`}
-                <span className="ml-1 text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-indigo-500">{`${mergeEstimateFormatted} UTC`}</span>
-              </LabelText>
+              <div className="flex items-center min-h-[21px] ">
+                <LabelText>merge</LabelText>
+                <LabelText className="hidden md:inline">
+                  &nbsp;estimate
+                </LabelText>
+                <LabelText className="hidden md:inline">:</LabelText>
+                <LabelText className="ml-1 text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-indigo-500">{`${mergeEstimateFormatted} UTC`}</LabelText>
+              </div>
             ) : (
               <LabelText className="flex items-center min-h-[21px]">
                 merge estimate
               </LabelText>
             )}
-            {(mergeEstimate !== undefined &&
-              Number(mergeEstimate.totalDifficulty) / 1e12 >=
-                TOTAL_TERMINAL_DIFFICULTY) ||
-            featureFlags.simulatePostMerge ? (
-              <div className="flex gap-x-8 mx-auto items-center h-14">
-                <Twemoji className="flex gap-x-2" imageClassName="h-10" wrapper>
-                  🎉
-                </Twemoji>
-                <Twemoji className="flex gap-x-2" imageClassName="h-10" wrapper>
-                  🦇🔊🐼
-                </Twemoji>
-                <Twemoji className="flex gap-x-2" imageClassName="h-10" wrapper>
-                  🎉
-                </Twemoji>
-              </div>
-            ) : (
-              <div className="flex gap-x-6 md:gap-x-7">
-                <div className="flex flex-col items-center gap-y-2 ">
-                  <CountdownNumber>{timeLeft?.days}</CountdownNumber>
-                  <LabelText className="text-slateus-400">
-                    {timeLeft?.days === 1 ? "day" : "days"}
-                  </LabelText>
-                </div>
-                <div className="flex flex-col items-center gap-y-2 ">
-                  <CountdownNumber>{timeLeft?.hours}</CountdownNumber>
-
-                  <LabelText className="text-slateus-400">
-                    {timeLeft?.hours === 1 ? "hour" : "hours"}
-                  </LabelText>
-                </div>
-                <div className="flex flex-col items-center gap-y-2 ">
-                  <CountdownNumber>{timeLeft?.minutes}</CountdownNumber>
-                  <LabelText className="text-slateus-400">
-                    {timeLeft?.minutes === 1 ? "min" : "mins"}
-                  </LabelText>
-                </div>
-                <div className="flex flex-col items-center gap-y-2 ">
-                  <CountdownNumber>{timeLeft?.seconds}</CountdownNumber>
-                  <LabelText className="text-slateus-400">
-                    {timeLeft?.seconds === 1 ? "sec" : "secs"}
-                  </LabelText>
-                </div>
-              </div>
-            )}
+            <Countdown mergeEstimate={mergeEstimate} />
           </div>
           <div className="flex flex-col gap-y-4">
             <div
@@ -180,17 +190,13 @@ const MergeEstimateWidget = () => {
             </div>
             <div className="flex md:justify-end">
               <div className="flex flex-col gap-y-2 items-center">
-                <TextRoboto className="text-[1.7rem]">
-                  {blocksToTTD !== undefined ? (
-                    <CountUp
-                      separator=","
-                      end={blocksToTTD}
-                      suffix={blocksToTTDSuffix ? "K" : ""}
-                      preserveValue
-                    />
-                  ) : (
-                    <Skeleton width="4rem"></Skeleton>
-                  )}
+                <TextRoboto className="text-[1.7rem] min-h-[40.8px]">
+                  <CountUp
+                    separator=","
+                    end={blocksToTTD}
+                    suffix={blocksToTTDSuffix ? "K" : ""}
+                    preserveValue
+                  />
                 </TextRoboto>
                 <LabelText className="text-slateus-400">blocks</LabelText>
               </div>

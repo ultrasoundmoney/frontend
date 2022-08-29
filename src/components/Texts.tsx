@@ -1,27 +1,33 @@
 import type { CSSProperties, FC, ReactNode } from "react";
+import { useContext } from "react";
 import Skeleton from "react-loading-skeleton";
+import { FeatureFlagsContext } from "../feature-flags";
 import BodyText from "./TextsNext/BodyText";
 
 export const LabelUnitText: FC<{
   children: string | undefined;
   className?: string;
   skeletonWidth?: string;
-}> = ({ children, className, skeletonWidth = "3rem" }) => (
-  <TextRoboto
-    className={`
+}> = ({ children, className, skeletonWidth = "3rem" }) => {
+  const { previewSkeletons } = useContext(FeatureFlagsContext);
+
+  return (
+    <TextRoboto
+      className={`
       font-light
       text-slateus-200 text-xs
       uppercase tracking-widest
       ${className}
     `}
-  >
-    {children !== undefined ? (
-      children
-    ) : (
-      <Skeleton inline width={skeletonWidth}></Skeleton>
-    )}
-  </TextRoboto>
-);
+    >
+      {children !== undefined && !previewSkeletons ? (
+        children
+      ) : (
+        <Skeleton inline width={skeletonWidth}></Skeleton>
+      )}
+    </TextRoboto>
+  );
+};
 
 export const UnitText: FC<{ children: string; className?: string }> = ({
   className = "",

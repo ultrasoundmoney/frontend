@@ -1,4 +1,8 @@
+import dynamic from "next/dynamic";
+import type { FC } from "react";
 import { useCallback, useState } from "react";
+import type { GroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import type { Scarcity } from "../../api/scarcity";
 import type { Unit } from "../../denomination";
 import type { TimeFrameNext } from "../../time-frames";
 import { timeFramesNext } from "../../time-frames";
@@ -10,9 +14,16 @@ import SupplyView from "../SupplyView";
 import TimeFrameControl from "../TimeFrameControl";
 import ToggleSwitch from "../ToggleSwitch";
 import { WidgetTitle } from "../WidgetSubcomponents";
-import EquilibriumWidget from "./EquilibriumWidget";
+const EquilibriumWidget = dynamic(() => import("./EquilibriumWidget"), {
+  ssr: false,
+});
 
-const SupplyWidgets = () => {
+type Props = {
+  groupedAnalysis1: GroupedAnalysis1;
+  scarcity: Scarcity | undefined;
+};
+
+const SupplyWidgets: FC<Props> = ({ scarcity, groupedAnalysis1 }) => {
   const [simulateMerge, setSimulateMerge] = useState(false);
   const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
@@ -40,10 +51,16 @@ const SupplyWidgets = () => {
       <div>
         <div className="w-full flex flex-col md:flex-row isolate">
           <div className="hidden md:block w-1/3">
-            <BurnGauge timeFrame={timeFrame} unit={unit} />
+            <BurnGauge
+              groupedAnalysis1={groupedAnalysis1}
+              timeFrame={timeFrame}
+              unit={unit}
+            />
           </div>
           <div className="md:w-1/3">
             <SupplyGrowthGauge
+              scarcity={scarcity}
+              groupedAnalysis1={groupedAnalysis1}
               onClickTimeFrame={handleClickTimeFrame}
               simulateMerge={simulateMerge}
               timeFrame={timeFrame}
@@ -52,6 +69,7 @@ const SupplyWidgets = () => {
           </div>
           <div className="hidden md:block w-1/3">
             <IssuanceGauge
+              groupedAnalysis1={groupedAnalysis1}
               simulateMerge={simulateMerge}
               timeFrame={timeFrame}
               unit={unit}
@@ -84,7 +102,7 @@ const SupplyWidgets = () => {
           </div>
         </div>
       </div>
-      <EquilibriumWidget />
+      <EquilibriumWidget groupedAnalysis1={groupedAnalysis1} />
       <div className="w-full md:m-auto relative bg-blue-tangaroa px-2 md:px-4 xl:px-12 py-4 md:py-8 xl:py-12 rounded-xl">
         <SupplyView />
       </div>

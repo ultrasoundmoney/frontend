@@ -1,5 +1,6 @@
 import * as DateFns from "date-fns";
 import type { FC } from "react";
+import { useEffect, useState } from "react";
 import { useAdminToken } from "../../../admin";
 import * as Contracts from "../../../api/contracts";
 
@@ -30,19 +31,21 @@ const onSetCategory = async (address: string, token: string | undefined) => {
   await Contracts.setContractCategory(address, category, token);
 };
 
-const getOpacityFromAge = (dt: Date | undefined) =>
-  dt === undefined
+const getOpacityFromAge = (now: Date | undefined, dt: Date | undefined) =>
+  dt === undefined || now === undefined
     ? 0.8
-    : Math.min(
-        0.8,
-        0.2 + (0.6 / 168) * DateFns.differenceInHours(new Date(), dt),
-      );
+    : Math.min(0.8, 0.2 + (0.6 / 168) * DateFns.differenceInHours(now, dt));
 
 const AdminControls: FC<{
   address: string;
   freshness: Contracts.MetadataFreshness | undefined;
 }> = ({ address, freshness }) => {
   const adminToken = useAdminToken();
+  const [now, setNow] = useState<Date>();
+
+  useEffect(() => {
+    setNow(new Date());
+  }, []);
 
   return (
     <>
@@ -95,7 +98,10 @@ const AdminControls: FC<{
         <span
           className="bg-slate-700 rounded-lg py-1 px-2"
           style={{
-            opacity: getOpacityFromAge(freshness?.openseaContractLastFetch),
+            opacity: getOpacityFromAge(
+              now,
+              freshness?.openseaContractLastFetch,
+            ),
           }}
         >
           {freshness?.openseaContractLastFetch === undefined
@@ -107,7 +113,7 @@ const AdminControls: FC<{
         <span
           className="bg-slate-700 rounded-lg py-1 px-2"
           style={{
-            opacity: getOpacityFromAge(freshness?.lastManuallyVerified),
+            opacity: getOpacityFromAge(now, freshness?.lastManuallyVerified),
           }}
         >
           {freshness?.lastManuallyVerified === undefined

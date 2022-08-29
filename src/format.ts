@@ -122,13 +122,13 @@ export const capitalize = (str: unknown) =>
     ? `${str[0]?.toUpperCase()}${str.slice(1)}`
     : undefined;
 
-export const formatDistance = (dt: Date) => {
-  const monthsDelta = DateFns.differenceInMonths(new Date(), dt);
-  const weeksDelta = DateFns.differenceInWeeks(new Date(), dt);
-  const daysDelta = DateFns.differenceInDays(new Date(), dt);
-  const hoursDelta = DateFns.differenceInHours(new Date(), dt);
-  const minutesDelta = DateFns.differenceInMinutes(new Date(), dt);
-  const secondsDelta = DateFns.differenceInSeconds(new Date(), dt);
+export const formatDistance = (currentDateTime: Date, dt: Date) => {
+  const monthsDelta = DateFns.differenceInMonths(currentDateTime, dt);
+  const weeksDelta = DateFns.differenceInWeeks(currentDateTime, dt);
+  const daysDelta = DateFns.differenceInDays(currentDateTime, dt);
+  const hoursDelta = DateFns.differenceInHours(currentDateTime, dt);
+  const minutesDelta = DateFns.differenceInMinutes(currentDateTime, dt);
+  const secondsDelta = DateFns.differenceInSeconds(currentDateTime, dt);
 
   if (monthsDelta > 0) {
     return `${monthsDelta}M`;

@@ -1,54 +1,45 @@
-import * as Sentry from "@sentry/react";
+import dynamic from "next/dynamic";
 import Head from "next/head";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import type { FC, ReactNode } from "react";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useAdminToken } from "../../admin";
-import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import type { EthSupplyF } from "../../api/eth-supply";
+import { decodeEthSupply, useEthSupply } from "../../api/eth-supply";
+import type { GroupedAnalysis1F } from "../../api/grouped-analysis-1";
+import {
+  decodeGroupedAnalysis1,
+  useGroupedAnalysis1,
+} from "../../api/grouped-analysis-1";
+import type { MergeEstimate } from "../../api/merge-estimate";
 import { useMergeEstimate } from "../../api/merge-estimate";
+import { useScarcity } from "../../api/scarcity";
+import type { TotalDifficultyProgress } from "../../api/total-difficulty-progress";
+import { useTotalDifficultyProgress } from "../../api/total-difficulty-progress";
 import colors from "../../colors";
 import type { Gwei } from "../../eth-units";
 import * as FeatureFlags from "../../feature-flags";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
-import WidgetGroup1 from "../BurnGroup";
-import Flippenings from "../Flippenings";
-import FollowingYou from "../FollowingYou";
-import IssuanceBreakdown from "../IssuanceBreakdown";
-import FaqBlock from "../Landing/faq";
+import BasicErrorBoundary from "../BasicErrorBoundary";
 import Link from "../Link";
-import PriceModel from "../PriceModel";
-import Scarcity from "../Scarcity";
-import SupplyWidgets from "../SupplyWidgets";
-import { TextInterLink, TextRoboto } from "../Texts";
-import { SectionTitle } from "../TextsNext/SectionTitle";
-import ToggleSwitch from "../ToggleSwitch";
+import SectionDivider from "../SectionDivider";
+import { TextInterLink } from "../Texts";
 import TopBar from "../TopBar";
-import TotalValueSecured from "../TotalValueSecured";
-import TwitterFam from "../TwitterFam";
-import ValidatorRewardsWidget from "../ValidatorRewards";
-import { WidgetTitle } from "../WidgetSubcomponents";
 import headerGlowSvg from "./blurred-bg.svg";
 import styles from "./Dashboard.module.scss";
-import JoinDiscordSection from "./JoinDiscordSection";
 import MergeSection from "./MergeSection";
-
-const SectionDivider: FC<{
-  link?: string;
-  subtitle?: string;
-  title: string;
-}> = ({ link, title, subtitle }) => (
-  <>
-    <div className="h-16"></div>
-    <SectionTitle link={link} subtitle={subtitle}>
-      {title}
-    </SectionTitle>
-    <div className="h-16"></div>
-  </>
+const AdminTools = dynamic(() => import("./AdminTools"));
+const SupplyWidgets = dynamic(() => import("../SupplyWidgets"));
+const BurnGroup = dynamic(() => import("../BurnGroup"));
+const TotalValueSecured = dynamic(() => import("../TotalValueSecured"));
+const MonetaryPremiumSection = dynamic(
+  () => import("./MonetaryPremiumSection"),
 );
+const FamSection = dynamic(() => import("./FamSection"));
 
 const Title: FC<{ children: ReactNode }> = ({ children }) => (
   <div
@@ -67,90 +58,6 @@ const Title: FC<{ children: ReactNode }> = ({ children }) => (
   >
     {children}
   </div>
-);
-
-const AdminTools: FC<{
-  setFlag: ({
-    flag,
-    enabled,
-  }: {
-    flag: FeatureFlags.Flag;
-    enabled: boolean;
-  }) => void;
-}> = ({ setFlag }) => {
-  const [minimizeFlags, setMinimizeFlags] = useState(false);
-  const featureFlags: FeatureFlags.FeatureFlags = useContext(
-    FeatureFlags.FeatureFlagsContext,
-  );
-
-  return (
-    <div
-      className={`
-        fixed bottom-4 left-4
-        bg-blue-tangaroa rounded-lg
-        p-4 z-20
-        border-2 border-slate-600
-      transition-transform
-        ${minimizeFlags ? "translate-y-[88%]" : ""}
-      `}
-    >
-      <div className="flex justify-between items-center">
-        <WidgetTitle>feature flags</WidgetTitle>
-        <div className="" onClick={() => setMinimizeFlags(!minimizeFlags)}>
-          <TextRoboto
-            className={`text-xl px-2 ${minimizeFlags ? "hidden" : ""}`}
-          >
-            ↓
-          </TextRoboto>
-          <TextRoboto
-            className={`text-xl px-2 ${minimizeFlags ? "" : "hidden"}`}
-          >
-            ↑
-          </TextRoboto>
-        </div>
-      </div>
-      {FeatureFlags.flags.map((flag) => (
-        <div
-          key={flag}
-          className="flex items-center justify-between gap-x-4 mt-4"
-        >
-          <span className="text-white mr-4">
-            {FeatureFlags.displayFlagMap[flag]}
-          </span>
-          <ToggleSwitch
-            checked={featureFlags[flag]}
-            onToggle={(enabled) => setFlag({ flag, enabled })}
-          ></ToggleSwitch>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-const QandASection: FC = () => (
-  <div className="flex px-4 md:px-0 mt-32">
-    <div className="w-full lg:w-2/3 md:m-auto relative">
-      <FaqBlock />
-    </div>
-  </div>
-);
-
-const BasicErrorBoundary: FC<{ children: ReactNode }> = ({ children }) => (
-  <Sentry.ErrorBoundary
-    fallback={
-      <div
-        className={`
-          w-5/6 m-auto p-8 rounded-lg font-roboto text-white text-base text-center
-          border border-red-400
-        `}
-      >
-        an error occured we did not foresee, if this does not change soon,
-        please tell us!
-      </div>
-    }
-  >
-    {children}
-  </Sentry.ErrorBoundary>
 );
 
 const useGasTitle = (defaultTitle: string, baseFeePerGas: Gwei | undefined) => {
@@ -183,8 +90,40 @@ const useScrollOnLoad = () => {
   }, []);
 };
 
-const Dashboard: FC = () => {
-  const groupedAnalysis1 = useGroupedAnalysis1();
+const useClientRefreshed = <A,>(
+  init: A,
+  refreshHook: () => A | undefined,
+): A => {
+  const refreshed = refreshHook();
+  return useMemo(() => refreshed ?? init, [init, refreshed]);
+};
+
+type Props = {
+  groupedAnalysis1F: GroupedAnalysis1F;
+  ethSupplyF: EthSupplyF;
+  mergeEstimate: MergeEstimate;
+  totalDifficultyProgress: TotalDifficultyProgress;
+};
+
+const Dashboard: FC<Props> = ({
+  ethSupplyF,
+  groupedAnalysis1F,
+  mergeEstimate,
+  totalDifficultyProgress,
+}) => {
+  const crTotalDifficultyProgress = useClientRefreshed(
+    totalDifficultyProgress,
+    useTotalDifficultyProgress,
+  );
+  const crMergeEstimate = useClientRefreshed(mergeEstimate, useMergeEstimate);
+  const crEthSupply = useClientRefreshed(ethSupplyF, useEthSupply);
+  const decodedCrEthSupply = decodeEthSupply(crEthSupply);
+  const crGroupedAnalysis = useClientRefreshed(
+    groupedAnalysis1F,
+    useGroupedAnalysis1,
+  );
+  const groupedAnalysis1 = decodeGroupedAnalysis1(crGroupedAnalysis);
+  const scarcity = useScarcity();
   const { featureFlags, setFlag } = FeatureFlags.useFeatureFlags();
   const adminToken = useAdminToken();
   const gasTitle = useGasTitle(
@@ -192,7 +131,6 @@ const Dashboard: FC = () => {
     groupedAnalysis1?.baseFeePerGas,
   );
   useScrollOnLoad();
-  const mergeEstimate = useMergeEstimate();
 
   return (
     <BasicErrorBoundary>
@@ -234,7 +172,7 @@ const Dashboard: FC = () => {
             )}
             <div className="px-4 xs:px-4 md:px-16">
               <BasicErrorBoundary>
-                <TopBar />
+                <TopBar groupedAnalysis1={groupedAnalysis1} />
               </BasicErrorBoundary>
             </div>
             <Title>Ultra Sound Money</Title>
@@ -255,7 +193,11 @@ const Dashboard: FC = () => {
               </video>
             )}
             <BasicErrorBoundary>
-              <MergeSection mergeEstimate={mergeEstimate} />
+              <MergeSection
+                ethSupply={decodedCrEthSupply}
+                mergeEstimate={crMergeEstimate}
+                totalDifficultyProgress={crTotalDifficultyProgress}
+              />
             </BasicErrorBoundary>
             <BasicErrorBoundary>
               <div id="projection">
@@ -264,7 +206,10 @@ const Dashboard: FC = () => {
                   subtitle="ultra sound money for years to come"
                   title="supply projections"
                 />
-                <SupplyWidgets />
+                <SupplyWidgets
+                  scarcity={scarcity}
+                  groupedAnalysis1={groupedAnalysis1}
+                />
               </div>
             </BasicErrorBoundary>
             <div className="h-16"></div>
@@ -275,7 +220,7 @@ const Dashboard: FC = () => {
                 title="the burn"
               />
               <BasicErrorBoundary>
-                <WidgetGroup1 />
+                <BurnGroup groupedAnalysis1={groupedAnalysis1} />
               </BasicErrorBoundary>
             </div>
             {featureFlags.showBackgroundOrbs && (
@@ -305,77 +250,21 @@ const Dashboard: FC = () => {
               </BasicErrorBoundary>
             </div>
             <div className="h-16"></div>
-            <div className="xs:px-4 md:px-16" id="monetary-premium">
-              <SectionDivider
-                title="monetary premium"
-                link="monetary-premium"
-                subtitle="the race to become the most desirable money"
-              />
-              <BasicErrorBoundary>
-                <div className="flex flex-col lg:flex-row gap-y-4 lg:gap-x-4">
-                  {featureFlags.showBackgroundOrbs && (
-                    <video
-                      className="absolute w-1/2 -left-20 -mt-96 opacity-20 -z-10 -mr-8"
-                      playsInline
-                      autoPlay
-                      muted
-                      loop
-                      poster="/orbs1.jpg"
-                    >
-                      <source
-                        src="/orbs1.webm"
-                        type="video/webm; codecs='vp9'"
-                      />
-                      <source src="/orbs1.mp4" type="video/mp4" />
-                    </video>
-                  )}
-                  <div className="flex flex-col basis-1/2 gap-y-4">
-                    <Scarcity />
-                    <ValidatorRewardsWidget />
-                    <Flippenings />
-                  </div>
-                  <div className="basis-1/2 flex flex-col gap-y-4">
-                    <PriceModel />
-                    <IssuanceBreakdown />
-                  </div>
-                </div>
-              </BasicErrorBoundary>
-            </div>
-            <BasicErrorBoundary>
-              <div className="flex flex-col xs:px-4 md:px-16">
-                <div
-                  id="fam"
-                  className="relative flex px-4 md:px-0 pt-40 mb-16"
-                >
-                  <div className="w-full relative flex flex-col items-center">
-                    {featureFlags.showBackgroundOrbs && (
-                      <video
-                        className="absolute w-2/3 right-0 -mr-16 -mt-48 opacity-100 -z-10 hidden md:block"
-                        playsInline
-                        autoPlay
-                        muted
-                        loop
-                        poster="/orbs2.jpg"
-                      >
-                        <source
-                          src="/orbs2.webm"
-                          type="video/webm; codecs='vp9'"
-                        />
-                        <source src="/orbs2.mp4" type="video/mp4" />
-                      </video>
-                    )}
-                    <TwitterFam />
-                  </div>
-                </div>
-                <div className="flex px-4 md:px-0 pt-20">
-                  <div className="w-full lg:w-2/3 md:m-auto relative">
-                    <FollowingYou />
-                  </div>
-                </div>
-                <JoinDiscordSection />
-                <QandASection />
-              </div>
-            </BasicErrorBoundary>
+            {featureFlags.showBackgroundOrbs && (
+              <video
+                className="absolute w-1/2 -left-20 -mt-96 opacity-20 -z-10 -mr-8"
+                playsInline
+                autoPlay
+                muted
+                loop
+                poster="/orbs1.jpg"
+              >
+                <source src="/orbs1.webm" type="video/webm; codecs='vp9'" />
+                <source src="/orbs1.mp4" type="video/mp4" />
+              </video>
+            )}
+            <MonetaryPremiumSection groupedAnalysis1={groupedAnalysis1} />
+            <FamSection />
             <div className="w-full flex flex-col items-center pb-40">
               <SectionDivider title="still have questions?" />
               <div className="flex flex-col gap-y-4 justify-start">

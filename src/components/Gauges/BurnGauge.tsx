@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import type { GroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import colors from "../../colors";
 import type { Unit } from "../../denomination";
 import * as Format from "../../format";
@@ -7,12 +7,19 @@ import type { TimeFrameNext } from "../../time-frames";
 import { timeframeBurnRateMap } from "../BurnTotal";
 import IssuanceBurnBaseGauge from "./IssuanceBurnBaseGauge";
 
-type BurnGaugeProps = { timeFrame: TimeFrameNext; unit: Unit };
+type BurnGaugeProps = {
+  groupedAnalysis1: GroupedAnalysis1;
+  timeFrame: TimeFrameNext;
+  unit: Unit;
+};
 
-const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame, unit }) => {
-  const burnRates = useGroupedAnalysis1()?.burnRates;
-
-  const preBurnRate = burnRates?.[timeframeBurnRateMap[timeFrame][unit]];
+const BurnGauge: FC<BurnGaugeProps> = ({
+  groupedAnalysis1,
+  timeFrame,
+  unit,
+}) => {
+  const preBurnRate =
+    groupedAnalysis1.burnRates[timeframeBurnRateMap[timeFrame][unit]];
   const burnRate =
     preBurnRate === undefined
       ? undefined
@@ -33,6 +40,7 @@ const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame, unit }) => {
         emoji="flame"
         gaugeUnit={unit === "eth" ? "M" : "B"}
         gradientFill="orange"
+        groupedAnalysis1={groupedAnalysis1}
         needleColor={colors.fireOrange}
         title="burn"
         unit={unit}

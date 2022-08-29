@@ -1,75 +1,47 @@
 import * as DateFns from "date-fns";
 import JSBI from "jsbi";
-import { useContext, useEffect, useState } from "react";
-import { useEthSupply } from "../../api/eth-supply";
+import type { FC } from "react";
+import { useEffect, useState } from "react";
+import type { EthSupply } from "../../api/eth-supply";
 import { getDateTimeFromSlot } from "../../beacon-time";
-import { FeatureFlagsContext } from "../../feature-flags";
 import { LabelUnitText } from "../Texts";
 import LabelText from "../TextsNext/LabelText";
+import UpdatedAgo from "../UpdatedAgo";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 import EthSupplyTooltip from "./EthSupplyTooltip";
 import Nerd from "./Nerd";
 import PreciseEth from "./PreciseEth";
 
-const EthSupplyWidget = () => {
-  const ethSupply = useEthSupply();
+type Props = { ethSupply: EthSupply };
+
+const EthSupplyWidget: FC<Props> = ({ ethSupply }) => {
   const [showNerdTooltip, setShowNerdTooltip] = useState(false);
-  const [timeElapsed, setTimeElapsed] = useState<number>();
-  const { previewSkeletons } = useContext(FeatureFlagsContext);
 
-  const ethSupplySum =
-    ethSupply === undefined
-      ? undefined
-      : JSBI.subtract(
-          JSBI.add(
-            ethSupply.executionBalancesSum.balancesSum,
-            ethSupply.beaconBalancesSum.balancesSum,
-          ),
-          ethSupply.beaconDepositsSum.depositsSum,
-        );
-
-  useEffect(() => {
-    if (ethSupply === undefined) {
-      return;
-    }
-
-    const lastAnalyzedSlotDateTime = getDateTimeFromSlot(
-      ethSupply.beaconBalancesSum.slot,
-    );
-
-    setTimeElapsed(
-      DateFns.differenceInSeconds(new Date(), lastAnalyzedSlotDateTime),
-    );
-
-    const intervalId = window.setInterval(() => {
-      setTimeElapsed(
-        DateFns.differenceInSeconds(new Date(), lastAnalyzedSlotDateTime),
-      );
-    }, 1000);
-
-    return () => {
-      window.clearInterval(intervalId);
-    };
-  }, [ethSupply]);
+  const ethSupplySum = JSBI.subtract(
+    JSBI.add(
+      ethSupply.executionBalancesSum.balancesSum,
+      ethSupply.beaconBalancesSum.balancesSum,
+    ),
+    ethSupply.beaconDepositsSum.depositsSum,
+  );
 
   return (
-    <>
-      <WidgetBackground>
-        <div className="relative flex flex-col gap-y-4">
-          <div
-            className={`
+    <WidgetBackground>
+      <div className="relative flex flex-col gap-y-4">
+        <div
+          className={`
                 flex items-center
                 cursor-pointer
                 [&_.gray-nerd]:hover:opacity-0
                 [&_.color-nerd]:active:brightness-75
             `}
-            onClick={() => setShowNerdTooltip(true)}
-          >
-            <WidgetTitle>eth supply</WidgetTitle>
-            <Nerd />
-          </div>
-          <div
-            className={`
+          onClick={() => setShowNerdTooltip(true)}
+        >
+          <WidgetTitle>eth supply</WidgetTitle>
+          <Nerd />
+        </div>
+        <div
+          className={`
               tooltip ${showNerdTooltip ? "block" : "hidden"} fixed
               top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
               w-[calc(100% + 96px)] max-w-sm
@@ -77,38 +49,33 @@ const EthSupplyWidget = () => {
               cursor-auto
               z-30
             `}
-          >
-            <EthSupplyTooltip onClickClose={() => setShowNerdTooltip(false)} />
-          </div>
-          <div className="flex flex-col gap-y-2">
-            <PreciseEth>{ethSupplySum}</PreciseEth>
-            <div className="flex gap-x-1 items-baseline">
-              <LabelText className="text-slateus-400">updated</LabelText>
-              <div className="flex items-baseline">
-                <LabelUnitText skeletonWidth="1rem">
-                  {!previewSkeletons && timeElapsed !== undefined
-                    ? String(timeElapsed)
-                    : undefined}
-                </LabelUnitText>
-                <LabelText className="ml-1">seconds</LabelText>
-              </div>
-              <LabelText className="text-slateus-400">ago</LabelText>
-            </div>
-          </div>
+        >
+          <EthSupplyTooltip
+            ethSupply={ethSupply}
+            onClickClose={() => setShowNerdTooltip(false)}
+          />
         </div>
-      </WidgetBackground>
+        <div className="flex flex-col gap-y-2">
+          <PreciseEth>{ethSupplySum}</PreciseEth>
+          <UpdatedAgo
+            updatedAt={getDateTimeFromSlot(
+              ethSupply.beaconDepositsSum.slot,
+            ).toISOString()}
+          />
+        </div>
+      </div>
       <div
         className={`
-          fixed top-0 left-0 bottom-0 right-0
-          flex justify-center items-center
-          z-20
-          bg-slateus-700/60
-          backdrop-blur-sm
-          ${showNerdTooltip ? "" : "hidden"}
-        `}
+            fixed top-0 left-0 bottom-0 right-0
+            flex justify-center items-center
+            z-20
+            bg-slateus-700/60
+            backdrop-blur-sm
+            ${showNerdTooltip ? "" : "hidden"}
+          `}
         onClick={() => setShowNerdTooltip(false)}
       ></div>
-    </>
+    </WidgetBackground>
   );
 };
 

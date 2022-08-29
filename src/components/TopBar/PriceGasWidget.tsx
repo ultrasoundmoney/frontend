@@ -1,12 +1,16 @@
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
 import type { FC } from "react";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
-import type { EthPrice } from "../api/grouped-analysis-1";
-import { FeatureFlagsContext } from "../feature-flags";
-import * as Format from "../format";
-import { AmountUnitSpace } from "./Spacing";
-import { TextRoboto } from "./Texts";
+import type { EthPrice } from "../../api/grouped-analysis-1";
+import { FeatureFlagsContext } from "../../feature-flags";
+import * as Format from "../../format";
+import { AmountUnitSpace } from "../Spacing";
+import { TextRoboto } from "../Texts";
+import ethSvg from "./eth-slateus.svg";
+import gasSvg from "./gas-slateus.svg";
 
 let startGasPrice = 0;
 let startGasPriceCached = 0;
@@ -54,11 +58,10 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
           rounded
         `}
     >
-      <img
-        className="select-none"
-        src="/gas-icon.svg"
+      <Image
+        src={gasSvg as StaticImageData}
         alt="gas pump icon"
-        width="13"
+        width="14"
         height="14"
       />
       <TextRoboto className="pl-1">
@@ -81,12 +84,12 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
         <span className="font-extralight text-blue-spindle">Gwei</span>
       </TextRoboto>
       <div className="mr-4"></div>
-      <img
+      <Image
         className="select-none"
-        src="/eth-icon.svg"
+        src={ethSvg as StaticImageData}
         alt="Ethereum Ether icon"
-        width="11"
-        height="16"
+        width="14"
+        height="14"
       />
       <TextRoboto className="pl-1">
         {ethPrice === undefined || previewSkeletons ? (

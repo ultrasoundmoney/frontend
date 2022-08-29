@@ -1,5 +1,4 @@
 import * as DateFns from "date-fns";
-import flow from "lodash/flow";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { londonHardfork } from "../dates";
@@ -8,10 +7,10 @@ import type { TimeFrameNext } from "../time-frames";
 import { displayTimeFrameNextMap } from "../time-frames";
 import { WidgetTitle } from "./WidgetSubcomponents";
 
-const getFormattedDays = flow(
-  () => DateFns.differenceInDays(new Date(), londonHardfork),
-  (daysCount) => `${daysCount}d`,
-);
+const getFormattedDays = (now: Date) => {
+  const daysCount = DateFns.differenceInDays(now, londonHardfork);
+  return `${daysCount}d`;
+};
 
 type Props = {
   onClickTimeFrame: () => void;
@@ -19,13 +18,11 @@ type Props = {
 };
 
 const TimeFrameIndicator: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
-  const [daysSinceLondon, setDaysSinceLondon] = useState<string>(
-    getFormattedDays(),
-  );
+  const [daysSinceLondon, setDaysSinceLondon] = useState<string>();
 
   useEffect(() => {
     setTimeout(() => {
-      setDaysSinceLondon(getFormattedDays());
+      setDaysSinceLondon(getFormattedDays(new Date()));
     }, millisFromHours(1));
   });
 

@@ -1,7 +1,7 @@
 import * as DateFns from "date-fns";
 import JSBI from "jsbi";
 import flow from "lodash/flow";
-import type { FC } from "react";
+import { FC, useEffect } from "react";
 import { useState } from "react";
 import { useScarcity } from "../api/scarcity";
 import Colors from "../colors";
@@ -229,6 +229,7 @@ type EngineRowProps = {
   name: string;
   setHovering: (hovering: boolean) => void;
   startedOn: Date;
+  now: Date;
 };
 
 const EngineRow: FC<EngineRowProps> = ({
@@ -238,6 +239,7 @@ const EngineRow: FC<EngineRowProps> = ({
   name,
   setHovering,
   startedOn,
+  now,
 }) => (
   <a
     className="grid grid-cols-3 link-animation"
@@ -254,17 +256,22 @@ const EngineRow: FC<EngineRowProps> = ({
     </MoneyAmount>
     <Amount className="text-right" unitPostfix="years">
       {Format.formatOneDecimal(
-        DateFns.differenceInDays(new Date(), startedOn) / 365.25,
+        DateFns.differenceInDays(now, startedOn) / 365.25,
       )}
     </Amount>
   </a>
 );
 
-const Scarcity: FC = () => {
+const ScarcityWidget: FC = () => {
   const scarcity = useScarcity();
+  const [now, setNow] = useState<Date>();
   const [hoveringStaked, setHoveringStaked] = useState(false);
   const [hoveringLocked, setHoveringLocked] = useState(false);
   const [hoveringBurned, setHoveringBurned] = useState(false);
+
+  useEffect(() => {
+    setNow(new Date());
+  }, []);
 
   return (
     <WidgetBackground>
@@ -293,7 +300,7 @@ const Scarcity: FC = () => {
           <LabelText className="text-right">amount</LabelText>
           <LabelText className="text-right">time span</LabelText>
         </div>
-        {scarcity && (
+        {scarcity && now && (
           <>
             <EngineRow
               amountFormatted={mEthFromWeiFormatted(
@@ -304,6 +311,7 @@ const Scarcity: FC = () => {
               name="staking"
               setHovering={setHoveringStaked}
               startedOn={scarcity.engines.staked.startedOn}
+              now={now}
             />
             <EngineRow
               amountFormatted={mEthFromEthFormatted(
@@ -314,6 +322,7 @@ const Scarcity: FC = () => {
               name="defi (stale)"
               setHovering={setHoveringLocked}
               startedOn={scarcity.engines.locked.startedOn}
+              now={now}
             />
             <EngineRow
               amountFormatted={mEthFromWeiFormatted(
@@ -324,6 +333,7 @@ const Scarcity: FC = () => {
               name="burn"
               setHovering={setHoveringBurned}
               startedOn={scarcity.engines.burned.startedOn}
+              now={now}
             />
           </>
         )}
@@ -332,4 +342,4 @@ const Scarcity: FC = () => {
   );
 };
 
-export default Scarcity;
+export default ScarcityWidget;

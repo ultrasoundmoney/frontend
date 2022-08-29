@@ -1,15 +1,19 @@
 import replace from "lodash/replace";
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
 import type { ChangeEvent, FC } from "react";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useGroupedAnalysis1 } from "../api/grouped-analysis-1";
-import { WEI_PER_GWEI } from "../eth-units";
-import * as Format from "../format";
-import { useLocalStorage } from "../use-local-storage";
-import useNotification from "../use-notification";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { GroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import { WEI_PER_GWEI } from "../../eth-units";
+import { formatZeroDecimals } from "../../format";
+import { useLocalStorage } from "../../use-local-storage";
+import useNotification from "../../use-notification";
+import { AmountUnitSpace } from "../Spacing";
+import { TextRoboto } from "../Texts";
+import ToggleSwitch from "../ToggleSwitch";
 import styles from "./AlarmInput.module.scss";
-import { AmountUnitSpace } from "./Spacing";
-import { TextRoboto } from "./Texts";
-import ToggleSwitch from "./ToggleSwitch";
+import ethSvg from "./eth-slateus.svg";
+import gasSvg from "./gas-slateus.svg";
 
 const thresholdToNumber = (
   threshold: string | undefined,
@@ -23,7 +27,7 @@ const thresholdToNumber = (
 };
 
 const safeFormatZeroDigit = (num: number | undefined) =>
-  num === undefined ? undefined : Format.formatZeroDecimals(num);
+  num === undefined ? undefined : formatZeroDecimals(num);
 
 const toThresholdDisplay = (str: string | undefined): string | undefined =>
   safeFormatZeroDigit(thresholdToNumber(str));
@@ -45,14 +49,27 @@ type AlarmType = "gas" | "eth";
 type ThresholdType = "GreaterThanOrEqualTo" | "SmallerThan";
 
 const imageMap: Record<AlarmType, JSX.Element> = {
-  gas: <img src="/gas-icon.svg" width="13" height="14" alt="gas pump icon" />,
+  gas: (
+    <Image
+      src={gasSvg as StaticImageData}
+      width="14"
+      height="14"
+      alt="gas pump icon"
+    />
+  ),
 
   eth: (
-    <img src="/eth-icon.svg" alt="Ethereum Ether icon" width="15" height="16" />
+    <Image
+      src={ethSvg as StaticImageData}
+      alt="Ethereum Ether icon"
+      width="16"
+      height="16"
+    />
   ),
 };
 
 type AlarmInputProps = {
+  groupedAnalysis1: GroupedAnalysis1 | undefined;
   isAlarmActive: boolean;
   onToggleIsAlarmActive: (isAlarmActive: boolean) => void;
   unit: string;
@@ -60,14 +77,15 @@ type AlarmInputProps = {
 };
 
 const AlarmInput: FC<AlarmInputProps> = ({
+  groupedAnalysis1,
   isAlarmActive,
   onToggleIsAlarmActive,
-  unit,
   type,
+  unit,
 }) => {
   const notification = useNotification();
-  const baseFeePerGas = useGroupedAnalysis1()?.baseFeePerGas;
-  const ethPrice = useGroupedAnalysis1()?.ethPrice;
+  const baseFeePerGas = groupedAnalysis1?.baseFeePerGas;
+  const ethPrice = groupedAnalysis1?.ethPrice;
   const [isBusyEditing, setIsBusyEditing] = useState(false);
   const [threshold, setThreshold] = useLocalStorage<string>(
     `${type}-threshold`,
@@ -196,7 +214,7 @@ const AlarmInput: FC<AlarmInputProps> = ({
       }
 
       const typeFormatted = typeToDisplay(type);
-      const currentValueFormatted = Format.formatZeroDecimals(currentValue);
+      const currentValueFormatted = formatZeroDecimals(currentValue);
       const message = `${typeFormatted} price hit ${currentValueFormatted} ${unit.trimEnd()}`;
       notification.showNotification(message);
 

@@ -1,0 +1,9 @@
+.chart {
+  --slateus-400: #b5bddb;
+
+  .highcharts-axis-labels text {
+    /* color: var(--slateus-400); */
+    color: blue;
+  }
+}
+

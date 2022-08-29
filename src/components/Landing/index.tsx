@@ -21,8 +21,18 @@ import Stepper from "../Navigation/Stepper";
 import { SteppersProvider } from "../../context/StepperContext";
 import styles from "./Landing.module.scss";
 import { NavigationProvider } from "../../context/NavigationContext";
+import {
+  decodeGroupedAnalysis1,
+  GroupedAnalysis1,
+  useGroupedAnalysis1,
+} from "../../api/grouped-analysis-1";
 
 const LandingPage: React.FC = () => {
+  const groupedAnalysis1F = useGroupedAnalysis1();
+  const groupedAnalysis1 =
+    groupedAnalysis1F === undefined
+      ? undefined
+      : decodeGroupedAnalysis1(groupedAnalysis1F);
   React.useEffect(() => {
     AOS.init();
     AOS.refresh();
@@ -33,7 +43,7 @@ const LandingPage: React.FC = () => {
       <NavigationProvider>
         <div className="wrapper">
           <Stepper />
-          <Navigation />
+          <Navigation groupedAnalysis1={groupedAnalysis1} />
           <div className="container mx-auto">
             <Intro />
             <BeforeGenesis />

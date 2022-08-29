@@ -5,12 +5,11 @@ import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { useEffectiveBalanceSum } from "../../api/effective-balance-sum";
 import { useImpreciseEthSupply } from "../../api/eth-supply";
-import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import type { GroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import { useSupplyProjectionInputs } from "../../api/supply-projection";
 import type { Eth, Gwei } from "../../eth-units";
 import { GWEI_PER_ETH, WEI_PER_ETH } from "../../eth-units";
 import * as Format from "../../format";
-import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { MoneyAmount, PercentAmount } from "../Amount";
 import Slider2 from "../Slider2";
 import { TimeFrameText } from "../Texts";
@@ -158,9 +157,10 @@ const BurnMarkers: FC<{ burnMarkers?: BurnMarkers }> = ({ burnMarkers }) => {
   );
 };
 
-const EquilibriumWidget: FC = () => {
-  const { md } = useActiveBreakpoint();
-  const burnRates = useGroupedAnalysis1()?.burnRates;
+const EquilibriumWidget: FC<{ groupedAnalysis1: GroupedAnalysis1 }> = ({
+  groupedAnalysis1,
+}) => {
+  const burnRates = groupedAnalysis1?.burnRates;
   const supplyProjectionInputs = useSupplyProjectionInputs();
   const ethSupply = useImpreciseEthSupply();
   const effectiveBalanceSum = useEffectiveBalanceSum();
@@ -283,7 +283,10 @@ const EquilibriumWidget: FC = () => {
     const supplyEquilibriumSeries = [...historicSupplyByMonth];
 
     // Now calculate n years into the future to paint an equilibrium.
-    let supply: Point = [DateFns.getUnixTime(new Date()), ethSupply];
+    let supply: Point = [
+      DateFns.getUnixTime(DateFns.startOfDay(new Date())),
+      ethSupply,
+    ];
     const staked = getStakedFromApr(stakingAprFraction);
     let nonStaked = supply[1] - staked;
     const issuance = getIssuancePerYear(staked);
@@ -365,8 +368,11 @@ const EquilibriumWidget: FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-8 gap-x-8 p-8">
           <div className="flex justify-between">
             <div className="flex flex-col gap-y-4">
-              <WidgetTitle>
-                {md ? "supply equilibrium" : "equilibrium (A)"}
+              <WidgetTitle className="hidden md:inline">
+                supply equilibrium
+              </WidgetTitle>
+              <WidgetTitle className="inline md:hidden">
+                equilibrium (A)
               </WidgetTitle>
               <MoneyAmount
                 amountPostfix={nonStakingBurnFraction === 0 ? "" : "M"}
@@ -380,8 +386,11 @@ const EquilibriumWidget: FC = () => {
               </MoneyAmount>
             </div>
             <div className="flex flex-col gap-y-4">
-              <WidgetTitle className="text-right">
-                {md ? "staking" : "staking (B)"}
+              <WidgetTitle className="text-right hidden md:inline">
+                staking
+              </WidgetTitle>
+              <WidgetTitle className="text-right inline md:hidden">
+                staking (B)
               </WidgetTitle>
               <MoneyAmount
                 amountPostfix="M"

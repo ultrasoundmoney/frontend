@@ -47,6 +47,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
   });
   const [selectedRanking, setSelectedRanking] = useState<TvsRanking>();
   const [showTooltip, setShowTooltip] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const onTooltip = useRef<boolean>(false);
   const onImage = useRef<boolean>(false);
 
@@ -102,13 +103,14 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
 
   const handleClickProfile = useCallback(
     (ranking: TvsRanking | undefined) => {
-      if (md) {
-        return;
-      }
-
       setSelectedRanking(ranking);
+      if (md) {
+        setShowTooltip(true);
+      } else {
+        setShowModal(true);
+      }
     },
-    [md, setSelectedRanking],
+    [md],
   );
 
   const leaderboardSkeletons = new Array(100).fill({}) as undefined[];
@@ -142,15 +144,13 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
                   imageUrl={row?.imageUrl}
                   isDoneLoading={row !== undefined}
                   onMouseEnter={(ref) =>
-                    !md || row === undefined
+                    row === undefined
                       ? () => undefined
                       : handleImageMouseEnter(row, ref)
                   }
-                  onMouseLeave={() =>
-                    !md ? () => undefined : handleImageMouseLeave()
-                  }
+                  onMouseLeave={() => handleImageMouseLeave()}
                   onClick={() =>
-                    md || row === undefined
+                    row === undefined
                       ? () => undefined
                       : handleClickProfile(row)
                   }
@@ -207,7 +207,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
           className="z-20 hidden md:block p-4"
           style={{
             ...styles.popper,
-            visibility: showTooltip && md ? "visible" : "hidden",
+            visibility: showTooltip ? "visible" : "hidden",
           }}
           {...attributes.popper}
           onMouseOver={handleTooltipEnter}
@@ -222,16 +222,13 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
             imageUrl={selectedRanking?.imageUrl}
             links={selectedRanking?.links ?? undefined}
             nftGoUrl={selectedRanking?.nftGoUrl}
-            onClickClose={() => setSelectedRanking(undefined)}
+            onClickClose={() => setShowTooltip(false)}
             title={selectedRanking?.tooltipName?.split(":")[0]}
             twitterUrl={selectedRanking?.twitterUrl}
           />
         </div>
-        <Modal
-          onClickBackground={() => setSelectedRanking(undefined)}
-          show={!md && selectedRanking !== undefined}
-        >
-          {!md && selectedRanking !== undefined && (
+        <Modal onClickBackground={() => setShowModal(false)} show={showModal}>
+          {selectedRanking !== undefined && (
             <Tooltip
               contractAddresses={selectedRanking?.contractAddresses}
               coingeckoUrl={selectedRanking?.coinGeckoUrl}
@@ -241,7 +238,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
               imageUrl={selectedRanking?.imageUrl}
               links={selectedRanking?.links ?? undefined}
               nftGoUrl={selectedRanking?.nftGoUrl}
-              onClickClose={() => setSelectedRanking(undefined)}
+              onClickClose={() => setShowModal(false)}
               title={selectedRanking?.tooltipName?.split(":")[0]}
               twitterUrl={selectedRanking?.twitterUrl}
             />

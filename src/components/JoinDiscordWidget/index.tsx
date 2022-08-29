@@ -41,16 +41,15 @@ const AlignmentText: FC = () => (
   <BodyText className="select-none text-xs md:text-base">&nbsp;</BodyText>
 );
 
-type AuthBody = {
-  id: string;
-  handle: string;
-};
-type AuthError = {
-  message?: string;
-};
-type TwitterAuthStatusResponse = AuthBody | AuthError;
-const getIsAuthBody = (u: unknown): u is AuthBody =>
-  typeof (u as AuthBody)?.id === "string";
+type TwitterAuthStatusResponse =
+  | { status: "not-authenticated"; session: null }
+  | {
+      status: "authenticated";
+      session: {
+        id: string;
+        handle: string;
+      };
+    };
 
 type TwitterAuthStatus =
   | { type: "access-denied" }
@@ -60,6 +59,7 @@ type TwitterAuthStatus =
   | { type: "error"; message: string }
   | { type: "init" }
   | { type: "signing-out" };
+
 const TwitterStatusText: FC<{ status: TwitterAuthStatus }> = ({ status }) =>
   status.type === "authenticated" ? (
     <PositiveText>authenticated</PositiveText>
@@ -105,28 +105,23 @@ const useTwitterAuthStatus = () => {
       if (res.status === 200) {
         const body = (await res.json()) as TwitterAuthStatusResponse;
 
-        if (getIsAuthBody(body)) {
+        if (body.status === "authenticated") {
           setTwitterAuthStatus({
             type: "authenticated",
-            id: body.id,
-            handle: body.handle,
+            id: body.session.id,
+            handle: body.session.handle,
           });
           return;
-        } else {
-          const message =
-            body.message ??
-            "get twitter auth status got 200 response, but no auth body";
-          setTwitterAuthStatus({
-            type: "error",
-            message,
-          });
-          throw new Error(message);
         }
-      }
 
-      if (res.status === 404) {
-        setTwitterAuthStatus({ type: "init" });
-        return;
+        if (body.status === "not-authenticated") {
+          setTwitterAuthStatus({ type: "init" });
+          return;
+        }
+
+        const message = "got twitter auth session 200 response, but no status";
+        setTwitterAuthStatus({ type: "error", message });
+        throw new Error(message);
       }
 
       const message = `failed to check auth status, response status: ${res.status}`;

@@ -1,5 +1,7 @@
+import dynamic from "next/dynamic";
 import type { FC } from "react";
 import { useCallback, useState } from "react";
+import type { GroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import type { Unit } from "../../denomination";
 import type { TimeFrameNext } from "../../time-frames";
 import { timeFramesNext } from "../../time-frames";
@@ -8,13 +10,17 @@ import BurnRecords from "../BurnRecords";
 import BurnTotal from "../BurnTotal";
 import CurrencyControl from "../CurrencyControl";
 import DeflationaryStreak from "../DeflationaryStreak";
-import LatestBlocks from "../LatestBlocks";
 import TimeFrameControl from "../TimeFrameControl";
 import ToggleSwitch from "../ToggleSwitch";
 import { WidgetTitle } from "../WidgetSubcomponents";
-import BurnLeaderboard from "./BurnLeaderboard";
+const BurnLeaderboard = dynamic(() => import("./BurnLeaderboard"), {
+  ssr: false,
+});
+const LatestBlocks = dynamic(() => import("../LatestBlocks"), { ssr: false });
 
-const WidgetGroup1: FC = () => {
+type Props = { groupedAnalysis1: GroupedAnalysis1 };
+
+const BurnGroup: FC<Props> = ({ groupedAnalysis1 }) => {
   const [simulateMerge, setSimulateMerge] = useState(false);
   const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
@@ -75,6 +81,7 @@ const WidgetGroup1: FC = () => {
         `}
       >
         <BurnTotal
+          groupedAnalysis1={groupedAnalysis1}
           onClickTimeFrame={handleClickTimeFrame}
           simulateMerge={simulateMerge}
           timeFrame={timeFrame}
@@ -92,13 +99,14 @@ const WidgetGroup1: FC = () => {
           />
         </div>
         <div className="lg:row-start-2">
-          <LatestBlocks unit={unit} />
+          <LatestBlocks groupedAnalysis1={groupedAnalysis1} unit={unit} />
         </div>
         <div className="lg:row-start-3">
           <DeflationaryStreak simulateMerge={simulateMerge} />
         </div>
         <div className="lg:row-end-5">
           <BurnRecords
+            groupedAnalysis1={groupedAnalysis1}
             onClickTimeFrame={handleClickTimeFrame}
             timeFrame={timeFrame}
           />
@@ -108,4 +116,4 @@ const WidgetGroup1: FC = () => {
   );
 };
 
-export default WidgetGroup1;
+export default BurnGroup;

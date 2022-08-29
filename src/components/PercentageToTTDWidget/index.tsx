@@ -1,7 +1,9 @@
 import * as DateFns from "date-fns";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import highchartsAnnotations from "highcharts/modules/annotations";
 import _last from "lodash/last";
+import _merge from "lodash/merge";
 import type { FC } from "react";
 import { useMemo } from "react";
 import colors from "../../colors";
@@ -9,7 +11,7 @@ import * as Format from "../../format";
 import LabelText from "../TextsNext/LabelText";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
-import highchartsAnnotations from "highcharts/modules/annotations";
+import styles from "./styles.module.css";
 
 // Somehow resolves an error thrown by the annotation lib
 if (typeof window !== "undefined") {
@@ -25,23 +27,24 @@ const baseOptions: Highcharts.Options = {
   chart: {
     backgroundColor: "transparent",
     showAxes: false,
+    marginLeft: 42,
   },
   title: undefined,
   xAxis: {
     type: "datetime",
-    tickInterval: 10 * 24 * 60 * 60 * 1000, // always use 1 year intervals
     min: 1659304800000,
-    max: 1663624800000,
+    max: 1663279200000,
     lineWidth: 0,
-    labels: { style: { color: colors.slateus200 } },
+    labels: { style: { color: colors.slateus400 } },
     tickWidth: 0,
   },
   yAxis: {
-    min: 94,
     max: 100,
-    // tickInterval: 20e6,
     title: { text: undefined },
-    labels: { format: "{value}%", style: { color: colors.slateus200 } },
+    labels: {
+      format: "{value}%",
+      style: { color: colors.slateus400, fontFamily: "Roboto Mono" },
+    },
     gridLineWidth: 0,
   },
   legend: {
@@ -51,17 +54,12 @@ const baseOptions: Highcharts.Options = {
     backgroundColor: "transparent",
     xDateFormat: "%m-%d",
     useHTML: true,
-    borderWidth: 0,
+    borderWidth: 4,
     shadow: false,
   },
   credits: { enabled: false },
   plotOptions: {
     series: {
-      enableMouseTracking: false,
-      // shadow: {
-      //   color: "rgba(75, 144, 219, 0.2)",
-      //   width: 15,
-      // },
       marker: {
         enabled: false,
         lineColor: "white",
@@ -88,111 +86,120 @@ const PercentageToTTDWidget: FC<Props> = ({
   difficultyProjectionSeries,
   difficultySeries,
 }) => {
-  console.log("rendering PercentageToTTDWidget");
-
-  const options = useMemo(() => {
-    const lastPoint = _last(difficultyProjectionSeries);
-    const nextOptions: Highcharts.Options = {
-      ...baseOptions,
-      ...({
-        series: [
-          {
-            id: "difficulty-series",
-            type: "line",
-            data: difficultySeries,
-            shadow: {
-              color: "rgba(75, 144, 219, 0.2)",
-              width: 15,
-            },
-            color: {
-              linearGradient: {
-                x1: 0,
-                y1: 0,
-                x2: 1,
-                y2: 0,
+  const options = useMemo((): Highcharts.Options => {
+    const lastPoint = _last(difficultySeries);
+    const lastPointProjection = _last(difficultyProjectionSeries);
+    return _merge(
+      {},
+      {
+        ...baseOptions,
+        ...({
+          series: [
+            {
+              id: "difficulty-projection-series",
+              type: "line",
+              dashStyle: "Dash",
+              color: {
+                linearGradient: {
+                  x1: 0,
+                  y1: 0,
+                  x2: 1,
+                  y2: 0,
+                },
+                stops: [
+                  [0, "#5487F4"],
+                  [1, "#6A54F4"],
+                ],
               },
-              stops: [
-                [0, "#00FFFB"],
-                [1, "#5487F4"],
-              ],
-            },
-          },
-          {
-            id: "difficulty-projection-series",
-            type: "line",
-            dashStyle: "Dash",
-            color: {
-              linearGradient: {
-                x1: 0,
-                y1: 0,
-                x2: 1,
-                y2: 0,
-              },
-              stops: [
-                [0, "#5487F4"],
-                [1, "#6A54F4"],
-              ],
-            },
-            data:
-              lastPoint === undefined
-                ? difficultyProjectionSeries
-                : [
-                    ...difficultyProjectionSeries,
-                    {
-                      x: lastPoint?.[0],
-                      y: lastPoint?.[1],
-                      marker: {
-                        symbol: `url(/graph-dot-panda.svg)`,
-                        enabled: true,
+              data:
+                lastPointProjection === undefined
+                  ? undefined
+                  : [
+                      ...difficultyProjectionSeries,
+                      {
+                        x: lastPointProjection?.[0],
+                        y: lastPointProjection?.[1],
+                        marker: {
+                          symbol: `url(/graph-dot-panda.svg)`,
+                          enabled: true,
+                        },
                       },
-                    },
-                  ],
-          },
-          {
-            id: "difficulty-projection-series-shadow",
-            states: { hover: { enabled: false }, select: { enabled: false } },
-            type: "line",
-            color: {},
-            shadow: {
-              color: "rgba(75, 144, 219, 0.2)",
-              width: 15,
+                    ],
             },
-            data: difficultyProjectionSeries,
+            {
+              enableMouseTracking: false,
+              id: "difficulty-projection-series-shadow",
+              states: { hover: { enabled: false }, select: { enabled: false } },
+              type: "line",
+              color: {},
+              shadow: {
+                color: "rgba(75, 144, 219, 0.2)",
+                width: 15,
+              },
+              data: difficultyProjectionSeries,
+            },
+            {
+              id: "difficulty-series",
+              type: "line",
+              data:
+                lastPoint !== undefined
+                  ? [
+                      ...difficultySeries,
+                      {
+                        x: lastPoint?.[0],
+                        y: lastPoint?.[1],
+                        marker: {
+                          symbol: `url(/dot_supply_graph.svg)`,
+                          enabled: true,
+                        },
+                      },
+                    ]
+                  : undefined,
+              shadow: {
+                color: "rgba(75, 144, 219, 0.2)",
+                width: 15,
+              },
+              color: {
+                linearGradient: {
+                  x1: 0,
+                  y1: 0,
+                  x2: 1,
+                  y2: 0,
+                },
+                stops: [
+                  [0, "#00FFFB"],
+                  [1, "#5487F4"],
+                ],
+              },
+            },
+          ],
+          tooltip: {
+            backgroundColor: "transparent",
+            useHTML: true,
+            borderWidth: 0,
+            shadow: false,
+            formatter: function () {
+              const x = typeof this.x === "number" ? this.x : undefined;
+              if (x === undefined) {
+                return undefined;
+              }
+
+              const total = difficultyMap[x] || difficultyProjectionMap[x];
+              if (total === undefined) {
+                return undefined;
+              }
+
+              const dt = new Date(x);
+              const formattedDate = DateFns.format(dt, "MMM d");
+
+              return `<div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200"><div class="text-blue-spindle">${formattedDate}</div><div class="text-white">${Format.formatPercentTwoDecimals(
+                total / 100,
+              )}</div></div>`;
+            },
           },
-        ],
-        tooltip: {
-          formatter: function () {
-            const x = typeof this.x === "number" ? this.x : undefined;
-            if (x === undefined) {
-              return undefined;
-            }
-
-            const total = difficultyMap[x] || difficultyProjectionMap[x];
-            if (total === undefined) {
-              return undefined;
-            }
-
-            const dt = DateFns.fromUnixTime(x);
-            const formattedDate = DateFns.format(dt, "LLL y");
-
-            return `
-                <div class="font-roboto font-light bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
-                  <div class="text-blue-spindle">
-                    ${formattedDate}
-                  </div>
-                  <div class="text-white">
-                    ${Format.formatOneDecimal(
-                      total / 1e6,
-                    )}M <span class="text-blue-spindle">ETH</span>
-                  </div>
-                </div>
-            `;
-          },
-        },
-      } as Highcharts.Options),
-    };
-
-    return nextOptions;
+        } as Highcharts.Options),
+      },
+    );
   }, [
     difficultyMap,
     difficultyProjectionMap,
@@ -202,7 +209,27 @@ const PercentageToTTDWidget: FC<Props> = ({
 
   return (
     <WidgetErrorBoundary title="percentage to TTD">
-      <WidgetBackground className="w-full flex flex-col gap-y-8">
+      <WidgetBackground className="relative w-full flex flex-col gap-y-8 overflow-hidden">
+        <div
+          // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
+          className={`
+            absolute -top-40 -right-0
+            w-full h-full
+            opacity-[0.20]
+            blur-[120px]
+            pointer-events-none
+            will-change-transform
+          `}
+        >
+          <div
+            className={`
+            absolute lg:bottom-[3.0rem] lg:-right-[1.0rem]
+            w-4/5 h-3/5 rounded-[35%]
+            bg-[#0037FA]
+            pointer-events-none
+          `}
+          ></div>
+        </div>
         <LabelText className="flex items-center min-h-[21px]">
           percentage to ttd
         </LabelText>
@@ -214,16 +241,13 @@ const PercentageToTTDWidget: FC<Props> = ({
             select-none
             overflow-hidden
             [&>div]:flex-grow
-            blur-[2px]
+            ${styles.chart}
           `}
         >
           <HighchartsReact highcharts={Highcharts} options={options} />
         </div>
-        <div className="flex justify-between">
-          <LabelText className="text-orange-300 animate-slow-pulse opacity-90">
-            analyzing.. check back later
-          </LabelText>
-          <LabelText className="">
+        <div className="flex justify-end">
+          <LabelText className="text-slateus-400">
             inspired by{" "}
             <a
               className="hover:underline"
