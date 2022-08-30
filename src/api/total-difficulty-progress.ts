@@ -12,6 +12,7 @@ type DifficultyByDay = {
 
 export type TotalDifficultyProgress = {
   blockNumber: number;
+  timestamp: DateTimeString;
   totalDifficultyByDay: DifficultyByDay[];
 };
 

@@ -1,4 +1,12 @@
-import * as DateFns from "date-fns";
+import {
+  addHours,
+  differenceInMilliseconds,
+  getTime,
+  isBefore,
+  parseISO,
+  startOfHour,
+  subMilliseconds,
+} from "date-fns";
 import _last from "lodash/last";
 import dynamic from "next/dynamic";
 import type { FC } from "react";
@@ -38,13 +46,26 @@ const MergeSection: FC<Props> = ({
   }
 
   // This will update every block, consider reducing that frequency.
-  const difficultyProjectionSeries = [
-    lastTotalDifficultyPoint,
-    [
-      DateFns.getTime(DateFns.parseISO(mergeEstimate.estimatedDateTime)),
-      100,
-    ] as [number, number],
-  ];
+  const difficultyProjectionSeries: [number, number][] = [];
+  const mergeTimestamp = parseISO(mergeEstimate.estimatedDateTime);
+
+  const periodMillis = differenceInMilliseconds(
+    mergeTimestamp,
+    lastTotalDifficultyPoint[0],
+  );
+  const percentLeft = 100 - lastTotalDifficultyPoint[1];
+  let timestamp = startOfHour(addHours(lastTotalDifficultyPoint[0], 1));
+  while (isBefore(timestamp, mergeTimestamp)) {
+    const millisSinceLast = subMilliseconds(
+      timestamp,
+      getTime(lastTotalDifficultyPoint[0]),
+    );
+    const fraction = getTime(millisSinceLast) / periodMillis;
+    const percent = lastTotalDifficultyPoint[1] + fraction * percentLeft;
+    const point = [getTime(timestamp), percent] as [number, number];
+    difficultyProjectionSeries.push(point);
+    timestamp = addHours(timestamp, 1);
+  }
 
   const difficultyMap = Object.fromEntries(
     new Map(totalDifficultyByDay).entries(),
