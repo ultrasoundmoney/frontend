@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import Head from "next/head";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
-import type { FC, ReactNode } from "react";
+import { FC, ReactNode, Suspense } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -167,12 +167,16 @@ const Dashboard: FC<Props> = ({
           <div className="container mx-auto">
             {adminToken && (
               <BasicErrorBoundary>
-                <AdminTools setFlag={setFlag} />
+                <Suspense>
+                  <AdminTools setFlag={setFlag} />
+                </Suspense>
               </BasicErrorBoundary>
             )}
             <div className="px-4 xs:px-4 md:px-16">
               <BasicErrorBoundary>
-                <TopBar groupedAnalysis1={groupedAnalysis1} />
+                <Suspense>
+                  <TopBar groupedAnalysis1={groupedAnalysis1} />
+                </Suspense>
               </BasicErrorBoundary>
             </div>
             <Title>Ultra Sound Money</Title>
@@ -193,24 +197,28 @@ const Dashboard: FC<Props> = ({
               </video>
             )}
             <BasicErrorBoundary>
-              <MergeSection
-                ethSupply={decodedCrEthSupply}
-                mergeEstimate={crMergeEstimate}
-                totalDifficultyProgress={crTotalDifficultyProgress}
-              />
+              <Suspense>
+                <MergeSection
+                  ethSupply={decodedCrEthSupply}
+                  mergeEstimate={crMergeEstimate}
+                  totalDifficultyProgress={crTotalDifficultyProgress}
+                />
+              </Suspense>
             </BasicErrorBoundary>
             <BasicErrorBoundary>
-              <div id="projection">
-                <SectionDivider
-                  link="projection"
-                  subtitle="ultra sound money for years to come"
-                  title="supply projections"
-                />
-                <SupplyWidgets
-                  scarcity={scarcity}
-                  groupedAnalysis1={groupedAnalysis1}
-                />
-              </div>
+              <Suspense>
+                <div id="projection">
+                  <SectionDivider
+                    link="projection"
+                    subtitle="ultra sound money for years to come"
+                    title="supply projections"
+                  />
+                  <SupplyWidgets
+                    scarcity={scarcity}
+                    groupedAnalysis1={groupedAnalysis1}
+                  />
+                </div>
+              </Suspense>
             </BasicErrorBoundary>
             <div className="h-16"></div>
             <div id="burn">
@@ -220,7 +228,9 @@ const Dashboard: FC<Props> = ({
                 title="the burn"
               />
               <BasicErrorBoundary>
-                <BurnGroup groupedAnalysis1={groupedAnalysis1} />
+                <Suspense>
+                  <BurnGroup groupedAnalysis1={groupedAnalysis1} />
+                </Suspense>
               </BasicErrorBoundary>
             </div>
             {featureFlags.showBackgroundOrbs && (
@@ -244,9 +254,11 @@ const Dashboard: FC<Props> = ({
                 subtitle="securing the internet of value"
               />
               <BasicErrorBoundary>
-                <div className="flex flex-col" id="tvs">
-                  <TotalValueSecured></TotalValueSecured>
-                </div>
+                <Suspense>
+                  <div className="flex flex-col" id="tvs">
+                    <TotalValueSecured></TotalValueSecured>
+                  </div>
+                </Suspense>
               </BasicErrorBoundary>
             </div>
             <div className="h-16"></div>

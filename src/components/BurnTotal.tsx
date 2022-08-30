@@ -1,7 +1,6 @@
 import * as DateFns from "date-fns";
 import type { FC } from "react";
-import { useEffect, useState } from "react";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
 import type {

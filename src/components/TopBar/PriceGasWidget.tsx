@@ -18,13 +18,13 @@ let startEthPrice = 0;
 let startEthPriceCached = 0;
 
 type PriceGasWidgetProps = {
-  baseFeePerGas: number | undefined;
+  baseFeePerGas: number;
   ethPrice: EthPrice | undefined;
 };
 
 const PriceGasWidget: FC<PriceGasWidgetProps> = ({
   baseFeePerGas,
-  ethPrice: ethPrice,
+  ethPrice,
 }) => {
   if (baseFeePerGas && baseFeePerGas !== startGasPrice) {
     startGasPriceCached = startGasPrice;
@@ -65,7 +65,7 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
         height="14"
       />
       <TextRoboto className="pl-1">
-        {baseFeePerGas === undefined || previewSkeletons ? (
+        {previewSkeletons ? (
           <Skeleton width="17px" inline />
         ) : (
           <CountUp

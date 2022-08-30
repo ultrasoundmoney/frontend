@@ -13,11 +13,11 @@ const PriceGasWidget = dynamic(() => import("./PriceGasWidget"), {
   ssr: false,
 });
 
-type Props = { groupedAnalysis1: GroupedAnalysis1 | undefined };
+type Props = { groupedAnalysis1: GroupedAnalysis1 };
 
 const TopBar: FC<Props> = ({ groupedAnalysis1 }) => {
-  const baseFeePerGas = groupedAnalysis1?.baseFeePerGas;
-  const ethPrice = groupedAnalysis1?.ethPrice;
+  const baseFeePerGas = groupedAnalysis1.baseFeePerGas;
+  const ethPrice = groupedAnalysis1.ethPrice;
   const [gasAlarmActive, setGasAlarmActive] = useLocalStorage(
     "gas-alarm-enabled",
     false,
