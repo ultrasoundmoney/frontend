@@ -22,7 +22,10 @@ const nextConfig = withBundleAnalyzer({
     {
       source: "/api/:path*",
       has: [{ type: "host", value: "localhost" }],
-      destination: "https://ultrasound.money/api/:path*",
+      destination:
+        process.env["NEXT_PUBLIC_ENV"] === "stag"
+          ? "https://usm-i7x0.ultrasound.money/api/:path*"
+          : "https://ultrasound.money/api/:path*",
     },
     // To test locally with the fam-analysis api running and a local tunnel to receive the oauth2 callback, use the below rewrite.
     // {
