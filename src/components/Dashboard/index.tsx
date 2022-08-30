@@ -150,7 +150,7 @@ const Dashboard: FC<Props> = ({
               h-[600px] -mt-[50px]
               lg:h-[700px]
               xl:h-[800px]
-              2xl:h-[1600px] 2xl:-mt-[350px]
+              2xl:h-[1600px] 2xl:-mt-[310px]
               -z-10
             `}
           >
