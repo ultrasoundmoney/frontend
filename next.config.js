@@ -11,10 +11,11 @@ const nextConfig = withBundleAnalyzer({
   productionBrowserSourceMaps: true,
   images: {
     domains: [
-      "pbs.twimg.com",
       "abs.twimg.com",
-      "openseauserdata.com",
+      "assets.coingecko.com",
       "lh3.googleusercontent.com",
+      "openseauserdata.com",
+      "pbs.twimg.com",
     ],
   },
   rewrites: async () => [
