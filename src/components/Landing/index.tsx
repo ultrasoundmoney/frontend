@@ -18,9 +18,9 @@ import "aos/dist/aos.css";
 import SupplyViewNew from "../SupplyViewNew";
 import TheBurnedCard from "./theBurnedCard";
 import Stepper from "../Navigation/Stepper";
-import { SteppersProvider } from "../../context/StepperContext";
+import { SteppersProvider } from "../../contexts/StepperContext";
 import styles from "./Landing.module.scss";
-import { NavigationProvider } from "../../context/NavigationContext";
+import { NavigationProvider } from "../../contexts/NavigationContext";
 import {
   decodeGroupedAnalysis1,
   GroupedAnalysis1,

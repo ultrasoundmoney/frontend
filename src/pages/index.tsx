@@ -10,6 +10,7 @@ import * as Duration from "../duration";
 type StaticProps = {
   ethSupplyF: EthSupplyF;
   // Experiment, this one updates frequently, might be a bad idea to include.
+  // It's too big to include in SSR. It creates a huge json embedded in our html that needs to be parsed to hydrate which slows our first load. Consider cutting down the data in it, splitting the data in it over multiple endpoints, loading this data client side with suspense.
   groupedAnalysis1F: GroupedAnalysis1F;
   mergeEstimate: MergeEstimate;
   totalDifficultyProgress: TotalDifficultyProgress;

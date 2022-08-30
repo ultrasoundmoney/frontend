@@ -1,11 +1,11 @@
 import * as React from "react";
-import { TranslationsContext } from "../../translations-context";
-import { StepperContext } from "../../context/StepperContext";
+import TranslationsContext from "../../contexts/TranslationsContext";
+import { StepperContext } from "../../contexts/StepperContext";
 import AnimatedPath from "./AnimatedPath";
 import DrawingLine from "./DrawingLine";
 import styles from "./Landing.module.scss";
 import Twemoji from "../Twemoji";
-import { NavigationContext } from "../../context/NavigationContext";
+import { NavigationContext } from "../../contexts/NavigationContext";
 import { calcCenterElement } from "../../utils/calcCenterElement";
 
 const TheMergeBlock: React.FC = () => {

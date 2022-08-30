@@ -49,7 +49,7 @@ const TotalDifficultyProgressWidget: FC<Props> = ({
       <div className="flex justify-between whitespace-nowrap items-baseline">
         <UpdatedAgo updatedAt={mergeEstimate.timestamp} />
         <div>
-          <LabelUnitText skeletonWidth="4rem">
+          <LabelUnitText skeletonWidth="2rem">
             {progress === undefined
               ? undefined
               : Format.formatPercentTwoDecimals(progress ?? 0)}

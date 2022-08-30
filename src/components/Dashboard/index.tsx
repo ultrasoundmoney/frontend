@@ -6,7 +6,7 @@ import type { FC, ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { useAdminToken } from "../../admin";
+import { useAdminToken } from "../../hooks/use-admin-token";
 import type { EthSupplyF } from "../../api/eth-supply";
 import { decodeEthSupply, useEthSupply } from "../../api/eth-supply";
 import type { GroupedAnalysis1F } from "../../api/grouped-analysis-1";

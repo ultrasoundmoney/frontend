@@ -1,6 +1,6 @@
 import * as React from "react";
-import { StepperContext } from "../../context/StepperContext";
-import { TranslationsContext } from "../../translations-context";
+import { StepperContext } from "../../contexts/StepperContext";
+import TranslationsContext from "../../contexts/TranslationsContext";
 import DrawingLine from "./DrawingLine";
 import styles from "./Landing.module.scss";
 

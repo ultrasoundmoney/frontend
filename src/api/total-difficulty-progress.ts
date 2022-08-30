@@ -1,6 +1,6 @@
 import * as DateFns from "date-fns";
 import useSWR from "swr";
-import { TOTAL_TERMINAL_DIFFICULTY } from "../components/SupplyWidgets/MergeEstimateWidget";
+import { TOTAL_TERMINAL_DIFFICULTY } from "../eth-constants";
 import type { DateTimeString } from "../time";
 import fetcher from "./default-fetcher";
 

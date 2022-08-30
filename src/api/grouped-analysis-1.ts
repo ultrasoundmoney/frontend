@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import useSWR from "swr";
+import { getDomain } from "../config";
 import * as Duration from "../duration";
 import type { Wei } from "../eth-units";
 import { FeatureFlagsContext } from "../feature-flags";
@@ -101,10 +102,14 @@ export const decodeGroupedAnalysis1 = (
 });
 
 export const useGroupedAnalysis1 = (): GroupedAnalysis1F | undefined => {
-  const { data } = useSWR<GroupedAnalysis1F>(`${feesBasePath}/all`, fetcher, {
-    refreshInterval: Duration.millisFromSeconds(1),
-    suspense: true,
-  });
+  const { data } = useSWR<GroupedAnalysis1F>(
+    `${getDomain()}/api/fees/grouped-analysis-1`,
+    fetcher,
+    {
+      refreshInterval: Duration.millisFromSeconds(1),
+      suspense: true,
+    },
+  );
 
   return data;
 };

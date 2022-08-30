@@ -3,16 +3,16 @@ import FirstVidget from "../Vidgets/FirstVidget";
 import SecondVidget from "../Vidgets/SecondVidget";
 import ThirdVidget from "../Vidgets/ThirdVidget";
 import FourthVidget from "../Vidgets/FourthVidget";
-import { TranslationsContext } from "../../translations-context";
+import TranslationsContext from "../../contexts/TranslationsContext";
 import { useState, useContext } from "react";
-import type { StepperPoint } from "../../context/StepperContext";
-import { StepperContext } from "../../context/StepperContext";
+import type { StepperPoint } from "../../contexts/StepperContext";
+import { StepperContext } from "../../contexts/StepperContext";
 import type { moneyType } from "../Vidgets/helpers";
 import { historicalData } from "./historicalData";
 import styles from "./Landing.module.scss";
 import { OFFSET_FAQ } from "../Navigation/helpers";
 import { calcCenterElement } from "../../utils/calcCenterElement";
-import { NavigationContext } from "../../context/NavigationContext";
+import { NavigationContext } from "../../contexts/NavigationContext";
 
 const FeeBurnedBlock = () => {
   const t = React.useContext(TranslationsContext);

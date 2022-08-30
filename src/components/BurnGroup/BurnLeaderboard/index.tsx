@@ -2,7 +2,7 @@ import range from "lodash/range";
 import type { FC, RefObject } from "react";
 import { memo, useCallback, useRef, useState } from "react";
 import { usePopper } from "react-popper";
-import { useAdminToken } from "../../../admin";
+import { useAdminToken } from "../../../hooks/use-admin-token";
 import { useContractsFreshness } from "../../../api/contracts";
 import { useGroupedAnalysis1 } from "../../../api/grouped-analysis-1";
 import type { LeaderboardEntry, Leaderboards } from "../../../api/leaderboards";

@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { TooltipTitle } from "../Texts";
 import * as Format from "../../format";
-import roundNerdLarge from "./round-nerd-large.svg";
+import roundNerdLarge from "../../assets/round-nerd-large.svg";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import closeSvg from "../../assets/close.svg";

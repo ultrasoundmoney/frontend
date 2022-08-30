@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TranslationsContext } from "../../translations-context";
+import TranslationsContext from "../../contexts/TranslationsContext";
 import Twemoji from "../Twemoji";
 
 type GoalBlcokProps = {

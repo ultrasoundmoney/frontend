@@ -6,7 +6,7 @@ import { getDateTimeFromSlot } from "../../beacon-time";
 import UpdatedAgo from "../UpdatedAgo";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 import EthSupplyTooltip from "./EthSupplyTooltip";
-import Nerd from "./Nerd";
+import Nerd from "../Nerd";
 import PreciseEth from "./PreciseEth";
 
 type Props = { ethSupply: EthSupply };

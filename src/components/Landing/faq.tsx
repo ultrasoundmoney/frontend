@@ -1,8 +1,8 @@
 import * as React from "react";
 import Accordion from "../Accordion";
-import { TranslationsContext } from "../../translations-context";
+import TranslationsContext from "../../contexts/TranslationsContext";
 import { SectionTitle } from "../TextsNext/SectionTitle";
-import { NavigationContext } from "../../context/NavigationContext";
+import { NavigationContext } from "../../contexts/NavigationContext";
 import { calcCenterElement } from "../../utils/calcCenterElement";
 
 const FaqBlock: React.FC = () => {

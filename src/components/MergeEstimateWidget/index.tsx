@@ -12,7 +12,8 @@ import Twemoji from "../Twemoji";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
 import MergeEstimateTooltip from "./MergeEstimateTooltip";
-import Nerd from "./Nerd";
+import Nerd from "../Nerd";
+import { TOTAL_TERMINAL_DIFFICULTY } from "../../eth-constants";
 
 type TimeLeft = {
   days: number;
@@ -27,8 +28,6 @@ const getTimeLeft = (now: Date, estimatedDateTime: Date) => ({
   minutes: DateFns.differenceInMinutes(estimatedDateTime, now) % 60,
   seconds: DateFns.differenceInSeconds(estimatedDateTime, now) % 60,
 });
-
-export const TOTAL_TERMINAL_DIFFICULTY = 5.875e22;
 
 const CountdownNumber: FC<{ children: number | undefined }> = ({
   children,

@@ -1,7 +1,7 @@
 import * as React from "react";
 import Link from "next/link";
 import twemoji from "twemoji";
-import { TranslationsContext } from "../../translations-context";
+import TranslationsContext from "../../contexts/TranslationsContext";
 import styles from "./Navigation.module.scss";
 
 const Navigation: React.FC = () => {

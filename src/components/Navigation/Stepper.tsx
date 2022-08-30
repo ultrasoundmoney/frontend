@@ -7,9 +7,9 @@ import React, {
 } from "react";
 import Link from "next/link";
 import Steps from "./Steps";
-import type { StepperPoint } from "../../context/StepperContext";
-import { StepperContext } from "../../context/StepperContext";
-import { TranslationsContext } from "../../translations-context";
+import type { StepperPoint } from "../../contexts/StepperContext";
+import { StepperContext } from "../../contexts/StepperContext";
+import TranslationsContext from "../../contexts/TranslationsContext";
 import type { ActionLogo } from "./types";
 import {
   getIconOffset,
@@ -19,7 +19,7 @@ import {
   MOBILE_VERTICAL_SCROLL_BREAK_POINT,
 } from "./helpers";
 import classes from "./Navigation.module.scss";
-import { NavigationContext } from "../../context/NavigationContext";
+import { NavigationContext } from "../../contexts/NavigationContext";
 
 const Stepper: React.FC = () => {
   const t = React.useContext(TranslationsContext);

@@ -1,6 +1,6 @@
 import nftDropPoster from "../../assets/nft-drop.jpg";
 import React from "react";
-import { TranslationsContext } from "../../translations-context";
+import TranslationsContext from "../../contexts/TranslationsContext";
 
 const NftDrop: React.FC = () => {
   const t = React.useContext(TranslationsContext);

@@ -5,7 +5,7 @@ import { FeatureFlagsContext } from "../feature-flags";
 import BodyText from "./TextsNext/BodyText";
 
 export const LabelUnitText: FC<{
-  children: string | undefined;
+  children: ReactNode;
   className?: string;
   skeletonWidth?: string;
 }> = ({ children, className, skeletonWidth = "3rem" }) => {

@@ -19,7 +19,7 @@ import { defaultOptions } from "../../utils/chart-defaults";
 import * as DateFns from "date-fns";
 
 import styles from "./SupplyChart.module.scss";
-import { TranslationsContext } from "../../translations-context";
+import TranslationsContext from "../../contexts/TranslationsContext";
 import { formatOneDecimal } from "../../format";
 
 if (typeof window !== "undefined") {

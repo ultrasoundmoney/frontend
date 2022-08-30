@@ -7,10 +7,9 @@ import type { EthSupply } from "../../api/eth-supply";
 import type { MergeEstimate } from "../../api/merge-estimate";
 import type { TotalDifficultyProgress } from "../../api/total-difficulty-progress";
 import { pointsFromTotalDifficultyProgress } from "../../api/total-difficulty-progress";
+import { TOTAL_TERMINAL_DIFFICULTY } from "../../eth-constants";
+import MergeEstimateWidget from "../MergeEstimateWidget";
 import EthSupplyWidget from "../SupplyWidgets/EthSupplyWidget";
-import MergeEstimateWidget, {
-  TOTAL_TERMINAL_DIFFICULTY,
-} from "../SupplyWidgets/MergeEstimateWidget";
 import TotalDifficultyProgressWidget from "../TotalDifficultyProgressWidget";
 const PercentageToTTDWidget = dynamic(() => import("../PercentageToTTDWidget"));
 

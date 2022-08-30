@@ -1,4 +1,4 @@
-import type { StepperPoint } from "../../context/StepperContext";
+import type { StepperPoint } from "../../contexts/StepperContext";
 import { calcCenterElement } from "../../utils/calcCenterElement";
 import classes from "./Navigation.module.scss";
 

@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useEffect, useState } from "react";
-import { StepperContext } from "../../context/StepperContext";
+import { StepperContext } from "../../contexts/StepperContext";
 import type { StepperPointProps } from "./types";
 import classes from "./StepperDots.module.scss";
 

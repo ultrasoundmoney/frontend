@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { TranslationsContext } from "../../../translations-context";
+import TranslationsContext from "../../../contexts/TranslationsContext";
 import BlockText from "./BlockText";
 
 const SVGrender = () => {

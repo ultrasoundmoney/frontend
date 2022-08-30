@@ -1,13 +1,13 @@
 import * as DateFns from "date-fns";
 import dynamic from "next/dynamic";
 import * as React from "react";
-import { MERGE_TIMESTAMP_ESTIMATED } from "../../eth-time";
+import TranslationsContext from "../../contexts/TranslationsContext";
+import { MERGE_TIMESTAMP_ESTIMATED } from "../../eth-constants";
 import { formatOneDecimal } from "../../format";
 import {
   estimatedDailyFeeBurn,
   estimatedDailyIssuance,
 } from "../../utils/metric-utils";
-import { useTranslations } from "../../utils/use-translation";
 import Slider from "../Slider/Slider";
 import { TextInter } from "../Texts";
 import Twemoji from "../Twemoji";
@@ -33,7 +33,7 @@ const getDaysUntil = (dt: Date) =>
   DateFns.differenceInDays(dt, DateFns.startOfDay(new Date()));
 
 const SupplyView: React.FC = () => {
-  const { translations: t } = useTranslations();
+  const t = React.useContext(TranslationsContext);
   const [daysUntilMaxProjectedMergeDate, setMaxDaysUntilMerge] = React.useState(
     getDaysUntil(MAX_PROJECTED_MERGE_DATE),
   );

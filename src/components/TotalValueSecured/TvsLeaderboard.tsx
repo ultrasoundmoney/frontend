@@ -1,7 +1,7 @@
 import type { FC, HTMLAttributes, RefObject } from "react";
 import { useCallback, useContext, useRef, useState } from "react";
 import { usePopper } from "react-popper";
-import { useAdminToken } from "../../admin";
+import { useAdminToken } from "../../hooks/use-admin-token";
 import { useContractsFreshness } from "../../api/contracts";
 import type { TvsRanking } from "../../api/total-value-secured";
 import { FeatureFlagsContext } from "../../feature-flags";

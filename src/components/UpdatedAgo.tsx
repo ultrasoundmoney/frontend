@@ -30,7 +30,7 @@ const UpdatedAge: FC<{ updatedAt: DateTimeString }> = ({ updatedAt }) => {
         updated
       </LabelText>
       <LabelUnitText className="-mr-1" skeletonWidth="1rem">
-        {String(timeElapsed)}
+        {timeElapsed}
       </LabelUnitText>
       <LabelText className="ml-1 truncate">seconds</LabelText>
       <LabelText className="text-slateus-400">ago</LabelText>

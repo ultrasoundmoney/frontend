@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { useEffect, useRef, useState, useContext } from "react";
 import BatImg from "../../../assets/bat.png";
-import { TranslationsContext } from "../../../translations-context";
+import TranslationsContext from "../../../contexts/TranslationsContext";
 import SVGrenderText from "../BTCETH/generateText";
 import DrawingLine from "../DrawingLine";
 import Graphics from "./Graphics";

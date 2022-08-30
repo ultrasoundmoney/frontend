@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { TranslationsContext } from "../../translations-context";
+import TranslationsContext from "../../contexts/TranslationsContext";
 import StepperPoint from "./StepperPoint";
 import StepperTrack from "./StepperTrack";
 import { motion } from "framer-motion";

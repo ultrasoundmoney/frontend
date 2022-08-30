@@ -2,8 +2,8 @@ import type { RefObject } from "react";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import styles from "./DrawingLine.module.scss";
-import type { StepperPoint } from "../../../context/StepperContext";
-import { StepperContext } from "../../../context/StepperContext";
+import type { StepperPoint } from "../../../contexts/StepperContext";
+import { StepperContext } from "../../../contexts/StepperContext";
 
 interface DrawingLineProps {
   pointRef: RefObject<HTMLDivElement> | null;

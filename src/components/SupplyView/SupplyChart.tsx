@@ -7,9 +7,9 @@ import last from "lodash/last";
 import merge from "lodash/merge";
 import * as React from "react";
 import { useSupplyProjectionInputs } from "../../api/supply-projection";
-import { LONDON_HARDFORK_DATE_TIME } from "../../eth-time";
+import { LONDON_HARDFORK_DATE_TIME } from "../../eth-constants";
 import { formatOneDecimal } from "../../format";
-import { TranslationsContext } from "../../translations-context";
+import TranslationsContext from "../../contexts/TranslationsContext";
 import { COLORS, defaultOptions } from "../../utils/chart-defaults";
 import {
   estimatedDailyFeeBurn,
