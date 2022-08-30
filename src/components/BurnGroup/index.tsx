@@ -87,7 +87,7 @@ const BurnGroup: FC<Props> = ({ groupedAnalysis1 }) => {
           timeFrame={timeFrame}
           unit={unit}
         />
-        <div className="lg:col-start-2 lg:row-start-1 lg:row-end-5 lg:h-[684px] xl:h-[702px] flex flex-col gap-y-4">
+        <div className="lg:col-start-2 lg:row-start-1 lg:row-end-5 lg:h-[688px] xl:h-[702px] flex flex-col gap-y-4">
           <BurnLeaderboard
             onClickTimeFrame={handleClickTimeFrame}
             timeFrame={timeFrame}

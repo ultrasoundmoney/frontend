@@ -114,7 +114,7 @@ const LatestBlocks: FC<Props> = ({ groupedAnalysis1, unit }) => {
         <ul
           className={`
             flex flex-col gap-y-4
-            max-h-[184px] md:max-h-[209px] overflow-y-auto
+            max-h-[184px] md:max-h-[214px] overflow-y-auto
             pr-1 -mr-3
             ${scrollbarStyles["styled-scrollbar"]}
           `}
