@@ -208,7 +208,7 @@ const PercentageToTTDWidget: FC<Props> = ({
   ]);
 
   return (
-    <WidgetErrorBoundary title="percentage to TTD">
+    <WidgetErrorBoundary title="percentage of TTD">
       <WidgetBackground className="relative w-full flex flex-col gap-y-8 overflow-hidden">
         <div
           // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
