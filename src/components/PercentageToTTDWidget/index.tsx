@@ -53,7 +53,6 @@ const baseOptions: Highcharts.Options = {
   },
   tooltip: {
     backgroundColor: "transparent",
-    xDateFormat: "%m-%d",
     useHTML: true,
     borderWidth: 4,
     shadow: false,
