@@ -1,4 +1,4 @@
-import { differenceInSeconds, parseISO } from "date-fns";
+import { differenceInMinutes, differenceInSeconds, parseISO } from "date-fns";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 import type { DateTimeString } from "../time";
@@ -6,17 +6,24 @@ import { LabelUnitText } from "./Texts";
 import LabelText from "./TextsNext/LabelText";
 
 const UpdatedAge: FC<{ updatedAt: DateTimeString }> = ({ updatedAt }) => {
-  const [timeElapsed, setTimeElapsed] = useState<number>();
+  const [timeElapsed, setTimeElapsed] = useState<{
+    secs: number;
+    mins: number;
+  }>();
 
   useEffect(() => {
     if (updatedAt === undefined) {
       return;
     }
 
-    setTimeElapsed(differenceInSeconds(new Date(), parseISO(updatedAt)));
+    const secs = differenceInSeconds(new Date(), parseISO(updatedAt));
+    const mins = differenceInMinutes(new Date(), parseISO(updatedAt));
+    setTimeElapsed({ secs, mins });
 
     const intervalId = window.setInterval(() => {
-      setTimeElapsed(differenceInSeconds(new Date(), parseISO(updatedAt)));
+      const secs = differenceInSeconds(new Date(), parseISO(updatedAt));
+      const mins = differenceInMinutes(new Date(), parseISO(updatedAt));
+      setTimeElapsed({ secs, mins });
     }, 1000);
 
     return () => {
@@ -26,13 +33,23 @@ const UpdatedAge: FC<{ updatedAt: DateTimeString }> = ({ updatedAt }) => {
 
   return (
     <div className="flex gap-x-1 truncate items-baseline">
-      <LabelText className="text-slateus-400 hidden md:block">
-        updated
-      </LabelText>
+      <LabelText className="text-slateus-400">updated</LabelText>
       <LabelUnitText className="-mr-1" skeletonWidth="1rem">
-        {timeElapsed}
+        {timeElapsed === undefined
+          ? undefined
+          : timeElapsed.secs >= 60
+          ? timeElapsed.mins
+          : timeElapsed.secs}
       </LabelUnitText>
-      <LabelText className="ml-1 truncate">seconds</LabelText>
+      <LabelText className="ml-1 truncate">
+        {timeElapsed === undefined
+          ? undefined
+          : timeElapsed?.secs >= 60
+          ? timeElapsed.mins === 1
+            ? "minute"
+            : "minutes"
+          : "seconds"}
+      </LabelText>
       <LabelText className="text-slateus-400">ago</LabelText>
     </div>
   );

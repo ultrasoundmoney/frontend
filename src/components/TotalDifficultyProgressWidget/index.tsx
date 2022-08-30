@@ -46,7 +46,7 @@ const TotalDifficultyProgressWidget: FC<Props> = ({
           ></div>
         </div>
       </div>
-      <div className="flex justify-between whitespace-nowrap items-baseline">
+      <div className="flex justify-between whitespace-nowrap items-baseline gap-x-1">
         <UpdatedAgo updatedAt={mergeEstimate.timestamp} />
         <div>
           <LabelUnitText skeletonWidth="2rem">

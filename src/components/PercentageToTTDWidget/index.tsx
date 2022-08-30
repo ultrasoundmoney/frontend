@@ -8,10 +8,11 @@ import type { FC } from "react";
 import { useMemo } from "react";
 import colors from "../../colors";
 import * as Format from "../../format";
+import type { DateTimeString } from "../../time";
 import LabelText from "../TextsNext/LabelText";
+import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
-import styles from "./styles.module.css";
 
 // Somehow resolves an error thrown by the annotation lib
 if (typeof window !== "undefined") {
@@ -78,6 +79,7 @@ type Props = {
   difficultyProjectionSeries: Point[];
   // A map used for fast-lookup of the Y in the series above by X.
   difficultyProjectionMap: Record<number, number>;
+  timestamp: DateTimeString;
 };
 
 const PercentageToTTDWidget: FC<Props> = ({
@@ -85,6 +87,7 @@ const PercentageToTTDWidget: FC<Props> = ({
   difficultyProjectionMap,
   difficultyProjectionSeries,
   difficultySeries,
+  timestamp,
 }) => {
   const options = useMemo((): Highcharts.Options => {
     const lastPoint = _last(difficultySeries);
@@ -190,11 +193,15 @@ const PercentageToTTDWidget: FC<Props> = ({
               }
 
               const dt = new Date(x);
-              const formattedDate = DateFns.format(dt, "MMM d");
+              const formattedDate = DateFns.format(dt, "MMM d haaa");
 
-              return `<div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200"><div class="text-blue-spindle">${formattedDate}</div><div class="text-white">${Format.formatPercentTwoDecimals(
-                total / 100,
-              )}</div></div>`;
+              return `
+                <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
+                  <div class="text-blue-spindle">${formattedDate}</div>
+                  <div class="text-white">
+                  ${Format.formatPercentTwoDecimals(total / 100)}
+                  </div>
+                </div>`;
             },
           },
         } as Highcharts.Options),
@@ -241,12 +248,12 @@ const PercentageToTTDWidget: FC<Props> = ({
             select-none
             overflow-hidden
             [&>div]:flex-grow
-            ${styles.chart}
           `}
         >
           <HighchartsReact highcharts={Highcharts} options={options} />
         </div>
-        <div className="flex justify-end">
+        <div className="flex justify-between flex-wrap gap-y-2">
+          <UpdatedAgo updatedAt={timestamp} />
           <LabelText className="text-slateus-400">
             inspired by{" "}
             <a

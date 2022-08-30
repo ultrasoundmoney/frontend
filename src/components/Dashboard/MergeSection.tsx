@@ -94,6 +94,7 @@ const MergeSection: FC<Props> = ({
           difficultyProjectionMap={difficultyProjectionMap}
           difficultyProjectionSeries={difficultyProjectionSeries}
           difficultySeries={totalDifficultyByDay}
+          timestamp={totalDifficultyProgress.timestamp}
         />
       </div>
     </div>
