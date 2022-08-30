@@ -1,8 +1,6 @@
 import dynamic from "next/dynamic";
 import type { FC } from "react";
-import { useContext } from "react";
 import type { GroupedAnalysis1 } from "../../api/grouped-analysis-1";
-import { FeatureFlagsContext } from "../../feature-flags";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import Flippenings from "../Flippenings";
 import IssuanceBreakdown from "../IssuanceBreakdown";

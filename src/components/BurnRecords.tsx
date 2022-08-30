@@ -1,14 +1,9 @@
-import { group } from "console";
 import flow from "lodash/flow";
-import { Group } from "next/dist/shared/lib/router/utils/route-regex";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import type { BurnRecord } from "../api/burn-records";
-import {
-  GroupedAnalysis1,
-  useGroupedAnalysis1,
-} from "../api/grouped-analysis-1";
+import type { GroupedAnalysis1 } from "../api/grouped-analysis-1";
 import * as Format from "../format";
 import scrollbarStyles from "../styles/Scrollbar.module.scss";
 import type { TimeFrameNext } from "../time-frames";

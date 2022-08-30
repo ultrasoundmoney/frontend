@@ -1,4 +1,5 @@
-import { FC, useContext } from "react";
+import type { FC } from "react";
+import { useContext } from "react";
 import { FeatureFlagsContext } from "../../feature-flags";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import FollowingYou from "../FollowingYou";

@@ -1,11 +1,8 @@
-import * as DateFns from "date-fns";
 import JSBI from "jsbi";
 import type { FC } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { EthSupply } from "../../api/eth-supply";
 import { getDateTimeFromSlot } from "../../beacon-time";
-import { LabelUnitText } from "../Texts";
-import LabelText from "../TextsNext/LabelText";
 import UpdatedAgo from "../UpdatedAgo";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 import EthSupplyTooltip from "./EthSupplyTooltip";

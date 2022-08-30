@@ -1,7 +1,8 @@
 import * as DateFns from "date-fns";
 import JSBI from "jsbi";
 import flow from "lodash/flow";
-import { FC, useEffect } from "react";
+import type { FC } from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 import { useScarcity } from "../api/scarcity";
 import Colors from "../colors";

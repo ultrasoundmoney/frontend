@@ -1,10 +1,10 @@
-import JSBI from "jsbi";
 import * as DateFns from "date-fns";
+import JSBI from "jsbi";
+import { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
-import { Eth, WEI_PER_GWEI_JSBI } from "../eth-units";
-import { feesBasePath } from "./fees";
 import * as Duration from "../duration";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { WEI_PER_GWEI_JSBI } from "../eth-units";
+import { feesBasePath } from "./fees";
 
 export type EthSupplyF = {
   beaconBalancesSum: {

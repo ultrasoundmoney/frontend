@@ -1,6 +1,7 @@
 import * as DateFns from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
-import { FC, useContext, useEffect, useState } from "react";
+import type { FC } from "react";
+import { useContext, useEffect, useState } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
 import type { MergeEstimate } from "../../api/merge-estimate";
