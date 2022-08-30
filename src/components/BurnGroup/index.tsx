@@ -6,7 +6,6 @@ import type { Unit } from "../../denomination";
 import type { TimeFrameNext } from "../../time-frames";
 import { timeFramesNext } from "../../time-frames";
 import BurnCategoryWidget from "../BurnCategoryWidget";
-import BurnRecords from "../BurnRecords";
 import BurnTotal from "../BurnTotal";
 import CurrencyControl from "../CurrencyControl";
 import DeflationaryStreak from "../DeflationaryStreak";
@@ -17,6 +16,7 @@ const BurnLeaderboard = dynamic(() => import("./BurnLeaderboard"), {
   ssr: false,
 });
 const LatestBlocks = dynamic(() => import("../LatestBlocks"), { ssr: false });
+const BurnRecords = dynamic(() => import("../BurnRecords"), { ssr: false });
 
 type Props = { groupedAnalysis1: GroupedAnalysis1 };
 

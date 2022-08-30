@@ -8,7 +8,7 @@ import { FeatureFlagsContext } from "../feature-flags";
 import type { BurnRecords, BurnRecordsF } from "./burn-records";
 import { decodeBurnRecords } from "./burn-records";
 import fetcher from "./default-fetcher";
-import { feesBasePath, feesWsUrl } from "./fees";
+import { feesWsUrl } from "./fees";
 import type { Leaderboards } from "./leaderboards";
 
 type WeiPerMinute = number;

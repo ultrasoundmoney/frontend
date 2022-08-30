@@ -97,6 +97,60 @@ const LatestBlockAge: FC<{ groupedAnalysis1: GroupedAnalysis1 }> = ({
   );
 };
 
+const LatestBlockComponent: FC<{
+  number: number | undefined;
+  baseFeePerGas: number | undefined;
+  fees: number | undefined;
+  feesUsd: number | undefined;
+  unit: Unit;
+}> = ({ number, baseFeePerGas, fees, feesUsd, unit }) => (
+  <div className="transition-opacity duration-700 font-light text-base md:text-lg animate-fade-in">
+    <a
+      href={
+        number === undefined
+          ? undefined
+          : `https://etherscan.io/block/${number}`
+      }
+      target="_blank"
+      rel="noreferrer"
+    >
+      <li className="grid grid-cols-3 hover:opacity-60">
+        <span className="font-roboto text-white">
+          {formatBlockNumber(number) || <Skeleton inline={true} width="7rem" />}
+        </span>
+        <div className="text-right mr-1">
+          <TextRoboto className="font-roboto text-white">
+            {formatGas(baseFeePerGas) || (
+              <Skeleton
+                className="-mr-0.5 md:mr-0"
+                inline={true}
+                width="1rem"
+              />
+            )}
+          </TextRoboto>
+          <div className="hidden md:inline">
+            <span className="font-inter">&thinsp;</span>
+            <span className="font-roboto text-blue-spindle font-extralight">
+              Gwei
+            </span>
+          </div>
+        </div>
+        <div className="text-right">
+          <TextRoboto className="font-roboto text-white">
+            {formatFees(unit, fees, feesUsd) || (
+              <Skeleton inline={true} width="2rem" />
+            )}
+          </TextRoboto>
+          <AmountUnitSpace />
+          <span className="font-roboto text-blue-spindle font-extralight">
+            {unit === "eth" ? "ETH" : "USD"}
+          </span>
+        </div>
+      </li>
+    </a>
+  </div>
+);
+
 type Props = { groupedAnalysis1: GroupedAnalysis1; unit: Unit };
 
 const LatestBlocks: FC<Props> = ({ groupedAnalysis1, unit }) => {
@@ -123,56 +177,14 @@ const LatestBlocks: FC<Props> = ({ groupedAnalysis1, unit }) => {
             ? latestBlockFeesSkeletons
             : latestBlockFees
           ).map(({ number, fees, feesUsd, baseFeePerGas }, index) => (
-            <div
-              className="transition-opacity duration-700 font-light text-base md:text-lg animate-fade-in"
+            <LatestBlockComponent
               key={number || index}
-            >
-              <a
-                href={
-                  number === undefined
-                    ? undefined
-                    : `https://etherscan.io/block/${number}`
-                }
-                target="_blank"
-                rel="noreferrer"
-              >
-                <li className="grid grid-cols-3 hover:opacity-60">
-                  <span className="font-roboto text-white">
-                    {formatBlockNumber(number) || (
-                      <Skeleton inline={true} width="7rem" />
-                    )}
-                  </span>
-                  <div className="text-right mr-1">
-                    <TextRoboto className="font-roboto text-white">
-                      {formatGas(baseFeePerGas) || (
-                        <Skeleton
-                          className="-mr-0.5 md:mr-0"
-                          inline={true}
-                          width="1rem"
-                        />
-                      )}
-                    </TextRoboto>
-                    <div className="hidden md:inline">
-                      <span className="font-inter">&thinsp;</span>
-                      <span className="font-roboto text-blue-spindle font-extralight">
-                        Gwei
-                      </span>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <TextRoboto className="font-roboto text-white">
-                      {formatFees(unit, fees, feesUsd) || (
-                        <Skeleton inline={true} width="2rem" />
-                      )}
-                    </TextRoboto>
-                    <AmountUnitSpace />
-                    <span className="font-roboto text-blue-spindle font-extralight">
-                      {unit === "eth" ? "ETH" : "USD"}
-                    </span>
-                  </div>
-                </li>
-              </a>
-            </div>
+              number={number}
+              fees={fees}
+              feesUsd={feesUsd}
+              baseFeePerGas={baseFeePerGas}
+              unit={unit}
+            />
           ))}
         </ul>
         <div className="flex justify-between flex-wrap gap-y-2">
