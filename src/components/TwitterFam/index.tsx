@@ -1,7 +1,6 @@
 import type { FC, RefObject } from "react";
 import { useCallback, useRef, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
-import Skeleton from "react-loading-skeleton";
 import { usePopper } from "react-popper";
 import type { FamProfile } from "../../api/profiles";
 import { useProfiles } from "../../api/profiles";
@@ -111,7 +110,6 @@ export const useTooltip = () => {
 };
 
 const TwitterFam: FC = () => {
-  const famCount = useProfiles()?.count;
   const profiles = useProfiles()?.profiles;
   const { md } = useActiveBreakpoint();
 
@@ -153,13 +151,7 @@ const TwitterFam: FC = () => {
           title="join the ultra sound Twitter fam"
           className="hover:underline hover:text-blue-spindle relative h-full"
         >
-          {famCount === undefined ? (
-            <>
-              join <Skeleton inline={true} width="4rem" /> fam members
-            </>
-          ) : (
-            `join 5000+ fam members`
-          )}
+          join 5000+ fam members
         </a>
       </h1>
       <div className="flex items-center justify-center">
