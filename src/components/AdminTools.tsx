@@ -1,14 +1,10 @@
 import type { FC } from "react";
 import { useContext, useState } from "react";
-import type { Flag } from "../../feature-flags";
-import {
-  displayFlagMap,
-  FeatureFlagsContext,
-  flags,
-} from "../../feature-flags";
-import { TextRoboto } from "../Texts";
-import ToggleSwitch from "../ToggleSwitch";
-import { WidgetTitle } from "../WidgetSubcomponents";
+import type { Flag } from "../feature-flags";
+import { displayFlagMap, FeatureFlagsContext, flags } from "../feature-flags";
+import { TextRoboto } from "./Texts";
+import ToggleSwitch from "./ToggleSwitch";
+import { WidgetTitle } from "./WidgetSubcomponents";
 
 const AdminTools: FC<{
   setFlag: ({ flag, enabled }: { flag: Flag; enabled: boolean }) => void;

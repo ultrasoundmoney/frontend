@@ -9,7 +9,7 @@ import * as Format from "../../format";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { AmountBillionsUsdAnimated } from "../Amount";
-import AdminControls from "../BurnGroup/BurnLeaderboard/AdminControls";
+import AdminControls from "../AdminControls";
 import ImageWithTooltip from "../ImageWithTooltip";
 import Link from "../Link";
 import Modal from "../Modal";

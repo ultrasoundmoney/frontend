@@ -1,8 +1,8 @@
 import * as DateFns from "date-fns";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
-import { useAdminToken } from "../../../hooks/use-admin-token";
-import * as Contracts from "../../../api/contracts";
+import { useAdminToken } from "../hooks/use-admin-token";
+import * as Contracts from "../api/contracts";
 
 const onSetTwitterHandle = async (
   address: string,

@@ -36,9 +36,9 @@ import MonetaryPremiumSection from "./MonetaryPremiumSection";
 import JoinDiscordSection from "./JoinDiscordSection";
 import FaqBlock from "../Landing/faq";
 import FamSection from "./FamSection";
-const AdminTools = dynamic(() => import("./AdminTools"));
+import BurnSection from "./BurnSection";
+const AdminTools = dynamic(() => import("../AdminTools"));
 const SupplyWidgets = dynamic(() => import("../SupplyWidgets"));
-const BurnGroup = dynamic(() => import("../BurnGroup"));
 const TotalValueSecured = dynamic(() => import("../TotalValueSecured"));
 
 const Title: FC<{ children: ReactNode }> = ({ children }) => (
@@ -219,18 +219,7 @@ const Dashboard: FC<Props> = ({
               </Suspense>
             </BasicErrorBoundary>
             <div className="h-16"></div>
-            <div id="burn">
-              <SectionDivider
-                link="burn"
-                subtitle="it's getting hot in here"
-                title="the burn"
-              />
-              <BasicErrorBoundary>
-                <Suspense>
-                  <BurnGroup groupedAnalysis1={groupedAnalysis1} />
-                </Suspense>
-              </BasicErrorBoundary>
-            </div>
+            <BurnSection groupedAnalysis1={groupedAnalysis1} />
             {featureFlags.showBackgroundOrbs && (
               <video
                 className="absolute w-1/2 right-0 -mt-64 opacity-20 -z-10"
