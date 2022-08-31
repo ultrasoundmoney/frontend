@@ -1,12 +1,12 @@
+import dynamic from "next/dynamic";
 import type { FC } from "react";
-import { Suspense } from "react";
-import { useContext } from "react";
+import { Suspense, useContext } from "react";
 import { FeatureFlagsContext } from "../../feature-flags";
 import BasicErrorBoundary from "../BasicErrorBoundary";
-import FollowingYou from "../FollowingYou";
-import FaqBlock from "../Landing/faq";
-import TwitterFam from "../TwitterFam";
-import JoinDiscordSection from "./JoinDiscordSection";
+const TwitterFam = dynamic(() => import("../TwitterFam"), { suspense: true });
+const FollowingYou = dynamic(() => import("../FollowingYou"), {
+  suspense: true,
+});
 
 const FamSection: FC = () => {
   const featureFlags = useContext(FeatureFlagsContext);
@@ -35,12 +35,6 @@ const FamSection: FC = () => {
           <div className="flex px-4 md:px-0 pt-20">
             <div className="w-full lg:w-2/3 md:m-auto relative">
               <FollowingYou />
-            </div>
-          </div>
-          <JoinDiscordSection />
-          <div className="flex px-4 md:px-0 mt-32">
-            <div className="w-full lg:w-2/3 md:m-auto relative">
-              <FaqBlock />
             </div>
           </div>
         </div>

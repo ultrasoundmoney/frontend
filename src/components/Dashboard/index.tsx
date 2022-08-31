@@ -32,14 +32,14 @@ import TopBar from "../TopBar";
 import headerGlowSvg from "./blurred-bg.svg";
 import styles from "./Dashboard.module.scss";
 import MergeSection from "./MergeSection";
+import MonetaryPremiumSection from "./MonetaryPremiumSection";
+import JoinDiscordSection from "./JoinDiscordSection";
+import FaqBlock from "../Landing/faq";
+import FamSection from "./FamSection";
 const AdminTools = dynamic(() => import("./AdminTools"));
 const SupplyWidgets = dynamic(() => import("../SupplyWidgets"));
 const BurnGroup = dynamic(() => import("../BurnGroup"));
 const TotalValueSecured = dynamic(() => import("../TotalValueSecured"));
-const MonetaryPremiumSection = dynamic(
-  () => import("./MonetaryPremiumSection"),
-);
-const FamSection = dynamic(() => import("./FamSection"));
 
 const Title: FC<{ children: ReactNode }> = ({ children }) => (
   <div
@@ -275,6 +275,12 @@ const Dashboard: FC<Props> = ({
             )}
             <MonetaryPremiumSection groupedAnalysis1={groupedAnalysis1} />
             <FamSection />
+            <JoinDiscordSection />
+            <div className="flex px-4 md:px-0 mt-32">
+              <div className="w-full lg:w-2/3 md:m-auto relative">
+                <FaqBlock />
+              </div>
+            </div>
             <div className="w-full flex flex-col items-center pb-40">
               <SectionDivider title="still have questions?" />
               <div className="flex flex-col gap-y-4 justify-start">

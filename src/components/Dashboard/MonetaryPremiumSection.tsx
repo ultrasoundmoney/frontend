@@ -10,6 +10,7 @@ import SectionDivider from "../SectionDivider";
 import ValidatorRewardsWidget from "../ValidatorRewards";
 const ScarcityWidget = dynamic(() => import("../ScarcityWidget"), {
   ssr: false,
+  suspense: true,
 });
 
 type Props = { groupedAnalysis1: GroupedAnalysis1 };
