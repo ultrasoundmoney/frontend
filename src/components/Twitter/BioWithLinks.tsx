@@ -6,7 +6,7 @@ import type {
   LinkableMention,
   Linkables,
   LinkableUrl,
-} from "../../api/fam";
+} from "../../api/profiles";
 
 type Text = { type: "text"; text: string[] };
 type Url = { type: "url"; linkable: LinkableUrl };
