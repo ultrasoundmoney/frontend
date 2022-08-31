@@ -1,9 +1,6 @@
-import { useContext, useEffect, useState } from "react";
-import useWebSocket from "react-use-websocket";
 import useSWR from "swr";
 import * as Duration from "../duration";
 import type { Wei } from "../eth-units";
-import { FeatureFlagsContext } from "../feature-flags";
 import type { BurnRecords, BurnRecordsF } from "./burn-records";
 import { decodeBurnRecords } from "./burn-records";
 import { fetchJson } from "./fetchers";
@@ -110,56 +107,4 @@ export const useGroupedAnalysis1 = (): GroupedAnalysis1F | undefined => {
   );
 
   return data;
-};
-
-type GroupedAnallysis1Envelope = {
-  id: "grouped-analysis-1";
-  message: GroupedAnalysis1F;
-};
-
-const getIsGroupedAnalysisMessage = (
-  u: unknown,
-): u is GroupedAnallysis1Envelope =>
-  u != null &&
-  typeof (u as GroupedAnallysis1Envelope).id === "string" &&
-  (u as GroupedAnallysis1Envelope).id === "grouped-analysis-1";
-
-export const useGroupedAnalysis1Ws = (): // enabled: boolean,
-GroupedAnalysis1F | undefined => {
-  const { useWebSockets } = useContext(FeatureFlagsContext);
-  const [latestGroupedAnalysis1, setLatestGroupedAnalysis1] =
-    useState<GroupedAnalysis1F>();
-  const [socketUrl] = useState(feesWsUrl);
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const { lastJsonMessage } = useWebSocket(
-    socketUrl,
-    {
-      onOpen: () => console.log("ws opened"),
-      onClose: () => console.log("ws closed"),
-      onError: (event) => console.log("ws error", event),
-      //Will attempt to reconnect on all close events, such as server shutting down
-      shouldReconnect: () => true,
-      share: true,
-    },
-    useWebSockets,
-  );
-
-  useEffect(() => {
-    if (!getIsGroupedAnalysisMessage(lastJsonMessage)) {
-      return undefined;
-    }
-
-    if (latestGroupedAnalysis1 === undefined) {
-      setLatestGroupedAnalysis1(lastJsonMessage.message);
-      return undefined;
-    }
-
-    const newBlock = lastJsonMessage.message.latestBlockFees[0];
-    if (newBlock.number > latestGroupedAnalysis1.latestBlockFees[0].number) {
-      setLatestGroupedAnalysis1(lastJsonMessage.message);
-      return undefined;
-    }
-  }, [lastJsonMessage, latestGroupedAnalysis1, setLatestGroupedAnalysis1]);
-
-  return latestGroupedAnalysis1;
 };
