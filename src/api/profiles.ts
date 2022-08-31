@@ -41,9 +41,7 @@ type ProfilesResponse = {
 };
 
 export const useProfiles = () => {
-  const { data } = useSWR<ProfilesResponse>(`/api/fam/profiles`, fetchJson, {
-    suspense: true,
-  });
+  const { data } = useSWR<ProfilesResponse>("/api/fam/profiles", fetchJson);
 
   return data;
 };
