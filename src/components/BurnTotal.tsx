@@ -17,9 +17,14 @@ import * as StaticEtherData from "../static-ether-data";
 import type { LimitedTimeFrameNext, TimeFrameNext } from "../time-frames";
 import { AmountAnimatedShell } from "./Amount";
 import { TextRoboto } from "./Texts";
+import TimeFrameIndicator from "./TimeFrameIndicator";
 import Twemoji from "./Twemoji";
 import WidgetErrorBoundary from "./WidgetErrorBoundary";
-import { BurnGroupBase, WidgetTitle } from "./WidgetSubcomponents";
+import {
+  BurnGroupBase,
+  WidgetBackground,
+  WidgetTitle,
+} from "./WidgetSubcomponents";
 
 const timeframeFeesBurnedMap: Record<
   TimeFrameNext,
@@ -126,11 +131,52 @@ const BurnTotal: FC<Props> = ({
 
   return (
     <WidgetErrorBoundary title="burn total">
-      <BurnGroupBase
-        onClickTimeFrame={onClickTimeFrame}
-        timeFrame={timeFrame}
-        title="burn total"
-      >
+      <WidgetBackground className="relative overflow-hidden">
+        <div
+          className={`
+              absolute top-20 -left-20
+              w-full h-full
+              opacity-[0.15]
+              blur-[90px]
+              pointer-events-none
+            `}
+          // will-change-transform
+        >
+          <div
+            className={`
+                absolute
+                w-3/5 h-3/5 rounded-[35%]
+                bg-[#243AFF]
+                pointer-events-none
+              `}
+          ></div>
+        </div>
+        <div
+          className={`
+              absolute top-5 -left-20
+              w-full h-full
+              opacity-[0.25]
+              blur-[90px]
+              pointer-events-none
+            `}
+          // will-change-transform
+        >
+          <div
+            className={`
+                absolute
+                w-4/5 h-3/5 rounded-[35%]
+                bg-[#FF8D24]
+                pointer-events-none
+              `}
+          ></div>
+        </div>
+        <div className="flex items-center justify-between">
+          <WidgetTitle>burn total</WidgetTitle>
+          <TimeFrameIndicator
+            onClickTimeFrame={onClickTimeFrame}
+            timeFrame={timeFrame}
+          />
+        </div>
         <div className="flex flex-col gap-y-4 pt-4">
           <div
             className={`
@@ -208,7 +254,7 @@ const BurnTotal: FC<Props> = ({
             </div>
           </div>
         </div>
-      </BurnGroupBase>
+      </WidgetBackground>
     </WidgetErrorBoundary>
   );
 };
