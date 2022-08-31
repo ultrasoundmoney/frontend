@@ -18,7 +18,6 @@ import {
 import type { MergeEstimate } from "../../api/merge-estimate";
 import { useMergeEstimate } from "../../api/merge-estimate";
 import { useScarcity } from "../../api/scarcity";
-import type { TotalDifficultyProgress } from "../../api/total-difficulty-progress";
 import { useTotalDifficultyProgress } from "../../api/total-difficulty-progress";
 import colors from "../../colors";
 import type { Gwei } from "../../eth-units";
