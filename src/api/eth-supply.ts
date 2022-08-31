@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import * as Duration from "../duration";
 import { WEI_PER_GWEI_JSBI } from "../eth-units";
-import { feesBasePath } from "./fees";
+import { fetchJson } from "./fetchers";
 
 export type EthSupplyF = {
   beaconBalancesSum: {
@@ -57,11 +57,8 @@ export const decodeEthSupply = (ethSupply: EthSupplyF): EthSupply => ({
   },
 });
 
-const fetcher = <A>(url: RequestInfo) =>
-  fetch(url).then((res) => res.json() as Promise<A>);
-
 export const useEthSupply = (): EthSupplyF | undefined => {
-  const { data } = useSWR<EthSupplyF>(`${feesBasePath}/eth-supply`, fetcher, {
+  const { data } = useSWR<EthSupplyF>("/api/fees/eth-supply", fetchJson, {
     refreshInterval: Duration.millisFromSeconds(4),
   });
 

@@ -1,5 +1,5 @@
 import type { Category } from "./burn-categories";
-import type { Linkables } from "./fam";
+import type { Linkables } from "./profiles";
 
 type ContractEntry = {
   address: string;

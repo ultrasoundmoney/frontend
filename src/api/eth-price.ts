@@ -1,12 +1,11 @@
 import useSWR from "swr";
 import * as Duration from "../duration";
 import type { TimeFrameNext } from "../time-frames";
-import fetcher from "./default-fetcher";
-import { feesBasePath } from "./fees";
+import { fetchJson } from "./fetchers";
 import type { EthPrice } from "./grouped-analysis-1";
 
 export const useEthPrice = (): EthPrice | undefined => {
-  const { data } = useSWR<EthPrice>(`${feesBasePath}/eth-price`, fetcher, {
+  const { data } = useSWR<EthPrice>("/api/fees/eth-price", fetchJson, {
     refreshInterval: Duration.millisFromSeconds(8),
   });
 
@@ -17,8 +16,8 @@ export type AverageEthPrice = Record<TimeFrameNext, number>;
 
 export const useAverageEthPrice = (): AverageEthPrice | undefined => {
   const { data } = useSWR<AverageEthPrice>(
-    `${feesBasePath}/average-eth-price`,
-    fetcher,
+    "/api/fees/average-eth-price",
+    fetchJson,
     {
       refreshInterval: Duration.millisFromSeconds(8),
     },

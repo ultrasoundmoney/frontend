@@ -1,8 +1,7 @@
 import useSWR from "swr";
 import * as Duration from "../duration";
-import fetcher from "./default-fetcher";
-import type { Linkables } from "./fam";
-import { feesBasePath } from "./fees";
+import { fetchJson } from "./fetchers";
+import type { Linkables } from "./profiles";
 
 export type TvsRanking = {
   coinGeckoUrl: string | undefined;
@@ -33,8 +32,8 @@ export type TotalValueSecured = {
 
 export const useTotalValueSecured = (): TotalValueSecured | undefined => {
   const { data } = useSWR<TotalValueSecured>(
-    `${feesBasePath}/total-value-secured`,
-    fetcher,
+    "/api/fees/total-value-secured",
+    fetchJson,
     {
       refreshInterval: Duration.millisFromSeconds(10),
     },

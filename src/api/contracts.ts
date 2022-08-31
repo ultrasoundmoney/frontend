@@ -1,7 +1,6 @@
 import * as DateFns from "date-fns";
 import mapValues from "lodash/mapValues";
 import useSWR from "swr";
-import { feesBasePath } from "./fees";
 
 export const setContractTwitterHandle = async (
   address: string,
@@ -13,7 +12,7 @@ export const setContractTwitterHandle = async (
   }
 
   const res = await fetch(
-    `${feesBasePath}/contracts/admin/set-twitter-handle?address=${address}&token=${token}&handle=${handle}`,
+    `/api/fees/contracts/admin/set-twitter-handle?address=${address}&token=${token}&handle=${handle}`,
   );
 
   if (res.status !== 200) {
@@ -34,7 +33,7 @@ export const setContractName = async (
   }
 
   const res = await fetch(
-    `${feesBasePath}/contracts/admin/set-name?address=${address}&token=${token}&name=${name}`,
+    `/api/fees/contracts/admin/set-name?address=${address}&token=${token}&name=${name}`,
   );
 
   if (res.status !== 200) {
@@ -55,7 +54,7 @@ export const setContractCategory = async (
   }
 
   const res = await fetch(
-    `${feesBasePath}/contracts/admin/set-category?address=${address}&token=${token}&category=${category}`,
+    `/contracts/admin/set-category?address=${address}&token=${token}&category=${category}`,
   );
 
   if (res.status !== 200) {
@@ -75,7 +74,7 @@ export const setContractLastManuallyVerified = async (
   }
 
   const res = await fetch(
-    `${feesBasePath}/contracts/admin/set-last-manually-verified?address=${address}&token=${token}`,
+    `/contracts/admin/set-last-manually-verified?address=${address}&token=${token}`,
   );
 
   if (res.status !== 200) {

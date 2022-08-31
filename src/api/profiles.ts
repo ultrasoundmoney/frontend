@@ -1,6 +1,5 @@
 import useSWR from "swr";
-import * as Config from "../config";
-import fetcher from "./default-fetcher";
+import { fetchJson } from "./fetchers";
 
 export type LinkableUrl = {
   display_url: string;
@@ -41,15 +40,10 @@ type ProfilesResponse = {
   profiles: FamProfile[];
 };
 
-export const famBasePath =
-  Config.getApiEnv() === "stag"
-    ? "https://api-stag.ultrasound.money/fam"
-    : Config.getApiEnv() === "dev"
-    ? "http://localhost:8082/fam"
-    : "https://api.ultrasound.money/fam";
-
 export const useProfiles = () => {
-  const { data } = useSWR<ProfilesResponse>(`${famBasePath}/profiles`, fetcher);
+  const { data } = useSWR<ProfilesResponse>(`/api/fam/profiles`, fetchJson, {
+    suspense: true,
+  });
 
   return data;
 };

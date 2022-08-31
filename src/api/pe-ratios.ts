@@ -1,6 +1,5 @@
 import useSWR from "swr";
-import fetcher from "./default-fetcher";
-import { feesBasePath } from "./fees";
+import { fetchJson } from "./fetchers";
 
 type PeRatios = {
   AAPL: number;
@@ -13,7 +12,7 @@ type PeRatios = {
 };
 
 export const usePeRatios = (): PeRatios | undefined => {
-  const { data } = useSWR<PeRatios>(`${feesBasePath}/pe-ratios`, fetcher, {});
+  const { data } = useSWR<PeRatios>("/api/fees/pe-ratios", fetchJson, {});
 
   return data;
 };

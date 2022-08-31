@@ -1,8 +1,7 @@
 import useSWR from "swr";
 import * as Duration from "../duration";
 import type { DateTimeString } from "../time";
-import fetcher from "./default-fetcher";
-import { feesBasePath } from "./fees";
+import { fetchJson } from "./fetchers";
 
 export type MergeEstimate = {
   blockNumber: number;
@@ -15,8 +14,8 @@ export type MergeEstimate = {
 
 export const useMergeEstimate = (): MergeEstimate | undefined => {
   const { data } = useSWR<MergeEstimate>(
-    `${feesBasePath}/merge-estimate`,
-    fetcher,
+    "/api/fees/merge-estimate",
+    fetchJson,
     {
       refreshInterval: Duration.millisFromSeconds(4),
     },

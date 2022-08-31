@@ -1,7 +1,6 @@
 import useSWR from "swr";
 import type { TimeFrameNext } from "../time-frames";
-import fetcher from "./default-fetcher";
-import { feesBasePath } from "./fees";
+import { fetchJson } from "./fetchers";
 
 const category = [
   "defi",
@@ -43,8 +42,8 @@ export type BurnCategories = Record<TimeFrameNext, BurnCategory[]>;
 
 export const useBurnCategories = () => {
   const { data } = useSWR<BurnCategories>(
-    `${feesBasePath}/burn-categories`,
-    fetcher,
+    "/api/fees/burn-categories",
+    fetchJson,
   );
 
   return data;

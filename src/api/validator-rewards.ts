@@ -1,7 +1,6 @@
 import useSWR from "swr";
 import * as Duration from "../duration";
-import fetcher from "./default-fetcher";
-import { feesBasePath } from "./fees";
+import { fetchJson } from "./fetchers";
 
 export type ValidatorRewards = {
   issuance: {
@@ -21,8 +20,8 @@ export type ValidatorRewards = {
 export const useValidatorRewards = (): ValidatorRewards | undefined => {
   const { data } = useSWR<ValidatorRewards>(
     // tmp endpoint to cache bust.
-    `${feesBasePath}/validator-rewards`,
-    fetcher,
+    "/api/fees/validator-rewards",
+    fetchJson,
     {
       refreshInterval: Duration.millisFromHours(1),
     },

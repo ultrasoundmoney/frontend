@@ -2,7 +2,7 @@ import * as DateFns from "date-fns";
 import useSWR from "swr";
 import { TOTAL_TERMINAL_DIFFICULTY } from "../eth-constants";
 import type { DateTimeString } from "../time";
-import fetcher from "./default-fetcher";
+import { fetchJson } from "./fetchers";
 
 type DifficultyByDay = {
   number: number;
@@ -32,8 +32,8 @@ export const useTotalDifficultyProgress = ():
   | TotalDifficultyProgress
   | undefined => {
   const { data } = useSWR<TotalDifficultyProgress>(
-    `/api/v2/fees/total-difficulty-progress`,
-    fetcher,
+    "/api/v2/fees/total-difficulty-progress",
+    fetchJson,
     {},
   );
 

@@ -1,7 +1,6 @@
 import type { FC } from "react";
 import { useState } from "react";
-import type { FamProfile } from "../../api/fam";
-import { famBasePath } from "../../api/fam";
+import type { FamProfile } from "../../api/profiles";
 import { formatZeroDecimals } from "../../format";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import ImageWithTooltip from "../ImageWithTooltip";
@@ -43,7 +42,7 @@ const FollowingYou: FC = () => {
 
     const cleanHandle = handle.startsWith("@") ? handle.slice(1) : handle;
 
-    const res = await fetch(`${famBasePath}/${cleanHandle}/followed-by`);
+    const res = await fetch(`/api/fam/${cleanHandle}/followed-by`);
 
     if (res.status === 404) {
       setFollowers({ type: "handleNotFound" });
