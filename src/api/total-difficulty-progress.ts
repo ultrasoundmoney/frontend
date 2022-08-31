@@ -34,7 +34,7 @@ export const useTotalDifficultyProgress = ():
   const { data } = useSWR<TotalDifficultyProgress>(
     "/api/v2/fees/total-difficulty-progress",
     fetchJson,
-    {},
+    { refreshInterval: 60 },
   );
 
   return data;
