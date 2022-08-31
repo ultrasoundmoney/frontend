@@ -135,6 +135,7 @@ const PercentageToTTDWidget: FC<Props> = ({
               id: "panda-point",
               type: "scatter",
               enableMouseTracking: false,
+              linkedTo: "difficulty-projection-series",
               data:
                 lastPointProjection === undefined
                   ? undefined
