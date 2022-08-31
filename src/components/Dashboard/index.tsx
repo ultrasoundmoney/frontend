@@ -103,19 +103,16 @@ type Props = {
   groupedAnalysis1F: GroupedAnalysis1F;
   ethSupplyF: EthSupplyF;
   mergeEstimate: MergeEstimate;
-  totalDifficultyProgress: TotalDifficultyProgress;
+  // totalDifficultyProgress: TotalDifficultyProgress;
 };
 
 const Dashboard: FC<Props> = ({
   ethSupplyF,
   groupedAnalysis1F,
   mergeEstimate,
-  totalDifficultyProgress,
+  // totalDifficultyProgress,
 }) => {
-  const crTotalDifficultyProgress = useClientRefreshed(
-    totalDifficultyProgress,
-    useTotalDifficultyProgress,
-  );
+  const totalDifficultyProgress = useTotalDifficultyProgress();
   const crMergeEstimate = useClientRefreshed(mergeEstimate, useMergeEstimate);
   const crEthSupply = useClientRefreshed(ethSupplyF, useEthSupply);
   const decodedCrEthSupply = decodeEthSupply(crEthSupply);
@@ -202,7 +199,7 @@ const Dashboard: FC<Props> = ({
                 <MergeSection
                   ethSupply={decodedCrEthSupply}
                   mergeEstimate={crMergeEstimate}
-                  totalDifficultyProgress={crTotalDifficultyProgress}
+                  totalDifficultyProgress={totalDifficultyProgress}
                 />
               </Suspense>
             </BasicErrorBoundary>

@@ -5,7 +5,9 @@ import type { DateTimeString } from "../time";
 import { LabelUnitText } from "./Texts";
 import LabelText from "./TextsNext/LabelText";
 
-const UpdatedAge: FC<{ updatedAt: DateTimeString }> = ({ updatedAt }) => {
+const UpdatedAge: FC<{ updatedAt: DateTimeString | undefined }> = ({
+  updatedAt,
+}) => {
   const [timeElapsed, setTimeElapsed] = useState<{
     secs: number;
     mins: number;

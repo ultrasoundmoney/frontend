@@ -10,7 +10,7 @@ import {
 import _last from "lodash/last";
 import dynamic from "next/dynamic";
 import type { FC } from "react";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { EthSupply } from "../../api/eth-supply";
 import type { MergeEstimate } from "../../api/merge-estimate";
 import type { TotalDifficultyProgress } from "../../api/total-difficulty-progress";
@@ -21,10 +21,14 @@ import EthSupplyWidget from "../SupplyWidgets/EthSupplyWidget";
 import TotalDifficultyProgressWidget from "../TotalDifficultyProgressWidget";
 const PercentageToTTDWidget = dynamic(() => import("../PercentageToTTDWidget"));
 
+type JsTimestamp = number;
+type Percent = number;
+type Point = [JsTimestamp, Percent];
+
 type Props = {
   ethSupply: EthSupply;
   mergeEstimate: MergeEstimate;
-  totalDifficultyProgress: TotalDifficultyProgress;
+  totalDifficultyProgress: TotalDifficultyProgress | undefined;
 };
 
 const MergeSection: FC<Props> = ({
@@ -32,47 +36,65 @@ const MergeSection: FC<Props> = ({
   mergeEstimate,
   totalDifficultyProgress,
 }) => {
+  const [difficultyProjectionSeries, setDifficultyProjectionSeries] =
+    useState<Point[]>();
   const progress =
     Number(mergeEstimate.totalDifficulty) / TOTAL_TERMINAL_DIFFICULTY;
 
   const totalDifficultyByDay = useMemo(
-    () => pointsFromTotalDifficultyProgress(totalDifficultyProgress),
+    () =>
+      totalDifficultyProgress === undefined
+        ? undefined
+        : pointsFromTotalDifficultyProgress(totalDifficultyProgress),
     [totalDifficultyProgress],
   );
 
-  const lastTotalDifficultyPoint = _last(totalDifficultyByDay);
-  if (lastTotalDifficultyPoint === undefined) {
-    throw new Error("expect totalDifficultyByDay to have at least one point");
-  }
+  useEffect(() => {
+    if (totalDifficultyProgress === undefined) {
+      return undefined;
+    }
 
-  // This will update every block, consider reducing that frequency.
-  const difficultyProjectionSeries: [number, number][] = [];
-  const mergeTimestamp = parseISO(mergeEstimate.estimatedDateTime);
+    const lastTotalDifficultyPoint = _last(totalDifficultyByDay);
 
-  const periodMillis = differenceInMilliseconds(
-    mergeTimestamp,
-    lastTotalDifficultyPoint[0],
-  );
-  const percentLeft = 100 - lastTotalDifficultyPoint[1];
-  let timestamp = startOfHour(addHours(lastTotalDifficultyPoint[0], 1));
-  while (isBefore(timestamp, mergeTimestamp)) {
-    const millisSinceLast = subMilliseconds(
-      timestamp,
-      getTime(lastTotalDifficultyPoint[0]),
+    if (lastTotalDifficultyPoint === undefined) {
+      throw new Error("expect at least one point in totalDifficultyByDay");
+    }
+
+    // This will update every block, consider reducing that frequency.
+    const generatedProjection: Point[] = [];
+    const mergeTimestamp = parseISO(mergeEstimate.estimatedDateTime);
+
+    const periodMillis = differenceInMilliseconds(
+      mergeTimestamp,
+      lastTotalDifficultyPoint[0],
     );
-    const fraction = getTime(millisSinceLast) / periodMillis;
-    const percent = lastTotalDifficultyPoint[1] + fraction * percentLeft;
-    const point = [getTime(timestamp), percent] as [number, number];
-    difficultyProjectionSeries.push(point);
-    timestamp = addHours(timestamp, 1);
-  }
+    const percentLeft = 100 - lastTotalDifficultyPoint[1];
+    let timestamp = startOfHour(addHours(lastTotalDifficultyPoint[0], 1));
+    while (isBefore(timestamp, mergeTimestamp)) {
+      const millisSinceLast = subMilliseconds(
+        timestamp,
+        getTime(lastTotalDifficultyPoint[0]),
+      );
+      const fraction = getTime(millisSinceLast) / periodMillis;
+      const percent = lastTotalDifficultyPoint[1] + fraction * percentLeft;
+      const point = [getTime(timestamp), percent] as Point;
+      generatedProjection.push(point);
+      timestamp = addHours(timestamp, 1);
+    }
+
+    setDifficultyProjectionSeries(generatedProjection);
+  }, [
+    mergeEstimate.estimatedDateTime,
+    totalDifficultyByDay,
+    totalDifficultyProgress,
+  ]);
 
   const difficultyMap = Object.fromEntries(
     new Map(totalDifficultyByDay).entries(),
   );
 
   const difficultyProjectionMap = Object.fromEntries(
-    new Map(difficultyProjectionSeries).entries(),
+    new Map(difficultyProjectionSeries ?? []).entries(),
   );
 
   return (
@@ -94,7 +116,7 @@ const MergeSection: FC<Props> = ({
           difficultyProjectionMap={difficultyProjectionMap}
           difficultyProjectionSeries={difficultyProjectionSeries}
           difficultySeries={totalDifficultyByDay}
-          timestamp={totalDifficultyProgress.timestamp}
+          timestamp={totalDifficultyProgress?.timestamp}
         />
       </div>
     </div>

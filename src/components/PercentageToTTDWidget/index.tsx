@@ -72,13 +72,13 @@ const baseOptions: Highcharts.Options = {
 };
 
 type Props = {
-  difficultySeries: Point[];
+  difficultySeries: Point[] | undefined;
   // A map used for fast-lookup of the Y in the series above by X.
   difficultyMap: Record<number, number>;
-  difficultyProjectionSeries: Point[];
+  difficultyProjectionSeries: Point[] | undefined;
   // A map used for fast-lookup of the Y in the series above by X.
   difficultyProjectionMap: Record<number, number>;
-  timestamp: DateTimeString;
+  timestamp: DateTimeString | undefined;
 };
 
 const PercentageToTTDWidget: FC<Props> = ({
@@ -114,7 +114,8 @@ const PercentageToTTDWidget: FC<Props> = ({
                 ],
               },
               data:
-                lastPointProjection === undefined
+                lastPointProjection === undefined ||
+                difficultyProjectionSeries === undefined
                   ? undefined
                   : [
                       ...difficultyProjectionSeries.slice(0, -1),
@@ -167,7 +168,7 @@ const PercentageToTTDWidget: FC<Props> = ({
               id: "difficulty-series",
               type: "line",
               data:
-                lastPoint !== undefined
+                lastPoint !== undefined && difficultySeries !== undefined
                   ? [
                       ...difficultySeries,
                       {
