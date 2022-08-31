@@ -140,6 +140,7 @@ const EquilibriumGraph: FC<Props> = ({
           data: [
             ...supplyEquilibriumSeries,
             {
+              id: "equilibrium-final-point",
               x: _last(supplyEquilibriumSeries)?.[0],
               y: _last(supplyEquilibriumSeries)?.[1],
               marker: {

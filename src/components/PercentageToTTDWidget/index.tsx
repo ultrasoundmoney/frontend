@@ -117,10 +117,32 @@ const PercentageToTTDWidget: FC<Props> = ({
                 lastPointProjection === undefined
                   ? undefined
                   : [
-                      ...difficultyProjectionSeries,
+                      ...difficultyProjectionSeries.slice(0, -1),
                       {
+                        id: "projection-final-point",
                         x: lastPointProjection?.[0],
                         y: lastPointProjection?.[1],
+                        marker: {
+                          fillColor: "#6A54F4",
+                          lineColor: "white",
+                          lineWidth: 1,
+                          enabled: true,
+                        },
+                      },
+                    ],
+            },
+            {
+              id: "panda-point",
+              type: "scatter",
+              enableMouseTracking: false,
+              data:
+                lastPointProjection === undefined
+                  ? undefined
+                  : [
+                      {
+                        id: "panda-marker",
+                        x: lastPointProjection?.[0],
+                        y: lastPointProjection?.[1] - 0.7,
                         marker: {
                           symbol: `url(/graph-dot-panda.svg)`,
                           enabled: true,
@@ -151,7 +173,8 @@ const PercentageToTTDWidget: FC<Props> = ({
                         x: lastPoint?.[0],
                         y: lastPoint?.[1],
                         marker: {
-                          symbol: `url(/dot_supply_graph.svg)`,
+                          id: "difficulty-final-point",
+                          symbol: `url(/graph-dot-blue.svg)`,
                           enabled: true,
                         },
                       },
@@ -192,7 +215,7 @@ const PercentageToTTDWidget: FC<Props> = ({
               }
 
               const dt = new Date(x);
-              const formattedDate = DateFns.format(dt, "MMM d haaa");
+              const formattedDate = DateFns.format(dt, "MMM d, ha");
 
               return `
                 <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
