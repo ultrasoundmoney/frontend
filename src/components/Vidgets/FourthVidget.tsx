@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Card from "./card";
 import { weiToEth } from "../Helpers/helper";
 import type { VidgetProps } from "./helpers";
@@ -6,14 +6,14 @@ import { convertToInternationalCurrencySystem } from "./helpers";
 import type { EthPrice } from "../../api/grouped-analysis-1";
 import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import useSWR from "swr";
-import fetcher from "../../api/default-fetcher";
+import { fetchJson } from "../../api/fetchers";
 
 const FouthVidget: React.FC<VidgetProps> = ({ name }) => {
   const feesBurned = useGroupedAnalysis1()?.feesBurned;
 
   const { data } = useSWR<EthPrice>(
     "https://api.ultrasound.money/fees/eth-price",
-    fetcher,
+    fetchJson,
     {
       revalidateOnFocus: true,
       revalidateOnReconnect: true,
