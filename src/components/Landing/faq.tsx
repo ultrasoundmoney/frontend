@@ -22,7 +22,7 @@ const FaqBlock: React.FC = () => {
     window.addEventListener("resize", resizeFun);
 
     return () => window.removeEventListener("resize", resizeFun);
-  }, [faqSection.current]);
+  }, [changeFaqPosition]);
 
   return (
     <section
