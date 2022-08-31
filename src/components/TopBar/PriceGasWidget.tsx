@@ -58,12 +58,14 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
           rounded
         `}
     >
-      <Image
-        src={gasSvg as StaticImageData}
-        alt="gas pump icon"
-        width="14"
-        height="14"
-      />
+      <div className="select-none">
+        <Image
+          src={gasSvg as StaticImageData}
+          alt="gas pump icon"
+          width="14"
+          height="14"
+        />
+      </div>
       <TextRoboto className="pl-1">
         {previewSkeletons || baseFeePerGas === undefined ? (
           <Skeleton width="17px" inline />
@@ -84,13 +86,15 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
         <span className="font-extralight text-blue-spindle">Gwei</span>
       </TextRoboto>
       <div className="mr-4"></div>
-      <Image
-        className="select-none"
-        src={ethSvg as StaticImageData}
-        alt="Ethereum Ether icon"
-        width="14"
-        height="14"
-      />
+      <div className="select-none">
+        <Image
+          className="select-none"
+          src={ethSvg as StaticImageData}
+          alt="Ethereum Ether icon"
+          width="14"
+          height="14"
+        />
+      </div>
       <TextRoboto className="pl-1">
         {ethPrice === undefined || previewSkeletons ? (
           <Skeleton width="42px" inline />

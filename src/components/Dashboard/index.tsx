@@ -150,6 +150,7 @@ const Dashboard: FC<Props> = ({
               xl:h-[800px]
               2xl:h-[1600px] 2xl:-mt-[310px]
               -z-10
+              select-none
             `}
           >
             <Image
