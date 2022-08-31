@@ -26,12 +26,14 @@ const TotalDifficultyProgressWidget: FC<Props> = ({
         <LabelText className="flex items-center min-h-[21px]">
           total difficulty progress
         </LabelText>
-        <Image
-          alt="a panda emoji, used to signify the merge, as pandas are a merge of black and white colors"
-          height={21}
-          src={pandaOwn as StaticImageData}
-          width={21}
-        />
+        <div className="select-none">
+          <Image
+            alt="a panda emoji, used to signify the merge, as pandas are a merge of black and white colors"
+            height={21}
+            src={pandaOwn as StaticImageData}
+            width={21}
+          />
+        </div>
       </div>
       <div className="flex flex-col gap-y-4 mt-2">
         <div className="w-full relative">
