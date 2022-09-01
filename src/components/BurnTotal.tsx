@@ -20,11 +20,7 @@ import { TextRoboto } from "./Texts";
 import TimeFrameIndicator from "./TimeFrameIndicator";
 import Twemoji from "./Twemoji";
 import WidgetErrorBoundary from "./WidgetErrorBoundary";
-import {
-  BurnGroupBase,
-  WidgetBackground,
-  WidgetTitle,
-} from "./WidgetSubcomponents";
+import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
 const timeframeFeesBurnedMap: Record<
   TimeFrameNext,
@@ -134,40 +130,39 @@ const BurnTotal: FC<Props> = ({
       <WidgetBackground className="relative overflow-hidden">
         <div
           className={`
-              absolute top-20 -left-20
-              w-full h-full
-              opacity-[0.15]
-              blur-[90px]
-              pointer-events-none
-            `}
-          // will-change-transform
+            absolute top-15 md:top-20 -left-20
+            w-full h-full
+            opacity-[0.13]
+            blur-[50px] md:blur-[70px]
+            pointer-events-none
+          `}
         >
           <div
             className={`
-                absolute
-                w-3/5 h-3/5 rounded-[35%]
-                bg-[#243AFF]
-                pointer-events-none
-              `}
+              absolute
+              w-4/5 h-4/5 md:w-3/5 md:h-3/5 rounded-[35%]
+              bg-[#243AFF]
+              pointer-events-none
+            `}
           ></div>
         </div>
         <div
           className={`
-              absolute top-5 -left-20
-              w-full h-full
-              opacity-[0.25]
-              blur-[90px]
-              pointer-events-none
-            `}
-          // will-change-transform
+            absolute top-0 md:top-5 -left-20
+            w-full h-full
+            opacity-[0.25]
+            blur-[50px] md:blur-[70px]
+            pointer-events-none
+          `}
         >
           <div
             className={`
-                absolute
-                w-4/5 h-3/5 rounded-[35%]
-                bg-[#FF8D24]
-                pointer-events-none
-              `}
+              absolute
+              -left-5 md:left-0
+              w-full h-4/5 md:w-4/5 md:h-3/5 rounded-[35%]
+              bg-[#FF8D24]
+              pointer-events-none
+            `}
           ></div>
         </div>
         <div className="flex items-center justify-between">
