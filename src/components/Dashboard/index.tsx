@@ -1,7 +1,5 @@
 import dynamic from "next/dynamic";
 import Head from "next/head";
-import type { StaticImageData } from "next/image";
-import Image from "next/image";
 import type { FC, ReactNode } from "react";
 import { Suspense } from "react";
 import { useEffect, useMemo, useState } from "react";
@@ -151,9 +149,7 @@ const Dashboard: FC<Props> = ({
             )}
             <div className="px-4 xs:px-4 md:px-16">
               <BasicErrorBoundary>
-                <Suspense>
-                  <TopBar groupedAnalysis1={groupedAnalysis1} />
-                </Suspense>
+                <TopBar groupedAnalysis1={groupedAnalysis1} />
               </BasicErrorBoundary>
             </div>
             <Title>Ultra Sound Money</Title>
