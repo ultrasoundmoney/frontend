@@ -49,8 +49,6 @@ export type LatestBlock = {
 export type EthPrice = {
   usd: number;
   usd24hChange: number;
-  btc: number;
-  btc24hChange: number;
 };
 
 export type DeflationaryStreakMode = "preMerge" | "postMerge";
