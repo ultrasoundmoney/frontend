@@ -29,7 +29,6 @@ import Link from "../Link";
 import SectionDivider from "../SectionDivider";
 import { TextInterLink } from "../Texts";
 import TopBar from "../TopBar";
-import headerGlowSvg from "./blurred-bg.svg";
 import styles from "./Dashboard.module.scss";
 import MergeSection from "./MergeSection";
 import MonetaryPremiumSection from "./MonetaryPremiumSection";
@@ -37,6 +36,7 @@ import JoinDiscordSection from "./JoinDiscordSection";
 import FaqBlock from "../Landing/faq";
 import FamSection from "./FamSection";
 import BurnSection from "./BurnSection";
+import HeaderGlow from "../HeaderGlow";
 const AdminTools = dynamic(() => import("../AdminTools"));
 const SupplyWidgets = dynamic(() => import("../SupplyWidgets"));
 const TotalValueSecured = dynamic(() => import("../TotalValueSecured"));
@@ -140,28 +140,7 @@ const Dashboard: FC<Props> = ({
           <Head>
             <title>{gasTitle}</title>
           </Head>
-          <div
-            className={`
-              absolute
-              w-full
-              h-[600px] -mt-[50px]
-              lg:h-[700px]
-              xl:h-[800px]
-              2xl:h-[1600px] 2xl:-mt-[310px]
-              -z-10
-              select-none
-            `}
-          >
-            <Image
-              className=""
-              alt=""
-              src={headerGlowSvg as StaticImageData}
-              layout="fill"
-              priority
-              quality={100}
-              objectFit="cover"
-            />
-          </div>
+          <HeaderGlow />
           <div className="container mx-auto">
             {adminToken && (
               <BasicErrorBoundary>
