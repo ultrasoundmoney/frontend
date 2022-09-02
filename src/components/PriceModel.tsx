@@ -2,7 +2,7 @@ import type JSBI from "jsbi";
 import flow from "lodash/flow";
 import type { FC, ReactNode } from "react";
 import { useEffect, useState } from "react";
-import { useAverageEthPrice } from "../api/eth-price";
+import { useAverageEthPrice } from "../api/average-eth-price";
 import type { GroupedAnalysis1 } from "../api/grouped-analysis-1";
 import { usePeRatios } from "../api/pe-ratios";
 import { useScarcity } from "../api/scarcity";

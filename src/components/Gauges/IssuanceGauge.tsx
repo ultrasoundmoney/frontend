@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { useAverageEthPrice } from "../../api/eth-price";
+import { useAverageEthPrice } from "../../api/average-eth-price";
 import type { GroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import colors from "../../colors";
 import type { Unit } from "../../denomination";
