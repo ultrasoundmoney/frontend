@@ -58,7 +58,7 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
           rounded
         `}
     >
-      <div className="select-none">
+      <div className="select-none flex items-center">
         <Image
           src={gasSvg as StaticImageData}
           alt="gas pump icon"
@@ -86,7 +86,7 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
         <span className="font-extralight text-blue-spindle">Gwei</span>
       </TextRoboto>
       <div className="mr-4"></div>
-      <div className="select-none">
+      <div className="select-none flex items-center">
         <Image
           className="select-none"
           src={ethSvg as StaticImageData}
