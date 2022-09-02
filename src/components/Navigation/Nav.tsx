@@ -1,26 +1,22 @@
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import type { GroupedAnalysis1 } from "../../api/grouped-analysis-1";
-import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import type { BaseFeePerGas } from "../../api/base-fee-per-gas";
+import type { EthPriceStats } from "../../api/eth-price-stats";
 import { NavigationContext } from "../../contexts/NavigationContext";
 import TranslationsContext from "../../contexts/TranslationsContext";
 import { useLocalStorage } from "../../hooks/use-local-storage";
 import useNotification from "../../hooks/use-notification";
 import { navigationItems } from "../../utils/static";
 import AlarmInput from "../TopBar/AlarmInput";
+import PriceGasWidget from "../TopBar/PriceGasWidget";
 import { WidgetTitle } from "../WidgetSubcomponents";
 import classes from "./Navigation.module.scss";
-const PriceGasWidget = dynamic(() => import("../TopBar/PriceGasWidget"), {
-  ssr: false,
-});
 
-const Nav: React.FC<{ groupedAnalysis1: GroupedAnalysis1 | undefined }> = ({
-  groupedAnalysis1,
-}) => {
+const Nav: React.FC<{
+  baseFeePerGas: BaseFeePerGas;
+  ethPriceStats: EthPriceStats;
+}> = ({ baseFeePerGas, ethPriceStats }) => {
   const t = React.useContext(TranslationsContext);
-  const baseFeePerGas = useGroupedAnalysis1()?.baseFeePerGas;
-  const ethPrice = useGroupedAnalysis1()?.ethPrice;
   const [isOpen, setIsOpen] = useState(false);
   const defaultBar = useRef<null | HTMLDivElement>(null);
   const { faqPosition } = React.useContext(NavigationContext);
@@ -65,7 +61,8 @@ const Nav: React.FC<{ groupedAnalysis1: GroupedAnalysis1 | undefined }> = ({
   const showAlarmDialogCss = showAlarmDialog ? "visible" : "invisible";
 
   const isAlarmValuesAvailable =
-    typeof baseFeePerGas === "number" && typeof ethPrice?.usd === "number";
+    typeof baseFeePerGas?.wei === "number" &&
+    typeof ethPriceStats?.usd === "number";
 
   useEffect(() => {
     document.addEventListener("click", checkIfClickedOutside);
@@ -86,7 +83,14 @@ const Nav: React.FC<{ groupedAnalysis1: GroupedAnalysis1 | undefined }> = ({
         className={`${classes.defaultBar} container px-1 md:px-4 mx-auto flex items-center justify-between`}
       >
         <div className="flex relative">
-          <PriceGasWidget baseFeePerGas={baseFeePerGas} ethPrice={ethPrice} />
+          {baseFeePerGas !== undefined && ethPriceStats !== undefined && (
+            <PriceGasWidget
+              initialBaseFeePerGas={0}
+              initialEthPrice={0}
+              baseFeePerGas={baseFeePerGas}
+              ethPriceStats={ethPriceStats}
+            />
+          )}
           <button
             ref={alarmButtonRef}
             className={`
@@ -117,14 +121,16 @@ const Nav: React.FC<{ groupedAnalysis1: GroupedAnalysis1 | undefined }> = ({
           >
             <WidgetTitle>price alerts</WidgetTitle>
             <AlarmInput
-              groupedAnalysis1={groupedAnalysis1}
+              baseFeePerGas={baseFeePerGas}
+              ethPriceStats={ethPriceStats}
               isAlarmActive={gasAlarmActive}
               onToggleIsAlarmActive={setGasAlarmActive}
               unit="Gwei"
               type="gas"
             />
             <AlarmInput
-              groupedAnalysis1={groupedAnalysis1}
+              baseFeePerGas={baseFeePerGas}
+              ethPriceStats={ethPriceStats}
               isAlarmActive={ethAlarmActive}
               onToggleIsAlarmActive={setEthAlarmActive}
               unit="USD "

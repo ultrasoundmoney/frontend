@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import * as Duration from "../duration";
-import type { Wei } from "../eth-units";
+import type { WeiNumber } from "../eth-units";
 import type { BurnRecords, BurnRecordsF } from "./burn-records";
 import { decodeBurnRecords } from "./burn-records";
 import { fetchJson } from "./fetchers";
@@ -24,25 +24,25 @@ export type BurnRates = {
 };
 
 export type FeesBurned = {
-  feesBurned5m: Wei;
+  feesBurned5m: WeiNumber;
   feesBurned5mUsd: number;
-  feesBurned1h: Wei;
+  feesBurned1h: WeiNumber;
   feesBurned1hUsd: number;
-  feesBurned24h: Wei;
+  feesBurned24h: WeiNumber;
   feesBurned24hUsd: number;
-  feesBurned7d: Wei;
+  feesBurned7d: WeiNumber;
   feesBurned7dUsd: number;
-  feesBurned30d: Wei;
+  feesBurned30d: WeiNumber;
   feesBurned30dUsd: number;
-  feesBurnedAll: Wei;
+  feesBurnedAll: WeiNumber;
   feesBurnedAllUsd: number;
 };
 
 export type LatestBlock = {
-  fees: Wei;
+  fees: WeiNumber;
   feesUsd: number;
   number: number;
-  baseFeePerGas: Wei;
+  baseFeePerGas: WeiNumber;
   minedAt: string;
 };
 

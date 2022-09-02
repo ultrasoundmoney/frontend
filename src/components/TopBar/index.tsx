@@ -1,23 +1,29 @@
-import dynamic from "next/dynamic";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import type { FC } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { GroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import type { BaseFeePerGas } from "../../api/base-fee-per-gas";
+import type { EthPriceStats } from "../../api/eth-price-stats";
 import { useLocalStorage } from "../../hooks/use-local-storage";
 import useNotification from "../../hooks/use-notification";
 import { WidgetTitle } from "../WidgetSubcomponents";
 import AlarmInput from "./AlarmInput";
 import bellSvg from "./bell-slateus.svg";
-const PriceGasWidget = dynamic(() => import("./PriceGasWidget"), {
-  ssr: false,
-});
+import PriceGasWidget from "./PriceGasWidget";
 
-type Props = { groupedAnalysis1: GroupedAnalysis1 };
+type Props = {
+  baseFeePerGas: BaseFeePerGas;
+  ethPriceStats: EthPriceStats;
+  initialBaseFeePerGas: number;
+  initialEthPrice: number;
+};
 
-const TopBar: FC<Props> = ({ groupedAnalysis1 }) => {
-  const baseFeePerGas = groupedAnalysis1.baseFeePerGas;
-  const ethPrice = groupedAnalysis1.ethPrice;
+const TopBar: FC<Props> = ({
+  baseFeePerGas,
+  ethPriceStats,
+  initialBaseFeePerGas,
+  initialEthPrice,
+}) => {
   const [gasAlarmActive, setGasAlarmActive] = useLocalStorage(
     "gas-alarm-enabled",
     false,
@@ -57,9 +63,6 @@ const TopBar: FC<Props> = ({ groupedAnalysis1 }) => {
 
   const showAlarmDialogCss = showAlarmDialog ? "visible" : "invisible";
 
-  const isAlarmValuesAvailable =
-    typeof baseFeePerGas === "number" && typeof ethPrice?.usd === "number";
-
   useEffect(() => {
     document.addEventListener("click", checkIfClickedOutside);
 
@@ -71,7 +74,12 @@ const TopBar: FC<Props> = ({ groupedAnalysis1 }) => {
   return (
     <div className="flex justify-between pt-4 md:pt-8">
       <div className="relative flex">
-        <PriceGasWidget baseFeePerGas={baseFeePerGas} ethPrice={ethPrice} />
+        <PriceGasWidget
+          initialEthPrice={initialEthPrice}
+          initialBaseFeePerGas={initialBaseFeePerGas}
+          baseFeePerGas={baseFeePerGas}
+          ethPriceStats={ethPriceStats}
+        />
         <button
           ref={alarmButtonRef}
           className={`
@@ -80,11 +88,7 @@ const TopBar: FC<Props> = ({ groupedAnalysis1 }) => {
             bg-blue-tangaroa rounded
             select-none
             border border-transparent
-            ${
-              notification.type === "Supported" && isAlarmValuesAvailable
-                ? "visible"
-                : "invisible"
-            }
+            ${notification.type === "Supported" ? "visible" : "invisible"}
             ${
               isAlarmActive
                 ? "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg"
@@ -107,14 +111,16 @@ const TopBar: FC<Props> = ({ groupedAnalysis1 }) => {
         >
           <WidgetTitle>price alerts</WidgetTitle>
           <AlarmInput
-            groupedAnalysis1={groupedAnalysis1}
+            baseFeePerGas={baseFeePerGas}
+            ethPriceStats={ethPriceStats}
             isAlarmActive={gasAlarmActive}
             onToggleIsAlarmActive={setGasAlarmActive}
             unit="Gwei"
             type="gas"
           />
           <AlarmInput
-            groupedAnalysis1={groupedAnalysis1}
+            baseFeePerGas={baseFeePerGas}
+            ethPriceStats={ethPriceStats}
             isAlarmActive={ethAlarmActive}
             onToggleIsAlarmActive={setEthAlarmActive}
             unit="USD "

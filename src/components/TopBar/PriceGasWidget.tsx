@@ -1,127 +1,108 @@
+import * as Sentry from "@sentry/react";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
-import type { FC } from "react";
-import { useContext } from "react";
+import type { FC, ReactNode } from "react";
 import CountUp from "react-countup";
-import Skeleton from "react-loading-skeleton";
-import type { EthPrice } from "../../api/grouped-analysis-1";
-import { FeatureFlagsContext } from "../../feature-flags";
+import type { BaseFeePerGas } from "../../api/base-fee-per-gas";
+import type { EthPriceStats } from "../../api/eth-price-stats";
 import * as Format from "../../format";
 import { AmountUnitSpace } from "../Spacing";
 import { TextRoboto } from "../Texts";
 import ethSvg from "./eth-slateus.svg";
 import gasSvg from "./gas-slateus.svg";
 
-let startGasPrice = 0;
-let startGasPriceCached = 0;
-let startEthPrice = 0;
-let startEthPriceCached = 0;
+const CustomErrorBoundary: FC<{ children: ReactNode }> = ({ children }) => (
+  <Sentry.ErrorBoundary
+    fallback={
+      <div
+        className={`
+            px-4 py-2 rounded-lg font-roboto text-white text-xs text-center
+            bg-blue-tangaroa
+            border border-red-400
+          `}
+      >
+        gas / price widget crashed
+      </div>
+    }
+  >
+    {children}
+  </Sentry.ErrorBoundary>
+);
 
 type PriceGasWidgetProps = {
-  baseFeePerGas: number | undefined;
-  ethPrice: EthPrice | undefined;
+  baseFeePerGas: BaseFeePerGas;
+  ethPriceStats: EthPriceStats;
+  initialBaseFeePerGas: number;
+  initialEthPrice: number;
 };
 
 const PriceGasWidget: FC<PriceGasWidgetProps> = ({
   baseFeePerGas,
-  ethPrice,
+  ethPriceStats,
+  initialBaseFeePerGas,
+  initialEthPrice,
 }) => {
-  if (baseFeePerGas && baseFeePerGas !== startGasPrice) {
-    startGasPriceCached = startGasPrice;
-    startGasPrice = baseFeePerGas;
-  }
+  const ethUsd24hChange = Format.formatPercentOneDecimalSigned(
+    ethPriceStats.h24Change,
+  );
 
-  if (ethPrice?.usd && ethPrice?.usd !== startEthPrice) {
-    startEthPriceCached = startEthPrice;
-    startEthPrice = ethPrice?.usd;
-  }
-
-  const ethUsd24hChange =
-    ethPrice === undefined
-      ? undefined
-      : Format.formatPercentOneDecimalSigned(ethPrice.usd24hChange / 100);
-
-  const color =
-    typeof ethPrice?.usd24hChange === "number" && ethPrice?.usd24hChange < 0
-      ? "text-red-400"
-      : "text-green-400";
-
-  const { previewSkeletons } = useContext(FeatureFlagsContext);
+  const color = ethPriceStats.h24Change < 0 ? "text-red-400" : "text-green-400";
 
   return (
-    <div
-      className={`
+    <CustomErrorBoundary>
+      <div
+        className={`
           text-xs lg:text-sm
           flex items-center
           px-3 py-2
           bg-blue-tangaroa
           rounded
         `}
-    >
-      <div className="select-none flex items-center">
-        <Image
-          src={gasSvg as StaticImageData}
-          alt="gas pump icon"
-          width="14"
-          height="14"
-        />
-      </div>
-      <TextRoboto className="pl-1">
-        {previewSkeletons || baseFeePerGas === undefined ? (
-          <Skeleton width="17px" inline />
-        ) : (
+      >
+        <div className="select-none flex items-center">
+          <Image
+            src={gasSvg as StaticImageData}
+            alt="gas pump icon"
+            width="14"
+            height="14"
+          />
+        </div>
+        <TextRoboto className="pl-1">
           <CountUp
             decimals={0}
             duration={0.8}
             separator=","
-            start={
-              startGasPriceCached === 0
-                ? Format.gweiFromWei(baseFeePerGas)
-                : Format.gweiFromWei(startGasPriceCached)
-            }
-            end={Format.gweiFromWei(baseFeePerGas)}
+            start={Format.gweiFromWei(initialBaseFeePerGas)}
+            end={Format.gweiFromWei(baseFeePerGas.wei)}
           />
-        )}
-        <AmountUnitSpace />
-        <span className="font-extralight text-blue-spindle">Gwei</span>
-      </TextRoboto>
-      <div className="mr-4"></div>
-      <div className="select-none flex items-center">
-        <Image
-          className="select-none"
-          src={ethSvg as StaticImageData}
-          alt="Ethereum Ether icon"
-          width="14"
-          height="14"
-        />
-      </div>
-      <TextRoboto className="pl-1">
-        {ethPrice === undefined || previewSkeletons ? (
-          <Skeleton width="42px" inline />
-        ) : (
+          <AmountUnitSpace />
+          <span className="font-extralight text-blue-spindle">Gwei</span>
+        </TextRoboto>
+        <div className="mr-4"></div>
+        <div className="select-none flex items-center">
+          <Image
+            className="select-none"
+            src={ethSvg as StaticImageData}
+            alt="Ethereum Ether icon"
+            width="14"
+            height="14"
+          />
+        </div>
+        <TextRoboto className="pl-1">
           <CountUp
             decimals={0}
             duration={0.8}
             separator=","
-            start={
-              startEthPriceCached === 0 ? ethPrice?.usd : startEthPriceCached
-            }
-            end={ethPrice?.usd}
+            start={initialEthPrice}
+            end={ethPriceStats.usd}
           />
-        )}
-        <AmountUnitSpace />
-        <span className="text-blue-spindle font-extralight">USD</span>
-        <AmountUnitSpace />
-        {ethUsd24hChange === undefined || previewSkeletons ? (
-          <>
-            (<Skeleton width="34px" inline />
-            %)
-          </>
-        ) : (
+          <AmountUnitSpace />
+          <span className="text-blue-spindle font-extralight">USD</span>
+          <AmountUnitSpace />
           <span className={`${color}`}>({ethUsd24hChange})</span>
-        )}
-      </TextRoboto>
-    </div>
+        </TextRoboto>
+      </div>
+    </CustomErrorBoundary>
   );
 };
 

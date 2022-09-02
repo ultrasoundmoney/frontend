@@ -3,7 +3,8 @@ import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import type { ChangeEvent, FC } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { GroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import type { BaseFeePerGas } from "../../api/base-fee-per-gas";
+import type { EthPriceStats } from "../../api/eth-price-stats";
 import { WEI_PER_GWEI } from "../../eth-units";
 import { formatZeroDecimals } from "../../format";
 import { useLocalStorage } from "../../hooks/use-local-storage";
@@ -31,9 +32,6 @@ const safeFormatZeroDigit = (num: number | undefined) =>
 
 const toThresholdDisplay = (str: string | undefined): string | undefined =>
   safeFormatZeroDigit(thresholdToNumber(str));
-
-const safeRound = (num: number | undefined) =>
-  num === undefined ? undefined : Math.round(num);
 
 type CrossThresholdFn = (current: number, threshold: number) => boolean;
 
@@ -69,7 +67,8 @@ const imageMap: Record<AlarmType, JSX.Element> = {
 };
 
 type AlarmInputProps = {
-  groupedAnalysis1: GroupedAnalysis1 | undefined;
+  baseFeePerGas: BaseFeePerGas;
+  ethPriceStats: EthPriceStats;
   isAlarmActive: boolean;
   onToggleIsAlarmActive: (isAlarmActive: boolean) => void;
   unit: string;
@@ -77,15 +76,14 @@ type AlarmInputProps = {
 };
 
 const AlarmInput: FC<AlarmInputProps> = ({
-  groupedAnalysis1,
+  baseFeePerGas,
+  ethPriceStats,
   isAlarmActive,
   onToggleIsAlarmActive,
   type,
   unit,
 }) => {
   const notification = useNotification();
-  const baseFeePerGas = groupedAnalysis1?.baseFeePerGas;
-  const ethPrice = groupedAnalysis1?.ethPrice;
   const [isBusyEditing, setIsBusyEditing] = useState(false);
   const [threshold, setThreshold] = useLocalStorage<string>(
     `${type}-threshold`,
@@ -97,12 +95,9 @@ const AlarmInput: FC<AlarmInputProps> = ({
   );
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const roundedGasPriceGwei =
-    baseFeePerGas === undefined
-      ? undefined
-      : Math.round(baseFeePerGas / WEI_PER_GWEI);
+  const roundedGasPriceGwei = Math.round(baseFeePerGas.wei / WEI_PER_GWEI);
 
-  const roundedEthPrice = safeRound(ethPrice?.usd);
+  const roundedEthPrice = Math.round(ethPriceStats.usd);
   const currentValueMap: Record<AlarmType, number | undefined> = {
     gas: roundedGasPriceGwei,
     eth: roundedEthPrice,

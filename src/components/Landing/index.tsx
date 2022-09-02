@@ -1,38 +1,32 @@
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-import React from "react";
-import Navigation from "../Navigation/Nav";
-import Intro from "./Intro";
-import BeforeGenesis from "./beforeGenesis";
-import GenesisBlock from "./gennesis";
-import EIPByzantium from "./eipByzantium";
-import EIPConstantinopole from "./eipConstantinopole";
-import EIP1559 from "./eip1559";
-import BlockGoal from "./goal";
-import TheMergeBlock from "./theMerge";
-import EtherTheUltraSound from "./BlockBtcEthUsd";
-import TwitterFam from "../TwitterFam";
-import FaqBlock from "./faq";
-import FollowingYou from "../FollowingYou";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import SupplyViewNew from "../SupplyViewNew";
-import TheBurnedCard from "./theBurnedCard";
-import Stepper from "../Navigation/Stepper";
-import { SteppersProvider } from "../../contexts/StepperContext";
-import styles from "./Landing.module.scss";
+import React from "react";
+import type { BaseFeePerGas } from "../../api/base-fee-per-gas";
+import type { EthPriceStats } from "../../api/eth-price-stats";
 import { NavigationProvider } from "../../contexts/NavigationContext";
-import {
-  decodeGroupedAnalysis1,
-  GroupedAnalysis1,
-  useGroupedAnalysis1,
-} from "../../api/grouped-analysis-1";
+import { SteppersProvider } from "../../contexts/StepperContext";
+import FollowingYou from "../FollowingYou";
+import Navigation from "../Navigation/Nav";
+import Stepper from "../Navigation/Stepper";
+import SupplyViewNew from "../SupplyViewNew";
+import TwitterFam from "../TwitterFam";
+import BeforeGenesis from "./beforeGenesis";
+import EtherTheUltraSound from "./BlockBtcEthUsd";
+import EIP1559 from "./eip1559";
+import EIPByzantium from "./eipByzantium";
+import EIPConstantinopole from "./eipConstantinopole";
+import FaqBlock from "./faq";
+import GenesisBlock from "./gennesis";
+import BlockGoal from "./goal";
+import Intro from "./Intro";
+import styles from "./Landing.module.scss";
+import TheBurnedCard from "./theBurnedCard";
+import TheMergeBlock from "./theMerge";
 
-const LandingPage: React.FC = () => {
-  const groupedAnalysis1F = useGroupedAnalysis1();
-  const groupedAnalysis1 =
-    groupedAnalysis1F === undefined
-      ? undefined
-      : decodeGroupedAnalysis1(groupedAnalysis1F);
+const LandingPage: React.FC<{
+  baseFeePerGas: BaseFeePerGas;
+  ethPriceStats: EthPriceStats;
+}> = ({ baseFeePerGas, ethPriceStats }) => {
   React.useEffect(() => {
     AOS.init();
     AOS.refresh();
@@ -43,7 +37,10 @@ const LandingPage: React.FC = () => {
       <NavigationProvider>
         <div className="wrapper">
           <Stepper />
-          <Navigation groupedAnalysis1={groupedAnalysis1} />
+          <Navigation
+            baseFeePerGas={baseFeePerGas}
+            ethPriceStats={ethPriceStats}
+          />
           <div className="container mx-auto">
             <Intro />
             <BeforeGenesis />

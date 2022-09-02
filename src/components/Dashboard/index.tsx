@@ -6,6 +6,10 @@ import { useEffect, useMemo, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useAdminToken } from "../../hooks/use-admin-token";
+import type { BaseFeePerGas } from "../../api/base-fee-per-gas";
+import { useBaseFeePerGas } from "../../api/base-fee-per-gas";
+import type { EthPriceStats } from "../../api/eth-price-stats";
+import { useEthPriceStats } from "../../api/eth-price-stats";
 import type { EthSupplyF } from "../../api/eth-supply";
 import { decodeEthSupply, useEthSupply } from "../../api/eth-supply";
 import type { GroupedAnalysis1F } from "../../api/grouped-analysis-1";
@@ -97,13 +101,17 @@ const useClientRefreshed = <A,>(
 };
 
 type Props = {
-  groupedAnalysis1F: GroupedAnalysis1F;
-  ethSupplyF: EthSupplyF;
-  mergeEstimate: MergeEstimate;
   // totalDifficultyProgress: TotalDifficultyProgress;
+  baseFeePerGas: BaseFeePerGas;
+  ethPriceStats: EthPriceStats;
+  ethSupplyF: EthSupplyF;
+  groupedAnalysis1F: GroupedAnalysis1F;
+  mergeEstimate: MergeEstimate;
 };
 
 const Dashboard: FC<Props> = ({
+  baseFeePerGas,
+  ethPriceStats,
   ethSupplyF,
   groupedAnalysis1F,
   mergeEstimate,
@@ -125,6 +133,8 @@ const Dashboard: FC<Props> = ({
     "dashboard | ultrasound.money",
     groupedAnalysis1?.baseFeePerGas,
   );
+  const crBaseFeePerGas = useClientRefreshed(baseFeePerGas, useBaseFeePerGas);
+  const crEthPriceStats = useClientRefreshed(ethPriceStats, useEthPriceStats);
   useScrollOnLoad();
 
   return (
@@ -149,7 +159,12 @@ const Dashboard: FC<Props> = ({
             )}
             <div className="px-4 xs:px-4 md:px-16">
               <BasicErrorBoundary>
-                <TopBar groupedAnalysis1={groupedAnalysis1} />
+                <TopBar
+                  baseFeePerGas={crBaseFeePerGas}
+                  ethPriceStats={crEthPriceStats}
+                  initialBaseFeePerGas={baseFeePerGas.wei}
+                  initialEthPrice={ethPriceStats.usd}
+                />
               </BasicErrorBoundary>
             </div>
             <Title>Ultra Sound Money</Title>
