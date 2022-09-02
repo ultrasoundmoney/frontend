@@ -26,6 +26,7 @@ import type { Gwei } from "../../eth-units";
 import * as FeatureFlags from "../../feature-flags";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
+import { useClientRefreshed } from "../../hooks/use-client-refreshed";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import Link from "../Link";
 import SectionDivider from "../SectionDivider";
@@ -90,14 +91,6 @@ const useScrollOnLoad = () => {
         ?.scrollIntoView({ behavior: "auto", block: "start" });
     }
   }, []);
-};
-
-const useClientRefreshed = <A,>(
-  init: A,
-  refreshHook: () => A | undefined,
-): A => {
-  const refreshed = refreshHook();
-  return useMemo(() => refreshed ?? init, [init, refreshed]);
 };
 
 type Props = {
