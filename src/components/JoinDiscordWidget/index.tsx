@@ -237,7 +237,7 @@ const JoinDiscordWidget: FC = () => {
 
   return (
     <WidgetErrorBoundary title="join discord queue">
-      <WidgetBackground className="flex flex-col gap-y-8 max-w-3xl mx-auto">
+      <WidgetBackground className="flex flex-col gap-y-8 max-w-3xl md:mx-auto">
         <div className="relative flex justify-between items-center">
           <LabelText>join discord queue</LabelText>
           <div className="w-10 md:w-16 md:absolute md:-right-12 md:-top-12 select-none">
