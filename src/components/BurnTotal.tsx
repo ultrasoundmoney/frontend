@@ -135,6 +135,7 @@ const BurnTotal: FC<Props> = ({
             opacity-[0.13]
             blur-[50px] md:blur-[70px]
             pointer-events-none
+            will-change-transform
           `}
         >
           <div
@@ -153,6 +154,7 @@ const BurnTotal: FC<Props> = ({
             opacity-[0.25]
             blur-[50px] md:blur-[70px]
             pointer-events-none
+            will-change-transform
           `}
         >
           <div
