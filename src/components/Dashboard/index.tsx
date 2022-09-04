@@ -120,7 +120,7 @@ const Dashboard: FC<Props> = ({
   const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysis1F);
   const gasTitle = useGasTitle(
     "dashboard | ultrasound.money",
-    crBaseFeePerGas.wei / WEI_PER_GWEI,
+    crBaseFeePerGas.wei,
   );
   useScrollOnLoad();
 
