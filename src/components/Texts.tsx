@@ -43,6 +43,9 @@ export const TextInter: FC<{
   children: ReactNode;
   className?: string;
   inline?: boolean;
+  /**
+   * @deprecated use the SkeletonText wrapper instead.
+   */
   skeletonWidth?: string;
   style?: CSSProperties;
 }> = ({
