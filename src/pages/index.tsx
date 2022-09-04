@@ -4,7 +4,6 @@ import { fetchBaseFeePerGas } from "../api/base-fee-per-gas";
 import type { EthPriceStats } from "../api/eth-price-stats";
 import { fetchEthPriceStats } from "../api/eth-price-stats";
 import type { EthSupplyF } from "../api/eth-supply";
-import type { GroupedAnalysis1F } from "../api/grouped-analysis-1";
 import type { MergeEstimate } from "../api/merge-estimate";
 import Dashboard from "../components/Dashboard";
 import { getDomain } from "../config";

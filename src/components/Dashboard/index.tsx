@@ -19,7 +19,7 @@ import { useMergeEstimate } from "../../api/merge-estimate";
 import { useScarcity } from "../../api/scarcity";
 import { useTotalDifficultyProgress } from "../../api/total-difficulty-progress";
 import colors from "../../colors";
-import type { Gwei } from "../../eth-units";
+import type { Gwei, WeiNumber } from "../../eth-units";
 import { WEI_PER_GWEI } from "../../eth-units";
 import * as FeatureFlags from "../../feature-flags";
 import { FeatureFlagsContext } from "../../feature-flags";
@@ -62,7 +62,7 @@ const Title: FC<{ children: ReactNode }> = ({ children }) => (
   </div>
 );
 
-const useGasTitle = (defaultTitle: string, baseFeePerGas: Gwei | undefined) => {
+const useGasTitle = (defaultTitle: string, baseFeePerGas: WeiNumber) => {
   const [gasTitle, setGasTitle] = useState<string>();
 
   useEffect(() => {
