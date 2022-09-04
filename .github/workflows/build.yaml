@@ -25,8 +25,6 @@ jobs:
           # type=raw,latest
           tags: |
             type=sha,prefix=
-          secrets: |
-            "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}"
       - name: Wait for tests to succeed
         uses: lewagon/wait-on-check-action@v1.1.2
         with:
@@ -43,3 +41,5 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=registry,ref=reg.fr-par.scw.cloud/ultrasoundmoney/serve-frontend:latest
           cache-to: type=inline
+          secrets: |
+            "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}"

@@ -5,19 +5,27 @@ COPY package.json .
 COPY yarn.lock .
 RUN ["yarn", "install", "--frozen-lockfile", "--ignore-engines"]
 COPY tsconfig.json .
-COPY src/ src
 COPY locales/ locales
 COPY next-env.d.ts .
 COPY next.config.js .
 COPY postcss.config.js .
 COPY tailwind.config.js .
+COPY sentry.client.config.ts .
+COPY sentry.server.config.ts .
+COPY sentry.properties .
+COPY src/ src
 COPY public/ public
 ENV NEXT_PUBLIC_ENV=stag
 RUN ["yarn", "build"]
+RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN \
+   export SENTRY_AUTH_TOKEN=$(cat /run/secrets/SENTRY_AUTH_TOKEN) && \
+   yarn build
 RUN ["cp", "-r", ".next/standalone", "/standalone-stag"]
 RUN ["cp", "-r", ".next/static", "/static-stag"]
 ENV NEXT_PUBLIC_ENV=prod
-RUN ["yarn", "build"]
+RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN \
+   export SENTRY_AUTH_TOKEN=$(cat /run/secrets/SENTRY_AUTH_TOKEN) && \
+   yarn build
 RUN ["cp", "-r", ".next/standalone", "/standalone-prod"]
 RUN ["cp", "-r", ".next/static", "/static-prod"]
 
