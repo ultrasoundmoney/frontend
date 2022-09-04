@@ -32,15 +32,18 @@ import Link from "../Link";
 import SectionDivider from "../SectionDivider";
 import { TextInterLink } from "../Texts";
 import TopBar from "../TopBar";
-import BurnSection from "./BurnSection";
 import styles from "./Dashboard.module.scss";
 import FamSection from "./FamSection";
 import JoinDiscordSection from "./JoinDiscordSection";
 import MergeSection from "./MergeSection";
 import MonetaryPremiumSection from "./MonetaryPremiumSection";
-import SupplySection from "./SupplySection";
 import TotalValueSecuredSection from "./TotalValueSecuredSection";
 const AdminTools = dynamic(() => import("../AdminTools"));
+
+// Fix the hydration errors we see in production before turning SSR back on for this section.
+const SupplySection = dynamic(() => import("./SupplySection"), { ssr: false });
+// Fix the hydration errors we see in production before turning SSR back on for this section.
+const BurnSection = dynamic(() => import("./BurnSection"), { ssr: false });
 
 const Title: FC<{ children: ReactNode }> = ({ children }) => (
   <div
