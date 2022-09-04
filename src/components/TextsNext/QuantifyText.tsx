@@ -1,10 +1,9 @@
-import type { FC } from "react";
-import Skeleton from "react-loading-skeleton";
+import type { FC, ReactNode } from "react";
 import { TextRoboto } from "../Texts";
 
 type Props = {
   amountPostfix?: string;
-  children: string | undefined;
+  children: ReactNode;
   className?: string;
   skeletonWidth?: string;
   unitPostfix?: string;
@@ -14,15 +13,12 @@ const QuantifyText: FC<Props> = ({
   amountPostfix = "",
   children,
   className = "",
-  skeletonWidth = "3rem",
   unitPostfix = "",
 }) => (
   <TextRoboto className={className}>
-    {children === undefined ? (
-      <Skeleton width={skeletonWidth} />
-    ) : (
-      `${children}${amountPostfix}${` ${unitPostfix}`}`
-    )}
+    {children}
+    {amountPostfix && amountPostfix}
+    {unitPostfix && <>&nbsp;{unitPostfix}</>}
   </TextRoboto>
 );
 
