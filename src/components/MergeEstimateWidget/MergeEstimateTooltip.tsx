@@ -28,9 +28,6 @@ const MergeEstimateTooltip: FC<Props> = ({
     onClick={(e) => {
       e.stopPropagation();
     }}
-    // Because this element is rendered as a child of a button it has
-    // select-none and cursor-pointer. We force overwrite so text is selectable
-    // and changes the cursor.
     className={`
       relative
       flex flex-col gap-y-4
