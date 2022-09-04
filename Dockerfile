@@ -16,7 +16,6 @@ COPY sentry.properties .
 COPY src/ src
 COPY public/ public
 ENV NEXT_PUBLIC_ENV=stag
-RUN ["yarn", "build"]
 RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN \
    export SENTRY_AUTH_TOKEN=$(cat /run/secrets/SENTRY_AUTH_TOKEN) && \
    yarn build
