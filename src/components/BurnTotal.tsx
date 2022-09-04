@@ -1,24 +1,24 @@
 import * as DateFns from "date-fns";
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
 import type { FC } from "react";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CountUp from "react-countup";
-import Skeleton from "react-loading-skeleton";
 import type {
   BurnRates,
   FeesBurned,
   GroupedAnalysis1,
 } from "../api/grouped-analysis-1";
+import fireSvg from "../assets/fire-own.svg";
 import { londonHardfork } from "../dates";
 import type { Unit } from "../denomination";
 import * as Duration from "../duration";
-import { FeatureFlagsContext } from "../feature-flags";
 import * as Format from "../format";
 import * as StaticEtherData from "../static-ether-data";
 import type { LimitedTimeFrameNext, TimeFrameNext } from "../time-frames";
 import { AmountAnimatedShell } from "./Amount";
 import { TextRoboto } from "./Texts";
 import TimeFrameIndicator from "./TimeFrameIndicator";
-import Twemoji from "./Twemoji";
 import WidgetErrorBoundary from "./WidgetErrorBoundary";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
@@ -71,28 +71,21 @@ const BurnTotal: FC<Props> = ({
 }) => {
   const burnRates = groupedAnalysis1.burnRates;
   const feesBurned = groupedAnalysis1.feesBurned;
-  const { previewSkeletons } = useContext(FeatureFlagsContext);
   const [millisecondsSinceLondonHardFork, setMillisecondsSinceLondonHardfork] =
     useState<number>();
 
   const selectedFeesBurnedEth =
-    feesBurned === undefined
-      ? undefined
-      : feesBurned[timeframeFeesBurnedMap[timeFrame]["eth"]];
+    feesBurned[timeframeFeesBurnedMap[timeFrame]["eth"]];
 
   // In ETH or USD K.
   const selectedFeesBurned =
-    feesBurned === undefined
-      ? undefined
-      : unit === "eth"
+    unit === "eth"
       ? feesBurned[timeframeFeesBurnedMap[timeFrame]["eth"]]
       : feesBurned[timeframeFeesBurnedMap[timeFrame][unit]];
 
   // In ETH / min or USD K / min.
   const selectedBurnRate =
-    burnRates === undefined
-      ? undefined
-      : unit === "eth"
+    unit === "eth"
       ? burnRates[timeframeBurnRateMap[timeFrame][unit]]
       : burnRates[timeframeBurnRateMap[timeFrame][unit]];
 
@@ -112,7 +105,6 @@ const BurnTotal: FC<Props> = ({
 
   // In ETH.
   const selectedIssuance =
-    selectedFeesBurned === undefined ||
     millisecondsSinceLondonHardFork === undefined
       ? undefined
       : timeFrame === "all"
@@ -121,7 +113,7 @@ const BurnTotal: FC<Props> = ({
 
   // Fraction.
   const issuanceOffset =
-    selectedFeesBurnedEth === undefined || selectedIssuance === undefined
+    selectedIssuance === undefined
       ? undefined
       : Format.ethFromWei(selectedFeesBurnedEth) / selectedIssuance;
 
@@ -186,24 +178,23 @@ const BurnTotal: FC<Props> = ({
               textClassName=""
               unitText={unit === "eth" ? "ETH" : "USD"}
             >
-              {selectedFeesBurned && (
-                <CountUp
-                  decimals={unit === "eth" ? 2 : 0}
-                  duration={0.8}
-                  end={
-                    unit === "eth"
-                      ? Format.ethFromWei(selectedFeesBurned)
-                      : selectedFeesBurned
-                  }
-                  preserveValue={true}
-                  separator=","
-                />
-              )}
+              <CountUp
+                decimals={unit === "eth" ? 2 : 0}
+                duration={0.8}
+                end={
+                  unit === "eth"
+                    ? Format.ethFromWei(selectedFeesBurned)
+                    : selectedFeesBurned
+                }
+                preserveValue={true}
+                separator=","
+              />
             </AmountAnimatedShell>
-            <div className="ml-4 md:ml-8">
-              <Twemoji imageClassName="h-6 lg:h-8 select-none" wrapper>
-                🔥
-              </Twemoji>
+            <div className="ml-4 md:ml-8 h-6 w-6 lg:h-8 lg:w-8 select-none">
+              <Image
+                alt="fire emoji symbolizing ETH burned"
+                src={fireSvg as StaticImageData}
+              />
             </div>
           </div>
           <div className="flex flex-col gap-y-4 justify-between lg:flex-row">
@@ -214,20 +205,18 @@ const BurnTotal: FC<Props> = ({
                 textClassName="text-2xl md:text-3xl lg:text-2xl xl:text-4xl"
                 unitText={unit === "eth" ? "ETH/min" : "USD/min"}
               >
-                {selectedBurnRate && (
-                  <CountUp
-                    decimals={unit === "eth" ? 2 : 1}
-                    duration={0.8}
-                    end={
-                      unit === "eth"
-                        ? Format.ethFromWei(selectedBurnRate)
-                        : selectedBurnRate / 1000
-                    }
-                    preserveValue={true}
-                    separator=","
-                    suffix={unit === "usd" ? "K" : ""}
-                  />
-                )}
+                <CountUp
+                  decimals={unit === "eth" ? 2 : 1}
+                  duration={0.8}
+                  end={
+                    unit === "eth"
+                      ? Format.ethFromWei(selectedBurnRate)
+                      : selectedBurnRate / 1000
+                  }
+                  preserveValue={true}
+                  separator=","
+                  suffix={unit === "usd" ? "K" : ""}
+                />
               </AmountAnimatedShell>
             </div>
             <div className="lg:text-right flex flex-col gap-y-4">
@@ -235,18 +224,14 @@ const BurnTotal: FC<Props> = ({
                 {simulateMerge ? "pos issuance offset" : "issuance offset"}
               </WidgetTitle>
               <TextRoboto className="text-2xl md:text-3xl lg:text-2xl xl:text-4xl">
-                {selectedBurnRate === undefined || previewSkeletons ? (
-                  <Skeleton inline={true} width="4rem" />
-                ) : (
-                  <CountUp
-                    decimals={2}
-                    duration={0.8}
-                    separator=","
-                    end={issuanceOffset ?? 0}
-                    preserveValue={true}
-                    suffix={"x"}
-                  />
-                )}
+                <CountUp
+                  decimals={2}
+                  duration={0.8}
+                  separator=","
+                  end={issuanceOffset ?? 0}
+                  preserveValue={true}
+                  suffix={"x"}
+                />
               </TextRoboto>
             </div>
           </div>

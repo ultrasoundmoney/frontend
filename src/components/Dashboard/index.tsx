@@ -19,8 +19,7 @@ import { useMergeEstimate } from "../../api/merge-estimate";
 import { useScarcity } from "../../api/scarcity";
 import { useTotalDifficultyProgress } from "../../api/total-difficulty-progress";
 import colors from "../../colors";
-import type { Gwei, WeiNumber } from "../../eth-units";
-import { WEI_PER_GWEI } from "../../eth-units";
+import type { WeiNumber } from "../../eth-units";
 import * as FeatureFlags from "../../feature-flags";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
@@ -40,8 +39,8 @@ import JoinDiscordSection from "./JoinDiscordSection";
 import MergeSection from "./MergeSection";
 import MonetaryPremiumSection from "./MonetaryPremiumSection";
 import SupplySection from "./SupplySection";
+import TotalValueSecuredSection from "./TotalValueSecuredSection";
 const AdminTools = dynamic(() => import("../AdminTools"));
-const TotalValueSecured = dynamic(() => import("../TotalValueSecured"));
 
 const Title: FC<{ children: ReactNode }> = ({ children }) => (
   <div
@@ -201,20 +200,7 @@ const Dashboard: FC<Props> = ({
               </video>
             )}
             <div className="h-16"></div>
-            <div className="xs:px-4 md:px-16" id="tvs">
-              <SectionDivider
-                title="total value secured—TVS"
-                link="tvs"
-                subtitle="securing the internet of value"
-              />
-              <BasicErrorBoundary>
-                <Suspense>
-                  <div className="flex flex-col" id="tvs">
-                    <TotalValueSecured ethPriceStats={ethPriceStats} />
-                  </div>
-                </Suspense>
-              </BasicErrorBoundary>
-            </div>
+            <TotalValueSecuredSection ethPriceStats={ethPriceStats} />
             <div className="h-16"></div>
             {featureFlags.showBackgroundOrbs && (
               <video
