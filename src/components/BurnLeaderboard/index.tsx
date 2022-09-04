@@ -4,7 +4,7 @@ import { memo, useCallback, useRef, useState } from "react";
 import { usePopper } from "react-popper";
 import { useAdminToken } from "../../hooks/use-admin-token";
 import { useContractsFreshness } from "../../api/contracts";
-import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import type { GroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import type { LeaderboardEntry, Leaderboards } from "../../api/leaderboards";
 import type { Unit } from "../../denomination";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
@@ -183,13 +183,19 @@ const useTooltip = () => {
 };
 
 type Props = {
+  groupedAnalysis1: GroupedAnalysis1;
   onClickTimeFrame: () => void;
   timeFrame: TimeFrameNext;
   unit: Unit;
 };
 
-const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
-  const leaderboards = useGroupedAnalysis1()?.leaderboards;
+const BurnLeaderboard: FC<Props> = ({
+  groupedAnalysis1,
+  onClickTimeFrame,
+  timeFrame,
+  unit,
+}) => {
+  const leaderboards = groupedAnalysis1?.leaderboards;
   const selectedLeaderboard =
     leaderboards === undefined
       ? undefined

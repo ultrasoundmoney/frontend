@@ -16,35 +16,31 @@ type StaticProps = {
   ethSupplyF: EthSupplyF;
   // Experiment, this one updates frequently, might be a bad idea to include.
   // It's too big to include in SSR. It creates a huge json embedded in our html that needs to be parsed to hydrate which slows our first load. Consider cutting down the data in it, splitting the data in it over multiple endpoints, loading this data client side with suspense.
-  groupedAnalysis1F: GroupedAnalysis1F;
   mergeEstimate: MergeEstimate;
   // totalDifficultyProgress: TotalDifficultyProgress;
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const [meRes, esRes, gaRes, baseFeePerGas, ethPriceStats] = await Promise.all(
-    [
-      // fetch(`${getDomain()}/api/v2/fees/total-difficulty-progress`),
-      fetch(`${getDomain()}/api/v2/fees/merge-estimate`),
-      fetch(`${getDomain()}/api/v2/fees/eth-supply`),
-      // fetch(`${getApiDomain()}/api/fees/scarcity`),
-      fetch(`${getDomain()}/api/fees/grouped-analysis-1`),
-      fetchBaseFeePerGas(),
-      fetchEthPriceStats(),
-    ],
-  );
+  const [meRes, esRes, baseFeePerGas, ethPriceStats] = await Promise.all([
+    // fetch(`${getDomain()}/api/v2/fees/total-difficulty-progress`),
+    fetch(`${getDomain()}/api/v2/fees/merge-estimate`),
+    fetch(`${getDomain()}/api/v2/fees/eth-supply`),
+    // fetch(`${getApiDomain()}/api/fees/scarcity`),
+    fetchBaseFeePerGas(),
+    fetchEthPriceStats(),
+  ]);
   // const tdpData = (await tdpRes.json()) as TotalDifficultyProgress;
   const meData = (await meRes.json()) as MergeEstimate;
   const esData = (await esRes.json()) as EthSupplyF;
   // const scData = (await scRes.json()) as Scarcity;
-  const gaData = (await gaRes.json()) as GroupedAnalysis1F;
+  // const gaData = (await gaRes.json()) as GroupedAnalysis1F;
 
   return {
     props: {
       baseFeePerGas,
       ethPriceStats,
       ethSupplyF: esData,
-      groupedAnalysis1F: gaData,
+      // groupedAnalysis1F: gaData,
       mergeEstimate: meData,
       // scarcity: scData,
       // totalDifficultyProgress: tdpData,
@@ -60,13 +56,13 @@ const IndexPage: NextPage<StaticProps> = ({
   baseFeePerGas,
   ethPriceStats,
   ethSupplyF,
-  groupedAnalysis1F,
+  // groupedAnalysis1F,
   mergeEstimate,
 }) => (
   <Dashboard
     baseFeePerGas={baseFeePerGas}
     ethPriceStats={ethPriceStats}
-    groupedAnalysis1F={groupedAnalysis1F}
+    // groupedAnalysis1F={groupedAnalysis1F}
     ethSupplyF={ethSupplyF}
     mergeEstimate={mergeEstimate}
   />

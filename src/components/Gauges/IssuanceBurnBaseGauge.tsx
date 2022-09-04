@@ -1,25 +1,25 @@
 import clamp from "lodash/clamp";
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
 import type { FC } from "react";
 import { useContext } from "react";
 import Skeleton from "react-loading-skeleton";
 import { animated, config, useSpring } from "react-spring";
+import type { EthPriceStats } from "../../api/eth-price-stats";
 import type { Unit } from "../../denomination";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
 import { WidgetTitle } from "../WidgetSubcomponents";
-import type { GaugeGradientFill } from "./GaugeSvg";
-import GaugeSvg from "./GaugeSvg";
 import dropletSvg from "./droplet.svg";
 import flameSvg from "./flame.svg";
-import type { StaticImageData } from "next/image";
-import Image from "next/image";
-import type { GroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import type { GaugeGradientFill } from "./GaugeSvg";
+import GaugeSvg from "./GaugeSvg";
 
 type BaseGuageProps = {
   emoji: "flame" | "droplet";
+  ethPriceStats: EthPriceStats;
   gaugeUnit: string;
   gradientFill: GaugeGradientFill;
-  groupedAnalysis1: GroupedAnalysis1;
   needleColor?: string;
   title: string;
   unit: Unit;
@@ -29,17 +29,15 @@ type BaseGuageProps = {
 
 const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
   emoji,
+  ethPriceStats,
   gaugeUnit,
   gradientFill,
-  groupedAnalysis1,
   needleColor,
   title,
   unit,
   value,
   valueUnit,
 }) => {
-  const ethPrice = groupedAnalysis1?.ethPrice;
-
   const { valueA } = useSpring({
     from: { valueA: 0 },
     to: { valueA: value },
@@ -48,12 +46,7 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
   });
 
   const min = 0;
-  const preMax =
-    unit === "eth"
-      ? 10
-      : ethPrice === undefined
-      ? 0
-      : (10 * ethPrice.usd) / 10 ** 3;
+  const preMax = unit === "eth" ? 10 : (10 * ethPriceStats.usd) / 10 ** 3;
   const max = Math.round(Math.max(preMax, unit === "eth" ? 10 : 20 ?? 0));
 
   const progress = clamp(value ?? 0, min, max) / (max - min);

@@ -1,16 +1,13 @@
 import dynamic from "next/dynamic";
 import type { FC } from "react";
-import { useCallback } from "react";
-import { Suspense, useState } from "react";
+import { Suspense, useCallback, useState } from "react";
 import type { GroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import type { Unit } from "../../denomination";
 import type { TimeFrameNext } from "../../time-frames";
 import { timeFramesNext } from "../../time-frames";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import BurnCategoryWidget from "../BurnCategoryWidget";
-import BurnTotal from "../BurnTotal";
 import CurrencyControl from "../CurrencyControl";
-import DeflationaryStreak from "../DeflationaryStreak";
 import SectionDivider from "../SectionDivider";
 import TimeFrameControl from "../TimeFrameControl";
 import ToggleSwitch from "../ToggleSwitch";
@@ -21,6 +18,10 @@ const BurnLeaderboard = dynamic(() => import("../BurnLeaderboard"), {
 });
 const LatestBlocks = dynamic(() => import("../LatestBlocks"), { ssr: false });
 const BurnRecords = dynamic(() => import("../BurnRecords"), { ssr: false });
+const DeflationaryStreak = dynamic(() => import("../DeflationaryStreak"), {
+  ssr: false,
+});
+const BurnTotal = dynamic(() => import("../BurnTotal"), { ssr: false });
 
 type Props = {
   groupedAnalysis1: GroupedAnalysis1;
@@ -99,6 +100,7 @@ const BurnSection: FC<Props> = ({ groupedAnalysis1 }) => {
               />
               <div className="lg:col-start-2 lg:row-start-1 lg:row-end-5 lg:h-[688px] xl:h-[702px] flex flex-col gap-y-4">
                 <BurnLeaderboard
+                  groupedAnalysis1={groupedAnalysis1}
                   onClickTimeFrame={handleClickTimeFrame}
                   timeFrame={timeFrame}
                   unit={unit}
@@ -112,7 +114,10 @@ const BurnSection: FC<Props> = ({ groupedAnalysis1 }) => {
                 <LatestBlocks groupedAnalysis1={groupedAnalysis1} unit={unit} />
               </div>
               <div className="lg:row-start-3">
-                <DeflationaryStreak simulateMerge={simulateMerge} />
+                <DeflationaryStreak
+                  groupedAnalysis1={groupedAnalysis1}
+                  simulateMerge={simulateMerge}
+                />
               </div>
               <div className="lg:row-end-5">
                 <BurnRecords

@@ -3,8 +3,10 @@ import type { FC } from "react";
 import { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
-import type { DeflationaryStreakMode } from "../api/grouped-analysis-1";
-import { useGroupedAnalysis1 } from "../api/grouped-analysis-1";
+import type {
+  DeflationaryStreakMode,
+  GroupedAnalysis1,
+} from "../api/grouped-analysis-1";
 import { AmountUnitSpace } from "./Spacing";
 import SpanMoji from "./SpanMoji";
 import { TextRoboto } from "./Texts";
@@ -13,14 +15,14 @@ import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 const getStreakKey = (simulateMerge: boolean): DeflationaryStreakMode =>
   simulateMerge ? "postMerge" : "preMerge";
 
-const DeflationaryStreak: FC<{ simulateMerge: boolean }> = ({
-  simulateMerge,
-}) => {
+const DeflationaryStreak: FC<{
+  groupedAnalysis1: GroupedAnalysis1;
+  simulateMerge: boolean;
+}> = ({ groupedAnalysis1, simulateMerge }) => {
   const [timeElapsed, setTimeElapsed] = useState<string>();
   const streakKey = getStreakKey(simulateMerge);
-  const deflationaryStreak =
-    useGroupedAnalysis1()?.deflationaryStreak[streakKey];
-  const latestBlocks = useGroupedAnalysis1()?.latestBlockFees;
+  const deflationaryStreak = groupedAnalysis1?.deflationaryStreak[streakKey];
+  const latestBlocks = groupedAnalysis1?.latestBlockFees;
 
   useEffect(() => {
     if (deflationaryStreak == undefined || latestBlocks === undefined) {

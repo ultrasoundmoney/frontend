@@ -94,7 +94,7 @@ export const decodeGroupedAnalysis1 = (
   }).records,
 });
 
-export const useGroupedAnalysis1 = (): GroupedAnalysis1F | undefined => {
+export const useGroupedAnalysis1 = (): GroupedAnalysis1F => {
   const { data } = useSWR<GroupedAnalysis1F>(
     "/api/fees/grouped-analysis-1",
     fetchJson,
@@ -104,5 +104,7 @@ export const useGroupedAnalysis1 = (): GroupedAnalysis1F | undefined => {
     },
   );
 
-  return data;
+  // We use suspense.
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return data!;
 };

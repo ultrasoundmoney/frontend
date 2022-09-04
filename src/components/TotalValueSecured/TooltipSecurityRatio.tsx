@@ -3,8 +3,7 @@ import flow from "lodash/flow";
 import type { FC } from "react";
 import { useContext } from "react";
 import Skeleton from "react-loading-skeleton";
-import type { EthPrice } from "../../api/grouped-analysis-1";
-import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import type { EthPriceStats } from "../../api/eth-price-stats";
 import type { Scarcity } from "../../api/scarcity";
 import { useScarcity } from "../../api/scarcity";
 import { useTotalValueSecured } from "../../api/total-value-secured";
@@ -16,7 +15,7 @@ import BodyText from "../TextsNext/BodyText";
 import { WidgetTitle } from "../WidgetSubcomponents";
 
 const formatEthPrice = (
-  ethPrice: EthPrice,
+  ethPrice: EthPriceStats,
   ethStaked: Scarcity["engines"]["staked"],
 ) =>
   flow(
@@ -32,10 +31,10 @@ const formatEthPrice = (
     Format.formatTwoDigit,
   )();
 
-const TooltipSecurityRatio: FC<{ onClickClose: () => void }> = ({
-  onClickClose,
-}) => {
-  const ethPrice = useGroupedAnalysis1()?.ethPrice;
+const TooltipSecurityRatio: FC<{
+  ethPriceStats: EthPriceStats;
+  onClickClose: () => void;
+}> = ({ ethPriceStats, onClickClose }) => {
   const totalValueSecured = useTotalValueSecured();
   const ethStaked = useScarcity()?.engines.staked;
   const { previewSkeletons } = useContext(FeatureFlagsContext);
@@ -113,12 +112,10 @@ const TooltipSecurityRatio: FC<{ onClickClose: () => void }> = ({
           ) : (
             <div>
               <TextRoboto>
-                {ethStaked === undefined ||
-                ethPrice === undefined ||
-                previewSkeletons ? (
+                {ethStaked === undefined || previewSkeletons ? (
                   <Skeleton inline width="2.4rem" />
                 ) : (
-                  formatEthPrice(ethPrice, ethStaked)
+                  formatEthPrice(ethPriceStats, ethStaked)
                 )}
                 T
               </TextRoboto>

@@ -1,14 +1,20 @@
+import type { FC } from "react";
+import type { EthPriceStats } from "../../api/eth-price-stats";
 import { useTotalValueSecured } from "../../api/total-value-secured";
 import Summary from "./Summary";
 import TvsLeaderboard from "./TvsLeaderboard";
 
-const TotalValueSecured = () => {
+type Props = {
+  ethPriceStats: EthPriceStats;
+};
+
+const TotalValueSecured: FC<Props> = ({ ethPriceStats }) => {
   const totalValueSecured = useTotalValueSecured();
 
   return (
     <>
       <div className="grid gap-4 lg:grid-cols-2">
-        <Summary />
+        <Summary ethPriceStats={ethPriceStats} />
         <TvsLeaderboard
           className="lg:col-start-2 lg:row-start-1 lg:row-end-3"
           rows={totalValueSecured?.erc20Leaderboard}

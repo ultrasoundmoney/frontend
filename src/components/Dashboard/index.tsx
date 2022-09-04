@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import type { FC, ReactNode } from "react";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import type { BaseFeePerGas } from "../../api/base-fee-per-gas";
@@ -10,7 +10,6 @@ import type { EthPriceStats } from "../../api/eth-price-stats";
 import { useEthPriceStats } from "../../api/eth-price-stats";
 import type { EthSupplyF } from "../../api/eth-supply";
 import { decodeEthSupply, useEthSupply } from "../../api/eth-supply";
-import type { GroupedAnalysis1F } from "../../api/grouped-analysis-1";
 import {
   decodeGroupedAnalysis1,
   useGroupedAnalysis1,
@@ -21,6 +20,7 @@ import { useScarcity } from "../../api/scarcity";
 import { useTotalDifficultyProgress } from "../../api/total-difficulty-progress";
 import colors from "../../colors";
 import type { Gwei } from "../../eth-units";
+import { WEI_PER_GWEI } from "../../eth-units";
 import * as FeatureFlags from "../../feature-flags";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
@@ -39,8 +39,8 @@ import FamSection from "./FamSection";
 import JoinDiscordSection from "./JoinDiscordSection";
 import MergeSection from "./MergeSection";
 import MonetaryPremiumSection from "./MonetaryPremiumSection";
+import SupplySection from "./SupplySection";
 const AdminTools = dynamic(() => import("../AdminTools"));
-const SupplyWidgets = dynamic(() => import("../SupplyWidgets"));
 const TotalValueSecured = dynamic(() => import("../TotalValueSecured"));
 
 const Title: FC<{ children: ReactNode }> = ({ children }) => (
@@ -97,7 +97,6 @@ type Props = {
   baseFeePerGas: BaseFeePerGas;
   ethPriceStats: EthPriceStats;
   ethSupplyF: EthSupplyF;
-  groupedAnalysis1F: GroupedAnalysis1F;
   mergeEstimate: MergeEstimate;
 };
 
@@ -105,7 +104,6 @@ const Dashboard: FC<Props> = ({
   baseFeePerGas,
   ethPriceStats,
   ethSupplyF,
-  groupedAnalysis1F,
   mergeEstimate,
   // totalDifficultyProgress,
 }) => {
@@ -113,20 +111,17 @@ const Dashboard: FC<Props> = ({
   const crMergeEstimate = useClientRefreshed(mergeEstimate, useMergeEstimate);
   const crEthSupply = useClientRefreshed(ethSupplyF, useEthSupply);
   const decodedCrEthSupply = decodeEthSupply(crEthSupply);
-  const crGroupedAnalysis = useClientRefreshed(
-    groupedAnalysis1F,
-    useGroupedAnalysis1,
-  );
-  const groupedAnalysis1 = decodeGroupedAnalysis1(crGroupedAnalysis);
   const scarcity = useScarcity();
   const { featureFlags, setFlag } = FeatureFlags.useFeatureFlags();
   const adminToken = useAdminToken();
-  const gasTitle = useGasTitle(
-    "dashboard | ultrasound.money",
-    groupedAnalysis1?.baseFeePerGas,
-  );
   const crBaseFeePerGas = useClientRefreshed(baseFeePerGas, useBaseFeePerGas);
   const crEthPriceStats = useClientRefreshed(ethPriceStats, useEthPriceStats);
+  const groupedAnalysis1F = useGroupedAnalysis1();
+  const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysis1F);
+  const gasTitle = useGasTitle(
+    "dashboard | ultrasound.money",
+    crBaseFeePerGas.wei / WEI_PER_GWEI,
+  );
   useScrollOnLoad();
 
   return (
@@ -185,21 +180,11 @@ const Dashboard: FC<Props> = ({
                 />
               </Suspense>
             </BasicErrorBoundary>
-            <BasicErrorBoundary>
-              <Suspense>
-                <div id="projection">
-                  <SectionDivider
-                    link="projection"
-                    subtitle="ultra sound money for years to come"
-                    title="supply projections"
-                  />
-                  <SupplyWidgets
-                    scarcity={scarcity}
-                    groupedAnalysis1={groupedAnalysis1}
-                  />
-                </div>
-              </Suspense>
-            </BasicErrorBoundary>
+            <SupplySection
+              burnRates={groupedAnalysis1.burnRates}
+              ethPriceStats={ethPriceStats}
+              scarcity={scarcity}
+            />
             <div className="h-16"></div>
             <BurnSection groupedAnalysis1={groupedAnalysis1} />
             {featureFlags.showBackgroundOrbs && (
@@ -225,7 +210,7 @@ const Dashboard: FC<Props> = ({
               <BasicErrorBoundary>
                 <Suspense>
                   <div className="flex flex-col" id="tvs">
-                    <TotalValueSecured></TotalValueSecured>
+                    <TotalValueSecured ethPriceStats={ethPriceStats} />
                   </div>
                 </Suspense>
               </BasicErrorBoundary>

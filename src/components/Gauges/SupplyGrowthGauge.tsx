@@ -3,7 +3,7 @@ import type { FC } from "react";
 import { useCallback, useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { animated, config, useSpring } from "react-spring";
-import type { GroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import type { BurnRates } from "../../api/grouped-analysis-1";
 import type { Scarcity } from "../../api/scarcity";
 import colors from "../../colors";
 import { FeatureFlagsContext } from "../../feature-flags";
@@ -17,19 +17,18 @@ import SplitGaugeSvg from "./SplitGaugeSvg";
 
 const useGrowthRate = (
   scarcity: Scarcity | undefined,
-  groupedAnalysis1: GroupedAnalysis1 | undefined,
+  burnRates: BurnRates,
   simulateMerge: boolean,
   timeFrame: TimeFrameNext,
 ): number | undefined => {
   const [growthRate, setGrowthRate] = useState<number>();
 
   useEffect(() => {
-    if (scarcity === undefined || groupedAnalysis1 === undefined) {
+    if (scarcity === undefined) {
       return;
     }
 
-    const selectedBurnRate =
-      groupedAnalysis1.burnRates[timeframeBurnRateMap[timeFrame]["eth"]];
+    const selectedBurnRate = burnRates[timeframeBurnRateMap[timeFrame]["eth"]];
 
     // Convert burn rate from eth/min to eth/year.
     const feeBurnYear = Format.ethFromWei(selectedBurnRate) * 60 * 24 * 365.25;
@@ -52,14 +51,14 @@ const useGrowthRate = (
     if (rateRounded !== undefined && rateRounded !== nextGrowthRate) {
       setGrowthRate(rateRounded);
     }
-  }, [groupedAnalysis1, growthRate, scarcity, simulateMerge, timeFrame]);
+  }, [burnRates, growthRate, scarcity, simulateMerge, timeFrame]);
 
   return growthRate;
 };
 
 type Props = {
   scarcity: Scarcity | undefined;
-  groupedAnalysis1: GroupedAnalysis1 | undefined;
+  burnRates: BurnRates;
   onClickTimeFrame: () => void;
   simulateMerge: boolean;
   timeFrame: TimeFrameNext;
@@ -68,14 +67,14 @@ type Props = {
 
 const SupplyGrowthGauge: FC<Props> = ({
   scarcity,
-  groupedAnalysis1,
+  burnRates,
   onClickTimeFrame,
   simulateMerge,
   timeFrame,
 }) => {
   const growthRate = useGrowthRate(
     scarcity,
-    groupedAnalysis1,
+    burnRates,
     simulateMerge,
     timeFrame,
   );

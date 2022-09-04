@@ -1,6 +1,6 @@
 import * as DateFns from "date-fns";
 import JSBI from "jsbi";
-import { WEI_PER_ETH } from "./eth-units";
+import { GWEI_PER_ETH, WEI_PER_ETH, WEI_PER_GWEI } from "./eth-units";
 
 const intlFormatter = new Intl.NumberFormat();
 export function intlFormat(num: number): string {
@@ -93,16 +93,16 @@ const compactNumberOneDecimal = new Intl.NumberFormat("en", {
 export const formatCompactOneDecimal = (num: number) =>
   compactNumberOneDecimal.format(num);
 
-export const gweiFromWei = (wei: number): number => wei / 1e9;
+export const gweiFromWei = (wei: number): number => wei / WEI_PER_GWEI;
 
-export const ethFromWei = (wei: number): number => wei / 1e18;
+export const ethFromWei = (wei: number): number => wei / WEI_PER_ETH;
 
 export const ethFromWeiBIUnsafe = (wei: JSBI): number =>
   JSBI.toNumber(
     JSBI.divide(wei, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))),
   );
 
-export const ethFromGwei = (gwei: number): number => gwei / 1e9;
+export const ethFromGwei = (gwei: number): number => gwei / GWEI_PER_ETH;
 
 export function convertToInternationalCurrencySystem(labelValue: number) {
   // Nine Zeroes for Billions

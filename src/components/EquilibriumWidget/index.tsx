@@ -5,7 +5,7 @@ import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { useEffectiveBalanceSum } from "../../api/effective-balance-sum";
 import { useImpreciseEthSupply } from "../../api/eth-supply";
-import type { GroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import type { BurnRates } from "../../api/grouped-analysis-1";
 import { useSupplyProjectionInputs } from "../../api/supply-projection";
 import type { Eth, Gwei } from "../../eth-units";
 import { GWEI_PER_ETH, WEI_PER_ETH } from "../../eth-units";
@@ -157,10 +157,9 @@ const BurnMarkers: FC<{ burnMarkers?: BurnMarkers }> = ({ burnMarkers }) => {
   );
 };
 
-const EquilibriumWidget: FC<{ groupedAnalysis1: GroupedAnalysis1 }> = ({
-  groupedAnalysis1,
-}) => {
-  const burnRates = groupedAnalysis1?.burnRates;
+type Props = { burnRates: BurnRates };
+
+const EquilibriumWidget: FC<Props> = ({ burnRates }) => {
   const supplyProjectionInputs = useSupplyProjectionInputs();
   const ethSupply = useImpreciseEthSupply();
   const effectiveBalanceSum = useEffectiveBalanceSum();

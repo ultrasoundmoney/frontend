@@ -1,5 +1,6 @@
 import type { FC } from "react";
-import type { GroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import type { EthPriceStats } from "../../api/eth-price-stats";
+import type { BurnRates } from "../../api/grouped-analysis-1";
 import colors from "../../colors";
 import type { Unit } from "../../denomination";
 import * as Format from "../../format";
@@ -8,18 +9,19 @@ import { timeframeBurnRateMap } from "../BurnTotal";
 import IssuanceBurnBaseGauge from "./IssuanceBurnBaseGauge";
 
 type BurnGaugeProps = {
-  groupedAnalysis1: GroupedAnalysis1;
+  burnRates: BurnRates;
+  ethPriceStats: EthPriceStats;
   timeFrame: TimeFrameNext;
   unit: Unit;
 };
 
 const BurnGauge: FC<BurnGaugeProps> = ({
-  groupedAnalysis1,
+  burnRates,
+  ethPriceStats,
   timeFrame,
   unit,
 }) => {
-  const preBurnRate =
-    groupedAnalysis1.burnRates[timeframeBurnRateMap[timeFrame][unit]];
+  const preBurnRate = burnRates[timeframeBurnRateMap[timeFrame][unit]];
   const burnRate =
     preBurnRate === undefined
       ? undefined
@@ -38,9 +40,9 @@ const BurnGauge: FC<BurnGaugeProps> = ({
     >
       <IssuanceBurnBaseGauge
         emoji="flame"
+        ethPriceStats={ethPriceStats}
         gaugeUnit={unit === "eth" ? "M" : "B"}
         gradientFill="orange"
-        groupedAnalysis1={groupedAnalysis1}
         needleColor={colors.fireOrange}
         title="burn"
         unit={unit}

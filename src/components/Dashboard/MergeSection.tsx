@@ -17,7 +17,7 @@ import type { TotalDifficultyProgress } from "../../api/total-difficulty-progres
 import { pointsFromTotalDifficultyProgress } from "../../api/total-difficulty-progress";
 import { TOTAL_TERMINAL_DIFFICULTY } from "../../eth-constants";
 import MergeEstimateWidget from "../MergeEstimateWidget";
-import EthSupplyWidget from "../SupplyWidgets/EthSupplyWidget";
+import EthSupplyWidget from "../EthSupplyWidget";
 import TotalDifficultyProgressWidget from "../TotalDifficultyProgressWidget";
 const PercentageToTTDWidget = dynamic(() => import("../PercentageToTTDWidget"));
 
