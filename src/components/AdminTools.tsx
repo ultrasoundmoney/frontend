@@ -45,7 +45,6 @@ const AdminTools: FC<{
         >
           <span className="text-white mr-4">{displayFlagMap[flag]}</span>
           <ToggleSwitch
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             checked={featureFlags[flag]}
             onToggle={(enabled) => setFlag({ flag, enabled })}
           ></ToggleSwitch>
