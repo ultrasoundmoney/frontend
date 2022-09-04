@@ -23,12 +23,12 @@ const EquilibriumWidget = dynamic(() => import("../EquilibriumWidget"), {
 });
 
 type Props = {
-  ethPriceStats: EthPriceStats;
   burnRates: BurnRates;
+  ethPriceStats: EthPriceStats;
   scarcity: Scarcity | undefined;
 };
 
-const SupplySection: FC<Props> = ({ ethPriceStats, burnRates, scarcity }) => {
+const SupplySection: FC<Props> = ({ burnRates, ethPriceStats, scarcity }) => {
   const [simulateMerge, setSimulateMerge] = useState(false);
   const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
