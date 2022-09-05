@@ -3,19 +3,28 @@ import { useContext } from "react";
 import Skeleton from "react-loading-skeleton";
 import { FeatureFlagsContext } from "../../feature-flags";
 
-type Props = { children?: ReactNode; width?: string };
+type Props = {
+  children?: ReactNode;
+  inline?: boolean;
+  /** approximation of the to-be-loaded text width */
+  width?: string;
+};
 
-const SkeletonText: FC<Props> = ({ children, width = "3rem" }) => {
+/**
+ * SkeletonText places a skeleton while content loads. Should be put *inside*
+ * text elements to automatically adopt the right size through text styling.
+ */
+const SkeletonText: FC<Props> = ({
+  children,
+  inline = true,
+  width = "3rem",
+}) => {
   const { previewSkeletons } = useContext(FeatureFlagsContext);
 
-  return (
-    <>
-      {children === undefined || previewSkeletons ? (
-        <Skeleton width={width} />
-      ) : (
-        children
-      )}
-    </>
+  return children === undefined || previewSkeletons ? (
+    <Skeleton inline={inline} width={width} />
+  ) : (
+    <>{children}</>
   );
 };
 
