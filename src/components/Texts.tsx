@@ -1,33 +1,21 @@
 import type { CSSProperties, FC, ReactNode } from "react";
-import { useContext } from "react";
-import Skeleton from "react-loading-skeleton";
-import { FeatureFlagsContext } from "../feature-flags";
 import BodyText from "./TextsNext/BodyText";
 
 export const LabelUnitText: FC<{
   children: ReactNode;
   className?: string;
-  skeletonWidth?: string;
-}> = ({ children, className, skeletonWidth = "3rem" }) => {
-  const { previewSkeletons } = useContext(FeatureFlagsContext);
-
-  return (
-    <TextRoboto
-      className={`
+}> = ({ children, className }) => (
+  <TextRoboto
+    className={`
       font-light
       text-slateus-200 text-xs
       uppercase tracking-widest
       ${className}
     `}
-    >
-      {children !== undefined && !previewSkeletons ? (
-        children
-      ) : (
-        <Skeleton inline width={skeletonWidth}></Skeleton>
-      )}
-    </TextRoboto>
-  );
-};
+  >
+    {children}
+  </TextRoboto>
+);
 
 export const UnitText: FC<{ children: string; className?: string }> = ({
   className = "",
@@ -38,23 +26,12 @@ export const UnitText: FC<{ children: string; className?: string }> = ({
   </TextRoboto>
 );
 
-// This component should not have text size styling. Replace all call-sites that don't overwrite the size with a more specific higher order component. Probably BodyText.
 export const TextInter: FC<{
   children: ReactNode;
   className?: string;
   inline?: boolean;
-  /**
-   * @deprecated use the SkeletonText wrapper instead.
-   */
-  skeletonWidth?: string;
   style?: CSSProperties;
-}> = ({
-  children,
-  className = "",
-  inline = true,
-  style,
-  skeletonWidth = "3rem",
-}) => {
+}> = ({ children, className = "", inline = true, style }) => {
   const mergedClassName = `
     font-inter font-light
     text-white
@@ -63,19 +40,11 @@ export const TextInter: FC<{
 
   return inline ? (
     <span className={mergedClassName} style={style}>
-      {children === undefined ? (
-        <Skeleton inline width={skeletonWidth} />
-      ) : (
-        children
-      )}
+      {children}
     </span>
   ) : (
     <p className={mergedClassName} style={style}>
-      {children === undefined ? (
-        <Skeleton inline width={skeletonWidth} />
-      ) : (
-        children
-      )}
+      {children}
     </p>
   );
 };
@@ -122,17 +91,6 @@ export const TimeFrameText: FC<{ children: ReactNode; className?: string }> = ({
   >
     {children}
   </TextRoboto>
-);
-
-export const StatusText: FC<{ className?: string; children: ReactNode }> = ({
-  children,
-  className,
-}) => (
-  <TextInter
-    className={`text-xs md:text-sm font-extralight text-slateus-200 ${className}`}
-  >
-    {children}
-  </TextInter>
 );
 
 export const TooltipTitle: FC<{ children: ReactNode }> = ({ children }) => (

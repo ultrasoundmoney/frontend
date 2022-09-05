@@ -1,5 +1,4 @@
 import type { FC, ReactNode } from "react";
-import Skeleton from "react-loading-skeleton";
 import { TextInter } from "../Texts";
 
 type Props = {
@@ -8,11 +7,7 @@ type Props = {
   skeletonWidth?: string;
 };
 
-const LabelText: FC<Props> = ({
-  children,
-  className = "",
-  skeletonWidth = "3rem",
-}) => (
+const LabelText: FC<Props> = ({ children, className = "" }) => (
   <TextInter
     className={`
       font-light
@@ -21,11 +16,7 @@ const LabelText: FC<Props> = ({
       ${className}
     `}
   >
-    {children !== undefined ? (
-      children
-    ) : (
-      <Skeleton inline width={skeletonWidth}></Skeleton>
-    )}
+    {children}
   </TextInter>
 );
 
