@@ -5,6 +5,7 @@ import type { MergeEstimate } from "../../api/merge-estimate";
 import * as Format from "../../format";
 import { LabelUnitText } from "../Texts";
 import LabelText from "../TextsNext/LabelText";
+import SkeletonText from "../TextsNext/SkeletonText";
 import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
@@ -40,10 +41,10 @@ const TotalDifficultyProgressWidget: FC<Props> = ({
           <div className="w-full h-2 bg-slateus-600 rounded-full"></div>
           <div
             className={`
-      absolute
-      left-0 top-0 h-2 rounded-full
-      bg-gradient-to-r from-cyan-300 to-indigo-500
-      `}
+              absolute
+              left-0 top-0 h-2 rounded-full
+              bg-gradient-to-r from-cyan-300 to-indigo-500
+            `}
             style={{ right: `${(1 - (progress ?? 0)) * 100}%` }}
           ></div>
         </div>
@@ -51,10 +52,12 @@ const TotalDifficultyProgressWidget: FC<Props> = ({
       <div className="flex justify-between whitespace-nowrap items-baseline gap-x-1">
         <UpdatedAgo updatedAt={mergeEstimate.timestamp} />
         <div>
-          <LabelUnitText skeletonWidth="2rem">
-            {progress === undefined
-              ? undefined
-              : Format.formatPercentTwoDecimals(progress ?? 0)}
+          <LabelUnitText>
+            <SkeletonText width="3rem">
+              {progress === undefined
+                ? undefined
+                : Format.formatPercentTwoDecimals(progress)}
+            </SkeletonText>
           </LabelUnitText>
           <LabelText className="text-slateus-400">{` of TTD`}</LabelText>
         </div>

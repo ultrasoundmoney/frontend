@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { DateTimeString } from "../time";
 import { LabelUnitText } from "./Texts";
 import LabelText from "./TextsNext/LabelText";
+import SkeletonText from "./TextsNext/SkeletonText";
 
 const UpdatedAge: FC<{ updatedAt: DateTimeString | undefined }> = ({
   updatedAt,
@@ -61,11 +62,19 @@ const UpdatedAge: FC<{ updatedAt: DateTimeString | undefined }> = ({
   return (
     <div className="flex gap-x-1 items-baseline truncate">
       <LabelText className="text-slateus-400">updated</LabelText>
-      <LabelUnitText className="-mr-1" skeletonWidth="1rem">
-        {secsOrMins}
+      <LabelUnitText className="-mr-1">
+        <SkeletonText width="1rem">{secsOrMins}</SkeletonText>
       </LabelUnitText>
-      <LabelText className="ml-1 inline xs:hidden">{postfixSmall}</LabelText>
-      <LabelText className="ml-1 hidden xs:inline">{postfixLarge}</LabelText>
+      <LabelText className="ml-1 inline xs:hidden">
+        <SkeletonText className="ml-1 -top-px" width="2rem">
+          {postfixSmall}
+        </SkeletonText>
+      </LabelText>
+      <LabelText className="ml-1 hidden xs:inline">
+        <SkeletonText className="ml-1 -top-px" width="3.5rem">
+          {postfixLarge}
+        </SkeletonText>
+      </LabelText>
       <LabelText className="text-slateus-400 truncate">ago</LabelText>
     </div>
   );

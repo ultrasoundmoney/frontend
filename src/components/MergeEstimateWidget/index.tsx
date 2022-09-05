@@ -3,17 +3,17 @@ import { formatInTimeZone } from "date-fns-tz";
 import type { FC } from "react";
 import { useContext, useEffect, useState } from "react";
 import CountUp from "react-countup";
-import Skeleton from "react-loading-skeleton";
 import type { MergeEstimate } from "../../api/merge-estimate";
+import { TOTAL_TERMINAL_DIFFICULTY } from "../../eth-constants";
 import { FeatureFlagsContext } from "../../feature-flags";
+import Nerd from "../Nerd";
 import { TextRoboto } from "../Texts";
 import LabelText from "../TextsNext/LabelText";
+import SkeletonText from "../TextsNext/SkeletonText";
 import Twemoji from "../Twemoji";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
 import MergeEstimateTooltip from "./MergeEstimateTooltip";
-import Nerd from "../Nerd";
-import { TOTAL_TERMINAL_DIFFICULTY } from "../../eth-constants";
 
 type TimeLeft = {
   days: number;
@@ -33,7 +33,7 @@ const CountdownNumber: FC<{ children: number | undefined }> = ({
   children,
 }) => (
   <TextRoboto className="text-[1.7rem]">
-    {children !== undefined ? children : <Skeleton width="2rem"></Skeleton>}
+    <SkeletonText width="2rem">{children}</SkeletonText>
   </TextRoboto>
 );
 
@@ -143,7 +143,7 @@ const MergeEstimateWidget: FC<Props> = ({ mergeEstimate }) => {
         <div className="relative flex flex-col md:flex-row justify-between gap-y-8 gap-x-2">
           <div className="flex flex-col gap-y-4">
             {/* Keeps the height of this widget equal to the adjacent one. */}
-            {mergeEstimate !== undefined ? (
+            {
               <div className="flex items-center min-h-[21px] ">
                 <LabelText>merge</LabelText>
                 <LabelText className="hidden md:inline">
@@ -154,11 +154,7 @@ const MergeEstimateWidget: FC<Props> = ({ mergeEstimate }) => {
                   <LabelText className="ml-1 text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-indigo-500">{`${mergeEstimateFormatted} UTC`}</LabelText>
                 )}
               </div>
-            ) : (
-              <LabelText className="flex items-center min-h-[21px]">
-                merge estimate
-              </LabelText>
-            )}
+            }
             <Countdown mergeEstimate={mergeEstimate} />
           </div>
           <div className="flex flex-col gap-y-4">

@@ -5,6 +5,7 @@ import { FeatureFlagsContext } from "../../feature-flags";
 
 type Props = {
   children?: ReactNode;
+  className?: string;
   inline?: boolean;
   /** approximation of the to-be-loaded text width */
   width?: string;
@@ -16,13 +17,14 @@ type Props = {
  */
 const SkeletonText: FC<Props> = ({
   children,
+  className = "",
   inline = true,
   width = "3rem",
 }) => {
   const { previewSkeletons } = useContext(FeatureFlagsContext);
 
   return children === undefined || previewSkeletons ? (
-    <Skeleton inline={inline} width={width} />
+    <Skeleton className={className} inline={inline} width={width} />
   ) : (
     <>{children}</>
   );
