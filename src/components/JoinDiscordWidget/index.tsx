@@ -10,7 +10,6 @@ import type {
   SetStateAction,
 } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import BodyText from "../TextsNext/BodyText";
 import BodyTextV2 from "../TextsNext/BodyTextV2";
 import LabelText from "../TextsNext/LabelText";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
@@ -19,26 +18,20 @@ import discordLogo from "./discord-logo.png";
 import logoTwitterWhite from "./logo-twitter-white.svg";
 
 const LoadingText: FC<{ children: ReactNode }> = ({ children }) => (
-  <BodyText className="text-white animate-pulse text-xs md:text-base">
-    {children}
-  </BodyText>
+  <BodyTextV2 className="text-white animate-pulse">{children}</BodyTextV2>
 );
 
 const PositiveText: FC<{ children: ReactNode }> = ({ children }) => (
-  <BodyText className="text-green-400 text-xs md:text-base">
-    {children}
-  </BodyText>
+  <BodyTextV2 className="text-green-400">{children}</BodyTextV2>
 );
 
 const NegativeText: FC<{ children: ReactNode }> = ({ children }) => (
-  <BodyText className="whitespace-nowrap text-red-400 text-xs md:text-base">
-    {children}
-  </BodyText>
+  <BodyTextV2 className="whitespace-nowrap text-red-400">{children}</BodyTextV2>
 );
 
 // Dummy item to fix baseline alignment between sections on md
 const AlignmentText: FC = () => (
-  <BodyText className="select-none text-xs md:text-base">&nbsp;</BodyText>
+  <BodyTextV2 className="select-none">&nbsp;</BodyTextV2>
 );
 
 type TwitterAuthStatusResponse =
