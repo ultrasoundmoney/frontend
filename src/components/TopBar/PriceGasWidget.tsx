@@ -16,10 +16,10 @@ const CustomErrorBoundary: FC<{ children: ReactNode }> = ({ children }) => (
     fallback={
       <div
         className={`
-            px-4 py-2 rounded-lg font-roboto text-white text-xs text-center
-            bg-blue-tangaroa
-            border border-red-400
-          `}
+          px-4 py-2 rounded-lg font-roboto text-white text-xs text-center
+          bg-blue-tangaroa
+          border border-red-400
+        `}
       >
         gas / price widget crashed
       </div>
