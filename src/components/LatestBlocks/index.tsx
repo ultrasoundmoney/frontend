@@ -14,8 +14,9 @@ import * as Format from "../../format";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import { AmountUnitSpace } from "../Spacing";
 import { LabelUnitText, TextRoboto } from "../Texts";
-import BodyText from "../TextsNext/BodyText";
+import BodyTextV2 from "../TextsNext/BodyTextV2";
 import LabelText from "../TextsNext/LabelText";
+import SkeletonText from "../TextsNext/SkeletonText";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 
 const maxBlocks = 20;
@@ -47,9 +48,9 @@ const latestBlockFeesSkeletons = new Array(maxBlocks).fill(
 ) as Partial<LatestBlock>[];
 
 const Resyncing = () => (
-  <BodyText className="text-xs md:text-sm text-red-400 animate-slow-pulse">
+  <BodyTextV2 className="md:text-sm text-red-400 animate-slow-pulse">
     node error, busy resyncing...
-  </BodyText>
+  </BodyTextV2>
 );
 
 const LatestBlockAge: FC<{ groupedAnalysis1: GroupedAnalysis1 }> = ({
@@ -88,8 +89,10 @@ const LatestBlockAge: FC<{ groupedAnalysis1: GroupedAnalysis1 }> = ({
       <LabelText className="text-slateus-400 whitespace-nowrap">
         latest block
       </LabelText>
-      <LabelUnitText skeletonWidth="1rem">
-        {timeElapsed !== undefined ? String(timeElapsed) : undefined}
+      <LabelUnitText>
+        <SkeletonText width="1rem">
+          {timeElapsed !== undefined ? String(timeElapsed) : undefined}
+        </SkeletonText>
       </LabelUnitText>
       <LabelText className="truncate">seconds</LabelText>
       <LabelText className="text-slateus-400">old</LabelText>
@@ -116,17 +119,11 @@ const LatestBlockComponent: FC<{
     >
       <li className="grid grid-cols-3 hover:opacity-60">
         <span className="font-roboto text-white">
-          {formatBlockNumber(number) || <Skeleton inline={true} width="7rem" />}
+          <SkeletonText width="7rem">{formatBlockNumber(number)}</SkeletonText>
         </span>
         <div className="text-right mr-1">
           <TextRoboto className="font-roboto text-white">
-            {formatGas(baseFeePerGas) || (
-              <Skeleton
-                className="-mr-0.5 md:mr-0"
-                inline={true}
-                width="1rem"
-              />
-            )}
+            <SkeletonText width="1rem">{formatGas(baseFeePerGas)}</SkeletonText>
           </TextRoboto>
           <div className="hidden md:inline">
             <span className="font-inter">&thinsp;</span>
@@ -136,10 +133,10 @@ const LatestBlockComponent: FC<{
           </div>
         </div>
         <div className="text-right">
-          <TextRoboto className="font-roboto text-white">
-            {formatFees(unit, fees, feesUsd) || (
-              <Skeleton inline={true} width="2rem" />
-            )}
+          <TextRoboto>
+            <SkeletonText width="2rem">
+              {formatFees(unit, fees, feesUsd)}
+            </SkeletonText>
           </TextRoboto>
           <AmountUnitSpace />
           <span className="font-roboto text-blue-spindle font-extralight">
@@ -190,8 +187,8 @@ const LatestBlocks: FC<Props> = ({ groupedAnalysis1, unit }) => {
         <div className="flex justify-between flex-wrap gap-y-2">
           <LatestBlockAge groupedAnalysis1={groupedAnalysis1} />
           <div className="flex gap-x-2 items-baseline">
-            <LabelUnitText skeletonWidth="1rem">
-              {blockLag !== undefined ? String(blockLag) : undefined}
+            <LabelUnitText>
+              <SkeletonText width="0.5rem">{blockLag}</SkeletonText>
             </LabelUnitText>
             <LabelText className="text-slateus-400">block lag</LabelText>
           </div>
