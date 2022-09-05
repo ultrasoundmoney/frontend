@@ -148,7 +148,7 @@ const useTwitterAuthStatus = () => {
 };
 
 const JoinDiscordWidget: FC = () => {
-  const [discordUsername, setDiscordUsername] = useState<string>();
+  const [discordIdOrUsername, setDiscordUsername] = useState<string>();
   const [queueStatus, setQueueStatus] = useState<QueueingStatus>("init");
   const [twitterAuthStatus, setTwitterAuthStatus] = useTwitterAuthStatus();
 
@@ -162,6 +162,7 @@ const JoinDiscordWidget: FC = () => {
   const handleSubmit = useCallback(
     (event: FormEvent) => {
       event.preventDefault();
+
       const submit = async () => {
         if (twitterAuthStatus.type !== "authenticated") {
           throw new Error("tried to submit without twitter auth");
@@ -172,7 +173,7 @@ const JoinDiscordWidget: FC = () => {
         const res = await fetch("/api/fam/queue-for-discord", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ discordIdOrUsername: discordUsername }),
+          body: JSON.stringify({ discordIdOrUsername }),
         });
 
         if (res.status === 200) {
@@ -186,6 +187,7 @@ const JoinDiscordWidget: FC = () => {
         }
 
         setQueueStatus("error");
+
         try {
           const body = (await res.json()) as { message?: string };
           if (typeof body.message === "string") {
@@ -195,11 +197,12 @@ const JoinDiscordWidget: FC = () => {
           console.error("failed to decode any discord queueing response body");
         }
       };
+
       submit().catch((err) => {
         throw err;
       });
     },
-    [discordUsername, twitterAuthStatus, setQueueStatus],
+    [discordIdOrUsername, twitterAuthStatus, setQueueStatus],
   );
 
   const handleSignOut = useCallback(() => {
@@ -219,10 +222,12 @@ const JoinDiscordWidget: FC = () => {
         type: "error",
         message: "failed to sign out",
       });
+
       throw new Error("failed to sign out");
     };
 
     setTwitterAuthStatus({ type: "signing-out" });
+
     signOut().catch((err) => {
       throw err;
     });
@@ -250,20 +255,20 @@ const JoinDiscordWidget: FC = () => {
               <Link href="/api/auth/twitter">
                 <a
                   className={`
-                  flex py-1.5 md:py-2 px-3
-                  self-center
-                  gap-x-2
-                  bg-slateus-600 hover:brightness-110 active:brightness-90
-                  border border-slateus-200 rounded-full
-                  outline-slateus-200
-                  select-none
-                  ${
-                    twitterAuthStatus.type === "checking" ||
-                    twitterAuthStatus.type === "authenticating"
-                      ? "opacity-50 pointer-events-none"
-                      : "pointer-events-auto"
-                  }
-                `}
+                    flex py-1.5 md:py-2 px-3
+                    self-center
+                    gap-x-2
+                    bg-slateus-600 hover:brightness-110 active:brightness-90
+                    border border-slateus-200 rounded-full
+                    outline-slateus-200
+                    select-none
+                    ${
+                      twitterAuthStatus.type === "checking" ||
+                      twitterAuthStatus.type === "authenticating"
+                        ? "opacity-50 pointer-events-none"
+                        : "pointer-events-auto"
+                    }
+                  `}
                   onClick={() => {
                     setTwitterAuthStatus({ type: "authenticating" });
                   }}
@@ -296,14 +301,14 @@ const JoinDiscordWidget: FC = () => {
           </div>
           <div
             className={`
-            flex flex-col gap-y-4
-              md:w-1/2
-            ${
-              twitterAuthStatus.type === "authenticated"
-                ? "opacity-100"
-                : "opacity-50"
-            }
-          `}
+              flex flex-col gap-y-4
+                md:w-1/2
+              ${
+                twitterAuthStatus.type === "authenticated"
+                  ? "opacity-100"
+                  : "opacity-50"
+              }
+            `}
           >
             <div className="flex justify-between items-baseline gap-x-1">
               <LabelText className="truncate">2. your discord handle</LabelText>
@@ -342,7 +347,7 @@ const JoinDiscordWidget: FC = () => {
                 required
                 spellCheck="false"
                 type="text"
-                value={discordUsername}
+                value={discordIdOrUsername}
               />
               <button
                 className={`
