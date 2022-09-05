@@ -33,14 +33,15 @@ import SectionDivider from "../SectionDivider";
 import { TextInterLink } from "../Texts";
 import TopBar from "../TopBar";
 import styles from "./Dashboard.module.scss";
+import JoinDiscordSection from "./JoinDiscordSection";
 import MergeSection from "./MergeSection";
 const AdminTools = dynamic(() => import("../AdminTools"));
 
 // We get hydration errors in production.
 // It's hard to tell what component causes them due to minification.
 // We stop SSR on all components, and slowly turn them back on one-by-one to see which cause hydration issues.
-// On: none
-// Off: SupplySection, BurnSection, MonetaryPremiumSection, JoinDiscordSection, FamSection, TotalValueSecuredSection, MergeSection.
+// On: MergeSection, JoinDiscordSection
+// Off: SupplySection, BurnSection, MonetaryPremiumSection, FamSection, TotalValueSecuredSection.
 const TotalValueSecuredSection = dynamic(
   () => import("./TotalValueSecuredSection"),
   { ssr: false },
@@ -52,9 +53,6 @@ const MonetaryPremiumSection = dynamic(
 const FamSection = dynamic(() => import("./FamSection"), { ssr: false });
 const SupplySection = dynamic(() => import("./SupplySection"), { ssr: false });
 const BurnSection = dynamic(() => import("./BurnSection"), { ssr: false });
-const JoinDiscordSection = dynamic(() => import("./JoinDiscordSection"), {
-  ssr: false,
-});
 
 const Title: FC<{ children: ReactNode }> = ({ children }) => (
   <div
