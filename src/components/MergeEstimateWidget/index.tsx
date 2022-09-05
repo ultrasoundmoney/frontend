@@ -117,12 +117,14 @@ type Props = {
 
 const MergeEstimateWidget: FC<Props> = ({ mergeEstimate }) => {
   const [showNerdTooltip, setShowNerdTooltip] = useState(false);
+  const [mergeEstimateFormatted, setMergeEstimateFormatted] =
+    useState<string>();
 
-  const mergeEstimateFormatted = formatInTimeZone(
-    mergeEstimate.estimatedDateTime,
-    "UTC",
-    "MMM d, ~haaa",
-  );
+  useEffect(() => {
+    setMergeEstimateFormatted(
+      formatInTimeZone(mergeEstimate.estimatedDateTime, "UTC", "MMM d, ~haaa"),
+    );
+  }, [mergeEstimate.estimatedDateTime]);
 
   // If we don't have data, show a zero.
   // If we have data and we're not dealing with the two column layout on a
@@ -148,7 +150,9 @@ const MergeEstimateWidget: FC<Props> = ({ mergeEstimate }) => {
                   &nbsp;estimate
                 </LabelText>
                 <LabelText className="hidden md:inline">:</LabelText>
-                <LabelText className="ml-1 text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-indigo-500">{`${mergeEstimateFormatted} UTC`}</LabelText>
+                {mergeEstimateFormatted && (
+                  <LabelText className="ml-1 text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-indigo-500">{`${mergeEstimateFormatted} UTC`}</LabelText>
+                )}
               </div>
             ) : (
               <LabelText className="flex items-center min-h-[21px]">

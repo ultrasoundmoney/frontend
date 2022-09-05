@@ -10,6 +10,7 @@ import {
 import _last from "lodash/last";
 import dynamic from "next/dynamic";
 import type { FC } from "react";
+import { Suspense } from "react";
 import { useEffect, useMemo, useState } from "react";
 import type { EthSupply } from "../../api/eth-supply";
 import type { MergeEstimate } from "../../api/merge-estimate";
@@ -19,6 +20,7 @@ import { TOTAL_TERMINAL_DIFFICULTY } from "../../eth-constants";
 import MergeEstimateWidget from "../MergeEstimateWidget";
 import EthSupplyWidget from "../EthSupplyWidget";
 import TotalDifficultyProgressWidget from "../TotalDifficultyProgressWidget";
+import BasicErrorBoundary from "../BasicErrorBoundary";
 const PercentageToTTDWidget = dynamic(() => import("../PercentageToTTDWidget"));
 
 type JsTimestamp = number;
@@ -98,28 +100,32 @@ const MergeSection: FC<Props> = ({
   );
 
   return (
-    <div
-      className="mt-32 mb-32 flex flex-col gap-y-4 xs:px-4 md:px-16"
-      id="merge"
-    >
-      <div className="flex flex-col lg:flex-row gap-x-4 gap-y-4">
-        <div className="flex flex-col gap-y-4 md:w-full md:min-w-fit">
-          <TotalDifficultyProgressWidget
-            mergeEstimate={mergeEstimate}
-            progress={progress}
-          />
-          <MergeEstimateWidget mergeEstimate={mergeEstimate} />
-          <EthSupplyWidget ethSupply={ethSupply}></EthSupplyWidget>
+    <BasicErrorBoundary>
+      <Suspense>
+        <div
+          className="mt-32 mb-32 flex flex-col gap-y-4 xs:px-4 md:px-16"
+          id="merge"
+        >
+          <div className="flex flex-col lg:flex-row gap-x-4 gap-y-4">
+            <div className="flex flex-col gap-y-4 md:w-full md:min-w-fit">
+              <TotalDifficultyProgressWidget
+                mergeEstimate={mergeEstimate}
+                progress={progress}
+              />
+              <MergeEstimateWidget mergeEstimate={mergeEstimate} />
+              <EthSupplyWidget ethSupply={ethSupply}></EthSupplyWidget>
+            </div>
+            <PercentageToTTDWidget
+              difficultyMap={difficultyMap}
+              difficultyProjectionMap={difficultyProjectionMap}
+              difficultyProjectionSeries={difficultyProjectionSeries}
+              difficultySeries={totalDifficultyByDay}
+              timestamp={totalDifficultyProgress?.timestamp}
+            />
+          </div>
         </div>
-        <PercentageToTTDWidget
-          difficultyMap={difficultyMap}
-          difficultyProjectionMap={difficultyProjectionMap}
-          difficultyProjectionSeries={difficultyProjectionSeries}
-          difficultySeries={totalDifficultyByDay}
-          timestamp={totalDifficultyProgress?.timestamp}
-        />
-      </div>
-    </div>
+      </Suspense>
+    </BasicErrorBoundary>
   );
 };
 

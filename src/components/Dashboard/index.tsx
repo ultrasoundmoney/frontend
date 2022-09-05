@@ -33,6 +33,7 @@ import SectionDivider from "../SectionDivider";
 import { TextInterLink } from "../Texts";
 import TopBar from "../TopBar";
 import styles from "./Dashboard.module.scss";
+import MergeSection from "./MergeSection";
 const AdminTools = dynamic(() => import("../AdminTools"));
 
 // We get hydration errors in production.
@@ -49,7 +50,6 @@ const MonetaryPremiumSection = dynamic(
   { ssr: false },
 );
 const FamSection = dynamic(() => import("./FamSection"), { ssr: false });
-const MergeSection = dynamic(() => import("./MergeSection"), { ssr: false });
 const SupplySection = dynamic(() => import("./SupplySection"), { ssr: false });
 const BurnSection = dynamic(() => import("./BurnSection"), { ssr: false });
 const JoinDiscordSection = dynamic(() => import("./JoinDiscordSection"), {
@@ -184,15 +184,11 @@ const Dashboard: FC<Props> = ({
                 <source src="/orbs1.mp4" type="video/mp4" />
               </video>
             )}
-            <BasicErrorBoundary>
-              <Suspense>
-                <MergeSection
-                  ethSupply={decodedCrEthSupply}
-                  mergeEstimate={crMergeEstimate}
-                  totalDifficultyProgress={totalDifficultyProgress}
-                />
-              </Suspense>
-            </BasicErrorBoundary>
+            <MergeSection
+              ethSupply={decodedCrEthSupply}
+              mergeEstimate={crMergeEstimate}
+              totalDifficultyProgress={totalDifficultyProgress}
+            />
             <SupplySection
               burnRates={groupedAnalysis1.burnRates}
               ethPriceStats={ethPriceStats}
