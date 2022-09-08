@@ -6,10 +6,9 @@ import SVGrenderText from "../BTCETH/generateText";
 import DrawingLine from "../DrawingLine";
 import Graphics from "./Graphics";
 import CurrencyTabs from "./CurrencyTabs";
-import { handleGraphs, setScrollPos } from "./helpers";
+import { handleGraphs, setScrollPos, WINDOW_BREAK_POINT } from "./helpers";
 import classes from "./BlockBtcEthUsd.module.scss";
 import type { graphTypes } from "./helpers";
-import { WINDOW_BREAK_POINT } from "./helpers";
 import styles from "../Landing.module.scss";
 
 const TheUltraSound: FC = () => {
@@ -19,15 +18,20 @@ const TheUltraSound: FC = () => {
   const graphsBlockRef = useRef<HTMLDivElement | null>(null);
   const graphTextRef = useRef<HTMLDivElement | null>(null);
   const [cryptoType, setCryptoType] = useState<string>("none");
-  const GRAPH_TOP_VALUE = 200;
-  const GRAPH_TOP_MOBILE_VALUE = 100;
 
   const setTextBlicksHeights = () => {
+    //center the graph
+    if (graphsBlockRef.current) {
+      const topGraph =
+        window.innerHeight / 2 - graphsBlockRef.current.clientHeight / 2;
+      graphsBlockRef.current.style.top = `${topGraph}px`;
+    }
+
     const graphBlockHeight =
       graphsBlockRef.current?.getBoundingClientRect().height;
     if (graphTextRef.current) {
       const blocks = graphTextRef.current.children;
-      if (window.innerWidth <= 1000) {
+      if (window.innerWidth <= WINDOW_BREAK_POINT) {
         for (let i = 0; i <= blocks.length - 1; i++) {
           const el = blocks[i] as HTMLDivElement;
           el.style.minHeight = "auto";
@@ -43,21 +47,10 @@ const TheUltraSound: FC = () => {
 
   useEffect(() => {
     if (!graphsBlockRef.current || !graphTextRef.current) return;
-    const offset = window.innerWidth * 0.2;
-    const topBreakPointValue: number =
-      window.innerWidth <= WINDOW_BREAK_POINT
-        ? GRAPH_TOP_MOBILE_VALUE +
-          graphsBlockRef.current.getBoundingClientRect().height
-        : GRAPH_TOP_VALUE;
     const textBlocksArray = Array.from(graphTextRef.current.children);
     const onScroll = () => {
       if (graphTextRef.current) {
-        handleGraphs(
-          topBreakPointValue,
-          textBlocksArray,
-          offset,
-          setCryptoType,
-        );
+        handleGraphs(graphsBlockRef.current, textBlocksArray, setCryptoType);
       }
     };
     window.addEventListener("scroll", onScroll);
