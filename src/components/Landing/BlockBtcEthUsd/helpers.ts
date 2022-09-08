@@ -1,18 +1,27 @@
 export type graphTypes = "none" | "btc" | "eth" | "usd";
-export const WINDOW_BREAK_POINT = 740;
+export const WINDOW_BREAK_POINT = 1024;
 const graphType = ["none", "btc", "usd", "eth"];
 
 export const handleGraphs = (
-  topBreakPointValue: number,
+  graphsBlock: HTMLDivElement | null,
   arrayBlocksText: Element[],
-  offset: number,
   setCryptoType: (val: string) => void,
 ) => {
-  for (let i = 0; i <= arrayBlocksText.length - 1; i++) {
-    const topValue = arrayBlocksText[i].getBoundingClientRect().top + offset;
-    if (topValue >= topBreakPointValue) {
-      setCryptoType(graphType[i]);
-      break;
+  if (graphsBlock) {
+    for (let i = arrayBlocksText.length; i--; ) {
+      //take value top of title
+      const block = arrayBlocksText[i];
+      const bottomBlock = block.getBoundingClientRect().bottom;
+
+      const trigger =
+        window.innerWidth > WINDOW_BREAK_POINT
+          ? bottomBlock - block.clientHeight / 2
+          : bottomBlock - block.clientHeight;
+      const bottomGraphsBlock = graphsBlock.getBoundingClientRect().bottom;
+      if (trigger < bottomGraphsBlock) {
+        setCryptoType(graphType[i]);
+        break;
+      }
     }
   }
 };

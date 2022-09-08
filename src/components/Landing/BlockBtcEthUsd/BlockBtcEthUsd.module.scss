@@ -74,7 +74,6 @@
 }
 .graphsBlock {
   position: sticky;
-  top: 200px;
   height: fit-content;
   background-color: rgba(20, 26, 47, var(--tw-bg-opacity));
 }
@@ -86,10 +85,10 @@
   justify-content: center;
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1024px) {
   .graphsBlock {
-    top: 60px;
-    padding-top: 30px;
+    top: 0 !important;
+    padding-top: 150px;
   }
   .graphsBlock::before {
     content: "";
