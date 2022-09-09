@@ -5,10 +5,11 @@ import _merge from "lodash/merge";
 import type { FC } from "react";
 import { useMemo } from "react";
 import colors from "../colors";
-import { Gwei } from "../eth-units";
+import type { Gwei } from "../eth-units";
 import { formatBlockNumber } from "../format";
 import type { BaseFeePoint } from "./Dashboard/SupplyGrowthSection";
 import LabelText from "./TextsNext/LabelText";
+import TimeFrameIndicator from "./TimeFrameIndicator";
 import WidgetErrorBoundary from "./WidgetErrorBoundary";
 import { WidgetBackground } from "./WidgetSubcomponents";
 
@@ -25,6 +26,7 @@ const baseOptions: Highcharts.Options = {
     showAxes: false,
     marginRight: 80,
     marginLeft: 28,
+    marginTop: 12,
   },
   title: undefined,
   xAxis: {
@@ -33,7 +35,6 @@ const baseOptions: Highcharts.Options = {
     labels: { enabled: false, style: { color: colors.slateus400 } },
     tickWidth: 0,
   },
-  yAxis: {},
   legend: {
     enabled: false,
   },
@@ -68,64 +69,67 @@ const BaseFeesWidget: FC<Props> = ({
   baseFeesSeries: baseFeesSeriesOver,
   baseFeesMap,
 }) => {
-  const options = useMemo((): Highcharts.Options => {
-    return _merge(
-      {},
-      {
-        ...baseOptions,
-        ...({
-          yAxis: {
-            plotLines: [
-              {
-                color: colors.slateus400,
-                width: 1,
-                value: barrier, // Need to set this probably as a var.
-                zIndex: 10,
-                label: {
-                  x: 76,
-                  text: `${barrier?.toFixed(2)} Gwei 🦇🔊`,
-                  useHTML: true,
-                  align: "right",
-                  formatter: () =>
-                    `
-                      <div class="flex">
-                        <div class="font-roboto font-light text-white">
-                          ${barrier?.toFixed(2)}
-                        </div>
-                        <div class="font-roboto font-light text-slateus-400 ml-1">
-                          Gwei
-                        </div>
-                      </div>
-                      <div class="flex justify-center">
-                        <img
-                          alt="bat emoji, first-half of signifying 'ultra sound' gas barrier"
-                          class="w-4 h-4"
-                          src="/bat-own.svg"
-                        />
-                        <img
-                          alt="speaker emoji, second-half of signifying 'ultra sound' gas barrier"
-                          class="w-4 h-4 ml-1"
-                          src="/speaker-own.svg"
-                        />
-                      </div>
-                    `,
-                },
+  const options = useMemo(
+    (): Highcharts.Options =>
+      _merge(
+        {},
+        {
+          ...baseOptions,
+          ...({
+            yAxis: {
+              labels: {
+                style: { color: colors.slateus400, fontFamily: "Roboto Mono" },
               },
-            ],
-            gridLineWidth: 0,
-            labels: {
-              style: { color: colors.slateus400, fontFamily: "Roboto Mono" },
+              // min: barrier,
+              // min: -(barrier ?? 0),
+              // max: 60 - (barrier ?? 0),
+              endOnTick: false,
+              gridLineWidth: 0,
+              plotLines: [
+                {
+                  color: colors.slateus600,
+                  width: 1,
+                  value: barrier,
+                  zIndex: 10,
+                  label: {
+                    x: 76,
+                    text: `${barrier?.toFixed(2)} Gwei 🦇🔊`,
+                    useHTML: true,
+                    align: "right",
+                    formatter: () =>
+                      `<div class="flex -mt-0.5">
+                  <div class="font-roboto font-light text-white">
+                  ${barrier?.toFixed(1)}
+                  </div>
+                  <div class="font-roboto font-light text-slateus-400 ml-1">
+                  Gwei
+                  </div>
+                  </div>
+                  <div class="flex justify-center mt-1">
+                  <img
+                  alt="bat emoji, first-half of signifying 'ultra sound' gas barrier"
+                  class="w-4 h-4"
+                  src="/bat-own.svg"
+                  />
+                  <img
+                  alt="speaker emoji, second-half of signifying 'ultra sound' gas barrier"
+                  class="w-4 h-4 ml-1"
+                  src="/speaker-own.svg"
+                  />
+                  </div>
+                  `,
+                  },
+                },
+              ],
             },
-            title: { text: undefined },
-          },
-          series: [
-            {
-              id: "base-fees-over",
-              type: "scatter",
-              data: baseFeesSeriesOver,
-              color: colors.fireOrange,
-              threshold: barrier,
-              negativeColor: colors.drop,
+            series: [
+              // {
+              //   id: "base-fees-over",
+              //   type: "scatter",
+              //   data: baseFeesSeriesOver,
+              //   color: colors.fireOrange,
+              //   threshold: barrier,
+              //   negativeColor: colors.drop,
               // color: {
               //   linearGradient: {
               //     x1: 0,
@@ -138,85 +142,79 @@ const BaseFeesWidget: FC<Props> = ({
               //     [1, "#5487F4"],
               //   ],
               // },
-            },
-            // {
-            //   id: "base-fees-over-area",
-            //   type: "area",
-            //   data: baseFeesSeriesOver,
-            //   // color: colors.fireOrange,
-            //   fillOpacity: 0.05,
-            //   lineWidth: 0,
-            //   color: {
-            //     linearGradient: {
-            //       x1: 0,
-            //       y1: 0,
-            //       x2: 1,
-            //       y2: 0,
-            //     },
-            //     stops: [
-            //       [0, "#E79800"],
-            //       [1, "#EDDB36"],
-            //     ],
-            //   },
-            //   opacity: 0.2,
-            // },
-            // {
-            //   id: "base-fees-under",
-            //   type: "scatter",
-            //   data: baseFeesSeriesUnder,
-            //   color: colors.drop,
-            //   // shadow: {
-            //   //   color: "rgba(75, 144, 219, 0.2)",
-            //   //   width: 15,
-            //   // },
-            //   // color: {
-            //   //   linearGradient: {
-            //   //     x1: 0,
-            //   //     y1: 0,
-            //   //     x2: 1,
-            //   //     y2: 0,
-            //   //   },
-            //   //   stops: [
-            //   //     [0, "#00FFFB"],
-            //   //     [1, "#5487F4"],
-            //   //   ],
-            //   // },
-            // },
-          ],
-          tooltip: {
-            backgroundColor: "transparent",
-            useHTML: true,
-            borderWidth: 0,
-            shadow: false,
-            formatter: function () {
-              const x = typeof this.x === "number" ? this.x : undefined;
-              if (x === undefined) {
-                return undefined;
-              }
+              // },
+              {
+                id: "base-fees-over-area",
+                type: "area",
+                yAxis: 0,
+                threshold: barrier,
+                data: baseFeesSeriesOver.map(([time, value]) => [time, value]),
+                lineWidth: 0,
+                color: colors.fireOrange,
+                // fillColor: "#E7980040",
+                fillColor: {
+                  linearGradient: {
+                    x1: 0,
+                    y1: 1,
+                    x2: 0,
+                    y2: 0,
+                  },
+                  stops: [
+                    [0.2, "#EDDB3600"],
+                    [1, "#E7980040"],
+                  ],
+                },
+                negativeColor: colors.drop,
+                // negativeFillColor: "#00FFFB10",
+                negativeFillColor: {
+                  linearGradient: {
+                    x1: 0,
+                    y1: 0,
+                    x2: 0,
+                    y2: 1,
+                  },
+                  stops: [
+                    [0.2, "#5487F400"],
+                    [1, "#00FFFB10"],
+                  ],
+                },
+              },
+            ],
+            tooltip: {
+              backgroundColor: "transparent",
+              useHTML: true,
+              borderWidth: 0,
+              shadow: false,
+              formatter: function () {
+                const x = typeof this.x === "number" ? this.x : undefined;
+                if (x === undefined) {
+                  return undefined;
+                }
 
-              const total = baseFeesMap[x];
-              if (total === undefined) {
-                return undefined;
-              }
+                const total = baseFeesMap[x];
+                if (total === undefined) {
+                  return undefined;
+                }
 
-              const formattedDate = formatBlockNumber(x);
+                const formattedDate = formatBlockNumber(x);
 
-              return `
+                return `
                 <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
-                  <div class="text-blue-spindle">${formattedDate}</div>
+                <div class="text-blue-spindle">${formattedDate}</div>
                 <div class="flex">
-                  <div class="text-white">
-                    ${total.toFixed(2)}
-                  </div>
-                  <div class="font-roboto font-light text-slateus-400 ml-1">Gwei</div>
+                <div class="text-white">
+                ${total.toFixed(2)}
+                </div>
+                <div class="font-roboto font-light text-slateus-400 ml-1">Gwei</div>
                 </div>
                 </div>`;
+              },
             },
-          },
-        } as Highcharts.Options),
-      },
-    );
-  }, [barrier, baseFeesMap, baseFeesSeriesOver]);
+          } as Highcharts.Options),
+        },
+      ),
+    [barrier, baseFeesMap, baseFeesSeriesOver],
+  );
 
   return (
     <WidgetErrorBoundary title="base fees">
@@ -226,8 +224,8 @@ const BaseFeesWidget: FC<Props> = ({
           className={`
             absolute -top-40 -right-0
             w-full h-full
-            opacity-[0.20]
-            blur-[120px]
+            opacity-[0.25]
+            blur-[110px]
             pointer-events-none
             will-change-transform
           `}
@@ -235,15 +233,21 @@ const BaseFeesWidget: FC<Props> = ({
           <div
             className={`
             absolute lg:bottom-[3.0rem] lg:-right-[1.0rem]
-            w-4/5 h-3/5 rounded-[35%]
+            w-3/5 h-2/5 rounded-[35%]
             bg-[#0037FA]
             pointer-events-none
           `}
           ></div>
         </div>
-        <LabelText className="flex items-center min-h-[21px]">
-          base fees
-        </LabelText>
+        <div className="flex justify-between items-baseline">
+          <LabelText className="flex items-center min-h-[21px]">
+            base fees
+          </LabelText>
+          <TimeFrameIndicator
+            timeFrame="h1"
+            onClickTimeFrame={() => undefined}
+          ></TimeFrameIndicator>
+        </div>
         <div
           // flex-grow fixes bug where highcharts doesn't take full width.
           className={`
