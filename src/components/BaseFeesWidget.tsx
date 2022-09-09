@@ -232,7 +232,7 @@ const BaseFeesWidget: FC<Props> = ({
         >
           <div
             className={`
-            absolute lg:bottom-[3.0rem] lg:-right-[1.0rem]
+            absolute bottom-[3.0rem] -right-[1.0rem]
             w-3/5 h-2/5 rounded-[35%]
             bg-[#0037FA]
             pointer-events-none
