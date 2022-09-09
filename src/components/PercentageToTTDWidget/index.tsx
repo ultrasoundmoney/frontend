@@ -36,7 +36,7 @@ const baseOptions: Highcharts.Options = {
     min: 1659304800000,
     max: 1663279200000,
     lineWidth: 0,
-    labels: { style: { color: colors.slateus400 } },
+    labels: { format: "{value:%b %d}", style: { color: colors.slateus400 } },
     tickWidth: 0,
   },
   yAxis: {
@@ -217,7 +217,7 @@ const PercentageToTTDWidget: FC<Props> = ({
               }
 
               const dt = new Date(x);
-              const formattedDate = DateFns.format(dt, "MMM d, ha");
+              const formattedDate = DateFns.format(dt, "MMM dd, hha");
 
               return `
                 <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
