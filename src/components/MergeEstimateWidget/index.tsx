@@ -122,7 +122,7 @@ const MergeEstimateWidget: FC<Props> = ({ mergeEstimate }) => {
 
   useEffect(() => {
     setMergeEstimateFormatted(
-      formatInTimeZone(mergeEstimate.estimatedDateTime, "UTC", "MMM d, ~haaa"),
+      formatInTimeZone(mergeEstimate.estimatedDateTime, "UTC", "~MMM d, haaa"),
     );
   }, [mergeEstimate.estimatedDateTime]);
 
