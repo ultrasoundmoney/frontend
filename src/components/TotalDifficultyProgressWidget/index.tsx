@@ -49,10 +49,9 @@ const TotalDifficultyProgressWidget: FC<Props> = ({
           ></div>
         </div>
       </div>
-      <div className="flex justify-between whitespace-nowrap items-baseline gap-x-1">
-        <UpdatedAgo updatedAt={mergeEstimate.timestamp} />
-        <div>
-          <LabelUnitText>
+      <div className="flex flex-col md:flex-row justify-between items-baseline gap-x-1 gap-y-2">
+        <div className="flex items-baseline gap-x-1">
+          <LabelUnitText className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-indigo-500">
             <SkeletonText width="3rem">
               {progress === undefined
                 ? undefined
@@ -61,6 +60,7 @@ const TotalDifficultyProgressWidget: FC<Props> = ({
           </LabelUnitText>
           <LabelText className="text-slateus-400">{` of TTD`}</LabelText>
         </div>
+        <UpdatedAgo updatedAt={mergeEstimate.timestamp} />
       </div>
     </WidgetBackground>
   </WidgetErrorBoundary>
