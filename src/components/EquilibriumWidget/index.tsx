@@ -97,8 +97,8 @@ const BurnMarkers: FC<{ burnMarkers?: BurnMarkers }> = ({ burnMarkers }) => {
     burnMarkers !== undefined
       ? [
           { label: "all", value: burnMarkers.all },
-          { label: "30d", value: burnMarkers.d30 },
           { label: "🦇🔊", value: burnMarkers.ultrasound },
+          { label: "30d", value: burnMarkers.d30 },
           { label: "7d", value: burnMarkers.d7 },
           { label: "1d", value: burnMarkers.d1 },
         ]
