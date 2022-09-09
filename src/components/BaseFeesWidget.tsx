@@ -87,7 +87,7 @@ const BaseFeesWidget: FC<Props> = ({
               gridLineWidth: 0,
               plotLines: [
                 {
-                  color: colors.slateus600,
+                  color: colors.slateus500,
                   width: 1,
                   value: barrier,
                   zIndex: 10,
