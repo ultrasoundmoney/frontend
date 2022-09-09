@@ -29,7 +29,6 @@ type BaseGuageProps = {
 
 const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
   emoji,
-  ethPriceStats,
   gaugeUnit,
   gradientFill,
   needleColor,
@@ -46,8 +45,12 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
   });
 
   const min = 0;
-  const preMax = unit === "eth" ? 10 : (10 * ethPriceStats.usd) / 10 ** 3;
-  const max = Math.round(Math.max(preMax, unit === "eth" ? 10 : 20 ?? 0));
+  const max =
+    unit === "eth"
+      ? // millions of ETH
+        6
+      : // Billions of USD
+        10;
 
   const progress = clamp(value ?? 0, min, max) / (max - min);
 
