@@ -29,6 +29,7 @@ import BasicErrorBoundary from "../BasicErrorBoundary";
 import HeaderGlow from "../HeaderGlow";
 import FaqBlock from "../Landing/faq";
 import Link from "../Link";
+import MainTitle from "../MainTitle";
 import SectionDivider from "../SectionDivider";
 import { TextInterLink } from "../Texts";
 import TopBar from "../TopBar";
@@ -44,34 +45,15 @@ const AdminTools = dynamic(() => import("../AdminTools"));
 // Off: SupplySection, BurnSection, MonetaryPremiumSection, FamSection, TotalValueSecuredSection.
 const TotalValueSecuredSection = dynamic(
   () => import("./TotalValueSecuredSection"),
-  { ssr: false },
+  { ssr: false }
 );
 const MonetaryPremiumSection = dynamic(
   () => import("./MonetaryPremiumSection"),
-  { ssr: false },
+  { ssr: false }
 );
 const FamSection = dynamic(() => import("./FamSection"), { ssr: false });
 const SupplySection = dynamic(() => import("./SupplySection"), { ssr: false });
 const BurnSection = dynamic(() => import("./BurnSection"), { ssr: false });
-
-const Title: FC<{ children: ReactNode }> = ({ children }) => (
-  <div
-    className={`
-      bg-transparent
-      font-extralight
-      text-white text-center
-      mt-16 mb-8 mx-auto px-4 md:px-16
-      text-[4.6rem]
-      md:text-[4.0rem]
-      lg:text-[4.8rem]
-      leading-[5.4rem]
-      md:leading-[5.4rem]
-      ${styles.gradientText}
-    `}
-  >
-    {children}
-  </div>
-);
 
 const useGasTitle = (defaultTitle: string, baseFeePerGas: WeiNumber) => {
   const [gasTitle, setGasTitle] = useState<string>();
@@ -131,7 +113,7 @@ const Dashboard: FC<Props> = ({
   const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysis1F);
   const gasTitle = useGasTitle(
     "dashboard | ultrasound.money",
-    crBaseFeePerGas.wei,
+    crBaseFeePerGas.wei
   );
   useScrollOnLoad();
 
@@ -165,7 +147,7 @@ const Dashboard: FC<Props> = ({
                 />
               </BasicErrorBoundary>
             </div>
-            <Title>Ultra Sound Money</Title>
+            <MainTitle>Ultra Sound Money</MainTitle>
             <p className="font-inter font-light text-blue-spindle text-xl md:text-2xl lg:text-3xl text-center mb-16">
               merge soon™
             </p>
