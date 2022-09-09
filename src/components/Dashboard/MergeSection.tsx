@@ -21,7 +21,9 @@ import MergeEstimateWidget from "../MergeEstimateWidget";
 import EthSupplyWidget from "../EthSupplyWidget";
 import TotalDifficultyProgressWidget from "../TotalDifficultyProgressWidget";
 import BasicErrorBoundary from "../BasicErrorBoundary";
-const PercentageToTTDWidget = dynamic(() => import("../PercentageToTTDWidget"));
+const TotalDifficultyProjectionWidget = dynamic(
+  () => import("../TotalDifficultyProjectionWidget"),
+);
 
 type JsTimestamp = number;
 type Percent = number;
@@ -115,7 +117,7 @@ const MergeSection: FC<Props> = ({
               <MergeEstimateWidget mergeEstimate={mergeEstimate} />
               <EthSupplyWidget ethSupply={ethSupply}></EthSupplyWidget>
             </div>
-            <PercentageToTTDWidget
+            <TotalDifficultyProjectionWidget
               difficultyMap={difficultyMap}
               difficultyProjectionMap={difficultyProjectionMap}
               difficultyProjectionSeries={difficultyProjectionSeries}
