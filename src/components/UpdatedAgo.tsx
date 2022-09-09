@@ -41,15 +41,6 @@ const UpdatedAge: FC<{ updatedAt: DateTimeString | undefined }> = ({
       ? timeElapsed.mins
       : timeElapsed.secs;
 
-  const postfixSmall =
-    timeElapsed === undefined
-      ? undefined
-      : timeElapsed?.secs >= 60
-      ? timeElapsed.mins === 1
-        ? "min"
-        : "mins"
-      : "secs";
-
   const postfixLarge =
     timeElapsed === undefined
       ? undefined
@@ -65,12 +56,7 @@ const UpdatedAge: FC<{ updatedAt: DateTimeString | undefined }> = ({
       <LabelUnitText className="-mr-1">
         <SkeletonText width="1rem">{secsOrMins}</SkeletonText>
       </LabelUnitText>
-      <LabelText className="ml-1 inline xs:hidden">
-        <SkeletonText className="ml-1 -top-px" width="2rem">
-          {postfixSmall}
-        </SkeletonText>
-      </LabelText>
-      <LabelText className="ml-1 hidden xs:inline">
+      <LabelText className="ml-1">
         <SkeletonText className="ml-1 -top-px" width="3.5rem">
           {postfixLarge}
         </SkeletonText>
