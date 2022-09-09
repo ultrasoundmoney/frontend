@@ -23,7 +23,7 @@ const EthSupplyWidget: FC<Props> = ({ ethSupply }) => {
   );
 
   return (
-    <WidgetBackground>
+    <WidgetBackground className="flex h-full">
       <div className="relative flex flex-col gap-y-4">
         <div
           className={`

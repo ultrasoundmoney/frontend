@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import Head from "next/head";
-import type { FC, ReactNode } from "react";
+import type { FC } from "react";
 import { Suspense, useEffect, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -17,7 +17,6 @@ import {
 import type { MergeEstimate } from "../../api/merge-estimate";
 import { useMergeEstimate } from "../../api/merge-estimate";
 import { useScarcity } from "../../api/scarcity";
-import { useTotalDifficultyProgress } from "../../api/total-difficulty-progress";
 import colors from "../../colors";
 import type { WeiNumber } from "../../eth-units";
 import * as FeatureFlags from "../../feature-flags";
@@ -33,7 +32,6 @@ import MainTitle from "../MainTitle";
 import SectionDivider from "../SectionDivider";
 import { TextInterLink } from "../Texts";
 import TopBar from "../TopBar";
-import styles from "./Dashboard.module.scss";
 import JoinDiscordSection from "./JoinDiscordSection";
 import MergeSection from "./MergeSection";
 const AdminTools = dynamic(() => import("../AdminTools"));
@@ -45,14 +43,20 @@ const AdminTools = dynamic(() => import("../AdminTools"));
 // Off: SupplySection, BurnSection, MonetaryPremiumSection, FamSection, TotalValueSecuredSection.
 const TotalValueSecuredSection = dynamic(
   () => import("./TotalValueSecuredSection"),
-  { ssr: false }
+  { ssr: false },
 );
 const MonetaryPremiumSection = dynamic(
   () => import("./MonetaryPremiumSection"),
-  { ssr: false }
+  { ssr: false },
 );
 const FamSection = dynamic(() => import("./FamSection"), { ssr: false });
-const SupplySection = dynamic(() => import("./SupplySection"), { ssr: false });
+const SupplyProjectionsSection = dynamic(
+  () => import("./SupplyProjectionsSection"),
+  { ssr: false },
+);
+const SupplyGrowthSection = dynamic(() => import("./SupplyGrowthSection"), {
+  ssr: false,
+});
 const BurnSection = dynamic(() => import("./BurnSection"), { ssr: false });
 
 const useGasTitle = (defaultTitle: string, baseFeePerGas: WeiNumber) => {
@@ -86,7 +90,6 @@ const useScrollOnLoad = () => {
 };
 
 type Props = {
-  // totalDifficultyProgress: TotalDifficultyProgress;
   baseFeePerGas: BaseFeePerGas;
   ethPriceStats: EthPriceStats;
   ethSupplyF: EthSupplyF;
@@ -98,12 +101,10 @@ const Dashboard: FC<Props> = ({
   ethPriceStats,
   ethSupplyF,
   mergeEstimate,
-  // totalDifficultyProgress,
 }) => {
-  const totalDifficultyProgress = useTotalDifficultyProgress();
   const crMergeEstimate = useClientRefreshed(mergeEstimate, useMergeEstimate);
   const crEthSupply = useClientRefreshed(ethSupplyF, useEthSupply);
-  const decodedCrEthSupply = decodeEthSupply(crEthSupply);
+  const ethSupply = decodeEthSupply(crEthSupply);
   const scarcity = useScarcity();
   const { featureFlags, setFlag } = FeatureFlags.useFeatureFlags();
   const adminToken = useAdminToken();
@@ -113,7 +114,7 @@ const Dashboard: FC<Props> = ({
   const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysis1F);
   const gasTitle = useGasTitle(
     "dashboard | ultrasound.money",
-    crBaseFeePerGas.wei
+    crBaseFeePerGas.wei,
   );
   useScrollOnLoad();
 
@@ -151,12 +152,14 @@ const Dashboard: FC<Props> = ({
             <p className="font-inter font-light text-blue-spindle text-xl md:text-2xl lg:text-3xl text-center mb-16">
               merge soon™
             </p>
-            <MergeSection
-              ethSupply={decodedCrEthSupply}
-              mergeEstimate={crMergeEstimate}
-              totalDifficultyProgress={totalDifficultyProgress}
+            <MergeSection mergeEstimate={crMergeEstimate} />
+            <SupplyGrowthSection
+              burnRates={groupedAnalysis1.burnRates}
+              ethSupply={ethSupply}
+              ethPriceStats={ethPriceStats}
+              scarcity={scarcity}
             />
-            <SupplySection
+            <SupplyProjectionsSection
               burnRates={groupedAnalysis1.burnRates}
               ethPriceStats={ethPriceStats}
               scarcity={scarcity}

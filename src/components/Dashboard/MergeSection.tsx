@@ -12,13 +12,11 @@ import dynamic from "next/dynamic";
 import type { FC } from "react";
 import { Suspense } from "react";
 import { useEffect, useMemo, useState } from "react";
-import type { EthSupply } from "../../api/eth-supply";
 import type { MergeEstimate } from "../../api/merge-estimate";
-import type { TotalDifficultyProgress } from "../../api/total-difficulty-progress";
+import { useTotalDifficultyProgress } from "../../api/total-difficulty-progress";
 import { pointsFromTotalDifficultyProgress } from "../../api/total-difficulty-progress";
 import { TOTAL_TERMINAL_DIFFICULTY } from "../../eth-constants";
 import MergeEstimateWidget from "../MergeEstimateWidget";
-import EthSupplyWidget from "../EthSupplyWidget";
 import TotalDifficultyProgressWidget from "../TotalDifficultyProgressWidget";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 const TotalDifficultyProjectionWidget = dynamic(
@@ -27,21 +25,16 @@ const TotalDifficultyProjectionWidget = dynamic(
 
 type JsTimestamp = number;
 type Percent = number;
-type Point = [JsTimestamp, Percent];
+export type TTDPercentPoint = [JsTimestamp, Percent];
 
 type Props = {
-  ethSupply: EthSupply;
   mergeEstimate: MergeEstimate;
-  totalDifficultyProgress: TotalDifficultyProgress | undefined;
 };
 
-const MergeSection: FC<Props> = ({
-  ethSupply,
-  mergeEstimate,
-  totalDifficultyProgress,
-}) => {
+const MergeSection: FC<Props> = ({ mergeEstimate }) => {
+  const totalDifficultyProgress = useTotalDifficultyProgress();
   const [difficultyProjectionSeries, setDifficultyProjectionSeries] =
-    useState<Point[]>();
+    useState<TTDPercentPoint[]>();
   const progress =
     Number(mergeEstimate.totalDifficulty) / TOTAL_TERMINAL_DIFFICULTY;
 
@@ -65,7 +58,7 @@ const MergeSection: FC<Props> = ({
     }
 
     // This will update every block, consider reducing that frequency.
-    const generatedProjection: Point[] = [];
+    const generatedProjection: TTDPercentPoint[] = [];
     const mergeTimestamp = parseISO(mergeEstimate.estimatedDateTime);
 
     const periodMillis = differenceInMilliseconds(
@@ -81,7 +74,7 @@ const MergeSection: FC<Props> = ({
       );
       const fraction = getTime(millisSinceLast) / periodMillis;
       const percent = lastTotalDifficultyPoint[1] + fraction * percentLeft;
-      const point = [getTime(timestamp), percent] as Point;
+      const point = [getTime(timestamp), percent] as TTDPercentPoint;
       generatedProjection.push(point);
       timestamp = addHours(timestamp, 1);
     }
@@ -105,17 +98,16 @@ const MergeSection: FC<Props> = ({
     <BasicErrorBoundary>
       <Suspense>
         <div
-          className="mt-32 mb-32 flex flex-col gap-y-4 xs:px-4 md:px-16"
+          className="mt-16 mb-32 flex flex-col gap-y-4 xs:px-4 md:px-16"
           id="merge"
         >
-          <div className="flex flex-col lg:flex-row gap-x-4 gap-y-4">
+          <div className="flex flex-col lg:flex-row gap-x-4 gap-y-4 mt-16">
             <div className="flex flex-col gap-y-4 md:w-full md:min-w-fit">
               <TotalDifficultyProgressWidget
                 mergeEstimate={mergeEstimate}
                 progress={progress}
               />
               <MergeEstimateWidget mergeEstimate={mergeEstimate} />
-              <EthSupplyWidget ethSupply={ethSupply}></EthSupplyWidget>
             </div>
             <TotalDifficultyProjectionWidget
               difficultyMap={difficultyMap}
