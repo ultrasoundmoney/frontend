@@ -38,11 +38,6 @@ const formatFees = (unit: Unit, fees: unknown, feesUsd: unknown) => {
     : undefined;
 };
 
-export const formatBlockNumber = (number: unknown) =>
-  typeof number === "number"
-    ? `#${Format.formatZeroDecimals(number)}`
-    : undefined;
-
 const latestBlockFeesSkeletons = new Array(maxBlocks).fill(
   {},
 ) as Partial<LatestBlock>[];
@@ -119,7 +114,9 @@ const LatestBlockComponent: FC<{
     >
       <li className="grid grid-cols-3 hover:opacity-60">
         <span className="font-roboto text-white">
-          <SkeletonText width="7rem">{formatBlockNumber(number)}</SkeletonText>
+          <SkeletonText width="7rem">
+            {Format.formatBlockNumber(number)}
+          </SkeletonText>
         </span>
         <div className="text-right mr-1">
           <TextRoboto className="font-roboto text-white">
