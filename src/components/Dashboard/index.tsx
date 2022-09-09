@@ -151,19 +151,6 @@ const Dashboard: FC<Props> = ({
             <p className="font-inter font-light text-blue-spindle text-xl md:text-2xl lg:text-3xl text-center mb-16">
               merge soon™
             </p>
-            {featureFlags.showBackgroundOrbs && (
-              <video
-                className="absolute hidden md:block left-0 -ml-24 md:top-96 lg:top-96 opacity-20 -z-10"
-                playsInline
-                autoPlay
-                muted
-                loop
-                poster="/orbs1.jpg"
-              >
-                <source src="/orbs1.webm" type="video/webm; codecs='vp9'" />
-                <source src="/orbs1.mp4" type="video/mp4" />
-              </video>
-            )}
             <MergeSection
               ethSupply={decodedCrEthSupply}
               mergeEstimate={crMergeEstimate}
@@ -176,35 +163,9 @@ const Dashboard: FC<Props> = ({
             />
             <div className="h-16"></div>
             <BurnSection groupedAnalysis1={groupedAnalysis1} />
-            {featureFlags.showBackgroundOrbs && (
-              <video
-                className="absolute w-1/2 right-0 -mt-64 opacity-20 -z-10"
-                playsInline
-                autoPlay
-                muted
-                loop
-                poster="/orbs2.jpg"
-              >
-                <source src="/orbs2.webm" type="video/webm; codecs='vp9'" />
-                <source src="/orbs2.mp4" type="video/mp4" />
-              </video>
-            )}
             <div className="h-16"></div>
             <TotalValueSecuredSection ethPriceStats={ethPriceStats} />
             <div className="h-16"></div>
-            {featureFlags.showBackgroundOrbs && (
-              <video
-                className="absolute w-1/2 -left-20 -mt-96 opacity-20 -z-10 -mr-8"
-                playsInline
-                autoPlay
-                muted
-                loop
-                poster="/orbs1.jpg"
-              >
-                <source src="/orbs1.webm" type="video/webm; codecs='vp9'" />
-                <source src="/orbs1.mp4" type="video/mp4" />
-              </video>
-            )}
             <MonetaryPremiumSection groupedAnalysis1={groupedAnalysis1} />
             <FamSection />
             <JoinDiscordSection />
