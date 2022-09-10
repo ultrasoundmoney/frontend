@@ -26,7 +26,7 @@ const baseOptions: Highcharts.Options = {
     showAxes: false,
     marginRight: 80,
     marginLeft: 28,
-    marginTop: 12,
+    marginTop: 14,
   },
   title: undefined,
   xAxis: {
