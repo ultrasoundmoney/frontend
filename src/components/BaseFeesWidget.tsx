@@ -66,7 +66,7 @@ type Props = {
 
 const BaseFeesWidget: FC<Props> = ({
   barrier,
-  baseFeesSeries: baseFeesSeriesOver,
+  baseFeesSeries,
   baseFeesMap,
 }) => {
   const options = useMemo(
@@ -148,7 +148,7 @@ const BaseFeesWidget: FC<Props> = ({
                 type: "area",
                 yAxis: 0,
                 threshold: barrier,
-                data: baseFeesSeriesOver.map(([time, value]) => [time, value]),
+                data: baseFeesSeries.map(([time, value]) => [time, value]),
                 lineWidth: 0,
                 color: colors.fireOrange,
                 // fillColor: "#E7980040",
@@ -213,12 +213,12 @@ const BaseFeesWidget: FC<Props> = ({
           } as Highcharts.Options),
         },
       ),
-    [barrier, baseFeesMap, baseFeesSeriesOver],
+    [barrier, baseFeesMap, baseFeesSeries],
   );
 
   return (
     <WidgetErrorBoundary title="base fees">
-      <WidgetBackground className="relative w-full flex flex-col overflow-hidden">
+      <WidgetBackground className="relative w-full flex flex-col overflow-hidden h-[399px]">
         <div
           // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
           className={`
@@ -251,7 +251,7 @@ const BaseFeesWidget: FC<Props> = ({
         <div
           // flex-grow fixes bug where highcharts doesn't take full width.
           className={`
-            w-full h-64 mt-4
+            w-full mt-4 h-full
             flex justify-center
             select-none
             overflow-hidden

@@ -17,3 +17,5 @@ export type Eth = number;
 export type WeiString = string;
 // When precision is no issue or the precise number will fit in 2^53 for the foreseeable future, we use number.
 export type WeiNumber = number;
+
+export type GweiNumber = number;

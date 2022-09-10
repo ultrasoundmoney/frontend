@@ -1,4 +1,5 @@
-import { FC, useMemo } from "react";
+import type { FC } from "react";
+import { useMemo } from "react";
 import { Suspense, useCallback, useState } from "react";
 import type { EthPriceStats } from "../../api/eth-price-stats";
 import type { BurnRates } from "../../api/grouped-analysis-1";
@@ -21,7 +22,9 @@ import BaseFeesWidget from "../BaseFeesWidget";
 import {
   BaseFeeAtTime,
   useBaseFeeOverTime,
-} from "../../api/base-fees-over-time";
+} from "../../api/base-fee-over-time";
+import { useBaseFeePerGasStats } from "../../api/base-fee-per-gas-stats";
+import GasMarketWidget from "../GasMarketWidget";
 import { getTime, parseISO } from "date-fns";
 import type { Gwei } from "../../eth-units";
 import { WEI_PER_GWEI } from "../../eth-units";
@@ -93,6 +96,7 @@ const SupplyGrowthSection: FC<Props> = ({
   scarcity,
 }) => {
   const baseFeesOverTime = useBaseFeeOverTime();
+  const baseFeePerGasStats = useBaseFeePerGasStats();
   const [simulateMerge, setSimulateMerge] = useState(false);
   const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
@@ -187,7 +191,8 @@ const SupplyGrowthSection: FC<Props> = ({
               />
             </div>
             <div className="flex flex-col lg:flex-row gap-y-4 gap-x-4">
-              <div className="w-full lg:w-1/2 h-min">
+              <div className="flex flex-col gap-y-4 w-full lg:w-1/2 h-min">
+                <GasMarketWidget baseFeePerGasStats={baseFeePerGasStats} />
                 <EthSupplyWidget ethSupply={ethSupply} />
               </div>
               <div className="w-full lg:w-1/2">

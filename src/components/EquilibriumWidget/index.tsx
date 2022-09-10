@@ -127,9 +127,9 @@ const BurnMarkers: FC<{ burnMarkers?: BurnMarkers }> = ({ burnMarkers }) => {
           <div
             key={marker.label}
             className={`
-                  absolute top-[14px] -translate-x-1/2
-                  flex flex-col items-center
-                `}
+              absolute top-[14px] -translate-x-1/2
+              flex flex-col items-center
+            `}
             // Positions the marker along the track whilst compensating for the thumb width as the browser natively does. 7 being half the thumb width.
             style={{
               left: `calc(${percent}% - ${((percent / 100) * 2 - 1) * 7}px)`,

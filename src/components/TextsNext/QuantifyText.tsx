@@ -18,7 +18,9 @@ const QuantifyText: FC<Props> = ({
   <TextRoboto className={className}>
     {children}
     {amountPostfix && amountPostfix}
-    {unitPostfix && <>&nbsp;{unitPostfix}</>}
+    {unitPostfix && (
+      <span className="text-slateus-400 ml-1">{unitPostfix}</span>
+    )}
   </TextRoboto>
 );
 
