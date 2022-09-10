@@ -6,8 +6,12 @@ import TimeFrameIndicator from "./TimeFrameIndicator";
 import type { FC } from "react";
 import QuantifyText from "./TextsNext/QuantifyText";
 import SkeletonText from "./TextsNext/SkeletonText";
-import { formatUsdZeroDecimals, formatZeroDecimals } from "../format";
+import { formatZeroDecimals } from "../format";
 import { WEI_PER_GWEI } from "../eth-units";
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
+import batSvg from "../assets/bat-own.svg";
+import speakerSvg from "../assets/speaker-own.svg";
 
 const getPercentage = (
   highest: number,
@@ -43,7 +47,26 @@ const Marker: FC<MarkerProps> = ({
       left: `${getPercentage(highest, lowest, gas) * 100}%`,
     }}
   >
-    <LabelText>{label}</LabelText>
+    {label === "barrier" ? (
+      <>
+        <div className="flex gap-x-1">
+          <Image
+            alt="emoji of a bat, first-half of signifying ultra sound base fee per gas"
+            src={batSvg as StaticImageData}
+            width={16}
+            height={16}
+          />
+          <Image
+            alt="emoji of a speaker, second-half of signifying ultra sound base fee per gas"
+            src={speakerSvg as StaticImageData}
+            width={16}
+            height={16}
+          />
+        </div>
+      </>
+    ) : (
+      <LabelText>{label}</LabelText>
+    )}
     <SkeletonText>
       {gas !== undefined && (
         <QuantifyText unitPostfix="Gwei">
