@@ -13,11 +13,16 @@ const getFormattedDays = (now: Date) => {
 };
 
 type Props = {
+  className?: string;
   onClickTimeFrame: () => void;
   timeFrame: TimeFrameNext;
 };
 
-const TimeFrameIndicator: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
+const TimeFrameIndicator: FC<Props> = ({
+  className = "",
+  onClickTimeFrame,
+  timeFrame,
+}) => {
   const [daysSinceLondon, setDaysSinceLondon] = useState<string>();
 
   useEffect(() => {
@@ -31,7 +36,10 @@ const TimeFrameIndicator: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   }, []);
 
   return (
-    <button className="flex gap-x-2 items-baseline" onClick={onClickTimeFrame}>
+    <button
+      className={`flex gap-x-2 items-baseline ${className}`}
+      onClick={onClickTimeFrame}
+    >
       <WidgetTitle>time frame</WidgetTitle>
       <p className="font-roboto font-light text-white text-xs">
         {timeFrame === "all"

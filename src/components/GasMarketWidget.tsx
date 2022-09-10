@@ -9,43 +9,57 @@ import SkeletonText from "./TextsNext/SkeletonText";
 import { formatUsdZeroDecimals, formatZeroDecimals } from "../format";
 import { WEI_PER_GWEI } from "../eth-units";
 
+const getPercentage = (
+  highest: number,
+  lowest: number,
+  gas: number,
+): number => {
+  const range = highest - lowest;
+  return (gas - lowest) / range;
+};
+
+type MarkerProps = {
+  highest: number;
+  lowest: number;
+  label: string;
+  gas: number;
+  orientation: "up" | "down";
+};
+
+const Marker: FC<MarkerProps> = ({
+  highest,
+  lowest,
+  gas,
+  label,
+  orientation,
+}) => (
+  <div
+    className={`
+        absolute  -translate-x-1/2
+        flex flex-col items-center
+        ${orientation === "up" ? "-top-12" : "-bottom-12"}
+      `}
+    style={{
+      left: `${getPercentage(highest, lowest, gas) * 100}%`,
+    }}
+  >
+    <LabelText>{label}</LabelText>
+    <SkeletonText>
+      {gas !== undefined && (
+        <QuantifyText unitPostfix="Gwei">
+          {formatZeroDecimals(gas / WEI_PER_GWEI)}
+        </QuantifyText>
+      )}
+    </SkeletonText>
+  </div>
+);
+
 type Props = {
   baseFeePerGasStats: BaseFeePerGasStats | undefined;
 };
 
 const GasMarketWidget: FC<Props> = ({ baseFeePerGasStats }) => {
-  console.log("rendering gas market widget");
-
-  const gasRange =
-    baseFeePerGasStats === undefined
-      ? undefined
-      : baseFeePerGasStats.max - baseFeePerGasStats.min;
-
-  const averagePercent =
-    baseFeePerGasStats === undefined || gasRange === undefined
-      ? undefined
-      : ((baseFeePerGasStats.average - baseFeePerGasStats.min) / gasRange) *
-        100;
-
-  const barrierPercent =
-    baseFeePerGasStats === undefined || gasRange === undefined
-      ? undefined
-      : ((baseFeePerGasStats.barrier - baseFeePerGasStats.min) / gasRange) *
-        100;
-
-  const delta =
-    barrierPercent !== undefined && averagePercent !== undefined
-      ? barrierPercent - averagePercent
-      : undefined;
-
-  type MarkerProps = {
-    highest: number;
-    lowest: number;
-    label: string;
-    gas: number;
-    orientation: "up" | "down";
-  };
-
+  console.log("rendering gas widget");
   const lowest =
     baseFeePerGasStats === undefined
       ? undefined
@@ -56,43 +70,6 @@ const GasMarketWidget: FC<Props> = ({ baseFeePerGasStats }) => {
       ? undefined
       : Math.max(baseFeePerGasStats.max, baseFeePerGasStats.barrier);
 
-  const getPercentage = (
-    highest: number,
-    lowest: number,
-    gas: number,
-  ): number | undefined => {
-    const range = highest - lowest;
-    return (gas - lowest) / range;
-  };
-
-  const Marker: FC<MarkerProps> = ({
-    highest,
-    lowest,
-    gas,
-    label,
-    orientation,
-  }) => (
-    <div
-      className={`
-        absolute  -translate-x-1/2
-        flex flex-col items-center
-        ${orientation === "up" ? "-top-12" : "-bottom-12"}
-      `}
-      style={{
-        left: `${getPercentage(highest, lowest, gas) * 100}%`,
-      }}
-    >
-      <LabelText>{label}</LabelText>
-      <SkeletonText>
-        {gas !== undefined && (
-          <QuantifyText unitPostfix="Gwei">
-            {formatZeroDecimals(gas / WEI_PER_GWEI)}
-          </QuantifyText>
-        )}
-      </SkeletonText>
-    </div>
-  );
-
   const markerList =
     baseFeePerGasStats === undefined
       ? []
@@ -101,7 +78,31 @@ const GasMarketWidget: FC<Props> = ({ baseFeePerGasStats }) => {
           { label: "min", gas: baseFeePerGasStats.min },
           { label: "max", gas: baseFeePerGasStats.max },
           { label: "average", gas: baseFeePerGasStats.average },
-        ];
+        ].sort(({ gas: gasA }, { gas: gasB }) => gasA - gasB);
+
+  const gasRange =
+    highest === undefined || lowest === undefined
+      ? undefined
+      : highest - lowest;
+
+  const averagePercent =
+    baseFeePerGasStats === undefined ||
+    gasRange === undefined ||
+    lowest === undefined
+      ? undefined
+      : ((baseFeePerGasStats.average - lowest) / gasRange) * 100;
+
+  const barrierPercent =
+    baseFeePerGasStats === undefined ||
+    gasRange === undefined ||
+    lowest === undefined
+      ? undefined
+      : ((baseFeePerGasStats.barrier - lowest) / gasRange) * 100;
+
+  const deltaPercent =
+    barrierPercent !== undefined && averagePercent !== undefined
+      ? averagePercent - barrierPercent
+      : undefined;
 
   return (
     <WidgetErrorBoundary title="gas market">
@@ -109,9 +110,10 @@ const GasMarketWidget: FC<Props> = ({ baseFeePerGasStats }) => {
         <div className="flex justify-between">
           <LabelText>gas market</LabelText>
           <TimeFrameIndicator
+            className="pointer-events-none"
             timeFrame="h1"
             onClickTimeFrame={() => undefined}
-          ></TimeFrameIndicator>
+          />
         </div>
         <div
           className={`
@@ -123,16 +125,19 @@ const GasMarketWidget: FC<Props> = ({ baseFeePerGasStats }) => {
             rounded-full
           `}
         >
-          {delta !== undefined && (
+          {deltaPercent !== undefined && (
             <div
               className={` absolute bg-gradient-to-r ${
-                delta < 0
-                  ? "from-orange-300 to-yellow-500"
-                  : "from-cyan-300 to-indigo-500"
+                deltaPercent >= 0
+                  ? "from-orange-400 to-yellow-500"
+                  : "to-indigo-500 from-cyan-300 "
               } h-2`}
               style={{
-                left: `${barrierPercent}%`,
-                width: `${Math.abs(delta)}%`,
+                left:
+                  deltaPercent >= 0
+                    ? `${barrierPercent}%`
+                    : `${averagePercent}%`,
+                width: `${Math.abs(deltaPercent)}%`,
               }}
             ></div>
           )}
@@ -147,7 +152,7 @@ const GasMarketWidget: FC<Props> = ({ baseFeePerGasStats }) => {
                 key={label}
                 label={label}
                 gas={gas}
-                orientation={index % 2 !== 0 ? "up" : "down"}
+                orientation={index % 2 === 0 ? "up" : "down"}
               />
             ))}
         </div>

@@ -244,9 +244,10 @@ const BaseFeesWidget: FC<Props> = ({
             base fees
           </LabelText>
           <TimeFrameIndicator
+            className="pointer-events-none"
             timeFrame="h1"
             onClickTimeFrame={() => undefined}
-          ></TimeFrameIndicator>
+          />
         </div>
         <div
           // flex-grow fixes bug where highcharts doesn't take full width.
