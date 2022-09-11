@@ -96,28 +96,33 @@ const BaseFeesWidget: FC<Props> = ({
                     text: `${barrier?.toFixed(2)} Gwei 🦇🔊`,
                     useHTML: true,
                     align: "right",
-                    formatter: () =>
-                      `<div class="flex -mt-0.5">
-                  <div class="font-roboto font-light text-white">
-                  ${barrier?.toFixed(1)}
-                  </div>
-                  <div class="font-roboto font-light text-slateus-400 ml-1">
-                  Gwei
-                  </div>
-                  </div>
-                  <div class="flex justify-center mt-1">
-                  <img
-                  alt="bat emoji, first-half of signifying 'ultra sound' gas barrier"
-                  class="w-4 h-4"
-                  src="/bat-own.svg"
-                  />
-                  <img
-                  alt="speaker emoji, second-half of signifying 'ultra sound' gas barrier"
-                  class="w-4 h-4 ml-1"
-                  src="/speaker-own.svg"
-                  />
-                  </div>
-                  `,
+                    formatter: () => `
+                      <div class="flex -mt-0.5">
+                        <div class="font-roboto font-light text-white">
+                          ${barrier?.toFixed(1)}
+                        </div>
+                        <div class="font-roboto font-light text-slateus-400 ml-1">
+                          Gwei
+                        </div>
+                      </div>
+                      <div class="flex justify-center mt-1">
+                        <img
+                          alt="bat emoji, first-half of signifying 'ultra sound' gas barrier"
+                          class="w-4 h-4"
+                          src="/bat-own.svg"
+                        />
+                        <img
+                          alt="speaker emoji, second-half of signifying 'ultra sound' gas barrier"
+                          class="w-4 h-4 ml-1"
+                          src="/speaker-own.svg"
+                        />
+                        <img
+                          alt="speaker emoji, second-half of signifying 'ultra sound' gas barrier"
+                          class="w-4 h-4 ml-1"
+                          src="/barrier-own.svg"
+                        />
+                      </div>
+                    `,
                   },
                 },
               ],
