@@ -6,7 +6,7 @@ import TimeFrameIndicator from "./TimeFrameIndicator";
 import type { FC } from "react";
 import QuantifyText from "./TextsNext/QuantifyText";
 import SkeletonText from "./TextsNext/SkeletonText";
-import { formatZeroDecimals } from "../format";
+import { formatTwoDigit, formatWeiTwoDigit, formatZeroDecimals } from "../format";
 import { WEI_PER_GWEI } from "../eth-units";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
@@ -23,6 +23,16 @@ const getPercentage = (
   return (gas - lowest) / range;
 };
 
+const formatTooltip = (description: string | undefined, gas: number): string | undefined => {
+  if (description === undefined) {
+    return undefined
+  }
+  const gasStr = formatTwoDigit(gas / WEI_PER_GWEI);
+  return `${description}
+
+${gasStr} Gwei`
+}
+
 type MarkerProps = {
   emphasize: boolean;
   gas: number;
@@ -30,6 +40,7 @@ type MarkerProps = {
   label: string;
   lowest: number;
   orientation: "up" | "down";
+  description?: string;
 };
 
 const Marker: FC<MarkerProps> = ({
@@ -39,6 +50,7 @@ const Marker: FC<MarkerProps> = ({
   label,
   lowest,
   orientation,
+  description
 }) => (
   <div
     className={`
@@ -51,6 +63,7 @@ const Marker: FC<MarkerProps> = ({
     style={{
       left: `${getPercentage(highest, lowest, gas) * 100}%`,
     }}
+    title={formatTooltip(description, gas)}
   >
     {orientation === "down" && (<div className={`w-0.5 ${emphasize ? "h-4" : "h-2"} bg-slateus-200 rounded-b-full mb-2`}></div>)}
     {label === "barrier" ? (
@@ -106,10 +119,15 @@ const GasMarketWidget: FC<Props> = ({ baseFeePerGasStats }) => {
     baseFeePerGasStats === undefined
       ? []
       : [
-        { label: "barrier", gas: baseFeePerGasStats.barrier, emphasize: true },
-        { label: "min", gas: baseFeePerGasStats.min, emphasize: false },
-        { label: "max", gas: baseFeePerGasStats.max, emphasize: false },
-        { label: "average", gas: baseFeePerGasStats.average, emphasize: true },
+        {
+          label: "barrier",
+          gas: baseFeePerGasStats.barrier,
+          emphasize: true,
+          description: "ultra sound barrier"
+        },
+        { label: "min", gas: baseFeePerGasStats.min, emphasize: false, description: "minimum gas price" },
+        { label: "max", gas: baseFeePerGasStats.max, emphasize: false, description: "maximum gas price" },
+        { label: "average", gas: baseFeePerGasStats.average, emphasize: true, description: "average gas price" },
       ].sort(({ gas: gasA }, { gas: gasB }) => gasA - gasB);
 
   const gasRange =
@@ -138,7 +156,7 @@ const GasMarketWidget: FC<Props> = ({ baseFeePerGasStats }) => {
 
   return (
     <WidgetErrorBoundary title="gas market">
-      <WidgetBackground className="flex flex-col">
+      <WidgetBackground className="flex flex-col gap-y-4">
         <div className="flex justify-between">
           <LabelText>gas market</LabelText>
           <TimeFrameIndicator
@@ -152,17 +170,18 @@ const GasMarketWidget: FC<Props> = ({ baseFeePerGasStats }) => {
             relative
             flex
             h-2
-            my-16
+            my-14
             bg-blue-highlightbg
             rounded-full
           `}
         >
           {deltaPercent !== undefined && (
             <div
-              className={` absolute bg-gradient-to-r ${deltaPercent >= 0
-                ? "from-orange-400 to-yellow-500"
-                : "to-indigo-500 from-cyan-300 "
-                } h-2`}
+              className={`
+                absolute bg-gradient-to-r
+                ${deltaPercent >= 0 ? "from-orange-400 to-yellow-500" : "to-indigo-500 from-cyan-300"}
+                h-2
+              `}
               style={{
                 left:
                   deltaPercent >= 0
@@ -172,11 +191,10 @@ const GasMarketWidget: FC<Props> = ({ baseFeePerGasStats }) => {
               }}
             ></div>
           )}
-
           {markerList !== undefined &&
             highest !== undefined &&
             lowest !== undefined &&
-            markerList.map(({ label, gas, emphasize }, index) => (
+            markerList.map(({ label, gas, emphasize, description }, index) => (
               <Marker
                 highest={highest}
                 lowest={lowest}
@@ -185,6 +203,7 @@ const GasMarketWidget: FC<Props> = ({ baseFeePerGasStats }) => {
                 gas={gas}
                 orientation={index % 2 === 0 ? "up" : "down"}
                 emphasize={emphasize}
+                description={description}
               />
             ))}
         </div>
