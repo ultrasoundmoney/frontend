@@ -26,12 +26,12 @@ const baseOptions: Highcharts.Options = {
   chart: {
     backgroundColor: "transparent",
     showAxes: false,
-    marginLeft: 42,
+    marginLeft: 54,
   },
   title: undefined,
   xAxis: {
     type: "datetime",
-    min: 1659304800000,
+    min: 1662764400000,
     max: 1663279200000,
     lineWidth: 0,
     labels: { format: "{value:%b %d}", style: { color: colors.slateus400 } },
@@ -41,7 +41,7 @@ const baseOptions: Highcharts.Options = {
     max: 100,
     title: { text: undefined },
     labels: {
-      format: "{value}%",
+      format: "{value:.1f}%",
       style: { color: colors.slateus400, fontFamily: "Roboto Mono" },
     },
     gridLineWidth: 0,
@@ -142,7 +142,7 @@ const TotalDifficultyProjectionWidget: FC<Props> = ({
                       {
                         id: "panda-marker",
                         x: lastPointProjection?.[0],
-                        y: lastPointProjection?.[1] - 1.2,
+                        y: lastPointProjection?.[1] - 0.2,
                         marker: {
                           symbol: `url(/graph-dot-panda.svg)`,
                           enabled: true,
