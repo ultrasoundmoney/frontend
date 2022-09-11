@@ -145,11 +145,7 @@ const MergeEstimateWidget: FC<Props> = ({ mergeEstimate }) => {
             {/* Keeps the height of this widget equal to the adjacent one. */}
             {
               <div className="flex items-center min-h-[21px] ">
-                <LabelText>merge</LabelText>
-                <LabelText className="hidden md:inline">
-                  &nbsp;estimate
-                </LabelText>
-                <LabelText className="hidden md:inline">:</LabelText>
+                <LabelText>merge:</LabelText>
                 {mergeEstimateFormatted && (
                   <LabelText className="ml-1 text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-indigo-500">{`${mergeEstimateFormatted} UTC`}</LabelText>
                 )}
