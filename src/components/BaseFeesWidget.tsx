@@ -24,6 +24,10 @@ const baseOptions: Highcharts.Options = {
   accessibility: { enabled: false },
   chart: {
     resetZoomButton: {
+    position: {
+      x: 74,
+      y: 170
+    },
       theme: {
         fill: colors.slateus600,
         style: {
