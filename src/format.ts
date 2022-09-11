@@ -76,6 +76,15 @@ const percentTwoDecimals = new Intl.NumberFormat("en-US", {
 export const formatPercentTwoDecimals = (fraction: number): string =>
   percentTwoDecimals.format(fraction);
 
+const percentThreeDecimals = new Intl.NumberFormat("en-US", {
+  minimumFractionDigits: 3,
+  maximumFractionDigits: 3,
+  style: "percent",
+});
+
+export const formatPercentThreeDecimals = (fraction: number): string =>
+  percentThreeDecimals.format(fraction);
+
 const compactNumber = new Intl.NumberFormat("en", {
   minimumFractionDigits: 0,
   maximumFractionDigits: 2,

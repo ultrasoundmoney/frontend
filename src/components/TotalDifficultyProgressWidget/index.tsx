@@ -55,7 +55,7 @@ const TotalDifficultyProgressWidget: FC<Props> = ({
             <SkeletonText width="3rem">
               {progress === undefined
                 ? undefined
-                : Format.formatPercentTwoDecimals(progress)}
+                : Format.formatPercentThreeDecimals(progress)}
             </SkeletonText>
           </LabelUnitText>
           <LabelText className="text-slateus-400">{` of TTD`}</LabelText>
