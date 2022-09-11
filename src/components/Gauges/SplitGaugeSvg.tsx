@@ -70,8 +70,8 @@ const SplitGaugeSvg: FC<SplitGaugeSvgProps> = ({
           <stop offset="100%" stopColor="#F4900C" />
         </linearGradient>
         <linearGradient id="blue-gradient-split-gauge">
-          <stop offset="0%" stopColor="#6366f1" />
-          <stop offset="100%" stopColor="#67e8f9" />
+          <stop offset="0%" stopColor="#67e8f9" />
+          <stop offset="100%" stopColor="#6366f1" />
         </linearGradient>
       </defs>
       <g transform={`translate(${width / 2},${height / 2})`}>
