@@ -24,30 +24,35 @@ const getPercentage = (
 };
 
 type MarkerProps = {
-  highest: number;
-  lowest: number;
-  label: string;
+  emphasize: boolean;
   gas: number;
+  highest: number;
+  label: string;
+  lowest: number;
   orientation: "up" | "down";
 };
 
 const Marker: FC<MarkerProps> = ({
-  highest,
-  lowest,
+  emphasize,
   gas,
+  highest,
   label,
+  lowest,
   orientation,
 }) => (
   <div
     className={`
         absolute  -translate-x-1/2
         flex flex-col items-center
-        ${orientation === "up" ? "-top-12" : "-bottom-12"}
+        ${orientation === "up" ? "-top-14" : "-bottom-14"}
+        ${emphasize ? "" : "opacity-60"}
+        ${label === "barrier-max" || label === "barrier-min" ? "invisible" : ""}
       `}
     style={{
       left: `${getPercentage(highest, lowest, gas) * 100}%`,
     }}
   >
+    {orientation === "down" && (<div className={`w-0.5 ${emphasize ? "h-4" : "h-2"} bg-slateus-200 rounded-b-full mb-2`}></div>)}
     {label === "barrier" ? (
       <>
         <div className="flex gap-x-1">
@@ -81,6 +86,7 @@ const Marker: FC<MarkerProps> = ({
         </QuantifyText>
       )}
     </SkeletonText>
+    {orientation === "up" && <div className={`w-0.5 ${emphasize ? "h-4" : "h-2"} bg-slateus-200 rounded-t-full mt-2`}></div>}
   </div>
 );
 
@@ -88,27 +94,25 @@ type Props = {
   baseFeePerGasStats: BaseFeePerGasStats | undefined;
 };
 
-const GasMarketWidget: FC<Props> = ({ baseFeePerGasStats }) => {
+const GasMarketWidget: FC<Props> = ({ baseFeePerGasStats: bs }) => {
   console.log("rendering gas widget");
-  const lowest =
-    baseFeePerGasStats === undefined
-      ? undefined
-      : Math.min(baseFeePerGasStats.min, baseFeePerGasStats.barrier);
+  const baseFeePerGasStats = { ...bs, };
+  const lowest = 0;
 
   const highest =
     baseFeePerGasStats === undefined
       ? undefined
-      : Math.max(baseFeePerGasStats.max, baseFeePerGasStats.barrier);
+      : Math.max(baseFeePerGasStats.max, baseFeePerGasStats.barrier) * 1.1;
 
   const markerList =
     baseFeePerGasStats === undefined
       ? []
       : [
-          { label: "barrier", gas: baseFeePerGasStats.barrier },
-          { label: "min", gas: baseFeePerGasStats.min },
-          { label: "max", gas: baseFeePerGasStats.max },
-          { label: "average", gas: baseFeePerGasStats.average },
-        ].sort(({ gas: gasA }, { gas: gasB }) => gasA - gasB);
+        { label: "barrier", gas: baseFeePerGasStats.barrier, emphasize: true },
+        { label: "min", gas: baseFeePerGasStats.min, emphasize: false },
+        { label: "max", gas: baseFeePerGasStats.max, emphasize: false },
+        { label: "average", gas: baseFeePerGasStats.average, emphasize: true },
+      ].sort(({ gas: gasA }, { gas: gasB }) => gasA - gasB);
 
   const gasRange =
     highest === undefined || lowest === undefined
@@ -117,15 +121,15 @@ const GasMarketWidget: FC<Props> = ({ baseFeePerGasStats }) => {
 
   const averagePercent =
     baseFeePerGasStats === undefined ||
-    gasRange === undefined ||
-    lowest === undefined
+      gasRange === undefined ||
+      lowest === undefined
       ? undefined
       : ((baseFeePerGasStats.average - lowest) / gasRange) * 100;
 
   const barrierPercent =
     baseFeePerGasStats === undefined ||
-    gasRange === undefined ||
-    lowest === undefined
+      gasRange === undefined ||
+      lowest === undefined
       ? undefined
       : ((baseFeePerGasStats.barrier - lowest) / gasRange) * 100;
 
@@ -150,18 +154,17 @@ const GasMarketWidget: FC<Props> = ({ baseFeePerGasStats }) => {
             relative
             flex
             h-2
-            my-16 mx-10
+            my-16
             bg-blue-highlightbg
             rounded-full
           `}
         >
           {deltaPercent !== undefined && (
             <div
-              className={` absolute bg-gradient-to-r ${
-                deltaPercent >= 0
-                  ? "from-orange-400 to-yellow-500"
-                  : "to-indigo-500 from-cyan-300 "
-              } h-2`}
+              className={` absolute bg-gradient-to-r ${deltaPercent >= 0
+                ? "from-orange-400 to-yellow-500"
+                : "to-indigo-500 from-cyan-300 "
+                } h-2`}
               style={{
                 left:
                   deltaPercent >= 0
@@ -175,7 +178,7 @@ const GasMarketWidget: FC<Props> = ({ baseFeePerGasStats }) => {
           {markerList !== undefined &&
             highest !== undefined &&
             lowest !== undefined &&
-            markerList.map(({ label, gas }, index) => (
+            markerList.map(({ label, gas, emphasize }, index) => (
               <Marker
                 highest={highest}
                 lowest={lowest}
@@ -183,6 +186,7 @@ const GasMarketWidget: FC<Props> = ({ baseFeePerGasStats }) => {
                 label={label}
                 gas={gas}
                 orientation={index % 2 === 0 ? "up" : "down"}
+                emphasize={emphasize}
               />
             ))}
         </div>
