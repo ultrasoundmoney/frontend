@@ -3,6 +3,7 @@ import HighchartsReact from "highcharts-react-official";
 import highchartsAnnotations from "highcharts/modules/annotations";
 import _merge from "lodash/merge";
 import type { FC } from "react";
+import { useEffect } from "react";
 import { useMemo } from "react";
 import colors from "../colors";
 import type { Gwei } from "../eth-units";
@@ -22,6 +23,23 @@ if (typeof window !== "undefined") {
 const baseOptions: Highcharts.Options = {
   accessibility: { enabled: false },
   chart: {
+    resetZoomButton: {
+      theme: {
+        fill: colors.slateus600,
+        style: {
+          fontSize: "12",
+          fontFamily: "Inter",
+          fontWeight: "300",
+          color: colors.white,
+          textTransform: "lowercase"
+          , border: `1px solid ${colors.slateus400}`
+        },
+        r: 4,
+        zIndex: 20,
+        states: { hover: { fill: "#343C56" } }
+      }
+    },
+    zoomType: "x",
     backgroundColor: "transparent",
     showAxes: false,
     marginRight: 80,
@@ -68,6 +86,19 @@ const BaseFeesWidget: FC<Props> = ({
   baseFeesSeries,
   baseFeesMap,
 }) => {
+  // Setting lang has to happen before any chart render.
+  useEffect(() => {
+    if (Highcharts) {
+      Highcharts.setOptions(
+        {
+          lang: {
+            resetZoomTitle: undefined
+          },
+        }
+      )
+    }
+  }, []);
+
   const options = useMemo(
     (): Highcharts.Options =>
       _merge(
@@ -129,7 +160,7 @@ const BaseFeesWidget: FC<Props> = ({
             series: [
               {
                 id: "base-fees-over-area",
-                type: "area",
+                type: "areaspline",
                 yAxis: 0,
                 threshold: barrier,
                 data: baseFeesSeries.map(([time, value]) => [time, value]),
@@ -153,7 +184,6 @@ const BaseFeesWidget: FC<Props> = ({
                   ],
                 },
                 negativeColor: colors.drop,
-                // negativeFillColor: "#00FFFB10",
                 negativeFillColor: {
                   linearGradient: {
                     x1: 0,
