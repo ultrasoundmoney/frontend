@@ -1,5 +1,7 @@
 import useSWR from "swr";
-import { GweiNumber, WeiNumber, WEI_PER_GWEI } from "../eth-units";
+import { millisFromMinutes } from "../duration";
+import type { GweiNumber, WeiNumber } from "../eth-units"
+import { WEI_PER_GWEI } from "../eth-units";
 import { fetchJson } from "./fetchers";
 
 export type BaseFeePerGasStats = {
@@ -16,7 +18,7 @@ export const fetchBaseFeePerGasStats = (): Promise<BaseFeePerGasStats> =>
 
 export const useBaseFeePerGasStats = (): BaseFeePerGasStats | undefined => {
   const { data } = useSWR<BaseFeePerGasStats>(url, fetchJson, {
-    refreshInterval: 4000,
+    refreshInterval: millisFromMinutes(1),
   });
 
   return data !== undefined

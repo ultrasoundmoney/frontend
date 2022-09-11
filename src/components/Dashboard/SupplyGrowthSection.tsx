@@ -19,13 +19,10 @@ import { WidgetTitle } from "../WidgetSubcomponents";
 import EthSupplyWidget from "../EthSupplyWidget";
 import type { EthSupply } from "../../api/eth-supply";
 import BaseFeesWidget from "../BaseFeesWidget";
-import {
-  BaseFeeAtTime,
-  useBaseFeeOverTime,
-} from "../../api/base-fee-over-time";
+import type { BaseFeeAtTime } from "../../api/base-fee-over-time"
+import { useBaseFeeOverTime } from "../../api/base-fee-over-time";
 import { useBaseFeePerGasStats } from "../../api/base-fee-per-gas-stats";
 import GasMarketWidget from "../GasMarketWidget";
-import { getTime, parseISO } from "date-fns";
 import type { Gwei } from "../../eth-units";
 import { WEI_PER_GWEI } from "../../eth-units";
 
@@ -47,32 +44,32 @@ const Controls: FC<{
   timeFrame,
   unit,
 }) => (
-  <div className={`bg-blue-tangaroa rounded-bl-lg rounded-br-lg p-8`}>
-    <div className="grid grid-cols-2 md:flex md:justify-between flex-col gap-y-8 md:flex-row lg:gap-y-0 ">
-      <div className="row-start-1 flex flex-col gap-4 lg:gap-x-4 lg:flex-row lg:items-center">
-        <WidgetTitle>time frame</WidgetTitle>
-        <TimeFrameControl
-          selectedTimeframe={timeFrame}
-          onSetTimeFrame={onSetTimeFrame}
-        />
-      </div>
-      <div className="row-start-2 md:row-start-1 flex flex-col gap-y-4 lg:gap-x-4 lg:flex-row lg:items-center">
-        <WidgetTitle>currency</WidgetTitle>
-        <CurrencyControl selectedUnit={unit} onSetUnit={onSetUnit} />
-      </div>
-      <div className="row-start-2 md:row-start-1 flex flex-col gap-4 lg:flex-row lg:items-center text-right">
-        <WidgetTitle>simulate merge</WidgetTitle>
-        {/* On tablet the vertical alignment looks off without aligning the toggle with the neighboring controls */}
-        <div className="flex items-center h-[34px] self-end">
-          <ToggleSwitch
-            checked={simulateMerge}
-            onToggle={onToggleSimulateMerge}
+    <div className={`bg-blue-tangaroa rounded-bl-lg rounded-br-lg p-8`}>
+      <div className="grid grid-cols-2 md:flex md:justify-between flex-col gap-y-8 md:flex-row lg:gap-y-0 ">
+        <div className="row-start-1 flex flex-col gap-4 lg:gap-x-4 lg:flex-row lg:items-center">
+          <WidgetTitle>time frame</WidgetTitle>
+          <TimeFrameControl
+            selectedTimeframe={timeFrame}
+            onSetTimeFrame={onSetTimeFrame}
           />
+        </div>
+        <div className="row-start-2 md:row-start-1 flex flex-col gap-y-4 lg:gap-x-4 lg:flex-row lg:items-center">
+          <WidgetTitle>currency</WidgetTitle>
+          <CurrencyControl selectedUnit={unit} onSetUnit={onSetUnit} />
+        </div>
+        <div className="row-start-2 md:row-start-1 flex flex-col gap-4 lg:flex-row lg:items-center text-right">
+          <WidgetTitle>simulate merge</WidgetTitle>
+          {/* On tablet the vertical alignment looks off without aligning the toggle with the neighboring controls */}
+          <div className="flex items-center h-[34px] self-end">
+            <ToggleSwitch
+              checked={simulateMerge}
+              onToggle={onToggleSimulateMerge}
+            />
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
 
 const pointsFromBaseFeesOverTime = (
   baseFeesD1: BaseFeeAtTime[],
