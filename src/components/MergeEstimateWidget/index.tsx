@@ -81,27 +81,27 @@ const Countdown: FC<{ mergeEstimate: MergeEstimate }> = ({ mergeEstimate }) => {
     TOTAL_TERMINAL_DIFFICULTY || featureFlags.simulatePostMerge ? (
     <Celebration />
   ) : (
-    <div className="flex gap-x-6 md:gap-x-7">
-      <div className="flex flex-col items-center gap-y-2 ">
+    <div className="flex gap-x-4">
+      <div className="flex flex-col items-center gap-y-2 w-[40px]">
         <CountdownNumber>{timeLeft?.days}</CountdownNumber>
         <LabelText className="text-slateus-400">
           {timeLeft?.days === 1 ? "day" : "days"}
         </LabelText>
       </div>
-      <div className="flex flex-col items-center gap-y-2 ">
+      <div className="flex flex-col items-center gap-y-2 w-[40px]">
         <CountdownNumber>{timeLeft?.hours}</CountdownNumber>
 
         <LabelText className="text-slateus-400">
           {timeLeft?.hours === 1 ? "hour" : "hours"}
         </LabelText>
       </div>
-      <div className="flex flex-col items-center gap-y-2 ">
+      <div className="flex flex-col items-center gap-y-2 w-[40px]">
         <CountdownNumber>{timeLeft?.minutes}</CountdownNumber>
         <LabelText className="text-slateus-400">
           {timeLeft?.minutes === 1 ? "min" : "mins"}
         </LabelText>
       </div>
-      <div className="flex flex-col items-center gap-y-2 ">
+      <div className="flex flex-col items-center gap-y-2 w-[40px]">
         <CountdownNumber>{timeLeft?.seconds}</CountdownNumber>
         <LabelText className="text-slateus-400">
           {timeLeft?.seconds === 1 ? "sec" : "secs"}
@@ -131,11 +131,12 @@ const MergeEstimateWidget: FC<Props> = ({ mergeEstimate }) => {
   // smaller screen (lg && !xl), show the full number.
   // If we are dealing with the two column layout and are on a small screen,
   // shorten the number by truncating thousands.
+  const precisionBarrier = 100000;
   const blocksToTTD =
-    mergeEstimate.blocksLeft > 1000
+    mergeEstimate.blocksLeft > precisionBarrier
       ? mergeEstimate.blocksLeft / 1e3
       : mergeEstimate.blocksLeft;
-  const blocksToTTDSuffix = mergeEstimate.blocksLeft > 1000 ? true : false;
+  const blocksToTTDSuffix = mergeEstimate.blocksLeft > precisionBarrier;
 
   return (
     <WidgetErrorBoundary title="merge estimate">
