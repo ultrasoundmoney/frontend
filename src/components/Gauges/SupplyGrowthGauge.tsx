@@ -41,7 +41,7 @@ const useGrowthRate = (
       scarcity.ethSupply === undefined
         ? undefined
         : (issuanceRate - feeBurnYear) /
-          Format.ethFromWeiBIUnsafe(scarcity.ethSupply);
+        Format.ethFromWeiBIUnsafe(scarcity.ethSupply);
 
     const rateRounded =
       nextGrowthRate === undefined
@@ -122,34 +122,36 @@ const SupplyGrowthGauge: FC<Props> = ({
       `}
     >
       <WidgetTitle>supply growth</WidgetTitle>
-      <div className="mt-8 lg:mt-9 md:scale-90 lg:scale-100">
+      <div className="mt-8 md:scale-90 lg:scale-100">
         <SplitGaugeSvg max={max} progress={progress} />
+        <animated.div
+          className="font-roboto font-light text-3xl -mt-[60px] text-center"
+          style={colorStyle}
+        >
+          {growthRate === undefined || previewSkeletons ? (
+            <div className="-mb-2">
+              <Skeleton inline width="46px" />
+            </div>
+          ) : freezeAnimated ? (
+            <p className="-mb-2">
+              {Format.formatPercentOneDecimalSigned(growthRateAnimated.get())}
+            </p>
+          ) : (
+            <animated.p className="-mb-2">
+              {growthRateAnimated.to(toPercentOneDigitSigned)}
+            </animated.p>
+          )}
+        </animated.div>
       </div>
-      <animated.div
-        className="font-roboto font-light text-3xl -mt-16"
-        style={colorStyle}
-      >
-        {growthRate === undefined || previewSkeletons ? (
-          <div className="-mb-2">
-            <Skeleton inline width="46px" />
-          </div>
-        ) : freezeAnimated ? (
-          <p className="-mb-2">
-            {Format.formatPercentOneDecimalSigned(growthRateAnimated.get())}
-          </p>
-        ) : (
-          <animated.p className="-mb-2">
-            {growthRateAnimated.to(toPercentOneDigitSigned)}
-          </animated.p>
-        )}
-      </animated.div>
-      <p className="font-roboto font-light text-xs text-blue-spindle select-none mb-7 lg:mb-6">
+      <p className="font-roboto font-light text-xs text-blue-spindle select-none mt-[7px] mb-2.5">
         /year
       </p>
-      <TimeFrameIndicator
-        onClickTimeFrame={onClickTimeFrame}
-        timeFrame={timeFrame}
-      />
+      <div className="h-6 flex items-center">
+        <TimeFrameIndicator
+          onClickTimeFrame={onClickTimeFrame}
+          timeFrame={timeFrame}
+        />
+      </div>
     </div>
   );
 };
