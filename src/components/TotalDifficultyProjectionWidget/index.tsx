@@ -261,7 +261,7 @@ const TotalDifficultyProjectionWidget: FC<Props> = ({
         </div>
         {/* Align min-h with emoji widget title on the left */}
         <LabelText className="flex items-center min-h-[21px]">
-          total difficulty projection
+          merge difficulty projection
         </LabelText>
         <div
           // flex-grow fixes bug where highcharts doesn't take full width.

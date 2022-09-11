@@ -21,11 +21,11 @@ const TotalDifficultyProgressWidget: FC<Props> = ({
   mergeEstimate,
   progress,
 }) => (
-  <WidgetErrorBoundary title="total difficulty progress">
+  <WidgetErrorBoundary title="merge difficulty progress">
     <WidgetBackground className="flex flex-col gap-y-4">
       <div className="flex justify-between items-center">
         <LabelText className="flex items-center min-h-[21px]">
-          total difficulty progress
+          merge difficulty progress
         </LabelText>
         <div className="select-none">
           <Image
