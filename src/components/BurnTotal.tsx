@@ -159,7 +159,7 @@ const BurnTotal: FC<Props> = ({
             `}
           ></div>
         </div>
-        <div className="flex items-center justify-between">
+        <div className="flex items-baseline justify-between">
           <WidgetTitle>burn total</WidgetTitle>
           <TimeFrameIndicator
             onClickTimeFrame={onClickTimeFrame}

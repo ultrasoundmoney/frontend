@@ -53,7 +53,7 @@ export const BurnGroupBase: FC<Group1BaseProps> = ({
   title,
 }) => (
   <WidgetBackground className={backgroundClassName}>
-    <div className="flex items-center justify-between">
+    <div className="flex items-baseline justify-between">
       <WidgetTitle>{title}</WidgetTitle>
       <TimeFrameIndicator
         onClickTimeFrame={onClickTimeFrame}

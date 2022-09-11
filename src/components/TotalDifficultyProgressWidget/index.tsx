@@ -27,7 +27,7 @@ const TotalDifficultyProgressWidget: FC<Props> = ({
         <LabelText className="flex items-center min-h-[21px]">
           merge difficulty progress
         </LabelText>
-        <div className="select-none">
+        <div className="select-none flex items-center">
           <Image
             alt="a panda emoji, used to signify the merge, as pandas are a merge of black and white colors"
             height={21}
