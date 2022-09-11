@@ -108,12 +108,13 @@ type Props = {
 };
 
 const GasMarketWidget: FC<Props> = ({ baseFeePerGasStats }) => {
-  const lowest = 0;
+  const barPaddingFactor = 0.08
+  const lowest = baseFeePerGasStats === undefined ? undefined : baseFeePerGasStats.min - Math.max(baseFeePerGasStats.max, baseFeePerGasStats.barrier) * barPaddingFactor;
 
   const highest =
     baseFeePerGasStats === undefined
       ? undefined
-      : Math.max(baseFeePerGasStats.max, baseFeePerGasStats.barrier) * 1.1;
+      : Math.max(baseFeePerGasStats.max, baseFeePerGasStats.barrier) * (1 + barPaddingFactor);
 
   const markerList =
     baseFeePerGasStats === undefined
