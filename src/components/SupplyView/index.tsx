@@ -1,4 +1,3 @@
-import * as DateFns from "date-fns";
 import dynamic from "next/dynamic";
 import * as React from "react";
 import TranslationsContext from "../../contexts/TranslationsContext";
@@ -16,27 +15,16 @@ const SupplyChart = dynamic(() => import("./SupplyChart"));
 
 const MIN_PROJECTED_ETH_STAKING = 1e6;
 const DEFAULT_PROJECTED_ETH_STAKING = 14e6;
-const MAX_PROJECTED_ETH_STAKING = 67108864;
+const MAX_PROJECTED_ETH_STAKING = 69696969;
 
 const MIN_PROJECTED_BASE_GAS_PRICE = 0;
 const DEFAULT_PROJECTED_BASE_GAS_PRICE = 74;
-const MAX_PROJECTED_BASE_GAS_PRICE = 200;
+const MAX_PROJECTED_BASE_GAS_PRICE = 420;
 
-const MIN_PROJECTED_MERGE_DATE = DateFns.startOfDay(new Date());
-const DEFAULT_PROJECTED_MERGE_DATE = DateFns.max([
-  MERGE_TIMESTAMP_ESTIMATED,
-  MIN_PROJECTED_MERGE_DATE,
-]);
-const MAX_PROJECTED_MERGE_DATE = DateFns.parseISO("2022-12-31T00:00:00Z");
-
-const getDaysUntil = (dt: Date) =>
-  DateFns.differenceInDays(dt, DateFns.startOfDay(new Date()));
+const DEFAULT_PROJECTED_MERGE_DATE = MERGE_TIMESTAMP_ESTIMATED;
 
 const SupplyView: React.FC = () => {
   const t = React.useContext(TranslationsContext);
-  const [daysUntilMaxProjectedMergeDate, setMaxDaysUntilMerge] = React.useState(
-    getDaysUntil(MAX_PROJECTED_MERGE_DATE),
-  );
 
   // TODO Initialize this to current amount of ETH staked
   const [projectedStaking, setProjectedStaking] = React.useState(
@@ -45,9 +33,6 @@ const SupplyView: React.FC = () => {
   // TODO Initialize this to current base gas price
   const [projectedBaseGasPrice, setProjectedBaseGasPrice] = React.useState(
     DEFAULT_PROJECTED_BASE_GAS_PRICE,
-  );
-  const [projectedMergeDate, setProjectedMergeDate] = React.useState(
-    DEFAULT_PROJECTED_MERGE_DATE,
   );
   const [showBreakdown, setShowBreakdown] = React.useState(false);
   const [isPeakPresent, setIsPeakPresent] = React.useState(true);
@@ -66,25 +51,7 @@ const SupplyView: React.FC = () => {
     [],
   );
 
-  const handleProjectedMergeDateChange = React.useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (
-        getDaysUntil(MAX_PROJECTED_MERGE_DATE) !==
-        daysUntilMaxProjectedMergeDate
-      ) {
-        setMaxDaysUntilMerge(getDaysUntil(MAX_PROJECTED_MERGE_DATE));
-      }
-
-      const numDays: number = parseInt(e.target.value);
-      const projectedDate = DateFns.addDays(
-        DateFns.startOfDay(new Date()),
-        numDays,
-      );
-      setProjectedMergeDate(projectedDate);
-    },
-    [daysUntilMaxProjectedMergeDate],
-  );
-
+  const projectedMergeDate = DEFAULT_PROJECTED_MERGE_DATE;
   const handleProjectedStakingPointerDown = React.useCallback(() => {
     setShowBreakdown(true);
   }, []);
@@ -99,9 +66,6 @@ const SupplyView: React.FC = () => {
     },
     [],
   );
-
-  const daysUntilProjectedMerge = getDaysUntil(projectedMergeDate);
-  const daysUntilMinProjectedMerge = getDaysUntil(MIN_PROJECTED_MERGE_DATE);
 
   return (
     <>
@@ -181,22 +145,6 @@ const SupplyView: React.FC = () => {
             value={projectedBaseGasPrice}
             step={1}
             onChange={handleProjectedBaseGasPriceChange}
-          />
-        </Param>
-
-        <Param
-          title={t.merge_date}
-          value={DateFns.format(projectedMergeDate, "d MMM yyyy")}
-          subValue={`${t.pow_removal}: in ${daysUntilProjectedMerge} ${
-            daysUntilProjectedMerge === 1 ? "day" : "days"
-          }`}
-        >
-          <Slider
-            min={daysUntilMinProjectedMerge}
-            max={daysUntilMaxProjectedMergeDate}
-            value={daysUntilProjectedMerge}
-            step={1}
-            onChange={handleProjectedMergeDateChange}
           />
         </Param>
       </div>
