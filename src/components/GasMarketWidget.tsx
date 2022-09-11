@@ -94,9 +94,7 @@ type Props = {
   baseFeePerGasStats: BaseFeePerGasStats | undefined;
 };
 
-const GasMarketWidget: FC<Props> = ({ baseFeePerGasStats: bs }) => {
-  console.log("rendering gas widget");
-  const baseFeePerGasStats = { ...bs, };
+const GasMarketWidget: FC<Props> = ({ baseFeePerGasStats }) => {
   const lowest = 0;
 
   const highest =
