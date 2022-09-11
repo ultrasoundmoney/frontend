@@ -50,7 +50,6 @@ const baseOptions: Highcharts.Options = {
       marker: {
         enabled: true,
         lineColor: "white",
-        // fillColor: "#4B90DB",
         radius: 1,
         symbol: "circle",
       },
@@ -128,26 +127,6 @@ const BaseFeesWidget: FC<Props> = ({
               ],
             },
             series: [
-              // {
-              //   id: "base-fees-over",
-              //   type: "scatter",
-              //   data: baseFeesSeriesOver,
-              //   color: colors.fireOrange,
-              //   threshold: barrier,
-              //   negativeColor: colors.drop,
-              // color: {
-              //   linearGradient: {
-              //     x1: 0,
-              //     y1: 0,
-              //     x2: 1,
-              //     y2: 0,
-              //   },
-              //   stops: [
-              //     [0, "#00FFFB"],
-              //     [1, "#5487F4"],
-              //   ],
-              // },
-              // },
               {
                 id: "base-fees-over-area",
                 type: "area",
@@ -194,7 +173,7 @@ const BaseFeesWidget: FC<Props> = ({
               useHTML: true,
               borderWidth: 0,
               shadow: false,
-              formatter: function () {
+              formatter: function() {
                 const x = typeof this.x === "number" ? this.x : undefined;
                 if (x === undefined) {
                   return undefined;
