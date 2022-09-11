@@ -25,6 +25,7 @@ import { useBaseFeePerGasStats } from "../../api/base-fee-per-gas-stats";
 import GasMarketWidget from "../GasMarketWidget";
 import type { Gwei } from "../../eth-units";
 import { WEI_PER_GWEI } from "../../eth-units";
+import _maxBy from "lodash/maxBy";
 
 type JsTimestamp = number;
 export type BaseFeePoint = [JsTimestamp, Gwei];
@@ -116,26 +117,18 @@ const SupplyGrowthSection: FC<Props> = ({
     setTimeFrame(timeFramesNext[nextIndex]);
   }, [timeFrame]);
 
-  const baseFeesSeries = useMemo(
-    () =>
-      baseFeesOverTime?.d1 === undefined
-        ? undefined
-        : pointsFromBaseFeesOverTime(baseFeesOverTime.d1),
-    [baseFeesOverTime?.d1],
-  );
+  const [baseFeesSeries, max] = useMemo(
+    () => {
+      if (baseFeesOverTime === undefined) {
+        return [undefined, undefined]
+      }
 
-  // const baseFeesSeries = useMemo(
-  //   () =>
-  //     baseFeesOverTime?.d1 === undefined
-  //       ? undefined
-  //       : pointsFromBaseFeesOverTime(
-  //           baseFeesOverTime.d1.map((point) => ({
-  //             ...point,
-  //             wei: point.wei - 8 * WEI_PER_GWEI,
-  //           })),
-  //         ),
-  //   [baseFeesOverTime],
-  // );
+      const series = pointsFromBaseFeesOverTime(baseFeesOverTime.d1);
+      const max = _maxBy(series, (point) => point[1]);
+
+      return [series, max]
+    }, [baseFeesOverTime]
+  );
 
   const baseFeesMap = Object.fromEntries(new Map(baseFeesSeries).entries());
 
@@ -197,6 +190,7 @@ const SupplyGrowthSection: FC<Props> = ({
                   barrier={baseFeesOverTime?.barrier}
                   baseFeesSeries={baseFeesSeries ?? []}
                   baseFeesMap={baseFeesMap}
+                  max={max?.[1]}
                 />
               </div>
             </div>

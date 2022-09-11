@@ -79,12 +79,14 @@ type Props = {
   barrier: Gwei | undefined;
   baseFeesSeries: BaseFeePoint[];
   baseFeesMap: Record<number, number>;
+  max: number | undefined
 };
 
 const BaseFeesWidget: FC<Props> = ({
   barrier,
   baseFeesSeries,
   baseFeesMap,
+  max,
 }) => {
   // Setting lang has to happen before any chart render.
   useEffect(() => {
@@ -179,8 +181,8 @@ const BaseFeesWidget: FC<Props> = ({
                     y2: 0,
                   },
                   stops: [
-                    [0.2, "#EDDB3600"],
-                    [1, "#E7980040"],
+                    [(barrier ?? 0) / (max ?? 1), "#EDDB3610"],
+                    [1, "#E7980050"],
                   ],
                 },
                 negativeColor: colors.drop,
