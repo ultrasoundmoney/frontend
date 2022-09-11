@@ -155,8 +155,12 @@ const BaseFeesWidget: FC<Props> = ({
                 threshold: barrier,
                 data: baseFeesSeries.map(([time, value]) => [time, value]),
                 lineWidth: 0,
-                color: colors.fireOrange,
-                // fillColor: "#E7980040",
+                states: {
+                  hover: {
+                    lineWidthPlus: 0
+                  }
+                },
+                color: "#E79800",
                 fillColor: {
                   linearGradient: {
                     x1: 0,
