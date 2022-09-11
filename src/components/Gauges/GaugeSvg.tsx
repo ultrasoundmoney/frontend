@@ -67,12 +67,12 @@ const GaugeSvg: FC<GaugeSvgProps> = ({
       <defs>
         {/* The linearGradient definitions somehow inherit the display: none CSS of their sibling gauges with the same id, hiding them on the split gauge too. We need to use unique IDs for the different gauges. */}
         <linearGradient y1="1" id="orange-gradient-base-gauge">
-          <stop offset="0%" stopColor="#EDDB36" />
-          <stop offset="60%" stopColor="#E79800" />
+          <stop offset="0%" stopColor="#E79800" />
+          <stop offset="100%" stopColor="#EDDB36" />
         </linearGradient>
         <linearGradient id="blue-gradient-base-gauge">
-          <stop offset="0%" stopColor="#5DECD2" />
-          <stop offset="100%" stopColor="#5DADEC" />
+          <stop offset="0%" stopColor="#67e8f9" />
+          <stop offset="100%" stopColor="#6366f1" />
         </linearGradient>
       </defs>
       <g transform={`translate(${width / 2},${height / 2})`}>

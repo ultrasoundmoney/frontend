@@ -66,12 +66,12 @@ const SplitGaugeSvg: FC<SplitGaugeSvgProps> = ({
       <defs>
         {/* The linearGradient definitions somehow inherit the display: none CSS of their sibling gauges with the same id, hiding them on the split gauge too. We need to use unique IDs for the different gauges. */}
         <linearGradient id="orange-gradient-split-gauge">
-          <stop offset="0%" stopColor="#F4900C" />
-          <stop offset="100%" stopColor="#F4DD0C" />
+          <stop offset="0%" stopColor="#F4DD0C" />
+          <stop offset="100%" stopColor="#F4900C" />
         </linearGradient>
         <linearGradient id="blue-gradient-split-gauge">
-          <stop offset="0%" stopColor="#5DECD2" />
-          <stop offset="100%" stopColor="#5DADEC" />
+          <stop offset="0%" stopColor="#6366f1" />
+          <stop offset="100%" stopColor="#67e8f9" />
         </linearGradient>
       </defs>
       <g transform={`translate(${width / 2},${height / 2})`}>
@@ -89,7 +89,7 @@ const SplitGaugeSvg: FC<SplitGaugeSvgProps> = ({
         <animated.path
           d={needlePath}
           opacity={stylesBlue.opacity}
-          style={{ fill: colors.drop }}
+          style={{ fill: "#67e8f9" }}
           transform={x.to((x) => `rotate(${-90 + x * 120})`)}
         ></animated.path>
         <animated.path
