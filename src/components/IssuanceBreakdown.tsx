@@ -246,7 +246,7 @@ const IssuanceBreakdown = () => {
         <IssuanceRow
           amount={issuanceBreakdown?.crowdSale}
           hovering={highlightCrowdSale}
-          name="Bitcoin crowd sale"
+          name="BTC crowd sale"
           setHovering={setHighlightCrowdSale}
         />
         <IssuanceRow
@@ -256,16 +256,16 @@ const IssuanceBreakdown = () => {
           setHovering={setHighlightProofOfWork}
         />
         <IssuanceRow
-          amount={issuanceBreakdown?.ethereumFoundation}
-          hovering={highlightEthereumFoundation}
-          name="Ethereum Foundation"
-          setHovering={setHighlightEthereumFoundation}
-        />
-        <IssuanceRow
           amount={issuanceBreakdown?.earlyContributors}
           hovering={highlightEarlyContributors}
           name="early contributors"
           setHovering={setHighlightEarlyContributors}
+        />
+        <IssuanceRow
+          amount={issuanceBreakdown?.ethereumFoundation}
+          hovering={highlightEthereumFoundation}
+          name="Ethereum Foundation"
+          setHovering={setHighlightEthereumFoundation}
         />
         <IssuanceRow
           amount={issuanceBreakdown?.proofOfStake}
