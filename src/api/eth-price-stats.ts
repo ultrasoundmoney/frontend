@@ -1,5 +1,5 @@
+import { secondsToMilliseconds } from "date-fns";
 import useSWR from "swr";
-import * as Duration from "../duration";
 import type { DateTimeString } from "../time";
 import { fetchJson } from "./fetchers";
 
@@ -15,7 +15,7 @@ export const fetchEthPriceStats = () => fetchJson<EthPriceStats>(url);
 
 export const useEthPriceStats = (): EthPriceStats | undefined => {
   const { data } = useSWR<EthPriceStats>(url, fetchJson, {
-    refreshInterval: Duration.millisFromSeconds(20),
+    refreshInterval: secondsToMilliseconds(10),
   });
 
   return data;

@@ -1,3 +1,4 @@
+import { secondsToMilliseconds } from "date-fns";
 import useSWR from "swr";
 import type { WeiNumber } from "../eth-units";
 import type { DateTimeString } from "../time";
@@ -18,7 +19,7 @@ export const fetchBaseFeePerGas = (): Promise<BaseFeePerGas> =>
 
 export const useBaseFeePerGas = (): BaseFeePerGas | undefined => {
   const { data } = useSWR<BaseFeePerGas>(url, fetchJson, {
-    refreshInterval: 4000,
+    refreshInterval: secondsToMilliseconds(4),
   });
 
   return data;

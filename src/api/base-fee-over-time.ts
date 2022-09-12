@@ -1,5 +1,5 @@
+import { secondsToMilliseconds } from "date-fns";
 import useSWR from "swr";
-import { millisFromMinutes } from "../duration";
 import type { Gwei, WeiNumber } from "../eth-units";
 import { fetchJson } from "./fetchers";
 
@@ -21,7 +21,7 @@ export const fetchBaseFeeOverTime = (): Promise<BaseFeeOverTime> =>
 
 export const useBaseFeeOverTime = (): BaseFeeOverTime | undefined => {
   const { data } = useSWR<BaseFeeOverTime>(url, fetchJson, {
-    refreshInterval: millisFromMinutes(1),
+    refreshInterval: secondsToMilliseconds(4),
   });
 
   return data;
