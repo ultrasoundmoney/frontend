@@ -35,7 +35,7 @@ export const fetchJson = async <A>(url: RequestInfo): Promise<A> => {
       throw new Error(`failed to fetch ${url}, message: ${message}`);
     }
 
-    console.log(body);
+    console.error(body);
     throw new Error(
       `failed to fetch ${url}, status: ${res.status}, json body, but no message, logged body.`,
     );
