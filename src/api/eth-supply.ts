@@ -58,9 +58,13 @@ export const decodeEthSupply = (ethSupply: EthSupplyF): EthSupply => ({
 });
 
 export const useEthSupply = (): EthSupplyF | undefined => {
-  const { data } = useSWR<EthSupplyF>("/api/fees/eth-supply", fetchJson, {
-    refreshInterval: Duration.millisFromSeconds(4),
-  });
+  const { data } = useSWR<EthSupplyF>(
+    "/api/v2/fees/eth-supply-parts",
+    fetchJson,
+    {
+      refreshInterval: Duration.millisFromSeconds(4),
+    },
+  );
 
   return data;
 };

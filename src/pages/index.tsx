@@ -23,7 +23,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const [meRes, esRes, baseFeePerGas, ethPriceStats] = await Promise.all([
     // fetch(`${getDomain()}/api/v2/fees/total-difficulty-progress`),
     fetch(`${getDomain()}/api/v2/fees/merge-estimate`),
-    fetch(`${getDomain()}/api/v2/fees/eth-supply`),
+    fetch(`${getDomain()}/api/v2/fees/eth-supply-parts`),
     // fetch(`${getApiDomain()}/api/fees/scarcity`),
     fetchBaseFeePerGas(),
     fetchEthPriceStats(),
