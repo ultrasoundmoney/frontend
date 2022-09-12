@@ -6,7 +6,11 @@ import TimeFrameIndicator from "./TimeFrameIndicator";
 import type { FC } from "react";
 import QuantifyText from "./TextsNext/QuantifyText";
 import SkeletonText from "./TextsNext/SkeletonText";
-import { formatTwoDigit, formatWeiTwoDigit, formatZeroDecimals } from "../format";
+import {
+  formatTwoDigit,
+  formatWeiTwoDigit,
+  formatZeroDecimals,
+} from "../format";
 import { WEI_PER_GWEI } from "../eth-units";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
@@ -23,15 +27,18 @@ const getPercentage = (
   return (gas - lowest) / range;
 };
 
-const formatTooltip = (description: string | undefined, gas: number): string | undefined => {
+const formatTooltip = (
+  description: string | undefined,
+  gas: number,
+): string | undefined => {
   if (description === undefined) {
-    return undefined
+    return undefined;
   }
   const gasStr = formatTwoDigit(gas / WEI_PER_GWEI);
   return `${description}
 
-${gasStr} Gwei`
-}
+${gasStr} Gwei`;
+};
 
 type MarkerProps = {
   emphasize: boolean;
@@ -50,7 +57,7 @@ const Marker: FC<MarkerProps> = ({
   label,
   lowest,
   orientation,
-  description
+  description,
 }) => (
   <div
     className={`
@@ -65,7 +72,13 @@ const Marker: FC<MarkerProps> = ({
     }}
     title={formatTooltip(description, gas)}
   >
-    {orientation === "down" && (<div className={`w-0.5 ${emphasize ? "h-4" : "h-2"} bg-slateus-200 rounded-b-full mb-2`}></div>)}
+    {orientation === "down" && (
+      <div
+        className={`w-0.5 ${
+          emphasize ? "h-4" : "h-2"
+        } bg-slateus-200 rounded-b-full mb-2`}
+      ></div>
+    )}
     {label === "barrier" ? (
       <>
         <div className="flex gap-x-1">
@@ -99,7 +112,13 @@ const Marker: FC<MarkerProps> = ({
         </QuantifyText>
       )}
     </SkeletonText>
-    {orientation === "up" && <div className={`w-0.5 ${emphasize ? "h-4" : "h-2"} bg-slateus-200 rounded-t-full mt-2`}></div>}
+    {orientation === "up" && (
+      <div
+        className={`w-0.5 ${
+          emphasize ? "h-4" : "h-2"
+        } bg-slateus-200 rounded-t-full mt-2`}
+      ></div>
+    )}
   </div>
 );
 
@@ -108,28 +127,49 @@ type Props = {
 };
 
 const GasMarketWidget: FC<Props> = ({ baseFeePerGasStats }) => {
-  const barPaddingFactor = 0.08
-  const lowest = baseFeePerGasStats === undefined ? undefined : baseFeePerGasStats.min - Math.max(baseFeePerGasStats.max, baseFeePerGasStats.barrier) * barPaddingFactor;
+  const barPaddingFactor = 0.08;
+  const lowest =
+    baseFeePerGasStats === undefined
+      ? undefined
+      : Math.min(baseFeePerGasStats.barrier, baseFeePerGasStats.min) -
+        Math.max(baseFeePerGasStats.max, baseFeePerGasStats.barrier) *
+          barPaddingFactor;
 
   const highest =
     baseFeePerGasStats === undefined
       ? undefined
-      : Math.max(baseFeePerGasStats.max, baseFeePerGasStats.barrier) * (1 + barPaddingFactor);
+      : Math.max(baseFeePerGasStats.max, baseFeePerGasStats.barrier) *
+        (1 + barPaddingFactor);
 
   const markerList =
     baseFeePerGasStats === undefined
       ? []
       : [
-        {
-          label: "barrier",
-          gas: baseFeePerGasStats.barrier,
-          emphasize: true,
-          description: "ultra sound barrier"
-        },
-        { label: "min", gas: baseFeePerGasStats.min, emphasize: false, description: "minimum gas price" },
-        { label: "max", gas: baseFeePerGasStats.max, emphasize: false, description: "maximum gas price" },
-        { label: "average", gas: baseFeePerGasStats.average, emphasize: true, description: "average gas price" },
-      ].sort(({ gas: gasA }, { gas: gasB }) => gasA - gasB);
+          {
+            label: "barrier",
+            gas: baseFeePerGasStats.barrier,
+            emphasize: true,
+            description: "ultra sound barrier",
+          },
+          {
+            label: "min",
+            gas: baseFeePerGasStats.min,
+            emphasize: false,
+            description: "minimum gas price",
+          },
+          {
+            label: "max",
+            gas: baseFeePerGasStats.max,
+            emphasize: false,
+            description: "maximum gas price",
+          },
+          {
+            label: "average",
+            gas: baseFeePerGasStats.average,
+            emphasize: true,
+            description: "average gas price",
+          },
+        ].sort(({ gas: gasA }, { gas: gasB }) => gasA - gasB);
 
   const gasRange =
     highest === undefined || lowest === undefined
@@ -138,15 +178,15 @@ const GasMarketWidget: FC<Props> = ({ baseFeePerGasStats }) => {
 
   const averagePercent =
     baseFeePerGasStats === undefined ||
-      gasRange === undefined ||
-      lowest === undefined
+    gasRange === undefined ||
+    lowest === undefined
       ? undefined
       : ((baseFeePerGasStats.average - lowest) / gasRange) * 100;
 
   const barrierPercent =
     baseFeePerGasStats === undefined ||
-      gasRange === undefined ||
-      lowest === undefined
+    gasRange === undefined ||
+    lowest === undefined
       ? undefined
       : ((baseFeePerGasStats.barrier - lowest) / gasRange) * 100;
 
@@ -180,7 +220,11 @@ const GasMarketWidget: FC<Props> = ({ baseFeePerGasStats }) => {
             <div
               className={`
                 absolute bg-gradient-to-r
-                ${deltaPercent >= 0 ? "from-orange-400 to-yellow-500" : "to-indigo-500 from-cyan-300"}
+                ${
+                  deltaPercent >= 0
+                    ? "from-orange-400 to-yellow-500"
+                    : "to-indigo-500 from-cyan-300"
+                }
                 h-2
               `}
               style={{
