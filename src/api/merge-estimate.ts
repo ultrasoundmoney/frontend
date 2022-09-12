@@ -14,7 +14,7 @@ export type MergeEstimate = {
 
 export const useMergeEstimate = (): MergeEstimate | undefined => {
   const { data } = useSWR<MergeEstimate>(
-    "/api/fees/merge-estimate",
+    "/api/v2/fees/merge-estimate",
     fetchJson,
     {
       refreshInterval: Duration.millisFromSeconds(4),
