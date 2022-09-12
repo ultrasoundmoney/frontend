@@ -31,7 +31,7 @@ const baseOptions: Highcharts.Options = {
   title: undefined,
   xAxis: {
     type: "datetime",
-    min: 1662764400000,
+    min: 1662937200000,
     max: 1663279200000,
     lineWidth: 0,
     labels: { format: "{value:%b %d}", style: { color: colors.slateus400 } },
@@ -142,7 +142,7 @@ const TotalDifficultyProjectionWidget: FC<Props> = ({
                       {
                         id: "panda-marker",
                         x: lastPointProjection?.[0],
-                        y: lastPointProjection?.[1] - 0.2,
+                        y: lastPointProjection?.[1] - 0.08,
                         marker: {
                           symbol: `url(/graph-dot-panda.svg)`,
                           enabled: true,
