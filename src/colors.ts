@@ -8,6 +8,7 @@ const colors = {
   slateus450: "#8888af",
   slateus800: "#131827",
   slateus400: "#8991ad",
+  /** @deprecated use slateus200 instead. */
   spindle: "#b5bddb",
   slateus200: "#b5bddb",
   slateus700: "#1b2236",
