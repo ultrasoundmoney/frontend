@@ -51,6 +51,9 @@ const Celebration = () => (
   </div>
 );
 
+const getIsMergePast = (mergeEstimate: MergeEstimate) =>
+  Number(mergeEstimate.totalDifficulty) / 1e12 >= TOTAL_TERMINAL_DIFFICULTY;
+
 const Countdown: FC<{ mergeEstimate: MergeEstimate }> = ({ mergeEstimate }) => {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>();
   const featureFlags = useContext(FeatureFlagsContext);
@@ -77,8 +80,7 @@ const Countdown: FC<{ mergeEstimate: MergeEstimate }> = ({ mergeEstimate }) => {
     );
   }, [mergeEstimate.estimatedDateTime]);
 
-  return Number(mergeEstimate.totalDifficulty) / 1e12 >=
-    TOTAL_TERMINAL_DIFFICULTY || featureFlags.simulatePostMerge ? (
+  return getIsMergePast(mergeEstimate) || featureFlags.simulatePostMerge ? (
     <Celebration />
   ) : (
     <div className="flex gap-x-4">
@@ -122,7 +124,11 @@ const MergeEstimateWidget: FC<Props> = ({ mergeEstimate }) => {
 
   useEffect(() => {
     setMergeEstimateFormatted(
-      formatInTimeZone(mergeEstimate.estimatedDateTime, "UTC", "~MMM d, haaa"),
+      formatInTimeZone(
+        mergeEstimate.estimatedDateTime,
+        "UTC",
+        "~MMM d, h:mmaaa",
+      ),
     );
   }, [mergeEstimate.estimatedDateTime]);
 
