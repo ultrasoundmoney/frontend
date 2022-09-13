@@ -81,7 +81,7 @@ const Marker: FC<MarkerProps> = ({
     )}
     {label === "barrier" ? (
       <>
-        <div className="flex gap-x-1">
+        <div className="flex gap-x-1 select-none">
           <Image
             alt="emoji of a bat, first-half of signifying ultra sound base fee per gas"
             src={batSvg as StaticImageData}
