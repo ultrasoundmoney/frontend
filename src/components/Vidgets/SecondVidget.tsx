@@ -7,7 +7,7 @@ const SecondVidget: React.FC<SecondVidgetProps> = ({ name, cost, number }) => {
   return (
     <Card name={name}>
       <div className="flex flex-wrap justify-between items-center">
-        <div className="text-sm sm:text-base md:text-lg lg:text-base xl:text-41xl font-light text-white text-left xl:leading-18 font-roboto">
+        <div className="text-sm sm:text-base md:text-lg lg:text-base xl:text-21xl font-light text-white text-left xl:leading-18 font-roboto">
           {followerCountConvert(cost)}
         </div>
         <div className="md:pl-8 text-sm sm:text-base font-light text-mediumspring text-left font-roboto">
