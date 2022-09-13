@@ -34,7 +34,10 @@ const baseOptions: Highcharts.Options = {
     min: 1662937200000,
     max: 1663279200000,
     lineWidth: 0,
-    labels: { format: "{value:%b %d}", style: { color: colors.slateus400 } },
+    labels: {
+      // format: "{value:%b %d}",
+      style: { color: colors.slateus400 },
+    },
     tickWidth: 0,
   },
   yAxis: {
