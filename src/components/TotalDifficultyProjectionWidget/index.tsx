@@ -31,7 +31,7 @@ const baseOptions: Highcharts.Options = {
   title: undefined,
   xAxis: {
     type: "datetime",
-    max: 1663279200000,
+    max: 1663232400000,
     lineWidth: 0,
     labels: {
       // format: "{value:%b %d}",
