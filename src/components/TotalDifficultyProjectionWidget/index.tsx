@@ -26,7 +26,7 @@ const baseOptions: Highcharts.Options = {
   chart: {
     backgroundColor: "transparent",
     showAxes: false,
-    marginLeft: 54,
+    marginLeft: 64,
   },
   title: undefined,
   xAxis: {
@@ -43,7 +43,7 @@ const baseOptions: Highcharts.Options = {
     max: 100,
     title: { text: undefined },
     labels: {
-      format: "{value:.1f}%",
+      format: "{value:.2f}%",
       style: { color: colors.slateus400, fontFamily: "Roboto Mono" },
     },
     gridLineWidth: 0,
