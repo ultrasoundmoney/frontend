@@ -32,7 +32,7 @@ const IssuanceGauge: FC<Props> = ({
     selectedAverageEthPrice === undefined
       ? undefined
       : unit === "eth"
-      ? (issuancePerDay * 365.25) / 1_000_000
+      ? (issuancePerDay * 365.25) / 1_000
       : (issuancePerDay * 365.25 * selectedAverageEthPrice) / 1_000_000_000;
 
   return (
@@ -46,7 +46,7 @@ const IssuanceGauge: FC<Props> = ({
       <BaseGauge
         emoji="droplet"
         ethPriceStats={ethPriceStats}
-        gaugeUnit={unit === "eth" ? "M" : "B"}
+        gaugeUnit={unit === "eth" ? "K" : "B"}
         gradientFill="blue"
         needleColor={colors.drop}
         title="issuance"

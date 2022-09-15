@@ -41,7 +41,7 @@ const useGrowthRate = (
       scarcity.ethSupply === undefined
         ? undefined
         : (issuanceRate - feeBurnYear) /
-        Format.ethFromWeiBIUnsafe(scarcity.ethSupply);
+          Format.ethFromWeiBIUnsafe(scarcity.ethSupply);
 
     const rateRounded =
       nextGrowthRate === undefined
@@ -98,7 +98,7 @@ const SupplyGrowthGauge: FC<Props> = ({
     },
   });
 
-  const max = 10;
+  const max = 5;
 
   const progress = clamp((growthRate ?? 0) * 100, -max, max) / max;
 

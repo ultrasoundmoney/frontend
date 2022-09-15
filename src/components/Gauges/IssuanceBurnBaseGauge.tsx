@@ -47,8 +47,8 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
   const min = 0;
   const max =
     unit === "eth"
-      ? // millions of ETH
-        6
+      ? // thousands of ETH
+        6000
       : // Billions of USD
         10;
 
@@ -80,8 +80,8 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
                 (n) =>
                   `${
                     unit === "eth"
-                      ? Format.formatOneDecimal(n)
-                      : Format.formatZeroDecimals(n)
+                      ? Format.formatZeroDecimals(n)
+                      : Format.formatOneDecimal(n)
                   }${gaugeUnit}`,
               )}
             </animated.p>

@@ -26,7 +26,7 @@ const BurnGauge: FC<BurnGaugeProps> = ({
     preBurnRate === undefined
       ? undefined
       : unit === "eth"
-      ? Format.ethFromWei(preBurnRate * 60 * 24 * 365.25) / 10 ** 6
+      ? Format.ethFromWei(preBurnRate * 60 * 24 * 365.25) / 10 ** 3
       : (preBurnRate * 60 * 24 * 365.25) / 10 ** 9;
 
   return (
@@ -41,7 +41,7 @@ const BurnGauge: FC<BurnGaugeProps> = ({
       <IssuanceBurnBaseGauge
         emoji="flame"
         ethPriceStats={ethPriceStats}
-        gaugeUnit={unit === "eth" ? "M" : "B"}
+        gaugeUnit={unit === "eth" ? "K" : "B"}
         gradientFill="orange"
         needleColor={colors.fireOrange}
         title="burn"
