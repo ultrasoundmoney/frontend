@@ -39,7 +39,8 @@ import MergeSection from "./MergeSection";
 const AdminTools = dynamic(() => import("../AdminTools"));
 import confettiSvg from "../../assets/confetti-own.svg";
 import pandaSvg from "../../assets/panda-own.svg";
-import Image, { StaticImageData } from "next/image";
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
 
 // We get hydration errors in production.
 // It's hard to tell what component causes them due to minification.
@@ -168,17 +169,19 @@ const Dashboard: FC<Props> = ({
             <MainTitle>ultra sound money</MainTitle>
             {mergeProxyStatus.status === "pending" ? (
               <p className="font-inter font-light text-blue-spindle text-xl md:text-2xl lg:text-3xl text-center mb-16">
-                "merge very soon™"
+                merge very soon™
               </p>
             ) : (
               <div className="flex mx-auto items-center justify-center mb-16 gap-x-8">
                 <div className="flex gap-x-2">
                   <Image
+                    alt="confetti celebrating merge"
                     width={56}
                     height={56}
                     src={confettiSvg as StaticImageData}
                   />
                   <Image
+                    alt="panda symbolizing merge"
                     width={40}
                     height={40}
                     src={pandaSvg as StaticImageData}
@@ -189,11 +192,13 @@ const Dashboard: FC<Props> = ({
                 </p>
                 <div className="flex gap-x-2">
                   <Image
+                    alt="panda symbolizing merge"
                     width={40}
                     height={40}
                     src={pandaSvg as StaticImageData}
                   />
                   <Image
+                    alt="confetti celebrating merge"
                     width={56}
                     height={56}
                     src={confettiSvg as StaticImageData}

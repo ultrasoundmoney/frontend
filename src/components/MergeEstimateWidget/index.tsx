@@ -2,21 +2,17 @@ import * as DateFns from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
 import JSBI from "jsbi";
 import type { FC } from "react";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CountUp from "react-countup";
-import { EthSupply, getEthSupplyImprecise } from "../../api/eth-supply";
+import type { EthSupply } from "../../api/eth-supply";
 import type { MergeEstimate } from "../../api/merge-estimate";
-import { MergeStatus } from "../../api/merge-status";
+import type { MergeStatus } from "../../api/merge-status";
 import { getDateTimeFromSlot } from "../../beacon-time";
 import { TOTAL_TERMINAL_DIFFICULTY } from "../../eth-constants";
-import { FeatureFlagsContext } from "../../feature-flags";
-import { formatTwoDigit } from "../../format";
 import Nerd from "../Nerd";
 import { TextRoboto } from "../Texts";
 import LabelText from "../TextsNext/LabelText";
-import QuantifyText from "../TextsNext/QuantifyText";
 import SkeletonText from "../TextsNext/SkeletonText";
-import Twemoji from "../Twemoji";
 import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
@@ -44,26 +40,8 @@ const CountdownNumber: FC<{ children: number | undefined }> = ({
   </TextRoboto>
 );
 
-const Celebration = () => (
-  <div className="flex gap-x-8 mx-auto items-center h-14">
-    <Twemoji className="flex gap-x-2" imageClassName="h-10" wrapper>
-      🎉
-    </Twemoji>
-    <Twemoji className="flex gap-x-2" imageClassName="h-10" wrapper>
-      🦇🔊🐼
-    </Twemoji>
-    <Twemoji className="flex gap-x-2" imageClassName="h-10" wrapper>
-      🎉
-    </Twemoji>
-  </div>
-);
-
-const getIsMergePast = (mergeEstimate: MergeEstimate) =>
-  Number(mergeEstimate.totalDifficulty) / 1e12 >= TOTAL_TERMINAL_DIFFICULTY;
-
 const Countdown: FC<{ mergeEstimate: MergeEstimate }> = ({ mergeEstimate }) => {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>();
-  const featureFlags = useContext(FeatureFlagsContext);
 
   useEffect(() => {
     const id = setInterval(() => {

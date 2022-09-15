@@ -3,23 +3,20 @@ import _last from "lodash/last";
 import _merge from "lodash/merge";
 import Highcharts from "highcharts";
 import highchartsAnnotations from "highcharts/modules/annotations";
-import { FC, useMemo } from "react";
+import type { FC } from "react";
+import { useMemo } from "react";
 import LabelText from "./TextsNext/LabelText";
 import UpdatedAgo from "./UpdatedAgo";
 import WidgetErrorBoundary from "./WidgetErrorBoundary";
 import { WidgetBackground } from "./WidgetSubcomponents";
 import colors from "../colors";
-import { format, getTime, parseISO } from "date-fns";
-import {
-  formatPercentTwoDecimals,
-  formatTwoDigit,
-  formatZeroDecimals,
-} from "../format";
-import { DateTimeString } from "../time";
-import { SupplyPoint } from "./Dashboard/MergeSection";
-import { EthNumber } from "../eth-units";
+import { getTime, parseISO } from "date-fns";
+import { formatTwoDigit, formatZeroDecimals } from "../format";
+import type { DateTimeString } from "../time";
+import type { SupplyPoint } from "./Dashboard/MergeSection";
+import type { EthNumber } from "../eth-units";
 import { formatInTimeZone } from "date-fns-tz";
-import { MergeStatus } from "../api/merge-status";
+import type { MergeStatus } from "../api/merge-status";
 
 // Somehow resolves an error thrown by the annotation lib
 if (typeof window !== "undefined") {
@@ -203,7 +200,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
                 <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
                   <div class="text-blue-spindle">${formattedDate}</div>
                   <div class="text-white">
-                    ${formatTwoDigit(total as number)}
+                    ${formatTwoDigit(total)}
                     <span class="text-slateus-200"> ETH</span>
                   </div>
                 </div>`;
