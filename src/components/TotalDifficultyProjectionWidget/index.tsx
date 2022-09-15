@@ -242,7 +242,7 @@ const TotalDifficultyProjectionWidget: FC<Props> = ({
   ]);
 
   return (
-    <WidgetErrorBoundary title="percentage of TTD">
+    <WidgetErrorBoundary title="merge difficulty projection">
       <WidgetBackground className="relative w-full flex flex-col overflow-hidden">
         <div
           // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
