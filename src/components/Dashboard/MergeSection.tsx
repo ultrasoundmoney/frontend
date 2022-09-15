@@ -35,8 +35,10 @@ const MergeSection: FC<Props> = ({ mergeEstimate }) => {
   const totalDifficultyProgress = useTotalDifficultyProgress();
   const [difficultyProjectionSeries, setDifficultyProjectionSeries] =
     useState<TTDPercentPoint[]>();
-  const progress =
-    Number(mergeEstimate.totalDifficulty) / TOTAL_TERMINAL_DIFFICULTY;
+  const progress = Math.min(
+    1,
+    Number(mergeEstimate.totalDifficulty) / TOTAL_TERMINAL_DIFFICULTY,
+  );
 
   const totalDifficultyByDay = useMemo(
     () =>
