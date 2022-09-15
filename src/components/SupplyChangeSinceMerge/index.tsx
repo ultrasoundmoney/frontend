@@ -9,14 +9,12 @@ import type { MergeEstimate } from "../../api/merge-estimate";
 import type { MergeStatus } from "../../api/merge-status";
 import { getDateTimeFromSlot } from "../../beacon-time";
 import { TOTAL_TERMINAL_DIFFICULTY } from "../../eth-constants";
-import Nerd from "../Nerd";
 import { TextRoboto } from "../Texts";
 import LabelText from "../TextsNext/LabelText";
 import SkeletonText from "../TextsNext/SkeletonText";
 import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
-import MergeEstimateTooltip from "./MergeEstimateTooltip";
 
 type TimeLeft = {
   days: number;
@@ -102,7 +100,7 @@ type Props = {
   mergeStatus: MergeStatus;
 };
 
-const MergeEstimateWidget: FC<Props> = ({
+const SupplyChangeSinceMerge: FC<Props> = ({
   ethSupply,
   mergeEstimate,
   mergeStatus,
@@ -195,4 +193,4 @@ const MergeEstimateWidget: FC<Props> = ({
   );
 };
 
-export default MergeEstimateWidget;
+export default SupplyChangeSinceMerge;

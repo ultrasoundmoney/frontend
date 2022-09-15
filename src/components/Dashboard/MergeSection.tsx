@@ -16,7 +16,7 @@ import type { MergeEstimate } from "../../api/merge-estimate";
 import { useTotalDifficultyProgress } from "../../api/total-difficulty-progress";
 import { pointsFromTotalDifficultyProgress } from "../../api/total-difficulty-progress";
 import { TOTAL_TERMINAL_DIFFICULTY } from "../../eth-constants";
-import MergeEstimateWidget from "../MergeEstimateWidget";
+import SupplyChangeSinceMerge from "../SupplyChangeSinceMerge";
 import TotalDifficultyProgressWidget from "../TotalDifficultyProgressWidget";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import type { MergeStatus } from "../../api/merge-status";
@@ -134,7 +134,7 @@ const MergeSection: FC<Props> = ({ ethSupply, mergeEstimate, mergeStatus }) => {
                 mergeEstimate={mergeEstimate}
                 progress={progress}
               />
-              <MergeEstimateWidget
+              <SupplyChangeSinceMerge
                 ethSupply={ethSupply}
                 mergeEstimate={mergeEstimate}
                 mergeStatus={mergeStatus}
