@@ -33,7 +33,6 @@ const baseOptions: Highcharts.Options = {
   title: undefined,
   yAxis: {
     title: { text: undefined },
-    type: "logarithmic",
     labels: {
       enabled: false,
     },
@@ -88,7 +87,6 @@ const SupplySinceMergeWidget: FC<Props> = ({
     const lastPoint = _last(supplySinceMergeSeries);
     return _merge({}, baseOptions, {
       xAxis: {
-        max: 1663217079000,
         plotLines: [
           {
             id: "merge-plotline",
