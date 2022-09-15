@@ -24,6 +24,7 @@
     "framer-motion": "^6.2.3",
     "highcharts": "^10.2.0",
     "highcharts-react-official": "^3.1.0",
+    "js-confetti": "^0.10.2",
     "jsbi": "^4.3.0",
     "lodash": "^4.17.21",
     "next": "^12.2.5",

@@ -41,6 +41,8 @@ import confettiSvg from "../../assets/confetti-own.svg";
 import pandaSvg from "../../assets/panda-own.svg";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
+import JSConfetti from "js-confetti";
+import { differenceInMinutes, parseISO } from "date-fns";
 
 // We get hydration errors in production.
 // It's hard to tell what component causes them due to minification.
@@ -135,6 +137,49 @@ const Dashboard: FC<Props> = ({
         supply: 120517942,
       } as const)
     : crMergeStatus;
+
+  const [confettiRan, setConfettiRan] = useState(false);
+  useEffect(() => {
+    if (mergeStatus.status === "pending" || confettiRan) {
+      return;
+    }
+    const jsConfetti = new JSConfetti();
+    const minutesSinceMerge = differenceInMinutes(
+      new Date(),
+      parseISO(mergeStatus.timestamp),
+    );
+    if (minutesSinceMerge < 5) {
+      setConfettiRan(true);
+      setTimeout(() => {
+        jsConfetti
+          .addConfetti({
+            emojis: ["🦇"],
+          })
+          .catch(console.error);
+      }, 5000);
+      setTimeout(() => {
+        jsConfetti
+          .addConfetti({
+            emojis: ["🔊"],
+          })
+          .catch(console.error);
+      }, 7000);
+      setTimeout(() => {
+        jsConfetti
+          .addConfetti({
+            emojis: ["🐼"],
+          })
+          .catch(console.error);
+      }, 9000);
+      setTimeout(() => {
+        jsConfetti
+          .addConfetti({
+            emojis: ["🎉", "🎊", "👏", "💛"],
+          })
+          .catch(console.error);
+      }, 10000);
+    }
+  }, [mergeStatus, confettiRan]);
 
   return (
     <BasicErrorBoundary>
