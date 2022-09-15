@@ -150,7 +150,7 @@ const Dashboard: FC<Props> = ({
             </div>
             <MainTitle>Ultra Sound Money</MainTitle>
             <p className="font-inter font-light text-blue-spindle text-xl md:text-2xl lg:text-3xl text-center mb-16">
-              merge soon™
+              merge very soon™
             </p>
             <MergeSection mergeEstimate={crMergeEstimate} />
             <SupplyGrowthSection
