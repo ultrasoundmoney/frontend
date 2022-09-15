@@ -17,10 +17,10 @@ const nextConfig = withSentryConfig(
       domains: [
         "abs.twimg.com",
         "assets.coingecko.com",
+        "i.seadn.io",
         "lh3.googleusercontent.com",
         "openseauserdata.com",
         "pbs.twimg.com",
-        "seadn.io",
       ],
     },
     rewrites: async () => [
