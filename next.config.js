@@ -20,6 +20,7 @@ const nextConfig = withSentryConfig(
         "lh3.googleusercontent.com",
         "openseauserdata.com",
         "pbs.twimg.com",
+        "seadn.io",
       ],
     },
     rewrites: async () => [
