@@ -93,14 +93,11 @@ export const useImpreciseEthSupply = (): number | undefined => {
 
 export const getEthSupplyImprecise = (ethSupply: EthSupply): number =>
   JSBI.toNumber(
-    JSBI.divide(
-      JSBI.subtract(
-        JSBI.add(
-          ethSupply.executionBalancesSum.balancesSum,
-          ethSupply.beaconBalancesSum.balancesSum,
-        ),
-        ethSupply.beaconDepositsSum.depositsSum,
+    JSBI.subtract(
+      JSBI.add(
+        ethSupply.executionBalancesSum.balancesSum,
+        ethSupply.beaconBalancesSum.balancesSum,
       ),
-      JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)),
+      ethSupply.beaconDepositsSum.depositsSum,
     ),
-  );
+  ) / 1e18;
