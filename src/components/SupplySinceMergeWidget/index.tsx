@@ -5,18 +5,18 @@ import Highcharts from "highcharts";
 import highchartsAnnotations from "highcharts/modules/annotations";
 import type { FC } from "react";
 import { useMemo } from "react";
-import LabelText from "./TextsNext/LabelText";
-import UpdatedAgo from "./UpdatedAgo";
-import WidgetErrorBoundary from "./WidgetErrorBoundary";
-import { WidgetBackground } from "./WidgetSubcomponents";
-import colors from "../colors";
+import LabelText from "../TextsNext/LabelText";
+import UpdatedAgo from "../UpdatedAgo";
+import WidgetErrorBoundary from "../WidgetErrorBoundary";
+import { WidgetBackground } from "../WidgetSubcomponents";
+import colors from "../../colors";
 import { getTime, parseISO } from "date-fns";
-import { formatTwoDigit, formatZeroDecimals } from "../format";
-import type { DateTimeString } from "../time";
-import type { SupplyPoint } from "./Dashboard/MergeSection";
-import type { EthNumber } from "../eth-units";
+import { formatTwoDigit, formatZeroDecimals } from "../../format";
+import type { DateTimeString } from "../../time";
+import type { SupplyPoint } from "../Dashboard/MergeSection";
+import type { EthNumber } from "../../eth-units";
 import { formatInTimeZone } from "date-fns-tz";
-import type { MergeStatus } from "../api/merge-status";
+import type { MergeStatus } from "../../api/merge-status";
 
 // Somehow resolves an error thrown by the annotation lib
 if (typeof window !== "undefined") {
@@ -71,10 +71,11 @@ const baseOptions: Highcharts.Options = {
 };
 
 type Props = {
-  supplySinceMergeSeries: SupplyPoint[] | undefined;
-  supplySinceMergeMap: Record<string, EthNumber>;
-  timestamp: DateTimeString | undefined;
   mergeStatus: MergeStatus;
+  peak: number | undefined;
+  supplySinceMergeMap: Record<string, EthNumber>;
+  supplySinceMergeSeries: SupplyPoint[] | undefined;
+  timestamp: DateTimeString | undefined;
 };
 
 const SupplySinceMergeWidget: FC<Props> = ({
@@ -82,34 +83,36 @@ const SupplySinceMergeWidget: FC<Props> = ({
   supplySinceMergeSeries: supplySinceMergeSeries,
   mergeStatus,
   timestamp,
+  peak,
 }) => {
   const options = useMemo((): Highcharts.Options => {
     const lastPoint = _last(supplySinceMergeSeries);
     return _merge({}, baseOptions, {
+      yAxis: {
+        plotLines: [
+          {
+            id: "peak-since-merge",
+            value: peak,
+          },
+        ],
+      },
       xAxis: {
         plotLines: [
           {
             id: "merge-plotline",
-            value:
-              mergeStatus.status === "pending"
-                ? undefined
-                : getTime(parseISO(mergeStatus.timestamp)),
+            value: getTime(parseISO(mergeStatus.timestamp)),
             color: colors.slateus400,
             width: 1,
             label: {
               x: 10,
-              y: 110,
+              y: 115,
               style: { color: colors.slateus400 },
               align: "center",
               useHTML: true,
               formatter: () => `
                 <div class="flex">
                   <div class="font-roboto font-light text-slateus-300">
-                  #${
-                    mergeStatus.status === "pending"
-                      ? undefined
-                      : formatZeroDecimals(mergeStatus.block_number)
-                  }
+                  #${formatZeroDecimals(mergeStatus.block_number)}
                   </div>
                   <img
                     class="w-4 h-4 ml-2"
@@ -205,7 +208,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
         },
       },
     } as Highcharts.Options);
-  }, [supplySinceMergeSeries, supplySinceMergeMap, mergeStatus]);
+  }, [supplySinceMergeSeries, supplySinceMergeMap, mergeStatus, peak]);
 
   return (
     <WidgetErrorBoundary title="supply since merge">
