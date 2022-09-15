@@ -59,7 +59,7 @@ const Controls: FC<{
         <CurrencyControl selectedUnit={unit} onSetUnit={onSetUnit} />
       </div>
       <div className="row-start-2 md:row-start-1 flex flex-col gap-4 lg:flex-row lg:items-center text-right">
-        <WidgetTitle>simulate merge</WidgetTitle>
+        <WidgetTitle>simulate pre-merge</WidgetTitle>
         {/* On tablet the vertical alignment looks off without aligning the toggle with the neighboring controls */}
         <div className="flex items-center h-[34px] self-end">
           <ToggleSwitch
@@ -95,7 +95,7 @@ const SupplyGrowthSection: FC<Props> = ({
 }) => {
   const baseFeesOverTime = useBaseFeeOverTime();
   const baseFeePerGasStats = useBaseFeePerGasStats();
-  const [simulateMerge, setSimulateMerge] = useState(false);
+  const [simulateMerge, setSimulateMerge] = useState(true);
   const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
 

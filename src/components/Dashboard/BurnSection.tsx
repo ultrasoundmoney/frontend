@@ -33,17 +33,12 @@ type Props = {
 };
 
 const BurnSection: FC<Props> = ({ groupedAnalysis1 }) => {
-  const [simulateMerge, setSimulateMerge] = useState(false);
   const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
 
   const handleSetTimeFrame = useCallback(setTimeFrame, [setTimeFrame]);
 
   const onSetUnit = useCallback(setUnit, [setUnit]);
-
-  const toggleSimulateMerge = useCallback(() => {
-    setSimulateMerge(!simulateMerge);
-  }, [simulateMerge]);
 
   const handleClickTimeFrame = useCallback(() => {
     const currentTimeFrameIndex = timeFramesNext.indexOf(timeFrame);
@@ -78,16 +73,6 @@ const BurnSection: FC<Props> = ({ groupedAnalysis1 }) => {
                   <WidgetTitle>currency</WidgetTitle>
                   <CurrencyControl selectedUnit={unit} onSetUnit={onSetUnit} />
                 </div>
-                <div className="row-start-2 md:row-start-1 flex flex-col gap-4 lg:flex-row lg:items-center text-right">
-                  <WidgetTitle>simulate merge</WidgetTitle>
-                  {/* On tablet the vertical alignment looks off without aligning the toggle with the neighboring controls */}
-                  <div className="flex items-center h-[34px] self-end">
-                    <ToggleSwitch
-                      checked={simulateMerge}
-                      onToggle={toggleSimulateMerge}
-                    />
-                  </div>
-                </div>
               </div>
             </div>
             <div
@@ -99,7 +84,6 @@ const BurnSection: FC<Props> = ({ groupedAnalysis1 }) => {
               <BurnTotal
                 groupedAnalysis1={groupedAnalysis1}
                 onClickTimeFrame={handleClickTimeFrame}
-                simulateMerge={simulateMerge}
                 timeFrame={timeFrame}
                 unit={unit}
               />
@@ -119,10 +103,7 @@ const BurnSection: FC<Props> = ({ groupedAnalysis1 }) => {
                 <LatestBlocks groupedAnalysis1={groupedAnalysis1} unit={unit} />
               </div>
               <div className="lg:row-start-3">
-                <DeflationaryStreak
-                  groupedAnalysis1={groupedAnalysis1}
-                  simulateMerge={simulateMerge}
-                />
+                <DeflationaryStreak groupedAnalysis1={groupedAnalysis1} />
               </div>
               <div className="lg:row-end-5">
                 <BurnRecords

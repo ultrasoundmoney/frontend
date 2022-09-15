@@ -57,7 +57,6 @@ const timeFrameMillisecondsMap: Record<LimitedTimeFrameNext, number> = {
 type Props = {
   groupedAnalysis1: GroupedAnalysis1;
   onClickTimeFrame: () => void;
-  simulateMerge: boolean;
   timeFrame: TimeFrameNext;
   unit: Unit;
 };
@@ -65,7 +64,6 @@ type Props = {
 const BurnTotal: FC<Props> = ({
   groupedAnalysis1,
   onClickTimeFrame,
-  simulateMerge,
   timeFrame,
   unit,
 }) => {
@@ -89,13 +87,8 @@ const BurnTotal: FC<Props> = ({
       ? burnRates[timeframeBurnRateMap[timeFrame][unit]]
       : burnRates[timeframeBurnRateMap[timeFrame][unit]];
 
-  // TODO: issuance changes post-merge, update this to switch to proof of stake issuance on time.
-  // In ETH.
   const issuancePerMillisecond =
-    (simulateMerge
-      ? StaticEtherData.posIssuancePerDay
-      : StaticEtherData.powIssuancePerDay + StaticEtherData.posIssuancePerDay) /
-    Duration.millisFromDays(1);
+    StaticEtherData.posIssuancePerDay / Duration.millisFromDays(1);
 
   useEffect(() => {
     setMillisecondsSinceLondonHardfork(
@@ -220,9 +213,7 @@ const BurnTotal: FC<Props> = ({
               </AmountAnimatedShell>
             </div>
             <div className="lg:text-right flex flex-col gap-y-4">
-              <WidgetTitle>
-                {simulateMerge ? "pos issuance offset" : "issuance offset"}
-              </WidgetTitle>
+              <WidgetTitle>issuance offset</WidgetTitle>
               <TextRoboto className="text-2xl md:text-3xl lg:text-2xl xl:text-4xl">
                 <CountUp
                   decimals={2}

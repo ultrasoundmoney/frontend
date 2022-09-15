@@ -9,8 +9,8 @@ type Props = {
 
 const ToggleSwitch: FC<Props> = ({ checked, className, onToggle }) => (
   <input
-    checked={checked}
-    onChange={(e) => onToggle(e.target.checked)}
+    checked={!checked}
+    onChange={(e) => onToggle(!e.target.checked)}
     className={`${className ?? ""} ${styles["toggle-switch"]}`}
     type="checkbox"
   />
