@@ -1,10 +1,10 @@
 import {
-  addHours,
+  addMinutes,
   differenceInMilliseconds,
   getTime,
   isBefore,
   parseISO,
-  startOfHour,
+  startOfMinute,
   subMilliseconds,
 } from "date-fns";
 import _last from "lodash/last";
