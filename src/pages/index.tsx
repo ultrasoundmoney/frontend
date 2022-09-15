@@ -47,7 +47,7 @@ export const getStaticProps: GetStaticProps = async () => {
     // Should be the expected lifetime of the data which goes stale quickest.
     // Currently: mergeEstimate ~12s
     // Although merge estimate updates every block, it's good enough to update SSR every 10min.
-    revalidate: Duration.secsFromMinutes(10),
+    revalidate: Duration.secsFromMinutes(1),
   };
 };
 
