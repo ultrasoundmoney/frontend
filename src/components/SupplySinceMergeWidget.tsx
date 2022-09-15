@@ -98,7 +98,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
             width: 1,
             label: {
               x: 10,
-              y: 100,
+              y: 110,
               style: { color: colors.slateus400 },
               align: "center",
               useHTML: true,
