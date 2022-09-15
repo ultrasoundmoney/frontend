@@ -16,6 +16,8 @@ import {
 } from "../../api/grouped-analysis-1";
 import type { MergeEstimate } from "../../api/merge-estimate";
 import { useMergeEstimate } from "../../api/merge-estimate";
+import type { MergeStatus } from "../../api/merge-status";
+import { useMergeStatus } from "../../api/merge-status";
 import { useScarcity } from "../../api/scarcity";
 import colors from "../../colors";
 import type { WeiNumber } from "../../eth-units";
@@ -35,6 +37,9 @@ import TopBar from "../TopBar";
 import JoinDiscordSection from "./JoinDiscordSection";
 import MergeSection from "./MergeSection";
 const AdminTools = dynamic(() => import("../AdminTools"));
+import confettiSvg from "../../assets/confetti-own.svg";
+import pandaSvg from "../../assets/panda-own.svg";
+import Image, { StaticImageData } from "next/image";
 
 // We get hydration errors in production.
 // It's hard to tell what component causes them due to minification.
@@ -94,6 +99,7 @@ type Props = {
   ethPriceStats: EthPriceStats;
   ethSupplyF: EthSupplyF;
   mergeEstimate: MergeEstimate;
+  mergeStatus: MergeStatus;
 };
 
 const Dashboard: FC<Props> = ({
@@ -101,6 +107,7 @@ const Dashboard: FC<Props> = ({
   ethPriceStats,
   ethSupplyF,
   mergeEstimate,
+  mergeStatus,
 }) => {
   const crMergeEstimate = useClientRefreshed(mergeEstimate, useMergeEstimate);
   const crEthSupply = useClientRefreshed(ethSupplyF, useEthSupply);
@@ -116,7 +123,17 @@ const Dashboard: FC<Props> = ({
     "dashboard | ultrasound.money",
     crBaseFeePerGas.wei,
   );
+  const crMergeStatus = useClientRefreshed(mergeStatus, useMergeStatus);
   useScrollOnLoad();
+
+  const mergeProxyStatus = featureFlags.simulatePostMerge
+    ? ({
+        status: "merged",
+        timestamp: "2022-09-15T03:32:00Z",
+        block_number: 15537349,
+        supply: 120517942,
+      } as const)
+    : crMergeStatus;
 
   return (
     <BasicErrorBoundary>
@@ -148,11 +165,47 @@ const Dashboard: FC<Props> = ({
                 />
               </BasicErrorBoundary>
             </div>
-            <MainTitle>Ultra Sound Money</MainTitle>
-            <p className="font-inter font-light text-blue-spindle text-xl md:text-2xl lg:text-3xl text-center mb-16">
-              merge very soon™
-            </p>
-            <MergeSection mergeEstimate={crMergeEstimate} />
+            <MainTitle>ultra sound money</MainTitle>
+            {mergeProxyStatus.status === "pending" ? (
+              <p className="font-inter font-light text-blue-spindle text-xl md:text-2xl lg:text-3xl text-center mb-16">
+                "merge very soon™"
+              </p>
+            ) : (
+              <div className="flex mx-auto items-center justify-center mb-16 gap-x-8">
+                <div className="flex gap-x-2">
+                  <Image
+                    width={56}
+                    height={56}
+                    src={confettiSvg as StaticImageData}
+                  />
+                  <Image
+                    width={40}
+                    height={40}
+                    src={pandaSvg as StaticImageData}
+                  />
+                </div>
+                <p className="font-inter font-light text-blue-spindle text-xl md:text-2xl lg:text-3xl text-center">
+                  merged
+                </p>
+                <div className="flex gap-x-2">
+                  <Image
+                    width={40}
+                    height={40}
+                    src={pandaSvg as StaticImageData}
+                  />
+                  <Image
+                    width={56}
+                    height={56}
+                    src={confettiSvg as StaticImageData}
+                  />
+                </div>
+              </div>
+            )}
+            <MergeSection
+              ethSupply={ethSupply}
+              mergeEstimate={crMergeEstimate}
+              mergeStatus={mergeProxyStatus}
+            />
             <SupplyGrowthSection
               burnRates={groupedAnalysis1.burnRates}
               ethSupply={ethSupply}

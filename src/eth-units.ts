@@ -19,3 +19,5 @@ export type WeiString = string;
 export type WeiNumber = number;
 
 export type GweiNumber = number;
+
+export type EthNumber = number;

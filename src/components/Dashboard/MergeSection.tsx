@@ -19,6 +19,13 @@ import { TOTAL_TERMINAL_DIFFICULTY } from "../../eth-constants";
 import MergeEstimateWidget from "../MergeEstimateWidget";
 import TotalDifficultyProgressWidget from "../TotalDifficultyProgressWidget";
 import BasicErrorBoundary from "../BasicErrorBoundary";
+import type { MergeStatus } from "../../api/merge-status";
+import { EthSupply } from "../../api/eth-supply";
+import { useSupplySinceMerge } from "../../api/supply-since-merge";
+import { EthNumber } from "../../eth-units";
+const SupplySinceMergeWidget = dynamic(
+  () => import("../SupplySinceMergeWidget"),
+);
 const TotalDifficultyProjectionWidget = dynamic(
   () => import("../TotalDifficultyProjectionWidget"),
 );
@@ -27,11 +34,16 @@ type JsTimestamp = number;
 type Percent = number;
 export type TTDPercentPoint = [JsTimestamp, Percent];
 
+export type SupplyPoint = [JsTimestamp, EthNumber];
+
 type Props = {
+  ethSupply: EthSupply;
   mergeEstimate: MergeEstimate;
+  mergeStatus: MergeStatus;
 };
 
-const MergeSection: FC<Props> = ({ mergeEstimate }) => {
+const MergeSection: FC<Props> = ({ ethSupply, mergeEstimate, mergeStatus }) => {
+  const supplySinceMerge = useSupplySinceMerge();
   const totalDifficultyProgress = useTotalDifficultyProgress();
   const [difficultyProjectionSeries, setDifficultyProjectionSeries] =
     useState<TTDPercentPoint[]>();
@@ -96,6 +108,18 @@ const MergeSection: FC<Props> = ({ mergeEstimate }) => {
     new Map(difficultyProjectionSeries ?? []).entries(),
   );
 
+  const supplySinceMergeSeries = useMemo(() => {
+    return supplySinceMerge?.supply_by_minute.map(
+      ({ timestamp, supply }) =>
+        [getTime(parseISO(timestamp)), supply] as SupplyPoint,
+      // [getTime(parseISO(timestamp)) - (1000 * 60 * 60, supply] as SupplyPoint,
+    );
+  }, [supplySinceMerge]);
+
+  const supplySinceMergeMap = Object.fromEntries(
+    new Map(supplySinceMergeSeries ?? []).entries(),
+  );
+
   return (
     <BasicErrorBoundary>
       <Suspense>
@@ -106,18 +130,32 @@ const MergeSection: FC<Props> = ({ mergeEstimate }) => {
           <div className="flex flex-col lg:flex-row gap-x-4 gap-y-4 mt-16">
             <div className="flex flex-col gap-y-4 md:w-full md:min-w-fit">
               <TotalDifficultyProgressWidget
+                mergeStatus={mergeStatus}
                 mergeEstimate={mergeEstimate}
                 progress={progress}
               />
-              <MergeEstimateWidget mergeEstimate={mergeEstimate} />
+              <MergeEstimateWidget
+                ethSupply={ethSupply}
+                mergeEstimate={mergeEstimate}
+                mergeStatus={mergeStatus}
+              />
             </div>
-            <TotalDifficultyProjectionWidget
-              difficultyMap={difficultyMap}
-              difficultyProjectionMap={difficultyProjectionMap}
-              difficultyProjectionSeries={difficultyProjectionSeries}
-              difficultySeries={totalDifficultyByDay}
-              timestamp={totalDifficultyProgress?.timestamp}
-            />
+            {mergeStatus.status === "pending" ? (
+              <TotalDifficultyProjectionWidget
+                difficultyMap={difficultyMap}
+                difficultyProjectionMap={difficultyProjectionMap}
+                difficultyProjectionSeries={difficultyProjectionSeries}
+                difficultySeries={totalDifficultyByDay}
+                timestamp={totalDifficultyProgress?.timestamp}
+              />
+            ) : (
+              <SupplySinceMergeWidget
+                mergeStatus={mergeStatus}
+                supplySinceMergeSeries={supplySinceMergeSeries}
+                supplySinceMergeMap={supplySinceMergeMap}
+                timestamp={supplySinceMerge?.timestamp}
+              />
+            )}
           </div>
         </div>
       </Suspense>

@@ -1,16 +1,23 @@
 import * as DateFns from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
+import JSBI from "jsbi";
 import type { FC } from "react";
 import { useContext, useEffect, useState } from "react";
 import CountUp from "react-countup";
+import { EthSupply, getEthSupplyImprecise } from "../../api/eth-supply";
 import type { MergeEstimate } from "../../api/merge-estimate";
+import { MergeStatus } from "../../api/merge-status";
+import { getDateTimeFromSlot } from "../../beacon-time";
 import { TOTAL_TERMINAL_DIFFICULTY } from "../../eth-constants";
 import { FeatureFlagsContext } from "../../feature-flags";
+import { formatTwoDigit } from "../../format";
 import Nerd from "../Nerd";
 import { TextRoboto } from "../Texts";
 import LabelText from "../TextsNext/LabelText";
+import QuantifyText from "../TextsNext/QuantifyText";
 import SkeletonText from "../TextsNext/SkeletonText";
 import Twemoji from "../Twemoji";
+import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
 import MergeEstimateTooltip from "./MergeEstimateTooltip";
@@ -80,9 +87,7 @@ const Countdown: FC<{ mergeEstimate: MergeEstimate }> = ({ mergeEstimate }) => {
     );
   }, [mergeEstimate.estimatedDateTime]);
 
-  return getIsMergePast(mergeEstimate) || featureFlags.simulatePostMerge ? (
-    <Celebration />
-  ) : (
+  return (
     <div className="flex gap-x-4">
       <div className="flex flex-col items-center gap-y-2 w-[40px]">
         <CountdownNumber>{timeLeft?.days}</CountdownNumber>
@@ -114,10 +119,16 @@ const Countdown: FC<{ mergeEstimate: MergeEstimate }> = ({ mergeEstimate }) => {
 };
 
 type Props = {
+  ethSupply: EthSupply;
   mergeEstimate: MergeEstimate;
+  mergeStatus: MergeStatus;
 };
 
-const MergeEstimateWidget: FC<Props> = ({ mergeEstimate }) => {
+const MergeEstimateWidget: FC<Props> = ({
+  ethSupply,
+  mergeEstimate,
+  mergeStatus,
+}) => {
   const [showNerdTooltip, setShowNerdTooltip] = useState(false);
   const [mergeEstimateFormatted, setMergeEstimateFormatted] =
     useState<string>();
@@ -127,7 +138,7 @@ const MergeEstimateWidget: FC<Props> = ({ mergeEstimate }) => {
       formatInTimeZone(
         mergeEstimate.estimatedDateTime,
         "UTC",
-        "~MMM d, h:mmaaa",
+        "~MMM d, h:mmaa",
       ),
     );
   }, [mergeEstimate.estimatedDateTime]);
@@ -144,37 +155,59 @@ const MergeEstimateWidget: FC<Props> = ({ mergeEstimate }) => {
       : mergeEstimate.blocksLeft;
   const blocksToTTDSuffix = mergeEstimate.blocksLeft > precisionBarrier;
 
+  const ethSupplySum = JSBI.subtract(
+    JSBI.add(
+      ethSupply.executionBalancesSum.balancesSum,
+      ethSupply.beaconBalancesSum.balancesSum,
+    ),
+    ethSupply.beaconDepositsSum.depositsSum,
+  );
+  const supplyDelta =
+    mergeStatus.status === "pending"
+      ? undefined
+      : JSBI.toNumber(ethSupplySum) / 1e18 - mergeStatus.supply;
+
   return (
     <WidgetErrorBoundary title="merge estimate">
       <WidgetBackground>
-        <div className="relative flex flex-col md:flex-row justify-between gap-y-8 gap-x-2">
+        <div
+          className={`relative flex flex-col gap-x-2 ${
+            mergeStatus.status === "pending"
+              ? "gap-y-8 justify-between md:flex-row"
+              : "gap-y-4"
+          }`}
+        >
           <div className="flex flex-col gap-y-4">
-            {/* Keeps the height of this widget equal to the adjacent one. */}
-            {
-              <div className="flex items-center min-h-[21px] ">
-                <LabelText>merge:</LabelText>
-                {mergeEstimateFormatted && (
-                  <LabelText className="font-normal ml-1 text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-indigo-500">{`${mergeEstimateFormatted} UTC`}</LabelText>
-                )}
-              </div>
-            }
-            <Countdown mergeEstimate={mergeEstimate} />
+            {mergeStatus.status === "pending" ? (
+              <>
+                <div className="flex items-center min-h-[21px] ">
+                  <LabelText>merge:</LabelText>
+                  {mergeEstimateFormatted && (
+                    <LabelText className="font-normal ml-1 text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-indigo-500">{`${mergeEstimateFormatted} UTC`}</LabelText>
+                  )}
+                </div>
+                <Countdown mergeEstimate={mergeEstimate} />
+              </>
+            ) : (
+              <LabelText>supply change since merge</LabelText>
+            )}
           </div>
-          <div className="flex flex-col gap-y-4">
-            <div
-              className={`
+          {mergeStatus.status === "pending" ? (
+            <div className="flex flex-col gap-y-4">
+              <div
+                className={`
                 flex items-center
                 md:justify-end
                 cursor-pointer
                 [&_.gray-nerd]:hover:opacity-0
                 [&_.color-nerd]:active:brightness-75
               `}
-              onClick={() => setShowNerdTooltip(true)}
-            >
-              <LabelText className="truncate">wen TTD</LabelText>
-              <Nerd />
-              <div
-                className={`
+                onClick={() => setShowNerdTooltip(true)}
+              >
+                <LabelText className="truncate">wen TTD</LabelText>
+                <Nerd />
+                <div
+                  className={`
                   tooltip ${showNerdTooltip ? "block" : "hidden"} fixed
                   top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
                   w-[calc(100% + 96px)]
@@ -182,29 +215,62 @@ const MergeEstimateWidget: FC<Props> = ({ mergeEstimate }) => {
                   cursor-auto
                   z-30
                 `}
-              >
-                <MergeEstimateTooltip
-                  latestBlockDifficulty={mergeEstimate?.difficulty}
-                  onClickClose={() => setShowNerdTooltip(false)}
-                  totalDifficulty={mergeEstimate?.totalDifficulty}
-                  totalTerminalDifficulty={TOTAL_TERMINAL_DIFFICULTY}
-                />
+                >
+                  <MergeEstimateTooltip
+                    latestBlockDifficulty={mergeEstimate?.difficulty}
+                    onClickClose={() => setShowNerdTooltip(false)}
+                    totalDifficulty={mergeEstimate?.totalDifficulty}
+                    totalTerminalDifficulty={TOTAL_TERMINAL_DIFFICULTY}
+                  />
+                </div>
+              </div>
+              <div className="flex md:justify-end">
+                <div className="flex flex-col gap-y-2 items-center">
+                  <TextRoboto className="text-[1.7rem] min-h-[40.8px]">
+                    <CountUp
+                      separator=","
+                      end={blocksToTTD}
+                      suffix={blocksToTTDSuffix ? "K" : ""}
+                      preserveValue
+                    />
+                  </TextRoboto>
+                  <LabelText className="text-slateus-400">blocks</LabelText>
+                </div>
               </div>
             </div>
-            <div className="flex md:justify-end">
-              <div className="flex flex-col gap-y-2 items-center">
-                <TextRoboto className="text-[1.7rem] min-h-[40.8px]">
+          ) : (
+            <>
+              <div className="flex">
+                <TextRoboto
+                  className={`
+                    text-3xl text-transparent
+                    bg-clip-text bg-gradient-to-r
+                    ${
+                      supplyDelta !== undefined && supplyDelta >= 0
+                        ? "from-cyan-300 to-indigo-500"
+                        : "from-orange-500 to-yellow-300"
+                    }
+                  `}
+                >
+                  {supplyDelta !== undefined && supplyDelta >= 0 && "+"}
                   <CountUp
-                    separator=","
-                    end={blocksToTTD}
-                    suffix={blocksToTTDSuffix ? "K" : ""}
                     preserveValue
+                    end={supplyDelta ?? 0}
+                    separator=","
+                    decimals={2}
                   />
                 </TextRoboto>
-                <LabelText className="text-slateus-400">blocks</LabelText>
+                <span className="font-roboto font-light text-3xl text-slateus-400 ml-2">
+                  ETH
+                </span>
               </div>
-            </div>
-          </div>
+              <UpdatedAgo
+                updatedAt={getDateTimeFromSlot(
+                  ethSupply.beaconBalancesSum.slot,
+                ).toISOString()}
+              />
+            </>
+          )}
         </div>
       </WidgetBackground>
       <div
