@@ -66,7 +66,7 @@ const MergeSection: FC<Props> = ({ mergeEstimate }) => {
       lastTotalDifficultyPoint[0],
     );
     const percentLeft = 100 - lastTotalDifficultyPoint[1];
-    let timestamp = startOfHour(addHours(lastTotalDifficultyPoint[0], 1));
+    let timestamp = startOfMinute(addMinutes(lastTotalDifficultyPoint[0], 1));
     while (isBefore(timestamp, mergeTimestamp)) {
       const millisSinceLast = subMilliseconds(
         timestamp,
@@ -76,7 +76,7 @@ const MergeSection: FC<Props> = ({ mergeEstimate }) => {
       const percent = lastTotalDifficultyPoint[1] + fraction * percentLeft;
       const point = [getTime(timestamp), percent] as TTDPercentPoint;
       generatedProjection.push(point);
-      timestamp = addHours(timestamp, 1);
+      timestamp = addMinutes(timestamp, 1);
     }
 
     setDifficultyProjectionSeries(generatedProjection);

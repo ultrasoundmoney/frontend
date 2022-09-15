@@ -144,7 +144,7 @@ const TotalDifficultyProjectionWidget: FC<Props> = ({
                       {
                         id: "panda-marker",
                         x: lastPointProjection?.[0],
-                        y: lastPointProjection?.[1] - 0.08,
+                        y: lastPointProjection?.[1] - 0.01,
                         marker: {
                           symbol: `url(/graph-dot-panda.svg)`,
                           enabled: true,
