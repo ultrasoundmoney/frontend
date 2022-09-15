@@ -217,13 +217,16 @@ const TotalDifficultyProjectionWidget: FC<Props> = ({
               }
 
               const dt = new Date(x);
-              const formattedDate = DateFns.format(dt, "MMM dd, hha");
-
+              const formattedDate = formatInTimeZone(
+                dt,
+                "UTC",
+                "MMM d, h:mmaa",
+              );
               return `
                 <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
-                  <div class="text-blue-spindle">${formattedDate}</div>
+                  <div class="text-blue-spindle">${formattedDate} UTC</div>
                   <div class="text-white">
-                  ${Format.formatPercentTwoDecimals(total / 100)}
+                    ${Format.formatPercentThreeDecimals(total / 100)}
                   </div>
                 </div>`;
             },
