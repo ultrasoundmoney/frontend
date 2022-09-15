@@ -140,22 +140,12 @@ const MergeSection: FC<Props> = ({ ethSupply, mergeEstimate, mergeStatus }) => {
                 mergeStatus={mergeStatus}
               />
             </div>
-            {mergeStatus.status === "pending" ? (
-              <TotalDifficultyProjectionWidget
-                difficultyMap={difficultyMap}
-                difficultyProjectionMap={difficultyProjectionMap}
-                difficultyProjectionSeries={difficultyProjectionSeries}
-                difficultySeries={totalDifficultyByDay}
-                timestamp={totalDifficultyProgress?.timestamp}
-              />
-            ) : (
-              <SupplySinceMergeWidget
-                mergeStatus={mergeStatus}
-                supplySinceMergeSeries={supplySinceMergeSeries}
-                supplySinceMergeMap={supplySinceMergeMap}
-                timestamp={supplySinceMerge?.timestamp}
-              />
-            )}
+            <SupplySinceMergeWidget
+              mergeStatus={mergeStatus}
+              supplySinceMergeSeries={supplySinceMergeSeries}
+              supplySinceMergeMap={supplySinceMergeMap}
+              timestamp={supplySinceMerge?.timestamp}
+            />
           </div>
         </div>
       </Suspense>

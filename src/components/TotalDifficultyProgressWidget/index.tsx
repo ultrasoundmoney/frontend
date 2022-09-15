@@ -4,7 +4,6 @@ import { formatInTimeZone } from "date-fns-tz";
 import Image from "next/image";
 import { FC, useEffect, useState } from "react";
 import type { MergeEstimate } from "../../api/merge-estimate";
-import type { MergeStatus } from "../../api/merge-status";
 import * as Format from "../../format";
 import { LabelUnitText } from "../Texts";
 import LabelText from "../TextsNext/LabelText";
@@ -13,6 +12,7 @@ import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
 import pandaOwn from "../../assets/panda-own.svg";
+import { MergeStatus } from "../../api/merge-status";
 
 type Props = {
   mergeEstimate: MergeEstimate;
@@ -30,31 +30,25 @@ const TotalDifficultyProgressWidget: FC<Props> = ({
   const [mergedDate, setMergedDate] = useState<string>();
 
   useEffect(() => {
-    const formattedMergeDate =
-      mergeStatus.status === "pending"
-        ? undefined
-        : formatInTimeZone(
-            parseISO(mergeStatus.timestamp),
-            "UTC",
-            "MMM d, h:mm:ssaaa",
-          );
+    const formattedMergeDate = formatInTimeZone(
+      parseISO(mergeStatus.timestamp),
+      "UTC",
+      "MMM d, h:mm:ssaaa",
+    );
 
     setMergeDate(formattedMergeDate);
   }, [mergeStatus]);
 
   useEffect(() => {
-    const formattedAgo =
-      mergeStatus.status === "pending"
-        ? undefined
-        : formatDuration(
-            intervalToDuration({
-              start: parseISO(mergeStatus.timestamp),
-              end: new Date(),
-            }),
-          )
-            .split(" ")
-            .slice(0, 2)
-            .join(" ");
+    const formattedAgo = formatDuration(
+      intervalToDuration({
+        start: parseISO(mergeStatus.timestamp),
+        end: new Date(),
+      }),
+    )
+      .split(" ")
+      .slice(0, 2)
+      .join(" ");
 
     setMergedDate(formattedAgo);
   }, [mergeStatus]);

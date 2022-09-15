@@ -140,115 +140,44 @@ const MergeEstimateWidget: FC<Props> = ({
     ),
     ethSupply.beaconDepositsSum.depositsSum,
   );
-  const supplyDelta =
-    mergeStatus.status === "pending"
-      ? undefined
-      : JSBI.toNumber(ethSupplySum) / 1e18 - mergeStatus.supply;
+  const supplyDelta = JSBI.toNumber(ethSupplySum) / 1e18 - mergeStatus.supply;
 
   return (
     <WidgetErrorBoundary title="merge estimate">
       <WidgetBackground>
-        <div
-          className={`relative flex flex-col gap-x-2 ${
-            mergeStatus.status === "pending"
-              ? "gap-y-8 justify-between md:flex-row"
-              : "gap-y-4"
-          }`}
-        >
+        <div className={`relative flex flex-col gap-x-2 "gap-y-4"`}>
           <div className="flex flex-col gap-y-4">
-            {mergeStatus.status === "pending" ? (
-              <>
-                <div className="flex items-center min-h-[21px] ">
-                  <LabelText>merge:</LabelText>
-                  {mergeEstimateFormatted && (
-                    <LabelText className="font-normal ml-1 text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-indigo-500">{`${mergeEstimateFormatted} UTC`}</LabelText>
-                  )}
-                </div>
-                <Countdown mergeEstimate={mergeEstimate} />
-              </>
-            ) : (
-              <LabelText>supply change since merge</LabelText>
-            )}
+            <LabelText>supply change since merge</LabelText>
           </div>
-          {mergeStatus.status === "pending" ? (
-            <div className="flex flex-col gap-y-4">
-              <div
-                className={`
-                flex items-center
-                md:justify-end
-                cursor-pointer
-                [&_.gray-nerd]:hover:opacity-0
-                [&_.color-nerd]:active:brightness-75
+          <div className="flex">
+            <TextRoboto
+              className={`
+                text-3xl text-transparent
+                bg-clip-text bg-gradient-to-r
+                ${
+                  supplyDelta !== undefined && supplyDelta >= 0
+                    ? "from-cyan-300 to-indigo-500"
+                    : "from-orange-500 to-yellow-300"
+                }
               `}
-                onClick={() => setShowNerdTooltip(true)}
-              >
-                <LabelText className="truncate">wen TTD</LabelText>
-                <Nerd />
-                <div
-                  className={`
-                  tooltip ${showNerdTooltip ? "block" : "hidden"} fixed
-                  top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-                  w-[calc(100% + 96px)]
-                  whitespace-nowrap
-                  cursor-auto
-                  z-30
-                `}
-                >
-                  <MergeEstimateTooltip
-                    latestBlockDifficulty={mergeEstimate?.difficulty}
-                    onClickClose={() => setShowNerdTooltip(false)}
-                    totalDifficulty={mergeEstimate?.totalDifficulty}
-                    totalTerminalDifficulty={TOTAL_TERMINAL_DIFFICULTY}
-                  />
-                </div>
-              </div>
-              <div className="flex md:justify-end">
-                <div className="flex flex-col gap-y-2 items-center">
-                  <TextRoboto className="text-[1.7rem] min-h-[40.8px]">
-                    <CountUp
-                      separator=","
-                      end={blocksToTTD}
-                      suffix={blocksToTTDSuffix ? "K" : ""}
-                      preserveValue
-                    />
-                  </TextRoboto>
-                  <LabelText className="text-slateus-400">blocks</LabelText>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <>
-              <div className="flex">
-                <TextRoboto
-                  className={`
-                    text-3xl text-transparent
-                    bg-clip-text bg-gradient-to-r
-                    ${
-                      supplyDelta !== undefined && supplyDelta >= 0
-                        ? "from-cyan-300 to-indigo-500"
-                        : "from-orange-500 to-yellow-300"
-                    }
-                  `}
-                >
-                  {supplyDelta !== undefined && supplyDelta >= 0 && "+"}
-                  <CountUp
-                    preserveValue
-                    end={supplyDelta ?? 0}
-                    separator=","
-                    decimals={2}
-                  />
-                </TextRoboto>
-                <span className="font-roboto font-light text-3xl text-slateus-400 ml-2">
-                  ETH
-                </span>
-              </div>
-              <UpdatedAgo
-                updatedAt={getDateTimeFromSlot(
-                  ethSupply.beaconBalancesSum.slot,
-                ).toISOString()}
+            >
+              {supplyDelta !== undefined && supplyDelta >= 0 && "+"}
+              <CountUp
+                preserveValue
+                end={supplyDelta ?? 0}
+                separator=","
+                decimals={2}
               />
-            </>
-          )}
+            </TextRoboto>
+            <span className="font-roboto font-light text-3xl text-slateus-400 ml-2">
+              ETH
+            </span>
+          </div>
+          <UpdatedAgo
+            updatedAt={getDateTimeFromSlot(
+              ethSupply.beaconBalancesSum.slot,
+            ).toISOString()}
+          />
         </div>
       </WidgetBackground>
       <div
