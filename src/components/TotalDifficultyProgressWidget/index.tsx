@@ -26,18 +26,13 @@ const TotalDifficultyProgressWidget: FC<Props> = ({
   mergeStatus,
   progress,
 }) => {
-  const [mergeDate, setMergeDate] = useState<string>();
   const [mergedDate, setMergedDate] = useState<string>();
 
-  useEffect(() => {
-    const formattedMergeDate = formatInTimeZone(
-      parseISO(mergeStatus.timestamp),
-      "UTC",
-      "MMM d, h:mm:ssaaa",
-    );
-
-    setMergeDate(formattedMergeDate);
-  }, [mergeStatus]);
+  const mergeDate = formatInTimeZone(
+    parseISO(mergeStatus.timestamp),
+    "UTC",
+    "MMM d, h:mm:ssaaa",
+  );
 
   useEffect(() => {
     const formattedAgo = formatDuration(
@@ -57,16 +52,10 @@ const TotalDifficultyProgressWidget: FC<Props> = ({
     <WidgetErrorBoundary title="merge difficulty progress">
       <WidgetBackground className="flex flex-col gap-y-4">
         <div className="flex justify-between items-center">
-          {mergeDate === undefined ? (
-            <LabelText className="flex items-center min-h-[21px]">
-              merge difficulty progress
-            </LabelText>
-          ) : (
-            <div className="flex items-center min-h-[21px] ">
-              <LabelText>merged:</LabelText>
-              <LabelText className="font-normal ml-1 text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-indigo-500">{`${mergeDate} UTC`}</LabelText>
-            </div>
-          )}
+          <div className="flex items-center min-h-[21px] ">
+            <LabelText>merged:</LabelText>
+            <LabelText className="font-normal ml-1 text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-indigo-500">{`${mergeDate} UTC`}</LabelText>
+          </div>
           <div className="select-none flex items-center">
             <Image
               alt="a panda emoji, used to signify the merge, as pandas are a merge of black and white colors"
