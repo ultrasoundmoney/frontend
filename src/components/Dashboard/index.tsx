@@ -148,7 +148,7 @@ const Dashboard: FC<Props> = ({
       new Date(),
       parseISO(mergeStatus.timestamp),
     );
-    if (minutesSinceMerge < 5) {
+    if (minutesSinceMerge < 15) {
       setConfettiRan(true);
       setTimeout(() => {
         jsConfetti
