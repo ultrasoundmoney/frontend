@@ -9,7 +9,7 @@ import SkeletonText from "../TextsNext/SkeletonText";
 import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
-import pandaOwn from "./panda-own.svg";
+import pandaOwn from "../../assets/panda-own.svg";
 
 type Props = {
   mergeEstimate: MergeEstimate;
