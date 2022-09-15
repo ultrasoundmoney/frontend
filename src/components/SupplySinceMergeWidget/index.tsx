@@ -1,22 +1,23 @@
 import HighchartsReact from "highcharts-react-official";
+import { getTime, parseISO, subHours } from "date-fns";
+import { useEffect, useMemo, useState } from "react";
+import { useSupplySinceMerge } from "../../api/supply-since-merge";
 import _last from "lodash/last";
 import _merge from "lodash/merge";
 import Highcharts from "highcharts";
 import highchartsAnnotations from "highcharts/modules/annotations";
 import type { FC } from "react";
-import { useMemo } from "react";
 import LabelText from "../TextsNext/LabelText";
 import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
 import colors from "../../colors";
-import { getTime, parseISO } from "date-fns";
 import { formatTwoDigit, formatZeroDecimals } from "../../format";
-import type { DateTimeString } from "../../time";
+import type { JsTimestamp } from "../../time";
 import type { SupplyPoint } from "../Dashboard/MergeSection";
-import type { EthNumber } from "../../eth-units";
 import { formatInTimeZone } from "date-fns-tz";
 import type { MergeStatus } from "../../api/merge-status";
+import { useImpreciseEthSupply } from "../../api/eth-supply";
 
 // Somehow resolves an error thrown by the annotation lib
 if (typeof window !== "undefined") {
@@ -29,6 +30,7 @@ const baseOptions: Highcharts.Options = {
   chart: {
     backgroundColor: "transparent",
     showAxes: false,
+    marginRight: 32,
   },
   title: undefined,
   yAxis: {
@@ -70,29 +72,72 @@ const baseOptions: Highcharts.Options = {
   },
 };
 
+const peakPoint: SupplyPoint = [1663224120000, 120521136.6];
+
+// Given a list of supply points check if no point within the last hour has crossed it, if no, return peak point.
+const getNewPeakSinceMerge = (
+  lastHourBound: JsTimestamp,
+  points: SupplyPoint[],
+) =>
+  points.some((point) => point[0] >= lastHourBound && point[1] >= peakPoint[1]);
+
 type Props = {
   mergeStatus: MergeStatus;
-  peak: number | undefined;
-  supplySinceMergeMap: Record<string, EthNumber>;
-  supplySinceMergeSeries: SupplyPoint[] | undefined;
-  timestamp: DateTimeString | undefined;
 };
 
-const SupplySinceMergeWidget: FC<Props> = ({
-  supplySinceMergeMap: supplySinceMergeMap,
-  supplySinceMergeSeries: supplySinceMergeSeries,
-  mergeStatus,
-  timestamp,
-  peak,
-}) => {
+const SupplySinceMergeWidget: FC<Props> = ({ mergeStatus }) => {
+  const [showPeakLine, setShowPeakLine] = useState<boolean>();
+  const ethSupply = useImpreciseEthSupply();
+  const supplySinceMerge = useSupplySinceMerge();
+
+  const supplySinceMergeSeries = useMemo(() => {
+    return supplySinceMerge?.supply_by_minute.map(
+      ({ timestamp, supply }) =>
+        [getTime(parseISO(timestamp)), supply] as SupplyPoint,
+    );
+  }, [supplySinceMerge]);
+
+  useEffect(() => {
+    if (supplySinceMergeSeries === undefined) {
+      return;
+    }
+
+    const lastHourBound = subHours(new Date(), 1).getTime();
+    if (!getNewPeakSinceMerge(lastHourBound, supplySinceMergeSeries)) {
+      setShowPeakLine(true);
+    } else {
+      setShowPeakLine(false);
+    }
+  }, [supplySinceMergeSeries]);
+
   const options = useMemo((): Highcharts.Options => {
     const lastPoint = _last(supplySinceMergeSeries);
+
+    const supplySinceMergeMap = Object.fromEntries(
+      new Map(supplySinceMergeSeries ?? []).entries(),
+    );
+
     return _merge({}, baseOptions, {
       yAxis: {
         plotLines: [
           {
             id: "peak-since-merge",
-            value: peak,
+            value: showPeakLine ? peakPoint[1] : undefined,
+            color: colors.slateus400,
+            width: 1,
+            label: {
+              x: 32,
+              y: 4,
+              style: { color: colors.slateus400 },
+              align: "right",
+              useHTML: true,
+              formatter: () => `
+                <img
+                  class="w-4 h-4 ml-2"
+                  src="/peak-own.svg"
+                />
+              `,
+            },
           },
         ],
       },
@@ -149,17 +194,17 @@ const SupplySinceMergeWidget: FC<Props> = ({
           data:
             lastPoint !== undefined && supplySinceMergeSeries !== undefined
               ? [
-                  ...supplySinceMergeSeries,
-                  {
-                    x: lastPoint?.[0],
-                    y: lastPoint?.[1],
-                    marker: {
-                      id: "supply-by-minute-final-point",
-                      symbol: `url(/graph-dot-blue.svg)`,
-                      enabled: true,
-                    },
+                ...supplySinceMergeSeries,
+                {
+                  x: lastPoint?.[0],
+                  y: lastPoint?.[1],
+                  marker: {
+                    id: "supply-by-minute-final-point",
+                    symbol: `url(/graph-dot-blue.svg)`,
+                    enabled: true,
                   },
-                ]
+                },
+              ]
               : undefined,
           shadow: {
             color: "rgba(75, 144, 219, 0.2)",
@@ -184,7 +229,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
         useHTML: true,
         borderWidth: 0,
         shadow: false,
-        formatter: function () {
+        formatter: function() {
           const x = typeof this.x === "number" ? this.x : undefined;
           if (x === undefined) {
             return undefined;
@@ -197,18 +242,41 @@ const SupplySinceMergeWidget: FC<Props> = ({
 
           const dt = new Date(x);
           const formattedDate = formatInTimeZone(dt, "UTC", "MMM d, h:mmaa");
+
+          const supplyDelta =
+            x >= peakPoint[0] && ethSupply !== undefined
+              ? total - peakPoint[1]
+              : undefined;
+          const supplyDeltaFormatted =
+            supplyDelta !== undefined ? formatTwoDigit(supplyDelta) : undefined;
+
+          const gradientCss =
+            supplyDelta !== undefined && supplyDelta <= 0
+              ? "from-orange-400 to-yellow-500"
+              : "from-cyan-300 to-indigo-500";
+
           return `
-                <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
-                  <div class="text-blue-spindle">${formattedDate}</div>
-                  <div class="text-white">
-                    ${formatTwoDigit(total)}
-                    <span class="text-slateus-200"> ETH</span>
-                  </div>
-                </div>`;
+            <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
+              <div class="text-blue-spindle">${formattedDate}</div>
+              <div class="flex flex-col items-end">
+                <div class="text-white">
+                  ${formatTwoDigit(total)}
+                  <span class="text-slateus-400"> ETH</span>
+                </div>
+                <div class="
+                  ${supplyDelta === undefined ? "hidden" : ""}
+                  text-transparent bg-clip-text bg-gradient-to-r ${gradientCss}
+                ">
+                  ${supplyDeltaFormatted}
+                  <span class="text-slateus-400"> ETH</span>
+                </div>
+              </div>
+            </div>
+          `;
         },
       },
     } as Highcharts.Options);
-  }, [supplySinceMergeSeries, supplySinceMergeMap, mergeStatus, peak]);
+  }, [ethSupply, mergeStatus, showPeakLine, supplySinceMergeSeries]);
 
   return (
     <WidgetErrorBoundary title="supply since merge">
@@ -250,7 +318,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
           <HighchartsReact highcharts={Highcharts} options={options} />
         </div>
         <div className="flex justify-between flex-wrap gap-y-2">
-          <UpdatedAgo updatedAt={timestamp} />
+          <UpdatedAgo updatedAt={supplySinceMerge?.timestamp} />
         </div>
       </WidgetBackground>
     </WidgetErrorBoundary>
