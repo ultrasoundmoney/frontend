@@ -26,8 +26,8 @@ import GasMarketWidget from "../GasMarketWidget";
 import type { Gwei } from "../../eth-units";
 import { WEI_PER_GWEI } from "../../eth-units";
 import _maxBy from "lodash/maxBy";
+import { JsTimestamp } from "../../time";
 
-type JsTimestamp = number;
 export type BaseFeePoint = [JsTimestamp, Gwei];
 
 const Controls: FC<{

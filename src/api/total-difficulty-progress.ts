@@ -1,7 +1,7 @@
 import * as DateFns from "date-fns";
 import useSWR from "swr";
 import { TOTAL_TERMINAL_DIFFICULTY } from "../eth-constants";
-import type { DateTimeString } from "../time";
+import type { DateTimeString, JsTimestamp } from "../time";
 import { fetchJson } from "./fetchers";
 
 type DifficultyByDay = {
@@ -16,7 +16,6 @@ export type TotalDifficultyProgress = {
   totalDifficultyByDay: DifficultyByDay[];
 };
 
-type JsTimestamp = number;
 type Point = [JsTimestamp, number];
 export type TotalDifficultyProgressPoints = Point[];
 
