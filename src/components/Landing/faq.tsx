@@ -55,11 +55,11 @@ const FaqBlock: React.FC = () => {
             style={{ height: "1px", opacity: "0.3" }}
           />
           <Accordion title={t.faq_question_4} text={t.faq_answer_4} />
-          <div
-            className="w-full bg-blue-shipcove"
-            style={{ height: "1px", opacity: "0.3" }}
-          />
-          <Accordion title={t.faq_question_5} text={t.faq_answer_5} />
+          {/* <div */}
+          {/*   className="w-full bg-blue-shipcove" */}
+          {/*   style={{ height: "1px", opacity: "0.3" }} */}
+          {/* /> */}
+          {/* <Accordion title={t.faq_question_5} text={t.faq_answer_5} /> */}
           <div
             className="w-full bg-blue-shipcove"
             style={{ height: "1px", opacity: "0.3" }}
