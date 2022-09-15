@@ -143,7 +143,7 @@ const SupplyChangeSinceMerge: FC<Props> = ({
   return (
     <WidgetErrorBoundary title="merge estimate">
       <WidgetBackground>
-        <div className={`relative flex flex-col gap-x-2 "gap-y-4"`}>
+        <div className={`relative flex flex-col gap-x-2 gap-y-4`}>
           <div className="flex flex-col gap-y-4">
             <LabelText>supply change since merge</LabelText>
           </div>
