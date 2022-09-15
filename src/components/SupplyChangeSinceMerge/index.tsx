@@ -178,17 +178,6 @@ const SupplyChangeSinceMerge: FC<Props> = ({
           />
         </div>
       </WidgetBackground>
-      <div
-        className={`
-          fixed top-0 left-0 bottom-0 right-0
-          flex justify-center items-center
-          z-20
-          bg-slateus-700/60
-          backdrop-blur-sm
-          ${showNerdTooltip ? "" : "hidden"}
-        `}
-        onClick={() => setShowNerdTooltip(false)}
-      ></div>
     </WidgetErrorBoundary>
   );
 };
