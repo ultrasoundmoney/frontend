@@ -1,27 +1,26 @@
+import { addMinutes } from "date-fns";
+import { formatInTimeZone } from "date-fns-tz";
+import type { TooltipFormatterCallbackFunction } from "highcharts";
+import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { subHours } from "date-fns";
-import { useEffect, useMemo, useState } from "react";
-import type { SupplyAtTime } from "../../api/supply-since-merge";
-import { useSupplySinceMerge } from "../../api/supply-since-merge";
+import highchartsAnnotations from "highcharts/modules/annotations";
 import _last from "lodash/last";
 import _merge from "lodash/merge";
-import Highcharts from "highcharts";
-import highchartsAnnotations from "highcharts/modules/annotations";
 import type { FC } from "react";
+import { useMemo } from "react";
+import type { MergeStatus } from "../../api/merge-status";
+import type { SupplyAtTime } from "../../api/supply-since-merge";
+import { useSupplySinceMerge } from "../../api/supply-since-merge";
+import colors from "../../colors";
+import { MERGE_TIMESTAMP } from "../../eth-constants";
+import { formatTwoDigit, formatZeroDecimals } from "../../format";
+import { posIssuancePerDay, powIssuancePerDay } from "../../static-ether-data";
+import type { SupplyPoint } from "../Dashboard/MergeSection";
+import SimulateProofOfWork from "../SimulateProofOfWork";
 import LabelText from "../TextsNext/LabelText";
 import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
-import colors from "../../colors";
-import { formatTwoDigit, formatZeroDecimals } from "../../format";
-import type { JsTimestamp } from "../../time";
-import type { SupplyPoint } from "../Dashboard/MergeSection";
-import { formatInTimeZone } from "date-fns-tz";
-import type { MergeStatus } from "../../api/merge-status";
-import { useImpreciseEthSupply } from "../../api/eth-supply";
-import SimulateProofOfWork from "../SimulateProofOfWork";
-import { MERGE_TIMESTAMP } from "../../eth-constants";
-import { posIssuancePerDay, powIssuancePerDay } from "../../static-ether-data";
 
 // Somehow resolves an error thrown by the annotation lib
 if (typeof window !== "undefined") {
@@ -30,13 +29,18 @@ if (typeof window !== "undefined") {
 }
 
 const SUPPLY_SINCE_MERGE_SERIES_ID = "supply-since-merge-series";
+const SUPPLY_SINCE_MERGE_POW_SERIES_ID = "supply-since-merge-pow-series";
+const BITCOIN_SUPPLY_ID = "bitcoin-supply-since-merge-series";
+
+const BITCOIN_SUPPLY_AT_MERGE = 19_152_350;
+const POW_ISSUANCE_PER_DAY = powIssuancePerDay - posIssuancePerDay;
+const SLOTS_PER_DAY = 24 * 60 * 5;
 
 const baseOptions: Highcharts.Options = {
   accessibility: { enabled: false },
   chart: {
     backgroundColor: "transparent",
     showAxes: false,
-    marginRight: 32,
     zooming: {
       type: "x",
       resetButton: {
@@ -100,18 +104,94 @@ const baseOptions: Highcharts.Options = {
   },
 };
 
-const peakPoint: SupplyPoint = [1663224120000, 120521136.6];
+type PointMap = Record<number, number>;
 
-const POW_ISSUANCE_PER_DAY = powIssuancePerDay - posIssuancePerDay;
-const SLOTS_PER_DAY = 24 * 60 * 5;
+const getTooltip = (
+  supplySinceMergeMap: PointMap,
+  supplySinceMergePowMap: PointMap,
+  bitcoinSupplySeriesMap: PointMap,
+  mergeStatus: MergeStatus,
+): TooltipFormatterCallbackFunction =>
+  function () {
+    const x = typeof this.x === "number" ? this.x : undefined;
+    if (x === undefined) {
+      return undefined;
+    }
 
-// Given a list of supply points check if no point within the last hour has crossed it, if no, return peak point.
-const getNewPeakSinceMerge = (
-  lastHourBound: JsTimestamp,
-  points: SupplyPoint[],
-) =>
-  points.some((point) => point[0] >= lastHourBound && point[1] >= peakPoint[1]);
+    const type =
+      this.series.userOptions.id === SUPPLY_SINCE_MERGE_SERIES_ID
+        ? "pos"
+        : this.series.userOptions.id === SUPPLY_SINCE_MERGE_POW_SERIES_ID
+        ? "pow"
+        : "bitcoin";
 
+    // Hack in showing the right graphs' points.
+    const pointMap =
+      type === "pos"
+        ? supplySinceMergeMap
+        : type === "pow"
+        ? supplySinceMergePowMap
+        : bitcoinSupplySeriesMap;
+
+    const total =
+      type === "bitcoin"
+        ? (pointMap[x] / mergeStatus.supply) * BITCOIN_SUPPLY_AT_MERGE
+        : pointMap[x];
+    if (total === undefined) {
+      return undefined;
+    }
+
+    const dt = new Date(x);
+    const formattedDate = formatInTimeZone(dt, "UTC", "MMM d, h:mmaa");
+
+    let supplyDelta = undefined;
+    if (x >= new Date(mergeStatus.timestamp).getTime()) {
+      if (this.series.userOptions.id === BITCOIN_SUPPLY_ID) {
+        supplyDelta = total - BITCOIN_SUPPLY_AT_MERGE;
+      } else {
+        supplyDelta = total - mergeStatus.supply;
+      }
+    }
+
+    const supplyDeltaFormatted =
+      supplyDelta !== undefined ? formatTwoDigit(supplyDelta) : undefined;
+
+    const gradientCss =
+      supplyDelta !== undefined && supplyDelta <= 0
+        ? "from-orange-400 to-yellow-500"
+        : "from-cyan-300 to-indigo-500";
+
+    const title =
+      this.series.userOptions.id === SUPPLY_SINCE_MERGE_SERIES_ID
+        ? "ETHEREUM PoS"
+        : this.series.userOptions.id === SUPPLY_SINCE_MERGE_POW_SERIES_ID
+        ? "ETHEREUM PoW"
+        : "BITCOIN";
+
+    const unit = type === "bitcoin" ? "BTC" : "ETH";
+
+    return `
+    <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
+      <div class="text-slateus-200">${title}</div>
+      <div class="text-slateus-400">${formattedDate}</div>
+      <div class="flex flex-col items-end">
+        <div class="text-white">
+          ${formatTwoDigit(total)}
+          <span class="text-slateus-400"> ${unit}</span>
+        </div>
+        <div class="
+          ${supplyDelta === undefined ? "hidden" : ""}
+          text-transparent bg-clip-text bg-gradient-to-r ${gradientCss}
+        ">
+          ${
+            supplyDelta !== undefined && supplyDelta >= 0 ? "+" : ""
+          }${supplyDeltaFormatted}
+          <span class="text-slateus-400"> ${unit}</span>
+        </div>
+      </div>
+    </div>
+  `;
+  };
 type Props = {
   mergeStatus: MergeStatus;
   simulateProofOfWork: boolean;
@@ -123,11 +203,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
   simulateProofOfWork,
   onSimulateProofOfWork,
 }) => {
-  const [showPeakLine, setShowPeakLine] = useState<boolean>();
-  const ethSupply = useImpreciseEthSupply();
   const supplySinceMerge = useSupplySinceMerge();
-
-  const mergeTimestamp = new Date(mergeStatus.timestamp).getTime();
 
   const pointFromSupplyAtTime = (supplyAtTime: SupplyAtTime): SupplyPoint => [
     new Date(supplyAtTime.timestamp).getTime(),
@@ -184,18 +260,38 @@ const SupplySinceMergeWidget: FC<Props> = ({
     [supplySinceMerge],
   );
 
-  useEffect(() => {
+  const supplyMaxPlusTen = useMemo(
+    () =>
+      supplySinceMergeSeries === undefined
+        ? undefined
+        : supplySinceMergeSeries.reduce((pointA, pointB) =>
+            pointA[1] > pointB[1] ? pointA : pointB,
+          )[1],
+    [supplySinceMergeSeries],
+  );
+
+  const bitcoinSupplySeries = useMemo(() => {
     if (supplySinceMergeSeries === undefined) {
-      return;
+      return undefined;
     }
 
-    const lastHourBound = subHours(new Date(), 1).getTime();
-    if (!getNewPeakSinceMerge(lastHourBound, supplySinceMergeSeries)) {
-      setShowPeakLine(true);
-    } else {
-      setShowPeakLine(false);
+    const last = supplySinceMergeSeries[supplySinceMergeSeries.length - 1];
+    const points = [];
+    let timestamp = MERGE_TIMESTAMP.getTime();
+    let bitcoinSupply = BITCOIN_SUPPLY_AT_MERGE;
+    while (timestamp < last[0]) {
+      bitcoinSupply = bitcoinSupply + 6.25;
+
+      const bitcoinSupplyRescaled =
+        (bitcoinSupply / BITCOIN_SUPPLY_AT_MERGE) * mergeStatus.supply;
+
+      points.push([timestamp, bitcoinSupplyRescaled] as SupplyPoint);
+
+      timestamp = addMinutes(timestamp, 10).getTime();
     }
-  }, [supplySinceMergeSeries]);
+
+    return points;
+  }, [mergeStatus, supplySinceMergeSeries]);
 
   const options = useMemo((): Highcharts.Options => {
     const lastPoint = _last(supplySinceMergeSeries);
@@ -208,15 +304,17 @@ const SupplySinceMergeWidget: FC<Props> = ({
       new Map(supplySinceMergePowSeries ?? []).entries(),
     );
 
+    const bitcoinSupplySeriesMap = Object.fromEntries(
+      new Map(bitcoinSupplySeries ?? []).entries(),
+    );
+
     return _merge({}, baseOptions, {
       yAxis: {
-        max: simulateProofOfWork
-          ? undefined
-          : mergeStatus.supply + POW_ISSUANCE_PER_DAY / 4,
+        max: simulateProofOfWork ? undefined : supplyMaxPlusTen,
         plotLines: [
           {
             id: "merge-supply",
-            value: peakPoint[1],
+            value: mergeStatus.supply,
             color: colors.slateus400,
             width: 1,
             label: {
@@ -231,7 +329,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
         plotLines: [
           {
             id: "merge-plotline",
-            value: mergeTimestamp,
+            value: MERGE_TIMESTAMP.getTime(),
             color: colors.slateus400,
             width: 1,
             label: {
@@ -259,31 +357,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
         {
           id: SUPPLY_SINCE_MERGE_SERIES_ID,
           type: "line",
-          threshold: mergeStatus.supply,
-          // negativeColor: {
-          //   linearGradient: {
-          //     x1: 0,
-          //     y1: 1,
-          //     x2: 0,
-          //     y2: 0,
-          //   },
-          //   stops: [
-          //     [0, "#EDDB36"],
-          //     [1, "#E79800"],
-          //   ],
-          // },
-          // color: {
-          //   linearGradient: {
-          //     x1: 0,
-          //     y1: 0,
-          //     x2: 0,
-          //     y2: 1,
-          //   },
-          //   stops: [
-          //     [0.2, "#5487F4"],
-          //     [1, "#00FFFB"],
-          //   ],
-          // },
+          name: "Ethereum PoS",
           data:
             lastPoint !== undefined && supplySinceMergeSeries !== undefined
               ? [
@@ -317,34 +391,20 @@ const SupplySinceMergeWidget: FC<Props> = ({
           },
         },
         {
-          id: "supply-since-merge-pow-series",
+          id: SUPPLY_SINCE_MERGE_POW_SERIES_ID,
           type: "line",
           dashStyle: "Dash",
-          color: {
-            linearGradient: {
-              x1: 0,
-              y1: 0,
-              x2: 1,
-              y2: 0,
-            },
-            stops: [
-              [0, "#5487F4"],
-              [1, "#6A54F4"],
-            ],
-          },
+          name: "Ethereum PoW",
+          color: simulateProofOfWork ? colors.slateus400 : "transparent",
           data: supplySinceMergePowSeries,
         },
         {
-          enableMouseTracking: false,
-          id: "supply-since-merge-pow-series-shadow",
-          states: { hover: { enabled: false }, select: { enabled: false } },
+          id: BITCOIN_SUPPLY_ID,
           type: "line",
-          color: {},
-          shadow: {
-            color: "rgba(75, 144, 219, 0.2)",
-            width: 15,
-          },
-          data: supplySinceMergePowSeries,
+          dashStyle: "Dash",
+          color: simulateProofOfWork ? colors.slateus400 : "transparent",
+          data: bitcoinSupplySeries,
+          name: "BITCOIN",
         },
       ],
       tooltip: {
@@ -352,74 +412,21 @@ const SupplySinceMergeWidget: FC<Props> = ({
         useHTML: true,
         borderWidth: 0,
         shadow: false,
-        formatter: function () {
-          const x = typeof this.x === "number" ? this.x : undefined;
-          if (x === undefined) {
-            return undefined;
-          }
-
-          // Hack in showing the right graphs' points.
-          const pointMap =
-            this.series.userOptions.id === SUPPLY_SINCE_MERGE_SERIES_ID
-              ? supplySinceMergeMap
-              : supplySinceMergePowMap;
-          const total = pointMap[x];
-          if (total === undefined) {
-            return undefined;
-          }
-
-          const dt = new Date(x);
-          const formattedDate = formatInTimeZone(dt, "UTC", "MMM d, h:mmaa");
-
-          const supplyDelta =
-            x >= peakPoint[0] && ethSupply !== undefined
-              ? total - peakPoint[1]
-              : undefined;
-
-          const supplyDeltaFormatted =
-            supplyDelta !== undefined ? formatTwoDigit(supplyDelta) : undefined;
-
-          const gradientCss =
-            supplyDelta !== undefined && supplyDelta <= 0
-              ? "from-orange-400 to-yellow-500"
-              : "from-cyan-300 to-indigo-500";
-
-          return `
-            <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
-              <div class="text-slateus-400">${
-                this.series.userOptions.id !== SUPPLY_SINCE_MERGE_SERIES_ID
-                  ? "SIMULATED PoW"
-                  : ""
-              }</div>
-              <div class="text-blue-spindle">${formattedDate}</div>
-              <div class="flex flex-col items-end">
-                <div class="text-white">
-                  ${formatTwoDigit(total)}
-                  <span class="text-slateus-400"> ETH</span>
-                </div>
-                <div class="
-                  ${supplyDelta === undefined ? "hidden" : ""}
-                  text-transparent bg-clip-text bg-gradient-to-r ${gradientCss}
-                ">
-                  ${
-                    supplyDelta !== undefined && supplyDelta >= 0 ? "+" : ""
-                  }${supplyDeltaFormatted}
-                  <span class="text-slateus-400"> ETH</span>
-                </div>
-              </div>
-            </div>
-          `;
-        },
+        formatter: getTooltip(
+          supplySinceMergeMap,
+          supplySinceMergePowMap,
+          bitcoinSupplySeriesMap,
+          mergeStatus,
+        ),
       },
     } as Highcharts.Options);
   }, [
-    ethSupply,
-    mergeStatus.block_number,
-    mergeStatus.supply,
-    mergeTimestamp,
+    bitcoinSupplySeries,
+    mergeStatus,
     simulateProofOfWork,
     supplySinceMergePowSeries,
     supplySinceMergeSeries,
+    supplyMaxPlusTen,
   ]);
 
   return (
