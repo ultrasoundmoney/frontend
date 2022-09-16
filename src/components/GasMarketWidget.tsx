@@ -8,7 +8,6 @@ import QuantifyText from "./TextsNext/QuantifyText";
 import SkeletonText from "./TextsNext/SkeletonText";
 import {
   formatTwoDigit,
-  formatWeiTwoDigit,
   formatZeroDecimals,
 } from "../format";
 import { WEI_PER_GWEI } from "../eth-units";
