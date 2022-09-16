@@ -1,11 +1,12 @@
-import type { FC } from "react";
+import type { FC} from "react";
+import { useCallback } from "react";
 import { useState } from "react";
 import CountUp from "react-countup";
 import type { EthSupply } from "../../api/eth-supply";
 import { getEthSupplyImprecise } from "../../api/eth-supply";
 import type { MergeEstimate } from "../../api/merge-estimate";
 import type { MergeStatus } from "../../api/merge-status";
-import { useSupplySinceMerge, } from "../../api/supply-since-merge";
+import { useSupplySinceMerge } from "../../api/supply-since-merge";
 import { getDateTimeFromSlot } from "../../beacon-time";
 import { MERGE_TIMESTAMP } from "../../eth-constants";
 import SimulatePreMerge from "../SimulatePreMerge";
@@ -27,8 +28,12 @@ const SupplyChangeSinceMerge: FC<Props> = ({ ethSupply, mergeStatus }) => {
   const [simulatePreMerge, setSimulatePreMerge] = useState(false);
   const ethSupplyImprecise = getEthSupplyImprecise(ethSupply);
 
+  const handleToggleSimulatePreMerge = useCallback(() => {
+    setSimulatePreMerge((lastState) => !lastState);
+  }, []);
+
   const slotsSinceMerge =
-    supplySinceMerge === undefined 
+    supplySinceMerge === undefined
       ? undefined
       : (new Date(supplySinceMerge?.timestamp).getTime() -
           MERGE_TIMESTAMP.getTime()) /
@@ -90,7 +95,7 @@ const SupplyChangeSinceMerge: FC<Props> = ({ ethSupply, mergeStatus }) => {
             />
             <SimulatePreMerge
               checked={simulatePreMerge}
-              onToggle={() => setSimulatePreMerge(!simulatePreMerge)}
+              onToggle={handleToggleSimulatePreMerge}
             ></SimulatePreMerge>
           </div>
         </div>
