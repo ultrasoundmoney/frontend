@@ -50,6 +50,16 @@ const percentOneDecimalSigned = new Intl.NumberFormat("en-US", {
 export const formatPercentOneDecimalSigned = (percent: number): string =>
   percentOneDecimalSigned.format(percent);
 
+const percentTwoDecimalSigned = new Intl.NumberFormat("en-US", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+  signDisplay: "always",
+  style: "percent",
+});
+
+export const formatPercentTwoDecimalSigned = (percent: number): string => 
+percentTwoDecimalSigned.format(percent);
+
 const percentOneDecimal = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 1,
   maximumFractionDigits: 1,
