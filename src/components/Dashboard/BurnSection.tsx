@@ -7,6 +7,7 @@ import type { TimeFrameNext } from "../../time-frames";
 import { timeFramesNext } from "../../time-frames";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import BurnCategoryWidget from "../BurnCategoryWidget";
+import BurnTotal from "../BurnTotal";
 import CurrencyControl from "../CurrencyControl";
 import SectionDivider from "../SectionDivider";
 import TimeFrameControl from "../TimeFrameControl";
@@ -20,12 +21,6 @@ const LatestBlocks = dynamic(() => import("../LatestBlocks"), { ssr: false });
 const BurnRecords = dynamic(() => import("../BurnRecords"), { ssr: false });
 const DeflationaryStreak = dynamic(() => import("../DeflationaryStreak"), {
   ssr: false,
-});
-const BurnTotal = dynamic(() => import("../BurnTotal"), {
-  ssr: false,
-  // BurnTotal shows hard to debug hydration errors, they go away when using suspense.
-  // It'd be nice to resolve them and remove the suspense instead!
-  suspense: true,
 });
 
 type Props = {
