@@ -2,11 +2,14 @@ import range from "lodash/range";
 import type { FC, RefObject } from "react";
 import { memo, useCallback, useRef, useState } from "react";
 import { usePopper } from "react-popper";
-import { useAdminToken } from "../../hooks/use-admin-token";
 import { useContractsFreshness } from "../../api/contracts";
-import type { GroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import {
+  decodeGroupedAnalysis1,
+  useGroupedAnalysis1
+} from "../../api/grouped-analysis-1";
 import type { LeaderboardEntry, Leaderboards } from "../../api/leaderboards";
 import type { Unit } from "../../denomination";
+import { useAdminToken } from "../../hooks/use-admin-token";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import type { TimeFrameNext } from "../../time-frames";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
@@ -183,18 +186,14 @@ const useTooltip = () => {
 };
 
 type Props = {
-  groupedAnalysis1: GroupedAnalysis1;
   onClickTimeFrame: () => void;
   timeFrame: TimeFrameNext;
   unit: Unit;
 };
 
-const BurnLeaderboard: FC<Props> = ({
-  groupedAnalysis1,
-  onClickTimeFrame,
-  timeFrame,
-  unit,
-}) => {
+const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
+  const groupedAnalysisF = useGroupedAnalysis1();
+  const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysisF);
   const leaderboards = groupedAnalysis1?.leaderboards;
   const selectedLeaderboard =
     leaderboards === undefined

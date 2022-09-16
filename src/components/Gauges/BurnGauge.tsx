@@ -1,6 +1,6 @@
 import type { FC } from "react";
+import { useBurnRates } from "../../api/burn-rates";
 import type { EthPriceStats } from "../../api/eth-price-stats";
-import type { BurnRates } from "../../api/grouped-analysis-1";
 import colors from "../../colors";
 import type { Unit } from "../../denomination";
 import * as Format from "../../format";
@@ -9,19 +9,17 @@ import { timeframeBurnRateMap } from "../BurnTotal";
 import IssuanceBurnBaseGauge from "./IssuanceBurnBaseGauge";
 
 type BurnGaugeProps = {
-  burnRates: BurnRates;
   ethPriceStats: EthPriceStats;
   timeFrame: TimeFrameNext;
   unit: Unit;
 };
 
-const BurnGauge: FC<BurnGaugeProps> = ({
-  burnRates,
-  ethPriceStats,
-  timeFrame,
-  unit,
-}) => {
-  const preBurnRate = burnRates[timeframeBurnRateMap[timeFrame][unit]];
+const BurnGauge: FC<BurnGaugeProps> = ({ ethPriceStats, timeFrame, unit }) => {
+  const burnRates = useBurnRates();
+  const preBurnRate =
+    burnRates === undefined
+      ? undefined
+      : burnRates[timeframeBurnRateMap[timeFrame][unit]];
   const burnRate =
     preBurnRate === undefined
       ? undefined

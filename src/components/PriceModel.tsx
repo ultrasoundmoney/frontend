@@ -1,11 +1,11 @@
-import type JSBI from "jsbi";
 import flow from "lodash/flow";
 import type { FC, ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { useAverageEthPrice } from "../api/average-eth-price";
-import type { GroupedAnalysis1 } from "../api/grouped-analysis-1";
+import { useBurnRates } from "../api/burn-rates";
+import type { EthPriceStats } from "../api/eth-price-stats";
+import { useImpreciseEthSupply } from "../api/eth-supply";
 import { usePeRatios } from "../api/pe-ratios";
-import { useScarcity } from "../api/scarcity";
 import * as Format from "../format";
 import * as StaticEtherData from "../static-ether-data";
 import { MoneyAmount } from "./Amount";
@@ -110,18 +110,18 @@ const linearFromLog = flow(
 
 const calcEarningsPerShare = (
   annualizedEarnings: number | undefined,
-  ethSupply: JSBI | undefined,
+  ethSupply: number | undefined,
 ) => {
   if (annualizedEarnings === undefined || ethSupply === undefined) {
     return undefined;
   }
 
-  return annualizedEarnings / Format.ethFromWeiBIUnsafe(ethSupply);
+  return annualizedEarnings / ethSupply;
 };
 
 const calcProjectedPrice = (
   annualizedEarnings: number | undefined,
-  ethSupply: JSBI | undefined,
+  ethSupply: number | undefined,
   monetaryPremium: number | undefined,
   peRatio: number | undefined,
 ) => {
@@ -142,13 +142,14 @@ const calcProjectedPrice = (
   return earningsPerShare * peRatio * monetaryPremium;
 };
 
-const PriceModel: FC<{ groupedAnalysis1: GroupedAnalysis1 }> = ({
-  groupedAnalysis1,
-}) => {
+const PriceModel: FC<{
+  ethPriceStats: EthPriceStats;
+}> = ({ ethPriceStats, }) => {
   const peRatios = usePeRatios();
-  const burnRateAll = groupedAnalysis1?.burnRates.burnRateAllUsd;
-  const ethPrice = groupedAnalysis1?.ethPrice?.usd;
-  const ethSupply = useScarcity()?.ethSupply;
+  const burnRates = useBurnRates();
+  const burnRateAll = burnRates?.burnRateAllUsd;
+  const ethPrice = ethPriceStats.usd;
+  const ethSupply = useImpreciseEthSupply();
   const [peRatio, setPeRatio] = useState<number>();
   const [peRatioPosition, setPeRatioPosition] = useState<number>(0);
   const [monetaryPremium, setMonetaryPremium] = useState(1);

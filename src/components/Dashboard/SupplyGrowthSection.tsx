@@ -6,7 +6,6 @@ import { useBaseFeeOverTime } from "../../api/base-fee-over-time";
 import { useBaseFeePerGasStats } from "../../api/base-fee-per-gas-stats";
 import type { EthPriceStats } from "../../api/eth-price-stats";
 import type { EthSupply } from "../../api/eth-supply";
-import type { BurnRates } from "../../api/grouped-analysis-1";
 import type { Scarcity } from "../../api/scarcity";
 import type { Unit } from "../../denomination";
 import type { Gwei } from "../../eth-units";
@@ -80,14 +79,12 @@ const pointsFromBaseFeesOverTime = (
   );
 
 type Props = {
-  burnRates: BurnRates;
   ethSupply: EthSupply;
   ethPriceStats: EthPriceStats;
   scarcity: Scarcity | undefined;
 };
 
 const SupplyGrowthSection: FC<Props> = ({
-  burnRates,
   ethSupply,
   ethPriceStats,
   scarcity,
@@ -143,7 +140,6 @@ const SupplyGrowthSection: FC<Props> = ({
               <div className="w-full flex flex-col md:flex-row isolate">
                 <div className="hidden md:block w-1/3">
                   <BurnGauge
-                    burnRates={burnRates}
                     ethPriceStats={ethPriceStats}
                     timeFrame={timeFrame}
                     unit={unit}
@@ -152,7 +148,6 @@ const SupplyGrowthSection: FC<Props> = ({
                 <div className="md:w-1/3">
                   <SupplyGrowthGauge
                     scarcity={scarcity}
-                    burnRates={burnRates}
                     onClickTimeFrame={handleClickTimeFrame}
                     simulatePreMerge={simulatePreMerge}
                     timeFrame={timeFrame}

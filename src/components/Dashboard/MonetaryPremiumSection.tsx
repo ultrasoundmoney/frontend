@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import type { FC } from "react";
 import { Suspense } from "react";
-import type { GroupedAnalysis1 } from "../../api/grouped-analysis-1";
+import type { EthPriceStats} from "../../api/eth-price-stats";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import Flippenings from "../Flippenings";
 import IssuanceBreakdown from "../IssuanceBreakdown";
@@ -12,9 +12,11 @@ const ScarcityWidget = dynamic(() => import("../ScarcityWidget"), {
   ssr: false,
 });
 
-type Props = { groupedAnalysis1: GroupedAnalysis1 };
+type Props = {
+  ethPriceStats: EthPriceStats;
+};
 
-const MonetaryPremiumSection: FC<Props> = ({ groupedAnalysis1 }) => (
+const MonetaryPremiumSection: FC<Props> = ({ethPriceStats}) => (
   <div className="xs:px-4 md:px-16" id="monetary-premium">
     <SectionDivider
       title="monetary premium"
@@ -30,7 +32,7 @@ const MonetaryPremiumSection: FC<Props> = ({ groupedAnalysis1 }) => (
             <Flippenings />
           </div>
           <div className="basis-1/2 flex flex-col gap-y-4">
-            <PriceModel groupedAnalysis1={groupedAnalysis1} />
+            <PriceModel ethPriceStats={ethPriceStats} />
             <IssuanceBreakdown />
           </div>
         </div>

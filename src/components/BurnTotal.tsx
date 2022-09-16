@@ -4,10 +4,10 @@ import Image from "next/image";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 import CountUp from "react-countup";
-import type {
-  BurnRates,
-  FeesBurned,
-  GroupedAnalysis1,
+import type { BurnRates, FeesBurned } from "../api/grouped-analysis-1";
+import {
+  decodeGroupedAnalysis1,
+  useGroupedAnalysis1,
 } from "../api/grouped-analysis-1";
 import fireSvg from "../assets/fire-own.svg";
 import { londonHardfork } from "../dates";
@@ -55,35 +55,40 @@ const timeFrameMillisecondsMap: Record<LimitedTimeFrameNext, number> = {
 };
 
 type Props = {
-  groupedAnalysis1: GroupedAnalysis1;
   onClickTimeFrame: () => void;
   timeFrame: TimeFrameNext;
   unit: Unit;
 };
 
-const BurnTotal: FC<Props> = ({
-  groupedAnalysis1,
-  onClickTimeFrame,
-  timeFrame,
-  unit,
-}) => {
-  const burnRates = groupedAnalysis1.burnRates;
-  const feesBurned = groupedAnalysis1.feesBurned;
+const BurnTotal: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
+  const groupedAnalysis1F = useGroupedAnalysis1();
+  const groupedAnalysis1 =
+    groupedAnalysis1F !== undefined
+      ? decodeGroupedAnalysis1(groupedAnalysis1F)
+      : undefined;
+  const burnRates = groupedAnalysis1?.burnRates;
+  const feesBurned = groupedAnalysis1?.feesBurned;
   const [millisecondsSinceLondonHardFork, setMillisecondsSinceLondonHardfork] =
     useState<number>();
 
   const selectedFeesBurnedEth =
-    feesBurned[timeframeFeesBurnedMap[timeFrame]["eth"]];
+    feesBurned === undefined
+      ? undefined
+      : feesBurned[timeframeFeesBurnedMap[timeFrame]["eth"]];
 
   // In ETH or USD K.
   const selectedFeesBurned =
-    unit === "eth"
+    feesBurned === undefined
+      ? undefined
+      : unit === "eth"
       ? feesBurned[timeframeFeesBurnedMap[timeFrame]["eth"]]
       : feesBurned[timeframeFeesBurnedMap[timeFrame][unit]];
 
   // In ETH / min or USD K / min.
   const selectedBurnRate =
-    unit === "eth"
+    burnRates === undefined
+      ? undefined
+      : unit === "eth"
       ? burnRates[timeframeBurnRateMap[timeFrame][unit]]
       : burnRates[timeframeBurnRateMap[timeFrame][unit]];
 
@@ -106,7 +111,7 @@ const BurnTotal: FC<Props> = ({
 
   // Fraction.
   const issuanceOffset =
-    selectedIssuance === undefined
+    selectedIssuance === undefined || selectedFeesBurnedEth === undefined
       ? undefined
       : Format.ethFromWei(selectedFeesBurnedEth) / selectedIssuance;
 
@@ -175,7 +180,9 @@ const BurnTotal: FC<Props> = ({
                 decimals={unit === "eth" ? 2 : 0}
                 duration={0.8}
                 end={
-                  unit === "eth"
+                  selectedFeesBurned === undefined
+                    ? 0
+                    : unit === "eth"
                     ? Format.ethFromWei(selectedFeesBurned)
                     : selectedFeesBurned
                 }
@@ -202,7 +209,9 @@ const BurnTotal: FC<Props> = ({
                   decimals={unit === "eth" ? 2 : 1}
                   duration={0.8}
                   end={
-                    unit === "eth"
+                    selectedBurnRate === undefined
+                      ? 0
+                      : unit === "eth"
                       ? Format.ethFromWei(selectedBurnRate)
                       : selectedBurnRate / 1000
                   }

@@ -3,9 +3,9 @@ import _last from "lodash/last";
 import dynamic from "next/dynamic";
 import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
+import { useBurnRates } from "../../api/burn-rates";
 import { useEffectiveBalanceSum } from "../../api/effective-balance-sum";
 import { useImpreciseEthSupply } from "../../api/eth-supply";
-import type { BurnRates } from "../../api/grouped-analysis-1";
 import { useSupplyProjectionInputs } from "../../api/supply-projection";
 import type { Eth, Gwei } from "../../eth-units";
 import { GWEI_PER_ETH, WEI_PER_ETH } from "../../eth-units";
@@ -157,9 +157,8 @@ const BurnMarkers: FC<{ burnMarkers?: BurnMarkers }> = ({ burnMarkers }) => {
   );
 };
 
-type Props = { burnRates: BurnRates };
-
-const EquilibriumWidget: FC<Props> = ({ burnRates }) => {
+const EquilibriumWidget = () => {
+  const burnRates = useBurnRates();
   const supplyProjectionInputs = useSupplyProjectionInputs();
   const ethSupply = useImpreciseEthSupply();
   const effectiveBalanceSum = useEffectiveBalanceSum();

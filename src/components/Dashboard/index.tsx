@@ -10,10 +10,6 @@ import type { EthPriceStats } from "../../api/eth-price-stats";
 import { useEthPriceStats } from "../../api/eth-price-stats";
 import type { EthSupplyF } from "../../api/eth-supply";
 import { decodeEthSupply, useEthSupply } from "../../api/eth-supply";
-import {
-  decodeGroupedAnalysis1,
-  useGroupedAnalysis1,
-} from "../../api/grouped-analysis-1";
 import type { MergeEstimate } from "../../api/merge-estimate";
 import { useMergeEstimate } from "../../api/merge-estimate";
 import type { MergeStatus } from "../../api/merge-status";
@@ -63,7 +59,7 @@ const SupplyProjectionsSection = dynamic(
 const SupplyGrowthSection = dynamic(() => import("./SupplyGrowthSection"), {
   ssr: false,
 });
-const BurnSection = dynamic(() => import("./BurnSection"), { ssr: false });
+import BurnSection from "./BurnSection";
 
 const useGasTitle = (defaultTitle: string, baseFeePerGas: WeiNumber) => {
   const [gasTitle, setGasTitle] = useState<string>();
@@ -118,8 +114,6 @@ const Dashboard: FC<Props> = ({
   const adminToken = useAdminToken();
   const crBaseFeePerGas = useClientRefreshed(baseFeePerGas, useBaseFeePerGas);
   const crEthPriceStats = useClientRefreshed(ethPriceStats, useEthPriceStats);
-  const groupedAnalysis1F = useGroupedAnalysis1();
-  const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysis1F);
   const gasTitle = useGasTitle(
     "dashboard | ultrasound.money",
     crBaseFeePerGas.wei,
@@ -206,22 +200,20 @@ const Dashboard: FC<Props> = ({
               mergeStatus={mergeProxyStatus}
             />
             <SupplyGrowthSection
-              burnRates={groupedAnalysis1.burnRates}
               ethSupply={ethSupply}
               ethPriceStats={ethPriceStats}
               scarcity={scarcity}
             />
             <SupplyProjectionsSection
-              burnRates={groupedAnalysis1.burnRates}
               ethPriceStats={ethPriceStats}
               scarcity={scarcity}
             />
             <div className="h-16"></div>
-            <BurnSection groupedAnalysis1={groupedAnalysis1} />
+            <BurnSection />
             <div className="h-16"></div>
             <TotalValueSecuredSection ethPriceStats={ethPriceStats} />
             <div className="h-16"></div>
-            <MonetaryPremiumSection groupedAnalysis1={groupedAnalysis1} />
+            <MonetaryPremiumSection ethPriceStats={ethPriceStats} />
             <FamSection />
             <JoinDiscordSection />
             <div className="flex px-4 md:px-0 mt-32">

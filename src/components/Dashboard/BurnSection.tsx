@@ -1,32 +1,21 @@
-import dynamic from "next/dynamic";
 import type { FC } from "react";
 import { Suspense, useCallback, useState } from "react";
-import type { GroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import type { Unit } from "../../denomination";
 import type { TimeFrameNext } from "../../time-frames";
 import { timeFramesNext } from "../../time-frames";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import BurnCategoryWidget from "../BurnCategoryWidget";
+import BurnLeaderboard from "../BurnLeaderboard";
+import BurnRecords from "../BurnRecords";
 import BurnTotal from "../BurnTotal";
 import CurrencyControl from "../CurrencyControl";
+import DeflationaryStreak from "../DeflationaryStreak";
+import LatestBlocks from "../LatestBlocks";
 import SectionDivider from "../SectionDivider";
 import TimeFrameControl from "../TimeFrameControl";
 import { WidgetTitle } from "../WidgetSubcomponents";
 
-const BurnLeaderboard = dynamic(() => import("../BurnLeaderboard"), {
-  ssr: false,
-});
-const LatestBlocks = dynamic(() => import("../LatestBlocks"), { ssr: false });
-const BurnRecords = dynamic(() => import("../BurnRecords"), { ssr: false });
-const DeflationaryStreak = dynamic(() => import("../DeflationaryStreak"), {
-  ssr: false,
-});
-
-type Props = {
-  groupedAnalysis1: GroupedAnalysis1;
-};
-
-const BurnSection: FC<Props> = ({ groupedAnalysis1 }) => {
+const BurnSection: FC = () => {
   const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
 
@@ -76,14 +65,12 @@ const BurnSection: FC<Props> = ({ groupedAnalysis1 }) => {
               `}
             >
               <BurnTotal
-                groupedAnalysis1={groupedAnalysis1}
                 onClickTimeFrame={handleClickTimeFrame}
                 timeFrame={timeFrame}
                 unit={unit}
               />
               <div className="lg:col-start-2 lg:row-start-1 lg:row-end-5 lg:h-[688px] xl:h-[702px] flex flex-col gap-y-4">
                 <BurnLeaderboard
-                  groupedAnalysis1={groupedAnalysis1}
                   onClickTimeFrame={handleClickTimeFrame}
                   timeFrame={timeFrame}
                   unit={unit}
@@ -94,14 +81,13 @@ const BurnSection: FC<Props> = ({ groupedAnalysis1 }) => {
                 />
               </div>
               <div className="lg:row-start-2">
-                <LatestBlocks groupedAnalysis1={groupedAnalysis1} unit={unit} />
+                <LatestBlocks unit={unit} />
               </div>
               <div className="lg:row-start-3">
-                <DeflationaryStreak groupedAnalysis1={groupedAnalysis1} />
+                <DeflationaryStreak />
               </div>
               <div className="lg:row-end-5">
                 <BurnRecords
-                  groupedAnalysis1={groupedAnalysis1}
                   onClickTimeFrame={handleClickTimeFrame}
                   timeFrame={timeFrame}
                 />

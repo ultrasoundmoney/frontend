@@ -1,7 +1,7 @@
 import { secondsToMilliseconds } from "date-fns";
 import useSWR from "swr";
-import { Slot } from "../beacon-units";
-import { EthNumber } from "../eth-units";
+import type { Slot } from "../beacon-units";
+import type { EthNumber } from "../eth-units";
 import type { DateTimeString } from "../time";
 import { fetchJson } from "./fetchers";
 

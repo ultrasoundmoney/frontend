@@ -2,11 +2,11 @@ import * as DateFns from "date-fns";
 import flow from "lodash/flow";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
-import Skeleton from "react-loading-skeleton";
 import { useBlockLag } from "../../api/block-lag";
-import type {
-  GroupedAnalysis1,
-  LatestBlock,
+import type { LatestBlock } from "../../api/grouped-analysis-1";
+import {
+  decodeGroupedAnalysis1,
+  useGroupedAnalysis1
 } from "../../api/grouped-analysis-1";
 import type { Unit } from "../../denomination";
 import { WEI_PER_GWEI } from "../../eth-units";
@@ -48,9 +48,9 @@ const Resyncing = () => (
   </BodyTextV2>
 );
 
-const LatestBlockAge: FC<{ groupedAnalysis1: GroupedAnalysis1 }> = ({
-  groupedAnalysis1,
-}) => {
+const LatestBlockAge: FC = () => {
+  const groupedAnalysisF = useGroupedAnalysis1();
+  const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysisF);
   const [timeElapsed, setTimeElapsed] = useState<number>();
 
   useEffect(() => {
@@ -145,10 +145,12 @@ const LatestBlockComponent: FC<{
   </div>
 );
 
-type Props = { groupedAnalysis1: GroupedAnalysis1; unit: Unit };
+type Props = { unit: Unit };
 
-const LatestBlocks: FC<Props> = ({ groupedAnalysis1, unit }) => {
-  const latestBlockFees = groupedAnalysis1.latestBlockFees;
+const LatestBlocks: FC<Props> = ({ unit }) => {
+  const groupedAnalysis1F = useGroupedAnalysis1();
+  const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysis1F);
+  const latestBlockFees = groupedAnalysis1?.latestBlockFees;
   const blockLag = useBlockLag()?.blockLag;
 
   return (
@@ -182,7 +184,7 @@ const LatestBlocks: FC<Props> = ({ groupedAnalysis1, unit }) => {
           ))}
         </ul>
         <div className="flex justify-between flex-wrap gap-y-2">
-          <LatestBlockAge groupedAnalysis1={groupedAnalysis1} />
+          <LatestBlockAge />
           <div className="flex gap-x-2 items-baseline">
             <LabelUnitText>
               <SkeletonText width="0.5rem">{blockLag}</SkeletonText>

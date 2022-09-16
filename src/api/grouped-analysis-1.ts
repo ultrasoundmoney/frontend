@@ -85,21 +85,24 @@ export type GroupedAnalysis1F = {
 };
 
 export const decodeGroupedAnalysis1 = (
-  raw: GroupedAnalysis1F,
-): GroupedAnalysis1 => ({
-  ...raw,
-  burnRecords: decodeBurnRecords({
-    number: raw.number,
-    records: raw.burnRecords,
-  }).records,
-});
+  raw: GroupedAnalysis1F | undefined,
+): GroupedAnalysis1 | undefined =>
+  raw === undefined
+    ? undefined
+    : {
+        ...raw,
+        burnRecords: decodeBurnRecords({
+          number: raw.number,
+          records: raw.burnRecords,
+        }).records,
+      };
 
-export const useGroupedAnalysis1 = (): GroupedAnalysis1F => {
+export const useGroupedAnalysis1 = (): GroupedAnalysis1F | undefined => {
   const { data } = useSWR<GroupedAnalysis1F>(
     "/api/fees/grouped-analysis-1",
     fetchJson,
     {
-      refreshInterval: Duration.millisFromSeconds(1),
+      refreshInterval: Duration.millisFromSeconds(4),
     },
   );
 

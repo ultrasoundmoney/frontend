@@ -3,6 +3,7 @@ import type { FC } from "react";
 import { useCallback, useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { animated, config, useSpring } from "react-spring";
+import { useBurnRates } from "../../api/burn-rates";
 import type { BurnRates } from "../../api/grouped-analysis-1";
 import type { Scarcity } from "../../api/scarcity";
 import colors from "../../colors";
@@ -17,14 +18,14 @@ import SplitGaugeSvg from "./SplitGaugeSvg";
 
 const useGrowthRate = (
   scarcity: Scarcity | undefined,
-  burnRates: BurnRates,
+  burnRates: BurnRates | undefined,
   simulatePreMerge: boolean,
   timeFrame: TimeFrameNext,
 ): number | undefined => {
   const [growthRate, setGrowthRate] = useState<number>();
 
   useEffect(() => {
-    if (scarcity === undefined) {
+    if (scarcity === undefined || burnRates === undefined) {
       return;
     }
 
@@ -58,7 +59,6 @@ const useGrowthRate = (
 
 type Props = {
   scarcity: Scarcity | undefined;
-  burnRates: BurnRates;
   onClickTimeFrame: () => void;
   simulatePreMerge: boolean;
   timeFrame: TimeFrameNext;
@@ -66,11 +66,11 @@ type Props = {
 
 const SupplyGrowthGauge: FC<Props> = ({
   scarcity,
-  burnRates,
   onClickTimeFrame,
-  simulatePreMerge: simulatePreMerge,
+  simulatePreMerge,
   timeFrame,
 }) => {
+  const burnRates = useBurnRates();
   const growthRate = useGrowthRate(
     scarcity,
     burnRates,

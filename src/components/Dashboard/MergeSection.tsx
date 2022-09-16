@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
-import { FC, useCallback, useState } from "react";
+import type { FC} from "react";
+import { useCallback, useState } from "react";
 import { Suspense } from "react";
 import type { MergeEstimate } from "../../api/merge-estimate";
 import SupplyChangeSinceMerge from "../SupplyChangeSinceMerge";

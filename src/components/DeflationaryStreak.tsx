@@ -3,16 +3,17 @@ import type { FC } from "react";
 import { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
-import type { GroupedAnalysis1 } from "../api/grouped-analysis-1";
+import { decodeGroupedAnalysis1, useGroupedAnalysis1 } from "../api/grouped-analysis-1";
 import { AmountUnitSpace } from "./Spacing";
 import SpanMoji from "./SpanMoji";
 import { TextRoboto } from "./Texts";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
-const DeflationaryStreak: FC<{
-  groupedAnalysis1: GroupedAnalysis1;
-}> = ({ groupedAnalysis1 }) => {
+const DeflationaryStreak: FC = () => {
   const [timeElapsed, setTimeElapsed] = useState<string>();
+  const groupedAnalysis1F = useGroupedAnalysis1();
+  const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysis1F);
+
   const deflationaryStreak = groupedAnalysis1?.deflationaryStreak.postMerge;
   const latestBlocks = groupedAnalysis1?.latestBlockFees;
 
