@@ -1,18 +1,18 @@
-import { format, formatDuration, intervalToDuration, parseISO } from "date-fns";
-import type { StaticImageData } from "next/image";
+import { formatDuration, intervalToDuration, parseISO } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
+import type { StaticImageData } from "next/image";
 import Image from "next/image";
-import { FC, useEffect, useState } from "react";
+import type { FC } from "react";
+import { useEffect, useState } from "react";
 import type { MergeEstimate } from "../../api/merge-estimate";
-import * as Format from "../../format";
+import type { MergeStatus } from "../../api/merge-status";
+import pandaOwn from "../../assets/panda-own.svg";
 import { LabelUnitText } from "../Texts";
 import LabelText from "../TextsNext/LabelText";
 import SkeletonText from "../TextsNext/SkeletonText";
 import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
-import pandaOwn from "../../assets/panda-own.svg";
-import { MergeStatus } from "../../api/merge-status";
 
 type Props = {
   mergeEstimate: MergeEstimate;
