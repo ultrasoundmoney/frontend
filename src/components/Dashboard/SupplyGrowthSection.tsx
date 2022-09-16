@@ -1,14 +1,24 @@
+import _maxBy from "lodash/maxBy";
 import type { FC } from "react";
-import { useMemo } from "react";
-import { Suspense, useCallback, useState } from "react";
+import { Suspense, useCallback, useMemo, useState } from "react";
+import type { BaseFeeAtTime } from "../../api/base-fee-over-time";
+import { useBaseFeeOverTime } from "../../api/base-fee-over-time";
+import { useBaseFeePerGasStats } from "../../api/base-fee-per-gas-stats";
 import type { EthPriceStats } from "../../api/eth-price-stats";
+import type { EthSupply } from "../../api/eth-supply";
 import type { BurnRates } from "../../api/grouped-analysis-1";
 import type { Scarcity } from "../../api/scarcity";
 import type { Unit } from "../../denomination";
+import type { Gwei } from "../../eth-units";
+import { WEI_PER_GWEI } from "../../eth-units";
+import type { JsTimestamp } from "../../time";
 import type { TimeFrameNext } from "../../time-frames";
 import { timeFramesNext } from "../../time-frames";
+import BaseFeesWidget from "../BaseFeesWidget";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import CurrencyControl from "../CurrencyControl";
+import EthSupplyWidget from "../EthSupplyWidget";
+import GasMarketWidget from "../GasMarketWidget";
 import BurnGauge from "../Gauges/BurnGauge";
 import IssuanceGauge from "../Gauges/IssuanceGauge";
 import SupplyGrowthGauge from "../Gauges/SupplyGrowthGauge";
@@ -16,32 +26,21 @@ import SectionDivider from "../SectionDivider";
 import TimeFrameControl from "../TimeFrameControl";
 import ToggleSwitch from "../ToggleSwitch";
 import { WidgetTitle } from "../WidgetSubcomponents";
-import EthSupplyWidget from "../EthSupplyWidget";
-import type { EthSupply } from "../../api/eth-supply";
-import BaseFeesWidget from "../BaseFeesWidget";
-import type { BaseFeeAtTime } from "../../api/base-fee-over-time";
-import { useBaseFeeOverTime } from "../../api/base-fee-over-time";
-import { useBaseFeePerGasStats } from "../../api/base-fee-per-gas-stats";
-import GasMarketWidget from "../GasMarketWidget";
-import type { Gwei } from "../../eth-units";
-import { WEI_PER_GWEI } from "../../eth-units";
-import _maxBy from "lodash/maxBy";
-import { JsTimestamp } from "../../time";
 
 export type BaseFeePoint = [JsTimestamp, Gwei];
 
 const Controls: FC<{
   timeFrame: TimeFrameNext;
   onSetTimeFrame: (timeFrame: TimeFrameNext) => void;
-  simulateMerge: boolean;
-  onToggleSimulateMerge: (simulateMerge: boolean) => void;
+  simulatePreMerge: boolean;
+  onToggleSimulatePreMerge: (simulatePreMerge: boolean) => void;
   unit: Unit;
   onSetUnit: (unit: Unit) => void;
 }> = ({
   onSetTimeFrame,
   onSetUnit,
-  onToggleSimulateMerge,
-  simulateMerge,
+  onToggleSimulatePreMerge,
+  simulatePreMerge,
   timeFrame,
   unit,
 }) => (
@@ -63,8 +62,8 @@ const Controls: FC<{
         {/* On tablet the vertical alignment looks off without aligning the toggle with the neighboring controls */}
         <div className="flex items-center h-[34px] self-end">
           <ToggleSwitch
-            checked={simulateMerge}
-            onToggle={onToggleSimulateMerge}
+            checked={simulatePreMerge}
+            onToggle={onToggleSimulatePreMerge}
           />
         </div>
       </div>
@@ -95,7 +94,7 @@ const SupplyGrowthSection: FC<Props> = ({
 }) => {
   const baseFeesOverTime = useBaseFeeOverTime();
   const baseFeePerGasStats = useBaseFeePerGasStats();
-  const [simulateMerge, setSimulateMerge] = useState(true);
+  const [simulatePreMerge, setSimulatePreMerge] = useState(false);
   const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
 
@@ -103,9 +102,9 @@ const SupplyGrowthSection: FC<Props> = ({
 
   const handleSetUnit = useCallback(setUnit, [setUnit]);
 
-  const handleToggleSimulateMerge = useCallback(() => {
-    setSimulateMerge(!simulateMerge);
-  }, [simulateMerge]);
+  const handleToggleSimulatePreMerge = useCallback(() => {
+    setSimulatePreMerge(simulatePreMerge => !simulatePreMerge);
+  }, []);
 
   const handleClickTimeFrame = useCallback(() => {
     const currentTimeFrameIndex = timeFramesNext.indexOf(timeFrame);
@@ -155,15 +154,14 @@ const SupplyGrowthSection: FC<Props> = ({
                     scarcity={scarcity}
                     burnRates={burnRates}
                     onClickTimeFrame={handleClickTimeFrame}
-                    simulateMerge={simulateMerge}
+                    simulatePreMerge={simulatePreMerge}
                     timeFrame={timeFrame}
-                    toggleSimulateMerge={handleToggleSimulateMerge}
                   />
                 </div>
                 <div className="hidden md:block w-1/3">
                   <IssuanceGauge
                     ethPriceStats={ethPriceStats}
-                    simulateMerge={simulateMerge}
+                    simulatePreMerge={simulatePreMerge}
                     timeFrame={timeFrame}
                     unit={unit}
                   />
@@ -172,8 +170,8 @@ const SupplyGrowthSection: FC<Props> = ({
               <Controls
                 onSetTimeFrame={handleSetTimeFrame}
                 onSetUnit={handleSetUnit}
-                onToggleSimulateMerge={handleToggleSimulateMerge}
-                simulateMerge={simulateMerge}
+                onToggleSimulatePreMerge={handleToggleSimulatePreMerge}
+                simulatePreMerge={simulatePreMerge}
                 timeFrame={timeFrame}
                 unit={unit}
               />

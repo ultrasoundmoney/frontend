@@ -18,7 +18,7 @@ import SplitGaugeSvg from "./SplitGaugeSvg";
 const useGrowthRate = (
   scarcity: Scarcity | undefined,
   burnRates: BurnRates,
-  simulateMerge: boolean,
+  simulatePreMerge: boolean,
   timeFrame: TimeFrameNext,
 ): number | undefined => {
   const [growthRate, setGrowthRate] = useState<number>();
@@ -33,9 +33,9 @@ const useGrowthRate = (
     // Convert burn rate from eth/min to eth/year.
     const feeBurnYear = Format.ethFromWei(selectedBurnRate) * 60 * 24 * 365.25;
 
-    const issuanceRate = simulateMerge
-      ? StaticEtherData.posIssuanceYear
-      : StaticEtherData.posIssuanceYear + StaticEtherData.powIssuanceYear;
+    const issuanceRate = simulatePreMerge
+      ? StaticEtherData.posIssuanceYear + StaticEtherData.powIssuanceYear
+      : StaticEtherData.posIssuanceYear;
 
     const nextGrowthRate =
       scarcity.ethSupply === undefined
@@ -51,7 +51,7 @@ const useGrowthRate = (
     if (rateRounded !== undefined && rateRounded !== nextGrowthRate) {
       setGrowthRate(rateRounded);
     }
-  }, [burnRates, growthRate, scarcity, simulateMerge, timeFrame]);
+  }, [burnRates, growthRate, scarcity, simulatePreMerge, timeFrame]);
 
   return growthRate;
 };
@@ -60,22 +60,21 @@ type Props = {
   scarcity: Scarcity | undefined;
   burnRates: BurnRates;
   onClickTimeFrame: () => void;
-  simulateMerge: boolean;
+  simulatePreMerge: boolean;
   timeFrame: TimeFrameNext;
-  toggleSimulateMerge: () => void;
 };
 
 const SupplyGrowthGauge: FC<Props> = ({
   scarcity,
   burnRates,
   onClickTimeFrame,
-  simulateMerge,
+  simulatePreMerge: simulatePreMerge,
   timeFrame,
 }) => {
   const growthRate = useGrowthRate(
     scarcity,
     burnRates,
-    simulateMerge,
+    simulatePreMerge,
     timeFrame,
   );
   const toPercentTwoDigitSigned = useCallback<(n: number) => string>(
