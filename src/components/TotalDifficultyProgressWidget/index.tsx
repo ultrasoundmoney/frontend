@@ -81,13 +81,7 @@ const TotalDifficultyProgressWidget: FC<Props> = ({
         <div className="flex flex-col md:flex-row justify-between items-baseline gap-x-1 gap-y-2">
           <div className="flex items-baseline gap-x-1">
             <LabelUnitText className="font-normal text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-indigo-500">
-              <SkeletonText width="3rem">
-                {progress === undefined
-                  ? undefined
-                  : progress === 1 || mergeStatus.status === "merged"
-                  ? Format.formatPercentNoDecimals(progress)
-                  : Format.formatPercentThreeDecimals(progress)}
-              </SkeletonText>
+              100%
             </LabelUnitText>
             <LabelText className="text-slateus-400">{` of TTD`}</LabelText>
           </div>
