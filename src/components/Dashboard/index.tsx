@@ -59,7 +59,10 @@ const SupplyProjectionsSection = dynamic(
 const SupplyGrowthSection = dynamic(() => import("./SupplyGrowthSection"), {
   ssr: false,
 });
-import BurnSection from "./BurnSection";
+// Likely culprit.
+const BurnSection = dynamic(() => import("./BurnSection"), {
+  ssr: false,
+});
 
 const useGasTitle = (defaultTitle: string, baseFeePerGas: WeiNumber) => {
   const [gasTitle, setGasTitle] = useState<string>();
