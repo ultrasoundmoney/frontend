@@ -1,6 +1,7 @@
 import HighchartsReact from "highcharts-react-official";
-import { getTime, parseISO, subHours } from "date-fns";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { subHours } from "date-fns";
+import { useEffect, useMemo, useState } from "react";
+import type { SupplyAtTime } from "../../api/supply-since-merge";
 import { useSupplySinceMerge } from "../../api/supply-since-merge";
 import _last from "lodash/last";
 import _merge from "lodash/merge";
@@ -19,12 +20,15 @@ import { formatInTimeZone } from "date-fns-tz";
 import type { MergeStatus } from "../../api/merge-status";
 import { useImpreciseEthSupply } from "../../api/eth-supply";
 import SimulatePreMerge from "../SimulatePreMerge";
+import { MERGE_TIMESTAMP } from "../../eth-constants";
 
 // Somehow resolves an error thrown by the annotation lib
 if (typeof window !== "undefined") {
   // Initialize highchats annotations module (only on browser, doesn't work on server)
   highchartsAnnotations(Highcharts);
 }
+
+const SUPPLY_SINCE_MERGE_SERIES_ID = "supply-since-merge-series";
 
 const baseOptions: Highcharts.Options = {
   accessibility: { enabled: false },
@@ -111,22 +115,75 @@ type Props = {
   onSimulatePreMerge: () => void;
 };
 
-const SupplySinceMergeWidget: FC<Props> = ({ mergeStatus }) => {
+const SupplySinceMergeWidget: FC<Props> = ({
+  mergeStatus,
+  simulatePreMerge,
+  onSimulatePreMerge,
+}) => {
   const [showPeakLine, setShowPeakLine] = useState<boolean>();
   const ethSupply = useImpreciseEthSupply();
   const supplySinceMerge = useSupplySinceMerge();
-  const [simulatePreMerge, setSimulatePreMerge] = useState(false);
 
-  const handleToggleSimulatePreMerge = useCallback(() => {
-    setSimulatePreMerge((simulatePreMerge) => !simulatePreMerge);
-  }, []);
+  const mergeTimestamp = new Date(mergeStatus.timestamp).getTime();
 
-  const supplySinceMergeSeries = useMemo(() => {
-    return supplySinceMerge?.supply_by_minute.map(
-      ({ timestamp, supply }) =>
-        [getTime(parseISO(timestamp)), supply] as SupplyPoint,
-    );
-  }, [supplySinceMerge]);
+  const pointFromSupplyAtTime = (supplyAtTime: SupplyAtTime): SupplyPoint => [
+    new Date(supplyAtTime.timestamp).getTime(),
+    supplyAtTime.supply,
+  ];
+
+  const supplySinceMergeSeries = useMemo(
+    () =>
+      supplySinceMerge === undefined
+        ? undefined
+        : supplySinceMerge.supply_by_minute.map(
+            (point): SupplyPoint => [
+              new Date(point.timestamp).getTime(),
+              point.supply,
+            ],
+          ),
+    [supplySinceMerge],
+  );
+
+  const supplySinceMergePowSeries = useMemo(
+    () =>
+      supplySinceMerge === undefined
+        ? undefined
+        : supplySinceMerge.supply_by_minute.reduce(
+            (points: SupplyPoint[], point) => {
+              const timestamp = new Date(point.timestamp).getTime();
+
+              if (timestamp <= MERGE_TIMESTAMP.getTime()) {
+                return points;
+              }
+
+              const lastPoint = _last(points);
+              if (lastPoint === undefined) {
+                return [pointFromSupplyAtTime(point)];
+              }
+
+              const slotsSinceMerge =
+                (new Date(point.timestamp).getTime() -
+                  MERGE_TIMESTAMP.getTime()) /
+                1000 /
+                12;
+
+              const simulatedPowIssuanceSinceMerge = slotsSinceMerge * 1.875;
+
+              const powSupplyAdd =
+                timestamp > MERGE_TIMESTAMP.getTime() && simulatePreMerge
+                  ? simulatedPowIssuanceSinceMerge
+                  : 0;
+
+              const nextSupply = point.supply + powSupplyAdd;
+
+              const nextPoint: SupplyPoint = [timestamp, nextSupply];
+
+              return [...points, nextPoint];
+            },
+            [],
+          ),
+    [simulatePreMerge, supplySinceMerge],
+  );
 
   useEffect(() => {
     if (supplySinceMergeSeries === undefined) {
@@ -146,6 +203,10 @@ const SupplySinceMergeWidget: FC<Props> = ({ mergeStatus }) => {
 
     const supplySinceMergeMap = Object.fromEntries(
       new Map(supplySinceMergeSeries ?? []).entries(),
+    );
+
+    const supplySinceMergePowMap = Object.fromEntries(
+      new Map(supplySinceMergePowSeries ?? []).entries(),
     );
 
     return _merge({}, baseOptions, {
@@ -176,12 +237,12 @@ const SupplySinceMergeWidget: FC<Props> = ({ mergeStatus }) => {
         plotLines: [
           {
             id: "merge-plotline",
-            value: getTime(parseISO(mergeStatus.timestamp)),
+            value: mergeTimestamp,
             color: colors.slateus400,
             width: 1,
             label: {
               x: 10,
-              y: 115,
+              y: 54,
               style: { color: colors.slateus400 },
               align: "center",
               useHTML: true,
@@ -201,26 +262,8 @@ const SupplySinceMergeWidget: FC<Props> = ({ mergeStatus }) => {
         ],
       },
       series: [
-        // {
-        //   id: "supply-by-minute-series-projection",
-        //   type: "line",
-        //   dashStyle: "Dash",
-        //   color: {
-        //     linearGradient: {
-        //       x1: 0,
-        //       y1: 0,
-        //       x2: 1,
-        //       y2: 0,
-        //     },
-        //     stops: [
-        //       [0, "#5487F4"],
-        //       [1, "#6A54F4"],
-        //     ],
-        //   },
-        //   data: [],
-        // },
         {
-          id: "supply-since-merge-series",
+          id: SUPPLY_SINCE_MERGE_SERIES_ID,
           type: "line",
           data:
             lastPoint !== undefined && supplySinceMergeSeries !== undefined
@@ -254,6 +297,38 @@ const SupplySinceMergeWidget: FC<Props> = ({ mergeStatus }) => {
             ],
           },
         },
+        {
+          id: "supply-since-merge-pow-series",
+          type: "line",
+          dashStyle: "Dash",
+          visible: simulatePreMerge,
+          color: {
+            linearGradient: {
+              x1: 0,
+              y1: 0,
+              x2: 1,
+              y2: 0,
+            },
+            stops: [
+              [0, "#5487F4"],
+              [1, "#6A54F4"],
+            ],
+          },
+          data: supplySinceMergePowSeries,
+        },
+        {
+          enableMouseTracking: false,
+          visible: simulatePreMerge,
+          id: "supply-since-merge-pow-series-shadow",
+          states: { hover: { enabled: false }, select: { enabled: false } },
+          type: "line",
+          color: {},
+          shadow: {
+            color: "rgba(75, 144, 219, 0.2)",
+            width: 15,
+          },
+          data: supplySinceMergePowSeries,
+        },
       ],
       tooltip: {
         backgroundColor: "transparent",
@@ -266,7 +341,12 @@ const SupplySinceMergeWidget: FC<Props> = ({ mergeStatus }) => {
             return undefined;
           }
 
-          const total = supplySinceMergeMap[x];
+          // Hack in showing the right graphs' points.
+          const pointMap =
+            this.series.userOptions.id === SUPPLY_SINCE_MERGE_SERIES_ID
+              ? supplySinceMergeMap
+              : supplySinceMergePowMap;
+          const total = pointMap[x];
           if (total === undefined) {
             return undefined;
           }
@@ -278,6 +358,7 @@ const SupplySinceMergeWidget: FC<Props> = ({ mergeStatus }) => {
             x >= peakPoint[0] && ethSupply !== undefined
               ? total - peakPoint[1]
               : undefined;
+
           const supplyDeltaFormatted =
             supplyDelta !== undefined ? formatTwoDigit(supplyDelta) : undefined;
 
@@ -307,7 +388,15 @@ const SupplySinceMergeWidget: FC<Props> = ({ mergeStatus }) => {
         },
       },
     } as Highcharts.Options);
-  }, [ethSupply, mergeStatus, showPeakLine, supplySinceMergeSeries]);
+  }, [
+    ethSupply,
+    mergeStatus.block_number,
+    mergeTimestamp,
+    showPeakLine,
+    simulatePreMerge,
+    supplySinceMergePowSeries,
+    supplySinceMergeSeries,
+  ]);
 
   return (
     <WidgetErrorBoundary title="supply since merge">
@@ -348,7 +437,7 @@ const SupplySinceMergeWidget: FC<Props> = ({ mergeStatus }) => {
         >
           <HighchartsReact highcharts={Highcharts} options={options} />
         </div>
-        <div className="flex flex-wrap gap-y-4 justify-between">
+        <div className="flex flex-wrap gap-x-4 gap-y-4 justify-between">
           <UpdatedAgo updatedAt={supplySinceMerge?.timestamp} />
           <SimulatePreMerge
             checked={simulatePreMerge}
