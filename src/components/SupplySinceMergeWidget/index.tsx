@@ -174,12 +174,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
                 60 /
                 5;
 
-              const powSupplyAdd =
-                timestamp > MERGE_TIMESTAMP.getTime() && simulateProofOfWork
-                  ? simulatedPowIssuanceSinceMerge
-                  : 0;
-
-              const nextSupply = point.supply + powSupplyAdd;
+              const nextSupply = point.supply + simulatedPowIssuanceSinceMerge;
 
               const nextPoint: SupplyPoint = [timestamp, nextSupply];
 
@@ -187,7 +182,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
             },
             [],
           ),
-    [simulateProofOfWork, supplySinceMerge],
+    [supplySinceMerge],
   );
 
   useEffect(() => {
@@ -216,6 +211,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
 
     return _merge({}, baseOptions, {
       yAxis: {
+        max: simulateProofOfWork ? undefined : 120_522_000,
         plotLines: [
           {
             id: "peak-since-merge",
@@ -306,7 +302,6 @@ const SupplySinceMergeWidget: FC<Props> = ({
           id: "supply-since-merge-pow-series",
           type: "line",
           dashStyle: "Dash",
-          visible: simulateProofOfWork,
           color: {
             linearGradient: {
               x1: 0,
@@ -323,7 +318,6 @@ const SupplySinceMergeWidget: FC<Props> = ({
         },
         {
           enableMouseTracking: false,
-          visible: simulateProofOfWork,
           id: "supply-since-merge-pow-series-shadow",
           states: { hover: { enabled: false }, select: { enabled: false } },
           type: "line",
@@ -375,6 +369,11 @@ const SupplySinceMergeWidget: FC<Props> = ({
           return `
             <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
               <div class="text-blue-spindle">${formattedDate}</div>
+              <div class="text-blue-spindle">${
+                this.series.userOptions.id === SUPPLY_SINCE_MERGE_SERIES_ID
+                  ? "simulated PoW"
+                  : ""
+              }</div>
               <div class="flex flex-col items-end">
                 <div class="text-white">
                   ${formatTwoDigit(total)}
