@@ -36,7 +36,7 @@ const MergeSection: FC<Props> = ({ ethSupply, mergeEstimate, mergeStatus }) => {
           id="merge"
         >
           <div className="flex flex-col lg:flex-row gap-x-4 gap-y-4 mt-16">
-            <div className="flex flex-col gap-y-4 md:w-1/2">
+            <div className="flex flex-col gap-y-4 lg:w-1/2">
               <TotalDifficultyProgressWidget
                 mergeStatus={mergeStatus}
                 mergeEstimate={mergeEstimate}
@@ -50,7 +50,7 @@ const MergeSection: FC<Props> = ({ ethSupply, mergeEstimate, mergeStatus }) => {
                 onSimulatePreMerge={handleSimulatePreMerge}
               />
             </div>
-            <div className="flex md:w-1/2">
+            <div className="flex lg:w-1/2">
               <SupplySinceMergeWidget
                 mergeStatus={mergeStatus}
                 simulatePreMerge={simulatePreMerge}

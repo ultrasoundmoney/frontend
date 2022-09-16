@@ -25,7 +25,7 @@ const IssuanceGauge: FC<Props> = ({
   const selectedAverageEthPrice = averageEthPrice?.[timeFrame];
 
   const issuancePerDay = simulatePreMerge
-    ? StaticEtherData.powIssuancePerDay + StaticEtherData.posIssuancePerDay
+    ? StaticEtherData.powIssuancePerDay 
     : StaticEtherData.posIssuancePerDay;
 
   const issuance =

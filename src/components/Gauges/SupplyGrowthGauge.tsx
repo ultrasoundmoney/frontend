@@ -35,7 +35,7 @@ const useGrowthRate = (
     const feeBurnYear = Format.ethFromWei(selectedBurnRate) * 60 * 24 * 365.25;
 
     const issuanceRate = simulatePreMerge
-      ? StaticEtherData.posIssuanceYear + StaticEtherData.powIssuanceYear
+      ? StaticEtherData.powIssuanceYear
       : StaticEtherData.posIssuanceYear;
 
     const nextGrowthRate =
@@ -47,7 +47,7 @@ const useGrowthRate = (
     const rateRounded =
       nextGrowthRate === undefined
         ? undefined
-        : Math.round(nextGrowthRate * 1000) / 1000;
+        : Math.round(nextGrowthRate * 10000) / 10000;
 
     if (rateRounded !== undefined && rateRounded !== nextGrowthRate) {
       setGrowthRate(rateRounded);

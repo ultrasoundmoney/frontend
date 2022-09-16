@@ -96,7 +96,7 @@ const SupplyChangeSinceMerge: FC<Props> = ({
             <SimulatePreMerge
               checked={simulatePreMerge}
               onToggle={onSimulatePreMerge}
-            ></SimulatePreMerge>
+            />
           </div>
         </div>
       </WidgetBackground>

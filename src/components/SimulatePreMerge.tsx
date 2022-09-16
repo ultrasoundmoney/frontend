@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import LabelText from "./TextsNext/LabelText";
+import { TextInter } from "./Texts";
 import ToggleSwitch from "./ToggleSwitch";
 
 type Props = {
@@ -8,8 +8,16 @@ type Props = {
 };
 
 const SimulatePreMerge: FC<Props> = ({ checked, onToggle }) => (
-  <div className="flex items-center gap-x-4">
-    <LabelText>simulate pre-merge</LabelText>
+  <div className="flex items-center gap-x-2">
+  <TextInter
+    className={`
+      font-light
+      text-slateus-200 text-xs
+      tracking-widest
+    `}
+  >
+    SIMULATE PoW
+  </TextInter>
     <ToggleSwitch checked={checked} onToggle={onToggle} />
   </div>
 );
