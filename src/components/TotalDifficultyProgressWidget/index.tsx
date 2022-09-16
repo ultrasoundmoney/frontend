@@ -9,8 +9,6 @@ import type { MergeStatus } from "../../api/merge-status";
 import pandaOwn from "../../assets/panda-own.svg";
 import { LabelUnitText } from "../Texts";
 import LabelText from "../TextsNext/LabelText";
-import SkeletonText from "../TextsNext/SkeletonText";
-import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
 
@@ -22,7 +20,6 @@ type Props = {
 };
 
 const TotalDifficultyProgressWidget: FC<Props> = ({
-  mergeEstimate,
   mergeStatus,
   progress,
 }) => {
@@ -85,13 +82,7 @@ const TotalDifficultyProgressWidget: FC<Props> = ({
             </LabelUnitText>
             <LabelText className="text-slateus-400">{` of TTD`}</LabelText>
           </div>
-          {mergeStatus.status === "merged" ? (
-            <SkeletonText width="6rem">
-              {mergedDate && <LabelText>merged {mergedDate} ago</LabelText>}
-            </SkeletonText>
-          ) : (
-            <UpdatedAgo updatedAt={mergeEstimate.timestamp} />
-          )}
+          <LabelText>merged {mergedDate} ago</LabelText>
         </div>
       </WidgetBackground>
     </WidgetErrorBoundary>
