@@ -73,7 +73,6 @@ const baseOptions: Highcharts.Options = {
     type: "datetime",
     lineWidth: 0,
     labels: {
-      format: "{value:%l%p} UTC",
       style: { color: colors.slateus400 },
     },
     tickWidth: 0,
@@ -102,6 +101,9 @@ const baseOptions: Highcharts.Options = {
 };
 
 const peakPoint: SupplyPoint = [1663224120000, 120521136.6];
+
+const POW_ISSUANCE_PER_DAY = powIssuancePerDay - posIssuancePerDay;
+const SLOTS_PER_DAY = 24 * 60 * 5;
 
 // Given a list of supply points check if no point within the last hour has crossed it, if no, return peak point.
 const getNewPeakSinceMerge = (
@@ -169,10 +171,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
                 12;
 
               const simulatedPowIssuanceSinceMerge =
-                (slotsSinceMerge * (powIssuancePerDay - posIssuancePerDay)) /
-                24 /
-                60 /
-                5;
+                (slotsSinceMerge * POW_ISSUANCE_PER_DAY) / SLOTS_PER_DAY;
 
               const nextSupply = point.supply + simulatedPowIssuanceSinceMerge;
 
@@ -211,25 +210,19 @@ const SupplySinceMergeWidget: FC<Props> = ({
 
     return _merge({}, baseOptions, {
       yAxis: {
-        max: simulateProofOfWork ? undefined : 120_522_000,
+        max: simulateProofOfWork
+          ? undefined
+          : mergeStatus.supply + POW_ISSUANCE_PER_DAY / 4,
         plotLines: [
           {
-            id: "peak-since-merge",
-            value: showPeakLine ? peakPoint[1] : undefined,
+            id: "merge-supply",
+            value: peakPoint[1],
             color: colors.slateus400,
             width: 1,
             label: {
               x: 32,
               y: 4,
               style: { color: colors.slateus400 },
-              align: "right",
-              useHTML: true,
-              formatter: () => `
-                <img
-                  class="w-4 h-4 ml-2"
-                  src="/peak-own.svg"
-                />
-              `,
             },
           },
         ],
@@ -266,6 +259,31 @@ const SupplySinceMergeWidget: FC<Props> = ({
         {
           id: SUPPLY_SINCE_MERGE_SERIES_ID,
           type: "line",
+          threshold: mergeStatus.supply,
+          // negativeColor: {
+          //   linearGradient: {
+          //     x1: 0,
+          //     y1: 1,
+          //     x2: 0,
+          //     y2: 0,
+          //   },
+          //   stops: [
+          //     [0, "#EDDB36"],
+          //     [1, "#E79800"],
+          //   ],
+          // },
+          // color: {
+          //   linearGradient: {
+          //     x1: 0,
+          //     y1: 0,
+          //     x2: 0,
+          //     y2: 1,
+          //   },
+          //   stops: [
+          //     [0.2, "#5487F4"],
+          //     [1, "#00FFFB"],
+          //   ],
+          // },
           data:
             lastPoint !== undefined && supplySinceMergeSeries !== undefined
               ? [
@@ -368,12 +386,12 @@ const SupplySinceMergeWidget: FC<Props> = ({
 
           return `
             <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
-              <div class="text-blue-spindle">${formattedDate}</div>
-              <div class="text-blue-spindle">${
-                this.series.userOptions.id === SUPPLY_SINCE_MERGE_SERIES_ID
-                  ? "simulated PoW"
+              <div class="text-slateus-400">${
+                this.series.userOptions.id !== SUPPLY_SINCE_MERGE_SERIES_ID
+                  ? "SIMULATED PoW"
                   : ""
               }</div>
+              <div class="text-blue-spindle">${formattedDate}</div>
               <div class="flex flex-col items-end">
                 <div class="text-white">
                   ${formatTwoDigit(total)}
@@ -397,8 +415,8 @@ const SupplySinceMergeWidget: FC<Props> = ({
   }, [
     ethSupply,
     mergeStatus.block_number,
+    mergeStatus.supply,
     mergeTimestamp,
-    showPeakLine,
     simulateProofOfWork,
     supplySinceMergePowSeries,
     supplySinceMergeSeries,
