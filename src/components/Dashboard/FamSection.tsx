@@ -3,9 +3,7 @@ import type { FC } from "react";
 import { Suspense } from "react";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 const TwitterFam = dynamic(() => import("../TwitterFam"), { suspense: true });
-const FollowingYou = dynamic(() => import("../FollowingYou"), {
-  suspense: true,
-});
+const FollowingYou = dynamic(() => import("../FollowingYou"));
 
 const FamSection: FC = () => (
   <BasicErrorBoundary>

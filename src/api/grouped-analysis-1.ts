@@ -100,7 +100,6 @@ export const useGroupedAnalysis1 = (): GroupedAnalysis1F => {
     fetchJson,
     {
       refreshInterval: Duration.millisFromSeconds(1),
-      suspense: true,
     },
   );
 
