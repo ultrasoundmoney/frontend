@@ -9,14 +9,14 @@ import BaseGauge from "./IssuanceBurnBaseGauge";
 
 type Props = {
   ethPriceStats: EthPriceStats;
-  simulatePreMerge: boolean;
+  simulateProofOfWork: boolean;
   timeFrame: TimeFrameNext;
   unit: Unit;
 };
 
 const IssuanceGauge: FC<Props> = ({
   ethPriceStats,
-  simulatePreMerge: simulatePreMerge,
+  simulateProofOfWork: simulateProofOfWork,
   timeFrame,
   unit,
 }) => {
@@ -24,7 +24,7 @@ const IssuanceGauge: FC<Props> = ({
 
   const selectedAverageEthPrice = averageEthPrice?.[timeFrame];
 
-  const issuancePerDay = simulatePreMerge
+  const issuancePerDay = simulateProofOfWork
     ? StaticEtherData.powIssuancePerDay 
     : StaticEtherData.posIssuancePerDay;
 

@@ -19,7 +19,7 @@ import type { SupplyPoint } from "../Dashboard/MergeSection";
 import { formatInTimeZone } from "date-fns-tz";
 import type { MergeStatus } from "../../api/merge-status";
 import { useImpreciseEthSupply } from "../../api/eth-supply";
-import SimulatePreMerge from "../SimulatePreMerge";
+import SimulateProofOfWork from "../SimulateProofOfWork";
 import { MERGE_TIMESTAMP } from "../../eth-constants";
 import { posIssuancePerDay, powIssuancePerDay } from "../../static-ether-data";
 
@@ -112,14 +112,14 @@ const getNewPeakSinceMerge = (
 
 type Props = {
   mergeStatus: MergeStatus;
-  simulatePreMerge: boolean;
-  onSimulatePreMerge: () => void;
+  simulateProofOfWork: boolean;
+  onSimulateProofOfWork: () => void;
 };
 
 const SupplySinceMergeWidget: FC<Props> = ({
   mergeStatus,
-  simulatePreMerge,
-  onSimulatePreMerge,
+  simulateProofOfWork,
+  onSimulateProofOfWork,
 }) => {
   const [showPeakLine, setShowPeakLine] = useState<boolean>();
   const ethSupply = useImpreciseEthSupply();
@@ -175,7 +175,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
                 5;
 
               const powSupplyAdd =
-                timestamp > MERGE_TIMESTAMP.getTime() && simulatePreMerge
+                timestamp > MERGE_TIMESTAMP.getTime() && simulateProofOfWork
                   ? simulatedPowIssuanceSinceMerge
                   : 0;
 
@@ -187,7 +187,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
             },
             [],
           ),
-    [simulatePreMerge, supplySinceMerge],
+    [simulateProofOfWork, supplySinceMerge],
   );
 
   useEffect(() => {
@@ -306,7 +306,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
           id: "supply-since-merge-pow-series",
           type: "line",
           dashStyle: "Dash",
-          visible: simulatePreMerge,
+          visible: simulateProofOfWork,
           color: {
             linearGradient: {
               x1: 0,
@@ -323,7 +323,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
         },
         {
           enableMouseTracking: false,
-          visible: simulatePreMerge,
+          visible: simulateProofOfWork,
           id: "supply-since-merge-pow-series-shadow",
           states: { hover: { enabled: false }, select: { enabled: false } },
           type: "line",
@@ -400,7 +400,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
     mergeStatus.block_number,
     mergeTimestamp,
     showPeakLine,
-    simulatePreMerge,
+    simulateProofOfWork,
     supplySinceMergePowSeries,
     supplySinceMergeSeries,
   ]);
@@ -446,9 +446,9 @@ const SupplySinceMergeWidget: FC<Props> = ({
         </div>
         <div className="flex flex-wrap gap-x-4 gap-y-4 justify-between">
           <UpdatedAgo updatedAt={supplySinceMerge?.timestamp} />
-          <SimulatePreMerge
-            checked={simulatePreMerge}
-            onToggle={onSimulatePreMerge}
+          <SimulateProofOfWork
+            checked={simulateProofOfWork}
+            onToggle={onSimulateProofOfWork}
           />
         </div>
       </WidgetBackground>

@@ -7,7 +7,7 @@ import type { MergeStatus } from "../../api/merge-status";
 import { useSupplySinceMerge } from "../../api/supply-since-merge";
 import { getDateTimeFromSlot } from "../../beacon-time";
 import { MERGE_TIMESTAMP } from "../../eth-constants";
-import SimulatePreMerge from "../SimulatePreMerge";
+import SimulateProofOfWork from "../SimulateProofOfWork";
 import { TextRoboto } from "../Texts";
 import LabelText from "../TextsNext/LabelText";
 import SkeletonText from "../TextsNext/SkeletonText";
@@ -19,15 +19,15 @@ type Props = {
   ethSupply: EthSupply;
   mergeEstimate: MergeEstimate;
   mergeStatus: MergeStatus;
-  simulatePreMerge: boolean;
-  onSimulatePreMerge: () => void;
+  simulateProofOfWork: boolean;
+  onSimulateProofOfWork: () => void;
 };
 
 const SupplyChangeSinceMerge: FC<Props> = ({
   ethSupply,
   mergeStatus,
-  simulatePreMerge,
-  onSimulatePreMerge,
+  simulateProofOfWork,
+  onSimulateProofOfWork,
 }) => {
   const supplySinceMerge = useSupplySinceMerge();
   const ethSupplyImprecise = getEthSupplyImprecise(ethSupply);
@@ -43,7 +43,7 @@ const SupplyChangeSinceMerge: FC<Props> = ({
   const simulatedPowIssuanceSinceMerge =
     slotsSinceMerge === undefined ? undefined : slotsSinceMerge * 1.875;
 
-  const supplyDelta = !simulatePreMerge
+  const supplyDelta = !simulateProofOfWork
     ? ethSupplyImprecise - mergeStatus.supply
     : simulatedPowIssuanceSinceMerge === undefined
     ? undefined
@@ -93,9 +93,9 @@ const SupplyChangeSinceMerge: FC<Props> = ({
                 ethSupply.beaconBalancesSum.slot,
               ).toISOString()}
             />
-            <SimulatePreMerge
-              checked={simulatePreMerge}
-              onToggle={onSimulatePreMerge}
+            <SimulateProofOfWork
+              checked={simulateProofOfWork}
+              onToggle={onSimulateProofOfWork}
             />
           </div>
         </div>

@@ -7,7 +7,7 @@ type Props = {
   checked: boolean;
 };
 
-const SimulatePreMerge: FC<Props> = ({ checked, onToggle }) => (
+const SimulateProofOfWork: FC<Props> = ({ checked, onToggle }) => (
   <div className="flex items-center gap-x-2">
   <TextInter
     className={`
@@ -22,4 +22,4 @@ const SimulatePreMerge: FC<Props> = ({ checked, onToggle }) => (
   </div>
 );
 
-export default SimulatePreMerge;
+export default SimulateProofOfWork;

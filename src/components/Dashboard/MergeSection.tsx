@@ -22,10 +22,10 @@ type Props = {
 };
 
 const MergeSection: FC<Props> = ({ ethSupply, mergeEstimate, mergeStatus }) => {
-  const [simulatePreMerge, setSimulatePreMerge] = useState(false);
+  const [simulateProofOfWork, setSimulateProofOfWork] = useState(false);
 
-  const handleSimulatePreMerge = useCallback(() => {
-    setSimulatePreMerge((simulatePreMerge) => !simulatePreMerge);
+  const handleSimulateProofOfWork = useCallback(() => {
+    setSimulateProofOfWork((simulateProofOfWork) => !simulateProofOfWork);
   }, []);
 
   return (
@@ -46,15 +46,15 @@ const MergeSection: FC<Props> = ({ ethSupply, mergeEstimate, mergeStatus }) => {
                 ethSupply={ethSupply}
                 mergeEstimate={mergeEstimate}
                 mergeStatus={mergeStatus}
-                simulatePreMerge={simulatePreMerge}
-                onSimulatePreMerge={handleSimulatePreMerge}
+                simulateProofOfWork={simulateProofOfWork}
+                onSimulateProofOfWork={handleSimulateProofOfWork}
               />
             </div>
             <div className="flex lg:w-1/2">
               <SupplySinceMergeWidget
                 mergeStatus={mergeStatus}
-                simulatePreMerge={simulatePreMerge}
-                onSimulatePreMerge={handleSimulatePreMerge}
+                simulateProofOfWork={simulateProofOfWork}
+                onSimulateProofOfWork={handleSimulateProofOfWork}
               />
             </div>
           </div>

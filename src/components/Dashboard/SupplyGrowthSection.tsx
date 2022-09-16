@@ -32,15 +32,15 @@ export type BaseFeePoint = [JsTimestamp, Gwei];
 const Controls: FC<{
   timeFrame: TimeFrameNext;
   onSetTimeFrame: (timeFrame: TimeFrameNext) => void;
-  simulatePreMerge: boolean;
-  onToggleSimulatePreMerge: (simulatePreMerge: boolean) => void;
+  simulateProofOfWork: boolean;
+  onToggleSimulateProofOfWork: (simulateProofOfWork: boolean) => void;
   unit: Unit;
   onSetUnit: (unit: Unit) => void;
 }> = ({
   onSetTimeFrame,
   onSetUnit,
-  onToggleSimulatePreMerge,
-  simulatePreMerge,
+  onToggleSimulateProofOfWork,
+  simulateProofOfWork,
   timeFrame,
   unit,
 }) => (
@@ -70,8 +70,8 @@ const Controls: FC<{
         {/* On tablet the vertical alignment looks off without aligning the toggle with the neighboring controls */}
         <div className="flex items-center h-[34px] self-end">
           <ToggleSwitch
-            checked={simulatePreMerge}
-            onToggle={onToggleSimulatePreMerge}
+            checked={simulateProofOfWork}
+            onToggle={onToggleSimulateProofOfWork}
           />
         </div>
       </div>
@@ -100,7 +100,7 @@ const SupplyGrowthSection: FC<Props> = ({
 }) => {
   const baseFeesOverTime = useBaseFeeOverTime();
   const baseFeePerGasStats = useBaseFeePerGasStats();
-  const [simulatePreMerge, setSimulatePreMerge] = useState(false);
+  const [simulateProofOfWork, setSimulateProofOfWork] = useState(false);
   const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
 
@@ -108,8 +108,8 @@ const SupplyGrowthSection: FC<Props> = ({
 
   const handleSetUnit = useCallback(setUnit, [setUnit]);
 
-  const handleToggleSimulatePreMerge = useCallback(() => {
-    setSimulatePreMerge((simulatePreMerge) => !simulatePreMerge);
+  const handleToggleSimulateProofOfWork = useCallback(() => {
+    setSimulateProofOfWork((simulateProofOfWork) => !simulateProofOfWork);
   }, []);
 
   const handleClickTimeFrame = useCallback(() => {
@@ -158,14 +158,14 @@ const SupplyGrowthSection: FC<Props> = ({
                   <SupplyGrowthGauge
                     scarcity={scarcity}
                     onClickTimeFrame={handleClickTimeFrame}
-                    simulatePreMerge={simulatePreMerge}
+                    simulateProofOfWork={simulateProofOfWork}
                     timeFrame={timeFrame}
                   />
                 </div>
                 <div className="hidden md:block w-1/3">
                   <IssuanceGauge
                     ethPriceStats={ethPriceStats}
-                    simulatePreMerge={simulatePreMerge}
+                    simulateProofOfWork={simulateProofOfWork}
                     timeFrame={timeFrame}
                     unit={unit}
                   />
@@ -174,8 +174,8 @@ const SupplyGrowthSection: FC<Props> = ({
               <Controls
                 onSetTimeFrame={handleSetTimeFrame}
                 onSetUnit={handleSetUnit}
-                onToggleSimulatePreMerge={handleToggleSimulatePreMerge}
-                simulatePreMerge={simulatePreMerge}
+                onToggleSimulateProofOfWork={handleToggleSimulateProofOfWork}
+                simulateProofOfWork={simulateProofOfWork}
                 timeFrame={timeFrame}
                 unit={unit}
               />
