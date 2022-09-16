@@ -11,7 +11,6 @@ import BurnTotal from "../BurnTotal";
 import CurrencyControl from "../CurrencyControl";
 import SectionDivider from "../SectionDivider";
 import TimeFrameControl from "../TimeFrameControl";
-import ToggleSwitch from "../ToggleSwitch";
 import { WidgetTitle } from "../WidgetSubcomponents";
 
 const BurnLeaderboard = dynamic(() => import("../BurnLeaderboard"), {
