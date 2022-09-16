@@ -7,6 +7,7 @@ import type { MergeStatus } from "../../api/merge-status";
 import { useSupplySinceMerge } from "../../api/supply-since-merge";
 import { getDateTimeFromSlot } from "../../beacon-time";
 import { MERGE_TIMESTAMP } from "../../eth-constants";
+import { posIssuancePerDay, powIssuancePerDay } from "../../static-ether-data";
 import SimulateProofOfWork from "../SimulateProofOfWork";
 import { TextRoboto } from "../Texts";
 import LabelText from "../TextsNext/LabelText";
@@ -22,6 +23,9 @@ type Props = {
   simulateProofOfWork: boolean;
   onSimulateProofOfWork: () => void;
 };
+
+const POW_ISSUANCE_PER_DAY = powIssuancePerDay - posIssuancePerDay;
+const SLOTS_PER_DAY = 24 * 60 * 5;
 
 const SupplyChangeSinceMerge: FC<Props> = ({
   ethSupply,
@@ -41,7 +45,9 @@ const SupplyChangeSinceMerge: FC<Props> = ({
         12;
 
   const simulatedPowIssuanceSinceMerge =
-    slotsSinceMerge === undefined ? undefined : slotsSinceMerge * 1.875;
+    slotsSinceMerge === undefined
+      ? undefined
+      : (slotsSinceMerge * POW_ISSUANCE_PER_DAY) / SLOTS_PER_DAY;
 
   const supplyDelta = !simulateProofOfWork
     ? ethSupplyImprecise - mergeStatus.supply
