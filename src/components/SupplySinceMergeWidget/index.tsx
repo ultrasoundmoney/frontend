@@ -1,6 +1,6 @@
 import HighchartsReact from "highcharts-react-official";
 import { getTime, parseISO, subHours } from "date-fns";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSupplySinceMerge } from "../../api/supply-since-merge";
 import _last from "lodash/last";
 import _merge from "lodash/merge";
@@ -18,6 +18,7 @@ import type { SupplyPoint } from "../Dashboard/MergeSection";
 import { formatInTimeZone } from "date-fns-tz";
 import type { MergeStatus } from "../../api/merge-status";
 import { useImpreciseEthSupply } from "../../api/eth-supply";
+import SimulatePreMerge from "../SimulatePreMerge";
 
 // Somehow resolves an error thrown by the annotation lib
 if (typeof window !== "undefined") {
@@ -112,6 +113,11 @@ const SupplySinceMergeWidget: FC<Props> = ({ mergeStatus }) => {
   const [showPeakLine, setShowPeakLine] = useState<boolean>();
   const ethSupply = useImpreciseEthSupply();
   const supplySinceMerge = useSupplySinceMerge();
+  const [simulatePreMerge, setSimulatePreMerge] = useState(false);
+
+  const handleToggleSimulatePreMerge = useCallback(() => {
+    setSimulatePreMerge((simulatePreMerge) => !simulatePreMerge);
+  }, []);
 
   const supplySinceMergeSeries = useMemo(() => {
     return supplySinceMerge?.supply_by_minute.map(
@@ -217,17 +223,17 @@ const SupplySinceMergeWidget: FC<Props> = ({ mergeStatus }) => {
           data:
             lastPoint !== undefined && supplySinceMergeSeries !== undefined
               ? [
-                ...supplySinceMergeSeries,
-                {
-                  x: lastPoint?.[0],
-                  y: lastPoint?.[1],
-                  marker: {
-                    id: "supply-by-minute-final-point",
-                    symbol: `url(/graph-dot-blue.svg)`,
-                    enabled: true,
+                  ...supplySinceMergeSeries,
+                  {
+                    x: lastPoint?.[0],
+                    y: lastPoint?.[1],
+                    marker: {
+                      id: "supply-by-minute-final-point",
+                      symbol: `url(/graph-dot-blue.svg)`,
+                      enabled: true,
+                    },
                   },
-                },
-              ]
+                ]
               : undefined,
           shadow: {
             color: "rgba(75, 144, 219, 0.2)",
@@ -252,7 +258,7 @@ const SupplySinceMergeWidget: FC<Props> = ({ mergeStatus }) => {
         useHTML: true,
         borderWidth: 0,
         shadow: false,
-        formatter: function() {
+        formatter: function () {
           const x = typeof this.x === "number" ? this.x : undefined;
           if (x === undefined) {
             return undefined;
@@ -340,8 +346,12 @@ const SupplySinceMergeWidget: FC<Props> = ({ mergeStatus }) => {
         >
           <HighchartsReact highcharts={Highcharts} options={options} />
         </div>
-        <div className="flex justify-between flex-wrap gap-y-2">
+        <div className="flex flex-wrap gap-y-4 justify-between">
           <UpdatedAgo updatedAt={supplySinceMerge?.timestamp} />
+          <SimulatePreMerge
+            checked={simulatePreMerge}
+            onToggle={handleToggleSimulatePreMerge}
+          />
         </div>
       </WidgetBackground>
     </WidgetErrorBoundary>
