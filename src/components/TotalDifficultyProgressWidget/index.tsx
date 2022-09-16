@@ -80,9 +80,9 @@ const TotalDifficultyProgressWidget: FC<Props> = ({
             <LabelUnitText className="font-normal text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-indigo-500">
               100%
             </LabelUnitText>
-            <LabelText className="text-slateus-400">{` of TTD`}</LabelText>
+            <LabelText color="text-slateus-400">{` of TTD`}</LabelText>
           </div>
-          <LabelText>merged {mergedDate} ago</LabelText>
+          <LabelText color="text-slateus-400">merged <span className="text-slateus-200">{mergedDate}</span> ago</LabelText>
         </div>
       </WidgetBackground>
     </WidgetErrorBoundary>

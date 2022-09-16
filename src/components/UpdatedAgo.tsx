@@ -52,7 +52,7 @@ const UpdatedAge: FC<{ updatedAt: DateTimeString | undefined }> = ({
 
   return (
     <div className="flex gap-x-1 items-baseline truncate">
-      <LabelText className="text-slateus-400">updated</LabelText>
+      <LabelText color="text-slateus-400">updated</LabelText>
       <LabelUnitText className="-mr-1">
         <SkeletonText width="1rem">{secsOrMins}</SkeletonText>
       </LabelUnitText>
@@ -61,7 +61,7 @@ const UpdatedAge: FC<{ updatedAt: DateTimeString | undefined }> = ({
           {postfixLarge}
         </SkeletonText>
       </LabelText>
-      <LabelText className="text-slateus-400 truncate">ago</LabelText>
+      <LabelText color="text-slateus-400" className="truncate">ago</LabelText>
     </div>
   );
 };

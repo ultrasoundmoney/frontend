@@ -4,16 +4,22 @@ import { TextInter } from "../Texts";
 type Props = {
   children: ReactNode;
   className?: string;
+  color?: string;
   skeletonWidth?: string;
 };
 
-const LabelText: FC<Props> = ({ children, className = "" }) => (
+const LabelText: FC<Props> = ({
+  children,
+  className = "",
+  color = "text-slateus-200",
+}) => (
   <TextInter
     className={`
       font-light
-      text-slateus-200 text-xs
+      text-xs
       uppercase tracking-widest
       ${className}
+      ${color}
     `}
   >
     {children}

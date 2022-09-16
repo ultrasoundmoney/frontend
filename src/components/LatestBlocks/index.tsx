@@ -81,7 +81,7 @@ const LatestBlockAge: FC = () => {
     <Resyncing />
   ) : (
     <div className="flex gap-x-2 items-baseline truncate">
-      <LabelText className="text-slateus-400 whitespace-nowrap">
+      <LabelText color="text-slateus-400" className="whitespace-nowrap">
         latest block
       </LabelText>
       <LabelUnitText>
@@ -90,7 +90,7 @@ const LatestBlockAge: FC = () => {
         </SkeletonText>
       </LabelUnitText>
       <LabelText className="truncate">seconds</LabelText>
-      <LabelText className="text-slateus-400">old</LabelText>
+      <LabelText color="text-slateus-400">old</LabelText>
     </div>
   );
 };
@@ -189,7 +189,7 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
             <LabelUnitText>
               <SkeletonText width="0.5rem">{blockLag}</SkeletonText>
             </LabelUnitText>
-            <LabelText className="text-slateus-400">block lag</LabelText>
+            <LabelText color="text-slateus-400">block lag</LabelText>
           </div>
         </div>
       </div>
