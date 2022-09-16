@@ -280,13 +280,12 @@ const SupplySinceMergeWidget: FC<Props> = ({
     let timestamp = MERGE_TIMESTAMP.getTime();
     let bitcoinSupply = BITCOIN_SUPPLY_AT_MERGE;
     while (timestamp < last[0]) {
-      bitcoinSupply = bitcoinSupply + 6.25;
-
       const bitcoinSupplyRescaled =
         (bitcoinSupply / BITCOIN_SUPPLY_AT_MERGE) * mergeStatus.supply;
 
       points.push([timestamp, bitcoinSupplyRescaled] as SupplyPoint);
 
+      bitcoinSupply = bitcoinSupply + 6.25;
       timestamp = addMinutes(timestamp, 10).getTime();
     }
 
