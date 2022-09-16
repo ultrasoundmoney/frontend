@@ -8,7 +8,7 @@ import BasicErrorBoundary from "../BasicErrorBoundary";
 import type { MergeStatus } from "../../api/merge-status";
 import type { EthNumber } from "../../eth-units";
 import type { EthSupply } from "../../api/eth-supply";
-import { JsTimestamp } from "../../time";
+import type { JsTimestamp } from "../../time";
 const SupplySinceMergeWidget = dynamic(
   () => import("../SupplySinceMergeWidget"),
 );
@@ -41,9 +41,7 @@ const MergeSection: FC<Props> = ({ ethSupply, mergeEstimate, mergeStatus }) => {
                 mergeStatus={mergeStatus}
               />
             </div>
-            <SupplySinceMergeWidget
-              mergeStatus={mergeStatus}
-            />
+            <SupplySinceMergeWidget mergeStatus={mergeStatus} />
           </div>
         </div>
       </Suspense>
