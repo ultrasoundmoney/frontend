@@ -87,7 +87,7 @@ const SupplyChangeSinceMerge: FC<Props> = ({
               ETH
             </span>
           </div>
-          <div className="flex flex-wrap gap-y-4 justify-between">
+          <div className="flex flex-wrap gap-x-4 gap-y-4 justify-between">
             <UpdatedAgo
               updatedAt={getDateTimeFromSlot(
                 ethSupply.beaconBalancesSum.slot,

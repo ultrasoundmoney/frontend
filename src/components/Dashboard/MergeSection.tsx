@@ -35,7 +35,7 @@ const MergeSection: FC<Props> = ({ ethSupply, mergeEstimate, mergeStatus }) => {
           id="merge"
         >
           <div className="flex flex-col lg:flex-row gap-x-4 gap-y-4 mt-16">
-            <div className="flex flex-col gap-y-4 md:w-full md:min-w-fit">
+            <div className="flex flex-col gap-y-4 md:w-1/2">
               <TotalDifficultyProgressWidget
                 mergeStatus={mergeStatus}
                 mergeEstimate={mergeEstimate}
