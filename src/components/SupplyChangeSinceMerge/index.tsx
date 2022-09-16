@@ -1,6 +1,4 @@
-import type { FC} from "react";
-import { useCallback } from "react";
-import { useState } from "react";
+import type { FC } from "react";
 import CountUp from "react-countup";
 import type { EthSupply } from "../../api/eth-supply";
 import { getEthSupplyImprecise } from "../../api/eth-supply";
@@ -21,16 +19,18 @@ type Props = {
   ethSupply: EthSupply;
   mergeEstimate: MergeEstimate;
   mergeStatus: MergeStatus;
+  simulatePreMerge: boolean;
+  onSimulatePreMerge: () => void;
 };
 
-const SupplyChangeSinceMerge: FC<Props> = ({ ethSupply, mergeStatus }) => {
+const SupplyChangeSinceMerge: FC<Props> = ({
+  ethSupply,
+  mergeStatus,
+  simulatePreMerge,
+  onSimulatePreMerge,
+}) => {
   const supplySinceMerge = useSupplySinceMerge();
-  const [simulatePreMerge, setSimulatePreMerge] = useState(false);
   const ethSupplyImprecise = getEthSupplyImprecise(ethSupply);
-
-  const handleToggleSimulatePreMerge = useCallback(() => {
-    setSimulatePreMerge((lastState) => !lastState);
-  }, []);
 
   const slotsSinceMerge =
     supplySinceMerge === undefined
@@ -95,7 +95,7 @@ const SupplyChangeSinceMerge: FC<Props> = ({ ethSupply, mergeStatus }) => {
             />
             <SimulatePreMerge
               checked={simulatePreMerge}
-              onToggle={handleToggleSimulatePreMerge}
+              onToggle={onSimulatePreMerge}
             ></SimulatePreMerge>
           </div>
         </div>

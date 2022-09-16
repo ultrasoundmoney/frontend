@@ -103,7 +103,7 @@ const SupplyGrowthSection: FC<Props> = ({
   const handleSetUnit = useCallback(setUnit, [setUnit]);
 
   const handleToggleSimulatePreMerge = useCallback(() => {
-    setSimulatePreMerge(simulatePreMerge => !simulatePreMerge);
+    setSimulatePreMerge((simulatePreMerge) => !simulatePreMerge);
   }, []);
 
   const handleClickTimeFrame = useCallback(() => {

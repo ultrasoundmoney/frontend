@@ -107,6 +107,8 @@ const getNewPeakSinceMerge = (
 
 type Props = {
   mergeStatus: MergeStatus;
+  simulatePreMerge: boolean;
+  onSimulatePreMerge: () => void;
 };
 
 const SupplySinceMergeWidget: FC<Props> = ({ mergeStatus }) => {
@@ -350,7 +352,7 @@ const SupplySinceMergeWidget: FC<Props> = ({ mergeStatus }) => {
           <UpdatedAgo updatedAt={supplySinceMerge?.timestamp} />
           <SimulatePreMerge
             checked={simulatePreMerge}
-            onToggle={handleToggleSimulatePreMerge}
+            onToggle={onSimulatePreMerge}
           />
         </div>
       </WidgetBackground>

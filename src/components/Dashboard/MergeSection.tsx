@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import type { FC } from "react";
+import { FC, useCallback, useState } from "react";
 import { Suspense } from "react";
 import type { MergeEstimate } from "../../api/merge-estimate";
 import SupplyChangeSinceMerge from "../SupplyChangeSinceMerge";
@@ -21,6 +21,12 @@ type Props = {
 };
 
 const MergeSection: FC<Props> = ({ ethSupply, mergeEstimate, mergeStatus }) => {
+  const [simulatePreMerge, setSimulatePreMerge] = useState(false);
+
+  const handleSimulatePreMerge = useCallback(() => {
+    setSimulatePreMerge((simulatePreMerge) => !simulatePreMerge);
+  }, []);
+
   return (
     <BasicErrorBoundary>
       <Suspense>
@@ -39,9 +45,17 @@ const MergeSection: FC<Props> = ({ ethSupply, mergeEstimate, mergeStatus }) => {
                 ethSupply={ethSupply}
                 mergeEstimate={mergeEstimate}
                 mergeStatus={mergeStatus}
+                simulatePreMerge={simulatePreMerge}
+                onSimulatePreMerge={handleSimulatePreMerge}
               />
             </div>
-            <SupplySinceMergeWidget mergeStatus={mergeStatus} />
+            <div className="flex md:w-1/2">
+              <SupplySinceMergeWidget
+                mergeStatus={mergeStatus}
+                simulatePreMerge={simulatePreMerge}
+                onSimulatePreMerge={handleSimulatePreMerge}
+              />
+            </div>
           </div>
         </div>
       </Suspense>
