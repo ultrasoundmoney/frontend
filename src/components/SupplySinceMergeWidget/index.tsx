@@ -21,6 +21,7 @@ import type { MergeStatus } from "../../api/merge-status";
 import { useImpreciseEthSupply } from "../../api/eth-supply";
 import SimulatePreMerge from "../SimulatePreMerge";
 import { MERGE_TIMESTAMP } from "../../eth-constants";
+import { posIssuancePerDay, powIssuancePerDay } from "../../static-ether-data";
 
 // Somehow resolves an error thrown by the annotation lib
 if (typeof window !== "undefined") {
@@ -167,7 +168,11 @@ const SupplySinceMergeWidget: FC<Props> = ({
                 1000 /
                 12;
 
-              const simulatedPowIssuanceSinceMerge = slotsSinceMerge * 1.875;
+              const simulatedPowIssuanceSinceMerge =
+                (slotsSinceMerge * (powIssuancePerDay - posIssuancePerDay)) /
+                24 /
+                60 /
+                5;
 
               const powSupplyAdd =
                 timestamp > MERGE_TIMESTAMP.getTime() && simulatePreMerge
@@ -379,7 +384,9 @@ const SupplySinceMergeWidget: FC<Props> = ({
                   ${supplyDelta === undefined ? "hidden" : ""}
                   text-transparent bg-clip-text bg-gradient-to-r ${gradientCss}
                 ">
-                  ${supplyDeltaFormatted}
+                  ${
+                    supplyDelta !== undefined && supplyDelta >= 0 ? "+" : ""
+                  }${supplyDeltaFormatted}
                   <span class="text-slateus-400"> ETH</span>
                 </div>
               </div>
