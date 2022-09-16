@@ -24,7 +24,7 @@ const SupplyChangeSinceMerge: FC<Props> = ({ ethSupply, mergeStatus }) => {
   const supplyDelta = ethSupplyImprecise - mergeStatus.supply;
 
   return (
-    <WidgetErrorBoundary title="merge estimate">
+    <WidgetErrorBoundary title="supply change since merge">
       <WidgetBackground>
         <div className={`relative flex flex-col gap-x-2 gap-y-4`}>
           <div className="flex flex-col gap-y-4">
