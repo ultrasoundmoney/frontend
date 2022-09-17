@@ -54,12 +54,10 @@ const UpdatedAge: FC<{ updatedAt: DateTimeString | undefined }> = ({
     <div className="flex gap-x-1 items-baseline truncate">
       <LabelText color="text-slateus-400">updated</LabelText>
       <LabelUnitText className="-mr-1">
-        <SkeletonText width="1rem">{secsOrMins}</SkeletonText>
+        <SkeletonText width="4.5rem">{secsOrMins}</SkeletonText>
       </LabelUnitText>
       <LabelText className="ml-1">
-        <SkeletonText className="ml-1 -top-px" width="3.5rem">
           {postfixLarge}
-        </SkeletonText>
       </LabelText>
       <LabelText color="text-slateus-400" className="truncate">ago</LabelText>
     </div>
