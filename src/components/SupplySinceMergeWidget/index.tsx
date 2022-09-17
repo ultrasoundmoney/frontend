@@ -126,10 +126,8 @@ const baseOptions: Highcharts.Options = {
         },
       },
       marker: {
-        enabled: false,
         lineColor: "white",
-        fillColor: "#4B90DB",
-        radius: 5,
+        radius: 3,
         symbol: "circle",
       },
     },
