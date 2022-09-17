@@ -39,6 +39,9 @@ const SLOTS_PER_DAY = 24 * 60 * 5;
 const baseOptions: Highcharts.Options = {
   accessibility: { enabled: false },
   chart: {
+    marginLeft: 0,
+    marginRight: 0,
+    marginTop: 10,
     backgroundColor: "transparent",
     showAxes: false,
     zooming: {
@@ -72,17 +75,41 @@ const baseOptions: Highcharts.Options = {
       enabled: false,
     },
     gridLineWidth: 0,
+    minPadding: 0.06,
+    maxPadding: 0.06,
   },
   xAxis: {
     type: "datetime",
     lineWidth: 0,
     labels: {
       style: { color: colors.slateus400 },
+      enabled: false,
     },
     tickWidth: 0,
+    minPadding: 0.04,
+    maxPadding: 0.04,
   },
   legend: {
-    enabled: false,
+    enabled: true,
+    useHTML: true,
+    symbolWidth: 0,
+    labelFormatter: function () {
+      const color =
+        this.index === 0
+          ? "bg-[#62A2F3]"
+          : this.index === 1
+          ? "bg-[#FF891D]"
+          : "bg-[#DEE2F1]";
+      return `
+      <div class="flex flex-row items-center gap-x-2">
+        
+        <div class="w-2 h-2 ${color} rounded-full"></div>
+      <div class="font-inter font-light text-slateus-400 text-xs">
+        ${this.name}
+      </div>
+      </div>
+    `;
+    },
   },
   tooltip: {
     backgroundColor: "transparent",
@@ -93,6 +120,11 @@ const baseOptions: Highcharts.Options = {
   credits: { enabled: false },
   plotOptions: {
     series: {
+      events: {
+        legendItemClick: function () {
+          return false;
+        },
+      },
       marker: {
         enabled: false,
         lineColor: "white",
@@ -163,10 +195,10 @@ const getTooltip = (
 
     const title =
       this.series.userOptions.id === SUPPLY_SINCE_MERGE_SERIES_ID
-        ? "ETHEREUM PoS"
+        ? "ETH"
         : this.series.userOptions.id === SUPPLY_SINCE_MERGE_POW_SERIES_ID
-        ? "ETHEREUM PoW"
-        : "BITCOIN";
+        ? "ETH (PoW)"
+        : "BTC";
 
     const unit = type === "bitcoin" ? "BTC" : "ETH";
 
@@ -260,12 +292,27 @@ const SupplySinceMergeWidget: FC<Props> = ({
     [supplySinceMerge],
   );
 
-  const supplyMaxPlusTen = useMemo(
+  const supplyPosMax = useMemo(
     () =>
       supplySinceMergeSeries === undefined
         ? undefined
         : supplySinceMergeSeries.reduce((pointA, pointB) =>
             pointA[1] > pointB[1] ? pointA : pointB,
+          )[1],
+    [supplySinceMergeSeries],
+  );
+
+  const supplyPowMax =
+    supplySinceMergePowSeries === undefined
+      ? undefined
+      : _last(supplySinceMergePowSeries)?.[1];
+
+  const supplyMin = useMemo(
+    () =>
+      supplySinceMergeSeries === undefined
+        ? undefined
+        : supplySinceMergeSeries.reduce((pointA, pointB) =>
+            pointA[1] < pointB[1] ? pointA : pointB,
           )[1],
     [supplySinceMergeSeries],
   );
@@ -277,8 +324,10 @@ const SupplySinceMergeWidget: FC<Props> = ({
 
     const last = supplySinceMergeSeries[supplySinceMergeSeries.length - 1];
     const points = [];
-    let timestamp = MERGE_TIMESTAMP.getTime();
-    let bitcoinSupply = BITCOIN_SUPPLY_AT_MERGE;
+    let timestamp = supplySinceMergeSeries[0][0];
+    const supplyBeforeMerge =
+      ((MERGE_TIMESTAMP.getTime() - timestamp) / 1000 / 60 / 10) * 6.25;
+    let bitcoinSupply = BITCOIN_SUPPLY_AT_MERGE - supplyBeforeMerge;
     while (timestamp < last[0]) {
       const bitcoinSupplyRescaled =
         (bitcoinSupply / BITCOIN_SUPPLY_AT_MERGE) * mergeStatus.supply;
@@ -294,6 +343,8 @@ const SupplySinceMergeWidget: FC<Props> = ({
 
   const options = useMemo((): Highcharts.Options => {
     const lastPoint = _last(supplySinceMergeSeries);
+    const lastPointBtc = _last(bitcoinSupplySeries);
+    const lastPointPow = _last(supplySinceMergePowSeries);
 
     const supplySinceMergeMap = Object.fromEntries(
       new Map(supplySinceMergeSeries ?? []).entries(),
@@ -309,7 +360,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
 
     return _merge({}, baseOptions, {
       yAxis: {
-        max: simulateProofOfWork ? undefined : supplyMaxPlusTen,
+        max: simulateProofOfWork ? undefined : supplyPosMax,
         plotLines: [
           {
             id: "merge-supply",
@@ -356,7 +407,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
         {
           id: SUPPLY_SINCE_MERGE_SERIES_ID,
           type: "line",
-          name: "Ethereum PoS",
+          name: "ETH",
           data:
             lastPoint !== undefined && supplySinceMergeSeries !== undefined
               ? [
@@ -390,20 +441,68 @@ const SupplySinceMergeWidget: FC<Props> = ({
           },
         },
         {
-          id: SUPPLY_SINCE_MERGE_POW_SERIES_ID,
-          type: "line",
-          dashStyle: "Dash",
-          name: "Ethereum PoW",
-          color: simulateProofOfWork ? colors.slateus400 : "transparent",
-          data: supplySinceMergePowSeries,
-        },
-        {
           id: BITCOIN_SUPPLY_ID,
           type: "line",
+          color: simulateProofOfWork ? "#FF891D" : "transparent",
+          shadow: {
+            color: simulateProofOfWork ? "#FF891D33" : "transparent",
+            width: 15,
+          },
+          data:
+            bitcoinSupplySeries === undefined
+              ? undefined
+              : [
+                  ...bitcoinSupplySeries,
+                  {
+                    x: lastPointBtc?.[0],
+                    y: lastPointBtc?.[1],
+                    marker: {
+                      id: "bitcoin-supply-final-point",
+                      symbol: `url(/graph-dot-bitcoin.svg)`,
+                      enabled: true,
+                    },
+                  },
+                ],
+          name: "BTC",
+          showInLegend: simulateProofOfWork,
+        },
+        {
+          id: SUPPLY_SINCE_MERGE_POW_SERIES_ID,
+          showInLegend: simulateProofOfWork,
+          type: "line",
           dashStyle: "Dash",
-          color: simulateProofOfWork ? colors.slateus400 : "transparent",
-          data: bitcoinSupplySeries,
-          name: "BITCOIN",
+          name: "ETH (PoW)",
+          // color: simulateProofOfWork ? colors.slateus400 : "transparent",
+          color: simulateProofOfWork ? colors.slateus100 : "transparent",
+          data:
+            supplySinceMergePowSeries === undefined
+              ? undefined
+              : [
+                  ...supplySinceMergePowSeries,
+                  {
+                    x: lastPointPow?.[0],
+                    y: lastPointPow?.[1],
+                    marker: {
+                      id: "supply-by-minute-final-point",
+                      symbol: `url(/graph-dot-white.svg)`,
+                      enabled: true,
+                    },
+                  },
+                ],
+        },
+        {
+          enableMouseTracking: false,
+          states: { hover: { enabled: false } },
+          data: supplySinceMergePowSeries,
+          showInLegend: false,
+          color: "transparent",
+          shadow: {
+            color: simulateProofOfWork
+              ? colors.slateus100
+              : "transparent",
+            width: 15,
+            opacity: 0.02
+          },
         },
       ],
       tooltip: {
@@ -420,12 +519,12 @@ const SupplySinceMergeWidget: FC<Props> = ({
       },
     } as Highcharts.Options);
   }, [
-    bitcoinSupplySeries,
-    mergeStatus,
-    simulateProofOfWork,
-    supplySinceMergePowSeries,
     supplySinceMergeSeries,
-    supplyMaxPlusTen,
+    supplySinceMergePowSeries,
+    bitcoinSupplySeries,
+    simulateProofOfWork,
+    supplyPosMax,
+    mergeStatus,
   ]);
 
   return (
