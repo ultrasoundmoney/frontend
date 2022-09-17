@@ -15,6 +15,7 @@ import colors from "../../colors";
 import { MERGE_TIMESTAMP } from "../../eth-constants";
 import {
   formatPercentOneDecimal,
+  formatPercentTwoDecimals,
   formatTwoDigit,
   formatZeroDecimals,
 } from "../../format";
@@ -44,7 +45,7 @@ const baseOptions: Highcharts.Options = {
   accessibility: { enabled: false },
   chart: {
     marginLeft: 0,
-    marginRight: 54,
+    marginRight: 64,
     marginTop: 10,
     backgroundColor: "transparent",
     showAxes: false,
@@ -206,7 +207,7 @@ const getTooltip = (
 
     return `
     <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
-      <div class="text-slateus-200">${title}</div>
+      <div class="text-slateus-400 mb-2">${title}</div>
       <div class="text-slateus-400">${formattedDate}</div>
       <div class="flex flex-col items-end">
         <div class="text-white">
@@ -237,7 +238,7 @@ const makeIssuanceLabel = (
     const value =
       (((mostRecentSupply - supplyAtTheMerge) / daysSinceMerge) * 365.25) /
       supplyAtTheMerge;
-    const formatted = formatPercentOneDecimal(value);
+    const formatted = formatPercentTwoDecimals(value);
     return `
       <div class="flex flex-row items-center gap-x-2">
         <div class="w-2 h-2 rounded-full"></div>
@@ -400,7 +401,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
                 color: colors.slateus400,
               },
               align: "right",
-              x: 54,
+              x: 64,
               y: 2,
               useHTML: true,
               formatter:
@@ -428,7 +429,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
                 color: colors.slateus400,
               },
               align: "right",
-              x: 54,
+              x: 64,
               y: 2,
               useHTML: true,
               formatter:
@@ -453,7 +454,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
                 color: colors.slateus400,
               },
               align: "right",
-              x: 54,
+              x: 64,
               y: 2,
               useHTML: true,
               formatter:
@@ -590,7 +591,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
           showInLegend: false,
           color: "transparent",
           shadow: {
-            color: simulateProofOfWork ? "#DEE2F1" : "transparent",
+            color: simulateProofOfWork ? "#DEE2F133" : "transparent",
             width: 15,
           },
         },
