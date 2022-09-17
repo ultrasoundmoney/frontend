@@ -28,7 +28,7 @@ const TotalDifficultyProgressWidget: FC<Props> = ({
   const mergeDate = formatInTimeZone(
     parseISO(mergeStatus.timestamp),
     "UTC",
-    "MMM d, h:mm:ssaaa",
+    "MMM d, h:mm:ss",
   );
 
   useEffect(() => {
@@ -50,8 +50,8 @@ const TotalDifficultyProgressWidget: FC<Props> = ({
       <WidgetBackground className="flex flex-col gap-y-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center min-h-[21px] ">
-            <LabelText>merged:</LabelText>
-            <LabelText className="font-normal ml-1 text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-indigo-500">{`${mergeDate} UTC`}</LabelText>
+            <LabelText>merged </LabelText>
+            <LabelText color="text-slateus-100" className="ml-1">{`${mergeDate} UTC`}</LabelText>
           </div>
           <div className="select-none flex items-center">
             <Image
@@ -77,7 +77,7 @@ const TotalDifficultyProgressWidget: FC<Props> = ({
         </div>
         <div className="flex flex-col md:flex-row justify-between items-baseline gap-x-1 gap-y-2">
           <div className="flex items-baseline gap-x-1">
-            <LabelUnitText className="font-normal text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-indigo-500">
+            <LabelUnitText className="text-slateus-200">
               100%
             </LabelUnitText>
             <LabelText color="text-slateus-400">{` of TTD`}</LabelText>
