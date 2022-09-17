@@ -1,6 +1,8 @@
 import { differenceInMinutes, differenceInSeconds, parseISO } from "date-fns";
 import type { FC } from "react";
+import { useContext } from "react";
 import { useEffect, useState } from "react";
+import { FeatureFlagsContext } from "../feature-flags";
 import type { DateTimeString } from "../time";
 import { LabelUnitText } from "./Texts";
 import LabelText from "./TextsNext/LabelText";
@@ -9,6 +11,7 @@ import SkeletonText from "./TextsNext/SkeletonText";
 const UpdatedAge: FC<{ updatedAt: DateTimeString | undefined }> = ({
   updatedAt,
 }) => {
+  const featureFlags = useContext(FeatureFlagsContext);
   const [timeElapsed, setTimeElapsed] = useState<{
     secs: number;
     mins: number;
@@ -35,7 +38,7 @@ const UpdatedAge: FC<{ updatedAt: DateTimeString | undefined }> = ({
   }, [updatedAt]);
 
   const secsOrMins =
-    timeElapsed === undefined
+    timeElapsed === undefined || featureFlags.previewSkeletons
       ? undefined
       : timeElapsed.secs >= 60
       ? timeElapsed.mins
@@ -56,10 +59,10 @@ const UpdatedAge: FC<{ updatedAt: DateTimeString | undefined }> = ({
       <LabelUnitText className="-mr-1">
         <SkeletonText width="4.5rem">{secsOrMins}</SkeletonText>
       </LabelUnitText>
-      <LabelText className="ml-1">
-          {postfixLarge}
+      <LabelText className="ml-1">{postfixLarge}</LabelText>
+      <LabelText color="text-slateus-400" className="truncate">
+        ago
       </LabelText>
-      <LabelText color="text-slateus-400" className="truncate">ago</LabelText>
     </div>
   );
 };
