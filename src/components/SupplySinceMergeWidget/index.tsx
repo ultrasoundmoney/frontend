@@ -14,7 +14,6 @@ import { useSupplySinceMerge } from "../../api/supply-since-merge";
 import colors from "../../colors";
 import { MERGE_TIMESTAMP } from "../../eth-constants";
 import {
-  formatPercentOneDecimal,
   formatPercentTwoDecimals,
   formatTwoDigit,
   formatZeroDecimals,
@@ -77,11 +76,9 @@ const baseOptions: Highcharts.Options = {
   yAxis: {
     title: { text: undefined },
     labels: {
-      enabled: false,
+      enabled: true,
     },
     gridLineWidth: 0,
-    minPadding: 0.06,
-    maxPadding: 0.06,
   },
   xAxis: {
     type: "datetime",
@@ -330,6 +327,26 @@ const SupplySinceMergeWidget: FC<Props> = ({
     [supplySinceMergeSeries],
   );
 
+  const supplyPosMin = useMemo(
+    () =>
+      supplySinceMergeSeries === undefined
+        ? undefined
+        : supplySinceMergeSeries.reduce((pointA, pointB) =>
+            pointA[1] < pointB[1] ? pointA : pointB,
+          )[1],
+    [supplySinceMergeSeries],
+  );
+
+  const supplyPowMax = useMemo(
+    () =>
+      supplySinceMergePowSeries === undefined
+        ? undefined
+        : supplySinceMergePowSeries.reduce((pointA, pointB) =>
+            pointA[1] > pointB[1] ? pointA : pointB,
+          )[1],
+    [supplySinceMergePowSeries],
+  );
+
   const bitcoinSupplySeries = useMemo(() => {
     if (supplySinceMergeSeries === undefined) {
       return undefined;
@@ -376,7 +393,21 @@ const SupplySinceMergeWidget: FC<Props> = ({
         enabled: simulateProofOfWork,
       },
       yAxis: {
-        max: simulateProofOfWork ? undefined : supplyPosMax,
+        endOnTick: false,
+        alignTicks: false,
+        startOnTick: false,
+        min:
+          supplyPosMin === undefined || supplyPowMax === undefined
+            ? undefined
+            : simulateProofOfWork
+            ? supplyPosMin - (supplyPowMax - supplyPosMin) * 0.15
+            : undefined,
+        max:
+          supplyPosMin === undefined || supplyPosMax === undefined
+            ? undefined
+            : !simulateProofOfWork
+            ? supplyPosMax + (supplyPosMax - supplyPosMin) * 0.15
+            : undefined,
         plotLines: [
           {
             id: "merge-supply",
@@ -615,6 +646,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
     bitcoinSupplySeries,
     simulateProofOfWork,
     supplyPosMax,
+    supplyPosMin,
     mergeStatus,
   ]);
 
