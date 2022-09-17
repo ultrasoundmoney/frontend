@@ -108,7 +108,7 @@ const baseOptions: Highcharts.Options = {
       <div class="flex flex-row items-center gap-x-2">
         
         <div class="w-2 h-2 ${color} rounded-full"></div>
-      <div class="font-inter font-light text-slateus-400 text-xs">
+      <div class="font-roboto font-normal text-slateus-400 text-xs">
         ${this.name}
       </div>
       </div>
@@ -590,9 +590,8 @@ const SupplySinceMergeWidget: FC<Props> = ({
           showInLegend: false,
           color: "transparent",
           shadow: {
-            color: simulateProofOfWork ? colors.slateus100 : "transparent",
+            color: simulateProofOfWork ? "#DEE2F1" : "transparent",
             width: 15,
-            opacity: 0.02,
           },
         },
       ],
