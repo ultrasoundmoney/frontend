@@ -359,6 +359,9 @@ const SupplySinceMergeWidget: FC<Props> = ({
     );
 
     return _merge({}, baseOptions, {
+      legend: {
+        enabled: simulateProofOfWork,
+      },
       yAxis: {
         max: simulateProofOfWork ? undefined : supplyPosMax,
         plotLines: [
@@ -497,11 +500,9 @@ const SupplySinceMergeWidget: FC<Props> = ({
           showInLegend: false,
           color: "transparent",
           shadow: {
-            color: simulateProofOfWork
-              ? colors.slateus100
-              : "transparent",
+            color: simulateProofOfWork ? colors.slateus100 : "transparent",
             width: 15,
-            opacity: 0.02
+            opacity: 0.02,
           },
         },
       ],
