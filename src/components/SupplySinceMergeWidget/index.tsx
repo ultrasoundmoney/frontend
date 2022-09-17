@@ -1,4 +1,4 @@
-import { addMinutes } from "date-fns";
+import { addMinutes, differenceInSeconds } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
 import type { TooltipFormatterCallbackFunction } from "highcharts";
 import Highcharts from "highcharts";
@@ -13,7 +13,11 @@ import type { SupplyAtTime } from "../../api/supply-since-merge";
 import { useSupplySinceMerge } from "../../api/supply-since-merge";
 import colors from "../../colors";
 import { MERGE_TIMESTAMP } from "../../eth-constants";
-import { formatTwoDigit, formatZeroDecimals } from "../../format";
+import {
+  formatPercentOneDecimal,
+  formatTwoDigit,
+  formatZeroDecimals,
+} from "../../format";
 import { posIssuancePerDay, powIssuancePerDay } from "../../static-ether-data";
 import type { SupplyPoint } from "../Dashboard/MergeSection";
 import SimulateProofOfWork from "../SimulateProofOfWork";
@@ -40,7 +44,7 @@ const baseOptions: Highcharts.Options = {
   accessibility: { enabled: false },
   chart: {
     marginLeft: 0,
-    marginRight: 0,
+    marginRight: 54,
     marginTop: 10,
     backgroundColor: "transparent",
     showAxes: false,
@@ -222,6 +226,31 @@ const getTooltip = (
     </div>
   `;
   };
+
+const makeIssuanceLabel = (
+  mostRecentSupply: number,
+  supplyAtTheMerge: number,
+  millisecondsSinceMerge: number,
+) =>
+  function () {
+    const daysSinceMerge = millisecondsSinceMerge / 1000 / 60 / 60 / 24;
+    const value =
+      (((mostRecentSupply - supplyAtTheMerge) / daysSinceMerge) * 365.25) /
+      supplyAtTheMerge;
+    const formatted = formatPercentOneDecimal(value);
+    return `
+      <div class="flex flex-row items-center gap-x-2">
+        <div class="w-2 h-2 rounded-full"></div>
+        <div class="font-roboto font-light text-slateus-400 text-xs">
+          <span class="text-white">+${formatted}</span>/y
+        </div>
+      </div>
+    `;
+  };
+
+const btcSupplyFromEthProjection = (ethProjection: number, ethSupply: number) =>
+  (ethProjection / ethSupply) * BITCOIN_SUPPLY_AT_MERGE;
+
 type Props = {
   mergeStatus: MergeStatus;
   simulateProofOfWork: boolean;
@@ -300,21 +329,6 @@ const SupplySinceMergeWidget: FC<Props> = ({
     [supplySinceMergeSeries],
   );
 
-  const supplyPowMax =
-    supplySinceMergePowSeries === undefined
-      ? undefined
-      : _last(supplySinceMergePowSeries)?.[1];
-
-  const supplyMin = useMemo(
-    () =>
-      supplySinceMergeSeries === undefined
-        ? undefined
-        : supplySinceMergeSeries.reduce((pointA, pointB) =>
-            pointA[1] < pointB[1] ? pointA : pointB,
-          )[1],
-    [supplySinceMergeSeries],
-  );
-
   const bitcoinSupplySeries = useMemo(() => {
     if (supplySinceMergeSeries === undefined) {
       return undefined;
@@ -340,7 +354,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
   }, [mergeStatus, supplySinceMergeSeries]);
 
   const options = useMemo((): Highcharts.Options => {
-    const lastPoint = _last(supplySinceMergeSeries);
+    const lastPointPos = _last(supplySinceMergeSeries);
     const lastPointBtc = _last(bitcoinSupplySeries);
     const lastPointPow = _last(supplySinceMergePowSeries);
 
@@ -372,6 +386,84 @@ const SupplySinceMergeWidget: FC<Props> = ({
               x: 32,
               y: 4,
               style: { color: colors.slateus400 },
+            },
+          },
+          {
+            id: "bitcoin-issuance",
+            value: lastPointBtc === undefined ? undefined : lastPointBtc[1],
+            width: 0,
+            label: {
+              style: {
+                fontSize: "12",
+                fontFamily: "Roboto mono",
+                fontWeight: "300",
+                color: colors.slateus400,
+              },
+              align: "right",
+              x: 54,
+              y: 2,
+              useHTML: true,
+              formatter:
+                lastPointBtc === undefined
+                  ? undefined
+                  : makeIssuanceLabel(
+                      btcSupplyFromEthProjection(
+                        lastPointBtc[1],
+                        mergeStatus.supply,
+                      ),
+                      BITCOIN_SUPPLY_AT_MERGE,
+                      lastPointBtc[0] - MERGE_TIMESTAMP.getTime(),
+                    ),
+            },
+          },
+          {
+            id: "eth-issuance-pos",
+            value: lastPointPos === undefined ? undefined : lastPointPos[1],
+            width: 0,
+            label: {
+              style: {
+                fontSize: "12",
+                fontFamily: "Roboto mono",
+                fontWeight: "300",
+                color: colors.slateus400,
+              },
+              align: "right",
+              x: 54,
+              y: 2,
+              useHTML: true,
+              formatter:
+                lastPointPos === undefined
+                  ? undefined
+                  : makeIssuanceLabel(
+                      lastPointPos[1],
+                      mergeStatus.supply,
+                      lastPointPos[0] - MERGE_TIMESTAMP.getTime(),
+                    ),
+            },
+          },
+          {
+            id: "eth-issuance-pow",
+            value: lastPointPow === undefined ? undefined : lastPointPow[1],
+            width: 0,
+            label: {
+              style: {
+                fontSize: "12",
+                fontFamily: "Roboto mono",
+                fontWeight: "300",
+                color: colors.slateus400,
+              },
+              align: "right",
+              x: 54,
+              y: 2,
+              useHTML: true,
+              formatter:
+                lastPointPow === undefined
+                  ? undefined
+                  : makeIssuanceLabel(
+                      lastPointPow[1],
+                      mergeStatus.supply,
+                      lastPointPow[0] - MERGE_TIMESTAMP.getTime(),
+                    ),
             },
           },
         ],
@@ -410,12 +502,12 @@ const SupplySinceMergeWidget: FC<Props> = ({
           type: "line",
           name: "ETH",
           data:
-            lastPoint !== undefined && supplySinceMergeSeries !== undefined
+            lastPointPos !== undefined && supplySinceMergeSeries !== undefined
               ? [
                   ...supplySinceMergeSeries,
                   {
-                    x: lastPoint?.[0],
-                    y: lastPoint?.[1],
+                    x: lastPointPos?.[0],
+                    y: lastPointPos?.[1],
                     marker: {
                       id: "supply-by-minute-final-point",
                       symbol: `url(/graph-dot-blue.svg)`,
