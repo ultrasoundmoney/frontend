@@ -57,8 +57,8 @@ const percentTwoDecimalSigned = new Intl.NumberFormat("en-US", {
   style: "percent",
 });
 
-export const formatPercentTwoDecimalSigned = (percent: number): string => 
-percentTwoDecimalSigned.format(percent);
+export const formatPercentTwoDecimalSigned = (percent: number): string =>
+  percentTwoDecimalSigned.format(percent);
 
 const percentOneDecimal = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 1,
