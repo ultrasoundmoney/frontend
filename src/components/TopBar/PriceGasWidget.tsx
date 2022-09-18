@@ -1,4 +1,4 @@
-import * as Sentry from "@sentry/react";
+import * as Sentry from "@sentry/nextjs";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import type { FC, ReactNode } from "react";

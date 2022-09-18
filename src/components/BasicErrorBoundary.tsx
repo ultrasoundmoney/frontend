@@ -1,4 +1,4 @@
-import * as Sentry from "@sentry/react";
+import * as Sentry from "@sentry/nextjs";
 import type { FC, ReactNode } from "react";
 
 // Used for larger section of our app. Prefer smaller boundaries that make it
