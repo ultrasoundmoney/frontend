@@ -11,7 +11,7 @@ import { TextRoboto } from "../Texts";
 import ethSvg from "./eth-slateus.svg";
 import gasSvg from "./gas-slateus.svg";
 
-const CustomErrorBoundary: FC<{ children: ReactNode }> = ({ children }) => (
+const PriceGasBoundary: FC<{ children: ReactNode }> = ({ children }) => (
   <Sentry.ErrorBoundary
     fallback={
       <div
@@ -49,7 +49,7 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
   const color = ethPriceStats.h24Change < 0 ? "text-red-400" : "text-green-400";
 
   return (
-    <CustomErrorBoundary>
+    <PriceGasBoundary>
       <div
         className={`
           text-xs lg:text-sm
