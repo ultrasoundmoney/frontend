@@ -7,7 +7,7 @@ const ErrorPage: FC<{ error?: Error; statusCode?: number }> = ({
   error,
   statusCode,
 }) => {
-  console.log(error);
+  console.error(error);
 
   return (
     <div
