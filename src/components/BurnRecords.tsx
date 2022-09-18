@@ -3,7 +3,10 @@ import type { FC } from "react";
 import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import type { BurnRecord } from "../api/burn-records";
-import { decodeGroupedAnalysis1, useGroupedAnalysis1 } from "../api/grouped-analysis-1";
+import {
+  decodeGroupedAnalysis1,
+  useGroupedAnalysis1,
+} from "../api/grouped-analysis-1";
 import * as Format from "../format";
 import scrollbarStyles from "../styles/Scrollbar.module.scss";
 import type { TimeFrameNext } from "../time-frames";
@@ -33,7 +36,7 @@ const Age: FC<{ minedAt: Date | undefined }> = ({ minedAt }) => {
 
     const now = new Date();
     const intervalId = window.setInterval(() => {
-      setAge(Format.formatDistance(now, minedAt));
+      setAge(Format.formatDistance(now, minedAt) ?? "??");
     }, 500);
 
     return () => {
@@ -58,10 +61,7 @@ type Props = {
   timeFrame: TimeFrameNext;
 };
 
-const BurnRecords: FC<Props> = ({
-  onClickTimeFrame,
-  timeFrame,
-}) => {
+const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const groupedAnalysis1F = useGroupedAnalysis1();
   const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysis1F);
   const burnRecords = groupedAnalysis1?.burnRecords;

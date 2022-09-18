@@ -173,7 +173,7 @@ export const formatDistance = (currentDateTime: Date, dt: Date) => {
     return `${secondsDelta}s`;
   }
 
-  return "??";
+  return undefined;
 };
 
 export const formatBlockNumber = (number: unknown) =>
