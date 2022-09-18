@@ -134,133 +134,131 @@ const Dashboard: FC<Props> = ({
     : crMergeStatus;
 
   return (
-    <BasicErrorBoundary>
-      <FeatureFlagsContext.Provider value={featureFlags}>
-        <SkeletonTheme
-          baseColor={colors.slateus500}
-          highlightColor={"#565b7f"}
-          enableAnimation={true}
-        >
-          <Head>
-            <title>{gasTitle}</title>
-          </Head>
-          <HeaderGlow />
-          <div className="container mx-auto">
-            {adminToken && (
-              <BasicErrorBoundary>
-                <Suspense>
-                  <AdminTools setFlag={setFlag} />
-                </Suspense>
-              </BasicErrorBoundary>
-            )}
-            <div className="px-4 xs:px-4 md:px-16">
-              <BasicErrorBoundary>
-                <TopBar
-                  baseFeePerGas={crBaseFeePerGas}
-                  ethPriceStats={crEthPriceStats}
-                  initialBaseFeePerGas={baseFeePerGas.wei}
-                  initialEthPrice={ethPriceStats.usd}
-                />
-              </BasicErrorBoundary>
+    <FeatureFlagsContext.Provider value={featureFlags}>
+      <SkeletonTheme
+        baseColor={colors.slateus500}
+        highlightColor={"#565b7f"}
+        enableAnimation={true}
+      >
+        <Head>
+          <title>{gasTitle}</title>
+        </Head>
+        <HeaderGlow />
+        <div className="container mx-auto">
+          {adminToken && (
+            <BasicErrorBoundary>
+              <Suspense>
+                <AdminTools setFlag={setFlag} />
+              </Suspense>
+            </BasicErrorBoundary>
+          )}
+          <div className="px-4 xs:px-4 md:px-16">
+            <BasicErrorBoundary>
+              <TopBar
+                baseFeePerGas={crBaseFeePerGas}
+                ethPriceStats={crEthPriceStats}
+                initialBaseFeePerGas={baseFeePerGas.wei}
+                initialEthPrice={ethPriceStats.usd}
+              />
+            </BasicErrorBoundary>
+          </div>
+          <MainTitle>ultra sound money</MainTitle>
+          <div className="flex mx-auto items-center justify-center mb-16 gap-x-8">
+            <div className="flex gap-x-2">
+              <Image
+                alt="confetti celebrating merge"
+                width={56}
+                height={56}
+                src={confettiSvg as StaticImageData}
+              />
+              <Image
+                alt="panda symbolizing merge"
+                width={40}
+                height={40}
+                src={pandaSvg as StaticImageData}
+              />
             </div>
-            <MainTitle>ultra sound money</MainTitle>
-            <div className="flex mx-auto items-center justify-center mb-16 gap-x-8">
-              <div className="flex gap-x-2">
-                <Image
-                  alt="confetti celebrating merge"
-                  width={56}
-                  height={56}
-                  src={confettiSvg as StaticImageData}
-                />
-                <Image
-                  alt="panda symbolizing merge"
-                  width={40}
-                  height={40}
-                  src={pandaSvg as StaticImageData}
-                />
-              </div>
-              <p className="font-inter font-light text-blue-spindle text-xl md:text-2xl lg:text-3xl text-center">
-                merged
-              </p>
-              <div className="flex gap-x-2">
-                <Image
-                  alt="panda symbolizing merge"
-                  width={40}
-                  height={40}
-                  src={pandaSvg as StaticImageData}
-                />
-                <Image
-                  alt="confetti celebrating merge"
-                  width={56}
-                  height={56}
-                  src={confettiSvg as StaticImageData}
-                />
-              </div>
+            <p className="font-inter font-light text-blue-spindle text-xl md:text-2xl lg:text-3xl text-center">
+              merged
+            </p>
+            <div className="flex gap-x-2">
+              <Image
+                alt="panda symbolizing merge"
+                width={40}
+                height={40}
+                src={pandaSvg as StaticImageData}
+              />
+              <Image
+                alt="confetti celebrating merge"
+                width={56}
+                height={56}
+                src={confettiSvg as StaticImageData}
+              />
             </div>
-            <MergeSection
-              ethSupply={ethSupply}
-              mergeEstimate={crMergeEstimate}
-              mergeStatus={mergeProxyStatus}
-            />
-            <SupplyGrowthSection
-              ethSupply={ethSupply}
-              ethPriceStats={ethPriceStats}
-              scarcity={scarcity}
-            />
-            <SupplyProjectionsSection
-              ethPriceStats={ethPriceStats}
-              scarcity={scarcity}
-            />
-            <div className="h-16"></div>
-            <BurnSection />
-            <div className="h-16"></div>
-            <TotalValueSecuredSection ethPriceStats={ethPriceStats} />
-            <div className="h-16"></div>
-            <MonetaryPremiumSection ethPriceStats={ethPriceStats} />
-            <FamSection />
-            <JoinDiscordSection />
-            <div className="flex px-4 md:px-0 mt-32">
-              <div className="w-full lg:w-2/3 md:m-auto relative">
-                <FaqBlock />
-              </div>
+          </div>
+          <MergeSection
+            ethSupply={ethSupply}
+            mergeEstimate={crMergeEstimate}
+            mergeStatus={mergeProxyStatus}
+          />
+          <SupplyGrowthSection
+            ethSupply={ethSupply}
+            ethPriceStats={ethPriceStats}
+            scarcity={scarcity}
+          />
+          <SupplyProjectionsSection
+            ethPriceStats={ethPriceStats}
+            scarcity={scarcity}
+          />
+          <div className="h-16"></div>
+          <BurnSection />
+          <div className="h-16"></div>
+          <TotalValueSecuredSection ethPriceStats={ethPriceStats} />
+          <div className="h-16"></div>
+          <MonetaryPremiumSection ethPriceStats={ethPriceStats} />
+          <FamSection />
+          <JoinDiscordSection />
+          <div className="flex px-4 md:px-0 mt-32">
+            <div className="w-full lg:w-2/3 md:m-auto relative">
+              <FaqBlock />
             </div>
-            <div className="w-full flex flex-col items-center pb-40">
-              <SectionDivider title="still have questions?" />
-              <div className="flex flex-col gap-y-4 justify-start">
-                <div className="flex gap-2 items-center">
-                  <img
-                    className="w-4"
-                    src="/twitter-icon.svg"
-                    alt="icon of the twitter bird"
-                  />
-                  <Link
-                    className="flex items-center gap-x-2"
-                    enableHover={false}
-                    href="https://twitter.com/ultrasoundmoney/"
-                  >
-                    <TextInterLink>DM us @ultrasoundmoney</TextInterLink>
-                  </Link>
-                </div>
-                <div className="flex gap-2 items-center">
-                  <img
-                    className="h-4"
-                    src="/email-icon.svg"
-                    alt="icon of an envelope, email"
-                  />
-                  <Link
-                    className="flex items-center gap-x-2"
-                    enableHover={false}
-                    href="mailto:contact@ultrasound.money"
-                  >
-                    <TextInterLink>contact@ultrasound.money</TextInterLink>
-                  </Link>
-                </div>
+          </div>
+          <div className="w-full flex flex-col items-center pb-40">
+            <SectionDivider title="still have questions?" />
+            <div className="flex flex-col gap-y-4 justify-start">
+              <div className="flex gap-2 items-center">
+                <img
+                  className="w-4"
+                  src="/twitter-icon.svg"
+                  alt="icon of the twitter bird"
+                />
+                <Link
+                  className="flex items-center gap-x-2"
+                  enableHover={false}
+                  href="https://twitter.com/ultrasoundmoney/"
+                >
+                  <TextInterLink>DM us @ultrasoundmoney</TextInterLink>
+                </Link>
+              </div>
+              <div className="flex gap-2 items-center">
+                <img
+                  className="h-4"
+                  src="/email-icon.svg"
+                  alt="icon of an envelope, email"
+                />
+                <Link
+                  className="flex items-center gap-x-2"
+                  enableHover={false}
+                  href="mailto:contact@ultrasound.money"
+                >
+                  <TextInterLink>contact@ultrasound.money</TextInterLink>
+                </Link>
               </div>
             </div>
           </div>
-        </SkeletonTheme>
-      </FeatureFlagsContext.Provider>
-    </BasicErrorBoundary>
+        </div>
+      </SkeletonTheme>
+    </FeatureFlagsContext.Provider>
   );
 };
 

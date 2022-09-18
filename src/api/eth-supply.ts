@@ -2,9 +2,11 @@ import * as DateFns from "date-fns";
 import JSBI from "jsbi";
 import { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
+import { getDomain } from "../config";
 import * as Duration from "../duration";
 import { WEI_PER_GWEI_JSBI } from "../eth-units";
-import { fetchJson } from "./fetchers";
+import type { ApiResult } from "./fetchers";
+import { fetchJson, fetchJsonSwr } from "./fetchers";
 
 export type EthSupplyF = {
   beaconBalancesSum: {
@@ -57,10 +59,13 @@ export const decodeEthSupply = (ethSupply: EthSupplyF): EthSupply => ({
   },
 });
 
+export const fetchEthSupplyParts = (): Promise<ApiResult<EthSupplyF>> =>
+  fetchJson(`${getDomain()}/api/v2/fees/eth-supply-parts`);
+
 export const useEthSupply = (): EthSupplyF | undefined => {
   const { data } = useSWR<EthSupplyF>(
     "/api/v2/fees/eth-supply-parts",
-    fetchJson,
+    fetchJsonSwr,
     {
       refreshInterval: Duration.millisFromSeconds(4),
     },

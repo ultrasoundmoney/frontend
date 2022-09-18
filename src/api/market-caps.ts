@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import * as Duration from "../duration";
-import { fetchJson } from "./fetchers";
+import { fetchJsonSwr } from "./fetchers";
 
 type MarketCaps = {
   btcMarketCap: number;
@@ -11,7 +11,7 @@ type MarketCaps = {
 };
 
 export const useMarketCaps = (): MarketCaps | undefined => {
-  const { data } = useSWR<MarketCaps>("/api/fees/market-caps", fetchJson, {
+  const { data } = useSWR<MarketCaps>("/api/fees/market-caps", fetchJsonSwr, {
     refreshInterval: Duration.millisFromSeconds(30),
   });
 

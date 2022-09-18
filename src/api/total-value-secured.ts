@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import * as Duration from "../duration";
-import { fetchJson } from "./fetchers";
+import { fetchJsonSwr } from "./fetchers";
 import type { Linkables } from "./profiles";
 
 export type TvsRanking = {
@@ -33,7 +33,7 @@ export type TotalValueSecured = {
 export const useTotalValueSecured = (): TotalValueSecured | undefined => {
   const { data } = useSWR<TotalValueSecured>(
     "/api/fees/total-value-secured",
-    fetchJson,
+    fetchJsonSwr,
     {
       refreshInterval: Duration.millisFromSeconds(10),
     },

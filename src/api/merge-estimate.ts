@@ -1,7 +1,9 @@
 import useSWR from "swr";
+import { getDomain } from "../config";
 import * as Duration from "../duration";
 import type { DateTimeString } from "../time";
-import { fetchJson } from "./fetchers";
+import type { ApiResult } from "./fetchers";
+import { fetchJson, fetchJsonSwr } from "./fetchers";
 
 export type MergeEstimate = {
   blockNumber: number;
@@ -12,10 +14,13 @@ export type MergeEstimate = {
   totalDifficulty: string;
 };
 
+export const fetchMergeEstimate = (): Promise<ApiResult<MergeEstimate>> =>
+  fetchJson<MergeEstimate>(`${getDomain()}/api/v2/fees/merge-estimate`);
+
 export const useMergeEstimate = (): MergeEstimate | undefined => {
   const { data } = useSWR<MergeEstimate>(
     "/api/v2/fees/merge-estimate",
-    fetchJson,
+    fetchJsonSwr,
     {
       refreshInterval: Duration.millisFromSeconds(4),
     },

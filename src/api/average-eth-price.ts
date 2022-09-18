@@ -1,14 +1,14 @@
 import useSWR from "swr";
 import * as Duration from "../duration";
 import type { TimeFrameNext } from "../time-frames";
-import { fetchJson } from "./fetchers";
+import { fetchJsonSwr } from "./fetchers";
 
 export type AverageEthPrice = Record<TimeFrameNext, number>;
 
 export const useAverageEthPrice = (): AverageEthPrice | undefined => {
   const { data } = useSWR<AverageEthPrice>(
     "/api/fees/average-eth-price",
-    fetchJson,
+    fetchJsonSwr,
     {
       refreshInterval: Duration.millisFromSeconds(8),
     },

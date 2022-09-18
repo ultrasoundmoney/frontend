@@ -3,7 +3,7 @@ import * as Duration from "../duration";
 import type { WeiNumber } from "../eth-units";
 import type { BurnRecords, BurnRecordsF } from "./burn-records";
 import { decodeBurnRecords } from "./burn-records";
-import { fetchJson } from "./fetchers";
+import { fetchJsonSwr } from "./fetchers";
 import type { Leaderboards } from "./leaderboards";
 
 type WeiPerMinute = number;
@@ -100,7 +100,7 @@ export const decodeGroupedAnalysis1 = (
 export const useGroupedAnalysis1 = (): GroupedAnalysis1F | undefined => {
   const { data } = useSWR<GroupedAnalysis1F>(
     "/api/fees/grouped-analysis-1",
-    fetchJson,
+    fetchJsonSwr,
     {
       refreshInterval: Duration.millisFromSeconds(4),
     },

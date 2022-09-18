@@ -5,11 +5,13 @@ import { fetchBaseFeePerGas } from "../api/base-fee-per-gas";
 import type { EthPriceStats } from "../api/eth-price-stats";
 import { fetchEthPriceStats } from "../api/eth-price-stats";
 import type { EthSupplyF } from "../api/eth-supply";
+import { fetchEthSupplyParts } from "../api/eth-supply";
 import type { MergeEstimate } from "../api/merge-estimate";
+import { fetchMergeEstimate } from "../api/merge-estimate";
 import type { MergeStatus } from "../api/merge-status";
 import { fetchMergeStatus } from "../api/merge-status";
+import BasicErrorBoundary from "../components/BasicErrorBoundary";
 import Dashboard from "../components/Dashboard";
-import { getDomain } from "../config";
 
 type StaticProps = {
   baseFeePerGas: BaseFeePerGas;
@@ -20,11 +22,11 @@ type StaticProps = {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const [meRes, esRes, baseFeePerGas, ethPriceStats, mergeStatus] =
+  const [mergeEstimate, ethSupplyF, baseFeePerGas, ethPriceStats, mergeStatus] =
     await Promise.all([
       // fetch(`${getDomain()}/api/v2/fees/total-difficulty-progress`),
-      fetch(`${getDomain()}/api/v2/fees/merge-estimate`),
-      fetch(`${getDomain()}/api/v2/fees/eth-supply-parts`),
+      fetchMergeEstimate(),
+      fetchEthSupplyParts(),
       // fetch(`${getApiDomain()}/api/fees/scarcity`),
       fetchBaseFeePerGas(),
       fetchEthPriceStats(),
@@ -34,13 +36,33 @@ export const getStaticProps: GetStaticProps = async () => {
   // const scData = (await scRes.json()) as Scarcity;
   // const gaData = (await gaRes.json()) as GroupedAnalysis1F;
 
+  if ("error" in mergeEstimate) {
+    throw mergeEstimate.error;
+  }
+
+  if ("error" in ethSupplyF) {
+    throw ethSupplyF.error;
+  }
+
+  if ("error" in baseFeePerGas) {
+    throw baseFeePerGas.error;
+  }
+
+  if ("error" in ethPriceStats) {
+    throw ethPriceStats.error;
+  }
+
+  if ("error" in mergeStatus) {
+    throw mergeStatus.error;
+  }
+
   return {
     props: {
       baseFeePerGas,
       ethPriceStats,
-      ethSupplyF: (await esRes.json()) as EthSupplyF,
-      mergeEstimate: (await meRes.json()) as MergeEstimate,
-      mergeStatus: mergeStatus,
+      ethSupplyF,
+      mergeEstimate,
+      mergeStatus,
       // groupedAnalysis1F: gaData,
       // scarcity: scData,
       // totalDifficultyProgress: tdpData,
@@ -60,13 +82,15 @@ const IndexPage: NextPage<StaticProps> = ({
   mergeEstimate,
   mergeStatus,
 }) => (
-  <Dashboard
-    baseFeePerGas={baseFeePerGas}
-    ethPriceStats={ethPriceStats}
-    // groupedAnalysis1F={groupedAnalysis1F}
-    ethSupplyF={ethSupplyF}
-    mergeStatus={mergeStatus}
-    mergeEstimate={mergeEstimate}
-  />
+  <BasicErrorBoundary>
+    <Dashboard
+      baseFeePerGas={baseFeePerGas}
+      ethPriceStats={ethPriceStats}
+      // groupedAnalysis1F={groupedAnalysis1F}
+      ethSupplyF={ethSupplyF}
+      mergeStatus={mergeStatus}
+      mergeEstimate={mergeEstimate}
+    />
+  </BasicErrorBoundary>
 );
 export default IndexPage;

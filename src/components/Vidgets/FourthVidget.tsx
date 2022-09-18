@@ -6,14 +6,14 @@ import { convertToInternationalCurrencySystem } from "./helpers";
 import type { EthPrice } from "../../api/grouped-analysis-1";
 import { useGroupedAnalysis1 } from "../../api/grouped-analysis-1";
 import useSWR from "swr";
-import { fetchJson } from "../../api/fetchers";
+import { fetchJsonSwr } from "../../api/fetchers";
 
 const FouthVidget: React.FC<VidgetProps> = ({ name }) => {
   const feesBurned = useGroupedAnalysis1()?.feesBurned;
 
   const { data } = useSWR<EthPrice>(
     "https://api.ultrasound.money/fees/eth-price",
-    fetchJson,
+    fetchJsonSwr,
     {
       revalidateOnFocus: true,
       revalidateOnReconnect: true,

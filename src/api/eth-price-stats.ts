@@ -1,7 +1,8 @@
 import { secondsToMilliseconds } from "date-fns";
 import useSWR from "swr";
 import type { DateTimeString } from "../time";
-import { fetchJson } from "./fetchers";
+import type { ApiResult } from "./fetchers";
+import { fetchJson, fetchJsonSwr } from "./fetchers";
 
 export type EthPriceStats = {
   h24Change: number;
@@ -11,10 +12,11 @@ export type EthPriceStats = {
 
 const url = "/api/v2/fees/eth-price-stats";
 
-export const fetchEthPriceStats = () => fetchJson<EthPriceStats>(url);
+export const fetchEthPriceStats = (): Promise<ApiResult<EthPriceStats>> =>
+  fetchJson<EthPriceStats>(url);
 
 export const useEthPriceStats = (): EthPriceStats | undefined => {
-  const { data } = useSWR<EthPriceStats>(url, fetchJson, {
+  const { data } = useSWR<EthPriceStats>(url, fetchJsonSwr, {
     refreshInterval: secondsToMilliseconds(10),
   });
 

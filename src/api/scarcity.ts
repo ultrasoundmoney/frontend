@@ -1,7 +1,7 @@
 import JSBI from "jsbi";
 import useSWR from "swr";
 import * as Duration from "../duration";
-import { fetchJson } from "./fetchers";
+import { fetchJsonSwr } from "./fetchers";
 
 export type Scarcity = {
   engines: {
@@ -54,7 +54,7 @@ type RawScarcity = {
 };
 
 export const useScarcity = (): Scarcity | undefined => {
-  const { data } = useSWR<RawScarcity>(`/api/fees/scarcity`, fetchJson, {
+  const { data } = useSWR<RawScarcity>(`/api/fees/scarcity`, fetchJsonSwr, {
     refreshInterval: Duration.millisFromHours(1),
   });
 

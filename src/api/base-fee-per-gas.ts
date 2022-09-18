@@ -2,7 +2,9 @@ import { secondsToMilliseconds } from "date-fns";
 import useSWR from "swr";
 import type { WeiNumber } from "../eth-units";
 import type { DateTimeString } from "../time";
+import type { ApiResult } from "./fetchers";
 import { fetchJson } from "./fetchers";
+import { fetchJsonSwr } from "./fetchers";
 
 export type BaseFeePerGas = {
   timestamp: DateTimeString;
@@ -14,11 +16,11 @@ export type BaseFeePerGas = {
 
 const url = "/api/v2/fees/base-fee-per-gas";
 
-export const fetchBaseFeePerGas = (): Promise<BaseFeePerGas> =>
+export const fetchBaseFeePerGas = (): Promise<ApiResult<BaseFeePerGas>> =>
   fetchJson<BaseFeePerGas>(url);
 
 export const useBaseFeePerGas = (): BaseFeePerGas | undefined => {
-  const { data } = useSWR<BaseFeePerGas>(url, fetchJson, {
+  const { data } = useSWR<BaseFeePerGas>(url, fetchJsonSwr, {
     refreshInterval: secondsToMilliseconds(4),
   });
 

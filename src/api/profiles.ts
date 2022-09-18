@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { fetchJson } from "./fetchers";
+import { fetchJsonSwr } from "./fetchers";
 
 export type LinkableUrl = {
   display_url: string;
@@ -41,7 +41,7 @@ type ProfilesResponse = {
 };
 
 export const useProfiles = () => {
-  const { data } = useSWR<ProfilesResponse>("/api/fam/profiles", fetchJson);
+  const { data } = useSWR<ProfilesResponse>("/api/fam/profiles", fetchJsonSwr);
 
   return data;
 };

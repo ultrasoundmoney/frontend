@@ -1,4 +1,4 @@
-import { addMinutes, differenceInSeconds } from "date-fns";
+import { addMinutes } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
 import type { TooltipFormatterCallbackFunction } from "highcharts";
 import Highcharts from "highcharts";
@@ -9,8 +9,10 @@ import _merge from "lodash/merge";
 import type { FC } from "react";
 import { useMemo } from "react";
 import type { MergeStatus } from "../../api/merge-status";
-import type { SupplyAtTime } from "../../api/supply-since-merge";
-import { useSupplySinceMerge } from "../../api/supply-since-merge";
+import {
+  SupplyAtTime,
+  useSupplySinceMerge,
+} from "../../api/supply-since-merge";
 import colors from "../../colors";
 import { MERGE_TIMESTAMP } from "../../eth-constants";
 import {
@@ -642,11 +644,12 @@ const SupplySinceMergeWidget: FC<Props> = ({
     } as Highcharts.Options);
   }, [
     supplySinceMergeSeries,
-    supplySinceMergePowSeries,
     bitcoinSupplySeries,
+    supplySinceMergePowSeries,
     simulateProofOfWork,
-    supplyPosMax,
     supplyPosMin,
+    supplyPowMax,
+    supplyPosMax,
     mergeStatus,
   ]);
 

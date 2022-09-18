@@ -102,7 +102,7 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
           <span className={`${color}`}>({ethUsd24hChange})</span>
         </TextRoboto>
       </div>
-    </CustomErrorBoundary>
+    </PriceGasBoundary>
   );
 };
 

@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { fetchJson } from "./fetchers";
+import { fetchJsonSwr } from "./fetchers";
 
 export type DataPoint = {
   t: number;
@@ -15,7 +15,7 @@ export type SupplyInputs = {
 export const useSupplyProjectionInputs = (): SupplyInputs | undefined => {
   const { data } = useSWR<SupplyInputs>(
     "/api/fees/supply-projection-inputs",
-    fetchJson,
+    fetchJsonSwr,
   );
 
   return data;

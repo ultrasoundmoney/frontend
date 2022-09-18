@@ -1,11 +1,9 @@
 import { getDomain } from "../config";
 
-export const fetchAnyJson = async <A>(url: RequestInfo): Promise<A> => {
-  const res = await fetch(url);
-  return res.json() as Promise<A>;
-};
+export type ApiResult<A> = { data: A } | { error: Error };
 
-export const fetchJson = async <A>(url: RequestInfo): Promise<A> => {
+// This may look safe, but it's simply handling API errors, fetch itself may still throw.
+const fetchUnsafe = async <A>(url: RequestInfo): Promise<ApiResult<A>> => {
   // Convert relative URLs to absolute, the server wouldn't know where to go otherwise.
   const absoluteUrlOrRequestInfo =
     typeof url === "string" && url.startsWith("https://")
@@ -17,9 +15,10 @@ export const fetchJson = async <A>(url: RequestInfo): Promise<A> => {
         url;
 
   const res = await fetch(absoluteUrlOrRequestInfo);
+
   if (res.status === 200) {
-    const body = (await res.json()) as Promise<A>;
-    return body;
+    const body = (await res.json()) as A;
+    return { data: body };
   }
 
   // Try to decode but handle failure.
@@ -32,14 +31,49 @@ export const fetchJson = async <A>(url: RequestInfo): Promise<A> => {
     const message = body?.message || body?.msg;
 
     if (typeof message === "string") {
-      throw new Error(`failed to fetch ${url}, message: ${message}`);
+      const error = new Error(`failed to fetch ${url}, message: ${message}`);
+      return { error };
     }
 
-    console.error(body);
-    throw new Error(
-      `failed to fetch ${url}, status: ${res.status}, json body, but no message, logged body.`,
+    const error = new Error(
+      `failed to fetch ${url}, status: ${res.status}, json body, but no message, logging body.`,
     );
+    console.error(body);
+    return { error };
   } catch {
-    throw new Error(`failed to fetch ${url}, status: ${res.status}, no body.`);
+    const error = new Error(
+      `failed to fetch ${url}, status: ${res.status}, no body.`,
+    );
+    return { error };
+  }
+};
+
+export const fetchJson = async <A>(url: RequestInfo): Promise<ApiResult<A>> => {
+  try {
+    return await fetchUnsafe(url);
+  } catch (error) {
+    if (error instanceof Error) {
+      return { error };
+    }
+
+    if (typeof error === "string") {
+      return { error: new Error(error) };
+    }
+
+    return {
+      error: new Error(
+        `fetch failed, caught something, but not an error, ${error}`,
+      ),
+    };
+  }
+};
+
+// Swr wants us to throw, but we don't like throwing, so we write code that doesn't throw, and add a wrapper for swr.
+export const fetchJsonSwr = async <A>(url: RequestInfo): Promise<A> => {
+  const dataOrError = await fetchJson<A>(url);
+  if ("data" in dataOrError) {
+    return dataOrError.data;
+  } else {
+    throw dataOrError.error;
   }
 };

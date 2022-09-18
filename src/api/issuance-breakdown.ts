@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import * as Duration from "../duration";
-import { fetchJson } from "./fetchers";
+import { fetchJsonSwr } from "./fetchers";
 
 export type IssuanceBreakdown = {
   crowdSale: number;
@@ -14,7 +14,7 @@ export const useIssuanceBreakdown = (): IssuanceBreakdown | undefined => {
   const { data } = useSWR<IssuanceBreakdown>(
     // tmp endpoint to cache bust.
     "/api/fees/issuance-breakdown",
-    fetchJson,
+    fetchJsonSwr,
     {
       refreshInterval: Duration.millisFromHours(1),
     },
