@@ -58,11 +58,11 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      baseFeePerGas,
-      ethPriceStats,
-      ethSupplyF,
-      mergeEstimate,
-      mergeStatus,
+      baseFeePerGas: baseFeePerGas.data,
+      ethPriceStats: ethPriceStats.data,
+      ethSupplyF: ethSupplyF.data,
+      mergeEstimate: mergeEstimate.data,
+      mergeStatus: mergeStatus.data,
       // groupedAnalysis1F: gaData,
       // scarcity: scData,
       // totalDifficultyProgress: tdpData,
