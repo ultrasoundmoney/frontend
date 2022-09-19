@@ -9,7 +9,7 @@ import {
   AmountBillionsUsdAnimated,
   AmountTrillionsUsdAnimated,
 } from "../Amount";
-import Link from "../Link";
+import StyledLink from "../Link";
 import Modal from "../Modal";
 import BodyText from "../TextsNext/BodyText";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
@@ -25,7 +25,7 @@ const AssetType: FC<{
   const [isHovering, setIsHovering] = useState(false);
 
   return (
-    <Link
+    <StyledLink
       className="relative flex justify-between items-center opacity-100"
       enableHover={false}
       href={href}
@@ -67,7 +67,7 @@ const AssetType: FC<{
       >
         {amount}
       </AmountBillionsUsdAnimated>
-    </Link>
+    </StyledLink>
   );
 };
 

@@ -11,7 +11,7 @@ import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { AmountBillionsUsdAnimated } from "../Amount";
 import AdminControls from "../AdminControls";
 import ImageWithTooltip from "../ImageWithTooltip";
-import Link from "../Link";
+import StyledLink from "../Link";
 import Modal from "../Modal";
 import BodyText from "../TextsNext/BodyText";
 import Tooltip from "../Tooltip";
@@ -157,7 +157,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
                   height={32}
                   width={32}
                 />
-                <Link
+                <StyledLink
                   className="flex justify-between ml-4 w-full overflow-hidden"
                   href={row?.coinGeckoUrl || row?.nftGoUrl}
                 >
@@ -182,7 +182,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
                   >
                     {row?.marketCap}
                   </AmountBillionsUsdAnimated>
-                </Link>
+                </StyledLink>
               </li>
               {adminToken !== undefined &&
                 row !== undefined &&

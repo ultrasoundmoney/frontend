@@ -9,7 +9,7 @@ type Props = {
   onMouseLeave?: () => void;
 };
 
-const Link: FC<Props> = ({
+const StyledLink: FC<Props> = ({
   children,
   className = "",
   enableHover = true,
@@ -34,4 +34,4 @@ const Link: FC<Props> = ({
   </a>
 );
 
-export default Link;
+export default StyledLink;

@@ -25,7 +25,7 @@ import { useClientRefreshed } from "../../hooks/use-client-refreshed";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import HeaderGlow from "../HeaderGlow";
 import FaqBlock from "../Landing/faq";
-import Link from "../Link";
+import StyledLink from "../Link";
 import MainTitle from "../MainTitle";
 import SectionDivider from "../SectionDivider";
 import { TextInterLink } from "../Texts";
@@ -232,13 +232,13 @@ const Dashboard: FC<Props> = ({
                   src="/twitter-icon.svg"
                   alt="icon of the twitter bird"
                 />
-                <Link
+                <StyledLink
                   className="flex items-center gap-x-2"
                   enableHover={false}
                   href="https://twitter.com/ultrasoundmoney/"
                 >
                   <TextInterLink>DM us @ultrasoundmoney</TextInterLink>
-                </Link>
+                </StyledLink>
               </div>
               <div className="flex gap-2 items-center">
                 <img
@@ -246,13 +246,13 @@ const Dashboard: FC<Props> = ({
                   src="/email-icon.svg"
                   alt="icon of an envelope, email"
                 />
-                <Link
+                <StyledLink
                   className="flex items-center gap-x-2"
                   enableHover={false}
                   href="mailto:contact@ultrasound.money"
                 >
                   <TextInterLink>contact@ultrasound.money</TextInterLink>
-                </Link>
+                </StyledLink>
               </div>
             </div>
           </div>
