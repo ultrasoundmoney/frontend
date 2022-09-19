@@ -502,7 +502,7 @@ const EligibleHandles = () => {
             </BodyTextV2>
           </div>
         </div>
-        <QuantifyText className="hidden md:block">
+        <QuantifyText className="text-slateus-200 hidden md:block">
           {formatZeroDecimals(fam.fam_follower_count)}
         </QuantifyText>
         <Claimed
