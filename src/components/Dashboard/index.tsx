@@ -152,7 +152,7 @@ const Dashboard: FC<Props> = ({
               </Suspense>
             </BasicErrorBoundary>
           )}
-          <div className="px-4 xs:px-4 md:px-16">
+          <div className="px-4 md:px-16">
             <BasicErrorBoundary>
               <TopBar
                 baseFeePerGas={crBaseFeePerGas}

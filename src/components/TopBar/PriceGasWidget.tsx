@@ -3,11 +3,13 @@ import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import type { FC, ReactNode } from "react";
 import CountUp from "react-countup";
-import type { BaseFeePerGas } from "../../api/base-fee-per-gas";
-import type { EthPriceStats } from "../../api/eth-price-stats";
+import { BaseFeePerGas, useBaseFeePerGas } from "../../api/base-fee-per-gas";
+import { useBaseFeePerGasStats } from "../../api/base-fee-per-gas-stats";
+import { EthPriceStats, useEthPriceStats } from "../../api/eth-price-stats";
 import * as Format from "../../format";
 import { AmountUnitSpace } from "../Spacing";
 import { TextRoboto } from "../Texts";
+import SkeletonText from "../TextsNext/SkeletonText";
 import ethSvg from "./eth-slateus.svg";
 import gasSvg from "./gas-slateus.svg";
 
@@ -30,23 +32,31 @@ const PriceGasBoundary: FC<{ children: ReactNode }> = ({ children }) => (
 );
 
 type PriceGasWidgetProps = {
-  baseFeePerGas: BaseFeePerGas;
-  ethPriceStats: EthPriceStats;
+  // baseFeePerGas: BaseFeePerGas;
+  // ethPriceStats: EthPriceStats;
   initialBaseFeePerGas: number;
   initialEthPrice: number;
 };
 
 const PriceGasWidget: FC<PriceGasWidgetProps> = ({
-  baseFeePerGas,
-  ethPriceStats,
+  // baseFeePerGas,
+  // ethPriceStats,
   initialBaseFeePerGas,
   initialEthPrice,
 }) => {
-  const ethUsd24hChange = Format.formatPercentOneDecimalSigned(
-    ethPriceStats.h24Change,
-  );
+  const baseFeePerGas = useBaseFeePerGas();
+  const ethPriceStats = useEthPriceStats();
+  const ethUsd24hChange =
+    ethPriceStats === undefined
+      ? undefined
+      : Format.formatPercentOneDecimalSigned(ethPriceStats.h24Change);
 
-  const color = ethPriceStats.h24Change < 0 ? "text-red-400" : "text-green-400";
+  const color =
+    ethPriceStats === undefined
+      ? undefined
+      : ethPriceStats.h24Change < 0
+      ? "text-red-400"
+      : "text-green-400";
 
   return (
     <PriceGasBoundary>
@@ -68,13 +78,17 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
           />
         </div>
         <TextRoboto className="pl-1">
-          <CountUp
-            decimals={0}
-            duration={0.8}
-            separator=","
-            start={Format.gweiFromWei(initialBaseFeePerGas)}
-            end={Format.gweiFromWei(baseFeePerGas.wei)}
-          />
+          {baseFeePerGas === undefined ? (
+            <SkeletonText></SkeletonText>
+          ) : (
+            <CountUp
+              decimals={0}
+              duration={0.8}
+              separator=","
+              start={Format.gweiFromWei(initialBaseFeePerGas)}
+              end={Format.gweiFromWei(baseFeePerGas.wei)}
+            />
+          )}
           <AmountUnitSpace />
           <span className="font-extralight text-blue-spindle">Gwei</span>
         </TextRoboto>
@@ -89,13 +103,17 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
           />
         </div>
         <TextRoboto className="pl-1">
-          <CountUp
-            decimals={0}
-            duration={0.8}
-            separator=","
-            start={initialEthPrice}
-            end={ethPriceStats.usd}
-          />
+          {ethPriceStats === undefined ? (
+            <SkeletonText></SkeletonText>
+          ) : (
+            <CountUp
+              decimals={0}
+              duration={0.8}
+              separator=","
+              start={initialEthPrice}
+              end={ethPriceStats.usd}
+            />
+          )}
           <AmountUnitSpace />
           <span className="text-blue-spindle font-extralight">USD</span>
           <AmountUnitSpace />
