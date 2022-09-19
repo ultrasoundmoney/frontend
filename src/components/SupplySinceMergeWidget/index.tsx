@@ -568,9 +568,10 @@ const SupplySinceMergeWidget: FC<Props> = ({
           },
         },
         {
+          color: simulateProofOfWork ? "#FF891D" : "transparent",
+          enableMouseTracking: simulateProofOfWork,
           id: BITCOIN_SUPPLY_ID,
           type: "line",
-          color: simulateProofOfWork ? "#FF891D" : "transparent",
           shadow: {
             color: simulateProofOfWork ? "#FF891D33" : "transparent",
             width: 15,
@@ -594,13 +595,13 @@ const SupplySinceMergeWidget: FC<Props> = ({
           showInLegend: simulateProofOfWork,
         },
         {
+          color: simulateProofOfWork ? colors.slateus100 : "transparent",
+          dashStyle: "Dash",
+          enableMouseTracking: simulateProofOfWork,
           id: SUPPLY_SINCE_MERGE_POW_SERIES_ID,
+          name: "ETH (PoW)",
           showInLegend: simulateProofOfWork,
           type: "line",
-          dashStyle: "Dash",
-          name: "ETH (PoW)",
-          // color: simulateProofOfWork ? colors.slateus400 : "transparent",
-          color: simulateProofOfWork ? colors.slateus100 : "transparent",
           data:
             supplySinceMergePowSeries === undefined
               ? undefined
@@ -618,11 +619,11 @@ const SupplySinceMergeWidget: FC<Props> = ({
                 ],
         },
         {
-          enableMouseTracking: false,
-          states: { hover: { enabled: false } },
-          data: supplySinceMergePowSeries,
-          showInLegend: false,
           color: "transparent",
+          data: supplySinceMergePowSeries,
+          enableMouseTracking: false,
+          showInLegend: false,
+          states: { hover: { enabled: false } },
           shadow: {
             color: simulateProofOfWork ? "#DEE2F133" : "transparent",
             width: 15,
