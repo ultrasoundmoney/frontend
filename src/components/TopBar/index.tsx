@@ -77,8 +77,6 @@ const TopBar: FC<Props> = ({
         <PriceGasWidget
           initialEthPrice={initialEthPrice}
           initialBaseFeePerGas={initialBaseFeePerGas}
-          baseFeePerGas={baseFeePerGas}
-          ethPriceStats={ethPriceStats}
         />
         <button
           ref={alarmButtonRef}

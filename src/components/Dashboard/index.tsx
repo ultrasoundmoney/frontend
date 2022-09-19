@@ -25,7 +25,7 @@ import { useClientRefreshed } from "../../hooks/use-client-refreshed";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import HeaderGlow from "../HeaderGlow";
 import FaqBlock from "../Landing/faq";
-import StyledLink from "../Link";
+import StyledLink from "../StyledLink";
 import MainTitle from "../MainTitle";
 import SectionDivider from "../SectionDivider";
 import { TextInterLink } from "../Texts";

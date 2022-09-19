@@ -9,7 +9,7 @@ import {
   AmountBillionsUsdAnimated,
   AmountTrillionsUsdAnimated,
 } from "../Amount";
-import StyledLink from "../Link";
+import StyledLink from "../StyledLink";
 import Modal from "../Modal";
 import BodyText from "../TextsNext/BodyText";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";

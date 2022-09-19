@@ -11,7 +11,7 @@ import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import { AmountBillionsUsdAnimated } from "../Amount";
 import AdminControls from "../AdminControls";
 import ImageWithTooltip from "../ImageWithTooltip";
-import StyledLink from "../Link";
+import StyledLink from "../StyledLink";
 import Modal from "../Modal";
 import BodyText from "../TextsNext/BodyText";
 import Tooltip from "../Tooltip";
