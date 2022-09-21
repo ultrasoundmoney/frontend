@@ -591,7 +591,7 @@ const PoapSection: FC = () => {
     if (inView) {
       const timeoutId = window.setTimeout(() => {
         setPoapSrc(ultraSoundPoapStill);
-      }, 5000);
+      }, 3000);
 
       return () => window.clearTimeout(timeoutId);
     }
