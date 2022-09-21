@@ -6,6 +6,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 /** @type {import('next').NextConfig} */
 const nextConfig = withSentryConfig(
   withBundleAnalyzer({
+    productionBrowserSourceMaps: true,
     sentry: {
       disableServerWebpackPlugin: process.env["NEXT_PUBLIC_ENV"] === "dev",
       disableClientWebpackPlugin: process.env["NEXT_PUBLIC_ENV"] === "dev",
