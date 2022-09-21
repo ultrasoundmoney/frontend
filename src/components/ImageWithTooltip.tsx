@@ -58,7 +58,7 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
           onMouseLeave={() =>
             onMouseLeave === undefined ? undefined : onMouseLeave(imageRef)
           }
-          className={`${className}`}
+          className={className}
         >
           <Image
             className={`
