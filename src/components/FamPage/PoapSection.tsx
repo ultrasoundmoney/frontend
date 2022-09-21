@@ -5,6 +5,7 @@ import { SectionTitle } from "../TextsNext/SectionTitle";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import ultraSoundPoapGif from "./utlra_sound_poap.gif";
+import ultraSoundPoapStill from "./ultrasoundpoapstill.png";
 import LabelText from "../TextsNext/LabelText";
 import useSWR from "swr";
 import { getDomain } from "../../config";
@@ -37,6 +38,7 @@ import hearNoEvilSvg from "./hear-no-evil-own.svg";
 import speakNoEvilSvg from "./speak-no-evil-own.svg";
 import StyledLink from "../StyledLink";
 import Twemoji from "../Twemoji";
+import { useInView } from "react-intersection-observer";
 
 type Props = {
   className?: string;
@@ -547,10 +549,22 @@ const PoapSection: FC = () => {
     `${getDomain()}/api/v2/fam/poap/claimed`,
     fetchJsonSwr,
   );
+  const { ref, inView } = useInView({ threshold: 1 });
+  const [poapSrc, setPoapSrc] = useState(ultraSoundPoapGif);
 
   if (error?.message) {
     throw error;
   }
+
+  useEffect(() => {
+    if (inView) {
+      const timeoutId = window.setTimeout(() => {
+        setPoapSrc(ultraSoundPoapStill);
+      }, 5000);
+
+      return () => window.clearTimeout(timeoutId);
+    }
+  }, [inView]);
 
   return (
     <section id="poap">
@@ -562,12 +576,19 @@ const PoapSection: FC = () => {
         ultra sound POAP
       </SectionTitle>
       <div className="flex justify-center my-16">
-        <Image
-          alt="image from the ultra sound money poap given out to pre-merge fam"
-          src={ultraSoundPoapGif}
-          width={128}
-          height={128}
-        />
+        <div
+          className="flex"
+          ref={ref}
+          onMouseEnter={() => setPoapSrc(ultraSoundPoapGif)}
+          onMouseLeave={() => setPoapSrc(ultraSoundPoapStill)}
+        >
+          <Image
+            alt="image from the ultra sound money poap given out to pre-merge fam"
+            src={poapSrc}
+            width={128}
+            height={128}
+          />
+        </div>
       </div>
       <div className="relative flex flex-col gap-y-4">
         <WidgetBackground className="flex flex-col gap-y-4">
