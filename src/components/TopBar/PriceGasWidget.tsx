@@ -74,7 +74,7 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
         </div>
         <TextRoboto className="pl-1">
           {baseFeePerGas === undefined ? (
-            <SkeletonText></SkeletonText>
+            <SkeletonText width="0.5rem" />
           ) : (
             <CountUp
               decimals={0}
@@ -99,7 +99,7 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
         </div>
         <TextRoboto className="pl-1">
           {ethPriceStats === undefined ? (
-            <SkeletonText></SkeletonText>
+            <SkeletonText width="2.65rem" />
           ) : (
             <CountUp
               decimals={0}
@@ -112,7 +112,9 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
           <AmountUnitSpace />
           <span className="text-blue-spindle font-extralight">USD</span>
           <AmountUnitSpace />
-          <span className={`${color}`}>({ethUsd24hChange})</span>
+          <span className={`${color}`}>
+            (<SkeletonText width="2.5rem">{ethUsd24hChange}</SkeletonText>)
+          </span>
         </TextRoboto>
       </div>
     </PriceGasBoundary>
