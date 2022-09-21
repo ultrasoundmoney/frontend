@@ -515,13 +515,15 @@ const EligibleHandles = () => {
                 className="grid grid-cols-[40px_1fr_64px] md:grid-cols-[40px_2fr_1fr_64px] gap-x-4 items-center"
                 key={fam.twitter_id}
               >
-                <Image
-                  className="rounded-full"
-                  alt={`profile image of ${"sassal"}`}
-                  src={fam.profile_image_url}
-                  width={40}
-                  height={40}
-                />
+                <div className="mt-1 -mb-1">
+                  <Image
+                    className="rounded-full"
+                    alt={`profile image of ${"sassal"}`}
+                    src={fam.profile_image_url}
+                    width={40}
+                    height={40}
+                  />
+                </div>
                 <div className="flex items-center overflow-hidden h-full">
                   <div className="flex flex-col truncate">
                     <BodyTextV2 className="truncate">{fam.name}</BodyTextV2>
