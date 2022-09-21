@@ -15,7 +15,13 @@ export type TwitterAuthStatusResponse =
 
 export type TwitterAuthStatus =
   | { type: "access-denied" }
-  | { type: "authenticated"; id: string; handle: string }
+  | {
+      type: "authenticated";
+      id: string;
+      handle: string;
+      eligibleForPoap: boolean;
+      claimedPoap: boolean;
+    }
   | { type: "authenticating" }
   | { type: "checking" }
   | { type: "error"; message: string }
@@ -38,9 +44,11 @@ export const useTwitterAuthStatus = () => {
 
         if (body.status === "authenticated") {
           setTwitterAuthStatus({
-            type: "authenticated",
-            id: body.session.id,
+            claimedPoap: body.session.claimedPoap,
+            eligibleForPoap: body.session.eligibleForPoap,
             handle: body.session.handle,
+            id: body.session.id,
+            type: "authenticated",
           });
           return;
         }

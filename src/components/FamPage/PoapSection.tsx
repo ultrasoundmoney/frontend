@@ -305,8 +305,25 @@ const ClaimPoap: FC = () => {
               <LabelText className="truncate">2. your wallet address</LabelText>
               <ClaimStatusText status={claimStatus} />
             </div>
-            <form
-              className={`
+            {twitterAuthStatus.type === "authenticated" &&
+            !twitterAuthStatus.eligibleForPoap ? (
+              <div className="border border-slateus-400 bg-slateus-700 text-slateus-100 flex justify-center items-center rounded-lg h-10">
+                not enough fam followers to claim
+              </div>
+            ) : twitterAuthStatus.type === "authenticated" &&
+              twitterAuthStatus.claimedPoap ? (
+              <div className="border-slateus-400 bg-slateus-700 text-slateus-100 flex justify-center items-center rounded-lg h-10">
+                <Twemoji
+                  className=""
+                  imageClassName="inline-flex h-4 ml-1"
+                  wrapper
+                >
+                  claimed by @{twitterAuthStatus.handle}! 🥳
+                </Twemoji>
+              </div>
+            ) : (
+              <form
+                className={`
                 flex justify-center
                 bg-slateus-800
                 border border-slateus-500 rounded-full
@@ -320,54 +337,55 @@ const ClaimPoap: FC = () => {
                     : "pointer-events-none"
                 }
               `}
-              onSubmit={handleSubmit}
-            >
-              <input
-                className={`
-                  w-full
-                  bg-transparent
-                  text-xs md:text-base text-white
-                  pl-4
-                  placeholder-slateus-400
-                  rounded-full
-                  outline-none
-                `}
-                onChange={handleWalletIdInputChange}
-                pattern="0x[0-9a-fA-F]{40}|.+\.eth"
-                placeholder="vitalik.eth / 0xd4nk..."
-                required
-                spellCheck="false"
-                type="text"
-                value={walletId}
-              />
-              <button
-                className={`
-                  relative
-                  bg-gradient-to-tr from-cyan-400 to-indigo-600
-                  rounded-full
-                  px-4 py-[5px]
-                  my-px
-                  mr-px
-                  md:py-1.5 md:m-0.5
-                  text-white
-                  font-light
-                  flex
-                  group
-                  select-none
-                `}
-                type="submit"
+                onSubmit={handleSubmit}
               >
-                <BodyTextV2 className="z-10">submit</BodyTextV2>
-                <div
+                <input
                   className={`
+                    w-full
+                    bg-transparent
+                    text-xs md:text-base text-white
+                    pl-4
+                    placeholder-slateus-400
+                    rounded-full
+                    outline-none
+                  `}
+                  onChange={handleWalletIdInputChange}
+                  pattern="0x[0-9a-fA-F]{40}|.+\.eth"
+                  placeholder="vitalik.eth / 0xd4nk..."
+                  required
+                  spellCheck="false"
+                  type="text"
+                  value={walletId}
+                />
+                <button
+                  className={`
+                    relative
+                    bg-gradient-to-tr from-cyan-400 to-indigo-600
+                    rounded-full
+                    px-4 py-[5px]
+                    my-px
+                    mr-px
+                    md:py-1.5 md:m-0.5
+                    text-white
+                    font-light
+                    flex
+                    group
+                    select-none
+                  `}
+                  type="submit"
+                >
+                  <BodyTextV2 className="z-10">submit</BodyTextV2>
+                  <div
+                    className={`
                     discord-submit
                     absolute left-[1px] right-[1px] top-[1px] bottom-[1px]
                     bg-slateus-700 rounded-full
                     group-hover:hidden
                   `}
-                ></div>
-              </button>
-            </form>
+                  ></div>
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </WidgetBackground>
