@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { Suspense, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import type { Unit } from "../../denomination";
 import type { TimeFrameNext } from "../../time-frames";
 import { timeFramesNext } from "../../time-frames";
@@ -41,60 +41,58 @@ const BurnSection: FC = () => {
         title="the burn"
       />
       <BasicErrorBoundary>
-        <Suspense>
-          <div className="flex flex-col gap-4 xs:px-4 md:px-16 ">
-            <div className={`bg-blue-tangaroa rounded-lg p-8`}>
-              <div className="grid grid-cols-2 md:flex md:justify-between flex-col gap-y-8 md:flex-row lg:gap-y-0 ">
-                <div className="row-start-1 flex flex-col gap-4 lg:gap-x-4 lg:flex-row lg:items-center">
-                  <WidgetTitle>time frame</WidgetTitle>
-                  <TimeFrameControl
-                    selectedTimeframe={timeFrame}
-                    onSetTimeFrame={handleSetTimeFrame}
-                  />
-                </div>
-                <div className="row-start-2 md:row-start-1 flex flex-col gap-y-4 lg:gap-x-4 lg:flex-row lg:items-center">
-                  <WidgetTitle>currency</WidgetTitle>
-                  <CurrencyControl selectedUnit={unit} onSetUnit={onSetUnit} />
-                </div>
+        <div className="flex flex-col gap-4 xs:px-4 md:px-16 ">
+          <div className={`bg-blue-tangaroa rounded-lg p-8`}>
+            <div className="grid grid-cols-2 md:flex md:justify-between flex-col gap-y-8 md:flex-row lg:gap-y-0 ">
+              <div className="row-start-1 flex flex-col gap-4 lg:gap-x-4 lg:flex-row lg:items-center">
+                <WidgetTitle>time frame</WidgetTitle>
+                <TimeFrameControl
+                  selectedTimeframe={timeFrame}
+                  onSetTimeFrame={handleSetTimeFrame}
+                />
+              </div>
+              <div className="row-start-2 md:row-start-1 flex flex-col gap-y-4 lg:gap-x-4 lg:flex-row lg:items-center">
+                <WidgetTitle>currency</WidgetTitle>
+                <CurrencyControl selectedUnit={unit} onSetUnit={onSetUnit} />
               </div>
             </div>
-            <div
-              className={`
+          </div>
+          <div
+            className={`
                 grid grid-cols-1 lg:grid-cols-2
                 gap-y-4 md:gap-x-4
               `}
-            >
-              <BurnTotal
+          >
+            <BurnTotal
+              onClickTimeFrame={handleClickTimeFrame}
+              timeFrame={timeFrame}
+              unit={unit}
+            />
+            <div className="lg:col-start-2 lg:row-start-1 lg:row-end-5 lg:h-[688px] xl:h-[702px] flex flex-col gap-y-4">
+              <BurnLeaderboard
                 onClickTimeFrame={handleClickTimeFrame}
                 timeFrame={timeFrame}
                 unit={unit}
               />
-              <div className="lg:col-start-2 lg:row-start-1 lg:row-end-5 lg:h-[688px] xl:h-[702px] flex flex-col gap-y-4">
-                <BurnLeaderboard
-                  onClickTimeFrame={handleClickTimeFrame}
-                  timeFrame={timeFrame}
-                  unit={unit}
-                />
-                <BurnCategoryWidget
-                  onClickTimeFrame={handleClickTimeFrame}
-                  timeFrame={timeFrame}
-                />
-              </div>
-              <div className="lg:row-start-2">
-                <LatestBlocks unit={unit} />
-              </div>
-              <div className="lg:row-start-3">
-                <DeflationaryStreak />
-              </div>
-              <div className="lg:row-end-5">
-                <BurnRecords
-                  onClickTimeFrame={handleClickTimeFrame}
-                  timeFrame={timeFrame}
-                />
-              </div>
+              <BurnCategoryWidget
+                onClickTimeFrame={handleClickTimeFrame}
+                timeFrame={timeFrame}
+              />
+            </div>
+            <div className="lg:row-start-2">
+              <LatestBlocks unit={unit} />
+            </div>
+            <div className="lg:row-start-3">
+              <DeflationaryStreak />
+            </div>
+            <div className="lg:row-end-5">
+              <BurnRecords
+                onClickTimeFrame={handleClickTimeFrame}
+                timeFrame={timeFrame}
+              />
             </div>
           </div>
-        </Suspense>
+        </div>
       </BasicErrorBoundary>
     </div>
   );

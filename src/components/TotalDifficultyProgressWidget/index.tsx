@@ -4,8 +4,7 @@ import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
-import type { MergeEstimate } from "../../api/merge-estimate";
-import type { MergeStatus } from "../../api/merge-status";
+import { useMergeStatus } from "../../api/merge-status";
 import pandaOwn from "../../assets/panda-own.svg";
 import { LabelUnitText } from "../Texts";
 import LabelText from "../TextsNext/LabelText";
@@ -13,16 +12,12 @@ import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
 
 type Props = {
-  mergeEstimate: MergeEstimate;
-  mergeStatus: MergeStatus;
   /** a fraction between 0 and 1 */
   progress: number | undefined;
 };
 
-const TotalDifficultyProgressWidget: FC<Props> = ({
-  mergeStatus,
-  progress,
-}) => {
+const TotalDifficultyProgressWidget: FC<Props> = ({ progress }) => {
+  const mergeStatus = useMergeStatus();
   const [mergedDate, setMergedDate] = useState<string>();
 
   const mergeDate = formatInTimeZone(

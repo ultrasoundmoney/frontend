@@ -1,7 +1,6 @@
 import type { FC } from "react";
 import { useState } from "react";
 import CountUp from "react-countup";
-import type { EthPriceStats } from "../../api/eth-price-stats";
 import { useTotalValueSecured } from "../../api/total-value-secured";
 import * as Format from "../../format";
 import {
@@ -71,10 +70,7 @@ const AssetType: FC<{
   );
 };
 
-const Summary: FC<{ className?: string; ethPriceStats: EthPriceStats }> = ({
-  className = "",
-  ethPriceStats,
-}) => {
+const Summary: FC<{ className?: string }> = ({ className = "" }) => {
   const totalValueSecured = useTotalValueSecured();
   const [showSecurityRatioTooltip, setShowSecurityRatioTooltip] =
     useState(false);
@@ -166,7 +162,6 @@ const Summary: FC<{ className?: string; ethPriceStats: EthPriceStats }> = ({
         show={showSecurityRatioTooltip}
       >
         <TooltipSecurityRatio
-          ethPriceStats={ethPriceStats}
           onClickClose={() => setShowSecurityRatioTooltip(false)}
         />
       </Modal>

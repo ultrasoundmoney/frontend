@@ -17,7 +17,7 @@ export type MergeEstimate = {
 export const fetchMergeEstimate = (): Promise<ApiResult<MergeEstimate>> =>
   fetchJson<MergeEstimate>(`${getDomain()}/api/v2/fees/merge-estimate`);
 
-export const useMergeEstimate = (): MergeEstimate | undefined => {
+export const useMergeEstimate = (): MergeEstimate => {
   const { data } = useSWR<MergeEstimate>(
     "/api/v2/fees/merge-estimate",
     fetchJsonSwr,
@@ -26,5 +26,7 @@ export const useMergeEstimate = (): MergeEstimate | undefined => {
     },
   );
 
-  return data;
+  // We use an SWRConfig with fallback data for this hook.
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return data!;
 };

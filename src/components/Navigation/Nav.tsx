@@ -84,7 +84,7 @@ const Nav: React.FC<{
       >
         <div className="flex relative">
           {baseFeePerGas !== undefined && ethPriceStats !== undefined && (
-            <PriceGasWidget initialBaseFeePerGas={0} initialEthPrice={0} />
+            <PriceGasWidget />
           )}
           <button
             ref={alarmButtonRef}
@@ -116,16 +116,12 @@ const Nav: React.FC<{
           >
             <WidgetTitle>price alerts</WidgetTitle>
             <AlarmInput
-              baseFeePerGas={baseFeePerGas}
-              ethPriceStats={ethPriceStats}
               isAlarmActive={gasAlarmActive}
               onToggleIsAlarmActive={setGasAlarmActive}
               unit="Gwei"
               type="gas"
             />
             <AlarmInput
-              baseFeePerGas={baseFeePerGas}
-              ethPriceStats={ethPriceStats}
               isAlarmActive={ethAlarmActive}
               onToggleIsAlarmActive={setEthAlarmActive}
               unit="USD "

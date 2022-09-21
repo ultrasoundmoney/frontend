@@ -24,10 +24,12 @@ const url = "/api/v2/fees/merge-status";
 export const fetchMergeStatus = (): Promise<ApiResult<MergeStatus>> =>
   fetchJson<MergeStatus>(url);
 
-export const useMergeStatus = (): MergedStatus | undefined => {
+export const useMergeStatus = (): MergedStatus => {
   const { data } = useSWR<MergedStatus>(url, fetchJsonSwr, {
     refreshInterval: secondsToMilliseconds(4),
   });
 
-  return data;
+  // We use an SWRConfig with fallback data for this hook.
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return data!;
 };

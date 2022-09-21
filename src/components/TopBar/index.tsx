@@ -2,8 +2,6 @@ import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import type { FC } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { BaseFeePerGas } from "../../api/base-fee-per-gas";
-import type { EthPriceStats } from "../../api/eth-price-stats";
 import { useLocalStorage } from "../../hooks/use-local-storage";
 import useNotification from "../../hooks/use-notification";
 import { WidgetTitle } from "../WidgetSubcomponents";
@@ -11,19 +9,7 @@ import AlarmInput from "./AlarmInput";
 import bellSvg from "./bell-slateus.svg";
 import PriceGasWidget from "./PriceGasWidget";
 
-type Props = {
-  baseFeePerGas: BaseFeePerGas;
-  ethPriceStats: EthPriceStats;
-  initialBaseFeePerGas: number;
-  initialEthPrice: number;
-};
-
-const TopBar: FC<Props> = ({
-  baseFeePerGas,
-  ethPriceStats,
-  initialBaseFeePerGas,
-  initialEthPrice,
-}) => {
+const TopBar: FC = () => {
   const [gasAlarmActive, setGasAlarmActive] = useLocalStorage(
     "gas-alarm-enabled",
     false,
@@ -74,10 +60,7 @@ const TopBar: FC<Props> = ({
   return (
     <div className="flex justify-between pt-4 md:pt-8">
       <div className="relative flex">
-        <PriceGasWidget
-          initialEthPrice={initialEthPrice}
-          initialBaseFeePerGas={initialBaseFeePerGas}
-        />
+        <PriceGasWidget />
         <button
           ref={alarmButtonRef}
           className={`
@@ -109,16 +92,12 @@ const TopBar: FC<Props> = ({
         >
           <WidgetTitle>price alerts</WidgetTitle>
           <AlarmInput
-            baseFeePerGas={baseFeePerGas}
-            ethPriceStats={ethPriceStats}
             isAlarmActive={gasAlarmActive}
             onToggleIsAlarmActive={setGasAlarmActive}
             unit="Gwei"
             type="gas"
           />
           <AlarmInput
-            baseFeePerGas={baseFeePerGas}
-            ethPriceStats={ethPriceStats}
             isAlarmActive={ethAlarmActive}
             onToggleIsAlarmActive={setEthAlarmActive}
             unit="USD "

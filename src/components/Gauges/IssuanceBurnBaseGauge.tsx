@@ -5,7 +5,6 @@ import type { FC } from "react";
 import { useContext } from "react";
 import Skeleton from "react-loading-skeleton";
 import { animated, config, useSpring } from "react-spring";
-import type { EthPriceStats } from "../../api/eth-price-stats";
 import type { Unit } from "../../denomination";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
@@ -17,7 +16,6 @@ import GaugeSvg from "./GaugeSvg";
 
 type BaseGuageProps = {
   emoji: "flame" | "droplet";
-  ethPriceStats: EthPriceStats;
   gaugeUnit: string;
   gradientFill: GaugeGradientFill;
   needleColor?: string;

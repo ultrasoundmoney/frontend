@@ -1,9 +1,8 @@
 import type { FC } from "react";
 import CountUp from "react-countup";
-import type { EthSupply } from "../../api/eth-supply";
+import { useEthSupply } from "../../api/eth-supply";
 import { getEthSupplyImprecise } from "../../api/eth-supply";
-import type { MergeEstimate } from "../../api/merge-estimate";
-import type { MergeStatus } from "../../api/merge-status";
+import { useMergeStatus } from "../../api/merge-status";
 import { useSupplySinceMerge } from "../../api/supply-since-merge";
 import { getDateTimeFromSlot } from "../../beacon-time";
 import { MERGE_TIMESTAMP } from "../../eth-constants";
@@ -17,9 +16,6 @@ import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
 
 type Props = {
-  ethSupply: EthSupply;
-  mergeEstimate: MergeEstimate;
-  mergeStatus: MergeStatus;
   simulateProofOfWork: boolean;
   onSimulateProofOfWork: () => void;
 };
@@ -28,11 +24,11 @@ const POW_ISSUANCE_PER_DAY = powIssuancePerDay - posIssuancePerDay;
 const SLOTS_PER_DAY = 24 * 60 * 5;
 
 const SupplyChangeSinceMerge: FC<Props> = ({
-  ethSupply,
-  mergeStatus,
   simulateProofOfWork,
   onSimulateProofOfWork,
 }) => {
+  const ethSupply = useEthSupply();
+  const mergeStatus = useMergeStatus();
   const supplySinceMerge = useSupplySinceMerge();
   const ethSupplyImprecise = getEthSupplyImprecise(ethSupply);
 

@@ -1,7 +1,7 @@
 import JSBI from "jsbi";
 import type { FC } from "react";
 import { useState } from "react";
-import type { EthSupply } from "../../api/eth-supply";
+import { useEthSupply } from "../../api/eth-supply";
 import { getDateTimeFromSlot } from "../../beacon-time";
 import UpdatedAgo from "../UpdatedAgo";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
@@ -10,9 +10,8 @@ import EthSupplyTooltip from "./EthSupplyTooltip";
 import Nerd from "../Nerd";
 import PreciseEth from "./PreciseEth";
 
-type Props = { ethSupply: EthSupply };
-
-const EthSupplyWidget: FC<Props> = ({ ethSupply }) => {
+const EthSupplyWidget: FC = () => {
+  const ethSupply = useEthSupply();
   const [showNerdTooltip, setShowNerdTooltip] = useState(false);
 
   const ethSupplySum = JSBI.subtract(

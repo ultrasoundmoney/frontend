@@ -106,7 +106,5 @@ export const useGroupedAnalysis1 = (): GroupedAnalysis1F | undefined => {
     },
   );
 
-  // We use suspense.
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return data!;
+  return data;
 };

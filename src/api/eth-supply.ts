@@ -62,7 +62,7 @@ export const decodeEthSupply = (ethSupply: EthSupplyF): EthSupply => ({
 export const fetchEthSupplyParts = (): Promise<ApiResult<EthSupplyF>> =>
   fetchJson(`${getDomain()}/api/v2/fees/eth-supply-parts`);
 
-export const useEthSupply = (): EthSupplyF | undefined => {
+export const useEthSupply = (): EthSupply => {
   const { data } = useSWR<EthSupplyF>(
     "/api/v2/fees/eth-supply-parts",
     fetchJsonSwr,
@@ -71,7 +71,9 @@ export const useEthSupply = (): EthSupplyF | undefined => {
     },
   );
 
-  return data;
+  // We use an SWRConfig with fallback data for this hook.
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return decodeEthSupply(data!);
 };
 
 export const useImpreciseEthSupply = (): number | undefined => {
@@ -89,7 +91,7 @@ export const useImpreciseEthSupply = (): number | undefined => {
       DateFns.differenceInSeconds(new Date(), lastRefresh.current) > 60
     ) {
       lastRefresh.current = new Date();
-      setLastEthSupply(getEthSupplyImprecise(decodeEthSupply(ethSupply)));
+      setLastEthSupply(getEthSupplyImprecise(ethSupply));
     }
   }, [ethSupply]);
 

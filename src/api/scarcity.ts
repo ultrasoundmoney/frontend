@@ -1,7 +1,8 @@
 import JSBI from "jsbi";
 import useSWR from "swr";
 import * as Duration from "../duration";
-import { fetchJsonSwr } from "./fetchers";
+import type { ApiResult } from "./fetchers";
+import { fetchJson, fetchJsonSwr } from "./fetchers";
 
 export type Scarcity = {
   engines: {
@@ -31,7 +32,7 @@ type BigIntString = string;
 const jsbiFromBigIntString = (str: string): JSBI =>
   JSBI.BigInt(str.slice(0, -1));
 
-type RawScarcity = {
+export type ScarcityF = {
   engines: {
     burned: {
       amount: BigIntString;
@@ -53,33 +54,38 @@ type RawScarcity = {
   number: number;
 };
 
-export const useScarcity = (): Scarcity | undefined => {
-  const { data } = useSWR<RawScarcity>(`/api/fees/scarcity`, fetchJsonSwr, {
+const url = "/api/fees/scarcity";
+
+export const fetchScarcity = (): Promise<ApiResult<ScarcityF>> =>
+  fetchJson(url);
+
+export const useScarcity = (): Scarcity => {
+  const { data } = useSWR<ScarcityF>(url, fetchJsonSwr, {
     refreshInterval: Duration.millisFromHours(1),
   });
 
-  if (data === undefined) {
-    return data;
-  }
+  // We use an SWRConfig with fallback data for this hook.
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const safeData = data!;
 
   return {
     engines: {
       burned: {
-        ...data.engines.burned,
-        startedOn: new Date(data.engines.burned.startedOn),
-        amount: jsbiFromBigIntString(data.engines.burned.amount),
+        ...safeData.engines.burned,
+        startedOn: new Date(safeData.engines.burned.startedOn),
+        amount: jsbiFromBigIntString(safeData.engines.burned.amount),
       },
       locked: {
-        ...data.engines.locked,
-        startedOn: new Date(data.engines.locked.startedOn),
+        ...safeData.engines.locked,
+        startedOn: new Date(safeData.engines.locked.startedOn),
       },
       staked: {
-        ...data.engines.staked,
-        startedOn: new Date(data.engines.staked.startedOn),
-        amount: jsbiFromBigIntString(data.engines.staked.amount),
+        ...safeData.engines.staked,
+        startedOn: new Date(safeData.engines.staked.startedOn),
+        amount: jsbiFromBigIntString(safeData.engines.staked.amount),
       },
     },
-    ethSupply: jsbiFromBigIntString(data.ethSupply),
-    number: data.number,
+    ethSupply: jsbiFromBigIntString(safeData.ethSupply),
+    number: safeData.number,
   };
 };

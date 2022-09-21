@@ -3,8 +3,8 @@ import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import type { ChangeEvent, FC } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { BaseFeePerGas } from "../../api/base-fee-per-gas";
-import type { EthPriceStats } from "../../api/eth-price-stats";
+import { useBaseFeePerGas } from "../../api/base-fee-per-gas";
+import { useEthPriceStats } from "../../api/eth-price-stats";
 import { WEI_PER_GWEI } from "../../eth-units";
 import { formatZeroDecimals } from "../../format";
 import { useLocalStorage } from "../../hooks/use-local-storage";
@@ -67,8 +67,6 @@ const imageMap: Record<AlarmType, JSX.Element> = {
 };
 
 type AlarmInputProps = {
-  baseFeePerGas: BaseFeePerGas;
-  ethPriceStats: EthPriceStats;
   isAlarmActive: boolean;
   onToggleIsAlarmActive: (isAlarmActive: boolean) => void;
   unit: string;
@@ -76,13 +74,13 @@ type AlarmInputProps = {
 };
 
 const AlarmInput: FC<AlarmInputProps> = ({
-  baseFeePerGas,
-  ethPriceStats,
   isAlarmActive,
   onToggleIsAlarmActive,
   type,
   unit,
 }) => {
+  const baseFeePerGas = useBaseFeePerGas();
+  const ethPriceStats = useEthPriceStats();
   const notification = useNotification();
   const [isBusyEditing, setIsBusyEditing] = useState(false);
   const [threshold, setThreshold] = useLocalStorage<string>(
@@ -95,13 +93,19 @@ const AlarmInput: FC<AlarmInputProps> = ({
   );
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const roundedGasPriceGwei = Math.round(baseFeePerGas.wei / WEI_PER_GWEI);
+  const roundedGasPriceGwei =
+    baseFeePerGas === undefined
+      ? undefined
+      : Math.round(baseFeePerGas.wei / WEI_PER_GWEI);
 
-  const roundedEthPrice = Math.round(ethPriceStats.usd);
+  const roundedEthPrice =
+    ethPriceStats === undefined ? undefined : Math.round(ethPriceStats.usd);
+
   const currentValueMap: Record<AlarmType, number | undefined> = {
     gas: roundedGasPriceGwei,
     eth: roundedEthPrice,
   };
+
   const currentValue = currentValueMap[type];
 
   const thresholdNum = thresholdToNumber(threshold);
@@ -235,6 +239,7 @@ const AlarmInput: FC<AlarmInputProps> = ({
 
     inputRef.current.focus();
   }, [inputRef]);
+
   return (
     <div className="flex justify-between items-center pt-4">
       <div

@@ -1,27 +1,14 @@
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import type { FC } from "react";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import type { BaseFeePerGas } from "../../api/base-fee-per-gas";
 import { useBaseFeePerGas } from "../../api/base-fee-per-gas";
-import type { EthPriceStats } from "../../api/eth-price-stats";
-import { useEthPriceStats } from "../../api/eth-price-stats";
-import type { EthSupplyF } from "../../api/eth-supply";
-import { decodeEthSupply, useEthSupply } from "../../api/eth-supply";
-import type { MergeEstimate } from "../../api/merge-estimate";
-import { useMergeEstimate } from "../../api/merge-estimate";
-import type { MergeStatus } from "../../api/merge-status";
-import { useMergeStatus } from "../../api/merge-status";
-import { useScarcity } from "../../api/scarcity";
 import colors from "../../colors";
-import type { WeiNumber } from "../../eth-units";
 import * as FeatureFlags from "../../feature-flags";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
-import { useAdminToken } from "../../hooks/use-admin-token";
-import { useClientRefreshed } from "../../hooks/use-client-refreshed";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import HeaderGlow from "../HeaderGlow";
 import FaqBlock from "../Landing/faq";
@@ -64,14 +51,15 @@ const BurnSection = dynamic(() => import("./BurnSection"), {
   ssr: false,
 });
 
-const useGasTitle = (defaultTitle: string, baseFeePerGas: WeiNumber) => {
+const useGasTitle = (defaultTitle: string) => {
   const [gasTitle, setGasTitle] = useState<string>();
+  const baseFeePerGas = useBaseFeePerGas();
 
   useEffect(() => {
     if (typeof window === "undefined" || baseFeePerGas === undefined) {
       return undefined;
     }
-    const gasFormatted = Format.gweiFromWei(baseFeePerGas).toFixed(0);
+    const gasFormatted = Format.gweiFromWei(baseFeePerGas.wei).toFixed(0);
     const newTitle = `${gasFormatted} Gwei | ${defaultTitle}`;
     setGasTitle(newTitle);
   }, [baseFeePerGas, defaultTitle]);
@@ -94,44 +82,10 @@ const useScrollOnLoad = () => {
   }, []);
 };
 
-type Props = {
-  baseFeePerGas: BaseFeePerGas;
-  ethPriceStats: EthPriceStats;
-  ethSupplyF: EthSupplyF;
-  mergeEstimate: MergeEstimate;
-  mergeStatus: MergeStatus;
-};
-
-const Dashboard: FC<Props> = ({
-  baseFeePerGas,
-  ethPriceStats,
-  ethSupplyF,
-  mergeEstimate,
-  mergeStatus,
-}) => {
-  const crMergeEstimate = useClientRefreshed(mergeEstimate, useMergeEstimate);
-  const crEthSupply = useClientRefreshed(ethSupplyF, useEthSupply);
-  const ethSupply = decodeEthSupply(crEthSupply);
-  const scarcity = useScarcity();
+const Dashboard: FC = () => {
   const { featureFlags, setFlag } = FeatureFlags.useFeatureFlags();
-  const adminToken = useAdminToken();
-  const crBaseFeePerGas = useClientRefreshed(baseFeePerGas, useBaseFeePerGas);
-  const crEthPriceStats = useClientRefreshed(ethPriceStats, useEthPriceStats);
-  const gasTitle = useGasTitle(
-    "dashboard | ultrasound.money",
-    crBaseFeePerGas.wei,
-  );
-  const crMergeStatus = useClientRefreshed(mergeStatus, useMergeStatus);
+  const gasTitle = useGasTitle("dashboard | ultrasound.money");
   useScrollOnLoad();
-
-  const mergeProxyStatus = featureFlags.simulatePostMerge
-    ? ({
-        status: "merged",
-        timestamp: "2022-09-15T03:32:00Z",
-        block_number: 15537349,
-        supply: 120517942,
-      } as const)
-    : crMergeStatus;
 
   return (
     <FeatureFlagsContext.Provider value={featureFlags}>
@@ -154,12 +108,7 @@ const Dashboard: FC<Props> = ({
           )}
           <div className="px-4 md:px-16">
             <BasicErrorBoundary>
-              <TopBar
-                baseFeePerGas={crBaseFeePerGas}
-                ethPriceStats={crEthPriceStats}
-                initialBaseFeePerGas={baseFeePerGas.wei}
-                initialEthPrice={ethPriceStats.usd}
-              />
+              <TopBar />
             </BasicErrorBoundary>
           </div>
           <MainTitle>ultra sound money</MainTitle>
@@ -196,28 +145,16 @@ const Dashboard: FC<Props> = ({
               />
             </div>
           </div>
-          <MergeSection
-            ethSupply={ethSupply}
-            mergeEstimate={crMergeEstimate}
-            mergeStatus={mergeProxyStatus}
-          />
-          <SupplyGrowthSection
-            ethSupply={ethSupply}
-            ethPriceStats={ethPriceStats}
-            scarcity={scarcity}
-          />
-          <SupplyProjectionsSection
-            ethPriceStats={ethPriceStats}
-            scarcity={scarcity}
-          />
+          <MergeSection />
+          <SupplyGrowthSection />
+          <SupplyProjectionsSection />
           <div className="h-16"></div>
           <BurnSection />
           <div className="h-16"></div>
-          <TotalValueSecuredSection ethPriceStats={ethPriceStats} />
+          <TotalValueSecuredSection />
           <div className="h-16"></div>
-          <MonetaryPremiumSection ethPriceStats={ethPriceStats} />
+          <MonetaryPremiumSection />
           <FamSection />
-          <JoinDiscordSection />
           <div className="flex px-4 md:px-0 mt-32">
             <div className="w-full lg:w-2/3 md:m-auto relative">
               <FaqBlock />

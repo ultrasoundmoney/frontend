@@ -3,7 +3,7 @@ import type { FC, ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { useAverageEthPrice } from "../api/average-eth-price";
 import { useBurnRates } from "../api/burn-rates";
-import type { EthPriceStats } from "../api/eth-price-stats";
+import { useEthPriceStats } from "../api/eth-price-stats";
 import { useImpreciseEthSupply } from "../api/eth-supply";
 import { usePeRatios } from "../api/pe-ratios";
 import * as Format from "../format";
@@ -142,12 +142,11 @@ const calcProjectedPrice = (
   return earningsPerShare * peRatio * monetaryPremium;
 };
 
-const PriceModel: FC<{
-  ethPriceStats: EthPriceStats;
-}> = ({ ethPriceStats, }) => {
+const PriceModel: FC = () => {
   const peRatios = usePeRatios();
   const burnRates = useBurnRates();
   const burnRateAll = burnRates?.burnRateAllUsd;
+  const ethPriceStats = useEthPriceStats();
   const ethPrice = ethPriceStats.usd;
   const ethSupply = useImpreciseEthSupply();
   const [peRatio, setPeRatio] = useState<number>();

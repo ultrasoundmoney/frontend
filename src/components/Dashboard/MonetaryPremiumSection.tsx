@@ -1,7 +1,5 @@
 import dynamic from "next/dynamic";
 import type { FC } from "react";
-import { Suspense } from "react";
-import type { EthPriceStats} from "../../api/eth-price-stats";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import Flippenings from "../Flippenings";
 import IssuanceBreakdown from "../IssuanceBreakdown";
@@ -12,11 +10,7 @@ const ScarcityWidget = dynamic(() => import("../ScarcityWidget"), {
   ssr: false,
 });
 
-type Props = {
-  ethPriceStats: EthPriceStats;
-};
-
-const MonetaryPremiumSection: FC<Props> = ({ethPriceStats}) => (
+const MonetaryPremiumSection: FC = () => (
   <div className="xs:px-4 md:px-16" id="monetary-premium">
     <SectionDivider
       title="monetary premium"
@@ -24,19 +18,17 @@ const MonetaryPremiumSection: FC<Props> = ({ethPriceStats}) => (
       subtitle="the race to become the most desirable money"
     />
     <BasicErrorBoundary>
-      <Suspense>
-        <div className="flex flex-col lg:flex-row gap-y-4 lg:gap-x-4">
-          <div className="flex flex-col basis-1/2 gap-y-4">
-            <ScarcityWidget />
-            <ValidatorRewardsWidget />
-            <Flippenings />
-          </div>
-          <div className="basis-1/2 flex flex-col gap-y-4">
-            <PriceModel ethPriceStats={ethPriceStats} />
-            <IssuanceBreakdown />
-          </div>
+      <div className="flex flex-col lg:flex-row gap-y-4 lg:gap-x-4">
+        <div className="flex flex-col basis-1/2 gap-y-4">
+          <ScarcityWidget />
+          <ValidatorRewardsWidget />
+          <Flippenings />
         </div>
-      </Suspense>
+        <div className="basis-1/2 flex flex-col gap-y-4">
+          <PriceModel />
+          <IssuanceBreakdown />
+        </div>
+      </div>
     </BasicErrorBoundary>
   </div>
 );

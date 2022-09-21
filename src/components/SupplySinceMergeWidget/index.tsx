@@ -9,10 +9,9 @@ import _merge from "lodash/merge";
 import type { FC } from "react";
 import { useMemo } from "react";
 import type { MergeStatus } from "../../api/merge-status";
-import {
-  SupplyAtTime,
-  useSupplySinceMerge,
-} from "../../api/supply-since-merge";
+import { useMergeStatus } from "../../api/merge-status";
+import type { SupplyAtTime } from "../../api/supply-since-merge";
+import { useSupplySinceMerge } from "../../api/supply-since-merge";
 import colors from "../../colors";
 import { MERGE_TIMESTAMP } from "../../eth-constants";
 import {
@@ -252,16 +251,15 @@ const btcSupplyFromEthProjection = (ethProjection: number, ethSupply: number) =>
   (ethProjection / ethSupply) * BITCOIN_SUPPLY_AT_MERGE;
 
 type Props = {
-  mergeStatus: MergeStatus;
   simulateProofOfWork: boolean;
   onSimulateProofOfWork: () => void;
 };
 
 const SupplySinceMergeWidget: FC<Props> = ({
-  mergeStatus,
   simulateProofOfWork,
   onSimulateProofOfWork,
 }) => {
+  const mergeStatus = useMergeStatus();
   const supplySinceMerge = useSupplySinceMerge();
 
   const pointFromSupplyAtTime = (supplyAtTime: SupplyAtTime): SupplyPoint => [

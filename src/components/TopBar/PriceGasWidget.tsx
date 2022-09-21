@@ -30,15 +30,7 @@ const PriceGasBoundary: FC<{ children: ReactNode }> = ({ children }) => (
   </Sentry.ErrorBoundary>
 );
 
-type PriceGasWidgetProps = {
-  initialBaseFeePerGas: number;
-  initialEthPrice: number;
-};
-
-const PriceGasWidget: FC<PriceGasWidgetProps> = ({
-  initialBaseFeePerGas,
-  initialEthPrice,
-}) => {
+const PriceGasWidget: FC = () => {
   const baseFeePerGas = useBaseFeePerGas();
   const ethPriceStats = useEthPriceStats();
   const ethUsd24hChange =
@@ -80,7 +72,7 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
               decimals={0}
               duration={0.8}
               separator=","
-              start={Format.gweiFromWei(initialBaseFeePerGas)}
+              start={Format.gweiFromWei(baseFeePerGas.wei)}
               end={Format.gweiFromWei(baseFeePerGas.wei)}
             />
           )}
@@ -105,7 +97,7 @@ const PriceGasWidget: FC<PriceGasWidgetProps> = ({
               decimals={0}
               duration={0.8}
               separator=","
-              start={initialEthPrice}
+              start={ethPriceStats.usd}
               end={ethPriceStats.usd}
             />
           )}

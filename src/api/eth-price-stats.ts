@@ -15,10 +15,12 @@ const url = "/api/v2/fees/eth-price-stats";
 export const fetchEthPriceStats = (): Promise<ApiResult<EthPriceStats>> =>
   fetchJson<EthPriceStats>(url);
 
-export const useEthPriceStats = (): EthPriceStats | undefined => {
+export const useEthPriceStats = (): EthPriceStats => {
   const { data } = useSWR<EthPriceStats>(url, fetchJsonSwr, {
     refreshInterval: secondsToMilliseconds(10),
   });
 
-  return data;
+  // We use an SWRConfig with fallback data for this hook.
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return data!;
 };

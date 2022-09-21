@@ -4,6 +4,7 @@ import type { FC } from "react";
 import { useContext } from "react";
 import Skeleton from "react-loading-skeleton";
 import type { EthPriceStats } from "../../api/eth-price-stats";
+import { useEthPriceStats } from "../../api/eth-price-stats";
 import type { Scarcity } from "../../api/scarcity";
 import { useScarcity } from "../../api/scarcity";
 import { useTotalValueSecured } from "../../api/total-value-secured";
@@ -32,9 +33,9 @@ const formatEthPrice = (
   )();
 
 const TooltipSecurityRatio: FC<{
-  ethPriceStats: EthPriceStats;
   onClickClose: () => void;
-}> = ({ ethPriceStats, onClickClose }) => {
+}> = ({ onClickClose }) => {
+  const ethPriceStats = useEthPriceStats();
   const totalValueSecured = useTotalValueSecured();
   const ethStaked = useScarcity()?.engines.staked;
   const { previewSkeletons } = useContext(FeatureFlagsContext);

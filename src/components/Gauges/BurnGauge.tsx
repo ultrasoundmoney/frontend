@@ -1,6 +1,5 @@
 import type { FC } from "react";
 import { useBurnRates } from "../../api/burn-rates";
-import type { EthPriceStats } from "../../api/eth-price-stats";
 import colors from "../../colors";
 import type { Unit } from "../../denomination";
 import * as Format from "../../format";
@@ -9,12 +8,11 @@ import { timeframeBurnRateMap } from "../BurnTotal";
 import IssuanceBurnBaseGauge from "./IssuanceBurnBaseGauge";
 
 type BurnGaugeProps = {
-  ethPriceStats: EthPriceStats;
   timeFrame: TimeFrameNext;
   unit: Unit;
 };
 
-const BurnGauge: FC<BurnGaugeProps> = ({ ethPriceStats, timeFrame, unit }) => {
+const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame, unit }) => {
   const burnRates = useBurnRates();
   const preBurnRate =
     burnRates === undefined
@@ -38,7 +36,6 @@ const BurnGauge: FC<BurnGaugeProps> = ({ ethPriceStats, timeFrame, unit }) => {
     >
       <IssuanceBurnBaseGauge
         emoji="flame"
-        ethPriceStats={ethPriceStats}
         gaugeUnit={unit === "eth" ? "K" : "B"}
         gradientFill="orange"
         needleColor={colors.fireOrange}

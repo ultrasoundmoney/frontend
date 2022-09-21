@@ -1,6 +1,5 @@
 import type { FC } from "react";
 import { useAverageEthPrice } from "../../api/average-eth-price";
-import type { EthPriceStats } from "../../api/eth-price-stats";
 import colors from "../../colors";
 import type { Unit } from "../../denomination";
 import * as StaticEtherData from "../../static-ether-data";
@@ -8,14 +7,12 @@ import type { TimeFrameNext } from "../../time-frames";
 import BaseGauge from "./IssuanceBurnBaseGauge";
 
 type Props = {
-  ethPriceStats: EthPriceStats;
   simulateProofOfWork: boolean;
   timeFrame: TimeFrameNext;
   unit: Unit;
 };
 
 const IssuanceGauge: FC<Props> = ({
-  ethPriceStats,
   simulateProofOfWork: simulateProofOfWork,
   timeFrame,
   unit,
@@ -45,7 +42,6 @@ const IssuanceGauge: FC<Props> = ({
     >
       <BaseGauge
         emoji="droplet"
-        ethPriceStats={ethPriceStats}
         gaugeUnit={unit === "eth" ? "K" : "B"}
         gradientFill="blue"
         needleColor={colors.drop}

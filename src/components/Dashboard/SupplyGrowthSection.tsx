@@ -1,12 +1,9 @@
 import _maxBy from "lodash/maxBy";
 import type { FC } from "react";
-import { Suspense, useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { BaseFeeAtTime } from "../../api/base-fee-over-time";
 import { useBaseFeeOverTime } from "../../api/base-fee-over-time";
 import { useBaseFeePerGasStats } from "../../api/base-fee-per-gas-stats";
-import type { EthPriceStats } from "../../api/eth-price-stats";
-import type { EthSupply } from "../../api/eth-supply";
-import type { Scarcity } from "../../api/scarcity";
 import type { Unit } from "../../denomination";
 import type { Gwei } from "../../eth-units";
 import { WEI_PER_GWEI } from "../../eth-units";
@@ -87,17 +84,7 @@ const pointsFromBaseFeesOverTime = (
       [block_number, wei / WEI_PER_GWEI] as BaseFeePoint,
   );
 
-type Props = {
-  ethSupply: EthSupply;
-  ethPriceStats: EthPriceStats;
-  scarcity: Scarcity | undefined;
-};
-
-const SupplyGrowthSection: FC<Props> = ({
-  ethSupply,
-  ethPriceStats,
-  scarcity,
-}) => {
+const SupplyGrowthSection: FC = () => {
   const baseFeesOverTime = useBaseFeeOverTime();
   const baseFeePerGasStats = useBaseFeePerGasStats();
   const [simulateProofOfWork, setSimulateProofOfWork] = useState(false);
@@ -137,66 +124,58 @@ const SupplyGrowthSection: FC<Props> = ({
 
   return (
     <BasicErrorBoundary>
-      <Suspense>
-        <div id="growth" className="mt-16">
-          <SectionDivider
-            link="growth"
-            subtitle="burn greater than issuance?"
-            title="supply growth"
-          />
-          <div className="flex flex-col gap-4 xs:px-4 md:px-16">
-            <div>
-              <div className="w-full flex flex-col md:flex-row isolate">
-                <div className="hidden md:block w-1/3">
-                  <BurnGauge
-                    ethPriceStats={ethPriceStats}
-                    timeFrame={timeFrame}
-                    unit={unit}
-                  />
-                </div>
-                <div className="md:w-1/3">
-                  <SupplyGrowthGauge
-                    scarcity={scarcity}
-                    onClickTimeFrame={handleClickTimeFrame}
-                    simulateProofOfWork={simulateProofOfWork}
-                    timeFrame={timeFrame}
-                  />
-                </div>
-                <div className="hidden md:block w-1/3">
-                  <IssuanceGauge
-                    ethPriceStats={ethPriceStats}
-                    simulateProofOfWork={simulateProofOfWork}
-                    timeFrame={timeFrame}
-                    unit={unit}
-                  />
-                </div>
+      <div id="growth" className="mt-16">
+        <SectionDivider
+          link="growth"
+          subtitle="burn greater than issuance?"
+          title="supply growth"
+        />
+        <div className="flex flex-col gap-4 xs:px-4 md:px-16">
+          <div>
+            <div className="w-full flex flex-col md:flex-row isolate">
+              <div className="hidden md:block w-1/3">
+                <BurnGauge timeFrame={timeFrame} unit={unit} />
               </div>
-              <Controls
-                onSetTimeFrame={handleSetTimeFrame}
-                onSetUnit={handleSetUnit}
-                onToggleSimulateProofOfWork={handleToggleSimulateProofOfWork}
-                simulateProofOfWork={simulateProofOfWork}
-                timeFrame={timeFrame}
-                unit={unit}
-              />
-            </div>
-            <div className="flex flex-col lg:flex-row gap-y-4 gap-x-4">
-              <div className="flex flex-col gap-y-4 w-full lg:w-1/2 h-min">
-                <GasMarketWidget baseFeePerGasStats={baseFeePerGasStats} />
-                <EthSupplyWidget ethSupply={ethSupply} />
+              <div className="md:w-1/3">
+                <SupplyGrowthGauge
+                  onClickTimeFrame={handleClickTimeFrame}
+                  simulateProofOfWork={simulateProofOfWork}
+                  timeFrame={timeFrame}
+                />
               </div>
-              <div className="w-full lg:w-1/2">
-                <BaseFeesWidget
-                  barrier={baseFeesOverTime?.barrier}
-                  baseFeesSeries={baseFeesSeries ?? []}
-                  baseFeesMap={baseFeesMap}
-                  max={max?.[1]}
+              <div className="hidden md:block w-1/3">
+                <IssuanceGauge
+                  simulateProofOfWork={simulateProofOfWork}
+                  timeFrame={timeFrame}
+                  unit={unit}
                 />
               </div>
             </div>
+            <Controls
+              onSetTimeFrame={handleSetTimeFrame}
+              onSetUnit={handleSetUnit}
+              onToggleSimulateProofOfWork={handleToggleSimulateProofOfWork}
+              simulateProofOfWork={simulateProofOfWork}
+              timeFrame={timeFrame}
+              unit={unit}
+            />
+          </div>
+          <div className="flex flex-col lg:flex-row gap-y-4 gap-x-4">
+            <div className="flex flex-col gap-y-4 w-full lg:w-1/2 h-min">
+              <GasMarketWidget baseFeePerGasStats={baseFeePerGasStats} />
+              <EthSupplyWidget />
+            </div>
+            <div className="w-full lg:w-1/2">
+              <BaseFeesWidget
+                barrier={baseFeesOverTime?.barrier}
+                baseFeesSeries={baseFeesSeries ?? []}
+                baseFeesMap={baseFeesMap}
+                max={max?.[1]}
+              />
+            </div>
           </div>
         </div>
-      </Suspense>
+      </div>
     </BasicErrorBoundary>
   );
 };
