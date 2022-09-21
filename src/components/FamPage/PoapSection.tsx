@@ -493,7 +493,7 @@ const EligibleHandles = () => {
     <WidgetBackground>
       <div className="grid grid-cols-[1fr_64px] md:grid-cols-[40px_2fr_1fr_64px] gap-x-4 mb-4">
         <LabelText className="col-span-1 md:col-span-2">
-          1559 Eligible Handles
+          1,559 Eligible Handles
         </LabelText>
         <LabelText className="hidden md:block">fam followers</LabelText>
         <LabelText>claimed</LabelText>
@@ -589,7 +589,7 @@ const PoapSection: FC = () => {
       <SectionTitle
         className="mt-16 pt-16"
         link="poap"
-        subtitle="bragging rights for the 1559 pre-merge fam"
+        subtitle="bragging rights for the 1,559 pre-merge fam"
       >
         ultra sound POAP
       </SectionTitle>
@@ -613,11 +613,11 @@ const PoapSection: FC = () => {
           <LabelText>claims</LabelText>
           <QuantifyText className="text-3xl">
             {poapsClaimed?.count}
-            <span className="text-slateus-200">/1559</span>
+            <span className="text-slateus-200">/1,559</span>
           </QuantifyText>
         </WidgetBackground>
         <ClaimPoap />
-        <WidgetErrorBoundary title="1559 Eligible Handles">
+        <WidgetErrorBoundary title="1,559 Eligible Handles">
           <EligibleHandles />
         </WidgetErrorBoundary>
       </div>
