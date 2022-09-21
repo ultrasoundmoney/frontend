@@ -29,7 +29,6 @@ import Nerd from "../Nerd";
 import { TooltipTitle } from "../Texts";
 import closeSvg from "../../assets/close.svg";
 import roundNerdLarge from "../../assets/round-nerd-large.svg";
-import withBasicErrorBoundary from "../../higher-order-components/WithBasicErrorBoundary";
 import SkeletonText from "../TextsNext/SkeletonText";
 import { formatDistance, formatZeroDecimals } from "../../format";
 import type { DateTimeString } from "../../time";
@@ -636,4 +635,4 @@ const PoapSection: FC = () => {
   );
 };
 
-export default withBasicErrorBoundary(PoapSection);
+export default PoapSection;
