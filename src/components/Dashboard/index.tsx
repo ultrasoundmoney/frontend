@@ -1,5 +1,8 @@
+import { captureException } from "@sentry/nextjs";
 import dynamic from "next/dynamic";
 import Head from "next/head";
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
 import type { FC } from "react";
 import { Suspense, useEffect, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
@@ -15,6 +18,8 @@ import { useMergeEstimate } from "../../api/merge-estimate";
 import type { MergeStatus } from "../../api/merge-status";
 import { useMergeStatus } from "../../api/merge-status";
 import { useScarcity } from "../../api/scarcity";
+import confettiSvg from "../../assets/confetti-own.svg";
+import pandaSvg from "../../assets/panda-own.svg";
 import colors from "../../colors";
 import type { WeiNumber } from "../../eth-units";
 import * as FeatureFlags from "../../feature-flags";
@@ -25,18 +30,14 @@ import { useClientRefreshed } from "../../hooks/use-client-refreshed";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import HeaderGlow from "../HeaderGlow";
 import FaqBlock from "../Landing/faq";
-import StyledLink from "../StyledLink";
 import MainTitle from "../MainTitle";
 import SectionDivider from "../SectionDivider";
+import StyledLink from "../StyledLink";
 import { TextInterLink } from "../Texts";
 import TopBar from "../TopBar";
 import JoinDiscordSection from "./JoinDiscordSection";
 import MergeSection from "./MergeSection";
 const AdminTools = dynamic(() => import("../AdminTools"));
-import confettiSvg from "../../assets/confetti-own.svg";
-import pandaSvg from "../../assets/panda-own.svg";
-import type { StaticImageData } from "next/image";
-import Image from "next/image";
 
 // We get hydration errors in production.
 // It's hard to tell what component causes them due to minification.
@@ -87,9 +88,15 @@ const useScrollOnLoad = () => {
       typeof window !== "undefined" &&
       window.location.hash.length > 0
     ) {
-      document
-        .querySelector(window.location.hash)
-        ?.scrollIntoView({ behavior: "auto", block: "start" });
+      // Throws on a bad query selector like people accidentally writing /#/growth where '#/growth' will cause an exception.
+      try {
+        document
+          .querySelector(window.location.hash)
+          ?.scrollIntoView({ behavior: "auto", block: "start" });
+      } catch (error) {
+        // We capture the exception and do nothing, can't scroll to a section for a hash that is not valid.
+        captureException(error);
+      }
     }
   }, []);
 };
