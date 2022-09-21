@@ -22,7 +22,7 @@ const IssuanceGauge: FC<Props> = ({
   const selectedAverageEthPrice = averageEthPrice?.[timeFrame];
 
   const issuancePerDay = simulateProofOfWork
-    ? StaticEtherData.powIssuancePerDay 
+    ? StaticEtherData.powIssuancePerDay
     : StaticEtherData.posIssuancePerDay;
 
   const issuance =
