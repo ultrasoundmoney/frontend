@@ -449,8 +449,8 @@ const Claimed: FC<{
             undefined ? (
             <Image
               alt="random emoji monkey covering one of its senses to indicate empathetic embarassment at not claiming a POAP"
-              width={16}
-              height={16}
+              width={32}
+              height={32}
               src={randomMonkeySrc}
             />
           ) : (
