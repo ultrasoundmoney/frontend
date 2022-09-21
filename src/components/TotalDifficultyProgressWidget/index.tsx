@@ -46,7 +46,10 @@ const TotalDifficultyProgressWidget: FC<Props> = ({ progress }) => {
         <div className="flex justify-between items-center">
           <div className="flex items-center min-h-[21px] ">
             <LabelText>merged </LabelText>
-            <LabelText color="text-slateus-100" className="ml-1">{`${mergeDate} UTC`}</LabelText>
+            <LabelText
+              color="text-slateus-100"
+              className="ml-1"
+            >{`${mergeDate} UTC`}</LabelText>
           </div>
           <div className="select-none flex items-center">
             <Image
@@ -72,12 +75,12 @@ const TotalDifficultyProgressWidget: FC<Props> = ({ progress }) => {
         </div>
         <div className="flex flex-col md:flex-row justify-between items-baseline gap-x-1 gap-y-2">
           <div className="flex items-baseline gap-x-1">
-            <LabelUnitText className="text-slateus-200">
-              100%
-            </LabelUnitText>
+            <LabelUnitText className="text-slateus-200">100%</LabelUnitText>
             <LabelText color="text-slateus-400">{` of TTD`}</LabelText>
           </div>
-          <LabelText color="text-slateus-400">merged <span className="text-slateus-200">{mergedDate}</span> ago</LabelText>
+          <LabelText color="text-slateus-400">
+            merged <span className="text-slateus-200">{mergedDate}</span> ago
+          </LabelText>
         </div>
       </WidgetBackground>
     </WidgetErrorBoundary>
