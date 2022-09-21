@@ -330,7 +330,7 @@ const ClaimPoap: FC = () => {
                   outline-none
                 `}
                 onChange={handleWalletIdInputChange}
-                pattern="^0x[0-9a-fA-F]{40}$|\.eth$"
+                pattern="0x[0-9a-fA-F]{40}|.+\.eth"
                 placeholder="vitalik.eth / 0xd4nk..."
                 required
                 spellCheck="false"
