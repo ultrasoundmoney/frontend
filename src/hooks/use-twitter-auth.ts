@@ -8,9 +8,9 @@ export type TwitterAuthStatusResponse =
       session: {
         id: string;
         handle: string;
-        eligibleForPoap: boolean;
-        claimedPoap: boolean;
       };
+      eligibleForPoap: boolean;
+      claimedPoap: boolean;
     };
 
 export type TwitterAuthStatus =
@@ -44,8 +44,8 @@ export const useTwitterAuthStatus = () => {
 
         if (body.status === "authenticated") {
           setTwitterAuthStatus({
-            claimedPoap: body.session.claimedPoap,
-            eligibleForPoap: body.session.eligibleForPoap,
+            claimedPoap: body.claimedPoap,
+            eligibleForPoap: body.eligibleForPoap,
             handle: body.session.handle,
             id: body.session.id,
             type: "authenticated",
