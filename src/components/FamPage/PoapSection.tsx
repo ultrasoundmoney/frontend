@@ -112,7 +112,7 @@ type ClaimStatus = "sending" | "invalid-wallet-id" | "error" | "done" | "init";
 
 const ClaimPoap: FC = () => {
   const [twitterAuthStatus, setTwitterAuthStatus] = useTwitterAuthStatus();
-  const [walletId, setWalletId] = useState<string>();
+  const [walletId, setWalletId] = useState<string>("");
   const [claimStatus, setClaimStatus] = useState<ClaimStatus>("init");
   const [showTooltip, setShowTooltip] = useState(false);
 
