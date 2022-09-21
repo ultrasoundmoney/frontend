@@ -6,7 +6,7 @@ import headerGlowSvg from "./header-glow.svg";
 const HeaderGlow: FC = () => (
   <div
     className={`
-      absolute w-full top-0
+      absolute w-full top-0 left-0
       h-[500px]
       xs:h-[650px]
       md:h-[700px]
