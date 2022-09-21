@@ -300,7 +300,7 @@ const ClaimPoap: FC = () => {
             `}
           >
             <div className="flex justify-between items-baseline gap-x-1">
-              <LabelText className="truncate">2. your discord handle</LabelText>
+              <LabelText className="truncate">2. your wallet address</LabelText>
               <ClaimStatusText status={claimStatus} />
             </div>
             <form
