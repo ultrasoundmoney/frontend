@@ -39,6 +39,7 @@ import speakNoEvilSvg from "./speak-no-evil-own.svg";
 import StyledLink from "../StyledLink";
 import Twemoji from "../Twemoji";
 import { useInView } from "react-intersection-observer";
+import questionMarkSvg from "../../assets/question-mark-v2.svg";
 
 type Props = {
   className?: string;
@@ -490,6 +491,25 @@ const EligibleHandles = () => {
     throw error;
   }
 
+  const ImageWithFallback: FC<{ src: string }> = ({ src }) => {
+    const [imgSrc, setImgSrc] = useState<string | StaticImageData>(src);
+
+    const onImageError = useCallback(() => {
+      setImgSrc(questionMarkSvg as StaticImageData);
+    }, []);
+
+    return (
+      <Image
+        onError={onImageError}
+        className="rounded-full"
+        alt={`profile image of ${"sassal"}`}
+        src={imgSrc}
+        width={40}
+        height={40}
+      />
+    );
+  };
+
   return (
     <WidgetBackground>
       <div className="grid grid-cols-[1fr_64px] md:grid-cols-[40px_2fr_1fr_64px] gap-x-4 mb-4">
@@ -516,13 +536,7 @@ const EligibleHandles = () => {
                 key={fam.twitter_id}
               >
                 <div className="mt-1 -mb-1">
-                  <Image
-                    className="rounded-full"
-                    alt={`profile image of ${"sassal"}`}
-                    src={fam.profile_image_url}
-                    width={40}
-                    height={40}
-                  />
+                  <ImageWithFallback src={fam.profile_image_url} />
                 </div>
                 <div className="flex items-center overflow-hidden h-full">
                   <div className="flex flex-col truncate">
