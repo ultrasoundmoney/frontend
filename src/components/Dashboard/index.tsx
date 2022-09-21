@@ -19,12 +19,12 @@ import { TextInterLink } from "../Texts";
 import TopBar from "../TopBar";
 import JoinDiscordSection from "./JoinDiscordSection";
 import MergeSection from "./MergeSection";
-const AdminTools = dynamic(() => import("../AdminTools"));
 import confettiSvg from "../../assets/confetti-own.svg";
 import pandaSvg from "../../assets/panda-own.svg";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 
+const AdminTools = dynamic(() => import("../AdminTools"), { ssr: false });
 // We get hydration errors in production.
 // It's hard to tell what component causes them due to minification.
 // We stop SSR on all components, and slowly turn them back on one-by-one to see which cause hydration issues.
@@ -99,13 +99,9 @@ const Dashboard: FC = () => {
         </Head>
         <HeaderGlow />
         <div className="container mx-auto">
-          {adminToken && (
-            <BasicErrorBoundary>
-              <Suspense>
-                <AdminTools setFlag={setFlag} />
-              </Suspense>
-            </BasicErrorBoundary>
-          )}
+          <BasicErrorBoundary>
+            <AdminTools setFlag={setFlag} />
+          </BasicErrorBoundary>
           <div className="px-4 md:px-16">
             <BasicErrorBoundary>
               <TopBar />

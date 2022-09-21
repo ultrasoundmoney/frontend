@@ -2,6 +2,7 @@ import type { FC } from "react";
 import { useContext, useState } from "react";
 import type { Flag } from "../feature-flags";
 import { displayFlagMap, FeatureFlagsContext, flags } from "../feature-flags";
+import { useAdminToken } from "../hooks/use-admin-token";
 import { TextRoboto } from "./Texts";
 import ToggleSwitch from "./ToggleSwitch";
 import { WidgetTitle } from "./WidgetSubcomponents";
@@ -9,8 +10,13 @@ import { WidgetTitle } from "./WidgetSubcomponents";
 const AdminTools: FC<{
   setFlag: ({ flag, enabled }: { flag: Flag; enabled: boolean }) => void;
 }> = ({ setFlag }) => {
+  const adminToken = useAdminToken();
   const [minimizeFlags, setMinimizeFlags] = useState(false);
   const featureFlags = useContext(FeatureFlagsContext);
+
+  if (adminToken === undefined) {
+    return null;
+  }
 
   return (
     <div
