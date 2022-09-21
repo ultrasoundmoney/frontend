@@ -324,23 +324,24 @@ const ClaimPoap: FC = () => {
             ) : (
               <form
                 className={`
-                flex justify-center
-                bg-slateus-800
-                border border-slateus-500 rounded-full
-                focus-within:border-slateus-400
-                valid:border-emerald-400
-                focus-within:valid:border-emerald-400
-                [&_button]:invalid:opacity-50
-                ${
-                  twitterAuthStatus.type === "authenticated"
-                    ? "pointer-events-auto"
-                    : "pointer-events-none"
-                }
-              `}
+                  flex justify-center
+                  bg-slateus-800
+                  border border-slateus-500 rounded-full
+                  focus-within:border-slateus-400
+                  valid:border-emerald-400
+                  focus-within:valid:border-emerald-400
+                  [&_button]:invalid:opacity-50
+                  ${
+                    twitterAuthStatus.type === "authenticated"
+                      ? "pointer-events-auto"
+                      : "pointer-events-none"
+                  }
+                `}
                 onSubmit={handleSubmit}
               >
                 <input
                   className={`
+                    font-roboto
                     w-full
                     bg-transparent
                     text-xs md:text-base text-white
