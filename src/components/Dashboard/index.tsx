@@ -17,7 +17,6 @@ import MainTitle from "../MainTitle";
 import SectionDivider from "../SectionDivider";
 import { TextInterLink } from "../Texts";
 import TopBar from "../TopBar";
-import JoinDiscordSection from "./JoinDiscordSection";
 import MergeSection from "./MergeSection";
 import confettiSvg from "../../assets/confetti-own.svg";
 import pandaSvg from "../../assets/panda-own.svg";
