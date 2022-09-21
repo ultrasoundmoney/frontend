@@ -512,11 +512,10 @@ const EligibleHandles = () => {
 
   return (
     <WidgetBackground>
-      <div className="grid grid-cols-[1fr_64px] md:grid-cols-[40px_2fr_1fr_64px] gap-x-4 mb-4">
+      <div className="grid grid-cols-[1fr_64px] md:grid-cols-[40px_2fr_64px] gap-x-4 mb-4">
         <LabelText className="col-span-1 md:col-span-2">
           1,559 Eligible Handles
         </LabelText>
-        <LabelText className="hidden md:block">fam followers</LabelText>
         <LabelText>claimed</LabelText>
       </div>
       {data === undefined ? (
@@ -532,7 +531,7 @@ const EligibleHandles = () => {
           <ul className="flex flex-col max-h-[27rem] overflow-y-auto gap-y-4">
             {data.map((fam, index) => (
               <li
-                className="grid grid-cols-[40px_1fr_64px] md:grid-cols-[40px_2fr_1fr_64px] gap-x-4 items-center"
+                className="grid grid-cols-[40px_1fr_64px] md:grid-cols-[40px_2fr_64px] gap-x-4 items-center"
                 key={fam.twitter_id}
               >
                 <div className="mt-1 -mb-1">
@@ -548,9 +547,6 @@ const EligibleHandles = () => {
                     </BodyTextV2>
                   </div>
                 </div>
-                <QuantifyText className="text-slateus-200 hidden md:block">
-                  {formatZeroDecimals(fam.fam_follower_count)}
-                </QuantifyText>
                 <Claimed
                   isLoading={data === undefined && error === undefined}
                   claimedOn={
