@@ -30,7 +30,7 @@ import { TooltipTitle } from "../Texts";
 import closeSvg from "../../assets/close.svg";
 import roundNerdLarge from "../../assets/round-nerd-large.svg";
 import SkeletonText from "../TextsNext/SkeletonText";
-import { formatDistance, formatZeroDecimals } from "../../format";
+import { formatDistance } from "../../format";
 import type { DateTimeString } from "../../time";
 import seeNoEvilSvg from "./see-no-evil-own.svg";
 import hearNoEvilSvg from "./hear-no-evil-own.svg";
