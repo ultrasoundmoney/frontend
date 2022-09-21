@@ -1,44 +1,43 @@
-import type { ChangeEvent, FC, FormEvent } from "react";
-import { useEffect } from "react";
-import { useCallback, useState } from "react";
-import { SectionTitle } from "../TextsNext/SectionTitle";
+import { captureException } from "@sentry/nextjs";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
-import ultraSoundPoapGif from "./utlra_sound_poap.gif";
-import ultraSoundPoapStill from "./ultrasoundpoapstill.png";
-import LabelText from "../TextsNext/LabelText";
+import type { ChangeEvent, FC, FormEvent } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
 import useSWR from "swr";
-import { getDomain } from "../../config";
 import { fetchJsonSwr } from "../../api/fetchers";
-import QuantifyText from "../TextsNext/QuantifyText";
-import WidgetErrorBoundary from "../WidgetErrorBoundary";
-import { WidgetBackground } from "../WidgetSubcomponents";
-import TwitterStatusText from "../TwitterStatusText";
-import { useTwitterAuthStatus } from "../../hooks/use-twitter-auth";
-import BodyTextV2 from "../TextsNext/BodyTextV2";
-import { captureException } from "@sentry/nextjs";
+import closeSvg from "../../assets/close.svg";
 import logoTwitterWhite from "../../assets/logo-twitter-white.svg";
+import questionMarkSvg from "../../assets/question-mark-v2.svg";
+import roundNerdLarge from "../../assets/round-nerd-large.svg";
+import { getDomain } from "../../config";
+import { formatDistance } from "../../format";
+import { useTwitterAuthStatus } from "../../hooks/use-twitter-auth";
+import type { DateTimeString } from "../../time";
+import Nerd from "../Nerd";
 import {
   AlignmentText,
   LoadingText,
   NegativeText,
   PositiveText,
 } from "../StatusText";
-import logoPoapSvg from "./logo-poap-slateus.svg";
-import Nerd from "../Nerd";
-import { TooltipTitle } from "../Texts";
-import closeSvg from "../../assets/close.svg";
-import roundNerdLarge from "../../assets/round-nerd-large.svg";
-import SkeletonText from "../TextsNext/SkeletonText";
-import { formatDistance } from "../../format";
-import type { DateTimeString } from "../../time";
-import seeNoEvilSvg from "./see-no-evil-own.svg";
-import hearNoEvilSvg from "./hear-no-evil-own.svg";
-import speakNoEvilSvg from "./speak-no-evil-own.svg";
 import StyledLink from "../StyledLink";
+import { TooltipTitle } from "../Texts";
+import BodyTextV2 from "../TextsNext/BodyTextV2";
+import LabelText from "../TextsNext/LabelText";
+import QuantifyText from "../TextsNext/QuantifyText";
+import { SectionTitle } from "../TextsNext/SectionTitle";
+import SkeletonText from "../TextsNext/SkeletonText";
 import Twemoji from "../Twemoji";
-import { useInView } from "react-intersection-observer";
-import questionMarkSvg from "../../assets/question-mark-v2.svg";
+import TwitterStatusText from "../TwitterStatusText";
+import WidgetErrorBoundary from "../WidgetErrorBoundary";
+import { WidgetBackground } from "../WidgetSubcomponents";
+import hearNoEvilSvg from "./hear-no-evil-own.svg";
+import logoPoapSvg from "./logo-poap-slateus.svg";
+import seeNoEvilSvg from "./see-no-evil-own.svg";
+import speakNoEvilSvg from "./speak-no-evil-own.svg";
+import ultraSoundPoapStill from "./ultrasoundpoapstill.png";
+import ultraSoundPoapGif from "./utlra_sound_poap.gif";
 
 type Props = {
   className?: string;
