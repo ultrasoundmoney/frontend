@@ -569,7 +569,7 @@ const PoapSection: FC = () => {
   return (
     <section id="poap">
       <SectionTitle
-        className="mt-32"
+        className="mt-16 pt-16"
         link="poap"
         subtitle="bragging rights for the 1559 pre-merge fam"
       >
