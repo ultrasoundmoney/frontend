@@ -616,7 +616,9 @@ const PoapSection: FC = () => {
             <span className="text-slateus-200">/1,559</span>
           </QuantifyText>
         </WidgetBackground>
-        <ClaimPoap />
+        <WidgetErrorBoundary title="claim POAP">
+          <ClaimPoap />
+        </WidgetErrorBoundary>
         <WidgetErrorBoundary title="1,559 Eligible Handles">
           <EligibleHandles />
         </WidgetErrorBoundary>
