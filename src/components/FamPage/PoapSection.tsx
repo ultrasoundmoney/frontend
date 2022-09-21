@@ -612,7 +612,7 @@ const PoapSection: FC = () => {
         <WidgetBackground className="flex flex-col gap-y-4">
           <LabelText>claims</LabelText>
           <QuantifyText className="text-3xl">
-            {poapsClaimed?.count}
+            <SkeletonText width="1.1rem">{poapsClaimed?.count}</SkeletonText>
             <span className="text-slateus-200">/1,559</span>
           </QuantifyText>
         </WidgetBackground>
