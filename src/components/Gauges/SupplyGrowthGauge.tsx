@@ -5,7 +5,7 @@ import Skeleton from "react-loading-skeleton";
 import { animated, config, useSpring } from "react-spring";
 import { useBurnRates } from "../../api/burn-rates";
 import type { BurnRates } from "../../api/grouped-analysis-1";
-import type { Scarcity } from "../../api/scarcity";
+import { useScarcity } from "../../api/scarcity";
 import colors from "../../colors";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
@@ -17,11 +17,11 @@ import { WidgetTitle } from "../WidgetSubcomponents";
 import SplitGaugeSvg from "./SplitGaugeSvg";
 
 const useGrowthRate = (
-  scarcity: Scarcity | undefined,
   burnRates: BurnRates | undefined,
   simulateProofOfWork: boolean,
   timeFrame: TimeFrameNext,
 ): number | undefined => {
+  const scarcity = useScarcity();
   const [growthRate, setGrowthRate] = useState<number>();
 
   useEffect(() => {
@@ -58,25 +58,18 @@ const useGrowthRate = (
 };
 
 type Props = {
-  scarcity: Scarcity | undefined;
   onClickTimeFrame: () => void;
   simulateProofOfWork: boolean;
   timeFrame: TimeFrameNext;
 };
 
 const SupplyGrowthGauge: FC<Props> = ({
-  scarcity,
   onClickTimeFrame,
   simulateProofOfWork,
   timeFrame,
 }) => {
   const burnRates = useBurnRates();
-  const growthRate = useGrowthRate(
-    scarcity,
-    burnRates,
-    simulateProofOfWork,
-    timeFrame,
-  );
+  const growthRate = useGrowthRate(burnRates, simulateProofOfWork, timeFrame);
   const toPercentTwoDigitSigned = useCallback<(n: number) => string>(
     (n) => Format.formatPercentTwoDecimalSigned(n),
     [],
