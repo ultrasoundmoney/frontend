@@ -509,7 +509,7 @@ const EligibleHandles = () => {
           imageClassName="inline-block align-middle h-4 ml-1"
           wrapper
         >
-          <ul className="flex flex-col max-h-[27rem] overflow-auto gap-y-4">
+          <ul className="flex flex-col max-h-[27rem] overflow-y-auto gap-y-4">
             {data.map((fam, index) => (
               <li
                 className="grid grid-cols-[40px_1fr_64px] md:grid-cols-[40px_2fr_1fr_64px] gap-x-4 items-center"
