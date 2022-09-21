@@ -599,11 +599,7 @@ const PoapSection: FC = () => {
 
   return (
     <section id="poap">
-      <SectionTitle
-        className="mt-16 pt-16"
-        link="poap"
-        subtitle="bragging rights for the 1,559 pre-merge fam"
-      >
+      <SectionTitle className="mt-16 pt-16" link="poap" subtitle="only 1,559">
         ultra sound POAP
       </SectionTitle>
       <div className="flex justify-center my-16">
