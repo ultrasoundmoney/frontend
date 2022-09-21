@@ -160,7 +160,8 @@ const ClaimPoap: FC = () => {
           throw new Error(
             `failed to claim poap, status ${res.status}, json body but no message`,
           );
-        } catch {
+        } catch (error) {
+          console.log("tried to parse unknown as json body: ", error);
           throw new Error(
             `failed to claim poap, status ${res.status}, no json body`,
           );
