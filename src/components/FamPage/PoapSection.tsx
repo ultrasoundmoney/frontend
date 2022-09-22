@@ -113,7 +113,7 @@ const ClaimStatusText: FC<{ status: ClaimStatus }> = ({ status }) =>
 
 type ClaimStatus = "sending" | "invalid-wallet-id" | "error" | "done" | "init";
 
-const ClaimPoap: FC = () => {
+const ClaimPoap: FC<{ className?: string }> = ({ className }) => {
   const [twitterAuthStatus, setTwitterAuthStatus] = useTwitterAuthStatus();
   const [walletId, setWalletId] = useState<string>("");
   const [claimStatus, setClaimStatus] = useState<ClaimStatus>("init");
@@ -213,8 +213,10 @@ const ClaimPoap: FC = () => {
   }, []);
 
   return (
-    <WidgetErrorBoundary title="claim poap">
-      <WidgetBackground className="flex max-w-3xl flex-col gap-y-8">
+    <>
+      <WidgetBackground
+        className={`flex max-w-3xl flex-col gap-y-8 ${className}`}
+      >
         <div className="relative flex items-center justify-between">
           <div className="flex items-center" onClick={handleClickNerd}>
             <LabelText>claim poap</LabelText>
@@ -238,8 +240,8 @@ const ClaimPoap: FC = () => {
             />
           </div>
         </div>
-        <div className="flex flex-col gap-y-8 md:flex-row md:justify-between md:gap-x-8">
-          <div className="flex flex-col gap-y-4 md:w-1/2">
+        <div className="flex flex-col gap-y-8">
+          <div className="flex flex-col gap-y-4">
             <div className="flex items-baseline justify-between">
               <LabelText>1. your twitter</LabelText>
               <TwitterStatusText status={twitterAuthStatus} />
@@ -294,7 +296,6 @@ const ClaimPoap: FC = () => {
           <div
             className={`
               flex flex-col gap-y-4
-                md:w-1/2
               ${
                 twitterAuthStatus.type === "authenticated"
                   ? "opacity-100"
@@ -379,11 +380,11 @@ const ClaimPoap: FC = () => {
                   <BodyTextV2 className="z-10">submit</BodyTextV2>
                   <div
                     className={`
-                    discord-submit
-                    absolute left-[1px] right-[1px] top-[1px] bottom-[1px]
-                    rounded-full bg-slateus-700
-                    group-hover:hidden
-                  `}
+                      discord-submit
+                      absolute left-[1px] right-[1px] top-[1px] bottom-[1px]
+                      rounded-full bg-slateus-700
+                      group-hover:hidden
+                    `}
                   ></div>
                 </button>
               </form>
@@ -393,16 +394,16 @@ const ClaimPoap: FC = () => {
       </WidgetBackground>
       <div
         className={`
-            fixed top-0 left-0 bottom-0 right-0
-            z-20 flex items-center
-            justify-center
-            bg-slateus-700/60
-            backdrop-blur-sm
-            ${showTooltip ? "" : "hidden"}
-          `}
+          fixed top-0 left-0 bottom-0 right-0
+          z-20 flex items-center
+          justify-center
+          bg-slateus-700/60
+          backdrop-blur-sm
+          ${showTooltip ? "" : "hidden"}
+        `}
         onClick={() => setShowTooltip(false)}
       ></div>
-    </WidgetErrorBoundary>
+    </>
   );
 };
 
@@ -480,7 +481,7 @@ type EligibleFamClaimStatus = {
   twitter_id: string;
 };
 
-const EligibleHandles = () => {
+const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
   const { data, error } = useSWR<EligibleFamClaimStatus[], Error>(
     "/api/v2/fam/poap/eligible-fam",
     fetchJsonSwr,
@@ -506,7 +507,7 @@ const EligibleHandles = () => {
   };
 
   return (
-    <WidgetBackground>
+    <WidgetBackground className={className}>
       <div className="mb-4 grid grid-cols-[1fr_64px] gap-x-4 md:grid-cols-[40px_2fr_64px]">
         <LabelText className="col-span-1 md:col-span-2">
           1,559 Eligible Handles
@@ -520,7 +521,7 @@ const EligibleHandles = () => {
       ) : (
         <Twemoji imageClassName="inline-block align-middle h-4 ml-1" wrapper>
           <ul
-            className={`-mr-1 flex max-h-[27rem] flex-col gap-y-4 overflow-y-auto pr-1 ${scrollbarStyles["styled-scrollbar"]}`}
+            className={`-mr-1 flex max-h-[27rem] flex-col gap-y-4 overflow-y-auto pr-1 lg:max-h-[23rem] ${scrollbarStyles["styled-scrollbar"]}`}
           >
             {data.map((fam) => (
               <li
@@ -604,7 +605,7 @@ const PoapSection: FC = () => {
           />
         </div>
       </div>
-      <div className="relative flex flex-col gap-y-4">
+      <div className="grid auto-rows-min gap-4 lg:grid-cols-2">
         <WidgetBackground className="flex flex-col gap-y-4">
           <LabelText>claims</LabelText>
           <QuantifyText className="text-3xl">
@@ -613,10 +614,10 @@ const PoapSection: FC = () => {
           </QuantifyText>
         </WidgetBackground>
         <WidgetErrorBoundary title="claim POAP">
-          <ClaimPoap />
+          <ClaimPoap className="col-start-1" />
         </WidgetErrorBoundary>
         <WidgetErrorBoundary title="1,559 Eligible Handles">
-          <EligibleHandles />
+          <EligibleHandles className="row-span-2 lg:col-start-2 lg:row-start-1" />
         </WidgetErrorBoundary>
       </div>
     </section>
