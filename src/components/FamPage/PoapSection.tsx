@@ -541,13 +541,7 @@ const EligibleHandles = () => {
                 </div>
                 <Claimed
                   isLoading={data === undefined && error === undefined}
-                  claimedOn={
-                    index % 10 === 0
-                      ? new Date(
-                          new Date().getTime() - 1000 * 60 * (index % 300),
-                        ).toISOString()
-                      : fam.claimed_on ?? undefined
-                  }
+                  claimedOn={fam.claimed_on ?? undefined}
                   famFollowerCount={fam.fam_follower_count}
                 />
               </li>
