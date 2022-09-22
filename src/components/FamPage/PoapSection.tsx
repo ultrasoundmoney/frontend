@@ -53,8 +53,8 @@ const ClaimPoapTooltip: FC<Props> = ({ className = "", onClickClose }) => (
     className={`
       relative
       flex flex-col gap-y-4
-      bg-blue-tangaroa p-8 rounded-lg
-      border border-blue-shipcove
+      rounded-lg border border-blue-shipcove
+      bg-blue-tangaroa p-8
       text-left
       ${className}
     `}
@@ -62,8 +62,8 @@ const ClaimPoapTooltip: FC<Props> = ({ className = "", onClickClose }) => (
     <button
       className={`
         flex w-6
-        active:brightness-90 hover:brightness-110
         select-none self-end
+        hover:brightness-110 active:brightness-90
       `}
     >
       <Image
@@ -78,7 +78,7 @@ const ClaimPoapTooltip: FC<Props> = ({ className = "", onClickClose }) => (
     </button>
     <Image
       alt="a nerd emoji symbolizing a knowledge deep-dive"
-      className="w-20 h-20 mx-auto rounded-full select-none"
+      className="mx-auto h-20 w-20 select-none rounded-full"
       src={roundNerdLarge as StaticImageData}
       height={80}
       width={80}
@@ -213,8 +213,8 @@ const ClaimPoap: FC = () => {
 
   return (
     <WidgetErrorBoundary title="claim poap">
-      <WidgetBackground className="flex flex-col gap-y-8 max-w-3xl">
-        <div className="relative flex justify-between items-center">
+      <WidgetBackground className="flex max-w-3xl flex-col gap-y-8">
+        <div className="relative flex items-center justify-between">
           <div className="flex items-center" onClick={handleClickNerd}>
             <LabelText>claim poap</LabelText>
             <Nerd />
@@ -222,15 +222,15 @@ const ClaimPoap: FC = () => {
           <div
             className={`
               ${showTooltip ? "block" : "hidden"} fixed
-              top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-              w-[20rem]
+              top-1/2 left-1/2 z-30 w-[20rem]
+              -translate-x-1/2
+              -translate-y-1/2
               cursor-auto
-              z-30
             `}
           >
             <ClaimPoapTooltip onClickClose={() => setShowTooltip(false)} />
           </div>
-          <div className="w-10 md:w-16 md:h-16 md:absolute md:-right-12 md:-top-10 select-none">
+          <div className="w-10 select-none md:absolute md:-right-12 md:-top-10 md:h-16 md:w-16">
             <Image
               alt="the proof of attendance protocol (POAP) logo, a protocol issuing NFTs proving you attended some event or are part of some group"
               src={logoPoapSvg as StaticImageData}
@@ -239,7 +239,7 @@ const ClaimPoap: FC = () => {
         </div>
         <div className="flex flex-col gap-y-8 md:flex-row md:justify-between md:gap-x-8">
           <div className="flex flex-col gap-y-4 md:w-1/2">
-            <div className="flex justify-between items-baseline">
+            <div className="flex items-baseline justify-between">
               <LabelText>1. your twitter</LabelText>
               <TwitterStatusText status={twitterAuthStatus} />
             </div>
@@ -247,17 +247,17 @@ const ClaimPoap: FC = () => {
               <a
                 href="/api/auth/twitter"
                 className={`
-                  flex py-1.5 md:py-2 px-3
-                  self-center
-                  gap-x-2
-                  bg-slateus-600 hover:brightness-110 active:brightness-90
-                  border border-slateus-200 rounded-full
-                  outline-slateus-200
-                  select-none
+                  flex select-none gap-x-2 self-center
+                  rounded-full
+                  border
+                  border-slateus-200 bg-slateus-600 py-1.5
+                  px-3 outline-slateus-200 hover:brightness-110
+                  active:brightness-90
+                  md:py-2
                   ${
                     twitterAuthStatus.type === "checking" ||
                     twitterAuthStatus.type === "authenticating"
-                      ? "opacity-50 pointer-events-none"
+                      ? "pointer-events-none opacity-50"
                       : "pointer-events-auto"
                   }
                 `}
@@ -276,13 +276,13 @@ const ClaimPoap: FC = () => {
             ) : (
               <button
                 className={`
-                  flex py-1.5 md:py-2 px-3
-                  self-center
-                  gap-x-2
-                  bg-slateus-600 hover:brightness-125 active:brightness-90
-                  border border-slateus-200 rounded-full
-                  outline-slateus-200
-                  select-none
+                  flex select-none gap-x-2 self-center
+                  rounded-full
+                  border
+                  border-slateus-200 bg-slateus-600 py-1.5
+                  px-3 outline-slateus-200 hover:brightness-125
+                  active:brightness-90
+                  md:py-2
                 `}
                 onClick={handleSignOut}
               >
@@ -301,18 +301,18 @@ const ClaimPoap: FC = () => {
               }
             `}
           >
-            <div className="flex justify-between items-baseline gap-x-1">
+            <div className="flex items-baseline justify-between gap-x-1">
               <LabelText className="truncate">2. your wallet address</LabelText>
               <ClaimStatusText status={claimStatus} />
             </div>
             {twitterAuthStatus.type === "authenticated" &&
             !twitterAuthStatus.eligibleForPoap ? (
-              <div className="border border-slateus-400 bg-slateus-700 text-slateus-100 flex justify-center items-center rounded-lg h-10">
+              <div className="flex h-10 items-center justify-center rounded-lg border border-slateus-400 bg-slateus-700 text-slateus-100">
                 not enough fam followers to claim
               </div>
             ) : twitterAuthStatus.type === "authenticated" &&
               twitterAuthStatus.claimedPoap ? (
-              <div className="border-slateus-400 bg-slateus-700 text-slateus-100 flex justify-center items-center rounded-lg h-10">
+              <div className="flex h-10 items-center justify-center rounded-lg border-slateus-400 bg-slateus-700 text-slateus-100">
                 <Twemoji
                   className=""
                   imageClassName="inline-flex h-4 ml-1"
@@ -325,10 +325,10 @@ const ClaimPoap: FC = () => {
               <form
                 className={`
                   flex justify-center
-                  bg-slateus-800
-                  border border-slateus-500 rounded-full
-                  focus-within:border-slateus-400
+                  rounded-full
+                  border border-slateus-500 bg-slateus-800
                   valid:border-emerald-400
+                  focus-within:border-slateus-400
                   focus-within:valid:border-emerald-400
                   [&_button]:invalid:opacity-50
                   ${
@@ -341,14 +341,14 @@ const ClaimPoap: FC = () => {
               >
                 <input
                   className={`
-                    font-roboto
                     w-full
-                    bg-transparent
-                    text-xs md:text-base text-white
-                    pl-4
-                    placeholder-slateus-400
                     rounded-full
+                    bg-transparent
+                    pl-4 font-roboto text-xs
+                    text-white
+                    placeholder-slateus-400
                     outline-none
+                    md:text-base
                   `}
                   onChange={handleWalletIdInputChange}
                   pattern="0x[0-9a-fA-F]{40}|.+\.eth"
@@ -360,18 +360,18 @@ const ClaimPoap: FC = () => {
                 />
                 <button
                   className={`
-                    relative
-                    bg-gradient-to-tr from-cyan-400 to-indigo-600
-                    rounded-full
-                    px-4 py-[5px]
-                    my-px
-                    mr-px
-                    md:py-1.5 md:m-0.5
-                    text-white
-                    font-light
-                    flex
                     group
-                    select-none
+                    relative my-px mr-px
+                    flex
+                    select-none rounded-full
+                    bg-gradient-to-tr
+                    from-cyan-400
+                    to-indigo-600 px-4
+                    py-[5px]
+                    font-light
+                    text-white
+                    md:m-0.5
+                    md:py-1.5
                   `}
                   type="submit"
                 >
@@ -380,7 +380,7 @@ const ClaimPoap: FC = () => {
                     className={`
                     discord-submit
                     absolute left-[1px] right-[1px] top-[1px] bottom-[1px]
-                    bg-slateus-700 rounded-full
+                    rounded-full bg-slateus-700
                     group-hover:hidden
                   `}
                   ></div>
@@ -393,8 +393,8 @@ const ClaimPoap: FC = () => {
       <div
         className={`
             fixed top-0 left-0 bottom-0 right-0
-            flex justify-center items-center
-            z-20
+            z-20 flex items-center
+            justify-center
             bg-slateus-700/60
             backdrop-blur-sm
             ${showTooltip ? "" : "hidden"}
@@ -443,7 +443,7 @@ const Claimed: FC<{
   // console.log(isLoading, age, claimedOn);
 
   return (
-    <div className="flex justify-end items-baseline">
+    <div className="flex items-baseline justify-end">
       <QuantifyText>
         <SkeletonText width="4rem">
           {isLoading || randomMonkeySrc === undefined ? undefined : age ===
@@ -460,7 +460,7 @@ const Claimed: FC<{
         </SkeletonText>
       </QuantifyText>
       <BodyTextV2
-        className={`text-slateus-400 ml-2 ${
+        className={`ml-2 text-slateus-400 ${
           isLoading || age === undefined ? "hidden" : ""
         }`}
       >
@@ -511,7 +511,7 @@ const EligibleHandles = () => {
 
   return (
     <WidgetBackground>
-      <div className="grid grid-cols-[1fr_64px] md:grid-cols-[40px_2fr_64px] gap-x-4 mb-4">
+      <div className="mb-4 grid grid-cols-[1fr_64px] gap-x-4 md:grid-cols-[40px_2fr_64px]">
         <LabelText className="col-span-1 md:col-span-2">
           1,559 Eligible Handles
         </LabelText>
@@ -524,20 +524,20 @@ const EligibleHandles = () => {
       ) : (
         <Twemoji imageClassName="inline-block align-middle h-4 ml-1" wrapper>
           <ul
-            className={`flex flex-col max-h-[27rem] overflow-y-auto gap-y-4 pr-1 -mr-1 ${scrollbarStyles["styled-scrollbar"]}`}
+            className={`-mr-1 flex max-h-[27rem] flex-col gap-y-4 overflow-y-auto pr-1 ${scrollbarStyles["styled-scrollbar"]}`}
           >
-            {data.map((fam, index) => (
+            {data.map((fam) => (
               <li
-                className="grid grid-cols-[40px_1fr_64px] md:grid-cols-[40px_2fr_64px] gap-x-4 items-center"
+                className="grid grid-cols-[40px_1fr_64px] items-center gap-x-4 md:grid-cols-[40px_2fr_64px]"
                 key={fam.twitter_id}
               >
                 <div className="mt-1 -mb-1">
                   <ImageWithFallback src={fam.profile_image_url} />
                 </div>
-                <div className="flex items-center overflow-hidden h-full">
+                <div className="flex h-full items-center overflow-hidden">
                   <div className="flex flex-col truncate">
                     <BodyTextV2 className="truncate">{fam.name}</BodyTextV2>
-                    <BodyTextV2 className="text-slateus-400 truncate">
+                    <BodyTextV2 className="truncate text-slateus-400">
                       <StyledLink href={`https://twitter.com/${fam.handle}`}>
                         @{fam.handle}
                       </StyledLink>
@@ -565,7 +565,7 @@ const EligibleHandles = () => {
 };
 
 const Spinner = () => (
-  <div className="[border:8px_solid_#2d344a] [border-top:8px_solid_#8991ad] rounded-[50%] w-20 h-20 animate-spin"></div>
+  <div className="h-20 w-20 animate-spin rounded-[50%] [border:8px_solid_#2d344a] [border-top:8px_solid_#8991ad]"></div>
 );
 
 type PoapsClaimed = {
@@ -595,7 +595,7 @@ const PoapSection: FC = () => {
       <SectionTitle className="mt-16 pt-16" link="poap" subtitle="only 1,559">
         ultra sound POAP
       </SectionTitle>
-      <div className="flex justify-center my-16">
+      <div className="my-16 flex justify-center">
         <div
           className="flex"
           ref={ref}
