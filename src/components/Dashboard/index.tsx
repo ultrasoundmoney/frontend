@@ -24,6 +24,7 @@ import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import PoapSection from "../FamPage/PoapSection";
 import ContactSection from "./ContactSection";
+import JoinDiscordSection from "./JoinDiscordSection";
 
 const AdminTools = dynamic(() => import("../AdminTools"), { ssr: false });
 // We get hydration errors in production.
@@ -109,7 +110,7 @@ const Dashboard: FC = () => {
             </BasicErrorBoundary>
           </div>
           <MainTitle>ultra sound money</MainTitle>
-          <div className="flex mx-auto items-center justify-center mb-16 gap-x-8">
+          <div className="mx-auto mb-16 flex items-center justify-center gap-x-8">
             <div className="flex gap-x-2">
               <Image
                 alt="confetti celebrating merge"
@@ -124,7 +125,7 @@ const Dashboard: FC = () => {
                 src={pandaSvg as StaticImageData}
               />
             </div>
-            <p className="font-inter font-light text-blue-spindle text-xl md:text-2xl lg:text-3xl text-center">
+            <p className="text-center font-inter text-xl font-light text-blue-spindle md:text-2xl lg:text-3xl">
               merged
             </p>
             <div className="flex gap-x-2">
@@ -152,11 +153,10 @@ const Dashboard: FC = () => {
           <div className="h-16"></div>
           <MonetaryPremiumSection />
           <FamSection />
-          <BasicErrorBoundary>
-            <PoapSection />
-          </BasicErrorBoundary>
-          <div className="flex px-4 md:px-0 mt-32">
-            <div className="w-full lg:w-2/3 md:m-auto relative">
+          <PoapSection />
+          <JoinDiscordSection />
+          <div className="mt-32 flex px-4 md:px-0">
+            <div className="relative w-full md:m-auto lg:w-2/3">
               <FaqBlock />
             </div>
           </div>
