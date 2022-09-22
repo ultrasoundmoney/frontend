@@ -1,14 +1,11 @@
-import dynamic from "next/dynamic";
 import type { FC } from "react";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import Flippenings from "../Flippenings";
 import IssuanceBreakdown from "../IssuanceBreakdown";
 import PriceModel from "../PriceModel";
+import ScarcityWidget from "../ScarcityWidget";
 import SectionDivider from "../SectionDivider";
 import ValidatorRewardsWidget from "../ValidatorRewards";
-const ScarcityWidget = dynamic(() => import("../ScarcityWidget"), {
-  ssr: false,
-});
 
 const MonetaryPremiumSection: FC = () => (
   <div className="xs:px-4 md:px-16" id="monetary-premium">
