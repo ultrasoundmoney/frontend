@@ -246,20 +246,20 @@ const ClaimPoap: FC = () => {
               <a
                 href="/api/auth/twitter"
                 className={`
-                    flex py-1.5 md:py-2 px-3
-                    self-center
-                    gap-x-2
-                    bg-slateus-600 hover:brightness-110 active:brightness-90
-                    border border-slateus-200 rounded-full
-                    outline-slateus-200
-                    select-none
-                    ${
-                      twitterAuthStatus.type === "checking" ||
-                      twitterAuthStatus.type === "authenticating"
-                        ? "opacity-50 pointer-events-none"
-                        : "pointer-events-auto"
-                    }
-                  `}
+                  flex py-1.5 md:py-2 px-3
+                  self-center
+                  gap-x-2
+                  bg-slateus-600 hover:brightness-110 active:brightness-90
+                  border border-slateus-200 rounded-full
+                  outline-slateus-200
+                  select-none
+                  ${
+                    twitterAuthStatus.type === "checking" ||
+                    twitterAuthStatus.type === "authenticating"
+                      ? "opacity-50 pointer-events-none"
+                      : "pointer-events-auto"
+                  }
+                `}
                 onClick={() => {
                   setTwitterAuthStatus({ type: "authenticating" });
                 }}
