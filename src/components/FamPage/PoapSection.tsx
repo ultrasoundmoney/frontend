@@ -39,6 +39,7 @@ import speakNoEvilSvg from "./speak-no-evil-own.svg";
 import ultraSoundPoapStill from "./ultrasoundpoapstill.png";
 import ultraSoundPoapGif from "./utlra_sound_poap.gif";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
+import withBasicErrorBoundary from "../../higher-order-components/WithBasicErrorBoundary";
 
 type Props = {
   className?: string;
@@ -622,4 +623,4 @@ const PoapSection: FC = () => {
   );
 };
 
-export default PoapSection;
+export default withBasicErrorBoundary(PoapSection);
