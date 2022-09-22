@@ -38,6 +38,7 @@ import seeNoEvilSvg from "./see-no-evil-own.svg";
 import speakNoEvilSvg from "./speak-no-evil-own.svg";
 import ultraSoundPoapStill from "./ultrasoundpoapstill.png";
 import ultraSoundPoapGif from "./utlra_sound_poap.gif";
+import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 
 type Props = {
   className?: string;
@@ -521,12 +522,10 @@ const EligibleHandles = () => {
           <Spinner />
         </div>
       ) : (
-        <Twemoji
-          className="truncate"
-          imageClassName="inline-block align-middle h-4 ml-1"
-          wrapper
-        >
-          <ul className="flex flex-col max-h-[27rem] overflow-y-auto gap-y-4">
+        <Twemoji imageClassName="inline-block align-middle h-4 ml-1" wrapper>
+          <ul
+            className={`flex flex-col max-h-[27rem] overflow-y-auto gap-y-4 pr-1 -mr-1 ${scrollbarStyles["styled-scrollbar"]}`}
+          >
             {data.map((fam, index) => (
               <li
                 className="grid grid-cols-[40px_1fr_64px] md:grid-cols-[40px_2fr_64px] gap-x-4 items-center"
