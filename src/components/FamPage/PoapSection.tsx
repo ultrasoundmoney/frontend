@@ -573,16 +573,12 @@ type PoapsClaimed = {
 };
 
 const PoapSection: FC = () => {
-  const { data: poapsClaimed, error } = useSWR<PoapsClaimed, Error>(
+  const { data: poapsClaimed } = useSWR<PoapsClaimed, Error>(
     `${getDomain()}/api/v2/fam/poap/claimed`,
     fetchJsonSwr,
   );
   const { ref, inView } = useInView({ threshold: 1 });
   const [poapSrc, setPoapSrc] = useState(ultraSoundPoapGif);
-
-  if (error?.message) {
-    throw error;
-  }
 
   useEffect(() => {
     if (inView) {
