@@ -19,6 +19,7 @@ import { TextInterLink } from "../Texts";
 import TopBar from "../TopBar";
 import MergeSection from "./MergeSection";
 import JoinDiscordSection from "./JoinDiscordSection";
+import ContactSection from "./ContactSection";
 
 const AdminTools = dynamic(() => import("../AdminTools"), { ssr: false });
 // We get hydration errors in production.
@@ -120,39 +121,7 @@ const Dashboard: FC = () => {
               <FaqBlock />
             </div>
           </div>
-          <div className="flex w-full flex-col items-center pb-40">
-            <SectionDivider title="still have questions?" />
-            <div className="flex flex-col justify-start gap-y-4">
-              <div className="flex items-center gap-2">
-                <img
-                  className="w-4"
-                  src="/twitter-icon.svg"
-                  alt="icon of the twitter bird"
-                />
-                <StyledLink
-                  className="flex items-center gap-x-2"
-                  enableHover={false}
-                  href="https://twitter.com/ultrasoundmoney/"
-                >
-                  <TextInterLink>DM us @ultrasoundmoney</TextInterLink>
-                </StyledLink>
-              </div>
-              <div className="flex items-center gap-2">
-                <img
-                  className="h-4"
-                  src="/email-icon.svg"
-                  alt="icon of an envelope, email"
-                />
-                <StyledLink
-                  className="flex items-center gap-x-2"
-                  enableHover={false}
-                  href="mailto:contact@ultrasound.money"
-                >
-                  <TextInterLink>contact@ultrasound.money</TextInterLink>
-                </StyledLink>
-              </div>
-            </div>
-          </div>
+          <ContactSection />
         </div>
       </SkeletonTheme>
     </FeatureFlagsContext.Provider>
