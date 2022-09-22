@@ -3,7 +3,7 @@ import JoinDiscordWidget from "../JoinDiscordWidget";
 import { SectionTitle } from "../TextsNext/SectionTitle";
 
 const JoinDiscordSection: FC = () => (
-  <div className="mt-16" id="discord">
+  <section className="mt-16 px-4 md:px-16" id="discord">
     <SectionTitle
       className="py-16"
       link="discord"
@@ -13,6 +13,6 @@ const JoinDiscordSection: FC = () => (
       ultra sound
     </SectionTitle>
     <JoinDiscordWidget />
-  </div>
+  </section>
 );
 export default JoinDiscordSection;
