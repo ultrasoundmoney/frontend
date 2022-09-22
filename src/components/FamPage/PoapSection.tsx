@@ -588,8 +588,12 @@ const PoapSection: FC = () => {
         <div
           className="flex"
           ref={ref}
-          onMouseEnter={() => setPoapSrc(ultraSoundPoapGif)}
-          onMouseLeave={() => setPoapSrc(ultraSoundPoapStill)}
+          onClick={() => {
+            setPoapSrc(ultraSoundPoapGif);
+            window.setTimeout(() => {
+              setPoapSrc(ultraSoundPoapStill);
+            }, 5000);
+          }}
         >
           <Image
             alt="image from the ultra sound money poap given out to pre-merge fam"
