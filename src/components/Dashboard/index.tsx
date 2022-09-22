@@ -22,6 +22,7 @@ import confettiSvg from "../../assets/confetti-own.svg";
 import pandaSvg from "../../assets/panda-own.svg";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
+import PoapSection from "../FamPage/PoapSection";
 import ContactSection from "./ContactSection";
 
 const AdminTools = dynamic(() => import("../AdminTools"), { ssr: false });
@@ -151,6 +152,9 @@ const Dashboard: FC = () => {
           <div className="h-16"></div>
           <MonetaryPremiumSection />
           <FamSection />
+          <BasicErrorBoundary>
+            <PoapSection />
+          </BasicErrorBoundary>
           <div className="flex px-4 md:px-0 mt-32">
             <div className="w-full lg:w-2/3 md:m-auto relative">
               <FaqBlock />
