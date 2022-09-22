@@ -10,15 +10,15 @@ import type {
   SetStateAction,
 } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import withWidgetErrorBoundary from "../../higher-order-components/WithWidgetErrorBoundary";
 import BodyTextV2 from "../TextsNext/BodyTextV2";
 import LabelText from "../TextsNext/LabelText";
-import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
 import discordLogo from "./discord-logo.png";
 import logoTwitterWhite from "./logo-twitter-white.svg";
 
 const LoadingText: FC<{ children: ReactNode }> = ({ children }) => (
-  <BodyTextV2 className="text-white animate-pulse">{children}</BodyTextV2>
+  <BodyTextV2 className="animate-pulse text-white">{children}</BodyTextV2>
 );
 
 const PositiveText: FC<{ children: ReactNode }> = ({ children }) => (
@@ -234,73 +234,72 @@ const JoinDiscordWidget: FC = () => {
   }, [setTwitterAuthStatus, setDiscordUsername, setQueueStatus]);
 
   return (
-    <WidgetErrorBoundary title="join discord queue">
-      <WidgetBackground className="flex flex-col gap-y-8 max-w-3xl md:mx-auto">
-        <div className="relative flex justify-between items-center">
-          <LabelText>join discord queue</LabelText>
-          <div className="w-10 md:w-16 md:absolute md:-right-12 md:-top-12 select-none">
-            <Image
-              alt="the discord logo, a community communication app"
-              src={discordLogo}
-            />
-          </div>
+    <WidgetBackground className="flex max-w-3xl flex-col gap-y-8 md:mx-auto">
+      <div className="relative flex items-center justify-between">
+        <LabelText>join discord queue</LabelText>
+        <div className="w-10 select-none md:absolute md:-right-12 md:-top-12 md:w-16">
+          <Image
+            alt="the discord logo, a community communication app"
+            src={discordLogo}
+          />
         </div>
-        <div className="flex flex-col gap-y-8 md:flex-row md:justify-between md:gap-x-8">
-          <div className="flex flex-col gap-y-4 md:w-1/2">
-            <div className="flex justify-between items-baseline">
-              <LabelText>1. your twitter</LabelText>
-              <TwitterStatusText status={twitterAuthStatus} />
-            </div>
-            {twitterAuthStatus.type !== "authenticated" ? (
-              <Link href="/api/auth/twitter">
-                <a
-                  className={`
-                    flex py-1.5 md:py-2 px-3
-                    self-center
-                    gap-x-2
-                    bg-slateus-600 hover:brightness-110 active:brightness-90
-                    border border-slateus-200 rounded-full
-                    outline-slateus-200
-                    select-none
+      </div>
+      <div className="flex flex-col gap-y-8 md:flex-row md:justify-between md:gap-x-8">
+        <div className="flex flex-col gap-y-4 md:w-1/2">
+          <div className="flex items-baseline justify-between">
+            <LabelText>1. your twitter</LabelText>
+            <TwitterStatusText status={twitterAuthStatus} />
+          </div>
+          {twitterAuthStatus.type !== "authenticated" ? (
+            <Link href="/api/auth/twitter">
+              <a
+                className={`
+                    flex select-none gap-x-2 self-center
+                    rounded-full
+                    border
+                    border-slateus-200 bg-slateus-600 py-1.5
+                    px-3 outline-slateus-200 hover:brightness-110
+                    active:brightness-90
+                    md:py-2
                     ${
                       twitterAuthStatus.type === "checking" ||
                       twitterAuthStatus.type === "authenticating"
-                        ? "opacity-50 pointer-events-none"
+                        ? "pointer-events-none opacity-50"
                         : "pointer-events-auto"
                     }
                   `}
-                  onClick={() => {
-                    setTwitterAuthStatus({ type: "authenticating" });
-                  }}
-                >
-                  <BodyTextV2>authenticate</BodyTextV2>
-                  <Image
-                    alt="twitte logo in white"
-                    src={logoTwitterWhite as StaticImageData}
-                    height={16}
-                    width={16}
-                  />
-                </a>
-              </Link>
-            ) : (
-              <button
-                className={`
-                  flex py-1.5 md:py-2 px-3
-                  self-center
-                  gap-x-2
-                  bg-slateus-600 hover:brightness-125 active:brightness-90
-                  border border-slateus-200 rounded-full
-                  outline-slateus-200
-                  select-none
-                `}
-                onClick={handleSignOut}
+                onClick={() => {
+                  setTwitterAuthStatus({ type: "authenticating" });
+                }}
               >
-                <BodyTextV2>sign out @{twitterAuthStatus.handle}</BodyTextV2>
-              </button>
-            )}
-          </div>
-          <div
-            className={`
+                <BodyTextV2>authenticate</BodyTextV2>
+                <Image
+                  alt="twitte logo in white"
+                  src={logoTwitterWhite as StaticImageData}
+                  height={16}
+                  width={16}
+                />
+              </a>
+            </Link>
+          ) : (
+            <button
+              className={`
+                  flex select-none gap-x-2 self-center
+                  rounded-full
+                  border
+                  border-slateus-200 bg-slateus-600 py-1.5
+                  px-3 outline-slateus-200 hover:brightness-125
+                  active:brightness-90
+                  md:py-2
+                `}
+              onClick={handleSignOut}
+            >
+              <BodyTextV2>sign out @{twitterAuthStatus.handle}</BodyTextV2>
+            </button>
+          )}
+        </div>
+        <div
+          className={`
               flex flex-col gap-y-4
                 md:w-1/2
               ${
@@ -309,18 +308,18 @@ const JoinDiscordWidget: FC = () => {
                   : "opacity-50"
               }
             `}
-          >
-            <div className="flex justify-between items-baseline gap-x-1">
-              <LabelText className="truncate">2. your discord handle</LabelText>
-              <DiscordStatusText status={queueStatus} />
-            </div>
-            <form
-              className={`
+        >
+          <div className="flex items-baseline justify-between gap-x-1">
+            <LabelText className="truncate">2. your discord handle</LabelText>
+            <DiscordStatusText status={queueStatus} />
+          </div>
+          <form
+            className={`
                 flex justify-center
-                bg-slateus-800
-                border border-slateus-500 rounded-full
-                focus-within:border-slateus-400
+                rounded-full
+                border border-slateus-500 bg-slateus-800
                 valid:border-emerald-400
+                focus-within:border-slateus-400
                 focus-within:valid:border-emerald-400
                 [&_button]:invalid:opacity-50
                 ${
@@ -329,59 +328,58 @@ const JoinDiscordWidget: FC = () => {
                     : "pointer-events-none"
                 }
               `}
-              onSubmit={handleSubmit}
-            >
-              <input
-                className={`
+            onSubmit={handleSubmit}
+          >
+            <input
+              className={`
                   w-full
-                  bg-transparent
-                  text-xs md:text-base text-white
-                  pl-4
-                  placeholder-slateus-400
                   rounded-full
-                  outline-none
-                `}
-                onChange={handleDiscordInputChange}
-                pattern="^\d{16}|.{2,32}#\d{4}$"
-                placeholder="discord_user#1559"
-                required
-                spellCheck="false"
-                type="text"
-                value={discordIdOrUsername}
-              />
-              <button
-                className={`
-                  relative
-                  bg-gradient-to-tr from-cyan-400 to-indigo-600
-                  rounded-full
-                  px-4 py-[5px]
-                  my-px
-                  mr-px
-                  md:py-1.5 md:m-0.5
+                  bg-transparent pl-4 text-xs
                   text-white
-                  font-light
-                  flex
-                  group
-                  select-none
+                  placeholder-slateus-400
+                  outline-none
+                  md:text-base
                 `}
-                type="submit"
-              >
-                <BodyTextV2 className="z-10">submit</BodyTextV2>
-                <div
-                  className={`
+              onChange={handleDiscordInputChange}
+              pattern="^\d{16}|.{2,32}#\d{4}$"
+              placeholder="discord_user#1559"
+              required
+              spellCheck="false"
+              type="text"
+              value={discordIdOrUsername}
+            />
+            <button
+              className={`
+                  group
+                  relative my-px mr-px
+                  flex
+                  select-none rounded-full
+                  bg-gradient-to-tr
+                  from-cyan-400
+                  to-indigo-600 px-4
+                  py-[5px]
+                  font-light
+                  text-white
+                  md:m-0.5
+                  md:py-1.5
+                `}
+              type="submit"
+            >
+              <BodyTextV2 className="z-10">submit</BodyTextV2>
+              <div
+                className={`
                     discord-submit
                     absolute left-[1px] right-[1px] top-[1px] bottom-[1px]
-                    bg-slateus-700 rounded-full
+                    rounded-full bg-slateus-700
                     group-hover:hidden
                   `}
-                ></div>
-              </button>
-            </form>
-          </div>
+              ></div>
+            </button>
+          </form>
         </div>
-      </WidgetBackground>
-    </WidgetErrorBoundary>
+      </div>
+    </WidgetBackground>
   );
 };
 
-export default JoinDiscordWidget;
+export default withWidgetErrorBoundary("join discord queue", JoinDiscordWidget);
