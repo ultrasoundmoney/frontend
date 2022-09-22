@@ -485,11 +485,6 @@ const EligibleHandles = () => {
     fetchJsonSwr,
   );
 
-  // We have an error boundary, this is fine.
-  if (error?.message) {
-    throw error;
-  }
-
   const ImageWithFallback: FC<{ src: string }> = ({ src }) => {
     const [imgSrc, setImgSrc] = useState<string | StaticImageData>(src);
 
