@@ -249,7 +249,7 @@ const ClaimPoap: FC<{ className?: string; refreshClaimStatus: () => void }> = ({
       <WidgetBackground
         className={`flex max-w-3xl flex-col gap-y-8 ${className}`}
       >
-        <div className="relative flex items-center justify-between">
+        <div className="relative flex items-start justify-between">
           <div className="flex items-center" onClick={handleClickNerd}>
             <LabelText>claim poap</LabelText>
             <Nerd />
@@ -265,10 +265,13 @@ const ClaimPoap: FC<{ className?: string; refreshClaimStatus: () => void }> = ({
           >
             <ClaimPoapTooltip onClickClose={() => setShowTooltip(false)} />
           </div>
-          <div className="w-10 select-none">
+          <div className="-mb-8">
             <Image
               alt="the proof of attendance protocol (POAP) logo, a protocol issuing NFTs proving you attended some event or are part of some group"
+              height={40}
+              layout="fixed"
               src={logoPoapSvg as StaticImageData}
+              width={40}
             />
           </div>
         </div>
