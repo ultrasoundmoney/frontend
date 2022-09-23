@@ -42,6 +42,8 @@ import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import withBasicErrorBoundary from "../../higher-order-components/WithBasicErrorBoundary";
 import type { AuthFromSection } from "../../hooks/use-auth-from-section";
 import useAuthFromSection from "../../hooks/use-auth-from-section";
+import flexSvg from "../../assets/flex-own.svg";
+import sobSvg from "../../assets/sob-own.svg";
 
 type Props = {
   className?: string;
@@ -101,21 +103,24 @@ const ClaimPoapTooltip: FC<Props> = ({ className = "", onClickClose }) => (
 );
 
 const ClaimStatusText: FC<{ status: ClaimStatus }> = ({ status }) =>
-  status === "invalid-wallet-id" ? (
+  status === "invalid-address" ? (
     <NegativeText>invalid wallet id</NegativeText>
   ) : status === "error" ? (
     <NegativeText>error</NegativeText>
   ) : status === "sending" ? (
     <LoadingText>sending...</LoadingText>
-  ) : status === "done" ? (
+  ) : status === "sent" ? (
     <PositiveText>sent!</PositiveText>
   ) : (
     <AlignmentText />
   );
 
-type ClaimStatus = "sending" | "invalid-wallet-id" | "error" | "done" | "init";
+type ClaimStatus = "sending" | "invalid-address" | "error" | "sent" | "init";
 
-const ClaimPoap: FC<{ className?: string }> = ({ className }) => {
+const ClaimPoap: FC<{ className?: string; refreshClaimStatus: () => void }> = ({
+  className,
+  refreshClaimStatus,
+}) => {
   const [twitterAuthStatus, setTwitterAuthStatus] = useTwitterAuthStatus();
   const [, setAuthFromSection] = useAuthFromSection();
   const [walletId, setWalletId] = useState<string>("");
@@ -147,12 +152,13 @@ const ClaimPoap: FC<{ className?: string }> = ({ className }) => {
         });
 
         if (res.status === 200) {
-          setClaimStatus("done");
+          setClaimStatus("sent");
+          refreshClaimStatus();
           return;
         }
 
         if (res.status === 400) {
-          setClaimStatus("invalid-wallet-id");
+          setClaimStatus("invalid-address");
           return;
         }
 
@@ -180,7 +186,7 @@ const ClaimPoap: FC<{ className?: string }> = ({ className }) => {
         console.error(error);
       });
     },
-    [twitterAuthStatus, walletId],
+    [refreshClaimStatus, twitterAuthStatus.type, walletId],
   );
 
   const handleSignOut = useCallback(() => {
@@ -215,6 +221,30 @@ const ClaimPoap: FC<{ className?: string }> = ({ className }) => {
     setShowTooltip(true);
   }, []);
 
+  const NotEligible = () => (
+    <div className="flex flex-col gap-y-4">
+      <LabelText className="truncate">status: not eligible</LabelText>
+      <Image
+        alt="a sobbing emoji signifying sadness at not being eligible"
+        src={sobSvg as StaticImageData}
+        width={30}
+        height={30}
+      />
+    </div>
+  );
+
+  const Claimed: FC = () => (
+    <div className="flex flex-col gap-y-4">
+      <LabelText className="truncate">status: claimed</LabelText>
+      <Image
+        alt="a sobbing emoji signifying sadness at not being eligible"
+        src={flexSvg as StaticImageData}
+        width={30}
+        height={30}
+      />
+    </div>
+  );
+
   return (
     <>
       <WidgetBackground
@@ -246,7 +276,7 @@ const ClaimPoap: FC<{ className?: string }> = ({ className }) => {
         <div className="flex flex-col gap-y-8">
           <div className="flex flex-col gap-y-4">
             <div className="flex items-baseline justify-between">
-              <LabelText>1. your twitter</LabelText>
+              <LabelText>your twitter</LabelText>
               <TwitterStatusText status={twitterAuthStatus} />
             </div>
             {twitterAuthStatus.type !== "authenticated" ? (
@@ -304,37 +334,27 @@ const ClaimPoap: FC<{ className?: string }> = ({ className }) => {
               </button>
             )}
           </div>
-          <div
-            className={`
-              flex flex-col gap-y-4
-              ${
-                twitterAuthStatus.type === "authenticated"
-                  ? "opacity-100"
-                  : "opacity-50"
-              }
-            `}
-          >
-            <div className="flex items-baseline justify-between gap-x-1">
-              <LabelText className="truncate">2. your wallet address</LabelText>
-              <ClaimStatusText status={claimStatus} />
-            </div>
-            {twitterAuthStatus.type === "authenticated" &&
-            !twitterAuthStatus.eligibleForPoap ? (
-              <div className="flex h-10 items-center justify-center rounded-lg border border-slateus-400 bg-slateus-700 text-slateus-100">
-                not enough fam followers to claim
+          {twitterAuthStatus.type === "authenticated" &&
+          !twitterAuthStatus.eligibleForPoap ? (
+            <NotEligible />
+          ) : twitterAuthStatus.type === "authenticated" &&
+            twitterAuthStatus.claimedPoap ? (
+            <Claimed />
+          ) : (
+            <div
+              className={`
+                flex flex-col gap-y-4
+                ${
+                  twitterAuthStatus.type === "authenticated"
+                    ? "opacity-100"
+                    : "opacity-50"
+                }
+              `}
+            >
+              <div className="flex items-baseline justify-between gap-x-1">
+                <LabelText>eligible</LabelText>
+                <ClaimStatusText status={claimStatus} />
               </div>
-            ) : twitterAuthStatus.type === "authenticated" &&
-              twitterAuthStatus.claimedPoap ? (
-              <div className="flex h-10 items-center justify-center rounded-lg border-slateus-400 bg-slateus-700 text-slateus-100">
-                <Twemoji
-                  className=""
-                  imageClassName="inline-flex h-4 ml-1"
-                  wrapper
-                >
-                  claimed by @{twitterAuthStatus.handle}! 🥳
-                </Twemoji>
-              </div>
-            ) : (
               <form
                 className={`
                   flex justify-center
@@ -399,8 +419,8 @@ const ClaimPoap: FC<{ className?: string }> = ({ className }) => {
                   ></div>
                 </button>
               </form>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </WidgetBackground>
       <div
@@ -631,7 +651,10 @@ const PoapSection: FC = () => {
           </QuantifyText>
         </WidgetBackground>
         <WidgetErrorBoundary title="claim POAP">
-          <ClaimPoap className="col-start-1" />
+          <ClaimPoap
+            className="col-start-1"
+            refreshClaimStatus={handleRefreshClaimStatus}
+          />
         </WidgetErrorBoundary>
         <WidgetErrorBoundary title="1,559 Eligible Handles">
           <EligibleHandles className="row-span-2 lg:col-start-2 lg:row-start-1" />
