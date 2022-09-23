@@ -526,6 +526,7 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
           alt={`profile image of ${"sassal"}`}
           className="rounded-full"
           height={40}
+          layout="fixed"
           onError={onImageError}
           src={imgSrc}
           width={40}
