@@ -40,6 +40,8 @@ import ultraSoundPoapStill from "./ultrasoundpoapstill.png";
 import ultraSoundPoapGif from "./utlra_sound_poap.gif";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import withBasicErrorBoundary from "../../higher-order-components/WithBasicErrorBoundary";
+import type { AuthFromSection } from "../../hooks/use-auth-from-section";
+import useAuthFromSection from "../../hooks/use-auth-from-section";
 
 type Props = {
   className?: string;
@@ -115,6 +117,7 @@ type ClaimStatus = "sending" | "invalid-wallet-id" | "error" | "done" | "init";
 
 const ClaimPoap: FC<{ className?: string }> = ({ className }) => {
   const [twitterAuthStatus, setTwitterAuthStatus] = useTwitterAuthStatus();
+  const [, setAuthFromSection] = useAuthFromSection();
   const [walletId, setWalletId] = useState<string>("");
   const [claimStatus, setClaimStatus] = useState<ClaimStatus>("init");
   const [showTooltip, setShowTooltip] = useState(false);
@@ -266,6 +269,7 @@ const ClaimPoap: FC<{ className?: string }> = ({ className }) => {
                 `}
                 onClick={() => {
                   setTwitterAuthStatus({ type: "authenticating" });
+                  setAuthFromSection("poap");
                 }}
               >
                 <BodyTextV2>authenticate</BodyTextV2>
