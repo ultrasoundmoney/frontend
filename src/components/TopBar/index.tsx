@@ -64,15 +64,15 @@ const TopBar: FC = () => {
         <button
           ref={alarmButtonRef}
           className={`
-            flex items-center
-            px-3 py-2 ml-4
-            bg-blue-tangaroa rounded
-            select-none
+            ml-4 flex
+            select-none items-center rounded
             border border-transparent
+            bg-blue-tangaroa
+            px-3 py-2
             ${notification.type === "Supported" ? "visible" : "invisible"}
             ${
               isAlarmActive
-                ? "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg"
+                ? "rounded-sm border-blue-highlightborder bg-blue-highlightbg text-white"
                 : ""
             }
           `}
@@ -88,7 +88,7 @@ const TopBar: FC = () => {
 
         <div
           ref={dialogRef}
-          className={`absolute w-full bg-blue-tangaroa rounded p-8 top-12 md:top-12 ${showAlarmDialogCss}`}
+          className={`absolute top-12 w-full rounded bg-blue-tangaroa p-8 md:top-12 ${showAlarmDialogCss}`}
         >
           <WidgetTitle>price alerts</WidgetTitle>
           <AlarmInput
@@ -105,14 +105,14 @@ const TopBar: FC = () => {
           />
           {notification.type === "Supported" &&
             notification.permission === "denied" && (
-              <p className="text-sm text-red-400 mt-4">
+              <p className="mt-4 text-sm text-red-400">
                 notifications disabled, please grant notification permission.
               </p>
             )}
         </div>
       </div>
       <a
-        className="hidden md:block px-4 py-1 font-medium text-white hover:text-blue-shipcove border-white border-solid border-2 rounded-3xl hover:border-blue-shipcove select-none"
+        className="hidden select-none rounded-3xl border-2 border-solid border-white px-4 py-1 font-medium text-white hover:border-blue-shipcove hover:text-blue-shipcove md:block"
         href="#fam"
       >
         join the fam
