@@ -211,8 +211,8 @@ const ClaimPoap: FC<{ className?: string; refreshClaimStatus: () => void }> = ({
 
     setTwitterAuthStatus({ type: "signing-out" });
 
-    signOut().catch((err) => {
-      throw err;
+    signOut().catch((error) => {
+      captureException(error);
     });
   }, [setTwitterAuthStatus]);
 
