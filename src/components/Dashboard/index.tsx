@@ -18,6 +18,7 @@ import TopBar from "../TopBar";
 import ContactSection from "./ContactSection";
 import JoinDiscordSection from "./JoinDiscordSection";
 import MergeSection from "./MergeSection";
+import useAuthFromSection from "../../hooks/use-auth-from-section";
 
 const AdminTools = dynamic(() => import("../AdminTools"), { ssr: false });
 // We get hydration errors in production.
@@ -64,16 +65,30 @@ const useGasTitle = (defaultTitle: string) => {
 
 // By default a browser doesn't scroll to a section with a given ID matching the # in the URL.
 const useScrollOnLoad = () => {
+  const [authFromSection, setAuthFromSection] = useAuthFromSection();
+
   useEffect(() => {
-    if (
-      typeof document !== "undefined" &&
-      typeof window !== "undefined" &&
-      window.location.hash.length > 0
-    ) {
+    if (typeof window === undefined || typeof document === undefined) {
+      return undefined;
+    }
+
+    if (authFromSection !== "empty") {
+      document
+        .querySelector(`#${authFromSection}`)
+        ?.scrollIntoView({ behavior: "auto", block: "start" });
+      setAuthFromSection("empty");
+    }
+
+    if (window.location.hash.length > 0) {
       document
         .querySelector(window.location.hash)
         ?.scrollIntoView({ behavior: "auto", block: "start" });
     }
+    // The useAuthFromSection deps are missing intentionally here, we only want
+    // this to run once on load. Because we disable the exhaustive deps linting
+    // rule for this reason do check anything you add above doesn't need to be
+    // in there.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };
 

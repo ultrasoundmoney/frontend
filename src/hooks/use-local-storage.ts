@@ -1,6 +1,8 @@
 import { useState } from "react";
 
-export const useLocalStorage = <T>(key: string, initialValue: T) => {
+export type LocalStorageKeys = "auth-from-section";
+
+export const useLocalStorage = <T>(key: LocalStorageKeys, initialValue: T) => {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState<T>(() => {
