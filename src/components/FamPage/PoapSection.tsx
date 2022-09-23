@@ -521,14 +521,16 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
     }, []);
 
     return (
-      <Image
-        onError={onImageError}
-        className="rounded-full"
-        alt={`profile image of ${"sassal"}`}
-        src={imgSrc}
-        width={40}
-        height={40}
-      />
+      <div className="min-w-[40px]">
+        <Image
+          alt={`profile image of ${"sassal"}`}
+          className="rounded-full"
+          height={40}
+          onError={onImageError}
+          src={imgSrc}
+          width={40}
+        />
+      </div>
     );
   };
 
@@ -545,9 +547,9 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
           <Spinner />
         </div>
       ) : (
-        <Twemoji imageClassName="inline-block align-middle h-4 ml-1" wrapper>
+        <Twemoji imageClassName="inline-block align-middle h-4 ml-1">
           <ul
-            className={`-mr-1 flex max-h-[27rem] flex-col gap-y-4 overflow-y-auto pr-1 lg:max-h-[23rem] ${scrollbarStyles["styled-scrollbar"]}`}
+            className={`-mr-1 flex max-h-[27rem] flex-col gap-y-4 overflow-y-auto pr-1 lg:max-h-[24rem] ${scrollbarStyles["styled-scrollbar"]}`}
           >
             {data.map((fam, index) => (
               <li
@@ -555,13 +557,13 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
                 key={fam.twitter_id}
               >
                 <a
-                  className="flex cursor-pointer hover:opacity-60 active:brightness-90"
+                  className="flex cursor-pointer truncate hover:opacity-60 active:brightness-90"
                   href={`https://twitter.com/${fam.handle}`}
                   rel="noreferrer"
                   target="_blank"
                 >
                   <ImageWithFallback src={fam.profile_image_url} />
-                  <div className="ml-4 flex h-full flex-col items-start overflow-hidden truncate">
+                  <div className="ml-4 flex h-full flex-col items-start truncate">
                     <BodyTextV2 className="truncate">{fam.name}</BodyTextV2>
                     <BodyTextV2 className="truncate text-slateus-400">
                       @{fam.handle}
