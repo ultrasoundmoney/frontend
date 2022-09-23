@@ -7,12 +7,18 @@ import { useInView } from "react-intersection-observer";
 import useSWR from "swr";
 import { fetchJsonSwr } from "../../api/fetchers";
 import closeSvg from "../../assets/close.svg";
+import flexSvg from "../../assets/flex-own.svg";
 import logoTwitterWhite from "../../assets/logo-twitter-white.svg";
 import questionMarkSvg from "../../assets/question-mark-v2.svg";
 import roundNerdLarge from "../../assets/round-nerd-large.svg";
+import sobSvg from "../../assets/sob-own.svg";
 import { getDomain } from "../../config";
 import { formatDistance } from "../../format";
+import withBasicErrorBoundary from "../../higher-order-components/WithBasicErrorBoundary";
+import type { AuthFromSection } from "../../hooks/use-auth-from-section";
+import useAuthFromSection from "../../hooks/use-auth-from-section";
 import { useTwitterAuthStatus } from "../../hooks/use-twitter-auth";
+import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import type { DateTimeString } from "../../time";
 import Nerd from "../Nerd";
 import {
@@ -21,7 +27,6 @@ import {
   NegativeText,
   PositiveText,
 } from "../StatusText";
-import StyledLink from "../StyledLink";
 import { TooltipTitle } from "../Texts";
 import BodyTextV2 from "../TextsNext/BodyTextV2";
 import LabelText from "../TextsNext/LabelText";
@@ -38,12 +43,6 @@ import seeNoEvilSvg from "./see-no-evil-own.svg";
 import speakNoEvilSvg from "./speak-no-evil-own.svg";
 import ultraSoundPoapStill from "./ultrasoundpoapstill.png";
 import ultraSoundPoapGif from "./utlra_sound_poap.gif";
-import scrollbarStyles from "../../styles/Scrollbar.module.scss";
-import withBasicErrorBoundary from "../../higher-order-components/WithBasicErrorBoundary";
-import type { AuthFromSection } from "../../hooks/use-auth-from-section";
-import useAuthFromSection from "../../hooks/use-auth-from-section";
-import flexSvg from "../../assets/flex-own.svg";
-import sobSvg from "../../assets/sob-own.svg";
 
 type Props = {
   className?: string;
@@ -552,22 +551,23 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
           >
             {data.map((fam, index) => (
               <li
-                className="grid grid-cols-[40px_1fr_64px] items-center gap-x-4 md:grid-cols-[40px_2fr_64px]"
+                className="grid grid-cols-[1fr_64px] items-center gap-x-4 md:grid-cols-[1fr_64px]"
                 key={fam.twitter_id}
               >
-                <div className="mt-1 -mb-1">
+                <a
+                  className="flex cursor-pointer hover:opacity-60 active:brightness-90"
+                  href={`https://twitter.com/${fam.handle}`}
+                  rel="noreferrer"
+                  target="_blank"
+                >
                   <ImageWithFallback src={fam.profile_image_url} />
-                </div>
-                <div className="flex h-full items-center overflow-hidden">
-                  <div className="flex flex-col truncate">
+                  <div className="ml-4 flex h-full flex-col items-start overflow-hidden truncate">
                     <BodyTextV2 className="truncate">{fam.name}</BodyTextV2>
                     <BodyTextV2 className="truncate text-slateus-400">
-                      <StyledLink href={`https://twitter.com/${fam.handle}`}>
-                        @{fam.handle}
-                      </StyledLink>
+                      @{fam.handle}
                     </BodyTextV2>
                   </div>
-                </div>
+                </a>
                 <Claimed
                   isLoading={data === undefined && error === undefined}
                   claimedOn={fam.claimed_on ?? undefined}
