@@ -543,7 +543,7 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
         <LabelText>claimed</LabelText>
       </div>
       {data === undefined ? (
-        <div className="flex justify-center">
+        <div className="flex h-full items-center justify-center">
           <Spinner />
         </div>
       ) : (
