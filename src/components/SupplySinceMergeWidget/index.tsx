@@ -654,44 +654,44 @@ const SupplySinceMergeWidget: FC<Props> = ({
 
   return (
     <WidgetErrorBoundary title="supply since merge">
-      <WidgetBackground className="relative w-full flex flex-col overflow-hidden">
+      <WidgetBackground className="relative flex w-full flex-col overflow-hidden">
         <div
           // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
           className={`
-            absolute -top-40 -right-0
-            w-full h-full
+            pointer-events-none absolute -top-40
+            -right-0 h-full
+            w-full
             opacity-[0.20]
             blur-[120px]
-            pointer-events-none
             will-change-transform
           `}
         >
           <div
             className={`
-            absolute lg:bottom-[3.0rem] lg:-right-[1.0rem]
-            w-4/5 h-3/5 rounded-[35%]
-            bg-[#0037FA]
-            pointer-events-none
+            pointer-events-none absolute h-3/5
+            w-4/5 rounded-[35%] bg-[#0037FA]
+            lg:bottom-[3.0rem]
+            lg:-right-[1.0rem]
           `}
           ></div>
         </div>
         {/* Align min-h with emoji widget title on the left */}
-        <LabelText className="flex items-center min-h-[21px]">
+        <LabelText className="flex min-h-[21px] items-center">
           supply since merge
         </LabelText>
         <div
           // flex-grow fixes bug where highcharts doesn't take full width.
           className={`
-            w-full h-full mt-4
-            flex justify-center
-            select-none
+            mt-4 flex h-full
+            w-full select-none
+            justify-center
             overflow-hidden
             [&>div]:flex-grow
           `}
         >
           <HighchartsReact highcharts={Highcharts} options={options} />
         </div>
-        <div className="flex flex-wrap gap-x-4 gap-y-4 justify-between">
+        <div className="flex flex-wrap justify-between gap-x-4 gap-y-4">
           <UpdatedAgo updatedAt={supplySinceMerge?.timestamp} />
           <SimulateProofOfWork
             checked={simulateProofOfWork}
