@@ -21,7 +21,7 @@ const Twemoji: FC<{
   tag?: keyof ReactHTML;
 }> = ({
   children,
-  className,
+  className = "",
   imageClassName,
   wrapper = false,
   tag = "div",
@@ -51,7 +51,7 @@ const Twemoji: FC<{
       tag,
       {
         ref: wrapperRef,
-        className: `${className ?? ""} ${replaceDone ? "" : "invisible"}`,
+        className: `${className}${replaceDone ? "" : " invisible"}`,
       },
       children,
     )
@@ -62,9 +62,30 @@ const Twemoji: FC<{
           return null;
         }
 
-        if (child === "string") {
+        if (typeof child === "string") {
           console.warn(
             "Twemoji can't parse plain strings, and strings are passed with wrapper set. Wrap them or add 'wrapper'",
+          );
+          return child;
+        }
+
+        if (typeof child === "boolean") {
+          console.warn(
+            "Twemoji can't parse plain booleans, and strings are passed with wrapper set. Wrap them or add 'wrapper'",
+          );
+          return child;
+        }
+
+        if (typeof child === "number") {
+          console.warn(
+            "Twemoji can't parse plain numbers, and strings are passed with wrapper set. Wrap them or add 'wrapper'",
+          );
+          return child;
+        }
+
+        if (!React.isValidElement<HTMLElement>(child)) {
+          console.error(
+            "Twemoji can't parse invalid react element. Wrap them or add 'wrapper'",
           );
           return child;
         }
@@ -74,9 +95,8 @@ const Twemoji: FC<{
           ref: (ref: HTMLElement) => {
             refList.current[index] = ref;
           },
-          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
-          className: `${(child as any)?.className ?? ""} ${
-            replaceDone ? "" : "invisible"
+          className: `${child.props.className ?? ""}${
+            replaceDone ? "" : " invisible"
           }`,
         });
       })}
