@@ -16,7 +16,7 @@ export type SupplySinceMerge = {
   balances_slot: Slot;
   block_number: number;
   deposits_slot: Slot;
-  supply_by_minute: SupplyAtTime[];
+  supply_by_hour: SupplyAtTime[];
   timestamp: DateTimeString;
 };
 
