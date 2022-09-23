@@ -1,6 +1,13 @@
 import { useState } from "react";
 
-export type LocalStorageKeys = "auth-from-section";
+export type LocalStorageKeys =
+  | "auth-from-section"
+  | "eth-alarm-enabled"
+  | "eth-threshold"
+  | "eth-threshold-type"
+  | "gas-alarm-enabled"
+  | "gas-threshold"
+  | "gas-threshold-type";
 
 export const useLocalStorage = <T>(key: LocalStorageKeys, initialValue: T) => {
   // State to store our value
