@@ -266,7 +266,7 @@ const ClaimPoap: FC<{ className?: string; refreshClaimStatus: () => void }> = ({
           >
             <ClaimPoapTooltip onClickClose={() => setShowTooltip(false)} />
           </div>
-          <div className="w-10 select-none md:absolute md:-right-12 md:-top-10 md:h-16 md:w-16">
+          <div className="w-10 select-none">
             <Image
               alt="the proof of attendance protocol (POAP) logo, a protocol issuing NFTs proving you attended some event or are part of some group"
               src={logoPoapSvg as StaticImageData}
