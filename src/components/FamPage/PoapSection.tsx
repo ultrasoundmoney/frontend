@@ -283,7 +283,8 @@ const ClaimPoap: FC<{ className?: string }> = ({ className }) => {
             ) : (
               <button
                 className={`
-                  flex select-none gap-x-2 self-center
+                  flex select-none items-center gap-x-2
+                  self-center
                   rounded-full
                   border
                   border-slateus-200 bg-slateus-600 py-1.5
@@ -294,6 +295,12 @@ const ClaimPoap: FC<{ className?: string }> = ({ className }) => {
                 onClick={handleSignOut}
               >
                 <BodyTextV2>sign out @{twitterAuthStatus.handle}</BodyTextV2>
+                <Image
+                  alt="twitte logo in white"
+                  src={logoTwitterWhite as StaticImageData}
+                  height={16}
+                  width={16}
+                />
               </button>
             )}
           </div>
