@@ -608,12 +608,14 @@ const PoapSection: FC = () => {
     }
   }, [inView]);
 
+  const id: AuthFromSection = "poap";
+
   const handleRefreshClaimStatus = useCallback(() => {
     mutate().catch(captureException);
   }, [mutate]);
 
   return (
-    <section className="px-4 md:px-16" id="poap">
+    <section className="px-4 md:px-16" id={id}>
       <SectionTitle className="mt-16 pt-16" link="poap" subtitle="only 1,559">
         ultra sound POAP
       </SectionTitle>
