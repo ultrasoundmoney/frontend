@@ -447,8 +447,8 @@ const monkeySvgs = [
 const Claimed: FC<{
   claimedOn: DateTimeString | undefined;
   isLoading: boolean;
-  famFollowerCount: number;
-}> = ({ claimedOn, isLoading, famFollowerCount }) => {
+  monkey: StaticImageData;
+}> = ({ claimedOn, isLoading, monkey }) => {
   const [age, setAge] = useState<string>();
 
   useEffect(() => {
@@ -471,21 +471,17 @@ const Claimed: FC<{
     };
   }, [claimedOn]);
 
-  const randomMonkeySrc = monkeySvgs[famFollowerCount % 3];
-
-  // console.log(isLoading, age, claimedOn);
-
   return (
     <div className="flex items-baseline justify-end">
       <QuantifyText>
         <SkeletonText width="4rem">
-          {isLoading || randomMonkeySrc === undefined ? undefined : age ===
-            undefined ? (
+          {isLoading || monkey === undefined ? undefined : age === undefined ? (
             <Image
+              title="not claimed"
               alt="random emoji monkey covering one of its senses to indicate empathetic embarassment at not claiming a POAP"
               width={32}
               height={32}
-              src={randomMonkeySrc}
+              src={monkey}
             />
           ) : (
             <BodyTextV2>{age}</BodyTextV2>
@@ -554,7 +550,7 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
           <ul
             className={`-mr-1 flex max-h-[27rem] flex-col gap-y-4 overflow-y-auto pr-1 lg:max-h-[23rem] ${scrollbarStyles["styled-scrollbar"]}`}
           >
-            {data.map((fam) => (
+            {data.map((fam, index) => (
               <li
                 className="grid grid-cols-[40px_1fr_64px] items-center gap-x-4 md:grid-cols-[40px_2fr_64px]"
                 key={fam.twitter_id}
@@ -575,7 +571,7 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
                 <Claimed
                   isLoading={data === undefined && error === undefined}
                   claimedOn={fam.claimed_on ?? undefined}
-                  famFollowerCount={fam.fam_follower_count}
+                  monkey={monkeySvgs[index % 3]}
                 />
               </li>
             ))}
