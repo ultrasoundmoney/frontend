@@ -271,7 +271,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
     () =>
       supplySinceMerge === undefined
         ? undefined
-        : supplySinceMerge.supply_by_minute.map(
+        : supplySinceMerge.supply_by_hour.map(
             (point): SupplyPoint => [
               new Date(point.timestamp).getTime(),
               point.supply,
@@ -284,7 +284,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
     () =>
       supplySinceMerge === undefined
         ? undefined
-        : supplySinceMerge.supply_by_minute.reduce(
+        : supplySinceMerge.supply_by_hour.reduce(
             (points: SupplyPoint[], point) => {
               const timestamp = new Date(point.timestamp).getTime();
 
