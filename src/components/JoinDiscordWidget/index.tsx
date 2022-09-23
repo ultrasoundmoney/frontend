@@ -11,6 +11,7 @@ import type {
 } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import withWidgetErrorBoundary from "../../higher-order-components/WithWidgetErrorBoundary";
+import useAuthFromSection from "../../hooks/use-auth-from-section";
 import BodyTextV2 from "../TextsNext/BodyTextV2";
 import LabelText from "../TextsNext/LabelText";
 import { WidgetBackground } from "../WidgetSubcomponents";
@@ -151,6 +152,7 @@ const JoinDiscordWidget: FC = () => {
   const [discordIdOrUsername, setDiscordUsername] = useState<string>();
   const [queueStatus, setQueueStatus] = useState<QueueingStatus>("init");
   const [twitterAuthStatus, setTwitterAuthStatus] = useTwitterAuthStatus();
+  const [, setAuthFromSection] = useAuthFromSection();
 
   const handleDiscordInputChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>): void => {
@@ -270,6 +272,7 @@ const JoinDiscordWidget: FC = () => {
                   `}
                 onClick={() => {
                   setTwitterAuthStatus({ type: "authenticating" });
+                  setAuthFromSection("discord");
                 }}
               >
                 <BodyTextV2>authenticate</BodyTextV2>
