@@ -351,7 +351,7 @@ const ClaimPoap: FC<{ className?: string; refreshClaimStatus: () => void }> = ({
               `}
             >
               <div className="flex items-baseline justify-between gap-x-1">
-                <LabelText>eligible</LabelText>
+                <LabelText>your wallet address</LabelText>
                 <ClaimStatusText status={claimStatus} />
               </div>
               <form
