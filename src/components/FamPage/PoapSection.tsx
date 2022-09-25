@@ -1,9 +1,10 @@
 import { captureException } from "@sentry/nextjs";
-import type { StaticImageData } from "next/image";
 import Image from "next/future/image";
+import type { StaticImageData } from "next/image";
 import type { ChangeEvent, CSSProperties, FC, FormEvent } from "react";
 import { useCallback, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import { FixedSizeList } from "react-window";
 import useSWR from "swr";
 import { fetchJsonSwr } from "../../api/fetchers";
 import closeSvg from "../../assets/close.svg";
@@ -17,6 +18,7 @@ import { formatDistance } from "../../format";
 import withBasicErrorBoundary from "../../higher-order-components/WithBasicErrorBoundary";
 import type { AuthFromSection } from "../../hooks/use-auth-from-section";
 import useAuthFromSection from "../../hooks/use-auth-from-section";
+import useFuseSearch from "../../hooks/use-fuse-search";
 import { useTwitterAuthStatus } from "../../hooks/use-twitter-auth";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import type { DateTimeString } from "../../time";
@@ -39,13 +41,11 @@ import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
 import hearNoEvilSvg from "./hear-no-evil-own.svg";
 import logoPoapSvg from "./logo-poap-slateus.svg";
+import magnifyingGlassSvg from "./magnifying-glass-own.svg";
 import seeNoEvilSvg from "./see-no-evil-own.svg";
 import speakNoEvilSvg from "./speak-no-evil-own.svg";
 import ultraSoundPoapStill from "./ultrasoundpoapstill.png";
 import ultraSoundPoapGif from "./utlra_sound_poap.gif";
-import { FixedSizeList } from "react-window";
-import magnifyingGlassSvg from "./magnifying-glass-own.svg";
-import useFuseSearch from "../../hooks/use-fuse-search";
 
 type Props = {
   className?: string;
