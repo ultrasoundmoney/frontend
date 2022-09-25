@@ -586,8 +586,6 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
     { limit: 6 },
   );
 
-  console.log(searchResults);
-
   return (
     <WidgetBackground className={className}>
       <div className="mb-4 grid grid-cols-[1fr_64px] gap-x-4 md:grid-cols-[40px_2fr_64px]">
