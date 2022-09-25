@@ -1,3 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* See: https://nextjs.org/docs/api-reference/next/future/image#known-browser-bugs */
+@media not all and (min-resolution:.001dpcm) { img[loading="lazy"] { clip-path: inset(0.5px) } }
