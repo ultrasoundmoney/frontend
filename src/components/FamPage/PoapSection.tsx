@@ -227,7 +227,7 @@ const ClaimPoap: FC<{ className?: string; refreshClaimStatus: () => void }> = ({
       <LabelText className="truncate">status: not eligible</LabelText>
       <Image
         alt="a sobbing emoji signifying sadness at not being eligible"
-        className="self-center"
+        className="select-none self-center"
         height={30}
         src={sobSvg as StaticImageData}
         width={30}
@@ -240,7 +240,7 @@ const ClaimPoap: FC<{ className?: string; refreshClaimStatus: () => void }> = ({
       <LabelText className="truncate">status: claimed</LabelText>
       <Image
         alt="a sobbing emoji signifying sadness at not being eligible"
-        className="self-center"
+        className="select-none self-center"
         height={30}
         src={flexSvg as StaticImageData}
         width={30}
@@ -483,6 +483,7 @@ const Claimed: FC<{
         <SkeletonText width="4rem">
           {isLoading || monkey === undefined ? undefined : age === undefined ? (
             <Image
+              className="select-none"
               title="not claimed"
               alt="random emoji monkey covering one of its senses to indicate empathetic embarassment at not claiming a POAP"
               width={32}
@@ -525,7 +526,7 @@ const ImageWithFallback: FC<{ src: string }> = ({ src }) => {
     <div className="min-w-[40px]">
       <Image
         alt={`profile image of ${"sassal"}`}
-        className="rounded-full"
+        className="select-none rounded-full"
         height={40}
         onError={onImageError}
         src={imgSrc}
