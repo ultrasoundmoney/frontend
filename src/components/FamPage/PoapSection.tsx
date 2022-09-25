@@ -619,7 +619,7 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
         />
 
         <Image
-          className="absolute top-1.5 right-3"
+          className="absolute top-1.5 right-3 select-none md:top-2"
           alt="magnifying glass indicating this input is to search for handles"
           src={magnifyingGlassSvg as StaticImageData}
           width={16}
