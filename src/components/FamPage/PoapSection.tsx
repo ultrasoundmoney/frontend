@@ -1,7 +1,7 @@
 import { captureException } from "@sentry/nextjs";
 import type { StaticImageData } from "next/image";
-import Image from "next/image";
-import type { ChangeEvent, FC, FormEvent } from "react";
+import Image from "next/future/image";
+import type { ChangeEvent, CSSProperties, FC, FormEvent } from "react";
 import { useCallback, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import useSWR from "swr";
@@ -43,6 +43,9 @@ import seeNoEvilSvg from "./see-no-evil-own.svg";
 import speakNoEvilSvg from "./speak-no-evil-own.svg";
 import ultraSoundPoapStill from "./ultrasoundpoapstill.png";
 import ultraSoundPoapGif from "./utlra_sound_poap.gif";
+import { FixedSizeList } from "react-window";
+import magnifyingGlassSvg from "./magnifying-glass-own.svg";
+import useFuseSearch from "../../hooks/use-fuse-search";
 
 type Props = {
   className?: string;
@@ -74,7 +77,6 @@ const ClaimPoapTooltip: FC<Props> = ({ className = "", onClickClose }) => (
         alt="a close button, circular with an x in the middle"
         draggable={false}
         height={24}
-        layout="fixed"
         onClick={onClickClose}
         src={closeSvg as StaticImageData}
         width={24}
@@ -268,8 +270,8 @@ const ClaimPoap: FC<{ className?: string; refreshClaimStatus: () => void }> = ({
           <div className="-mb-8">
             <Image
               alt="the proof of attendance protocol (POAP) logo, a protocol issuing NFTs proving you attended some event or are part of some group"
+              className="select-none"
               height={40}
-              layout="fixed"
               src={logoPoapSvg as StaticImageData}
               width={40}
             />
@@ -510,33 +512,78 @@ type EligibleFamClaimStatus = {
   twitter_id: string;
 };
 
+const ImageWithFallback: FC<{ src: string }> = ({ src }) => {
+  const [imgSrc, setImgSrc] = useState<string | StaticImageData>(src);
+
+  const onImageError = useCallback(() => {
+    setImgSrc(questionMarkSvg as StaticImageData);
+  }, []);
+
+  return (
+    <div className="min-w-[40px]">
+      <Image
+        alt={`profile image of ${"sassal"}`}
+        className="rounded-full"
+        height={40}
+        onError={onImageError}
+        src={imgSrc}
+        width={40}
+      />
+    </div>
+  );
+};
+
+const Row: FC<{
+  data: EligibleFamClaimStatus[];
+  index: number;
+  style: CSSProperties;
+  className?: string;
+}> = ({ data, style = {}, index, className = "" }) => {
+  const fam = data[index];
+
+  return (
+    <li
+      style={style}
+      className={`grid grid-cols-[1fr_64px] items-center gap-x-4 md:grid-cols-[1fr_64px] ${className}`}
+      key={fam.twitter_id}
+    >
+      <a
+        className="flex cursor-pointer items-center truncate hover:opacity-60 active:brightness-90"
+        href={`https://twitter.com/${fam.handle}`}
+        rel="noreferrer"
+        target="_blank"
+      >
+        <ImageWithFallback src={fam.profile_image_url} />
+        <div className="ml-4 flex h-full flex-col items-start truncate">
+          <BodyTextV2 className="truncate">{fam.name}</BodyTextV2>
+          <BodyTextV2 className="truncate text-slateus-400">
+            @{fam.handle}
+          </BodyTextV2>
+        </div>
+      </a>
+      <Claimed
+        isLoading={false}
+        claimedOn={fam.claimed_on ?? undefined}
+        monkey={monkeySvgs[index % 3]}
+      />
+    </li>
+  );
+};
+
 const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
-  const { data, error } = useSWR<EligibleFamClaimStatus[], Error>(
+  const { data } = useSWR<EligibleFamClaimStatus[], Error>(
     "/api/v2/fam/poap/eligible-fam",
     fetchJsonSwr,
   );
+  const [searchHandle, setSearchHandle] = useState("");
+  const searchResults = useFuseSearch(
+    data,
+    searchHandle,
+    { keys: ["handle"] },
+    { limit: 6 },
+  );
 
-  const ImageWithFallback: FC<{ src: string }> = ({ src }) => {
-    const [imgSrc, setImgSrc] = useState<string | StaticImageData>(src);
-
-    const onImageError = useCallback(() => {
-      setImgSrc(questionMarkSvg as StaticImageData);
-    }, []);
-
-    return (
-      <div className="min-w-[40px]">
-        <Image
-          alt={`profile image of ${"sassal"}`}
-          className="rounded-full"
-          height={40}
-          layout="fixed"
-          onError={onImageError}
-          src={imgSrc}
-          width={40}
-        />
-      </div>
-    );
-  };
+  console.log(searchResults);
 
   return (
     <WidgetBackground className={className}>
@@ -546,6 +593,36 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
         </LabelText>
         <LabelText>claimed</LabelText>
       </div>
+      <div className="relative">
+        <input
+          className={`
+          w-full
+          rounded-full border
+          border-slateus-500
+          bg-slateus-800
+          py-1
+          pl-4
+          font-inter
+          text-xs
+          font-light
+          text-white placeholder-slateus-400 outline-none
+          focus-within:border-slateus-400
+          md:text-base
+        `}
+          onChange={(event) => setSearchHandle(event.target.value)}
+          placeholder="search..."
+          type="text"
+          value={searchHandle}
+        />
+
+        <Image
+          className="absolute top-1.5 right-3"
+          alt="magnifying glass indicating this input is to search for handles"
+          src={magnifyingGlassSvg as StaticImageData}
+          width={16}
+          height={16}
+        />
+      </div>
       {data === undefined ? (
         <div className="flex h-full items-center justify-center">
           <Spinner />
@@ -553,34 +630,32 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
       ) : (
         <Twemoji imageClassName="inline-block align-middle h-4 ml-1">
           <ul
-            className={`-mr-1 flex max-h-[27rem] flex-col gap-y-4 overflow-y-auto pr-1 lg:max-h-[24rem] ${scrollbarStyles["styled-scrollbar"]}`}
+            className={`-mr-1 flex max-h-[27rem] flex-col overflow-y-auto pr-1 lg:max-h-[24rem] ${scrollbarStyles["styled-scrollbar"]}`}
           >
-            {data.map((fam, index) => (
-              <li
-                className="grid grid-cols-[1fr_64px] items-center gap-x-4 md:grid-cols-[1fr_64px]"
-                key={fam.twitter_id}
+            {searchResults === undefined || searchResults.length === 0 ? (
+              <FixedSizeList
+                height={384}
+                itemCount={data.length}
+                itemSize={64}
+                width="100%"
+                itemData={data}
               >
-                <a
-                  className="flex cursor-pointer truncate hover:opacity-60 active:brightness-90"
-                  href={`https://twitter.com/${fam.handle}`}
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  <ImageWithFallback src={fam.profile_image_url} />
-                  <div className="ml-4 flex h-full flex-col items-start truncate">
-                    <BodyTextV2 className="truncate">{fam.name}</BodyTextV2>
-                    <BodyTextV2 className="truncate text-slateus-400">
-                      @{fam.handle}
-                    </BodyTextV2>
-                  </div>
-                </a>
-                <Claimed
-                  isLoading={data === undefined && error === undefined}
-                  claimedOn={fam.claimed_on ?? undefined}
-                  monkey={monkeySvgs[index % 3]}
+                {Row}
+              </FixedSizeList>
+            ) : (
+              searchResults.map((result) => (
+                <Row
+                  key={result.refIndex}
+                  data={data}
+                  index={result.refIndex}
+                  className="h-16"
+                  // FixedSizeList does not accept a component with optional
+                  // style, so it is required, but we don't need one here so
+                  // pass an empty one.
+                  style={{}}
                 />
-              </li>
-            ))}
+              ))
+            )}
           </ul>
         </Twemoji>
       )}
@@ -637,6 +712,7 @@ const PoapSection: FC = () => {
           }}
         >
           <Image
+            className="select-none"
             alt="image from the ultra sound money poap given out to pre-merge fam"
             src={poapSrc}
             width={128}
