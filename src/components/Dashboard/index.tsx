@@ -92,9 +92,18 @@ const useScrollOnLoad = () => {
   }, []);
 };
 
+// This is a component to avoid triggering a render on the whole Dashboard.
+const GasTitle = () => {
+  const gasTitle = useGasTitle("dashboard | ultrasound.money");
+  return (
+    <Head>
+      <title>{gasTitle}</title>
+    </Head>
+  );
+};
+
 const Dashboard: FC = () => {
   const { featureFlags, setFlag } = FeatureFlags.useFeatureFlags();
-  const gasTitle = useGasTitle("dashboard | ultrasound.money");
   useScrollOnLoad();
 
   return (
@@ -104,9 +113,7 @@ const Dashboard: FC = () => {
         highlightColor={"#565b7f"}
         enableAnimation={true}
       >
-        <Head>
-          <title>{gasTitle}</title>
-        </Head>
+        <GasTitle />
         <HeaderGlow />
         <div className="container mx-auto">
           <BasicErrorBoundary>
