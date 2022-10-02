@@ -278,16 +278,8 @@ const BaseFeesWidget: FC<Props> = ({
         >
           <HighchartsReact highcharts={Highcharts} options={options} />
         </div>
-        <LabelText className="text-slateus-400 text-right">
-          inspired by{" "}
-          <a
-            className="hover:underline"
-            href="https://watchtheburn.com"
-            rel="noreferrer"
-            target="_blank"
-          >
-            watchtheburn.com
-          </a>
+        <LabelText color="text-slateus-400" className="text-right">
+          live on ultrasound.money
         </LabelText>
       </WidgetBackground>
     </WidgetErrorBoundary>
