@@ -20,6 +20,7 @@ import {
 import { useDebounce } from "../../utils/use-debounce";
 import { useOnResize } from "../../utils/use-on-resize";
 import styles from "./SupplyChart.module.scss";
+import colors from "../../colors";
 
 if (typeof window !== "undefined") {
   // Initialize highchats annotations module (only on browser, doesn't work on server)
@@ -503,6 +504,29 @@ const SupplyChart: React.FC<Props> = ({
       chart: {
         animation: animate,
         height: chartSettings.useCompactChart ? 300 : 380,
+        zooming: {
+          type: "x",
+          resetButton: {
+            position: {
+              x: 0,
+              y: 10,
+            },
+            theme: {
+              fill: colors.slateus600,
+              style: {
+                opacity: 0.8,
+                fontSize: "12",
+                fontFamily: "Inter",
+                fontWeight: "300",
+                color: colors.white,
+                textTransform: "lowercase",
+                border: `1px solid ${colors.slateus400}`,
+              },
+              r: 4,
+              states: { hover: { fill: "#343C56" } },
+            },
+          },
+        },
       },
       plotOptions: {
         area: {
