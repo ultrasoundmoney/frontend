@@ -235,29 +235,29 @@ const BaseFeesWidget: FC<Props> = ({
 
   return (
     <WidgetErrorBoundary title="base fees">
-      <WidgetBackground className="relative w-full flex flex-col overflow-hidden h-[399px]">
+      <WidgetBackground className="relative flex h-[399px] w-full flex-col overflow-hidden">
         <div
           // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
           className={`
-            absolute -top-40 -right-0
-            w-full h-full
+            pointer-events-none absolute -top-40
+            -right-0 h-full
+            w-full
             opacity-[0.25]
             blur-[110px]
-            pointer-events-none
             will-change-transform
           `}
         >
           <div
             className={`
-            absolute bottom-[3.0rem] -right-[1.0rem]
-            w-3/5 h-2/5 rounded-[35%]
+            pointer-events-none absolute bottom-[3.0rem]
+            -right-[1.0rem] h-2/5 w-3/5
+            rounded-[35%]
             bg-[#0037FA]
-            pointer-events-none
           `}
           ></div>
         </div>
-        <div className="flex justify-between items-baseline">
-          <LabelText className="flex items-center min-h-[21px]">
+        <div className="flex items-baseline justify-between">
+          <LabelText className="flex min-h-[21px] items-center">
             base fees
           </LabelText>
           <TimeFrameIndicator
@@ -269,9 +269,9 @@ const BaseFeesWidget: FC<Props> = ({
         <div
           // flex-grow fixes bug where highcharts doesn't take full width.
           className={`
-            w-full mt-4 h-full
-            flex justify-center
-            select-none
+            mt-4 flex h-full
+            w-full select-none
+            justify-center
             overflow-hidden
             [&>div]:flex-grow
           `}
