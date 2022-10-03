@@ -71,9 +71,10 @@ const PriceGasWidget: FC = () => {
             <CountUp
               decimals={0}
               duration={0.8}
+              end={Format.gweiFromWei(baseFeePerGas.wei)}
+              preserveValue
               separator=","
               start={Format.gweiFromWei(baseFeePerGas.wei)}
-              end={Format.gweiFromWei(baseFeePerGas.wei)}
             />
           )}
           <AmountUnitSpace />
