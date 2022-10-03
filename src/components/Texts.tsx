@@ -26,6 +26,12 @@ export const UnitText: FC<{ children: string; className?: string }> = ({
   </TextRoboto>
 );
 
+/**
+ * Don't use directly. Prefer shared text components based on it instead. Drop
+ * font-light and the deprecation note when all references are Text components
+ * including their own font-weight.
+ * @deprecated for direct use, use a Text component instead.
+ */
 export const TextInter: FC<{
   children: ReactNode;
   className?: string;
