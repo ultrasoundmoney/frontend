@@ -97,9 +97,10 @@ const PriceGasWidget: FC = () => {
             <CountUp
               decimals={0}
               duration={0.8}
+              end={ethPriceStats.usd}
+              preserveValue
               separator=","
               start={ethPriceStats.usd}
-              end={ethPriceStats.usd}
             />
           )}
           <AmountUnitSpace />
