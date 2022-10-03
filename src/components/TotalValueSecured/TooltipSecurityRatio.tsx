@@ -11,7 +11,7 @@ import { useTotalValueSecured } from "../../api/total-value-secured";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
 import { AmountUnitSpace } from "../Spacing";
-import { TextInter, TextRoboto, UnitText } from "../Texts";
+import { BaseText, UnitText } from "../Texts";
 import BodyText from "../TextsNext/BodyText";
 import { WidgetTitle } from "../WidgetSubcomponents";
 
@@ -92,40 +92,48 @@ const TooltipSecurityRatio: FC<{
         <BodyText>=</BodyText>
         <div className="flex flex-col ml-2">
           <div>
-            <TextRoboto>
+            <BaseText font="font-roboto">
               {totalValueSecured === undefined || previewSkeletons ? (
                 <Skeleton inline width="2.4rem" />
               ) : (
                 Format.formatTwoDigit(totalValueSecured.sum / 1e12)
               )}
               T
-            </TextRoboto>
+            </BaseText>
             <AmountUnitSpace />
             <UnitText>USD</UnitText>
             <AmountUnitSpace />
-            <TextInter className="font-inter font-extralight text-blue-spindle">
+            <BaseText
+              font="font-inter"
+              weight="font-extralight"
+              color="text-slateus-200"
+            >
               in ETH, ERC20s, NFTs
-            </TextInter>
+            </BaseText>
           </div>
           <hr className="h-[1px]" />
           {totalValueSecured === undefined ? (
             <Skeleton inline width="2rem" />
           ) : (
             <div>
-              <TextRoboto>
+              <BaseText font="font-roboto">
                 {ethStaked === undefined || previewSkeletons ? (
                   <Skeleton inline width="2.4rem" />
                 ) : (
                   formatEthPrice(ethPriceStats, ethStaked)
                 )}
                 T
-              </TextRoboto>
+              </BaseText>
               <AmountUnitSpace />
               <UnitText>USD</UnitText>
               <AmountUnitSpace />
-              <TextInter className="font-inter font-extralight text-blue-spindle">
+              <BaseText
+                color="text-slateus-200"
+                font="font-inter"
+                weight="font-extralight"
+              >
                 in staked ETH
-              </TextInter>
+              </BaseText>
             </div>
           )}
         </div>

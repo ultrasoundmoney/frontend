@@ -12,7 +12,7 @@ import scrollbarStyles from "../styles/Scrollbar.module.scss";
 import type { TimeFrameNext } from "../time-frames";
 import { MoneyAmountAnimated } from "./Amount";
 import SpanMoji from "./SpanMoji";
-import { TextRoboto } from "./Texts";
+import { BaseText } from "./Texts";
 import BodyText from "./TextsNext/BodyText";
 import { BurnGroupBase } from "./WidgetSubcomponents";
 
@@ -48,7 +48,7 @@ const Age: FC<{ minedAt: Date | undefined }> = ({ minedAt }) => {
     <BodyText skeletonWidth="6rem">
       {age === undefined ? undefined : (
         <>
-          <TextRoboto>{age}</TextRoboto>
+          <BaseText font="font-roboto">{age}</BaseText>
           {" ago"}
         </>
       )}

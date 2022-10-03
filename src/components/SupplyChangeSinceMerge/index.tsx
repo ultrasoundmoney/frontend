@@ -8,7 +8,7 @@ import { getDateTimeFromSlot } from "../../beacon-time";
 import { MERGE_TIMESTAMP } from "../../eth-constants";
 import { posIssuancePerDay, powIssuancePerDay } from "../../static-ether-data";
 import SimulateProofOfWork from "../SimulateProofOfWork";
-import { TextRoboto } from "../Texts";
+import { BaseText } from "../Texts";
 import LabelText from "../TextsNext/LabelText";
 import SkeletonText from "../TextsNext/SkeletonText";
 import UpdatedAgo from "../UpdatedAgo";
@@ -59,10 +59,11 @@ const SupplyChangeSinceMerge: FC<Props> = ({
             <LabelText>supply change since merge</LabelText>
           </div>
           <div className="flex">
-            <TextRoboto
+            <BaseText
+              font="font-roboto"
               className={`
+                bg-gradient-to-r bg-clip-text
                 text-3xl text-transparent
-                bg-clip-text bg-gradient-to-r
                 ${
                   supplyDelta !== undefined && supplyDelta >= 0
                     ? "from-cyan-300 to-indigo-500"
@@ -84,12 +85,12 @@ const SupplyChangeSinceMerge: FC<Props> = ({
                   </>
                 )}
               </SkeletonText>
-            </TextRoboto>
-            <span className="font-roboto font-light text-3xl text-slateus-400 ml-2">
+            </BaseText>
+            <span className="ml-2 font-roboto text-3xl font-light text-slateus-400">
               ETH
             </span>
           </div>
-          <div className="flex flex-wrap gap-x-4 gap-y-4 justify-between">
+          <div className="flex flex-wrap justify-between gap-x-4 gap-y-4">
             <UpdatedAgo
               updatedAt={getDateTimeFromSlot(
                 ethSupply.beaconBalancesSum.slot,

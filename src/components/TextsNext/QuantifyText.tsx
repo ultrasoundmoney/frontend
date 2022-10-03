@@ -1,5 +1,5 @@
 import type { FC, ReactNode } from "react";
-import { TextRoboto } from "../Texts";
+import { BaseText } from "../Texts";
 
 type Props = {
   amountPostfix?: string;
@@ -15,13 +15,13 @@ const QuantifyText: FC<Props> = ({
   className = "",
   unitPostfix = "",
 }) => (
-  <TextRoboto className={className}>
+  <BaseText font="font-roboto" className={className}>
     {children}
     {amountPostfix && amountPostfix}
     {unitPostfix && (
-      <span className="text-slateus-400 ml-1">{unitPostfix}</span>
+      <span className="ml-1 text-slateus-400">{unitPostfix}</span>
     )}
-  </TextRoboto>
+  </BaseText>
 );
 
 export default QuantifyText;

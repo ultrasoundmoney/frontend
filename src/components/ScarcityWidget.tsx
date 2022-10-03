@@ -8,7 +8,7 @@ import { useScarcity } from "../api/scarcity";
 import Colors from "../colors";
 import * as Format from "../format";
 import { Amount, MoneyAmount } from "./Amount";
-import { TextRoboto } from "./Texts";
+import { BaseText } from "./Texts";
 import BodyText from "./TextsNext/BodyText";
 import LabelText from "./TextsNext/LabelText";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
@@ -108,14 +108,15 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
               backgroundColor: hoveringStaked ? Colors.white : Colors.spindle,
             }}
           ></div>
-          <TextRoboto
-            className="color-animation text-sm mt-[12px] md:text-base md:mt-[9px]"
+          <BaseText
+            font="font-roboto"
+            className="color-animation mt-[12px] text-sm md:mt-[9px] md:text-base"
             style={{
               color: hoveringStaked ? Colors.white : Colors.spindle,
             }}
           >
             {Format.formatZeroDecimals(stakedPercent)}%
-          </TextRoboto>
+          </BaseText>
         </div>
         <div
           className="absolute h-2 bg-blue-dusk z-10 w-0.5"
@@ -157,14 +158,16 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
               backgroundColor: hoveringLocked ? Colors.white : Colors.spindle,
             }}
           ></div>
-          <TextRoboto
-            className="font-roboto color-animation text-sm mt-[12px] md:text-base md:mt-[9px]"
+          <BaseText
+            font="font-roboto"
+            size="text-sm md:text-base"
+            className="color-animation mt-[12px] md:mt-[9px]"
             style={{
               color: hoveringLocked ? Colors.white : Colors.spindle,
             }}
           >
             {Format.formatZeroDecimals(lockedPercent)}%
-          </TextRoboto>
+          </BaseText>
         </div>
       </div>
       <div

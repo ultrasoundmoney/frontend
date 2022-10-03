@@ -17,7 +17,7 @@ import * as Format from "../format";
 import * as StaticEtherData from "../static-ether-data";
 import type { LimitedTimeFrameNext, TimeFrameNext } from "../time-frames";
 import { AmountAnimatedShell } from "./Amount";
-import { TextRoboto } from "./Texts";
+import { BaseText } from "./Texts";
 import TimeFrameIndicator from "./TimeFrameIndicator";
 import WidgetErrorBoundary from "./WidgetErrorBoundary";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
@@ -223,7 +223,10 @@ const BurnTotal: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
             </div>
             <div className="lg:text-right flex flex-col gap-y-4">
               <WidgetTitle>issuance offset</WidgetTitle>
-              <TextRoboto className="text-2xl md:text-3xl lg:text-2xl xl:text-4xl">
+              <BaseText
+                font="font-roboto"
+                size="text-2xl md:text-3xl lg:text-2xl xl:text-4xl"
+              >
                 <CountUp
                   decimals={2}
                   duration={0.8}
@@ -232,7 +235,7 @@ const BurnTotal: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
                   preserveValue={true}
                   suffix={"x"}
                 />
-              </TextRoboto>
+              </BaseText>
             </div>
           </div>
         </div>

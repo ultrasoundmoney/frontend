@@ -10,7 +10,7 @@ import * as Format from "../format";
 import * as StaticEtherData from "../static-ether-data";
 import { MoneyAmount } from "./Amount";
 import Slider2 from "./Slider2";
-import { TextRoboto } from "./Texts";
+import { BaseText } from "./Texts";
 import BodyText from "./TextsNext/BodyText";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
@@ -74,9 +74,13 @@ const MarkerText: FC<{ children: ReactNode; ratio: number }> = ({
     style={{ transform: `translateX(${ratio * 100}%)` }}
   >
     <div className="[min-height:3px] w-3 bg-blue-shipcove -translate-x-1/2"></div>
-    <TextRoboto className="absolute top-3 text-blue-spindle -translate-x-1/2">
+    <BaseText
+      font="font-roboto"
+      color="text-slateus-200"
+      className="absolute top-3 -translate-x-1/2"
+    >
       {children}
-    </TextRoboto>
+    </BaseText>
   </div>
 );
 
@@ -316,9 +320,9 @@ const PriceModel: FC = () => {
         <div className="flex flex-col gap-y-2">
           <div className="flex justify-between">
             <BodyText>monetary premium</BodyText>
-            <TextRoboto>{`${Format.formatOneDecimal(
+            <BaseText font="font-roboto">{`${Format.formatOneDecimal(
               monetaryPremium,
-            )}x`}</TextRoboto>
+            )}x`}</BaseText>
           </div>
           <div className="relative mb-10">
             <Slider2

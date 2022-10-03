@@ -1,5 +1,5 @@
 import type { FC, ReactNode } from "react";
-import { TextInter } from "../Texts";
+import { BaseText } from "../Texts";
 
 type Props = {
   children: ReactNode;
@@ -8,9 +8,14 @@ type Props = {
 };
 
 const BodyTextV2: FC<Props> = ({ children, className = "", inline }) => (
-  <TextInter className={`text-xs md:text-base ${className}`} inline={inline}>
+  <BaseText
+    font="font-inter"
+    size="text-xs md:text-base"
+    className={className}
+    inline={inline}
+  >
     {children}
-  </TextInter>
+  </BaseText>
 );
 
 export default BodyTextV2;

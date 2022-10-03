@@ -10,7 +10,7 @@ import { FeatureFlagsContext } from "../feature-flags";
 import * as Format from "../format";
 import type { TimeFrameNext } from "../time-frames";
 import { MoneyAmount } from "./Amount";
-import { TextRoboto } from "./Texts";
+import { BaseText } from "./Texts";
 import BodyText from "./TextsNext/BodyText";
 import LabelText from "./TextsNext/LabelText";
 import { BurnGroupBase, WidgetTitle } from "./WidgetSubcomponents";
@@ -115,7 +115,8 @@ const CategorySegment: FC<CategorySegmentProps> = ({
       {percentOfTotalBurn === undefined ? (
         <Skeleton width="1.5rem" />
       ) : (
-        <TextRoboto
+        <BaseText
+          font="font-roboto"
           className={`color-animation ${
             !showHighlight && percentOfTotalBurn < alwaysShowImgPercentThreshold
               ? "invisible"
@@ -129,16 +130,16 @@ const CategorySegment: FC<CategorySegmentProps> = ({
             (percentOfTotalBurn ?? skeletonLoadingWidth) * 100,
           )}
           %
-        </TextRoboto>
+        </BaseText>
       )}
     </div>
   </div>
 );
 
 const CategoryBar: FC<CategoryBarProps> = ({ nft, defi, mev, l2, misc }) => (
-  <div className="relative flex py-4 items-center">
-    <div className="absolute w-full h-2 bg-blue-highlightbg rounded-full color-animation"></div>
-    <div className="w-full flex flex-row top-0 left-0 items-center z-10">
+  <div className="relative flex items-center py-4">
+    <div className="color-animation absolute h-2 w-full rounded-full bg-blue-highlightbg"></div>
+    <div className="top-0 left-0 z-10 flex w-full flex-row items-center">
       {nft && (
         <CategorySegment
           imgAlt={nft.imgAlt}

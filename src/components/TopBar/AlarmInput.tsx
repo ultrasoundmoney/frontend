@@ -10,7 +10,7 @@ import { formatZeroDecimals } from "../../format";
 import { useLocalStorage } from "../../hooks/use-local-storage";
 import useNotification from "../../hooks/use-notification";
 import { AmountUnitSpace } from "../Spacing";
-import { TextRoboto } from "../Texts";
+import { BaseText } from "../Texts";
 import ToggleSwitch from "../ToggleSwitch";
 import styles from "./AlarmInput.module.scss";
 import ethSvg from "./eth-slateus.svg";
@@ -264,9 +264,14 @@ const AlarmInput: FC<AlarmInputProps> = ({
             onBlur={handleDoneEditing}
           />
           <AmountUnitSpace />
-          <TextRoboto className="text-blue-spindle text-sm font-extralight whitespace-pre">
+          <BaseText
+            font="font-roboto"
+            weight="font-extralight"
+            color="text-slateus-200"
+            className="whitespace-pre text-sm"
+          >
             {unit}
-          </TextRoboto>
+          </BaseText>
         </div>
       </div>
       <ToggleSwitch

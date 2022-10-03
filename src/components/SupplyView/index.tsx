@@ -8,7 +8,7 @@ import {
   estimatedDailyIssuance,
 } from "../../utils/metric-utils";
 import Slider from "../Slider/Slider";
-import { TextInter } from "../Texts";
+import { BaseText } from "../Texts";
 import Twemoji from "../Twemoji";
 import styles from "./SupplyView.module.scss";
 const SupplyChart = dynamic(() => import("./SupplyChart"));
@@ -70,8 +70,9 @@ const SupplyView: React.FC = () => {
   return (
     <>
       <div className={styles.chartHeader}>
-        <TextInter
-          className="font-light text-blue-spindle text-xs uppercase tracking-widest flex items-center px-3 pb-8"
+        <BaseText
+          font="font-inter"
+          className="flex items-center px-3 pb-8 text-xs uppercase tracking-widest text-slateus-200"
           inline
         >
           ETH supply—2y projection
@@ -84,7 +85,7 @@ const SupplyView: React.FC = () => {
               🦇🔊
             </Twemoji>
           </span>
-        </TextInter>
+        </BaseText>
       </div>
       <SupplyChart
         projectedStaking={projectedStaking}

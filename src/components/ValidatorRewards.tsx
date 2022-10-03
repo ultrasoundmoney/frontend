@@ -13,7 +13,7 @@ import Colors from "../colors";
 import { GWEI_PER_ETH } from "../eth-units";
 import * as Format from "../format";
 import { MoneyAmount, PercentAmount } from "./Amount";
-import { TextRoboto } from "./Texts";
+import { BaseText } from "./Texts";
 import BodyText from "./TextsNext/BodyText";
 import LabelText from "./TextsNext/LabelText";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
@@ -84,14 +84,15 @@ const CategorySegment: FC<CategorySegmentProps> = ({
     ></div>
     <div style={{ marginTop: "9px" }}>
       {percentOfTotalRewards !== undefined ? (
-        <TextRoboto
+        <BaseText
+          font="font-roboto"
           className="color-animation"
           style={{
             color: showHighlight ? Colors.white : Colors.spindle,
           }}
         >
           {Format.formatPercentNoDecimals(percentOfTotalRewards)}
-        </TextRoboto>
+        </BaseText>
       ) : (
         <Skeleton width="1.5rem" />
       )}

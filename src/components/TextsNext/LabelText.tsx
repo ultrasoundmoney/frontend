@@ -1,5 +1,5 @@
 import type { FC, ReactNode } from "react";
-import { TextInter } from "../Texts";
+import { BaseText } from "../Texts";
 
 type Props = {
   children: ReactNode;
@@ -13,16 +13,17 @@ const LabelText: FC<Props> = ({
   className = "",
   color = "text-slateus-200",
 }) => (
-  <TextInter
+  <BaseText
+    font="font-inter"
+    color={color}
     className={`
-      text-xs font-light
+      text-xs
       uppercase tracking-widest
       ${className}
-      ${color}
     `}
   >
     {children}
-  </TextInter>
+  </BaseText>
 );
 
 export default LabelText;

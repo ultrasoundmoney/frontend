@@ -5,7 +5,7 @@ import CountUp from "react-countup";
 import { animated, useSpring } from "react-spring";
 import { useMarketCaps } from "../api/market-caps";
 import colors from "../colors";
-import { TextRoboto } from "./Texts";
+import { BaseText } from "./Texts";
 import BodyText from "./TextsNext/BodyText";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
@@ -83,7 +83,7 @@ const Row: FC<RowProps> = ({ highlightColor, title, progress, icon }) => {
           style={{ paddingTop: "0.1875rem" }}
         >
           <BodyText>{title}</BodyText>
-          <TextRoboto className="text-base md:text-lg">
+          <BaseText font="font-roboto" size="text-base md:text-lg">
             <CountUp
               decimals={2}
               duration={0.8}
@@ -92,7 +92,7 @@ const Row: FC<RowProps> = ({ highlightColor, title, progress, icon }) => {
               preserveValue={true}
               suffix={"%"}
             />
-          </TextRoboto>
+          </BaseText>
         </div>
       </div>
     </div>

@@ -19,7 +19,7 @@ import BurnGauge from "../Gauges/BurnGauge";
 import IssuanceGauge from "../Gauges/IssuanceGauge";
 import SupplyGrowthGauge from "../Gauges/SupplyGrowthGauge";
 import SectionDivider from "../SectionDivider";
-import { TextInter } from "../Texts";
+import { BaseText } from "../Texts";
 import TimeFrameControl from "../TimeFrameControl";
 import ToggleSwitch from "../ToggleSwitch";
 import { WidgetTitle } from "../WidgetSubcomponents";
@@ -54,16 +54,14 @@ const Controls: FC<{
         <WidgetTitle>currency</WidgetTitle>
         <CurrencyControl selectedUnit={unit} onSetUnit={onSetUnit} />
       </div>
-      <div className="row-start-2 md:row-start-1 flex flex-col gap-4 lg:flex-row lg:items-center text-right">
-        <TextInter
-          className={`
-            font-light
-            text-slateus-200 text-xs
-            tracking-widest
-          `}
+      <div className="row-start-2 flex flex-col gap-4 text-right md:row-start-1 lg:flex-row lg:items-center">
+        <BaseText
+          font="font-inter"
+          color="text-slateus-200"
+          className="text-xs tracking-widest"
         >
           SIMULATE PoW
-        </TextInter>
+        </BaseText>
         {/* On tablet the vertical alignment looks off without aligning the toggle with the neighboring controls */}
         <div className="flex items-center h-[34px] self-end">
           <ToggleSwitch

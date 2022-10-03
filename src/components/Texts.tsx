@@ -1,11 +1,13 @@
 import type { CSSProperties, FC, ReactNode } from "react";
+import { createElement } from "react";
 import BodyText from "./TextsNext/BodyText";
 
 export const LabelUnitText: FC<{
   children: ReactNode;
   className?: string;
 }> = ({ children, className }) => (
-  <TextRoboto
+  <BaseText
+    font="font-roboto"
     className={`
       text-xs
       font-light uppercase
@@ -14,91 +16,82 @@ export const LabelUnitText: FC<{
     `}
   >
     {children}
-  </TextRoboto>
+  </BaseText>
 );
 
 export const UnitText: FC<{ children: string; className?: string }> = ({
   className = "",
   children,
 }) => (
-  <TextRoboto className={`font-extralight text-blue-spindle ${className}`}>
+  <BaseText
+    font="font-roboto"
+    weight="font-extralight"
+    className={`font-extralight text-blue-spindle ${className}`}
+  >
     {children}
-  </TextRoboto>
+  </BaseText>
 );
-
-/**
- * Don't use directly. Prefer shared text components based on it instead. Drop
- * font-light and the deprecation note when all references are Text components
- * including their own font-weight.
- * @deprecated for direct use, use a Text component instead.
- */
-export const TextInter: FC<{
-  children: ReactNode;
-  className?: string;
-  inline?: boolean;
-  style?: CSSProperties;
-}> = ({ children, className = "", inline = true, style }) => {
-  const mergedClassName = `
-    font-inter font-light
-    text-white
-    ${className}
-  `;
-
-  return inline ? (
-    <span className={mergedClassName} style={style}>
-      {children}
-    </span>
-  ) : (
-    <p className={mergedClassName} style={style}>
-      {children}
-    </p>
-  );
-};
 
 export const TextInterLink: FC<{
   children: ReactNode;
   className?: string;
 }> = ({ children, className: className = "" }) => (
-  <BodyText className={`text-blue-spindle hover:underline ${className}`}>
+  <BodyText className={`text-slateus-200 hover:underline ${className}`}>
     {children}
   </BodyText>
 );
 
-export const TextRoboto: FC<{
+type BaseTextProps = {
   children: ReactNode;
+  font: "font-roboto" | "font-inter";
   className?: string;
+  color?: "text-white" | "text-slateus-200" | string;
   inline?: boolean;
+  size?: string;
   style?: CSSProperties;
   tooltip?: string;
-}> = ({ children, className, inline = true, style, tooltip }) => {
-  const mergedClassName = `
-    font-roboto font-light
-    text-white
-    ${className ?? ""}
-  `;
-
-  return inline ? (
-    <span className={mergedClassName} style={style} title={tooltip}>
-      {children}
-    </span>
-  ) : (
-    <p className={mergedClassName} style={style} title={tooltip}>
-      {children}
-    </p>
-  );
+  weight?: "font-normal" | "font-light" | "font-extralight";
 };
+
+/**
+ * Flexible base text component. Prefer shared text components based on it.
+ */
+export const BaseText: FC<BaseTextProps> = ({
+  children,
+  className = "",
+  color = "text-white",
+  font,
+  inline = true,
+  size,
+  style,
+  tooltip,
+  weight = "font-weight",
+}) =>
+  createElement(
+    inline ? "span" : "p",
+    {
+      className: `${font} ${className} ${color} ${weight} ${size}`,
+      style: style,
+      title: tooltip,
+    },
+    children,
+  );
 
 export const TimeFrameText: FC<{ children: ReactNode; className?: string }> = ({
   children,
   className = "",
 }) => (
-  <TextRoboto
-    className={`font-roboto text-xs font-light tracking-widest ${className}`}
+  <BaseText
+    className={`tracking-widest ${className}`}
+    size="text-xs"
+    font="font-roboto"
   >
     {children}
-  </TextRoboto>
+  </BaseText>
 );
 
 export const TooltipTitle: FC<{ children: ReactNode }> = ({ children }) => (
-  <TextInter className="text-base font-normal md:text-lg">{children}</TextInter>
+  <BaseText font="font-inter" size="text-base md:text-lg" weight="font-normal">
+    {children}
+  </BaseText>
 );

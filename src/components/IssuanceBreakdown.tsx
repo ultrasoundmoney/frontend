@@ -9,7 +9,7 @@ import {
 import Colors from "../colors";
 import * as Format from "../format";
 import { MoneyAmount } from "./Amount";
-import { TextRoboto } from "./Texts";
+import { BaseText } from "./Texts";
 import BodyText from "./TextsNext/BodyText";
 import LabelText from "./TextsNext/LabelText";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
@@ -95,14 +95,13 @@ const CategorySegment: FC<CategorySegmentProps> = ({
       }}
     >
       {percentOfTotalRewards ? (
-        <TextRoboto
+        <BaseText
+          font="font-roboto"
+          color={showHighlight ? "text-white" : "text-slateus-200"}
           className="color-animation"
-          style={{
-            color: showHighlight ? Colors.white : Colors.spindle,
-          }}
         >
           {Format.formatPercentNoDecimals(percentOfTotalRewards)}
-        </TextRoboto>
+        </BaseText>
       ) : (
         <Skeleton width="1.5rem" />
       )}

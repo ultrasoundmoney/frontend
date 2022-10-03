@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import type { Linkables } from "../api/profiles";
 import * as Format from "../format";
 import scrollbarStyles from "../styles/Scrollbar.module.scss";
-import { TextRoboto } from "./Texts";
+import { BaseText } from "./Texts";
 import BodyText from "./TextsNext/BodyText";
 import Twemoji from "./Twemoji";
 import BioWithLinks from "./Twitter/BioWithLinks";
@@ -122,19 +122,23 @@ const Tooltip: FC<TooltipProps> = ({
       <div className="flex justify-between">
         <div className="flex flex-col gap-y-4">
           <WidgetTitle>followers</WidgetTitle>
-          <TextRoboto className="font-extralight text-2xl">
+          <BaseText font="font-roboto" className="text-2xl font-extralight">
             {followerCount === undefined
               ? "-"
               : Format.formatCompactOneDecimal(followerCount)}
-          </TextRoboto>
+          </BaseText>
         </div>
         <div className="flex flex-col gap-y-4 items-end">
           <WidgetTitle>fam followers</WidgetTitle>
-          <TextRoboto className="font-extralight text-2xl">
+          <BaseText
+            font="font-roboto"
+            weight="font-extralight"
+            className="text-2xl"
+          >
             {famFollowerCount === undefined
               ? "-"
               : Format.formatZeroDecimals(famFollowerCount)}
-          </TextRoboto>
+          </BaseText>
         </div>
       </div>
       <div

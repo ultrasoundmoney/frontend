@@ -6,7 +6,7 @@ import type { Unit } from "../denomination";
 import { FeatureFlagsContext } from "../feature-flags";
 import * as Format from "../format";
 import { AmountUnitSpace } from "./Spacing";
-import { TextRoboto, UnitText } from "./Texts";
+import { BaseText, UnitText } from "./Texts";
 
 type AmountProps = {
   amountPostfix?: string;
@@ -23,7 +23,8 @@ export const Amount: FC<AmountProps> = ({
   textSizeClass,
   unitPostfix,
 }) => (
-  <TextRoboto
+  <BaseText
+    font="font-roboto"
     className={`${className ?? ""} ${textSizeClass ?? "text-base md:text-lg"}`}
   >
     {children}
@@ -34,7 +35,7 @@ export const Amount: FC<AmountProps> = ({
         <UnitText className={textSizeClass}>{unitPostfix}</UnitText>
       </>
     )}
-  </TextRoboto>
+  </BaseText>
 );
 
 type PercentAmountProps = {
@@ -155,9 +156,9 @@ export const AmountAnimatedShell: FC<AmountAnimatedShellProps> = ({
 }) => {
   const { previewSkeletons } = useContext(FeatureFlagsContext);
   return (
-    <TextRoboto
+    <BaseText
+      font="font-roboto"
       className={`
-        font-light
         whitespace-nowrap
         ${textClassName ?? "text-base md:text-lg"}
         ${className}
@@ -175,7 +176,7 @@ export const AmountAnimatedShell: FC<AmountAnimatedShellProps> = ({
           <UnitText>{unitText}</UnitText>
         </>
       )}
-    </TextRoboto>
+    </BaseText>
   );
 };
 

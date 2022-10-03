@@ -6,7 +6,7 @@ import Skeleton from "react-loading-skeleton";
 import { decodeGroupedAnalysis1, useGroupedAnalysis1 } from "../api/grouped-analysis-1";
 import { AmountUnitSpace } from "./Spacing";
 import SpanMoji from "./SpanMoji";
-import { TextRoboto } from "./Texts";
+import { BaseText } from "./Texts";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
 const DeflationaryStreak: FC = () => {
@@ -44,7 +44,7 @@ const DeflationaryStreak: FC = () => {
         >
           {deflationaryStreak != undefined ? (
             <>
-              <TextRoboto>
+              <BaseText font="font-roboto">
                 <CountUp
                   decimals={0}
                   duration={0.8}
@@ -54,7 +54,7 @@ const DeflationaryStreak: FC = () => {
                   suffix={deflationaryStreak.count === 1 ? " block" : " blocks"}
                 />
                 <AmountUnitSpace />
-              </TextRoboto>
+              </BaseText>
               <SpanMoji
                 className="flex items-center gap-x-1 ml-4"
                 imageClassName="h-8"
@@ -62,9 +62,7 @@ const DeflationaryStreak: FC = () => {
               />
             </>
           ) : (
-            <>
-              <TextRoboto>0 blocks</TextRoboto>
-            </>
+            <BaseText font="font-roboto">0 blocks</BaseText>
           )}
         </div>
         <span className="font-inter text-blue-spindle text-xs md:text-sm font-extralight">

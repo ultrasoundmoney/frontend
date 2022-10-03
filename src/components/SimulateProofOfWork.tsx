@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { TextInter } from "./Texts";
+import { BaseText } from "./Texts";
 import ToggleSwitch from "./ToggleSwitch";
 
 type Props = {
@@ -9,15 +9,13 @@ type Props = {
 
 const SimulateProofOfWork: FC<Props> = ({ checked, onToggle }) => (
   <div className="flex items-center gap-x-2">
-  <TextInter
-    className={`
-      font-light
-      text-slateus-200 text-xs
-      tracking-widest
-    `}
-  >
-    SIMULATE PoW
-  </TextInter>
+    <BaseText
+      font="font-inter"
+      color="text-slateus-200"
+      className="text-xs tracking-widest"
+    >
+      SIMULATE PoW
+    </BaseText>
     <ToggleSwitch checked={checked} onToggle={onToggle} />
   </div>
 );

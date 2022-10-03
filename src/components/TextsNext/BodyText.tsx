@@ -1,7 +1,8 @@
 import type { FC, ReactNode } from "react";
-import { TextInter } from "../Texts";
+import { BaseText } from "../Texts";
 
-// If your design supports Mobile XS 320px, and it should, then you probably want BodyTextV2.
+// If your design supports Mobile XS 320px, and it should, then you probably
+// want BodyTextV2 instead.
 
 type Props = {
   children: ReactNode;
@@ -14,12 +15,14 @@ type Props = {
  * @deprecated build on BodyTextV2 instead to support smaller screens better.
  */
 const BodyText: FC<Props> = ({ children, className = "", inline }) => (
-  <TextInter
-    className={`text-base font-light md:text-lg ${className}`}
+  <BaseText
+    font="font-inter"
+    className={className}
+    size="text-base md:text-lg"
     inline={inline}
   >
     {children}
-  </TextInter>
+  </BaseText>
 );
 
 export default BodyText;

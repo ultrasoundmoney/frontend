@@ -7,7 +7,7 @@ import { useBaseFeePerGas } from "../../api/base-fee-per-gas";
 import { useEthPriceStats } from "../../api/eth-price-stats";
 import * as Format from "../../format";
 import { AmountUnitSpace } from "../Spacing";
-import { TextRoboto } from "../Texts";
+import { BaseText } from "../Texts";
 import SkeletonText from "../TextsNext/SkeletonText";
 import ethSvg from "./eth-slateus.svg";
 import gasSvg from "./gas-slateus.svg";
@@ -64,7 +64,7 @@ const PriceGasWidget: FC = () => {
             height="14"
           />
         </div>
-        <TextRoboto className="pl-1">
+        <BaseText font="font-roboto" className="pl-1">
           {baseFeePerGas === undefined ? (
             <SkeletonText width="0.5rem" />
           ) : (
@@ -79,7 +79,7 @@ const PriceGasWidget: FC = () => {
           )}
           <AmountUnitSpace />
           <span className="font-extralight text-blue-spindle">Gwei</span>
-        </TextRoboto>
+        </BaseText>
         <div className="mr-4"></div>
         <div className="select-none flex items-center">
           <Image
@@ -90,7 +90,7 @@ const PriceGasWidget: FC = () => {
             height="14"
           />
         </div>
-        <TextRoboto className="pl-1">
+        <BaseText font="font-roboto" className="pl-1">
           {ethPriceStats === undefined ? (
             <SkeletonText width="2.65rem" />
           ) : (
@@ -109,7 +109,7 @@ const PriceGasWidget: FC = () => {
           <span className={`${color}`}>
             (<SkeletonText width="2.5rem">{ethUsd24hChange}</SkeletonText>)
           </span>
-        </TextRoboto>
+        </BaseText>
       </div>
     </PriceGasBoundary>
   );

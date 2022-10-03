@@ -13,7 +13,7 @@ import { WEI_PER_GWEI } from "../../eth-units";
 import * as Format from "../../format";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import { AmountUnitSpace } from "../Spacing";
-import { LabelUnitText, TextRoboto } from "../Texts";
+import { BaseText, LabelUnitText } from "../Texts";
 import BodyTextV2 from "../TextsNext/BodyTextV2";
 import LabelText from "../TextsNext/LabelText";
 import SkeletonText from "../TextsNext/SkeletonText";
@@ -118,10 +118,10 @@ const LatestBlockComponent: FC<{
             {Format.formatBlockNumber(number)}
           </SkeletonText>
         </span>
-        <div className="text-right mr-1">
-          <TextRoboto className="font-roboto text-white">
+        <div className="mr-1 text-right">
+          <BaseText font="font-roboto">
             <SkeletonText width="1rem">{formatGas(baseFeePerGas)}</SkeletonText>
-          </TextRoboto>
+          </BaseText>
           <div className="hidden md:inline">
             <span className="font-inter">&thinsp;</span>
             <span className="font-roboto text-blue-spindle font-extralight">
@@ -130,11 +130,11 @@ const LatestBlockComponent: FC<{
           </div>
         </div>
         <div className="text-right">
-          <TextRoboto>
+          <BaseText font="font-roboto">
             <SkeletonText width="2rem">
               {formatFees(unit, fees, feesUsd)}
             </SkeletonText>
-          </TextRoboto>
+          </BaseText>
           <AmountUnitSpace />
           <span className="font-roboto text-blue-spindle font-extralight">
             {unit === "eth" ? "ETH" : "USD"}

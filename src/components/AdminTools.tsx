@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import type { Flag } from "../feature-flags";
 import { displayFlagMap, FeatureFlagsContext, flags } from "../feature-flags";
 import { useAdminToken } from "../hooks/use-admin-token";
-import { TextRoboto } from "./Texts";
+import { BaseText } from "./Texts";
 import ToggleSwitch from "./ToggleSwitch";
 import { WidgetTitle } from "./WidgetSubcomponents";
 
@@ -32,16 +32,18 @@ const AdminTools: FC<{
       <div className="flex justify-between items-center">
         <WidgetTitle>feature flags</WidgetTitle>
         <div className="" onClick={() => setMinimizeFlags(!minimizeFlags)}>
-          <TextRoboto
-            className={`text-xl px-2 ${minimizeFlags ? "hidden" : ""}`}
+          <BaseText
+            font="font-roboto"
+            className={`px-2 text-xl ${minimizeFlags ? "hidden" : ""}`}
           >
             ↓
-          </TextRoboto>
-          <TextRoboto
-            className={`text-xl px-2 ${minimizeFlags ? "" : "hidden"}`}
+          </BaseText>
+          <BaseText
+            font="font-roboto"
+            className={`px-2 text-xl ${minimizeFlags ? "" : "hidden"}`}
           >
             ↑
-          </TextRoboto>
+          </BaseText>
         </div>
       </div>
       {flags.map((flag) => (
