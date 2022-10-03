@@ -65,7 +65,7 @@ export const BaseText: FC<BaseTextProps> = ({
   size,
   style,
   tooltip,
-  weight = "font-weight",
+  weight = "font-light",
 }) =>
   createElement(
     inline ? "span" : "p",
