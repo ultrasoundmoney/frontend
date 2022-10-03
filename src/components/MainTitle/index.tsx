@@ -7,6 +7,7 @@ const MainTitle: FC<{ children: ReactNode; className?: string }> = ({
 }) => (
   <div
     className={`
+      mt-16
       bg-transparent
       font-extralight
       text-white text-center
