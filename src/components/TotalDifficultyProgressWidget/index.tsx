@@ -6,6 +6,7 @@ import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { useMergeStatus } from "../../api/merge-status";
 import pandaOwn from "../../assets/panda-own.svg";
+import StyledLink from "../StyledLink";
 import { LabelUnitText } from "../Texts";
 import LabelText from "../TextsNext/LabelText";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
@@ -46,10 +47,15 @@ const TotalDifficultyProgressWidget: FC<Props> = ({ progress }) => {
         <div className="flex items-center justify-between">
           <div className="flex min-h-[21px] items-center">
             <LabelText>merged </LabelText>
-            <LabelText
-              color="text-slateus-100"
-              className="ml-1"
-            >{`${mergeDate} UTC`}</LabelText>
+            <StyledLink
+              className="flex"
+              href="https://etherscan.io/block/15537394"
+            >
+              <LabelText
+                color="text-slateus-100"
+                className="ml-1"
+              >{`${mergeDate} UTC`}</LabelText>
+            </StyledLink>
           </div>
           <div className="flex select-none items-center">
             <Image
