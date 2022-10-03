@@ -14,7 +14,10 @@ type Props = {
  * @deprecated build on BodyTextV2 instead to support smaller screens better.
  */
 const BodyText: FC<Props> = ({ children, className = "", inline }) => (
-  <TextInter className={`text-base md:text-lg ${className}`} inline={inline}>
+  <TextInter
+    className={`text-base font-light md:text-lg ${className}`}
+    inline={inline}
+  >
     {children}
   </TextInter>
 );

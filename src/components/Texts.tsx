@@ -7,9 +7,9 @@ export const LabelUnitText: FC<{
 }> = ({ children, className }) => (
   <TextRoboto
     className={`
-      font-light
-      text-slateus-200 text-xs
-      uppercase tracking-widest
+      text-xs
+      font-light uppercase
+      tracking-widest text-slateus-200
       ${className}
     `}
   >
@@ -21,7 +21,7 @@ export const UnitText: FC<{ children: string; className?: string }> = ({
   className = "",
   children,
 }) => (
-  <TextRoboto className={`text-blue-spindle font-extralight ${className}`}>
+  <TextRoboto className={`font-extralight text-blue-spindle ${className}`}>
     {children}
   </TextRoboto>
 );
@@ -87,12 +87,12 @@ export const TimeFrameText: FC<{ children: ReactNode; className?: string }> = ({
   className = "",
 }) => (
   <TextRoboto
-    className={`font-roboto font-light text-xs tracking-widest ${className}`}
+    className={`font-roboto text-xs font-light tracking-widest ${className}`}
   >
     {children}
   </TextRoboto>
 );
 
 export const TooltipTitle: FC<{ children: ReactNode }> = ({ children }) => (
-  <TextInter className="font-normal text-base md:text-lg">{children}</TextInter>
+  <TextInter className="text-base font-normal md:text-lg">{children}</TextInter>
 );

@@ -15,8 +15,7 @@ const LabelText: FC<Props> = ({
 }) => (
   <TextInter
     className={`
-      font-light
-      text-xs
+      text-xs font-light
       uppercase tracking-widest
       ${className}
       ${color}

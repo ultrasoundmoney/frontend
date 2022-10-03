@@ -43,15 +43,15 @@ const TotalDifficultyProgressWidget: FC<Props> = ({ progress }) => {
   return (
     <WidgetErrorBoundary title="merge difficulty progress">
       <WidgetBackground className="flex flex-col gap-y-4">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center min-h-[21px] ">
+        <div className="flex items-center justify-between">
+          <div className="flex min-h-[21px] items-center">
             <LabelText>merged </LabelText>
             <LabelText
               color="text-slateus-100"
               className="ml-1"
             >{`${mergeDate} UTC`}</LabelText>
           </div>
-          <div className="select-none flex items-center">
+          <div className="flex select-none items-center">
             <Image
               alt="a panda emoji, used to signify the merge, as pandas are a merge of black and white colors"
               height={21}
@@ -60,9 +60,9 @@ const TotalDifficultyProgressWidget: FC<Props> = ({ progress }) => {
             />
           </div>
         </div>
-        <div className="flex flex-col gap-y-4 mt-2">
-          <div className="w-full relative">
-            <div className="w-full h-2 bg-slateus-600 rounded-full"></div>
+        <div className="mt-2 flex flex-col gap-y-4">
+          <div className="relative w-full">
+            <div className="h-2 w-full rounded-full bg-slateus-600"></div>
             <div
               className={`
               absolute
@@ -73,7 +73,7 @@ const TotalDifficultyProgressWidget: FC<Props> = ({ progress }) => {
             ></div>
           </div>
         </div>
-        <div className="flex flex-col md:flex-row justify-between items-baseline gap-x-1 gap-y-2">
+        <div className="flex flex-col items-baseline justify-between gap-x-1 gap-y-2 md:flex-row">
           <div className="flex items-baseline gap-x-1">
             <LabelUnitText className="text-slateus-200">100%</LabelUnitText>
             <LabelText color="text-slateus-400">{` of TTD`}</LabelText>

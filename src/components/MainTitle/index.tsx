@@ -7,16 +7,16 @@ const MainTitle: FC<{ children: ReactNode; className?: string }> = ({
 }) => (
   <div
     className={`
+      mx-auto
       mt-16
       bg-transparent
-      font-extralight
-      text-white text-center
-      mx-auto px-4 md:px-16
-      text-[4.6rem]
+      px-4 text-center
+      text-[4.6rem] font-extralight leading-[5.4rem]
+      text-white
+      md:px-16
       md:text-[4.0rem]
-      lg:text-[4.8rem]
-      leading-[5.4rem]
       md:leading-[5.4rem]
+      lg:text-[4.8rem]
       ${styles.gradientText}
       ${className}
     `}
