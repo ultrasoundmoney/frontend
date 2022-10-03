@@ -65,18 +65,18 @@ const Digits: FC<{ children: JSBI }> = ({ children }) => {
   );
 
   return (
-    <div className="relative w-[26px] [@media(min-width:375px)]:w-9 -mr-1">
+    <div className="relative -mr-1 w-[26px] [@media(min-width:375px)]:w-9">
       <div
         // We need whitespace-normal to counteract the whitespace-nowrap from our parent.
         className={`
-          text-[6px] [@media(min-width:375px)]:text-[8px]
-          leading-[0.4rem] [@media(min-width:375px)]:leading-[0.5rem]
-          text-white
-          block break-all
-          whitespace-normal
-          absolute
+          absolute block
+          h-2 w-3
           overflow-hidden
-          w-3 h-2
+          whitespace-normal break-all
+          text-[6px]
+          leading-[0.4rem]
+          text-white
+          [@media(min-width:375px)]:text-[8px] [@media(min-width:375px)]:leading-[0.5rem]
         `}
       >
         {ethFirstTwoDecimals(children) === 0 ? (
@@ -95,12 +95,12 @@ const Digits: FC<{ children: JSBI }> = ({ children }) => {
       <div
         // We need whitespace-normal to counteract the whitespace-nowrap from our parent.
         className={`
-          text-[6px] [@media(min-width:375px)]:text-[8px]
-          leading-[0.4rem] [@media(min-width:375px)]:leading-[0.5rem]
-          text-blue-spindle
-          block break-all
-          whitespace-normal
-          left-0
+          left-0 block
+          whitespace-normal break-all
+          text-[6px]
+          leading-[0.4rem] text-blue-spindle
+          [@media(min-width:375px)]:text-[8px]
+          [@media(min-width:375px)]:leading-[0.5rem]
         `}
       >
         &nbsp;&nbsp;
@@ -130,7 +130,7 @@ const PreciseEth: FC<{ children?: JSBI; justify?: "justify-end" }> = ({
       ${justify !== undefined ? justify : ""}
       tracking-tight
     `}
-    textClassName="text-[1.30rem] [@media(min-width:375px)]:text-[1.70rem]"
+    size="text-[1.30rem] [@media(min-width:375px)]:text-[1.70rem]"
     skeletonWidth={"3rem"}
     unitText={"ETH"}
   >

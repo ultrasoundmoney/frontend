@@ -92,8 +92,8 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
           >
             <div className="flex w-full justify-between">
               <MoneyAmountAnimated
+                size="text-2xl md:text-3xl"
                 skeletonWidth="4rem"
-                textClassName="text-2xl md:text-3xl"
                 unit="eth"
                 unitText="ETH"
               >

@@ -165,15 +165,10 @@ const BurnTotal: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
           />
         </div>
         <div className="flex flex-col gap-y-4 pt-4">
-          <div
-            className={`
-            flex items-center
-            text-2xl md:text-3xl lg:text-3xl xl:text-4xl
-          `}
-          >
+          <div className="flex items-center">
             <AmountAnimatedShell
               skeletonWidth="9rem"
-              textClassName=""
+              size="text-2xl md:text-3xl lg:text-3xl xl:text-4xl"
               unitText={unit === "eth" ? "ETH" : "USD"}
             >
               <CountUp
@@ -202,7 +197,7 @@ const BurnTotal: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
               <WidgetTitle>burn rate</WidgetTitle>
               <AmountAnimatedShell
                 skeletonWidth="4rem"
-                textClassName="text-2xl md:text-3xl lg:text-2xl xl:text-4xl"
+                size="text-2xl md:text-3xl lg:text-2xl xl:text-4xl"
                 unitText={unit === "eth" ? "ETH/min" : "USD/min"}
               >
                 <CountUp

@@ -54,10 +54,8 @@ const AssetType: FC<{
         </BodyText>
       </div>
       <AmountBillionsUsdAnimated
-        textClassName={`
-          text-base md:text-lg
-          ${isHovering ? "opacity-60" : ""}
-        `}
+        size="text-base md:text-lg"
+        textClassName={`${isHovering ? "opacity-60" : ""}`}
         tooltip={
           amount === undefined
             ? undefined
@@ -122,7 +120,7 @@ const Summary: FC<{ className?: string }> = ({ className = "" }) => {
               </div>
               <AmountAnimatedShell
                 skeletonWidth="5rem"
-                textClassName="text-2xl md:text-3xl xl:text-4xl"
+                size="text-2xl md:text-3xl xl:text-4xl"
               >
                 {totalValueSecured?.securityRatio === undefined ? undefined : (
                   <CountUp

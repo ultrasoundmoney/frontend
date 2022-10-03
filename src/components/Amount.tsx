@@ -107,8 +107,9 @@ export const defaultMoneyAnimationDuration = 0.8;
 type MoneyAmountAnimatedProps = {
   children: number | undefined;
   decimals?: number;
+  size?: string;
   skeletonWidth?: string;
-  textClassName?: HTMLDivElement["className"];
+  textClassName?: string;
   unit: Unit;
   unitText: string;
 };
@@ -116,12 +117,14 @@ type MoneyAmountAnimatedProps = {
 export const MoneyAmountAnimated: FC<MoneyAmountAnimatedProps> = ({
   children,
   decimals = 2,
+  size,
   skeletonWidth,
   textClassName,
   unit,
   unitText,
 }) => (
   <AmountAnimatedShell
+    size={size}
     skeletonWidth={skeletonWidth}
     textClassName={textClassName}
     unitText={unitText}
@@ -141,6 +144,7 @@ export const MoneyAmountAnimated: FC<MoneyAmountAnimatedProps> = ({
 type AmountAnimatedShellProps = {
   children: ReactNode;
   className?: string;
+  size?: string;
   skeletonWidth?: string;
   textClassName?: string;
   tooltip?: string;
@@ -149,8 +153,9 @@ type AmountAnimatedShellProps = {
 export const AmountAnimatedShell: FC<AmountAnimatedShellProps> = ({
   children,
   className = "",
+  size,
   skeletonWidth = "3rem",
-  textClassName,
+  textClassName = "",
   tooltip,
   unitText,
 }) => {
@@ -158,11 +163,8 @@ export const AmountAnimatedShell: FC<AmountAnimatedShellProps> = ({
   return (
     <BaseText
       font="font-roboto"
-      className={`
-        whitespace-nowrap
-        ${textClassName ?? "text-base md:text-lg"}
-        ${className}
-      `}
+      size={size ?? "text-base md:text-lg"}
+      className={`whitespace-nowrap ${textClassName} ${className}`}
       tooltip={tooltip}
     >
       {children === undefined || previewSkeletons ? (
@@ -183,6 +185,7 @@ export const AmountAnimatedShell: FC<AmountAnimatedShellProps> = ({
 type AmountBillionsUsdAnimatedProps = {
   children: number | undefined;
   className?: string;
+  size?: string;
   skeletonWidth?: string;
   textClassName?: string;
   tooltip?: string;
@@ -190,11 +193,13 @@ type AmountBillionsUsdAnimatedProps = {
 
 export const AmountBillionsUsdAnimated: FC<AmountBillionsUsdAnimatedProps> = ({
   children,
+  size,
   skeletonWidth = "3rem",
   textClassName,
   tooltip,
 }) => (
   <AmountAnimatedShell
+    size={size}
     skeletonWidth={skeletonWidth}
     textClassName={textClassName}
     tooltip={tooltip}
@@ -218,14 +223,16 @@ type AmountTrillionsUsdAnimatedProps = {
   className?: string;
   skeletonWidth?: string;
   textClassName?: string;
+  size?: string;
 };
 
 export const AmountTrillionsUsdAnimated: FC<
   AmountTrillionsUsdAnimatedProps
-> = ({ children, skeletonWidth = "3rem", textClassName = "" }) => (
+> = ({ children, skeletonWidth = "3rem", textClassName = "", size }) => (
   <AmountAnimatedShell
     skeletonWidth={skeletonWidth}
     textClassName={textClassName}
+    size={size}
     unitText="USD"
   >
     {children && (
@@ -244,6 +251,7 @@ export const AmountTrillionsUsdAnimated: FC<
 type AmountCompactAnimatedProps = {
   children: number | undefined;
   className?: string;
+  size: string;
   skeletonWidth?: string;
   textClassName?: string;
   unit?: Unit | string;
@@ -251,11 +259,13 @@ type AmountCompactAnimatedProps = {
 
 export const AmountCompactAnimated: FC<AmountCompactAnimatedProps> = ({
   children,
+  size,
   skeletonWidth = "3rem",
   textClassName = "",
   unit = "eth",
 }) => (
   <AmountAnimatedShell
+    size={size}
     skeletonWidth={skeletonWidth}
     textClassName={textClassName}
     unitText={unit === "eth" ? "ETH" : unit === "usd" ? "USD" : unit}
