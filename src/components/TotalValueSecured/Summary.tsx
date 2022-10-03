@@ -25,7 +25,7 @@ const AssetType: FC<{
 
   return (
     <StyledLink
-      className="relative flex justify-between items-center opacity-100"
+      className="relative flex items-center justify-between opacity-100"
       enableHover={false}
       href={href}
       onMouseEnter={() => setIsHovering(true)}
@@ -79,7 +79,7 @@ const Summary: FC<{ className?: string }> = ({ className = "" }) => {
   return (
     <>
       <WidgetBackground className={`h-min ${className}`}>
-        <div className="flex flex-col gap-y-4 -mt-1 mb-2">
+        <div className="-mt-1 mb-2 flex flex-col gap-y-4">
           <div className="flex flex-col  gap-y-4 md:flex-row md:justify-between">
             <div
               className="flex flex-col gap-y-4"
@@ -92,13 +92,13 @@ const Summary: FC<{ className?: string }> = ({ className = "" }) => {
               <WidgetTitle>total value secured</WidgetTitle>
               <AmountTrillionsUsdAnimated
                 skeletonWidth="8rem"
-                textClassName="text-2xl md:text-3xl xl:text-4xl"
+                size="text-2xl md:text-3xl xl:text-4xl"
               >
                 {totalValueSecured?.sum}
               </AmountTrillionsUsdAnimated>
             </div>
             <div
-              className="flex flex-col gap-y-4 md:items-end cursor-pointer"
+              className="flex cursor-pointer flex-col gap-y-4 md:items-end"
               onClick={() => setShowSecurityRatioTooltip(true)}
               onMouseEnter={() => setIsHoveringNerd(true)}
               onMouseLeave={() => setIsHoveringNerd(false)}
