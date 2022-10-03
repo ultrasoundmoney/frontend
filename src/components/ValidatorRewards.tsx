@@ -38,7 +38,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
   showHighlight,
 }) => (
   <div
-    className="flex flex-col items-center select-none"
+    className="flex select-none flex-col items-center"
     style={{
       width: `${(percentOfTotalRewards ?? skeletonLoadingWidth) * 100}%`,
     }}
@@ -71,7 +71,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
       </>
     )}
     <div
-      className={`h-2 bg-blue-spindle w-full color-animation ${
+      className={`color-animation h-2 w-full bg-blue-spindle ${
         rounded === "left"
           ? "rounded-l-full"
           : rounded === "right"
@@ -118,7 +118,7 @@ const RewardRow: FC<RewardRowProps> = ({
   apr,
 }) => (
   <a
-    className="grid grid-cols-3 link-animation"
+    className="link-animation grid grid-cols-3"
     onMouseEnter={() => setHovering?.(true)}
     onMouseLeave={() => setHovering?.(false)}
     style={{ opacity: hovering !== undefined && hovering ? 0.6 : 1 }}
@@ -127,7 +127,7 @@ const RewardRow: FC<RewardRowProps> = ({
     rel="noreferrer"
   >
     <BodyText>{name}</BodyText>
-    <MoneyAmount className="font-light text-right">
+    <MoneyAmount className="text-right font-light">
       {amount === undefined
         ? undefined
         : Format.formatOneDecimal(amount / GWEI_PER_ETH)}
@@ -149,12 +149,12 @@ const ValidatorRewardsWidget = () => {
       <WidgetTitle>validator rewards</WidgetTitle>
       {validatorRewards === undefined ? (
         <div className="relative py-16">
-          <div className="absolute w-full h-2 bg-blue-dusk rounded-full"></div>
+          <div className="absolute h-2 w-full rounded-full bg-blue-dusk"></div>
         </div>
       ) : (
-        <div className="relative flex py-4 items-center">
-          <div className="absolute w-full h-2 bg-blue-highlightbg rounded-full color-animation"></div>
-          <div className="w-full flex flex-row top-0 left-0 items-center z-10">
+        <div className="relative flex items-center py-4">
+          <div className="color-animation absolute h-2 w-full rounded-full bg-blue-highlightbg"></div>
+          <div className="top-0 left-0 z-10 flex w-full flex-row items-center">
             <CategorySegment
               imgAlt={
                 "a droplet symbolizing ETH issuance on the beacon chain paid to block proposers"
@@ -168,7 +168,7 @@ const ValidatorRewardsWidget = () => {
               rounded="left"
               showHighlight={highlightIssuance}
             />
-            <div className="h-2 bg-blue-dusk w-0.5"></div>
+            <div className="h-2 w-0.5 bg-blue-dusk"></div>
             <CategorySegment
               imgAlt={"an ETH coin symbolizing tips paid to block proposers"}
               imgName={"coin"}
@@ -179,7 +179,7 @@ const ValidatorRewardsWidget = () => {
               )}
               showHighlight={highlightTips}
             />
-            <div className="h-2 bg-blue-dusk w-0.5"></div>
+            <div className="h-2 w-0.5 bg-blue-dusk"></div>
             <CategorySegment
               imgAlt={"a robot symbolizing MEV paid to block proposers"}
               imgName={"mev"}
@@ -221,7 +221,7 @@ const ValidatorRewardsWidget = () => {
               setHovering={setHighlightMev}
               apr={getApr(validatorRewards, "mev")}
             />
-            <hr className="border-blue-shipcove h-[1px]" />
+            <hr className="h-[1px] border-blue-shipcove" />
             <RewardRow
               amount={getTotalAnnualReward(validatorRewards)}
               name="total"

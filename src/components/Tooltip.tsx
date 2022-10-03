@@ -35,7 +35,7 @@ export const ExternalLink: FC<ExternalLinkProps> = ({
     >
       <img src={`/round-${icon}-coloroff.svg`} alt={alt} className={`w-12`} />
       <img
-        className={`absolute w-12 top-0 ${isHovering ? "" : "hidden"}`}
+        className={`absolute top-0 w-12 ${isHovering ? "" : "hidden"}`}
         src={`/round-${icon}-coloron.svg`}
         alt={alt}
       />
@@ -82,21 +82,21 @@ const Tooltip: FC<TooltipProps> = ({
       }}
       className={`
         relative
-        flex flex-col gap-y-4
-        bg-blue-tangaroa p-8 rounded-lg
-        border border-blue-shipcove
-        w-[22rem]
+        flex w-[22rem] flex-col
+        gap-y-4 rounded-lg border
+        border-blue-shipcove bg-blue-tangaroa
+        p-8
       `}
     >
       <img
         alt="a close button, circular with an x in the middle"
-        className="md:hidden absolute w-6 right-5 top-5 hover:brightness-90 active:brightness-110 cursor-pointer select-none"
+        className="absolute right-5 top-5 w-6 cursor-pointer select-none hover:brightness-90 active:brightness-110 md:hidden"
         onClick={onClickClose}
         src="/close.svg"
       />
       <img
         alt=""
-        className="w-20 h-20 mx-auto rounded-full select-none"
+        className="mx-auto h-20 w-20 select-none rounded-full"
         onError={onImageError}
         src={imageUrl ?? "/leaderboard-images/question-mark-v2.svg"}
       />
@@ -128,7 +128,7 @@ const Tooltip: FC<TooltipProps> = ({
               : Format.formatCompactOneDecimal(followerCount)}
           </BaseText>
         </div>
-        <div className="flex flex-col gap-y-4 items-end">
+        <div className="flex flex-col items-end gap-y-4">
           <WidgetTitle>fam followers</WidgetTitle>
           <BaseText
             font="font-roboto"
@@ -153,7 +153,7 @@ const Tooltip: FC<TooltipProps> = ({
         }`}
       >
         <WidgetTitle>external links</WidgetTitle>
-        <div className="flex gap-x-4 select-none">
+        <div className="flex select-none gap-x-4">
           <ExternalLink
             alt="twitter logo"
             className={`${twitterUrl === undefined ? "hidden" : "block"}`}

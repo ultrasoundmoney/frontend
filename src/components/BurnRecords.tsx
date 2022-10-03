@@ -78,10 +78,10 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
     >
       <div
         className={`
-          flex flex-col gap-y-6
-          mt-4 -mr-3
-          overflow-y-auto
-          h-60 md:h-64
+          mt-4 -mr-3 flex
+          h-60 flex-col
+          gap-y-6
+          overflow-y-auto md:h-64
           ${scrollbarStyles["styled-scrollbar"]}
         `}
       >
@@ -90,7 +90,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
             className="flex flex-col gap-y-1 pr-2"
             key={record.blockNumber || index}
           >
-            <div className="flex justify-between w-full">
+            <div className="flex w-full justify-between">
               <MoneyAmountAnimated
                 skeletonWidth="4rem"
                 textClassName="text-2xl md:text-3xl"
@@ -100,7 +100,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                 {record.baseFeeSum}
               </MoneyAmountAnimated>
               <SpanMoji
-                className="text-2xl md:text-3xl select-none"
+                className="select-none text-2xl md:text-3xl"
                 emoji={emojiMap[index]}
               />
             </div>
@@ -110,7 +110,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <span className="font-roboto font-light text-blue-shipcove md:text-lg hover:opacity-60 link-animation">
+                <span className="link-animation font-roboto font-light text-blue-shipcove hover:opacity-60 md:text-lg">
                   {formatBlockNumber(record.blockNumber) || (
                     <Skeleton width="8rem" />
                   )}

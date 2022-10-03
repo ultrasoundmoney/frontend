@@ -241,20 +241,20 @@ const AlarmInput: FC<AlarmInputProps> = ({
   }, [inputRef]);
 
   return (
-    <div className="flex justify-between items-center pt-4">
+    <div className="flex items-center justify-between pt-4">
       <div
-        className={`flex justify-between items-center px-2 py-1 pr-4 border border-gray-500 rounded-full select-none ${styles.alarmInput}`}
+        className={`flex select-none items-center justify-between rounded-full border border-gray-500 px-2 py-1 pr-4 ${styles.alarmInput}`}
         onClick={handleSurroundingInputClick}
       >
-        <div className="flex justify-center ml-1 w-5">{imageMap[type]}</div>
+        <div className="ml-1 flex w-5 justify-center">{imageMap[type]}</div>
         <div className="flex items-center">
           <input
             ref={inputRef}
             className={`
-              font-roboto font-light
-              w-14
-              bg-transparent
-              text-sm text-white text-right
+              w-14 bg-transparent
+              text-right
+              font-roboto
+              text-sm font-light text-white
               focus:outline-none
             `}
             inputMode="numeric"

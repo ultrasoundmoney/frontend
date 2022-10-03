@@ -56,7 +56,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
   showHighlight,
 }) => (
   <div
-    className="flex flex-col items-center select-none"
+    className="flex select-none flex-col items-center"
     style={{
       width: `${(percentOfTotalBurn ?? skeletonLoadingWidth) * 100}%`,
     }}
@@ -100,7 +100,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
       </>
     )}
     <div
-      className={`h-2 bg-blue-spindle w-full color-animation ${
+      className={`color-animation h-2 w-full bg-blue-spindle ${
         rounded === "left"
           ? "rounded-l-full"
           : rounded === "right"
@@ -150,7 +150,7 @@ const CategoryBar: FC<CategoryBarProps> = ({ nft, defi, mev, l2, misc }) => (
           showHighlight={nft.showHighlight}
         />
       )}
-      <div className="h-2 bg-blue-dusk w-0.5"></div>
+      <div className="h-2 w-0.5 bg-blue-dusk"></div>
       {defi && (
         <CategorySegment
           imgAlt={defi.imgAlt}
@@ -160,7 +160,7 @@ const CategoryBar: FC<CategoryBarProps> = ({ nft, defi, mev, l2, misc }) => (
           showHighlight={defi.showHighlight}
         />
       )}
-      <div className="h-2 bg-blue-dusk w-0.5"></div>
+      <div className="h-2 w-0.5 bg-blue-dusk"></div>
       {mev && (
         <CategorySegment
           imgAlt={mev.imgAlt}
@@ -170,7 +170,7 @@ const CategoryBar: FC<CategoryBarProps> = ({ nft, defi, mev, l2, misc }) => (
           showHighlight={mev.showHighlight}
         />
       )}
-      <div className="h-2 bg-blue-dusk w-0.5"></div>
+      <div className="h-2 w-0.5 bg-blue-dusk"></div>
       {l2 && (
         <CategorySegment
           imgAlt={l2.imgAlt}
@@ -180,7 +180,7 @@ const CategoryBar: FC<CategoryBarProps> = ({ nft, defi, mev, l2, misc }) => (
           showHighlight={l2.showHighlight}
         />
       )}
-      <div className="h-2 bg-blue-dusk w-0.5"></div>
+      <div className="h-2 w-0.5 bg-blue-dusk"></div>
       {misc && (
         <CategorySegment
           imgAlt={misc.imgAlt}
@@ -224,8 +224,8 @@ const CategoryRow: FC<CategoryRowProps> = ({
     <BodyText>{name}</BodyText>
     <div
       className={`
-        text-right
-        col-span-1 md:col-span-1
+        col-span-1
+        text-right md:col-span-1
         ${showCategoryCounts ? "md:mr-8" : ""}
       `}
     >
@@ -237,14 +237,16 @@ const CategoryRow: FC<CategoryRowProps> = ({
     </div>
     <div
       className={`
-        text-right
-        hidden ${showCategoryCounts ? "md:block" : ""}
+        hidden
+        text-right ${showCategoryCounts ? "md:block" : ""}
       `}
     >
       {countFormatted === undefined ? (
         <Skeleton width="5rem" />
       ) : (
-        <TextRoboto className="text-right">{countFormatted}</TextRoboto>
+        <BaseText font="font-roboto" className="text-right">
+          {countFormatted}
+        </BaseText>
       )}
     </div>
   </div>
@@ -391,9 +393,9 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
         <div
           className={`
           absolute
-          text-blue-spindle text-lg text-center
-          left-0 top-0 w-full h-full
-          flex justify-center items-center
+          left-0 top-0 flex
+          h-full w-full items-center justify-center
+          text-center text-lg text-blue-spindle
           ${timeFrame === "m5" ? "visible" : "hidden"}
         `}
         >
@@ -424,7 +426,7 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                 <WidgetTitle>burn</WidgetTitle>
               </div>
               <LabelText
-                className={`text-right hidden ${
+                className={`hidden text-right ${
                   showCategoryCounts ? "md:block" : ""
                 }`}
               >

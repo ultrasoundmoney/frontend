@@ -26,15 +26,15 @@ const Marker: FC<{
 
   return (
     <div
-      className="absolute w-full flex flex-col pointer-events-none"
+      className="pointer-events-none absolute flex w-full flex-col"
       style={{
         transform: `translateX(${ratio * 100}%)`,
       }}
     >
-      <div className="[min-height:3px] w-3 bg-blue-shipcove mb-3 -translate-x-1/2"></div>
+      <div className="mb-3 w-3 -translate-x-1/2 bg-blue-shipcove [min-height:3px]"></div>
       <a
         title={`${peRatio?.toFixed(1) ?? "-"} P/E`}
-        className="absolute pointer-events-auto top-4 -translate-x-1/2"
+        className="pointer-events-auto absolute top-4 -translate-x-1/2"
         href={
           symbol === undefined
             ? undefined
@@ -69,11 +69,11 @@ const MarkerText: FC<{ children: ReactNode; ratio: number }> = ({
   children,
 }) => (
   <div
-    className="absolute w-full flex flex-col pointer-events-none"
+    className="pointer-events-none absolute flex w-full flex-col"
     // For unclear reasons the left 89% position for TSLA is closer to notch 91 on the actual slider. We manually adjust.
     style={{ transform: `translateX(${ratio * 100}%)` }}
   >
-    <div className="[min-height:3px] w-3 bg-blue-shipcove -translate-x-1/2"></div>
+    <div className="w-3 -translate-x-1/2 bg-blue-shipcove [min-height:3px]"></div>
     <BaseText
       font="font-roboto"
       color="text-slateus-200"
@@ -222,7 +222,7 @@ const PriceModel: FC = () => {
   return (
     <WidgetBackground>
       <WidgetTitle>price model (post-merge)</WidgetTitle>
-      <div className="flex flex-col gap-y-4 mt-4 overflow-hidden">
+      <div className="mt-4 flex flex-col gap-y-4 overflow-hidden">
         <div className="flex justify-between">
           <BodyText>annualized profits</BodyText>
           <MoneyAmount amountPostfix="B" unitText="USD" skeletonWidth="2rem">
@@ -251,7 +251,7 @@ const PriceModel: FC = () => {
               thumbVisible={initialPeSet}
               value={peRatioPosition}
             />
-            <div className="absolute w-full top-3 select-none">
+            <div className="absolute top-3 w-full select-none">
               {peRatios !== undefined && (
                 // Because the actual slider does not span the entire visual slider, overlaying an element and setting the left is not perfect. We manually adjust values to match the slider more precisely. To improve this look into off-the-shelf components that allow for styled markers.
                 <>
@@ -335,7 +335,7 @@ const PriceModel: FC = () => {
               value={monetaryPremium}
             />
             {/* Because a slider range is not exactly the visual width of the element positioning using absolute children with a left is not exactly right. we add small amounts to try fudge them into the right place. */}
-            <div className="absolute w-full flex top-3 pointer-events-none">
+            <div className="pointer-events-none absolute top-3 flex w-full">
               <MarkerText
                 ratio={(2 + 0.3 - monetaryPremiumMin) / monetaryPremiumRange}
               >
@@ -352,13 +352,13 @@ const PriceModel: FC = () => {
                 8x
               </MarkerText>
               <div
-                className="absolute w-full flex flex-col pointer-events-none"
+                className="pointer-events-none absolute flex w-full flex-col"
                 style={{
                   transform: `translateX(47.5%)`,
                 }}
               >
-                <div className="[min-height:3px] w-3 bg-blue-shipcove mb-3 -translate-x-1/2"></div>
-                <div className="absolute pointer-events-auto top-4 -translate-x-1/2">
+                <div className="mb-3 w-3 -translate-x-1/2 bg-blue-shipcove [min-height:3px]"></div>
+                <div className="pointer-events-auto absolute top-4 -translate-x-1/2">
                   <img
                     title="gold"
                     src={`/gold-icon.svg`}

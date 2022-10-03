@@ -17,9 +17,9 @@ const PriceGasBoundary: FC<{ children: ReactNode }> = ({ children }) => (
     fallback={
       <div
         className={`
-          px-4 py-2 rounded-lg font-roboto text-white text-xs text-center
-          bg-blue-tangaroa
-          border border-red-400
+          rounded-lg border border-red-400 bg-blue-tangaroa px-4 py-2 text-center
+          font-roboto
+          text-xs text-white
         `}
       >
         gas / price widget crashed
@@ -49,14 +49,14 @@ const PriceGasWidget: FC = () => {
     <PriceGasBoundary>
       <div
         className={`
-          text-xs lg:text-sm
           flex items-center
+          rounded bg-blue-tangaroa
           px-3 py-2
-          bg-blue-tangaroa
-          rounded
+          text-xs
+          lg:text-sm
         `}
       >
-        <div className="select-none flex items-center">
+        <div className="flex select-none items-center">
           <Image
             src={gasSvg as StaticImageData}
             alt="gas pump icon"
@@ -81,7 +81,7 @@ const PriceGasWidget: FC = () => {
           <span className="font-extralight text-blue-spindle">Gwei</span>
         </BaseText>
         <div className="mr-4"></div>
-        <div className="select-none flex items-center">
+        <div className="flex select-none items-center">
           <Image
             className="select-none"
             src={ethSvg as StaticImageData}
@@ -104,7 +104,7 @@ const PriceGasWidget: FC = () => {
             />
           )}
           <AmountUnitSpace />
-          <span className="text-blue-spindle font-extralight">USD</span>
+          <span className="font-extralight text-blue-spindle">USD</span>
           <AmountUnitSpace />
           <span className={`${color}`}>
             (<SkeletonText width="2.5rem">{ethUsd24hChange}</SkeletonText>)

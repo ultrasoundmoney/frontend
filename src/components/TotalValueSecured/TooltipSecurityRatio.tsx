@@ -47,21 +47,21 @@ const TooltipSecurityRatio: FC<{
       }}
       className={`
         relative
-        flex flex-col gap-y-4
-        bg-blue-tangaroa p-8 rounded-lg
-        border border-blue-shipcove
-        w-[22rem]
+        flex w-[22rem] flex-col
+        gap-y-4 rounded-lg border
+        border-blue-shipcove bg-blue-tangaroa
+        p-8
       `}
     >
       <img
         alt="a close button, circular with an x in the middle"
-        className="absolute w-6 right-5 top-5 hover:brightness-90 active:brightness-110 cursor-pointer select-none"
+        className="absolute right-5 top-5 w-6 cursor-pointer select-none hover:brightness-90 active:brightness-110"
         onClick={onClickClose}
         src="/close.svg"
       />
       <img
         alt=""
-        className="w-20 h-20 mx-auto rounded-full select-none"
+        className="mx-auto h-20 w-20 select-none rounded-full"
         src={"/round-nerd-large.svg"}
       />
       <BodyText className="font-semibold">Security ratio</BodyText>
@@ -74,7 +74,7 @@ const TooltipSecurityRatio: FC<{
       <WidgetTitle>formula</WidgetTitle>
       <div className="flex items-center">
         <BodyText>=</BodyText>
-        <div className="flex flex-col ml-2">
+        <div className="ml-2 flex flex-col">
           <BodyText>total value secured</BodyText>
           <hr className="h-[1px]" />
           <BodyText>economic security</BodyText>
@@ -82,7 +82,7 @@ const TooltipSecurityRatio: FC<{
       </div>
       <div className="flex items-center">
         <BodyText>=</BodyText>
-        <div className="flex flex-col ml-2">
+        <div className="ml-2 flex flex-col">
           <BodyText>value secured by Ethereum</BodyText>
           <hr className="h-[1px]" />
           <BodyText>value securing Ethereum</BodyText>
@@ -90,7 +90,7 @@ const TooltipSecurityRatio: FC<{
       </div>
       <div className="flex items-center text-base">
         <BodyText>=</BodyText>
-        <div className="flex flex-col ml-2">
+        <div className="ml-2 flex flex-col">
           <div>
             <BaseText font="font-roboto">
               {totalValueSecured === undefined || previewSkeletons ? (

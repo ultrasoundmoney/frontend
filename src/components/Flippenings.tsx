@@ -31,7 +31,7 @@ const ProgressBar: FC<ProgressBarProps> = ({
 
   return (
     <div className="relative">
-      <div className="w-full h-2 rounded-full bg-blue-dusk"></div>
+      <div className="h-2 w-full rounded-full bg-blue-dusk"></div>
       <animated.div
         className="absolute top-0 h-2 rounded-full bg-blue-spindle"
         style={{
@@ -72,7 +72,7 @@ const Row: FC<RowProps> = ({ highlightColor, title, progress, icon }) => {
         src={`/${icon}-color.svg`}
         alt={`${icon} icon`}
       />
-      <div className="w-full flex flex-col justify-between">
+      <div className="flex w-full flex-col justify-between">
         <ProgressBar
           highlightColor={highlightColor}
           showHighlight={hovering}
@@ -120,7 +120,7 @@ const Flippenings: FC = () => {
   return (
     <WidgetBackground>
       <WidgetTitle>flippenings</WidgetTitle>
-      <div className="flex flex-col gap-y-4 mt-4">
+      <div className="mt-4 flex flex-col gap-y-4">
         <Row
           icon="btc"
           highlightColor="linear-gradient(88.24deg, #FF891D -10.74%, #E8AB74 115.66%)"

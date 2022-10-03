@@ -3,7 +3,10 @@ import type { FC } from "react";
 import { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
-import { decodeGroupedAnalysis1, useGroupedAnalysis1 } from "../api/grouped-analysis-1";
+import {
+  decodeGroupedAnalysis1,
+  useGroupedAnalysis1,
+} from "../api/grouped-analysis-1";
 import { AmountUnitSpace } from "./Spacing";
 import SpanMoji from "./SpanMoji";
 import { BaseText } from "./Texts";
@@ -56,7 +59,7 @@ const DeflationaryStreak: FC = () => {
                 <AmountUnitSpace />
               </BaseText>
               <SpanMoji
-                className="flex items-center gap-x-1 ml-4"
+                className="ml-4 flex items-center gap-x-1"
                 imageClassName="h-8"
                 emoji="🦇🔊"
               />
@@ -65,13 +68,13 @@ const DeflationaryStreak: FC = () => {
             <BaseText font="font-roboto">0 blocks</BaseText>
           )}
         </div>
-        <span className="font-inter text-blue-spindle text-xs md:text-sm font-extralight">
+        <span className="font-inter text-xs font-extralight text-blue-spindle md:text-sm">
           {deflationaryStreak == null ? (
             "awaiting deflationary block"
           ) : (
             <>
               spanning
-              <span className="text-white ml-1">
+              <span className="ml-1 text-white">
                 {timeElapsed || <Skeleton inline={true} width="2rem" />}
               </span>
             </>

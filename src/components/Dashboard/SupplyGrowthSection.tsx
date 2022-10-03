@@ -41,16 +41,16 @@ const Controls: FC<{
   timeFrame,
   unit,
 }) => (
-  <div className={`bg-blue-tangaroa rounded-bl-lg rounded-br-lg p-8`}>
-    <div className="grid grid-cols-2 md:flex md:justify-between flex-col gap-y-8 md:flex-row lg:gap-y-0 ">
-      <div className="row-start-1 flex flex-col gap-4 lg:gap-x-4 lg:flex-row lg:items-center">
+  <div className={`rounded-bl-lg rounded-br-lg bg-blue-tangaroa p-8`}>
+    <div className="grid grid-cols-2 flex-col gap-y-8 md:flex md:flex-row md:justify-between lg:gap-y-0 ">
+      <div className="row-start-1 flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-x-4">
         <WidgetTitle>time frame</WidgetTitle>
         <TimeFrameControl
           selectedTimeframe={timeFrame}
           onSetTimeFrame={onSetTimeFrame}
         />
       </div>
-      <div className="row-start-2 md:row-start-1 flex flex-col gap-y-4 lg:gap-x-4 lg:flex-row lg:items-center">
+      <div className="row-start-2 flex flex-col gap-y-4 md:row-start-1 lg:flex-row lg:items-center lg:gap-x-4">
         <WidgetTitle>currency</WidgetTitle>
         <CurrencyControl selectedUnit={unit} onSetUnit={onSetUnit} />
       </div>
@@ -63,7 +63,7 @@ const Controls: FC<{
           SIMULATE PoW
         </BaseText>
         {/* On tablet the vertical alignment looks off without aligning the toggle with the neighboring controls */}
-        <div className="flex items-center h-[34px] self-end">
+        <div className="flex h-[34px] items-center self-end">
           <ToggleSwitch
             checked={simulateProofOfWork}
             onToggle={onToggleSimulateProofOfWork}
@@ -130,8 +130,8 @@ const SupplyGrowthSection: FC = () => {
         />
         <div className="flex flex-col gap-4 xs:px-4 md:px-16">
           <div>
-            <div className="w-full flex flex-col md:flex-row isolate">
-              <div className="hidden md:block w-1/3">
+            <div className="isolate flex w-full flex-col md:flex-row">
+              <div className="hidden w-1/3 md:block">
                 <BurnGauge timeFrame={timeFrame} unit={unit} />
               </div>
               <div className="md:w-1/3">
@@ -141,7 +141,7 @@ const SupplyGrowthSection: FC = () => {
                   timeFrame={timeFrame}
                 />
               </div>
-              <div className="hidden md:block w-1/3">
+              <div className="hidden w-1/3 md:block">
                 <IssuanceGauge
                   simulateProofOfWork={simulateProofOfWork}
                   timeFrame={timeFrame}
@@ -158,8 +158,8 @@ const SupplyGrowthSection: FC = () => {
               unit={unit}
             />
           </div>
-          <div className="flex flex-col lg:flex-row gap-y-4 gap-x-4">
-            <div className="flex flex-col gap-y-4 w-full lg:w-1/2 h-min">
+          <div className="flex flex-col gap-y-4 gap-x-4 lg:flex-row">
+            <div className="flex h-min w-full flex-col gap-y-4 lg:w-1/2">
               <GasMarketWidget baseFeePerGasStats={baseFeePerGasStats} />
               <EthSupplyWidget />
             </div>

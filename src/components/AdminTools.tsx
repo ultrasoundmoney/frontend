@@ -22,14 +22,14 @@ const AdminTools: FC<{
     <div
       className={`
         fixed bottom-4 left-4
-        bg-blue-tangaroa rounded-lg
-        p-4 z-20
+        z-20 rounded-lg
         border-2 border-slate-600
+        bg-blue-tangaroa p-4
       transition-transform
         ${minimizeFlags ? "translate-y-[88%]" : ""}
       `}
     >
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <WidgetTitle>feature flags</WidgetTitle>
         <div className="" onClick={() => setMinimizeFlags(!minimizeFlags)}>
           <BaseText
@@ -49,9 +49,9 @@ const AdminTools: FC<{
       {flags.map((flag) => (
         <div
           key={flag}
-          className="flex items-center justify-between gap-x-4 mt-4"
+          className="mt-4 flex items-center justify-between gap-x-4"
         >
-          <span className="text-white mr-4">{displayFlagMap[flag]}</span>
+          <span className="mr-4 text-white">{displayFlagMap[flag]}</span>
           <ToggleSwitch
             checked={featureFlags[flag]}
             onToggle={(enabled) => setFlag({ flag, enabled })}

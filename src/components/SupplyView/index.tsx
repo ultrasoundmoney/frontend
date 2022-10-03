@@ -166,7 +166,7 @@ const Param: React.FC<ParamProps> = ({ title, value, subValue, children }) => (
     <div className={styles.paramValue}>{value}</div>
     <div className={styles.paramChildren}>{children}</div>
     <div
-      className={`text-blue-spindle text-xs lg:text-base xl:text-lg ${styles.paramSubValue}`}
+      className={`text-xs text-blue-spindle lg:text-base xl:text-lg ${styles.paramSubValue}`}
     >
       {subValue}
     </div>

@@ -120,40 +120,40 @@ const BurnTotal: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
       <WidgetBackground className="relative overflow-hidden">
         <div
           className={`
-            absolute top-15 md:top-20 -left-20
-            w-full h-full
+            top-15 pointer-events-none absolute -left-20
+            h-full w-full
             opacity-[0.13]
-            blur-[50px] md:blur-[70px]
-            pointer-events-none
-            will-change-transform
+            blur-[50px] will-change-transform
+            md:top-20
+            md:blur-[70px]
           `}
         >
           <div
             className={`
-              absolute
-              w-4/5 h-4/5 md:w-3/5 md:h-3/5 rounded-[35%]
-              bg-[#243AFF]
               pointer-events-none
+              absolute h-4/5 w-4/5 rounded-[35%] bg-[#243AFF]
+              md:h-3/5
+              md:w-3/5
             `}
           ></div>
         </div>
         <div
           className={`
-            absolute top-0 md:top-5 -left-20
-            w-full h-full
+            pointer-events-none absolute top-0 -left-20
+            h-full w-full
             opacity-[0.25]
-            blur-[50px] md:blur-[70px]
-            pointer-events-none
-            will-change-transform
+            blur-[50px] will-change-transform
+            md:top-5
+            md:blur-[70px]
           `}
         >
           <div
             className={`
-              absolute
-              -left-5 md:left-0
-              w-full h-4/5 md:w-4/5 md:h-3/5 rounded-[35%]
-              bg-[#FF8D24]
               pointer-events-none
+              absolute -left-5
+              h-4/5 w-full rounded-[35%] bg-[#FF8D24] md:left-0
+              md:h-3/5
+              md:w-4/5
             `}
           ></div>
         </div>
@@ -190,14 +190,14 @@ const BurnTotal: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
                 separator=","
               />
             </AmountAnimatedShell>
-            <div className="ml-4 md:ml-8 h-6 w-6 lg:h-8 lg:w-8 select-none">
+            <div className="ml-4 h-6 w-6 select-none md:ml-8 lg:h-8 lg:w-8">
               <Image
                 alt="fire emoji symbolizing ETH burned"
                 src={fireSvg as StaticImageData}
               />
             </div>
           </div>
-          <div className="flex flex-col gap-y-4 justify-between lg:flex-row">
+          <div className="flex flex-col justify-between gap-y-4 lg:flex-row">
             <div className="flex flex-col gap-y-4">
               <WidgetTitle>burn rate</WidgetTitle>
               <AmountAnimatedShell
@@ -221,7 +221,7 @@ const BurnTotal: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
                 />
               </AmountAnimatedShell>
             </div>
-            <div className="lg:text-right flex flex-col gap-y-4">
+            <div className="flex flex-col gap-y-4 lg:text-right">
               <WidgetTitle>issuance offset</WidgetTitle>
               <BaseText
                 font="font-roboto"

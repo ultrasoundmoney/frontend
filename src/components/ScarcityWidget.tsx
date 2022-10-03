@@ -52,9 +52,9 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
 
   return (
     <div className="relative select-none">
-      <div className="h-28 flex items-center">
+      <div className="flex h-28 items-center">
         <div
-          className="absolute w-full h-2 bg-fire rounded-full color-animation"
+          className="color-animation absolute h-2 w-full rounded-full bg-fire"
           style={{
             backgroundColor: hoveringBurned
               ? Colors.fireHighlight
@@ -64,12 +64,12 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
           onMouseLeave={() => onHoverBurned(false)}
         ></div>
         <div
-          className="absolute h-2 bg-blue-dusk rounded-full"
+          className="absolute h-2 rounded-full bg-blue-dusk"
           style={{ width: `${totalSupplyPercent}%` }}
         ></div>
       </div>
       <div
-        className="absolute h-28 flex flex-row top-0 left-0 items-center"
+        className="absolute top-0 left-0 flex h-28 flex-row items-center"
         style={{
           width: `${(supply / totalIssued) * 100}%`,
         }}
@@ -103,7 +103,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
             }}
           />
           <div
-            className="h-2 bg-blue-spindle rounded-l-full w-full color-animation"
+            className="color-animation h-2 w-full rounded-l-full bg-blue-spindle"
             style={{
               backgroundColor: hoveringStaked ? Colors.white : Colors.spindle,
             }}
@@ -119,7 +119,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
           </BaseText>
         </div>
         <div
-          className="absolute h-2 bg-blue-dusk z-10 w-0.5"
+          className="absolute z-10 h-2 w-0.5 bg-blue-dusk"
           style={{
             left: `${stakedPercent}%`,
           }}
@@ -153,7 +153,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
             }}
           />
           <div
-            className="h-2 bg-blue-spindle rounded-r-full w-full color-animation"
+            className="color-animation h-2 w-full rounded-r-full bg-blue-spindle"
             style={{
               backgroundColor: hoveringLocked ? Colors.white : Colors.spindle,
             }}
@@ -246,7 +246,7 @@ const EngineRow: FC<EngineRowProps> = ({
   now,
 }) => (
   <a
-    className="grid grid-cols-3 link-animation"
+    className="link-animation grid grid-cols-3"
     onMouseEnter={() => setHovering(true)}
     onMouseLeave={() => setHovering(false)}
     style={{ opacity: hovering ? 0.6 : 1 }}
@@ -255,7 +255,7 @@ const EngineRow: FC<EngineRowProps> = ({
     rel="noreferrer"
   >
     <BodyText>{name}</BodyText>
-    <MoneyAmount className="font-light text-right" amountPostfix="M">
+    <MoneyAmount className="text-right font-light" amountPostfix="M">
       {amountFormatted}
     </MoneyAmount>
     <Amount className="text-right" unitPostfix="years">
@@ -282,7 +282,7 @@ const ScarcityWidget: FC = () => {
       <WidgetTitle>scarcity</WidgetTitle>
       {scarcity === undefined ? (
         <div className="relative py-16">
-          <div className="absolute w-full h-2 bg-blue-dusk rounded-full"></div>
+          <div className="absolute h-2 w-full rounded-full bg-blue-dusk"></div>
         </div>
       ) : (
         <ScarcityBar

@@ -6,7 +6,7 @@ import { useBlockLag } from "../../api/block-lag";
 import type { LatestBlock } from "../../api/grouped-analysis-1";
 import {
   decodeGroupedAnalysis1,
-  useGroupedAnalysis1
+  useGroupedAnalysis1,
 } from "../../api/grouped-analysis-1";
 import type { Unit } from "../../denomination";
 import { WEI_PER_GWEI } from "../../eth-units";
@@ -43,7 +43,7 @@ const latestBlockFeesSkeletons = new Array(maxBlocks).fill(
 ) as Partial<LatestBlock>[];
 
 const Resyncing = () => (
-  <BodyTextV2 className="md:text-sm text-red-400 animate-slow-pulse">
+  <BodyTextV2 className="animate-slow-pulse text-red-400 md:text-sm">
     node error, busy resyncing...
   </BodyTextV2>
 );
@@ -80,7 +80,7 @@ const LatestBlockAge: FC = () => {
   return typeof timeElapsed === "number" && timeElapsed > 1800 ? (
     <Resyncing />
   ) : (
-    <div className="flex gap-x-2 items-baseline truncate">
+    <div className="flex items-baseline gap-x-2 truncate">
       <LabelText color="text-slateus-400" className="whitespace-nowrap">
         latest block
       </LabelText>
@@ -102,7 +102,7 @@ const LatestBlockComponent: FC<{
   feesUsd: number | undefined;
   unit: Unit;
 }> = ({ number, baseFeePerGas, fees, feesUsd, unit }) => (
-  <div className="transition-opacity duration-700 font-light text-base md:text-lg animate-fade-in">
+  <div className="animate-fade-in text-base font-light transition-opacity duration-700 md:text-lg">
     <a
       href={
         number === undefined
@@ -124,7 +124,7 @@ const LatestBlockComponent: FC<{
           </BaseText>
           <div className="hidden md:inline">
             <span className="font-inter">&thinsp;</span>
-            <span className="font-roboto text-blue-spindle font-extralight">
+            <span className="font-roboto font-extralight text-blue-spindle">
               Gwei
             </span>
           </div>
@@ -136,7 +136,7 @@ const LatestBlockComponent: FC<{
             </SkeletonText>
           </BaseText>
           <AmountUnitSpace />
-          <span className="font-roboto text-blue-spindle font-extralight">
+          <span className="font-roboto font-extralight text-blue-spindle">
             {unit === "eth" ? "ETH" : "USD"}
           </span>
         </div>
@@ -159,13 +159,13 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
         <div className="grid grid-cols-3">
           <WidgetTitle>block</WidgetTitle>
           <WidgetTitle className="text-right">gas</WidgetTitle>
-          <WidgetTitle className="text-right -mr-1">burn</WidgetTitle>
+          <WidgetTitle className="-mr-1 text-right">burn</WidgetTitle>
         </div>
         <ul
           className={`
-            flex flex-col gap-y-4
-            max-h-[184px] md:max-h-[214px] overflow-y-auto
-            pr-1 -mr-3
+            -mr-3 flex max-h-[184px]
+            flex-col gap-y-4 overflow-y-auto
+            pr-1 md:max-h-[214px]
             ${scrollbarStyles["styled-scrollbar"]}
           `}
         >
@@ -183,9 +183,9 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
             />
           ))}
         </ul>
-        <div className="flex justify-between flex-wrap gap-y-2">
+        <div className="flex flex-wrap justify-between gap-y-2">
           <LatestBlockAge />
-          <div className="flex gap-x-2 items-baseline">
+          <div className="flex items-baseline gap-x-2">
             <LabelUnitText>
               <SkeletonText width="0.5rem">{blockLag}</SkeletonText>
             </LabelUnitText>
