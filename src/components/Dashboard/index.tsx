@@ -18,10 +18,6 @@ import SectionDivider from "../SectionDivider";
 import { TextInterLink } from "../Texts";
 import TopBar from "../TopBar";
 import MergeSection from "./MergeSection";
-import confettiSvg from "../../assets/confetti-own.svg";
-import pandaSvg from "../../assets/panda-own.svg";
-import type { StaticImageData } from "next/image";
-import Image from "next/image";
 
 const AdminTools = dynamic(() => import("../AdminTools"), { ssr: false });
 // We get hydration errors in production.
