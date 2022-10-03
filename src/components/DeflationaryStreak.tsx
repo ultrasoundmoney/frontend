@@ -52,7 +52,7 @@ const DeflationaryStreak: FC = () => {
                   decimals={0}
                   duration={0.8}
                   end={deflationaryStreak.count}
-                  preserveValue={true}
+                  preserveValue
                   separator=","
                   suffix={deflationaryStreak.count === 1 ? " block" : " blocks"}
                 />
