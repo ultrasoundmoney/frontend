@@ -389,105 +389,116 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
       title="burn categories"
       timeFrame={timeFrame}
     >
-      <div className="relative">
+      <div
+        className={`${
+          timeFrame === "m5" || timeFrame === "all" ? "hidden" : "visible"
+        }`}
+      >
+        <CategoryBar
+          nft={burnCategoryParts?.nft}
+          defi={burnCategoryParts?.defi}
+          mev={burnCategoryParts?.mev}
+          l2={burnCategoryParts?.l2}
+          misc={misc}
+        />
+      </div>
+      {timeFrame === "m5" ? (
         <div
           className={`
-          absolute
-          left-0 top-0 flex
-          h-full w-full items-center justify-center
-          text-center text-lg text-blue-spindle
-          ${timeFrame === "m5" ? "visible" : "hidden"}
-        `}
+            flex min-h-[324px] w-full items-center justify-center
+            text-center text-lg text-blue-spindle
+          `}
         >
           5 minute time frame unavailable
         </div>
-        <div className={`${timeFrame === "m5" ? "opacity-0" : "visible"}`}>
-          <CategoryBar
-            nft={burnCategoryParts?.nft}
-            defi={burnCategoryParts?.defi}
-            mev={burnCategoryParts?.mev}
-            l2={burnCategoryParts?.l2}
-            misc={misc}
-          />
-          <div className="flex flex-col gap-y-3">
+      ) : timeFrame === "all" ? (
+        <div
+          className={`
+            flex min-h-[324px] w-full items-center justify-center
+            text-center text-lg text-blue-spindle
+          `}
+        >
+          all time frame unavailable, data sync in progress...
+        </div>
+      ) : (
+        <div className="flex flex-col gap-y-3">
+          <div
+            className={`grid ${
+              showCategoryCounts ? "md:grid-cols-3" : "grid-cols-2"
+            }`}
+          >
+            <WidgetTitle>category</WidgetTitle>
             <div
-              className={`grid ${
-                showCategoryCounts ? "md:grid-cols-3" : "grid-cols-2"
-              }`}
-            >
-              <WidgetTitle>category</WidgetTitle>
-              <div
-                className={`
+              className={`
                   text-right
                   ${showCategoryCounts ? "col-span-1" : "col-span-1"}
                   ${showCategoryCounts ? "md:mr-8" : ""}
                 `}
-              >
-                <WidgetTitle>burn</WidgetTitle>
-              </div>
-              <LabelText
-                className={`hidden text-right ${
-                  showCategoryCounts ? "md:block" : ""
-                }`}
-              >
-                transactions
-              </LabelText>
+            >
+              <WidgetTitle>burn</WidgetTitle>
             </div>
-            {
-              <>
-                <CategoryRow
-                  amountFormatted={formatFees(burnCategoryParts.nft.fees)}
-                  countFormatted={formatCount(
-                    burnCategoryParts?.nft.transactionCount,
-                  )}
-                  hovering={hoveringNft}
-                  name="NFT"
-                  setHovering={setHoveringNft}
-                  showCategoryCounts={showCategoryCounts}
-                />
-                <CategoryRow
-                  amountFormatted={formatFees(burnCategoryParts?.defi.fees)}
-                  countFormatted={formatCount(
-                    burnCategoryParts?.defi.transactionCount,
-                  )}
-                  hovering={hoveringDefi}
-                  name="defi"
-                  setHovering={setHoveringDefi}
-                  showCategoryCounts={showCategoryCounts}
-                />
-                <CategoryRow
-                  amountFormatted={formatFees(burnCategoryParts?.mev.fees)}
-                  countFormatted={formatCount(
-                    burnCategoryParts?.mev.transactionCount,
-                  )}
-                  hovering={hoveringMev}
-                  name="MEV"
-                  setHovering={setHoveringMev}
-                  showCategoryCounts={showCategoryCounts}
-                />
-                <CategoryRow
-                  amountFormatted={formatFees(burnCategoryParts?.l2.fees)}
-                  countFormatted={formatCount(
-                    burnCategoryParts?.l2.transactionCount,
-                  )}
-                  hovering={hoveringL2}
-                  name="L2"
-                  setHovering={setHoveringL2}
-                  showCategoryCounts={showCategoryCounts}
-                />
-                <CategoryRow
-                  amountFormatted={formatFees(misc?.fees)}
-                  countFormatted={formatCount(misc?.transactionCount)}
-                  hovering={hoveringMisc}
-                  name="misc"
-                  setHovering={setHoveringMisc}
-                  showCategoryCounts={showCategoryCounts}
-                />
-              </>
-            }
+            <LabelText
+              className={`hidden text-right ${
+                showCategoryCounts ? "md:block" : ""
+              }`}
+            >
+              transactions
+            </LabelText>
           </div>
+          {
+            <>
+              <CategoryRow
+                amountFormatted={formatFees(burnCategoryParts.nft.fees)}
+                countFormatted={formatCount(
+                  burnCategoryParts?.nft.transactionCount,
+                )}
+                hovering={hoveringNft}
+                name="NFT"
+                setHovering={setHoveringNft}
+                showCategoryCounts={showCategoryCounts}
+              />
+              <CategoryRow
+                amountFormatted={formatFees(burnCategoryParts?.defi.fees)}
+                countFormatted={formatCount(
+                  burnCategoryParts?.defi.transactionCount,
+                )}
+                hovering={hoveringDefi}
+                name="defi"
+                setHovering={setHoveringDefi}
+                showCategoryCounts={showCategoryCounts}
+              />
+              <CategoryRow
+                amountFormatted={formatFees(burnCategoryParts?.mev.fees)}
+                countFormatted={formatCount(
+                  burnCategoryParts?.mev.transactionCount,
+                )}
+                hovering={hoveringMev}
+                name="MEV"
+                setHovering={setHoveringMev}
+                showCategoryCounts={showCategoryCounts}
+              />
+              <CategoryRow
+                amountFormatted={formatFees(burnCategoryParts?.l2.fees)}
+                countFormatted={formatCount(
+                  burnCategoryParts?.l2.transactionCount,
+                )}
+                hovering={hoveringL2}
+                name="L2"
+                setHovering={setHoveringL2}
+                showCategoryCounts={showCategoryCounts}
+              />
+              <CategoryRow
+                amountFormatted={formatFees(misc?.fees)}
+                countFormatted={formatCount(misc?.transactionCount)}
+                hovering={hoveringMisc}
+                name="misc"
+                setHovering={setHoveringMisc}
+                showCategoryCounts={showCategoryCounts}
+              />
+            </>
+          }
         </div>
-      </div>
+      )}
     </BurnGroupBase>
   );
 };
