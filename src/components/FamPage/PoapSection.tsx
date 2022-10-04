@@ -483,7 +483,8 @@ const Claimed: FC<{
         <SkeletonText width="4rem">
           {isLoading || monkey === undefined ? undefined : age === undefined ? (
             <Image
-              className="select-none"
+              // See: https://nextjs.org/docs/api-reference/next/future/image#known-browser-bugs
+              className="select-none [clip-path:inset(0.5px)]"
               title="not claimed"
               alt="random emoji monkey covering one of its senses to indicate empathetic embarassment at not claiming a POAP"
               width={32}
@@ -529,7 +530,8 @@ const ImageWithFallback: FC<{ handle: string; src: string }> = ({
     <div className="relative h-[40px] w-[40px] min-w-[40px]">
       <Image
         alt={`profile image of ${handle}`}
-        className="max-h-[40px] max-w-[40px] select-none rounded-full"
+        // See: https://nextjs.org/docs/api-reference/next/future/image#known-browser-bugs
+        className="max-h-[40px] max-w-[40px] select-none rounded-full [clip-path:inset(0.5px)]"
         onError={onImageError}
         src={imgSrc}
         fill
