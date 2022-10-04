@@ -515,7 +515,10 @@ type EligibleFamClaimStatus = {
   twitter_id: string;
 };
 
-const ImageWithFallback: FC<{ src: string }> = ({ src }) => {
+const ImageWithFallback: FC<{ handle: string; src: string }> = ({
+  handle,
+  src,
+}) => {
   const [imgSrc, setImgSrc] = useState<string | StaticImageData>(src);
 
   const onImageError = useCallback(() => {
@@ -525,9 +528,9 @@ const ImageWithFallback: FC<{ src: string }> = ({ src }) => {
   return (
     <div className="min-w-[40px]">
       <Image
-        alt={`profile image of ${"sassal"}`}
         className="select-none rounded-full"
         height={40}
+        alt={`profile image of ${handle}`}
         onError={onImageError}
         src={imgSrc}
         width={40}
@@ -556,7 +559,7 @@ const Row: FC<{
         rel="noreferrer"
         target="_blank"
       >
-        <ImageWithFallback src={fam.profile_image_url} />
+        <ImageWithFallback handle={fam.handle} src={fam.profile_image_url} />
         <div className="ml-4 flex h-full flex-col items-start truncate">
           <BodyTextV2 className="truncate">{fam.name}</BodyTextV2>
           <BodyTextV2 className="truncate text-slateus-400">
