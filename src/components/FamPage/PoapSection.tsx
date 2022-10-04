@@ -563,7 +563,7 @@ const Row: FC<{
 
         <Twemoji imageClassName="inline-block align-middle h-4 ml-1">
           <div className="ml-4 flex h-full flex-col items-start truncate">
-            <BodyTextV2 className="truncate">{fam.name}</BodyTextV2>
+            <BodyTextV2 className="w-full truncate">{fam.name}</BodyTextV2>
             <BodyTextV2 className="truncate text-slateus-400">
               @{fam.handle}
             </BodyTextV2>
