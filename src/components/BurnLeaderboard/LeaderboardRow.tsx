@@ -81,11 +81,11 @@ const LeaderboardRow: FC<Props> = ({
           />
           <a
             className={`
-              w-full
-              flex flex-row items-center
-              font-inter font-light
-              text-white text-base md:text-lg
-              truncate
+              flex
+              w-full flex-row items-center
+              truncate font-inter
+              text-base font-light text-white
+              md:text-lg
               ${address !== undefined ? "hover:opacity-60" : ""}
             `}
             href={
@@ -96,7 +96,7 @@ const LeaderboardRow: FC<Props> = ({
             target="_blank"
             rel="noreferrer"
           >
-            <p className="pl-4 truncate">
+            <p className="truncate pl-4">
               {typeof name === "string" ? (
                 name
               ) : typeof address === "string" ? (
@@ -111,13 +111,13 @@ const LeaderboardRow: FC<Props> = ({
             </p>
             <p
               className={`
-                px-1.5 py-0.5 ml-2
-                text-sm text-blue-manatee
+                ml-2 hidden whitespace-nowrap
+                rounded-sm bg-blue-highlightbg
+                px-1.5
+                py-0.5
+                text-sm
                 font-normal
-                bg-blue-highlightbg
-                rounded-sm
-                whitespace-nowrap
-                hidden md:block
+                text-blue-manatee md:block
                 ${category ? "block" : "md:hidden"}
               `}
             >
@@ -128,11 +128,11 @@ const LeaderboardRow: FC<Props> = ({
                 : Format.capitalize(category)}
             </p>
             {detail && (
-              <p className="pl-2 truncate font-extralight text-blue-shipcove hidden md:block lg:hidden xl:block">
+              <p className="hidden truncate pl-2 font-extralight text-blue-shipcove md:block lg:hidden xl:block">
                 {detail}
               </p>
             )}
-            <p className="pl-4 whitespace-nowrap ml-auto">
+            <p className="ml-auto whitespace-nowrap pl-4">
               {fees === undefined ? (
                 <Skeleton inline={true} width="4rem" />
               ) : (
