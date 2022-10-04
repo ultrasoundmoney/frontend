@@ -55,7 +55,7 @@ export const setContractCategory = async (
   }
 
   const res = await fetch(
-    `${getDomain()}/contracts/admin/set-category?address=${address}&token=${token}&category=${category}`,
+    `${getDomain()}/api/contracts/admin/set-category?address=${address}&token=${token}&category=${category}`,
   );
 
   if (res.status !== 200) {
@@ -75,7 +75,7 @@ export const setContractLastManuallyVerified = async (
   }
 
   const res = await fetch(
-    `${getDomain()}/contracts/admin/set-last-manually-verified?address=${address}&token=${token}`,
+    `${getDomain()}/api/contracts/admin/set-last-manually-verified?address=${address}&token=${token}`,
   );
 
   if (res.status !== 200) {
