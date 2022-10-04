@@ -526,7 +526,7 @@ const ImageWithFallback: FC<{ handle: string; src: string }> = ({
   }, []);
 
   return (
-    <div className="relative h-[40px] w-[40px] min-w-[40px]">
+    <div className="relative mt-0.5 h-[40px] w-[40px] min-w-[40px]">
       <Image
         alt={`profile image of ${handle}`}
         className={`max-h-[40px] max-w-[40px] select-none rounded-full`}
@@ -560,7 +560,6 @@ const Row: FC<{
         target="_blank"
       >
         <ImageWithFallback handle={fam.handle} src={fam.profile_image_url} />
-
         <Twemoji imageClassName="inline-block align-middle h-4 ml-1">
           <div className="ml-4 flex h-full flex-col items-start truncate">
             <BodyTextV2 className="w-full truncate">{fam.name}</BodyTextV2>
