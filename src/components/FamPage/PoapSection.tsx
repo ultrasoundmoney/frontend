@@ -383,7 +383,7 @@ const ClaimPoap: FC<{ className?: string; refreshClaimStatus: () => void }> = ({
                     w-full
                     rounded-full
                     bg-transparent
-                    pl-4 font-roboto text-xs
+                    pl-4 font-inter text-xs font-light
                     text-white
                     placeholder-slateus-400
                     outline-none
@@ -526,14 +526,14 @@ const ImageWithFallback: FC<{ handle: string; src: string }> = ({
   }, []);
 
   return (
-    <div className="min-w-[40px]">
+    <div className="relative h-[40px] w-[40px] min-w-[40px]">
       <Image
-        className="select-none rounded-full"
-        height={40}
         alt={`profile image of ${handle}`}
+        className="max-h-[40px] max-w-[40px] select-none rounded-full"
         onError={onImageError}
         src={imgSrc}
-        width={40}
+        fill
+        sizes="40"
       />
     </div>
   );
@@ -597,22 +597,19 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
         </LabelText>
         <LabelText>claimed</LabelText>
       </div>
-      <div className="relative">
+      <div className="relative mb-4">
         <input
           className={`
-          w-full
-          rounded-full border
-          border-slateus-500
-          bg-slateus-800
-          py-1
-          pl-4
-          font-inter
-          text-xs
-          font-light
-          text-white placeholder-slateus-400 outline-none
-          focus-within:border-slateus-400
-          md:text-base
-        `}
+            w-full
+            rounded-full
+            border border-slateus-500
+            bg-slateus-800 py-1.5 pl-4
+            font-inter text-xs font-light
+            text-white placeholder-slateus-400 outline-none
+            focus-within:border-slateus-400
+            md:py-2
+            md:text-base
+          `}
           onChange={(event) => setSearchHandle(event.target.value)}
           placeholder="search..."
           type="text"
@@ -620,7 +617,7 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
         />
 
         <Image
-          className="absolute top-1.5 right-3 select-none md:top-2"
+          className="absolute top-1.5 right-3 select-none md:top-3"
           alt="magnifying glass indicating this input is to search for handles"
           src={magnifyingGlassSvg as StaticImageData}
           width={16}
@@ -634,7 +631,7 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
       ) : (
         <Twemoji imageClassName="inline-block align-middle h-4 ml-1">
           <ul
-            className={`-mr-1 flex max-h-[27rem] flex-col overflow-y-auto pr-1 lg:max-h-[24rem] ${scrollbarStyles["styled-scrollbar"]}`}
+            className={`-mr-2 flex max-h-[27rem] flex-col overflow-y-auto pr-1 lg:max-h-[20rem]`}
           >
             {searchResults === undefined || searchResults.length === 0 ? (
               <FixedSizeList
@@ -643,6 +640,7 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
                 itemSize={64}
                 width="100%"
                 itemData={data}
+                className={scrollbarStyles["styled-scrollbar"]}
               >
                 {Row}
               </FixedSizeList>
