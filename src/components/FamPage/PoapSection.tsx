@@ -550,7 +550,7 @@ const Row: FC<{
   return (
     <li
       style={style}
-      className={`grid grid-cols-[1fr_64px] items-center gap-x-4 md:grid-cols-[1fr_64px] ${className}`}
+      className={`grid grid-cols-[1fr_72px] items-center gap-x-4 md:grid-cols-[1fr_72px] ${className}`}
       key={fam.twitter_id}
     >
       <a
@@ -594,11 +594,11 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
 
   return (
     <WidgetBackground className={className}>
-      <div className="mb-4 grid grid-cols-[1fr_64px] gap-x-4 md:grid-cols-[40px_2fr_64px]">
+      <div className="mb-4 grid grid-cols-[1fr_72px] gap-x-4 md:grid-cols-[40px_2fr_72px]">
         <LabelText className="col-span-1 md:col-span-2">
           1,559 Eligible Handles
         </LabelText>
-        <LabelText>claimed</LabelText>
+        <LabelText className="text-right">claimed?</LabelText>
       </div>
       <div className="relative mb-4">
         <input
