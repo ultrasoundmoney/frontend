@@ -1,5 +1,5 @@
 import { captureException } from "@sentry/nextjs";
-import Image from "next/future/image";
+import Image from "next/image";
 import type { StaticImageData } from "next/image";
 import type { ChangeEvent, CSSProperties, FC, FormEvent } from "react";
 import { useCallback, useEffect, useState } from "react";
@@ -483,8 +483,7 @@ const Claimed: FC<{
         <SkeletonText width="4rem">
           {isLoading || monkey === undefined ? undefined : age === undefined ? (
             <Image
-              // See: https://nextjs.org/docs/api-reference/next/future/image#known-browser-bugs
-              className="select-none [clip-path:inset(0.5px)]"
+              className="select-none"
               title="not claimed"
               alt="random emoji monkey covering one of its senses to indicate empathetic embarassment at not claiming a POAP"
               width={32}
@@ -530,12 +529,11 @@ const ImageWithFallback: FC<{ handle: string; src: string }> = ({
     <div className="relative h-[40px] w-[40px] min-w-[40px]">
       <Image
         alt={`profile image of ${handle}`}
-        // See: https://nextjs.org/docs/api-reference/next/future/image#known-browser-bugs
-        className="max-h-[40px] max-w-[40px] select-none rounded-full [clip-path:inset(0.5px)]"
+        className={`max-h-[40px] max-w-[40px] select-none rounded-full`}
         onError={onImageError}
         src={imgSrc}
-        fill
-        sizes="40"
+        layout="fill"
+        sizes="40px"
       />
     </div>
   );
@@ -620,14 +618,14 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
           type="text"
           value={searchHandle}
         />
-
-        <Image
-          className="absolute top-1.5 right-3 select-none md:top-3"
-          alt="magnifying glass indicating this input is to search for handles"
-          src={magnifyingGlassSvg as StaticImageData}
-          width={16}
-          height={16}
-        />
+        <div className="absolute top-1.5 right-3 select-none md:top-3">
+          <Image
+            alt="magnifying glass indicating this input is to search for handles"
+            src={magnifyingGlassSvg as StaticImageData}
+            width={16}
+            height={16}
+          />
+        </div>
       </div>
       {data === undefined ? (
         <div className="flex h-full items-center justify-center">
