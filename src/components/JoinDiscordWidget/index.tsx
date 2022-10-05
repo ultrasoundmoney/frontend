@@ -249,7 +249,7 @@ const JoinDiscordWidget: FC = () => {
       <div className="flex flex-col gap-y-8 md:flex-row md:justify-between md:gap-x-8">
         <div className="flex flex-col gap-y-4 md:w-1/2">
           <div className="flex items-baseline justify-between">
-            <LabelText>1. your twitter</LabelText>
+            <LabelText>your twitter</LabelText>
             <TwitterStatusText status={twitterAuthStatus} />
           </div>
           {twitterAuthStatus.type !== "authenticated" ? (
@@ -313,7 +313,7 @@ const JoinDiscordWidget: FC = () => {
             `}
         >
           <div className="flex items-baseline justify-between gap-x-1">
-            <LabelText className="truncate">2. your discord handle</LabelText>
+            <LabelText className="truncate">your discord handle</LabelText>
             <DiscordStatusText status={queueStatus} />
           </div>
           <form
