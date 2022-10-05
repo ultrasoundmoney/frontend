@@ -593,38 +593,9 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
 
   return (
     <WidgetBackground className={className}>
-      <div className="mb-4 grid grid-cols-[1fr_72px] gap-x-4 md:grid-cols-[40px_2fr_72px]">
-        <LabelText className="col-span-1 md:col-span-2">
-          1,559 Eligible Handles
-        </LabelText>
+      <div className="mb-4 flex justify-between">
+        <LabelText>1,559 Eligible Handles</LabelText>
         <LabelText className="text-right">claimed?</LabelText>
-      </div>
-      <div className="relative mb-4">
-        <input
-          className={`
-            w-full
-            rounded-full
-            border border-slateus-500
-            bg-slateus-800 py-1.5 pl-4
-            font-inter text-xs font-light
-            text-white placeholder-slateus-400 outline-none
-            focus-within:border-slateus-400
-            md:py-2
-            md:text-base
-          `}
-          onChange={(event) => setSearchHandle(event.target.value)}
-          placeholder="search..."
-          type="text"
-          value={searchHandle}
-        />
-        <div className="absolute top-1.5 right-3 select-none md:top-3">
-          <Image
-            alt="magnifying glass indicating this input is to search for handles"
-            src={magnifyingGlassSvg as StaticImageData}
-            width={16}
-            height={16}
-          />
-        </div>
       </div>
       {data === undefined ? (
         <div className="flex h-full items-center justify-center">
@@ -661,6 +632,33 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
           )}
         </ul>
       )}
+      <div className="relative my-4">
+        <input
+          className={`
+            w-full
+            rounded-full
+            border border-slateus-500
+            bg-slateus-800 py-1.5 pl-4
+            font-inter text-xs font-light
+            text-white placeholder-slateus-400 outline-none
+            focus-within:border-slateus-400
+            md:py-2
+            md:text-base
+          `}
+          onChange={(event) => setSearchHandle(event.target.value)}
+          placeholder="search..."
+          type="text"
+          value={searchHandle}
+        />
+        <div className="absolute top-1.5 right-3 select-none md:top-3">
+          <Image
+            alt="magnifying glass indicating this input is to search for handles"
+            src={magnifyingGlassSvg as StaticImageData}
+            width={16}
+            height={16}
+          />
+        </div>
+      </div>
     </WidgetBackground>
   );
 };
