@@ -702,7 +702,7 @@ const PoapSection: FC = () => {
       <SectionTitle className="mt-16 pt-16" link="poap" subtitle="only 1,559">
         ultra sound POAP
       </SectionTitle>
-      <div className="my-16 flex justify-center">
+      <div className="my-12 flex justify-center">
         <div
           className="flex"
           ref={ref}
@@ -717,8 +717,8 @@ const PoapSection: FC = () => {
             className="select-none"
             alt="image from the ultra sound money poap given out to pre-merge fam"
             src={poapSrc}
-            width={128}
-            height={128}
+            width={144}
+            height={144}
           />
         </div>
       </div>
