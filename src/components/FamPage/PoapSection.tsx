@@ -84,7 +84,7 @@ const ClaimPoapTooltip: FC<Props> = ({ className = "", onClickClose }) => (
     </button>
     <Image
       alt="a nerd emoji symbolizing a knowledge deep-dive"
-      className="mx-auto h-20 w-20 select-none rounded-full"
+      className="mx-auto h-20 w-20 cursor-pointer select-none rounded-full"
       src={roundNerdLarge as StaticImageData}
       height={80}
       width={80}
@@ -702,7 +702,7 @@ const PoapSection: FC = () => {
       </SectionTitle>
       <div className="my-12 flex justify-center">
         <div
-          className="flex"
+          className="flex cursor-pointer"
           ref={ref}
           onClick={() => {
             setPoapSrc(ultraSoundPoapGif);
