@@ -251,7 +251,7 @@ const ClaimPoap: FC<{ className?: string; refreshClaimStatus: () => void }> = ({
   return (
     <>
       <WidgetBackground
-        className={`flex max-w-3xl flex-col gap-y-8 ${className}`}
+        className={`flex max-w-3xl flex-col justify-between ${className}`}
       >
         <div className="relative flex items-start justify-between">
           <div className="flex items-center" onClick={handleClickNerd}>
@@ -632,7 +632,7 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
           )}
         </ul>
       )}
-      <div className="relative my-4">
+      <div className="relative mt-4">
         <input
           className={`
             w-full
