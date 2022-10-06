@@ -8,9 +8,10 @@ const Nerd: FC = () => (
   <div className="relative">
     <div
       className={`
-        relative
         gray-nerd
-        flex ml-2 select-none z-10
+        relative
+        z-10
+        ml-2 flex cursor-pointer select-none
         hover:opacity-0 [&+.color-nerd]:active:brightness-75
       `}
     >
