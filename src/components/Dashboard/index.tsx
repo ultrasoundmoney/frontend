@@ -18,6 +18,7 @@ import SectionDivider from "../SectionDivider";
 import { TextInterLink } from "../Texts";
 import TopBar from "../TopBar";
 import MergeSection from "./MergeSection";
+import JoinDiscordSection from "./JoinDiscordSection";
 
 const AdminTools = dynamic(() => import("../AdminTools"), { ssr: false });
 // We get hydration errors in production.
@@ -113,6 +114,7 @@ const Dashboard: FC = () => {
           <div className="h-16"></div>
           <MonetaryPremiumSection />
           <FamSection />
+          <JoinDiscordSection />
           <div className="mt-32 flex px-4 md:px-0">
             <div className="relative w-full md:m-auto lg:w-2/3">
               <FaqBlock />
