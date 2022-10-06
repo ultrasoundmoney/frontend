@@ -588,7 +588,7 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
     data,
     searchHandle,
     { keys: ["handle"] },
-    { limit: 6 },
+    { limit: 10 },
   );
 
   return (
