@@ -6,6 +6,7 @@ export type LinkableUrl = {
   end: number;
   expanded_url: string;
   start: number;
+  url: string;
 };
 
 export type LinkableMention = {
