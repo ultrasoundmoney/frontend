@@ -225,26 +225,30 @@ const ClaimPoap: FC<{ className?: string; refreshClaimStatus: () => void }> = ({
   const NotEligible = () => (
     <div className="flex flex-col gap-y-4">
       <LabelText className="truncate">status: not eligible</LabelText>
-      <Image
-        alt="a sobbing emoji signifying sadness at not being eligible"
-        className="select-none self-center"
-        height={30}
-        src={sobSvg as StaticImageData}
-        width={30}
-      />
+      <div className="select-none">
+        <Image
+          alt="a sobbing emoji signifying sadness at not being eligible"
+          className="select-none self-center"
+          height={30}
+          src={sobSvg as StaticImageData}
+          width={30}
+        />
+      </div>
     </div>
   );
 
   const Claimed: FC = () => (
     <div className="flex flex-col justify-center gap-y-4">
       <LabelText className="truncate">status: claimed</LabelText>
-      <Image
-        alt="a sobbing emoji signifying sadness at not being eligible"
-        className="select-none self-center"
-        height={30}
-        src={flexSvg as StaticImageData}
-        width={30}
-      />
+      <div className="select-none">
+        <Image
+          alt="a sobbing emoji signifying sadness at not being eligible"
+          className="select-none self-center"
+          height={30}
+          src={flexSvg as StaticImageData}
+          width={30}
+        />
+      </div>
     </div>
   );
 
@@ -269,7 +273,7 @@ const ClaimPoap: FC<{ className?: string; refreshClaimStatus: () => void }> = ({
           >
             <ClaimPoapTooltip onClickClose={() => setShowTooltip(false)} />
           </div>
-          <div className="-mb-8 -mr-1.5">
+          <div className="-mr-1.5 select-none">
             <Image
               alt="the proof of attendance protocol (POAP) logo, a protocol issuing NFTs proving you attended some event or are part of some group"
               className="select-none"
@@ -702,7 +706,7 @@ const PoapSection: FC = () => {
       </SectionTitle>
       <div className="my-12 flex justify-center">
         <div
-          className="flex cursor-pointer"
+          className="flex cursor-pointer select-none"
           ref={ref}
           onClick={() => {
             setPoapSrc(ultraSoundPoapGif);
