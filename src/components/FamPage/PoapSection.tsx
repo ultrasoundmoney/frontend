@@ -602,12 +602,10 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
           <Spinner />
         </div>
       ) : (
-        <ul
-          className={`-mr-2 flex max-h-[27rem] flex-col overflow-y-auto pr-1 lg:max-h-[20rem]`}
-        >
+        <ul className={`-mr-2 flex flex-col overflow-y-auto pr-1`}>
           {searchResults === undefined || searchResults.length === 0 ? (
             <FixedSizeList
-              height={384}
+              height={358}
               itemCount={data.length}
               itemSize={64}
               width="100%"
@@ -617,22 +615,24 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
               {Row}
             </FixedSizeList>
           ) : (
-            searchResults.map((result) => (
-              <Row
-                key={result.refIndex}
-                data={data}
-                index={result.refIndex}
-                className="h-16"
-                // FixedSizeList does not accept a component with optional
-                // style, so it is required, but we don't need one here so
-                // pass an empty one.
-                style={{}}
-              />
-            ))
+            <div className="h-[358px]">
+              {searchResults.map((result) => (
+                <Row
+                  key={result.refIndex}
+                  data={data}
+                  index={result.refIndex}
+                  className="h-16"
+                  // FixedSizeList does not accept a component with optional
+                  // style, so it is required, but we don't need one here so
+                  // pass an empty one.
+                  style={{}}
+                />
+              ))}
+            </div>
           )}
         </ul>
       )}
-      <div className="relative mt-4">
+      <div className="relative mt-8">
         <input
           className={`
             w-full
