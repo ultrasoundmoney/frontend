@@ -1,7 +1,13 @@
 import { captureException } from "@sentry/nextjs";
 import Image from "next/image";
 import type { StaticImageData } from "next/image";
-import type { ChangeEvent, CSSProperties, FC, FormEvent } from "react";
+import type {
+  ChangeEvent,
+  CSSProperties,
+  FC,
+  FormEvent,
+  ReactNode,
+} from "react";
 import { useCallback, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { FixedSizeList } from "react-window";
@@ -11,7 +17,6 @@ import closeSvg from "../../assets/close.svg";
 import flexSvg from "../../assets/flex-own.svg";
 import logoTwitterWhite from "../../assets/logo-twitter-white.svg";
 import questionMarkSvg from "../../assets/question-mark-v2.svg";
-import roundNerdLarge from "../../assets/round-nerd-large.svg";
 import sobSvg from "../../assets/sob-own.svg";
 import { getDomain } from "../../config";
 import { formatDistance } from "../../format";
@@ -46,6 +51,7 @@ import seeNoEvilSvg from "./see-no-evil-own.svg";
 import speakNoEvilSvg from "./speak-no-evil-own.svg";
 import ultraSoundPoapStill from "./ultrasoundpoapstill.png";
 import ultraSoundPoapGif from "./utlra_sound_poap.gif";
+import type { Linkables } from "../../api/profiles";
 import StyledLink from "../StyledLink";
 
 type Props = {
@@ -66,9 +72,11 @@ const ClaimPoapTooltip: FC<Props> = ({ className = "", onClickClose }) => (
     }}
     className={`
       relative
-      flex flex-col gap-y-4
-      rounded-lg border border-blue-shipcove
-      bg-blue-tangaroa p-8
+      flex max-h-screen flex-col
+      gap-y-4 overflow-hidden rounded-lg
+      border border-blue-shipcove
+      bg-blue-tangaroa
+      p-8
       text-left
       ${className}
     `}
@@ -313,7 +321,6 @@ const ClaimPoap: FC<{ className?: string; refreshClaimStatus: () => void }> = ({
           <div className="-mr-1.5 select-none">
             <Image
               alt="the proof of attendance protocol (POAP) logo, a protocol issuing NFTs proving you attended some event or are part of some group"
-              className="select-none"
               height={40}
               src={logoPoapSvg as StaticImageData}
               width={40}
@@ -523,14 +530,15 @@ const Claimed: FC<{
       <QuantifyText>
         <SkeletonText width="4rem">
           {isLoading || monkey === undefined ? undefined : age === undefined ? (
-            <Image
-              className="select-none"
-              title="not claimed"
-              alt="random emoji monkey covering one of its senses to indicate empathetic embarassment at not claiming a POAP"
-              width={32}
-              height={32}
-              src={monkey}
-            />
+            <div className="select-none">
+              <Image
+                title="not claimed"
+                alt="random emoji monkey covering one of its senses to indicate empathetic embarassment at not claiming a POAP"
+                width={32}
+                height={32}
+                src={monkey}
+              />
+            </div>
           ) : (
             <BodyTextV2>{age}</BodyTextV2>
           )}
@@ -642,34 +650,41 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
         <div className="flex h-full items-center justify-center">
           <Spinner />
         </div>
+      ) : searchResults === undefined ||
+        (searchHandle.length === 0 && searchResults.length === 0) ? (
+        <FixedSizeList
+          height={358}
+          itemCount={data.length}
+          itemSize={64}
+          width="100%"
+          itemData={data}
+          className={scrollbarStyles["styled-scrollbar"]}
+        >
+          {Row}
+        </FixedSizeList>
       ) : (
-        <ul className={`-mr-2 flex flex-col overflow-y-auto pr-1`}>
-          {searchResults === undefined || searchResults.length === 0 ? (
-            <FixedSizeList
-              height={358}
-              itemCount={data.length}
-              itemSize={64}
-              width="100%"
-              itemData={data}
-              className={scrollbarStyles["styled-scrollbar"]}
-            >
-              {Row}
-            </FixedSizeList>
-          ) : (
-            <div className="h-[358px]">
-              {searchResults.map((result) => (
-                <Row
-                  key={result.refIndex}
-                  data={data}
-                  index={result.refIndex}
-                  className="h-16"
-                  // FixedSizeList does not accept a component with optional
-                  // style, so it is required, but we don't need one here so
-                  // pass an empty one.
-                  style={{}}
-                />
-              ))}
+        <ul
+          className={`-mr-2 flex h-[358px] flex-col overflow-y-auto pr-1 ${scrollbarStyles["styled-scrollbar"]}`}
+        >
+          {searchResults.length === 0 ? (
+            <div className="flex h-full w-full items-center justify-center">
+              <BodyTextV2 color="text-slateus-200">
+                no search results
+              </BodyTextV2>
             </div>
+          ) : (
+            searchResults.map((result) => (
+              <Row
+                key={result.refIndex}
+                data={data}
+                index={result.refIndex}
+                className="h-16"
+                // FixedSizeList does not accept a component with optional
+                // style, so it is required, but we don't need one here so
+                // pass an empty one.
+                style={{}}
+              />
+            ))
           )}
         </ul>
       )}
