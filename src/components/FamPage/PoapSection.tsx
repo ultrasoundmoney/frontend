@@ -664,7 +664,7 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
         </FixedSizeList>
       ) : (
         <ul
-          className={`-mr-2 flex h-[358px] flex-col overflow-y-auto pr-1 ${scrollbarStyles["styled-scrollbar"]}`}
+          className={`flex h-[358px] flex-col overflow-y-auto ${scrollbarStyles["styled-scrollbar"]}`}
         >
           {searchResults.length === 0 ? (
             <div className="flex h-full w-full items-center justify-center">
@@ -678,7 +678,7 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
                 key={result.refIndex}
                 data={data}
                 index={result.refIndex}
-                className="h-16"
+                className="py-[11px]"
                 // FixedSizeList does not accept a component with optional
                 // style, so it is required, but we don't need one here so
                 // pass an empty one.
