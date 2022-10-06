@@ -708,8 +708,54 @@ const Spinner = () => (
   <div className="h-20 w-20 animate-spin rounded-[50%] [border:8px_solid_#2d344a] [border-top:8px_solid_#8991ad]"></div>
 );
 
+type RecentClaimAccount = {
+  bio: string;
+  claimed_on: DateTimeString;
+  fam_follower_count: number;
+  follower_count: number;
+  handle: string;
+  linkables: Linkables | null;
+  name: string;
+  profile_image_url: string | null;
+  twitter_id: string;
+};
+
 type PoapsClaimed = {
   count: number;
+  index: number;
+  latest_claimers: RecentClaimAccount[];
+};
+
+const Claimer: FC<{ handle: string; src: string | null; index: number }> = ({
+  handle,
+  index,
+  src,
+}) => {
+  const [imgSrc, setImgSrc] = useState<string | StaticImageData | null>(src);
+
+  const onImageError = useCallback(() => {
+    setImgSrc(questionMarkSvg as StaticImageData);
+  }, []);
+
+  return (
+    <div
+      className={`
+        relative mt-0.5 ${index !== 0 ? "-ml-2" : ""}
+        h-[40px] w-[40px] min-w-[40px]
+        rounded-full
+        border border-slateus-200
+      `}
+    >
+      <Image
+        alt={`profile image of ${handle}`}
+        className={"max-h-[40px] max-w-[40px] select-none rounded-full"}
+        onError={onImageError}
+        src={imgSrc === null ? (questionMarkSvg as StaticImageData) : imgSrc}
+        layout="fill"
+        sizes="40px"
+      />
+    </div>
+  );
 };
 
 const PoapSection: FC = () => {
@@ -762,12 +808,26 @@ const PoapSection: FC = () => {
         </div>
       </div>
       <div className="grid auto-rows-min gap-4 lg:grid-cols-2">
-        <WidgetBackground className="flex flex-col gap-y-4">
-          <LabelText>claims</LabelText>
-          <QuantifyText className="text-3xl">
-            <SkeletonText width="1.1rem">{poapsClaimed?.count}</SkeletonText>
-            <span className="text-slateus-200">/1,559</span>
-          </QuantifyText>
+        <WidgetBackground className="flex flex-col gap-y-8 overflow-hidden">
+          <div className="flex flex-col gap-y-4">
+            <LabelText>claims</LabelText>
+            <QuantifyText className="text-3xl">
+              <SkeletonText width="4rem">{poapsClaimed?.count}</SkeletonText>
+              <span className="text-slateus-200">/1,559</span>
+            </QuantifyText>
+          </div>
+          <div className="flex w-full overflow-x-scroll">
+            {poapsClaimed?.latest_claimers
+              .slice(0, 17)
+              .map((claimer, index) => (
+                <Claimer
+                  key={claimer.twitter_id}
+                  handle={claimer.handle}
+                  src={claimer.profile_image_url}
+                  index={index}
+                />
+              ))}
+          </div>
         </WidgetBackground>
         <WidgetErrorBoundary title="claim POAP">
           <ClaimPoap
