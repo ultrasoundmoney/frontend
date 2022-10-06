@@ -29,7 +29,7 @@ import {
   NegativeText,
   PositiveText,
 } from "../StatusText";
-import { TooltipTitle } from "../Texts";
+import { BaseText, TooltipTitle } from "../Texts";
 import BodyTextV2 from "../TextsNext/BodyTextV2";
 import LabelText from "../TextsNext/LabelText";
 import QuantifyText from "../TextsNext/QuantifyText";
@@ -46,11 +46,18 @@ import seeNoEvilSvg from "./see-no-evil-own.svg";
 import speakNoEvilSvg from "./speak-no-evil-own.svg";
 import ultraSoundPoapStill from "./ultrasoundpoapstill.png";
 import ultraSoundPoapGif from "./utlra_sound_poap.gif";
+import StyledLink from "../StyledLink";
 
 type Props = {
   className?: string;
   onClickClose?: () => void;
 };
+
+const TooltipText: FC<{ children: ReactNode }> = ({ children }) => (
+  <BaseText font="font-inter" size="text-base" inline={false}>
+    {children}
+  </BaseText>
+);
 
 const ClaimPoapTooltip: FC<Props> = ({ className = "", onClickClose }) => (
   <div
@@ -82,23 +89,53 @@ const ClaimPoapTooltip: FC<Props> = ({ className = "", onClickClose }) => (
         width={24}
       />
     </button>
-    <Image
-      alt="a nerd emoji symbolizing a knowledge deep-dive"
-      className="mx-auto h-20 w-20 cursor-pointer select-none rounded-full"
-      src={roundNerdLarge as StaticImageData}
-      height={80}
-      width={80}
-    />
-    <TooltipTitle>a title</TooltipTitle>
-    <LabelText>followed by a section title</LabelText>
-    <div className="flex flex-col">
-      <BodyTextV2>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vitae augue
-        in nunc mattis aliquam. Cras ac imperdiet lacus. Sed eu nunc faucibus
-        leo consectetur maximus. Ut pellentesque semper erat nec suscipit. Morbi
-        id semper purus, id pharetra velit. Proin pretium sit amet massa
-        facilisis efficitur.
-      </BodyTextV2>
+    <div className="flex select-none justify-center">
+      <Image
+        alt="the Proof of Attendance (POAP) logo"
+        className="h-20 w-20 cursor-pointer select-none rounded-full"
+        src={logoPoapSvg as StaticImageData}
+        height={100}
+        width={100}
+      />
+    </div>
+    <TooltipTitle>ultra sound POAP</TooltipTitle>
+    <div className="flex flex-col gap-y-4 overflow-y-scroll">
+      <TooltipText>
+        The ultra sound money meme spreads at L0, via humans.
+      </TooltipText>
+      <TooltipText>
+        This exclusive POAP is a small reward for early meme spreaders.
+      </TooltipText>
+      <LabelText>eligibility</LabelText>
+      <TooltipText>
+        Only 1,559 pre-merge fam accounts are eligible, ranked by number of
+        follows from other fam.
+      </TooltipText>
+      <LabelText>Fam</LabelText>
+      <Twemoji wrapper imageClassName="inline-block align-middle h-4 ml-1">
+        <TooltipText>
+          The fam are{" "}
+          <StyledLink
+            className="text-slateus-200 hover:underline"
+            href="https://twitter.com/i/lists/1376636817089396750"
+          >
+            5,000+ supporters
+          </StyledLink>{" "}
+          with variants of the bat signal{" "}
+          <span className="whitespace-nowrap">🦇🔊</span> on their Twitter
+          profile.
+        </TooltipText>
+      </Twemoji>
+      <LabelText>benefits</LabelText>
+      <TooltipText>
+        Beyond pride and glory, POAP holders get priority access to the{" "}
+        <StyledLink
+          className="text-slateus-200 hover:underline"
+          href="https://ultrasound.money/#discord"
+        >
+          ultra sound Discord.
+        </StyledLink>
+      </TooltipText>
     </div>
   </div>
 );
