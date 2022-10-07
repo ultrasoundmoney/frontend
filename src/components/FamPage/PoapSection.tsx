@@ -653,7 +653,7 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
       ) : searchResults === undefined ||
         (searchHandle.length === 0 && searchResults.length === 0) ? (
         <FixedSizeList
-          height={358}
+          height={415}
           itemCount={data.length}
           itemSize={64}
           width="100%"
@@ -688,7 +688,7 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
           )}
         </ul>
       )}
-      <div className="relative mt-8">
+      <div className="relative">
         <input
           className={`
             w-full
