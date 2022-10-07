@@ -6,7 +6,7 @@ import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import ImageWithTooltip from "../ImageWithTooltip";
 import Modal from "../Modal";
 import { SectionTitle } from "../TextsNext/SectionTitle";
-import Tooltip from "../Tooltip";
+import Tooltip from "../FamTooltip";
 import { useTooltip } from "../TwitterFam";
 import styles from "./FollowingYou.module.scss";
 

@@ -55,6 +55,7 @@ export type TooltipProps = {
   onClickClose?: () => void;
   title: string | undefined;
   twitterUrl?: string;
+  width?: string;
 };
 
 const Tooltip: FC<TooltipProps> = ({
@@ -69,6 +70,7 @@ const Tooltip: FC<TooltipProps> = ({
   onClickClose,
   title,
   twitterUrl,
+  width = "22rem",
 }) => {
   const onImageError = useCallback<ReactEventHandler<HTMLImageElement>>((e) => {
     (e.target as HTMLImageElement).src =
@@ -82,10 +84,11 @@ const Tooltip: FC<TooltipProps> = ({
       }}
       className={`
         relative
-        flex w-[22rem] flex-col
+        flex flex-col
         gap-y-4 rounded-lg border
         border-blue-shipcove bg-blue-tangaroa
         p-8
+        ${width}
       `}
     >
       <img

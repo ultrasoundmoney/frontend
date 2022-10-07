@@ -14,7 +14,7 @@ import ImageWithTooltip from "../ImageWithTooltip";
 import StyledLink from "../StyledLink";
 import Modal from "../Modal";
 import BodyText from "../TextsNext/BodyText";
-import Tooltip from "../Tooltip";
+import Tooltip from "../FamTooltip";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 
 type TvsLeaderboardProps = {
