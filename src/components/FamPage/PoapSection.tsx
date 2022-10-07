@@ -702,7 +702,7 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
       : accountMap[tooltipActiveHandle];
 
   return (
-    <WidgetBackground className={className}>
+    <WidgetBackground className={`flex flex-col justify-between ${className}`}>
       <div
         className={`
           ${tooltipActiveHandle !== undefined ? "block" : "hidden"} fixed
