@@ -36,7 +36,7 @@ const StoryPreview: NextPage<StaticProps> = ({
     <Head>
       <title>ultrasound.money</title>
     </Head>
-    {/* <Story baseFeePerGas={baseFeePerGas} ethPriceStats={ethPriceStats} /> */}
+    <Story baseFeePerGas={baseFeePerGas} ethPriceStats={ethPriceStats} />
   </>
 );
 export default StoryPreview;
