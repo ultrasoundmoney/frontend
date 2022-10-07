@@ -831,17 +831,22 @@ const PoapSection: FC = () => {
               <span className="text-slateus-200">/1,559</span>
             </QuantifyText>
           </div>
-          <div className="flex w-full overflow-x-scroll">
-            {poapsClaimed?.latest_claimers
-              .slice(0, 17)
-              .map((claimer, index) => (
-                <Claimer
-                  key={claimer.twitter_id}
-                  handle={claimer.handle}
-                  src={claimer.profile_image_url}
-                  index={index}
-                />
-              ))}
+          <div className="flex flex-col gap-y-4">
+            <LabelText>latest claimers</LabelText>
+            <div
+              className={`flex w-full overflow-x-scroll pb-2 ${scrollbarStyles["styled-scrollbar"]} ${scrollbarStyles["styled-scrollbar-horizontal"]}`}
+            >
+              {poapsClaimed?.latest_claimers
+                .slice(0, 10)
+                .map((claimer, index) => (
+                  <Claimer
+                    key={claimer.twitter_id}
+                    handle={claimer.handle}
+                    src={claimer.profile_image_url}
+                    index={index}
+                  />
+                ))}
+            </div>
           </div>
         </WidgetBackground>
         <WidgetErrorBoundary title="claim POAP">
