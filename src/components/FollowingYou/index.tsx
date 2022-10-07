@@ -89,7 +89,7 @@ const FollowingYou: FC = () => {
         me & the fam
       </SectionTitle>
       <p
-        className={`text-blue-shipcove leading-6 md:leading-none text-center font-light text-base lg:text-lg mb-16`}
+        className={`mb-16 text-center text-base font-light leading-6 text-blue-shipcove md:leading-none lg:text-lg`}
       ></p>
       <form
         className="flex justify-center"
@@ -98,7 +98,7 @@ const FollowingYou: FC = () => {
         }}
       >
         <input
-          className="md:w-96 p-4 pr-32 bg-transparent border border-gray-500 rounded-full text-xs text-white"
+          className="rounded-full border border-gray-500 bg-transparent p-4 pr-32 text-xs text-white md:w-96"
           type="text"
           placeholder="@vitalikbuterin"
           value={handle}
@@ -108,12 +108,12 @@ const FollowingYou: FC = () => {
         <button
           className={`
             ${styles.showMe}
-            md:w-32 -ml-28 px-5
-            text-xs text-white
+            -ml-28 select-none rounded-full
             border border-white
-            bg-transparent hover:bg-gray-700
-            rounded-full
-            select-none
+            bg-transparent px-5
+            text-xs text-white
+            hover:bg-gray-700
+            md:w-32
           `}
           type="submit"
         >
@@ -122,17 +122,17 @@ const FollowingYou: FC = () => {
       </form>
       {followers.type === "empty" ? null : followers.type ===
         "handleNotFound" ? (
-        <p className="text-white text-xl p-8 text-center">handle not found</p>
+        <p className="p-8 text-center text-xl text-white">handle not found</p>
       ) : followers.type === "searching" ? (
-        <p className="text-white text-xl p-8 text-center">searching...</p>
+        <p className="p-8 text-center text-xl text-white">searching...</p>
       ) : followers.type === "unknownError" ? (
-        <p className="text-white text-xl p-8 text-center">
+        <p className="p-8 text-center text-xl text-white">
           error fetching followers
         </p>
       ) : followers.type === "followers" ? (
         <div className="my-8">
           {followers.count === 0 ? (
-            <p className="text-white text-xl p-8 text-center">
+            <p className="p-8 text-center text-xl text-white">
               no fam followers found
             </p>
           ) : (
@@ -141,7 +141,7 @@ const FollowingYou: FC = () => {
                 {followers.followers.map((profile, index) => (
                   <ImageWithTooltip
                     key={profile.profileUrl ?? index}
-                    className="m-2 w-10 h-10"
+                    className="m-2 h-10 w-10"
                     imageUrl={profile?.profileImageUrl}
                     onClick={() => handleClickImage(profile)}
                     onMouseEnter={(ref) => handleImageMouseEnter(profile, ref)}
@@ -152,7 +152,7 @@ const FollowingYou: FC = () => {
                 ))}
               </div>
               {followers.count > followers.followers.length && (
-                <p className="text-white text-xl p-8 text-center">{`+${formatZeroDecimals(
+                <p className="p-8 text-center text-xl text-white">{`+${formatZeroDecimals(
                   followers.count - followers.followers.length,
                 )} more!`}</p>
               )}
@@ -160,14 +160,14 @@ const FollowingYou: FC = () => {
           )}
         </div>
       ) : (
-        <p className="text-white text-xl p-8 text-center">
+        <p className="p-8 text-center text-xl text-white">
           unknown followers state
         </p>
       )}
       <>
         <div
           ref={setPopperEl}
-          className="z-20 hidden md:block p-4"
+          className="z-20 hidden p-4 md:block"
           style={{
             ...popperStyles.popper,
             visibility: showTooltip && md ? "visible" : "hidden",
