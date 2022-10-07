@@ -221,7 +221,7 @@ const PriceModel: FC = () => {
 
   return (
     <WidgetBackground>
-      <WidgetTitle>price model (post-merge)</WidgetTitle>
+      <WidgetTitle>price model</WidgetTitle>
       <div className="mt-4 flex flex-col gap-y-4 overflow-hidden">
         <div className="flex justify-between">
           <BodyText>annualized profits</BodyText>
