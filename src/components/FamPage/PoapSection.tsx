@@ -114,10 +114,8 @@ const ClaimPoapTooltip: FC<ClaimPoapTooltipProps> = ({
     <TooltipTitle>ultra sound POAP</TooltipTitle>
     <div className="flex flex-col gap-y-4 overflow-y-scroll">
       <TooltipText>
-        The ultra sound money meme spreads at L0, via humans.
-      </TooltipText>
-      <TooltipText>
-        This exclusive POAP is a small reward for early meme spreaders.
+        The ultra sound money meme spreads at L0, via humans. This exclusive
+        POAP is a small reward for early meme spreaders.
       </TooltipText>
       <LabelText>eligibility</LabelText>
       <TooltipText>
