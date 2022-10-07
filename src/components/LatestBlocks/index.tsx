@@ -166,6 +166,7 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
             -mr-3 flex max-h-[184px]
             flex-col gap-y-4 overflow-y-auto
             pr-1 md:max-h-[214px]
+            ${scrollbarStyles["styled-scrollbar-vertical"]}
             ${scrollbarStyles["styled-scrollbar"]}
           `}
         >

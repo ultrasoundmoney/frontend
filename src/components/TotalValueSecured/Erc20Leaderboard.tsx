@@ -19,6 +19,7 @@ const Erc20Leaderboard: FC = () => {
         className={`
           max-h-96 overflow-y-auto
           pr-2
+          ${scrollbarStyles["styled-scrollbar-vertical"]}
           ${scrollbarStyles["styled-scrollbar"]}
         `}
       >
