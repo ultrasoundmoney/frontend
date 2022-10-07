@@ -133,6 +133,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
             gap-y-4
             pr-2 -mr-3
             h-full
+            ${scrollbarStyles["styled-scrollbar-vertical"]}
             ${scrollbarStyles["styled-scrollbar"]}
           `}
         >

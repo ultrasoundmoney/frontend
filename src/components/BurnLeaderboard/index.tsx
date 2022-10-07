@@ -236,6 +236,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
           className={`
             -mt-1 -mr-3
             overflow-y-auto overflow-x-hidden
+            ${scrollbarStyles["styled-scrollbar-vertical"]}
             ${scrollbarStyles["styled-scrollbar"]}
           `}
         >

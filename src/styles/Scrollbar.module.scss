@@ -1,6 +1,10 @@
 /* scroller width */
-.styled-scrollbar::-webkit-scrollbar {
+.styled-scrollbar-vertical::-webkit-scrollbar {
   width: 5px;
+}
+
+.styled-scrollbar-horizontal::-webkit-scrollbar {
+  height: 5px;
 }
 
 /* scroller track */

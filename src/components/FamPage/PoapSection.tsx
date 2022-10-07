@@ -658,13 +658,13 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
           itemSize={64}
           width="100%"
           itemData={data}
-          className={scrollbarStyles["styled-scrollbar"]}
+          className={`${scrollbarStyles["styled-scrollbar-vertical"]} ${scrollbarStyles["styled-scrollbar"]}`}
         >
           {Row}
         </FixedSizeList>
       ) : (
         <ul
-          className={`flex h-[358px] flex-col overflow-y-auto ${scrollbarStyles["styled-scrollbar"]}`}
+          className={`flex h-[415px] flex-col overflow-y-auto ${scrollbarStyles["styled-scrollbar-vertical"]} ${scrollbarStyles["styled-scrollbar"]}`}
         >
           {searchResults.length === 0 ? (
             <div className="flex h-full w-full items-center justify-center">
