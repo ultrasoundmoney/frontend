@@ -946,7 +946,7 @@ const PoapSection: FC = () => {
             refreshClaimStatus={handleRefreshClaimStatus}
           />
         </WidgetErrorBoundary>
-        <WidgetErrorBoundary title="1,559 Eligible Handles">
+        <WidgetErrorBoundary title="Eligible Handles">
           <EligibleHandles className="row-span-2 lg:col-start-2 lg:row-start-1" />
         </WidgetErrorBoundary>
       </div>
