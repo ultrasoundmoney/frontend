@@ -128,7 +128,7 @@ const ClaimPoapTooltip: FC<ClaimPoapTooltipProps> = ({
           The fam are{" "}
           <StyledLink
             className="text-slateus-200 hover:underline"
-            href="https://twitter.com/i/lists/1376636817089396750"
+            href="https://ultrasound.money/#fam"
           >
             5,000+ supporters
           </StyledLink>{" "}
