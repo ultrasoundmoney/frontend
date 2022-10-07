@@ -9,6 +9,7 @@ import colors from "../../colors";
 import * as FeatureFlags from "../../feature-flags";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
+import useAuthFromSection from "../../hooks/use-auth-from-section";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import PoapSection from "../FamPage/PoapSection";
 import HeaderGlow from "../HeaderGlow";
@@ -16,9 +17,9 @@ import FaqBlock from "../Landing/faq";
 import MainTitle from "../MainTitle";
 import TopBar from "../TopBar";
 import ContactSection from "./ContactSection";
+import FamSection from "./FamSection";
 import JoinDiscordSection from "./JoinDiscordSection";
 import MergeSection from "./MergeSection";
-import useAuthFromSection from "../../hooks/use-auth-from-section";
 
 const AdminTools = dynamic(() => import("../AdminTools"), { ssr: false });
 // We get hydration errors in production.
@@ -34,7 +35,6 @@ const MonetaryPremiumSection = dynamic(
   () => import("./MonetaryPremiumSection"),
   { ssr: false },
 );
-const FamSection = dynamic(() => import("./FamSection"), { ssr: false });
 const SupplyProjectionsSection = dynamic(
   () => import("./SupplyProjectionsSection"),
   { ssr: false },
