@@ -132,7 +132,7 @@ const ClaimPoapTooltip: FC<ClaimPoapTooltipProps> = ({
           >
             5,000+ supporters
           </StyledLink>{" "}
-          with variants of the bat signal{" "}
+          with variants of the bat signal
           <span className="whitespace-nowrap">🦇🔊</span> on their Twitter
           profile.
         </TooltipText>
