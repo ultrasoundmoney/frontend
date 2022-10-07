@@ -130,18 +130,18 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
           className={`
             flex flex-col
             overflow-y-auto ${maxHeight}
-            gap-y-4
-            pr-2 -mr-3
-            h-full
+            -mr-3
+            h-full gap-y-4
+            pr-2
             ${scrollbarStyles["styled-scrollbar-vertical"]}
             ${scrollbarStyles["styled-scrollbar"]}
           `}
         >
           {(rows || leaderboardSkeletons).map((row, index) => (
             <div key={row?.name ?? index}>
-              <li className="text-white flex items-center">
+              <li className="flex items-center text-white">
                 <ImageWithTooltip
-                  className="w-8 h-8 select-none"
+                  className="h-8 w-8 select-none"
                   imageUrl={row?.imageUrl}
                   isDoneLoading={row !== undefined}
                   onMouseEnter={(ref) =>
@@ -159,7 +159,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
                   width={32}
                 />
                 <StyledLink
-                  className="flex justify-between ml-4 w-full overflow-hidden"
+                  className="ml-4 flex w-full justify-between overflow-hidden"
                   href={row?.coinGeckoUrl || row?.nftGoUrl}
                 >
                   <BodyText skeletonWidth="6rem" className="truncate">
@@ -167,9 +167,11 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
                   </BodyText>
                   <BodyText
                     className={`
-                      font-extralight text-blue-shipcove uppercase
-                      pr-2 ml-2 mr-auto
-                      hidden ${row?.detail !== undefined ? "md:inline" : ""}
+                      ml-2 mr-auto hidden
+                      pr-2 font-extralight uppercase
+                      text-blue-shipcove ${
+                        row?.detail !== undefined ? "md:inline" : ""
+                      }
                     `}
                   >
                     {row?.detail}
@@ -205,7 +207,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
       <>
         <div
           ref={setPopperEl}
-          className="z-20 hidden md:block p-4"
+          className="z-20 hidden p-4 md:block"
           style={{
             ...styles.popper,
             visibility: showTooltip ? "visible" : "hidden",

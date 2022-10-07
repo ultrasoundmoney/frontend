@@ -26,12 +26,12 @@ const Erc20Leaderboard: FC = () => {
         {totalValueSecured !== undefined &&
           totalValueSecured.erc20Leaderboard.map((row) => (
             <li
-              className="text-white flex justify-between items-center"
+              className="flex items-center justify-between text-white"
               key={row.name}
             >
               <div className="flex items-center">
                 <img
-                  className="w-8 h-8 rounded-full"
+                  className="h-8 w-8 rounded-full"
                   src={
                     row.imageUrl ?? "/leaderboard-images/question-mark-v2.svg"
                   }
