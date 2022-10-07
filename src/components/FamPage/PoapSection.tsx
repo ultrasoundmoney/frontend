@@ -774,7 +774,10 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
             md:py-2
             md:text-base
           `}
-          onChange={(event) => setSearchHandle(event.target.value)}
+          onChange={(event) => {
+            setTooltipActiveHandle(undefined);
+            setSearchHandle(event.target.value);
+          }}
           placeholder="search..."
           type="text"
           value={searchHandle}
