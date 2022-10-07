@@ -71,18 +71,18 @@ const ClaimPoapTooltip: FC<Props> = ({ className = "", onClickClose }) => (
       e.stopPropagation();
     }}
     className={`
-      relative
-      flex max-h-screen flex-col
-      gap-y-4 overflow-hidden rounded-lg
-      border border-blue-shipcove
-      bg-blue-tangaroa
+      relative flex max-h-[95vh] flex-col gap-y-4
+      overflow-hidden rounded-lg border
+      border-blue-shipcove bg-blue-tangaroa
       p-8
       text-left
+      md:max-h-[90vh]
       ${className}
     `}
   >
     <button
       className={`
+        absolute right-5 top-5
         flex w-6
         select-none self-end
         hover:brightness-110 active:brightness-90
