@@ -757,12 +757,17 @@ const Claimer: FC<{ handle: string; src: string | null; index: number }> = ({
   }, []);
 
   return (
-    <div
+    <a
+      href={`https://twitter.com/${handle}`}
+      rel="noreferrer"
+      target="_blank"
       className={`
         relative mt-0.5 ${index !== 0 ? "-ml-2" : ""}
         h-[40px] w-[40px] min-w-[40px]
         rounded-full
         border border-slateus-200
+        hover:brightness-90
+        active:brightness-75
       `}
     >
       <Image
@@ -773,7 +778,7 @@ const Claimer: FC<{ handle: string; src: string | null; index: number }> = ({
         layout="fill"
         sizes="40px"
       />
-    </div>
+    </a>
   );
 };
 
