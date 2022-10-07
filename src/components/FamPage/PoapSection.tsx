@@ -537,7 +537,7 @@ const Claimed: FC<{
       <QuantifyText>
         <SkeletonText width="4rem">
           {isLoading || monkey === undefined ? undefined : age === undefined ? (
-            <div className="select-none">
+            <div className="h-8 w-8 select-none">
               <Image
                 title="not claimed"
                 alt="random emoji monkey covering one of its senses to indicate empathetic embarassment at not claiming a POAP"
@@ -606,7 +606,7 @@ const Row: FC<{
   return (
     <li
       style={style}
-      className={`grid grid-cols-[1fr_72px] items-center gap-x-4 md:grid-cols-[1fr_72px] ${className}`}
+      className={`flex items-center justify-between gap-x-4 ${className}`}
       key={fam.twitter_id}
     >
       <a
