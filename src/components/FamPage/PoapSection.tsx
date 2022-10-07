@@ -102,8 +102,8 @@ const ClaimPoapTooltip: FC<Props> = ({ className = "", onClickClose }) => (
         alt="the Proof of Attendance (POAP) logo"
         className="h-20 w-20 cursor-pointer select-none rounded-full"
         src={logoPoapSvg as StaticImageData}
-        height={100}
-        width={100}
+        height={64}
+        width={64}
       />
     </div>
     <TooltipTitle>ultra sound POAP</TooltipTitle>
