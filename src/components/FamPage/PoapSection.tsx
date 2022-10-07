@@ -55,7 +55,7 @@ import ultraSoundPoapGif from "./utlra_sound_poap.gif";
 import type { Linkables } from "../../api/profiles";
 import StyledLink from "../StyledLink";
 
-type Props = {
+type ClaimPoapTooltipProps = {
   className?: string;
   onClickClose?: () => void;
 };
@@ -66,7 +66,10 @@ const TooltipText: FC<{ children: ReactNode }> = ({ children }) => (
   </BaseText>
 );
 
-const ClaimPoapTooltip: FC<Props> = ({ className = "", onClickClose }) => (
+const ClaimPoapTooltip: FC<ClaimPoapTooltipProps> = ({
+  className = "",
+  onClickClose,
+}) => (
   <div
     onClick={(e) => {
       e.stopPropagation();
