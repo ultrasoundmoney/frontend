@@ -5,7 +5,7 @@ import { usePopper } from "react-popper";
 import { useContractsFreshness } from "../../api/contracts";
 import {
   decodeGroupedAnalysis1,
-  useGroupedAnalysis1
+  useGroupedAnalysis1,
 } from "../../api/grouped-analysis-1";
 import type { LeaderboardEntry, Leaderboards } from "../../api/leaderboards";
 import type { Unit } from "../../denomination";
@@ -286,7 +286,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
       <>
         <div
           ref={setPopperEl}
-          className="z-20 hidden md:block p-4"
+          className="z-20 hidden p-4 md:block"
           style={{
             ...popperStyles.popper,
             visibility: showTooltip && md ? "visible" : "hidden",
