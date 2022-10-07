@@ -769,6 +769,7 @@ const Claimer: FC<{ handle: string; src: string | null; index: number }> = ({
         hover:brightness-90
         active:brightness-75
       `}
+      style={{ zIndex: 10 - index }}
     >
       <Image
         alt={`profile image of ${handle}`}
