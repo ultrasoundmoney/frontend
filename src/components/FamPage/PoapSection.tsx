@@ -304,7 +304,10 @@ const ClaimPoap: FC<{ className?: string; refreshClaimStatus: () => void }> = ({
         className={`flex max-w-3xl flex-col justify-between ${className}`}
       >
         <div className="relative flex items-start justify-between">
-          <div className="flex items-center" onClick={handleClickNerd}>
+          <div
+            className="flex cursor-pointer items-center"
+            onClick={handleClickNerd}
+          >
             <LabelText>claim poap</LabelText>
             <Nerd />
           </div>
