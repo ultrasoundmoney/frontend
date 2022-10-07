@@ -310,10 +310,10 @@ const ClaimPoap: FC<{ className?: string; refreshClaimStatus: () => void }> = ({
           <div
             className={`
               ${showTooltip ? "block" : "hidden"} fixed
-              top-1/2 left-1/2 z-30 w-[20rem]
-              -translate-x-1/2
+              top-1/2 left-1/2 z-30 w-[20rem] -translate-x-1/2
               -translate-y-1/2
               cursor-auto
+              md:w-[24rem]
             `}
           >
             <ClaimPoapTooltip onClickClose={() => setShowTooltip(false)} />
