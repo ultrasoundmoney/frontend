@@ -1,19 +1,20 @@
 import { captureException } from "@sentry/nextjs";
-import Image from "next/image";
 import type { StaticImageData } from "next/image";
+import Image from "next/image";
 import type {
   ChangeEvent,
   CSSProperties,
   FC,
   FormEvent,
+  MouseEventHandler,
   ReactNode,
 } from "react";
-import { useRef } from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { FixedSizeList } from "react-window";
 import useSWR from "swr";
 import { fetchJsonSwr } from "../../api/fetchers";
+import type { Linkables } from "../../api/profiles";
 import closeSvg from "../../assets/close.svg";
 import flexSvg from "../../assets/flex-own.svg";
 import logoTwitterWhite from "../../assets/logo-twitter-white.svg";
@@ -28,6 +29,7 @@ import useFuseSearch from "../../hooks/use-fuse-search";
 import { useTwitterAuthStatus } from "../../hooks/use-twitter-auth";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import type { DateTimeString } from "../../time";
+import FamTooltip from "../FamTooltip";
 import Nerd from "../Nerd";
 import {
   AlignmentText,
@@ -35,6 +37,7 @@ import {
   NegativeText,
   PositiveText,
 } from "../StatusText";
+import StyledLink from "../StyledLink";
 import { BaseText, TooltipTitle } from "../Texts";
 import BodyTextV2 from "../TextsNext/BodyTextV2";
 import LabelText from "../TextsNext/LabelText";
@@ -52,8 +55,6 @@ import seeNoEvilSvg from "./see-no-evil-own.svg";
 import speakNoEvilSvg from "./speak-no-evil-own.svg";
 import ultraSoundPoapStill from "./ultrasoundpoapstill.png";
 import ultraSoundPoapGif from "./utlra_sound_poap.gif";
-import type { Linkables } from "../../api/profiles";
-import StyledLink from "../StyledLink";
 
 type ClaimPoapTooltipProps = {
   className?: string;
@@ -562,19 +563,26 @@ const Claimed: FC<{
   );
 };
 
-type EligibleFamClaimStatus = {
+type EligibleFam = {
+  bio: string;
   claimed_on: DateTimeString | null;
   fam_follower_count: number;
+  follower_count: number;
   handle: string;
+  linkables: Linkables;
   name: string;
+  onEnterImage: (handle: string) => void;
+  onLeaveImage: () => void;
   profile_image_url: string;
   twitter_id: string;
 };
 
-const ImageWithFallback: FC<{ handle: string; src: string }> = ({
-  handle,
-  src,
-}) => {
+const ImageWithFallback: FC<{
+  handle: string;
+  onMouseEnter?: MouseEventHandler<HTMLImageElement>;
+  onMouseLeave?: MouseEventHandler<HTMLImageElement>;
+  src: string;
+}> = ({ handle, src, onMouseEnter, onMouseLeave }) => {
   const [imgSrc, setImgSrc] = useState<string | StaticImageData>(src);
 
   const onImageError = useCallback(() => {
@@ -582,8 +590,10 @@ const ImageWithFallback: FC<{ handle: string; src: string }> = ({
   }, []);
 
   return (
-    <div className="relative mt-0.5 h-[40px] w-[40px] min-w-[40px]">
+    <div className="relative mt-0.5 h-[40px] w-[40px] min-w-[40px] hover:brightness-75">
       <Image
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
         alt={`profile image of ${handle}`}
         className={`max-h-[40px] max-w-[40px] select-none rounded-full`}
         onError={onImageError}
@@ -595,36 +605,45 @@ const ImageWithFallback: FC<{ handle: string; src: string }> = ({
   );
 };
 
-const Row: FC<{
-  data: EligibleFamClaimStatus[];
+type RowProps = {
+  data: EligibleFam[];
   index: number;
   style: CSSProperties;
   className?: string;
-}> = ({ data, style = {}, index, className = "" }) => {
+};
+
+const Row: FC<RowProps> = ({ data, style = {}, index, className = "" }) => {
   const fam = data[index];
 
   return (
     <li
       style={style}
-      className={`flex items-center justify-between gap-x-4 ${className}`}
+      className={`flex h-16 w-full items-center justify-between gap-x-4 ${className}`}
       key={fam.twitter_id}
     >
-      <a
-        className="flex cursor-pointer items-center truncate hover:opacity-60 active:brightness-90"
-        href={`https://twitter.com/${fam.handle}`}
-        rel="noreferrer"
-        target="_blank"
-      >
-        <ImageWithFallback handle={fam.handle} src={fam.profile_image_url} />
-        <Twemoji imageClassName="inline-block align-middle h-4 ml-1">
-          <div className="ml-4 flex h-full flex-col items-start truncate">
-            <BodyTextV2 className="w-full truncate">{fam.name}</BodyTextV2>
-            <BodyTextV2 className="truncate text-slateus-400">
-              @{fam.handle}
-            </BodyTextV2>
-          </div>
-        </Twemoji>
-      </a>
+      <div className="flex items-center overflow-x-hidden">
+        <ImageWithFallback
+          handle={fam.handle}
+          onMouseEnter={() => fam.onEnterImage(fam.handle)}
+          onMouseLeave={fam.onLeaveImage}
+          src={fam.profile_image_url}
+        />
+        <a
+          className="cursor-pointer overflow-x-hidden hover:brightness-90 active:brightness-75"
+          href={`https://twitter.com/${fam.handle}`}
+          rel="noreferrer"
+          target="_blank"
+        >
+          <Twemoji imageClassName="inline-block align-middle h-4 ml-1">
+            <div className="ml-4 flex h-full flex-col items-start overflow-x-hidden">
+              <BodyTextV2 className="w-full truncate">{fam.name}</BodyTextV2>
+              <BodyTextV2 className="truncate text-slateus-400">
+                @{fam.handle}
+              </BodyTextV2>
+            </div>
+          </Twemoji>
+        </a>
+      </div>
       <Claimed
         isLoading={false}
         claimedOn={fam.claimed_on ?? undefined}
@@ -635,25 +654,78 @@ const Row: FC<{
 };
 
 const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
-  const { data } = useSWR<EligibleFamClaimStatus[], Error>(
+  const { data } = useSWR<EligibleFam[], Error>(
     "/api/v2/fam/poap/eligible-fam",
     fetchJsonSwr,
   );
   const [searchHandle, setSearchHandle] = useState("");
+  const [tooltipActiveHandle, setTooltipActiveHandle] = useState<string>();
+
+  const handleOnEnterImage = useCallback((handle: string) => {
+    setTooltipActiveHandle(handle);
+  }, []);
+
+  const handleOnLeaveImage = useCallback(() => {
+    setTooltipActiveHandle(undefined);
+  }, []);
+
+  const dataWithHandlers = data?.map((item) => ({
+    ...item,
+    onEnterImage: handleOnEnterImage,
+    onLeaveImage: handleOnLeaveImage,
+  }));
+
   const searchResults = useFuseSearch(
-    data,
+    dataWithHandlers,
     searchHandle,
-    { keys: ["handle"] },
+    { keys: ["handle", "name"] },
     { limit: 10 },
   );
 
+  const accountMap = useMemo(() => {
+    if (data === undefined) {
+      return undefined;
+    }
+
+    return Object.fromEntries(
+      data.map((fam) => [fam.handle, fam] as [string, EligibleFam]),
+    );
+  }, [data]);
+
+  const tooltipActiveAccount =
+    accountMap === undefined || tooltipActiveHandle === undefined
+      ? undefined
+      : accountMap[tooltipActiveHandle];
+
   return (
     <WidgetBackground className={className}>
+      <div
+        className={`
+          ${tooltipActiveHandle !== undefined ? "block" : "hidden"} fixed
+          top-1/2 right-0 z-30 w-[20rem] -translate-y-1/2
+          cursor-auto
+          md:right-10
+          md:w-[24rem]
+        `}
+      >
+        {tooltipActiveAccount && (
+          <FamTooltip
+            description={tooltipActiveAccount.bio}
+            famFollowerCount={tooltipActiveAccount.fam_follower_count}
+            followerCount={tooltipActiveAccount.follower_count}
+            imageUrl={tooltipActiveAccount.profile_image_url}
+            title={tooltipActiveAccount.name}
+            links={tooltipActiveAccount.linkables}
+            onClickClose={() => setTooltipActiveHandle(undefined)}
+            width="20rem"
+          />
+        )}
+      </div>
       <div className="mb-4 flex justify-between">
         <LabelText>1,559 Eligible Handles</LabelText>
         <LabelText className="text-right">claimed?</LabelText>
       </div>
-      {data === undefined ? (
+      {dataWithHandlers === undefined ? (
         <div className="flex h-full items-center justify-center">
           <Spinner />
         </div>
@@ -661,39 +733,29 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
         (searchHandle.length === 0 && searchResults.length === 0) ? (
         <FixedSizeList
           height={415}
-          itemCount={data.length}
+          itemCount={dataWithHandlers.length}
           itemSize={64}
           width="100%"
-          itemData={data}
+          itemData={dataWithHandlers}
           className={`${scrollbarStyles["styled-scrollbar-vertical"]} ${scrollbarStyles["styled-scrollbar"]}`}
         >
           {Row}
         </FixedSizeList>
+      ) : searchResults.length === 0 ? (
+        <div className="flex h-full w-full items-center justify-center">
+          <BodyTextV2 color="text-slateus-200">no search results</BodyTextV2>
+        </div>
       ) : (
-        <ul
-          className={`flex h-[415px] flex-col overflow-y-auto ${scrollbarStyles["styled-scrollbar-vertical"]} ${scrollbarStyles["styled-scrollbar"]}`}
+        <FixedSizeList
+          height={415}
+          itemCount={searchResults.length}
+          itemSize={64}
+          width="100%"
+          itemData={searchResults.map((result) => result.item)}
+          className={`${scrollbarStyles["styled-scrollbar-vertical"]} ${scrollbarStyles["styled-scrollbar"]}`}
         >
-          {searchResults.length === 0 ? (
-            <div className="flex h-full w-full items-center justify-center">
-              <BodyTextV2 color="text-slateus-200">
-                no search results
-              </BodyTextV2>
-            </div>
-          ) : (
-            searchResults.map((result) => (
-              <Row
-                key={result.refIndex}
-                data={data}
-                index={result.refIndex}
-                className="py-[11px]"
-                // FixedSizeList does not accept a component with optional
-                // style, so it is required, but we don't need one here so
-                // pass an empty one.
-                style={{}}
-              />
-            ))
-          )}
-        </ul>
+          {Row}
+        </FixedSizeList>
       )}
       <div className="relative">
         <input
