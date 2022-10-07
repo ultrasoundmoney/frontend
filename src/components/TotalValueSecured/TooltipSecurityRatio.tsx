@@ -64,7 +64,7 @@ const TooltipSecurityRatio: FC<{
         className="mx-auto h-20 w-20 select-none rounded-full"
         src={"/round-nerd-large.svg"}
       />
-      <BodyText className="font-semibold">Security ratio</BodyText>
+      <BodyText className="font-semibold">security ratio</BodyText>
       <div>
         <BodyText className="whitespace-pre-wrap md:leading-normal">
           The ratio of total value secured (TVS) to economic security. It
