@@ -14,7 +14,7 @@ import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import type { TimeFrameNext } from "../../time-frames";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import Modal from "../Modal";
-import Tooltip from "../Tooltip";
+import Tooltip from "../FamTooltip";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { BurnGroupBase } from "../WidgetSubcomponents";
 import LeaderboardRow from "./LeaderboardRow";

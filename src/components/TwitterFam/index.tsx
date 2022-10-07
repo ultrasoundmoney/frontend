@@ -7,7 +7,7 @@ import { useProfiles } from "../../api/profiles";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import ImageWithTooltip from "../ImageWithTooltip";
 import Modal from "../Modal";
-import Tooltip from "../Tooltip";
+import Tooltip from "../FamTooltip";
 import Twemoji from "../Twemoji";
 
 // See if merging with leaderboards tooltip makes sense after making it more generic.
