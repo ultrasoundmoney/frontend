@@ -8,6 +8,7 @@ import type {
   FormEvent,
   ReactNode,
 } from "react";
+import { useRef } from "react";
 import { useCallback, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { FixedSizeList } from "react-window";
@@ -779,12 +780,13 @@ const PoapSection: FC = () => {
     fetchJsonSwr,
   );
   const { ref, inView } = useInView({ threshold: 1 });
-  const [poapSrc, setPoapSrc] = useState(ultraSoundPoapGif);
+  const [animatePoap, setAnimatePoap] = useState(true);
+  const animationTimeoutId = useRef<number>();
 
   useEffect(() => {
     if (inView) {
       const timeoutId = window.setTimeout(() => {
-        setPoapSrc(ultraSoundPoapStill);
+        setAnimatePoap(false);
       }, 3000);
 
       return () => window.clearTimeout(timeoutId);
@@ -797,6 +799,21 @@ const PoapSection: FC = () => {
     mutate().catch(captureException);
   }, [mutate]);
 
+  const handleClickPoap = useCallback(() => {
+    if (animatePoap) {
+      setAnimatePoap(false);
+      if (typeof animationTimeoutId.current === "number") {
+        window.clearTimeout(animationTimeoutId.current);
+      }
+      return;
+    }
+
+    setAnimatePoap(true);
+    animationTimeoutId.current = window.setTimeout(() => {
+      setAnimatePoap(false);
+    }, 5000);
+  }, [animatePoap]);
+
   return (
     <section className="px-4 md:px-16" id={id}>
       <SectionTitle className="mt-16 pt-16" link="poap" subtitle="only 1,559">
@@ -806,17 +823,12 @@ const PoapSection: FC = () => {
         <div
           className="flex cursor-pointer select-none"
           ref={ref}
-          onClick={() => {
-            setPoapSrc(ultraSoundPoapGif);
-            window.setTimeout(() => {
-              setPoapSrc(ultraSoundPoapStill);
-            }, 5000);
-          }}
+          onClick={handleClickPoap}
         >
           <Image
             className="select-none"
             alt="image from the ultra sound money poap given out to pre-merge fam"
-            src={poapSrc}
+            src={animatePoap ? ultraSoundPoapGif : ultraSoundPoapStill}
             width={144}
             height={144}
           />
