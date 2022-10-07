@@ -273,30 +273,34 @@ const ClaimPoap: FC<{ className?: string; refreshClaimStatus: () => void }> = ({
   }, []);
 
   const NotEligible = () => (
-    <div className="flex flex-col gap-y-4">
-      <LabelText className="truncate">status: not eligible</LabelText>
+    <div className="flex min-h-[82px] flex-col gap-y-4">
+      <LabelText className="flex min-h-[24px] items-center">
+        status: not eligible
+      </LabelText>
       <div className="flex select-none justify-center">
         <Image
           alt="a sobbing emoji signifying sadness at not being eligible"
           className="select-none"
-          height={30}
+          height={40}
           src={sobSvg as StaticImageData}
-          width={30}
+          width={40}
         />
       </div>
     </div>
   );
 
   const Claimed: FC = () => (
-    <div className="flex flex-col justify-center gap-y-4">
-      <LabelText className="truncate">status: claimed</LabelText>
+    <div className="flex min-h-[82px] flex-col gap-y-4">
+      <LabelText className="flex min-h-[24px] items-center">
+        status: claimed
+      </LabelText>
       <div className="flex select-none justify-center">
         <Image
           alt="a sobbing emoji signifying sadness at not being eligible"
           className="select-none"
-          height={30}
+          height={40}
           src={flexSvg as StaticImageData}
-          width={30}
+          width={40}
         />
       </div>
     </div>
@@ -732,7 +736,7 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
       ) : searchResults === undefined ||
         (searchHandle.length === 0 && searchResults.length === 0) ? (
         <FixedSizeList
-          height={415}
+          height={434}
           itemCount={dataWithHandlers.length}
           itemSize={64}
           width="100%"
@@ -747,7 +751,7 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
         </div>
       ) : (
         <FixedSizeList
-          height={415}
+          height={434}
           itemCount={searchResults.length}
           itemSize={64}
           width="100%"
