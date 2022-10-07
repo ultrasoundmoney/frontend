@@ -620,7 +620,7 @@ const Row: FC<RowProps> = ({ data, style = {}, index, className = "" }) => {
   return (
     <li
       style={style}
-      className={`flex h-16 w-full items-center justify-between gap-x-4 ${className}`}
+      className={`flex h-16 w-full items-center justify-between gap-x-4 pr-1 ${className}`}
       key={fam.twitter_id}
     >
       <div className="flex items-center overflow-x-hidden">
