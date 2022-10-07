@@ -270,10 +270,10 @@ const ClaimPoap: FC<{ className?: string; refreshClaimStatus: () => void }> = ({
   const NotEligible = () => (
     <div className="flex flex-col gap-y-4">
       <LabelText className="truncate">status: not eligible</LabelText>
-      <div className="select-none">
+      <div className="flex select-none justify-center">
         <Image
           alt="a sobbing emoji signifying sadness at not being eligible"
-          className="select-none self-center"
+          className="select-none"
           height={30}
           src={sobSvg as StaticImageData}
           width={30}
@@ -285,10 +285,10 @@ const ClaimPoap: FC<{ className?: string; refreshClaimStatus: () => void }> = ({
   const Claimed: FC = () => (
     <div className="flex flex-col justify-center gap-y-4">
       <LabelText className="truncate">status: claimed</LabelText>
-      <div className="select-none">
+      <div className="flex select-none justify-center">
         <Image
           alt="a sobbing emoji signifying sadness at not being eligible"
-          className="select-none self-center"
+          className="select-none"
           height={30}
           src={flexSvg as StaticImageData}
           width={30}
