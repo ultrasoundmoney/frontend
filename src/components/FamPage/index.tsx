@@ -31,27 +31,27 @@ const FamPage: FC = () => {
         highlightColor={"#565b7f"}
         enableAnimation={true}
       >
-        <div className="container mx-auto md:px-16 mb-16">
+        <div className="container mx-auto mb-16 md:px-16">
           {adminToken && (
             <BasicErrorBoundary>
               <AdminTools setFlag={setFlag} />
             </BasicErrorBoundary>
           )}
           <HeaderGlow />
-          <div className="flex p-4 items-center justify-between z-10 w-full">
+          <div className="z-10 flex w-full items-center justify-between p-4">
             <PriceGasWidget />
             <HamburgerMenu />
           </div>
           <MainTitle className="mt-8">ultra sound fam</MainTitle>
           <BasicErrorBoundary>
-            <section className="flex flex-col gap-y-4 mt-16">
-              <div className="bg-slateus-700 p-8 flex flex-col gap-y-4 rounded-lg">
+            <section className="mt-16 flex flex-col gap-y-4">
+              <div className="flex flex-col gap-y-4 rounded-lg bg-slateus-700 p-8">
                 <LabelText>fam count</LabelText>
                 <div className="flex gap-x-1">
                   <QuantifyText className="text-3xl">
                     {formatZeroDecimals(famCount.count)}
                   </QuantifyText>
-                  <QuantifyText className="text-3xl text-slateus-400 ml-2">
+                  <QuantifyText className="ml-2 text-3xl text-slateus-400">
                     members
                   </QuantifyText>
                 </div>
@@ -59,8 +59,14 @@ const FamPage: FC = () => {
               <WearTheBatSignal />
             </section>
           </BasicErrorBoundary>
-          <PoapSection />
-          <JoinDiscordSection />
+          <PoapSection
+            setTwitterAuthStatus={setTwitterAuthStatus}
+            twitterAuthStatus={twitterAuthStatus}
+          />
+          <JoinDiscordSection
+            setTwitterAuthStatus={setTwitterAuthStatus}
+            twitterAuthStatus={twitterAuthStatus}
+          />
         </div>
       </SkeletonTheme>
     </FeatureFlagsContext.Provider>
