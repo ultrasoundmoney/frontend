@@ -5,6 +5,7 @@ import colors from "../../colors";
 import { useFeatureFlags, FeatureFlagsContext } from "../../feature-flags";
 import { formatZeroDecimals } from "../../format";
 import { useAdminToken } from "../../hooks/use-admin-token";
+import { useTwitterAuthStatus } from "../../hooks/use-twitter-auth";
 import AdminTools from "../AdminTools";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import JoinDiscordSection from "../Dashboard/JoinDiscordSection";
@@ -21,6 +22,7 @@ const FamPage: FC = () => {
   const famCount = useFamCount();
   const adminToken = useAdminToken();
   const { featureFlags, setFlag } = useFeatureFlags();
+  const [twitterAuthStatus, setTwitterAuthStatus] = useTwitterAuthStatus();
 
   return (
     <FeatureFlagsContext.Provider value={featureFlags}>
@@ -57,12 +59,8 @@ const FamPage: FC = () => {
               <WearTheBatSignal />
             </section>
           </BasicErrorBoundary>
-          <BasicErrorBoundary>
-            <PoapSection />
-          </BasicErrorBoundary>
-          <BasicErrorBoundary>
-            <JoinDiscordSection />
-          </BasicErrorBoundary>
+          <PoapSection />
+          <JoinDiscordSection />
         </div>
       </SkeletonTheme>
     </FeatureFlagsContext.Provider>
