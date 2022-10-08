@@ -574,7 +574,7 @@ const Claimed: FC<{
 };
 
 type EligibleFam = {
-  bio: string;
+  bio: string | null;
   claimed_on: DateTimeString | null;
   fam_follower_count: number;
   follower_count: number;
@@ -720,7 +720,7 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
       >
         {tooltipActiveAccount && (
           <FamTooltip
-            description={tooltipActiveAccount.bio}
+            description={tooltipActiveAccount.bio ?? undefined}
             famFollowerCount={tooltipActiveAccount.fam_follower_count}
             followerCount={tooltipActiveAccount.follower_count}
             imageUrl={tooltipActiveAccount.profile_image_url}
