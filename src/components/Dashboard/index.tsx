@@ -12,7 +12,6 @@ import * as Format from "../../format";
 import useAuthFromSection from "../../hooks/use-auth-from-section";
 import { useTwitterAuthStatus } from "../../hooks/use-twitter-auth";
 import BasicErrorBoundary from "../BasicErrorBoundary";
-import PoapSection from "../FamPage/PoapSection";
 import HeaderGlow from "../HeaderGlow";
 import FaqBlock from "../Landing/faq";
 import MainTitle from "../MainTitle";
@@ -137,10 +136,10 @@ const Dashboard: FC = () => {
           <div className="h-16"></div>
           <MonetaryPremiumSection />
           <FamSection />
-          <PoapSection
-            setTwitterAuthStatus={setTwitterAuthStatus}
-            twitterAuthStatus={twitterAuthStatus}
-          />
+          {/* <PoapSection */}
+          {/*   setTwitterAuthStatus={setTwitterAuthStatus} */}
+          {/*   twitterAuthStatus={twitterAuthStatus} */}
+          {/* /> */}
           <JoinDiscordSection
             setTwitterAuthStatus={setTwitterAuthStatus}
             twitterAuthStatus={twitterAuthStatus}
