@@ -1,4 +1,5 @@
 import type { Dispatch, FC, SetStateAction } from "react";
+import withBasicErrorBoundary from "../../higher-order-components/WithBasicErrorBoundary";
 import type { AuthFromSection } from "../../hooks/use-auth-from-section";
 import type { TwitterAuthStatus } from "../../hooks/use-twitter-auth";
 import JoinDiscordWidget from "../JoinDiscordWidget";
@@ -28,4 +29,4 @@ const JoinDiscordSection: FC<{
   );
 };
 
-export default JoinDiscordSection;
+export default withBasicErrorBoundary(JoinDiscordSection);
