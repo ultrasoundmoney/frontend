@@ -7,7 +7,7 @@ import { useProfiles } from "../../api/profiles";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import ImageWithTooltip from "../ImageWithTooltip";
 import Modal from "../Modal";
-import Tooltip from "../FamTooltip";
+import FamTooltip from "../FamTooltip";
 import Twemoji from "../Twemoji";
 
 // See if merging with leaderboards tooltip makes sense after making it more generic.
@@ -212,7 +212,8 @@ const TwitterFam: FC = () => {
           onMouseEnter={handleTooltipEnter}
           onMouseLeave={handleTooltipLeave}
         >
-          <Tooltip
+          <FamTooltip
+            width="min-w-[20rem] max-w-sm"
             description={selectedItem?.bio}
             famFollowerCount={selectedItem?.famFollowerCount}
             followerCount={selectedItem?.followersCount}
@@ -227,7 +228,7 @@ const TwitterFam: FC = () => {
           show={!md && selectedItem !== undefined}
         >
           {!md && selectedItem !== undefined && (
-            <Tooltip
+            <FamTooltip
               description={selectedItem.bio}
               famFollowerCount={selectedItem.famFollowerCount}
               followerCount={selectedItem.followersCount}
@@ -236,6 +237,7 @@ const TwitterFam: FC = () => {
               onClickClose={() => setSelectedItem(undefined)}
               title={selectedItem.name}
               twitterUrl={selectedItem.profileUrl}
+              width="min-w-[18rem] max-w-md"
             />
           )}
         </Modal>
