@@ -9,11 +9,13 @@ import type {
   ReactNode,
   SetStateAction,
 } from "react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import withWidgetErrorBoundary from "../../higher-order-components/WithWidgetErrorBoundary";
 import useAuthFromSection from "../../hooks/use-auth-from-section";
+import type { TwitterAuthStatus } from "../../hooks/use-twitter-auth";
 import BodyTextV2 from "../TextsNext/BodyTextV2";
 import LabelText from "../TextsNext/LabelText";
+import TwitterStatusText from "../TwitterStatusText";
 import { WidgetBackground } from "../WidgetSubcomponents";
 import discordLogo from "./discord-logo.png";
 import logoTwitterWhite from "./logo-twitter-white.svg";
@@ -35,42 +37,6 @@ const AlignmentText: FC = () => (
   <BodyTextV2 className="select-none">&nbsp;</BodyTextV2>
 );
 
-type TwitterAuthStatusResponse =
-  | { status: "not-authenticated"; session: null }
-  | {
-      status: "authenticated";
-      session: {
-        id: string;
-        handle: string;
-      };
-    };
-
-type TwitterAuthStatus =
-  | { type: "access-denied" }
-  | { type: "authenticated"; id: string; handle: string }
-  | { type: "authenticating" }
-  | { type: "checking" }
-  | { type: "error"; message: string }
-  | { type: "init" }
-  | { type: "signing-out" };
-
-const TwitterStatusText: FC<{ status: TwitterAuthStatus }> = ({ status }) =>
-  status.type === "authenticated" ? (
-    <PositiveText>authenticated</PositiveText>
-  ) : status.type === "checking" ? (
-    <LoadingText>checking...</LoadingText>
-  ) : status.type === "authenticating" ? (
-    <LoadingText>authenticating...</LoadingText>
-  ) : status.type === "signing-out" ? (
-    <LoadingText>signing out...</LoadingText>
-  ) : status.type === "error" ? (
-    <NegativeText>error</NegativeText>
-  ) : status.type === "access-denied" ? (
-    <NegativeText>access denied</NegativeText>
-  ) : (
-    <AlignmentText />
-  );
-
 type QueueingStatus = "init" | "invalid-handle" | "done" | "sending" | "error";
 const DiscordStatusText: FC<{ status: QueueingStatus }> = ({ status }) =>
   status === "invalid-handle" ? (
@@ -85,73 +51,12 @@ const DiscordStatusText: FC<{ status: QueueingStatus }> = ({ status }) =>
     <AlignmentText />
   );
 
-const useTwitterAuthStatus = () => {
-  const [twitterAuthStatus, setTwitterAuthStatus] = useState<TwitterAuthStatus>(
-    { type: "init" },
-  );
-
-  useEffect(() => {
-    const checkAuthStatus = async (): Promise<void> => {
-      setTwitterAuthStatus({ type: "checking" });
-
-      const res = await fetch("/api/auth/twitter/session");
-
-      if (res.status === 200) {
-        const body = (await res.json()) as TwitterAuthStatusResponse;
-
-        if (body.status === "authenticated") {
-          setTwitterAuthStatus({
-            type: "authenticated",
-            id: body.session.id,
-            handle: body.session.handle,
-          });
-          return;
-        }
-
-        if (body.status === "not-authenticated") {
-          setTwitterAuthStatus({ type: "init" });
-          return;
-        }
-
-        const message = "got twitter auth session 200 response, but no status";
-        setTwitterAuthStatus({ type: "error", message });
-        throw new Error(message);
-      }
-
-      const message = `failed to check auth status, response status: ${res.status}`;
-      setTwitterAuthStatus({ type: "error", message });
-      throw new Error(message);
-    };
-
-    // Because we get redirected back, it's possible the backend tried to communicate a response to us by setting a query param when the user cancelled.
-    if (typeof document !== "undefined") {
-      const urlParams = new URLSearchParams(window.location.search);
-      const authStatus = urlParams.get("auth");
-      if (authStatus !== null && authStatus === "access_denied") {
-        setTwitterAuthStatus({ type: "access-denied" });
-        return;
-      }
-    }
-
-    checkAuthStatus().catch((err) => {
-      throw err;
-    });
-  }, []);
-
-  return useMemo(
-    () =>
-      [twitterAuthStatus, setTwitterAuthStatus] as [
-        TwitterAuthStatus,
-        Dispatch<SetStateAction<TwitterAuthStatus>>,
-      ],
-    [twitterAuthStatus],
-  );
-};
-
-const JoinDiscordWidget: FC = () => {
+const JoinDiscordWidget: FC<{
+  twitterAuthStatus: TwitterAuthStatus;
+  setTwitterAuthStatus: Dispatch<SetStateAction<TwitterAuthStatus>>;
+}> = ({ twitterAuthStatus, setTwitterAuthStatus }) => {
   const [discordIdOrUsername, setDiscordUsername] = useState<string>();
   const [queueStatus, setQueueStatus] = useState<QueueingStatus>("init");
-  const [twitterAuthStatus, setTwitterAuthStatus] = useTwitterAuthStatus();
   const [, setAuthFromSection] = useAuthFromSection();
 
   const handleDiscordInputChange = useCallback(

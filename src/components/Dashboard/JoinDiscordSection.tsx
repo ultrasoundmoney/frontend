@@ -1,9 +1,13 @@
-import type { FC } from "react";
+import type { Dispatch, FC, SetStateAction } from "react";
 import type { AuthFromSection } from "../../hooks/use-auth-from-section";
+import type { TwitterAuthStatus } from "../../hooks/use-twitter-auth";
 import JoinDiscordWidget from "../JoinDiscordWidget";
 import { SectionTitle } from "../TextsNext/SectionTitle";
 
-const JoinDiscordSection: FC = () => {
+const JoinDiscordSection: FC<{
+  setTwitterAuthStatus: Dispatch<SetStateAction<TwitterAuthStatus>>;
+  twitterAuthStatus: TwitterAuthStatus;
+}> = ({ setTwitterAuthStatus, twitterAuthStatus }) => {
   const id: AuthFromSection = "discord";
 
   return (
@@ -16,7 +20,10 @@ const JoinDiscordSection: FC = () => {
       >
         ultra sound
       </SectionTitle>
-      <JoinDiscordWidget />
+      <JoinDiscordWidget
+        twitterAuthStatus={twitterAuthStatus}
+        setTwitterAuthStatus={setTwitterAuthStatus}
+      />
     </section>
   );
 };

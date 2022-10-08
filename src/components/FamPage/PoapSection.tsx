@@ -4,10 +4,12 @@ import Image from "next/image";
 import type {
   ChangeEvent,
   CSSProperties,
+  Dispatch,
   FC,
   FormEvent,
   MouseEventHandler,
   ReactNode,
+  SetStateAction,
 } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
@@ -26,7 +28,7 @@ import withBasicErrorBoundary from "../../higher-order-components/WithBasicError
 import type { AuthFromSection } from "../../hooks/use-auth-from-section";
 import useAuthFromSection from "../../hooks/use-auth-from-section";
 import useFuseSearch from "../../hooks/use-fuse-search";
-import { useTwitterAuthStatus } from "../../hooks/use-twitter-auth";
+import type { TwitterAuthStatus } from "../../hooks/use-twitter-auth";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import type { DateTimeString } from "../../time";
 import FamTooltip from "../FamTooltip";
@@ -166,11 +168,17 @@ const ClaimStatusText: FC<{ status: ClaimStatus }> = ({ status }) =>
 
 type ClaimStatus = "sending" | "invalid-address" | "error" | "sent" | "init";
 
-const ClaimPoap: FC<{ className?: string; refreshClaimStatus: () => void }> = ({
+const ClaimPoap: FC<{
+  className?: string;
+  refreshClaimStatus: () => void;
+  setTwitterAuthStatus: Dispatch<SetStateAction<TwitterAuthStatus>>;
+  twitterAuthStatus: TwitterAuthStatus;
+}> = ({
   className,
   refreshClaimStatus,
+  twitterAuthStatus,
+  setTwitterAuthStatus,
 }) => {
-  const [twitterAuthStatus, setTwitterAuthStatus] = useTwitterAuthStatus();
   const [, setAuthFromSection] = useAuthFromSection();
   const [walletId, setWalletId] = useState<string>("");
   const [claimStatus, setClaimStatus] = useState<ClaimStatus>("init");
@@ -853,7 +861,10 @@ const Claimer: FC<{ handle: string; src: string | null; index: number }> = ({
   );
 };
 
-const PoapSection: FC = () => {
+const PoapSection: FC<{
+  setTwitterAuthStatus: Dispatch<SetStateAction<TwitterAuthStatus>>;
+  twitterAuthStatus: TwitterAuthStatus;
+}> = ({ setTwitterAuthStatus, twitterAuthStatus }) => {
   const { data: poapsClaimed, mutate } = useSWR<PoapsClaimed, Error>(
     `${getDomain()}/api/v2/fam/poap/claimed`,
     fetchJsonSwr,
@@ -944,6 +955,8 @@ const PoapSection: FC = () => {
           <ClaimPoap
             className="col-start-1"
             refreshClaimStatus={handleRefreshClaimStatus}
+            twitterAuthStatus={twitterAuthStatus}
+            setTwitterAuthStatus={setTwitterAuthStatus}
           />
         </WidgetErrorBoundary>
         <WidgetErrorBoundary title="Eligible Handles">

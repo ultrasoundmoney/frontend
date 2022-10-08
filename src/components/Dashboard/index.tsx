@@ -10,6 +10,7 @@ import * as FeatureFlags from "../../feature-flags";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
 import useAuthFromSection from "../../hooks/use-auth-from-section";
+import { useTwitterAuthStatus } from "../../hooks/use-twitter-auth";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import PoapSection from "../FamPage/PoapSection";
 import HeaderGlow from "../HeaderGlow";
@@ -104,6 +105,7 @@ const GasTitle = () => {
 
 const Dashboard: FC = () => {
   const { featureFlags, setFlag } = FeatureFlags.useFeatureFlags();
+  const [twitterAuthStatus, setTwitterAuthStatus] = useTwitterAuthStatus();
   useScrollOnLoad();
 
   return (
@@ -135,8 +137,14 @@ const Dashboard: FC = () => {
           <div className="h-16"></div>
           <MonetaryPremiumSection />
           <FamSection />
-          <PoapSection />
-          <JoinDiscordSection />
+          <PoapSection
+            setTwitterAuthStatus={setTwitterAuthStatus}
+            twitterAuthStatus={twitterAuthStatus}
+          />
+          <JoinDiscordSection
+            setTwitterAuthStatus={setTwitterAuthStatus}
+            twitterAuthStatus={twitterAuthStatus}
+          />
           <div className="mt-32 flex px-4 md:px-0">
             <div className="relative w-full md:m-auto lg:w-2/3">
               <FaqBlock />
