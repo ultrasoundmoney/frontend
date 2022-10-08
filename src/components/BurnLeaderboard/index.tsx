@@ -14,7 +14,7 @@ import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import type { TimeFrameNext } from "../../time-frames";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import Modal from "../Modal";
-import Tooltip from "../FamTooltip";
+import FamTooltip from "../FamTooltip";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { BurnGroupBase } from "../WidgetSubcomponents";
 import LeaderboardRow from "./LeaderboardRow";
@@ -295,7 +295,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
           onMouseEnter={handleTooltipEnter}
           onMouseLeave={handleTooltipLeave}
         >
-          <Tooltip
+          <FamTooltip
             contractAddresses={
               selectedEntry === undefined ? undefined : [selectedEntry.address]
             }
@@ -307,6 +307,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
             onClickClose={() => setSelectedEntry(undefined)}
             title={selectedEntry?.twitterName}
             twitterUrl={selectedEntry?.twitterUrl}
+            width="min-w-[18rem] max-w-sm"
           />
         </div>
         <Modal
@@ -314,7 +315,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
           show={!md && selectedEntry !== undefined}
         >
           {!md && selectedEntry !== undefined && (
-            <Tooltip
+            <FamTooltip
               contractAddresses={[selectedEntry.address]}
               description={selectedEntry.twitterBio}
               famFollowerCount={selectedEntry.famFollowerCount}
@@ -323,6 +324,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
               onClickClose={() => setSelectedEntry(undefined)}
               title={selectedEntry.twitterName}
               twitterUrl={selectedEntry.twitterUrl}
+              width="min-w-[18rem] max-w-sm"
             />
           )}
         </Modal>

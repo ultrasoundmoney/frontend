@@ -6,7 +6,7 @@ import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import ImageWithTooltip from "../ImageWithTooltip";
 import Modal from "../Modal";
 import { SectionTitle } from "../TextsNext/SectionTitle";
-import Tooltip from "../FamTooltip";
+import FamTooltip from "../FamTooltip";
 import { useTooltip } from "../TwitterFam";
 import styles from "./FollowingYou.module.scss";
 
@@ -176,7 +176,7 @@ const FollowingYou: FC = () => {
           onMouseOver={handleTooltipEnter}
           onMouseOut={handleTooltipLeave}
         >
-          <Tooltip
+          <FamTooltip
             description={selectedItem?.bio}
             famFollowerCount={selectedItem?.famFollowerCount}
             followerCount={selectedItem?.followersCount}
@@ -185,6 +185,7 @@ const FollowingYou: FC = () => {
             onClickClose={() => setSelectedItem(undefined)}
             title={selectedItem?.name}
             twitterUrl={selectedItem?.profileUrl}
+            width="min-w-[18rem] max-w-sm"
           />
         </div>
         <Modal
@@ -192,7 +193,7 @@ const FollowingYou: FC = () => {
           show={!md && selectedItem !== undefined}
         >
           {selectedItem !== undefined && (
-            <Tooltip
+            <FamTooltip
               description={selectedItem?.bio}
               famFollowerCount={selectedItem?.famFollowerCount}
               followerCount={selectedItem?.followersCount}
@@ -201,6 +202,7 @@ const FollowingYou: FC = () => {
               onClickClose={() => setSelectedItem(undefined)}
               title={selectedItem?.name}
               twitterUrl={selectedItem?.profileUrl}
+              width="min-w-[18rem] max-w-sm"
             />
           )}
         </Modal>

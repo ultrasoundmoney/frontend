@@ -14,7 +14,7 @@ import ImageWithTooltip from "../ImageWithTooltip";
 import StyledLink from "../StyledLink";
 import Modal from "../Modal";
 import BodyText from "../TextsNext/BodyText";
-import Tooltip from "../FamTooltip";
+import FamTooltip from "../FamTooltip";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 
 type TvsLeaderboardProps = {
@@ -216,7 +216,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
           onMouseOver={handleTooltipEnter}
           onMouseOut={handleTooltipLeave}
         >
-          <Tooltip
+          <FamTooltip
             contractAddresses={selectedRanking?.contractAddresses}
             coingeckoUrl={selectedRanking?.coinGeckoUrl}
             description={selectedRanking?.tooltipDescription}
@@ -228,11 +228,12 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
             onClickClose={() => setShowTooltip(false)}
             title={selectedRanking?.tooltipName?.split(":")[0]}
             twitterUrl={selectedRanking?.twitterUrl}
+            width="min-w-[18rem] max-w-sm"
           />
         </div>
         <Modal onClickBackground={() => setShowModal(false)} show={showModal}>
           {selectedRanking !== undefined && (
-            <Tooltip
+            <FamTooltip
               contractAddresses={selectedRanking?.contractAddresses}
               coingeckoUrl={selectedRanking?.coinGeckoUrl}
               description={selectedRanking?.tooltipDescription}
@@ -244,6 +245,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
               onClickClose={() => setShowModal(false)}
               title={selectedRanking?.tooltipName?.split(":")[0]}
               twitterUrl={selectedRanking?.twitterUrl}
+              width="min-w-[18rem] max-w-sm"
             />
           )}
         </Modal>

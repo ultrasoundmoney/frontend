@@ -213,7 +213,6 @@ const TwitterFam: FC = () => {
           onMouseLeave={handleTooltipLeave}
         >
           <FamTooltip
-            width="min-w-[20rem] max-w-sm"
             description={selectedItem?.bio}
             famFollowerCount={selectedItem?.famFollowerCount}
             followerCount={selectedItem?.followersCount}
@@ -221,6 +220,7 @@ const TwitterFam: FC = () => {
             links={selectedItem?.links}
             title={selectedItem?.name}
             twitterUrl={selectedItem?.profileUrl}
+            width="min-w-[20rem] max-w-sm"
           />
         </div>
         <Modal
