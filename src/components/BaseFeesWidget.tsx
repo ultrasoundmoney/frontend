@@ -179,59 +179,63 @@ const BaseFeesWidget: FC<Props> = ({
     }
   }, []);
 
-  const options = useMemo(
-    (): Highcharts.Options =>
-      _merge({}, baseOptions, {
-        yAxis: {
-          id: "base-fees",
-          plotLines: [barrier !== undefined ? makeBarrier(barrier) : undefined],
-        },
-        series: [
-          {
-            id: "base-fees-over-area",
-            type: "areaspline",
-            threshold: barrier,
-            data: baseFeesSeries,
-            color: "#E79800",
-            negativeColor: colors.drop,
-            lineWidth: 0,
-            states: {
-              hover: {
-                lineWidthPlus: 0,
-              },
-            },
-            negativeFillColor: {
-              linearGradient: {
-                x1: 0,
-                y1: 0,
-                x2: 0,
-                y2: 1,
-              },
-              stops: [
-                [0.2, "#5487F400"],
-                [1, "#00FFFB10"],
-              ],
-            },
-            fillColor: {
-              linearGradient: {
-                x1: 0,
-                y1: 1,
-                x2: 0,
-                y2: 0,
-              },
-              stops: [
-                [(barrier ?? 0) / (max ?? 1), "#EDDB3610"],
-                [1, "#E7980050"],
-              ],
+  const options = useMemo((): Highcharts.Options => {
+    const min = baseFeesSeries.reduce(
+      (min, point) => (point[1] < min ? point[1] : min),
+      15,
+    );
+
+    return _merge({}, baseOptions, {
+      yAxis: {
+        id: "base-fees",
+        min,
+        plotLines: [barrier !== undefined ? makeBarrier(barrier) : undefined],
+      },
+      series: [
+        {
+          id: "base-fees-over-area",
+          type: "areaspline",
+          threshold: barrier,
+          data: baseFeesSeries,
+          color: "#E79800",
+          negativeColor: colors.drop,
+          lineWidth: 0,
+          states: {
+            hover: {
+              lineWidthPlus: 0,
             },
           },
-        ],
-        tooltip: {
-          formatter: getTooltipFormatter(baseFeesMap),
+          negativeFillColor: {
+            linearGradient: {
+              x1: 0,
+              y1: 0,
+              x2: 0,
+              y2: 1,
+            },
+            stops: [
+              [0.2, "#5487F400"],
+              [1, "#00FFFB10"],
+            ],
+          },
+          fillColor: {
+            linearGradient: {
+              x1: 0,
+              y1: 1,
+              x2: 0,
+              y2: 0,
+            },
+            stops: [
+              [(barrier ?? 0) / (max ?? 1), "#EDDB3610"],
+              [1, "#E7980050"],
+            ],
+          },
         },
-      } as Highcharts.Options),
-    [max, barrier, baseFeesMap, baseFeesSeries],
-  );
+      ],
+      tooltip: {
+        formatter: getTooltipFormatter(baseFeesMap),
+      },
+    } as Highcharts.Options);
+  }, [max, barrier, baseFeesMap, baseFeesSeries]);
 
   return (
     <WidgetErrorBoundary title="base fees">
