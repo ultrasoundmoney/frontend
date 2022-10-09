@@ -26,11 +26,11 @@ const MergeSection: FC = () => {
       >
         <div className="flex flex-col lg:flex-row gap-x-4 gap-y-4 mt-16">
           <div className="flex flex-col gap-y-4 lg:w-1/2">
-            <TotalDifficultyProgressWidget progress={1} />
             <SupplyChangeSinceMerge
               simulateProofOfWork={simulateProofOfWork}
               onSimulateProofOfWork={handleSimulateProofOfWork}
             />
+            <TotalDifficultyProgressWidget progress={1} />
           </div>
           <div className="flex lg:w-1/2">
             <SupplySinceMergeWidget
