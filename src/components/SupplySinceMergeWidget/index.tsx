@@ -104,14 +104,13 @@ const baseOptions: Highcharts.Options = {
           ? "bg-[#FF891D]"
           : "bg-[#DEE2F1]";
       return `
-      <div class="flex flex-row items-center gap-x-2">
-        
-        <div class="w-2 h-2 ${color} rounded-full"></div>
-      <div class="font-roboto font-normal text-slateus-400 text-xs">
-        ${this.name}
-      </div>
-      </div>
-    `;
+        <div class="flex flex-row items-center gap-x-2">
+          <div class="w-2 h-2 ${color} rounded-full"></div>
+          <div class="font-roboto font-normal text-slateus-400 text-xs">
+            ${this.name}
+          </div>
+        </div>
+      `;
     },
   },
   tooltip: {
@@ -175,7 +174,7 @@ const getTooltip = (
     }
 
     const dt = new Date(x);
-    const formattedDate = formatInTimeZone(dt, "UTC", "MMM d, h:mmaa");
+    const formattedDate = formatInTimeZone(dt, "UTC", "MMM d, hh:mmaa");
 
     let supplyDelta = undefined;
     if (x >= new Date(mergeStatus.timestamp).getTime()) {
@@ -206,7 +205,7 @@ const getTooltip = (
     return `
     <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
       <div class="text-slateus-400 mb-2">${title}</div>
-      <div class="text-slateus-400">${formattedDate}</div>
+      <div class="text-slateus-400">${formattedDate} UTC</div>
       <div class="flex flex-col items-end">
         <div class="text-white">
           ${formatTwoDigit(total)}
