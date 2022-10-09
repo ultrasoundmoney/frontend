@@ -39,10 +39,10 @@ import {
   NegativeText,
   PositiveText,
 } from "../StatusText";
-import StyledLink from "../StyledLink";
 import { BaseText, TooltipTitle } from "../Texts";
 import BodyTextV2 from "../TextsNext/BodyTextV2";
 import LabelText from "../TextsNext/LabelText";
+import LinkText from "../TextsNext/LinkText";
 import QuantifyText from "../TextsNext/QuantifyText";
 import { SectionTitle } from "../TextsNext/SectionTitle";
 import SkeletonText from "../TextsNext/SkeletonText";
@@ -128,12 +128,13 @@ const ClaimPoapTooltip: FC<ClaimPoapTooltipProps> = ({
       <Twemoji wrapper imageClassName="inline-block align-middle h-4 ml-1">
         <TooltipText>
           The fam are{" "}
-          <StyledLink
-            className="text-slateus-200 hover:underline"
+          <a
             href="https://ultrasound.money/#fam"
+            rel="noreferrer"
+            target="_blank"
           >
-            5,000+ supporters
-          </StyledLink>{" "}
+            <LinkText>5,000+ supporters</LinkText>
+          </a>{" "}
           with variants of the bat signal
           <span className="whitespace-nowrap">🦇🔊</span> on their Twitter
           profile.
@@ -142,12 +143,13 @@ const ClaimPoapTooltip: FC<ClaimPoapTooltipProps> = ({
       <LabelText>benefits</LabelText>
       <TooltipText>
         Beyond pride and glory, POAP holders get priority access to the{" "}
-        <StyledLink
-          className="text-slateus-200 hover:underline"
+        <a
           href="https://ultrasound.money/#discord"
+          rel="noreferrer"
+          target="_blank"
         >
-          ultra sound Discord.
-        </StyledLink>
+          <LinkText>ultra sound Discord.</LinkText>
+        </a>
       </TooltipText>
     </div>
   </div>
@@ -291,6 +293,9 @@ const ClaimPoap: FC<{
           src={sobSvg as StaticImageData}
           width={40}
         />
+        <button className="ml-4" onClick={() => setShowTooltip(true)}>
+          <LinkText>show criteria</LinkText>
+        </button>
       </div>
     </div>
   );
