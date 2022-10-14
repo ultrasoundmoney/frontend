@@ -59,8 +59,8 @@ const Marker: FC<MarkerProps> = ({
 }) => (
   <div
     className={`
-        absolute  -translate-x-1/2
-        flex flex-col items-center
+        absolute flex
+        -translate-x-1/2 flex-col items-center
         ${orientation === "up" ? "-top-14" : "-bottom-14"}
         ${emphasize ? "" : "opacity-60"}
         ${label === "barrier-max" || label === "barrier-min" ? "invisible" : ""}
@@ -74,12 +74,12 @@ const Marker: FC<MarkerProps> = ({
       <div
         className={`w-0.5 ${
           emphasize ? "h-4" : "h-2"
-        } bg-slateus-200 rounded-b-full mb-2`}
+        } mb-2 rounded-b-full bg-slateus-200`}
       ></div>
     )}
     {label === "barrier" ? (
       <>
-        <div className="flex gap-x-1 select-none">
+        <div className="flex select-none gap-x-1">
           <Image
             alt="emoji of a bat, first-half of signifying ultra sound base fee per gas"
             src={batSvg as StaticImageData}
@@ -114,7 +114,7 @@ const Marker: FC<MarkerProps> = ({
       <div
         className={`w-0.5 ${
           emphasize ? "h-4" : "h-2"
-        } bg-slateus-200 rounded-t-full mt-2`}
+        } mt-2 rounded-t-full bg-slateus-200`}
       ></div>
     )}
   </div>
