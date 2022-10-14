@@ -1,8 +1,7 @@
 import type { FC } from "react";
 import { useCallback, useState } from "react";
 import type { Unit } from "../../denomination";
-import type { TimeFrameNext } from "../../time-frames";
-import { timeFramesNext } from "../../time-frames";
+import { getNextTimeFrame, TimeFrameNext } from "../../time-frames";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import BurnCategoryWidget from "../BurnCategoryWidget";
 import BurnLeaderboard from "../BurnLeaderboard";
@@ -24,14 +23,8 @@ const BurnSection: FC = () => {
   const onSetUnit = useCallback(setUnit, [setUnit]);
 
   const handleClickTimeFrame = useCallback(() => {
-    const currentTimeFrameIndex = timeFramesNext.indexOf(timeFrame);
-    const nextIndex =
-      currentTimeFrameIndex === timeFramesNext.length - 1
-        ? 0
-        : currentTimeFrameIndex + 1;
-
-    setTimeFrame(timeFramesNext[nextIndex]);
-  }, [timeFrame]);
+    setTimeFrame((timeFrame) => getNextTimeFrame(timeFrame));
+  }, []);
 
   return (
     <div id="burn">

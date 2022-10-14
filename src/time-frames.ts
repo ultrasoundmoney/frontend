@@ -49,3 +49,10 @@ export const displayTimeFrameNextMap: Record<TimeFrameNext, string> = {
   d30: "30d",
   all: "all",
 };
+
+export const getNextTimeFrame = (timeFrame: TimeFrameNext): TimeFrameNext => {
+  const nextIndex =
+    (timeFramesNext.indexOf(timeFrame) + 1) % timeFramesNext.length;
+
+  return timeFramesNext[nextIndex];
+};
