@@ -5,9 +5,21 @@ import { WEI_PER_GWEI } from "../eth-units";
 import type { ApiResult } from "./fetchers";
 import { fetchJsonSwr } from "./fetchers";
 
+export type BaseFeePerGasStatsTimeFrame = {
+  average: WeiNumber;
+  max: WeiNumber;
+  min: WeiNumber;
+};
+
 export type BaseFeePerGasStats = {
   average: WeiNumber;
   barrier: GweiNumber;
+  d1: BaseFeePerGasStatsTimeFrame;
+  d30: BaseFeePerGasStatsTimeFrame;
+  d7: BaseFeePerGasStatsTimeFrame;
+  h1: BaseFeePerGasStatsTimeFrame;
+  m5: BaseFeePerGasStatsTimeFrame;
+  all: BaseFeePerGasStatsTimeFrame | null;
   max: WeiNumber;
   min: WeiNumber;
 };

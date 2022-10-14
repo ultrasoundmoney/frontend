@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import colors from "../colors";
 import type { Gwei } from "../eth-units";
 import { formatBlockNumber } from "../format";
+import type { TimeFrameNext } from "../time-frames";
 import type { BaseFeePoint } from "./Dashboard/SupplyGrowthSection";
 import LabelText from "./TextsNext/LabelText";
 import TimeFrameIndicator from "./TimeFrameIndicator";
@@ -157,16 +158,20 @@ const getTooltipFormatter = (
 
 type Props = {
   barrier: Gwei | undefined;
-  baseFeesSeries: BaseFeePoint[];
   baseFeesMap: Record<number, number>;
+  baseFeesSeries: BaseFeePoint[] | undefined;
   max: number | undefined;
+  onClickTimeFrame: () => void;
+  timeFrame: TimeFrameNext;
 };
 
 const BaseFeesWidget: FC<Props> = ({
   barrier,
-  baseFeesSeries,
   baseFeesMap,
+  baseFeesSeries,
   max,
+  onClickTimeFrame,
+  timeFrame,
 }) => {
   // Setting lang has to happen before any chart render.
   useEffect(() => {
@@ -180,7 +185,7 @@ const BaseFeesWidget: FC<Props> = ({
   }, []);
 
   const options = useMemo((): Highcharts.Options => {
-    const min = baseFeesSeries.reduce(
+    const min = baseFeesSeries?.reduce(
       (min, point) => (point[1] < min ? point[1] : min),
       15,
     );
@@ -265,9 +270,8 @@ const BaseFeesWidget: FC<Props> = ({
             base fees
           </LabelText>
           <TimeFrameIndicator
-            className="pointer-events-none"
-            timeFrame="h1"
-            onClickTimeFrame={() => undefined}
+            timeFrame={timeFrame}
+            onClickTimeFrame={onClickTimeFrame}
           />
         </div>
         <div
@@ -280,7 +284,15 @@ const BaseFeesWidget: FC<Props> = ({
             [&>div]:flex-grow
           `}
         >
-          <HighchartsReact highcharts={Highcharts} options={options} />
+          {baseFeesSeries === undefined ? (
+            <div className="flex h-full items-center justify-center">
+              <LabelText color="text-slateus-300">
+                {timeFrame} not yet available
+              </LabelText>
+            </div>
+          ) : (
+            <HighchartsReact highcharts={Highcharts} options={options} />
+          )}
         </div>
         <LabelText color="text-slateus-400" className="text-right">
           live on ultrasound.money

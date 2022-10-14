@@ -3,13 +3,12 @@ import type { FC } from "react";
 import { useCallback, useMemo, useState } from "react";
 import type { BaseFeeAtTime } from "../../api/base-fee-over-time";
 import { useBaseFeeOverTime } from "../../api/base-fee-over-time";
-import { useBaseFeePerGasStats } from "../../api/base-fee-per-gas-stats";
 import type { Unit } from "../../denomination";
 import type { Gwei } from "../../eth-units";
 import { WEI_PER_GWEI } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
 import type { TimeFrameNext } from "../../time-frames";
-import { timeFramesNext } from "../../time-frames";
+import { getNextTimeFrame } from "../../time-frames";
 import BaseFeesWidget from "../BaseFeesWidget";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import CurrencyControl from "../CurrencyControl";
@@ -84,7 +83,6 @@ const pointsFromBaseFeesOverTime = (
 
 const SupplyGrowthSection: FC = () => {
   const baseFeesOverTime = useBaseFeeOverTime();
-  const baseFeePerGasStats = useBaseFeePerGasStats();
   const [simulateProofOfWork, setSimulateProofOfWork] = useState(false);
   const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
@@ -98,27 +96,31 @@ const SupplyGrowthSection: FC = () => {
   }, []);
 
   const handleClickTimeFrame = useCallback(() => {
-    const currentTimeFrameIndex = timeFramesNext.indexOf(timeFrame);
-    const nextIndex =
-      currentTimeFrameIndex === timeFramesNext.length - 1
-        ? 0
-        : currentTimeFrameIndex + 1;
-
-    setTimeFrame(timeFramesNext[nextIndex]);
-  }, [timeFrame]);
+    setTimeFrame((timeFrame) => getNextTimeFrame(timeFrame));
+  }, []);
 
   const [baseFeesSeries, max] = useMemo(() => {
     if (baseFeesOverTime === undefined) {
       return [undefined, undefined];
     }
 
-    const series = pointsFromBaseFeesOverTime(baseFeesOverTime.d1);
+    console.log(baseFeesOverTime);
+
+    const baseFeesOverTimeTimeFrame = baseFeesOverTime[timeFrame] ?? undefined;
+    const series =
+      baseFeesOverTimeTimeFrame === undefined
+        ? undefined
+        : pointsFromBaseFeesOverTime(baseFeesOverTimeTimeFrame);
+
     const max = _maxBy(series, (point) => point[1]);
 
     return [series, max];
-  }, [baseFeesOverTime]);
+  }, [baseFeesOverTime, timeFrame]);
 
-  const baseFeesMap = Object.fromEntries(new Map(baseFeesSeries).entries());
+  const baseFeesMap =
+    baseFeesSeries === undefined
+      ? undefined
+      : Object.fromEntries(new Map(baseFeesSeries).entries());
 
   return (
     <BasicErrorBoundary>
@@ -160,15 +162,20 @@ const SupplyGrowthSection: FC = () => {
           </div>
           <div className="flex flex-col gap-y-4 gap-x-4 lg:flex-row">
             <div className="flex h-min w-full flex-col gap-y-4 lg:w-1/2">
-              <GasMarketWidget baseFeePerGasStats={baseFeePerGasStats} />
+              <GasMarketWidget
+                timeFrame={timeFrame}
+                onClickTimeFrame={handleClickTimeFrame}
+              />
               <EthSupplyWidget />
             </div>
             <div className="w-full lg:w-1/2">
               <BaseFeesWidget
                 barrier={baseFeesOverTime?.barrier}
-                baseFeesSeries={baseFeesSeries ?? []}
-                baseFeesMap={baseFeesMap}
+                baseFeesSeries={baseFeesSeries}
+                baseFeesMap={baseFeesMap ?? {}}
                 max={max?.[1]}
+                timeFrame={timeFrame}
+                onClickTimeFrame={handleClickTimeFrame}
               />
             </div>
           </div>
