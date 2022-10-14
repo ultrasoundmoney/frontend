@@ -35,16 +35,16 @@ const BurnSection: FC = () => {
       />
       <BasicErrorBoundary>
         <div className="flex flex-col gap-4 xs:px-4 md:px-16 ">
-          <div className={`bg-blue-tangaroa rounded-lg p-8`}>
-            <div className="grid grid-cols-2 md:flex md:justify-between flex-col gap-y-8 md:flex-row lg:gap-y-0 ">
-              <div className="row-start-1 flex flex-col gap-4 lg:gap-x-4 lg:flex-row lg:items-center">
+          <div className={`rounded-lg bg-blue-tangaroa p-8`}>
+            <div className="grid grid-cols-2 flex-col gap-y-8 md:flex md:flex-row md:justify-between lg:gap-y-0 ">
+              <div className="row-start-1 flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-x-4">
                 <WidgetTitle>time frame</WidgetTitle>
                 <TimeFrameControl
                   selectedTimeframe={timeFrame}
                   onSetTimeFrame={handleSetTimeFrame}
                 />
               </div>
-              <div className="row-start-2 md:row-start-1 flex flex-col gap-y-4 lg:gap-x-4 lg:flex-row lg:items-center">
+              <div className="row-start-2 flex flex-col gap-y-4 md:row-start-1 lg:flex-row lg:items-center lg:gap-x-4">
                 <WidgetTitle>currency</WidgetTitle>
                 <CurrencyControl selectedUnit={unit} onSetUnit={onSetUnit} />
               </div>
@@ -52,8 +52,8 @@ const BurnSection: FC = () => {
           </div>
           <div
             className={`
-                grid grid-cols-1 lg:grid-cols-2
-                gap-y-4 md:gap-x-4
+                grid grid-cols-1 gap-y-4
+                md:gap-x-4 lg:grid-cols-2
               `}
           >
             <BurnTotal
@@ -61,7 +61,7 @@ const BurnSection: FC = () => {
               timeFrame={timeFrame}
               unit={unit}
             />
-            <div className="lg:col-start-2 lg:row-start-1 lg:row-end-5 lg:h-[688px] xl:h-[702px] flex flex-col gap-y-4">
+            <div className="flex flex-col gap-y-4 lg:col-start-2 lg:row-start-1 lg:row-end-5 lg:h-[688px] xl:h-[702px]">
               <BurnLeaderboard
                 onClickTimeFrame={handleClickTimeFrame}
                 timeFrame={timeFrame}
