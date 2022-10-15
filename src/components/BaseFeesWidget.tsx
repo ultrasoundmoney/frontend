@@ -84,7 +84,7 @@ const baseOptions: Highcharts.Options = {
       marker: {
         enabled: true,
         lineColor: "white",
-        radius: 1,
+        radius: 0.5,
         symbol: "circle",
       },
     },
