@@ -8,9 +8,27 @@ import {
   useGroupedAnalysis1,
 } from "../api/grouped-analysis-1";
 import { AmountUnitSpace } from "./Spacing";
-import SpanMoji from "./SpanMoji";
 import { BaseText } from "./Texts";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
+import batSvg from "../assets/bat-own.svg";
+import speakerSvg from "../assets/speaker-own.svg";
+import barrierSvg from "../assets/barrier-own.svg";
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
+
+const UltraSoundBarrier = () => (
+  <div className="inline-flex gap-x-1">
+    <div className="h-4 w-4">
+      <Image alt="bat emoji" src={batSvg as StaticImageData} />
+    </div>
+    <div className="h-4 w-4">
+      <Image alt="speaker emoji" src={speakerSvg as StaticImageData} />
+    </div>
+    <div className="h-4 w-4">
+      <Image alt="barrier emoji" src={barrierSvg as StaticImageData} />
+    </div>
+  </div>
+);
 
 const DeflationaryStreak: FC = () => {
   const [timeElapsed, setTimeElapsed] = useState<string>();
@@ -38,7 +56,10 @@ const DeflationaryStreak: FC = () => {
   return (
     <WidgetBackground>
       <div className="flex flex-col gap-y-2">
-        <WidgetTitle>deflationary streak</WidgetTitle>
+        <div className="flex items-center gap-x-2">
+          <WidgetTitle className="mt-1">streak above</WidgetTitle>
+          <UltraSoundBarrier />
+        </div>
         <div
           className={`
             flex items-center
@@ -58,11 +79,6 @@ const DeflationaryStreak: FC = () => {
                 />
                 <AmountUnitSpace />
               </BaseText>
-              <SpanMoji
-                className="ml-4 flex items-center gap-x-1"
-                imageClassName="h-8"
-                emoji="🦇🔊"
-              />
             </>
           ) : (
             <BaseText font="font-roboto">0 blocks</BaseText>
@@ -70,7 +86,7 @@ const DeflationaryStreak: FC = () => {
         </div>
         <span className="font-inter text-xs font-extralight text-blue-spindle md:text-sm">
           {deflationaryStreak == null ? (
-            "awaiting deflationary block"
+            "awaiting ultra sound block"
           ) : (
             <>
               spanning
