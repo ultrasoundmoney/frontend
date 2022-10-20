@@ -34,7 +34,6 @@ const formatTooltip = (
   }
   const gasStr = formatTwoDigit(gas / WEI_PER_GWEI);
   return `${description}
-
 ${gasStr} Gwei`;
 };
 
