@@ -62,6 +62,7 @@ const PriceGasWidget: FC = () => {
             alt="gas pump icon"
             width="14"
             height="14"
+            priority
           />
         </div>
         <BaseText font="font-roboto" className="pl-1">
@@ -88,6 +89,7 @@ const PriceGasWidget: FC = () => {
             alt="Ethereum Ether icon"
             width="14"
             height="14"
+            priority
           />
         </div>
         <BaseText font="font-roboto" className="pl-1">
