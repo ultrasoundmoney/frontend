@@ -7,9 +7,9 @@ import { millisFromSeconds } from "../../duration";
 import BodyTextV2 from "../TextsNext/BodyTextV2";
 import LabelText from "../TextsNext/LabelText";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
-import batSvg from "./bat-own.svg";
+import batSvg from "../../assets/bat-own.svg";
 import BatSignalTooltip from "./BatSignalTooltip";
-import speakerSvg from "./speaker-own.svg";
+import speakerSvg from "../../assets/speaker-own.svg";
 
 type Timeout = ReturnType<typeof setTimeout>;
 
