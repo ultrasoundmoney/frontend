@@ -35,22 +35,22 @@ const WearTheBatSignal: FC = () => {
 
   return (
     <WidgetErrorBoundary title="wear the bat signal">
-      <div className="bg-slateus-700 p-8 flex flex-col gap-y-4 rounded-lg">
+      <div className="flex flex-col gap-y-4 rounded-lg bg-slateus-700 p-8">
         <div className="flex justify-between">
           <LabelText>wear the bat signal</LabelText>
 
           <div
             className={`
-              flex items-center
+              flex cursor-pointer
+              items-center
               md:justify-end
-              cursor-pointer
             `}
             onClick={() => setShowTooltip(true)}
           >
             <LabelText>explain</LabelText>
           </div>
         </div>
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           <div className="flex gap-x-4">
             <Image
               alt="emoji of a bat, signifying ultrasound"
@@ -69,23 +69,23 @@ const WearTheBatSignal: FC = () => {
             <span className="relative flex">
               <button
                 className={`
-                  relative
-                  w-[74px] h-fit
-                  bg-gradient-to-tr from-cyan-400 to-indigo-600
-                  rounded-full
-                  px-4 py-2
-                  md:py-1.5 md:m-0.5
-                  font-light text-white
-                  flex justify-center
                   group
-                  select-none
+                  relative flex
+                  h-fit w-[74px] select-none
+                  justify-center
+                  rounded-full bg-gradient-to-tr
+                  from-cyan-400 to-indigo-600
+                  px-4 py-2
+                  font-light text-white
+                  md:m-0.5
+                  md:py-1.5
                 `}
               >
                 <BodyTextV2 className="z-10">copy</BodyTextV2>
                 <div
                   className={`
                     absolute left-[1px] right-[1px] top-[1px] bottom-[1px]
-                    bg-slateus-700 rounded-full
+                    rounded-full bg-slateus-700
                     group-hover:hidden
                   `}
                 ></div>
@@ -93,12 +93,12 @@ const WearTheBatSignal: FC = () => {
               <span
                 className={`
                   absolute left-0 right-0 top-0 bottom-0
-                  bg-slateus-700
-                  flex justify-center items-center
-                  rounded-full
-                  transition-all
                   z-10
-                  border border-white
+                  flex items-center justify-center
+                  rounded-full
+                  border
+                  border-white
+                  bg-slateus-700 transition-all
                   ${
                     isCopiedFeedbackVisible
                       ? "visible opacity-100"
@@ -115,11 +115,11 @@ const WearTheBatSignal: FC = () => {
       <div
         className={`
           tooltip ${showTooltip ? "block" : "hidden"} fixed
-          top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-          min-w-[320px]
+          top-1/2 left-1/2 z-30 min-w-[320px]
           max-w-sm
+          -translate-x-1/2
+          -translate-y-1/2
           cursor-auto
-          z-30
         `}
       >
         <BatSignalTooltip onClickClose={() => setShowTooltip(false)} />
@@ -127,8 +127,8 @@ const WearTheBatSignal: FC = () => {
       <div
         className={`
           fixed top-0 left-0 bottom-0 right-0
-          flex justify-center items-center
-          z-20
+          z-20 flex items-center
+          justify-center
           bg-slateus-700/60
           backdrop-blur-sm
           ${showTooltip ? "" : "hidden"}
