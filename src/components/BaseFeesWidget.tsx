@@ -295,7 +295,7 @@ const BaseFeesWidget: FC<Props> = ({
           )}
         </div>
         <LabelText color="text-slateus-400" className="text-right">
-          live on ultrasound.money
+          live on <span className="text-slateus-200">ultrasound.money</span>
         </LabelText>
       </WidgetBackground>
     </WidgetErrorBoundary>
