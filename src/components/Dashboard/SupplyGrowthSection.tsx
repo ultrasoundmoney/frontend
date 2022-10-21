@@ -12,6 +12,7 @@ import { getNextTimeFrame } from "../../time-frames";
 import BaseFeesWidget from "../BaseFeesWidget";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import CurrencyControl from "../CurrencyControl";
+import DeflationaryStreak from "../DeflationaryStreak";
 import EthSupplyWidget from "../EthSupplyWidget";
 import GasMarketWidget from "../GasMarketWidget";
 import BurnGauge from "../Gauges/BurnGauge";
@@ -166,7 +167,7 @@ const SupplyGrowthSection: FC = () => {
                 timeFrame={timeFrame}
                 onClickTimeFrame={handleClickTimeFrame}
               />
-              <EthSupplyWidget />
+              <DeflationaryStreak />
             </div>
             <div className="w-full lg:w-1/2">
               <BaseFeesWidget

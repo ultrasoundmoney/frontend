@@ -61,7 +61,7 @@ const BurnSection: FC = () => {
               timeFrame={timeFrame}
               unit={unit}
             />
-            <div className="flex flex-col gap-y-4 lg:col-start-2 lg:row-start-1 lg:row-end-5 lg:h-[688px] xl:h-[702px]">
+            <div className="flex flex-col gap-y-4 lg:col-start-2 lg:row-start-1 lg:row-end-4 lg:h-[520px] xl:h-[532px]">
               <BurnLeaderboard
                 onClickTimeFrame={handleClickTimeFrame}
                 timeFrame={timeFrame}
@@ -75,10 +75,7 @@ const BurnSection: FC = () => {
             <div className="lg:row-start-2">
               <LatestBlocks unit={unit} />
             </div>
-            <div className="lg:row-start-3">
-              <DeflationaryStreak />
-            </div>
-            <div className="lg:row-end-5">
+            <div className="lg:row-end-4">
               <BurnRecords
                 onClickTimeFrame={handleClickTimeFrame}
                 timeFrame={timeFrame}
