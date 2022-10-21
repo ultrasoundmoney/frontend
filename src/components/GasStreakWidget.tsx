@@ -33,9 +33,10 @@ type TimeElapsed = {
   days: number;
 };
 
-const SpanningAge: FC<{ updatedAt: DateTimeString | undefined }> = ({
-  updatedAt,
-}) => {
+const SpanningAge: FC<{
+  isLoading: boolean;
+  updatedAt: DateTimeString | undefined;
+}> = ({ isLoading, updatedAt }) => {
   const featureFlags = useContext(FeatureFlagsContext);
   const [timeElapsed, setTimeElapsed] = useState<TimeElapsed>();
 
@@ -90,11 +91,14 @@ const SpanningAge: FC<{ updatedAt: DateTimeString | undefined }> = ({
 
   return (
     <div className="flex items-baseline gap-x-1 truncate">
-      <LabelText color="text-slateus-400">spanning</LabelText>
-      <LabelUnitText className="-mr-1">
-        <SkeletonText width="4.5rem">{timeUnitsAgo}</SkeletonText>
-      </LabelUnitText>
-      <LabelText className="ml-1">{postfix}</LabelText>
+      <QuantifyText size="text-4xl">
+        <SkeletonText width="10rem">
+          {isLoading ? undefined : timeUnitsAgo ?? 0}
+        </SkeletonText>
+      </QuantifyText>
+      <QuantifyText color="text-slateus-200" className="ml-1" size="text-4xl">
+        {isLoading ? undefined : postfix ?? "seconds"}
+      </QuantifyText>
     </div>
   );
 };
@@ -104,45 +108,32 @@ const DeflationaryStreak: FC = () => {
   const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysis1F);
 
   const deflationaryStreak = groupedAnalysis1?.deflationaryStreak.postMerge;
+  const { blocks } = useSpring({ blocks: deflationaryStreak?.count });
 
   return (
     <WidgetBackground>
       <div className="flex flex-col gap-y-2">
         <div className="flex items-center gap-x-2">
-          <WidgetTitle className="mt-1">streak above</WidgetTitle>
-          <UltraSoundBarrier />
-        </div>
-        <div
-          className={`
-            flex items-center
-            text-2xl md:text-4xl lg:text-3xl xl:text-4xl
-          `}
-        >
-          {deflationaryStreak != undefined ? (
-            <>
-              <BaseText font="font-roboto">
-                <CountUp
-                  decimals={0}
-                  duration={0.8}
-                  end={deflationaryStreak.count}
-                  preserveValue
-                  separator=","
-                  suffix={deflationaryStreak.count === 1 ? " block" : " blocks"}
-                />
-                <AmountUnitSpace />
-              </BaseText>
-            </>
-          ) : (
-            <BaseText font="font-roboto">0 blocks</BaseText>
-          )}
+          <WidgetTitle>gas streak</WidgetTitle>
         </div>
         <span className="font-inter text-xs font-extralight text-blue-spindle md:text-sm">
-          {deflationaryStreak == null ? (
-            "awaiting ultra sound block"
-          ) : (
-            <SpanningAge updatedAt={deflationaryStreak.startedOn} />
-          )}
+          <SpanningAge
+            isLoading={deflationaryStreak === undefined}
+            updatedAt={deflationaryStreak?.startedOn}
+          />
         </span>
+        <div className="flex items-center gap-x-1">
+          <LabelUnitText className="mt-1">
+            <animated.span>
+              {blocks?.to((x) => formatZeroDecimals(x))}
+            </animated.span>
+          </LabelUnitText>
+          <LabelText className="mt-1"> blocks</LabelText>
+          <LabelText className="mt-1" color="text-slateus-400">
+            above
+          </LabelText>
+          <UltraSoundBarrier />
+        </div>
       </div>
     </WidgetBackground>
   );
