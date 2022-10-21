@@ -105,8 +105,6 @@ const SupplyGrowthSection: FC = () => {
       return [undefined, undefined];
     }
 
-    console.log(baseFeesOverTime);
-
     const baseFeesOverTimeTimeFrame = baseFeesOverTime[timeFrame] ?? undefined;
     const series =
       baseFeesOverTimeTimeFrame === undefined
