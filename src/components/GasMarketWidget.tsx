@@ -7,7 +7,7 @@ import TimeFrameIndicator from "./TimeFrameIndicator";
 import type { FC } from "react";
 import QuantifyText from "./TextsNext/QuantifyText";
 import SkeletonText from "./TextsNext/SkeletonText";
-import { formatTwoDigit, formatZeroDecimals } from "../format";
+import { formatOneDecimal, formatTwoDigit } from "../format";
 import { WEI_PER_GWEI } from "../eth-units";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
@@ -104,9 +104,7 @@ const Marker: FC<MarkerProps> = ({
     )}
     <SkeletonText>
       {gas !== undefined && (
-        <QuantifyText unitPostfix="Gwei">
-          {formatZeroDecimals(gas / WEI_PER_GWEI)}
-        </QuantifyText>
+        <QuantifyText>{formatOneDecimal(gas / WEI_PER_GWEI)}</QuantifyText>
       )}
     </SkeletonText>
     {orientation === "up" && (
