@@ -652,7 +652,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
   ]);
 
   return (
-    <WidgetErrorBoundary title="supply since merge">
+    <WidgetErrorBoundary title="eth supply">
       <WidgetBackground className="relative flex w-full flex-col overflow-hidden">
         <div
           // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
@@ -676,7 +676,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
         </div>
         {/* Align min-h with emoji widget title on the left */}
         <LabelText className="flex min-h-[21px] items-center">
-          supply since merge
+          eth supply
         </LabelText>
         <div
           // flex-grow fixes bug where highcharts doesn't take full width.
