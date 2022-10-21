@@ -13,7 +13,6 @@ import BaseFeesWidget from "../BaseFeesWidget";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import CurrencyControl from "../CurrencyControl";
 import DeflationaryStreak from "../DeflationaryStreak";
-import EthSupplyWidget from "../EthSupplyWidget";
 import GasMarketWidget from "../GasMarketWidget";
 import BurnGauge from "../Gauges/BurnGauge";
 import IssuanceGauge from "../Gauges/IssuanceGauge";

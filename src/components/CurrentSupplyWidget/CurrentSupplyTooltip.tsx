@@ -5,7 +5,7 @@ import BodyText from "../TextsNext/BodyText";
 import LabelText from "../TextsNext/LabelText";
 import PreciseEth from "./PreciseEth";
 
-const EthSupplyTooltip: FC<{
+const CurrentSupplyTooltip: FC<{
   ethSupply: EthSupply;
   onClickClose: () => void;
 }> = ({ ethSupply, onClickClose }) => (
@@ -15,21 +15,21 @@ const EthSupplyTooltip: FC<{
     }}
     className={`
       relative
-      flex flex-col gap-y-4
-      bg-blue-tangaroa p-8 rounded-lg
-      border border-blue-shipcove
-      w-[22rem]
-      `}
+      flex w-[22rem] flex-col
+      gap-y-4 rounded-lg border
+      border-blue-shipcove bg-blue-tangaroa
+      p-8
+    `}
   >
     <img
       alt="a close button, circular with an x in the middle"
-      className="absolute w-6 right-5 top-5 hover:brightness-90 active:brightness-110 cursor-pointer select-none"
+      className="absolute right-5 top-5 w-6 cursor-pointer select-none hover:brightness-90 active:brightness-110"
       onClick={onClickClose}
       src="/close.svg"
     />
     <img
       alt=""
-      className="w-20 h-20 mx-auto rounded-full select-none"
+      className="mx-auto h-20 w-20 select-none rounded-full"
       src={"/round-nerd-large.svg"}
     />
     <TooltipTitle>ETH supply breakdown</TooltipTitle>
@@ -56,4 +56,4 @@ const EthSupplyTooltip: FC<{
   </div>
 );
 
-export default EthSupplyTooltip;
+export default CurrentSupplyTooltip;
