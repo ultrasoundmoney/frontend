@@ -9,7 +9,7 @@ const EquilibriumWidget = dynamic(() => import("../EquilibriumWidget"), {
 
 const SupplyProjectionsSection: FC = () => (
   <BasicErrorBoundary>
-    <div id="projection">
+    <div id="projection" className="mt-16">
       <SectionDivider
         link="projection"
         subtitle="ultra sound money for years to come"
