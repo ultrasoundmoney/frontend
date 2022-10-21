@@ -22,6 +22,7 @@ import {
 import { posIssuancePerDay, powIssuancePerDay } from "../../static-ether-data";
 import type { SupplyPoint } from "../Dashboard/SupplySection";
 import SimulateProofOfWork from "../SimulateProofOfWork";
+import SinceMergeIndicator from "../SinceMergeIndicator";
 import LabelText from "../TextsNext/LabelText";
 import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
@@ -674,10 +675,10 @@ const SupplySinceMergeWidget: FC<Props> = ({
           `}
           ></div>
         </div>
-        {/* Align min-h with emoji widget title on the left */}
-        <LabelText className="flex min-h-[21px] items-center">
-          eth supply
-        </LabelText>
+        <div className="flex justify-between">
+          <LabelText className="flex items-center">eth supply</LabelText>
+          <SinceMergeIndicator />
+        </div>
         <div
           // flex-grow fixes bug where highcharts doesn't take full width.
           className={`

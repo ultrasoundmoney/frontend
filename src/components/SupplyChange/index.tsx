@@ -14,6 +14,7 @@ import SkeletonText from "../TextsNext/SkeletonText";
 import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
+import SinceMergeIndicator from "../SinceMergeIndicator";
 
 type Props = {
   simulateProofOfWork: boolean;
@@ -55,8 +56,9 @@ const SupplyChange: FC<Props> = ({
     <WidgetErrorBoundary title="supply change">
       <WidgetBackground>
         <div className="relative flex flex-col gap-x-2 gap-y-4">
-          <div className="flex flex-col gap-y-4">
+          <div className="flex justify-between">
             <LabelText>supply change</LabelText>
+            <SinceMergeIndicator />
           </div>
           <div className="flex">
             <BaseText
