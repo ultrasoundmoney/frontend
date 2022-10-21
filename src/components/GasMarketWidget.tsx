@@ -226,7 +226,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
           />
         </div>
         {baseFeePerGasStatsTimeFrame === undefined ? (
-          <div className="flex h-[120px] items-center justify-center">
+          <div className="flex h-[96px] items-center justify-center">
             <LabelText color="text-slateus-300">
               {timeFrame} time frame not yet available
             </LabelText>
