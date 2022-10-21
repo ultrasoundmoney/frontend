@@ -6,9 +6,7 @@ import TotalDifficultyProgressWidget from "../TotalDifficultyProgressWidget";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import type { EthNumber } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
-const SupplySinceMergeWidget = dynamic(
-  () => import("../SupplySinceMergeWidget"),
-);
+const EthSupplyWidget = dynamic(() => import("../EthSupplyWidget"));
 export type SupplyPoint = [JsTimestamp, EthNumber];
 
 const SupplySection: FC = () => {
@@ -33,7 +31,7 @@ const SupplySection: FC = () => {
             <TotalDifficultyProgressWidget progress={1} />
           </div>
           <div className="flex lg:w-1/2">
-            <SupplySinceMergeWidget
+            <EthSupplyWidget
               simulateProofOfWork={simulateProofOfWork}
               onSimulateProofOfWork={handleSimulateProofOfWork}
             />
