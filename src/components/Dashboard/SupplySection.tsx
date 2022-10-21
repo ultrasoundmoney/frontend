@@ -1,11 +1,11 @@
 import dynamic from "next/dynamic";
 import type { FC } from "react";
 import { useCallback, useState } from "react";
-import TotalDifficultyProgressWidget from "../TotalDifficultyProgressWidget";
 import SupplyChange from "../SupplyChange";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import type { EthNumber } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
+import CurrentSupplyWidget from "../CurrentSupplyWidget";
 const EthSupplyWidget = dynamic(() => import("../EthSupplyWidget"));
 export type SupplyPoint = [JsTimestamp, EthNumber];
 
@@ -28,7 +28,7 @@ const SupplySection: FC = () => {
               simulateProofOfWork={simulateProofOfWork}
               onSimulateProofOfWork={handleSimulateProofOfWork}
             />
-            <TotalDifficultyProgressWidget progress={1} />
+            <CurrentSupplyWidget />
           </div>
           <div className="flex lg:w-1/2">
             <EthSupplyWidget
