@@ -82,20 +82,20 @@ const Marker: FC<MarkerProps> = ({
           <Image
             alt="emoji of a bat, first-half of signifying ultra sound base fee per gas"
             src={batSvg as StaticImageData}
-            width={16}
-            height={16}
+            width={15}
+            height={15}
           />
           <Image
             alt="emoji of a speaker, second-half of signifying ultra sound base fee per gas"
             src={speakerSvg as StaticImageData}
-            width={16}
-            height={16}
+            width={15}
+            height={15}
           />
           <Image
             alt="emoji of a barrier, third-half of signifying ultra sound base fee per gas"
             src={barrierSvg as StaticImageData}
-            width={16}
-            height={16}
+            width={15}
+            height={15}
           />
         </div>
       </>
