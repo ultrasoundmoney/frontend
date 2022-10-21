@@ -1,14 +1,14 @@
 import type { FC } from "react";
 import { useCallback, useState } from "react";
 import type { Unit } from "../../denomination";
-import { getNextTimeFrame, TimeFrameNext } from "../../time-frames";
+import type { TimeFrameNext } from "../../time-frames";
+import { getNextTimeFrame } from "../../time-frames";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import BurnCategoryWidget from "../BurnCategoryWidget";
 import BurnLeaderboard from "../BurnLeaderboard";
 import BurnRecords from "../BurnRecords";
 import BurnTotal from "../BurnTotal";
 import CurrencyControl from "../CurrencyControl";
-import DeflationaryStreak from "../DeflationaryStreak";
 import LatestBlocks from "../LatestBlocks";
 import SectionDivider from "../SectionDivider";
 import TimeFrameControl from "../TimeFrameControl";
