@@ -8,11 +8,6 @@ import {
 } from "../api/grouped-analysis-1";
 import { AmountUnitSpace } from "./Spacing";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
-import batSvg from "../assets/bat-own.svg";
-import speakerSvg from "../assets/speaker-own.svg";
-import barrierSvg from "../assets/barrier-own.svg";
-import type { StaticImageData } from "next/image";
-import Image from "next/image";
 import { DateTimeString } from "../time";
 import { FeatureFlagsContext } from "../feature-flags";
 import {
@@ -26,20 +21,10 @@ import {
 import LabelText from "./TextsNext/LabelText";
 import { BaseText, LabelUnitText } from "./Texts";
 import SkeletonText from "./TextsNext/SkeletonText";
-
-const UltraSoundBarrier = () => (
-  <div className="inline-flex gap-x-1">
-    <div className="h-4 w-4">
-      <Image alt="bat emoji" src={batSvg as StaticImageData} />
-    </div>
-    <div className="h-4 w-4">
-      <Image alt="speaker emoji" src={speakerSvg as StaticImageData} />
-    </div>
-    <div className="h-4 w-4">
-      <Image alt="barrier emoji" src={barrierSvg as StaticImageData} />
-    </div>
-  </div>
-);
+import QuantifyText from "./TextsNext/QuantifyText";
+import { useSpring, animated } from "react-spring";
+import { formatZeroDecimals } from "../format";
+import UltraSoundBarrier from "./UltraSoundBarrier";
 
 type TimeElapsed = {
   secs: number;
