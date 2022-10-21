@@ -200,7 +200,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
       : undefined;
 
   return (
-    <WidgetErrorBoundary title="gas market">
+    <WidgetErrorBoundary title="gas market (Gwei)">
       <WidgetBackground className="flex flex-col gap-y-4">
         <div className="flex justify-between">
           <LabelText>gas market</LabelText>
