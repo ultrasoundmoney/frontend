@@ -23,7 +23,7 @@ type Props = {
 const POW_ISSUANCE_PER_DAY = powIssuancePerDay - posIssuancePerDay;
 const SLOTS_PER_DAY = 24 * 60 * 5;
 
-const SupplyChangeSinceMerge: FC<Props> = ({
+const SupplyChange: FC<Props> = ({
   simulateProofOfWork,
   onSimulateProofOfWork,
 }) => {
@@ -52,11 +52,11 @@ const SupplyChangeSinceMerge: FC<Props> = ({
     : ethSupplyImprecise - mergeStatus.supply + simulatedPowIssuanceSinceMerge;
 
   return (
-    <WidgetErrorBoundary title="supply change since merge">
+    <WidgetErrorBoundary title="supply change">
       <WidgetBackground>
-        <div className={`relative flex flex-col gap-x-2 gap-y-4`}>
+        <div className="relative flex flex-col gap-x-2 gap-y-4">
           <div className="flex flex-col gap-y-4">
-            <LabelText>supply change since merge</LabelText>
+            <LabelText>supply change</LabelText>
           </div>
           <div className="flex">
             <BaseText
@@ -107,4 +107,4 @@ const SupplyChangeSinceMerge: FC<Props> = ({
   );
 };
 
-export default SupplyChangeSinceMerge;
+export default SupplyChange;

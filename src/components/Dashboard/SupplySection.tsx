@@ -1,8 +1,8 @@
 import dynamic from "next/dynamic";
 import type { FC } from "react";
 import { useCallback, useState } from "react";
-import SupplyChangeSinceMerge from "../SupplyChangeSinceMerge";
 import TotalDifficultyProgressWidget from "../TotalDifficultyProgressWidget";
+import SupplyChange from "../SupplyChange";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import type { EthNumber } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
@@ -24,7 +24,7 @@ const SupplySection: FC = () => {
       >
         <div className="mt-16 flex flex-col gap-x-4 gap-y-4 lg:flex-row">
           <div className="flex flex-col gap-y-4 lg:w-1/2">
-            <SupplyChangeSinceMerge
+            <SupplyChange
               simulateProofOfWork={simulateProofOfWork}
               onSimulateProofOfWork={handleSimulateProofOfWork}
             />
