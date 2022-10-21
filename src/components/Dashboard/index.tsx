@@ -40,7 +40,7 @@ const SupplyProjectionsSection = dynamic(
   () => import("./SupplyProjectionsSection"),
   { ssr: false },
 );
-const SupplyGrowthSection = dynamic(() => import("./SupplyGrowthSection"), {
+const GasSection = dynamic(() => import("./GasSection"), {
   ssr: false,
 });
 // Likely culprit.
@@ -128,7 +128,7 @@ const Dashboard: FC = () => {
           </div>
           <MainTitle>ultra sound money</MainTitle>
           <SupplySection />
-          <SupplyGrowthSection />
+          <GasSection />
           <SupplyProjectionsSection />
           <div className="h-16"></div>
           <BurnSection />

@@ -12,7 +12,7 @@ import { getNextTimeFrame } from "../../time-frames";
 import BaseFeesWidget from "../BaseFeesWidget";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import CurrencyControl from "../CurrencyControl";
-import DeflationaryStreak from "../DeflationaryStreak";
+import GasStreakWidget from "../GasStreakWidget";
 import GasMarketWidget from "../GasMarketWidget";
 import BurnGauge from "../Gauges/BurnGauge";
 import IssuanceGauge from "../Gauges/IssuanceGauge";
@@ -124,9 +124,9 @@ const SupplyGrowthSection: FC = () => {
     <BasicErrorBoundary>
       <div id="growth" className="mt-16">
         <SectionDivider
-          link="growth"
+          link="gas"
           subtitle="burn greater than issuance?"
-          title="supply growth"
+          title="gas"
         />
         <div className="flex flex-col gap-4 xs:px-4 md:px-16">
           <div>
@@ -164,7 +164,7 @@ const SupplyGrowthSection: FC = () => {
                 timeFrame={timeFrame}
                 onClickTimeFrame={handleClickTimeFrame}
               />
-              <DeflationaryStreak />
+              <GasStreakWidget />
             </div>
             <div className="w-full lg:w-1/2">
               <BaseFeesWidget
