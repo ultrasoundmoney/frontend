@@ -23,7 +23,14 @@ const QuantifyText: FC<Props> = ({
     {children}
     {amountPostfix === undefined ? undefined : amountPostfix}
     {unitPostfix && (
-      <span className="ml-1 text-slateus-400">{unitPostfix}</span>
+      <BaseText
+        font="font-roboto"
+        color="text-slateus-400"
+        className="ml-1"
+        weight="font-normal"
+      >
+        {unitPostfix}
+      </BaseText>
     )}
   </BaseText>
 );
