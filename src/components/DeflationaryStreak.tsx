@@ -1,5 +1,4 @@
-import * as DateFns from "date-fns";
-import type { FC } from "react";
+import { FC, useContext } from "react";
 import { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import Skeleton from "react-loading-skeleton";
@@ -8,13 +7,25 @@ import {
   useGroupedAnalysis1,
 } from "../api/grouped-analysis-1";
 import { AmountUnitSpace } from "./Spacing";
-import { BaseText } from "./Texts";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 import batSvg from "../assets/bat-own.svg";
 import speakerSvg from "../assets/speaker-own.svg";
 import barrierSvg from "../assets/barrier-own.svg";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
+import { DateTimeString } from "../time";
+import { FeatureFlagsContext } from "../feature-flags";
+import {
+  differenceInDays,
+  differenceInHours,
+  differenceInMinutes,
+  differenceInSeconds,
+  formatDistanceStrict,
+  parseISO,
+} from "date-fns";
+import LabelText from "./TextsNext/LabelText";
+import { BaseText, LabelUnitText } from "./Texts";
+import SkeletonText from "./TextsNext/SkeletonText";
 
 const UltraSoundBarrier = () => (
   <div className="inline-flex gap-x-1">
@@ -30,28 +41,87 @@ const UltraSoundBarrier = () => (
   </div>
 );
 
+type TimeElapsed = {
+  secs: number;
+  mins: number;
+  hours: number;
+  days: number;
+};
+
+const SpanningAge: FC<{ updatedAt: DateTimeString | undefined }> = ({
+  updatedAt,
+}) => {
+  const featureFlags = useContext(FeatureFlagsContext);
+  const [timeElapsed, setTimeElapsed] = useState<TimeElapsed>();
+
+  useEffect(() => {
+    if (updatedAt === undefined) {
+      return;
+    }
+
+    const dt = parseISO(updatedAt);
+    const secs = differenceInSeconds(new Date(), dt);
+    const mins = differenceInMinutes(new Date(), dt);
+    const hours = differenceInHours(new Date(), dt);
+    const days = differenceInDays(new Date(), dt);
+    setTimeElapsed({ secs, mins, hours, days });
+
+    const intervalId = window.setInterval(() => {
+      const secs = differenceInSeconds(new Date(), parseISO(updatedAt));
+      const mins = differenceInMinutes(new Date(), parseISO(updatedAt));
+      const hours = differenceInHours(new Date(), dt);
+      const days = differenceInDays(new Date(), dt);
+      setTimeElapsed({ secs, mins, hours, days });
+    }, 1000);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [updatedAt]);
+
+  const largestNonZero: keyof TimeElapsed | undefined =
+    timeElapsed === undefined || featureFlags.previewSkeletons
+      ? undefined
+      : timeElapsed.days > 0
+      ? "days"
+      : timeElapsed.hours > 0
+      ? "hours"
+      : timeElapsed.mins > 0
+      ? "mins"
+      : "secs";
+
+  const timeUnitsAgo =
+    largestNonZero === undefined || timeElapsed === undefined
+      ? undefined
+      : timeElapsed[largestNonZero];
+
+  // If it's one second, minute, hour, or day, cut of the 's' in seconds, etc.
+  const postfix =
+    timeUnitsAgo === undefined
+      ? undefined
+      : timeUnitsAgo === 1
+      ? `${largestNonZero}`.slice(0, -1)
+      : largestNonZero;
+
+  return (
+    <div className="flex items-baseline gap-x-1 truncate">
+      <LabelText color="text-slateus-400">spanning</LabelText>
+      <LabelUnitText className="-mr-1">
+        <SkeletonText width="4.5rem">{timeUnitsAgo}</SkeletonText>
+      </LabelUnitText>
+      <LabelText className="ml-1">{postfix}</LabelText>
+      <LabelText color="text-slateus-400" className="truncate">
+        ago
+      </LabelText>
+    </div>
+  );
+};
+
 const DeflationaryStreak: FC = () => {
-  const [timeElapsed, setTimeElapsed] = useState<string>();
   const groupedAnalysis1F = useGroupedAnalysis1();
   const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysis1F);
 
   const deflationaryStreak = groupedAnalysis1?.deflationaryStreak.postMerge;
-  const latestBlocks = groupedAnalysis1?.latestBlockFees;
-
-  useEffect(() => {
-    if (deflationaryStreak == undefined || latestBlocks === undefined) {
-      return;
-    }
-
-    const lastBlock = latestBlocks[0];
-
-    setTimeElapsed(
-      DateFns.formatDistanceStrict(
-        DateFns.parseISO(lastBlock.minedAt),
-        DateFns.parseISO(deflationaryStreak.startedOn),
-      ),
-    );
-  }, [deflationaryStreak, latestBlocks]);
 
   return (
     <WidgetBackground>
@@ -88,12 +158,7 @@ const DeflationaryStreak: FC = () => {
           {deflationaryStreak == null ? (
             "awaiting ultra sound block"
           ) : (
-            <>
-              spanning
-              <span className="ml-1 text-white">
-                {timeElapsed || <Skeleton inline={true} width="2rem" />}
-              </span>
-            </>
+            <SpanningAge updatedAt={deflationaryStreak.startedOn} />
           )}
         </span>
       </div>
