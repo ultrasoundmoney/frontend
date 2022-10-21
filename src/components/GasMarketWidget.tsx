@@ -235,7 +235,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
           <div
             className={`
               relative
-              my-14
+              my-11
               mx-11
               flex
               h-2
