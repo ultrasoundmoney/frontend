@@ -9,7 +9,7 @@ import colors from "../colors";
 import type { Gwei } from "../eth-units";
 import { formatBlockNumber } from "../format";
 import type { TimeFrameNext } from "../time-frames";
-import type { BaseFeePoint } from "./Dashboard/SupplyGrowthSection";
+import type { BaseFeePoint } from "./Dashboard/GasSection";
 import LabelText from "./TextsNext/LabelText";
 import TimeFrameIndicator from "./TimeFrameIndicator";
 import WidgetErrorBoundary from "./WidgetErrorBoundary";

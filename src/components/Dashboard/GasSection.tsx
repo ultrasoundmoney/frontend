@@ -81,7 +81,7 @@ const pointsFromBaseFeesOverTime = (
       [block_number, wei / WEI_PER_GWEI] as BaseFeePoint,
   );
 
-const SupplyGrowthSection: FC = () => {
+const GasSection: FC = () => {
   const baseFeesOverTime = useBaseFeeOverTime();
   const [simulateProofOfWork, setSimulateProofOfWork] = useState(false);
   const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
@@ -179,4 +179,4 @@ const SupplyGrowthSection: FC = () => {
   );
 };
 
-export default SupplyGrowthSection;
+export default GasSection;
