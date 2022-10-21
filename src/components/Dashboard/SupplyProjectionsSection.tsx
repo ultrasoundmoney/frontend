@@ -12,7 +12,7 @@ const SupplyProjectionsSection: FC = () => (
     <div id="projection" className="mt-16">
       <SectionDivider
         link="projection"
-        subtitle="ultra sound money for years to come"
+        subtitle="ultra sound for decades to come"
         title="supply projections"
       />
       <div className="flex flex-col gap-4 xs:px-4 md:px-16">

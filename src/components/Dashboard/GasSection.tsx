@@ -123,11 +123,7 @@ const SupplyGrowthSection: FC = () => {
   return (
     <BasicErrorBoundary>
       <div id="growth" className="mt-16">
-        <SectionDivider
-          link="gas"
-          subtitle="burn greater than issuance?"
-          title="gas"
-        />
+        <SectionDivider link="gas" subtitle="gas is the new oil" title="gas" />
         <div className="flex flex-col gap-4 xs:px-4 md:px-16">
           <div>
             <div className="isolate flex w-full flex-col md:flex-row">
