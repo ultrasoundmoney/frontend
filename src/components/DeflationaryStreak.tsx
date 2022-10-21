@@ -110,9 +110,6 @@ const SpanningAge: FC<{ updatedAt: DateTimeString | undefined }> = ({
         <SkeletonText width="4.5rem">{timeUnitsAgo}</SkeletonText>
       </LabelUnitText>
       <LabelText className="ml-1">{postfix}</LabelText>
-      <LabelText color="text-slateus-400" className="truncate">
-        ago
-      </LabelText>
     </div>
   );
 };
