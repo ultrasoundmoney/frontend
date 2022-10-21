@@ -294,7 +294,7 @@ const BaseFeesWidget: FC<Props> = ({
             <HighchartsReact highcharts={Highcharts} options={options} />
           )}
         </div>
-        <LabelText color="text-slateus-400" className="text-right">
+        <LabelText color="text-slateus-400 mt-2" className="text-right">
           live on <span className="text-slateus-200">ultrasound.money</span>
         </LabelText>
       </WidgetBackground>
