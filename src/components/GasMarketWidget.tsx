@@ -63,15 +63,14 @@ const Marker: FC<MarkerProps> = ({
   const styles = useSpring({
     left: `${getPercentage(highest, lowest, gas) * 100}%`,
   });
-  const { gwei } = useSpring({ gwei: gas });
+  const { gwei } = useSpring({ gwei: gas, round: 0.1 });
 
   return (
     <animated.div
       className={`
         absolute flex
         -translate-x-1/2 flex-col items-center
-        ${vertical === "top" ? "-top-[48px]" : "-bottom-[56px]"}
-        ${label === "barrier-max" || label === "barrier-min" ? "invisible" : ""}
+        ${vertical === "top" ? "-top-[48px]" : "-bottom-[40px]"}
       `}
       style={styles}
       title={formatTooltip(description, gas)}
@@ -79,21 +78,20 @@ const Marker: FC<MarkerProps> = ({
       {vertical === "bottom" && (
         <div
           className={`
-          mb-2
-          h-12 w-px
-          rounded-b-full
-          ${markerColor}
-        `}
+            h-12 w-px
+            rounded-b-full
+            ${markerColor}
+          `}
         ></div>
       )}
       {label === "barrier" ? (
         <>
           <div
             className={`
-            absolute top-2 flex h-[15px]
-            w-[53px] select-none gap-x-1
-            ${horizontal === "right" ? "left-2" : "right-2"}
-          `}
+              absolute top-2 flex h-[15px]
+              w-[53px] select-none gap-x-1
+              ${horizontal === "right" ? "left-2" : "right-2"}
+            `}
           >
             <Image
               alt="emoji of a bat, first-half of signifying ultra sound base fee per gas"
@@ -119,17 +117,19 @@ const Marker: FC<MarkerProps> = ({
         <LabelText
           color={emphasize ? undefined : "text-slateus-400"}
           className={`
-          absolute top-2
-          ${horizontal === "right" ? "left-2" : "right-2"}
-          ${emphasize ? "" : "text-slateus-400"}
-        `}
+            absolute top-2
+            ${vertical === "top" ? "top-2" : "top-3"}
+            ${horizontal === "right" ? "left-2" : "right-2"}
+            ${emphasize ? "" : "text-slateus-400"}
+          `}
         >
           {label}
         </LabelText>
       )}
       <QuantifyText
         className={`
-          absolute top-6
+          absolute
+          ${vertical === "top" ? "top-6" : "top-7"}
           ${horizontal === "right" ? "left-2" : "right-2"}
         `}
         color={emphasize ? "text-white" : "text-slateus-200"}
@@ -205,6 +205,16 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
     lowest !== undefined &&
     deltaPercent !== undefined;
 
+  const deltaLeft =
+    deltaPercent === undefined
+      ? undefined
+      : deltaPercent >= 0
+      ? `${barrierPercent}%`
+      : `${averagePercent}%`;
+
+  const deltaWidth =
+    deltaPercent === undefined ? undefined : `${Math.abs(deltaPercent)}%`;
+
   return (
     <WidgetErrorBoundary title="gas market">
       <WidgetBackground className="flex flex-col gap-y-4">
@@ -245,11 +255,8 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                   }
                 `}
                 style={{
-                  left:
-                    deltaPercent >= 0
-                      ? `${barrierPercent}%`
-                      : `${averagePercent}%`,
-                  width: `${Math.abs(deltaPercent)}%`,
+                  left: deltaLeft,
+                  width: deltaWidth,
                 }}
               ></div>
             )}
