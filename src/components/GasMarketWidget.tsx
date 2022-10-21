@@ -6,7 +6,6 @@ import LabelText from "./TextsNext/LabelText";
 import TimeFrameIndicator from "./TimeFrameIndicator";
 import type { FC } from "react";
 import QuantifyText from "./TextsNext/QuantifyText";
-import SkeletonText from "./TextsNext/SkeletonText";
 import { formatOneDecimal, formatTwoDigit } from "../format";
 import { WEI_PER_GWEI } from "../eth-units";
 import type { StaticImageData } from "next/image";
@@ -15,7 +14,7 @@ import batSvg from "../assets/bat-own.svg";
 import speakerSvg from "../assets/speaker-own.svg";
 import barrierSvg from "../assets/barrier-own.svg";
 import type { TimeFrameNext } from "../time-frames";
-import { animated, config, useSpring } from "react-spring";
+import { animated, useSpring } from "react-spring";
 
 const getPercentage = (
   highest: number,
@@ -39,14 +38,15 @@ ${gasStr} Gwei`;
 };
 
 type MarkerProps = {
+  description?: string;
   emphasize?: boolean;
   gas: number;
   highest: number;
+  horizontal: "left" | "right";
   label: string;
   lowest: number;
+  markerColor: string;
   vertical: "top" | "bottom";
-  horizontal: "left" | "right";
-  description?: string;
 };
 
 const Marker: FC<MarkerProps> = ({
@@ -57,29 +57,32 @@ const Marker: FC<MarkerProps> = ({
   horizontal,
   label,
   lowest,
-  vertical: orientation,
+  markerColor,
+  vertical,
 }) => {
   const styles = useSpring({
     left: `${getPercentage(highest, lowest, gas) * 100}%`,
   });
+  const { gwei } = useSpring({ gwei: gas });
 
   return (
     <animated.div
       className={`
         absolute flex
         -translate-x-1/2 flex-col items-center
-        ${orientation === "top" ? "-top-[48px]" : "-bottom-[56px]"}
+        ${vertical === "top" ? "-top-[48px]" : "-bottom-[56px]"}
         ${label === "barrier-max" || label === "barrier-min" ? "invisible" : ""}
       `}
       style={styles}
       title={formatTooltip(description, gas)}
     >
-      {orientation === "bottom" && (
+      {vertical === "bottom" && (
         <div
           className={`
           mb-2
-          h-12 w-0.5
-          rounded-b-full bg-slateus-600
+          h-12 w-px
+          rounded-b-full
+          ${markerColor}
         `}
         ></div>
       )}
@@ -126,16 +129,19 @@ const Marker: FC<MarkerProps> = ({
       )}
       <QuantifyText
         className={`
-        absolute top-6
-        ${horizontal === "right" ? "left-2" : "right-2"}
-      `}
+          absolute top-6
+          ${horizontal === "right" ? "left-2" : "right-2"}
+        `}
         color={emphasize ? "text-white" : "text-slateus-200"}
         size="text-sm"
+        unitPostfix={vertical === "top" ? "Gwei" : undefined}
       >
-        {formatOneDecimal(gas / WEI_PER_GWEI)}
+        <animated.span>
+          {gwei.to((x) => formatOneDecimal(x / WEI_PER_GWEI))}
+        </animated.span>
       </QuantifyText>
-      {orientation === "top" && (
-        <div className={`mt-2 h-12 w-0.5 rounded-t-full bg-slateus-200`}></div>
+      {vertical === "top" && (
+        <div className={`mt-2 h-12 w-px rounded-t-full ${markerColor}`}></div>
       )}
     </animated.div>
   );
@@ -192,8 +198,15 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
       ? averagePercent - barrierPercent
       : undefined;
 
+  const isDataAvailable =
+    baseFeePerGasStats !== undefined &&
+    baseFeePerGasStatsTimeFrame !== undefined &&
+    highest !== undefined &&
+    lowest !== undefined &&
+    deltaPercent !== undefined;
+
   return (
-    <WidgetErrorBoundary title="gas market (Gwei)">
+    <WidgetErrorBoundary title="gas market">
       <WidgetBackground className="flex flex-col gap-y-4">
         <div className="flex justify-between">
           <LabelText>gas market</LabelText>
@@ -213,6 +226,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
             className={`
               relative
               my-14
+              mx-11
               flex
               h-2
               rounded-full
@@ -239,59 +253,66 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                 }}
               ></div>
             )}
-            {baseFeePerGasStats !== undefined &&
-              baseFeePerGasStatsTimeFrame !== undefined &&
-              highest !== undefined &&
-              lowest !== undefined && (
-                <>
-                  <Marker
-                    description="minimum gas price"
-                    gas={baseFeePerGasStatsTimeFrame.min}
-                    highest={highest}
-                    horizontal="left"
-                    label="min"
-                    lowest={lowest}
-                    vertical="bottom"
-                  />
-                  <Marker
-                    description="maximum gas price"
-                    gas={baseFeePerGasStatsTimeFrame.max}
-                    highest={highest}
-                    horizontal="right"
-                    label="max"
-                    lowest={lowest}
-                    vertical="bottom"
-                  />
-                  <Marker
-                    description="average gas price"
-                    gas={baseFeePerGasStatsTimeFrame.average}
-                    highest={highest}
-                    horizontal={
-                      baseFeePerGasStatsTimeFrame.average >
-                      baseFeePerGasStats.barrier
-                        ? "right"
-                        : "left"
-                    }
-                    label="average"
-                    lowest={lowest}
-                    vertical="top"
-                  />
-                  <Marker
-                    description="ultra sound barrier"
-                    gas={baseFeePerGasStats.barrier}
-                    highest={highest}
-                    horizontal={
-                      baseFeePerGasStats.barrier <=
-                      baseFeePerGasStatsTimeFrame.average
-                        ? "left"
-                        : "right"
-                    }
-                    label="barrier"
-                    lowest={lowest}
-                    vertical="top"
-                  />
-                </>
-              )}
+            {isDataAvailable && (
+              <>
+                <Marker
+                  description="minimum gas price"
+                  gas={baseFeePerGasStatsTimeFrame.min}
+                  highest={highest}
+                  horizontal="left"
+                  label="min"
+                  lowest={lowest}
+                  markerColor="bg-slateus-400"
+                  vertical="bottom"
+                />
+                <Marker
+                  description="maximum gas price"
+                  gas={baseFeePerGasStatsTimeFrame.max}
+                  highest={highest}
+                  horizontal="right"
+                  label="max"
+                  lowest={lowest}
+                  markerColor="bg-slateus-400"
+                  vertical="bottom"
+                />
+                <Marker
+                  description="average gas price"
+                  emphasize
+                  gas={baseFeePerGasStatsTimeFrame.average}
+                  highest={highest}
+                  horizontal={
+                    baseFeePerGasStatsTimeFrame.average >
+                    baseFeePerGasStats.barrier
+                      ? "right"
+                      : "left"
+                  }
+                  label="average"
+                  lowest={lowest}
+                  markerColor={
+                    deltaPercent >= 0 ? "bg-yellow-500" : "bg-cyan-300"
+                  }
+                  vertical="top"
+                />
+                <Marker
+                  description="ultra sound barrier"
+                  emphasize
+                  gas={baseFeePerGasStats.barrier}
+                  highest={highest}
+                  horizontal={
+                    baseFeePerGasStats.barrier <=
+                    baseFeePerGasStatsTimeFrame.average
+                      ? "left"
+                      : "right"
+                  }
+                  label="barrier"
+                  lowest={lowest}
+                  markerColor={
+                    deltaPercent >= 0 ? "bg-orange-400" : "bg-indigo-500"
+                  }
+                  vertical="top"
+                />
+              </>
+            )}
           </div>
         )}
       </WidgetBackground>
