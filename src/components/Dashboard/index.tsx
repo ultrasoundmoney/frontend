@@ -112,7 +112,7 @@ const Dashboard: FC = () => {
     <FeatureFlagsContext.Provider value={featureFlags}>
       <SkeletonTheme
         baseColor={colors.slateus500}
-        highlightColor={"#565b7f"}
+        highlightColor="#565b7f"
         enableAnimation={true}
       >
         <GasTitle />
