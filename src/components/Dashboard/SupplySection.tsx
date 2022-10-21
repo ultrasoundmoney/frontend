@@ -11,7 +11,7 @@ const SupplySinceMergeWidget = dynamic(
 );
 export type SupplyPoint = [JsTimestamp, EthNumber];
 
-const MergeSection: FC = () => {
+const SupplySection: FC = () => {
   const [simulateProofOfWork, setSimulateProofOfWork] = useState(false);
 
   const handleSimulateProofOfWork = useCallback(() => {
@@ -44,4 +44,4 @@ const MergeSection: FC = () => {
   );
 };
 
-export default MergeSection;
+export default SupplySection;

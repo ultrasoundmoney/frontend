@@ -20,7 +20,7 @@ import {
   formatZeroDecimals,
 } from "../../format";
 import { posIssuancePerDay, powIssuancePerDay } from "../../static-ether-data";
-import type { SupplyPoint } from "../Dashboard/MergeSection";
+import type { SupplyPoint } from "../Dashboard/SupplySection";
 import SimulateProofOfWork from "../SimulateProofOfWork";
 import LabelText from "../TextsNext/LabelText";
 import UpdatedAgo from "../UpdatedAgo";

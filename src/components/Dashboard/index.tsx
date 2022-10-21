@@ -20,7 +20,7 @@ import TopBar from "../TopBar";
 import ContactSection from "./ContactSection";
 import FamSection from "./FamSection";
 import JoinDiscordSection from "./JoinDiscordSection";
-import MergeSection from "./MergeSection";
+import SupplySection from "./SupplySection";
 
 const AdminTools = dynamic(() => import("../AdminTools"), { ssr: false });
 // We get hydration errors in production.
@@ -127,7 +127,7 @@ const Dashboard: FC = () => {
             </BasicErrorBoundary>
           </div>
           <MainTitle>ultra sound money</MainTitle>
-          <MergeSection />
+          <SupplySection />
           <SupplyGrowthSection />
           <SupplyProjectionsSection />
           <div className="h-16"></div>
