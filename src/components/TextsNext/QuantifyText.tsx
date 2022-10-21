@@ -5,19 +5,23 @@ type Props = {
   amountPostfix?: string;
   children: ReactNode;
   className?: string;
+  color?: string;
+  size?: string;
   skeletonWidth?: string;
   unitPostfix?: string;
 };
 
 const QuantifyText: FC<Props> = ({
-  amountPostfix = "",
+  amountPostfix,
   children,
-  className = "",
-  unitPostfix = "",
+  className,
+  color,
+  unitPostfix,
+  size,
 }) => (
-  <BaseText font="font-roboto" className={className}>
+  <BaseText font="font-roboto" className={className} color={color} size={size}>
     {children}
-    {amountPostfix && amountPostfix}
+    {amountPostfix === undefined ? undefined : amountPostfix}
     {unitPostfix && (
       <span className="ml-1 text-slateus-400">{unitPostfix}</span>
     )}

@@ -15,6 +15,7 @@ import batSvg from "../assets/bat-own.svg";
 import speakerSvg from "../assets/speaker-own.svg";
 import barrierSvg from "../assets/barrier-own.svg";
 import type { TimeFrameNext } from "../time-frames";
+import { animated, config, useSpring } from "react-spring";
 
 const getPercentage = (
   highest: number,
@@ -38,84 +39,107 @@ ${gasStr} Gwei`;
 };
 
 type MarkerProps = {
-  emphasize: boolean;
+  emphasize?: boolean;
   gas: number;
   highest: number;
   label: string;
   lowest: number;
-  orientation: "up" | "down";
+  vertical: "top" | "bottom";
+  horizontal: "left" | "right";
   description?: string;
 };
 
 const Marker: FC<MarkerProps> = ({
-  emphasize,
+  description,
+  emphasize = false,
   gas,
   highest,
+  horizontal,
   label,
   lowest,
-  orientation,
-  description,
-}) => (
-  <div
-    className={`
+  vertical: orientation,
+}) => {
+  const styles = useSpring({
+    left: `${getPercentage(highest, lowest, gas) * 100}%`,
+  });
+
+  return (
+    <animated.div
+      className={`
         absolute flex
         -translate-x-1/2 flex-col items-center
-        ${orientation === "up" ? "-top-14" : "-bottom-14"}
-        ${emphasize ? "" : "opacity-60"}
+        ${orientation === "top" ? "-top-[48px]" : "-bottom-[56px]"}
         ${label === "barrier-max" || label === "barrier-min" ? "invisible" : ""}
       `}
-    style={{
-      left: `${getPercentage(highest, lowest, gas) * 100}%`,
-    }}
-    title={formatTooltip(description, gas)}
-  >
-    {orientation === "down" && (
-      <div
-        className={`w-0.5 ${
-          emphasize ? "h-4" : "h-2"
-        } mb-2 rounded-b-full bg-slateus-200`}
-      ></div>
-    )}
-    {label === "barrier" ? (
-      <>
-        <div className="flex select-none gap-x-1">
-          <Image
-            alt="emoji of a bat, first-half of signifying ultra sound base fee per gas"
-            src={batSvg as StaticImageData}
-            width={15}
-            height={15}
-          />
-          <Image
-            alt="emoji of a speaker, second-half of signifying ultra sound base fee per gas"
-            src={speakerSvg as StaticImageData}
-            width={15}
-            height={15}
-          />
-          <Image
-            alt="emoji of a barrier, third-half of signifying ultra sound base fee per gas"
-            src={barrierSvg as StaticImageData}
-            width={15}
-            height={15}
-          />
-        </div>
-      </>
-    ) : (
-      <LabelText>{label}</LabelText>
-    )}
-    <SkeletonText>
-      {gas !== undefined && (
-        <QuantifyText>{formatOneDecimal(gas / WEI_PER_GWEI)}</QuantifyText>
+      style={styles}
+      title={formatTooltip(description, gas)}
+    >
+      {orientation === "bottom" && (
+        <div
+          className={`
+          mb-2
+          h-12 w-0.5
+          rounded-b-full bg-slateus-600
+        `}
+        ></div>
       )}
-    </SkeletonText>
-    {orientation === "up" && (
-      <div
-        className={`w-0.5 ${
-          emphasize ? "h-4" : "h-2"
-        } mt-2 rounded-t-full bg-slateus-200`}
-      ></div>
-    )}
-  </div>
-);
+      {label === "barrier" ? (
+        <>
+          <div
+            className={`
+            absolute top-2 flex h-[15px]
+            w-[53px] select-none gap-x-1
+            ${horizontal === "right" ? "left-2" : "right-2"}
+          `}
+          >
+            <Image
+              alt="emoji of a bat, first-half of signifying ultra sound base fee per gas"
+              src={batSvg as StaticImageData}
+              width={15}
+              height={15}
+            />
+            <Image
+              alt="emoji of a speaker, second-half of signifying ultra sound base fee per gas"
+              src={speakerSvg as StaticImageData}
+              width={15}
+              height={15}
+            />
+            <Image
+              alt="emoji of a barrier, third-half of signifying ultra sound base fee per gas"
+              src={barrierSvg as StaticImageData}
+              width={15}
+              height={15}
+            />
+          </div>
+        </>
+      ) : (
+        <LabelText
+          color={emphasize ? undefined : "text-slateus-400"}
+          className={`
+          absolute top-2
+          ${horizontal === "right" ? "left-2" : "right-2"}
+          ${emphasize ? "" : "text-slateus-400"}
+        `}
+        >
+          {label}
+        </LabelText>
+      )}
+      <QuantifyText
+        className={`
+        absolute top-6
+        ${horizontal === "right" ? "left-2" : "right-2"}
+      `}
+        color={emphasize ? "text-white" : "text-slateus-200"}
+        size="text-sm"
+      >
+        {formatOneDecimal(gas / WEI_PER_GWEI)}
+      </QuantifyText>
+      {orientation === "top" && (
+        <div className={`mt-2 h-12 w-0.5 rounded-t-full bg-slateus-200`}></div>
+      )}
+    </animated.div>
+  );
+};
 
 type Props = {
   onClickTimeFrame: () => void;
@@ -142,37 +166,6 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
       ? undefined
       : Math.max(baseFeePerGasStatsTimeFrame.max, baseFeePerGasStats.barrier) *
         (1 + barPaddingFactor);
-
-  const markerList =
-    baseFeePerGasStatsTimeFrame === undefined ||
-    baseFeePerGasStats === undefined
-      ? []
-      : [
-          {
-            label: "barrier",
-            gas: baseFeePerGasStats.barrier,
-            emphasize: true,
-            description: "ultra sound barrier",
-          },
-          {
-            label: "min",
-            gas: baseFeePerGasStatsTimeFrame.min,
-            emphasize: false,
-            description: "minimum gas price",
-          },
-          {
-            label: "max",
-            gas: baseFeePerGasStatsTimeFrame.max,
-            emphasize: false,
-            description: "maximum gas price",
-          },
-          {
-            label: "average",
-            gas: baseFeePerGasStatsTimeFrame.average,
-            emphasize: true,
-            description: "average gas price",
-          },
-        ].sort(({ gas: gasA }, { gas: gasB }) => gasA - gasB);
 
   const gasRange =
     highest === undefined || lowest === undefined
@@ -246,22 +239,58 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                 }}
               ></div>
             )}
-            {markerList !== undefined &&
+            {baseFeePerGasStats !== undefined &&
+              baseFeePerGasStatsTimeFrame !== undefined &&
               highest !== undefined &&
-              lowest !== undefined &&
-              markerList.map(
-                ({ label, gas, emphasize, description }, index) => (
+              lowest !== undefined && (
+                <>
                   <Marker
+                    description="minimum gas price"
+                    gas={baseFeePerGasStatsTimeFrame.min}
                     highest={highest}
+                    horizontal="left"
+                    label="min"
                     lowest={lowest}
-                    key={label}
-                    label={label}
-                    gas={gas}
-                    orientation={index % 2 === 0 ? "up" : "down"}
-                    emphasize={emphasize}
-                    description={description}
+                    vertical="bottom"
                   />
-                ),
+                  <Marker
+                    description="maximum gas price"
+                    gas={baseFeePerGasStatsTimeFrame.max}
+                    highest={highest}
+                    horizontal="right"
+                    label="max"
+                    lowest={lowest}
+                    vertical="bottom"
+                  />
+                  <Marker
+                    description="average gas price"
+                    gas={baseFeePerGasStatsTimeFrame.average}
+                    highest={highest}
+                    horizontal={
+                      baseFeePerGasStatsTimeFrame.average >
+                      baseFeePerGasStats.barrier
+                        ? "right"
+                        : "left"
+                    }
+                    label="average"
+                    lowest={lowest}
+                    vertical="top"
+                  />
+                  <Marker
+                    description="ultra sound barrier"
+                    gas={baseFeePerGasStats.barrier}
+                    highest={highest}
+                    horizontal={
+                      baseFeePerGasStats.barrier <=
+                      baseFeePerGasStatsTimeFrame.average
+                        ? "left"
+                        : "right"
+                    }
+                    label="barrier"
+                    lowest={lowest}
+                    vertical="top"
+                  />
+                </>
               )}
           </div>
         )}
