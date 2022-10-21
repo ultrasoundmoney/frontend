@@ -1,14 +1,14 @@
 import { differenceInDays } from "date-fns";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
-import { londonHardfork } from "../dates";
+import { londonHardFork } from "../dates";
 import { millisFromHours } from "../duration";
 import type { TimeFrameNext } from "../time-frames";
 import { displayTimeFrameNextMap } from "../time-frames";
 import { WidgetTitle } from "./WidgetSubcomponents";
 
 const getFormattedDays = (now: Date) => {
-  const daysCount = differenceInDays(now, londonHardfork);
+  const daysCount = differenceInDays(now, londonHardFork);
   return `${daysCount}d`;
 };
 
@@ -37,11 +37,11 @@ const TimeFrameIndicator: FC<Props> = ({
 
   return (
     <button
-      className={`flex gap-x-2 items-baseline ${className}`}
+      className={`flex items-baseline gap-x-2 ${className}`}
       onClick={onClickTimeFrame}
     >
       <WidgetTitle>time frame</WidgetTitle>
-      <p className="font-roboto font-light text-white text-xs">
+      <p className="font-roboto text-xs font-light text-white">
         {timeFrame === "all"
           ? daysSinceLondon
           : displayTimeFrameNextMap[timeFrame]}

@@ -10,7 +10,7 @@ import {
   useGroupedAnalysis1,
 } from "../api/grouped-analysis-1";
 import fireSvg from "../assets/fire-own.svg";
-import { londonHardfork } from "../dates";
+import { londonHardFork } from "../dates";
 import type { Unit } from "../denomination";
 import * as Duration from "../duration";
 import * as Format from "../format";
@@ -97,7 +97,7 @@ const BurnTotal: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
 
   useEffect(() => {
     setMillisecondsSinceLondonHardfork(
-      DateFns.differenceInMilliseconds(new Date(), londonHardfork),
+      DateFns.differenceInMilliseconds(new Date(), londonHardFork),
     );
   }, []);
 
