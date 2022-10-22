@@ -140,10 +140,11 @@ const baseOptions: Highcharts.Options = {
 type PointMap = Record<number, number>;
 
 const getTooltip = (
-  supplySinceMergeMap: PointMap,
-  supplySinceMergePowMap: PointMap,
   bitcoinSupplySeriesMap: PointMap,
   mergeStatus: MergeStatus,
+  simulateProofOfWork: boolean,
+  supplySinceMergeMap: PointMap,
+  supplySinceMergePowMap: PointMap,
 ): TooltipFormatterCallbackFunction =>
   function () {
     const x = typeof this.x === "number" ? this.x : undefined;
@@ -205,7 +206,11 @@ const getTooltip = (
 
     return `
     <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
-      <div class="text-slateus-400 mb-2">${title}</div>
+      ${
+        !simulateProofOfWork
+          ? ""
+          : `<div class="mb-2 text-slateus-400">${title}</div>`
+      }
       <div class="text-slateus-400">${formattedDate} UTC</div>
       <div class="flex flex-col items-end">
         <div class="text-white">
@@ -634,10 +639,11 @@ const SupplySinceMergeWidget: FC<Props> = ({
         borderWidth: 0,
         shadow: false,
         formatter: getTooltip(
-          supplySinceMergeMap,
-          supplySinceMergePowMap,
           bitcoinSupplySeriesMap,
           mergeStatus,
+          simulateProofOfWork,
+          supplySinceMergeMap,
+          supplySinceMergePowMap,
         ),
       },
     } as Highcharts.Options);
