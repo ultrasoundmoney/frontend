@@ -61,15 +61,6 @@ const GasSection: FC = () => {
         <SectionDivider link="gas" subtitle="gas is the new oil" title="gas" />
         <div className="flex flex-col gap-4 xs:px-4 md:px-16">
           <div className="flex flex-col gap-y-4 gap-x-4 lg:flex-row">
-            <div className="flex h-min w-full flex-col gap-y-4 lg:w-1/2">
-              <GasMarketWidget
-                timeFrame={timeFrame}
-                onClickTimeFrame={handleClickTimeFrame}
-              />
-              <GasStreakWidget
-                lastBaseFeeAtTime={_last(baseFeesOverTime?.m5)}
-              />
-            </div>
             <div className="w-full lg:w-1/2">
               <BaseFeesWidget
                 barrier={baseFeesOverTime?.barrier}
@@ -78,6 +69,15 @@ const GasSection: FC = () => {
                 max={max?.[1]}
                 timeFrame={timeFrame}
                 onClickTimeFrame={handleClickTimeFrame}
+              />
+            </div>
+            <div className="flex h-min w-full flex-col gap-y-4 lg:w-1/2">
+              <GasMarketWidget
+                timeFrame={timeFrame}
+                onClickTimeFrame={handleClickTimeFrame}
+              />
+              <GasStreakWidget
+                lastBaseFeeAtTime={_last(baseFeesOverTime?.m5)}
               />
             </div>
           </div>

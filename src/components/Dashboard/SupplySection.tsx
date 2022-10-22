@@ -33,18 +33,18 @@ const SupplySection: FC = () => {
         id="merge"
       >
         <div className="mt-16 flex flex-col gap-x-4 gap-y-4 lg:flex-row">
+          <div className="flex lg:w-1/2">
+            <EthSupplyWidget
+              simulateProofOfWork={simulateProofOfWork}
+              onSimulateProofOfWork={handleSimulateProofOfWork}
+            />
+          </div>
           <div className="flex flex-col gap-y-4 lg:w-1/2">
             <SupplyChange
               simulateProofOfWork={simulateProofOfWork}
               onSimulateProofOfWork={handleSimulateProofOfWork}
             />
             <CurrentSupplyWidget />
-          </div>
-          <div className="flex lg:w-1/2">
-            <EthSupplyWidget
-              simulateProofOfWork={simulateProofOfWork}
-              onSimulateProofOfWork={handleSimulateProofOfWork}
-            />
           </div>
         </div>
         <GaugeWidget
