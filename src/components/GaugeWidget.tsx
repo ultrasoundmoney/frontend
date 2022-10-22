@@ -39,7 +39,7 @@ const Controls: FC<{
         <WidgetTitle>currency</WidgetTitle>
         <CurrencyControl selectedUnit={unit} onSetUnit={onSetUnit} />
       </div>
-      <div className="row-start-2 flex flex-col gap-4 text-left md:row-start-1 md:text-right lg:flex-row lg:items-center">
+      <div className="col-span-2 row-start-2 flex items-center gap-4 text-left md:row-start-1 md:flex-col md:text-right lg:flex-row">
         <BaseText
           font="font-inter"
           color="text-slateus-200"
