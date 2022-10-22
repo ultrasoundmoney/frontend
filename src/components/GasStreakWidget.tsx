@@ -58,7 +58,7 @@ type Props = {
   lastBaseFeeAtTime: BaseFeeAtTime | undefined;
 };
 
-const DeflationaryStreak: FC<Props> = ({ lastBaseFeeAtTime }) => {
+const GasStreakWidget: FC<Props> = ({ lastBaseFeeAtTime }) => {
   const groupedAnalysis1F = useGroupedAnalysis1();
   const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysis1F);
 
@@ -98,4 +98,4 @@ const DeflationaryStreak: FC<Props> = ({ lastBaseFeeAtTime }) => {
   );
 };
 
-export default DeflationaryStreak;
+export default GasStreakWidget;
