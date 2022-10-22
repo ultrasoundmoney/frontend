@@ -202,6 +202,7 @@ const BaseFeesWidget: FC<Props> = ({
       },
       series: [
         {
+          animation: false,
           id: "base-fees-over-area",
           type: "areaspline",
           threshold: barrier,
