@@ -1,11 +1,13 @@
 import { secondsToMilliseconds } from "date-fns";
 import useSWR from "swr";
 import type { Gwei, WeiNumber } from "../eth-units";
+import type { DateTimeString } from "../time";
 import type { ApiResult } from "./fetchers";
 import { fetchJsonSwr } from "./fetchers";
 
 export type BaseFeeAtTime = {
   block_number: number;
+  timestamp: DateTimeString;
   wei: WeiNumber;
 };
 

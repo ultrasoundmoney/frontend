@@ -1,3 +1,4 @@
+import { formatInTimeZone } from "date-fns-tz";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import highchartsAnnotations from "highcharts/modules/annotations";
@@ -56,7 +57,7 @@ const baseOptions: Highcharts.Options = {
   },
   title: undefined,
   xAxis: {
-    // type: "datetime",
+    type: "datetime",
     lineWidth: 0,
     labels: { enabled: false, style: { color: colors.slateus400 } },
     tickWidth: 0,
@@ -103,15 +104,7 @@ const makeBarrier = (barrier: number) => ({
     useHTML: true,
     align: "right",
     formatter: () => `
-      <div class="flex -mt-0.5">
-        <div class="font-roboto font-light text-white">
-          ${barrier?.toFixed(1)}
-        </div>
-        <div class="font-roboto font-light text-slateus-400 ml-1">
-          Gwei
-        </div>
-      </div>
-      <div class="flex justify-center mt-1">
+      <div class="flex justify-end">
         <img
           class="w-4 h-4"
           src="/bat-own.svg"
@@ -124,6 +117,14 @@ const makeBarrier = (barrier: number) => ({
           class="w-4 h-4 ml-1"
           src="/barrier-own.svg"
         />
+      </div>
+      <div class="flex mt-0.5">
+        <div class="font-roboto font-light text-white">
+          ${barrier?.toFixed(1)}
+        </div>
+        <div class="font-roboto font-light text-slateus-400 ml-1">
+          Gwei
+        </div>
       </div>
     `,
   },
@@ -143,14 +144,15 @@ const getTooltipFormatter = (
       return undefined;
     }
 
-    const formattedDate = formatBlockNumber(x);
+    const dt = new Date(x);
+    const formattedDate = formatInTimeZone(dt, "UTC", "MMM d, hh:mm:ssaa");
 
     return `
       <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
         <div class="text-blue-spindle">${formattedDate}</div>
         <div class="flex">
           <div class="text-white">${total.toFixed(2)}</div>
-          <div class="font-roboto font-light text-slateus-400 ml-1">Gwei</div>
+          <div class="font-roboto text-slateus-400 ml-1">Gwei</div>
         </div>
       </div>
     `;

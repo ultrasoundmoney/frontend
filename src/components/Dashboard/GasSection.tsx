@@ -13,6 +13,7 @@ import BasicErrorBoundary from "../BasicErrorBoundary";
 import GasStreakWidget from "../GasStreakWidget";
 import GasMarketWidget from "../GasMarketWidget";
 import SectionDivider from "../SectionDivider";
+import { parseISO } from "date-fns";
 
 export type BaseFeePoint = [JsTimestamp, Gwei];
 
@@ -20,8 +21,8 @@ const pointsFromBaseFeesOverTime = (
   baseFeesD1: BaseFeeAtTime[],
 ): BaseFeePoint[] =>
   baseFeesD1.map(
-    ({ block_number, wei }) =>
-      [block_number, wei / WEI_PER_GWEI] as BaseFeePoint,
+    ({ wei, timestamp }) =>
+      [parseISO(timestamp).getTime(), wei / WEI_PER_GWEI] as BaseFeePoint,
   );
 
 const GasSection: FC = () => {
