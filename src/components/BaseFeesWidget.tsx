@@ -1,4 +1,4 @@
-import { formatInTimeZone } from "date-fns-tz";
+import { format } from "date-fns";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import highchartsAnnotations from "highcharts/modules/annotations";
@@ -144,7 +144,7 @@ const getTooltipFormatter = (
     }
 
     const dt = new Date(x);
-    const formattedDate = formatInTimeZone(dt, "UTC", "MMM d, hh:mm:ssaa");
+    const formattedDate = format(dt, "MMM d, HH:mm:ssx");
 
     return `
       <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
