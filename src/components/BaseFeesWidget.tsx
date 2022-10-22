@@ -258,7 +258,7 @@ const BaseFeesWidget: FC<Props> = ({
           // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
           className={`
             pointer-events-none absolute -top-40
-            -right-0 h-full
+            -left-56 h-full
             w-full
             opacity-[0.25]
             blur-[110px]

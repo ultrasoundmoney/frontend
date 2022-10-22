@@ -664,8 +664,8 @@ const SupplySinceMergeWidget: FC<Props> = ({
         <div
           // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
           className={`
-            pointer-events-none absolute -top-40
-            -right-0 h-full
+            pointer-events-none absolute -left-36
+            -top-40 h-full
             w-full
             opacity-[0.20]
             blur-[120px]
