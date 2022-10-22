@@ -292,7 +292,7 @@ const BaseFeesWidget: FC<Props> = ({
           {baseFeesSeries === undefined ? (
             <div className="flex h-full items-center justify-center">
               <LabelText color="text-slateus-300">
-                {timeFrame} time frame not yet available
+                data not yet available
               </LabelText>
             </div>
           ) : (

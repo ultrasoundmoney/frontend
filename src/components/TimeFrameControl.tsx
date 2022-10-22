@@ -1,6 +1,9 @@
 import type { FC, ReactNode } from "react";
 import type { TimeFrameNext } from "../time-frames";
 import { displayTimeFrameNextMap, timeFramesNext } from "../time-frames";
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
+import flameSvg from "../assets/flame-slateus.svg";
 
 export const Button: FC<{
   children: ReactNode;
@@ -40,7 +43,16 @@ const TimeFrameControl: FC<Props> = ({ selectedTimeframe, onSetTimeFrame }) => (
         isActive={selectedTimeframe === timeFrame}
         onClick={() => onSetTimeFrame(timeFrame)}
       >
-        {displayTimeFrameNextMap[timeFrame]}
+        {timeFrame === "all" ? (
+          <Image
+            alt="flame emoji symbolizing time span since london hark fork when EIP-1559 was activated"
+            src={flameSvg as StaticImageData}
+            width={12}
+            height={12}
+          />
+        ) : (
+          displayTimeFrameNextMap[timeFrame]
+        )}
       </Button>
     ))}
   </div>

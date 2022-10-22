@@ -5,7 +5,7 @@ import { londonHardFork } from "../dates";
 import { millisFromHours } from "../duration";
 import type { TimeFrameNext } from "../time-frames";
 import { displayTimeFrameNextMap } from "../time-frames";
-import { WidgetTitle } from "./WidgetSubcomponents";
+import LabelText from "./TextsNext/LabelText";
 
 const getFormattedDays = (now: Date) => {
   const daysCount = differenceInDays(now, londonHardFork);
@@ -39,8 +39,9 @@ const TimeFrameIndicator: FC<Props> = ({
     <button
       className={`flex items-baseline gap-x-2 ${className}`}
       onClick={onClickTimeFrame}
+      title="since London hark fork where EIP-1559 was activated"
     >
-      <WidgetTitle>time frame</WidgetTitle>
+      <LabelText>{timeFrame === "all" ? "since burn" : "time frame"}</LabelText>
       <p className="font-roboto text-xs font-light text-white">
         {timeFrame === "all"
           ? daysSinceLondon
