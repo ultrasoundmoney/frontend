@@ -81,6 +81,9 @@ const baseOptions: Highcharts.Options = {
   credits: { enabled: false },
   plotOptions: {
     series: {
+      animation: {
+        duration: 300,
+      },
       marker: {
         enabled: true,
         lineColor: "white",
