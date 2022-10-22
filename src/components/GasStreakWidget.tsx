@@ -66,7 +66,7 @@ const DeflationaryStreak: FC<Props> = ({ lastBaseFeeAtTime }) => {
 
   return (
     <WidgetBackground>
-      <div className="flex flex-col gap-y-2">
+      <div className="flex flex-col gap-y-4">
         <div className="flex items-center gap-x-2">
           <WidgetTitle>gas streak</WidgetTitle>
         </div>

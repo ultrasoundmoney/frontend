@@ -53,7 +53,7 @@ const EthSupplyWidget: FC = () => {
               onClickClose={() => setShowNerdTooltip(false)}
             />
           </div>
-          <div className="flex flex-col gap-y-2">
+          <div className="flex flex-col gap-y-4">
             <PreciseEth>{ethSupplySum}</PreciseEth>
             <UpdatedAgo
               updatedAt={getDateTimeFromSlot(
