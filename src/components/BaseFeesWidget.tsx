@@ -65,7 +65,11 @@ const baseOptions: Highcharts.Options = {
     endOnTick: false,
     gridLineWidth: 0,
     labels: {
-      style: { color: colors.slateus400, fontFamily: "Roboto Mono" },
+      style: {
+        color: colors.slateus400,
+        fontFamily: "Roboto Mono",
+        fontSize: "12px",
+      },
     },
     title: undefined,
   },
