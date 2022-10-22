@@ -8,22 +8,18 @@ import type { JsTimestamp } from "../../time";
 import CurrentSupplyWidget from "../CurrentSupplyWidget";
 import GaugeWidget from "../GaugeWidget";
 import type { TimeFrameNext } from "../../time-frames";
-import { getNextTimeFrame } from "../../time-frames";
 const EthSupplyWidget = dynamic(() => import("../EthSupplyWidget"));
 export type SupplyPoint = [JsTimestamp, EthNumber];
 
-const SupplySection: FC = () => {
+const SupplySection: FC<{
+  onClickTimeFrame: () => void;
+  onSetTimeFrame: (timeFrame: TimeFrameNext) => void;
+  timeFrame: TimeFrameNext;
+}> = ({ timeFrame, onClickTimeFrame, onSetTimeFrame }) => {
   const [simulateProofOfWork, setSimulateProofOfWork] = useState(false);
-  const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
-
-  const handleSetTimeFrame = useCallback(setTimeFrame, [setTimeFrame]);
 
   const handleSimulateProofOfWork = useCallback(() => {
     setSimulateProofOfWork((simulateProofOfWork) => !simulateProofOfWork);
-  }, []);
-
-  const handleClickTimeFrame = useCallback(() => {
-    setTimeFrame((timeFrame) => getNextTimeFrame(timeFrame));
   }, []);
 
   return (
@@ -48,9 +44,9 @@ const SupplySection: FC = () => {
           </div>
         </div>
         <GaugeWidget
-          onClickTimeFrame={handleClickTimeFrame}
+          onClickTimeFrame={onClickTimeFrame}
           onSimulateProofOfWork={handleSimulateProofOfWork}
-          onSetTimeFrame={handleSetTimeFrame}
+          onSetTimeFrame={onSetTimeFrame}
           simulateProofOfWork={simulateProofOfWork}
           timeFrame={timeFrame}
         />

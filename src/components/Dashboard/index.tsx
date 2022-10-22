@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import type { FC } from "react";
+import { useCallback } from "react";
 import { useEffect, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -11,6 +12,8 @@ import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
 import useAuthFromSection from "../../hooks/use-auth-from-section";
 import { useTwitterAuthStatus } from "../../hooks/use-twitter-auth";
+import type { TimeFrameNext } from "../../time-frames";
+import { getNextTimeFrame } from "../../time-frames";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import PoapSection from "../FamPage/PoapSection";
 import HeaderGlow from "../HeaderGlow";
@@ -106,7 +109,14 @@ const GasTitle = () => {
 const Dashboard: FC = () => {
   const { featureFlags, setFlag } = FeatureFlags.useFeatureFlags();
   const [twitterAuthStatus, setTwitterAuthStatus] = useTwitterAuthStatus();
+  const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
   useScrollOnLoad();
+
+  const handleClickTimeFrame = useCallback(() => {
+    setTimeFrame((timeFrame) => getNextTimeFrame(timeFrame));
+  }, []);
+
+  const handleSetTimeFrame = useCallback(setTimeFrame, [setTimeFrame]);
 
   return (
     <FeatureFlagsContext.Provider value={featureFlags}>
@@ -127,8 +137,15 @@ const Dashboard: FC = () => {
             </BasicErrorBoundary>
           </div>
           <MainTitle>ultra sound money</MainTitle>
-          <SupplySection />
-          <GasSection />
+          <SupplySection
+            timeFrame={timeFrame}
+            onSetTimeFrame={handleSetTimeFrame}
+            onClickTimeFrame={handleClickTimeFrame}
+          />
+          <GasSection
+            timeFrame={timeFrame}
+            onClickTimeFrame={handleClickTimeFrame}
+          />
           <SupplyProjectionsSection />
           <div className="h-16"></div>
           <BurnSection />

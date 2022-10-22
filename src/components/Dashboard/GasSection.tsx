@@ -1,13 +1,12 @@
 import _maxBy from "lodash/maxBy";
 import type { FC } from "react";
-import { useCallback, useMemo, useState } from "react";
+import { useMemo } from "react";
 import type { BaseFeeAtTime } from "../../api/base-fee-over-time";
 import { useBaseFeeOverTime } from "../../api/base-fee-over-time";
 import type { Gwei } from "../../eth-units";
 import { WEI_PER_GWEI } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
 import type { TimeFrameNext } from "../../time-frames";
-import { getNextTimeFrame } from "../../time-frames";
 import BaseFeesWidget from "../BaseFeesWidget";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import GasStreakWidget from "../GasStreakWidget";
@@ -26,13 +25,11 @@ const pointsFromBaseFeesOverTime = (
       [parseISO(timestamp).getTime(), wei / WEI_PER_GWEI] as BaseFeePoint,
   );
 
-const GasSection: FC = () => {
+const GasSection: FC<{
+  timeFrame: TimeFrameNext;
+  onClickTimeFrame: () => void;
+}> = ({ timeFrame, onClickTimeFrame }) => {
   const baseFeesOverTime = useBaseFeeOverTime();
-  const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
-
-  const handleClickTimeFrame = useCallback(() => {
-    setTimeFrame((timeFrame) => getNextTimeFrame(timeFrame));
-  }, []);
 
   const [baseFeesSeries, max] = useMemo(() => {
     if (baseFeesOverTime === undefined) {
@@ -68,13 +65,13 @@ const GasSection: FC = () => {
                 baseFeesMap={baseFeesMap ?? {}}
                 max={max?.[1]}
                 timeFrame={timeFrame}
-                onClickTimeFrame={handleClickTimeFrame}
+                onClickTimeFrame={onClickTimeFrame}
               />
             </div>
             <div className="flex h-min w-full flex-col gap-y-4 lg:w-1/2">
               <GasMarketWidget
                 timeFrame={timeFrame}
-                onClickTimeFrame={handleClickTimeFrame}
+                onClickTimeFrame={onClickTimeFrame}
               />
               <GasStreakWidget
                 lastBaseFeeAtTime={_last(baseFeesOverTime?.m5)}
