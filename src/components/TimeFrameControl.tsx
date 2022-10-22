@@ -12,15 +12,15 @@ export const Button: FC<{
 }> = ({ children, isActive, onClick }) => (
   <button
     className={`
-      font-roboto font-light
-      text-xs md:tracking-widest
-      px-[10px] [@media(min-width:354px)]:px-3 py-2
-      select-none
-      border
+      select-none border
+      px-[10px] py-2
+      font-roboto text-xs font-light
+      md:tracking-widest
+      [@media(min-width:354px)]:px-3
       ${
         isActive
-          ? "text-white bg-blue-highlightbg border-blue-highlightborder rounded-sm"
-          : "text-blue-spindle border-transparent"
+          ? "rounded-sm border-blue-highlightborder bg-blue-highlightbg text-white"
+          : "border-transparent text-blue-spindle"
       }
     `}
     onClick={onClick}

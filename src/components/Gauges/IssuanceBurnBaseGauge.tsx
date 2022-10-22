@@ -64,8 +64,10 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
           progress={progress}
         />
         <div
-          className="font-roboto text-white text-center font-light text-3xl -mt-[60px]"
-          style={{ color: needleColor }}
+          className={`
+            -mt-[60px] text-center font-roboto text-3xl
+            font-light
+          `}
         >
           {value === undefined || previewSkeletons ? (
             <div className="-mb-2">
@@ -73,7 +75,17 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
               <span>{gaugeUnit}</span>
             </div>
           ) : (
-            <animated.p className="-mb-2">
+            <animated.p
+              className={`
+              -mb-2 bg-gradient-to-r bg-clip-text 
+              text-transparent
+              ${
+                title === "burn"
+                  ? "from-orange-500 to-yellow-300"
+                  : "from-cyan-300 to-indigo-500"
+              }
+              `}
+            >
               {valueA.to(
                 (n) =>
                   `${
@@ -86,7 +98,7 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
           )}
         </div>
       </div>
-      <p className="font-roboto font-light text-xs text-blue-spindle select-none mt-[7px] mb-2.5">
+      <p className="mt-[7px] mb-2.5 select-none font-roboto text-xs font-light text-blue-spindle">
         {valueUnit}
       </p>
       {emoji === "flame" ? (
