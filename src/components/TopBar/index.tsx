@@ -83,6 +83,7 @@ const TopBar: FC = () => {
             alt="bell icon"
             width="14"
             height="14"
+            priority
           />
         </button>
 
