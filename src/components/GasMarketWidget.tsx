@@ -61,6 +61,7 @@ const Marker: FC<MarkerProps> = ({
   markerColor,
   vertical,
 }) => {
+  // TODO: rewrite to use translation
   const styles = useSpring({
     left: `${getPercentage(highest, lowest, gas) * 100}%`,
   });
