@@ -39,14 +39,16 @@ const SpanningAge: FC<SpanningAgeProps> = ({
   return (
     <div className="flex items-baseline gap-x-1 truncate">
       <QuantifyText size="text-4xl">
-        <SkeletonText width="10rem">
+        <SkeletonText width="2rem">
           {isLoading ? undefined : (
             <CountUp preserveValue end={formattedNumber} />
           )}
         </SkeletonText>
       </QuantifyText>
       <QuantifyText color="text-slateus-200" className="ml-1" size="text-4xl">
-        {isLoading ? undefined : formattedUnit ?? "seconds"}
+        <SkeletonText width="8rem">
+          {isLoading ? undefined : formattedUnit ?? "seconds"}
+        </SkeletonText>
       </QuantifyText>
     </div>
   );
@@ -77,7 +79,11 @@ const DeflationaryStreak: FC<Props> = ({ lastBaseFeeAtTime }) => {
         </span>
         <div className="flex items-center gap-x-1">
           <LabelUnitText className="mt-1">
-            {deflationaryStreak?.count}
+            <SkeletonText width="3rem">
+              {deflationaryStreak === undefined
+                ? undefined
+                : deflationaryStreak?.count ?? 0}
+            </SkeletonText>
           </LabelUnitText>
           <LabelText className="mt-1">
             {deflationaryStreak?.count === 1 ? " block" : " blocks"}
