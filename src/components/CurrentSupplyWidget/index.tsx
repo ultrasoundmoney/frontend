@@ -23,7 +23,7 @@ const EthSupplyWidget: FC = () => {
   );
 
   return (
-    <WidgetErrorBoundary title="eth supply">
+    <WidgetErrorBoundary title="current supply">
       <WidgetBackground className="flex">
         <div className="relative flex flex-col gap-y-4">
           <div
@@ -35,7 +35,7 @@ const EthSupplyWidget: FC = () => {
             `}
             onClick={() => setShowNerdTooltip(true)}
           >
-            <WidgetTitle>eth supply</WidgetTitle>
+            <WidgetTitle>current supply</WidgetTitle>
             <Nerd />
           </div>
           <div
