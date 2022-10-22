@@ -35,11 +35,11 @@ const Controls: FC<{
           onSetTimeFrame={onSetTimeFrame}
         />
       </div>
-      <div className="row-start-2 flex flex-col gap-y-4 md:row-start-1 lg:flex-row lg:items-center lg:gap-x-4">
+      <div className="row-start-2 hidden flex-col gap-y-4 md:row-start-1 md:flex lg:flex-row lg:items-center lg:gap-x-4">
         <WidgetTitle>currency</WidgetTitle>
         <CurrencyControl selectedUnit={unit} onSetUnit={onSetUnit} />
       </div>
-      <div className="row-start-2 flex flex-col gap-4 text-right md:row-start-1 lg:flex-row lg:items-center">
+      <div className="row-start-2 flex flex-col gap-4 text-left md:row-start-1 md:text-right lg:flex-row lg:items-center">
         <BaseText
           font="font-inter"
           color="text-slateus-200"
@@ -48,7 +48,7 @@ const Controls: FC<{
           SIMULATE PoW
         </BaseText>
         {/* On tablet the vertical alignment looks off without aligning the toggle with the neighboring controls */}
-        <div className="flex h-[34px] items-center self-end">
+        <div className="flex h-[34px] items-center self-start md:self-end">
           <ToggleSwitch
             checked={simulateProofOfWork}
             onToggle={onToggleSimulateProofOfWork}
