@@ -15,6 +15,7 @@ import speakerSvg from "../assets/speaker-own.svg";
 import barrierSvg from "../assets/barrier-own.svg";
 import type { TimeFrameNext } from "../time-frames";
 import { animated, useSpring } from "react-spring";
+import CountUp from "react-countup";
 
 const getPercentage = (
   highest: number,
@@ -63,7 +64,6 @@ const Marker: FC<MarkerProps> = ({
   const styles = useSpring({
     left: `${getPercentage(highest, lowest, gas) * 100}%`,
   });
-  const { gwei } = useSpring({ gwei: gas, round: 0.1 });
 
   return (
     <animated.div
@@ -136,9 +136,14 @@ const Marker: FC<MarkerProps> = ({
         size="text-sm"
         unitPostfix={vertical === "top" ? "Gwei" : undefined}
       >
-        <animated.span>
-          {gwei.to((x) => formatOneDecimal(x / WEI_PER_GWEI))}
-        </animated.span>
+        <CountUp
+          end={gas / WEI_PER_GWEI}
+          preserveValue
+          formattingFn={formatOneDecimal}
+          duration={1}
+          useEasing
+          decimals={1}
+        />
       </QuantifyText>
       {vertical === "top" && (
         <div className={`mt-2 h-12 w-px rounded-t-full ${markerColor}`}></div>
