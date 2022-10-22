@@ -50,7 +50,7 @@ const baseOptions: Highcharts.Options = {
     },
     backgroundColor: "transparent",
     showAxes: false,
-    marginRight: 80,
+    marginRight: 84,
     marginLeft: 40,
     marginTop: 14,
   },
@@ -101,30 +101,30 @@ const makeBarrier = (barrier: number) => ({
   value: barrier,
   zIndex: 10,
   label: {
-    x: 76,
+    x: 84,
     text: `${barrier?.toFixed(2)} Gwei 🦇🔊`,
     useHTML: true,
     align: "right",
     formatter: () => `
       <div class="flex justify-end">
         <img
-          class="w-4 h-4"
+          class="w-[15px] h-[15px]"
           src="/bat-own.svg"
         />
         <img
-          class="w-4 h-4 ml-1"
+          class="w-[15px] h-[15px] ml-1"
           src="/speaker-own.svg"
         />
         <img
-          class="w-4 h-4 ml-1"
+          class="w-[15px] h-[15px] ml-1"
           src="/barrier-own.svg"
         />
       </div>
-      <div class="flex mt-0.5">
-        <div class="font-roboto font-light text-white">
+      <div class="flex text-sm">
+        <div class="font-roboto text-white">
           ${barrier?.toFixed(1)}
         </div>
-        <div class="font-roboto font-light text-slateus-400 ml-1">
+        <div class="font-roboto text-slateus-400 ml-1">
           Gwei
         </div>
       </div>
