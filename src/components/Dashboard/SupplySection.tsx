@@ -6,14 +6,24 @@ import BasicErrorBoundary from "../BasicErrorBoundary";
 import type { EthNumber } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
 import CurrentSupplyWidget from "../CurrentSupplyWidget";
+import GaugeWidget from "../GaugeWidget";
+import type { TimeFrameNext } from "../../time-frames";
+import { getNextTimeFrame } from "../../time-frames";
 const EthSupplyWidget = dynamic(() => import("../EthSupplyWidget"));
 export type SupplyPoint = [JsTimestamp, EthNumber];
 
 const SupplySection: FC = () => {
   const [simulateProofOfWork, setSimulateProofOfWork] = useState(false);
+  const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
+
+  const handleSetTimeFrame = useCallback(setTimeFrame, [setTimeFrame]);
 
   const handleSimulateProofOfWork = useCallback(() => {
     setSimulateProofOfWork((simulateProofOfWork) => !simulateProofOfWork);
+  }, []);
+
+  const handleClickTimeFrame = useCallback(() => {
+    setTimeFrame((timeFrame) => getNextTimeFrame(timeFrame));
   }, []);
 
   return (
@@ -37,6 +47,13 @@ const SupplySection: FC = () => {
             />
           </div>
         </div>
+        <GaugeWidget
+          onClickTimeFrame={handleClickTimeFrame}
+          onSimulateProofOfWork={handleSimulateProofOfWork}
+          onSetTimeFrame={handleSetTimeFrame}
+          simulateProofOfWork={simulateProofOfWork}
+          timeFrame={timeFrame}
+        />
       </div>
     </BasicErrorBoundary>
   );

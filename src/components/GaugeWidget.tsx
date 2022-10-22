@@ -2,7 +2,6 @@ import type { FC } from "react";
 import { useCallback, useState } from "react";
 import type { Unit } from "../denomination";
 import type { TimeFrameNext } from "../time-frames";
-import { getNextTimeFrame } from "../time-frames";
 import CurrencyControl from "./CurrencyControl";
 import BurnGauge from "./Gauges/BurnGauge";
 import IssuanceGauge from "./Gauges/IssuanceGauge";
@@ -16,13 +15,13 @@ const Controls: FC<{
   timeFrame: TimeFrameNext;
   onSetTimeFrame: (timeFrame: TimeFrameNext) => void;
   simulateProofOfWork: boolean;
-  onToggleSimulateProofOfWork: (simulateProofOfWork: boolean) => void;
+  onSimulateProofOfWork: () => void;
   unit: Unit;
   onSetUnit: (unit: Unit) => void;
 }> = ({
   onSetTimeFrame,
   onSetUnit,
-  onToggleSimulateProofOfWork,
+  onSimulateProofOfWork: onToggleSimulateProofOfWork,
   simulateProofOfWork,
   timeFrame,
   unit,
@@ -60,22 +59,22 @@ const Controls: FC<{
   </div>
 );
 
-const GaugeWidget: FC = () => {
-  const [simulateProofOfWork, setSimulateProofOfWork] = useState(false);
+const GaugeWidget: FC<{
+  onClickTimeFrame: () => void;
+  onSetTimeFrame: (timeFrame: TimeFrameNext) => void;
+  onSimulateProofOfWork: () => void;
+  simulateProofOfWork: boolean;
+  timeFrame: TimeFrameNext;
+}> = ({
+  onClickTimeFrame,
+  onSetTimeFrame,
+  onSimulateProofOfWork,
+  simulateProofOfWork,
+  timeFrame,
+}) => {
   const [unit, setUnit] = useState<Unit>("eth");
-  const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
-
-  const handleSetTimeFrame = useCallback(setTimeFrame, [setTimeFrame]);
 
   const handleSetUnit = useCallback(setUnit, [setUnit]);
-
-  const handleToggleSimulateProofOfWork = useCallback(() => {
-    setSimulateProofOfWork((simulateProofOfWork) => !simulateProofOfWork);
-  }, []);
-
-  const handleClickTimeFrame = useCallback(() => {
-    setTimeFrame((timeFrame) => getNextTimeFrame(timeFrame));
-  }, []);
 
   return (
     <div>
@@ -85,7 +84,7 @@ const GaugeWidget: FC = () => {
         </div>
         <div className="md:w-1/3">
           <SupplyGrowthGauge
-            onClickTimeFrame={handleClickTimeFrame}
+            onClickTimeFrame={onClickTimeFrame}
             simulateProofOfWork={simulateProofOfWork}
             timeFrame={timeFrame}
           />
@@ -99,9 +98,9 @@ const GaugeWidget: FC = () => {
         </div>
       </div>
       <Controls
-        onSetTimeFrame={handleSetTimeFrame}
+        onSetTimeFrame={onSetTimeFrame}
         onSetUnit={handleSetUnit}
-        onToggleSimulateProofOfWork={handleToggleSimulateProofOfWork}
+        onSimulateProofOfWork={onSimulateProofOfWork}
         simulateProofOfWork={simulateProofOfWork}
         timeFrame={timeFrame}
         unit={unit}
