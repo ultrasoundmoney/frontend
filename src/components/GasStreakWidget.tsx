@@ -1,11 +1,12 @@
-import { formatDistanceStrict } from "date-fns";
-import { useSpring, motion } from "framer-motion";
+import { formatDistanceStrict, parseISO } from "date-fns";
 import type { FC } from "react";
 import CountUp from "react-countup";
+import type { BaseFeeAtTime } from "../api/base-fee-over-time";
 import {
   decodeGroupedAnalysis1,
   useGroupedAnalysis1,
 } from "../api/grouped-analysis-1";
+import type { DateTimeString } from "../time";
 import { LabelUnitText } from "./Texts";
 import LabelText from "./TextsNext/LabelText";
 import QuantifyText from "./TextsNext/QuantifyText";
@@ -13,21 +14,21 @@ import SkeletonText from "./TextsNext/SkeletonText";
 import UltraSoundBarrier from "./UltraSoundBarrier";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
-const SLOT_DURATION_IN_SECONDS = 12;
-
-const SpanningAge: FC<{
+type SpanningAgeProps = {
   isLoading: boolean;
-  blocks: number | undefined;
-}> = ({ isLoading, blocks }) => {
-  const durationSeconds =
-    blocks === undefined ? undefined : blocks * SLOT_DURATION_IN_SECONDS;
+  lastBlockTimestamp: DateTimeString | undefined;
+  startedOn: DateTimeString | undefined;
+};
+
+const SpanningAge: FC<SpanningAgeProps> = ({
+  isLoading,
+  lastBlockTimestamp,
+  startedOn,
+}) => {
   const formattedDistance =
-    durationSeconds === undefined
+    startedOn === undefined || lastBlockTimestamp === undefined
       ? undefined
-      : formatDistanceStrict(
-          new Date(new Date().getTime() - durationSeconds * 1000),
-          new Date(),
-        );
+      : formatDistanceStrict(parseISO(startedOn), parseISO(lastBlockTimestamp));
   const distanceNumber =
     formattedDistance === undefined
       ? 0
@@ -51,7 +52,11 @@ const SpanningAge: FC<{
   );
 };
 
-const DeflationaryStreak: FC = () => {
+type Props = {
+  lastBaseFeeAtTime: BaseFeeAtTime | undefined;
+};
+
+const DeflationaryStreak: FC<Props> = ({ lastBaseFeeAtTime }) => {
   const groupedAnalysis1F = useGroupedAnalysis1();
   const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysis1F);
 
@@ -66,7 +71,8 @@ const DeflationaryStreak: FC = () => {
         <span className="font-inter text-xs font-extralight text-blue-spindle md:text-sm">
           <SpanningAge
             isLoading={deflationaryStreak === undefined}
-            blocks={deflationaryStreak?.count}
+            startedOn={deflationaryStreak?.startedOn ?? undefined}
+            lastBlockTimestamp={lastBaseFeeAtTime?.timestamp}
           />
         </span>
         <div className="flex items-center gap-x-1">

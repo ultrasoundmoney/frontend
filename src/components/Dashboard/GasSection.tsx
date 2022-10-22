@@ -14,6 +14,7 @@ import GasStreakWidget from "../GasStreakWidget";
 import GasMarketWidget from "../GasMarketWidget";
 import SectionDivider from "../SectionDivider";
 import { parseISO } from "date-fns";
+import _last from "lodash/last";
 
 export type BaseFeePoint = [JsTimestamp, Gwei];
 
@@ -65,7 +66,9 @@ const GasSection: FC = () => {
                 timeFrame={timeFrame}
                 onClickTimeFrame={handleClickTimeFrame}
               />
-              <GasStreakWidget />
+              <GasStreakWidget
+                lastBaseFeeAtTime={_last(baseFeesOverTime?.m5)}
+              />
             </div>
             <div className="w-full lg:w-1/2">
               <BaseFeesWidget
