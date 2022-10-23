@@ -3,10 +3,8 @@ import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import type { FC, ReactNode } from "react";
 import CountUp from "react-countup";
-import { useBaseFeeOverTime } from "../../api/base-fee-over-time";
 import { useBaseFeePerGas } from "../../api/base-fee-per-gas";
 import { useEthPriceStats } from "../../api/eth-price-stats";
-import { WEI_PER_GWEI } from "../../eth-units";
 import * as Format from "../../format";
 import { AmountUnitSpace } from "../Spacing";
 import { BaseText } from "../Texts";
@@ -34,7 +32,7 @@ const PriceGasBoundary: FC<{ children: ReactNode }> = ({ children }) => (
 
 const PriceGasWidget: FC = () => {
   const baseFeePerGas = useBaseFeePerGas();
-  const baseFeesOverTime = useBaseFeeOverTime();
+  // const baseFeesOverTime = useBaseFeeOverTime();
   const ethPriceStats = useEthPriceStats();
   const ethUsd24hChange =
     ethPriceStats === undefined
@@ -48,11 +46,11 @@ const PriceGasWidget: FC = () => {
       ? "text-red-400"
       : "text-green-400";
 
-  const gradientCss =
-    baseFeesOverTime !== undefined &&
-    baseFeePerGas.wei / WEI_PER_GWEI > baseFeesOverTime.barrier
-      ? "from-orange-400 to-yellow-300"
-      : "from-cyan-300 to-indigo-500";
+  // const gradientCss =
+  //   baseFeesOverTime !== undefined &&
+  //   baseFeePerGas.wei / WEI_PER_GWEI > baseFeesOverTime.barrier
+  //     ? "from-orange-400 to-yellow-300"
+  //     : "from-cyan-300 to-indigo-500";
 
   return (
     <PriceGasBoundary>
@@ -75,11 +73,12 @@ const PriceGasWidget: FC = () => {
           />
         </div>
         <BaseText font="font-roboto" className="pl-1">
-          {baseFeePerGas === undefined || baseFeesOverTime === undefined ? (
+          {baseFeePerGas === undefined ? (
             <SkeletonText width="0.5rem" />
           ) : (
             <CountUp
-              className={`bg-gradient-to-r bg-clip-text text-transparent ${gradientCss}`}
+              // className={`bg-gradient-to-r bg-clip-text text-transparent ${gradientCss}`}
+              className="text-white"
               decimals={0}
               duration={0.8}
               end={Format.gweiFromWei(baseFeePerGas.wei)}
