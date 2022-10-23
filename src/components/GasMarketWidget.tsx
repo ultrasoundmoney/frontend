@@ -139,7 +139,7 @@ const Marker: FC<MarkerProps> = ({
           label === "average"
             ? `bg-gradient-to-r bg-clip-text text-transparent ${
                 gas >= barrier
-                  ? "from-yellow-300 to-orange-400"
+                  ? "from-orange-400 to-yellow-300"
                   : "from-cyan-300 to-indigo-500"
               }`
             : emphasize
