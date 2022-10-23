@@ -29,7 +29,6 @@ const QuantifyText: FC<Props> = ({
         font="font-roboto"
         color="text-slateus-400"
         className="ml-1"
-        weight="font-normal"
       >
         {unitPostfix}
       </BaseText>
