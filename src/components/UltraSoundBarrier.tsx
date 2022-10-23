@@ -6,7 +6,7 @@ import batSvg from "../assets/bat-own.svg";
 import speakerSvg from "../assets/speaker-own.svg";
 
 const UltraSoundBarrier: FC = () => (
-  <div className="inline-flex select-none gap-x-1">
+  <div className="inline-flex select-none gap-x-1" title="ultra sound barrier">
     <div className="h-4 w-4">
       <Image alt="bat emoji" src={batSvg as StaticImageData} />
     </div>

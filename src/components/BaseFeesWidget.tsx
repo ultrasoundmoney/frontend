@@ -110,7 +110,7 @@ const makeBarrier = (barrier: number) => ({
     useHTML: true,
     align: "right",
     formatter: () => `
-      <div class="flex justify-end">
+      <div class="flex justify-end" title="ultra sound barrier">
         <img
           class="w-[15px] h-[15px]"
           src="/bat-own.svg"
