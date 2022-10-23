@@ -29,6 +29,7 @@ const QuantifyText: FC<Props> = ({
         font="font-roboto"
         color="text-slateus-400"
         className="ml-1"
+        size={size}
       >
         {unitPostfix}
       </BaseText>
