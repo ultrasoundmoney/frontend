@@ -268,7 +268,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                   bg-gradient-to-r
                   ${
                     deltaPercent >= 0
-                      ? "from-orange-400 to-yellow-500"
+                      ? "from-orange-400 to-yellow-300"
                       : "from-cyan-300 to-indigo-500"
                   }
                 `}
@@ -317,7 +317,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                   label="average"
                   lowest={lowest}
                   markerColor={
-                    deltaPercent >= 0 ? "bg-yellow-500" : "bg-cyan-300"
+                    deltaPercent >= 0 ? "bg-yellow-300" : "bg-cyan-300"
                   }
                   vertical="top"
                 />
