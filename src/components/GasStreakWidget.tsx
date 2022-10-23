@@ -29,11 +29,10 @@ const SpanningAge: FC<SpanningAgeProps> = ({
     startedOn === undefined || lastBlockTimestamp === undefined
       ? undefined
       : formatDistanceStrict(parseISO(startedOn), parseISO(lastBlockTimestamp));
-  const distanceNumber =
+  const formattedNumber =
     formattedDistance === undefined
       ? 0
       : Number(formattedDistance.split(" ")[0]);
-  const formattedNumber = distanceNumber;
   const formattedUnit = formattedDistance?.split(" ")[1];
 
   return (
