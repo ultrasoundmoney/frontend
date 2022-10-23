@@ -26,14 +26,14 @@ const getPercentage = (
   return (gas - lowest) / range;
 };
 
-const formatTooltip = (
+const formatGasTooltip = (
   description: string | undefined,
   gas: number,
 ): string | undefined => {
   if (description === undefined) {
     return undefined;
   }
-  const gasStr = formatTwoDigit(gas / WEI_PER_GWEI);
+  const gasStr = formatTwoDigit(gas);
   return `${description}
 ${gasStr} Gwei`;
 };
@@ -76,7 +76,7 @@ const Marker: FC<MarkerProps> = ({
         ${vertical === "top" ? "-top-[48px]" : "-bottom-[40px]"}
       `}
       style={styles}
-      title={formatTooltip(description, gas)}
+      title={formatGasTooltip(description, gas / WEI_PER_GWEI)}
     >
       {vertical === "bottom" && (
         <div
