@@ -96,29 +96,30 @@ const SupplyGrowthGauge: FC<Props> = ({
 
   const { previewSkeletons } = useContext(FeatureFlagsContext);
 
-  const colorStyle = useSpring({
-    from: { color: colors.drop },
-    to: { color: colors.fireOrange },
-    reverse: progress > 0,
-  });
-
   return (
     <div
       // HACK: on tablet the growth gauge is a different height from the burn and issuance gauges so we do some nasty margin hacking to try and align them.
       className={`
-        flex flex-col justify-start items-center
-        bg-blue-tangaroa
-        px-4 md:px-0 py-8 pt-7
-        rounded-tl-lg rounded-tr-lg md:rounded-none
-        pb-[36px] -mb-[4px]
+        -mb-[4px] flex flex-col items-center
+        justify-start
+        rounded-tl-lg rounded-tr-lg bg-blue-tangaroa px-4
+        py-8 pt-7 pb-[36px]
+        md:rounded-none md:px-0
       `}
     >
       <WidgetTitle>supply growth</WidgetTitle>
       <div className="mt-8 md:scale-90 lg:scale-100">
         <SplitGaugeSvg max={max} progress={progress} />
         <animated.div
-          className="font-roboto font-light text-3xl -mt-[60px] text-center"
-          style={colorStyle}
+          className={`
+            -mt-[60px] bg-gradient-to-r bg-clip-text text-center font-roboto text-3xl font-light text-transparent
+            ${
+              growthRate !== undefined && growthRate > 0
+                ? "from-cyan-300 to-indigo-500"
+                : "from-orange-500 to-yellow-300"
+            }
+          `}
+          // style={colorStyle}
         >
           {growthRate === undefined || previewSkeletons ? (
             <div className="-mb-2">
@@ -135,10 +136,10 @@ const SupplyGrowthGauge: FC<Props> = ({
           )}
         </animated.div>
       </div>
-      <p className="font-roboto font-light text-xs text-blue-spindle select-none mt-[7px] mb-2.5">
+      <p className="mt-[7px] mb-2.5 select-none font-roboto text-xs font-light text-blue-spindle">
         /year
       </p>
-      <div className="h-6 flex items-center">
+      <div className="flex h-6 items-center">
         <TimeFrameIndicator
           onClickTimeFrame={onClickTimeFrame}
           timeFrame={timeFrame}
