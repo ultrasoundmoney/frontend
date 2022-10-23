@@ -138,10 +138,11 @@ const makeBarrier = (barrier: number) => ({
 
 const getTooltipFormatter = (
   baseFeesMap: Record<number, number>,
+  barrier: number | undefined,
 ): Highcharts.TooltipFormatterCallbackFunction =>
   function () {
     const x = typeof this.x === "number" ? this.x : undefined;
-    if (x === undefined) {
+    if (x === undefined || barrier === undefined) {
       return undefined;
     }
 
@@ -153,11 +154,18 @@ const getTooltipFormatter = (
     const dt = new Date(x);
     const formattedDate = format(dt, "MMM d, HH:mm:ssx");
 
+    const gradientCss =
+      total > barrier
+        ? "from-orange-400 to-yellow-500"
+        : "from-cyan-300 to-indigo-500";
+
     return `
       <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
         <div class="text-blue-spindle">${formattedDate}</div>
         <div class="flex">
-          <div class="text-white">${total.toFixed(2)}</div>
+          <div class="bg-gradient-to-r bg-clip-text text-transparent ${gradientCss}">${total.toFixed(
+      2,
+    )}</div>
           <div class="font-roboto text-slateus-400 ml-1">Gwei</div>
         </div>
       </div>
@@ -246,7 +254,7 @@ const BaseFeesWidget: FC<Props> = ({
         },
       ],
       tooltip: {
-        formatter: getTooltipFormatter(baseFeesMap),
+        formatter: getTooltipFormatter(baseFeesMap, barrier),
       },
     } as Highcharts.Options);
   }, [max, barrier, baseFeesMap, baseFeesSeries]);
