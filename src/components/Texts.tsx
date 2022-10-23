@@ -41,6 +41,7 @@ export const TextInterLink: FC<{
   </BodyText>
 );
 
+export type FontWeight = "font-normal" | "font-light" | "font-extralight";
 type BaseTextProps = {
   children: ReactNode;
   font: "font-roboto" | "font-inter";
@@ -50,7 +51,7 @@ type BaseTextProps = {
   size?: string;
   style?: CSSProperties;
   tooltip?: string;
-  weight?: "font-normal" | "font-light" | "font-extralight";
+  weight?: FontWeight;
 };
 
 /**
