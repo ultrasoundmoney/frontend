@@ -69,7 +69,7 @@ const SupplyChange: FC<Props> = ({
                 ${
                   supplyDelta !== undefined && supplyDelta >= 0
                     ? "from-cyan-300 to-indigo-500"
-                    : "from-orange-500 to-yellow-300"
+                    : "from-orange-400 to-yellow-300"
                 }
               `}
             >

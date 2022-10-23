@@ -81,7 +81,7 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
               text-transparent
               ${
                 title === "burn"
-                  ? "from-orange-500 to-yellow-300"
+                  ? "from-orange-400 to-yellow-300"
                   : "from-cyan-300 to-indigo-500"
               }
               `}

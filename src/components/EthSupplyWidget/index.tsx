@@ -192,7 +192,7 @@ const getTooltip = (
 
     const gradientCss =
       supplyDelta !== undefined && supplyDelta <= 0
-        ? "from-orange-400 to-yellow-500"
+        ? "from-orange-400 to-yellow-300"
         : "from-cyan-300 to-indigo-500";
 
     const title =
