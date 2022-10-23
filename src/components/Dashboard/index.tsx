@@ -6,10 +6,12 @@ import { useEffect, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useBaseFeePerGas } from "../../api/base-fee-per-gas";
+import { useEthPriceStats } from "../../api/eth-price-stats";
 import colors from "../../colors";
+import { WEI_PER_GWEI } from "../../eth-units";
 import * as FeatureFlags from "../../feature-flags";
 import { FeatureFlagsContext } from "../../feature-flags";
-import * as Format from "../../format";
+import { formatZeroDecimals } from "../../format";
 import useAuthFromSection from "../../hooks/use-auth-from-section";
 import { useTwitterAuthStatus } from "../../hooks/use-twitter-auth";
 import type { TimeFrameNext } from "../../time-frames";
@@ -51,18 +53,25 @@ const BurnSection = dynamic(() => import("./BurnSection"), {
   ssr: false,
 });
 
-const useGasTitle = (defaultTitle: string) => {
+const useGasPriceTitle = (defaultTitle: string) => {
   const [gasTitle, setGasTitle] = useState<string>();
   const baseFeePerGas = useBaseFeePerGas();
+  const ethPriceStats = useEthPriceStats();
 
   useEffect(() => {
-    if (typeof window === "undefined" || baseFeePerGas === undefined) {
+    if (
+      typeof window === "undefined" ||
+      baseFeePerGas === undefined ||
+      ethPriceStats === undefined
+    ) {
       return undefined;
     }
-    const gasFormatted = Format.gweiFromWei(baseFeePerGas.wei).toFixed(0);
-    const newTitle = `${gasFormatted} Gwei | ${defaultTitle}`;
+    const gasFormatted = (baseFeePerGas.wei / WEI_PER_GWEI).toFixed(0);
+    const newTitle = `${gasFormatted} Gwei | $${formatZeroDecimals(
+      ethPriceStats.usd,
+    )} ${defaultTitle}`;
     setGasTitle(newTitle);
-  }, [baseFeePerGas, defaultTitle]);
+  }, [baseFeePerGas, defaultTitle, ethPriceStats]);
 
   return gasTitle;
 };
@@ -97,11 +106,11 @@ const useScrollOnLoad = () => {
 };
 
 // This is a component to avoid triggering a render on the whole Dashboard.
-const GasTitle = () => {
-  const gasTitle = useGasTitle("dashboard | ultrasound.money");
+const GasPriceTitle = () => {
+  const gasPriceTitle = useGasPriceTitle("| ultrasound.money");
   return (
     <Head>
-      <title>{gasTitle}</title>
+      <title>{gasPriceTitle}</title>
     </Head>
   );
 };
@@ -125,7 +134,7 @@ const Dashboard: FC = () => {
         highlightColor="#565b7f"
         enableAnimation={true}
       >
-        <GasTitle />
+        <GasPriceTitle />
         <HeaderGlow />
         <div className="container mx-auto">
           <BasicErrorBoundary>
