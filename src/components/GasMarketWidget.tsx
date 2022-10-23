@@ -39,6 +39,7 @@ ${gasStr} Gwei`;
 };
 
 type MarkerProps = {
+  barrier: number;
   description?: string;
   emphasize?: boolean;
   gas: number;
@@ -51,6 +52,7 @@ type MarkerProps = {
 };
 
 const Marker: FC<MarkerProps> = ({
+  barrier,
   description,
   emphasize = false,
   gas,
@@ -133,7 +135,17 @@ const Marker: FC<MarkerProps> = ({
           ${vertical === "top" ? "top-6" : "top-7"}
           ${horizontal === "right" ? "left-2" : "right-2"}
         `}
-        color={emphasize ? "text-white" : "text-slateus-200"}
+        color={
+          label === "average"
+            ? `bg-gradient-to-r bg-clip-text text-transparent ${
+                gas >= barrier
+                  ? "from-yellow-300 to-orange-400"
+                  : "from-cyan-300 to-indigo-500"
+              }`
+            : emphasize
+            ? "text-white"
+            : "text-slateus-200"
+        }
         size="text-sm"
         unitPostfix={vertical === "top" ? "Gwei" : undefined}
       >
@@ -269,6 +281,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
             {isDataAvailable && (
               <>
                 <Marker
+                  barrier={baseFeePerGasStats.barrier}
                   description="minimum gas price"
                   gas={baseFeePerGasStatsTimeFrame.min}
                   highest={highest}
@@ -279,6 +292,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                   vertical="bottom"
                 />
                 <Marker
+                  barrier={baseFeePerGasStats.barrier}
                   description="maximum gas price"
                   gas={baseFeePerGasStatsTimeFrame.max}
                   highest={highest}
@@ -289,6 +303,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                   vertical="bottom"
                 />
                 <Marker
+                  barrier={baseFeePerGasStats.barrier}
                   description="average gas price"
                   emphasize
                   gas={baseFeePerGasStatsTimeFrame.average}
@@ -307,6 +322,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                   vertical="top"
                 />
                 <Marker
+                  barrier={baseFeePerGasStats.barrier}
                   description="ultra sound barrier"
                   emphasize
                   gas={baseFeePerGasStats.barrier}
