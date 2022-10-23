@@ -14,7 +14,7 @@ import { useSupplySinceMerge } from "../../api/supply-since-merge";
 import colors from "../../colors";
 import { MERGE_TIMESTAMP } from "../../eth-constants";
 import {
-  formatPercentTwoDecimals,
+  formatPercentThreeDecimals,
   formatTwoDigit,
   formatZeroDecimals,
 } from "../../format";
@@ -45,7 +45,7 @@ const baseOptions: Highcharts.Options = {
   accessibility: { enabled: false },
   chart: {
     marginLeft: 0,
-    marginRight: 64,
+    marginRight: 72,
     marginTop: 10,
     backgroundColor: "transparent",
     showAxes: false,
@@ -242,7 +242,7 @@ const makeIssuanceLabel = (
     const value =
       (((mostRecentSupply - supplyAtTheMerge) / daysSinceMerge) * 365.25) /
       supplyAtTheMerge;
-    const formatted = formatPercentTwoDecimals(value);
+    const formatted = formatPercentThreeDecimals(value);
     return `
       <div class="flex flex-row items-center gap-x-2">
         <div class="w-2 h-2 rounded-full"></div>
@@ -438,7 +438,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
                 color: colors.slateus400,
               },
               align: "right",
-              x: 64,
+              x: 72,
               y: 2,
               useHTML: true,
               formatter:
@@ -466,7 +466,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
                 color: colors.slateus400,
               },
               align: "right",
-              x: 64,
+              x: 72,
               y: 2,
               useHTML: true,
               formatter:
@@ -491,7 +491,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
                 color: colors.slateus400,
               },
               align: "right",
-              x: 64,
+              x: 72,
               y: 2,
               useHTML: true,
               formatter:
