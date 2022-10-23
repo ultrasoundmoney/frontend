@@ -1,5 +1,4 @@
-import { addMinutes } from "date-fns";
-import { formatInTimeZone } from "date-fns-tz";
+import { addMinutes, format } from "date-fns";
 import type { TooltipFormatterCallbackFunction } from "highcharts";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
@@ -176,7 +175,7 @@ const getTooltip = (
     }
 
     const dt = new Date(x);
-    const formattedDate = formatInTimeZone(dt, "UTC", "MMM d, hh:mmaa");
+    const formattedDate = format(dt, "MMM d, HH:mm:ssx");
 
     let supplyDelta = undefined;
     if (x >= new Date(mergeStatus.timestamp).getTime()) {
