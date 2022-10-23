@@ -175,7 +175,8 @@ const getTooltip = (
     }
 
     const dt = new Date(x);
-    const formattedDate = format(dt, "MMM d, HH:mm:ssx");
+    const formattedDate = format(dt, "iii MMM d");
+    const formattedTime = format(dt, "HH:mm:ssx");
 
     let supplyDelta = undefined;
     if (x >= new Date(mergeStatus.timestamp).getTime()) {
@@ -210,8 +211,9 @@ const getTooltip = (
           ? ""
           : `<div class="mb-2 text-slateus-400">${title}</div>`
       }
-      <div class="text-slateus-400">${formattedDate} UTC</div>
-      <div class="flex flex-col items-end">
+      <div class="text-slateus-400 text-right">${formattedDate}</div>
+      <div class="text-slateus-400 text-right">${formattedTime}</div>
+      <div class="flex flex-col items-end mt-2">
         <div class="text-white">
           ${formatTwoDigit(total)}
           <span class="text-slateus-400"> ${unit}</span>

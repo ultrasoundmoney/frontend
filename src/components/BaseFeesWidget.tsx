@@ -152,7 +152,8 @@ const getTooltipFormatter = (
     }
 
     const dt = new Date(x);
-    const formattedDate = format(dt, "MMM d, HH:mm:ssx");
+    const formattedDate = format(dt, "iii MMM d");
+    const formattedTime = format(dt, "HH:mm:ssx");
 
     const gradientCss =
       total > barrier
@@ -161,8 +162,9 @@ const getTooltipFormatter = (
 
     return `
       <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
-        <div class="text-blue-spindle">${formattedDate}</div>
-        <div class="flex">
+        <div class="text-slateus-400 text-right">${formattedDate}</div>
+        <div class="text-slateus-400 text-right">${formattedTime}</div>
+        <div class="flex justify-end mt-2">
           <div class="bg-gradient-to-r bg-clip-text text-transparent ${gradientCss}">${total.toFixed(
       2,
     )}</div>
