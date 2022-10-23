@@ -1,7 +1,6 @@
 import { formatDistanceStrict, parseISO } from "date-fns";
 import type { FC } from "react";
 import CountUp from "react-countup";
-import type { BaseFeeAtTime } from "../api/base-fee-over-time";
 import {
   decodeGroupedAnalysis1,
   useGroupedAnalysis1,
@@ -13,6 +12,7 @@ import QuantifyText from "./TextsNext/QuantifyText";
 import SkeletonText from "./TextsNext/SkeletonText";
 import UltraSoundBarrier from "./UltraSoundBarrier";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
+import _last from "lodash/last";
 
 type SpanningAgeProps = {
   isLoading: boolean;
@@ -54,13 +54,10 @@ const SpanningAge: FC<SpanningAgeProps> = ({
   );
 };
 
-type Props = {
-  lastBaseFeeAtTime: BaseFeeAtTime | undefined;
-};
-
-const GasStreakWidget: FC<Props> = ({ lastBaseFeeAtTime }) => {
+const GasStreakWidget: FC = () => {
   const groupedAnalysis1F = useGroupedAnalysis1();
   const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysis1F);
+  const lastBaseFeeAtTime = _last(groupedAnalysis1?.latestBlockFees)?.minedAt;
 
   const deflationaryStreak = groupedAnalysis1?.deflationaryStreak.postMerge;
 
@@ -74,7 +71,7 @@ const GasStreakWidget: FC<Props> = ({ lastBaseFeeAtTime }) => {
           <SpanningAge
             isLoading={deflationaryStreak === undefined}
             startedOn={deflationaryStreak?.startedOn ?? undefined}
-            lastBlockTimestamp={lastBaseFeeAtTime?.timestamp}
+            lastBlockTimestamp={lastBaseFeeAtTime}
           />
         </span>
         <div className="flex items-center gap-x-1">
