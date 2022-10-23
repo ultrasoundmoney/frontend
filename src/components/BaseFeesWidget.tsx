@@ -153,7 +153,7 @@ const getTooltipFormatter = (
 
     const dt = new Date(x);
     const formattedDate = format(dt, "iii MMM d");
-    const formattedTime = format(dt, "HH:mm:ssx");
+    const formattedTime = format(dt, "HH:mm:ss 'UTC'x");
 
     const gradientCss =
       total > barrier
