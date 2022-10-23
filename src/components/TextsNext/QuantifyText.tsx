@@ -19,9 +19,11 @@ const QuantifyText: FC<Props> = ({
   unitPostfix,
   size,
 }) => (
-  <BaseText font="font-roboto" className={className} color={color} size={size}>
-    {children}
-    {amountPostfix === undefined ? undefined : amountPostfix}
+  <div className={className}>
+    <BaseText font="font-roboto" color={color} size={size}>
+      {children}
+      {amountPostfix === undefined ? undefined : amountPostfix}
+    </BaseText>
     {unitPostfix && (
       <BaseText
         font="font-roboto"
@@ -32,7 +34,7 @@ const QuantifyText: FC<Props> = ({
         {unitPostfix}
       </BaseText>
     )}
-  </BaseText>
+  </div>
 );
 
 export default QuantifyText;
