@@ -175,7 +175,7 @@ const getTooltip = (
     }
 
     const dt = new Date(x);
-    const formattedDate = format(dt, "iii MMM d");
+    const formattedDate = format(dt, "iii MMM dd");
     const formattedTime = format(dt, "HH:mm:ss 'UTC'x");
 
     let supplyDelta = undefined;
