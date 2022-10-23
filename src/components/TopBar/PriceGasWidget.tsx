@@ -74,14 +74,12 @@ const PriceGasWidget: FC = () => {
             priority
           />
         </div>
-        <BaseText
-          font="font-roboto"
-          className={`bg-gradient-to-r bg-clip-text pl-1 text-transparent ${gradientCss}`}
-        >
+        <BaseText font="font-roboto" className="pl-1">
           {baseFeePerGas === undefined || baseFeesOverTime === undefined ? (
             <SkeletonText width="0.5rem" />
           ) : (
             <CountUp
+              className={`bg-gradient-to-r bg-clip-text text-transparent ${gradientCss}`}
               decimals={0}
               duration={0.8}
               end={Format.gweiFromWei(baseFeePerGas.wei)}
