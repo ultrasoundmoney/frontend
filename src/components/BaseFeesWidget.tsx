@@ -69,6 +69,7 @@ const baseOptions: Highcharts.Options = {
         color: colors.slateus400,
         fontFamily: "Roboto Mono",
         fontSize: "12px",
+        fontWeight: "300",
       },
     },
     title: undefined,
@@ -125,10 +126,10 @@ const makeBarrier = (barrier: number) => ({
         />
       </div>
       <div class="flex text-sm">
-        <div class="font-roboto text-white">
+        <div class="font-roboto font-light text-white">
           ${barrier?.toFixed(1)}
         </div>
-        <div class="font-roboto text-slateus-400 ml-1">
+        <div class="font-roboto font-light text-slateus-400 ml-1">
           Gwei
         </div>
       </div>
