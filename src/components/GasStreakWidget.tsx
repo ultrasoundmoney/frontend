@@ -12,7 +12,6 @@ import QuantifyText from "./TextsNext/QuantifyText";
 import SkeletonText from "./TextsNext/SkeletonText";
 import UltraSoundBarrier from "./UltraSoundBarrier";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
-import _last from "lodash/last";
 
 type SpanningAgeProps = {
   isLoading: boolean;
@@ -56,7 +55,7 @@ const SpanningAge: FC<SpanningAgeProps> = ({
 const GasStreakWidget: FC = () => {
   const groupedAnalysis1F = useGroupedAnalysis1();
   const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysis1F);
-  const lastBaseFeeAtTime = _last(groupedAnalysis1?.latestBlockFees)?.minedAt;
+  const lastBaseFeeAtTime = groupedAnalysis1?.latestBlockFees[0].minedAt;
 
   const deflationaryStreak = groupedAnalysis1?.deflationaryStreak.postMerge;
 
