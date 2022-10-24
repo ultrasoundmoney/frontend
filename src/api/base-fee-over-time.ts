@@ -6,7 +6,7 @@ import type { ApiResult } from "./fetchers";
 import { fetchJsonSwr } from "./fetchers";
 
 export type BaseFeeAtTime = {
-  block_number: number;
+  block_number: number | null;
   timestamp: DateTimeString;
   wei: WeiNumber;
 };
