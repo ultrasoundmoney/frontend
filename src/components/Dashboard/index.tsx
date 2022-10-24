@@ -26,6 +26,9 @@ import ContactSection from "./ContactSection";
 import FamSection from "./FamSection";
 import JoinDiscordSection from "./JoinDiscordSection";
 import SupplySection from "./SupplySection";
+import ConfettiGenerator from "confetti-js";
+import { useSupplySinceMerge } from "../../api/supply-since-merge";
+import { useMergeStatus } from "../../api/merge-status";
 
 const AdminTools = dynamic(() => import("../AdminTools"), { ssr: false });
 // We get hydration errors in production.
@@ -115,6 +118,59 @@ const GasPriceTitle = () => {
   );
 };
 
+const confettiSettings = {
+  target: "confetti-canvas",
+  height: 1400,
+  props: [{ type: "svg", src: "/bat-own.svg" }],
+};
+
+type UseConfetti = { showConfetti: boolean };
+
+const useConfetti = (): UseConfetti => {
+  const [confettiRan, setConfettiRan] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const supplySinceMerge = useSupplySinceMerge();
+  const mergeStatus = useMergeStatus();
+
+  useEffect(() => {
+    if (
+      confettiRan ||
+      supplySinceMerge === undefined ||
+      typeof document === "undefined"
+    ) {
+      return;
+    }
+
+    // If confetti hasn't ran and last supply is under merge supply, run
+    const lastSupply =
+      supplySinceMerge.supply_by_hour[
+        supplySinceMerge.supply_by_hour.length - 1
+      ].supply;
+
+    if (lastSupply > mergeStatus.supply) {
+      return;
+    }
+
+    setShowConfetti(true);
+    setConfettiRan(true);
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    const confetti = new ConfettiGenerator(confettiSettings) as {
+      render: () => void;
+      clear: () => void;
+    };
+    confetti.render();
+
+    setTimeout(() => {
+      confetti.clear();
+    }, 15000);
+
+    return;
+  }, [mergeStatus, confettiRan, supplySinceMerge]);
+
+  return { showConfetti };
+};
+
 const Dashboard: FC = () => {
   const { featureFlags, setFlag } = FeatureFlags.useFeatureFlags();
   const [twitterAuthStatus, setTwitterAuthStatus] = useTwitterAuthStatus();
@@ -127,6 +183,8 @@ const Dashboard: FC = () => {
 
   const handleSetTimeFrame = useCallback(setTimeFrame, [setTimeFrame]);
 
+  const { showConfetti } = useConfetti();
+
   return (
     <FeatureFlagsContext.Provider value={featureFlags}>
       <SkeletonTheme
@@ -134,6 +192,12 @@ const Dashboard: FC = () => {
         highlightColor="#565b7f"
         enableAnimation={true}
       >
+        <canvas
+          className={`pointer-events-none absolute z-10 ${
+            showConfetti ? "" : "hidden"
+          }`}
+          id="confetti-canvas"
+        ></canvas>
         <GasPriceTitle />
         <HeaderGlow />
         <div className="container mx-auto">
