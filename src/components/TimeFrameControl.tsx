@@ -10,7 +10,8 @@ export const Button: FC<{
   children: ReactNode;
   isActive: boolean;
   onClick: () => void;
-}> = ({ children, isActive, onClick }) => (
+  title?: string;
+}> = ({ children, isActive, onClick, title }) => (
   <button
     className={`
       select-none border
@@ -24,6 +25,7 @@ export const Button: FC<{
       }
     `}
     onClick={onClick}
+    title={title}
   >
     {children}
   </button>
@@ -42,6 +44,11 @@ const TimeFrameControl: FC<Props> = ({ selectedTimeframe, onSetTimeFrame }) => (
         key={timeFrame}
         isActive={selectedTimeframe === timeFrame}
         onClick={() => onSetTimeFrame(timeFrame)}
+        title={
+          timeFrame === "all"
+            ? "since London hark fork where EIP-1559 was activated"
+            : undefined
+        }
       >
         {timeFrame === "all" ? (
           selectedTimeframe === "all" ? (
