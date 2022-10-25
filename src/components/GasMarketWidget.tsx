@@ -261,23 +261,6 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
               bg-blue-highlightbg
             `}
           >
-            {deltaPercent !== undefined && (
-              <div
-                className={`
-                  absolute h-2
-                  bg-gradient-to-r
-                  ${
-                    deltaPercent >= 0
-                      ? "from-orange-400 to-yellow-300"
-                      : "from-cyan-300 to-indigo-500"
-                  }
-                `}
-                style={{
-                  left: deltaLeft,
-                  width: deltaWidth,
-                }}
-              ></div>
-            )}
             {isDataAvailable && (
               <>
                 <Marker
@@ -341,6 +324,18 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                   vertical="top"
                 />
               </>
+            )}
+            {deltaPercent !== undefined && (
+              <div
+                className={`
+                  absolute h-2
+                  ${deltaPercent >= 0 ? "bg-orange-400" : "bg-drop"}
+                `}
+                style={{
+                  left: deltaLeft,
+                  width: deltaWidth,
+                }}
+              ></div>
             )}
           </div>
         )}
