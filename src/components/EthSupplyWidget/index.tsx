@@ -205,7 +205,7 @@ const getTooltip = (
     const unit = type === "bitcoin" ? "BTC" : "ETH";
 
     return `
-    <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
+    <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-400">
       ${
         !simulateProofOfWork
           ? ""

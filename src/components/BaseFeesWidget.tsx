@@ -162,7 +162,7 @@ const getTooltipFormatter = (
         : "from-cyan-300 to-indigo-500";
 
     return `
-      <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
+      <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-400">
         <div class="text-slateus-400 text-right">${formattedDate}</div>
         <div class="text-slateus-400 text-right">${formattedTime}</div>
         <div class="flex justify-end mt-2">
