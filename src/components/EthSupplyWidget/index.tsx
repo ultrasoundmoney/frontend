@@ -11,8 +11,9 @@ import type { SupplyAtTime } from "../../api/supply-since-merge";
 import { useSupplySinceMerge } from "../../api/supply-since-merge";
 import colors from "../../colors";
 import {
-  formatPercentThreeDecimals,
+  formatPercentThreeDecimalsSigned,
   formatTwoDigit,
+  formatTwoDigitsSigned,
   formatZeroDecimals,
 } from "../../format";
 import {
@@ -149,7 +150,7 @@ const getIssuanceSupplyChange = (
   const value =
     (((mostRecentSupply - supplyAtTheMerge) / daysSinceMerge) * 365.25) /
     supplyAtTheMerge;
-  return formatPercentThreeDecimals(value);
+  return formatPercentThreeDecimalsSigned(value);
 };
 
 const getTooltip = (
@@ -211,7 +212,9 @@ const getTooltip = (
     }
 
     const supplyDeltaFormatted =
-      supplyDelta !== undefined ? formatTwoDigit(supplyDelta) : undefined;
+      supplyDelta !== undefined
+        ? formatTwoDigitsSigned(supplyDelta)
+        : undefined;
 
     const gradientCss =
       supplyDelta !== undefined && supplyDelta <= 0
@@ -246,9 +249,6 @@ const getTooltip = (
       millisecondsSinceMerge,
     );
 
-    const supplyChangeOperator =
-      supplyDelta !== undefined && supplyDelta >= 0 ? "+" : "";
-
     return `
     <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-400">
       ${
@@ -267,15 +267,14 @@ const getTooltip = (
           ${supplyDelta === undefined ? "hidden" : ""}
           text-transparent bg-clip-text bg-gradient-to-r ${gradientCss}
         ">
-          ${supplyChangeOperator}${supplyDeltaFormatted}
+          ${supplyDeltaFormatted}
           <span class="text-slateus-400"> ${unit}</span>
         </div>
         <div class="
           ${issuanceSupplyChange === undefined ? "hidden" : ""}
           text-transparent bg-clip-text bg-gradient-to-r ${gradientCss}
         ">
-          ${supplyChangeOperator}${issuanceSupplyChange}
-          <span class="text-slateus-400"> ${unit}</span>
+          ${issuanceSupplyChange}
         </div>
       </div>
     </div>
@@ -297,8 +296,8 @@ const makeIssuanceLabel = (
     return `
         <div class="flex flex-row items-center gap-x-2">
           <div class="w-2 h-2 rounded-full"></div>
-          <div class="font-roboto font-light text-slateus-400 text-xs">
-            <span class="text-white">+${issuanceSupplyChange}</span>/y
+          <div class="font-roboto font-normal text-slateus-400 text-xs">
+            <span class="text-white">${issuanceSupplyChange}</span>/y
           </div>
         </div>
       `;
