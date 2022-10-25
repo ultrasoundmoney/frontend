@@ -267,7 +267,13 @@ const getTooltip = (
           text-transparent bg-clip-text bg-gradient-to-r ${gradientCss}
         ">
           ${supplyChangeOperator}${supplyDeltaFormatted}
-          (${supplyChangeOperator}${issuanceSupplyChange})
+          <span class="text-slateus-400"> ${unit}</span>
+        </div>
+        <div class="
+          ${issuanceSupplyChange === undefined ? "hidden" : ""}
+          text-transparent bg-clip-text bg-gradient-to-r ${gradientCss}
+        ">
+          ${supplyChangeOperator}${issuanceSupplyChange}
           <span class="text-slateus-400"> ${unit}</span>
         </div>
       </div>
