@@ -17,6 +17,15 @@ export const formatWeiTwoDigit = (wei: number): string =>
 
 export const formatTwoDigit = (num: number): string => twoDigit.format(num);
 
+const twoDigitSigned = new Intl.NumberFormat("en-US", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+  signDisplay: "always",
+});
+
+export const formatTwoDigitsSigned = (num: number): string =>
+  twoDigitSigned.format(num);
+
 const zeroDecimals = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 0,
 });
@@ -94,6 +103,16 @@ const percentThreeDecimals = new Intl.NumberFormat("en-US", {
 
 export const formatPercentThreeDecimals = (fraction: number): string =>
   percentThreeDecimals.format(fraction);
+
+const percentThreeDecimalsSigned = new Intl.NumberFormat("en-US", {
+  minimumFractionDigits: 3,
+  maximumFractionDigits: 3,
+  style: "percent",
+  signDisplay: "always",
+});
+
+export const formatPercentThreeDecimalsSigned = (fraction: number): string =>
+  percentThreeDecimalsSigned.format(fraction);
 
 const compactNumber = new Intl.NumberFormat("en", {
   minimumFractionDigits: 0,
