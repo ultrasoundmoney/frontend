@@ -4,6 +4,7 @@ import {
   decodeGroupedAnalysis1,
   useGroupedAnalysis1,
 } from "../api/grouped-analysis-1";
+import { formatZeroDecimals } from "../format";
 import type { DateTimeString } from "../time";
 import { SECONDS_PER_SLOT } from "../time";
 import { LabelUnitText } from "./Texts";
@@ -72,7 +73,9 @@ const GasStreakWidget: FC = () => {
             <SkeletonText width="3rem">
               {deflationaryStreak === undefined
                 ? undefined
-                : deflationaryStreak?.count ?? 0}
+                : deflationaryStreak === null
+                ? 0
+                : formatZeroDecimals(deflationaryStreak.count)}
             </SkeletonText>
           </LabelUnitText>
           <LabelText className="mt-1">
