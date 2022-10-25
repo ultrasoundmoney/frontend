@@ -274,7 +274,7 @@ const getTooltip = (
           ${issuanceSupplyChange === undefined ? "hidden" : ""}
           text-transparent bg-clip-text bg-gradient-to-r ${gradientCss}
         ">
-          ${issuanceSupplyChange}
+          (${issuanceSupplyChange})
         </div>
       </div>
     </div>
