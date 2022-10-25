@@ -1,4 +1,4 @@
-import { formatDistanceStrict, parseISO } from "date-fns";
+import { addSeconds, formatDistanceStrict, parseISO } from "date-fns";
 import type { FC } from "react";
 import CountUp from "react-countup";
 import {
@@ -6,6 +6,7 @@ import {
   useGroupedAnalysis1,
 } from "../api/grouped-analysis-1";
 import type { DateTimeString } from "../time";
+import { SECONDS_PER_SLOT } from "../time";
 import { LabelUnitText } from "./Texts";
 import LabelText from "./TextsNext/LabelText";
 import QuantifyText from "./TextsNext/QuantifyText";
@@ -15,19 +16,18 @@ import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
 type SpanningAgeProps = {
   isLoading: boolean;
-  lastBlockTimestamp: DateTimeString | undefined;
+  count: number | undefined;
   startedOn: DateTimeString | undefined;
 };
 
-const SpanningAge: FC<SpanningAgeProps> = ({
-  isLoading,
-  lastBlockTimestamp,
-  startedOn,
-}) => {
+const SpanningAge: FC<SpanningAgeProps> = ({ isLoading, count, startedOn }) => {
   const formattedDistance =
-    startedOn === undefined || lastBlockTimestamp === undefined
+    startedOn === undefined || count === undefined
       ? undefined
-      : formatDistanceStrict(parseISO(startedOn), parseISO(lastBlockTimestamp));
+      : formatDistanceStrict(
+          parseISO(startedOn),
+          addSeconds(parseISO(startedOn), count * SECONDS_PER_SLOT),
+        );
   const formattedNumber =
     formattedDistance === undefined
       ? 0
@@ -55,8 +55,6 @@ const SpanningAge: FC<SpanningAgeProps> = ({
 const GasStreakWidget: FC = () => {
   const groupedAnalysis1F = useGroupedAnalysis1();
   const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysis1F);
-  const lastBaseFeeAtTime = groupedAnalysis1?.latestBlockFees[0].minedAt;
-
   const deflationaryStreak = groupedAnalysis1?.deflationaryStreak.postMerge;
 
   return (
@@ -69,7 +67,7 @@ const GasStreakWidget: FC = () => {
           <SpanningAge
             isLoading={deflationaryStreak === undefined}
             startedOn={deflationaryStreak?.startedOn ?? undefined}
-            lastBlockTimestamp={lastBaseFeeAtTime}
+            count={deflationaryStreak?.count ?? undefined}
           />
         </span>
         <div className="flex items-center gap-x-1">
