@@ -1,6 +1,5 @@
 import { addSeconds, formatDistanceStrict, parseISO } from "date-fns";
 import type { FC } from "react";
-import CountUp from "react-countup";
 import {
   decodeGroupedAnalysis1,
   useGroupedAnalysis1,
@@ -38,9 +37,7 @@ const SpanningAge: FC<SpanningAgeProps> = ({ isLoading, count, startedOn }) => {
     <div className="flex items-baseline gap-x-1 truncate">
       <QuantifyText size="text-4xl">
         <SkeletonText width="2rem">
-          {isLoading ? undefined : (
-            <CountUp preserveValue end={formattedNumber} />
-          )}
+          {isLoading ? undefined : formattedNumber}
         </SkeletonText>
       </QuantifyText>
       <QuantifyText color="text-slateus-200" className="ml-1" size="text-4xl">
