@@ -121,8 +121,8 @@ const ClaimPoapTooltip: FC<ClaimPoapTooltipProps> = ({
       </TooltipText>
       <LabelText>eligibility</LabelText>
       <TooltipText>
-        Only 1,559 pre-merge fam accounts are eligible, ranked by number of
-        follows from other fam.
+        There are only 1,559 POAPs. Pre-merge fam accounts with 8+ fam followers
+        are eligible.
       </TooltipText>
       <LabelText>Fam</LabelText>
       <Twemoji wrapper imageClassName="inline-block align-middle h-4 ml-1">
@@ -737,7 +737,7 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
         )}
       </div>
       <div className="mb-4 flex justify-between">
-        <LabelText>1,559 Eligible Handles</LabelText>
+        <LabelText>Eligible Accounts</LabelText>
         <LabelText className="text-right">claimed?</LabelText>
       </div>
       {dataWithHandlers === undefined ? (
