@@ -209,7 +209,7 @@ const getTooltip = (
       ${
         !simulateProofOfWork
           ? ""
-          : `<div class="mb-2 text-slateus-400">${title}</div>`
+          : `<div class="mb-2 text-slateus-200">${title}</div>`
       }
       <div class="text-slateus-400 text-right">${formattedDate}</div>
       <div class="text-slateus-400 text-right">${formattedTime}</div>
