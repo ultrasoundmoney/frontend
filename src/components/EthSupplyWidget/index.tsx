@@ -246,7 +246,7 @@ const makeIssuanceLabel = (
     return `
       <div class="flex flex-row items-center gap-x-2">
         <div class="w-2 h-2 rounded-full"></div>
-        <div class="font-roboto font-light text-slateus-400 text-xs">
+        <div class="font-roboto text-slateus-400 text-xs">
           <span class="text-white">+${formatted}</span>/y
         </div>
       </div>
