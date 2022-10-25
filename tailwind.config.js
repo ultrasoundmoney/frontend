@@ -25,6 +25,7 @@ module.exports = {
           highlightborder: "#8794b8",
           dusk: "#464b6f",
         },
+        drop: "#5dadec",
         fire: "#f4900c",
         mediumspring: "#00ffa3",
         slateus: {
