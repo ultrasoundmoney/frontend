@@ -4,7 +4,9 @@ import Image from "next/image";
 import type { FC, ReactNode } from "react";
 import CountUp from "react-countup";
 import { useBaseFeePerGas } from "../../api/base-fee-per-gas";
+import { useBaseFeePerGasStats } from "../../api/base-fee-per-gas-stats";
 import { useEthPriceStats } from "../../api/eth-price-stats";
+import { WEI_PER_GWEI } from "../../eth-units";
 import * as Format from "../../format";
 import { AmountUnitSpace } from "../Spacing";
 import { BaseText } from "../Texts";
@@ -32,7 +34,8 @@ const PriceGasBoundary: FC<{ children: ReactNode }> = ({ children }) => (
 
 const PriceGasWidget: FC = () => {
   const baseFeePerGas = useBaseFeePerGas();
-  // const baseFeesOverTime = useBaseFeeOverTime();
+  const baseFeePerGasStats = useBaseFeePerGasStats();
+  const barrier = baseFeePerGasStats.barrier * WEI_PER_GWEI;
   const ethPriceStats = useEthPriceStats();
   const ethUsd24hChange =
     ethPriceStats === undefined
@@ -46,11 +49,11 @@ const PriceGasWidget: FC = () => {
       ? "text-red-400"
       : "text-green-400";
 
-  // const gradientCss =
-  //   baseFeesOverTime !== undefined &&
-  //   baseFeePerGas.wei / WEI_PER_GWEI > baseFeesOverTime.barrier
-  //     ? "from-orange-400 to-yellow-300"
-  //     : "from-cyan-300 to-indigo-500";
+  const gradientCss =
+    baseFeePerGasStats !== undefined &&
+    baseFeePerGas.wei / WEI_PER_GWEI > barrier
+      ? "from-orange-400 to-yellow-300"
+      : "from-cyan-300 to-indigo-500";
 
   return (
     <PriceGasBoundary>
@@ -77,8 +80,7 @@ const PriceGasWidget: FC = () => {
             <SkeletonText width="0.5rem" />
           ) : (
             <CountUp
-              // className={`bg-gradient-to-r bg-clip-text text-transparent ${gradientCss}`}
-              className="text-white"
+              className={`bg-gradient-to-r bg-clip-text text-transparent ${gradientCss}`}
               decimals={0}
               duration={0.8}
               end={Format.gweiFromWei(baseFeePerGas.wei)}
