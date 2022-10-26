@@ -3,33 +3,34 @@ import Image from "next/image";
 import type { FC } from "react";
 import headerGlowSvg from "./header-glow.svg";
 
-const HeaderGlow: FC = () => (
+const HeaderGlow: FC<{ className?: string }> = ({ className }) => (
   <div
     className={`
-      absolute w-full top-0 left-0
+      absolute top-0 left-0 -z-10
+      flex
       h-[500px]
+      w-full
+      justify-center
+      overflow-hidden
       xs:h-[650px]
-      md:h-[700px]
-      lg:h-[800px]
-      xl:h-[900px]
+      md:h-[700px] lg:h-[800px] xl:h-[900px]
       2xl:h-[1200px]
-      overflow-hidden flex justify-center
-      -z-10
+      ${className}
     `}
   >
     <div
       className={`
         absolute
-        w-full
-        h-full
         -top-[120px]
+        h-full
+        w-full
+        select-none
         xs:-top-[180px]
         sm:-top-[200px]
         md:-top-[240px]
         lg:-top-[280px]
         xl:-top-[320px]
         2xl:-top-[440px]
-        select-none
       `}
     >
       <Image
