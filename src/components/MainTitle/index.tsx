@@ -1,11 +1,13 @@
 import type { FC, ReactNode } from "react";
 import styles from "./index.module.scss";
 
-const MainTitle: FC<{ children: ReactNode; className?: string }> = ({
-  children,
-  className,
-}) => (
+const MainTitle: FC<{
+  children: ReactNode;
+  className?: string;
+  onClick?: () => void;
+}> = ({ children, className, onClick }) => (
   <div
+    onClick={onClick}
     className={`
       mx-auto
       mt-16

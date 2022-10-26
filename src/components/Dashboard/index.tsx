@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import Head from "next/head";
-import type { FC } from "react";
+import { FC, useRef } from "react";
 import { useCallback } from "react";
 import { useEffect, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
@@ -120,8 +120,34 @@ const GasPriceTitle = () => {
 
 const confettiSettings = {
   target: "confetti-canvas",
+  max: 20,
   height: 1400,
   props: [{ type: "svg", src: "/bat-own.svg" }],
+};
+
+const useIsDeflationary = () => {
+  const mergeStatus = useMergeStatus();
+  const supplySinceMerge = useSupplySinceMerge();
+  const [isDeflationary, setIsDeflationary] = useState(false);
+
+  useEffect(() => {
+    if (mergeStatus === undefined || supplySinceMerge === undefined) {
+      return;
+    }
+    const lastSupply =
+      supplySinceMerge.supply_by_hour[
+        supplySinceMerge.supply_by_hour.length - 1
+      ].supply;
+
+    if (lastSupply > mergeStatus.supply) {
+      setIsDeflationary(false);
+      return;
+    }
+
+    setIsDeflationary(true);
+  }, [mergeStatus, supplySinceMerge, setIsDeflationary]);
+
+  return isDeflationary;
 };
 
 type UseConfetti = { showConfetti: boolean };
@@ -129,28 +155,14 @@ type UseConfetti = { showConfetti: boolean };
 const useConfetti = (): UseConfetti => {
   const [confettiRan, setConfettiRan] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
-  const supplySinceMerge = useSupplySinceMerge();
-  const mergeStatus = useMergeStatus();
+  const isDeflationary = useIsDeflationary();
 
   useEffect(() => {
-    if (
-      confettiRan ||
-      supplySinceMerge === undefined ||
-      typeof document === "undefined"
-    ) {
+    if (confettiRan || typeof document === "undefined" || !isDeflationary) {
       return;
     }
 
     // If confetti hasn't ran and last supply is under merge supply, run
-    const lastSupply =
-      supplySinceMerge.supply_by_hour[
-        supplySinceMerge.supply_by_hour.length - 1
-      ].supply;
-
-    if (lastSupply > mergeStatus.supply) {
-      return;
-    }
-
     setShowConfetti(true);
     setConfettiRan(true);
 
@@ -166,7 +178,7 @@ const useConfetti = (): UseConfetti => {
     }, 15000);
 
     return;
-  }, [mergeStatus, confettiRan, supplySinceMerge]);
+  }, [isDeflationary, confettiRan]);
 
   return { showConfetti };
 };
@@ -176,6 +188,9 @@ const Dashboard: FC = () => {
   const [twitterAuthStatus, setTwitterAuthStatus] = useTwitterAuthStatus();
   const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
   useScrollOnLoad();
+  const { showConfetti } = useConfetti();
+  const isDeflationary = useIsDeflationary();
+  const videoEl = useRef<HTMLVideoElement>(null);
 
   const handleClickTimeFrame = useCallback(() => {
     setTimeFrame((timeFrame) => getNextTimeFrame(timeFrame));
@@ -183,7 +198,15 @@ const Dashboard: FC = () => {
 
   const handleSetTimeFrame = useCallback(setTimeFrame, [setTimeFrame]);
 
-  const { showConfetti } = useConfetti();
+  const handleToggleBatLoop = useCallback(() => {
+    if (videoEl.current === null) {
+      return;
+    }
+
+    videoEl.current.paused
+      ? videoEl.current.play().catch(console.error)
+      : videoEl.current.pause();
+  }, []);
 
   return (
     <FeatureFlagsContext.Provider value={featureFlags}>
@@ -209,7 +232,22 @@ const Dashboard: FC = () => {
               <TopBar />
             </BasicErrorBoundary>
           </div>
-          <MainTitle>ultra sound money</MainTitle>
+          <video
+            ref={videoEl}
+            className={`
+              absolute left-0 right-0
+              -top-10 -z-10
+              mx-auto hidden
+              ${isDeflationary ? "md:block" : ""}
+            `}
+            muted
+            autoPlay
+            loop
+          >
+            <source src="/bat-480.mov" type="video/quicktime" />
+            <source src="/bat-480.webm" type="video/webm" />
+          </video>
+          <MainTitle onClick={handleToggleBatLoop}>ultra sound money</MainTitle>
           <SupplySection
             timeFrame={timeFrame}
             onSetTimeFrame={handleSetTimeFrame}
