@@ -5,7 +5,7 @@ export const flags = [
   "showCategoryCounts",
   "showCategorySlugs",
   "showMetadataTools",
-  "simulatePostMerge",
+  "simulateDeflationary",
   "useWebSockets",
 ] as const;
 export type Flag = typeof flags[number];
@@ -17,7 +17,7 @@ export const defaults: FeatureFlags = {
   showCategoryCounts: false,
   showCategorySlugs: false,
   showMetadataTools: false,
-  simulatePostMerge: false,
+  simulateDeflationary: false,
   useWebSockets: false,
 };
 
@@ -26,7 +26,7 @@ export const displayFlagMap: Record<Flag, string> = {
   showCategoryCounts: "show category counts",
   showCategorySlugs: "show category slugs",
   showMetadataTools: "show metadata tools",
-  simulatePostMerge: "simulate post-merge",
+  simulateDeflationary: "simulate deflationary",
   useWebSockets: "use websockets",
 };
 

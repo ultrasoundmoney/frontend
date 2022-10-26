@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import type { FC } from "react";
+import { useContext } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -127,6 +128,7 @@ const confettiSettings = {
 const useIsDeflationary = () => {
   const supplySinceMerge = useSupplySinceMerge();
   const [isDeflationary, setIsDeflationary] = useState(false);
+  const { simulateDeflationary } = useContext(FeatureFlagsContext);
 
   useEffect(() => {
     if (supplySinceMerge === undefined) {
@@ -145,7 +147,7 @@ const useIsDeflationary = () => {
     setIsDeflationary(true);
   }, [supplySinceMerge, setIsDeflationary]);
 
-  return isDeflationary;
+  return isDeflationary || simulateDeflationary;
 };
 
 type UseConfetti = { showConfetti: boolean };
