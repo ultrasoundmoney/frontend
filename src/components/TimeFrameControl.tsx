@@ -13,7 +13,7 @@ export const Button: FC<{
   title?: string;
 }> = ({ children, isActive, onClick, title }) => (
   <button
-    className={`
+    className={` 
       select-none border
       px-[10px] py-2
       font-roboto text-xs
