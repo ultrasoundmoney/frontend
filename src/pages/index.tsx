@@ -11,8 +11,6 @@ import type { EthSupplyF } from "../api/eth-supply";
 import { fetchEthSupplyParts } from "../api/eth-supply";
 import type { MergeEstimate } from "../api/merge-estimate";
 import { fetchMergeEstimate } from "../api/merge-estimate";
-import type { MergeStatus } from "../api/merge-status";
-import { fetchMergeStatus } from "../api/merge-status";
 import type { ScarcityF } from "../api/scarcity";
 import { fetchScarcity } from "../api/scarcity";
 import BasicErrorBoundary from "../components/BasicErrorBoundary";
@@ -25,7 +23,6 @@ type StaticProps = {
     "/api/v2/fees/eth-price-stats": EthPriceStats;
     "/api/v2/fees/eth-supply-parts": EthSupplyF;
     "/api/v2/fees/merge-estimate": MergeEstimate;
-    "/api/v2/fees/merge-status": MergeStatus;
     "/api/v2/fees/base-fee-per-gas-stats": BaseFeePerGasStats;
   };
 };
@@ -36,23 +33,16 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
     ethSupplyF,
     baseFeePerGas,
     ethPriceStats,
-    mergeStatus,
     scarcityF,
     baseFeePerGasStats,
   ] = await Promise.all([
-    // fetch(`${getDomain()}/api/v2/fees/total-difficulty-progress`),
     fetchMergeEstimate(),
     fetchEthSupplyParts(),
-    // fetch(`${getApiDomain()}/api/fees/scarcity`),
     fetchBaseFeePerGas(),
     fetchEthPriceStats(),
-    fetchMergeStatus(),
     fetchScarcity(),
     fetchBaseFeePerGasStats(),
   ]);
-  // const tdpData = (await tdpRes.json()) as TotalDifficultyProgress;
-  // const scData = (await scRes.json()) as Scarcity;
-  // const gaData = (await gaRes.json()) as GroupedAnalysis1F;
 
   if ("error" in mergeEstimate) {
     throw mergeEstimate.error;
@@ -68,10 +58,6 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
 
   if ("error" in ethPriceStats) {
     throw ethPriceStats.error;
-  }
-
-  if ("error" in mergeStatus) {
-    throw mergeStatus.error;
   }
 
   if ("error" in scarcityF) {
@@ -90,7 +76,6 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
         "/api/v2/fees/eth-price-stats": ethPriceStats.data,
         "/api/v2/fees/eth-supply-parts": ethSupplyF.data,
         "/api/v2/fees/merge-estimate": mergeEstimate.data,
-        "/api/v2/fees/merge-status": mergeStatus.data,
         "/api/v2/fees/base-fee-per-gas-stats": baseFeePerGasStats.data,
       },
     },

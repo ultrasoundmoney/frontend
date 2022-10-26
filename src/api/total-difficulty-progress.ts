@@ -1,6 +1,6 @@
 import * as DateFns from "date-fns";
 import useSWR from "swr";
-import { TOTAL_TERMINAL_DIFFICULTY } from "../eth-constants";
+import { TOTAL_TERMINAL_DIFFICULTY } from "../hardforks/paris";
 import type { DateTimeString, JsTimestamp } from "../time";
 import { fetchJsonSwr } from "./fetchers";
 

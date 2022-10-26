@@ -7,17 +7,19 @@ import _last from "lodash/last";
 import _merge from "lodash/merge";
 import type { FC } from "react";
 import { useMemo } from "react";
-import type { MergeStatus } from "../../api/merge-status";
-import { useMergeStatus } from "../../api/merge-status";
 import type { SupplyAtTime } from "../../api/supply-since-merge";
 import { useSupplySinceMerge } from "../../api/supply-since-merge";
 import colors from "../../colors";
-import { MERGE_TIMESTAMP } from "../../eth-constants";
 import {
   formatPercentThreeDecimals,
   formatTwoDigit,
   formatZeroDecimals,
 } from "../../format";
+import {
+  PARIS_BLOCK_NUMBER,
+  PARIS_SUPPLY,
+  PARIS_TIMESTAMP,
+} from "../../hardforks/paris";
 import { posIssuancePerDay, powIssuancePerDay } from "../../static-ether-data";
 import type { SupplyPoint } from "../Dashboard/SupplySection";
 import SimulateProofOfWork from "../SimulateProofOfWork";
@@ -152,7 +154,6 @@ const getIssuanceSupplyChange = (
 
 const getTooltip = (
   bitcoinSupplySeriesMap: PointMap,
-  mergeStatus: MergeStatus,
   simulateProofOfWork: boolean,
   supplySinceMergeMap: PointMap,
   supplySinceMergePowMap: PointMap,
@@ -190,7 +191,7 @@ const getTooltip = (
 
     const total =
       type === "bitcoin"
-        ? (pointMap[x] / mergeStatus.supply) * BITCOIN_SUPPLY_AT_MERGE
+        ? (pointMap[x] / PARIS_SUPPLY) * BITCOIN_SUPPLY_AT_MERGE
         : pointMap[x];
     if (total === undefined) {
       return undefined;
@@ -201,11 +202,11 @@ const getTooltip = (
     const formattedTime = format(dt, "HH:mm:ss 'UTC'x");
 
     let supplyDelta = undefined;
-    if (x >= new Date(mergeStatus.timestamp).getTime()) {
+    if (x >= PARIS_TIMESTAMP.getTime()) {
       if (this.series.userOptions.id === BITCOIN_SUPPLY_ID) {
         supplyDelta = total - BITCOIN_SUPPLY_AT_MERGE;
       } else {
-        supplyDelta = total - mergeStatus.supply;
+        supplyDelta = total - PARIS_SUPPLY;
       }
     }
 
@@ -315,7 +316,6 @@ const SupplySinceMergeWidget: FC<Props> = ({
   simulateProofOfWork,
   onSimulateProofOfWork,
 }) => {
-  const mergeStatus = useMergeStatus();
   const supplySinceMerge = useSupplySinceMerge();
 
   const pointFromSupplyAtTime = (supplyAtTime: SupplyAtTime): SupplyPoint => [
@@ -344,7 +344,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
             (points: SupplyPoint[], point) => {
               const timestamp = new Date(point.timestamp).getTime();
 
-              if (timestamp <= MERGE_TIMESTAMP.getTime()) {
+              if (timestamp <= PARIS_TIMESTAMP.getTime()) {
                 return points;
               }
 
@@ -355,7 +355,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
 
               const slotsSinceMerge =
                 (new Date(point.timestamp).getTime() -
-                  MERGE_TIMESTAMP.getTime()) /
+                  PARIS_TIMESTAMP.getTime()) /
                 1000 /
                 12;
 
@@ -412,11 +412,11 @@ const SupplySinceMergeWidget: FC<Props> = ({
     const points = [];
     let timestamp = supplySinceMergeSeries[0][0];
     const supplyBeforeMerge =
-      ((MERGE_TIMESTAMP.getTime() - timestamp) / 1000 / 60 / 10) * 6.25;
+      ((PARIS_TIMESTAMP.getTime() - timestamp) / 1000 / 60 / 10) * 6.25;
     let bitcoinSupply = BITCOIN_SUPPLY_AT_MERGE - supplyBeforeMerge;
     while (timestamp < last[0]) {
       const bitcoinSupplyRescaled =
-        (bitcoinSupply / BITCOIN_SUPPLY_AT_MERGE) * mergeStatus.supply;
+        (bitcoinSupply / BITCOIN_SUPPLY_AT_MERGE) * PARIS_SUPPLY;
 
       points.push([timestamp, bitcoinSupplyRescaled] as SupplyPoint);
 
@@ -425,7 +425,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
     }
 
     return points;
-  }, [mergeStatus, supplySinceMergeSeries]);
+  }, [supplySinceMergeSeries]);
 
   const options = useMemo((): Highcharts.Options => {
     const lastPointPos = _last(supplySinceMergeSeries);
@@ -467,7 +467,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
         plotLines: [
           {
             id: "merge-supply",
-            value: mergeStatus.supply,
+            value: PARIS_SUPPLY,
             color: colors.slateus400,
             width: 1,
             label: {
@@ -495,12 +495,9 @@ const SupplySinceMergeWidget: FC<Props> = ({
                 lastPointBtc === undefined
                   ? undefined
                   : makeIssuanceLabel(
-                      btcSupplyFromEthProjection(
-                        lastPointBtc[1],
-                        mergeStatus.supply,
-                      ),
+                      btcSupplyFromEthProjection(lastPointBtc[1], PARIS_SUPPLY),
                       BITCOIN_SUPPLY_AT_MERGE,
-                      lastPointBtc[0] - MERGE_TIMESTAMP.getTime(),
+                      lastPointBtc[0] - PARIS_TIMESTAMP.getTime(),
                     ),
             },
           },
@@ -524,8 +521,8 @@ const SupplySinceMergeWidget: FC<Props> = ({
                   ? undefined
                   : makeIssuanceLabel(
                       lastPointPos[1],
-                      mergeStatus.supply,
-                      lastPointPos[0] - MERGE_TIMESTAMP.getTime(),
+                      PARIS_SUPPLY,
+                      lastPointPos[0] - PARIS_TIMESTAMP.getTime(),
                     ),
             },
           },
@@ -549,8 +546,8 @@ const SupplySinceMergeWidget: FC<Props> = ({
                   ? undefined
                   : makeIssuanceLabel(
                       lastPointPow[1],
-                      mergeStatus.supply,
-                      lastPointPow[0] - MERGE_TIMESTAMP.getTime(),
+                      PARIS_SUPPLY,
+                      lastPointPow[0] - PARIS_TIMESTAMP.getTime(),
                     ),
             },
           },
@@ -560,7 +557,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
         plotLines: [
           {
             id: "merge-plotline",
-            value: MERGE_TIMESTAMP.getTime(),
+            value: PARIS_TIMESTAMP.getTime(),
             color: colors.slateus400,
             width: 1,
             label: {
@@ -572,7 +569,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
               formatter: () => `
                 <div class="flex">
                   <div class="font-roboto font-light text-slateus-300">
-                  #${formatZeroDecimals(mergeStatus.block_number)}
+                  #${formatZeroDecimals(PARIS_BLOCK_NUMBER)}
                   </div>
                   <img
                     class="w-4 h-4 ml-2"
@@ -691,7 +688,6 @@ const SupplySinceMergeWidget: FC<Props> = ({
         shadow: false,
         formatter: getTooltip(
           bitcoinSupplySeriesMap,
-          mergeStatus,
           simulateProofOfWork,
           supplySinceMergeMap,
           supplySinceMergePowMap,
@@ -709,7 +705,6 @@ const SupplySinceMergeWidget: FC<Props> = ({
     supplyPosMin,
     supplyPowMax,
     supplyPosMax,
-    mergeStatus,
   ]);
 
   return (

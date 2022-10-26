@@ -28,7 +28,7 @@ import JoinDiscordSection from "./JoinDiscordSection";
 import SupplySection from "./SupplySection";
 import ConfettiGenerator from "confetti-js";
 import { useSupplySinceMerge } from "../../api/supply-since-merge";
-import { useMergeStatus } from "../../api/merge-status";
+import { PARIS_SUPPLY } from "../../hardforks/paris";
 
 const AdminTools = dynamic(() => import("../AdminTools"), { ssr: false });
 // We get hydration errors in production.
@@ -126,12 +126,11 @@ const confettiSettings = {
 };
 
 const useIsDeflationary = () => {
-  const mergeStatus = useMergeStatus();
   const supplySinceMerge = useSupplySinceMerge();
   const [isDeflationary, setIsDeflationary] = useState(false);
 
   useEffect(() => {
-    if (mergeStatus === undefined || supplySinceMerge === undefined) {
+    if (supplySinceMerge === undefined) {
       return;
     }
     const lastSupply =
@@ -139,13 +138,13 @@ const useIsDeflationary = () => {
         supplySinceMerge.supply_by_hour.length - 1
       ].supply;
 
-    if (lastSupply > mergeStatus.supply) {
+    if (lastSupply > PARIS_SUPPLY) {
       setIsDeflationary(false);
       return;
     }
 
     setIsDeflationary(true);
-  }, [mergeStatus, supplySinceMerge, setIsDeflationary]);
+  }, [supplySinceMerge, setIsDeflationary]);
 
   return isDeflationary;
 };

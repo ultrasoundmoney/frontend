@@ -1,7 +1,6 @@
 import dynamic from "next/dynamic";
 import * as React from "react";
 import TranslationsContext from "../../contexts/TranslationsContext";
-import { MERGE_TIMESTAMP_ESTIMATED } from "../../eth-constants";
 import { formatOneDecimal } from "../../format";
 import {
   estimatedDailyFeeBurn,
@@ -21,7 +20,7 @@ const MIN_PROJECTED_BASE_GAS_PRICE = 0;
 const DEFAULT_PROJECTED_BASE_GAS_PRICE = 74;
 const MAX_PROJECTED_BASE_GAS_PRICE = 420;
 
-const DEFAULT_PROJECTED_MERGE_DATE = MERGE_TIMESTAMP_ESTIMATED;
+const DEFAULT_PROJECTED_MERGE_DATE = new Date("2022-09-15T00:00:00Z");
 
 const SupplyView: React.FC = () => {
   const t = React.useContext(TranslationsContext);

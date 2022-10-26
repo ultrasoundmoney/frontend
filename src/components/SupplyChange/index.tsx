@@ -2,10 +2,8 @@ import type { FC } from "react";
 import CountUp from "react-countup";
 import { useEthSupply } from "../../api/eth-supply";
 import { getEthSupplyImprecise } from "../../api/eth-supply";
-import { useMergeStatus } from "../../api/merge-status";
 import { useSupplySinceMerge } from "../../api/supply-since-merge";
 import { getDateTimeFromSlot } from "../../beacon-time";
-import { MERGE_TIMESTAMP } from "../../eth-constants";
 import { posIssuancePerDay, powIssuancePerDay } from "../../static-ether-data";
 import SimulateProofOfWork from "../SimulateProofOfWork";
 import { BaseText } from "../Texts";
@@ -15,6 +13,7 @@ import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
 import SinceMergeIndicator from "../SinceMergeIndicator";
+import { PARIS_SUPPLY, PARIS_TIMESTAMP } from "../../hardforks/paris";
 
 type Props = {
   simulateProofOfWork: boolean;
@@ -29,7 +28,6 @@ const SupplyChange: FC<Props> = ({
   onSimulateProofOfWork,
 }) => {
   const ethSupply = useEthSupply();
-  const mergeStatus = useMergeStatus();
   const supplySinceMerge = useSupplySinceMerge();
   const ethSupplyImprecise = getEthSupplyImprecise(ethSupply);
 
@@ -37,7 +35,7 @@ const SupplyChange: FC<Props> = ({
     supplySinceMerge === undefined
       ? undefined
       : (new Date(supplySinceMerge?.timestamp).getTime() -
-          MERGE_TIMESTAMP.getTime()) /
+          PARIS_TIMESTAMP.getTime()) /
         1000 /
         12;
 
@@ -47,10 +45,10 @@ const SupplyChange: FC<Props> = ({
       : (slotsSinceMerge * POW_ISSUANCE_PER_DAY) / SLOTS_PER_DAY;
 
   const supplyDelta = !simulateProofOfWork
-    ? ethSupplyImprecise - mergeStatus.supply
+    ? ethSupplyImprecise - PARIS_SUPPLY
     : simulatedPowIssuanceSinceMerge === undefined
     ? undefined
-    : ethSupplyImprecise - mergeStatus.supply + simulatedPowIssuanceSinceMerge;
+    : ethSupplyImprecise - PARIS_SUPPLY + simulatedPowIssuanceSinceMerge;
 
   return (
     <WidgetErrorBoundary title="supply change">
