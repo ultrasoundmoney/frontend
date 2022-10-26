@@ -138,12 +138,27 @@ const baseOptions: Highcharts.Options = {
 
 type PointMap = Record<number, number>;
 
+const getIssuanceSupplyChange = (
+  mostRecentSupply: number,
+  supplyAtTheMerge: number,
+  millisecondsSinceMerge: number,
+) => {
+  const daysSinceMerge = millisecondsSinceMerge / 1000 / 60 / 60 / 24;
+  const value =
+    (((mostRecentSupply - supplyAtTheMerge) / daysSinceMerge) * 365.25) /
+    supplyAtTheMerge;
+  return formatPercentThreeDecimals(value);
+};
+
 const getTooltip = (
   bitcoinSupplySeriesMap: PointMap,
   mergeStatus: MergeStatus,
   simulateProofOfWork: boolean,
   supplySinceMergeMap: PointMap,
   supplySinceMergePowMap: PointMap,
+  lastPointPos: SupplyPoint | undefined,
+  lastPointPow: SupplyPoint | undefined,
+  lastPointBtc: SupplyPoint | undefined,
 ): TooltipFormatterCallbackFunction =>
   function () {
     const x = typeof this.x === "number" ? this.x : undefined;
@@ -165,6 +180,13 @@ const getTooltip = (
         : type === "pow"
         ? supplySinceMergePowMap
         : bitcoinSupplySeriesMap;
+
+    const lastPoint =
+      type === "pos"
+        ? lastPointPos
+        : type === "pow"
+        ? lastPointPow
+        : lastPointBtc;
 
     const total =
       type === "bitcoin"
@@ -204,6 +226,28 @@ const getTooltip = (
 
     const unit = type === "bitcoin" ? "BTC" : "ETH";
 
+    const mostRecentSupply =
+      unit === "BTC"
+        ? btcSupplyFromEthProjection(pointMap[x], mergeStatus.supply)
+        : pointMap[x];
+
+    const supplyAtTheMerge =
+      unit === "BTC" ? BITCOIN_SUPPLY_AT_MERGE : mergeStatus.supply;
+
+    const millisecondsSinceMerge =
+      typeof lastPoint !== "undefined"
+        ? lastPoint[0] - MERGE_TIMESTAMP.getTime()
+        : 0;
+
+    const issuanceSupplyChange = getIssuanceSupplyChange(
+      mostRecentSupply,
+      supplyAtTheMerge,
+      millisecondsSinceMerge,
+    );
+
+    const supplyChangeOperator =
+      supplyDelta !== undefined && supplyDelta >= 0 ? "+" : "";
+
     return `
     <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-400">
       ${
@@ -222,9 +266,14 @@ const getTooltip = (
           ${supplyDelta === undefined ? "hidden" : ""}
           text-transparent bg-clip-text bg-gradient-to-r ${gradientCss}
         ">
-          ${
-            supplyDelta !== undefined && supplyDelta >= 0 ? "+" : ""
-          }${supplyDeltaFormatted}
+          ${supplyChangeOperator}${supplyDeltaFormatted}
+          <span class="text-slateus-400"> ${unit}</span>
+        </div>
+        <div class="
+          ${issuanceSupplyChange === undefined ? "hidden" : ""}
+          text-transparent bg-clip-text bg-gradient-to-r ${gradientCss}
+        ">
+          ${supplyChangeOperator}${issuanceSupplyChange}
           <span class="text-slateus-400"> ${unit}</span>
         </div>
       </div>
@@ -238,19 +287,20 @@ const makeIssuanceLabel = (
   millisecondsSinceMerge: number,
 ) =>
   function () {
-    const daysSinceMerge = millisecondsSinceMerge / 1000 / 60 / 60 / 24;
-    const value =
-      (((mostRecentSupply - supplyAtTheMerge) / daysSinceMerge) * 365.25) /
-      supplyAtTheMerge;
-    const formatted = formatPercentThreeDecimals(value);
+    const issuanceSupplyChange = getIssuanceSupplyChange(
+      mostRecentSupply,
+      supplyAtTheMerge,
+      millisecondsSinceMerge,
+    );
+
     return `
-      <div class="flex flex-row items-center gap-x-2">
-        <div class="w-2 h-2 rounded-full"></div>
-        <div class="font-roboto text-slateus-400 text-xs">
-          <span class="text-white">+${formatted}</span>/y
+        <div class="flex flex-row items-center gap-x-2">
+          <div class="w-2 h-2 rounded-full"></div>
+          <div class="font-roboto font-light text-slateus-400 text-xs">
+            <span class="text-white">+${issuanceSupplyChange}</span>/y
+          </div>
         </div>
-      </div>
-    `;
+      `;
   };
 
 const btcSupplyFromEthProjection = (ethProjection: number, ethSupply: number) =>
@@ -645,6 +695,9 @@ const SupplySinceMergeWidget: FC<Props> = ({
           simulateProofOfWork,
           supplySinceMergeMap,
           supplySinceMergePowMap,
+          lastPointPos,
+          lastPointPow,
+          lastPointBtc,
         ),
       },
     } as Highcharts.Options);
