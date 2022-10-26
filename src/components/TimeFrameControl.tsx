@@ -18,6 +18,7 @@ export const Button: FC<{
       px-[10px] py-2
       font-roboto text-xs
       tracking-widest
+      font-normal
       ${
         isActive
           ? "rounded-sm border-blue-highlightborder bg-blue-highlightbg text-white"
