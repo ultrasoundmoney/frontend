@@ -173,7 +173,7 @@ const useConfetti = (): UseConfetti => {
 
     setTimeout(() => {
       confetti.clear();
-    }, 15000);
+    }, 22000);
 
     return;
   }, [isDeflationary, confettiRan]);
@@ -233,16 +233,16 @@ const Dashboard: FC = () => {
           <video
             ref={videoEl}
             className={`
-              absolute left-0 right-0
-              -top-10 -z-10
-              mx-auto hidden
-              ${isDeflationary ? "md:block" : ""}
+              absolute left-0 right-0 top-10 -z-10 mx-auto hidden
+              md:-top-10
+              ${isDeflationary ? "block" : ""}
             `}
-            muted
             autoPlay
             loop
+            muted
+            playsInline
           >
-            <source src="/bat-480.mov" type="video/quicktime" />
+            <source src="/bat-480.mov" type="video/mp4;codecs=hvc1" />
             <source src="/bat-480.webm" type="video/webm" />
           </video>
           <MainTitle onClick={handleToggleBatLoop}>ultra sound money</MainTitle>
