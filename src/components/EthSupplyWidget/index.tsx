@@ -232,15 +232,15 @@ const getTooltip = (
 
     const mostRecentSupply =
       unit === "BTC"
-        ? btcSupplyFromEthProjection(pointMap[x], mergeStatus.supply)
+        ? btcSupplyFromEthProjection(pointMap[x], PARIS_SUPPLY)
         : pointMap[x];
 
     const supplyAtTheMerge =
-      unit === "BTC" ? BITCOIN_SUPPLY_AT_MERGE : mergeStatus.supply;
+      unit === "BTC" ? BITCOIN_SUPPLY_AT_MERGE : PARIS_SUPPLY;
 
     const millisecondsSinceMerge =
       typeof lastPoint !== "undefined"
-        ? lastPoint[0] - MERGE_TIMESTAMP.getTime()
+        ? lastPoint[0] - PARIS_TIMESTAMP.getTime()
         : 0;
 
     const issuanceSupplyChange = getIssuanceSupplyChange(
