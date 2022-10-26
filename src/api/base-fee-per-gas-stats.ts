@@ -1,8 +1,8 @@
 import { secondsToMilliseconds } from "date-fns";
 import useSWR from "swr";
 import type { GweiNumber, WeiNumber } from "../eth-units";
-import { WEI_PER_GWEI } from "../eth-units";
 import type { ApiResult } from "./fetchers";
+import { fetchJson } from "./fetchers";
 import { fetchJsonSwr } from "./fetchers";
 
 export type BaseFeePerGasStatsTimeFrame = {
@@ -28,14 +28,14 @@ const url = "/api/v2/fees/base-fee-per-gas-stats";
 
 export const fetchBaseFeePerGasStats = (): Promise<
   ApiResult<BaseFeePerGasStats>
-> => fetchJsonSwr<ApiResult<BaseFeePerGasStats>>(url);
+> => fetchJson<BaseFeePerGasStats>(url);
 
-export const useBaseFeePerGasStats = (): BaseFeePerGasStats | undefined => {
+export const useBaseFeePerGasStats = (): BaseFeePerGasStats => {
   const { data } = useSWR<BaseFeePerGasStats>(url, fetchJsonSwr, {
     refreshInterval: secondsToMilliseconds(4),
   });
 
-  return data !== undefined
-    ? { ...data, barrier: data.barrier * WEI_PER_GWEI }
-    : undefined;
+  // We use an SWRConfig with fallback data for this hook.
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return data!;
 };

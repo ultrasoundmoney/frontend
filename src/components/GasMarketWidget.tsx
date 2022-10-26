@@ -172,6 +172,7 @@ type Props = {
 
 const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const baseFeePerGasStats = useBaseFeePerGasStats();
+  const barrier = baseFeePerGasStats.barrier * WEI_PER_GWEI;
   const baseFeePerGasStatsTimeFrame =
     baseFeePerGasStats?.[timeFrame] ??
     (undefined as BaseFeePerGasStatsTimeFrame | undefined);
@@ -180,15 +181,14 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
     baseFeePerGasStatsTimeFrame === undefined ||
     baseFeePerGasStats === undefined
       ? undefined
-      : Math.min(baseFeePerGasStats.barrier, baseFeePerGasStatsTimeFrame.min) -
-        Math.max(baseFeePerGasStatsTimeFrame.max, baseFeePerGasStats.barrier) *
-          barPaddingFactor;
+      : Math.min(barrier, baseFeePerGasStatsTimeFrame.min) -
+        Math.max(baseFeePerGasStatsTimeFrame.max, barrier) * barPaddingFactor;
 
   const highest =
     baseFeePerGasStatsTimeFrame === undefined ||
     baseFeePerGasStats === undefined
       ? undefined
-      : Math.max(baseFeePerGasStatsTimeFrame.max, baseFeePerGasStats.barrier) *
+      : Math.max(baseFeePerGasStatsTimeFrame.max, barrier) *
         (1 + barPaddingFactor);
 
   const gasRange =
@@ -209,7 +209,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
     gasRange === undefined ||
     lowest === undefined
       ? undefined
-      : ((baseFeePerGasStats.barrier - lowest) / gasRange) * 100;
+      : ((barrier - lowest) / gasRange) * 100;
 
   const deltaPercent =
     barrierPercent !== undefined && averagePercent !== undefined
@@ -264,7 +264,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
             {isDataAvailable && (
               <>
                 <Marker
-                  barrier={baseFeePerGasStats.barrier}
+                  barrier={barrier}
                   description="minimum gas price"
                   gas={baseFeePerGasStatsTimeFrame.min}
                   highest={highest}
@@ -275,7 +275,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                   vertical="bottom"
                 />
                 <Marker
-                  barrier={baseFeePerGasStats.barrier}
+                  barrier={barrier}
                   description="maximum gas price"
                   gas={baseFeePerGasStatsTimeFrame.max}
                   highest={highest}
@@ -286,14 +286,13 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                   vertical="bottom"
                 />
                 <Marker
-                  barrier={baseFeePerGasStats.barrier}
+                  barrier={barrier}
                   description="average gas price"
                   emphasize
                   gas={baseFeePerGasStatsTimeFrame.average}
                   highest={highest}
                   horizontal={
-                    baseFeePerGasStatsTimeFrame.average >
-                    baseFeePerGasStats.barrier
+                    baseFeePerGasStatsTimeFrame.average > barrier
                       ? "right"
                       : "left"
                   }
@@ -303,14 +302,13 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                   vertical="top"
                 />
                 <Marker
-                  barrier={baseFeePerGasStats.barrier}
+                  barrier={barrier}
                   description="ultra sound barrier"
                   emphasize
-                  gas={baseFeePerGasStats.barrier}
+                  gas={barrier}
                   highest={highest}
                   horizontal={
-                    baseFeePerGasStats.barrier <=
-                    baseFeePerGasStatsTimeFrame.average
+                    barrier <= baseFeePerGasStatsTimeFrame.average
                       ? "left"
                       : "right"
                   }

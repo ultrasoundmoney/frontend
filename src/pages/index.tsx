@@ -3,6 +3,8 @@ import type { GetStaticProps, NextPage } from "next";
 import { SWRConfig } from "swr";
 import type { BaseFeePerGas } from "../api/base-fee-per-gas";
 import { fetchBaseFeePerGas } from "../api/base-fee-per-gas";
+import type { BaseFeePerGasStats } from "../api/base-fee-per-gas-stats";
+import { fetchBaseFeePerGasStats } from "../api/base-fee-per-gas-stats";
 import type { EthPriceStats } from "../api/eth-price-stats";
 import { fetchEthPriceStats } from "../api/eth-price-stats";
 import type { EthSupplyF } from "../api/eth-supply";
@@ -24,6 +26,7 @@ type StaticProps = {
     "/api/v2/fees/eth-supply-parts": EthSupplyF;
     "/api/v2/fees/merge-estimate": MergeEstimate;
     "/api/v2/fees/merge-status": MergeStatus;
+    "/api/v2/fees/base-fee-per-gas-stats": BaseFeePerGasStats;
   };
 };
 
@@ -35,6 +38,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
     ethPriceStats,
     mergeStatus,
     scarcityF,
+    baseFeePerGasStats,
   ] = await Promise.all([
     // fetch(`${getDomain()}/api/v2/fees/total-difficulty-progress`),
     fetchMergeEstimate(),
@@ -44,6 +48,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
     fetchEthPriceStats(),
     fetchMergeStatus(),
     fetchScarcity(),
+    fetchBaseFeePerGasStats(),
   ]);
   // const tdpData = (await tdpRes.json()) as TotalDifficultyProgress;
   // const scData = (await scRes.json()) as Scarcity;
@@ -73,6 +78,10 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
     throw scarcityF.error;
   }
 
+  if ("error" in baseFeePerGasStats) {
+    throw baseFeePerGasStats.error;
+  }
+
   return {
     props: {
       fallback: {
@@ -82,6 +91,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
         "/api/v2/fees/eth-supply-parts": ethSupplyF.data,
         "/api/v2/fees/merge-estimate": mergeEstimate.data,
         "/api/v2/fees/merge-status": mergeStatus.data,
+        "/api/v2/fees/base-fee-per-gas-stats": baseFeePerGasStats.data,
       },
     },
     // Should be the expected lifetime of the data which goes stale quickest.
