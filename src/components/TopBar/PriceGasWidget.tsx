@@ -50,8 +50,7 @@ const PriceGasWidget: FC = () => {
       : "text-green-400";
 
   const gradientCss =
-    baseFeePerGasStats !== undefined &&
-    baseFeePerGas.wei / WEI_PER_GWEI > barrier
+    baseFeePerGasStats !== undefined && baseFeePerGas.wei > barrier
       ? "from-orange-400 to-yellow-300"
       : "from-cyan-300 to-indigo-500";
 
