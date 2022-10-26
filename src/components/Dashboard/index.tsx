@@ -206,6 +206,20 @@ const Dashboard: FC = () => {
       : videoEl.current.pause();
   }, []);
 
+  useEffect(() => {
+    if (!isDeflationary || typeof window === "undefined") {
+      return;
+    }
+
+    const id = setTimeout(() => {
+      if (videoEl.current === null) {
+        return;
+      }
+      videoEl.current.pause();
+    }, 22000);
+    return () => window.clearTimeout(id);
+  }, [isDeflationary]);
+
   return (
     <FeatureFlagsContext.Provider value={featureFlags}>
       <SkeletonTheme
