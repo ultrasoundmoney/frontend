@@ -21,6 +21,7 @@ const CurrencyButton: FC<CurrencyButtonProps> = ({
       text-xs tracking-widest
       px-3 py-2 border
       uppercase select-none
+      font-normal
       ${
         selectedUnit === unit
           ? activePeriodClasses
