@@ -18,7 +18,7 @@ import {
 } from "../../utils/metric-utils";
 import { useDebounce } from "../../utils/use-debounce";
 import { useOnResize } from "../../utils/use-on-resize";
-import styles from "./SupplyChart.module.scss";
+import styles from "./TwoYearProjectionChart.module.scss";
 import colors from "../../colors";
 import { LONDON_TIMESTAMP } from "../../hardforks/london";
 

@@ -9,8 +9,8 @@ import {
 import Slider from "../Slider/Slider";
 import { BaseText } from "../Texts";
 import Twemoji from "../Twemoji";
-import styles from "./SupplyView.module.scss";
-const SupplyChart = dynamic(() => import("./SupplyChart"));
+import styles from "./TwoYearProjection.module.scss";
+const SupplyChart = dynamic(() => import("./TwoYearProjectionChart"));
 
 const MIN_PROJECTED_ETH_STAKING = 1e6;
 const DEFAULT_PROJECTED_ETH_STAKING = 14e6;
@@ -22,7 +22,7 @@ const MAX_PROJECTED_BASE_GAS_PRICE = 420;
 
 const DEFAULT_PROJECTED_MERGE_DATE = new Date("2022-09-15T00:00:00Z");
 
-const SupplyView: React.FC = () => {
+const TwoYearProjection: React.FC = () => {
   const t = React.useContext(TranslationsContext);
 
   // TODO Initialize this to current amount of ETH staked
@@ -172,4 +172,4 @@ const Param: React.FC<ParamProps> = ({ title, value, subValue, children }) => (
   </div>
 );
 
-export default SupplyView;
+export default TwoYearProjection;

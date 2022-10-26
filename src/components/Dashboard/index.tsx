@@ -1,8 +1,7 @@
 import dynamic from "next/dynamic";
 import Head from "next/head";
-import { FC, useRef } from "react";
-import { useCallback } from "react";
-import { useEffect, useState } from "react";
+import type { FC } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useBaseFeePerGas } from "../../api/base-fee-per-gas";
