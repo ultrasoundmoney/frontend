@@ -158,9 +158,6 @@ const getTooltip = (
   simulateProofOfWork: boolean,
   supplySinceMergeMap: PointMap,
   supplySinceMergePowMap: PointMap,
-  lastPointPos: SupplyPoint | undefined,
-  lastPointPow: SupplyPoint | undefined,
-  lastPointBtc: SupplyPoint | undefined,
 ): TooltipFormatterCallbackFunction =>
   function () {
     const x = typeof this.x === "number" ? this.x : undefined;
@@ -182,13 +179,6 @@ const getTooltip = (
         : type === "pow"
         ? supplySinceMergePowMap
         : bitcoinSupplySeriesMap;
-
-    const lastPoint =
-      type === "pos"
-        ? lastPointPos
-        : type === "pow"
-        ? lastPointPow
-        : lastPointBtc;
 
     const total =
       type === "bitcoin"
@@ -230,24 +220,10 @@ const getTooltip = (
 
     const unit = type === "bitcoin" ? "BTC" : "ETH";
 
-    const mostRecentSupply =
-      unit === "BTC"
-        ? btcSupplyFromEthProjection(pointMap[x], PARIS_SUPPLY)
-        : pointMap[x];
-
-    const supplyAtTheMerge =
-      unit === "BTC" ? BITCOIN_SUPPLY_AT_MERGE : PARIS_SUPPLY;
-
-    const millisecondsSinceMerge =
-      typeof lastPoint !== "undefined"
-        ? lastPoint[0] - PARIS_TIMESTAMP.getTime()
-        : 0;
-
-    const issuanceSupplyChange = getIssuanceSupplyChange(
-      mostRecentSupply,
-      supplyAtTheMerge,
-      millisecondsSinceMerge,
-    );
+    const issuanceSupplyChangeFormatted =
+      supplyDelta === undefined
+        ? undefined
+        : formatPercentThreeDecimalsSigned(supplyDelta / total);
 
     return `
     <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-400">
@@ -264,17 +240,19 @@ const getTooltip = (
           <span class="text-slateus-400"> ${unit}</span>
         </div>
         <div class="
+          text-transparent bg-clip-text bg-gradient-to-r
+          ${gradientCss}
           ${supplyDelta === undefined ? "hidden" : ""}
-          text-transparent bg-clip-text bg-gradient-to-r ${gradientCss}
         ">
           ${supplyDeltaFormatted}
           <span class="text-slateus-400"> ${unit}</span>
         </div>
         <div class="
-          ${issuanceSupplyChange === undefined ? "hidden" : ""}
-          text-transparent bg-clip-text bg-gradient-to-r ${gradientCss}
+          text-transparent bg-clip-text bg-gradient-to-r
+          ${gradientCss}
+          ${issuanceSupplyChangeFormatted === undefined ? "hidden" : ""}
         ">
-          (${issuanceSupplyChange})
+          (${issuanceSupplyChangeFormatted})
         </div>
       </div>
     </div>
@@ -690,9 +668,6 @@ const SupplySinceMergeWidget: FC<Props> = ({
           simulateProofOfWork,
           supplySinceMergeMap,
           supplySinceMergePowMap,
-          lastPointPos,
-          lastPointPow,
-          lastPointBtc,
         ),
       },
     } as Highcharts.Options);
