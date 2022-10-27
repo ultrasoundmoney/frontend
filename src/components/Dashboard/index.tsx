@@ -9,8 +9,7 @@ import { useBaseFeePerGas } from "../../api/base-fee-per-gas";
 import { useEthPriceStats } from "../../api/eth-price-stats";
 import colors from "../../colors";
 import { WEI_PER_GWEI } from "../../eth-units";
-import * as FeatureFlags from "../../feature-flags";
-import { FeatureFlagsContext } from "../../feature-flags";
+import { FeatureFlagsContext, useFeatureFlags } from "../../feature-flags";
 import { formatZeroDecimals } from "../../format";
 import useAuthFromSection from "../../hooks/use-auth-from-section";
 import { useTwitterAuthStatus } from "../../hooks/use-twitter-auth";
@@ -147,18 +146,23 @@ const useIsDeflationary = () => {
     setIsDeflationary(true);
   }, [supplySinceMerge, setIsDeflationary]);
 
+  // simulateDeflationary doesn't work in the Dashboard component as the FeatureFlagsContext is not available.
   return isDeflationary || simulateDeflationary;
 };
 
 type UseConfetti = { showConfetti: boolean };
 
-const useConfetti = (): UseConfetti => {
+const useConfetti = (simulateDeflationary: boolean): UseConfetti => {
   const [confettiRan, setConfettiRan] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const isDeflationary = useIsDeflationary();
 
   useEffect(() => {
-    if (confettiRan || typeof document === "undefined" || !isDeflationary) {
+    if (
+      confettiRan ||
+      typeof document === "undefined" ||
+      (!isDeflationary && !simulateDeflationary)
+    ) {
       return;
     }
 
@@ -178,19 +182,20 @@ const useConfetti = (): UseConfetti => {
     }, 22000);
 
     return;
-  }, [isDeflationary, confettiRan]);
+  }, [isDeflationary, confettiRan, simulateDeflationary]);
 
   return { showConfetti };
 };
 
 const Dashboard: FC = () => {
-  const { featureFlags, setFlag } = FeatureFlags.useFeatureFlags();
+  useScrollOnLoad();
+  const { featureFlags, setFlag } = useFeatureFlags();
   const [twitterAuthStatus, setTwitterAuthStatus] = useTwitterAuthStatus();
   const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
-  useScrollOnLoad();
-  const { showConfetti } = useConfetti();
   const isDeflationary = useIsDeflationary();
   const videoEl = useRef<HTMLVideoElement>(null);
+  const { simulateDeflationary } = featureFlags;
+  const { showConfetti } = useConfetti(simulateDeflationary);
 
   const handleClickTimeFrame = useCallback(() => {
     setTimeFrame((timeFrame) => getNextTimeFrame(timeFrame));
@@ -249,9 +254,9 @@ const Dashboard: FC = () => {
           <video
             ref={videoEl}
             className={`
-              absolute left-0 right-0 top-10 -z-10 mx-auto hidden
+              absolute left-0 right-0 top-10 -z-10 mx-auto
               md:-top-10
-              ${isDeflationary ? "block" : ""}
+              ${isDeflationary || simulateDeflationary ? "" : "hidden"}
             `}
             autoPlay
             loop
