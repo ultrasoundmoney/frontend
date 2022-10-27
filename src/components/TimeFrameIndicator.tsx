@@ -42,7 +42,7 @@ const TimeFrameIndicator: FC<Props> = ({
       title="since London hark fork where EIP-1559 was activated"
     >
       <LabelText>{timeFrame === "all" ? "since burn" : "time frame"}</LabelText>
-      <p className="font-roboto text-xs font-light text-white">
+      <p className="font-roboto text-xs text-white">
         {timeFrame === "all"
           ? daysSinceLondon
           : displayTimeFrameNextMap[timeFrame]}

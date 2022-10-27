@@ -26,9 +26,7 @@ const SinceMergeIndicator: FC = () => {
   return (
     <div className="flex items-baseline gap-x-2">
       <WidgetTitle>since merge</WidgetTitle>
-      <p className="font-roboto text-xs font-light text-white">
-        {daysSinceParis}
-      </p>
+      <p className="font-roboto text-xs text-white">{daysSinceParis}</p>
     </div>
   );
 };
