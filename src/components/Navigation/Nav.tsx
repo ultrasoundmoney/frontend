@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import type { BaseFeePerGas } from "../../api/base-fee-per-gas";
-import type { EthPriceStats } from "../../api/eth-price-stats";
+import { useBaseFeePerGas } from "../../api/base-fee-per-gas";
+import { useEthPriceStats } from "../../api/eth-price-stats";
 import { NavigationContext } from "../../contexts/NavigationContext";
 import TranslationsContext from "../../contexts/TranslationsContext";
 import { useLocalStorage } from "../../hooks/use-local-storage";
@@ -12,14 +12,13 @@ import PriceGasWidget from "../TopBar/PriceGasWidget";
 import { WidgetTitle } from "../WidgetSubcomponents";
 import classes from "./Navigation.module.scss";
 
-const Nav: React.FC<{
-  baseFeePerGas: BaseFeePerGas;
-  ethPriceStats: EthPriceStats;
-}> = ({ baseFeePerGas, ethPriceStats }) => {
+const Nav: React.FC = () => {
   const t = React.useContext(TranslationsContext);
   const [isOpen, setIsOpen] = useState(false);
   const defaultBar = useRef<null | HTMLDivElement>(null);
   const { faqPosition } = React.useContext(NavigationContext);
+  const baseFeePerGas = useBaseFeePerGas();
+  const ethPriceStats = useEthPriceStats();
 
   const [gasAlarmActive, setGasAlarmActive] = useLocalStorage(
     "gas-alarm-enabled",
@@ -77,23 +76,23 @@ const Nav: React.FC<{
   const moveToFaq = () => window.scrollTo(0, faqPosition);
 
   return (
-    <nav className="fixed w-full flex flex-wrap items-center justify-between px-2 py-6 bg-transparent mb-3 z-10">
+    <nav className="fixed z-10 mb-3 flex w-full flex-wrap items-center justify-between bg-transparent px-2 py-6">
       <div
         ref={defaultBar}
-        className={`${classes.defaultBar} container px-1 md:px-4 mx-auto flex items-center justify-between`}
+        className={`${classes.defaultBar} container mx-auto flex items-center justify-between px-1 md:px-4`}
       >
-        <div className="flex relative">
+        <div className="relative flex">
           {baseFeePerGas !== undefined && ethPriceStats !== undefined && (
             <PriceGasWidget />
           )}
           <button
             ref={alarmButtonRef}
             className={`
-              flex items-center
-              px-3 py-2 ml-4
-              bg-blue-tangaroa rounded
-              select-none
+              ml-4 flex
+              select-none items-center rounded
               border border-transparent
+              bg-blue-tangaroa
+              px-3 py-2
               ${
                 notification.type === "Supported" && isAlarmValuesAvailable
                   ? "visible"
@@ -101,7 +100,7 @@ const Nav: React.FC<{
               }
               ${
                 isAlarmActive
-                  ? "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg"
+                  ? "rounded-sm border-blue-highlightborder bg-blue-highlightbg text-white"
                   : ""
               }
             `}
@@ -112,7 +111,7 @@ const Nav: React.FC<{
 
           <div
             ref={dialogRef}
-            className={`absolute w-full bg-blue-tangaroa rounded p-8 top-12 md:top-12 ${showAlarmDialogCss}`}
+            className={`absolute top-12 w-full rounded bg-blue-tangaroa p-8 md:top-12 ${showAlarmDialogCss}`}
           >
             <WidgetTitle>price alerts</WidgetTitle>
             <AlarmInput
@@ -129,25 +128,25 @@ const Nav: React.FC<{
             />
             {notification.type === "Supported" &&
               notification.permission === "denied" && (
-                <p className="text-sm text-red-400 mt-4">
+                <p className="mt-4 text-sm text-red-400">
                   notifications disabled, please grant notification permission.
                 </p>
               )}
           </div>
         </div>
-        <div className="w-full md:w-6/12 hidden md:block" id="menu">
-          <ul className="flex flex-col items-center md:flex-row justify-end list-none mt-4 md:mt-0 relative text-sm">
-            <li className="nav-item pl-6 justify-center">
+        <div className="hidden w-full md:block md:w-6/12" id="menu">
+          <ul className="relative mt-4 flex list-none flex-col items-center justify-end text-sm md:mt-0 md:flex-row">
+            <li className="nav-item justify-center pl-6">
               <button
                 onClick={moveToFaq}
-                className="px-3 py-2 outline-none flex items-center leading-snug text-blue-shipcove hover:opacity-75 hover:text-white hover:cursor-pointer"
+                className="flex items-center px-3 py-2 leading-snug text-blue-shipcove outline-none hover:cursor-pointer hover:text-white hover:opacity-75"
               >
                 {t.landing_faq_link}
               </button>
             </li>
             <li className="nav-item justify-center" style={{ paddingLeft: 75 }}>
               <Link href="/dashboard">
-                <a className="px-5 py-2 flex items-center font-medium text-sm  text-white hover:text-blue-shipcove border-white border-solid border-2 rounded-3xl hover:border-blue-shipcove">
+                <a className="flex items-center rounded-3xl border-2 border-solid border-white  px-5 py-2 text-sm font-medium text-white hover:border-blue-shipcove hover:text-blue-shipcove">
                   {t.landing_dashboard_link}
                   <img
                     className="ml-6"
@@ -159,7 +158,7 @@ const Nav: React.FC<{
             </li>
           </ul>
         </div>
-        <div className="-mr-2 flex md:hidden fixed right-5">
+        <div className="fixed right-5 -mr-2 flex md:hidden">
           <img
             alt="icon indicating a hamburger or navigation menu"
             onClick={openCloseNavHandler}
@@ -175,7 +174,7 @@ const Nav: React.FC<{
         }
         id="mobile-menu"
       >
-        <div className="px-2 pt-20 pb-3 space-y-1 sm:px-3 relative">
+        <div className="relative space-y-1 px-2 pt-20 pb-3 sm:px-3">
           <div className="absolute right-5 top-2">
             <img
               alt="cross icon indicating a hamburger or navigation menu"

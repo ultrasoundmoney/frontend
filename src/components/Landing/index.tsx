@@ -1,8 +1,6 @@
 import AOS from "aos";
 import "aos/dist/aos.css";
 import React from "react";
-import type { BaseFeePerGas } from "../../api/base-fee-per-gas";
-import type { EthPriceStats } from "../../api/eth-price-stats";
 import { NavigationProvider } from "../../contexts/NavigationContext";
 import { SteppersProvider } from "../../contexts/StepperContext";
 import FollowingYou from "../FollowingYou";
@@ -23,10 +21,7 @@ import styles from "./Landing.module.scss";
 import TheBurnedCard from "./theBurnedCard";
 import TheMergeBlock from "./theMerge";
 
-const LandingPage: React.FC<{
-  baseFeePerGas: BaseFeePerGas;
-  ethPriceStats: EthPriceStats;
-}> = ({ baseFeePerGas, ethPriceStats }) => {
+const LandingPage: React.FC = () => {
   React.useEffect(() => {
     AOS.init();
     AOS.refresh();
@@ -37,10 +32,7 @@ const LandingPage: React.FC<{
       <NavigationProvider>
         <div className="wrapper">
           <Stepper />
-          <Navigation
-            baseFeePerGas={baseFeePerGas}
-            ethPriceStats={ethPriceStats}
-          />
+          <Navigation />
           <div className="container mx-auto">
             <Intro />
             <BeforeGenesis />
@@ -66,10 +58,10 @@ const LandingPage: React.FC<{
                   data-aos-delay="100"
                   data-aos-duration="1000"
                   data-aos-easing="ease-in-out"
-                  className="flex flex-col px-4 md:px-0 mt-6 mb-16"
+                  className="mt-6 mb-16 flex flex-col px-4 md:px-0"
                   id="supplyview"
                 >
-                  <div className="w-full md:w-5/6 lg:w-5/6 md:m-auto relative md:px-11 py-4 md:py-11 rounded-xl">
+                  <div className="relative w-full rounded-xl py-4 md:m-auto md:w-5/6 md:px-11 md:py-11 lg:w-5/6">
                     <SupplyViewNew />
                   </div>
                   <div className="flex flex-wrap justify-center pt-20">
@@ -91,10 +83,10 @@ const LandingPage: React.FC<{
               data-aos-delay="50"
               data-aos-duration="1000"
               data-aos-easing="ease-in-out"
-              className="flex px-4 md:px-8 lg:px-0 py-8 md:py-40"
+              className="flex px-4 py-8 md:px-8 md:py-40 lg:px-0"
               id="fam"
             >
-              <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
+              <div className="relative w-full md:m-auto md:w-5/6 lg:w-2/3">
                 <TwitterFam />
               </div>
             </section>
@@ -104,9 +96,9 @@ const LandingPage: React.FC<{
               data-aos-delay="50"
               data-aos-duration="1000"
               data-aos-easing="ease-in-out"
-              className="relative flex px-4 mb-32 md:px-8 lg:px-0 py-24"
+              className="relative mb-32 flex px-4 py-24 md:px-8 lg:px-0"
             >
-              <div className="w-full md:w-5/6 lg:w-2/3 md:m-auto relative">
+              <div className="relative w-full md:m-auto md:w-5/6 lg:w-2/3">
                 <FollowingYou />
               </div>
             </section>
