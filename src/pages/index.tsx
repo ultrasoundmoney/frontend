@@ -9,8 +9,6 @@ import type { EthPriceStats } from "../api/eth-price-stats";
 import { fetchEthPriceStats } from "../api/eth-price-stats";
 import type { EthSupplyF } from "../api/eth-supply";
 import { fetchEthSupplyParts } from "../api/eth-supply";
-import type { MergeEstimate } from "../api/merge-estimate";
-import { fetchMergeEstimate } from "../api/merge-estimate";
 import type { ScarcityF } from "../api/scarcity";
 import { fetchScarcity } from "../api/scarcity";
 import BasicErrorBoundary from "../components/BasicErrorBoundary";
@@ -22,31 +20,24 @@ type StaticProps = {
     "/api/v2/fees/base-fee-per-gas": BaseFeePerGas;
     "/api/v2/fees/eth-price-stats": EthPriceStats;
     "/api/v2/fees/eth-supply-parts": EthSupplyF;
-    "/api/v2/fees/merge-estimate": MergeEstimate;
     "/api/v2/fees/base-fee-per-gas-stats": BaseFeePerGasStats;
   };
 };
 
 export const getStaticProps: GetStaticProps<StaticProps> = async () => {
   const [
-    mergeEstimate,
     ethSupplyF,
     baseFeePerGas,
     ethPriceStats,
     scarcityF,
     baseFeePerGasStats,
   ] = await Promise.all([
-    fetchMergeEstimate(),
     fetchEthSupplyParts(),
     fetchBaseFeePerGas(),
     fetchEthPriceStats(),
     fetchScarcity(),
     fetchBaseFeePerGasStats(),
   ]);
-
-  if ("error" in mergeEstimate) {
-    throw mergeEstimate.error;
-  }
 
   if ("error" in ethSupplyF) {
     throw ethSupplyF.error;
@@ -75,13 +66,11 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
         "/api/v2/fees/base-fee-per-gas": baseFeePerGas.data,
         "/api/v2/fees/eth-price-stats": ethPriceStats.data,
         "/api/v2/fees/eth-supply-parts": ethSupplyF.data,
-        "/api/v2/fees/merge-estimate": mergeEstimate.data,
         "/api/v2/fees/base-fee-per-gas-stats": baseFeePerGasStats.data,
       },
     },
     // Should be the expected lifetime of the data which goes stale quickest.
-    // Currently: mergeEstimate ~12s
-    // Although merge estimate updates every block, it's good enough to update SSR every 1min.
+    // Although base-fee-per-gas updates every block, it's good enough to update SSR every 1min.
     revalidate: minutesToSeconds(1),
   };
 };
