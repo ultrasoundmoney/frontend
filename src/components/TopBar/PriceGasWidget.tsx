@@ -49,10 +49,10 @@ const PriceGasWidget: FC = () => {
       ? "text-red-400"
       : "text-green-400";
 
-  const gradientCss =
+  const gweiColor =
     baseFeePerGasStats !== undefined && baseFeePerGas.wei > barrier
-      ? "from-orange-400 to-yellow-300"
-      : "from-cyan-300 to-indigo-500";
+      ? "text-orange-400"
+      : "text-drop";
 
   return (
     <PriceGasBoundary>
@@ -80,7 +80,7 @@ const PriceGasWidget: FC = () => {
             <SkeletonText width="0.5rem" />
           ) : (
             <CountUp
-              className={`bg-gradient-to-r bg-clip-text text-transparent ${gradientCss}`}
+              className={gweiColor}
               decimals={0}
               duration={0.8}
               end={Format.gweiFromWei(baseFeePerGas.wei)}
@@ -90,7 +90,11 @@ const PriceGasWidget: FC = () => {
             />
           )}
           <AmountUnitSpace />
-          <BaseText font="font-roboto" color="text-slateus-400">
+          <BaseText
+            font="font-roboto"
+            color="text-slateus-400"
+            weight="font-normal"
+          >
             Gwei
           </BaseText>
         </BaseText>
