@@ -62,6 +62,7 @@ const PriceGasWidget: FC = () => {
           rounded bg-blue-tangaroa
           px-3 py-2
           text-xs
+          font-normal
           lg:text-sm
         `}
       >
@@ -74,7 +75,7 @@ const PriceGasWidget: FC = () => {
             priority
           />
         </div>
-        <BaseText font="font-roboto" className="pl-1">
+        <BaseText font="font-roboto" weight="font-normal" className="pl-1">
           {baseFeePerGas === undefined ? (
             <SkeletonText width="0.5rem" />
           ) : (
@@ -89,7 +90,9 @@ const PriceGasWidget: FC = () => {
             />
           )}
           <AmountUnitSpace />
-          <span className="font-extralight text-blue-spindle">Gwei</span>
+          <BaseText font="font-roboto" color="text-slateus-400">
+            Gwei
+          </BaseText>
         </BaseText>
         <div className="mr-4"></div>
         <div className="flex select-none items-center">
@@ -102,7 +105,7 @@ const PriceGasWidget: FC = () => {
             priority
           />
         </div>
-        <BaseText font="font-roboto" className="pl-1">
+        <BaseText font="font-roboto" className="pl-1" weight="font-normal">
           {ethPriceStats === undefined ? (
             <SkeletonText width="2.65rem" />
           ) : (
@@ -116,11 +119,21 @@ const PriceGasWidget: FC = () => {
             />
           )}
           <AmountUnitSpace />
-          <span className="font-extralight text-blue-spindle">USD</span>
+          <BaseText
+            font="font-roboto"
+            color="text-slateus-400"
+            weight="font-normal"
+          >
+            USD
+          </BaseText>
           <AmountUnitSpace />
-          <span className={`${color}`}>
+          <BaseText
+            font="font-roboto"
+            weight="font-normal"
+            className={`${color}`}
+          >
             (<SkeletonText width="2.5rem">{ethUsd24hChange}</SkeletonText>)
-          </span>
+          </BaseText>
         </BaseText>
       </div>
     </PriceGasBoundary>
