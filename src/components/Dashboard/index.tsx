@@ -195,6 +195,7 @@ const Dashboard: FC = () => {
   const videoEl = useRef<HTMLVideoElement>(null);
   const { simulateDeflationary } = featureFlags;
   const { showConfetti } = useConfetti(simulateDeflationary);
+  const showVideo = isDeflationary || simulateDeflationary;
 
   const handleClickTimeFrame = useCallback(() => {
     setTimeFrame((timeFrame) => getNextTimeFrame(timeFrame));
@@ -213,7 +214,7 @@ const Dashboard: FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!isDeflationary || typeof window === "undefined") {
+    if (!showVideo || typeof window === "undefined") {
       return;
     }
 
@@ -224,7 +225,7 @@ const Dashboard: FC = () => {
       videoEl.current.pause();
     }, 22000);
     return () => window.clearTimeout(id);
-  }, [isDeflationary]);
+  }, [showVideo]);
 
   return (
     <FeatureFlagsContext.Provider value={featureFlags}>
@@ -233,15 +234,15 @@ const Dashboard: FC = () => {
         highlightColor="#565b7f"
         enableAnimation={true}
       >
-        <canvas
-          className={`pointer-events-none absolute z-10 ${
-            showConfetti ? "" : "hidden"
-          }`}
-          id="confetti-canvas"
-        ></canvas>
         <GasPriceTitle />
         <HeaderGlow />
-        <div className="container mx-auto">
+        <div className="container mx-auto overflow-x-hidden relative">
+          <canvas
+            className={`pointer-events-none absolute z-10 ${
+              showConfetti ? "" : "hidden"
+            }`}
+            id="confetti-canvas"
+          ></canvas>
           <BasicErrorBoundary>
             <AdminTools setFlag={setFlag} />
           </BasicErrorBoundary>
@@ -250,21 +251,23 @@ const Dashboard: FC = () => {
               <TopBar />
             </BasicErrorBoundary>
           </div>
-          <video
-            ref={videoEl}
-            className={`
-              absolute left-0 right-0 top-10 -z-10 mx-auto
-              md:-top-10
-              ${isDeflationary || simulateDeflationary ? "" : "hidden"}
-            `}
-            autoPlay
-            loop
-            muted
-            playsInline
-          >
-            <source src="/bat-480.mov" type="video/mp4;codecs=hvc1" />
-            <source src="/bat-480.webm" type="video/webm" />
-          </video>
+          {showVideo &&
+            <video
+              ref={videoEl}
+              className={`
+                absolute left-0 right-0 top-10 -z-10 mx-auto
+                md:-top-10
+                ${isDeflationary || simulateDeflationary ? "" : "hidden"}
+              `}
+              autoPlay
+              loop
+              muted
+              playsInline
+            >
+              <source src="/bat-480.mov" type="video/mp4;codecs=hvc1" />
+              <source src="/bat-480.webm" type="video/webm" />
+            </video>
+          }
           <MainTitle onClick={handleToggleBatLoop}>ultra sound money</MainTitle>
           <SupplySection
             timeFrame={timeFrame}
