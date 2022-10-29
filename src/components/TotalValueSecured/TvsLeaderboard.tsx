@@ -16,6 +16,7 @@ import Modal from "../Modal";
 import BodyText from "../TextsNext/BodyText";
 import FamTooltip from "../FamTooltip";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
+import SkeletonText from "../TextsNext/SkeletonText";
 
 type TvsLeaderboardProps = {
   className?: HTMLAttributes<HTMLDivElement>["className"];
@@ -162,8 +163,10 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
                   className="ml-4 flex w-full justify-between overflow-hidden"
                   href={row?.coinGeckoUrl || row?.nftGoUrl}
                 >
-                  <BodyText skeletonWidth="6rem" className="truncate">
-                    {row?.name?.split(":")[0]}
+                  <BodyText className="truncate">
+                    <SkeletonText width="6rem">
+                      {row?.name?.split(":")[0]}
+                    </SkeletonText>
                   </BodyText>
                   <BodyText
                     className={`
