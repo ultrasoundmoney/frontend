@@ -12,6 +12,17 @@ const getFormattedDays = (now: Date) => {
   return `${daysCount}d`;
 };
 
+const displayTimeframeV2Map: Record<
+  Exclude<TimeFrameV2, "since_merge">,
+  string | undefined
+> = {
+  d1: "d1",
+  d30: "d30",
+  d7: "d7",
+  h1: "h1",
+  m5: "m5",
+};
+
 const SinceMergeIndicator: FC<{
   onClick?: () => void;
   timeFrame: TimeFrameV2;
@@ -33,14 +44,12 @@ const SinceMergeIndicator: FC<{
       {timeFrame === "since_merge" ? (
         <>
           <WidgetTitle>since merge</WidgetTitle>
-          <TimeFrameText className="font-roboto text-xs text-white">
-            {daysSinceParis}
-          </TimeFrameText>
+          <TimeFrameText>{daysSinceParis}</TimeFrameText>
         </>
       ) : (
         <>
           <WidgetTitle>time frame</WidgetTitle>
-          <TimeFrameText>{timeFrame}</TimeFrameText>
+          <TimeFrameText>{displayTimeframeV2Map[timeFrame]}</TimeFrameText>
         </>
       )}
     </button>

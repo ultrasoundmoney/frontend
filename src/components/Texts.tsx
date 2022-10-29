@@ -86,6 +86,7 @@ export const TimeFrameText: FC<{ children: ReactNode; className?: string }> = ({
     className={`tracking-widest ${className}`}
     size="text-xs"
     font="font-roboto"
+    weight="font-normal"
   >
     {children}
   </BaseText>
