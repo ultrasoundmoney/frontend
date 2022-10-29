@@ -7,7 +7,6 @@ type Props = {
   className?: string;
   color?: string;
   size?: string;
-  skeletonWidth?: string;
   unitPostfix?: string;
 };
 
