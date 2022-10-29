@@ -8,7 +8,7 @@ export const timeFrames = ["5m", "1h", "24h", "7d", "30d", "all"] as const;
  */
 export type TimeFrame = typeof timeFrames[number];
 
-export const limitedTimeFramesNext = ["m5", "h1", "d1", "d7", "d30"];
+export const limitedTimeFramesNext = ["m5", "h1", "d1", "d7", "d30"] as const;
 export type LimitedTimeFrameNext = typeof limitedTimeFramesNext[number];
 
 export const timeFramesNext = ["m5", "h1", "d1", "d7", "d30", "all"] as const;
@@ -48,6 +48,19 @@ export const displayTimeFrameNextMap: Record<TimeFrameNext, string> = {
   d7: "7d",
   d30: "30d",
   all: "all",
+  merge: "since_merge",
+};
+
+export const timeFrameNextNextFromNextMap: Record<
+  TimeFrameNext,
+  TimeFrameWithBurnWithMerge
+> = {
+  all: "since_burn",
+  d1: "d1",
+  d30: "d30",
+  d7: "d7",
+  h1: "h1",
+  m5: "m5",
 };
 
 export const getNextTimeFrame = (timeFrame: TimeFrameNext): TimeFrameNext => {

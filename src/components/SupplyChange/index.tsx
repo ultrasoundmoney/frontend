@@ -56,7 +56,7 @@ const SupplyChange: FC<Props> = ({
         <div className="relative flex flex-col gap-x-2 gap-y-4">
           <div className="flex justify-between">
             <LabelText>supply change</LabelText>
-            <SinceMergeIndicator />
+            <SinceMergeIndicator timeFrame="since_merge" />
           </div>
           <div className="flex">
             <BaseText

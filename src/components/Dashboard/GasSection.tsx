@@ -35,7 +35,7 @@ const GasSection: FC<{
       return [undefined, undefined];
     }
 
-    const baseFeesOverTimeTimeFrame = baseFeesOverTime[timeFrame] ?? undefined;
+    const baseFeesOverTimeTimeFrame = baseFeesOverTime[timeFrame];
     const series =
       baseFeesOverTimeTimeFrame === undefined
         ? undefined

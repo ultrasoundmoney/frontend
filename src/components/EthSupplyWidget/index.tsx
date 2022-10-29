@@ -6,9 +6,10 @@ import highchartsAnnotations from "highcharts/modules/annotations";
 import _last from "lodash/last";
 import _merge from "lodash/merge";
 import type { FC } from "react";
+import { useCallback, useState } from "react";
 import { useMemo } from "react";
+import { useSupplyOverTime } from "../../api/supply-over-time";
 import type { SupplyAtTime } from "../../api/supply-since-merge";
-import { useSupplySinceMerge } from "../../api/supply-since-merge";
 import colors from "../../colors";
 import {
   formatPercentThreeDecimalsSigned,
@@ -284,6 +285,15 @@ const makeIssuanceLabel = (
 const btcSupplyFromEthProjection = (ethProjection: number, ethSupply: number) =>
   (ethProjection / ethSupply) * BITCOIN_SUPPLY_AT_MERGE;
 
+const timeFramesV2 = ["m5", "h1", "d1", "d7", "d30", "since_merge"] as const;
+export type TimeFrameV2 = typeof timeFramesV2[number];
+
+const getNextTimeFrame = (timeFrame: TimeFrameV2): TimeFrameV2 => {
+  const nextIndex = (timeFramesV2.indexOf(timeFrame) + 1) % timeFramesV2.length;
+
+  return timeFramesV2[nextIndex];
+};
+
 type Props = {
   simulateProofOfWork: boolean;
   onSimulateProofOfWork: () => void;
@@ -293,7 +303,16 @@ const SupplySinceMergeWidget: FC<Props> = ({
   simulateProofOfWork,
   onSimulateProofOfWork,
 }) => {
-  const supplySinceMerge = useSupplySinceMerge();
+  const supplyOverTime = useSupplyOverTime();
+  const [timeFrame, setTimeFrame] = useState<TimeFrameV2>("since_merge");
+  const supplyOverTimeTimeFrame = supplyOverTime?.[timeFrame] as
+    | SupplyAtTime[]
+    | undefined;
+  const supplySinceMerge = supplyOverTime?.since_merge;
+
+  const handleClickTimeFrame = useCallback(() => {
+    setTimeFrame((timeFrame) => getNextTimeFrame(timeFrame));
+  }, []);
 
   const pointFromSupplyAtTime = (supplyAtTime: SupplyAtTime): SupplyPoint => [
     new Date(supplyAtTime.timestamp).getTime(),
@@ -302,82 +321,49 @@ const SupplySinceMergeWidget: FC<Props> = ({
 
   const supplySinceMergeSeries = useMemo(
     () =>
-      supplySinceMerge === undefined
+      supplyOverTimeTimeFrame === undefined
         ? undefined
-        : supplySinceMerge.supply_by_hour.map(
+        : supplyOverTimeTimeFrame.map(
             (point): SupplyPoint => [
               new Date(point.timestamp).getTime(),
               point.supply,
             ],
           ),
-    [supplySinceMerge],
+    [supplyOverTimeTimeFrame],
   );
 
   const supplySinceMergePowSeries = useMemo(
     () =>
       supplySinceMerge === undefined
         ? undefined
-        : supplySinceMerge.supply_by_hour.reduce(
-            (points: SupplyPoint[], point) => {
-              const timestamp = new Date(point.timestamp).getTime();
+        : supplySinceMerge.reduce((points: SupplyPoint[], point) => {
+            const timestamp = new Date(point.timestamp).getTime();
 
-              if (timestamp <= PARIS_TIMESTAMP.getTime()) {
-                return points;
-              }
+            if (timestamp <= PARIS_TIMESTAMP.getTime()) {
+              return points;
+            }
 
-              const lastPoint = _last(points);
-              if (lastPoint === undefined) {
-                return [pointFromSupplyAtTime(point)];
-              }
+            const lastPoint = _last(points);
+            if (lastPoint === undefined) {
+              return [pointFromSupplyAtTime(point)];
+            }
 
-              const slotsSinceMerge =
-                (new Date(point.timestamp).getTime() -
-                  PARIS_TIMESTAMP.getTime()) /
-                1000 /
-                12;
+            const slotsSinceMerge =
+              (new Date(point.timestamp).getTime() -
+                PARIS_TIMESTAMP.getTime()) /
+              1000 /
+              12;
 
-              const simulatedPowIssuanceSinceMerge =
-                (slotsSinceMerge * POW_ISSUANCE_PER_DAY) / SLOTS_PER_DAY;
+            const simulatedPowIssuanceSinceMerge =
+              (slotsSinceMerge * POW_ISSUANCE_PER_DAY) / SLOTS_PER_DAY;
 
-              const nextSupply = point.supply + simulatedPowIssuanceSinceMerge;
+            const nextSupply = point.supply + simulatedPowIssuanceSinceMerge;
 
-              const nextPoint: SupplyPoint = [timestamp, nextSupply];
+            const nextPoint: SupplyPoint = [timestamp, nextSupply];
 
-              return [...points, nextPoint];
-            },
-            [],
-          ),
+            return [...points, nextPoint];
+          }, []),
     [supplySinceMerge],
-  );
-
-  const supplyPosMax = useMemo(
-    () =>
-      supplySinceMergeSeries === undefined
-        ? undefined
-        : supplySinceMergeSeries.reduce((pointA, pointB) =>
-            pointA[1] > pointB[1] ? pointA : pointB,
-          )[1],
-    [supplySinceMergeSeries],
-  );
-
-  const supplyPosMin = useMemo(
-    () =>
-      supplySinceMergeSeries === undefined
-        ? undefined
-        : supplySinceMergeSeries.reduce((pointA, pointB) =>
-            pointA[1] < pointB[1] ? pointA : pointB,
-          )[1],
-    [supplySinceMergeSeries],
-  );
-
-  const supplyPowMax = useMemo(
-    () =>
-      supplySinceMergePowSeries === undefined
-        ? undefined
-        : supplySinceMergePowSeries.reduce((pointA, pointB) =>
-            pointA[1] > pointB[1] ? pointA : pointB,
-          )[1],
-    [supplySinceMergePowSeries],
   );
 
   const bitcoinSupplySeries = useMemo(() => {
@@ -426,21 +412,6 @@ const SupplySinceMergeWidget: FC<Props> = ({
         enabled: simulateProofOfWork,
       },
       yAxis: {
-        endOnTick: false,
-        alignTicks: false,
-        startOnTick: false,
-        min:
-          supplyPosMin === undefined || supplyPowMax === undefined
-            ? undefined
-            : simulateProofOfWork
-            ? supplyPosMin - (supplyPowMax - supplyPosMin) * 0.15
-            : undefined,
-        max:
-          supplyPosMin === undefined || supplyPosMax === undefined
-            ? undefined
-            : !simulateProofOfWork
-            ? supplyPosMax + (supplyPosMax - supplyPosMin) * 0.15
-            : undefined,
         plotLines: [
           {
             id: "merge-supply",
@@ -596,12 +567,13 @@ const SupplySinceMergeWidget: FC<Props> = ({
           },
         },
         {
-          color: simulateProofOfWork ? "#FF891D" : "transparent",
+          color: "#FF891D",
+          visible: simulateProofOfWork,
           enableMouseTracking: simulateProofOfWork,
           id: BITCOIN_SUPPLY_ID,
           type: "line",
           shadow: {
-            color: simulateProofOfWork ? "#FF891D33" : "transparent",
+            color: "#FF891D33",
             width: 15,
           },
           data:
@@ -623,8 +595,9 @@ const SupplySinceMergeWidget: FC<Props> = ({
           showInLegend: simulateProofOfWork,
         },
         {
-          color: simulateProofOfWork ? colors.slateus100 : "transparent",
+          color: colors.slateus100,
           dashStyle: "Dash",
+          visible: simulateProofOfWork,
           enableMouseTracking: simulateProofOfWork,
           id: SUPPLY_SINCE_MERGE_POW_SERIES_ID,
           name: "ETH (PoW)",
@@ -648,12 +621,13 @@ const SupplySinceMergeWidget: FC<Props> = ({
         },
         {
           color: "transparent",
+          visible: simulateProofOfWork,
           data: supplySinceMergePowSeries,
           enableMouseTracking: false,
           showInLegend: false,
           states: { hover: { enabled: false } },
           shadow: {
-            color: simulateProofOfWork ? "#DEE2F133" : "transparent",
+            color: "#DEE2F133",
             width: 15,
           },
         },
@@ -676,23 +650,22 @@ const SupplySinceMergeWidget: FC<Props> = ({
     bitcoinSupplySeries,
     supplySinceMergePowSeries,
     simulateProofOfWork,
-    supplyPosMin,
-    supplyPowMax,
-    supplyPosMax,
   ]);
 
   return (
     <WidgetErrorBoundary title="eth supply">
       <WidgetBackground className="relative flex w-full flex-col overflow-hidden">
         <div
-          // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
+          // will-change-transform is critical for mobile performance of
+          // rendering the chart overlayed on this element.
           className={`
-            pointer-events-none absolute -left-36
-            -top-40 h-full
-            w-full
-            opacity-[0.20]
+            pointer-events-none absolute
+            -left-[64px] -top-[64px]
+            h-full
+            w-full opacity-[0.20]
             blur-[120px]
             will-change-transform
+            md:-left-[128px]
           `}
         >
           <div
@@ -706,7 +679,10 @@ const SupplySinceMergeWidget: FC<Props> = ({
         </div>
         <div className="flex justify-between">
           <LabelText className="flex items-center">eth supply</LabelText>
-          <SinceMergeIndicator />
+          <SinceMergeIndicator
+            onClick={handleClickTimeFrame}
+            timeFrame={timeFrame}
+          />
         </div>
         <div
           // flex-grow fixes bug where highcharts doesn't take full width.
@@ -718,10 +694,18 @@ const SupplySinceMergeWidget: FC<Props> = ({
             [&>div]:flex-grow
           `}
         >
-          <HighchartsReact highcharts={Highcharts} options={options} />
+          {simulateProofOfWork && timeFrame !== "since_merge" ? (
+            <div className="flex h-full min-h-[400px] items-center justify-center text-center md:min-h-[auto]">
+              <LabelText color="text-slateus-300">
+                {timeFrame} simulated proof-of-work not available
+              </LabelText>
+            </div>
+          ) : (
+            <HighchartsReact highcharts={Highcharts} options={options} />
+          )}
         </div>
         <div className="flex flex-wrap justify-between gap-x-4 gap-y-4">
-          <UpdatedAgo updatedAt={supplySinceMerge?.timestamp} />
+          <UpdatedAgo updatedAt={supplyOverTime?.timestamp} />
           <SimulateProofOfWork
             checked={simulateProofOfWork}
             onToggle={onSimulateProofOfWork}
