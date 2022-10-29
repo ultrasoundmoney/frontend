@@ -5,7 +5,6 @@ type Props = {
   children: ReactNode;
   className?: string;
   color?: string;
-  skeletonWidth?: string;
 };
 
 const LabelText: FC<Props> = ({

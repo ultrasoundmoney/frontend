@@ -8,13 +8,12 @@ type Props = {
   children: ReactNode;
   className?: string;
   inline?: boolean;
-  skeletonWidth?: string;
 };
 
 /**
  * @deprecated build on BodyTextV2 instead to support smaller screens better.
  */
-const BodyText: FC<Props> = ({ children, className = "", inline }) => (
+const BodyText: FC<Props> = ({ children, className, inline }) => (
   <BaseText
     font="font-inter"
     className={className}
