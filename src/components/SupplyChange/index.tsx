@@ -28,8 +28,8 @@ const SupplyChange: FC<Props> = ({
   onSimulateProofOfWork,
 }) => {
   const ethSupply = useEthSupply();
-  const supplySinceMerge = useSupplySinceMerge();
   const ethSupplyImprecise = getEthSupplyImprecise(ethSupply);
+  const supplySinceMerge = useSupplySinceMerge();
 
   const slotsSinceMerge =
     supplySinceMerge === undefined
