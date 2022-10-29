@@ -3,6 +3,8 @@ import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { parisHardFork } from "../dates";
 import { millisFromHours } from "../duration";
+import type { TimeFrameV2 } from "./EthSupplyWidget";
+import { TimeFrameText } from "./Texts";
 import { WidgetTitle } from "./WidgetSubcomponents";
 
 const getFormattedDays = (now: Date) => {
@@ -10,7 +12,10 @@ const getFormattedDays = (now: Date) => {
   return `${daysCount}d`;
 };
 
-const SinceMergeIndicator: FC = () => {
+const SinceMergeIndicator: FC<{
+  onClick?: () => void;
+  timeFrame: TimeFrameV2;
+}> = ({ onClick, timeFrame }) => {
   const [daysSinceParis, setDaysSinceParis] = useState<string>();
 
   useEffect(() => {
@@ -24,10 +29,21 @@ const SinceMergeIndicator: FC = () => {
   }, []);
 
   return (
-    <div className="flex items-baseline gap-x-2">
-      <WidgetTitle>since merge</WidgetTitle>
-      <p className="font-roboto text-xs text-white">{daysSinceParis}</p>
-    </div>
+    <button className="flex items-baseline gap-x-2" onClick={onClick}>
+      {timeFrame === "since_merge" ? (
+        <>
+          <WidgetTitle>since merge</WidgetTitle>
+          <TimeFrameText className="font-roboto text-xs text-white">
+            {daysSinceParis}
+          </TimeFrameText>
+        </>
+      ) : (
+        <>
+          <WidgetTitle>time frame</WidgetTitle>
+          <TimeFrameText>{timeFrame}</TimeFrameText>
+        </>
+      )}
+    </button>
   );
 };
 

@@ -13,14 +13,16 @@ export type BaseFeeAtTime = {
 };
 
 export type BaseFeeOverTime = {
+  all: BaseFeeAtTime[];
   barrier: Gwei;
   block_number: number;
-  all: BaseFeeAtTime[] | null;
   d1: BaseFeeAtTime[];
   d30: BaseFeeAtTime[];
   d7: BaseFeeAtTime[];
   h1: BaseFeeAtTime[];
   m5: BaseFeeAtTime[];
+  since_burn: BaseFeeAtTime[];
+  since_merge: BaseFeeAtTime[] | null;
 };
 
 const url = "/api/v2/fees/base-fee-over-time";
