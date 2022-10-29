@@ -18,25 +18,25 @@ type StaticProps = {
   fallback: {
     "/api/fees/scarcity": ScarcityF;
     "/api/v2/fees/base-fee-per-gas": BaseFeePerGas;
+    "/api/v2/fees/base-fee-per-gas-stats": BaseFeePerGasStats;
     "/api/v2/fees/eth-price-stats": EthPriceStats;
     "/api/v2/fees/eth-supply-parts": EthSupplyF;
-    "/api/v2/fees/base-fee-per-gas-stats": BaseFeePerGasStats;
   };
 };
 
 export const getStaticProps: GetStaticProps<StaticProps> = async () => {
   const [
-    ethSupplyF,
     baseFeePerGas,
-    ethPriceStats,
-    scarcityF,
     baseFeePerGasStats,
+    ethPriceStats,
+    ethSupplyF,
+    scarcityF,
   ] = await Promise.all([
-    fetchEthSupplyParts(),
     fetchBaseFeePerGas(),
-    fetchEthPriceStats(),
-    fetchScarcity(),
     fetchBaseFeePerGasStats(),
+    fetchEthPriceStats(),
+    fetchEthSupplyParts(),
+    fetchScarcity(),
   ]);
 
   if ("error" in ethSupplyF) {
@@ -64,9 +64,9 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
       fallback: {
         "/api/fees/scarcity": scarcityF.data,
         "/api/v2/fees/base-fee-per-gas": baseFeePerGas.data,
+        "/api/v2/fees/base-fee-per-gas-stats": baseFeePerGasStats.data,
         "/api/v2/fees/eth-price-stats": ethPriceStats.data,
         "/api/v2/fees/eth-supply-parts": ethSupplyF.data,
-        "/api/v2/fees/base-fee-per-gas-stats": baseFeePerGasStats.data,
       },
     },
     // Should be the expected lifetime of the data which goes stale quickest.
