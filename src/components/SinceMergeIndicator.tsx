@@ -16,11 +16,11 @@ const displayTimeframeV2Map: Record<
   Exclude<TimeFrameV2, "since_merge">,
   string | undefined
 > = {
-  d1: "d1",
-  d30: "d30",
-  d7: "d7",
-  h1: "h1",
-  m5: "m5",
+  d1: "1d",
+  d30: "30d",
+  d7: "7d",
+  h1: "1h",
+  m5: "5m",
 };
 
 const SinceMergeIndicator: FC<{
