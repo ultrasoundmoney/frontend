@@ -13,7 +13,7 @@ import type { TimeFrameNext } from "../time-frames";
 import { MoneyAmountAnimated } from "./Amount";
 import SpanMoji from "./SpanMoji";
 import { BaseText } from "./Texts";
-import BodyText from "./TextsNext/BodyText";
+import SkeletonText from "./TextsNext/SkeletonText";
 import { BurnGroupBase } from "./WidgetSubcomponents";
 
 const formatBlockNumber = (u: unknown): string | undefined =>
@@ -45,14 +45,16 @@ const Age: FC<{ minedAt: Date | undefined }> = ({ minedAt }) => {
   }, [minedAt]);
 
   return (
-    <BodyText skeletonWidth="6rem">
-      {age === undefined ? undefined : (
-        <>
-          <BaseText font="font-roboto">{age}</BaseText>
-          {" ago"}
-        </>
-      )}
-    </BodyText>
+    <BaseText font="font-inter" size="text-base md:text-lg">
+      <SkeletonText width="6rem">
+        {age === undefined ? undefined : (
+          <>
+            <BaseText font="font-roboto">{age}</BaseText>
+            {" ago"}
+          </>
+        )}
+      </SkeletonText>
+    </BaseText>
   );
 };
 
