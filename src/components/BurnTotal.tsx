@@ -120,10 +120,11 @@ const BurnTotal: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
       <WidgetBackground className="relative overflow-hidden">
         <div
           className={`
-            top-15 pointer-events-none absolute -left-20
-            h-full w-full
-            opacity-[0.13]
-            blur-[50px] will-change-transform
+            top-15 pointer-events-none
+            absolute -left-20 h-full
+            w-full opacity-[0.13]
+            blur-[50px]
+            will-change-transform
             md:top-20
             md:blur-[70px]
           `}
@@ -139,11 +140,11 @@ const BurnTotal: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
         </div>
         <div
           className={`
-            pointer-events-none absolute top-0 -left-20
-            h-full w-full
-            opacity-[0.25]
-            blur-[50px] will-change-transform
-            md:top-5
+            pointer-events-none absolute
+            top-0 -left-20 h-full
+            w-full opacity-[0.25]
+            blur-[50px]
+            will-change-transform md:top-5
             md:blur-[70px]
           `}
         >
