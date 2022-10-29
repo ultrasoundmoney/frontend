@@ -48,19 +48,6 @@ export const displayTimeFrameNextMap: Record<TimeFrameNext, string> = {
   d7: "7d",
   d30: "30d",
   all: "all",
-  merge: "since_merge",
-};
-
-export const timeFrameNextNextFromNextMap: Record<
-  TimeFrameNext,
-  TimeFrameWithBurnWithMerge
-> = {
-  all: "since_burn",
-  d1: "d1",
-  d30: "d30",
-  d7: "d7",
-  h1: "h1",
-  m5: "m5",
 };
 
 export const getNextTimeFrame = (timeFrame: TimeFrameNext): TimeFrameNext => {
