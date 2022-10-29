@@ -96,7 +96,7 @@ const useScrollOnLoad = () => {
 
     if (window.location.hash.length > 0) {
       document
-        .querySelector(window.location.hash)
+        .querySelector(window.location.hash.toLowerCase())
         ?.scrollIntoView({ behavior: "auto", block: "start" });
     }
     // The useAuthFromSection deps are missing intentionally here, we only want
