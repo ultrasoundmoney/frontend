@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import type { FC } from "react";
 import { useCallback, useState } from "react";
-import SupplyChange from "../SupplyChange";
+import SupplyChange from "../SupplyChangeWidget";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import type { EthNumber } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
