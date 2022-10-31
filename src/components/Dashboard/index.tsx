@@ -26,8 +26,9 @@ import FamSection from "./FamSection";
 import JoinDiscordSection from "./JoinDiscordSection";
 import SupplySection from "./SupplySection";
 import ConfettiGenerator from "confetti-js";
-import { useSupplySinceMerge } from "../../api/supply-since-merge";
 import { PARIS_SUPPLY } from "../../hardforks/paris";
+import { useSupplyOverTime } from "../../api/supply-over-time";
+import _last from "lodash/last";
 
 const AdminTools = dynamic(() => import("../AdminTools"), { ssr: false });
 // We get hydration errors in production.
@@ -125,26 +126,24 @@ const confettiSettings = {
 };
 
 const useIsDeflationary = () => {
-  const supplySinceMerge = useSupplySinceMerge();
+  const supplyOverTime = useSupplyOverTime();
+  const supplySinceMerge = supplyOverTime?.since_merge;
+  const lastSupply = _last(supplySinceMerge);
   const [isDeflationary, setIsDeflationary] = useState(false);
   const { simulateDeflationary } = useContext(FeatureFlagsContext);
 
   useEffect(() => {
-    if (supplySinceMerge === undefined) {
+    if (lastSupply === undefined) {
       return;
     }
-    const lastSupply =
-      supplySinceMerge.supply_by_hour[
-        supplySinceMerge.supply_by_hour.length - 1
-      ].supply;
 
-    if (lastSupply > PARIS_SUPPLY) {
+    if (lastSupply.supply > PARIS_SUPPLY) {
       setIsDeflationary(false);
       return;
     }
 
     setIsDeflationary(true);
-  }, [supplySinceMerge, setIsDeflationary]);
+  }, [setIsDeflationary, lastSupply]);
 
   // simulateDeflationary doesn't work in the Dashboard component as the FeatureFlagsContext is not available.
   return isDeflationary || simulateDeflationary;
