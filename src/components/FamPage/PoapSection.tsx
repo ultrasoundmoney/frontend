@@ -63,8 +63,11 @@ type ClaimPoapTooltipProps = {
   onClickClose?: () => void;
 };
 
-const TooltipText: FC<{ children: ReactNode }> = ({ children }) => (
-  <BaseText font="font-inter" size="text-base" inline={false}>
+const TooltipText: FC<{ children: ReactNode; inline?: boolean }> = ({
+  children,
+  inline = false,
+}) => (
+  <BaseText font="font-inter" size="text-base" inline={inline}>
     {children}
   </BaseText>
 );
@@ -120,9 +123,12 @@ const ClaimPoapTooltip: FC<ClaimPoapTooltipProps> = ({
         POAP is a small reward for early meme spreaders.
       </TooltipText>
       <LabelText>eligibility</LabelText>
-      <TooltipText>
-        Only 1,559 POAPs. Pre-merge fam accounts with 8+ fam followers at the
-        snapshot are eligible.
+      <TooltipText inline={true}>
+        <ul className="list-inside list-decimal">
+          <li>Part of the fam pre-merge.</li>
+          <li>Had 8+ fam followers in a recent snapshot.</li>
+          <li>One of the first 1,559 to claim.</li>
+        </ul>
       </TooltipText>
       <LabelText>Fam</LabelText>
       <Twemoji wrapper imageClassName="inline-block align-middle h-4 ml-1">
