@@ -13,11 +13,11 @@ import styles from "./TwoYearProjection.module.scss";
 const SupplyChart = dynamic(() => import("./TwoYearProjectionChart"));
 
 const MIN_PROJECTED_ETH_STAKING = 1e6;
-const DEFAULT_PROJECTED_ETH_STAKING = 14e6;
+const DEFAULT_PROJECTED_ETH_STAKING = 30e6;
 const MAX_PROJECTED_ETH_STAKING = 69696969;
 
 const MIN_PROJECTED_BASE_GAS_PRICE = 0;
-const DEFAULT_PROJECTED_BASE_GAS_PRICE = 74;
+const DEFAULT_PROJECTED_BASE_GAS_PRICE = 60;
 const MAX_PROJECTED_BASE_GAS_PRICE = 420;
 
 const DEFAULT_PROJECTED_MERGE_DATE = new Date("2022-09-15T00:00:00Z");
