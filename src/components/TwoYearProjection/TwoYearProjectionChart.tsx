@@ -201,10 +201,7 @@ const SupplyChart: React.FC<Props> = ({
       // Glassnode overcounting per day
       const GLASSNODE_OVERCOUNTING_ETH = ((24 * 60 * 60) / 12) * 2 * 0.99;
       const daysSinceMerge =
-        DateFns.differenceInDays(
-          dateTime,
-          DateFns.startOfDay(PARIS_TIMESTAMP),
-        ) + 1;
+        DateFns.differenceInDays(dateTime, PARIS_TIMESTAMP) + 1;
 
       const v = DateFns.isAfter(dateTime, PARIS_TIMESTAMP)
         ? vMiscounted - GLASSNODE_OVERCOUNTING_ETH * daysSinceMerge
@@ -215,7 +212,10 @@ const SupplyChart: React.FC<Props> = ({
         maxSupply = v;
         peakSupply = null;
       } else if (v < maxSupply! && !peakSupply) {
-        peakSupply = [timestamp, v];
+        const lastPoint = supplyData[i - 1];
+        const value =
+          lastPoint.v - (daysSinceMerge - 1) * GLASSNODE_OVERCOUNTING_ETH;
+        peakSupply = [lastPoint.t, value];
       }
 
       // Only render every Nth point for chart performance
