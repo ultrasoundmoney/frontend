@@ -73,6 +73,8 @@ const SupplySection: FC<Props> = ({
             <SupplyChange
               simulateProofOfWork={simulateProofOfWork}
               onSimulateProofOfWork={handleSimulateProofOfWork}
+              onClickTimeFrame={handleClickSupplyTimeFrame}
+              timeFrame={supplyTimeFrame}
             />
             <CurrentSupplyWidget />
           </div>

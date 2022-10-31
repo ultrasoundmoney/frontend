@@ -1,9 +1,5 @@
 import type { FC } from "react";
 import CountUp from "react-countup";
-import { useEthSupply } from "../../api/eth-supply";
-import { getEthSupplyImprecise } from "../../api/eth-supply";
-import { useSupplySinceMerge } from "../../api/supply-since-merge";
-import { getDateTimeFromSlot } from "../../beacon-time";
 import { posIssuancePerDay, powIssuancePerDay } from "../../static-ether-data";
 import SimulateProofOfWork from "../SimulateProofOfWork";
 import { BaseText } from "../Texts";
@@ -13,42 +9,54 @@ import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
 import SinceMergeIndicator from "../SinceMergeIndicator";
-import { PARIS_SUPPLY, PARIS_TIMESTAMP } from "../../hardforks/paris";
+import type { TimeFrameWithMerge } from "../Dashboard/SupplySection";
+import { useSupplyOverTime } from "../../api/supply-over-time";
+import { differenceInSeconds } from "date-fns";
 
 type Props = {
-  simulateProofOfWork: boolean;
+  onClickTimeFrame: () => void;
   onSimulateProofOfWork: () => void;
+  simulateProofOfWork: boolean;
+  timeFrame: TimeFrameWithMerge;
 };
 
 const POW_ISSUANCE_PER_DAY = powIssuancePerDay - posIssuancePerDay;
 const SLOTS_PER_DAY = 24 * 60 * 5;
 
 const SupplyChange: FC<Props> = ({
+  timeFrame,
   simulateProofOfWork,
+  onClickTimeFrame,
   onSimulateProofOfWork,
 }) => {
-  const ethSupply = useEthSupply();
-  const ethSupplyImprecise = getEthSupplyImprecise(ethSupply);
-  const supplySinceMerge = useSupplySinceMerge();
+  const supplyOverTime = useSupplyOverTime();
+  const supplyOverTimeTimeFrame = supplyOverTime?.[timeFrame];
 
-  const slotsSinceMerge =
-    supplySinceMerge === undefined
+  const firstPoint = supplyOverTimeTimeFrame?.[0];
+  const lastPoint =
+    supplyOverTimeTimeFrame?.[supplyOverTimeTimeFrame.length - 1];
+
+  const slotsSinceStart =
+    lastPoint === undefined || firstPoint === undefined
       ? undefined
-      : (new Date(supplySinceMerge?.timestamp).getTime() -
-          PARIS_TIMESTAMP.getTime()) /
-        1000 /
-        12;
+      : differenceInSeconds(
+          new Date(lastPoint.timestamp),
+          new Date(firstPoint.timestamp),
+        ) / 12;
 
   const simulatedPowIssuanceSinceMerge =
-    slotsSinceMerge === undefined
+    slotsSinceStart === undefined
       ? undefined
-      : (slotsSinceMerge * POW_ISSUANCE_PER_DAY) / SLOTS_PER_DAY;
+      : (slotsSinceStart * POW_ISSUANCE_PER_DAY) / SLOTS_PER_DAY;
 
-  const supplyDelta = !simulateProofOfWork
-    ? ethSupplyImprecise - PARIS_SUPPLY
-    : simulatedPowIssuanceSinceMerge === undefined
-    ? undefined
-    : ethSupplyImprecise - PARIS_SUPPLY + simulatedPowIssuanceSinceMerge;
+  const supplyDelta =
+    lastPoint === undefined ||
+    firstPoint === undefined ||
+    simulatedPowIssuanceSinceMerge === undefined
+      ? undefined
+      : simulateProofOfWork
+      ? lastPoint.supply - firstPoint.supply + simulatedPowIssuanceSinceMerge
+      : lastPoint.supply - firstPoint.supply;
 
   return (
     <WidgetErrorBoundary title="supply change">
@@ -56,7 +64,10 @@ const SupplyChange: FC<Props> = ({
         <div className="relative flex flex-col gap-x-2 gap-y-4">
           <div className="flex justify-between">
             <LabelText>supply change</LabelText>
-            <SinceMergeIndicator timeFrame="since_merge" />
+            <SinceMergeIndicator
+              onClick={onClickTimeFrame}
+              timeFrame={timeFrame}
+            />
           </div>
           <div className="flex">
             <BaseText
@@ -91,11 +102,7 @@ const SupplyChange: FC<Props> = ({
             </span>
           </div>
           <div className="flex flex-wrap justify-between gap-x-4 gap-y-4">
-            <UpdatedAgo
-              updatedAt={getDateTimeFromSlot(
-                ethSupply.beaconBalancesSum.slot,
-              ).toISOString()}
-            />
+            <UpdatedAgo updatedAt={supplyOverTime?.timestamp} />
             <SimulateProofOfWork
               checked={simulateProofOfWork}
               onToggle={onSimulateProofOfWork}
