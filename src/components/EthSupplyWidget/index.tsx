@@ -672,7 +672,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
         >
           {simulateProofOfWork && timeFrame !== "since_merge" ? (
             <div className="flex h-full min-h-[400px] items-center justify-center text-center lg:min-h-[auto]">
-              <LabelText color="text-slateus-300">not available</LabelText>
+              <LabelText color="text-slateus-300">not available yet</LabelText>
             </div>
           ) : (
             <HighchartsReact highcharts={Highcharts} options={options} />
