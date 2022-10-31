@@ -11,6 +11,7 @@ import type { SupplyAtTime } from "../../api/supply-over-time";
 import { useSupplyOverTime } from "../../api/supply-over-time";
 import colors from "../../colors";
 import {
+  formatPercentFiveDecimalsSigned,
   formatPercentThreeDecimalsSigned,
   formatTwoDigit,
   formatTwoDigitsSigned,
@@ -205,7 +206,7 @@ const getTooltip = (
     const issuanceSupplyChangeFormatted =
       supplyDelta === undefined
         ? undefined
-        : formatPercentThreeDecimalsSigned(supplyDelta / total);
+        : formatPercentFiveDecimalsSigned(supplyDelta / total);
 
     // z-10 does not work without adjusting position to !static.
     return `

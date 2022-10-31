@@ -114,6 +114,26 @@ const percentThreeDecimalsSigned = new Intl.NumberFormat("en-US", {
 export const formatPercentThreeDecimalsSigned = (fraction: number): string =>
   percentThreeDecimalsSigned.format(fraction);
 
+const percentFourDecimalsSigned = new Intl.NumberFormat("en-US", {
+  minimumFractionDigits: 4,
+  maximumFractionDigits: 4,
+  style: "percent",
+  signDisplay: "always",
+});
+
+export const formatPercentFourDecimalsSigned = (fraction: number): string =>
+  percentFourDecimalsSigned.format(fraction);
+
+const percentFiveDecimalsSigned = new Intl.NumberFormat("en-US", {
+  minimumFractionDigits: 5,
+  maximumFractionDigits: 5,
+  style: "percent",
+  signDisplay: "always",
+});
+
+export const formatPercentFiveDecimalsSigned = (fraction: number): string =>
+  percentFiveDecimalsSigned.format(fraction);
+
 const compactNumber = new Intl.NumberFormat("en", {
   minimumFractionDigits: 0,
   maximumFractionDigits: 2,
