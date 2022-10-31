@@ -21,6 +21,7 @@ import { useOnResize } from "../../utils/use-on-resize";
 import styles from "./TwoYearProjectionChart.module.scss";
 import colors from "../../colors";
 import { LONDON_TIMESTAMP } from "../../hardforks/london";
+import { PARIS_TIMESTAMP } from "../../hardforks/paris";
 
 if (typeof window !== "undefined") {
   // Initialize highchats annotations module (only on browser, doesn't work on server)
@@ -193,7 +194,22 @@ const SupplyChart: React.FC<Props> = ({
 
     let lastInContractsIterValue: number | undefined = undefined;
 
-    supplyData.forEach(({ t: timestamp, v }, i) => {
+    // Glassnode is currently overcounting ETH after the Paris hardfork as Etherscan was too. Etherscan fixed it. Glassnode not yet, here we manually correct their mistake.
+    supplyData.forEach(({ t: timestamp, v: vMiscounted }, i) => {
+      const dateTime = DateFns.fromUnixTime(timestamp);
+
+      // Glassnode overcounting per day
+      const GLASSNODE_OVERCOUNTING_ETH = ((24 * 60 * 60) / 12) * 2 * 0.99;
+      const daysSinceMerge =
+        DateFns.differenceInDays(
+          dateTime,
+          DateFns.startOfDay(PARIS_TIMESTAMP),
+        ) + 1;
+
+      const v = DateFns.isAfter(dateTime, PARIS_TIMESTAMP)
+        ? vMiscounted - GLASSNODE_OVERCOUNTING_ETH * daysSinceMerge
+        : vMiscounted;
+
       // Calculate peak supply
       if (v > (maxSupply || 0)) {
         maxSupply = v;
@@ -207,8 +223,7 @@ const SupplyChart: React.FC<Props> = ({
         return;
       }
 
-      const date = DateFns.fromUnixTime(timestamp);
-      const dateMillis = DateFns.getTime(date);
+      const dateMillis = DateFns.getTime(dateTime);
 
       // Subtract any staking eth from total supply on that date
       const stakingSupply = stakingByDate[timestamp];
