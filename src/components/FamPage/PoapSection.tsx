@@ -121,8 +121,8 @@ const ClaimPoapTooltip: FC<ClaimPoapTooltipProps> = ({
       </TooltipText>
       <LabelText>eligibility</LabelText>
       <TooltipText>
-        There are only 1,559 POAPs. Pre-merge fam accounts with 8+ fam followers
-        are eligible.
+        There are only 1,559 POAPs. Fam accounts which had 8+ fam followers
+        <span className="italic"> pre-merge</span> are eligible.
       </TooltipText>
       <LabelText>Fam</LabelText>
       <Twemoji wrapper imageClassName="inline-block align-middle h-4 ml-1">
