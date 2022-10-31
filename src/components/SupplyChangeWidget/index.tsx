@@ -12,6 +12,7 @@ import SinceMergeIndicator from "../SinceMergeIndicator";
 import type { TimeFrameWithMerge } from "../Dashboard/SupplySection";
 import { useSupplyOverTime } from "../../api/supply-over-time";
 import { differenceInSeconds } from "date-fns";
+import { formatTwoDigitsSigned } from "../../format";
 
 type Props = {
   onClickTimeFrame: () => void;
@@ -85,13 +86,13 @@ const SupplyChange: FC<Props> = ({
               <SkeletonText width="7rem">
                 {supplyDelta === undefined ? undefined : (
                   <>
-                    {supplyDelta >= 0 && "+"}
                     <CountUp
                       preserveValue
                       end={supplyDelta ?? 0}
                       separator=","
                       decimals={2}
                       duration={0.8}
+                      formattingFn={formatTwoDigitsSigned}
                     />
                   </>
                 )}
