@@ -54,7 +54,7 @@ const UpdatedAge: FC<{ updatedAt: DateTimeString | undefined }> = ({
       : "seconds";
 
   return (
-    <div className="flex gap-x-1 items-baseline truncate">
+    <div className="flex items-baseline gap-x-1 truncate">
       <LabelText color="text-slateus-400">updated</LabelText>
       <LabelUnitText className="-mr-1">
         <SkeletonText width="4.5rem">{secsOrMins}</SkeletonText>
