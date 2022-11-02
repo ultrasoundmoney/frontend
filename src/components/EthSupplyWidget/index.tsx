@@ -17,11 +17,7 @@ import {
   formatTwoDigitsSigned,
   formatZeroDecimals,
 } from "../../format";
-import {
-  PARIS_BLOCK_NUMBER,
-  PARIS_SUPPLY,
-  PARIS_TIMESTAMP,
-} from "../../hardforks/paris";
+import { PARIS_BLOCK_NUMBER, PARIS_TIMESTAMP } from "../../hardforks/paris";
 import { posIssuancePerDay, powIssuancePerDay } from "../../static-ether-data";
 import type {
   SupplyPoint,
@@ -359,7 +355,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
         plotLines: [
           {
             id: "merge-supply",
-            value: PARIS_SUPPLY,
+            value: ethPosSeries?.[0][1],
             color: colors.slateus400,
             width: 1,
             label: {
