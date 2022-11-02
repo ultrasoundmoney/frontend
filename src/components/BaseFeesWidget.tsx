@@ -222,8 +222,8 @@ const BaseFeesWidget: FC<Props> = ({
           type: "areaspline",
           threshold: barrier,
           data: baseFeesSeries,
-          color: "#E79800",
-          negativeColor: colors.drop,
+          color: colors.orange400,
+          negativeColor: colors.blue400,
           lineWidth: 0,
           states: {
             hover: {

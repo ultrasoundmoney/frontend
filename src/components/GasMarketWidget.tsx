@@ -298,7 +298,9 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                   }
                   label="average"
                   lowest={lowest}
-                  markerColor={deltaPercent >= 0 ? "bg-orange-400" : "bg-drop"}
+                  markerColor={
+                    deltaPercent >= 0 ? "bg-orange-400" : "bg-blue-400"
+                  }
                   vertical="top"
                 />
                 <Marker
@@ -314,7 +316,9 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                   }
                   label="barrier"
                   lowest={lowest}
-                  markerColor={deltaPercent >= 0 ? "bg-orange-400" : "bg-drop"}
+                  markerColor={
+                    deltaPercent >= 0 ? "bg-orange-400" : "bg-blue-400"
+                  }
                   vertical="top"
                 />
               </>

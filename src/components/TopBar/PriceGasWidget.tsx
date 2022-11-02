@@ -52,7 +52,7 @@ const PriceGasWidget: FC = () => {
   const gweiColor =
     baseFeePerGasStats !== undefined && baseFeePerGas.wei > barrier
       ? "text-orange-400"
-      : "text-drop";
+      : "text-blue-400";
 
   return (
     <PriceGasBoundary>
