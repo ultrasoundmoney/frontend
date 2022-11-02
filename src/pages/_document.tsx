@@ -20,7 +20,7 @@ class MyDocument extends Document {
             name="keywords"
             content="ultra sound money, ethereum, ETH, sound money, fee burn, EIP-1559"
           />
-          {/* When Justin shares the site on twitter, twitter adds our metadata, this adds little value, so Justin removes it. To not spend a lot of time removing our metadata from every shared link we're disabling twitter metadata for now. */}
+          {/* When sharing the site on twitter, twitter adds our metadata, this adds little value, so we remove it. To not spend a lot of time removing our metadata from every shared link we're disabling twitter metadata for now. */}
           <meta property="og:title" content={SiteMetadata.title} />
           <meta property="og:description" content={SiteMetadata.description} />
           <meta property="og:image" content={SiteMetadata.image} />
