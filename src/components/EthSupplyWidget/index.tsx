@@ -41,7 +41,9 @@ const SUPPLY_SINCE_MERGE_POW_SERIES_ID = "supply-since-merge-pow-series";
 const BITCOIN_SUPPLY_ID = "bitcoin-supply-since-merge-series";
 
 const BITCOIN_SUPPLY_AT_MERGE = 19_152_350;
-const POW_ISSUANCE_PER_DAY = powIssuancePerDay - posIssuancePerDay;
+
+// To compare proof of stake issuance to proof of work issuance we offer a "simulate proof of work" toggle. However, we only have a supply series under proof of stake. Already including proof of stake issuance. Adding proof of work issuance would mean "simulated proof of work" is really what supply would look like if there was both proof of work _and_ proof of stake issuance. To make the comparison apples to apples we subtract an estimated proof of stake issuance to show the supply as if there were _only_ proof of work issuance. A possible improvement would be to drop this ad-hoc solution and have the backend return separate series.
+const POW_MIN_POS_ISSUANCE_PER_DAY = powIssuancePerDay - posIssuancePerDay;
 const SLOTS_PER_DAY = 24 * 60 * 5;
 
 const baseOptions: Highcharts.Options = {
@@ -291,7 +293,7 @@ const getEthPowSeries = (
           differenceInSeconds(new Date(timestamp), firstPointTimestamp) / 12;
 
         const simulatedPowIssuanceSinceStart =
-          (slotsSinceStart / SLOTS_PER_DAY) * POW_ISSUANCE_PER_DAY;
+          (slotsSinceStart / SLOTS_PER_DAY) * POW_MIN_POS_ISSUANCE_PER_DAY;
 
         const nextSupply = supply + simulatedPowIssuanceSinceStart;
         const nextPoint: SupplyPoint = [timestamp, nextSupply];
