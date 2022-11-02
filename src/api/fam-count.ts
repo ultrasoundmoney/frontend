@@ -1,7 +1,7 @@
 import { secondsToMilliseconds } from "date-fns";
 import useSWR from "swr";
 import type { ApiResult } from "./fetchers";
-import { fetchJson, fetchJsonSwr } from "./fetchers";
+import { fetchApiJson, fetchJsonSwr } from "./fetchers";
 
 export type FamCount = {
   count: number;
@@ -10,7 +10,7 @@ export type FamCount = {
 const url = "/api/v2/fam/count";
 
 export const fetchFamCount = (): Promise<ApiResult<FamCount>> =>
-  fetchJson<FamCount>(url);
+  fetchApiJson<FamCount>(url);
 
 export const useFamCount = (): FamCount => {
   const { data } = useSWR<FamCount>(url, fetchJsonSwr, {

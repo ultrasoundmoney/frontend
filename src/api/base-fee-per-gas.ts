@@ -3,7 +3,7 @@ import useSWR from "swr";
 import type { WeiNumber } from "../eth-units";
 import type { DateTimeString } from "../time";
 import type { ApiResult } from "./fetchers";
-import { fetchJson } from "./fetchers";
+import { fetchApiJson } from "./fetchers";
 import { fetchJsonSwr } from "./fetchers";
 
 export type BaseFeePerGas = {
@@ -17,7 +17,7 @@ export type BaseFeePerGas = {
 const url = "/api/v2/fees/base-fee-per-gas";
 
 export const fetchBaseFeePerGas = (): Promise<ApiResult<BaseFeePerGas>> =>
-  fetchJson<BaseFeePerGas>(url);
+  fetchApiJson<BaseFeePerGas>(url);
 
 export const useBaseFeePerGas = (): BaseFeePerGas => {
   const { data } = useSWR<BaseFeePerGas>(url, fetchJsonSwr, {

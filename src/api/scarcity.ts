@@ -2,7 +2,7 @@ import JSBI from "jsbi";
 import useSWR from "swr";
 import * as Duration from "../duration";
 import type { ApiResult } from "./fetchers";
-import { fetchJson, fetchJsonSwr } from "./fetchers";
+import { fetchApiJson, fetchJsonSwr } from "./fetchers";
 
 export type Scarcity = {
   engines: {
@@ -57,7 +57,7 @@ export type ScarcityF = {
 const url = "/api/fees/scarcity";
 
 export const fetchScarcity = (): Promise<ApiResult<ScarcityF>> =>
-  fetchJson(url);
+  fetchApiJson(url);
 
 export const useScarcity = (): Scarcity => {
   const { data } = useSWR<ScarcityF>(url, fetchJsonSwr, {

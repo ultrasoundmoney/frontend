@@ -2,7 +2,7 @@ import { secondsToMilliseconds } from "date-fns";
 import useSWR from "swr";
 import type { GweiNumber, WeiNumber } from "../eth-units";
 import type { ApiResult } from "./fetchers";
-import { fetchJson } from "./fetchers";
+import { fetchApiJson } from "./fetchers";
 import { fetchJsonSwr } from "./fetchers";
 
 export type BaseFeePerGasStatsTimeFrame = {
@@ -28,7 +28,7 @@ const url = "/api/v2/fees/base-fee-per-gas-stats";
 
 export const fetchBaseFeePerGasStats = (): Promise<
   ApiResult<BaseFeePerGasStats>
-> => fetchJson<BaseFeePerGasStats>(url);
+> => fetchApiJson<BaseFeePerGasStats>(url);
 
 export const useBaseFeePerGasStats = (): BaseFeePerGasStats => {
   const { data } = useSWR<BaseFeePerGasStats>(url, fetchJsonSwr, {

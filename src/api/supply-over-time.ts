@@ -5,7 +5,7 @@ import type { EthNumber } from "../eth-units";
 import { PARIS_TIMESTAMP } from "../hardforks/paris";
 import type { DateTimeString } from "../time";
 import type { ApiResult } from "./fetchers";
-import { fetchJson, fetchJsonSwr } from "./fetchers";
+import { fetchApiJson, fetchJsonSwr } from "./fetchers";
 
 export type SupplyAtTime = {
   slot: Slot | null;
@@ -42,7 +42,7 @@ const filterPostParisPoints = (points: SupplyAtTime[]): SupplyAtTime[] => {
 };
 
 export const fetchSupplyOverTime = (): Promise<ApiResult<SupplyOverTime>> =>
-  fetchJson<SupplyOverTime>(url).then((res) => {
+  fetchApiJson<SupplyOverTime>(url).then((res) => {
     if ("error" in res) {
       return res;
     }

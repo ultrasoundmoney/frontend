@@ -33,7 +33,7 @@ export type ApiError = {
 
 export type ApiResult<A> = { data: A } | FetchError | ApiError;
 
-export const fetchJson = async <A>(url: string): Promise<ApiResult<A>> => {
+export const fetchApiJson = async <A>(url: string): Promise<ApiResult<A>> => {
   // Convert relative URLs to absolute, the server wouldn't know where to go
   // otherwise.
   const absoluteUrl =
@@ -86,9 +86,10 @@ export const fetchJson = async <A>(url: string): Promise<ApiResult<A>> => {
   }
 };
 
-// Swr wants us to throw, but we don't like throwing, so we write code that doesn't throw, and add a wrapper for swr.
+// Swr wants us to throw, but we don't like throwing, so we write code that
+// doesn't throw, and add a wrapper for swr which does.
 export const fetchJsonSwr = async <A>(url: string): Promise<A> => {
-  const dataOrError = await fetchJson<A>(url);
+  const dataOrError = await fetchApiJson<A>(url);
   if ("data" in dataOrError) {
     return dataOrError.data;
   } else {

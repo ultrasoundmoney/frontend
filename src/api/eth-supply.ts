@@ -6,7 +6,7 @@ import { getDomain } from "../config";
 import * as Duration from "../duration";
 import { WEI_PER_GWEI_JSBI } from "../eth-units";
 import type { ApiResult } from "./fetchers";
-import { fetchJson, fetchJsonSwr } from "./fetchers";
+import { fetchApiJson, fetchJsonSwr } from "./fetchers";
 
 export type EthSupplyF = {
   beaconBalancesSum: {
@@ -60,7 +60,7 @@ export const decodeEthSupply = (ethSupply: EthSupplyF): EthSupply => ({
 });
 
 export const fetchEthSupplyParts = (): Promise<ApiResult<EthSupplyF>> =>
-  fetchJson(`${getDomain()}/api/v2/fees/eth-supply-parts`);
+  fetchApiJson(`${getDomain()}/api/v2/fees/eth-supply-parts`);
 
 export const useEthSupply = (): EthSupply => {
   const { data } = useSWR<EthSupplyF>(
