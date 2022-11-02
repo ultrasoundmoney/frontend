@@ -52,8 +52,27 @@ const TimeFrameControl: FC<Props> = ({ selectedTimeframe, onSetTimeFrame }) => (
         }
       >
         {timeFrame === "all" ? (
-          selectedTimeframe === "all" ? (
-            <div className="h-4 w-4">
+          <>
+            <div
+              className={`
+                h-4 w-4
+                ${selectedTimeframe === "all" ? "hidden" : "block"}
+              `}
+            >
+              <Image
+                className={selectedTimeframe === "all" ? "hidden" : "block"}
+                alt="flame emoji symbolizing time span since london hark fork when EIP-1559 was activated"
+                src={fireSlateusSvg as StaticImageData}
+                width={16}
+                height={16}
+              />
+            </div>
+            <div
+              className={`
+                h-4 w-4
+                ${selectedTimeframe === "all" ? "block" : "hidden"}
+              `}
+            >
               <Image
                 alt="flame emoji symbolizing time span since london hark fork when EIP-1559 was activated"
                 src={fireOwnSvg as StaticImageData}
@@ -61,16 +80,7 @@ const TimeFrameControl: FC<Props> = ({ selectedTimeframe, onSetTimeFrame }) => (
                 height={16}
               />
             </div>
-          ) : (
-            <div className="h-4 w-4">
-              <Image
-                alt="flame emoji symbolizing time span since london hark fork when EIP-1559 was activated"
-                src={fireSlateusSvg as StaticImageData}
-                width={16}
-                height={16}
-              />
-            </div>
-          )
+          </>
         ) : (
           displayTimeFrameNextMap[timeFrame]
         )}
