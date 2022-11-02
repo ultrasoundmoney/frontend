@@ -1,4 +1,3 @@
-import { captureException } from "@sentry/nextjs";
 import { getDomain } from "../config";
 
 export type ApiResult<A> = { data: A } | { error: Error };
@@ -51,22 +50,20 @@ const fetchUnsafe = async <A>(url: RequestInfo): Promise<ApiResult<A>> => {
 
 export const fetchJson = async <A>(url: RequestInfo): Promise<ApiResult<A>> => {
   try {
-    return await fetchUnsafe(url);
+    const res = await fetchUnsafe<A>(url);
+    return res;
   } catch (error) {
     if (error instanceof Error) {
-      captureException(error);
       return { error };
     }
 
     if (typeof error === "string") {
-      captureException(error);
       return { error: new Error(error) };
     }
 
     const errorObj = new Error(
       `fetch failed, caught something, but not an error, ${error}`,
     );
-    captureException(errorObj);
     return {
       error: errorObj,
     };
