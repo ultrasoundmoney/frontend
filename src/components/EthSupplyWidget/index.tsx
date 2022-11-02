@@ -538,7 +538,6 @@ const SupplySinceMergeWidget: FC<Props> = ({
         },
         {
           color: colors.slateus100,
-          dashStyle: "Dash",
           visible: simulateProofOfWork,
           enableMouseTracking: simulateProofOfWork,
           id: SUPPLY_SINCE_MERGE_POW_SERIES_ID,
