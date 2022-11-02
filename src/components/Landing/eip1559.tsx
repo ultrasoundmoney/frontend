@@ -33,7 +33,7 @@ const EIP1559: React.FC = () => {
         id="eip-1559"
       >
         <div
-          className={`${styles.blockFeeBurn} flex flex-col justify-center items-center w-full md:w-6/12 md:mx-auto pt-20 px-4 md:px-0`}
+          className={`${styles.blockFeeBurn} flex w-full flex-col items-center justify-center px-4 pt-20 md:mx-auto md:w-6/12 md:px-0`}
         >
           <video
             className={`${styles.eipBg}`}
@@ -47,7 +47,7 @@ const EIP1559: React.FC = () => {
           </video>
           <picture>
             <img
-              className="relative text-center mx-auto mb-8"
+              className="relative mx-auto mb-8 text-center"
               width="111"
               height="90"
               src={`/eth-burn.svg`}
@@ -55,11 +55,11 @@ const EIP1559: React.FC = () => {
               onError={imageErrorHandler}
             />
           </picture>
-          <h1 className="text-white font-light text-base md:text-28xl leading-5 text-center mb-6 font-inter">
+          <h1 className="mb-6 text-center font-inter text-base font-light leading-5 text-white md:text-28xl">
             {t.landing_eip1559_title}
           </h1>
           <p
-            className="text-blue-shipcove font-light lg:w-w-55 text-sm text-center mb-8 font-inter"
+            className="mb-8 text-center font-inter text-sm font-light text-blue-shipcove lg:w-w-55"
             dangerouslySetInnerHTML={{
               __html: t.landing_eip1559_text,
             }}

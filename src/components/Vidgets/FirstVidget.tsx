@@ -9,7 +9,7 @@ const FirstVidget: React.FC<FirstVidgetProps> = ({
 }) => {
   return (
     <Card name={`Status ${convertDateStringReadable(date)}`}>
-      <div className="text-xs sm:text-base md:text-lg lg:text-base xl:text-lg font-light text-white text-left xl:leading-10 font-roboto">
+      <div className="text-left font-roboto text-xs font-light text-white sm:text-base md:text-lg lg:text-base xl:text-lg xl:leading-10">
         Money ({currentMoneyType})
       </div>
     </Card>

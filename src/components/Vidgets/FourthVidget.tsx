@@ -30,7 +30,7 @@ const FouthVidget: React.FC<VidgetProps> = ({ name }) => {
 
   return (
     <Card name={name}>
-      <div className="text-sm sm:text-base md:text-lg lg:text-base xl:text-21xl xl:leading-18 font-light text-white text-left font-roboto">
+      <div className="text-left font-roboto text-sm font-light text-white sm:text-base md:text-lg lg:text-base xl:text-21xl xl:leading-18">
         $
         {getFeeBurdedinEthToUsd
           ? convertToInternationalCurrencySystem(Number(getFeeBurdedinEthToUsd))

@@ -12,7 +12,7 @@ const NftLeaderboard = () => {
         {totalValueSecured !== undefined &&
           totalValueSecured.nftLeaderboard.map((row) => (
             <li
-              className="text-white w-12 flex justify-between truncate"
+              className="flex w-12 justify-between truncate text-white"
               key={row.name}
             >
               <BodyText>{row.name}</BodyText>

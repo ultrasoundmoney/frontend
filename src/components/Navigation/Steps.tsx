@@ -100,7 +100,7 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
     }, [ref, trackWrapper, logoOnDots, onActionLogo, setScroll, activeLogo]);
 
     return (
-      <div className="w-full h-full md:w-9/12 relative flex justify-around lg:justify-around items-center pt-5">
+      <div className="relative flex h-full w-full items-center justify-around pt-5 md:w-9/12 lg:justify-around">
         <div className={`${classes.trackWrapper}`} ref={trackWrapper}>
           <motion.div
             ref={ref}
@@ -126,7 +126,7 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
             />
           </motion.div>
         </div>
-        <div className="flex w-full justify-around items-start">
+        <div className="flex w-full items-start justify-around">
           {activeBalls &&
             activeBalls.map((item, index) => {
               if (item) {
@@ -145,7 +145,7 @@ const Steps = React.forwardRef<HTMLDivElement | null, StepsProps>(
                   );
                 }
                 return (
-                  <div className="flex w-full h-full" key={`${index}`}>
+                  <div className="flex h-full w-full" key={`${index}`}>
                     <StepperPoint
                       actionLogo={activeLogo}
                       positinLogo={positinLogo}

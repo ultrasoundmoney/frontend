@@ -4,10 +4,10 @@ import StyledLink from "../StyledLink";
 import { TextInterLink } from "../Texts";
 
 const ContactSection: FC = () => (
-  <section className="w-full flex flex-col items-center pb-40">
+  <section className="flex w-full flex-col items-center pb-40">
     <SectionDivider title="still have questions?" />
-    <div className="flex flex-col gap-y-4 justify-start">
-      <div className="flex gap-2 items-center">
+    <div className="flex flex-col justify-start gap-y-4">
+      <div className="flex items-center gap-2">
         <img
           className="w-4"
           src="/twitter-icon.svg"
@@ -21,7 +21,7 @@ const ContactSection: FC = () => (
           <TextInterLink>DM us @ultrasoundmoney</TextInterLink>
         </StyledLink>
       </div>
-      <div className="flex gap-2 items-center">
+      <div className="flex items-center gap-2">
         <img
           className="h-4"
           src="/email-icon.svg"

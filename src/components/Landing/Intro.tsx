@@ -17,24 +17,24 @@ const Intro: React.FC = () => {
       >
         <source src="/hero_compressed.mp4" type="video/mp4" />
       </video>
-      <div className=" flex flex-wrap flex-col pt-32 relative">
-        <h1 className="text-white font-extralight mx-4 text-center leading-loose text-4xl md:text-6xl font-inter">
+      <div className=" relative flex flex-col flex-wrap pt-32">
+        <h1 className="mx-4 text-center font-inter text-4xl font-extralight leading-loose text-white md:text-6xl">
           {t.landing_hero_title}
         </h1>
-        <div className="mx-4 flex flex-wrap justify-center mb-8 gap-4">
+        <div className="mx-4 mb-8 flex flex-wrap justify-center gap-4">
           <div
-            className={`${styles.ultraSoundText} text-4xl md:text-6xl font-inter font-extralight leading-loose`}
+            className={`${styles.ultraSoundText} font-inter text-4xl font-extralight leading-loose md:text-6xl`}
           >
             {t.landing_hero_title_1}
           </div>
           <div className="flex self-center">
             <SpanMoji emoji="🦇" className="mr-1" />
             <SpanMoji emoji="🔊" />
-            <span className="text-red-600 text-2xl">*</span>
+            <span className="text-2xl text-red-600">*</span>
           </div>
         </div>
         <video
-          className="w-full md:w-3/6 lg:w-2/6 mx-auto mix-blend-lighten md:-mt-6 lg:-mt-28 xl:-mt-24 2xl:-mt-20 relative right-4"
+          className="relative right-4 mx-auto w-full mix-blend-lighten md:-mt-6 md:w-3/6 lg:-mt-28 lg:w-2/6 xl:-mt-24 2xl:-mt-20"
           playsInline
           autoPlay
           muted

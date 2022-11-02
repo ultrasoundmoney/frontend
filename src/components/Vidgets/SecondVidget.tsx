@@ -6,11 +6,11 @@ import type { SecondVidgetProps } from "./helpers";
 const SecondVidget: React.FC<SecondVidgetProps> = ({ name, cost, number }) => {
   return (
     <Card name={name}>
-      <div className="flex flex-wrap justify-between items-center">
-        <div className="text-sm sm:text-base md:text-lg lg:text-base xl:text-21xl font-light text-white text-left xl:leading-18 font-roboto">
+      <div className="flex flex-wrap items-center justify-between">
+        <div className="text-left font-roboto text-sm font-light text-white sm:text-base md:text-lg lg:text-base xl:text-21xl xl:leading-18">
           {followerCountConvert(cost)}
         </div>
-        <div className="md:pl-8 text-sm sm:text-base font-light text-mediumspring text-left font-roboto">
+        <div className="text-left font-roboto text-sm font-light text-mediumspring sm:text-base md:pl-8">
           +{Number(number).toFixed(2)}%
         </div>
       </div>

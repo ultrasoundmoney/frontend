@@ -51,7 +51,7 @@ const AdminControls: FC<{
     <>
       <div className="flex flex-row gap-4 opacity-80">
         <a
-          className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
+          className="cursor-pointer text-pink-300 hover:text-pink-300 hover:opacity-60"
           onClick={() => {
             onSetTwitterHandle(address, adminToken).catch(console.error);
           }}
@@ -61,7 +61,7 @@ const AdminControls: FC<{
           set handle
         </a>
         <a
-          className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
+          className="cursor-pointer text-pink-300 hover:text-pink-300 hover:opacity-60"
           onClick={() => {
             onSetName(address, adminToken).catch(console.error);
           }}
@@ -71,7 +71,7 @@ const AdminControls: FC<{
           set name
         </a>
         <a
-          className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
+          className="cursor-pointer text-pink-300 hover:text-pink-300 hover:opacity-60"
           onClick={() => {
             onSetCategory(address, adminToken).catch(console.error);
           }}
@@ -81,7 +81,7 @@ const AdminControls: FC<{
           set category
         </a>
         <a
-          className="text-pink-300 hover:opacity-60 hover:text-pink-300 cursor-pointer"
+          className="cursor-pointer text-pink-300 hover:text-pink-300 hover:opacity-60"
           onClick={() => {
             Contracts.setContractLastManuallyVerified(
               address,
@@ -94,9 +94,9 @@ const AdminControls: FC<{
           set verified
         </a>
       </div>
-      <div className="flex text-sm text-white gap-x-4 mt-2">
+      <div className="mt-2 flex gap-x-4 text-sm text-white">
         <span
-          className="bg-slate-700 rounded-lg py-1 px-2"
+          className="rounded-lg bg-slate-700 py-1 px-2"
           style={{
             opacity: getOpacityFromAge(
               now,
@@ -111,7 +111,7 @@ const AdminControls: FC<{
               )} ago`}
         </span>
         <span
-          className="bg-slate-700 rounded-lg py-1 px-2"
+          className="rounded-lg bg-slate-700 py-1 px-2"
           style={{
             opacity: getOpacityFromAge(now, freshness?.lastManuallyVerified),
           }}

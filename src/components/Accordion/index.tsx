@@ -12,7 +12,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, text }) => {
   return (
     <BodyText className={styles["wrapper"]}>
       <div
-        className={`${styles.title} text-lg py-6 break-words ${
+        className={`${styles.title} break-words py-6 text-lg ${
           isOpen ? `${styles.open}` : ""
         }`}
         onClick={() => setOpen(!isOpen)}
@@ -26,7 +26,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, text }) => {
         </Twemoji>
       </div>
       <div
-        className={`pb-6 break-words whitespace-pre-line ${styles.item} ${
+        className={`whitespace-pre-line break-words pb-6 ${styles.item} ${
           isOpen
             ? `${styles.animateIn}`
             : `${styles.collapsed} ${styles.animateOut}`
@@ -34,7 +34,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, text }) => {
       >
         <Twemoji imageClassName="inline h-6">
           <p
-            className={`${styles.content} leading-relaxed pb-6`}
+            className={`${styles.content} pb-6 leading-relaxed`}
             dangerouslySetInnerHTML={{
               __html: String(text),
             }}

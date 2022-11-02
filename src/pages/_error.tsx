@@ -33,7 +33,7 @@ const ErrorPage: FC<{ error?: Error; statusCode?: number }> = ({
         before, or reloading doesn&apos;t fix it, you can help debug it by
         sending a screenshot to
         <a
-          className="text-slateus-200 active:brightness-90 cursor-pointer"
+          className="cursor-pointer text-slateus-200 active:brightness-90"
           href="https://twitter.com/ultrasoundmoney/"
           rel="noreferrer"
           target="_blank"

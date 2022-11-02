@@ -15,11 +15,11 @@ const BeforeGenesis: React.FC = () => {
         data-aos-easing="ease-in-out"
         id="before-genesis"
       >
-        <div className="flex flex-col justify-center w-full lg:w-1/2 max-w-2xl md:m-auto px-16  pt-16  md:px-8 lg:px-0">
-          <h1 className="text-white font-light text-base md:text-32xl leading-normal text-center mb-6 font-inter">
+        <div className="flex w-full max-w-2xl flex-col justify-center px-16 pt-16 md:m-auto  md:px-8  lg:w-1/2 lg:px-0">
+          <h1 className="mb-6 text-center font-inter text-base font-light leading-normal text-white md:text-32xl">
             {t.landing_before_genesis_title}
           </h1>
-          <p className="text-blue-shipcove font-light text-sm text-center mb-10 font-inter">
+          <p className="mb-10 text-center font-inter text-sm font-light text-blue-shipcove">
             {t.landing_before_genesis_text}
           </p>
         </div>

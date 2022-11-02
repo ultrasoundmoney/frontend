@@ -127,8 +127,8 @@ const BurnMarkers: FC<{ burnMarkers?: BurnMarkers }> = ({ burnMarkers }) => {
           <div
             key={marker.label}
             className={`
-              absolute top-[14px] -translate-x-1/2
-              flex flex-col items-center
+              absolute top-[14px] flex
+              -translate-x-1/2 flex-col items-center
             `}
             // Positions the marker along the track whilst compensating for the thumb width as the browser natively does. 7 being half the thumb width.
             style={{
@@ -137,11 +137,11 @@ const BurnMarkers: FC<{ burnMarkers?: BurnMarkers }> = ({ burnMarkers }) => {
           >
             <div
               className={`
-                w-0.5 rounded-b-full bg-blue-spindle -mt-0.5
+                -mt-0.5 w-0.5 rounded-b-full bg-blue-spindle
                 ${index % 2 === 0 ? "h-2" : "h-6"}
               `}
             ></div>
-            <TimeFrameText className="text-blue-spindle mt-1 select-none">
+            <TimeFrameText className="mt-1 select-none text-blue-spindle">
               <Twemoji
                 className="flex gap-x-1"
                 imageClassName="mt-0.5 h-3"
@@ -341,29 +341,29 @@ const EquilibriumWidget = () => {
   return (
     <WidgetErrorBoundary title="supply equilibrium">
       <WidgetBackground
-        className={`relative flex-col lg:flex-row-reverse gap-x-4 overflow-hidden p-0`}
+        className={`relative flex-col gap-x-4 overflow-hidden p-0 lg:flex-row-reverse`}
       >
         <div
           // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
           className={`
-            absolute top-0 right-0
-            w-3/5 h-full
+            pointer-events-none absolute top-0
+            right-0 h-full
+            w-3/5
             opacity-[0.25]
             blur-[100px]
-            pointer-events-none
             will-change-transform
           `}
         >
           <div
             className={`
-            absolute lg:bottom-[3.0rem] lg:-right-[1.0rem]
-            w-4/5 h-3/5 rounded-[35%]
-            bg-[#0037FA]
-            pointer-events-none
+            pointer-events-none absolute h-3/5
+            w-4/5 rounded-[35%] bg-[#0037FA]
+            lg:bottom-[3.0rem]
+            lg:-right-[1.0rem]
           `}
           ></div>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-8 gap-x-8 p-8">
+        <div className="grid grid-cols-1 gap-y-8 gap-x-8 p-8 lg:grid-cols-2">
           <div className="flex justify-between">
             <div className="flex flex-col gap-y-4">
               <WidgetTitle className="hidden md:inline">
@@ -384,10 +384,10 @@ const EquilibriumWidget = () => {
               </MoneyAmount>
             </div>
             <div className="flex flex-col gap-y-4">
-              <WidgetTitle className="text-right hidden md:inline">
+              <WidgetTitle className="hidden text-right md:inline">
                 staking
               </WidgetTitle>
-              <WidgetTitle className="text-right inline md:hidden">
+              <WidgetTitle className="inline text-right md:hidden">
                 staking (B)
               </WidgetTitle>
               <MoneyAmount
@@ -403,7 +403,7 @@ const EquilibriumWidget = () => {
               </MoneyAmount>
             </div>
           </div>
-          <div className="lg:col-start-2 row-span-3">
+          <div className="row-span-3 lg:col-start-2">
             <WidgetTitle className="lg:ml-6">
               ETH supply—200y projection
             </WidgetTitle>
@@ -418,10 +418,10 @@ const EquilibriumWidget = () => {
           </div>
           <div className="flex flex-col gap-y-7">
             <div>
-              <div className="flex justify-between items-baseline">
+              <div className="flex items-baseline justify-between">
                 <div className="flex items-center truncate">
                   <WidgetTitle>issuance rewards</WidgetTitle>
-                  <BodyText className="text-xs md:text-xs invisible lg:visible">
+                  <BodyText className="invisible text-xs md:text-xs lg:visible">
                     &nbsp;for stakers
                   </BodyText>
                 </div>
@@ -449,9 +449,9 @@ const EquilibriumWidget = () => {
                 />
                 <div
                   className={`
-                  relative top-[14px] -translate-x-1/2
-                  flex flex-col items-center
-                  select-none
+                  relative top-[14px] flex
+                  -translate-x-1/2 select-none flex-col
+                  items-center
                   ${nowMarkerPercent === undefined ? "invisible" : "visible"}
                 `}
                   style={{
@@ -461,15 +461,15 @@ const EquilibriumWidget = () => {
                     }px)`,
                   }}
                 >
-                  <div className="w-0.5 h-2 rounded-b-full bg-blue-spindle -mt-0.5"></div>
-                  <TimeFrameText className="text-blue-spindle mt-0.5">
+                  <div className="-mt-0.5 h-2 w-0.5 rounded-b-full bg-blue-spindle"></div>
+                  <TimeFrameText className="mt-0.5 text-blue-spindle">
                     now
                   </TimeFrameText>
                 </div>
               </div>
             </div>
             <div>
-              <div className="flex justify-between items-baseline">
+              <div className="flex items-baseline justify-between">
                 <div className="flex items-center truncate">
                   <WidgetTitle>burn rate</WidgetTitle>
                   <BodyText className="text-xs md:text-xs">
@@ -499,7 +499,7 @@ const EquilibriumWidget = () => {
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row w-full justify-between items-baseline mt-2 -mb-2">
+          <div className="mt-2 -mb-2 flex w-full flex-col items-baseline justify-between md:flex-row">
             <WidgetTitle>issuance and burn at equilibrium</WidgetTitle>
             <MoneyAmount amountPostfix="K" unitText="ETH/year">
               {equilibriums !== undefined

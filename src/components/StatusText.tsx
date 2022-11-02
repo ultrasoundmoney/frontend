@@ -2,7 +2,7 @@ import type { FC, ReactNode } from "react";
 import BodyTextV2 from "./TextsNext/BodyTextV2";
 
 export const LoadingText: FC<{ children: ReactNode }> = ({ children }) => (
-  <BodyTextV2 className="text-white animate-pulse">{children}</BodyTextV2>
+  <BodyTextV2 className="animate-pulse text-white">{children}</BodyTextV2>
 );
 
 export const PositiveText: FC<{ children: ReactNode }> = ({ children }) => (

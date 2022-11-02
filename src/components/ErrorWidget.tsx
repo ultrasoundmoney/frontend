@@ -3,8 +3,8 @@ import type { FC } from "react";
 type Props = { title: string };
 
 const ErrorWidget: FC<Props> = ({ title }) => (
-  <div className="w-full p-8 text-base font-light text-white border border-red-400 rounded-lg font-roboto bg-slateus-700">
-    <p className="font-inter font-light text-slateus-200 text-xs uppercase tracking-widest mb-8">
+  <div className="w-full rounded-lg border border-red-400 bg-slateus-700 p-8 font-roboto text-base font-light text-white">
+    <p className="mb-8 font-inter text-xs font-light uppercase tracking-widest text-slateus-200">
       {title}
     </p>
     <p className="mb-4">An exception has occured 😱</p>
@@ -13,7 +13,7 @@ const ErrorWidget: FC<Props> = ({ title }) => (
       before, or reloading doesn&apos;t fix it, you can help debug it by sending
       a screenshot to
       <a
-        className="ml-2 underline cursor-pointer text-slateus-200 active:brightness-90"
+        className="ml-2 cursor-pointer text-slateus-200 underline active:brightness-90"
         href="https://twitter.com/ultrasoundmoney/"
         rel="noreferrer"
         target="_blank"

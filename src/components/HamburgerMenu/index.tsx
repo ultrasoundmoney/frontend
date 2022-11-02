@@ -12,7 +12,7 @@ const HamburgerMenu: FC = () => {
   return (
     <>
       <button
-        className="flex items-center z-20"
+        className="z-20 flex items-center"
         onClick={() => setIsOpen(true)}
       >
         <Image
@@ -25,11 +25,11 @@ const HamburgerMenu: FC = () => {
       <div
         className={`
           fixed top-0 left-0 bottom-0 right-0
-          flex justify-center
-          z-20
+          z-20 flex
+          justify-center
           bg-slateus-700
           transition-all
-          ${isOpen ? "opacity-95 visible" : "opacity-0 invisible"}
+          ${isOpen ? "visible opacity-95" : "invisible opacity-0"}
         `}
       >
         <button
@@ -43,17 +43,17 @@ const HamburgerMenu: FC = () => {
             height={24}
           />
         </button>
-        <ul className="flex flex-col text-center gap-y-12 mt-32">
+        <ul className="mt-32 flex flex-col gap-y-12 text-center">
           <li>
             <Link href="/">
-              <a className="font-inter font-extralight text-white text-4xl">
+              <a className="font-inter text-4xl font-extralight text-white">
                 dashboard
               </a>
             </Link>
           </li>
           <li onClick={() => setIsOpen(false)}>
             <Link href="/fam">
-              <a className="font-inter font-extralight text-white text-4xl">
+              <a className="font-inter text-4xl font-extralight text-white">
                 fam
               </a>
             </Link>

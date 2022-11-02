@@ -23,13 +23,13 @@ export const SectionTitle: FC<Props> = ({
   const { md } = useActiveBreakpoint();
   return (
     <>
-      <div className={`flex justify-center items-center gap-x-4 ${className}`}>
+      <div className={`flex items-center justify-center gap-x-4 ${className}`}>
         <Link href={`#${link}`}>
           <a className="flex items-center gap-x-4 text-white">
             <h2
               className={`
-              font-inter font-extralight
-              text-white text-center text-2xl md:text-3xl xl:text-4xl
+              text-center font-inter
+              text-2xl font-extralight text-white md:text-3xl xl:text-4xl
             `}
             >
               {children}
@@ -37,7 +37,7 @@ export const SectionTitle: FC<Props> = ({
                 <>
                   &nbsp;
                   <span
-                    className={`text-transparent bg-clip-text ${highlightGradient}`}
+                    className={`bg-clip-text text-transparent ${highlightGradient}`}
                   >
                     {highlightPhrase}
                   </span>
@@ -59,9 +59,9 @@ export const SectionTitle: FC<Props> = ({
       {subtitle !== undefined && (
         <p
           className={`
-          font-inter font-light
-          text-blue-shipcove text-center text-base lg:text-lg
-          mt-6
+          mt-6 text-center
+          font-inter text-base font-light text-blue-shipcove
+          lg:text-lg
         `}
         >
           {subtitle}

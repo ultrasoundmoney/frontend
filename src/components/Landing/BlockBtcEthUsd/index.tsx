@@ -73,9 +73,9 @@ const TheUltraSound: FC = () => {
       <DrawingLine pointRef={pointRef} />
       <section
         id="enter-ultra-sound"
-        className="py-8 px-4 md:px-8 lg:px-0 relative"
+        className="relative py-8 px-4 md:px-8 lg:px-0"
       >
-        <div className="block pt-16 relative">
+        <div className="relative block pt-16">
           <img
             data-aos="fade-up"
             data-aos-anchor-placement="top-center"
@@ -85,10 +85,10 @@ const TheUltraSound: FC = () => {
             title={t.eusm_section_title}
             alt={t.eusm_section_title}
             src={BatImg.src}
-            className="mx-auto text-center mb-8"
+            className="mx-auto mb-8 text-center"
           />
           <div
-            className={`${styles.ultraSoundText} ${styles.currentGradient} text-2xl md:text-6xl mb-24`}
+            className={`${styles.ultraSoundText} ${styles.currentGradient} mb-24 text-2xl md:text-6xl`}
           >
             {t.eusm_section_title}
           </div>
@@ -96,16 +96,16 @@ const TheUltraSound: FC = () => {
         <div
           id="graph_svg"
           ref={graphRef}
-          className="w-full md:w-5/6 flex flex-wrap align-start justify-between ml-auto mr-auto"
+          className="align-start ml-auto mr-auto flex w-full flex-wrap justify-between md:w-5/6"
         >
           <div
             ref={graphTextRef}
-            className={`${classes.graphTextContainter} w-5/12 self-center order-1`}
+            className={`${classes.graphTextContainter} order-1 w-5/12 self-center`}
           >
             <SVGrenderText />
           </div>
           <div
-            className={`${classes.graphsBlock} w-5/12 order-1 mb-6 md:mb-0`}
+            className={`${classes.graphsBlock} order-1 mb-6 w-5/12 md:mb-0`}
             ref={graphsBlockRef}
           >
             <CurrencyTabs

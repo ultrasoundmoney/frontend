@@ -35,10 +35,10 @@ const IssuanceGauge: FC<Props> = ({
   return (
     <div
       className={`
-        flex flex-col justify-start items-center
-        bg-blue-tangaroa
-        px-4 md:px-0 py-8 pt-7
-        rounded-lg md:rounded-none md:rounded-tr-lg`}
+        flex flex-col items-center justify-start
+        rounded-lg
+        bg-blue-tangaroa px-4 py-8 pt-7
+        md:rounded-none md:rounded-tr-lg md:px-0`}
     >
       <BaseGauge
         emoji="droplet"

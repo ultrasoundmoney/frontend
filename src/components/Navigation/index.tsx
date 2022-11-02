@@ -10,9 +10,9 @@ const Navigation: React.FC = () => {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   return (
     <>
-      <nav className="relative flex flex-wrap items-center justify-between px-2 py-6 bg-transparent mb-3">
-        <div className="container px-1 md:px-4 mx-auto flex flex-wrap items-center justify-between">
-          <div className="w-full md:w-5/12 relative flex justify-start lg:static lg:justify-start">
+      <nav className="relative mb-3 flex flex-wrap items-center justify-between bg-transparent px-2 py-6">
+        <div className="container mx-auto flex flex-wrap items-center justify-between px-1 md:px-4">
+          <div className="relative flex w-full justify-start md:w-5/12 lg:static lg:justify-start">
             <div className="flex-initial pr-2 lg:pr-8">
               <Link href="/">
                 <img
@@ -23,7 +23,7 @@ const Navigation: React.FC = () => {
               </Link>
             </div>
             <div
-              className="flex-initial flex text-white self-center bg-blue-tangaroa px-2 md:px-3 py-2 text-xs lg:text-sm eth-price-gass-emoji"
+              className="eth-price-gass-emoji flex flex-initial self-center bg-blue-tangaroa px-2 py-2 text-xs text-white md:px-3 lg:text-sm"
               dangerouslySetInnerHTML={{
                 __html: String(twemoji.parse(ethPrice)),
               }}
@@ -31,37 +31,37 @@ const Navigation: React.FC = () => {
           </div>
           <div
             className={
-              "w-full md:w-7/12 md:flex md:flex-grow items-center" +
+              "w-full items-center md:flex md:w-7/12 md:flex-grow" +
               (navbarOpen ? " md:flex" : " hidden")
             }
             id="menu"
           >
-            <ul className="flex flex-col md:flex-row  list-none lg:ml-auto mt-4 md:mt-0">
-              <li className="nav-item lg:px-4 xl:px-8 justify-center">
+            <ul className="mt-4 flex list-none  flex-col md:mt-0 md:flex-row lg:ml-auto">
+              <li className="nav-item justify-center lg:px-4 xl:px-8">
                 <Link href="/">
-                  <a className="px-3 py-2 flex items-center leading-snug text-blue-shipcove hover:opacity-75 hover:text-white">
+                  <a className="flex items-center px-3 py-2 leading-snug text-blue-shipcove hover:text-white hover:opacity-75">
                     dashboard
                   </a>
                 </Link>
               </li>
-              <li className="nav-item lg:px-4 xl:px-8 justify-center">
+              <li className="nav-item justify-center lg:px-4 xl:px-8">
                 <Link href="/">
-                  <a className="px-3 py-2 flex items-center leading-snug text-blue-shipcove hover:opacity-75 hover:text-white">
+                  <a className="flex items-center px-3 py-2 leading-snug text-blue-shipcove hover:text-white hover:opacity-75">
                     q&a
                   </a>
                 </Link>
               </li>
-              <li className="nav-item lg:px-4 xl:px-8 justify-center">
+              <li className="nav-item justify-center lg:px-4 xl:px-8">
                 <a
-                  className="px-3 py-2 flex items-center leading-snug text-blue-shipcove hover:opacity-75 hover:text-white"
+                  className="flex items-center px-3 py-2 leading-snug text-blue-shipcove hover:text-white hover:opacity-75"
                   href="#faqs"
                 >
                   resources
                 </a>
               </li>
-              <li className="nav-item lg:px-4 xl:px-8 justify-center">
+              <li className="nav-item justify-center lg:px-4 xl:px-8">
                 <a
-                  className="px-3 py-2 flex items-center font-medium text-white hover:text-blue-shipcove border-white border-solid border-2 rounded-3xl hover:border-blue-shipcove"
+                  className="flex items-center rounded-3xl border-2 border-solid border-white px-3 py-2 font-medium text-white hover:border-blue-shipcove hover:text-blue-shipcove"
                   href="#join-the-community"
                 >
                   join the fam
@@ -70,13 +70,13 @@ const Navigation: React.FC = () => {
             </ul>
           </div>
           <button
-            className={`${styles.hamburgerMenu} text-white cursor-pointer text-xl leading-none border border-solid border-white rounded bg-transparent block md:hidden outline-none focus:outline-none`}
+            className={`${styles.hamburgerMenu} block cursor-pointer rounded border border-solid border-white bg-transparent text-xl leading-none text-white outline-none focus:outline-none md:hidden`}
             type="button"
             onClick={() => setNavbarOpen(!navbarOpen)}
           >
-            <span className="block relative w-6 h-px rounded-sm bg-white"></span>
-            <span className="block relative w-6 h-px rounded-sm bg-white mt-1"></span>
-            <span className="block relative w-6 h-px rounded-sm bg-white mt-1"></span>
+            <span className="relative block h-px w-6 rounded-sm bg-white"></span>
+            <span className="relative mt-1 block h-px w-6 rounded-sm bg-white"></span>
+            <span className="relative mt-1 block h-px w-6 rounded-sm bg-white"></span>
           </button>
         </div>
       </nav>

@@ -28,18 +28,18 @@ const BlockText: React.FC<BlockTextProps> = ({ title, text }) => {
 
   return (
     <div
-      className="flex flex-col justify-center lg:mb-20 pt-20 lg:pt-0"
+      className="flex flex-col justify-center pt-20 lg:mb-20 lg:pt-0"
       style={{ transition: "0.2s" }}
       ref={text_block}
     >
       <h1
-        className="text-white font-light text-base md:text-2xl leading-normal text-center md:text-left mb-6"
+        className="mb-6 text-center text-base font-light leading-normal text-white md:text-left md:text-2xl"
         dangerouslySetInnerHTML={{
           __html: title,
         }}
       />
       <p
-        className="text-blue-shipcove font-light text-sm mb-10 text-center md:text-left"
+        className="mb-10 text-center text-sm font-light text-blue-shipcove md:text-left"
         dangerouslySetInnerHTML={{
           __html: text,
         }}

@@ -13,16 +13,16 @@ const SupplyView: React.FC = () => {
 
   return (
     <div
-      className={`${styles.supplyGraphSection} flex justify-between items-center`}
+      className={`${styles.supplyGraphSection} flex items-center justify-between`}
     >
       <div
-        className={`${styles.supplyGraphText} relative pl-14 w-2/5 box-border`}
+        className={`${styles.supplyGraphText} relative box-border w-2/5 pl-14`}
       >
-        <h1 className="text-white font-light text-base md:text-28xl leading-normal text-left mb-8 font-inter">
+        <h1 className="mb-8 text-left font-inter text-base font-light leading-normal text-white md:text-28xl">
           {t.supplu_chart_title}
         </h1>
         <p
-          className="text-blue-shipcove font-light text-sm text-left mb-8 font-inter leading-relaxed"
+          className="mb-8 text-left font-inter text-sm font-light leading-relaxed text-blue-shipcove"
           dangerouslySetInnerHTML={{
             __html: t.sypply_chart_description,
           }}
@@ -30,7 +30,7 @@ const SupplyView: React.FC = () => {
         <button
           type="button"
           style={{ background: "#2D344A", fontSize: "12px" }}
-          className="flex-none px-5 py-2 text-base text-white hover:opacity-75 rounded-3xl"
+          className="flex-none rounded-3xl px-5 py-2 text-base text-white hover:opacity-75"
         >
           <Link href="/dashboard">
             <a rel="noreferrer">{t.sypply_chart_button}</a>
@@ -38,7 +38,7 @@ const SupplyView: React.FC = () => {
         </button>
       </div>
       <div
-        className={`${styles.supplyGraph} relative w-1/2 box-border overflow-hidden p-3 md:p-7 rounded-lg`}
+        className={`${styles.supplyGraph} relative box-border w-1/2 overflow-hidden rounded-lg p-3 md:p-7`}
       >
         <p
           style={{
@@ -53,7 +53,7 @@ const SupplyView: React.FC = () => {
         </p>
         {/* blue blure */}
         <svg
-          className="absolute top-0 left-0 w-full h-full"
+          className="absolute top-0 left-0 h-full w-full"
           width="624"
           height="468"
           viewBox="0 0 624 468"

@@ -18,8 +18,8 @@ const BatSignalTooltip: FC<Props> = ({ className = "", onClickClose }) => (
     }}
     className={`
       flex flex-col gap-y-4
-      bg-blue-tangaroa p-8 rounded-lg
-      border border-blue-shipcove
+      rounded-lg border border-blue-shipcove
+      bg-blue-tangaroa p-8
       text-left
       ${className}
     `}
@@ -27,8 +27,8 @@ const BatSignalTooltip: FC<Props> = ({ className = "", onClickClose }) => (
     <button
       className={`
         flex w-6
-        active:brightness-90 hover:brightness-110
         select-none self-end
+        hover:brightness-110 active:brightness-90
       `}
     >
       <Image

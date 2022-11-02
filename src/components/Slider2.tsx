@@ -21,12 +21,12 @@ const Slider: FC<SliderProps> = ({
   <input
     className={`
       absolute
-      appearance-none
-      w-full h-2 z-10
-      my-1
-      bg-blue-highlightbg
-      rounded-full
+      z-10
+      my-1 h-2 w-full
       cursor-pointer
+      appearance-none
+      rounded-full
+      bg-blue-highlightbg
       ${thumbVisible ? "" : styles.thumbInvisible}
       ${styles.customSlider}
     `}

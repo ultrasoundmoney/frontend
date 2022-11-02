@@ -12,7 +12,7 @@ const Custom404 = () => (
   >
     <h1 style={{ marginBottom: "2rem" }}>404 | no ultra sound money here</h1>
     <a
-      className="text-slateus-200 active:brightness-90 cursor-pointer"
+      className="cursor-pointer text-slateus-200 active:brightness-90"
       href="https://ultrasound.money/"
       rel="noreferrer"
       target="_blank"

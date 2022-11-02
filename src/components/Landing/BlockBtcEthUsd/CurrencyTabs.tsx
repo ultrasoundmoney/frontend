@@ -17,9 +17,9 @@ const CurrencyTabs: React.FC<CurrencyTabsProps> = ({
           setSpecificTab("btc");
         }}
         className={`
-          pl-10 pr-6 cursor-pointer py-3
-          text-sm text-white rounded-lg font-roboto leading-none
-          ${styles.spanBtc} transition-all duration-100 mx-2
+          cursor-pointer rounded-lg py-3 pl-10
+          pr-6 font-roboto text-sm leading-none text-white
+          ${styles.spanBtc} mx-2 transition-all duration-100
           ${
             cryptoType === "btc"
               ? "bg-blue-tangaroa hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
@@ -33,9 +33,9 @@ const CurrencyTabs: React.FC<CurrencyTabsProps> = ({
         onClick={() => {
           setSpecificTab("usd");
         }}
-        className={`pl-10 pr-6 cursor-pointer py-3
-          text-sm text-white rounded-lg font-roboto leading-none
-          ${styles.spanUsd} transition-all duration-100 mx-2
+        className={`cursor-pointer rounded-lg py-3 pl-10
+          pr-6 font-roboto text-sm leading-none text-white
+          ${styles.spanUsd} mx-2 transition-all duration-100
           ${
             cryptoType === "usd"
               ? "bg-blue-tangaroa hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
@@ -49,9 +49,9 @@ const CurrencyTabs: React.FC<CurrencyTabsProps> = ({
         onClick={() => {
           setSpecificTab("eth");
         }}
-        className={`pl-10 pr-6 cursor-pointer py-3
-          text-sm text-white rounded-lg font-roboto leading-none
-          ${styles.spanEth} transition-all duration-100 mx-2
+        className={`cursor-pointer rounded-lg py-3 pl-10
+          pr-6 font-roboto text-sm leading-none text-white
+          ${styles.spanEth} mx-2 transition-all duration-100
           ${
             cryptoType === "eth"
               ? "bg-blue-tangaroa hover:bg-blue-tangaroa focus:bg-blue-tangaroa"

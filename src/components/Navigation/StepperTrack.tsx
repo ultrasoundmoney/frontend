@@ -2,7 +2,7 @@ import React from "react";
 
 const StepperTrack = () => (
   <div
-    className="w-full h-full"
+    className="h-full w-full"
     style={{
       marginTop: 8,
       height: 1,

@@ -25,15 +25,15 @@ const EIPConstantinopole: React.FC = () => {
         data-aos-easing="ease-in-out"
         id="eip-constantinople"
       >
-        <div className="flex flex-col justify-center w-full md:w-w-34 md:mx-auto pt-16 px-4 md:px-0">
-          <p className="text-blue-shipcove font-light text-sm text-center mb-6 font-inter">
+        <div className="flex w-full flex-col justify-center px-4 pt-16 md:mx-auto md:w-w-34 md:px-0">
+          <p className="mb-6 text-center font-inter text-sm font-light text-blue-shipcove">
             {t.landing_constantinopole_date}
           </p>
-          <h1 className="text-white font-light text-base md:text-28xl leading-5 text-center mb-6 font-inter">
+          <h1 className="mb-6 text-center font-inter text-base font-light leading-5 text-white md:text-28xl">
             {t.landing_constantinopole_title}
           </h1>
           <p
-            className="text-blue-shipcove font-light text-sm text-center mb-24 font-inter"
+            className="mb-24 text-center font-inter text-sm font-light text-blue-shipcove"
             dangerouslySetInnerHTML={{
               __html: t.landing_constantinopole_text,
             }}

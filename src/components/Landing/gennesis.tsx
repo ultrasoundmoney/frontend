@@ -30,15 +30,15 @@ const GenesisBlock: React.FC = () => {
         data-aos-easing="ease-in-out"
         id="genesis"
       >
-        <div className="flex flex-col justify-center w-full md:w-4/12 md:mx-auto pt-16 px-4 md:px-0">
-          <p className="text-blue-shipcove font-light text-sm text-center mb-7 font-inter">
+        <div className="flex w-full flex-col justify-center px-4 pt-16 md:mx-auto md:w-4/12 md:px-0">
+          <p className="mb-7 text-center font-inter text-sm font-light text-blue-shipcove">
             {t.landing_genesis_date}
           </p>
-          <h1 className="text-white font-light text-base md:text-28xl leading-5 text-center mb-7 font-inter">
+          <h1 className="mb-7 text-center font-inter text-base font-light leading-5 text-white md:text-28xl">
             {t.landing_genesis_title}
           </h1>
           <p
-            className="text-blue-shipcove font-light text-sm text-center mb-24 font-inter"
+            className="mb-24 text-center font-inter text-sm font-light text-blue-shipcove"
             dangerouslySetInnerHTML={{
               __html: t.landing_genesis_text,
             }}

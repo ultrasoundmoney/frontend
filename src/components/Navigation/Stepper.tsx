@@ -90,9 +90,9 @@ const Stepper: React.FC = () => {
   return (
     <nav
       ref={stepsRef}
-      className={`${classes.mobileNavBarNav} ${classes.stepperNav} sticky top-0 left-0 w-full flex justify-between md:justify-start p-3 bg-blue-tangaroa z-50`}
+      className={`${classes.mobileNavBarNav} ${classes.stepperNav} sticky top-0 left-0 z-50 flex w-full justify-between bg-blue-tangaroa p-3 md:justify-start`}
     >
-      <div className="w-full px-1 md:px-4 mx-auto flex flex-wrap items-center justify-between">
+      <div className="mx-auto flex w-full flex-wrap items-center justify-between px-1 md:px-4">
         <Steps
           onActionLogo={handlerActionLogo}
           activeLogo={currentActionLogo}
@@ -102,10 +102,10 @@ const Stepper: React.FC = () => {
           isLastTrackingElem={isLastTrackingElem}
         />
         <div
-          className={`${classes.linkWrap} w-full md:w-3/12 hidden md:block py-1`}
+          className={`${classes.linkWrap} hidden w-full py-1 md:block md:w-3/12`}
         >
           <Link href="/dashboard">
-            <a className="px-5 py-2 flex items-center font-medium text-sm  text-white hover:text-blue-shipcove border-white border-solid border-2 rounded-3xl hover:border-blue-shipcove">
+            <a className="flex items-center rounded-3xl border-2 border-solid border-white  px-5 py-2 text-sm font-medium text-white hover:border-blue-shipcove hover:text-blue-shipcove">
               {t.landing_dashboard_link}
               <img className="ml-6" src={`/arrowRight.svg`} alt="arrow-right" />
             </a>
