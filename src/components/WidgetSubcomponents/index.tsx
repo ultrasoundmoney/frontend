@@ -1,5 +1,5 @@
 import type { FC, HTMLAttributes, ReactNode } from "react";
-import type { TimeFrameNext } from "../../time-frames";
+import type { TimeFrame } from "../../time-frames";
 import TimeFrameIndicator from "../TimeFrameIndicator";
 
 type BackgroundProps = {
@@ -41,7 +41,7 @@ type Group1BaseProps = {
   backgroundClassName?: HTMLAttributes<HTMLDivElement>["className"];
   children: ReactNode;
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrameNext;
+  timeFrame: TimeFrame;
   title: string;
 };
 

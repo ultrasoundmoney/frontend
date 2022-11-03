@@ -8,7 +8,7 @@ import Colors from "../colors";
 import { WEI_PER_ETH } from "../eth-units";
 import { FeatureFlagsContext } from "../feature-flags";
 import * as Format from "../format";
-import type { TimeFrameNext } from "../time-frames";
+import type { TimeFrame } from "../time-frames";
 import { MoneyAmount } from "./Amount";
 import { BaseText } from "./Texts";
 import BodyText from "./TextsNext/BodyText";
@@ -307,7 +307,7 @@ const buildMiscCategory = (
 
 type Props = {
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrameNext;
+  timeFrame: TimeFrame;
 };
 
 const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {

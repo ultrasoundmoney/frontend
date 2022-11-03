@@ -3,12 +3,12 @@ import { useAverageEthPrice } from "../../api/average-eth-price";
 import colors from "../../colors";
 import type { Unit } from "../../denomination";
 import * as StaticEtherData from "../../static-ether-data";
-import type { TimeFrameNext } from "../../time-frames";
+import type { TimeFrame } from "../../time-frames";
 import BaseGauge from "./IssuanceBurnBaseGauge";
 
 type Props = {
   simulateProofOfWork: boolean;
-  timeFrame: TimeFrameNext;
+  timeFrame: TimeFrame;
   unit: Unit;
 };
 

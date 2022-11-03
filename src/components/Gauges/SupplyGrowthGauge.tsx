@@ -10,7 +10,7 @@ import colors from "../../colors";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
 import * as StaticEtherData from "../../static-ether-data";
-import type { TimeFrameNext } from "../../time-frames";
+import type { TimeFrame } from "../../time-frames";
 import { timeframeBurnRateMap } from "../BurnTotal";
 import TimeFrameIndicator from "../TimeFrameIndicator";
 import { WidgetTitle } from "../WidgetSubcomponents";
@@ -19,7 +19,7 @@ import SplitGaugeSvg from "./SplitGaugeSvg";
 const useGrowthRate = (
   burnRates: BurnRates | undefined,
   simulateProofOfWork: boolean,
-  timeFrame: TimeFrameNext,
+  timeFrame: TimeFrame,
 ): number | undefined => {
   const scarcity = useScarcity();
   const [growthRate, setGrowthRate] = useState<number>();
@@ -60,7 +60,7 @@ const useGrowthRate = (
 type Props = {
   onClickTimeFrame: () => void;
   simulateProofOfWork: boolean;
-  timeFrame: TimeFrameNext;
+  timeFrame: TimeFrame;
 };
 
 const SupplyGrowthGauge: FC<Props> = ({

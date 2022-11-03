@@ -3,8 +3,8 @@ import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { londonHardFork } from "../dates";
 import { millisFromHours } from "../duration";
-import type { TimeFrameNext } from "../time-frames";
-import { displayTimeFrameNextMap } from "../time-frames";
+import type { TimeFrame } from "../time-frames";
+import { displayTimeFrameMap } from "../time-frames";
 import LabelText from "./TextsNext/LabelText";
 
 const getFormattedDays = (now: Date) => {
@@ -15,7 +15,7 @@ const getFormattedDays = (now: Date) => {
 type Props = {
   className?: string;
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrameNext;
+  timeFrame: TimeFrame;
 };
 
 const TimeFrameIndicator: FC<Props> = ({
@@ -45,7 +45,7 @@ const TimeFrameIndicator: FC<Props> = ({
       <p className="font-roboto text-xs text-white">
         {timeFrame === "all"
           ? daysSinceLondon
-          : displayTimeFrameNextMap[timeFrame]}
+          : displayTimeFrameMap[timeFrame]}
       </p>
     </button>
   );

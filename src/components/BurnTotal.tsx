@@ -15,7 +15,7 @@ import type { Unit } from "../denomination";
 import * as Duration from "../duration";
 import * as Format from "../format";
 import * as StaticEtherData from "../static-ether-data";
-import type { LimitedTimeFrameNext, TimeFrameNext } from "../time-frames";
+import type { LimitedTimeFrame, TimeFrame } from "../time-frames";
 import { AmountAnimatedShell } from "./Amount";
 import { BaseText } from "./Texts";
 import TimeFrameIndicator from "./TimeFrameIndicator";
@@ -23,7 +23,7 @@ import WidgetErrorBoundary from "./WidgetErrorBoundary";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
 const timeframeFeesBurnedMap: Record<
-  TimeFrameNext,
+  TimeFrame,
   { eth: keyof FeesBurned; usd: keyof FeesBurned }
 > = {
   m5: { eth: "feesBurned5m", usd: "feesBurned5mUsd" },
@@ -35,7 +35,7 @@ const timeframeFeesBurnedMap: Record<
 };
 
 export const timeframeBurnRateMap: Record<
-  TimeFrameNext,
+  TimeFrame,
   { eth: keyof BurnRates; usd: keyof BurnRates }
 > = {
   m5: { eth: "burnRate5m", usd: "burnRate5mUsd" },
@@ -46,7 +46,7 @@ export const timeframeBurnRateMap: Record<
   all: { eth: "burnRateAll", usd: "burnRateAllUsd" },
 };
 
-const timeFrameMillisecondsMap: Record<LimitedTimeFrameNext, number> = {
+const timeFrameMillisecondsMap: Record<LimitedTimeFrame, number> = {
   d30: Duration.millisFromDays(30),
   d7: Duration.millisFromDays(7),
   d1: Duration.millisFromHours(24),
@@ -56,7 +56,7 @@ const timeFrameMillisecondsMap: Record<LimitedTimeFrameNext, number> = {
 
 type Props = {
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrameNext;
+  timeFrame: TimeFrame;
   unit: Unit;
 };
 

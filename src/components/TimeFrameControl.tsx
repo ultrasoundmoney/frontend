@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from "react";
-import type { TimeFrameNext } from "../time-frames";
-import { displayTimeFrameNextMap, timeFramesNext } from "../time-frames";
+import type { TimeFrame } from "../time-frames";
+import { displayTimeFrameMap, timeFrames } from "../time-frames";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import fireSlateusSvg from "../assets/fire-slateus.svg";
@@ -33,14 +33,14 @@ export const Button: FC<{
 );
 
 type Props = {
-  onSetTimeFrame: (timeframe: TimeFrameNext) => void;
-  selectedTimeframe: TimeFrameNext;
+  onSetTimeFrame: (timeframe: TimeFrame) => void;
+  selectedTimeframe: TimeFrame;
   topCornersRounded?: boolean;
 };
 
 const TimeFrameControl: FC<Props> = ({ selectedTimeframe, onSetTimeFrame }) => (
   <div className="flex flex-row items-center lg:gap-x-1">
-    {timeFramesNext.map((timeFrame) => (
+    {timeFrames.map((timeFrame) => (
       <Button
         key={timeFrame}
         isActive={selectedTimeframe === timeFrame}
@@ -82,7 +82,7 @@ const TimeFrameControl: FC<Props> = ({ selectedTimeframe, onSetTimeFrame }) => (
             </div>
           </>
         ) : (
-          displayTimeFrameNextMap[timeFrame]
+          displayTimeFrameMap[timeFrame]
         )}
       </Button>
     ))}

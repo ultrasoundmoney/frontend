@@ -1,10 +1,10 @@
-export const limitedTimeFramesNext = ["m5", "h1", "d1", "d7", "d30"] as const;
-export type LimitedTimeFrameNext = typeof limitedTimeFramesNext[number];
+export const limitedTimeFrames = ["m5", "h1", "d1", "d7", "d30"] as const;
+export type LimitedTimeFrame = typeof limitedTimeFrames[number];
 
-export const timeFramesNext = ["m5", "h1", "d1", "d7", "d30", "all"] as const;
-export type TimeFrameNext = typeof timeFramesNext[number];
+export const timeFrames = ["m5", "h1", "d1", "d7", "d30", "all"] as const;
+export type TimeFrame = typeof timeFrames[number];
 
-export const displayTimeFrameNextMap: Record<TimeFrameNext, string> = {
+export const displayTimeFrameMap: Record<TimeFrame, string> = {
   m5: "5m",
   h1: "1h",
   d1: "1d",
@@ -13,9 +13,8 @@ export const displayTimeFrameNextMap: Record<TimeFrameNext, string> = {
   all: "all",
 };
 
-export const getNextTimeFrame = (timeFrame: TimeFrameNext): TimeFrameNext => {
-  const nextIndex =
-    (timeFramesNext.indexOf(timeFrame) + 1) % timeFramesNext.length;
+export const getNextTimeFrame = (timeFrame: TimeFrame): TimeFrame => {
+  const nextIndex = (timeFrames.indexOf(timeFrame) + 1) % timeFrames.length;
 
-  return timeFramesNext[nextIndex];
+  return timeFrames[nextIndex];
 };

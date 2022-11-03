@@ -13,7 +13,7 @@ import { FeatureFlagsContext, useFeatureFlags } from "../../feature-flags";
 import { formatZeroDecimals } from "../../format";
 import useAuthFromSection from "../../hooks/use-auth-from-section";
 import { useTwitterAuthStatus } from "../../hooks/use-twitter-auth";
-import type { TimeFrameNext } from "../../time-frames";
+import type { TimeFrame } from "../../time-frames";
 import { getNextTimeFrame } from "../../time-frames";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import PoapSection from "../FamPage/PoapSection";
@@ -191,7 +191,7 @@ const Dashboard: FC = () => {
   useScrollOnLoad();
   const { featureFlags, setFlag } = useFeatureFlags();
   const [twitterAuthStatus, setTwitterAuthStatus] = useTwitterAuthStatus();
-  const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
+  const [timeFrame, setTimeFrame] = useState<TimeFrame>("d1");
   const isDeflationary = useIsDeflationary();
   const videoEl = useRef<HTMLVideoElement>(null);
   const { simulateDeflationary } = featureFlags;

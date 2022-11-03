@@ -7,7 +7,7 @@ import type { EthNumber } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
 import CurrentSupplyWidget from "../CurrentSupplyWidget";
 import GaugeWidget from "../GaugeWidget";
-import type { TimeFrameNext } from "../../time-frames";
+import type { TimeFrame } from "../../time-frames";
 export type SupplyPoint = [JsTimestamp, EthNumber];
 
 const EthSupplyWidget = dynamic(() => import("../EthSupplyWidget"));
@@ -33,8 +33,8 @@ const getNextTimeFrame = (
 
 type Props = {
   onClickTimeFrame: () => void;
-  onSetTimeFrame: (timeFrame: TimeFrameNext) => void;
-  timeFrame: TimeFrameNext;
+  onSetTimeFrame: (timeFrame: TimeFrame) => void;
+  timeFrame: TimeFrame;
 };
 
 const SupplySection: FC<Props> = ({

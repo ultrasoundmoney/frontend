@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { useCallback, useState } from "react";
 import type { Unit } from "../../denomination";
-import type { TimeFrameNext } from "../../time-frames";
+import type { TimeFrame } from "../../time-frames";
 import { getNextTimeFrame } from "../../time-frames";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import BurnCategoryWidget from "../BurnCategoryWidget";
@@ -15,7 +15,7 @@ import TimeFrameControl from "../TimeFrameControl";
 import { WidgetTitle } from "../WidgetSubcomponents";
 
 const BurnSection: FC = () => {
-  const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
+  const [timeFrame, setTimeFrame] = useState<TimeFrame>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
 
   const handleSetTimeFrame = useCallback(setTimeFrame, [setTimeFrame]);

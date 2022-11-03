@@ -13,7 +13,7 @@ import Image from "next/image";
 import batSvg from "../assets/bat-own.svg";
 import speakerSvg from "../assets/speaker-own.svg";
 import barrierSvg from "../assets/barrier-own.svg";
-import type { TimeFrameNext } from "../time-frames";
+import type { TimeFrame } from "../time-frames";
 import { animated, useSpring } from "react-spring";
 import CountUp from "react-countup";
 
@@ -167,7 +167,7 @@ const Marker: FC<MarkerProps> = ({
 
 type Props = {
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrameNext;
+  timeFrame: TimeFrame;
 };
 
 const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
