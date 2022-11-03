@@ -19,8 +19,8 @@ const DefaultLink: FC<Props> = ({
 }) => (
   <a
     className={`
-      active:brightness-50
-      ${enableHover ? "hover:brightness-75" : ""}
+      active:brightness-75
+      ${enableHover ? "hover:brightness-90" : ""}
       ${className}
     `}
     href={href}
