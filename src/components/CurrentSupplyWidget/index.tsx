@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { useState } from "react";
-import { getDateTimeFromSlot } from "../../beacon-time";
 import { ethSupplyFromParts, useEthSupplyParts } from "../../api/eth-supply";
+import { dateTimeFromSlot } from "../../beacon-time";
 import UpdatedAgo from "../UpdatedAgo";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
@@ -48,8 +48,8 @@ const EthSupplyWidget: FC = () => {
           <div className="flex flex-col gap-y-4">
             <PreciseEth>{ethSupply}</PreciseEth>
             <UpdatedAgo
-              updatedAt={getDateTimeFromSlot(
-                ethSupply.beaconDepositsSum.slot,
+              updatedAt={dateTimeFromSlot(
+                ethSupplyParts.beaconDepositsSum.slot,
               ).toISOString()}
             />
           </div>
