@@ -7,7 +7,7 @@ import type { BaseFeePerGasStats } from "../api/base-fee-per-gas-stats";
 import { fetchBaseFeePerGasStats } from "../api/base-fee-per-gas-stats";
 import type { EthPriceStats } from "../api/eth-price-stats";
 import { fetchEthPriceStats } from "../api/eth-price-stats";
-import type { EthSupplyF } from "../api/eth-supply";
+import type { EthSupplyPartsF } from "../api/eth-supply";
 import { fetchEthSupplyParts } from "../api/eth-supply";
 import type { ScarcityF } from "../api/scarcity";
 import { fetchScarcity } from "../api/scarcity";
@@ -20,7 +20,7 @@ type StaticProps = {
     "/api/v2/fees/base-fee-per-gas": BaseFeePerGas;
     "/api/v2/fees/base-fee-per-gas-stats": BaseFeePerGasStats;
     "/api/v2/fees/eth-price-stats": EthPriceStats;
-    "/api/v2/fees/eth-supply-parts": EthSupplyF;
+    "/api/v2/fees/eth-supply-parts": EthSupplyPartsF;
   };
 };
 

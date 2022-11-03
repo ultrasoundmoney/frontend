@@ -1,8 +1,7 @@
-import JSBI from "jsbi";
 import type { FC } from "react";
 import { useState } from "react";
-import { useEthSupply } from "../../api/eth-supply";
 import { getDateTimeFromSlot } from "../../beacon-time";
+import { ethSupplyFromParts, useEthSupplyParts } from "../../api/eth-supply";
 import UpdatedAgo from "../UpdatedAgo";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
@@ -11,16 +10,9 @@ import Nerd from "../Nerd";
 import PreciseEth from "./PreciseEth";
 
 const EthSupplyWidget: FC = () => {
-  const ethSupply = useEthSupply();
+  const ethSupplyParts = useEthSupplyParts();
+  const ethSupply = ethSupplyFromParts(ethSupplyParts);
   const [showNerdTooltip, setShowNerdTooltip] = useState(false);
-
-  const ethSupplySum = JSBI.subtract(
-    JSBI.add(
-      ethSupply.executionBalancesSum.balancesSum,
-      ethSupply.beaconBalancesSum.balancesSum,
-    ),
-    ethSupply.beaconDepositsSum.depositsSum,
-  );
 
   return (
     <WidgetErrorBoundary title="current supply">
@@ -49,12 +41,12 @@ const EthSupplyWidget: FC = () => {
             `}
           >
             <CurrentSupplyTooltip
-              ethSupply={ethSupply}
+              ethSupply={ethSupplyParts}
               onClickClose={() => setShowNerdTooltip(false)}
             />
           </div>
           <div className="flex flex-col gap-y-4">
-            <PreciseEth>{ethSupplySum}</PreciseEth>
+            <PreciseEth>{ethSupply}</PreciseEth>
             <UpdatedAgo
               updatedAt={getDateTimeFromSlot(
                 ethSupply.beaconDepositsSum.slot,

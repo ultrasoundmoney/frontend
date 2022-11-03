@@ -4,11 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { getDomain } from "../config";
 import * as Duration from "../duration";
+import type { EthNumber } from "../eth-units";
+import { WEI_PER_ETH } from "../eth-units";
 import { WEI_PER_GWEI_JSBI } from "../eth-units";
 import type { ApiResult } from "./fetchers";
 import { fetchApiJson, fetchJsonSwr } from "./fetchers";
 
-export type EthSupplyF = {
+export type EthSupplyPartsF = {
   beaconBalancesSum: {
     balancesSum: string;
     slot: number;
@@ -23,7 +25,7 @@ export type EthSupplyF = {
   };
 };
 
-export type EthSupply = {
+export type EthSupplyParts = {
   beaconBalancesSum: {
     balancesSum: JSBI;
     slot: number;
@@ -38,7 +40,9 @@ export type EthSupply = {
   };
 };
 
-export const decodeEthSupply = (ethSupply: EthSupplyF): EthSupply => ({
+export const decodeEthSupply = (
+  ethSupply: EthSupplyPartsF,
+): EthSupplyParts => ({
   beaconDepositsSum: {
     slot: ethSupply.beaconDepositsSum.slot,
     depositsSum: JSBI.multiply(
@@ -59,11 +63,30 @@ export const decodeEthSupply = (ethSupply: EthSupplyF): EthSupply => ({
   },
 });
 
-export const fetchEthSupplyParts = (): Promise<ApiResult<EthSupplyF>> =>
+export const ethSupplyFromParts = (ethSupplyParts: EthSupplyParts): JSBI => {
+  const ethSupplySum = JSBI.subtract(
+    JSBI.add(
+      ethSupplyParts.executionBalancesSum.balancesSum,
+      ethSupplyParts.beaconBalancesSum.balancesSum,
+    ),
+    ethSupplyParts.beaconDepositsSum.depositsSum,
+  );
+
+  return ethSupplySum;
+};
+
+export const impreciseEthSupplyFromParts = (
+  ethSupplyParts: EthSupplyParts,
+): EthNumber => {
+  const ethSupplySum = ethSupplyFromParts(ethSupplyParts);
+  return JSBI.toNumber(ethSupplySum) / WEI_PER_ETH;
+};
+
+export const fetchEthSupplyParts = (): Promise<ApiResult<EthSupplyPartsF>> =>
   fetchApiJson(`${getDomain()}/api/v2/fees/eth-supply-parts`);
 
-export const useEthSupply = (): EthSupply => {
-  const { data } = useSWR<EthSupplyF>(
+export const useEthSupplyParts = (): EthSupplyParts => {
+  const { data } = useSWR<EthSupplyPartsF>(
     "/api/v2/fees/eth-supply-parts",
     fetchJsonSwr,
     {
@@ -76,8 +99,8 @@ export const useEthSupply = (): EthSupply => {
   return decodeEthSupply(data!);
 };
 
-export const useImpreciseEthSupply = (): number | undefined => {
-  const ethSupply = useEthSupply();
+export const useImpreciseEthSupply = (): EthNumber | undefined => {
+  const ethSupply = useEthSupplyParts();
   const lastRefresh = useRef<Date>();
   const [lastEthSupply, setLastEthSupply] = useState<number>();
 
@@ -98,7 +121,7 @@ export const useImpreciseEthSupply = (): number | undefined => {
   return lastEthSupply;
 };
 
-export const getEthSupplyImprecise = (ethSupply: EthSupply): number =>
+export const getEthSupplyImprecise = (ethSupply: EthSupplyParts): number =>
   JSBI.toNumber(
     JSBI.subtract(
       JSBI.add(
