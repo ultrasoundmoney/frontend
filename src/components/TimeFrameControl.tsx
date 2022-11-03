@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from "react";
 import type { TimeFrame } from "../time-frames";
-import { displayTimeFrameMap, timeFrames } from "../time-frames";
+import { displayLimitedTimeFrameMap, timeFrames } from "../time-frames";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import fireSlateusSvg from "../assets/fire-slateus.svg";
@@ -82,7 +82,7 @@ const TimeFrameControl: FC<Props> = ({ selectedTimeframe, onSetTimeFrame }) => (
             </div>
           </>
         ) : (
-          displayTimeFrameMap[timeFrame]
+          displayLimitedTimeFrameMap[timeFrame]
         )}
       </Button>
     ))}

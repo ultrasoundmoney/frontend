@@ -12,7 +12,7 @@ export type SupplyPoint = [JsTimestamp, EthNumber];
 
 const EthSupplyWidget = dynamic(() => import("../EthSupplyWidget"));
 
-const timeFramesWithMerge = [
+const limitedTimeFramesWithMerge = [
   "m5",
   "h1",
   "d1",
@@ -20,15 +20,17 @@ const timeFramesWithMerge = [
   "d30",
   "since_merge",
 ] as const;
-export type TimeFrameWithMerge = typeof timeFramesWithMerge[number];
+export type LimitedTimeFrameWithMerge =
+  typeof limitedTimeFramesWithMerge[number];
 
 const getNextTimeFrame = (
-  timeFrame: TimeFrameWithMerge,
-): TimeFrameWithMerge => {
+  timeFrame: LimitedTimeFrameWithMerge,
+): LimitedTimeFrameWithMerge => {
   const nextIndex =
-    (timeFramesWithMerge.indexOf(timeFrame) + 1) % timeFramesWithMerge.length;
+    (limitedTimeFramesWithMerge.indexOf(timeFrame) + 1) %
+    limitedTimeFramesWithMerge.length;
 
-  return timeFramesWithMerge[nextIndex];
+  return limitedTimeFramesWithMerge[nextIndex];
 };
 
 type Props = {
@@ -44,7 +46,7 @@ const SupplySection: FC<Props> = ({
 }) => {
   const [simulateProofOfWork, setSimulateProofOfWork] = useState(false);
   const [supplyTimeFrame, setSupplyTimeFrame] =
-    useState<TimeFrameWithMerge>("since_merge");
+    useState<LimitedTimeFrameWithMerge>("since_merge");
 
   const handleSimulateProofOfWork = useCallback(() => {
     setSimulateProofOfWork((simulateProofOfWork) => !simulateProofOfWork);

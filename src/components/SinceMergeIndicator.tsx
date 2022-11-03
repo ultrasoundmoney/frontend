@@ -3,7 +3,7 @@ import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { parisHardFork } from "../dates";
 import { millisFromHours } from "../duration";
-import type { TimeFrameWithMerge } from "./Dashboard/SupplySection";
+import type { LimitedTimeFrameWithMerge } from "./Dashboard/SupplySection";
 import { TimeFrameText } from "./Texts";
 import { WidgetTitle } from "./WidgetSubcomponents";
 
@@ -13,7 +13,7 @@ const getFormattedDays = (now: Date) => {
 };
 
 const displayTimeframeV2Map: Record<
-  Exclude<TimeFrameWithMerge, "since_merge">,
+  Exclude<LimitedTimeFrameWithMerge, "since_merge">,
   string | undefined
 > = {
   d1: "1d",
@@ -25,7 +25,7 @@ const displayTimeframeV2Map: Record<
 
 const SinceMergeIndicator: FC<{
   onClick?: () => void;
-  timeFrame: TimeFrameWithMerge;
+  timeFrame: LimitedTimeFrameWithMerge;
 }> = ({ onClick, timeFrame }) => {
   const [daysSinceParis, setDaysSinceParis] = useState<string>();
 

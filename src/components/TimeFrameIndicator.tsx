@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { londonHardFork } from "../dates";
 import { millisFromHours } from "../duration";
 import type { TimeFrame } from "../time-frames";
-import { displayTimeFrameMap } from "../time-frames";
+import { displayLimitedTimeFrameMap } from "../time-frames";
 import LabelText from "./TextsNext/LabelText";
 
 const getFormattedDays = (now: Date) => {
@@ -45,7 +45,7 @@ const TimeFrameIndicator: FC<Props> = ({
       <p className="font-roboto text-xs text-white">
         {timeFrame === "all"
           ? daysSinceLondon
-          : displayTimeFrameMap[timeFrame]}
+          : displayLimitedTimeFrameMap[timeFrame]}
       </p>
     </button>
   );

@@ -9,7 +9,7 @@ import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
 import SinceMergeIndicator from "../SinceMergeIndicator";
-import type { TimeFrameWithMerge } from "../Dashboard/SupplySection";
+import type { LimitedTimeFrameWithMerge } from "../Dashboard/SupplySection";
 import { useSupplyOverTime } from "../../api/supply-over-time";
 import { differenceInSeconds } from "date-fns";
 import { formatTwoDigitsSigned } from "../../format";
@@ -23,7 +23,7 @@ type Props = {
   onClickTimeFrame: () => void;
   onSimulateProofOfWork: () => void;
   simulateProofOfWork: boolean;
-  timeFrame: TimeFrameWithMerge;
+  timeFrame: LimitedTimeFrameWithMerge;
 };
 
 const POW_ISSUANCE_PER_DAY = powIssuancePerDay - posIssuancePerDay;
