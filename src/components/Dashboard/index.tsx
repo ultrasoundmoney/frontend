@@ -118,13 +118,6 @@ const GasPriceTitle = () => {
   );
 };
 
-const confettiSettings = {
-  target: "confetti-canvas",
-  max: 20,
-  height: 1400,
-  props: [{ type: "svg", src: "/bat-own.svg" }],
-};
-
 const useIsDeflationary = () => {
   const supplyOverTime = useSupplyOverTime();
   const supplySinceMerge = supplyOverTime?.since_merge;
@@ -168,6 +161,14 @@ const useConfetti = (simulateDeflationary: boolean): UseConfetti => {
     // If confetti hasn't ran and last supply is under merge supply, run
     setShowConfetti(true);
     setConfettiRan(true);
+
+    const confettiSettings = {
+      target: "confetti-canvas",
+      max: 20,
+      width: document.body.clientWidth,
+      height: 1400,
+      props: [{ type: "svg", src: "/bat-own.svg" }],
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     const confetti = new ConfettiGenerator(confettiSettings) as {
@@ -236,13 +237,15 @@ const Dashboard: FC = () => {
       >
         <GasPriceTitle />
         <HeaderGlow />
-        <div className="container mx-auto overflow-x-hidden relative">
+        
+        <div className="confetti-container absolute bottom-0 top-0 left-0 right-0 overflow-hidden pointer-events-none z-10">
           <canvas
-            className={`pointer-events-none absolute z-10 ${
-              showConfetti ? "" : "hidden"
-            }`}
+            className={showConfetti ? "" : "hidden"}
             id="confetti-canvas"
           ></canvas>
+        </div>
+        
+        <div className="container mx-auto">
           <BasicErrorBoundary>
             <AdminTools setFlag={setFlag} />
           </BasicErrorBoundary>
