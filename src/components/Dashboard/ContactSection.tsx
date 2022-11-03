@@ -1,6 +1,6 @@
 import type { FC } from "react";
+import DefaultTextLink from "../DefaultTextLink";
 import SectionDivider from "../SectionDivider";
-import StyledLink from "../StyledLink";
 import { TextInterLink } from "../Texts";
 
 const ContactSection: FC = () => (
@@ -13,13 +13,12 @@ const ContactSection: FC = () => (
           src="/twitter-icon.svg"
           alt="icon of the twitter bird"
         />
-        <StyledLink
+        <DefaultTextLink
           className="flex items-center gap-x-2"
-          enableHover={false}
           href="https://twitter.com/ultrasoundmoney/"
         >
           <TextInterLink>DM us @ultrasoundmoney</TextInterLink>
-        </StyledLink>
+        </DefaultTextLink>
       </div>
       <div className="flex items-center gap-2">
         <img
@@ -27,13 +26,12 @@ const ContactSection: FC = () => (
           src="/email-icon.svg"
           alt="icon of an envelope, email"
         />
-        <StyledLink
+        <DefaultTextLink
           className="flex items-center gap-x-2"
-          enableHover={false}
           href="mailto:contact@ultrasound.money"
         >
           <TextInterLink>contact@ultrasound.money</TextInterLink>
-        </StyledLink>
+        </DefaultTextLink>
       </div>
     </div>
   </section>

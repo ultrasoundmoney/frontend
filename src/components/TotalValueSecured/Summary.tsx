@@ -8,7 +8,7 @@ import {
   AmountBillionsUsdAnimated,
   AmountTrillionsUsdAnimated,
 } from "../Amount";
-import StyledLink from "../StyledLink";
+import DefaultLink from "../DefaultLink";
 import Modal from "../Modal";
 import BodyText from "../TextsNext/BodyText";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
@@ -24,9 +24,8 @@ const AssetType: FC<{
   const [isHovering, setIsHovering] = useState(false);
 
   return (
-    <StyledLink
-      className="relative flex items-center justify-between opacity-100"
-      enableHover={false}
+    <DefaultLink
+      className="relative flex items-center justify-between"
       href={href}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
@@ -47,7 +46,6 @@ const AssetType: FC<{
         <BodyText
           className={`
             ml-4
-            ${isHovering ? "opacity-60" : ""}
           `}
         >
           {title}
@@ -55,7 +53,6 @@ const AssetType: FC<{
       </div>
       <AmountBillionsUsdAnimated
         size="text-base md:text-lg"
-        textClassName={`${isHovering ? "opacity-60" : ""}`}
         tooltip={
           amount === undefined
             ? undefined
@@ -64,7 +61,7 @@ const AssetType: FC<{
       >
         {amount}
       </AmountBillionsUsdAnimated>
-    </StyledLink>
+    </DefaultLink>
   );
 };
 

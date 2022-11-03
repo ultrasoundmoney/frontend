@@ -9,10 +9,7 @@ type Props = {
   onMouseLeave?: () => void;
 };
 
-/**
- * @deprecated use StyledLinkV2
- */
-const StyledLink: FC<Props> = ({
+const DefaultLink: FC<Props> = ({
   children,
   className = "",
   enableHover = true,
@@ -22,9 +19,8 @@ const StyledLink: FC<Props> = ({
 }) => (
   <a
     className={`
-      cursor-pointer
-      active:brightness-90
-      ${enableHover ? "hover:opacity-60" : ""}
+      active:brightness-50
+      ${enableHover ? "hover:brightness-75" : ""}
       ${className}
     `}
     href={href}
@@ -37,4 +33,4 @@ const StyledLink: FC<Props> = ({
   </a>
 );
 
-export default StyledLink;
+export default DefaultLink;
