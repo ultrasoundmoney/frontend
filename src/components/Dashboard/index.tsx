@@ -21,7 +21,7 @@ import HeaderGlow from "../HeaderGlow";
 import FaqBlock from "../Landing/faq";
 import MainTitle from "../MainTitle";
 import TopBar from "../TopBar";
-import ContactSection from "./ContactSection";
+import ContactSection from "../ContactSection";
 import FamSection from "./FamSection";
 import JoinDiscordSection from "./JoinDiscordSection";
 import SupplySection from "./SupplySection";
