@@ -13,6 +13,11 @@ import type { TimeFrameWithMerge } from "../Dashboard/SupplySection";
 import { useSupplyOverTime } from "../../api/supply-over-time";
 import { differenceInSeconds } from "date-fns";
 import { formatTwoDigitsSigned } from "../../format";
+import {
+  impreciseEthSupplyFromParts,
+  useEthSupplyParts,
+} from "../../api/eth-supply";
+import { dateTimeFromSlot as dateTimeFromSlot } from "../../beacon-time";
 
 type Props = {
   onClickTimeFrame: () => void;
@@ -31,17 +36,18 @@ const SupplyChange: FC<Props> = ({
   onSimulateProofOfWork,
 }) => {
   const supplyOverTime = useSupplyOverTime();
+  const ethSupplyParts = useEthSupplyParts();
+  const currentSupply = impreciseEthSupplyFromParts(ethSupplyParts);
   const supplyOverTimeTimeFrame = supplyOverTime?.[timeFrame];
 
   const firstPoint = supplyOverTimeTimeFrame?.[0];
-  const lastPoint =
-    supplyOverTimeTimeFrame?.[supplyOverTimeTimeFrame.length - 1];
+  const lastPoint = currentSupply;
 
   const slotsSinceStart =
-    lastPoint === undefined || firstPoint === undefined
+    firstPoint === undefined
       ? undefined
       : differenceInSeconds(
-          new Date(lastPoint.timestamp),
+          dateTimeFromSlot(ethSupplyParts.beaconBalancesSum.slot),
           new Date(firstPoint.timestamp),
         ) / 12;
 
@@ -56,8 +62,8 @@ const SupplyChange: FC<Props> = ({
     simulatedPowIssuanceSinceMerge === undefined
       ? undefined
       : simulateProofOfWork
-      ? lastPoint.supply - firstPoint.supply + simulatedPowIssuanceSinceMerge
-      : lastPoint.supply - firstPoint.supply;
+      ? currentSupply - firstPoint.supply + simulatedPowIssuanceSinceMerge
+      : currentSupply - firstPoint.supply;
 
   return (
     <WidgetErrorBoundary title="supply change">
