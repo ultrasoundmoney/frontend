@@ -21,7 +21,7 @@ import { PARIS_BLOCK_NUMBER, PARIS_TIMESTAMP } from "../../hardforks/paris";
 import { posIssuancePerDay, powIssuancePerDay } from "../../static-ether-data";
 import type {
   SupplyPoint,
-  TimeFrameWithMerge,
+  LimitedTimeFrameWithMerge,
 } from "../Dashboard/SupplySection";
 import SimulateProofOfWork from "../SimulateProofOfWork";
 import SinceMergeIndicator from "../SinceMergeIndicator";
@@ -324,7 +324,7 @@ type Props = {
   onClickTimeFrame: () => void;
   onSimulateProofOfWork: () => void;
   simulateProofOfWork: boolean;
-  timeFrame: TimeFrameWithMerge;
+  timeFrame: LimitedTimeFrameWithMerge;
 };
 
 const SupplySinceMergeWidget: FC<Props> = ({
