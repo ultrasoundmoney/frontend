@@ -168,7 +168,7 @@ const useConfetti = (simulateDeflationary: boolean): UseConfetti => {
       width: document.body.clientWidth,
       height: 1400,
       props: [{ type: "svg", src: "/bat-own.svg" }],
-    }
+    };
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     const confetti = new ConfettiGenerator(confettiSettings) as {
@@ -237,14 +237,14 @@ const Dashboard: FC = () => {
       >
         <GasPriceTitle />
         <HeaderGlow />
-        
-        <div className="confetti-container absolute bottom-0 top-0 left-0 right-0 overflow-hidden pointer-events-none z-10">
+
+        <div className="confetti-container pointer-events-none absolute bottom-0 top-0 left-0 right-0 z-10 overflow-hidden">
           <canvas
             className={showConfetti ? "" : "hidden"}
             id="confetti-canvas"
           ></canvas>
         </div>
-        
+
         <div className="container mx-auto">
           <BasicErrorBoundary>
             <AdminTools setFlag={setFlag} />
@@ -254,7 +254,7 @@ const Dashboard: FC = () => {
               <TopBar />
             </BasicErrorBoundary>
           </div>
-          {showVideo &&
+          {showVideo && (
             <video
               ref={videoEl}
               className={`
@@ -270,7 +270,7 @@ const Dashboard: FC = () => {
               <source src="/bat-480.mov" type="video/mp4;codecs=hvc1" />
               <source src="/bat-480.webm" type="video/webm" />
             </video>
-          }
+          )}
           <MainTitle onClick={handleToggleBatLoop}>ultra sound money</MainTitle>
           <SupplySection
             timeFrame={timeFrame}
