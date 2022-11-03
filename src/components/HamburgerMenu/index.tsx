@@ -45,14 +45,14 @@ const HamburgerMenu: FC = () => {
         </button>
         <ul className="mt-32 flex flex-col gap-y-12 text-center">
           <li>
-            <Link href="/">
+            <Link href="/" legacyBehavior>
               <a className="font-inter text-4xl font-extralight text-white">
                 dashboard
               </a>
             </Link>
           </li>
           <li onClick={() => setIsOpen(false)}>
-            <Link href="/fam">
+            <Link href="/fam" legacyBehavior>
               <a className="font-inter text-4xl font-extralight text-white">
                 fam
               </a>

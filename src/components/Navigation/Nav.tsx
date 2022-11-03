@@ -145,7 +145,7 @@ const Nav: React.FC = () => {
               </button>
             </li>
             <li className="nav-item justify-center" style={{ paddingLeft: 75 }}>
-              <Link href="/dashboard">
+              <Link href="/dashboard" legacyBehavior>
                 <a className="flex items-center rounded-3xl border-2 border-solid border-white  px-5 py-2 text-sm font-medium text-white hover:border-blue-shipcove hover:text-blue-shipcove">
                   {t.landing_dashboard_link}
                   <img

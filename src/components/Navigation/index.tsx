@@ -38,14 +38,14 @@ const Navigation: React.FC = () => {
           >
             <ul className="mt-4 flex list-none  flex-col md:mt-0 md:flex-row lg:ml-auto">
               <li className="nav-item justify-center lg:px-4 xl:px-8">
-                <Link href="/">
+                <Link href="/" legacyBehavior>
                   <a className="flex items-center px-3 py-2 leading-snug text-blue-shipcove hover:text-white hover:opacity-75">
                     dashboard
                   </a>
                 </Link>
               </li>
               <li className="nav-item justify-center lg:px-4 xl:px-8">
-                <Link href="/">
+                <Link href="/" legacyBehavior>
                   <a className="flex items-center px-3 py-2 leading-snug text-blue-shipcove hover:text-white hover:opacity-75">
                     q&a
                   </a>

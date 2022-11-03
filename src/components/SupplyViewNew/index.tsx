@@ -32,7 +32,7 @@ const SupplyView: React.FC = () => {
           style={{ background: "#2D344A", fontSize: "12px" }}
           className="flex-none rounded-3xl px-5 py-2 text-base text-white hover:opacity-75"
         >
-          <Link href="/dashboard">
+          <Link href="/dashboard" legacyBehavior>
             <a rel="noreferrer">{t.sypply_chart_button}</a>
           </Link>
         </button>

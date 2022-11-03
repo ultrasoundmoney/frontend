@@ -158,7 +158,7 @@ const JoinDiscordWidget: FC<{
             <TwitterStatusText status={twitterAuthStatus} />
           </div>
           {twitterAuthStatus.type !== "authenticated" ? (
-            <Link href="/api/auth/twitter">
+            <Link href="/api/auth/twitter" legacyBehavior>
               <a
                 className={`
                     flex select-none gap-x-2 self-center
