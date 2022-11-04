@@ -148,8 +148,8 @@ const SupplyChart: React.FC<Props> = ({
     const lastStakingPoint = last(stakingSeriesData);
 
     // Projection should be 1/3 of chart
-    const firstDate = DateFns.parseISO(supplyData[0].t);
-    const lastDate = DateFns.parseISO(supplyData[supplyData.length - 1].t);
+    const firstDate = DateFns.parseISO(supplyData[0]!.t);
+    const lastDate = DateFns.parseISO(supplyData[supplyData.length - 1]!.t);
     const daysOfData = DateFns.differenceInDays(lastDate, firstDate);
     const daysOfProjection = Math.floor(daysOfData / 2);
 
@@ -177,8 +177,8 @@ const SupplyChart: React.FC<Props> = ({
           ...supplyProj,
           //end point
           {
-            x: supplyProj[supplyProj.length - 1][0],
-            y: supplyProj[supplyProj.length - 1][1],
+            x: supplyProj[supplyProj.length - 1]![0],
+            y: supplyProj[supplyProj.length - 1]![1],
             marker: {
               symbol: `url(/dot_supply_graph.svg)`,
               enabled: true,
@@ -249,7 +249,8 @@ const SupplyChart: React.FC<Props> = ({
             dt,
           )}</div></div>`;
 
-          const total = totalSupplyByDate[x];
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+          const total = totalSupplyByDate[x] as number;
           const table = `<table><tbody><tr class="tt-total-row">
               <td class="text-white">${formatOneDecimal(total / 1e6)}M</td>
             </tr></tbody></table>`;

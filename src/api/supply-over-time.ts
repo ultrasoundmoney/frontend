@@ -15,6 +15,8 @@ export type SupplyAtTime = {
 
 export type BlockNumber = number;
 
+// These may be empty when our backend fails to sync blocks for more than 5
+// minutes.
 export type SupplyOverTime = {
   block_number: BlockNumber;
   d1: SupplyAtTime[];
@@ -29,9 +31,15 @@ export type SupplyOverTime = {
 
 const url = "/api/v2/fees/supply-over-time";
 
-// To calculate rates based on points we look at the first and last point in a time frame. This works for all but the since-merge time frame as it currently includes pre-merge points we don't want to include in the rate calculation. To rectify this we slice them out until the backend stops sending them.
-// TODO: deploy this code to prod so the frontend has correct behavior when receiving only post-merge points.
-// TODO: have the backend stop sending pre-merge points for the since-merge time frame.
+// To calculate rates based on points we look at the first and last point in a
+// time frame. This works for all but the since-merge time frame as it
+// currently includes pre-merge points we don't want to include in the rate
+// calculation. To rectify this we slice them out until the backend stops
+// sending them.
+// TODO: deploy this code to prod so the frontend has correct behavior when
+// receiving only post-merge points.
+// TODO: have the backend stop sending pre-merge points for the since-merge
+// time frame.
 // TODO: remove the pre-merge point filtering code.
 const filterPostParisPoints = (points: SupplyAtTime[]): SupplyAtTime[] => {
   const mergeIndex = points.findIndex(

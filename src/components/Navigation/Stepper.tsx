@@ -33,9 +33,10 @@ const Stepper: React.FC = () => {
   const [pageLoad, setPageLoad] = useState(false);
   const handlerActionLogo = (value: ActionLogo) => setCurrentActionLogo(value);
   const controlPoints: StepperPoint[] = stepperPoints?.stepperElements
-    ? Object.keys(stepperPoints.stepperElements).map((element) => {
+    ? // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+      (Object.keys(stepperPoints.stepperElements).map((element) => {
         return stepperPoints?.stepperElements[element];
-      })
+      }) as StepperPoint[])
     : [];
 
   const onScroll = useCallback(() => {

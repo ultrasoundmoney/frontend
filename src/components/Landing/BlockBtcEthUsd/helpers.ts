@@ -1,4 +1,5 @@
-export type graphTypes = "none" | "btc" | "eth" | "usd";
+type graphTypes = "none" | "btc" | "eth" | "usd";
+export default graphTypes;
 export const WINDOW_BREAK_POINT = 1024;
 const graphType = ["none", "btc", "usd", "eth"];
 
@@ -10,7 +11,8 @@ export const handleGraphs = (
   if (graphsBlock) {
     for (let i = arrayBlocksText.length; i--; ) {
       //take value top of title
-      const block = arrayBlocksText[i];
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const block = arrayBlocksText[i]!;
       const bottomBlock = block.getBoundingClientRect().bottom;
 
       const trigger =
@@ -19,7 +21,8 @@ export const handleGraphs = (
           : bottomBlock - block.clientHeight;
       const bottomGraphsBlock = graphsBlock.getBoundingClientRect().bottom;
       if (trigger < bottomGraphsBlock) {
-        setCryptoType(graphType[i]);
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        setCryptoType(graphType[i]!);
         break;
       }
     }
@@ -31,7 +34,8 @@ export const setScrollPos = (
   graphTextBlockElem: HTMLElement,
 ) => {
   const indexScrollElement = graphType.findIndex((el) => el === scrollTo);
-  graphTextBlockElem.children[indexScrollElement].scrollIntoView({
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  graphTextBlockElem.children[indexScrollElement]!.scrollIntoView({
     behavior: "smooth",
     block: "center",
     inline: "center",

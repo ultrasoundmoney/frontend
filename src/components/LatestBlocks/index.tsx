@@ -18,6 +18,7 @@ import BodyTextV2 from "../TextsNext/BodyTextV2";
 import LabelText from "../TextsNext/LabelText";
 import SkeletonText from "../TextsNext/SkeletonText";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
+import _first from "lodash/first";
 
 const maxBlocks = 20;
 
@@ -58,9 +59,11 @@ const LatestBlockAge: FC = () => {
       return;
     }
 
-    const latestMinedBlockDate = new Date(
-      groupedAnalysis1.latestBlockFees[0].minedAt,
-    );
+    const lastBlock = _first(groupedAnalysis1.latestBlockFees);
+    if (lastBlock === undefined) {
+      return;
+    }
+    const latestMinedBlockDate = new Date(lastBlock?.minedAt);
 
     setTimeElapsed(
       DateFns.differenceInSeconds(new Date(), latestMinedBlockDate),

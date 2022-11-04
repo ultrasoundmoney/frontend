@@ -116,7 +116,8 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
 
   const leaderboardSkeletons = new Array(100).fill({}) as undefined[];
 
-  const addresses = rows?.map((row) => row.contractAddresses[0]);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const addresses = rows?.map((row) => row.contractAddresses[0]!);
   const freshnessMap = useContractsFreshness(addresses, adminToken);
   const { showMetadataTools } = useContext(FeatureFlagsContext);
 
@@ -195,10 +196,10 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
                 freshnessMap !== undefined &&
                 showMetadataTools && (
                   <AdminControls
-                    address={row.contractAddresses[0]}
+                    address={row.contractAddresses[0]!}
                     freshness={
                       row !== undefined
-                        ? freshnessMap[row.contractAddresses[0]]
+                        ? freshnessMap[row.contractAddresses[0]!]
                         : undefined
                     }
                   />

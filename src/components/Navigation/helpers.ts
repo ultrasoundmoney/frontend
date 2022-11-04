@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 import type { StepperPoint } from "../../contexts/StepperContext";
 import { calcCenterElement } from "../../utils/calcCenterElement";
 import classes from "./Navigation.module.scss";
@@ -46,6 +48,7 @@ export const setScrollPosition = (
   const distancesNumber = controllPoints.length - 1;
   const distanceWidth = trackWidth / distancesNumber;
   const distanceOrderItem = Math.ceil(iconOffset / distanceWidth);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const parentBlock = stepsRefElem.parentElement!;
   const trackingChildrenBlock = Array.from(parentBlock.children).find(
     (elem: Element) => {
@@ -68,13 +71,14 @@ export const setScrollPosition = (
     }
     const percentOffsetBlock = iconOffsetInBlock / distanceWidth;
     const certainBlockHeight = blocksHeights[distanceOrderItem];
-    const blockYOffset = certainBlockHeight * percentOffsetBlock;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const blockYOffset = certainBlockHeight! * percentOffsetBlock;
     const drawingLineHight =
-      allTrackingChildren[0].children[0].getBoundingClientRect().height;
+      allTrackingChildren[0]?.children[0]?.getBoundingClientRect().height;
     const offsetValue =
-      controllPoints[distanceOrderItem - 1]?.offsetY +
+      controllPoints[distanceOrderItem - 1]?.offsetY! +
       blockYOffset -
-      drawingLineHight;
+      drawingLineHight!;
     offsetValue > 0 && window.scrollTo({ top: offsetValue });
     const isActiveDot =
       iconOffsetInBlock > (distanceWidth / 4) * 3 &&
@@ -100,12 +104,13 @@ export const showHideNavBar = (
       item && acc < item.offsetY ? item.offsetY : acc,
     0,
   );
-  const collectionElems = stepsRefElem?.parentElement?.children[2].children;
+  const collectionElems = stepsRefElem?.parentElement?.children[2]?.children;
 
   const childrenElems = collectionElems?.length
     ? Array.from(collectionElems)
     : [];
 
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const lastSectionIndex: number = childrenElems.findIndex(
     (node) => node.id === "before-genesis",
   )!;
@@ -122,8 +127,8 @@ export const showHideNavBar = (
       window.scrollY < hidingNavigationPosition;
 
     showStickyHeader
-      ? stepsRefElem.classList.add(classes.active)
-      : stepsRefElem.classList.remove(classes.active);
+      ? stepsRefElem.classList.add(classes.active!)
+      : stepsRefElem.classList.remove(classes.active!);
   }
 };
 

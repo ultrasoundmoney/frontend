@@ -30,7 +30,8 @@ const getNextTimeFrame = (
     (limitedTimeFramesWithMerge.indexOf(timeFrame) + 1) %
     limitedTimeFramesWithMerge.length;
 
-  return limitedTimeFramesWithMerge[nextIndex];
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return limitedTimeFramesWithMerge[nextIndex]!;
 };
 
 type Props = {

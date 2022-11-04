@@ -635,6 +635,9 @@ type RowProps = {
 
 const Row: FC<RowProps> = ({ data, style = {}, index, className = "" }) => {
   const fam = data[index];
+  if (fam === undefined) {
+    return <div>row unavailable</div>;
+  }
 
   return (
     <li
@@ -668,7 +671,8 @@ const Row: FC<RowProps> = ({ data, style = {}, index, className = "" }) => {
       <Claimed
         isLoading={false}
         claimedOn={fam.claimed_on ?? undefined}
-        monkey={monkeySvgs[index % 3]}
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        monkey={monkeySvgs[index % 3]!}
       />
     </li>
   );

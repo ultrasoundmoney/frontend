@@ -8,7 +8,7 @@ import Graphics from "./Graphics";
 import CurrencyTabs from "./CurrencyTabs";
 import { handleGraphs, setScrollPos, WINDOW_BREAK_POINT } from "./helpers";
 import classes from "./BlockBtcEthUsd.module.scss";
-import type { graphTypes } from "./helpers";
+import type graphTypes from "./helpers";
 import styles from "../Landing.module.scss";
 
 const TheUltraSound: FC = () => {

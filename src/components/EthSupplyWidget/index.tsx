@@ -1,8 +1,13 @@
 import { differenceInSeconds, format } from "date-fns";
-import type { FormatterCallbackFunction, Point } from "highcharts";
+import type {
+  FormatterCallbackFunction,
+  PlotLineOrBand,
+  Point,
+} from "highcharts";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import highchartsAnnotations from "highcharts/modules/annotations";
+import _first from "lodash/first";
 import _last from "lodash/last";
 import _merge from "lodash/merge";
 import type { FC } from "react";
@@ -20,8 +25,8 @@ import {
 import { PARIS_BLOCK_NUMBER, PARIS_TIMESTAMP } from "../../hardforks/paris";
 import { posIssuancePerDay, powIssuancePerDay } from "../../static-ether-data";
 import type {
-  SupplyPoint,
   LimitedTimeFrameWithMerge,
+  SupplyPoint,
 } from "../Dashboard/SupplySection";
 import SimulateProofOfWork from "../SimulateProofOfWork";
 import SinceMergeIndicator from "../SinceMergeIndicator";
@@ -41,6 +46,9 @@ const SUPPLY_SINCE_MERGE_POW_SERIES_ID = "supply-since-merge-pow-series";
 const BITCOIN_SUPPLY_ID = "bitcoin-supply-since-merge-series";
 
 const BITCOIN_SUPPLY_AT_MERGE = 19_152_350;
+const BITCOIN_ISSUANCE_PER_TEN_MINUTES = 6.25;
+const BITCOIN_ISSUANCE_PER_SECOND =
+  BITCOIN_ISSUANCE_PER_TEN_MINUTES / (60 * 10);
 
 // To compare proof of stake issuance to proof of work issuance we offer a
 // "simulate proof of work" toggle. However, we only have a supply series under
@@ -167,9 +175,15 @@ const getTooltip = (
       return "";
     }
 
-    const firstPoint = series[0];
+    const firstPoint = _first(series);
+    if (firstPoint === undefined) {
+      return "";
+    }
     const firstSupply = firstPoint[1];
     const total = pointMap[x];
+    if (total === undefined) {
+      return "";
+    }
 
     const dt = new Date(x);
     const formattedDate = format(dt, "iii MMM dd");
@@ -232,26 +246,32 @@ const getTooltip = (
 
 const YEAR_IN_SECONDS = 365.25 * 24 * 60 * 60;
 
-const getSupplyChangeLabel = (points: SupplyPoint[]) => () => {
-  const firstPoint = points[0];
-  const lastPoint = points[points.length - 1];
+const getSupplyChangeLabel = (
+  points: SupplyPoint[],
+): FormatterCallbackFunction<PlotLineOrBand> =>
+  function () {
+    const firstPoint = _first(points);
+    const lastPoint = _last(points);
+    if (firstPoint === undefined || lastPoint === undefined) {
+      return "";
+    }
 
-  const secondsDelta = differenceInSeconds(lastPoint[0], firstPoint[0]);
-  const supplyDelta = lastPoint[1] - firstPoint[1];
-  const yearlyDelta = (supplyDelta / secondsDelta) * YEAR_IN_SECONDS;
-  const yearlySupplyDeltaPercent = formatPercentThreeDecimalsSigned(
-    yearlyDelta / firstPoint[1],
-  );
+    const secondsDelta = differenceInSeconds(lastPoint[0], firstPoint[0]);
+    const supplyDelta = lastPoint[1] - firstPoint[1];
+    const yearlyDelta = (supplyDelta / secondsDelta) * YEAR_IN_SECONDS;
+    const yearlySupplyDeltaPercent = formatPercentThreeDecimalsSigned(
+      yearlyDelta / firstPoint[1],
+    );
 
-  return `
-    <div class="flex flex-row items-center gap-x-2 select-text">
-      <div class="w-2 h-2 rounded-full"></div>
-      <div class="font-roboto font-normal text-slateus-400 text-xs">
-        <span class="text-white">${yearlySupplyDeltaPercent}</span>/y
+    return `
+      <div class="flex flex-row items-center gap-x-2 select-text">
+        <div class="w-2 h-2 rounded-full"></div>
+        <div class="font-roboto font-normal text-slateus-400 text-xs">
+          <span class="text-white">${yearlySupplyDeltaPercent}</span>/y
+        </div>
       </div>
-    </div>
-  `;
-};
+    `;
+  };
 
 const getBitcoinSeries = (
   ethPosSeries: SupplyPoint[] | undefined,
@@ -260,10 +280,11 @@ const getBitcoinSeries = (
     return [undefined, undefined];
   }
 
-  const BITCOIN_ISSUANCE_PER_TEN_MINUTES = 6.25;
-  const BITCOIN_ISSUANCE_PER_SECOND =
-    BITCOIN_ISSUANCE_PER_TEN_MINUTES / (60 * 10);
-  const ethPosFirstPoint = ethPosSeries[0];
+  const ethPosFirstPoint = _first(ethPosSeries);
+  if (ethPosFirstPoint === undefined) {
+    return [undefined, undefined];
+  }
+
   const parisToTimeFrameSeconds = differenceInSeconds(
     ethPosFirstPoint[0],
     PARIS_TIMESTAMP,
@@ -296,7 +317,10 @@ const getEthPowSeries = (
   ethPosSeries === undefined
     ? undefined
     : ethPosSeries.map(([timestamp, supply]) => {
-        const firstPointTimestamp = new Date(ethPosSeries[0][0]);
+        const firstPoint = _first(ethPosSeries);
+        // Map can only be called for points that are not undefined.
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const firstPointTimestamp = new Date(firstPoint![0]);
         const slotsSinceStart =
           differenceInSeconds(new Date(timestamp), firstPointTimestamp) / 12;
 
@@ -365,7 +389,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
         plotLines: [
           {
             id: "merge-supply",
-            value: ethPosSeries?.[0][1],
+            value: ethPosSeries?.[0]?.[1],
             color: colors.slateus400,
             width: 1,
             label: {

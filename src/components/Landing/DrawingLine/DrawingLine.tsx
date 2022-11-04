@@ -54,9 +54,10 @@ const DrawingLine: React.FC<DrawingLineProps> = ({
 
   const stepperPoints = useContext(StepperContext);
   const controlPoints: StepperPoint[] = stepperPoints?.stepperElements
-    ? Object.keys(stepperPoints.stepperElements).map((element) => {
+    ? // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+      (Object.keys(stepperPoints.stepperElements).map((element) => {
         return stepperPoints?.stepperElements[element];
-      })
+      }) as StepperPoint[])
     : [];
 
   const triggerActivePointScroll: Obj = useRef(0);

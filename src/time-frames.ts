@@ -15,7 +15,9 @@ export const displayLimitedTimeFrameMap: Record<LimitedTimeFrame, string> = {
 export const getNextTimeFrame = (timeFrame: TimeFrame): TimeFrame => {
   const nextIndex = (timeFrames.indexOf(timeFrame) + 1) % timeFrames.length;
 
-  return timeFrames[nextIndex];
+  // Index is checked above.
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return timeFrames[nextIndex]!;
 };
 
 export const timeFramesWithMerge = [...timeFrames, "since_merge"] as const;

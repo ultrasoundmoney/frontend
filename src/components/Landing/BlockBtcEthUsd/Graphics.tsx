@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import classes from "./BlockBtcEthUsd.module.scss";
-import type { graphTypes } from "./helpers";
+import type graphTypes from "./helpers";
 import { onHoverFunctionality, onSvgMouseOut } from "./helpers";
 
 type NoneSvgProps = {

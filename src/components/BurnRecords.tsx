@@ -104,7 +104,8 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
               </MoneyAmountAnimated>
               <SpanMoji
                 className="select-none text-2xl md:text-3xl"
-                emoji={emojiMap[index]}
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                emoji={emojiMap[index]!}
               />
             </div>
             <div className="flex justify-between">

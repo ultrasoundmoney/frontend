@@ -17,8 +17,10 @@ const StepperDots: React.FC<StepperPointProps> = ({
     if (objStepperElements) {
       let top = 0;
       const currentKey = Object.keys(stepperPoints.stepperElements)[indexPoint];
-      top = objStepperElements[currentKey]
-        ? objStepperElements[currentKey].offsetY
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion, @typescript-eslint/no-non-null-assertion
+      top = objStepperElements[currentKey!]
+        ? // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion, @typescript-eslint/no-non-null-assertion
+          (objStepperElements[currentKey!]?.offsetY as number)
         : 0;
 
       const windowHeight = window.innerHeight / 2.6;

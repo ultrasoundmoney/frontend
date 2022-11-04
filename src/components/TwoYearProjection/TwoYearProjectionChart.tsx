@@ -22,6 +22,7 @@ import styles from "./TwoYearProjectionChart.module.scss";
 import colors from "../../colors";
 import { LONDON_TIMESTAMP } from "../../hardforks/london";
 import { PARIS_TIMESTAMP } from "../../hardforks/paris";
+import _first from "lodash/first";
 
 if (typeof window !== "undefined") {
   // Initialize highchats annotations module (only on browser, doesn't work on server)
@@ -213,6 +214,9 @@ const SupplyChart: React.FC<Props> = ({
         peakSupply = null;
       } else if (v < maxSupply! && !peakSupply) {
         const lastPoint = supplyData[i - 1];
+        if (lastPoint === undefined) {
+          throw new Error("cannot calculate peak supply without supply points");
+        }
         const value =
           lastPoint.v - (daysSinceMerge - 1) * GLASSNODE_OVERCOUNTING_ETH;
         peakSupply = [lastPoint.t, value];
@@ -276,6 +280,11 @@ const SupplyChart: React.FC<Props> = ({
 
     let supplyValue = lastSupplyPoint![1];
     let stakingValue = lastStakingPoint![1];
+    if (stakingValue === undefined) {
+      throw new Error(
+        "cannot calculate projected staking value without staking value",
+      );
+    }
 
     const maxIssuance = estimatedDailyIssuance(chartSettings.projectedStaking);
 
@@ -309,11 +318,21 @@ const SupplyChart: React.FC<Props> = ({
         burn = estimatedDailyFeeBurn(chartSettings.projectedBaseGasPrice);
       }
 
+      if (supplyValue === undefined) {
+        throw new Error("cannot calculate supply split without supply value");
+      }
+
       supplyValue = Math.max(supplyValue + newIssuance - burn, 0);
 
       const nonStakingValue = Math.max(supplyValue - stakingValue, 0);
 
-      let inContractValue = Math.min(lastContractPoint![1], nonStakingValue);
+      if (lastContractPoint === undefined) {
+        throw new Error(
+          "cannot calculate the in contract value without the last contract point",
+        );
+      }
+
+      let inContractValue = Math.min(lastContractPoint[1]!, nonStakingValue);
       let inAddressesValue = nonStakingValue - inContractValue;
       // Make sure ETH in addresses doesn't dip way below ETH in contracts
       if (inAddressesValue < inContractValue * 0.5) {
@@ -607,8 +626,14 @@ const SupplyChart: React.FC<Props> = ({
             );
           }
 
+          const firstPoint = _first(points);
+
+          if (firstPoint === undefined) {
+            return "";
+          }
+
           const isProjected =
-            points[0].series.userOptions.id?.includes("projected");
+            firstPoint.series.userOptions.id?.includes("projected");
 
           const dt = new Date(this.x || 0);
           const header = `<div class="tt-header"><div class="tt-header-date text-blue-spindle">${formatDate(
@@ -640,6 +665,9 @@ const SupplyChart: React.FC<Props> = ({
 
           // Show total supply last
           const total = totalSupplyByDate[this.x || 0];
+          if (total === undefined) {
+            return "";
+          }
           rows.push(
             `<tr class="tt-total-row">
               <td><div class="tt-series-name">${t.total_supply}</div></td>

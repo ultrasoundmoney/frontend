@@ -1,4 +1,4 @@
-import type { graphTypes } from "./helpers";
+import type graphTypes from "./helpers";
 import styles from "./BlockBtcEthUsd.module.scss";
 
 type CurrencyTabsProps = {

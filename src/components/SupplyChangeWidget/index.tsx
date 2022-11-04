@@ -1,23 +1,24 @@
+import { differenceInSeconds } from "date-fns";
 import type { FC } from "react";
 import CountUp from "react-countup";
+import {
+  impreciseEthSupplyFromParts,
+  useEthSupplyParts,
+} from "../../api/eth-supply";
+import { useSupplyOverTime } from "../../api/supply-over-time";
+import { dateTimeFromSlot } from "../../beacon-time";
+import { formatTwoDigitsSigned } from "../../format";
 import { posIssuancePerDay, powIssuancePerDay } from "../../static-ether-data";
+import type { LimitedTimeFrameWithMerge } from "../Dashboard/SupplySection";
 import SimulateProofOfWork from "../SimulateProofOfWork";
+import SinceMergeIndicator from "../SinceMergeIndicator";
 import { BaseText } from "../Texts";
 import LabelText from "../TextsNext/LabelText";
 import SkeletonText from "../TextsNext/SkeletonText";
 import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
-import SinceMergeIndicator from "../SinceMergeIndicator";
-import type { LimitedTimeFrameWithMerge } from "../Dashboard/SupplySection";
-import { useSupplyOverTime } from "../../api/supply-over-time";
-import { differenceInSeconds } from "date-fns";
-import { formatTwoDigitsSigned } from "../../format";
-import {
-  impreciseEthSupplyFromParts,
-  useEthSupplyParts,
-} from "../../api/eth-supply";
-import { dateTimeFromSlot as dateTimeFromSlot } from "../../beacon-time";
+import _first from "lodash/first";
 
 type Props = {
   onClickTimeFrame: () => void;
@@ -40,7 +41,7 @@ const SupplyChange: FC<Props> = ({
   const currentSupply = impreciseEthSupplyFromParts(ethSupplyParts);
   const supplyOverTimeTimeFrame = supplyOverTime?.[timeFrame];
 
-  const firstPoint = supplyOverTimeTimeFrame?.[0];
+  const firstPoint = _first(supplyOverTimeTimeFrame);
   const lastPoint = currentSupply;
 
   const slotsSinceStart =
