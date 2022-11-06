@@ -2,6 +2,7 @@ import type { FC, RefObject } from "react";
 import { useCallback, useRef, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { usePopper } from "react-popper";
+import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import type { FamProfile } from "../../api/profiles";
 import { useProfiles } from "../../api/profiles";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
@@ -35,20 +36,29 @@ export const useTooltip = () => {
         return;
       }
 
-      onImage.current = true;
+      // onImage.current = true;
+      if (!showTooltip && !onTooltip.current) {
+        setRefEl(ref.current);
+        setSelectedItem(profile);
+        setShowTooltip(true);
+      } else {
+        setShowTooltip(false);
+        setSelectedItem(undefined);
+      }
 
-      // Delayed show.
-      const id = window.setTimeout(() => {
-        if (onImage.current || onTooltip.current) {
-          setRefEl(ref.current);
-          setSelectedItem(profile);
-          setShowTooltip(true);
-        }
-      }, 300);
 
-      return () => window.clearTimeout(id);
+      // // Delayed show.
+      // const id = window.setTimeout(() => {
+      //   if (onImage.current || onTooltip.current) {
+      //     setRefEl(ref.current);
+      //     setSelectedItem(profile);
+      //     setShowTooltip(true);
+      //   }
+      // }, 300);
+
+      // return () => window.clearTimeout(id);
     },
-    [onImage, onTooltip],
+    [showTooltip, setShowTooltip, setSelectedItem, setRefEl, onImage, onTooltip],
   );
 
   const handleImageMouseLeave = useCallback(() => {
@@ -124,7 +134,8 @@ const TwitterFam: FC = () => {
   const currentProfiles =
     profiles === undefined
       ? (new Array(120).fill(undefined) as undefined[])
-      : profiles;
+      // add extra profiles to fill the grid
+      : [ ...profiles, ...profiles, ...profiles, ...profiles, ...profiles, ...profiles, ...profiles, ...profiles, ...profiles ];
 
   const {
     attributes,
@@ -179,26 +190,84 @@ const TwitterFam: FC = () => {
       </div>
       <div className="h-16"></div>
       <div className="flex flex-wrap justify-center">
-        {currentProfiles.map((profile, index) => (
-          <ImageWithTooltip
-            key={profile?.profileUrl ?? index}
-            className="m-2 h-10 w-10 select-none"
-            imageUrl={profile?.profileImageUrl}
-            isDoneLoading={profile !== undefined}
-            skeletonDiameter="40px"
-            onMouseEnter={(ref) =>
-              !md || profile === undefined
-                ? () => undefined
-                : handleImageMouseEnter(profile, ref)
-            }
-            onMouseLeave={() =>
-              !md ? () => undefined : handleImageMouseLeave()
-            }
-            onClick={() => handleClickImage(profile)}
-            height={40}
-            width={40}
-          />
-        ))}
+        <TransformWrapper
+          initialScale={2}
+          initialPositionX={0}
+          initialPositionY={0}
+        >
+          {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
+            <>
+              <div
+                style={{ display: "flex", justifyContent: "center", marginBottom: 10 }}
+              >
+                <button
+                  className={`
+                    ml-4 flex
+                    select-none items-center rounded
+                    border border-transparent
+                    bg-blue-tangaroa
+                    px-2 py-1
+                  `}
+                  onClick={() => zoomIn()}
+                >
+                  <span>+</span>
+                </button>
+                <button
+                  className={`
+                    ml-4 flex
+                    select-none items-center rounded
+                    border border-transparent
+                    bg-blue-tangaroa
+                    px-2 py-1
+                  `}
+                  onClick={() => zoomOut()}
+                >
+                  <span>-</span>
+                </button>
+                <button
+                  className={`
+                    ml-4 flex
+                    select-none items-center rounded
+                    border border-transparent
+                    bg-blue-tangaroa
+                    px-2 py-1
+                  `}
+                  onClick={() => resetTransform()}
+                >
+                  <span>X</span>
+                </button>
+                {/* <button onClick={() => zoomIn()}>+</button> */}
+                {/* <button onClick={() => zoomOut()}>-</button> */}
+                {/* <button onClick={() => resetTransform()}>x</button> */}
+              </div>
+              <TransformComponent
+                wrapperStyle={{ height: 300, cursor: "move" }}
+              >
+                {currentProfiles.map((profile, index) => (
+                  <ImageWithTooltip
+                    key={profile?.profileUrl ?? index}
+                    // className="m-2 h-10 w-10 select-none"
+                    className="m-1 h-3 w-3 select-none"
+                    imageUrl={profile?.profileImageUrl}
+                    isDoneLoading={profile !== undefined}
+                    skeletonDiameter="40px"
+                    onMouseEnter={(ref) =>
+                      !md || profile === undefined
+                        ? () => undefined
+                        : handleImageMouseEnter(profile, ref)
+                    }
+                    onMouseLeave={() =>
+                      !md ? () => undefined : handleImageMouseLeave()
+                    }
+                    onClick={() => handleClickImage(profile)}
+                    height={40}
+                    width={40}
+                  />
+                ))}
+              </TransformComponent>
+            </>
+          )}
+        </TransformWrapper>
       </div>
       <>
         <div

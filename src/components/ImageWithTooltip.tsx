@@ -52,17 +52,22 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
       ) : (
         <div
           ref={imageRef}
-          onMouseEnter={() =>
-            onMouseEnter === undefined ? undefined : onMouseEnter(imageRef)
-          }
-          onMouseLeave={() =>
-            onMouseLeave === undefined ? undefined : onMouseLeave(imageRef)
-          }
-          className={className}
+          // onMouseEnter={() =>
+          //   onMouseEnter === undefined ? undefined : onMouseEnter(imageRef)
+          // }
+          // onMouseLeave={() =>
+          //   onMouseLeave === undefined ? undefined : onMouseLeave(imageRef)
+          // }
+          onClick={onMouseEnter === undefined ? undefined : () => onMouseEnter(imageRef)}
+          // className={className}
+          className={`
+              cursor-pointer
+              ${className}
+              ${onMouseEnter !== undefined ? "hover:opacity-60" : ""}
+            `}
         >
           <Image
             className={`
-              cursor-pointer
               rounded-full active:brightness-125
               md:cursor-auto md:active:brightness-100
               ${onMouseEnter !== undefined ? "hover:opacity-60" : ""}
