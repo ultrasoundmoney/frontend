@@ -113,7 +113,7 @@ const LatestBlockComponent: FC<{
       rel="noreferrer"
     >
       <li className="grid grid-cols-3 hover:opacity-60">
-        <span className="font-roboto text-white">
+        <span className="font-roboto text-white slateus-200">
           <SkeletonText width="7rem">
             {Format.formatBlockNumber(number)}
           </SkeletonText>
