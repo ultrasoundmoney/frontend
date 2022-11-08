@@ -19,6 +19,7 @@ import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
 import _first from "lodash/first";
+import { PARIS_SUPPLY, PARIS_TIMESTAMP } from "../../hardforks/paris";
 
 type Props = {
   onClickTimeFrame: () => void;
@@ -41,7 +42,10 @@ const SupplyChange: FC<Props> = ({
   const currentSupply = impreciseEthSupplyFromParts(ethSupplyParts);
   const supplyOverTimeTimeFrame = supplyOverTime?.[timeFrame];
 
-  const firstPoint = _first(supplyOverTimeTimeFrame);
+  const firstPoint =
+    timeFrame === "since_merge"
+      ? { timestamp: PARIS_TIMESTAMP, supply: PARIS_SUPPLY }
+      : _first(supplyOverTimeTimeFrame);
   const lastPoint = currentSupply;
 
   const slotsSinceStart =
