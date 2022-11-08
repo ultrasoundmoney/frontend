@@ -9,6 +9,7 @@ import {
   useGroupedAnalysis1,
 } from "../../api/grouped-analysis-1";
 import type { Unit } from "../../denomination";
+import { useBaseFeePerGasStats } from "../../api/base-fee-per-gas-stats";
 import { WEI_PER_GWEI } from "../../eth-units";
 import * as Format from "../../format";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
@@ -101,7 +102,17 @@ const LatestBlockComponent: FC<{
   fees: number | undefined;
   feesUsd: number | undefined;
   unit: Unit;
-}> = ({ number, baseFeePerGas, fees, feesUsd, unit }) => (
+}> = ({ number, baseFeePerGas, fees, feesUsd, unit }) => {
+  const baseFeePerGasStats = useBaseFeePerGasStats();
+  const barrier = baseFeePerGasStats.barrier * WEI_PER_GWEI;
+  
+  const gradientCss = 
+    baseFeePerGasStats !== undefined &&
+    baseFeePerGas.wei / WEI_PER_GWEI > barrier
+      ? "from-orange-400 to-yellow-300"
+      : "from-cyan-300 to-indigo-500";
+      
+  return (
   <div className="animate-fade-in text-base font-light transition-opacity duration-700 md:text-lg">
     <a
       href={
@@ -119,15 +130,9 @@ const LatestBlockComponent: FC<{
           </SkeletonText>
         </span>
         <div className="mr-1 text-right">
-          <BaseText font="font-roboto">
+          <BaseText className={`bg-gradient-to-r bg-clip-text text-transparent ${gradientCss}`} font="font-roboto">
             <SkeletonText width="1rem">{formatGas(baseFeePerGas)}</SkeletonText>
           </BaseText>
-          <div className="hidden md:inline">
-            <span className="font-inter">&thinsp;</span>
-            <span className="font-roboto font-extralight text-blue-spindle">
-              Gwei
-            </span>
-          </div>
         </div>
         <div className="text-right">
           <BaseText font="font-roboto">
@@ -144,6 +149,7 @@ const LatestBlockComponent: FC<{
     </a>
   </div>
 );
+};
 
 type Props = { unit: Unit };
 
