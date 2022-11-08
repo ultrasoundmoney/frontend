@@ -1,5 +1,5 @@
 import ConfettiGenerator from "confetti-js";
-import _last from "lodash/last";
+import JSBI from "jsbi";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import type { FC } from "react";
@@ -8,7 +8,7 @@ import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useBaseFeePerGas } from "../../api/base-fee-per-gas";
 import { useEthPriceStats } from "../../api/eth-price-stats";
-import { useSupplyOverTime } from "../../api/supply-over-time";
+import { ethSupplyFromParts, useEthSupplyParts } from "../../api/eth-supply";
 import colors from "../../colors";
 import { WEI_PER_GWEI } from "../../eth-units";
 import { FeatureFlagsContext, useFeatureFlags } from "../../feature-flags";
@@ -118,24 +118,19 @@ const GasPriceTitle = () => {
 };
 
 const useIsDeflationary = () => {
-  const supplyOverTime = useSupplyOverTime();
-  const supplySinceMerge = supplyOverTime?.since_merge;
-  const lastSupply = _last(supplySinceMerge);
+  const ethSupplyParts = useEthSupplyParts();
+  const ethSupply = JSBI.toNumber(ethSupplyFromParts(ethSupplyParts)) / 1e18;
   const [isDeflationary, setIsDeflationary] = useState(false);
   const { simulateDeflationary } = useContext(FeatureFlagsContext);
 
   useEffect(() => {
-    if (lastSupply === undefined) {
-      return;
-    }
-
-    if (lastSupply.supply > PARIS_SUPPLY) {
+    if (ethSupply > PARIS_SUPPLY) {
       setIsDeflationary(false);
       return;
     }
 
     setIsDeflationary(true);
-  }, [setIsDeflationary, lastSupply]);
+  }, [ethSupply, setIsDeflationary]);
 
   // simulateDeflationary doesn't work in the Dashboard component as the FeatureFlagsContext is not available.
   return isDeflationary || simulateDeflationary;
@@ -213,19 +208,19 @@ const Dashboard: FC = () => {
       : videoEl.current.pause();
   }, []);
 
-  useEffect(() => {
-    if (!showVideo || typeof window === "undefined") {
-      return;
-    }
+  // useEffect(() => {
+  //   if (!showVideo || typeof window === "undefined") {
+  //     return;
+  //   }
 
-    const id = setTimeout(() => {
-      if (videoEl.current === null) {
-        return;
-      }
-      videoEl.current.pause();
-    }, 22000);
-    return () => window.clearTimeout(id);
-  }, [showVideo]);
+  // const id = setTimeout(() => {
+  //   if (videoEl.current === null) {
+  //     return;
+  //   }
+  //   videoEl.current.pause();
+  // }, 22000);
+  // return () => window.clearTimeout(id);
+  // }, [showVideo]);
 
   return (
     <FeatureFlagsContext.Provider value={featureFlags}>
