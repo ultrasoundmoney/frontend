@@ -33,6 +33,7 @@ type CategoryBarProps = {
   mev: CategoryProps | undefined;
   l2: CategoryProps | undefined;
   misc: CategoryProps | undefined;
+  uncategorized: CategoryProps | undefined;
 };
 
 type CategorySegmentProps = {
@@ -304,6 +305,46 @@ const buildMiscCategory = (
         showHighlight: hoveringMisc,
       } as CategoryProps,
     );
+    
+    const buildUncategorizedCategory = (
+      burnCategories: BurnCategory[],
+      setHoveringUncategorized: (bool: boolean) => void,
+      hoveringUncategorized: boolean,
+    ) =>
+      burnCategories
+        .filter(
+          (category) => !["nft", "defi", "mev", "l2"].includes(category.category),
+        )
+        .reduce(
+          (sumCategory, category) => ({
+            imgName: "misc",
+            imgAlt:
+              "three dots, signaling the summing of other contracts that have been categorized",
+            fees: (sumCategory.fees ?? 0) + category.fees,
+            feesUsd: (sumCategory.feesUsd ?? 0) + category.feesUsd,
+            transactionCount:
+              (sumCategory.transactionCount ?? 0) + category.transactionCount,
+            percentOfTotalBurn:
+              (sumCategory.percentOfTotalBurn ?? 0) + category.percentOfTotalBurn,
+            percentOfTotalBurnUsd:
+              (sumCategory.percentOfTotalBurnUsd ?? 0) +
+              category.percentOfTotalBurnUsd,
+            onHoverCategory: setHoveringUncategorized,
+            showHighlight: hoveringUncategorized,
+          }),
+          {
+            imgName: "misc",
+            imgAlt:
+              "three dots, signaling the summing of other contracts that have been categorized",
+            fees: undefined,
+            feesUsd: undefined,
+            transactionCount: undefined,
+            percentOfTotalBurn: undefined,
+            percentOfTotalBurnUsd: undefined,
+            onHoverCategory: setHoveringUncategorized,
+            showHighlight: hoveringUncategorized,
+          } as CategoryProps,
+        );
 
 type Props = {
   onClickTimeFrame: () => void;
@@ -317,6 +358,7 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const [hoveringMev, setHoveringMev] = useState(false);
   const [hoveringL2, setHoveringL2] = useState(false);
   const [hoveringMisc, setHoveringMisc] = useState(false);
+  const [hoveringUncategorized, setHoveringUncategorized] = useState(false);
   const { showCategoryCounts } = useContext(FeatureFlagsContext);
 
   const selectedBurnCategories = burnCategories?.[timeFrame];
@@ -335,6 +377,8 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
     selectedBurnCategories !== undefined
       ? buildMiscCategory(selectedBurnCategories, setHoveringMisc, hoveringMisc)
       : undefined;
+      
+  const uncategorized = selectedBurnCategories
 
   const burnCategoryParts = {
     nft: {
@@ -400,6 +444,7 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
           mev={burnCategoryParts?.mev}
           l2={burnCategoryParts?.l2}
           misc={misc}
+          uncategorized={uncategorized}
         />
       </div>
       {timeFrame === "m5" ? (
@@ -493,6 +538,14 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                 hovering={hoveringMisc}
                 name="misc"
                 setHovering={setHoveringMisc}
+                showCategoryCounts={showCategoryCounts}
+              />
+              <CategoryRow
+                amountFormatted={formatFees(uncategorized?.fees)}
+                countFormatted={formatCount(uncategorized?.transactionCount)}
+                hovering={hoveringUncategorized}
+                name="uncategorized"
+                setHovering={setHoveringUncategorized}
                 showCategoryCounts={showCategoryCounts}
               />
             </>

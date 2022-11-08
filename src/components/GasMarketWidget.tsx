@@ -16,6 +16,7 @@ import barrierSvg from "../assets/barrier-own.svg";
 import type { TimeFrameNext } from "../time-frames";
 import { animated, useSpring } from "react-spring";
 import CountUp from "react-countup";
+import LatestBlocks from "./LatestBlocks";
 
 const getPercentage = (
   highest: number,
@@ -172,6 +173,7 @@ type Props = {
 
 const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const baseFeePerGasStats = useBaseFeePerGasStats();
+  const latestBlocks = LatestBlocks();
   const barrier = baseFeePerGasStats.barrier * WEI_PER_GWEI;
   const baseFeePerGasStatsTimeFrame =
     baseFeePerGasStats?.[timeFrame] ??
