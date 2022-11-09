@@ -130,7 +130,7 @@ const LatestBlockComponent: FC<{
           </SkeletonText>
         </span>
         <div className="mr-1 text-right">
-          <BaseText className={`bg-gradient-to-r bg-clip-text text-transparent ${gradientCss}`} font="font-roboto">
+          <BaseText font="font-roboto" className={`bg-gradient-to-r bg-clip-text text-transparent ${gradientCss}`}>
             <SkeletonText width="1rem">{formatGas(baseFeePerGas)}</SkeletonText>
           </BaseText>
         </div>
