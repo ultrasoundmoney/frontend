@@ -173,7 +173,7 @@ const useConfetti = (simulateDeflationary: boolean): UseConfetti => {
 
     setTimeout(() => {
       confetti.clear();
-    }, 22000);
+    }, 5000);
 
     return;
   }, [isDeflationary, confettiRan, simulateDeflationary]);
