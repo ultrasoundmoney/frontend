@@ -95,7 +95,7 @@ const SplitGaugeSvg: FC<SplitGaugeSvgProps> = ({
         <animated.path
           transform={x.to((x) => `rotate(${-90 + x * 120})`)}
           opacity={stylesOrange.opacity}
-          style={{ fill: colors.fireOrange }}
+          style={{ fill: colors.orange400 }}
           d={needlePath}
         ></animated.path>
       </g>

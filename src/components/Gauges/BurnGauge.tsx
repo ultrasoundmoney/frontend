@@ -38,7 +38,7 @@ const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame, unit }) => {
         emoji="flame"
         gaugeUnit={unit === "eth" ? "K" : "B"}
         gradientFill="orange"
-        needleColor={colors.fireOrange}
+        needleColor={colors.orange400}
         title="burn"
         unit={unit}
         value={burnRate}

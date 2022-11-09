@@ -58,7 +58,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
           style={{
             backgroundColor: hoveringBurned
               ? Colors.fireHighlight
-              : Colors.fireOrange,
+              : Colors.orange400,
           }}
           onMouseEnter={() => onHoverBurned(true)}
           onMouseLeave={() => onHoverBurned(false)}
