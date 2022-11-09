@@ -1,3 +1,4 @@
+import { parseISO } from "date-fns";
 import _maxBy from "lodash/maxBy";
 import type { FC } from "react";
 import { useMemo } from "react";
@@ -6,13 +7,12 @@ import { useBaseFeeOverTime } from "../../api/base-fee-over-time";
 import type { Gwei } from "../../eth-units";
 import { WEI_PER_GWEI } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
-import type { TimeFrame } from "../../time-frames";
+import type { TimeFrameNext } from "../../time-frames";
 import BaseFeesWidget from "../BaseFeesWidget";
 import BasicErrorBoundary from "../BasicErrorBoundary";
-import GasStreakWidget from "../GasStreakWidget";
 import GasMarketWidget from "../GasMarketWidget";
+import GasStreakWidget from "../GasStreakWidget";
 import SectionDivider from "../SectionDivider";
-import { parseISO } from "date-fns";
 
 export type BaseFeePoint = [JsTimestamp, Gwei];
 
@@ -25,7 +25,7 @@ const pointsFromBaseFeesOverTime = (
   );
 
 const GasSection: FC<{
-  timeFrame: TimeFrame;
+  timeFrame: TimeFrameNext;
   onClickTimeFrame: () => void;
 }> = ({ timeFrame, onClickTimeFrame }) => {
   const baseFeesOverTime = useBaseFeeOverTime();

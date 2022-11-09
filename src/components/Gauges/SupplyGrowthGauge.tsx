@@ -6,11 +6,10 @@ import { animated, config, useSpring } from "react-spring";
 import { useBurnRates } from "../../api/burn-rates";
 import type { BurnRates } from "../../api/grouped-analysis-1";
 import { useScarcity } from "../../api/scarcity";
-import colors from "../../colors";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
 import * as StaticEtherData from "../../static-ether-data";
-import type { TimeFrame } from "../../time-frames";
+import type { TimeFrameNext } from "../../time-frames";
 import { timeframeBurnRateMap } from "../BurnTotal";
 import TimeFrameIndicator from "../TimeFrameIndicator";
 import { WidgetTitle } from "../WidgetSubcomponents";
@@ -19,7 +18,7 @@ import SplitGaugeSvg from "./SplitGaugeSvg";
 const useGrowthRate = (
   burnRates: BurnRates | undefined,
   simulateProofOfWork: boolean,
-  timeFrame: TimeFrame,
+  timeFrame: TimeFrameNext,
 ): number | undefined => {
   const scarcity = useScarcity();
   const [growthRate, setGrowthRate] = useState<number>();
@@ -60,7 +59,7 @@ const useGrowthRate = (
 type Props = {
   onClickTimeFrame: () => void;
   simulateProofOfWork: boolean;
-  timeFrame: TimeFrame;
+  timeFrame: TimeFrameNext;
 };
 
 const SupplyGrowthGauge: FC<Props> = ({

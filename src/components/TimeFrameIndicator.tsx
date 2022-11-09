@@ -3,7 +3,7 @@ import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { londonHardFork } from "../dates";
 import { millisFromHours } from "../duration";
-import type { TimeFrame } from "../time-frames";
+import type { TimeFrameNext } from "../time-frames";
 import { displayLimitedTimeFrameMap } from "../time-frames";
 import LabelText from "./TextsNext/LabelText";
 
@@ -15,7 +15,7 @@ const getFormattedDays = (now: Date) => {
 type Props = {
   className?: string;
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrame;
+  timeFrame: TimeFrameNext;
 };
 
 const TimeFrameIndicator: FC<Props> = ({
@@ -41,9 +41,11 @@ const TimeFrameIndicator: FC<Props> = ({
       onClick={onClickTimeFrame}
       title="since London hark fork where EIP-1559 was activated"
     >
-      <LabelText>{timeFrame === "all" ? "since burn" : "time frame"}</LabelText>
+      <LabelText>
+        {timeFrame === "since_burn" ? "since burn" : "time frame"}
+      </LabelText>
       <p className="font-roboto text-xs text-white">
-        {timeFrame === "all"
+        {timeFrame === "since_burn"
           ? daysSinceLondon
           : displayLimitedTimeFrameMap[timeFrame]}
       </p>

@@ -15,7 +15,7 @@ import type { Unit } from "../denomination";
 import * as Duration from "../duration";
 import * as Format from "../format";
 import * as StaticEtherData from "../static-ether-data";
-import type { LimitedTimeFrame, TimeFrame } from "../time-frames";
+import type { LimitedTimeFrame, TimeFrameNext } from "../time-frames";
 import { AmountAnimatedShell } from "./Amount";
 import { BaseText } from "./Texts";
 import TimeFrameIndicator from "./TimeFrameIndicator";
@@ -23,7 +23,7 @@ import WidgetErrorBoundary from "./WidgetErrorBoundary";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
 const timeframeFeesBurnedMap: Record<
-  TimeFrame,
+  TimeFrameNext,
   { eth: keyof FeesBurned; usd: keyof FeesBurned }
 > = {
   m5: { eth: "feesBurned5m", usd: "feesBurned5mUsd" },
@@ -31,11 +31,11 @@ const timeframeFeesBurnedMap: Record<
   d1: { eth: "feesBurned24h", usd: "feesBurned24hUsd" },
   d7: { eth: "feesBurned7d", usd: "feesBurned7dUsd" },
   d30: { eth: "feesBurned30d", usd: "feesBurned30dUsd" },
-  all: { eth: "feesBurnedAll", usd: "feesBurnedAllUsd" },
+  since_burn: { eth: "feesBurnedAll", usd: "feesBurnedAllUsd" },
 };
 
 export const timeframeBurnRateMap: Record<
-  TimeFrame,
+  TimeFrameNext,
   { eth: keyof BurnRates; usd: keyof BurnRates }
 > = {
   m5: { eth: "burnRate5m", usd: "burnRate5mUsd" },
@@ -43,7 +43,7 @@ export const timeframeBurnRateMap: Record<
   d1: { eth: "burnRate24h", usd: "burnRate24hUsd" },
   d7: { eth: "burnRate7d", usd: "burnRate7dUsd" },
   d30: { eth: "burnRate30d", usd: "burnRate30dUsd" },
-  all: { eth: "burnRateAll", usd: "burnRateAllUsd" },
+  since_burn: { eth: "burnRateAll", usd: "burnRateAllUsd" },
 };
 
 const timeFrameMillisecondsMap: Record<LimitedTimeFrame, number> = {
@@ -56,7 +56,7 @@ const timeFrameMillisecondsMap: Record<LimitedTimeFrame, number> = {
 
 type Props = {
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrame;
+  timeFrame: TimeFrameNext;
   unit: Unit;
 };
 
@@ -105,7 +105,7 @@ const BurnTotal: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
   const selectedIssuance =
     millisecondsSinceLondonHardFork === undefined
       ? undefined
-      : timeFrame === "all"
+      : timeFrame === "since_burn"
       ? issuancePerMillisecond * millisecondsSinceLondonHardFork
       : issuancePerMillisecond * timeFrameMillisecondsMap[timeFrame];
 

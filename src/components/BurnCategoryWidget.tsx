@@ -8,7 +8,8 @@ import Colors from "../colors";
 import { WEI_PER_ETH } from "../eth-units";
 import { FeatureFlagsContext } from "../feature-flags";
 import * as Format from "../format";
-import type { TimeFrame } from "../time-frames";
+import type { TimeFrameNext } from "../time-frames";
+import { timeFrameFromNext } from "../time-frames";
 import { MoneyAmount } from "./Amount";
 import { BaseText } from "./Texts";
 import BodyText from "./TextsNext/BodyText";
@@ -307,7 +308,7 @@ const buildMiscCategory = (
 
 type Props = {
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrame;
+  timeFrame: TimeFrameNext;
 };
 
 const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
@@ -319,7 +320,7 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const [hoveringMisc, setHoveringMisc] = useState(false);
   const { showCategoryCounts } = useContext(FeatureFlagsContext);
 
-  const selectedBurnCategories = burnCategories?.[timeFrame];
+  const selectedBurnCategories = burnCategories?.[timeFrameFromNext(timeFrame)];
 
   const nft = selectedBurnCategories?.find(
     ({ category }) => category === "nft",
@@ -391,7 +392,9 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
     >
       <div
         className={`${
-          timeFrame === "m5" || timeFrame === "all" ? "hidden" : "visible"
+          timeFrame === "m5" || timeFrame === "since_burn"
+            ? "hidden"
+            : "visible"
         }`}
       >
         <CategoryBar
@@ -411,7 +414,7 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
         >
           5 minute time frame unavailable
         </div>
-      ) : timeFrame === "all" ? (
+      ) : timeFrame === "since_burn" ? (
         <div
           className={`
             flex min-h-[324px] w-full items-center justify-center

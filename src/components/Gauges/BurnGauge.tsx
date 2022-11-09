@@ -3,12 +3,12 @@ import { useBurnRates } from "../../api/burn-rates";
 import colors from "../../colors";
 import type { Unit } from "../../denomination";
 import * as Format from "../../format";
-import type { TimeFrame } from "../../time-frames";
+import type { TimeFrameNext } from "../../time-frames";
 import { timeframeBurnRateMap } from "../BurnTotal";
 import IssuanceBurnBaseGauge from "./IssuanceBurnBaseGauge";
 
 type BurnGaugeProps = {
-  timeFrame: TimeFrame;
+  timeFrame: TimeFrameNext;
   unit: Unit;
 };
 

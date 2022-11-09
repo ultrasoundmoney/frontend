@@ -11,7 +11,7 @@ import type { LeaderboardEntry, Leaderboards } from "../../api/leaderboards";
 import type { Unit } from "../../denomination";
 import { useAdminToken } from "../../hooks/use-admin-token";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
-import type { TimeFrame } from "../../time-frames";
+import type { TimeFrameNext } from "../../time-frames";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import Modal from "../Modal";
 import FamTooltip from "../FamTooltip";
@@ -19,13 +19,13 @@ import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { BurnGroupBase } from "../WidgetSubcomponents";
 import LeaderboardRow from "./LeaderboardRow";
 
-const feePeriodToUpdateMap: Record<TimeFrame, keyof Leaderboards> = {
+const feePeriodToUpdateMap: Record<TimeFrameNext, keyof Leaderboards> = {
   m5: "leaderboard5m",
   h1: "leaderboard1h",
   d1: "leaderboard24h",
   d7: "leaderboard7d",
   d30: "leaderboard30d",
-  all: "leaderboardAll",
+  since_burn: "leaderboardAll",
 };
 
 const formatName = (rawName: unknown, address: unknown) => {
@@ -187,7 +187,7 @@ const useTooltip = () => {
 
 type Props = {
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrame;
+  timeFrame: TimeFrameNext;
   unit: Unit;
 };
 

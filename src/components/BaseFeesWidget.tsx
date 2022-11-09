@@ -4,11 +4,10 @@ import HighchartsReact from "highcharts-react-official";
 import highchartsAnnotations from "highcharts/modules/annotations";
 import _merge from "lodash/merge";
 import type { FC } from "react";
-import { useEffect } from "react";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import colors from "../colors";
 import type { Gwei } from "../eth-units";
-import type { TimeFrame } from "../time-frames";
+import type { TimeFrameNext } from "../time-frames";
 import type { BaseFeePoint } from "./Dashboard/GasSection";
 import LabelText from "./TextsNext/LabelText";
 import TimeFrameIndicator from "./TimeFrameIndicator";
@@ -181,7 +180,7 @@ type Props = {
   baseFeesSeries: BaseFeePoint[] | undefined;
   max: number | undefined;
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrame;
+  timeFrame: TimeFrameNext;
 };
 
 const BaseFeesWidget: FC<Props> = ({
