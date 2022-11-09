@@ -18,7 +18,8 @@ export type BaseFeePerGasStats = {
   d7: BaseFeePerGasStatsTimeFrame;
   h1: BaseFeePerGasStatsTimeFrame;
   m5: BaseFeePerGasStatsTimeFrame;
-  all: BaseFeePerGasStatsTimeFrame | null;
+  since_burn: BaseFeePerGasStatsTimeFrame | null;
+  since_merge: BaseFeePerGasStatsTimeFrame | null;
 };
 
 const url = "/api/v2/fees/base-fee-per-gas-stats";
