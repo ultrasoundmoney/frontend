@@ -15,12 +15,8 @@ import { formatZeroDecimals } from "../../format";
 import { PARIS_SUPPLY } from "../../hardforks/paris";
 import useAuthFromSection from "../../hooks/use-auth-from-section";
 import { useTwitterAuthStatus } from "../../hooks/use-twitter-auth";
-import {
-  getNextTimeFrameNext,
-  TimeFrame,
-  TimeFrameNext,
-} from "../../time-frames";
-import { getNextTimeFrame } from "../../time-frames";
+import type { TimeFrameNext } from "../../time-frames";
+import { getNextTimeFrameNext } from "../../time-frames";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import ContactSection from "../ContactSection";
 import PoapSection from "../FamPage/PoapSection";
