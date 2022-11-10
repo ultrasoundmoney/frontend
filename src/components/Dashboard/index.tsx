@@ -1,4 +1,3 @@
-import ConfettiGenerator from "confetti-js";
 import JSBI from "jsbi";
 import dynamic from "next/dynamic";
 import Head from "next/head";
@@ -140,51 +139,6 @@ const useIsDeflationary = () => {
   return isDeflationary || simulateDeflationary;
 };
 
-type UseConfetti = { showConfetti: boolean };
-
-const useConfetti = (simulateDeflationary: boolean): UseConfetti => {
-  const [confettiRan, setConfettiRan] = useState(false);
-  const [showConfetti, setShowConfetti] = useState(false);
-  const isDeflationary = useIsDeflationary();
-
-  useEffect(() => {
-    if (
-      confettiRan ||
-      typeof document === "undefined" ||
-      (!isDeflationary && !simulateDeflationary)
-    ) {
-      return;
-    }
-
-    // If confetti hasn't ran and last supply is under merge supply, run
-    setShowConfetti(true);
-    setConfettiRan(true);
-
-    const confettiSettings = {
-      target: "confetti-canvas",
-      max: 20,
-      width: document.body.clientWidth,
-      height: 1400,
-      props: [{ type: "svg", src: "/bat-own.svg" }],
-    };
-
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    const confetti = new ConfettiGenerator(confettiSettings) as {
-      render: () => void;
-      clear: () => void;
-    };
-    confetti.render();
-
-    setTimeout(() => {
-      confetti.clear();
-    }, 5000);
-
-    return;
-  }, [isDeflationary, confettiRan, simulateDeflationary]);
-
-  return { showConfetti };
-};
-
 const Dashboard: FC = () => {
   useScrollOnLoad();
   const { featureFlags, setFlag } = useFeatureFlags();
@@ -193,7 +147,6 @@ const Dashboard: FC = () => {
   const isDeflationary = useIsDeflationary();
   const videoEl = useRef<HTMLVideoElement>(null);
   const { simulateDeflationary } = featureFlags;
-  const { showConfetti } = useConfetti(simulateDeflationary);
   const showVideo = isDeflationary || simulateDeflationary;
 
   const handleClickTimeFrame = useCallback(() => {
@@ -212,20 +165,6 @@ const Dashboard: FC = () => {
       : videoEl.current.pause();
   }, []);
 
-  // useEffect(() => {
-  //   if (!showVideo || typeof window === "undefined") {
-  //     return;
-  //   }
-
-  // const id = setTimeout(() => {
-  //   if (videoEl.current === null) {
-  //     return;
-  //   }
-  //   videoEl.current.pause();
-  // }, 22000);
-  // return () => window.clearTimeout(id);
-  // }, [showVideo]);
-
   return (
     <FeatureFlagsContext.Provider value={featureFlags}>
       <SkeletonTheme
@@ -235,14 +174,6 @@ const Dashboard: FC = () => {
       >
         <GasPriceTitle />
         <HeaderGlow />
-
-        <div className="confetti-container pointer-events-none absolute bottom-0 top-0 left-0 right-0 z-10 overflow-hidden">
-          <canvas
-            className={showConfetti ? "" : "hidden"}
-            id="confetti-canvas"
-          ></canvas>
-        </div>
-
         <div className="container mx-auto">
           <BasicErrorBoundary>
             <AdminTools setFlag={setFlag} />
