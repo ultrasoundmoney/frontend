@@ -66,15 +66,10 @@ const TopBar: FC = () => {
           className={`
             ml-4 flex
             select-none items-center rounded
-            border border-transparent
             bg-slateus-700
             px-3 py-2
             ${notification.type === "Supported" ? "visible" : "invisible"}
-            ${
-              isAlarmActive
-                ? "rounded-sm border-blue-highlightborder bg-slateus-600 text-white"
-                : ""
-            }
+            ${isAlarmActive ? "bg-slateus-600" : ""}
           `}
           onClick={handleClickAlarm}
         >
