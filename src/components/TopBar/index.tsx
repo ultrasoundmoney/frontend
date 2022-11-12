@@ -67,7 +67,7 @@ const TopBar: FC = () => {
             ml-4 flex
             select-none items-center rounded
             border border-transparent
-            bg-blue-tangaroa
+            bg-slateus-700
             px-3 py-2
             ${notification.type === "Supported" ? "visible" : "invisible"}
             ${
@@ -89,7 +89,7 @@ const TopBar: FC = () => {
 
         <div
           ref={dialogRef}
-          className={`absolute top-12 w-full rounded bg-blue-tangaroa p-8 md:top-12 ${showAlarmDialogCss}`}
+          className={`absolute top-12 w-full rounded bg-slateus-700 p-8 md:top-12 ${showAlarmDialogCss}`}
         >
           <WidgetTitle>price alerts</WidgetTitle>
           <AlarmInput

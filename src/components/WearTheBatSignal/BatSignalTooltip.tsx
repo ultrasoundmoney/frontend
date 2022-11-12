@@ -19,7 +19,7 @@ const BatSignalTooltip: FC<Props> = ({ className = "", onClickClose }) => (
     className={`
       flex flex-col gap-y-4
       rounded-lg border border-blue-shipcove
-      bg-blue-tangaroa p-8
+      bg-slateus-700 p-8
       text-left
       ${className}
     `}

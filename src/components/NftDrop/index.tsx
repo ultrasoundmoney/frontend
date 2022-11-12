@@ -14,7 +14,7 @@ const NftDrop: React.FC = () => {
         <img src={`/glow.svg`} alt="glow" />
       </div>
       <div className="relative w-full md:m-auto md:w-5/6 lg:w-2/3">
-        <div className="flex flex-col rounded-xl bg-blue-tangaroa px-4 py-8 md:flex-row md:px-24 md:py-16">
+        <div className="flex flex-col rounded-xl bg-slateus-700 px-4 py-8 md:flex-row md:px-24 md:py-16">
           <div className="order-2 flex flex-col md:order-1">
             <img
               alt="logo of a poap token"

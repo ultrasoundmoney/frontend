@@ -101,7 +101,7 @@ const SupplyGrowthGauge: FC<Props> = ({
       className={`
         -mb-[4px] flex flex-col items-center
         justify-start
-        rounded-tl-lg rounded-tr-lg bg-blue-tangaroa px-4
+        rounded-tl-lg rounded-tr-lg bg-slateus-700 px-4
         py-8 pt-7 pb-[36px]
         md:rounded-none md:px-0
       `}

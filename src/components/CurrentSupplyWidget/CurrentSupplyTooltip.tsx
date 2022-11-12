@@ -17,7 +17,7 @@ const CurrentSupplyTooltip: FC<{
       relative
       flex w-[22rem] flex-col
       gap-y-4 rounded-lg border
-      border-blue-shipcove bg-blue-tangaroa
+      border-blue-shipcove bg-slateus-700
       p-8
     `}
   >

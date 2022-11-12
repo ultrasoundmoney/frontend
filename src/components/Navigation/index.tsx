@@ -23,7 +23,7 @@ const Navigation: React.FC = () => {
               </Link>
             </div>
             <div
-              className="eth-price-gass-emoji flex flex-initial self-center bg-blue-tangaroa px-2 py-2 text-xs text-white md:px-3 lg:text-sm"
+              className="eth-price-gass-emoji flex flex-initial self-center bg-slateus-700 px-2 py-2 text-xs text-white md:px-3 lg:text-sm"
               dangerouslySetInnerHTML={{
                 __html: String(twemoji.parse(ethPrice)),
               }}

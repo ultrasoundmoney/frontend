@@ -83,7 +83,7 @@ const ClaimPoapTooltip: FC<ClaimPoapTooltipProps> = ({
     className={`
       relative flex max-h-[95vh] flex-col gap-y-4
       overflow-hidden rounded-lg border
-      border-blue-shipcove bg-blue-tangaroa
+      border-blue-shipcove bg-slateus-700
       p-8
       text-left
       md:max-h-[90vh]

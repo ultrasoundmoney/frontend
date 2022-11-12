@@ -91,7 +91,7 @@ const Stepper: React.FC = () => {
   return (
     <nav
       ref={stepsRef}
-      className={`${classes.mobileNavBarNav} ${classes.stepperNav} sticky top-0 left-0 z-50 flex w-full justify-between bg-blue-tangaroa p-3 md:justify-start`}
+      className={`${classes.mobileNavBarNav} ${classes.stepperNav} sticky top-0 left-0 z-50 flex w-full justify-between bg-slateus-700 p-3 md:justify-start`}
     >
       <div className="mx-auto flex w-full flex-wrap items-center justify-between px-1 md:px-4">
         <Steps

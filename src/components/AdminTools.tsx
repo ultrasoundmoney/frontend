@@ -24,7 +24,7 @@ const AdminTools: FC<{
         fixed bottom-4 left-4
         z-20 rounded-lg
         border-2 border-slate-600
-        bg-blue-tangaroa p-4
+        bg-slateus-700 p-4
       transition-transform
         ${minimizeFlags ? "translate-y-[88%]" : ""}
       `}
