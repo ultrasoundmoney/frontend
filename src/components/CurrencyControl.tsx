@@ -19,7 +19,7 @@ const CurrencyButton: FC<CurrencyButtonProps> = ({
     className={`
       select-none border
       px-3 py-2
-      font-roboto text-xs font-light
+      font-roboto text-xs
       font-normal uppercase
       tracking-widest
       ${
