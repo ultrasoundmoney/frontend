@@ -13,8 +13,6 @@ const colors = {
   slateus200: "#b5bddb",
   slateus400: "#8991ad",
   slateus450: "#8888af",
-  /** @deprecated use slateus500 instead. */
-  dusk: "#464b6f",
   slateus500: "#464b6f",
   slateus800: "#131827",
   slateus600: "#2d344a",

@@ -31,7 +31,7 @@ const ProgressBar: FC<ProgressBarProps> = ({
 
   return (
     <div className="relative">
-      <div className="h-2 w-full rounded-full bg-blue-dusk"></div>
+      <div className="h-2 w-full rounded-full bg-slateus-500"></div>
       <animated.div
         className="absolute top-0 h-2 rounded-full bg-blue-spindle"
         style={{

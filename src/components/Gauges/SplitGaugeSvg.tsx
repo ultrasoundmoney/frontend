@@ -75,7 +75,7 @@ const SplitGaugeSvg: FC<SplitGaugeSvgProps> = ({
         </linearGradient>
       </defs>
       <g transform={`translate(${width / 2},${height / 2})`}>
-        <path style={{ fill: colors.dusk }} d={backgroundArc}></path>
+        <path style={{ fill: colors.slateus500 }} d={backgroundArc}></path>
         <animated.path
           d={foregroundArc}
           fill="url(#blue-gradient-split-gauge)"

@@ -149,7 +149,7 @@ const ValidatorRewardsWidget = () => {
       <WidgetTitle>validator rewards</WidgetTitle>
       {validatorRewards === undefined ? (
         <div className="relative py-16">
-          <div className="absolute h-2 w-full rounded-full bg-blue-dusk"></div>
+          <div className="absolute h-2 w-full rounded-full bg-slateus-500"></div>
         </div>
       ) : (
         <div className="relative flex items-center py-4">
@@ -168,7 +168,7 @@ const ValidatorRewardsWidget = () => {
               rounded="left"
               showHighlight={highlightIssuance}
             />
-            <div className="h-2 w-0.5 bg-blue-dusk"></div>
+            <div className="h-2 w-0.5 bg-slateus-500"></div>
             <CategorySegment
               imgAlt={"an ETH coin symbolizing tips paid to block proposers"}
               imgName={"coin"}
@@ -179,7 +179,7 @@ const ValidatorRewardsWidget = () => {
               )}
               showHighlight={highlightTips}
             />
-            <div className="h-2 w-0.5 bg-blue-dusk"></div>
+            <div className="h-2 w-0.5 bg-slateus-500"></div>
             <CategorySegment
               imgAlt={"a robot symbolizing MEV paid to block proposers"}
               imgName={"mev"}

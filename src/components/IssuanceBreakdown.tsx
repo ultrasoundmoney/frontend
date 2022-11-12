@@ -164,7 +164,7 @@ const IssuanceBreakdown = () => {
       <WidgetTitle>issuance breakdown</WidgetTitle>
       {issuanceBreakdown === undefined ? (
         <div className="relative py-16">
-          <div className="absolute h-2 w-full rounded-full bg-blue-dusk"></div>
+          <div className="absolute h-2 w-full rounded-full bg-slateus-500"></div>
         </div>
       ) : (
         <div className="relative flex items-center py-4">
@@ -181,7 +181,7 @@ const IssuanceBreakdown = () => {
               rounded="left"
               showHighlight={highlightCrowdSale}
             />
-            <div className="h-2 w-0.5 bg-blue-dusk"></div>
+            <div className="h-2 w-0.5 bg-slateus-500"></div>
             <CategorySegment
               imgAlt={
                 "a pickaxe symbolizing the ETH minted using proof of work"
@@ -194,7 +194,7 @@ const IssuanceBreakdown = () => {
               )}
               showHighlight={highlightProofOfWork}
             />
-            <div className="h-2 w-0.5 bg-blue-dusk"></div>
+            <div className="h-2 w-0.5 bg-slateus-500"></div>
             <CategorySegment
               imgAlt={
                 "a seedling symbolizing the gardening Ethereum Foundation"
@@ -207,7 +207,7 @@ const IssuanceBreakdown = () => {
               )}
               showHighlight={highlightEthereumFoundation}
             />
-            <div className="h-2 w-0.5 bg-blue-dusk"></div>
+            <div className="h-2 w-0.5 bg-slateus-500"></div>
             <CategorySegment
               imgAlt={
                 "a unicorn symbolizing the early contributors dreaming up and building Ethereum"
@@ -220,7 +220,7 @@ const IssuanceBreakdown = () => {
               )}
               showHighlight={highlightEarlyContributors}
             />
-            <div className="h-2 w-0.5 bg-blue-dusk"></div>
+            <div className="h-2 w-0.5 bg-slateus-500"></div>
             <CategorySegment
               imgAlt={
                 "a steak as workplay on stake, symbolizing the ETH minted using proof of stake"

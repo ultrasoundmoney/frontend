@@ -151,7 +151,7 @@ const CategoryBar: FC<CategoryBarProps> = ({ nft, defi, mev, l2, misc }) => (
           showHighlight={nft.showHighlight}
         />
       )}
-      <div className="h-2 w-0.5 bg-blue-dusk"></div>
+      <div className="h-2 w-0.5 bg-slateus-500"></div>
       {defi && (
         <CategorySegment
           imgAlt={defi.imgAlt}
@@ -161,7 +161,7 @@ const CategoryBar: FC<CategoryBarProps> = ({ nft, defi, mev, l2, misc }) => (
           showHighlight={defi.showHighlight}
         />
       )}
-      <div className="h-2 w-0.5 bg-blue-dusk"></div>
+      <div className="h-2 w-0.5 bg-slateus-500"></div>
       {mev && (
         <CategorySegment
           imgAlt={mev.imgAlt}
@@ -171,7 +171,7 @@ const CategoryBar: FC<CategoryBarProps> = ({ nft, defi, mev, l2, misc }) => (
           showHighlight={mev.showHighlight}
         />
       )}
-      <div className="h-2 w-0.5 bg-blue-dusk"></div>
+      <div className="h-2 w-0.5 bg-slateus-500"></div>
       {l2 && (
         <CategorySegment
           imgAlt={l2.imgAlt}
@@ -181,7 +181,7 @@ const CategoryBar: FC<CategoryBarProps> = ({ nft, defi, mev, l2, misc }) => (
           showHighlight={l2.showHighlight}
         />
       )}
-      <div className="h-2 w-0.5 bg-blue-dusk"></div>
+      <div className="h-2 w-0.5 bg-slateus-500"></div>
       {misc && (
         <CategorySegment
           imgAlt={misc.imgAlt}

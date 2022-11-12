@@ -64,7 +64,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
           onMouseLeave={() => onHoverBurned(false)}
         ></div>
         <div
-          className="absolute h-2 rounded-full bg-blue-dusk"
+          className="absolute h-2 rounded-full bg-slateus-500"
           style={{ width: `${totalSupplyPercent}%` }}
         ></div>
       </div>
@@ -119,7 +119,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
           </BaseText>
         </div>
         <div
-          className="absolute z-10 h-2 w-0.5 bg-blue-dusk"
+          className="absolute z-10 h-2 w-0.5 bg-slateus-500"
           style={{
             left: `${stakedPercent}%`,
           }}
@@ -282,7 +282,7 @@ const ScarcityWidget: FC = () => {
       <WidgetTitle>scarcity</WidgetTitle>
       {scarcity === undefined ? (
         <div className="relative py-16">
-          <div className="absolute h-2 w-full rounded-full bg-blue-dusk"></div>
+          <div className="absolute h-2 w-full rounded-full bg-slateus-500"></div>
         </div>
       ) : (
         <ScarcityBar
