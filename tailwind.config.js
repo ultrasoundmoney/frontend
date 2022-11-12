@@ -18,7 +18,6 @@ module.exports = {
           midnightexpress: "#141a2f",
           spindle: "#b5bddb",
           shipcove: "#8991ad",
-          manatee: "#8888af",
           highlightbg: "#2d344a",
           highlightborder: "#8794b8",
           dusk: "#464b6f",

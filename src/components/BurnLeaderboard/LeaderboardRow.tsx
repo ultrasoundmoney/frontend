@@ -117,7 +117,7 @@ const LeaderboardRow: FC<Props> = ({
                 py-0.5
                 text-sm
                 font-normal
-                text-blue-manatee md:block
+                text-slateus-400 md:block
                 ${category ? "block" : "md:hidden"}
               `}
             >
