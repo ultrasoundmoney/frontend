@@ -21,7 +21,7 @@ export const Button: FC<{
       tracking-widest
       ${
         isActive
-          ? "rounded-sm border-blue-highlightborder bg-blue-highlightbg text-white"
+          ? "rounded-sm border-blue-highlightborder bg-slateus-600 text-white"
           : "border-transparent text-blue-spindle"
       }
     `}

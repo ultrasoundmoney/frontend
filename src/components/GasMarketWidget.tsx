@@ -258,7 +258,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
               flex
               h-2
               rounded-full
-              bg-blue-highlightbg
+              bg-slateus-600
             `}
           >
             {isDataAvailable && (

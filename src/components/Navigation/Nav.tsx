@@ -100,7 +100,7 @@ const Nav: React.FC = () => {
               }
               ${
                 isAlarmActive
-                  ? "rounded-sm border-blue-highlightborder bg-blue-highlightbg text-white"
+                  ? "rounded-sm border-blue-highlightborder bg-slateus-600 text-white"
                   : ""
               }
             `}

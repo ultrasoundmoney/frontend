@@ -2,7 +2,7 @@ import type { FC } from "react";
 import type { Unit } from "../denomination";
 
 const activePeriodClasses =
-  "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg";
+  "text-white border-blue-highlightborder rounded-sm bg-slateus-600";
 
 type CurrencyButtonProps = {
   onClick: (unit: Unit) => void;

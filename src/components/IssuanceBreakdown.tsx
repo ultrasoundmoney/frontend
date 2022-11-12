@@ -168,7 +168,7 @@ const IssuanceBreakdown = () => {
         </div>
       ) : (
         <div className="relative flex items-center py-4">
-          <div className="color-animation absolute h-2 w-full rounded-full bg-blue-highlightbg"></div>
+          <div className="color-animation absolute h-2 w-full rounded-full bg-slateus-600"></div>
           <div className="top-0 left-0 z-10 flex w-full flex-row items-center">
             <CategorySegment
               imgAlt={"btc symbol symbolizing the bitcoin crowd sale"}

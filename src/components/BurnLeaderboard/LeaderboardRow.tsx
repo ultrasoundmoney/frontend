@@ -112,7 +112,7 @@ const LeaderboardRow: FC<Props> = ({
             <p
               className={`
                 ml-2 hidden whitespace-nowrap
-                rounded-sm bg-blue-highlightbg
+                rounded-sm bg-slateus-600
                 px-1.5
                 py-0.5
                 text-sm
