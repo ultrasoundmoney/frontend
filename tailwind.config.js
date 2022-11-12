@@ -17,7 +17,6 @@ module.exports = {
           ...colors.blue,
           midnightexpress: "#141a2f",
           spindle: "#b5bddb",
-          linkwater: "#c8cbd9",
           shipcove: "#8991ad",
           manatee: "#8888af",
           highlightbg: "#2d344a",

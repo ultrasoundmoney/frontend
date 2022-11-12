@@ -24,7 +24,7 @@ const NftDrop: React.FC = () => {
             <h2 className="my-8 text-2xl font-light text-white md:text-3xl">
               {t.title_nft_drop}
             </h2>
-            <p className="text-blue-linkwater">{t.description_nft_drop}</p>
+            <p className="text-slateus-100">{t.description_nft_drop}</p>
           </div>
           <div className="order-1 mb-8 w-full md:order-2 md:ml-12 md:-mr-12 md:-mt-28">
             <video
