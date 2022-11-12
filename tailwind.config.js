@@ -12,9 +12,6 @@ module.exports = {
     },
     extend: {
       colors: {
-        blue: {
-          shipcove: "#8991ad",
-        },
         drop: "#5dadec",
         fire: "#f4900c",
         mediumspring: "#00ffa3",

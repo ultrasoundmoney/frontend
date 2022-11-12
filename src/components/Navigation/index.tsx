@@ -39,21 +39,21 @@ const Navigation: React.FC = () => {
             <ul className="mt-4 flex list-none  flex-col md:mt-0 md:flex-row lg:ml-auto">
               <li className="nav-item justify-center lg:px-4 xl:px-8">
                 <Link href="/" legacyBehavior>
-                  <a className="flex items-center px-3 py-2 leading-snug text-blue-shipcove hover:text-white hover:opacity-75">
+                  <a className="flex items-center px-3 py-2 leading-snug text-slateus-400 hover:text-white hover:opacity-75">
                     dashboard
                   </a>
                 </Link>
               </li>
               <li className="nav-item justify-center lg:px-4 xl:px-8">
                 <Link href="/" legacyBehavior>
-                  <a className="flex items-center px-3 py-2 leading-snug text-blue-shipcove hover:text-white hover:opacity-75">
+                  <a className="flex items-center px-3 py-2 leading-snug text-slateus-400 hover:text-white hover:opacity-75">
                     q&a
                   </a>
                 </Link>
               </li>
               <li className="nav-item justify-center lg:px-4 xl:px-8">
                 <a
-                  className="flex items-center px-3 py-2 leading-snug text-blue-shipcove hover:text-white hover:opacity-75"
+                  className="flex items-center px-3 py-2 leading-snug text-slateus-400 hover:text-white hover:opacity-75"
                   href="#faqs"
                 >
                   resources
@@ -61,7 +61,7 @@ const Navigation: React.FC = () => {
               </li>
               <li className="nav-item justify-center lg:px-4 xl:px-8">
                 <a
-                  className="flex items-center rounded-3xl border-2 border-solid border-white px-3 py-2 font-medium text-white hover:border-blue-shipcove hover:text-blue-shipcove"
+                  className="flex items-center rounded-3xl border-2 border-solid border-white px-3 py-2 font-medium text-white hover:border-slateus-400 hover:text-blue-shipcove"
                   href="#join-the-community"
                 >
                   join the fam

@@ -155,7 +155,7 @@ const TwitterFam: FC = () => {
         </a>
       </h1>
       <div className="flex items-center justify-center">
-        <p className="text-blue-shipcove md:text-lg">wear the bat signal</p>
+        <p className="text-slateus-400 md:text-lg">wear the bat signal</p>
         <div className="w-4"></div>
         <CopyToClipboard text={"🦇🔊"} onCopy={onBatSoundCopied}>
           <span className="clipboard-emoji relative isolate mx-auto flex w-48 cursor-pointer items-center justify-between rounded-full border border-gray-700 bg-slateus-800 p-2 pl-5 text-2xl">

@@ -89,7 +89,7 @@ const FollowingYou: FC = () => {
         me & the fam
       </SectionTitle>
       <p
-        className={`mb-16 text-center text-base font-light leading-6 text-blue-shipcove md:leading-none lg:text-lg`}
+        className={`mb-16 text-center text-base font-light leading-6 text-slateus-400 md:leading-none lg:text-lg`}
       ></p>
       <form
         className="flex justify-center"

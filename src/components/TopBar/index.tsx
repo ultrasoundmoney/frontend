@@ -108,7 +108,7 @@ const TopBar: FC = () => {
         </div>
       </div>
       <a
-        className="hidden select-none rounded-3xl border-2 border-solid border-white px-4 py-1 font-medium text-white hover:border-blue-shipcove hover:text-blue-shipcove md:block"
+        className="hidden select-none rounded-3xl border-2 border-solid border-white px-4 py-1 font-medium text-white hover:border-slateus-400 hover:text-blue-shipcove md:block"
         href="#fam"
       >
         join the fam

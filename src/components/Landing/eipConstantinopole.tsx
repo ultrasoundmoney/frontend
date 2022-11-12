@@ -26,14 +26,14 @@ const EIPConstantinopole: React.FC = () => {
         id="eip-constantinople"
       >
         <div className="flex w-full flex-col justify-center px-4 pt-16 md:mx-auto md:w-w-34 md:px-0">
-          <p className="mb-6 text-center font-inter text-sm font-light text-blue-shipcove">
+          <p className="mb-6 text-center font-inter text-sm font-light text-slateus-400">
             {t.landing_constantinopole_date}
           </p>
           <h1 className="mb-6 text-center font-inter text-base font-light leading-5 text-white md:text-28xl">
             {t.landing_constantinopole_title}
           </h1>
           <p
-            className="mb-24 text-center font-inter text-sm font-light text-blue-shipcove"
+            className="mb-24 text-center font-inter text-sm font-light text-slateus-400"
             dangerouslySetInnerHTML={{
               __html: t.landing_constantinopole_text,
             }}

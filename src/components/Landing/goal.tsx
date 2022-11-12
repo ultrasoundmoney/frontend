@@ -37,7 +37,7 @@ const GoalBlcok: React.FC<GoalBlcokProps> = ({ styles }) => {
             <h3 className="mb-4 mt-4 text-start text-base font-light text-white">
               {t.landing_goal_block1_title}
             </h3>
-            <p className="mt-4 whitespace-pre-line break-words text-start text-sm font-light leading-relaxed text-blue-shipcove">
+            <p className="mt-4 whitespace-pre-line break-words text-start text-sm font-light leading-relaxed text-slateus-400">
               {t.landing_goal_block1_text}
             </p>
           </div>
@@ -48,7 +48,7 @@ const GoalBlcok: React.FC<GoalBlcokProps> = ({ styles }) => {
             <h3 className="mb-4 mt-4 text-start text-base font-light text-white">
               {t.landing_goal_block2_title}
             </h3>
-            <p className="mt-4 whitespace-pre-line break-words text-start text-sm font-light leading-relaxed text-blue-shipcove">
+            <p className="mt-4 whitespace-pre-line break-words text-start text-sm font-light leading-relaxed text-slateus-400">
               {t.landing_goal_block2_text}
             </p>
           </div>
@@ -59,7 +59,7 @@ const GoalBlcok: React.FC<GoalBlcokProps> = ({ styles }) => {
             <h3 className="mb-4 mt-4 text-start text-base font-light text-white">
               {t.landing_goal_block3_title}
             </h3>
-            <p className="mt-4 whitespace-pre-line break-words text-start text-sm font-light leading-relaxed text-blue-shipcove">
+            <p className="mt-4 whitespace-pre-line break-words text-start text-sm font-light leading-relaxed text-slateus-400">
               {t.landing_goal_block3_text}
             </p>
           </div>

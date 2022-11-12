@@ -61,7 +61,7 @@ export const SectionTitle: FC<Props> = ({
         <p
           className={`
           mt-6 text-center
-          font-inter text-base font-light text-blue-shipcove
+          font-inter text-base font-light text-slateus-400
           lg:text-lg
         `}
         >

@@ -59,7 +59,7 @@ const EIP1559: React.FC = () => {
             {t.landing_eip1559_title}
           </h1>
           <p
-            className="mb-8 text-center font-inter text-sm font-light text-blue-shipcove lg:w-w-55"
+            className="mb-8 text-center font-inter text-sm font-light text-slateus-400 lg:w-w-55"
             dangerouslySetInnerHTML={{
               __html: t.landing_eip1559_text,
             }}

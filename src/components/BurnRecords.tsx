@@ -115,7 +115,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <span className="link-animation font-roboto font-light text-blue-shipcove hover:opacity-60 md:text-lg">
+                <span className="link-animation font-roboto font-light text-slateus-400 hover:opacity-60 md:text-lg">
                   {formatBlockNumber(record.blockNumber) || (
                     <Skeleton width="8rem" />
                   )}

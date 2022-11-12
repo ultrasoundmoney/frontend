@@ -128,7 +128,7 @@ const LeaderboardRow: FC<Props> = ({
                 : Format.capitalize(category)}
             </p>
             {detail && (
-              <p className="hidden truncate pl-2 font-extralight text-blue-shipcove md:block lg:hidden xl:block">
+              <p className="hidden truncate pl-2 font-extralight text-slateus-400 md:block lg:hidden xl:block">
                 {detail}
               </p>
             )}

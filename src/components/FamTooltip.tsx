@@ -86,7 +86,7 @@ const Tooltip: FC<TooltipProps> = ({
         relative
         flex flex-col
         gap-y-4 rounded-lg border
-        border-blue-shipcove bg-slateus-700
+        border-slateus-400 bg-slateus-700
         p-8
         ${width}
       `}

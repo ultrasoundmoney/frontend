@@ -31,7 +31,7 @@ const Marker: FC<{
         transform: `translateX(${ratio * 100}%)`,
       }}
     >
-      <div className="mb-3 w-3 -translate-x-1/2 bg-blue-shipcove [min-height:3px]"></div>
+      <div className="mb-3 w-3 -translate-x-1/2 bg-slateus-400 [min-height:3px]"></div>
       <a
         title={`${peRatio?.toFixed(1) ?? "-"} P/E`}
         className="pointer-events-auto absolute top-4 -translate-x-1/2"
@@ -73,7 +73,7 @@ const MarkerText: FC<{ children: ReactNode; ratio: number }> = ({
     // For unclear reasons the left 89% position for TSLA is closer to notch 91 on the actual slider. We manually adjust.
     style={{ transform: `translateX(${ratio * 100}%)` }}
   >
-    <div className="w-3 -translate-x-1/2 bg-blue-shipcove [min-height:3px]"></div>
+    <div className="w-3 -translate-x-1/2 bg-slateus-400 [min-height:3px]"></div>
     <BaseText
       font="font-roboto"
       color="text-slateus-200"
@@ -373,7 +373,7 @@ const PriceModel: FC = () => {
                   transform: `translateX(47.5%)`,
                 }}
               >
-                <div className="mb-3 w-3 -translate-x-1/2 bg-blue-shipcove [min-height:3px]"></div>
+                <div className="mb-3 w-3 -translate-x-1/2 bg-slateus-400 [min-height:3px]"></div>
                 <div className="pointer-events-auto absolute top-4 -translate-x-1/2">
                   <img
                     title="gold"

@@ -22,7 +22,7 @@ const SupplyView: React.FC = () => {
           {t.supplu_chart_title}
         </h1>
         <p
-          className="mb-8 text-left font-inter text-sm font-light leading-relaxed text-blue-shipcove"
+          className="mb-8 text-left font-inter text-sm font-light leading-relaxed text-slateus-400"
           dangerouslySetInnerHTML={{
             __html: t.sypply_chart_description,
           }}

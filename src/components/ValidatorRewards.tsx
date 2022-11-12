@@ -221,7 +221,7 @@ const ValidatorRewardsWidget = () => {
               setHovering={setHighlightMev}
               apr={getApr(validatorRewards, "mev")}
             />
-            <hr className="h-[1px] border-blue-shipcove" />
+            <hr className="h-[1px] border-slateus-400" />
             <RewardRow
               amount={getTotalAnnualReward(validatorRewards)}
               name="total"
