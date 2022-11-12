@@ -149,7 +149,7 @@ const TwitterFam: FC = () => {
           rel="noopener noreferrer"
           role="link"
           title="join the ultra sound Twitter fam"
-          className="relative h-full hover:text-blue-spindle hover:underline"
+          className="relative h-full hover:text-slateus-200 hover:underline"
         >
           join 5000+ fam members
         </a>

@@ -135,7 +135,7 @@ const SupplyGrowthGauge: FC<Props> = ({
           )}
         </animated.div>
       </div>
-      <p className="mt-[7px] mb-2.5 select-none font-roboto text-xs font-light text-blue-spindle">
+      <p className="mt-[7px] mb-2.5 select-none font-roboto text-xs font-light text-slateus-200">
         /year
       </p>
       <div className="flex h-6 items-center">

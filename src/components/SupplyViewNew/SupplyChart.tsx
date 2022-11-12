@@ -245,7 +245,7 @@ const SupplyChart: React.FC<Props> = ({
         formatter: function () {
           const x: number = this.x !== undefined ? Number(this.x) : 0;
           const dt = new Date(x);
-          const header = `<div class="tt-header"><div class="tt-header-date text-blue-spindle">${formatDate(
+          const header = `<div class="tt-header"><div class="tt-header-date text-slateus-200">${formatDate(
             dt,
           )}</div></div>`;
 

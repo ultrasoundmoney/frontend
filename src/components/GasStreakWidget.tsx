@@ -61,7 +61,7 @@ const GasStreakWidget: FC = () => {
         <div className="flex items-center gap-x-2">
           <WidgetTitle>gas streak</WidgetTitle>
         </div>
-        <span className="font-inter text-xs font-extralight text-blue-spindle md:text-sm">
+        <span className="font-inter text-xs font-extralight text-slateus-200 md:text-sm">
           <SpanningAge
             isLoading={deflationaryStreak === undefined}
             startedOn={deflationaryStreak?.startedOn ?? undefined}

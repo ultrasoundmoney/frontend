@@ -101,7 +101,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
       </>
     )}
     <div
-      className={`color-animation h-2 w-full bg-blue-spindle ${
+      className={`color-animation h-2 w-full bg-slateus-200 ${
         rounded === "left"
           ? "rounded-l-full"
           : rounded === "right"
@@ -109,7 +109,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
           : ""
       }`}
       style={{
-        backgroundColor: showHighlight ? Colors.white : Colors.spindle,
+        backgroundColor: showHighlight ? Colors.white : Colors.slateus200,
       }}
     ></div>
     <div style={{ marginTop: "9px" }}>
@@ -124,7 +124,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
               : "visible"
           }`}
           style={{
-            color: showHighlight ? Colors.white : Colors.spindle,
+            color: showHighlight ? Colors.white : Colors.slateus200,
           }}
         >
           {Format.formatZeroDecimals(
@@ -409,7 +409,7 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
         <div
           className={`
             flex min-h-[324px] w-full items-center justify-center
-            text-center text-lg text-blue-spindle
+            text-center text-lg text-slateus-200
           `}
         >
           5 minute time frame unavailable
@@ -418,7 +418,7 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
         <div
           className={`
             flex min-h-[324px] w-full items-center justify-center
-            text-center text-lg text-blue-spindle
+            text-center text-lg text-slateus-200
           `}
         >
           all time frame unavailable, data sync in progress...

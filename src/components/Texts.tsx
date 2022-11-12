@@ -26,7 +26,7 @@ export const UnitText: FC<{ children: string; className?: string }> = ({
   <BaseText
     font="font-roboto"
     weight="font-extralight"
-    className={`font-extralight text-blue-spindle ${className}`}
+    className={`font-extralight text-slateus-200 ${className}`}
   >
     {children}
   </BaseText>

@@ -25,7 +25,7 @@ const CurrencyButton: FC<CurrencyButtonProps> = ({
       ${
         selectedUnit === unit
           ? activePeriodClasses
-          : "border-transparent text-blue-spindle"
+          : "border-transparent text-slateus-200"
       }`}
     onClick={() => onClick(unit)}
   >

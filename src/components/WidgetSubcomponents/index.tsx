@@ -29,7 +29,7 @@ export const WidgetTitle: FC<{
     className={`
       font-inter text-xs
       font-light uppercase
-      tracking-widest text-blue-spindle
+      tracking-widest text-slateus-200
       ${className ?? ""}
     `}
   >

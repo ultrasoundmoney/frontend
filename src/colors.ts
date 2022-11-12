@@ -8,8 +8,6 @@ const colors = {
   fireOrange: "#f4900c",
   orange400: "#fb923c",
   slateus100: "#dee2f1",
-  /** @deprecated use slateus200 instead. */
-  spindle: "#b5bddb",
   slateus200: "#b5bddb",
   slateus400: "#8991ad",
   slateus450: "#8888af",

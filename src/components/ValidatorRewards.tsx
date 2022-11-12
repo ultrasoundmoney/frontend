@@ -71,7 +71,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
       </>
     )}
     <div
-      className={`color-animation h-2 w-full bg-blue-spindle ${
+      className={`color-animation h-2 w-full bg-slateus-200 ${
         rounded === "left"
           ? "rounded-l-full"
           : rounded === "right"
@@ -79,7 +79,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
           : ""
       }`}
       style={{
-        backgroundColor: showHighlight ? Colors.white : Colors.spindle,
+        backgroundColor: showHighlight ? Colors.white : Colors.slateus200,
       }}
     ></div>
     <div style={{ marginTop: "9px" }}>
@@ -88,7 +88,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
           font="font-roboto"
           className="color-animation"
           style={{
-            color: showHighlight ? Colors.white : Colors.spindle,
+            color: showHighlight ? Colors.white : Colors.slateus200,
           }}
         >
           {Format.formatPercentNoDecimals(percentOfTotalRewards)}

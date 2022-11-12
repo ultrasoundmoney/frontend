@@ -636,7 +636,7 @@ const SupplyChart: React.FC<Props> = ({
             firstPoint.series.userOptions.id?.includes("projected");
 
           const dt = new Date(this.x || 0);
-          const header = `<div class="tt-header"><div class="tt-header-date text-blue-spindle">${formatDate(
+          const header = `<div class="tt-header"><div class="tt-header-date text-slateus-200">${formatDate(
             dt,
           )}</div>${
             isProjected

@@ -72,15 +72,18 @@ const CategorySegment: FC<CategorySegmentProps> = ({
       </>
     )}
     <div
-      className={`color-animation h-2 w-full bg-blue-spindle ${
-        rounded === "left"
-          ? "rounded-l-full"
-          : rounded === "right"
-          ? "rounded-r-full"
-          : ""
-      }`}
+      className={`
+        color-animation h-2 w-full bg-slateus-200
+        ${
+          rounded === "left"
+            ? "rounded-l-full"
+            : rounded === "right"
+            ? "rounded-r-full"
+            : ""
+        }
+      `}
       style={{
-        backgroundColor: showHighlight ? Colors.white : Colors.spindle,
+        backgroundColor: showHighlight ? Colors.white : Colors.slateus200,
       }}
     ></div>
     <div

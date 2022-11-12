@@ -15,7 +15,6 @@ module.exports = {
       colors: {
         blue: {
           ...colors.blue,
-          spindle: "#b5bddb",
           shipcove: "#8991ad",
         },
         drop: "#5dadec",

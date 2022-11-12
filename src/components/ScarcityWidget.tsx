@@ -103,16 +103,18 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
             }}
           />
           <div
-            className="color-animation h-2 w-full rounded-l-full bg-blue-spindle"
+            className="color-animation h-2 w-full rounded-l-full bg-slateus-200"
             style={{
-              backgroundColor: hoveringStaked ? Colors.white : Colors.spindle,
+              backgroundColor: hoveringStaked
+                ? Colors.white
+                : Colors.slateus200,
             }}
           ></div>
           <BaseText
             font="font-roboto"
             className="color-animation mt-[12px] text-sm md:mt-[9px] md:text-base"
             style={{
-              color: hoveringStaked ? Colors.white : Colors.spindle,
+              color: hoveringStaked ? Colors.white : Colors.slateus200,
             }}
           >
             {Format.formatZeroDecimals(stakedPercent)}%
@@ -153,9 +155,11 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
             }}
           />
           <div
-            className="color-animation h-2 w-full rounded-r-full bg-blue-spindle"
+            className="color-animation h-2 w-full rounded-r-full bg-slateus-200"
             style={{
-              backgroundColor: hoveringLocked ? Colors.white : Colors.spindle,
+              backgroundColor: hoveringLocked
+                ? Colors.white
+                : Colors.slateus200,
             }}
           ></div>
           <BaseText
@@ -163,7 +167,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
             size="text-sm md:text-base"
             className="color-animation mt-[12px] md:mt-[9px]"
             style={{
-              color: hoveringLocked ? Colors.white : Colors.spindle,
+              color: hoveringLocked ? Colors.white : Colors.slateus200,
             }}
           >
             {Format.formatZeroDecimals(lockedPercent)}%

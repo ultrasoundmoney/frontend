@@ -32,7 +32,7 @@ const GaugeSvg: FC<GaugeSvgProps> = ({
       ? progressFillColor
       : gradientFillColor !== undefined
       ? `url(#${gradientFillColor}-gradient-base-gauge)`
-      : colors.spindle;
+      : colors.slateus200;
 
   const thickness = 11;
   const width = 2 * (innerRadius + thickness);

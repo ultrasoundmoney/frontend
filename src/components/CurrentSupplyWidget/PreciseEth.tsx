@@ -98,7 +98,7 @@ const Digits: FC<{ children: JSBI }> = ({ children }) => {
           left-0 block
           whitespace-normal break-all
           text-[6px]
-          leading-[0.4rem] text-blue-spindle
+          leading-[0.4rem] text-slateus-200
           [@media(min-width:375px)]:text-[8px]
           [@media(min-width:375px)]:leading-[0.5rem]
         `}
