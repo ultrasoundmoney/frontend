@@ -1,5 +1,5 @@
-import type { StaticImageData } from "next/image";
-import Image from "next/image";
+import type { StaticImageData } from "next/legacy/image";
+import Image from "next/legacy/image";
 import type { FC } from "react";
 import nerdColorOff from "./nerd-coloroff.svg";
 import nerdColorOn from "./nerd-coloron.svg";

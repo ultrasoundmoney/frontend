@@ -1,5 +1,5 @@
-import type { StaticImageData } from "next/image";
-import Image from "next/image";
+import type { StaticImageData } from "next/legacy/image";
+import Image from "next/legacy/image";
 import type { FC, RefObject } from "react";
 import { useCallback, useContext, useRef, useState } from "react";
 import Skeleton from "react-loading-skeleton";

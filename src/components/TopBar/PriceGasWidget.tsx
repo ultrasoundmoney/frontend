@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/nextjs";
-import type { StaticImageData } from "next/image";
-import Image from "next/image";
+import type { StaticImageData } from "next/legacy/image";
+import Image from "next/legacy/image";
 import type { FC, ReactNode } from "react";
 import CountUp from "react-countup";
 import { useBaseFeePerGas } from "../../api/base-fee-per-gas";

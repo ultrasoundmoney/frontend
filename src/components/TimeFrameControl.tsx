@@ -1,5 +1,5 @@
-import type { StaticImageData } from "next/image";
-import Image from "next/image";
+import type { StaticImageData } from "next/legacy/image";
+import Image from "next/legacy/image";
 import type { FC, ReactNode } from "react";
 import fireOwnSvg from "../assets/fire-own.svg";
 import fireSlateusSvg from "../assets/fire-slateus.svg";
