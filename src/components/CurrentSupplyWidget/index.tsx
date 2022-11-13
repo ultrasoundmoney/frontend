@@ -1,18 +1,57 @@
 import type { FC } from "react";
-import { useState } from "react";
-import { ethSupplyFromParts, useEthSupplyParts } from "../../api/eth-supply";
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  ethSupplyFromParts,
+  impreciseEthSupplyFromParts,
+  useEthSupplyParts,
+} from "../../api/eth-supply";
 import { dateTimeFromSlot } from "../../beacon-time";
-import UpdatedAgo from "../UpdatedAgo";
-import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
-import WidgetErrorBoundary from "../WidgetErrorBoundary";
-import CurrentSupplyTooltip from "./CurrentSupplyTooltip";
 import Nerd from "../Nerd";
+import UpdatedAgo from "../UpdatedAgo";
+import WidgetErrorBoundary from "../WidgetErrorBoundary";
+import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
+import CurrentSupplyTooltip from "./CurrentSupplyTooltip";
 import PreciseEth from "./PreciseEth";
 
 const EthSupplyWidget: FC = () => {
   const ethSupplyParts = useEthSupplyParts();
   const ethSupply = ethSupplyFromParts(ethSupplyParts);
   const [showNerdTooltip, setShowNerdTooltip] = useState(false);
+  const [blinkOrange, setBlinkOrange] = useState(false);
+  const [blinkBlue, setBlinkBlue] = useState(false);
+  const lastSupply = useRef(impreciseEthSupplyFromParts(ethSupplyParts));
+
+  const handleBlinkOrange = useCallback(() => {
+    setBlinkOrange(true);
+    const id = setTimeout(() => {
+      setBlinkOrange(false);
+    }, 1000);
+    return () => window.clearTimeout(id);
+  }, []);
+
+  const handleBlinkBlue = useCallback(() => {
+    setBlinkBlue(true);
+    const id = setTimeout(() => {
+      setBlinkBlue(false);
+    }, 1000);
+    return () => window.clearTimeout(id);
+  }, []);
+
+  useEffect(() => {
+    const ethSupply = impreciseEthSupplyFromParts(ethSupplyParts);
+    if (lastSupply.current === ethSupply) {
+      return;
+    }
+
+    const isPositiveDelta = ethSupply - lastSupply.current > 0;
+    if (isPositiveDelta) {
+      handleBlinkBlue();
+    } else {
+      handleBlinkOrange();
+    }
+
+    lastSupply.current = ethSupply;
+  }, [ethSupplyParts, handleBlinkBlue, handleBlinkOrange]);
 
   return (
     <WidgetErrorBoundary title="current supply">
@@ -45,8 +84,18 @@ const EthSupplyWidget: FC = () => {
               onClickClose={() => setShowNerdTooltip(false)}
             />
           </div>
-          <div className="flex flex-col gap-y-4">
-            <PreciseEth>{ethSupply}</PreciseEth>
+          <div className="flex flex-col gap-y-4 transition-colors">
+            <PreciseEth
+              className={
+                blinkBlue
+                  ? "animate-flash-blue"
+                  : blinkOrange
+                  ? "animate-flash-orange"
+                  : ""
+              }
+            >
+              {ethSupply}
+            </PreciseEth>
             <UpdatedAgo
               updatedAt={dateTimeFromSlot(
                 ethSupplyParts.beaconDepositsSum.slot,

@@ -51,6 +51,8 @@ module.exports = {
       animation: {
         "fade-in": "fade-in 1s ease-in 0s",
         "slow-pulse": "pulse 4s ease-in-out infinite",
+        "flash-orange": "to-orange-400 0.5s",
+        "flash-blue": "to-blue-400 0.5s",
       },
       keyframes: {
         "fade-in": {
@@ -59,6 +61,28 @@ module.exports = {
           },
           "100%": {
             opacity: 100,
+          },
+        },
+        "to-orange-400": {
+          "0%": {
+            color: "white",
+          },
+          "50%": {
+            color: "#fb923c",
+          },
+          "100%": {
+            color: "white",
+          },
+        },
+        "to-blue-400": {
+          "0%": {
+            color: "white",
+          },
+          "50%": {
+            color: "#60a5fa",
+          },
+          "100%": {
+            color: "white",
           },
         },
       },

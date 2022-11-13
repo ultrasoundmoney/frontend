@@ -120,15 +120,16 @@ const Digits: FC<{ children: JSBI }> = ({ children }) => {
   );
 };
 
-const PreciseEth: FC<{ children?: JSBI; justify?: "justify-end" }> = ({
-  children,
-  justify,
-}) => (
+const PreciseEth: FC<{
+  className?: string;
+  children?: JSBI;
+  justify?: "justify-end";
+}> = ({ className = "", children, justify }) => (
   <AmountAnimatedShell
     className={`
-      flex items-center
+      flex items-center tracking-tight
       ${justify !== undefined ? justify : ""}
-      tracking-tight
+      ${className}
     `}
     size="text-[1.30rem] [@media(min-width:375px)]:text-[1.70rem]"
     skeletonWidth={"3rem"}
