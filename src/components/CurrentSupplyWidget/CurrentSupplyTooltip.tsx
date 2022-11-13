@@ -42,17 +42,20 @@ const CurrentSupplyTooltip: FC<{
       </div>
     </div>
     <LabelText>EVM balances</LabelText>
-    <PreciseEth justify="justify-end">
-      {ethSupply?.executionBalancesSum.balancesSum}
-    </PreciseEth>
+    <PreciseEth
+      amount={ethSupply.executionBalancesSum.balancesSum}
+      justify="justify-end"
+    />
     <LabelText>beacon chain balances</LabelText>
-    <PreciseEth justify="justify-end">
-      {ethSupply?.beaconBalancesSum.balancesSum}
-    </PreciseEth>
+    <PreciseEth
+      amount={ethSupply.beaconBalancesSum.balancesSum}
+      justify="justify-end"
+    />
     <LabelText>beacon chain deposits</LabelText>
-    <PreciseEth justify="justify-end">
-      {ethSupply?.beaconDepositsSum.depositsSum}
-    </PreciseEth>
+    <PreciseEth
+      amount={ethSupply.beaconDepositsSum.depositsSum}
+      justify="justify-end"
+    />
   </div>
 );
 
