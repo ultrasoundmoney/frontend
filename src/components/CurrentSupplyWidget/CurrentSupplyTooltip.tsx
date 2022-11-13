@@ -1,18 +1,29 @@
-import type { FC } from "react";
+import type { FC, ReactNode } from "react";
 import type { EthSupplyParts } from "../../api/eth-supply";
-import { TooltipTitle } from "../Texts";
-import BodyText from "../TextsNext/BodyText";
+import { BaseText, TooltipTitle } from "../Texts";
 import LabelText from "../TextsNext/LabelText";
 import PreciseEth from "./PreciseEth";
+
+const FormulaText: FC<{
+  className?: string;
+  inline?: boolean;
+  children: ReactNode;
+}> = ({ className, inline, children }) => (
+  <BaseText
+    font="font-inter"
+    className={className}
+    size="text-base md:text-lg"
+    inline={inline}
+  >
+    {children}
+  </BaseText>
+);
 
 const CurrentSupplyTooltip: FC<{
   ethSupply: EthSupplyParts;
   onClickClose: () => void;
 }> = ({ ethSupply, onClickClose }) => (
   <div
-    onClick={(e) => {
-      e.stopPropagation();
-    }}
     className={`
       relative
       flex w-[22rem] flex-col
@@ -35,10 +46,10 @@ const CurrentSupplyTooltip: FC<{
     <TooltipTitle>ETH supply breakdown</TooltipTitle>
     <LabelText>formula</LabelText>
     <div className="flex flex-col">
-      <BodyText>supply = EVM balances +</BodyText>
+      <FormulaText>supply = EVM balances +</FormulaText>
       <div className="ml-[69px] md:ml-[77px]">
-        <BodyText inline={false}>beacon balances -</BodyText>
-        <BodyText>beacon chain deposits</BodyText>
+        <FormulaText inline={false}>beacon balances -</FormulaText>
+        <FormulaText>beacon chain deposits</FormulaText>
       </div>
     </div>
     <LabelText>EVM balances</LabelText>
