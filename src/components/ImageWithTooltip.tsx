@@ -78,6 +78,8 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
             onClick={onClick}
             width={width}
             height={height}
+            quality={40}
+            sizes="40px"
           />
         </div>
       )}
