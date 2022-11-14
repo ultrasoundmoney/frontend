@@ -42,7 +42,8 @@ type ProfilesResponse = {
 };
 
 export const useProfiles = () => {
-  const { data } = useSWR<ProfilesResponse>("/api/fam/profiles", fetchJsonSwr);
+  // const { data } = useSWR<ProfilesResponse>("/api/fam/profiles", fetchJsonSwr);
+  const { data } = useSWR<ProfilesResponse>("/api/fam/all-profiles", fetchJsonSwr);
 
   return data;
 };
