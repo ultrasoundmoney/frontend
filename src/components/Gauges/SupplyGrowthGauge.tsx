@@ -97,12 +97,11 @@ const SupplyGrowthGauge: FC<Props> = ({
 
   return (
     <div
-      // HACK: on tablet the growth gauge is a different height from the burn and issuance gauges so we do some nasty margin hacking to try and align them.
       className={`
-        -mb-[4px] flex flex-col items-center
+        flex flex-col items-center
         justify-start
         rounded-tl-lg rounded-tr-lg bg-slateus-700 px-4
-        py-8 pt-7 pb-[36px]
+        py-8 pt-7
         md:rounded-none md:px-0
       `}
     >
