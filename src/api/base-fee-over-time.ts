@@ -13,7 +13,6 @@ export type BaseFeeAtTime = {
 };
 
 export type BaseFeeOverTime = {
-  all: BaseFeeAtTime[];
   barrier: Gwei;
   block_number: number;
   d1: BaseFeeAtTime[];
