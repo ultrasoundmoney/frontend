@@ -187,7 +187,7 @@ const TwitterFam: FC = () => {
                 <div className="mt-4 flex flex-col gap-y-4">
                   <div className="h-1"></div>
                   <CopyToClipboard text={"🦇🔊"} onCopy={onBatSoundCopied}>
-                  <button type="button" className="bg-gradient-to-r from-green-400 to-blue-500 rounded-full p-px">
+                  <button type="button" className="bg-gradient-to-r from-[#00FFFB] via-[#54C4F4] via-[#5487F4] to-[#6A54F4] rounded-full p-px">
                     <button className="rounded-full px-5 py-1 pb-2 text-base font-light text-white bg-slateus-700">
                       {isCopiedFeedbackVisible ? 'copied!' : 'copy'}
                     </button>
