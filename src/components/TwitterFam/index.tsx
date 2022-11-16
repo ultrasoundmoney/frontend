@@ -3,6 +3,7 @@ import { useCallback, useRef, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { usePopper } from "react-popper";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
+import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import type { FamProfile } from "../../api/profiles";
 import { useProfiles } from "../../api/profiles";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
@@ -125,6 +126,7 @@ export const useTooltip = () => {
 const TwitterFam: FC = () => {
   const profiles = useProfiles()?.profiles;
   const { md } = useActiveBreakpoint();
+  const fullScreenHandle = useFullScreenHandle();
 
   // Copy batsound feedback
   const [isCopiedFeedbackVisible, setIsCopiedFeedbackVisible] = useState(false);
@@ -199,93 +201,123 @@ const TwitterFam: FC = () => {
           </div>
         </div>
       </BasicErrorBoundary>
-      <div className="h-16"></div>
-      <div className="flex flex-wrap justify-center">
-        <TransformWrapper
-          initialScale={2}
-          initialPositionX={0}
-          initialPositionY={0}
-        >
-          {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
-            <>
-              <div
-                style={{ display: "flex", justifyContent: "center", marginBottom: 10 }}
-              >
-                <button
-                  className={`
-                    ml-4 flex
-                    select-none items-center rounded
-                    border border-transparent
-                    bg-blue-tangaroa
-                    px-2 py-1
-                  `}
-                  onClick={() => zoomIn()}
+      <div className="h-12"></div>
+      <FullScreen handle={fullScreenHandle}>
+        <div className="flex flex-wrap justify-center w-screen">
+          <TransformWrapper
+            initialScale={2}
+            initialPositionX={0}
+            initialPositionY={0}
+            wheel={{ wheelDisabled: true }}
+          >
+            {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
+              <>
+                <div
+                  style={{ display: "flex", justifyContent: "center", marginBottom: 10 }}
                 >
-                  <b>+</b>
-                </button>
-                <button
-                  className={`
-                    ml-4 flex
-                    select-none items-center rounded
-                    border border-transparent
-                    bg-blue-tangaroa
-                    px-2 py-1
-                  `}
-                  onClick={() => zoomOut()}
-                >
-                  <b>-</b>
-                </button>
-                <button
-                  className={`
-                    ml-4 flex
-                    select-none items-center rounded
-                    border border-transparent
-                    bg-blue-tangaroa
-                    px-2 py-1
-                  `}
-                  onClick={() => resetTransform()}
-                >
+                  <button
+                    className={`
+                      ml-4 flex
+                      select-none items-center rounded
+                      border border-transparent
+                      bg-blue-tangaroa
+                      px-2 py-1
+                    `}
+                    onClick={() => zoomIn()}
+                  >
                     <img
                       style={{ color: 'white' }}
-                      src={`/rotate-right.svg`}
-                      alt="rotate-right"
+                      src={`/magnifying-glass-plus.svg`}
+                      alt="magnifying-glass-plus"
                       width={15}
                       height={15}
                     />
-                </button>
-                {/* <button onClick={() => zoomIn()}>+</button> */}
-                {/* <button onClick={() => zoomOut()}>-</button> */}
-                {/* <button onClick={() => resetTransform()}>x</button> */}
-              </div>
-              <TransformComponent
-                wrapperStyle={{ height: 300, cursor: "move" }}
-              >
-                {currentProfiles.map((profile, index) => (
-                  <ImageWithTooltip
-                    key={profile?.profileUrl ?? index}
-                    // className="m-2 h-10 w-10 select-none"
-                    className="m-1 h-3 w-3 select-none"
-                    imageUrl={profile?.profileImageUrl}
-                    isDoneLoading={profile !== undefined}
-                    skeletonDiameter="40px"
-                    onMouseEnter={(ref) =>
-                      !md || profile === undefined
-                        ? () => undefined
-                        : handleImageMouseEnter(profile, ref)
-                    }
-                    onMouseLeave={() =>
-                      !md ? () => undefined : handleImageMouseLeave()
-                    }
-                    onClick={() => handleClickImage(profile)}
-                    height={40}
-                    width={40}
-                  />
-                ))}
-              </TransformComponent>
-            </>
-          )}
-        </TransformWrapper>
-      </div>
+                  </button>
+                  <button
+                    className={`
+                      ml-4 flex
+                      select-none items-center rounded
+                      border border-transparent
+                      bg-blue-tangaroa
+                      px-2 py-1
+                    `}
+                    onClick={() => zoomOut()}
+                  >
+                    <img
+                      style={{ color: 'white' }}
+                      src={`/magnifying-glass-minus.svg`}
+                      alt="magnifying-glass-minus"
+                      width={15}
+                      height={15}
+                    />
+                  </button>
+                  <button
+                    className={`
+                      ml-4 flex
+                      select-none items-center rounded
+                      border border-transparent
+                      bg-blue-tangaroa
+                      px-2 py-1
+                    `}
+                    onClick={() => resetTransform()}
+                  >
+                      <img
+                        style={{ color: 'white' }}
+                        src={`/rotate-right.svg`}
+                        alt="rotate-right"
+                        width={15}
+                        height={15}
+                      />
+                  </button>
+                  <button
+                    className={`
+                      ml-4 flex
+                      select-none items-center rounded
+                      border border-transparent
+                      bg-blue-tangaroa
+                      px-2 py-1
+                    `}
+                    onClick={fullScreenHandle.active ? fullScreenHandle.exit : fullScreenHandle.enter}
+                  >
+                    <img
+                      style={{ color: 'white' }}
+                      src={fullScreenHandle.active ? `/compress.svg` : `/expand.svg`}
+                      alt="expand"
+                      width={15}
+                      height={15}
+                    />
+                  </button>
+                </div>
+                <TransformComponent
+                  wrapperStyle={{ height: fullScreenHandle.active ? '100%' : 500, cursor: "move" }}
+                >
+                  {currentProfiles.map((profile, index) => (
+                    <ImageWithTooltip
+                      key={profile?.profileUrl ?? index}
+                      // className="m-2 h-10 w-10 select-none"
+                      className="m-1 h-3 w-3 select-none"
+                      imageUrl={profile?.profileImageUrl}
+                      isDoneLoading={profile !== undefined}
+                      skeletonDiameter="40px"
+                      onMouseEnter={(ref) =>
+                        !md || profile === undefined
+                          ? () => undefined
+                          : handleImageMouseEnter(profile, ref)
+                      }
+                      onMouseLeave={() =>
+                        !md ? () => undefined : handleImageMouseLeave()
+                      }
+                      onClick={() => handleClickImage(profile)}
+                      height={40}
+                      width={40}
+                    />
+                  ))}
+                </TransformComponent>
+              </>
+            )}
+          </TransformWrapper>
+        </div>
+      </FullScreen>
       <>
         <div
           ref={setPopperEl}
