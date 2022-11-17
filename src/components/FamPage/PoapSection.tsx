@@ -323,7 +323,7 @@ const ClaimPoap: FC<{
           ${className}
         `}
       >
-        <div className="flex h-full items-center justify-center text-center">
+        <div className="my-24 flex h-full items-center justify-center text-center">
           <LabelText>POAP API unavailable. Check back tomorrow.</LabelText>
         </div>
         {/* <div className="relative flex items-start justify-between"> */}
