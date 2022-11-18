@@ -484,7 +484,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
               useHTML: true,
               formatter: () => `
                 <div class="flex">
-                  <a class="hover:underline" href="https://etherscan.io/block/15537393" rel="noreferrer" target="_blank">
+                  <a class="hover:underline" href="https://etherscan.io/block/15537393" target="_blank">
                     <div class="font-roboto font-light text-slateus-300">
                     #${formatZeroDecimals(PARIS_BLOCK_NUMBER)}
                     </div>
