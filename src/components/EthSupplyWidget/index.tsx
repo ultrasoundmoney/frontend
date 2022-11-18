@@ -359,8 +359,14 @@ const SupplySinceMergeWidget: FC<Props> = ({
 }) => {
   const supplyOverTime = useSupplyOverTime();
   const supplyOverTimeTimeFrame = supplyOverTime?.[timeFrame];
+  const isTimeFrameAvailable =
+    supplyOverTimeTimeFrame !== undefined && supplyOverTimeTimeFrame.length > 0;
 
   const options = useMemo((): Highcharts.Options => {
+    if (!isTimeFrameAvailable) {
+      return baseOptions;
+    }
+
     const ethPosSeries = getEthPosSeries(supplyOverTimeTimeFrame);
     const [bitcoinSupplySeries, bitcoinSupplySeriesScaled] =
       getBitcoinSeries(ethPosSeries);
@@ -626,7 +632,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
     };
 
     return _merge({}, baseOptions, dynamicOptions);
-  }, [simulateProofOfWork, supplyOverTimeTimeFrame]);
+  }, [isTimeFrameAvailable, simulateProofOfWork, supplyOverTimeTimeFrame]);
 
   return (
     <WidgetErrorBoundary title="eth supply">
@@ -670,7 +676,15 @@ const SupplySinceMergeWidget: FC<Props> = ({
             [&>div]:flex-grow
           `}
         >
-          <HighchartsReact highcharts={Highcharts} options={options} />
+          {isTimeFrameAvailable ? (
+            <HighchartsReact highcharts={Highcharts} options={options} />
+          ) : (
+            <div className="flex h-full min-h-[400px] items-center justify-center text-center lg:min-h-[auto]">
+              <LabelText color="text-slateus-300">
+                currently unavailable
+              </LabelText>
+            </div>
+          )}
         </div>
         <div className="flex flex-wrap justify-between gap-x-4 gap-y-4">
           <UpdatedAgo updatedAt={supplyOverTime?.timestamp} />
