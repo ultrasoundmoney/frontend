@@ -173,7 +173,7 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
                     className={`
                       ml-2 mr-auto hidden
                       pr-2 font-extralight uppercase
-                      text-blue-shipcove ${
+                      text-slateus-400 ${
                         row?.detail !== undefined ? "md:inline" : ""
                       }
                     `}

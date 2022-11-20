@@ -8,13 +8,9 @@ const colors = {
   fireOrange: "#f4900c",
   orange400: "#fb923c",
   slateus100: "#dee2f1",
-  /** @deprecated use slateus200 instead. */
-  spindle: "#b5bddb",
   slateus200: "#b5bddb",
   slateus400: "#8991ad",
   slateus450: "#8888af",
-  /** @deprecated use slateus500 instead. */
-  dusk: "#464b6f",
   slateus500: "#464b6f",
   slateus800: "#131827",
   slateus600: "#2d344a",

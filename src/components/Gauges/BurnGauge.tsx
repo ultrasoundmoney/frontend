@@ -3,12 +3,12 @@ import { useBurnRates } from "../../api/burn-rates";
 import colors from "../../colors";
 import type { Unit } from "../../denomination";
 import * as Format from "../../format";
-import type { TimeFrame } from "../../time-frames";
+import type { TimeFrameNext } from "../../time-frames";
 import { timeframeBurnRateMap } from "../BurnTotal";
 import IssuanceBurnBaseGauge from "./IssuanceBurnBaseGauge";
 
 type BurnGaugeProps = {
-  timeFrame: TimeFrame;
+  timeFrame: TimeFrameNext;
   unit: Unit;
 };
 
@@ -30,7 +30,7 @@ const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame, unit }) => {
       className={`
         flex flex-col items-center justify-start
         rounded-lg
-        bg-blue-tangaroa px-4 py-8 pt-7
+        bg-slateus-700 px-4 py-8 pt-7
         md:rounded-none md:rounded-tl-lg md:px-0
       `}
     >
@@ -38,7 +38,7 @@ const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame, unit }) => {
         emoji="flame"
         gaugeUnit={unit === "eth" ? "K" : "B"}
         gradientFill="orange"
-        needleColor={colors.fireOrange}
+        needleColor={colors.orange400}
         title="burn"
         unit={unit}
         value={burnRate}

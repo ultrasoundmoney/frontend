@@ -1,6 +1,6 @@
 import clamp from "lodash/clamp";
-import type { StaticImageData } from "next/image";
-import Image from "next/image";
+import type { StaticImageData } from "next/legacy/image";
+import Image from "next/legacy/image";
 import type { FC } from "react";
 import { useContext } from "react";
 import Skeleton from "react-loading-skeleton";
@@ -98,7 +98,7 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
           )}
         </div>
       </div>
-      <p className="mt-[7px] mb-2.5 select-none font-roboto text-xs font-light text-blue-spindle">
+      <p className="mt-[7px] mb-2.5 select-none font-roboto text-xs font-light text-slateus-200">
         {valueUnit}
       </p>
       {emoji === "flame" ? (

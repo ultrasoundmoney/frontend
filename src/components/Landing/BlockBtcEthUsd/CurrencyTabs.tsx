@@ -22,8 +22,8 @@ const CurrencyTabs: React.FC<CurrencyTabsProps> = ({
           ${styles.spanBtc} mx-2 transition-all duration-100
           ${
             cryptoType === "btc"
-              ? "bg-blue-tangaroa hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
-              : "bg-transparent hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
+              ? "bg-slateus-700 hover:bg-slateus-700 focus:bg-slateus-700"
+              : "bg-transparent hover:bg-slateus-700 focus:bg-slateus-700"
           }
         `}
       >
@@ -38,8 +38,8 @@ const CurrencyTabs: React.FC<CurrencyTabsProps> = ({
           ${styles.spanUsd} mx-2 transition-all duration-100
           ${
             cryptoType === "usd"
-              ? "bg-blue-tangaroa hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
-              : "bg-transparent hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
+              ? "bg-slateus-700 hover:bg-slateus-700 focus:bg-slateus-700"
+              : "bg-transparent hover:bg-slateus-700 focus:bg-slateus-700"
           }
         `}
       >
@@ -54,8 +54,8 @@ const CurrencyTabs: React.FC<CurrencyTabsProps> = ({
           ${styles.spanEth} mx-2 transition-all duration-100
           ${
             cryptoType === "eth"
-              ? "bg-blue-tangaroa hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
-              : "bg-transparent hover:bg-blue-tangaroa focus:bg-blue-tangaroa"
+              ? "bg-slateus-700 hover:bg-slateus-700 focus:bg-slateus-700"
+              : "bg-transparent hover:bg-slateus-700 focus:bg-slateus-700"
           }
         `}
       >

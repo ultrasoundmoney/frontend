@@ -359,8 +359,14 @@ const SupplySinceMergeWidget: FC<Props> = ({
 }) => {
   const supplyOverTime = useSupplyOverTime();
   const supplyOverTimeTimeFrame = supplyOverTime?.[timeFrame];
+  const isTimeFrameAvailable =
+    supplyOverTimeTimeFrame !== undefined && supplyOverTimeTimeFrame.length > 0;
 
   const options = useMemo((): Highcharts.Options => {
+    if (!isTimeFrameAvailable) {
+      return baseOptions;
+    }
+
     const ethPosSeries = getEthPosSeries(supplyOverTimeTimeFrame);
     const [bitcoinSupplySeries, bitcoinSupplySeriesScaled] =
       getBitcoinSeries(ethPosSeries);
@@ -388,7 +394,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
       yAxis: {
         plotLines: [
           {
-            id: "merge-supply",
+            id: "supply-at-start",
             value: ethPosSeries?.[0]?.[1],
             color: colors.slateus400,
             width: 1,
@@ -478,9 +484,11 @@ const SupplySinceMergeWidget: FC<Props> = ({
               useHTML: true,
               formatter: () => `
                 <div class="flex">
-                  <div class="font-roboto font-light text-slateus-300">
-                  #${formatZeroDecimals(PARIS_BLOCK_NUMBER)}
-                  </div>
+                  <a class="hover:underline" href="https://etherscan.io/block/15537393" target="_blank">
+                    <div class="font-roboto font-light text-slateus-300">
+                    #${formatZeroDecimals(PARIS_BLOCK_NUMBER)}
+                    </div>
+                  </a>
                   <img
                     class="w-4 h-4 ml-2"
                     src="/panda-own.svg"
@@ -624,7 +632,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
     };
 
     return _merge({}, baseOptions, dynamicOptions);
-  }, [simulateProofOfWork, supplyOverTimeTimeFrame]);
+  }, [isTimeFrameAvailable, simulateProofOfWork, supplyOverTimeTimeFrame]);
 
   return (
     <WidgetErrorBoundary title="eth supply">
@@ -668,7 +676,15 @@ const SupplySinceMergeWidget: FC<Props> = ({
             [&>div]:flex-grow
           `}
         >
-          <HighchartsReact highcharts={Highcharts} options={options} />
+          {isTimeFrameAvailable ? (
+            <HighchartsReact highcharts={Highcharts} options={options} />
+          ) : (
+            <div className="flex h-full min-h-[400px] items-center justify-center text-center lg:min-h-[auto]">
+              <LabelText color="text-slateus-300">
+                currently unavailable
+              </LabelText>
+            </div>
+          )}
         </div>
         <div className="flex flex-wrap justify-between gap-x-4 gap-y-4">
           <UpdatedAgo updatedAt={supplyOverTime?.timestamp} />

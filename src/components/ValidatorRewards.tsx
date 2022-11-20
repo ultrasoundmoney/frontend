@@ -71,7 +71,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
       </>
     )}
     <div
-      className={`color-animation h-2 w-full bg-blue-spindle ${
+      className={`color-animation h-2 w-full bg-slateus-200 ${
         rounded === "left"
           ? "rounded-l-full"
           : rounded === "right"
@@ -79,7 +79,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
           : ""
       }`}
       style={{
-        backgroundColor: showHighlight ? Colors.white : Colors.spindle,
+        backgroundColor: showHighlight ? Colors.white : Colors.slateus200,
       }}
     ></div>
     <div style={{ marginTop: "9px" }}>
@@ -88,7 +88,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
           font="font-roboto"
           className="color-animation"
           style={{
-            color: showHighlight ? Colors.white : Colors.spindle,
+            color: showHighlight ? Colors.white : Colors.slateus200,
           }}
         >
           {Format.formatPercentNoDecimals(percentOfTotalRewards)}
@@ -149,11 +149,11 @@ const ValidatorRewardsWidget = () => {
       <WidgetTitle>validator rewards</WidgetTitle>
       {validatorRewards === undefined ? (
         <div className="relative py-16">
-          <div className="absolute h-2 w-full rounded-full bg-blue-dusk"></div>
+          <div className="absolute h-2 w-full rounded-full bg-slateus-500"></div>
         </div>
       ) : (
         <div className="relative flex items-center py-4">
-          <div className="color-animation absolute h-2 w-full rounded-full bg-blue-highlightbg"></div>
+          <div className="color-animation absolute h-2 w-full rounded-full bg-slateus-600"></div>
           <div className="top-0 left-0 z-10 flex w-full flex-row items-center">
             <CategorySegment
               imgAlt={
@@ -168,7 +168,7 @@ const ValidatorRewardsWidget = () => {
               rounded="left"
               showHighlight={highlightIssuance}
             />
-            <div className="h-2 w-0.5 bg-blue-dusk"></div>
+            <div className="h-2 w-0.5 bg-slateus-500"></div>
             <CategorySegment
               imgAlt={"an ETH coin symbolizing tips paid to block proposers"}
               imgName={"coin"}
@@ -179,7 +179,7 @@ const ValidatorRewardsWidget = () => {
               )}
               showHighlight={highlightTips}
             />
-            <div className="h-2 w-0.5 bg-blue-dusk"></div>
+            <div className="h-2 w-0.5 bg-slateus-500"></div>
             <CategorySegment
               imgAlt={"a robot symbolizing MEV paid to block proposers"}
               imgName={"mev"}
@@ -221,7 +221,7 @@ const ValidatorRewardsWidget = () => {
               setHovering={setHighlightMev}
               apr={getApr(validatorRewards, "mev")}
             />
-            <hr className="h-[1px] border-blue-shipcove" />
+            <hr className="h-[1px] border-slateus-400" />
             <RewardRow
               amount={getTotalAnnualReward(validatorRewards)}
               name="total"

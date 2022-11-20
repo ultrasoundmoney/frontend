@@ -14,7 +14,7 @@ const SupplyProjectionsSection: FC = () => (
       />
       <div className="flex flex-col gap-4 xs:px-4 md:px-16">
         <EquilibriumWidget />
-        <div className="relative w-full rounded-xl bg-blue-tangaroa px-2 py-4 md:m-auto md:px-4 md:py-8 xl:px-12 xl:py-12">
+        <div className="relative w-full rounded-xl bg-slateus-700 px-2 py-4 md:m-auto md:px-4 md:py-8 xl:px-12 xl:py-12">
           <TwoYearProjection />
         </div>
       </div>

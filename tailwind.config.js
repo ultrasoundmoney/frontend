@@ -1,4 +1,3 @@
-const colors = require("tailwindcss/colors");
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
@@ -13,18 +12,6 @@ module.exports = {
     },
     extend: {
       colors: {
-        blue: {
-          ...colors.blue,
-          midnightexpress: "#141a2f",
-          tangaroa: "#1b2236",
-          spindle: "#b5bddb",
-          linkwater: "#c8cbd9",
-          shipcove: "#8991ad",
-          manatee: "#8888af",
-          highlightbg: "#2d344a",
-          highlightborder: "#8794b8",
-          dusk: "#464b6f",
-        },
         drop: "#5dadec",
         fire: "#f4900c",
         mediumspring: "#00ffa3",
@@ -64,6 +51,8 @@ module.exports = {
       animation: {
         "fade-in": "fade-in 1s ease-in 0s",
         "slow-pulse": "pulse 4s ease-in-out infinite",
+        "flash-orange": "to-orange-400 0.5s",
+        "flash-blue": "to-blue-400 0.5s",
       },
       keyframes: {
         "fade-in": {
@@ -72,6 +61,28 @@ module.exports = {
           },
           "100%": {
             opacity: 100,
+          },
+        },
+        "to-orange-400": {
+          "0%": {
+            color: "white",
+          },
+          "50%": {
+            color: "#fb923c",
+          },
+          "100%": {
+            color: "white",
+          },
+        },
+        "to-blue-400": {
+          "0%": {
+            color: "white",
+          },
+          "50%": {
+            color: "#60a5fa",
+          },
+          "100%": {
+            color: "white",
           },
         },
       },

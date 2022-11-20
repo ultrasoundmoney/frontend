@@ -26,7 +26,7 @@ const Slider: FC<SliderProps> = ({
       cursor-pointer
       appearance-none
       rounded-full
-      bg-blue-highlightbg
+      bg-slateus-600
       ${thumbVisible ? "" : styles.thumbInvisible}
       ${styles.customSlider}
     `}

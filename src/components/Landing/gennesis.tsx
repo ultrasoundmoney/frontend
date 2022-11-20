@@ -31,14 +31,14 @@ const GenesisBlock: React.FC = () => {
         id="genesis"
       >
         <div className="flex w-full flex-col justify-center px-4 pt-16 md:mx-auto md:w-4/12 md:px-0">
-          <p className="mb-7 text-center font-inter text-sm font-light text-blue-shipcove">
+          <p className="mb-7 text-center font-inter text-sm font-light text-slateus-400">
             {t.landing_genesis_date}
           </p>
           <h1 className="mb-7 text-center font-inter text-base font-light leading-5 text-white md:text-28xl">
             {t.landing_genesis_title}
           </h1>
           <p
-            className="mb-24 text-center font-inter text-sm font-light text-blue-shipcove"
+            className="mb-24 text-center font-inter text-sm font-light text-slateus-400"
             dangerouslySetInnerHTML={{
               __html: t.landing_genesis_text,
             }}

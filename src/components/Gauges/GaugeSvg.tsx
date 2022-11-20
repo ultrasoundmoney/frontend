@@ -32,7 +32,7 @@ const GaugeSvg: FC<GaugeSvgProps> = ({
       ? progressFillColor
       : gradientFillColor !== undefined
       ? `url(#${gradientFillColor}-gradient-base-gauge)`
-      : colors.spindle;
+      : colors.slateus200;
 
   const thickness = 11;
   const width = 2 * (innerRadius + thickness);
@@ -77,7 +77,7 @@ const GaugeSvg: FC<GaugeSvgProps> = ({
       </defs>
       <g transform={`translate(${width / 2},${height / 2})`}>
         <path
-          style={{ fill: colors.dusk }}
+          style={{ fill: colors.slateus500 }}
           d={backgroundArc ?? undefined}
         ></path>
         <animated.path d={foregroundArc} fill={fillColor}></animated.path>

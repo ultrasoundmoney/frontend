@@ -6,11 +6,10 @@ import { animated, config, useSpring } from "react-spring";
 import { useBurnRates } from "../../api/burn-rates";
 import type { BurnRates } from "../../api/grouped-analysis-1";
 import { useScarcity } from "../../api/scarcity";
-import colors from "../../colors";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
 import * as StaticEtherData from "../../static-ether-data";
-import type { TimeFrame } from "../../time-frames";
+import type { TimeFrameNext } from "../../time-frames";
 import { timeframeBurnRateMap } from "../BurnTotal";
 import TimeFrameIndicator from "../TimeFrameIndicator";
 import { WidgetTitle } from "../WidgetSubcomponents";
@@ -19,7 +18,7 @@ import SplitGaugeSvg from "./SplitGaugeSvg";
 const useGrowthRate = (
   burnRates: BurnRates | undefined,
   simulateProofOfWork: boolean,
-  timeFrame: TimeFrame,
+  timeFrame: TimeFrameNext,
 ): number | undefined => {
   const scarcity = useScarcity();
   const [growthRate, setGrowthRate] = useState<number>();
@@ -60,7 +59,7 @@ const useGrowthRate = (
 type Props = {
   onClickTimeFrame: () => void;
   simulateProofOfWork: boolean;
-  timeFrame: TimeFrame;
+  timeFrame: TimeFrameNext;
 };
 
 const SupplyGrowthGauge: FC<Props> = ({
@@ -98,12 +97,11 @@ const SupplyGrowthGauge: FC<Props> = ({
 
   return (
     <div
-      // HACK: on tablet the growth gauge is a different height from the burn and issuance gauges so we do some nasty margin hacking to try and align them.
       className={`
-        -mb-[4px] flex flex-col items-center
+        flex flex-col items-center
         justify-start
-        rounded-tl-lg rounded-tr-lg bg-blue-tangaroa px-4
-        py-8 pt-7 pb-[36px]
+        rounded-tl-lg rounded-tr-lg bg-slateus-700 px-4
+        py-8 pt-7
         md:rounded-none md:px-0
       `}
     >
@@ -136,7 +134,7 @@ const SupplyGrowthGauge: FC<Props> = ({
           )}
         </animated.div>
       </div>
-      <p className="mt-[7px] mb-2.5 select-none font-roboto text-xs font-light text-blue-spindle">
+      <p className="mt-[7px] mb-2.5 select-none font-roboto text-xs font-light text-slateus-200">
         /year
       </p>
       <div className="flex h-6 items-center">

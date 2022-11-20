@@ -12,16 +12,14 @@ export type BaseFeePerGasStatsTimeFrame = {
 };
 
 export type BaseFeePerGasStats = {
-  average: WeiNumber;
   barrier: GweiNumber;
   d1: BaseFeePerGasStatsTimeFrame;
   d30: BaseFeePerGasStatsTimeFrame;
   d7: BaseFeePerGasStatsTimeFrame;
   h1: BaseFeePerGasStatsTimeFrame;
   m5: BaseFeePerGasStatsTimeFrame;
-  all: BaseFeePerGasStatsTimeFrame | null;
-  max: WeiNumber;
-  min: WeiNumber;
+  since_burn: BaseFeePerGasStatsTimeFrame | null;
+  since_merge: BaseFeePerGasStatsTimeFrame | null;
 };
 
 const url = "/api/v2/fees/base-fee-per-gas-stats";

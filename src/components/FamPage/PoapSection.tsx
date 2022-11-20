@@ -1,6 +1,6 @@
 import { captureException } from "@sentry/nextjs";
-import type { StaticImageData } from "next/image";
-import Image from "next/image";
+import type { StaticImageData } from "next/legacy/image";
+import Image from "next/legacy/image";
 import type {
   ChangeEvent,
   CSSProperties,
@@ -83,7 +83,7 @@ const ClaimPoapTooltip: FC<ClaimPoapTooltipProps> = ({
     className={`
       relative flex max-h-[95vh] flex-col gap-y-4
       overflow-hidden rounded-lg border
-      border-blue-shipcove bg-blue-tangaroa
+      border-slateus-400 bg-slateus-700
       p-8
       text-left
       md:max-h-[90vh]
@@ -326,7 +326,10 @@ const ClaimPoap: FC<{
   return (
     <>
       <WidgetBackground
-        className={`flex max-w-3xl flex-col justify-between ${className}`}
+        className={`
+          flex max-w-3xl flex-col justify-between
+          ${className}
+        `}
       >
         <div className="relative flex items-start justify-between">
           <div

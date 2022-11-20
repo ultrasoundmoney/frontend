@@ -1,5 +1,5 @@
 import type { FC, HTMLAttributes, ReactNode } from "react";
-import type { TimeFrame } from "../../time-frames";
+import type { TimeFrameNext } from "../../time-frames";
 import TimeFrameIndicator from "../TimeFrameIndicator";
 
 type BackgroundProps = {
@@ -29,7 +29,7 @@ export const WidgetTitle: FC<{
     className={`
       font-inter text-xs
       font-light uppercase
-      tracking-widest text-blue-spindle
+      tracking-widest text-slateus-200
       ${className ?? ""}
     `}
   >
@@ -41,7 +41,7 @@ type Group1BaseProps = {
   backgroundClassName?: HTMLAttributes<HTMLDivElement>["className"];
   children: ReactNode;
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrame;
+  timeFrame: TimeFrameNext;
   title: string;
 };
 

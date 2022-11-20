@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { useCallback, useState } from "react";
 import type { Unit } from "../denomination";
-import type { TimeFrame } from "../time-frames";
+import type { TimeFrameNext } from "../time-frames";
 import CurrencyControl from "./CurrencyControl";
 import BurnGauge from "./Gauges/BurnGauge";
 import IssuanceGauge from "./Gauges/IssuanceGauge";
@@ -11,14 +11,16 @@ import TimeFrameControl from "./TimeFrameControl";
 import ToggleSwitch from "./ToggleSwitch";
 import { WidgetTitle } from "./WidgetSubcomponents";
 
-const Controls: FC<{
-  timeFrame: TimeFrame;
-  onSetTimeFrame: (timeFrame: TimeFrame) => void;
+type Props = {
+  timeFrame: TimeFrameNext;
+  onSetTimeFrame: (timeFrame: TimeFrameNext) => void;
   simulateProofOfWork: boolean;
   onSimulateProofOfWork: () => void;
   unit: Unit;
   onSetUnit: (unit: Unit) => void;
-}> = ({
+};
+
+const Controls: FC<Props> = ({
   onSetTimeFrame,
   onSetUnit,
   onSimulateProofOfWork: onToggleSimulateProofOfWork,
@@ -26,7 +28,7 @@ const Controls: FC<{
   timeFrame,
   unit,
 }) => (
-  <div className={`rounded-bl-lg rounded-br-lg bg-blue-tangaroa p-8`}>
+  <div className={`rounded-bl-lg rounded-br-lg bg-slateus-700 px-8 pb-8`}>
     <div className="grid grid-cols-2 flex-col gap-y-8 md:flex md:flex-row md:justify-between lg:gap-y-0 ">
       <div className="row-start-1 flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-x-4">
         <WidgetTitle>time frame</WidgetTitle>
@@ -61,10 +63,10 @@ const Controls: FC<{
 
 const GaugeWidget: FC<{
   onClickTimeFrame: () => void;
-  onSetTimeFrame: (timeFrame: TimeFrame) => void;
+  onSetTimeFrame: (timeFrame: TimeFrameNext) => void;
   onSimulateProofOfWork: () => void;
   simulateProofOfWork: boolean;
-  timeFrame: TimeFrame;
+  timeFrame: TimeFrameNext;
 }> = ({
   onClickTimeFrame,
   onSetTimeFrame,

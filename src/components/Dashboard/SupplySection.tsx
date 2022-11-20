@@ -6,11 +6,12 @@ import BasicErrorBoundary from "../BasicErrorBoundary";
 import type { EthNumber } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
 import CurrentSupplyWidget from "../CurrentSupplyWidget";
-import GaugeWidget from "../GaugeWidget";
-import type { TimeFrame } from "../../time-frames";
+import type { TimeFrameNext } from "../../time-frames";
 export type SupplyPoint = [JsTimestamp, EthNumber];
 
 const EthSupplyWidget = dynamic(() => import("../EthSupplyWidget"));
+// On Safari SSR rendering the animated SVG gauge paths causes a hydration error.
+const GaugeWidget = dynamic(() => import("../GaugeWidget"), { ssr: false });
 
 const limitedTimeFramesWithMerge = [
   "m5",
@@ -36,8 +37,8 @@ const getNextTimeFrame = (
 
 type Props = {
   onClickTimeFrame: () => void;
-  onSetTimeFrame: (timeFrame: TimeFrame) => void;
-  timeFrame: TimeFrame;
+  onSetTimeFrame: (timeFrame: TimeFrameNext) => void;
+  timeFrame: TimeFrameNext;
 };
 
 const SupplySection: FC<Props> = ({

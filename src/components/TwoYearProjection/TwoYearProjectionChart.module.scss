@@ -2,7 +2,7 @@
 $tooltip-bg: #1b2135;
 $chart-label: #8490b5;
 
-$blue-spindle: #b5bddb;
+$slateus200: #b5bddb;
 
 $tooltip-zindex: 2;
 
@@ -160,7 +160,7 @@ $tooltip-zindex: 2;
   margin: 1px 8px 0 0;
   font-size: 10px;
   font-weight: bold;
-  color: $blue-spindle;
+  color: $slateus200;
 }
 .markerLegendTitle {
   font-weight: bold;
@@ -178,7 +178,7 @@ $tooltip-zindex: 2;
     text-align: center;
   }
   .ann-title {
-    color: $blue-spindle;
+    color: $slateus200;
     font-weight: bold;
     margin-bottom: 2px;
   }

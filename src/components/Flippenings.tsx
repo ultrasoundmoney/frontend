@@ -27,13 +27,13 @@ const ProgressBar: FC<ProgressBarProps> = ({
     from: { width: 0 },
   });
 
-  const backgroundColor = showHighlight ? highlightColor : colors.spindle;
+  const backgroundColor = showHighlight ? highlightColor : colors.slateus200;
 
   return (
     <div className="relative">
-      <div className="h-2 w-full rounded-full bg-blue-dusk"></div>
+      <div className="h-2 w-full rounded-full bg-slateus-500"></div>
       <animated.div
-        className="absolute top-0 h-2 rounded-full bg-blue-spindle"
+        className="absolute top-0 h-2 rounded-full bg-slateus-200"
         style={{
           width: width.to((width) => `${width}%`),
           background: backgroundColor,

@@ -8,12 +8,12 @@ import type { FC } from "react";
 import QuantifyText from "./TextsNext/QuantifyText";
 import { formatOneDecimal, formatTwoDigit } from "../format";
 import { WEI_PER_GWEI } from "../eth-units";
-import type { StaticImageData } from "next/image";
-import Image from "next/image";
+import type { StaticImageData } from "next/legacy/image";
+import Image from "next/legacy/image";
 import batSvg from "../assets/bat-own.svg";
 import speakerSvg from "../assets/speaker-own.svg";
 import barrierSvg from "../assets/barrier-own.svg";
-import type { TimeFrame } from "../time-frames";
+import type { TimeFrameNext } from "../time-frames";
 import { animated, useSpring } from "react-spring";
 import CountUp from "react-countup";
 
@@ -167,7 +167,7 @@ const Marker: FC<MarkerProps> = ({
 
 type Props = {
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrame;
+  timeFrame: TimeFrameNext;
 };
 
 const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
@@ -258,7 +258,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
               flex
               h-2
               rounded-full
-              bg-blue-highlightbg
+              bg-slateus-600
             `}
           >
             {isDataAvailable && (

@@ -1,5 +1,5 @@
-import type { StaticImageData } from "next/image";
-import Image from "next/image";
+import type { StaticImageData } from "next/legacy/image";
+import Image from "next/legacy/image";
 import type { FC } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocalStorage } from "../../hooks/use-local-storage";
@@ -66,15 +66,10 @@ const TopBar: FC = () => {
           className={`
             ml-4 flex
             select-none items-center rounded
-            border border-transparent
-            bg-blue-tangaroa
+            bg-slateus-700
             px-3 py-2
             ${notification.type === "Supported" ? "visible" : "invisible"}
-            ${
-              isAlarmActive
-                ? "rounded-sm border-blue-highlightborder bg-blue-highlightbg text-white"
-                : ""
-            }
+            ${isAlarmActive ? "bg-slateus-600" : ""}
           `}
           onClick={handleClickAlarm}
         >
@@ -89,7 +84,7 @@ const TopBar: FC = () => {
 
         <div
           ref={dialogRef}
-          className={`absolute top-12 w-full rounded bg-blue-tangaroa p-8 md:top-12 ${showAlarmDialogCss}`}
+          className={`absolute top-12 w-full rounded bg-slateus-700 p-8 md:top-12 ${showAlarmDialogCss}`}
         >
           <WidgetTitle>price alerts</WidgetTitle>
           <AlarmInput
@@ -113,7 +108,7 @@ const TopBar: FC = () => {
         </div>
       </div>
       <a
-        className="hidden select-none rounded-3xl border-2 border-solid border-white px-4 py-1 font-medium text-white hover:border-blue-shipcove hover:text-blue-shipcove md:block"
+        className="hidden select-none rounded-3xl border-2 border-solid border-white px-4 py-1 font-medium text-white hover:border-slateus-400 hover:text-blue-shipcove md:block"
         href="#fam"
       >
         join the fam

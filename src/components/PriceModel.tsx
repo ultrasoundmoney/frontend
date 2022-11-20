@@ -31,7 +31,7 @@ const Marker: FC<{
         transform: `translateX(${ratio * 100}%)`,
       }}
     >
-      <div className="mb-3 w-3 -translate-x-1/2 bg-blue-shipcove [min-height:3px]"></div>
+      <div className="mb-3 w-3 -translate-x-1/2 bg-slateus-400 [min-height:3px]"></div>
       <a
         title={`${peRatio?.toFixed(1) ?? "-"} P/E`}
         className="pointer-events-auto absolute top-4 -translate-x-1/2"
@@ -73,7 +73,7 @@ const MarkerText: FC<{ children: ReactNode; ratio: number }> = ({
     // For unclear reasons the left 89% position for TSLA is closer to notch 91 on the actual slider. We manually adjust.
     style={{ transform: `translateX(${ratio * 100}%)` }}
   >
-    <div className="w-3 -translate-x-1/2 bg-blue-shipcove [min-height:3px]"></div>
+    <div className="w-3 -translate-x-1/2 bg-slateus-400 [min-height:3px]"></div>
     <BaseText
       font="font-roboto"
       color="text-slateus-200"
@@ -146,6 +146,9 @@ const calcProjectedPrice = (
   return earningsPerShare * peRatio * monetaryPremium;
 };
 
+// This component needs to be rewritten for the PEs to be an ordered list where
+// anything that is too close to the last item in the list is skipped. An
+// example can be found in the 200Y equilibrium widget.
 const PriceModel: FC = () => {
   const peRatios = usePeRatios();
   const burnRates = useBurnRates();
@@ -255,15 +258,18 @@ const PriceModel: FC = () => {
               {peRatios !== undefined && (
                 // Because the actual slider does not span the entire visual slider, overlaying an element and setting the left is not perfect. We manually adjust values to match the slider more precisely. To improve this look into off-the-shelf components that allow for styled markers.
                 <>
-                  <Marker
-                    alt="intel logo"
-                    icon="intel"
-                    peRatio={peRatios.INTC}
-                    ratio={linearFromLog(peRatios.INTC)}
-                    symbol="INTC"
-                  />
-                  {ethPeRatio === undefined ||
-                    (ethPeRatio - peRatios.GOOGL > 4 && (
+                  {typeof peRatios.INTC === "number" && (
+                    <Marker
+                      alt="intel logo"
+                      icon="intel"
+                      peRatio={peRatios.INTC}
+                      ratio={linearFromLog(peRatios.INTC)}
+                      symbol="INTC"
+                    />
+                  )}
+                  {peRatios.GOOGL !== null &&
+                    ethPeRatio !== undefined &&
+                    Math.abs(ethPeRatio - peRatios.GOOGL) > 4 && (
                       <Marker
                         alt="google logo"
                         icon="google"
@@ -271,15 +277,19 @@ const PriceModel: FC = () => {
                         ratio={linearFromLog(peRatios.GOOGL)}
                         symbol="GOOGL"
                       />
-                    ))}
-                  {/* <Marker */}
-                  {/*   alt="netflix logo" */}
-                  {/*   icon="netflix" */}
-                  {/*   peRatio={peRatios.NFLX} */}
-                  {/*   ratio={linearFromLog(peRatios.NFLX)} */}
-                  {/*   symbol="NFLX" */}
-                  {/* /> */}
-                  {ethPeRatio === undefined ? null : (
+                    )}
+                  {peRatios.NFLX !== null &&
+                    ethPeRatio !== undefined &&
+                    Math.abs(ethPeRatio - peRatios.NFLX) > 4 && (
+                      <Marker
+                        alt="netflix logo"
+                        icon="netflix"
+                        peRatio={peRatios.NFLX}
+                        ratio={linearFromLog(peRatios.NFLX)}
+                        symbol="NFLX"
+                      />
+                    )}
+                  {ethPeRatio !== undefined && (
                     <Marker
                       alt="ethereum logo"
                       icon="eth"
@@ -287,9 +297,9 @@ const PriceModel: FC = () => {
                       ratio={linearFromLog(ethPeRatio)}
                     />
                   )}
-
-                  {ethPeRatio === undefined ||
-                    (peRatios.AMZN - ethPeRatio > 4 && (
+                  {peRatios.AMZN !== null &&
+                    ethPeRatio !== undefined &&
+                    peRatios.AMZN - ethPeRatio > 4 && (
                       <Marker
                         alt="amazon logo"
                         icon="amazon"
@@ -297,21 +307,27 @@ const PriceModel: FC = () => {
                         ratio={linearFromLog(peRatios.AMZN)}
                         symbol="AMZN"
                       />
-                    ))}
-                  <Marker
-                    alt="disney logo"
-                    icon="disney"
-                    peRatio={peRatios.DIS}
-                    ratio={linearFromLog(peRatios.DIS)}
-                    symbol="DIS"
-                  />
-                  <Marker
-                    alt="tesla logo"
-                    icon="tesla"
-                    peRatio={peRatios.TSLA}
-                    ratio={linearFromLog(peRatios.TSLA)}
-                    symbol="TSLA"
-                  />
+                    )}
+                  {peRatios.DIS !== null &&
+                    ethPeRatio !== undefined &&
+                    Math.abs(peRatios.DIS - ethPeRatio) > 4 && (
+                      <Marker
+                        alt="disney logo"
+                        icon="disney"
+                        peRatio={peRatios.DIS}
+                        ratio={linearFromLog(peRatios.DIS)}
+                        symbol="DIS"
+                      />
+                    )}
+                  {peRatios.TSLA !== null && (
+                    <Marker
+                      alt="tesla logo"
+                      icon="tesla"
+                      peRatio={peRatios.TSLA}
+                      ratio={linearFromLog(peRatios.TSLA)}
+                      symbol="TSLA"
+                    />
+                  )}
                 </>
               )}
             </div>
@@ -357,7 +373,7 @@ const PriceModel: FC = () => {
                   transform: `translateX(47.5%)`,
                 }}
               >
-                <div className="mb-3 w-3 -translate-x-1/2 bg-blue-shipcove [min-height:3px]"></div>
+                <div className="mb-3 w-3 -translate-x-1/2 bg-slateus-400 [min-height:3px]"></div>
                 <div className="pointer-events-auto absolute top-4 -translate-x-1/2">
                   <img
                     title="gold"

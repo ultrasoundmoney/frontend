@@ -3,6 +3,7 @@ import dropRight from "lodash/dropRight";
 import flow from "lodash/flow";
 import takeRight from "lodash/takeRight";
 import type { FC } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCallback } from "react";
 import CountUp from "react-countup";
 import { AmountAnimatedShell, defaultMoneyAnimationDuration } from "../Amount";
@@ -98,7 +99,7 @@ const Digits: FC<{ children: JSBI }> = ({ children }) => {
           left-0 block
           whitespace-normal break-all
           text-[6px]
-          leading-[0.4rem] text-blue-spindle
+          leading-[0.4rem] text-slateus-200
           [@media(min-width:375px)]:text-[8px]
           [@media(min-width:375px)]:leading-[0.5rem]
         `}
@@ -120,33 +121,77 @@ const Digits: FC<{ children: JSBI }> = ({ children }) => {
   );
 };
 
-const PreciseEth: FC<{ children?: JSBI; justify?: "justify-end" }> = ({
-  children,
-  justify,
-}) => (
-  <AmountAnimatedShell
-    className={`
-      flex items-center
+type Props = {
+  amount: JSBI;
+  justify?: "justify-end";
+};
+
+const PreciseEth: FC<Props> = ({ amount, justify }) => {
+  const [blinkOrange, setBlinkOrange] = useState(false);
+  const [blinkBlue, setBlinkBlue] = useState(false);
+  const lastAmount = useRef(amount);
+
+  const handleBlinkOrange = useCallback(() => {
+    setBlinkOrange(true);
+    const id = setTimeout(() => {
+      setBlinkOrange(false);
+    }, 1000);
+    return () => window.clearTimeout(id);
+  }, []);
+
+  const handleBlinkBlue = useCallback(() => {
+    setBlinkBlue(true);
+    const id = setTimeout(() => {
+      setBlinkBlue(false);
+    }, 1000);
+    return () => window.clearTimeout(id);
+  }, []);
+
+  useEffect(() => {
+    if (JSBI.equal(lastAmount.current, amount)) {
+      return;
+    }
+
+    const isPositiveDelta = JSBI.greaterThan(
+      JSBI.subtract(amount, lastAmount.current),
+      JSBI.BigInt(0),
+    );
+
+    if (isPositiveDelta) {
+      handleBlinkBlue();
+    } else {
+      handleBlinkOrange();
+    }
+
+    lastAmount.current = amount;
+  }, [amount, handleBlinkBlue, handleBlinkOrange]);
+
+  return (
+    <AmountAnimatedShell
+      className={`
+      flex items-center tracking-tight
       ${justify !== undefined ? justify : ""}
-      tracking-tight
+      ${blinkBlue ? "animate-flash-blue" : ""}
+      ${blinkOrange ? "animate-flash-orange" : ""}
     `}
-    size="text-[1.30rem] [@media(min-width:375px)]:text-[1.70rem]"
-    skeletonWidth={"3rem"}
-    unitText={"ETH"}
-  >
-    {children && (
-      <>
-        <CountUp
-          decimals={0}
-          duration={defaultMoneyAnimationDuration}
-          end={ethNoDecimals(children)}
-          preserveValue={true}
-          separator=","
-        />
-        .<Digits>{children}</Digits>
-      </>
-    )}
-  </AmountAnimatedShell>
-);
+      size="text-[1.30rem] [@media(min-width:375px)]:text-[1.70rem]"
+      skeletonWidth={"3rem"}
+      unitText={"ETH"}
+    >
+      {amount && (
+        <>
+          <CountUp
+            decimals={0}
+            duration={defaultMoneyAnimationDuration}
+            end={ethNoDecimals(amount)}
+            preserveValue={true}
+            separator=","
+          />
+          .<Digits>{amount}</Digits>
+        </>
+      )}
+    </AmountAnimatedShell>
+  );
+};
 
 export default PreciseEth;

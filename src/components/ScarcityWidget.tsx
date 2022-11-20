@@ -58,13 +58,13 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
           style={{
             backgroundColor: hoveringBurned
               ? Colors.fireHighlight
-              : Colors.fireOrange,
+              : Colors.orange400,
           }}
           onMouseEnter={() => onHoverBurned(true)}
           onMouseLeave={() => onHoverBurned(false)}
         ></div>
         <div
-          className="absolute h-2 rounded-full bg-blue-dusk"
+          className="absolute h-2 rounded-full bg-slateus-500"
           style={{ width: `${totalSupplyPercent}%` }}
         ></div>
       </div>
@@ -103,23 +103,25 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
             }}
           />
           <div
-            className="color-animation h-2 w-full rounded-l-full bg-blue-spindle"
+            className="color-animation h-2 w-full rounded-l-full bg-slateus-200"
             style={{
-              backgroundColor: hoveringStaked ? Colors.white : Colors.spindle,
+              backgroundColor: hoveringStaked
+                ? Colors.white
+                : Colors.slateus200,
             }}
           ></div>
           <BaseText
             font="font-roboto"
             className="color-animation mt-[12px] text-sm md:mt-[9px] md:text-base"
             style={{
-              color: hoveringStaked ? Colors.white : Colors.spindle,
+              color: hoveringStaked ? Colors.white : Colors.slateus200,
             }}
           >
             {Format.formatZeroDecimals(stakedPercent)}%
           </BaseText>
         </div>
         <div
-          className="absolute z-10 h-2 w-0.5 bg-blue-dusk"
+          className="absolute z-10 h-2 w-0.5 bg-slateus-500"
           style={{
             left: `${stakedPercent}%`,
           }}
@@ -153,9 +155,11 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
             }}
           />
           <div
-            className="color-animation h-2 w-full rounded-r-full bg-blue-spindle"
+            className="color-animation h-2 w-full rounded-r-full bg-slateus-200"
             style={{
-              backgroundColor: hoveringLocked ? Colors.white : Colors.spindle,
+              backgroundColor: hoveringLocked
+                ? Colors.white
+                : Colors.slateus200,
             }}
           ></div>
           <BaseText
@@ -163,7 +167,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
             size="text-sm md:text-base"
             className="color-animation mt-[12px] md:mt-[9px]"
             style={{
-              color: hoveringLocked ? Colors.white : Colors.spindle,
+              color: hoveringLocked ? Colors.white : Colors.slateus200,
             }}
           >
             {Format.formatZeroDecimals(lockedPercent)}%
@@ -282,7 +286,7 @@ const ScarcityWidget: FC = () => {
       <WidgetTitle>scarcity</WidgetTitle>
       {scarcity === undefined ? (
         <div className="relative py-16">
-          <div className="absolute h-2 w-full rounded-full bg-blue-dusk"></div>
+          <div className="absolute h-2 w-full rounded-full bg-slateus-500"></div>
         </div>
       ) : (
         <ScarcityBar

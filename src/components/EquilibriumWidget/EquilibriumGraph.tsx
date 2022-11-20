@@ -41,11 +41,11 @@ const baseOptions: Highcharts.Options = {
     plotLines: [
       {
         id: "equilibrium",
-        color: colors.spindle,
+        color: colors.slateus200,
         label: {
           align: "right",
           text: "EQUILIBRIUM",
-          style: { color: colors.spindle },
+          style: { color: colors.slateus200 },
           y: 5,
           x: 20,
         },
@@ -54,11 +54,11 @@ const baseOptions: Highcharts.Options = {
       },
       {
         id: "staking",
-        color: colors.spindle,
+        color: colors.slateus200,
         label: {
           align: "right",
           text: "STAKING",
-          style: { color: colors.spindle },
+          style: { color: colors.slateus200 },
           y: 18,
           x: 1,
         },
@@ -301,13 +301,13 @@ const EquilibriumGraph: FC<Props> = ({
 
           return `
             <div class="font-roboto font-light bg-slateus-700 p-4 rounded-lg border-2 border-slateus-200">
-              <div class="text-blue-spindle">
+              <div class="text-slateus-200">
                 ${formattedDate}
               </div>
               <div class="text-white">
                 ${Format.formatOneDecimal(
                   total / 1e6,
-                )}M <span class="text-blue-spindle">ETH</span>
+                )}M <span class="text-slateus-200">ETH</span>
               </div>
             </div>
           `;

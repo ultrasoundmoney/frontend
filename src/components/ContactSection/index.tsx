@@ -4,8 +4,8 @@ import SectionDivider from "../SectionDivider";
 import emailSvg from "./email-slateus.svg";
 import twitterSvg from "../../assets/twitter-slateus.svg";
 import githubSvg from "./github-slateus.svg";
-import type { StaticImageData } from "next/image";
-import Image from "next/image";
+import type { StaticImageData } from "next/legacy/image";
+import Image from "next/legacy/image";
 
 type ContactProps = {
   alt: string;

@@ -39,7 +39,7 @@ const BlockText: React.FC<BlockTextProps> = ({ title, text }) => {
         }}
       />
       <p
-        className="mb-10 text-center text-sm font-light text-blue-shipcove md:text-left"
+        className="mb-10 text-center text-sm font-light text-slateus-400 md:text-left"
         dangerouslySetInnerHTML={{
           __html: text,
         }}

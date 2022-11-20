@@ -72,15 +72,18 @@ const CategorySegment: FC<CategorySegmentProps> = ({
       </>
     )}
     <div
-      className={`color-animation h-2 w-full bg-blue-spindle ${
-        rounded === "left"
-          ? "rounded-l-full"
-          : rounded === "right"
-          ? "rounded-r-full"
-          : ""
-      }`}
+      className={`
+        color-animation h-2 w-full bg-slateus-200
+        ${
+          rounded === "left"
+            ? "rounded-l-full"
+            : rounded === "right"
+            ? "rounded-r-full"
+            : ""
+        }
+      `}
       style={{
-        backgroundColor: showHighlight ? Colors.white : Colors.spindle,
+        backgroundColor: showHighlight ? Colors.white : Colors.slateus200,
       }}
     ></div>
     <div
@@ -164,11 +167,11 @@ const IssuanceBreakdown = () => {
       <WidgetTitle>issuance breakdown</WidgetTitle>
       {issuanceBreakdown === undefined ? (
         <div className="relative py-16">
-          <div className="absolute h-2 w-full rounded-full bg-blue-dusk"></div>
+          <div className="absolute h-2 w-full rounded-full bg-slateus-500"></div>
         </div>
       ) : (
         <div className="relative flex items-center py-4">
-          <div className="color-animation absolute h-2 w-full rounded-full bg-blue-highlightbg"></div>
+          <div className="color-animation absolute h-2 w-full rounded-full bg-slateus-600"></div>
           <div className="top-0 left-0 z-10 flex w-full flex-row items-center">
             <CategorySegment
               imgAlt={"btc symbol symbolizing the bitcoin crowd sale"}
@@ -181,7 +184,7 @@ const IssuanceBreakdown = () => {
               rounded="left"
               showHighlight={highlightCrowdSale}
             />
-            <div className="h-2 w-0.5 bg-blue-dusk"></div>
+            <div className="h-2 w-0.5 bg-slateus-500"></div>
             <CategorySegment
               imgAlt={
                 "a pickaxe symbolizing the ETH minted using proof of work"
@@ -194,7 +197,7 @@ const IssuanceBreakdown = () => {
               )}
               showHighlight={highlightProofOfWork}
             />
-            <div className="h-2 w-0.5 bg-blue-dusk"></div>
+            <div className="h-2 w-0.5 bg-slateus-500"></div>
             <CategorySegment
               imgAlt={
                 "a seedling symbolizing the gardening Ethereum Foundation"
@@ -207,7 +210,7 @@ const IssuanceBreakdown = () => {
               )}
               showHighlight={highlightEthereumFoundation}
             />
-            <div className="h-2 w-0.5 bg-blue-dusk"></div>
+            <div className="h-2 w-0.5 bg-slateus-500"></div>
             <CategorySegment
               imgAlt={
                 "a unicorn symbolizing the early contributors dreaming up and building Ethereum"
@@ -220,7 +223,7 @@ const IssuanceBreakdown = () => {
               )}
               showHighlight={highlightEarlyContributors}
             />
-            <div className="h-2 w-0.5 bg-blue-dusk"></div>
+            <div className="h-2 w-0.5 bg-slateus-500"></div>
             <CategorySegment
               imgAlt={
                 "a steak as workplay on stake, symbolizing the ETH minted using proof of stake"

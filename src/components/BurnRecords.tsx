@@ -9,7 +9,8 @@ import {
 } from "../api/grouped-analysis-1";
 import * as Format from "../format";
 import scrollbarStyles from "../styles/Scrollbar.module.scss";
-import type { TimeFrame } from "../time-frames";
+import type { TimeFrameNext } from "../time-frames";
+import { timeFrameFromNext } from "../time-frames";
 import { MoneyAmountAnimated } from "./Amount";
 import SpanMoji from "./SpanMoji";
 import { BaseText } from "./Texts";
@@ -60,7 +61,7 @@ const Age: FC<{ minedAt: Date | undefined }> = ({ minedAt }) => {
 
 type Props = {
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrame;
+  timeFrame: TimeFrameNext;
 };
 
 const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
@@ -70,7 +71,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const timeFrameRecords =
     burnRecords === undefined
       ? (new Array(10).fill({}) as Partial<BurnRecord>[])
-      : burnRecords[timeFrame];
+      : burnRecords[timeFrameFromNext(timeFrame)];
 
   return (
     <BurnGroupBase
@@ -114,7 +115,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <span className="link-animation font-roboto font-light text-blue-shipcove hover:opacity-60 md:text-lg">
+                <span className="link-animation font-roboto font-light text-slateus-400 hover:opacity-60 md:text-lg">
                   {formatBlockNumber(record.blockNumber) || (
                     <Skeleton width="8rem" />
                   )}

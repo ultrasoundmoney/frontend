@@ -86,7 +86,7 @@ const Tooltip: FC<TooltipProps> = ({
         relative
         flex flex-col
         gap-y-4 rounded-lg border
-        border-blue-shipcove bg-blue-tangaroa
+        border-slateus-400 bg-slateus-700
         p-8
         ${width}
       `}
@@ -109,7 +109,7 @@ const Tooltip: FC<TooltipProps> = ({
         </Twemoji>
       </BodyText>
       <div
-        className={`max-h-64 overflow-y-auto ${scrollbarStyles["styled-scrollbar-vertical"]} ${scrollbarStyles["styled-scrollbar"]}`}
+        className={`max-h-64 overflow-y-auto ${scrollbarStyles["styled-scrollbar-horizontal"]} ${scrollbarStyles["styled-scrollbar-vertical"]} ${scrollbarStyles["styled-scrollbar"]}`}
       >
         <BodyText className="whitespace-pre-wrap md:leading-normal">
           {description === undefined ? null : (

@@ -161,11 +161,11 @@ interface ParamProps {
 
 const Param: React.FC<ParamProps> = ({ title, value, subValue, children }) => (
   <div className={styles.param}>
-    <div className={`text-blue-spindle ${styles.paramTitle}`}>{title}</div>
+    <div className={`text-slateus-200 ${styles.paramTitle}`}>{title}</div>
     <div className={styles.paramValue}>{value}</div>
     <div className={styles.paramChildren}>{children}</div>
     <div
-      className={`text-xs text-blue-spindle lg:text-base xl:text-lg ${styles.paramSubValue}`}
+      className={`text-xs text-slateus-200 lg:text-base xl:text-lg ${styles.paramSubValue}`}
     >
       {subValue}
     </div>

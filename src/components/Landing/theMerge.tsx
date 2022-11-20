@@ -59,7 +59,7 @@ const TheMergeBlock: React.FC = () => {
             <h3 className="mb-6 text-center text-base font-light leading-normal text-white md:text-3xl">
               {t.landing_themerge_title}
             </h3>
-            <p className="mb-10 text-center text-sm font-light text-blue-shipcove">
+            <p className="mb-10 text-center text-sm font-light text-slateus-400">
               {t.landing_themerge_text}
             </p>
           </div>
@@ -90,7 +90,7 @@ const TheMergeBlock: React.FC = () => {
               <h3 className="mb-4 mt-4 text-center text-base font-light text-white">
                 {t.landing_themerge_pow_title}
               </h3>
-              <p className="mt-4 whitespace-pre-line break-words text-center text-sm font-light leading-relaxed text-blue-shipcove">
+              <p className="mt-4 whitespace-pre-line break-words text-center text-sm font-light leading-relaxed text-slateus-400">
                 {t.landing_themerge_pow_text}
               </p>
             </div>
@@ -114,7 +114,7 @@ const TheMergeBlock: React.FC = () => {
               <h3 className="mb-4 mt-4 text-center text-base font-light text-white">
                 {t.landing_themerge_pos_title}
               </h3>
-              <p className="mt-4 whitespace-pre-line break-words text-center text-sm font-light leading-relaxed text-blue-shipcove">
+              <p className="mt-4 whitespace-pre-line break-words text-center text-sm font-light leading-relaxed text-slateus-400">
                 {t.landing_themerge_pos_text}
               </p>
             </div>
@@ -135,7 +135,7 @@ const TheMergeBlock: React.FC = () => {
             <h3 className="mb-6 text-center text-base font-light leading-normal text-white md:text-3xl">
               {t.landing_themerge_title2}
             </h3>
-            <p className="mb-10 text-center text-sm font-light text-blue-shipcove">
+            <p className="mb-10 text-center text-sm font-light text-slateus-400">
               {t.landing_themerge_text2}
             </p>
           </div>

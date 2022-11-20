@@ -137,11 +137,11 @@ const BurnMarkers: FC<{ burnMarkers?: BurnMarkers }> = ({ burnMarkers }) => {
           >
             <div
               className={`
-                -mt-0.5 w-0.5 rounded-b-full bg-blue-spindle
+                -mt-0.5 w-0.5 rounded-b-full bg-slateus-200
                 ${index % 2 === 0 ? "h-2" : "h-6"}
               `}
             ></div>
-            <TimeFrameText className="mt-1 select-none text-blue-spindle">
+            <TimeFrameText className="mt-1 select-none text-slateus-200">
               <Twemoji
                 className="flex gap-x-1"
                 imageClassName="mt-0.5 h-3"
@@ -461,8 +461,8 @@ const EquilibriumWidget = () => {
                     }px)`,
                   }}
                 >
-                  <div className="-mt-0.5 h-2 w-0.5 rounded-b-full bg-blue-spindle"></div>
-                  <TimeFrameText className="mt-0.5 text-blue-spindle">
+                  <div className="-mt-0.5 h-2 w-0.5 rounded-b-full bg-slateus-200"></div>
+                  <TimeFrameText className="mt-0.5 text-slateus-200">
                     now
                   </TimeFrameText>
                 </div>

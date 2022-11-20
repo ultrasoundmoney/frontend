@@ -2,7 +2,7 @@ import type { FC } from "react";
 import type { Unit } from "../denomination";
 
 const activePeriodClasses =
-  "text-white border-blue-highlightborder rounded-sm bg-blue-highlightbg";
+  "text-white border-slateus-400 rounded-sm bg-slateus-600";
 
 type CurrencyButtonProps = {
   onClick: (unit: Unit) => void;
@@ -19,13 +19,13 @@ const CurrencyButton: FC<CurrencyButtonProps> = ({
     className={`
       select-none border
       px-3 py-2
-      font-roboto text-xs font-light
+      font-roboto text-xs
       font-normal uppercase
       tracking-widest
       ${
         selectedUnit === unit
           ? activePeriodClasses
-          : "border-transparent text-blue-spindle"
+          : "border-transparent text-slateus-200"
       }`}
     onClick={() => onClick(unit)}
   >

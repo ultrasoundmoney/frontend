@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/nextjs";
-import type { StaticImageData } from "next/image";
-import Image from "next/image";
+import type { StaticImageData } from "next/legacy/image";
+import Image from "next/legacy/image";
 import type { FC, ReactNode } from "react";
 import CountUp from "react-countup";
 import { useBaseFeePerGas } from "../../api/base-fee-per-gas";
@@ -19,7 +19,7 @@ const PriceGasBoundary: FC<{ children: ReactNode }> = ({ children }) => (
     fallback={
       <div
         className={`
-          rounded-lg border border-red-400 bg-blue-tangaroa px-4 py-2 text-center
+          rounded-lg border border-red-400 bg-slateus-700 px-4 py-2 text-center
           font-roboto
           text-xs text-white
         `}
@@ -59,7 +59,7 @@ const PriceGasWidget: FC = () => {
       <div
         className={`
           flex items-center
-          rounded bg-blue-tangaroa
+          rounded bg-slateus-700
           px-3 py-2
           text-xs
           font-normal

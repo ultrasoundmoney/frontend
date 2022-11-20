@@ -3,12 +3,13 @@ import { useAverageEthPrice } from "../../api/average-eth-price";
 import colors from "../../colors";
 import type { Unit } from "../../denomination";
 import * as StaticEtherData from "../../static-ether-data";
-import type { TimeFrame } from "../../time-frames";
+import type { TimeFrameNext } from "../../time-frames";
+import { timeFrameFromNext } from "../../time-frames";
 import BaseGauge from "./IssuanceBurnBaseGauge";
 
 type Props = {
   simulateProofOfWork: boolean;
-  timeFrame: TimeFrame;
+  timeFrame: TimeFrameNext;
   unit: Unit;
 };
 
@@ -19,7 +20,8 @@ const IssuanceGauge: FC<Props> = ({
 }) => {
   const averageEthPrice = useAverageEthPrice();
 
-  const selectedAverageEthPrice = averageEthPrice?.[timeFrame];
+  const selectedAverageEthPrice =
+    averageEthPrice?.[timeFrameFromNext(timeFrame)];
 
   const issuancePerDay = simulateProofOfWork
     ? StaticEtherData.powIssuancePerDay
@@ -37,7 +39,7 @@ const IssuanceGauge: FC<Props> = ({
       className={`
         flex flex-col items-center justify-start
         rounded-lg
-        bg-blue-tangaroa px-4 py-8 pt-7
+        bg-slateus-700 px-4 py-8 pt-7
         md:rounded-none md:rounded-tr-lg md:px-0`}
     >
       <BaseGauge

@@ -19,7 +19,7 @@ const BeforeGenesis: React.FC = () => {
           <h1 className="mb-6 text-center font-inter text-base font-light leading-normal text-white md:text-32xl">
             {t.landing_before_genesis_title}
           </h1>
-          <p className="mb-10 text-center font-inter text-sm font-light text-blue-shipcove">
+          <p className="mb-10 text-center font-inter text-sm font-light text-slateus-400">
             {t.landing_before_genesis_text}
           </p>
         </div>

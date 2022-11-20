@@ -37,7 +37,7 @@ class MyDocument extends Document {
             src="https://ultrasound.money/cfw/script.js"
           />
         </Head>
-        <body className="bg-blue-midnightexpress text-slateus-200 [&_.next-error-h1]:border-slateus-200">
+        <body className="bg-slateus-800 text-slateus-200 [&_.next-error-h1]:border-slateus-200">
           <Main />
           <NextScript />
         </body>

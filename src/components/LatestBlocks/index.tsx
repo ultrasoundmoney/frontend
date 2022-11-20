@@ -127,7 +127,7 @@ const LatestBlockComponent: FC<{
           </BaseText>
           <div className="hidden md:inline">
             <span className="font-inter">&thinsp;</span>
-            <span className="font-roboto font-extralight text-blue-spindle">
+            <span className="font-roboto font-extralight text-slateus-200">
               Gwei
             </span>
           </div>
@@ -139,7 +139,7 @@ const LatestBlockComponent: FC<{
             </SkeletonText>
           </BaseText>
           <AmountUnitSpace />
-          <span className="font-roboto font-extralight text-blue-spindle">
+          <span className="font-roboto font-extralight text-slateus-200">
             {unit === "eth" ? "ETH" : "USD"}
           </span>
         </div>

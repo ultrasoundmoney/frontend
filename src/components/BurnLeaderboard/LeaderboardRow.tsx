@@ -112,12 +112,12 @@ const LeaderboardRow: FC<Props> = ({
             <p
               className={`
                 ml-2 hidden whitespace-nowrap
-                rounded-sm bg-blue-highlightbg
+                rounded-sm bg-slateus-600
                 px-1.5
                 py-0.5
                 text-sm
                 font-normal
-                text-blue-manatee md:block
+                text-slateus-400 md:block
                 ${category ? "block" : "md:hidden"}
               `}
             >
@@ -128,7 +128,7 @@ const LeaderboardRow: FC<Props> = ({
                 : Format.capitalize(category)}
             </p>
             {detail && (
-              <p className="hidden truncate pl-2 font-extralight text-blue-shipcove md:block lg:hidden xl:block">
+              <p className="hidden truncate pl-2 font-extralight text-slateus-400 md:block lg:hidden xl:block">
                 {detail}
               </p>
             )}
