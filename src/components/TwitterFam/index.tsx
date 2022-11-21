@@ -277,6 +277,7 @@ const TwitterFam: FC = () => {
                       bg-blue-tangaroa
                       px-2 py-1
                     `}
+                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
                     onClick={fullScreenHandle.active ? fullScreenHandle.exit : fullScreenHandle.enter}
                   >
                     <img
