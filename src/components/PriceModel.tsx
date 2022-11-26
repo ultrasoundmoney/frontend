@@ -84,6 +84,50 @@ const MarkerText: FC<{ children: ReactNode; ratio: number }> = ({
   </div>
 );
 
+
+const CompanyMarkers: FC<typeof usePeRatios & { ETH: number, peRatios: any }> = ({ peRatios }) => {
+  const markerList: Array<typeof Marker | undefined> =
+    peRatios !== undefined
+      ? [
+          { alt: "ethereum logo", icon: "eth", peRatio: peRatios.ETH, ratio: peRatios.ETH, symbol: "ETH"},
+          { alt: "apple logo", icon: "apple", peRatio: peRatios.AAPL, ratio: peRatios.AAPL, Symbol: "AAPL"},
+          { alt: "amazon logo", icon: "amazon", peRatio: peRatios.AMZN, ratio: peRatios.AMZN, Symbol: "AMZN"},
+          { alt: "intel logo", icon: "intel", peRatio: peRatios.INTC, ratio: peRatios.INTC, Symbol: "INTC"},
+          { alt: "google logo", icon: "google", peRatio: peRatios.GOOGL, ratio: peRatios.GOOGL, symbol: "GOOGL"},
+          { alt: "netflix logo", icon: "netflix", peRatio: peRatios.NFLX, ratio: peRatios.NFLX, symbol: "NFLX"},
+          { alt: "tesla logo", icon: "tesla", peRatio: peRatios.TSLA, ratio: peRatios.TSLA, symbol: "TSLA"},
+          { alt: "disney logo", icon: "disney", peRatio: peRatios.DIS, ratio: peRatios.DIS, symbol: "DIS"},
+        ]
+      : [];
+
+  const shownList = markerList
+    .reduce((list: Array<typeof Marker | undefined>, marker) => {
+      const someConflict = list.some((shownMarker) => Math.abs(shownMarker.peRatio - marker.peRatio) < 4);
+
+      if (someConflict) {
+        return list;
+      }
+
+      return [...list, marker];
+    }, [])
+    .sort((m1, m2) => m1.value - m2.value);
+
+  return (
+    <>
+      {shownList.map((marker: any) => {
+        return (
+          <Marker
+            icon={marker.icon} 
+            peRatio={marker.peRatio}
+            ratio={linearFromLog(marker.peRatio)}
+            symbol={marker.symbol}
+          />
+        );
+      })}
+    </>
+  );
+};
+
 const monetaryPremiumMin = 1;
 const monetaryPremiumMax = 20;
 const monetaryPremiumRange = monetaryPremiumMax - monetaryPremiumMin;
@@ -255,80 +299,9 @@ const PriceModel: FC = () => {
               value={peRatioPosition}
             />
             <div className="absolute top-3 w-full select-none">
-              {peRatios !== undefined && (
+              {peRatios !== undefined && ethPeRatio !== undefined && (
                 // Because the actual slider does not span the entire visual slider, overlaying an element and setting the left is not perfect. We manually adjust values to match the slider more precisely. To improve this look into off-the-shelf components that allow for styled markers.
-                <>
-                  {typeof peRatios.INTC === "number" && (
-                    <Marker
-                      alt="intel logo"
-                      icon="intel"
-                      peRatio={peRatios.INTC}
-                      ratio={linearFromLog(peRatios.INTC)}
-                      symbol="INTC"
-                    />
-                  )}
-                  {peRatios.GOOGL !== null &&
-                    ethPeRatio !== undefined &&
-                    Math.abs(ethPeRatio - peRatios.GOOGL) > 4 && (
-                      <Marker
-                        alt="google logo"
-                        icon="google"
-                        peRatio={peRatios.GOOGL}
-                        ratio={linearFromLog(peRatios.GOOGL)}
-                        symbol="GOOGL"
-                      />
-                    )}
-                  {peRatios.NFLX !== null &&
-                    ethPeRatio !== undefined &&
-                    Math.abs(ethPeRatio - peRatios.NFLX) > 4 && (
-                      <Marker
-                        alt="netflix logo"
-                        icon="netflix"
-                        peRatio={peRatios.NFLX}
-                        ratio={linearFromLog(peRatios.NFLX)}
-                        symbol="NFLX"
-                      />
-                    )}
-                  {ethPeRatio !== undefined && (
-                    <Marker
-                      alt="ethereum logo"
-                      icon="eth"
-                      peRatio={ethPeRatio}
-                      ratio={linearFromLog(ethPeRatio)}
-                    />
-                  )}
-                  {peRatios.AMZN !== null &&
-                    ethPeRatio !== undefined &&
-                    peRatios.AMZN - ethPeRatio > 4 && (
-                      <Marker
-                        alt="amazon logo"
-                        icon="amazon"
-                        peRatio={peRatios.AMZN}
-                        ratio={linearFromLog(peRatios.AMZN)}
-                        symbol="AMZN"
-                      />
-                    )}
-                  {peRatios.DIS !== null &&
-                    ethPeRatio !== undefined &&
-                    Math.abs(peRatios.DIS - ethPeRatio) > 4 && (
-                      <Marker
-                        alt="disney logo"
-                        icon="disney"
-                        peRatio={peRatios.DIS}
-                        ratio={linearFromLog(peRatios.DIS)}
-                        symbol="DIS"
-                      />
-                    )}
-                  {peRatios.TSLA !== null && (
-                    <Marker
-                      alt="tesla logo"
-                      icon="tesla"
-                      peRatio={peRatios.TSLA}
-                      ratio={linearFromLog(peRatios.TSLA)}
-                      symbol="TSLA"
-                    />
-                  )}
-                </>
+                <CompanyMarkers peRatios={{ ...peRatios, ETH: ethPeRatio }} />
               )}
             </div>
           </div>
@@ -415,3 +388,4 @@ price = profits * P/E ratio * monetary premium`}
 };
 
 export default PriceModel;
+
