@@ -102,6 +102,8 @@ const CompanyMarkers: FC<typeof usePeRatios & { ETH: number, peRatios: any }> = 
 
   const shownList = markerList
     .reduce((list: Array<typeof Marker | undefined>, marker) => {
+      if (marker?.peRatio === null) return list;
+
       const someConflict = list.some((shownMarker) => Math.abs(shownMarker.peRatio - marker.peRatio) < 4);
 
       if (someConflict) {
