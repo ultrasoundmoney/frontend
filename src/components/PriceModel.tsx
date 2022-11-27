@@ -92,11 +92,11 @@ const CompanyMarkers: FC<typeof usePeRatios & { ETH: number, peRatios: any }> = 
           { alt: "ethereum logo", icon: "eth", peRatio: peRatios.ETH, ratio: peRatios.ETH, symbol: "ETH"},
           { alt: "apple logo", icon: "apple", peRatio: peRatios.AAPL, ratio: peRatios.AAPL, Symbol: "AAPL"},
           { alt: "amazon logo", icon: "amazon", peRatio: peRatios.AMZN, ratio: peRatios.AMZN, Symbol: "AMZN"},
-          { alt: "intel logo", icon: "intel", peRatio: peRatios.INTC, ratio: peRatios.INTC, Symbol: "INTC"},
-          { alt: "google logo", icon: "google", peRatio: peRatios.GOOGL, ratio: peRatios.GOOGL, symbol: "GOOGL"},
-          { alt: "netflix logo", icon: "netflix", peRatio: peRatios.NFLX, ratio: peRatios.NFLX, symbol: "NFLX"},
           { alt: "tesla logo", icon: "tesla", peRatio: peRatios.TSLA, ratio: peRatios.TSLA, symbol: "TSLA"},
           { alt: "disney logo", icon: "disney", peRatio: peRatios.DIS, ratio: peRatios.DIS, symbol: "DIS"},
+          { alt: "google logo", icon: "google", peRatio: peRatios.GOOGL, ratio: peRatios.GOOGL, symbol: "GOOGL"},
+          { alt: "netflix logo", icon: "netflix", peRatio: peRatios.NFLX, ratio: peRatios.NFLX, symbol: "NFLX"},
+          { alt: "intel logo", icon: "intel", peRatio: peRatios.INTC, ratio: peRatios.INTC, Symbol: "INTC"},
         ]
       : [];
 
