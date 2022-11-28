@@ -164,8 +164,7 @@ const CompanyMarkers: FC<
       }
 
       return [...list, marker];
-    }, [])
-    .sort((m1, m2) => m1.value - m2.value);
+    }, []);
 
   return (
     <>
