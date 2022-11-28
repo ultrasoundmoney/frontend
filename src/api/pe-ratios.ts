@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import { fetchJsonSwr } from "./fetchers";
 
-type PeRatios = {
+export type PeRatios = {
   AAPL: number;
   AMZN: number;
   DIS: number;

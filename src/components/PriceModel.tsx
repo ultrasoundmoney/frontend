@@ -5,6 +5,7 @@ import { useAverageEthPrice } from "../api/average-eth-price";
 import { useBurnRates } from "../api/burn-rates";
 import { useEthPriceStats } from "../api/eth-price-stats";
 import { useImpreciseEthSupply } from "../api/eth-supply";
+import type { PeRatios } from "../api/pe-ratios";
 import { usePeRatios } from "../api/pe-ratios";
 import * as Format from "../format";
 import * as StaticEtherData from "../static-ether-data";
@@ -86,9 +87,9 @@ const MarkerText: FC<{ children: ReactNode; ratio: number }> = ({
   </div>
 );
 
-const CompanyMarkers: FC<
-  typeof usePeRatios & { ETH: number; peRatios: any }
-> = ({ peRatios }) => {
+const CompanyMarkers: FC<{ peRatios: PeRatios & { ETH: number } }> = ({
+  peRatios,
+}) => {
   const markerList: Array<typeof Marker | undefined> =
     peRatios !== undefined
       ? [
