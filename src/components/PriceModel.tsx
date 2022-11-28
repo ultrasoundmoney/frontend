@@ -90,7 +90,7 @@ const MarkerText: FC<{ children: ReactNode; ratio: number }> = ({
 const CompanyMarkers: FC<{ peRatios: PeRatios & { ETH: number } }> = ({
   peRatios,
 }) => {
-  const markerList: Array<typeof Marker | undefined> =
+  const markerList: MarkerProps[] =
     peRatios !== undefined
       ? [
           {
@@ -152,24 +152,23 @@ const CompanyMarkers: FC<{ peRatios: PeRatios & { ETH: number } }> = ({
         ]
       : [];
 
-  const shownList = markerList
-    .reduce((list: Array<typeof Marker | undefined>, marker) => {
-      if (marker?.peRatio === null) return list;
+  const shownList = markerList.reduce((list: Array<MarkerProps>, marker) => {
+    if (marker?.peRatio === null) return list;
 
-      const someConflict = list.some(
-        (shownMarker) => Math.abs(shownMarker.peRatio - marker.peRatio) < 4,
-      );
+    const someConflict = list.some(
+      (shownMarker) => Math.abs(shownMarker.peRatio - marker.peRatio) < 4,
+    );
 
-      if (someConflict) {
-        return list;
-      }
+    if (someConflict) {
+      return list;
+    }
 
-      return [...list, marker];
-    }, []);
+    return [...list, marker];
+  }, []);
 
   return (
     <>
-      {shownList.map((marker: any) => {
+      {shownList.map((marker) => {
         return (
           <Marker
             key={marker.symbol}
