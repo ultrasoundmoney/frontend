@@ -102,14 +102,14 @@ const CompanyMarkers: FC<
             icon: "apple",
             peRatio: peRatios.AAPL,
             ratio: peRatios.AAPL,
-            Symbol: "AAPL",
+            symbol: "AAPL",
           },
           {
             alt: "amazon logo",
             icon: "amazon",
             peRatio: peRatios.AMZN,
             ratio: peRatios.AMZN,
-            Symbol: "AMZN",
+            symbol: "AMZN",
           },
           {
             alt: "tesla logo",
@@ -144,7 +144,7 @@ const CompanyMarkers: FC<
             icon: "intel",
             peRatio: peRatios.INTC,
             ratio: peRatios.INTC,
-            Symbol: "INTC",
+            symbol: "INTC",
           },
         ]
       : [];
