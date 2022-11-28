@@ -90,67 +90,64 @@ const MarkerText: FC<{ children: ReactNode; ratio: number }> = ({
 const CompanyMarkers: FC<{ peRatios: PeRatios & { ETH: number } }> = ({
   peRatios,
 }) => {
-  const markerList: MarkerProps[] =
-    peRatios !== undefined
-      ? [
-          {
-            alt: "ethereum logo",
-            icon: "eth",
-            peRatio: peRatios.ETH,
-            ratio: peRatios.ETH,
-            symbol: "ETH",
-          },
-          {
-            alt: "apple logo",
-            icon: "apple",
-            peRatio: peRatios.AAPL,
-            ratio: peRatios.AAPL,
-            symbol: "AAPL",
-          },
-          {
-            alt: "amazon logo",
-            icon: "amazon",
-            peRatio: peRatios.AMZN,
-            ratio: peRatios.AMZN,
-            symbol: "AMZN",
-          },
-          {
-            alt: "tesla logo",
-            icon: "tesla",
-            peRatio: peRatios.TSLA,
-            ratio: peRatios.TSLA,
-            symbol: "TSLA",
-          },
-          {
-            alt: "disney logo",
-            icon: "disney",
-            peRatio: peRatios.DIS,
-            ratio: peRatios.DIS,
-            symbol: "DIS",
-          },
-          {
-            alt: "google logo",
-            icon: "google",
-            peRatio: peRatios.GOOGL,
-            ratio: peRatios.GOOGL,
-            symbol: "GOOGL",
-          },
-          {
-            alt: "netflix logo",
-            icon: "netflix",
-            peRatio: peRatios.NFLX,
-            ratio: peRatios.NFLX,
-            symbol: "NFLX",
-          },
-          {
-            alt: "intel logo",
-            icon: "intel",
-            peRatio: peRatios.INTC,
-            ratio: peRatios.INTC,
-            symbol: "INTC",
-          },
-        ]
-      : [];
+  const markerList: MarkerProps[] = [
+    {
+      alt: "ethereum logo",
+      icon: "eth",
+      peRatio: peRatios.ETH,
+      ratio: peRatios.ETH,
+      symbol: "ETH",
+    },
+    {
+      alt: "apple logo",
+      icon: "apple",
+      peRatio: peRatios.AAPL,
+      ratio: peRatios.AAPL,
+      symbol: "AAPL",
+    },
+    {
+      alt: "amazon logo",
+      icon: "amazon",
+      peRatio: peRatios.AMZN,
+      ratio: peRatios.AMZN,
+      symbol: "AMZN",
+    },
+    {
+      alt: "tesla logo",
+      icon: "tesla",
+      peRatio: peRatios.TSLA,
+      ratio: peRatios.TSLA,
+      symbol: "TSLA",
+    },
+    {
+      alt: "disney logo",
+      icon: "disney",
+      peRatio: peRatios.DIS,
+      ratio: peRatios.DIS,
+      symbol: "DIS",
+    },
+    {
+      alt: "google logo",
+      icon: "google",
+      peRatio: peRatios.GOOGL,
+      ratio: peRatios.GOOGL,
+      symbol: "GOOGL",
+    },
+    {
+      alt: "netflix logo",
+      icon: "netflix",
+      peRatio: peRatios.NFLX,
+      ratio: peRatios.NFLX,
+      symbol: "NFLX",
+    },
+    {
+      alt: "intel logo",
+      icon: "intel",
+      peRatio: peRatios.INTC,
+      ratio: peRatios.INTC,
+      symbol: "INTC",
+    },
+  ];
 
   const shownList = markerList.reduce((list: Array<MarkerProps>, marker) => {
     if (marker?.peRatio === null) return list;
