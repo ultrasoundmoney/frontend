@@ -14,14 +14,16 @@ import { BaseText } from "./Texts";
 import BodyText from "./TextsNext/BodyText";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
-// Markers are positioned absolutely, manipulating their 'left' relatively to the full width bar which should be positioned relatively as their parent. Marker width
-const Marker: FC<{
+type MarkerProps = {
   alt?: string;
   icon: string;
   peRatio: number | undefined;
   ratio: number;
   symbol?: string;
-}> = ({ alt, icon, peRatio, ratio, symbol }) => {
+};
+
+// Markers are positioned absolutely, manipulating their 'left' relatively to the full width bar which should be positioned relatively as their parent. Marker width
+const Marker: FC<MarkerProps> = ({ alt, icon, peRatio, ratio, symbol }) => {
   const [isHovering, setIsHovering] = useState(false);
 
   return (
