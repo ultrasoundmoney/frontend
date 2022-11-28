@@ -84,19 +84,68 @@ const MarkerText: FC<{ children: ReactNode; ratio: number }> = ({
   </div>
 );
 
-
-const CompanyMarkers: FC<typeof usePeRatios & { ETH: number, peRatios: any }> = ({ peRatios }) => {
+const CompanyMarkers: FC<
+  typeof usePeRatios & { ETH: number; peRatios: any }
+> = ({ peRatios }) => {
   const markerList: Array<typeof Marker | undefined> =
     peRatios !== undefined
       ? [
-          { alt: "ethereum logo", icon: "eth", peRatio: peRatios.ETH, ratio: peRatios.ETH, symbol: "ETH"},
-          { alt: "apple logo", icon: "apple", peRatio: peRatios.AAPL, ratio: peRatios.AAPL, Symbol: "AAPL"},
-          { alt: "amazon logo", icon: "amazon", peRatio: peRatios.AMZN, ratio: peRatios.AMZN, Symbol: "AMZN"},
-          { alt: "tesla logo", icon: "tesla", peRatio: peRatios.TSLA, ratio: peRatios.TSLA, symbol: "TSLA"},
-          { alt: "disney logo", icon: "disney", peRatio: peRatios.DIS, ratio: peRatios.DIS, symbol: "DIS"},
-          { alt: "google logo", icon: "google", peRatio: peRatios.GOOGL, ratio: peRatios.GOOGL, symbol: "GOOGL"},
-          { alt: "netflix logo", icon: "netflix", peRatio: peRatios.NFLX, ratio: peRatios.NFLX, symbol: "NFLX"},
-          { alt: "intel logo", icon: "intel", peRatio: peRatios.INTC, ratio: peRatios.INTC, Symbol: "INTC"},
+          {
+            alt: "ethereum logo",
+            icon: "eth",
+            peRatio: peRatios.ETH,
+            ratio: peRatios.ETH,
+            symbol: "ETH",
+          },
+          {
+            alt: "apple logo",
+            icon: "apple",
+            peRatio: peRatios.AAPL,
+            ratio: peRatios.AAPL,
+            Symbol: "AAPL",
+          },
+          {
+            alt: "amazon logo",
+            icon: "amazon",
+            peRatio: peRatios.AMZN,
+            ratio: peRatios.AMZN,
+            Symbol: "AMZN",
+          },
+          {
+            alt: "tesla logo",
+            icon: "tesla",
+            peRatio: peRatios.TSLA,
+            ratio: peRatios.TSLA,
+            symbol: "TSLA",
+          },
+          {
+            alt: "disney logo",
+            icon: "disney",
+            peRatio: peRatios.DIS,
+            ratio: peRatios.DIS,
+            symbol: "DIS",
+          },
+          {
+            alt: "google logo",
+            icon: "google",
+            peRatio: peRatios.GOOGL,
+            ratio: peRatios.GOOGL,
+            symbol: "GOOGL",
+          },
+          {
+            alt: "netflix logo",
+            icon: "netflix",
+            peRatio: peRatios.NFLX,
+            ratio: peRatios.NFLX,
+            symbol: "NFLX",
+          },
+          {
+            alt: "intel logo",
+            icon: "intel",
+            peRatio: peRatios.INTC,
+            ratio: peRatios.INTC,
+            Symbol: "INTC",
+          },
         ]
       : [];
 
@@ -104,7 +153,9 @@ const CompanyMarkers: FC<typeof usePeRatios & { ETH: number, peRatios: any }> = 
     .reduce((list: Array<typeof Marker | undefined>, marker) => {
       if (marker?.peRatio === null) return list;
 
-      const someConflict = list.some((shownMarker) => Math.abs(shownMarker.peRatio - marker.peRatio) < 4);
+      const someConflict = list.some(
+        (shownMarker) => Math.abs(shownMarker.peRatio - marker.peRatio) < 4,
+      );
 
       if (someConflict) {
         return list;
@@ -119,7 +170,7 @@ const CompanyMarkers: FC<typeof usePeRatios & { ETH: number, peRatios: any }> = 
       {shownList.map((marker: any) => {
         return (
           <Marker
-            icon={marker.icon} 
+            icon={marker.icon}
             peRatio={marker.peRatio}
             ratio={linearFromLog(marker.peRatio)}
             symbol={marker.symbol}
@@ -390,4 +441,3 @@ price = profits * P/E ratio * monetary premium`}
 };
 
 export default PriceModel;
-
