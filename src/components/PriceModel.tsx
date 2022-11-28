@@ -170,6 +170,7 @@ const CompanyMarkers: FC<
       {shownList.map((marker: any) => {
         return (
           <Marker
+            key={marker.symbol}
             icon={marker.icon}
             peRatio={marker.peRatio}
             ratio={linearFromLog(marker.peRatio)}
