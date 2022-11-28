@@ -104,19 +104,17 @@ const BurnMarkers: FC<{ burnMarkers?: BurnMarkers }> = ({ burnMarkers }) => {
         ]
       : [];
 
-  const shownList = markerList
-    .reduce((list: BurnMarker[], marker) => {
-      const someConflict = list.some(
-        (shownMarker) => Math.abs(shownMarker.value - marker.value) < 0.0017,
-      );
+  const shownList = markerList.reduce((list: BurnMarker[], marker) => {
+    const someConflict = list.some(
+      (shownMarker) => Math.abs(shownMarker.value - marker.value) < 0.0017,
+    );
 
-      if (someConflict) {
-        return list;
-      }
+    if (someConflict) {
+      return list;
+    }
 
-      return [...list, marker];
-    }, [])
-    .sort((m1, m2) => m1.value - m2.value);
+    return [...list, marker];
+  }, []);
 
   return (
     <>
