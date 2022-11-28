@@ -17,7 +17,7 @@ import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 type MarkerProps = {
   alt?: string;
   icon: string;
-  peRatio: number | undefined;
+  peRatio: number;
   ratio: number;
   symbol?: string;
 };
