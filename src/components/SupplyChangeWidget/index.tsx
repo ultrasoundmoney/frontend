@@ -3,7 +3,7 @@ import type { FC } from "react";
 import CountUp from "react-countup";
 import {
   impreciseEthSupplyFromParts,
-  useEthSupplyParts,
+  useSupplyParts,
 } from "../../api/eth-supply";
 import { useSupplyOverTime } from "../../api/supply-over-time";
 import { dateTimeFromSlot } from "../../beacon-time";
@@ -38,7 +38,7 @@ const SupplyChange: FC<Props> = ({
   onSimulateProofOfWork,
 }) => {
   const supplyOverTime = useSupplyOverTime();
-  const ethSupplyParts = useEthSupplyParts();
+  const ethSupplyParts = useSupplyParts();
   const currentSupply = impreciseEthSupplyFromParts(ethSupplyParts);
   const supplyOverTimeTimeFrame = supplyOverTime?.[timeFrame];
 

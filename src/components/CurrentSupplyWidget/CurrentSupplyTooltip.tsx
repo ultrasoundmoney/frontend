@@ -1,5 +1,5 @@
 import type { FC, ReactNode } from "react";
-import type { EthSupplyParts } from "../../api/eth-supply";
+import type { SupplyParts } from "../../api/eth-supply";
 import { BaseText, TooltipTitle } from "../Texts";
 import LabelText from "../TextsNext/LabelText";
 import PreciseEth from "./PreciseEth";
@@ -20,7 +20,7 @@ const FormulaText: FC<{
 );
 
 const CurrentSupplyTooltip: FC<{
-  ethSupply: EthSupplyParts;
+  ethSupply: SupplyParts;
   onClickClose: () => void;
 }> = ({ ethSupply, onClickClose }) => (
   <div

@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { useState } from "react";
-import { ethSupplyFromParts, useEthSupplyParts } from "../../api/eth-supply";
+import { ethSupplyFromParts, useSupplyParts } from "../../api/eth-supply";
 import { dateTimeFromSlot } from "../../beacon-time";
 import Nerd from "../Nerd";
 import UpdatedAgo from "../UpdatedAgo";
@@ -10,7 +10,7 @@ import CurrentSupplyTooltip from "./CurrentSupplyTooltip";
 import PreciseEth from "./PreciseEth";
 
 const EthSupplyWidget: FC = () => {
-  const ethSupplyParts = useEthSupplyParts();
+  const ethSupplyParts = useSupplyParts();
   const ethSupply = ethSupplyFromParts(ethSupplyParts);
   const [showNerdTooltip, setShowNerdTooltip] = useState(false);
 

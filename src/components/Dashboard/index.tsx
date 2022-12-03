@@ -7,7 +7,7 @@ import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useBaseFeePerGas } from "../../api/base-fee-per-gas";
 import { useEthPriceStats } from "../../api/eth-price-stats";
-import { ethSupplyFromParts, useEthSupplyParts } from "../../api/eth-supply";
+import { ethSupplyFromParts, useSupplyParts } from "../../api/eth-supply";
 import colors from "../../colors";
 import { WEI_PER_GWEI } from "../../eth-units";
 import { FeatureFlagsContext, useFeatureFlags } from "../../feature-flags";
@@ -117,7 +117,7 @@ const GasPriceTitle = () => {
 };
 
 const useIsDeflationary = () => {
-  const ethSupplyParts = useEthSupplyParts();
+  const ethSupplyParts = useSupplyParts();
   const ethSupply = JSBI.toNumber(ethSupplyFromParts(ethSupplyParts)) / 1e18;
   const [isDeflationary, setIsDeflationary] = useState(false);
   const { simulateDeflationary } = useContext(FeatureFlagsContext);
