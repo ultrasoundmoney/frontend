@@ -9,7 +9,7 @@ import { useSupplyOverTime } from "../../api/supply-over-time";
 import { dateTimeFromSlot } from "../../beacon-time";
 import { formatTwoDigitsSigned } from "../../format";
 import { posIssuancePerDay, powIssuancePerDay } from "../../static-ether-data";
-import type { LimitedTimeFrameWithMerge } from "../Dashboard/SupplySection";
+import type { LimitedTimeFrameWithMerge } from "../Dashboard/SupplyDashboard";
 import SimulateProofOfWork from "../SimulateProofOfWork";
 import SinceMergeIndicator from "../SinceMergeIndicator";
 import { BaseText } from "../Texts";

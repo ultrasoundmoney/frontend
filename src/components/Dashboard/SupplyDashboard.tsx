@@ -41,7 +41,7 @@ type Props = {
   timeFrame: TimeFrameNext;
 };
 
-const SupplySection: FC<Props> = ({
+const SupplyDashboard: FC<Props> = ({
   timeFrame,
   onClickTimeFrame,
   onSetTimeFrame,
@@ -95,4 +95,4 @@ const SupplySection: FC<Props> = ({
   );
 };
 
-export default SupplySection;
+export default SupplyDashboard;

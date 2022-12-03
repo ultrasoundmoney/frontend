@@ -26,14 +26,14 @@ import MainTitle from "../MainTitle";
 import TopBar from "../TopBar";
 import FamSection from "./FamSection";
 import JoinDiscordSection from "./JoinDiscordSection";
-import SupplySection from "./SupplySection";
+import SupplyDashboard from "./SupplyDashboard";
 
 const AdminTools = dynamic(() => import("../AdminTools"), { ssr: false });
 // We get hydration errors in production.
 // It's hard to tell what component causes them due to minification.
 // We stop SSR on all components, and slowly turn them back on one-by-one to see which cause hydration issues.
 // On: MergeSection, JoinDiscordSection
-// Off: SupplySection, BurnSection, MonetaryPremiumSection, FamSection, TotalValueSecuredSection.
+// Off: SupplyDashboard, BurnSection, MonetaryPremiumSection, FamSection, TotalValueSecuredSection.
 const TotalValueSecuredSection = dynamic(
   () => import("./TotalValueSecuredSection"),
   { ssr: false },
@@ -197,7 +197,7 @@ const Dashboard: FC = () => {
             </video>
           )}
           <MainTitle onClick={handleToggleBatLoop}>ultra sound money</MainTitle>
-          <SupplySection
+          <SupplyDashboard
             timeFrame={timeFrame}
             onSetTimeFrame={handleSetTimeFrame}
             onClickTimeFrame={handleClickTimeFrame}

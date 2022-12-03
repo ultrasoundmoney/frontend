@@ -3,7 +3,7 @@ import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { parisHardFork } from "../dates";
 import { millisFromHours } from "../duration";
-import type { LimitedTimeFrameWithMerge } from "./Dashboard/SupplySection";
+import type { LimitedTimeFrameWithMerge } from "./Dashboard/SupplyDashboard";
 import { TimeFrameText } from "./Texts";
 import { WidgetTitle } from "./WidgetSubcomponents";
 

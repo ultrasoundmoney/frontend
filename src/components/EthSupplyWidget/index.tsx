@@ -27,7 +27,7 @@ import { posIssuancePerDay, powIssuancePerDay } from "../../static-ether-data";
 import type {
   LimitedTimeFrameWithMerge,
   SupplyPoint,
-} from "../Dashboard/SupplySection";
+} from "../Dashboard/SupplyDashboard";
 import SimulateProofOfWork from "../SimulateProofOfWork";
 import SinceMergeIndicator from "../SinceMergeIndicator";
 import LabelText from "../TextsNext/LabelText";
