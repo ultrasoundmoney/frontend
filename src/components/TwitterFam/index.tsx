@@ -1,8 +1,8 @@
-import type { FC, RefObject } from "react";
+import { FC, RefObject } from "react";
 import { useCallback, useRef, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { usePopper } from "react-popper";
-import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
+import { ReactZoomPanPinchRef, TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import type { FamProfile } from "../../api/profiles";
 import { useProfiles } from "../../api/profiles";
@@ -14,6 +14,8 @@ import Twemoji from "../Twemoji";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import SectionDivider from "../SectionDivider";
+import ClickAwayListener from "react-click-away-listener";
+import ImageWithOnClickTooltip from "../ImageWithOnClickTooltip";
 
 // See if merging with leaderboards tooltip makes sense after making it more generic.
 export const useTooltip = () => {
@@ -33,7 +35,7 @@ export const useTooltip = () => {
   const onTooltip = useRef<boolean>(false);
   const onImage = useRef<boolean>(false);
 
-  const handleImageMouseEnter = useCallback(
+  const handleImageClick = useCallback(
     (profile: FamProfile, ref: RefObject<HTMLImageElement>) => {
       // The ranking data isn't there yet so no tooltip can be shown.
       if (profile === undefined) {
@@ -41,42 +43,32 @@ export const useTooltip = () => {
       }
 
       // onImage.current = true;
-      if (!showTooltip && !onTooltip.current) {
-        setRefEl(ref.current);
-        setSelectedItem(profile);
-        setShowTooltip(true);
-      } else {
-        setShowTooltip(false);
-        setSelectedItem(undefined);
-      }
+      // wait for the click-a-way event to fire before showing the tooltip
+      const id = window.setTimeout(() => {
+        if (!showTooltip && !onTooltip.current) {
+          setRefEl(ref.current);
+          setSelectedItem(profile);
+          setShowTooltip(true);
+        } else {
+          setShowTooltip(false);
+          setSelectedItem(undefined);
+        }
+      }, 100);
 
-
-      // // Delayed show.
-      // const id = window.setTimeout(() => {
-      //   if (onImage.current || onTooltip.current) {
-      //     setRefEl(ref.current);
-      //     setSelectedItem(profile);
-      //     setShowTooltip(true);
-      //   }
-      // }, 300);
-
-      // return () => window.clearTimeout(id);
+      return () => window.clearTimeout(id);
     },
     [showTooltip, setShowTooltip, setSelectedItem, setRefEl, onImage, onTooltip],
   );
 
-  const handleImageMouseLeave = useCallback(() => {
+  const handleClickAway = useCallback(() => {
     onImage.current = false;
 
-    // Delayed hide.
-    const id = window.setTimeout(() => {
-      if (!onImage.current && !onTooltip.current) {
+    if (!onImage.current && !onTooltip.current) {
+      window.setTimeout(() => {
         setShowTooltip(false);
         setSelectedItem(undefined);
-      }
-    }, 300);
-
-    return () => window.clearTimeout(id);
+      }, 75);
+    }
   }, [onImage, onTooltip]);
 
   const handleTooltipEnter = useCallback(() => {
@@ -97,22 +89,23 @@ export const useTooltip = () => {
     return () => window.clearTimeout(id);
   }, [onImage, onTooltip]);
 
-  const handleClickImage = useCallback(
-    (ranking: FamProfile | undefined) => {
-      if (md) {
-        return;
-      }
+  // todo: I think I can remove this now
+  // const handleClickImage = useCallback(
+  //   (ranking: FamProfile | undefined) => {
+  //     if (md) {
+  //       return;
+  //     }
 
-      setSelectedItem(ranking);
-    },
-    [md, setSelectedItem],
-  );
+  //     setSelectedItem(ranking);
+  //   },
+  //   [md, setSelectedItem],
+  // );
 
   return {
     attributes,
-    handleClickImage,
-    handleImageMouseEnter,
-    handleImageMouseLeave,
+    // handleClickImage,
+    handleImageClick,
+    handleClickAway,
     handleTooltipEnter,
     handleTooltipLeave,
     selectedItem,
@@ -144,9 +137,9 @@ const TwitterFam: FC = () => {
 
   const {
     attributes,
-    handleClickImage,
-    handleImageMouseEnter,
-    handleImageMouseLeave,
+    // handleClickImage,
+    handleImageClick,
+    handleClickAway,
     handleTooltipEnter,
     handleTooltipLeave,
     popperStyles,
@@ -155,6 +148,10 @@ const TwitterFam: FC = () => {
     setSelectedItem,
     showTooltip,
   } = useTooltip();
+
+  const panZoomRef = useRef<ReactZoomPanPinchRef>(null);
+
+  console.log('scale:', panZoomRef.current?.state?.scale)
 
   return (
     <>
@@ -202,18 +199,23 @@ const TwitterFam: FC = () => {
         </div>
       </BasicErrorBoundary>
       <div className="h-12"></div>
-      <FullScreen handle={fullScreenHandle}>
+      <FullScreen
+        handle={fullScreenHandle}
+        className="bg-blue-midnightexpress"
+      >
         <div className="flex flex-wrap justify-center w-screen">
           <TransformWrapper
+            ref={panZoomRef}
             initialScale={2}
             initialPositionX={0}
             initialPositionY={0}
             wheel={{ wheelDisabled: true }}
+            // onZoomStop={handleOnZoomStop}
           >
             {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
               <>
                 <div
-                  style={{ display: "flex", justifyContent: "center", marginBottom: 10 }}
+                  className="flex justify-center my-4"
                 >
                   <button
                     className={`
@@ -278,6 +280,7 @@ const TwitterFam: FC = () => {
                       px-2 py-1
                     `}
                     // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                    // todo: reset the zoom and position on exit
                     onClick={fullScreenHandle.active ? fullScreenHandle.exit : fullScreenHandle.enter}
                   >
                     <img
@@ -293,25 +296,23 @@ const TwitterFam: FC = () => {
                   wrapperStyle={{ height: fullScreenHandle.active ? '100%' : 500, cursor: "move" }}
                 >
                   {currentProfiles.map((profile, index) => (
-                    <ImageWithTooltip
-                      key={profile?.profileUrl ?? index}
-                      // className="m-2 h-10 w-10 select-none"
-                      className="m-1 h-3 w-3 select-none"
-                      imageUrl={profile?.profileImageUrl}
-                      isDoneLoading={profile !== undefined}
-                      skeletonDiameter="40px"
-                      onMouseEnter={(ref) =>
-                        !md || profile === undefined
-                          ? () => undefined
-                          : handleImageMouseEnter(profile, ref)
-                      }
-                      onMouseLeave={() =>
-                        !md ? () => undefined : handleImageMouseLeave()
-                      }
-                      onClick={() => handleClickImage(profile)}
-                      height={40}
-                      width={40}
-                    />
+                    <ClickAwayListener onClickAway={handleClickAway}>
+                      <ImageWithOnClickTooltip
+                        key={profile?.profileUrl ?? index}
+                        className="m-1 h-3 w-3 select-none"
+                        imageUrl={profile?.profileImageUrl}
+                        isDoneLoading={profile !== undefined}
+                        skeletonDiameter="20px"
+                        onClick={(ref) =>
+                          !md || profile === undefined
+                            ? () => undefined
+                            : handleImageClick(profile, ref)
+                        }
+                        height={20}
+                        width={20}
+                        currentScale={panZoomRef.current?.state?.scale}
+                      />
+                    </ClickAwayListener>
                   ))}
                 </TransformComponent>
               </>
@@ -328,8 +329,8 @@ const TwitterFam: FC = () => {
             visibility: showTooltip && md ? "visible" : "hidden",
           }}
           {...attributes.popper}
-          onMouseEnter={handleTooltipEnter}
-          onMouseLeave={handleTooltipLeave}
+          // onMouseEnter={handleTooltipEnter}
+          // onMouseLeave={handleTooltipLeave}
         >
           <FamTooltip
             description={selectedItem?.bio}
