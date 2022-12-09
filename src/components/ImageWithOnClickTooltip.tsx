@@ -1,32 +1,30 @@
-import type { StaticImageData } from "next/legacy/image";
-import Image from "next/legacy/image";
-import type { FC, RefObject } from "react";
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
+import type { FC, MouseEventHandler, RefObject } from "react";
 import { useCallback, useContext, useRef, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import questionMarkSvg from "../assets/question-mark-v2.svg";
 import { FeatureFlagsContext } from "../feature-flags";
 
-type ImageWithTooltipProps = {
+type ImageWithOnClickTooltipProps = {
   className?: HTMLImageElement["className"];
   height: number;
   imageUrl: string | undefined;
   isDoneLoading?: boolean;
-  onClick?: () => void;
-  onMouseEnter?: (ref: RefObject<HTMLImageElement>) => void;
-  onMouseLeave?: (ref: RefObject<HTMLImageElement>) => void;
+  onClick: (ref: RefObject<HTMLImageElement>) => void;
   skeletonDiameter?: string;
   width: number;
+  currentScale: number | undefined;
 };
 
-const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
+const ImageWithOnClickTooltip: FC<ImageWithOnClickTooltipProps> = ({
   className = "",
   height,
   imageUrl,
   isDoneLoading = true,
   onClick,
-  onMouseEnter,
-  onMouseLeave,
   width,
+  currentScale,
 }) => {
   const imageRef = useRef<HTMLImageElement>(null);
   const { previewSkeletons } = useContext(FeatureFlagsContext);
@@ -37,6 +35,8 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
   const onImageError = useCallback(() => {
     setImgSrc(questionMarkSvg as StaticImageData);
   }, []);
+
+  console.log("currentScale", currentScale);
 
   return (
     <>
@@ -52,27 +52,28 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
       ) : (
         <div
           ref={imageRef}
-          onMouseEnter={() =>
-            onMouseEnter === undefined ? undefined : onMouseEnter(imageRef)
-          }
-          onMouseLeave={() =>
-            onMouseLeave === undefined ? undefined : onMouseLeave(imageRef)
-          }
-          className={className}
+          onClick={onClick === undefined ? undefined : () => onClick(imageRef)}
+          // className={className}
+          className={`
+              cursor-pointer
+              relative
+              ${className}
+              `}
+              // ${onMouseEnter !== undefined ? "hover:opacity-60" : ""}
         >
           <Image
             className={`
-              cursor-pointer
               rounded-full active:brightness-125
               md:cursor-auto md:active:brightness-100
-              ${onMouseEnter !== undefined ? "hover:opacity-60" : ""}
-            `}
+              `}
+              // ${onMouseEnter !== undefined ? "hover:opacity-60" : ""}
             src={imgSrc ?? (questionMarkSvg as StaticImageData)}
             alt="logo of an ERC20 token"
             onError={onImageError}
-            onClick={onClick}
-            width={width}
-            height={height}
+            // onClick={onClick}
+            quality={40}
+            // sizes="(max-width: 640px) 100vw, 640px"
+            fill
           />
         </div>
       )}
@@ -80,4 +81,4 @@ const ImageWithTooltip: FC<ImageWithTooltipProps> = ({
   );
 };
 
-export default ImageWithTooltip;
+export default ImageWithOnClickTooltip;

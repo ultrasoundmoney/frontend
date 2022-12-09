@@ -156,7 +156,11 @@ const Tooltip: FC<TooltipProps> = ({
         }`}
       >
         <WidgetTitle>external links</WidgetTitle>
-        <div className="flex select-none gap-x-4">
+        <div className="flex select-none gap-x-4"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+        >
           <ExternalLink
             alt="twitter logo"
             className={`${twitterUrl === undefined ? "hidden" : "block"}`}
