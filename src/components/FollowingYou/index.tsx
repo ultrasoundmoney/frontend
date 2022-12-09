@@ -71,11 +71,11 @@ const FollowingYou: FC = () => {
 
   const {
     attributes,
-    handleClickImage,
+    // handleClickImage,
     handleTooltipEnter,
     handleTooltipLeave,
-    handleImageMouseLeave,
-    handleImageMouseEnter,
+    // handleImageMouseLeave,
+    // handleImageMouseEnter,
     selectedItem,
     setPopperEl,
     setSelectedItem,
@@ -138,7 +138,7 @@ const FollowingYou: FC = () => {
           ) : (
             <>
               <div className="flex flex-wrap justify-center">
-                {followers.followers.map((profile, index) => (
+                {/* {followers.followers.map((profile, index) => (
                   <ImageWithTooltip
                     key={profile.profileUrl ?? index}
                     className="m-2 h-10 w-10"
@@ -149,7 +149,7 @@ const FollowingYou: FC = () => {
                     height={40}
                     width={40}
                   />
-                ))}
+                ))} */}
               </div>
               {followers.count > followers.followers.length && (
                 <p className="p-8 text-center text-xl text-white">{`+${formatZeroDecimals(
