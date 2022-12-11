@@ -502,7 +502,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
       series: [
         {
           id: SUPPLY_SINCE_MERGE_SERIES_ID,
-          type: "line",
+          type: "spline",
           name: "ETH",
           data:
             lastPointPos !== undefined && ethPosSeries !== undefined
@@ -548,7 +548,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
           visible: simulateProofOfWork,
           enableMouseTracking: simulateProofOfWork,
           id: BITCOIN_SUPPLY_ID,
-          type: "line",
+          type: "spline",
           shadow: {
             color: "#FF891D33",
             width: 15,
@@ -585,7 +585,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
           id: SUPPLY_SINCE_MERGE_POW_SERIES_ID,
           name: "ETH (PoW)",
           showInLegend: simulateProofOfWork,
-          type: "line",
+          type: "spline",
           data:
             ethPowSeries === undefined
               ? undefined
@@ -612,7 +612,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
         {
           color: "transparent",
           visible: simulateProofOfWork,
-          type: "line",
+          type: "spline",
           data: ethPowSeries,
           enableMouseTracking: false,
           showInLegend: false,
