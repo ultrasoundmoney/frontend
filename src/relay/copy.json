@@ -1,0 +1,26 @@
+[
+    {
+        "question": "What is the ultra sound relay?",
+        "answer": "The ultra sound relay is a credibly-neutral and permissionless relay—a public good from the ultrasound.money team."
+    },
+    {
+        "question": "What is a credibly-neutral relay?",
+        "answer": "A credibly-neutral relay only validates blocks against consensus rules as in enshrined proposer-builder separation."
+    },
+    {
+        "question": "What is enshrined proposer-builder separation?",
+        "answer": "Enshrined proposer-builder separation (PBS) is an in-consensus PBS without relays, removing relay weak censorship."
+    },
+    {
+        "question": "What is weak censorship?",
+        "answer": "Weak censorship is mild transaction censorship which increases on-chain inclusion delay of censored transactions."
+    },
+    {
+        "question": "How delayed are censored transactions?",
+        "answer": "Censorship in X% of blocks yields 1/(1-X%) larger average delay. If X% = 80%, delay grows 5x from 12 sec to 1 min."
+    },
+    {
+        "question": "Anything else?",
+        "answer": "The relay operators abstain from searching and block building, and commit to self-cap the relay to 1/3 of blocks."
+    }
+]
