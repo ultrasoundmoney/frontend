@@ -1,5 +1,6 @@
 import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
+import SiteMetadata from "../site-metadata";
 import { SWRConfig } from "swr";
 import type { BaseFeePerGas } from "../api/base-fee-per-gas";
 import { fetchBaseFeePerGas } from "../api/base-fee-per-gas";
@@ -55,6 +56,22 @@ const StoryPreview: NextPage<StaticProps> = ({ fallback }) => (
   <>
     <Head>
       <title>ultrasound.money</title>
+      <meta name="description" content={SiteMetadata.description} />
+      <meta
+        name="keywords"
+        content="ultra sound money, ethereum, ETH, sound money, fee burn, EIP-1559"
+      />
+      {/* When sharing the site on twitter, twitter adds our metadata, this adds little value, so we remove it. To not spend a lot of time removing our metadata from every shared link we're disabling twitter metadata for now. */}
+      <meta property="og:title" content={SiteMetadata.title} />
+      <meta property="og:description" content={SiteMetadata.description} />
+      <meta property="og:url" content="https://ultrasound.money" />
+      {/* This serves our Plausible analytics script. We use cloudflare workers to make this possible. The name is intentionally vague as suggested in the Plausible docs. */}
+      <script
+        defer
+        data-domain="ultrasound.money"
+        data-api="https://ultrasound.money/cfw/event"
+        src="https://ultrasound.money/cfw/script.js"
+      />
     </Head>
     <SWRConfig
       value={{
