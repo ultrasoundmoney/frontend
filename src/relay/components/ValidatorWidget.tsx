@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 
 import * as Format from "../../format";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";

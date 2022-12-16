@@ -1,5 +1,6 @@
-import { FC } from "react";
+import type { FC } from "react";
 
+import type { ApiPayload, ApiValidator } from "../api";
 import HeaderGlow from "../../components/HeaderGlow";
 import MainTitle from "../../components/MainTitle";
 import AddressWidget from "./AddressWidget";
@@ -8,17 +9,6 @@ import InclusionsWidget from "./InclusionsWidget";
 import ValidatorWidget from "./ValidatorWidget";
 import FaqSection from "./FaqSection";
 import ContactSection from "../../components/ContactSection";
-
-type ApiPayload = {
-  insertedAt: Date;
-  blockNumber: number;
-  value: number;
-};
-
-type ApiValidator = {
-  insertedAt: Date;
-  pubkeyFragment: string;
-};
 
 export type RelayDashboardProps = {
   payloadCount: number;

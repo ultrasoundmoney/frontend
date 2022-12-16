@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 
 import { getRelayUrl, getRelayDisplayUrl } from "../config";
 import Button from "../../components/BlueButton";
@@ -36,7 +36,9 @@ const AddressWidget: FC = () => {
         </p>
         <div
           onClick={() => {
-            navigator.clipboard.writeText(address);
+            navigator.clipboard.writeText(address).catch((err) => {
+              console.error("failed to write to clipboard", err);
+            });
             setCopyTextVisible(true);
           }}
         >

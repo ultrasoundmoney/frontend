@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 
 import { getApiUrl } from "../config";
 import { WidgetBackground } from "../../components/WidgetSubcomponents";
@@ -24,6 +24,9 @@ const CheckRegistrationWidget: FC = () => {
           } else {
             setRegistrationStatus("not registered");
           }
+        })
+        .catch((err) => {
+          console.error("failed to fetch registration status", err);
         });
     }
   };
