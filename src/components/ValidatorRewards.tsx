@@ -12,6 +12,7 @@ import {
 import Colors from "../colors";
 import { GWEI_PER_ETH } from "../eth-units";
 import * as Format from "../format";
+import { hoverClassName } from "../styles";
 import { MoneyAmount, PercentAmount } from "./Amount";
 import { BaseText } from "./Texts";
 import BodyText from "./TextsNext/BodyText";
@@ -121,18 +122,19 @@ const RewardRow: FC<RewardRowProps> = ({
     className="link-animation grid grid-cols-3"
     onMouseEnter={() => setHovering?.(true)}
     onMouseLeave={() => setHovering?.(false)}
-    style={{ opacity: hovering !== undefined && hovering ? 0.6 : 1 }}
     href={link}
     target="_blank"
     rel="noreferrer"
   >
-    <BodyText>{name}</BodyText>
-    <MoneyAmount className="text-right font-light">
+    <BodyText className={`${hovering ? hoverClassName : ""}`}>{name}</BodyText>
+    <MoneyAmount
+      className={`text-right font-light ${hovering ? hoverClassName : ""}`}
+    >
       {amount === undefined
         ? undefined
         : Format.formatOneDecimal(amount / GWEI_PER_ETH)}
     </MoneyAmount>
-    <PercentAmount className="text-right">
+    <PercentAmount className={`text-right ${hovering ? hoverClassName : ""}`}>
       {apr === undefined ? undefined : Format.formatPercentOneDecimal(apr)}
     </PercentAmount>
   </a>
