@@ -73,6 +73,25 @@ const RelayIndexPage: FC<RelayDashboardProps> = ({
     <BasicErrorBoundary>
       <Head>
         <title>Ultra Sound Relay</title>
+        <meta property="og:title" content="Ultra Sound Relay" />
+        <meta
+          name="description"
+          content="Permissionless, neutral, and censorship free MEV relay"
+        />
+        <meta
+          name="keywords"
+          content="ultra sound relay, ethereum, ETH, MEV, MEV Boost Relay"
+        />
+        <meta
+          property="og:description"
+          content="Permissionless, neutral, and censorship free MEV relay"
+        />
+        <meta property="og:url" content="https://relay.ultrasound.money" />
+        <script
+          defer
+          data-domain="relay.ultrasound.money"
+          src="https://plausible.io/js/script.js"
+        ></script>
       </Head>
       <RelayDashboard {...props} />
     </BasicErrorBoundary>
