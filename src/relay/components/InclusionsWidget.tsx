@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 
 import * as Format from "../../format";
 import { getEtherscanUrl } from "../config";
@@ -27,6 +27,7 @@ const PayloadRow = ({ blockNumber, insertedAt, value }: Payload) => {
     <a
       key={blockNumber}
       target="_blank"
+      rel="noreferrer"
       href={`${etherscanUrl}/block/${blockNumber}`}
     >
       <li className="grid grid-cols-3 hover:opacity-60">

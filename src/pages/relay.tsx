@@ -1,44 +1,19 @@
-import { FC } from "react";
+import type { FC } from "react";
 import Head from "next/head";
 import * as D from "date-fns";
-import { getApiUrl } from "../relay/config";
+import * as Api from "../relay/api";
 import BasicErrorBoundary from "../components/BasicErrorBoundary";
 import RelayDashboard, {
-  RelayDashboardProps,
+  type RelayDashboardProps,
 } from "../relay/components/RelayDashboard";
 
 export const getServerSideProps = async () => {
-  const apiUrl = getApiUrl();
   const [payloads, payloadCount, validators, validatorCount] =
     await Promise.all([
-      fetch(`${apiUrl}/api/payloads`)
-        .then((res) => res.json())
-        .then(({ payloads }) => payloads)
-        .catch((err) => {
-          console.error("error fetching payloads", err);
-          return [];
-        }),
-      fetch(`${apiUrl}/api/payloads/count`)
-        .then((res) => res.json())
-        .then(({ count }) => count)
-        .catch((err) => {
-          console.error("error fetching payload count", err);
-          return 0;
-        }),
-      fetch(`${apiUrl}/api/validators`)
-        .then((res) => res.json())
-        .then(({ validators }) => validators)
-        .catch((err) => {
-          console.error("error fetching validators", err);
-          return [];
-        }),
-      fetch(`${apiUrl}/api/validators/count`)
-        .then((res) => res.json())
-        .then(({ validatorCount }) => validatorCount)
-        .catch((err) => {
-          console.error("error fetching validator count", err);
-          return 0;
-        }),
+      Api.fetchPayloads(),
+      Api.fetchPayloadCount(),
+      Api.fetchValidators(),
+      Api.fetchValidatorCount(),
     ]);
 
   return {
