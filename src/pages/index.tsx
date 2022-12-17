@@ -1,6 +1,7 @@
 import { minutesToSeconds } from "date-fns";
 import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
+import Script from "next/script";
 import { SWRConfig } from "swr";
 import SiteMetadata from "../site-metadata";
 import type { BaseFeePerGas } from "../api/base-fee-per-gas";
@@ -89,14 +90,14 @@ const IndexPage: NextPage<StaticProps> = ({ fallback }) => (
       <meta property="og:title" content={SiteMetadata.title} />
       <meta property="og:description" content={SiteMetadata.description} />
       <meta property="og:url" content="https://ultrasound.money" />
-      {/* This serves our Plausible analytics script. We use cloudflare workers to make this possible. The name is intentionally vague as suggested in the Plausible docs. */}
-      <script
-        defer
-        data-domain="ultrasound.money"
-        data-api="https://ultrasound.money/cfw/event"
-        src="https://ultrasound.money/cfw/script.js"
-      />
     </Head>
+    {/* This serves our Plausible analytics script. We use cloudflare workers to make this possible. The name is intentionally vague as suggested in the Plausible docs. */}
+    <Script
+      defer
+      data-domain="ultrasound.money"
+      data-api="https://ultrasound.money/cfw/event"
+      src="https://ultrasound.money/cfw/script.js"
+    />
     <SWRConfig
       value={{
         fallback,
