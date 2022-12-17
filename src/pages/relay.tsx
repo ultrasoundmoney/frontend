@@ -1,5 +1,6 @@
 import type { FC } from "react";
 import Head from "next/head";
+import Script from "next/script";
 import * as D from "date-fns";
 import * as Api from "../relay/api";
 import BasicErrorBoundary from "../components/BasicErrorBoundary";
@@ -62,12 +63,12 @@ const RelayIndexPage: FC<RelayDashboardProps> = ({
           content="Permissionless, neutral, and censorship free MEV relay"
         />
         <meta property="og:url" content="https://relay.ultrasound.money" />
-        <script
-          defer
-          data-domain="relay.ultrasound.money"
-          src="https://plausible.io/js/script.js"
-        ></script>
       </Head>
+      <Script
+        defer
+        data-domain="relay.ultrasound.money"
+        src="https://plausible.io/js/script.js"
+      />
       <RelayDashboard {...props} />
     </BasicErrorBoundary>
   );
