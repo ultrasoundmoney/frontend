@@ -9,6 +9,7 @@ export type ApiPayload = {
 export type ApiValidator = {
   insertedAt: Date;
   pubkeyFragment: string;
+  index: string;
 };
 
 // TODO: parse response bodies

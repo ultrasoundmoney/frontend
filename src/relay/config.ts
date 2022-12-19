@@ -42,3 +42,10 @@ export const getEtherscanUrl = () => {
     ? "https://goerli.etherscan.io"
     : "https://etherscan.io";
 };
+
+export const getBeaconchainUrl = () => {
+  const env = getEnv();
+  return env === "stag"
+    ? "https://goerli.beaconcha.in"
+    : "https://beaconcha.in";
+};

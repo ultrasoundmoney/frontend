@@ -9,21 +9,31 @@ import {
   WidgetBackground,
   WidgetTitle,
 } from "../../components/WidgetSubcomponents";
+import { getBeaconchainUrl } from "../config";
+
+const beaconChainUrl = getBeaconchainUrl();
 
 type Validator = {
   insertedAt: Date;
-  pubkeyFragment: string;
+  index: string;
 };
 
-const ValidatorRow = ({ insertedAt, pubkeyFragment }: Validator) => {
+const ValidatorRow = ({ insertedAt, index }: Validator) => {
   const registeredAgo = `${Format.formatDistance(new Date(), insertedAt)} ago`;
 
   return (
-    <div key={pubkeyFragment}>
-      <li className="grid grid-cols-2">
+    <a
+      key={index}
+      target="_blank"
+      rel="noreferrer"
+      href={`${beaconChainUrl}/validator/${index}`}
+    >
+      <li className="grid grid-cols-2 hover:opacity-60">
         <div className="mr-1">
           <BaseText font="font-roboto">
-            <SkeletonText width="1rem">{pubkeyFragment}</SkeletonText>
+            <SkeletonText width="1rem">
+              {Format.formatZeroDecimals(parseInt(index))}
+            </SkeletonText>
           </BaseText>
         </div>
         <div className="text-right">
@@ -32,7 +42,7 @@ const ValidatorRow = ({ insertedAt, pubkeyFragment }: Validator) => {
           </BaseText>
         </div>
       </li>
-    </div>
+    </a>
   );
 };
 
