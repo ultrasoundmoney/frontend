@@ -264,7 +264,7 @@ const getSupplyChangeLabel = (
     );
 
     return `
-      <div class="flex flex-row items-center gap-x-2 select-text">
+      <div class="flex flex-row items-center gap-x-2">
         <div class="w-2 h-2 rounded-full"></div>
         <div class="font-roboto font-normal text-slateus-400 text-xs">
           <span class="text-white">${yearlySupplyDeltaPercent}</span>/y
