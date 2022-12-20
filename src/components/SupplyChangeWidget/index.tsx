@@ -28,6 +28,15 @@ type Props = {
   timeFrame: LimitedTimeFrameWithMerge;
 };
 
+// To compare proof of stake issuance to proof of work issuance we offer a
+// "simulate proof of work" toggle. However, we only have a supply series under
+// proof of stake. Already including proof of stake issuance. Adding proof of
+// work issuance would mean "simulated proof of work" is really what supply
+// would look like if there was both proof of work _and_ proof of stake
+// issuance. To make the comparison apples to apples we subtract an estimated
+// proof of stake issuance to show the supply as if there were _only_ proof of
+// work issuance. A possible improvement would be to drop this ad-hoc solution
+// and have the backend return separate series.
 const POW_ISSUANCE_PER_DAY = powIssuancePerDay - posIssuancePerDay;
 const SLOTS_PER_DAY = 24 * 60 * 5;
 
