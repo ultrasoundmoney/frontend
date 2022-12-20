@@ -16,6 +16,8 @@ import type { ScarcityF } from "../api/scarcity";
 import { fetchScarcity } from "../api/scarcity";
 import BasicErrorBoundary from "../components/BasicErrorBoundary";
 import Dashboard from "../components/Dashboard";
+import type { SupplyChanges } from "../api/supply-changes";
+import { fetchSupplyChanges } from "../api/supply-changes";
 
 type StaticProps = {
   fallback: {
@@ -24,6 +26,7 @@ type StaticProps = {
     "/api/v2/fees/base-fee-per-gas-stats": BaseFeePerGasStats;
     "/api/v2/fees/eth-price-stats": EthPriceStats;
     "/api/v2/fees/eth-supply-parts": SupplyPartsF;
+    "/api/v2/fees/supply-changes": SupplyChanges;
   };
 };
 
@@ -34,12 +37,14 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
     ethPriceStats,
     ethSupplyF,
     scarcityF,
+    supplyChanges,
   ] = await Promise.all([
     fetchBaseFeePerGas(),
     fetchBaseFeePerGasStats(),
     fetchEthPriceStats(),
     fetchSupplyParts(),
     fetchScarcity(),
+    fetchSupplyChanges(),
   ]);
 
   if ("error" in ethSupplyF) {
@@ -62,6 +67,10 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
     throw baseFeePerGasStats.error;
   }
 
+  if ("error" in supplyChanges) {
+    throw supplyChanges.error;
+  }
+
   return {
     props: {
       fallback: {
@@ -70,6 +79,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
         "/api/v2/fees/base-fee-per-gas-stats": baseFeePerGasStats.data,
         "/api/v2/fees/eth-price-stats": ethPriceStats.data,
         "/api/v2/fees/eth-supply-parts": ethSupplyF.data,
+        "/api/v2/fees/supply-changes": supplyChanges.data,
       },
     },
     // Should be the expected lifetime of the data which goes stale quickest.
