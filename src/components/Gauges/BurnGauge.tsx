@@ -30,7 +30,7 @@ const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame, unit }) => {
       className={`
         flex flex-col items-center justify-start
         rounded-lg
-        bg-slateus-700 px-4 py-8 pt-7
+        bg-slateus-700 px-4 pb-4 pt-7
         md:rounded-none md:rounded-tl-lg md:px-0
       `}
     >

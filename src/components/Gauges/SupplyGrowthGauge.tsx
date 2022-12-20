@@ -101,12 +101,12 @@ const SupplyGrowthGauge: FC<Props> = ({
         flex flex-col items-center
         justify-start
         rounded-tl-lg rounded-tr-lg bg-slateus-700 px-4
-        py-8 pt-7
+        pb-4 pt-7
         md:rounded-none md:px-0
       `}
     >
       <WidgetTitle>supply growth</WidgetTitle>
-      <div className="mt-8 md:scale-90 lg:scale-100">
+      <div className="mt-6 md:scale-90 lg:scale-100">
         <SplitGaugeSvg max={max} progress={progress} />
         <animated.div
           className={`
