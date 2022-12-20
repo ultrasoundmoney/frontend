@@ -1,12 +1,5 @@
-import { differenceInSeconds } from "date-fns";
 import type { FC } from "react";
 import CountUp from "react-countup";
-import {
-  impreciseEthSupplyFromParts,
-  useSupplyParts,
-} from "../../api/eth-supply";
-import { useSupplyOverTime } from "../../api/supply-over-time";
-import { dateTimeFromSlot } from "../../beacon-time";
 import { formatTwoDigitsSigned } from "../../format";
 import { posIssuancePerDay, powIssuancePerDay } from "../../static-ether-data";
 import type { LimitedTimeFrameWithMerge } from "../Dashboard/SupplyDashboard";
@@ -18,8 +11,9 @@ import SkeletonText from "../TextsNext/SkeletonText";
 import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
-import _first from "lodash/first";
-import { PARIS_SUPPLY, PARIS_TIMESTAMP } from "../../hardforks/paris";
+import { useSupplyChanges } from "../../api/supply-changes";
+import JSBI from "jsbi";
+import { WEI_PER_ETH } from "../../eth-units";
 
 type Props = {
   onClickTimeFrame: () => void;
@@ -46,38 +40,31 @@ const SupplyChange: FC<Props> = ({
   onClickTimeFrame,
   onSimulateProofOfWork,
 }) => {
-  const supplyOverTime = useSupplyOverTime();
-  const ethSupplyParts = useSupplyParts();
-  const currentSupply = impreciseEthSupplyFromParts(ethSupplyParts);
-  const supplyOverTimeTimeFrame = supplyOverTime?.[timeFrame];
-
-  const firstPoint =
-    timeFrame === "since_merge"
-      ? { timestamp: PARIS_TIMESTAMP, supply: PARIS_SUPPLY }
-      : _first(supplyOverTimeTimeFrame);
-  const lastPoint = currentSupply;
-
-  const slotsSinceStart =
-    firstPoint === undefined
-      ? undefined
-      : differenceInSeconds(
-          dateTimeFromSlot(ethSupplyParts.beaconBalancesSum.slot),
-          new Date(firstPoint.timestamp),
-        ) / 12;
+  const supplyChanges = useSupplyChanges();
+  const supplyChangesTimeFrame = supplyChanges[timeFrame] ?? undefined;
 
   const simulatedPowIssuanceSinceMerge =
-    slotsSinceStart === undefined
+    supplyChangesTimeFrame === undefined
       ? undefined
-      : (slotsSinceStart * POW_ISSUANCE_PER_DAY) / SLOTS_PER_DAY;
+      : ((supplyChangesTimeFrame.to_slot - supplyChangesTimeFrame.from_slot) *
+          POW_ISSUANCE_PER_DAY) /
+        SLOTS_PER_DAY;
+
+  const supplyChange =
+    supplyChangesTimeFrame === undefined
+      ? undefined
+      : JSBI.subtract(
+          JSBI.BigInt(supplyChangesTimeFrame.to_supply),
+          JSBI.BigInt(supplyChangesTimeFrame.from_supply),
+        );
 
   const supplyDelta =
-    lastPoint === undefined ||
-    firstPoint === undefined ||
-    simulatedPowIssuanceSinceMerge === undefined
+    supplyChange === undefined || simulatedPowIssuanceSinceMerge === undefined
       ? undefined
       : simulateProofOfWork
-      ? currentSupply - firstPoint.supply + simulatedPowIssuanceSinceMerge
-      : currentSupply - firstPoint.supply;
+      ? JSBI.toNumber(supplyChange) / WEI_PER_ETH +
+        simulatedPowIssuanceSinceMerge
+      : JSBI.toNumber(supplyChange) / WEI_PER_ETH;
 
   return (
     <WidgetErrorBoundary title="supply change">
@@ -123,7 +110,7 @@ const SupplyChange: FC<Props> = ({
             </span>
           </div>
           <div className="flex flex-wrap justify-between gap-x-4 gap-y-4">
-            <UpdatedAgo updatedAt={supplyOverTime?.timestamp} />
+            <UpdatedAgo updatedAt={supplyChanges.timestamp} />
             <SimulateProofOfWork
               checked={simulateProofOfWork}
               onToggle={onSimulateProofOfWork}
