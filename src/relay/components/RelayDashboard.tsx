@@ -1,6 +1,11 @@
 import type { FC } from "react";
 
-import type { ApiPayload, ApiValidator } from "../api";
+import type {
+  ApiPayload,
+  ApiPayloadStats,
+  ApiValidator,
+  ApiValidatorStats,
+} from "../api";
 import HeaderGlow from "../../components/HeaderGlow";
 import MainTitle from "../../components/MainTitle";
 import AddressWidget from "./AddressWidget";
@@ -11,16 +16,16 @@ import FaqSection from "./FaqSection";
 import ContactSection from "../../components/ContactSection";
 
 export type RelayDashboardProps = {
-  payloadCount: number;
+  payloadStats: ApiPayloadStats;
   payloads: Array<ApiPayload>;
-  validatorCount: number;
+  validatorStats: ApiValidatorStats;
   validators: Array<ApiValidator>;
 };
 
 const RelayDashboard: FC<RelayDashboardProps> = ({
-  payloadCount,
+  payloadStats,
   payloads,
-  validatorCount,
+  validatorStats,
   validators,
 }) => {
   return (
@@ -41,15 +46,14 @@ const RelayDashboard: FC<RelayDashboardProps> = ({
           <div className="flex flex-col gap-x-4 gap-y-4 lg:flex-row">
             <div className="flex flex-col lg:w-1/2">
               <InclusionsWidget
-                payloadCount={payloadCount}
+                payloadCount={payloadStats.count}
+                totalValue={payloadStats.totalValue}
+                firstPayloadAt={new Date(payloadStats.firstPayloadAt)}
                 payloads={payloads}
               />
             </div>
             <div className="flex flex-col lg:w-1/2">
-              <ValidatorWidget
-                validatorCount={validatorCount}
-                validators={validators}
-              />
+              <ValidatorWidget {...validatorStats} validators={validators} />
             </div>
           </div>
         </div>

@@ -6,10 +6,22 @@ export type ApiPayload = {
   value: number;
 };
 
+export type ApiPayloadStats = {
+  count: number;
+  totalValue: number;
+  firstPayloadAt: Date;
+};
+
 export type ApiValidator = {
   insertedAt: Date;
   pubkeyFragment: string;
   index: string;
+};
+
+export type ApiValidatorStats = {
+  validatorCount: number;
+  knownValidatorCount: number;
+  recipientCount: number;
 };
 
 // TODO: parse response bodies
@@ -23,13 +35,20 @@ export const fetchPayloads = (): Promise<Array<ApiPayload>> =>
       return [];
     });
 
-export const fetchPayloadCount = (): Promise<number> =>
+export const fetchPayloadStats = (): Promise<ApiPayloadStats> =>
   fetch(`${getApiUrl()}/api/payloads/count`)
     .then((res) => res.json())
-    .then(({ count }) => count as number)
+    .then(
+      ({ count, totalValue, firstPayloadAt }) =>
+        ({
+          count,
+          totalValue,
+          firstPayloadAt,
+        } as ApiPayloadStats),
+    )
     .catch((err) => {
-      console.error("error fetching payload count", err);
-      return 0;
+      console.error("error fetching payload stats", err);
+      return { count: 0, totalValue: 0, firstPayloadAt: new Date() };
     });
 
 export const fetchValidators = (): Promise<Array<ApiValidator>> =>
@@ -41,11 +60,22 @@ export const fetchValidators = (): Promise<Array<ApiValidator>> =>
       return [];
     });
 
-export const fetchValidatorCount = (): Promise<number> =>
+export const fetchValidatorStats = (): Promise<ApiValidatorStats> =>
   fetch(`${getApiUrl()}/api/validators/count`)
     .then((res) => res.json())
-    .then(({ validatorCount }) => validatorCount as number)
+    .then(
+      ({ validatorCount, knownValidatorCount, recipientCount }) =>
+        ({
+          validatorCount,
+          knownValidatorCount,
+          recipientCount,
+        } as ApiValidatorStats),
+    )
     .catch((err) => {
       console.error("error fetching validator count", err);
-      return 0;
+      return {
+        validatorCount: 0,
+        knownValidatorCount: 0,
+        recipientCount: 0,
+      };
     });

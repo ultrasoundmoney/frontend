@@ -9,23 +9,23 @@ import RelayDashboard, {
 } from "../relay/components/RelayDashboard";
 
 export const getServerSideProps = async () => {
-  const [payloads, payloadCount, validators, validatorCount] =
+  const [payloads, payloadStats, validators, validatorStats] =
     await Promise.all([
       Api.fetchPayloads(),
-      Api.fetchPayloadCount(),
+      Api.fetchPayloadStats(),
       Api.fetchValidators(),
-      Api.fetchValidatorCount(),
+      Api.fetchValidatorStats(),
     ]);
 
   return {
-    props: { payloads, payloadCount, validators, validatorCount },
+    props: { payloads, payloadStats, validators, validatorStats },
   };
 };
 
 const RelayIndexPage: FC<RelayDashboardProps> = ({
-  payloadCount,
+  payloadStats,
   payloads,
-  validatorCount,
+  validatorStats,
   validators,
 }) => {
   const payloadsSorted = payloads
@@ -39,9 +39,9 @@ const RelayIndexPage: FC<RelayDashboardProps> = ({
     .sort(({ insertedAt: a }, { insertedAt: b }) => D.compareDesc(a, b));
 
   const props = {
-    payloadCount,
+    payloadStats,
     payloads: payloadsSorted,
-    validatorCount,
+    validatorStats,
     validators: validatorsSorted,
   };
 
