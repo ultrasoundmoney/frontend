@@ -354,11 +354,11 @@ const EquilibriumWidget = () => {
         >
           <div
             className={`
-            pointer-events-none absolute h-3/5
-            w-4/5 rounded-[35%] bg-[#0037FA]
-            lg:bottom-[3.0rem]
-            lg:-right-[1.0rem]
-          `}
+              pointer-events-none absolute h-3/5
+              w-4/5 rounded-[35%] bg-[#0037FA]
+              lg:bottom-[3.0rem]
+              lg:-right-[1.0rem]
+            `}
           ></div>
         </div>
         <div className="grid grid-cols-1 gap-y-8 gap-x-8 p-8 lg:grid-cols-2">

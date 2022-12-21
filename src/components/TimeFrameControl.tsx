@@ -5,6 +5,7 @@ import fireOwnSvg from "../assets/fire-own.svg";
 import fireSlateusSvg from "../assets/fire-slateus.svg";
 import type { TimeFrameNext } from "../time-frames";
 import { displayLimitedTimeFrameMap, timeFramesNext } from "../time-frames";
+import HoverTooltip from "./TextTooltip";
 
 export const Button: FC<{
   children: ReactNode;
@@ -41,52 +42,56 @@ type Props = {
 const TimeFrameControl: FC<Props> = ({ selectedTimeframe, onSetTimeFrame }) => (
   <div className="flex flex-row items-center lg:gap-x-1">
     {timeFramesNext.map((timeFrame) => (
-      <Button
+      <HoverTooltip
         key={timeFrame}
-        isActive={selectedTimeframe === timeFrame}
-        onClick={() => onSetTimeFrame(timeFrame)}
-        title={
+        customAlign="-left-16"
+        text={
           timeFrame === "since_burn"
             ? "since London hark fork where EIP-1559 was activated"
             : undefined
         }
       >
-        {timeFrame === "since_burn" ? (
-          <>
-            <div
-              className={`
+        <Button
+          isActive={selectedTimeframe === timeFrame}
+          onClick={() => onSetTimeFrame(timeFrame)}
+        >
+          {timeFrame === "since_burn" ? (
+            <>
+              <div
+                className={`
                 h-4 w-4
                 ${selectedTimeframe === "since_burn" ? "hidden" : "block"}
               `}
-            >
-              <Image
-                className={
-                  selectedTimeframe === "since_burn" ? "hidden" : "block"
-                }
-                alt="flame emoji symbolizing time span since london hark fork when EIP-1559 was activated"
-                src={fireSlateusSvg as StaticImageData}
-                width={16}
-                height={16}
-              />
-            </div>
-            <div
-              className={`
+              >
+                <Image
+                  className={
+                    selectedTimeframe === "since_burn" ? "hidden" : "block"
+                  }
+                  alt="flame emoji symbolizing time span since london hark fork when EIP-1559 was activated"
+                  src={fireSlateusSvg as StaticImageData}
+                  width={16}
+                  height={16}
+                />
+              </div>
+              <div
+                className={`
                 h-4 w-4
                 ${selectedTimeframe === "since_burn" ? "block" : "hidden"}
               `}
-            >
-              <Image
-                alt="flame emoji symbolizing time span since london hark fork when EIP-1559 was activated"
-                src={fireOwnSvg as StaticImageData}
-                width={16}
-                height={16}
-              />
-            </div>
-          </>
-        ) : (
-          displayLimitedTimeFrameMap[timeFrame]
-        )}
-      </Button>
+              >
+                <Image
+                  alt="flame emoji symbolizing time span since london hark fork when EIP-1559 was activated"
+                  src={fireOwnSvg as StaticImageData}
+                  width={16}
+                  height={16}
+                />
+              </div>
+            </>
+          ) : (
+            displayLimitedTimeFrameMap[timeFrame]
+          )}
+        </Button>
+      </HoverTooltip>
     ))}
   </div>
 );

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ethSupplyFromParts, useSupplyParts } from "../../api/eth-supply";
 import { dateTimeFromSlot } from "../../beacon-time";
 import Nerd from "../Nerd";
+import HoverTooltip from "../TextTooltip";
 import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
@@ -28,7 +29,12 @@ const EthSupplyWidget: FC = () => {
             onClick={() => setShowNerdTooltip(true)}
           >
             <WidgetTitle>current supply</WidgetTitle>
-            <Nerd />
+            <HoverTooltip
+              customAlign="-left-16"
+              text="learn how the current supply is calculated"
+            >
+              <Nerd />
+            </HoverTooltip>
           </div>
           <div
             className={`

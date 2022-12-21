@@ -114,6 +114,7 @@ const SupplyChange: FC<Props> = ({
             <SimulateProofOfWork
               checked={simulateProofOfWork}
               onToggle={onSimulateProofOfWork}
+              tooltipText="simulate what the supply change would look like under proof-of-work issuance"
             />
           </div>
         </div>
