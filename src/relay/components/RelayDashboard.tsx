@@ -6,6 +6,7 @@ import type {
   ApiValidator,
   ApiValidatorStats,
 } from "../api";
+import { getEnv } from "../../config";
 import HeaderGlow from "../../components/HeaderGlow";
 import MainTitle from "../../components/MainTitle";
 import AddressWidget from "./AddressWidget";
@@ -22,6 +23,8 @@ export type RelayDashboardProps = {
   validators: Array<ApiValidator>;
 };
 
+const env = getEnv();
+
 const RelayDashboard: FC<RelayDashboardProps> = ({
   payloadStats,
   payloads,
@@ -34,6 +37,17 @@ const RelayDashboard: FC<RelayDashboardProps> = ({
       <div className="container mx-auto">
         <div className="h-[48.5px] md:h-[68px]"></div>
         <MainTitle>ultra sound relay</MainTitle>
+        {env === "stag" ? (
+          <div
+            className={`
+           mt-4 text-center font-inter text-xl
+           font-extralight tracking-wide
+           text-slateus-400 sm:mt-0
+         `}
+          >
+            goerli testnet
+          </div>
+        ) : null}
         <div className="mt-16 mb-32 flex flex-col gap-y-4 xs:px-4 md:px-16">
           <div className="mt-16 flex flex-col gap-x-4 gap-y-4 lg:flex-row">
             <div className="flex lg:w-1/2">
