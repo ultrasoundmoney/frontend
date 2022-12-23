@@ -37,7 +37,7 @@ export const fetchPayloads = (): Promise<Array<ApiPayload>> =>
 
 export const fetchPayloadStats = (): Promise<ApiPayloadStats> =>
   fetch(`${getApiUrl()}/api/payloads/count`)
-    .then((res) => res.json())
+    .then((res) => res.json() as Promise<ApiPayloadStats>)
     .then(
       ({ count, totalValue, firstPayloadAt }) =>
         ({
@@ -62,7 +62,7 @@ export const fetchValidators = (): Promise<Array<ApiValidator>> =>
 
 export const fetchValidatorStats = (): Promise<ApiValidatorStats> =>
   fetch(`${getApiUrl()}/api/validators/count`)
-    .then((res) => res.json())
+    .then((res) => res.json() as Promise<ApiValidatorStats>)
     .then(
       ({ validatorCount, knownValidatorCount, recipientCount }) =>
         ({
