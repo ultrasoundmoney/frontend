@@ -21,7 +21,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: rg.fr-par.scw.cloud/ultrasoundmoney/serve-frontend
+          images: rg.fr-par.scw.cloud/ultrasoundmoney/frontend
           # type=raw,latest
           tags: |
             type=sha,prefix=
@@ -39,7 +39,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=rg.fr-par.scw.cloud/ultrasoundmoney/serve-frontend:latest
+          cache-from: type=registry,ref=rg.fr-par.scw.cloud/ultrasoundmoney/frontend
           cache-to: type=inline
           secrets: |
             "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}"
