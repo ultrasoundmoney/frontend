@@ -18,6 +18,8 @@ import BasicErrorBoundary from "../components/BasicErrorBoundary";
 import Dashboard from "../components/Dashboard";
 import type { SupplyChanges } from "../api/supply-changes";
 import { fetchSupplyChanges } from "../api/supply-changes";
+import type { IssuanceEstimate } from "../api/issuance-estimate";
+import { fetchIssuanceEstimate } from "../api/issuance-estimate";
 
 type StaticProps = {
   fallback: {
@@ -26,6 +28,7 @@ type StaticProps = {
     "/api/v2/fees/base-fee-per-gas-stats": BaseFeePerGasStats;
     "/api/v2/fees/eth-price-stats": EthPriceStats;
     "/api/v2/fees/eth-supply-parts": SupplyPartsF;
+    "/api/v2/fees/issuance-estimate": IssuanceEstimate;
     "/api/v2/fees/supply-changes": SupplyChanges;
   };
 };
@@ -36,6 +39,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
     baseFeePerGasStats,
     ethPriceStats,
     ethSupplyF,
+    issuanceEstimate,
     scarcityF,
     supplyChanges,
   ] = await Promise.all([
@@ -43,6 +47,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
     fetchBaseFeePerGasStats(),
     fetchEthPriceStats(),
     fetchSupplyParts(),
+    fetchIssuanceEstimate(),
     fetchScarcity(),
     fetchSupplyChanges(),
   ]);
@@ -71,6 +76,10 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
     throw supplyChanges.error;
   }
 
+  if ("error" in issuanceEstimate) {
+    throw issuanceEstimate.error;
+  }
+
   return {
     props: {
       fallback: {
@@ -79,6 +88,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
         "/api/v2/fees/base-fee-per-gas-stats": baseFeePerGasStats.data,
         "/api/v2/fees/eth-price-stats": ethPriceStats.data,
         "/api/v2/fees/eth-supply-parts": ethSupplyF.data,
+        "/api/v2/fees/issuance-estimate": issuanceEstimate.data,
         "/api/v2/fees/supply-changes": supplyChanges.data,
       },
     },

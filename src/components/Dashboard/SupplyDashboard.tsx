@@ -3,10 +3,11 @@ import type { FC } from "react";
 import { useCallback, useState } from "react";
 import SupplyChange from "../SupplyChangeWidget";
 import BasicErrorBoundary from "../BasicErrorBoundary";
-import type { EthNumber } from "../../eth-units";
+import { EthNumber, usePosIssuancePerDay } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
 import CurrentSupplyWidget from "../CurrentSupplyWidget";
 import type { TimeFrameNext } from "../../time-frames";
+import { useIssuanceEstimate } from "../../api/issuance-estimate";
 export type SupplyPoint = [JsTimestamp, EthNumber];
 
 const EthSupplyWidget = dynamic(() => import("../EthSupplyWidget"));
@@ -46,6 +47,7 @@ const SupplyDashboard: FC<Props> = ({
   onClickTimeFrame,
   onSetTimeFrame,
 }) => {
+  const posIssuancePerDay = usePosIssuancePerDay();
   const [simulateProofOfWork, setSimulateProofOfWork] = useState(false);
   const [supplyTimeFrame, setSupplyTimeFrame] =
     useState<LimitedTimeFrameWithMerge>("since_merge");
@@ -79,6 +81,7 @@ const SupplyDashboard: FC<Props> = ({
               onSimulateProofOfWork={handleSimulateProofOfWork}
               onClickTimeFrame={handleClickSupplyTimeFrame}
               timeFrame={supplyTimeFrame}
+              posIssuancePerDay={posIssuancePerDay}
             />
             <CurrentSupplyWidget />
           </div>

@@ -15,6 +15,8 @@ import { useMemo } from "react";
 import type { SupplyAtTime } from "../../api/supply-over-time";
 import { useSupplyOverTime } from "../../api/supply-over-time";
 import colors from "../../colors";
+import type { EthNumber } from "../../eth-units";
+import { usePosIssuancePerDay } from "../../eth-units";
 import {
   formatPercentFiveDecimalsSigned,
   formatPercentThreeDecimalsSigned,
@@ -23,7 +25,7 @@ import {
   formatZeroDecimals,
 } from "../../format";
 import { PARIS_BLOCK_NUMBER, PARIS_TIMESTAMP } from "../../hardforks/paris";
-import { posIssuancePerDay, powIssuancePerDay } from "../../static-ether-data";
+import { powIssuancePerDay } from "../../static-ether-data";
 import type {
   LimitedTimeFrameWithMerge,
   SupplyPoint,
@@ -50,16 +52,6 @@ const BITCOIN_ISSUANCE_PER_TEN_MINUTES = 6.25;
 const BITCOIN_ISSUANCE_PER_SECOND =
   BITCOIN_ISSUANCE_PER_TEN_MINUTES / (60 * 10);
 
-// To compare proof of stake issuance to proof of work issuance we offer a
-// "simulate proof of work" toggle. However, we only have a supply series under
-// proof of stake. Already including proof of stake issuance. Adding proof of
-// work issuance would mean "simulated proof of work" is really what supply
-// would look like if there was both proof of work _and_ proof of stake
-// issuance. To make the comparison apples to apples we subtract an estimated
-// proof of stake issuance to show the supply as if there were _only_ proof of
-// work issuance. A possible improvement would be to drop this ad-hoc solution
-// and have the backend return separate series.
-const POW_MIN_POS_ISSUANCE_PER_DAY = powIssuancePerDay - posIssuancePerDay;
 const SLOTS_PER_DAY = 24 * 60 * 5;
 
 const baseOptions: Highcharts.Options = {
@@ -313,6 +305,7 @@ const getBitcoinSeries = (
 
 const getEthPowSeries = (
   ethPosSeries: SupplyPoint[] | undefined,
+  powMinPosIssuancePerDay: EthNumber,
 ): SupplyPoint[] | undefined =>
   ethPosSeries === undefined
     ? undefined
@@ -325,7 +318,7 @@ const getEthPowSeries = (
           differenceInSeconds(new Date(timestamp), firstPointTimestamp) / 12;
 
         const simulatedPowIssuanceSinceStart =
-          (slotsSinceStart / SLOTS_PER_DAY) * POW_MIN_POS_ISSUANCE_PER_DAY;
+          (slotsSinceStart / SLOTS_PER_DAY) * powMinPosIssuancePerDay;
 
         const nextSupply = supply + simulatedPowIssuanceSinceStart;
         const nextPoint: SupplyPoint = [timestamp, nextSupply];
@@ -361,6 +354,17 @@ const SupplySinceMergeWidget: FC<Props> = ({
   const supplyOverTimeTimeFrame = supplyOverTime?.[timeFrame];
   const isTimeFrameAvailable =
     supplyOverTimeTimeFrame !== undefined && supplyOverTimeTimeFrame.length > 0;
+  const posIssuancePerDay = usePosIssuancePerDay();
+  // To compare proof of stake issuance to proof of work issuance we offer a
+  // "simulate proof of work" toggle. However, we only have a supply series under
+  // proof of stake. Already including proof of stake issuance. Adding proof of
+  // work issuance would mean "simulated proof of work" is really what supply
+  // would look like if there was both proof of work _and_ proof of stake
+  // issuance. To make the comparison apples to apples we subtract an estimated
+  // proof of stake issuance to show the supply as if there were _only_ proof of
+  // work issuance. A possible improvement would be to drop this ad-hoc solution
+  // and have the backend return separate series.
+  const powMinPosIssuancePerDay = powIssuancePerDay - posIssuancePerDay;
 
   const options = useMemo((): Highcharts.Options => {
     if (!isTimeFrameAvailable) {
@@ -370,7 +374,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
     const ethPosSeries = getEthPosSeries(supplyOverTimeTimeFrame);
     const [bitcoinSupplySeries, bitcoinSupplySeriesScaled] =
       getBitcoinSeries(ethPosSeries);
-    const ethPowSeries = getEthPowSeries(ethPosSeries);
+    const ethPowSeries = getEthPowSeries(ethPosSeries, powMinPosIssuancePerDay);
     const lastPointPos = _last(ethPosSeries);
     const lastPointBtc = _last(bitcoinSupplySeriesScaled);
     const lastPointPow = _last(ethPowSeries);
@@ -632,7 +636,12 @@ const SupplySinceMergeWidget: FC<Props> = ({
     };
 
     return _merge({}, baseOptions, dynamicOptions);
-  }, [isTimeFrameAvailable, simulateProofOfWork, supplyOverTimeTimeFrame]);
+  }, [
+    isTimeFrameAvailable,
+    powMinPosIssuancePerDay,
+    simulateProofOfWork,
+    supplyOverTimeTimeFrame,
+  ]);
 
   return (
     <WidgetErrorBoundary title="eth supply">

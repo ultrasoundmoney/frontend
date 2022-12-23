@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import CountUp from "react-countup";
 import { formatTwoDigitsSigned } from "../../format";
-import { posIssuancePerDay, powIssuancePerDay } from "../../static-ether-data";
+import { powIssuancePerDay } from "../../static-ether-data";
 import type { LimitedTimeFrameWithMerge } from "../Dashboard/SupplyDashboard";
 import SimulateProofOfWork from "../SimulateProofOfWork";
 import SinceMergeIndicator from "../SinceMergeIndicator";
@@ -20,18 +20,9 @@ type Props = {
   onSimulateProofOfWork: () => void;
   simulateProofOfWork: boolean;
   timeFrame: LimitedTimeFrameWithMerge;
+  posIssuancePerDay: number;
 };
 
-// To compare proof of stake issuance to proof of work issuance we offer a
-// "simulate proof of work" toggle. However, we only have a supply series under
-// proof of stake. Already including proof of stake issuance. Adding proof of
-// work issuance would mean "simulated proof of work" is really what supply
-// would look like if there was both proof of work _and_ proof of stake
-// issuance. To make the comparison apples to apples we subtract an estimated
-// proof of stake issuance to show the supply as if there were _only_ proof of
-// work issuance. A possible improvement would be to drop this ad-hoc solution
-// and have the backend return separate series.
-const POW_ISSUANCE_PER_DAY = powIssuancePerDay - posIssuancePerDay;
 const SLOTS_PER_DAY = 24 * 60 * 5;
 
 const SupplyChange: FC<Props> = ({
@@ -39,7 +30,18 @@ const SupplyChange: FC<Props> = ({
   simulateProofOfWork,
   onClickTimeFrame,
   onSimulateProofOfWork,
+  posIssuancePerDay,
 }) => {
+  // To compare proof of stake issuance to proof of work issuance we offer a
+  // "simulate proof of work" toggle. However, we only have a supply series under
+  // proof of stake. Already including proof of stake issuance. Adding proof of
+  // work issuance would mean "simulated proof of work" is really what supply
+  // would look like if there was both proof of work _and_ proof of stake
+  // issuance. To make the comparison apples to apples we subtract an estimated
+  // proof of stake issuance to show the supply as if there were _only_ proof of
+  // work issuance. A possible improvement would be to drop this ad-hoc solution
+  // and have the backend return separate series.
+  const powMinPosIssuancePerDay = powIssuancePerDay - posIssuancePerDay;
   const supplyChanges = useSupplyChanges();
   const supplyChangesTimeFrame = supplyChanges[timeFrame] ?? undefined;
 
@@ -47,7 +49,7 @@ const SupplyChange: FC<Props> = ({
     supplyChangesTimeFrame === undefined
       ? undefined
       : ((supplyChangesTimeFrame.to_slot - supplyChangesTimeFrame.from_slot) *
-          POW_ISSUANCE_PER_DAY) /
+          powMinPosIssuancePerDay) /
         SLOTS_PER_DAY;
 
   const supplyChange =

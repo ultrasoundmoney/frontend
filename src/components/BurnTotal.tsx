@@ -13,8 +13,8 @@ import fireSvg from "../assets/fire-own.svg";
 import { londonHardFork } from "../dates";
 import type { Unit } from "../denomination";
 import * as Duration from "../duration";
+import { usePosIssuancePerDay } from "../eth-units";
 import * as Format from "../format";
-import * as StaticEtherData from "../static-ether-data";
 import type { LimitedTimeFrame, TimeFrameNext } from "../time-frames";
 import { AmountAnimatedShell } from "./Amount";
 import { BaseText } from "./Texts";
@@ -70,6 +70,7 @@ const BurnTotal: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
   const feesBurned = groupedAnalysis1?.feesBurned;
   const [millisecondsSinceLondonHardFork, setMillisecondsSinceLondonHardfork] =
     useState<number>();
+  const posIssuancePerDay = usePosIssuancePerDay();
 
   const selectedFeesBurnedEth =
     feesBurned === undefined
@@ -92,8 +93,7 @@ const BurnTotal: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
       ? burnRates[timeframeBurnRateMap[timeFrame][unit]]
       : burnRates[timeframeBurnRateMap[timeFrame][unit]];
 
-  const issuancePerMillisecond =
-    StaticEtherData.posIssuancePerDay / Duration.millisFromDays(1);
+  const issuancePerMillisecond = posIssuancePerDay / Duration.millisFromDays(1);
 
   useEffect(() => {
     setMillisecondsSinceLondonHardfork(

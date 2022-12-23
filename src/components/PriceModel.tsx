@@ -7,8 +7,8 @@ import { useEthPriceStats } from "../api/eth-price-stats";
 import { useImpreciseEthSupply } from "../api/eth-supply";
 import type { PeRatios } from "../api/pe-ratios";
 import { usePeRatios } from "../api/pe-ratios";
+import { usePosIssuanceYear } from "../eth-units";
 import * as Format from "../format";
-import * as StaticEtherData from "../static-ether-data";
 import { MoneyAmount } from "./Amount";
 import Slider2 from "./Slider2";
 import { BaseText } from "./Texts";
@@ -258,6 +258,7 @@ const PriceModel: FC = () => {
   const [initialPeSet, setInitialPeSet] = useState(false);
   const averageEthPrice = useAverageEthPrice()?.all;
   const [ethPeRatio, setEthPeRatio] = useState<number>();
+  const posIssuanceYear = usePosIssuanceYear();
 
   const annualizedRevenue =
     burnRateAll === undefined || averageEthPrice === undefined
@@ -266,7 +267,7 @@ const PriceModel: FC = () => {
   const annualizedCosts =
     averageEthPrice === undefined
       ? undefined
-      : StaticEtherData.posIssuanceYear * averageEthPrice;
+      : posIssuanceYear * averageEthPrice;
   const annualizedEarnings =
     annualizedRevenue === undefined || annualizedCosts === undefined
       ? undefined

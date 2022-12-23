@@ -2,6 +2,7 @@ import type { FC } from "react";
 import { useAverageEthPrice } from "../../api/average-eth-price";
 import colors from "../../colors";
 import type { Unit } from "../../denomination";
+import { usePosIssuancePerDay } from "../../eth-units";
 import * as StaticEtherData from "../../static-ether-data";
 import type { TimeFrameNext } from "../../time-frames";
 import { timeFrameFromNext } from "../../time-frames";
@@ -19,13 +20,14 @@ const IssuanceGauge: FC<Props> = ({
   unit,
 }) => {
   const averageEthPrice = useAverageEthPrice();
+  const posIssuancePerDay = usePosIssuancePerDay();
 
   const selectedAverageEthPrice =
     averageEthPrice?.[timeFrameFromNext(timeFrame)];
 
   const issuancePerDay = simulateProofOfWork
     ? StaticEtherData.powIssuancePerDay
-    : StaticEtherData.posIssuancePerDay;
+    : posIssuancePerDay;
 
   const issuance =
     selectedAverageEthPrice === undefined

@@ -6,6 +6,7 @@ import { animated, config, useSpring } from "react-spring";
 import { useBurnRates } from "../../api/burn-rates";
 import type { BurnRates } from "../../api/grouped-analysis-1";
 import { useScarcity } from "../../api/scarcity";
+import { usePosIssuanceYear } from "../../eth-units";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
 import * as StaticEtherData from "../../static-ether-data";
@@ -22,6 +23,7 @@ const useGrowthRate = (
 ): number | undefined => {
   const scarcity = useScarcity();
   const [growthRate, setGrowthRate] = useState<number>();
+  const posIssuanceYear = usePosIssuanceYear();
 
   useEffect(() => {
     if (scarcity === undefined || burnRates === undefined) {
@@ -35,7 +37,7 @@ const useGrowthRate = (
 
     const issuanceRate = simulateProofOfWork
       ? StaticEtherData.powIssuanceYear
-      : StaticEtherData.posIssuanceYear;
+      : posIssuanceYear;
 
     const nextGrowthRate =
       scarcity.ethSupply === undefined
@@ -51,7 +53,14 @@ const useGrowthRate = (
     if (rateRounded !== undefined && rateRounded !== nextGrowthRate) {
       setGrowthRate(rateRounded);
     }
-  }, [burnRates, growthRate, scarcity, simulateProofOfWork, timeFrame]);
+  }, [
+    burnRates,
+    growthRate,
+    posIssuanceYear,
+    scarcity,
+    simulateProofOfWork,
+    timeFrame,
+  ]);
 
   return growthRate;
 };
