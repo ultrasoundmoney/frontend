@@ -1,6 +1,7 @@
 import type { FC } from "react";
 import * as D from "date-fns";
 
+import type { Payload } from "../types";
 import * as Format from "../../format";
 import { getEtherscanUrl } from "../config";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
@@ -13,12 +14,6 @@ import {
 } from "../../components/WidgetSubcomponents";
 
 const etherscanUrl = getEtherscanUrl();
-
-type Payload = {
-  blockNumber: number;
-  insertedAt: Date;
-  value: number;
-};
 
 const PayloadRow = ({ blockNumber, insertedAt, value }: Payload) => {
   const inclusionAgo = `${Format.formatDistance(new Date(), insertedAt)} ago`;

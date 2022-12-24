@@ -1,48 +1,72 @@
 import type { FC } from "react";
 import Head from "next/head";
 import Script from "next/script";
-import * as D from "date-fns";
 import * as Api from "../relay/api";
+import type { ApiPayload, ApiPayloadStats, ApiValidator } from "../relay/api";
+import {
+  Payload,
+  Builder,
+  ValidatorStats,
+  parsePayload,
+  parseValidator,
+  parsePayloadStats,
+} from "../relay/types";
 import BasicErrorBoundary from "../components/BasicErrorBoundary";
-import RelayDashboard, {
-  type RelayDashboardProps,
-} from "../relay/components/RelayDashboard";
+import RelayDashboard from "../relay/components/RelayDashboard";
 
 export const getServerSideProps = async () => {
-  const [payloads, payloadStats, validators, validatorStats] =
-    await Promise.all([
-      Api.fetchPayloads(),
-      Api.fetchPayloadStats(),
-      Api.fetchValidators(),
-      Api.fetchValidatorStats(),
-    ]);
+  const [
+    payloads,
+    topPayloads,
+    payloadStats,
+    validators,
+    validatorStats,
+    topBuilders,
+  ] = await Promise.all([
+    Api.fetchPayloads(),
+    Api.fetchTopPayloads(),
+    Api.fetchPayloadStats(),
+    Api.fetchValidators(),
+    Api.fetchValidatorStats(),
+    Api.fetchTopBuilders(),
+  ]);
 
   return {
-    props: { payloads, payloadStats, validators, validatorStats },
+    props: {
+      payloads,
+      topPayloads,
+      payloadStats,
+      validators,
+      validatorStats,
+      topBuilders,
+    },
   };
 };
 
-const RelayIndexPage: FC<RelayDashboardProps> = ({
+type RelayPageProps = {
+  payloadStats: ApiPayloadStats;
+  payloads: Array<ApiPayload>;
+  topPayloads: Array<ApiPayload>;
+  validatorStats: ValidatorStats;
+  validators: Array<ApiValidator>;
+  topBuilders: Array<Builder>;
+};
+
+const RelayIndexPage: FC<RelayPageProps> = ({
   payloadStats,
   payloads,
+  topPayloads,
   validatorStats,
   validators,
+  topBuilders,
 }) => {
-  const payloadsSorted = payloads
-    .map((p) => ({ ...p, insertedAt: new Date(p.insertedAt) }))
-    .sort(({ insertedAt: a }, { insertedAt: b }) => D.compareDesc(a, b));
-  const validatorsSorted = validators
-    .map((v) => ({
-      ...v,
-      insertedAt: new Date(v.insertedAt),
-    }))
-    .sort(({ insertedAt: a }, { insertedAt: b }) => D.compareDesc(a, b));
-
   const props = {
-    payloadStats,
-    payloads: payloadsSorted,
+    payloadStats: parsePayloadStats(payloadStats),
+    payloads: payloads.map(parsePayload),
+    topPayloads: topPayloads.map(parsePayload),
     validatorStats,
-    validators: validatorsSorted,
+    validators: validators.map(parseValidator),
+    topBuilders,
   };
 
   return (

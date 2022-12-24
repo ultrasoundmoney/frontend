@@ -1,11 +1,12 @@
 import type { FC } from "react";
 
 import type {
-  ApiPayload,
-  ApiPayloadStats,
-  ApiValidator,
-  ApiValidatorStats,
-} from "../api";
+  Payload,
+  PayloadStats,
+  Validator,
+  ValidatorStats,
+  Builder,
+} from "../types";
 import { getEnv } from "../../config";
 import HeaderGlow from "../../components/HeaderGlow";
 import MainTitle from "../../components/MainTitle";
@@ -13,14 +14,17 @@ import AddressWidget from "./AddressWidget";
 import CheckRegistrationWidget from "./CheckRegistrationWidget";
 import InclusionsWidget from "./InclusionsWidget";
 import ValidatorWidget from "./ValidatorWidget";
+import LeaderboardSection from "./LeaderboardSection";
 import FaqSection from "./FaqSection";
 import ContactSection from "../../components/ContactSection";
 
 export type RelayDashboardProps = {
-  payloadStats: ApiPayloadStats;
-  payloads: Array<ApiPayload>;
-  validatorStats: ApiValidatorStats;
-  validators: Array<ApiValidator>;
+  payloadStats: PayloadStats;
+  payloads: Array<Payload>;
+  topPayloads: Array<Payload>;
+  validatorStats: ValidatorStats;
+  validators: Array<Validator>;
+  topBuilders: Array<Builder>;
 };
 
 const env = getEnv();
@@ -30,6 +34,8 @@ const RelayDashboard: FC<RelayDashboardProps> = ({
   payloads,
   validatorStats,
   validators,
+  topBuilders,
+  topPayloads,
 }) => {
   return (
     <>
@@ -71,6 +77,11 @@ const RelayDashboard: FC<RelayDashboardProps> = ({
             </div>
           </div>
         </div>
+        <LeaderboardSection
+          payloadCount={payloadStats.count}
+          topPayloads={topPayloads}
+          topBuilders={topBuilders}
+        />
         <FaqSection />
         <ContactSection />
       </div>

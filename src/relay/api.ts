@@ -1,7 +1,10 @@
 import { getApiUrl } from "./config";
+import type { Builder, ValidatorStats } from "./types";
+
+// Next cannot serialize dates, these types represent domain objects before parsing
 
 export type ApiPayload = {
-  insertedAt: Date;
+  insertedAt: string;
   blockNumber: number;
   value: number;
 };
@@ -9,22 +12,14 @@ export type ApiPayload = {
 export type ApiPayloadStats = {
   count: number;
   totalValue: number;
-  firstPayloadAt: Date;
+  firstPayloadAt: string;
 };
 
 export type ApiValidator = {
-  insertedAt: Date;
+  insertedAt: string;
   pubkeyFragment: string;
   index: string;
 };
-
-export type ApiValidatorStats = {
-  validatorCount: number;
-  knownValidatorCount: number;
-  recipientCount: number;
-};
-
-// TODO: parse response bodies
 
 export const fetchPayloads = (): Promise<Array<ApiPayload>> =>
   fetch(`${getApiUrl()}/api/payloads`)
@@ -32,6 +27,15 @@ export const fetchPayloads = (): Promise<Array<ApiPayload>> =>
     .then(({ payloads }) => payloads as Array<ApiPayload>)
     .catch((err) => {
       console.error("error fetching payloads", err);
+      return [];
+    });
+
+export const fetchTopPayloads = (): Promise<Array<ApiPayload>> =>
+  fetch(`${getApiUrl()}/api/payloads/top`)
+    .then((res) => res.json())
+    .then(({ payloads }) => payloads as Array<ApiPayload>)
+    .catch((err) => {
+      console.error("error fetching top payloads", err);
       return [];
     });
 
@@ -48,7 +52,11 @@ export const fetchPayloadStats = (): Promise<ApiPayloadStats> =>
     )
     .catch((err) => {
       console.error("error fetching payload stats", err);
-      return { count: 0, totalValue: 0, firstPayloadAt: new Date() };
+      return {
+        count: 0,
+        totalValue: 0,
+        firstPayloadAt: "2022-11-25T23:49:23.789155Z",
+      };
     });
 
 export const fetchValidators = (): Promise<Array<ApiValidator>> =>
@@ -60,16 +68,16 @@ export const fetchValidators = (): Promise<Array<ApiValidator>> =>
       return [];
     });
 
-export const fetchValidatorStats = (): Promise<ApiValidatorStats> =>
+export const fetchValidatorStats = (): Promise<ValidatorStats> =>
   fetch(`${getApiUrl()}/api/validators/count`)
-    .then((res) => res.json() as Promise<ApiValidatorStats>)
+    .then((res) => res.json() as Promise<ValidatorStats>)
     .then(
       ({ validatorCount, knownValidatorCount, recipientCount }) =>
         ({
           validatorCount,
           knownValidatorCount,
           recipientCount,
-        } as ApiValidatorStats),
+        } as ValidatorStats),
     )
     .catch((err) => {
       console.error("error fetching validator count", err);
@@ -78,4 +86,13 @@ export const fetchValidatorStats = (): Promise<ApiValidatorStats> =>
         knownValidatorCount: 0,
         recipientCount: 0,
       };
+    });
+
+export const fetchTopBuilders = (): Promise<Array<Builder>> =>
+  fetch(`${getApiUrl()}/api/builders/top`)
+    .then((res) => res.json())
+    .then(({ builders }) => builders as Array<Builder>)
+    .catch((err) => {
+      console.error("error fetching top builders", err);
+      return [];
     });
