@@ -28,11 +28,21 @@ export const getRelayDisplayUrl = () => {
   const env = getEnv();
   switch (env) {
     case "dev":
-      return "http://0xc1559cee...@localhost:3000";
+      return {
+        pubkey: "0xc1559...",
+        host: "localhost:3000",
+      };
     case "stag":
-      return "https://0xb1559bee...@relay-stag.ultrasound.money";
+      return {
+        pubkey: "0xb1559...",
+        host: "relay-stag.ultrasound.money",
+      };
+
     case "prod":
-      return "https://0xa1559ace...@relay.ultrasound.money";
+      return {
+        pubkey: "0xa1559...",
+        host: "relay.ultrasound.money",
+      };
   }
 };
 
