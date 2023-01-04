@@ -5,7 +5,7 @@ import fireOwnSvg from "../assets/fire-own.svg";
 import fireSlateusSvg from "../assets/fire-slateus.svg";
 import type { TimeFrameNext } from "../time-frames";
 import { displayLimitedTimeFrameMap, timeFramesNext } from "../time-frames";
-import HoverTooltip from "./TextTooltip";
+import HoverTooltip from "./HoverTooltip";
 
 export const Button: FC<{
   children: ReactNode;
@@ -47,7 +47,7 @@ const TimeFrameControl: FC<Props> = ({ selectedTimeframe, onSetTimeFrame }) => (
         customAlign="-left-16"
         text={
           timeFrame === "since_burn"
-            ? "since London hark fork where EIP-1559 was activated"
+            ? "since the London hard fork where EIP-1559 was activated"
             : undefined
         }
       >
@@ -59,9 +59,9 @@ const TimeFrameControl: FC<Props> = ({ selectedTimeframe, onSetTimeFrame }) => (
             <>
               <div
                 className={`
-                h-4 w-4
-                ${selectedTimeframe === "since_burn" ? "hidden" : "block"}
-              `}
+                  h-4 w-4
+                  ${selectedTimeframe === "since_burn" ? "hidden" : "block"}
+                `}
               >
                 <Image
                   className={
@@ -75,9 +75,9 @@ const TimeFrameControl: FC<Props> = ({ selectedTimeframe, onSetTimeFrame }) => (
               </div>
               <div
                 className={`
-                h-4 w-4
-                ${selectedTimeframe === "since_burn" ? "block" : "hidden"}
-              `}
+                  h-4 w-4
+                  ${selectedTimeframe === "since_burn" ? "block" : "hidden"}
+                `}
               >
                 <Image
                   alt="flame emoji symbolizing time span since london hark fork when EIP-1559 was activated"

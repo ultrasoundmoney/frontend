@@ -10,16 +10,18 @@ const Text = ({ children }: { children: ReactNode }) => (
 
 const HoverTooltip: FC<{
   align?: "right" | "left";
+  children: ReactNode;
   customAlign?: string;
   position?: "top" | "bottom";
-  children: ReactNode;
   text: string | undefined;
+  zLevel?: string;
 }> = ({
   align = "right",
   children,
   customAlign,
   position = "bottom",
   text,
+  zLevel = "z-20",
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
@@ -35,7 +37,7 @@ const HoverTooltip: FC<{
     >
       <div
         className={`
-          absolute right-0 z-20 w-72
+          absolute right-0 w-72
           overflow-visible
           rounded-lg border
           border-slateus-400 bg-slateus-700
@@ -49,6 +51,7 @@ const HoverTooltip: FC<{
           }
           ${position === "top" ? "bottom-8" : "top-8"}
           ${showTooltip ? "visible" : "hidden"}
+          ${zLevel}
         `}
       >
         <Text>{text}</Text>

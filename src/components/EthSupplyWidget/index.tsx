@@ -670,7 +670,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
             ></div>
           </div>
         </div>
-        <div className="flex justify-between">
+        <div className="z-10 flex justify-between">
           <LabelText className="flex items-center">eth supply</LabelText>
           <SinceMergeIndicator
             onClick={onClickTimeFrame}

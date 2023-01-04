@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ethSupplyFromParts, useSupplyParts } from "../../api/eth-supply";
 import { dateTimeFromSlot } from "../../beacon-time";
 import Nerd from "../Nerd";
-import HoverTooltip from "../TextTooltip";
+import HoverTooltip from "../HoverTooltip";
 import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
