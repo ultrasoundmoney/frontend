@@ -31,7 +31,7 @@ const BurnSection: FC = () => {
       <SectionDivider
         link="burn"
         subtitle="it's getting hot in here"
-        title="the burn"
+        title="burn"
       />
       <BasicErrorBoundary>
         <div className="flex flex-col gap-4 xs:px-4 md:px-16 ">
