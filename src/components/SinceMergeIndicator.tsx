@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { parisHardFork } from "../dates";
 import { millisFromHours } from "../duration";
 import type { LimitedTimeFrameWithMerge } from "./Dashboard/SupplyDashboard";
+import HoverTooltip from "./HoverTooltip";
 import { TimeFrameText } from "./Texts";
 import { WidgetTitle } from "./WidgetSubcomponents";
 
@@ -40,19 +41,27 @@ const SinceMergeIndicator: FC<{
   }, []);
 
   return (
-    <button className="flex items-baseline gap-x-2" onClick={onClick}>
-      {timeFrame === "since_merge" ? (
-        <>
-          <WidgetTitle>since merge</WidgetTitle>
-          <TimeFrameText>{daysSinceParis}</TimeFrameText>
-        </>
-      ) : (
-        <>
-          <WidgetTitle>time frame</WidgetTitle>
-          <TimeFrameText>{displayTimeframeV2Map[timeFrame]}</TimeFrameText>
-        </>
-      )}
-    </button>
+    <HoverTooltip
+      text={
+        timeFrame === "since_merge"
+          ? "since the merge where proof-of-stake was activated"
+          : undefined
+      }
+    >
+      <button className="flex items-baseline gap-x-2" onClick={onClick}>
+        {timeFrame === "since_merge" ? (
+          <>
+            <WidgetTitle>since merge</WidgetTitle>
+            <TimeFrameText>{daysSinceParis}</TimeFrameText>
+          </>
+        ) : (
+          <>
+            <WidgetTitle>time frame</WidgetTitle>
+            <TimeFrameText>{displayTimeframeV2Map[timeFrame]}</TimeFrameText>
+          </>
+        )}
+      </button>
+    </HoverTooltip>
   );
 };
 

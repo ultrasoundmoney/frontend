@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { BaseText } from "./Texts";
-import HoverTooltip from "./TextTooltip";
+import HoverTooltip from "./HoverTooltip";
 import ToggleSwitch from "./ToggleSwitch";
 
 type Props = {
