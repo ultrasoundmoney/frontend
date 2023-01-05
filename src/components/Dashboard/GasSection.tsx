@@ -1,5 +1,6 @@
 import { parseISO } from "date-fns";
 import _maxBy from "lodash/maxBy";
+import dynamic from "next/dynamic";
 import type { FC } from "react";
 import { useMemo } from "react";
 import type { BaseFeeAtTime } from "../../api/base-fee-over-time";
@@ -8,11 +9,18 @@ import type { Gwei } from "../../eth-units";
 import { WEI_PER_GWEI } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
 import type { TimeFrameNext } from "../../time-frames";
-import BaseFeesWidget from "../BaseFeesWidget";
 import BasicErrorBoundary from "../BasicErrorBoundary";
-import GasMarketWidget from "../GasMarketWidget";
-import GasStreakWidget from "../GasStreakWidget";
 import SectionDivider from "../SectionDivider";
+
+const BaseFeesWidget = dynamic(() => import("../BaseFeesWidget"), {
+  ssr: false,
+});
+const GasMarketWidget = dynamic(() => import("../GasMarketWidget"), {
+  ssr: false,
+});
+const GasStreakWidget = dynamic(() => import("../GasStreakWidget"), {
+  ssr: false,
+});
 
 export type BaseFeePoint = [JsTimestamp, Gwei];
 

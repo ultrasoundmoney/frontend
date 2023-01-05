@@ -27,6 +27,7 @@ import TopBar from "../TopBar";
 import FamSection from "./FamSection";
 import JoinDiscordSection from "./JoinDiscordSection";
 import SupplyDashboard from "./SupplyDashboard";
+import GasSection from "./GasSection";
 
 const AdminTools = dynamic(() => import("../AdminTools"), { ssr: false });
 // We get hydration errors in production.
@@ -46,9 +47,6 @@ const SupplyProjectionsSection = dynamic(
   () => import("./SupplyProjectionsSection"),
   { ssr: false },
 );
-const GasSection = dynamic(() => import("./GasSection"), {
-  ssr: false,
-});
 // Likely culprit.
 const BurnSection = dynamic(() => import("./BurnSection"), {
   ssr: false,
