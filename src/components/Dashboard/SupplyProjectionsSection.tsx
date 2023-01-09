@@ -6,7 +6,7 @@ import TwoYearProjection from "../TwoYearProjection";
 
 const SupplyProjectionsSection: FC = () => (
   <BasicErrorBoundary>
-    <div id="projection" className="mt-16">
+    <div id="projections" className="mt-16">
       <SectionDivider
         link="projections"
         subtitle="ultra sound for decades to come"
