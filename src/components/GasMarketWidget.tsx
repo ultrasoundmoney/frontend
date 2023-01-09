@@ -154,14 +154,20 @@ const Marker: FC<MarkerProps> = ({
         size="text-sm"
         unitPostfix={vertical === "top" ? "Gwei" : undefined}
       >
-        <CountUp
-          end={gas / WEI_PER_GWEI}
-          preserveValue
-          formattingFn={formatOneDecimal}
-          duration={1}
-          useEasing
-          decimals={1}
-        />
+        <a
+          href={getBlockPageLink(blockNumber)}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <CountUp
+            end={gas / WEI_PER_GWEI}
+            preserveValue
+            formattingFn={formatOneDecimal}
+            duration={1}
+            useEasing
+            decimals={1}
+          />
+        </a>
       </QuantifyText>
       {vertical === "top" && (
         <div className={`mt-2 h-12 w-px rounded-t-full ${markerColor}`}></div>
