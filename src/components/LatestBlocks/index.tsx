@@ -9,6 +9,7 @@ import {
   useGroupedAnalysis1,
 } from "../../api/grouped-analysis-1";
 import type { Unit } from "../../denomination";
+import { useBaseFeePerGasStats } from "../../api/base-fee-per-gas-stats";
 import { WEI_PER_GWEI } from "../../eth-units";
 import * as Format from "../../format";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
@@ -19,6 +20,7 @@ import LabelText from "../TextsNext/LabelText";
 import SkeletonText from "../TextsNext/SkeletonText";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 import _first from "lodash/first";
+import type { TimeFrameNext } from "src/time-frames";
 
 const maxBlocks = 20;
 
@@ -98,55 +100,66 @@ const LatestBlockAge: FC = () => {
   );
 };
 
+type Props = {
+  onClickTimeFrame: () => void;
+  timeFrame: TimeFrameNext;
+};
+
 const LatestBlockComponent: FC<{
   number: number | undefined;
   baseFeePerGas: number | undefined;
   fees: number | undefined;
   feesUsd: number | undefined;
   unit: Unit;
-}> = ({ number, baseFeePerGas, fees, feesUsd, unit }) => (
-  <div className="animate-fade-in text-base font-light transition-opacity duration-700 md:text-lg">
-    <a
-      href={
-        number === undefined
-          ? undefined
-          : `https://etherscan.io/block/${number}`
-      }
-      target="_blank"
-      rel="noreferrer"
-    >
-      <li className="grid grid-cols-3 hover:opacity-60">
-        <span className="font-roboto text-white">
-          <SkeletonText width="7rem">
-            {Format.formatBlockNumber(number)}
-          </SkeletonText>
-        </span>
-        <div className="mr-1 text-right">
-          <BaseText font="font-roboto">
-            <SkeletonText width="1rem">{formatGas(baseFeePerGas)}</SkeletonText>
-          </BaseText>
-          <div className="hidden md:inline">
-            <span className="font-inter">&thinsp;</span>
+  Props;
+}> = ({ number, baseFeePerGas, fees, feesUsd, unit, onClickTimeFrame, timeFrame }) => {
+  const baseFeePerGasStats = useBaseFeePerGasStats();
+  const barrier = baseFeePerGasStats.barrier * WEI_PER_GWEI;
+
+  const gradientCss = 
+    baseFeePerGasStats !== undefined &&
+    BaseFeePerGasStatsTimeFrame.average / WEI_PER_GWEI > barrier
+      ? "from-orange-400 to-yellow-300"
+      : "from-cyan-300 to-indigo-500";
+
+  return (
+    <div className="animate-fade-in text-base font-light transition-opacity duration-700 md:text-lg">
+      <a
+        href={
+          number === undefined
+            ? undefined
+            : `https://etherscan.io/block/${number}`
+        }
+        target="_blank"
+        rel="noreferrer"
+      >
+        <li className="grid grid-cols-3 hover:opacity-60">
+          <span className="font-roboto text-white slateus-200">
+            <SkeletonText width="7rem">
+              {Format.formatBlockNumber(number)}
+            </SkeletonText>
+          </span>
+          <div className="mr-1 text-right">
+            <BaseText font="font-roboto" className={`bg-gradient-to-r bg-clip-text text-transparent ${gradientCss}`}>
+              <SkeletonText width="1rem">{formatGas(baseFeePerGas)}</SkeletonText>
+            </BaseText>
+          </div>
+          <div className="text-right">
+            <BaseText font="font-roboto">
+              <SkeletonText width="2rem">
+                {formatFees(unit, fees, feesUsd)}
+              </SkeletonText>
+            </BaseText>
+            <AmountUnitSpace />
             <span className="font-roboto font-extralight text-slateus-200">
-              Gwei
+              {unit === "eth" ? "ETH" : "USD"}
             </span>
           </div>
-        </div>
-        <div className="text-right">
-          <BaseText font="font-roboto">
-            <SkeletonText width="2rem">
-              {formatFees(unit, fees, feesUsd)}
-            </SkeletonText>
-          </BaseText>
-          <AmountUnitSpace />
-          <span className="font-roboto font-extralight text-slateus-200">
-            {unit === "eth" ? "ETH" : "USD"}
-          </span>
-        </div>
-      </li>
-    </a>
-  </div>
-);
+        </li>
+      </a>
+    </div>
+  );
+};
 
 type Props = { unit: Unit };
 
