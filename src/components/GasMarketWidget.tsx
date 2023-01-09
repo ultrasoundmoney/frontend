@@ -38,8 +38,12 @@ const formatGasTooltip = (
 ${gasStr} Gwei`;
 };
 
+const getBlockPageLink = (u: unknown): string | undefined =>
+  typeof u === undefined ? undefined : `https://etherscan.io/block/${u}`;
+
 type MarkerProps = {
   barrier: number;
+  blockNumber?: number;
   description?: string;
   emphasize?: boolean;
   gas: number;
@@ -53,6 +57,7 @@ type MarkerProps = {
 
 const Marker: FC<MarkerProps> = ({
   barrier,
+  blockNumber,
   description,
   emphasize = false,
   gas,
@@ -265,6 +270,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
               <>
                 <Marker
                   barrier={barrier}
+                  blockNumber={baseFeePerGasStatsTimeFrame.min_block_number}
                   description="minimum gas price"
                   gas={baseFeePerGasStatsTimeFrame.min}
                   highest={highest}
@@ -276,6 +282,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                 />
                 <Marker
                   barrier={barrier}
+                  blockNumber={baseFeePerGasStatsTimeFrame.max_block_number}
                   description="maximum gas price"
                   gas={baseFeePerGasStatsTimeFrame.max}
                   highest={highest}
