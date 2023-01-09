@@ -1,5 +1,4 @@
 import * as DateFns from "date-fns";
-import flow from "lodash/flow";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { useBlockLag } from "../../api/block-lag";
@@ -18,15 +17,13 @@ import BodyTextV2 from "../TextsNext/BodyTextV2";
 import LabelText from "../TextsNext/LabelText";
 import SkeletonText from "../TextsNext/SkeletonText";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
-import _first from "lodash/first";
 
 const maxBlocks = 20;
 
-const formatGas = flow((u: unknown) =>
+const formatGas = (u: unknown) =>
   typeof u !== "number"
     ? undefined
-    : Format.formatZeroDecimals(u / WEI_PER_GWEI),
-);
+    : Format.formatZeroDecimals(u / WEI_PER_GWEI);
 
 const formatFees = (unit: Unit, fees: unknown, feesUsd: unknown) => {
   if (unit === "eth") {
@@ -59,7 +56,7 @@ const LatestBlockAge: FC = () => {
       return;
     }
 
-    const lastBlock = _first(groupedAnalysis1.latestBlockFees);
+    const lastBlock = groupedAnalysis1.latestBlockFees[0];
     if (lastBlock === undefined) {
       return;
     }
