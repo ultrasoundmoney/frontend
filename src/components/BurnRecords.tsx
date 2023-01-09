@@ -22,7 +22,7 @@ const formatBlockNumber = (u: unknown): string | undefined =>
     ? undefined
     : flow(Format.formatZeroDecimals, (str) => `#${str}`)(u);
 
-const getBlockPageLink = (u: unknown): string | undefined =>
+const getBlockPageLink = (u: number | undefined): string | undefined =>
   typeof u === undefined ? undefined : `https://etherscan.io/block/${u}`;
 
 const emojiMap = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];

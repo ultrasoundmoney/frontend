@@ -38,7 +38,7 @@ const formatGasTooltip = (
 ${gasStr} Gwei`;
 };
 
-const getBlockPageLink = (u: unknown): string | undefined =>
+const getBlockPageLink = (u: number | undefined): string | undefined =>
   typeof u === undefined ? undefined : `https://etherscan.io/block/${u}`;
 
 type MarkerProps = {
