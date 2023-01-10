@@ -61,7 +61,7 @@ const BurnSection: FC = () => {
               timeFrame={timeFrame}
               unit={unit}
             />
-            <div className="flex flex-col gap-y-4 lg:col-start-2 lg:row-start-1 lg:row-end-4 lg:h-[520px] xl:h-[532px]">
+            <div className="flex flex-col gap-y-4 lg:col-start-2 lg:row-start-1 lg:row-end-4 lg:max-h-[491px] xl:max-h-[503px] 2xl:h-[532px]">
               <BurnLeaderboard
                 onClickTimeFrame={handleClickTimeFrame}
                 timeFrame={timeFrame}

@@ -1,6 +1,7 @@
 import * as DateFns from "date-fns";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
+import { useBaseFeePerGasStats } from "../../api/base-fee-per-gas-stats";
 import { useBlockLag } from "../../api/block-lag";
 import type { LatestBlock } from "../../api/grouped-analysis-1";
 import {
@@ -8,6 +9,7 @@ import {
   useGroupedAnalysis1,
 } from "../../api/grouped-analysis-1";
 import type { Unit } from "../../denomination";
+import type { GweiNumber, WeiNumber } from "../../eth-units";
 import { WEI_PER_GWEI } from "../../eth-units";
 import * as Format from "../../format";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
@@ -15,6 +17,7 @@ import { AmountUnitSpace } from "../Spacing";
 import { BaseText, LabelUnitText } from "../Texts";
 import BodyTextV2 from "../TextsNext/BodyTextV2";
 import LabelText from "../TextsNext/LabelText";
+import QuantifyText from "../TextsNext/QuantifyText";
 import SkeletonText from "../TextsNext/SkeletonText";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 
@@ -77,9 +80,11 @@ const LatestBlockAge: FC = () => {
     };
   }, [groupedAnalysis1]);
 
-  return typeof timeElapsed === "number" && timeElapsed > 1800 ? (
-    <Resyncing />
-  ) : (
+  if (typeof timeElapsed === "number" && timeElapsed > 1800) {
+    return <Resyncing />;
+  }
+
+  return (
     <div className="flex items-baseline gap-x-2 truncate">
       <LabelText color="text-slateus-400" className="whitespace-nowrap">
         latest block
@@ -95,14 +100,24 @@ const LatestBlockAge: FC = () => {
   );
 };
 
-const LatestBlockComponent: FC<{
-  number: number | undefined;
-  baseFeePerGas: number | undefined;
+type LatestBlockComponentProps = {
+  barrier: GweiNumber;
+  baseFeePerGas: WeiNumber | undefined;
   fees: number | undefined;
   feesUsd: number | undefined;
+  number: number | undefined;
   unit: Unit;
-}> = ({ number, baseFeePerGas, fees, feesUsd, unit }) => (
-  <div className="animate-fade-in text-base font-light transition-opacity duration-700 md:text-lg">
+};
+
+const LatestBlockRow: FC<LatestBlockComponentProps> = ({
+  barrier,
+  baseFeePerGas,
+  fees,
+  feesUsd,
+  number,
+  unit,
+}) => (
+  <div className="animate-fade-in transition-opacity duration-700">
     <a
       href={
         number === undefined
@@ -113,22 +128,25 @@ const LatestBlockComponent: FC<{
       rel="noreferrer"
     >
       <li className="grid grid-cols-3 hover:opacity-60">
-        <span className="font-roboto text-white">
+        <QuantifyText color="text-slateus-400">
           <SkeletonText width="7rem">
-            {Format.formatBlockNumber(number)}
+            {number === undefined
+              ? undefined
+              : Format.formatZeroDecimals(number)}
           </SkeletonText>
-        </span>
-        <div className="mr-1 text-right">
-          <BaseText font="font-roboto">
-            <SkeletonText width="1rem">{formatGas(baseFeePerGas)}</SkeletonText>
-          </BaseText>
-          <div className="hidden md:inline">
-            <span className="font-inter">&thinsp;</span>
-            <span className="font-roboto font-extralight text-slateus-200">
-              Gwei
-            </span>
-          </div>
-        </div>
+        </QuantifyText>
+        <QuantifyText
+          className="mr-1 text-right"
+          color={
+            typeof baseFeePerGas === "number" &&
+            baseFeePerGas / WEI_PER_GWEI > barrier
+              ? "text-orange-400"
+              : "text-blue-400"
+          }
+          size="text-base"
+        >
+          <SkeletonText width="1rem">{formatGas(baseFeePerGas)}</SkeletonText>
+        </QuantifyText>
         <div className="text-right">
           <BaseText font="font-roboto">
             <SkeletonText width="2rem">
@@ -152,6 +170,7 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
   const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysis1F);
   const latestBlockFees = groupedAnalysis1?.latestBlockFees;
   const blockLag = useBlockLag()?.blockLag;
+  const barrier = useBaseFeePerGasStats().barrier;
 
   return (
     <WidgetBackground>
@@ -163,9 +182,9 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
         </div>
         <ul
           className={`
-            -mr-3 flex max-h-[184px]
+            -mr-3 flex max-h-[182px]
             flex-col gap-y-4 overflow-y-auto
-            pr-1 md:max-h-[214px]
+            pr-1
             ${scrollbarStyles["styled-scrollbar-vertical"]}
             ${scrollbarStyles["styled-scrollbar"]}
           `}
@@ -174,12 +193,13 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
             ? latestBlockFeesSkeletons
             : latestBlockFees
           ).map(({ number, fees, feesUsd, baseFeePerGas }, index) => (
-            <LatestBlockComponent
-              key={number || index}
-              number={number}
+            <LatestBlockRow
+              barrier={barrier}
+              baseFeePerGas={baseFeePerGas}
               fees={fees}
               feesUsd={feesUsd}
-              baseFeePerGas={baseFeePerGas}
+              key={number || index}
+              number={number}
               unit={unit}
             />
           ))}

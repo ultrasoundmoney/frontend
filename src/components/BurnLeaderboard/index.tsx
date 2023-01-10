@@ -226,7 +226,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
   return (
     <WidgetErrorBoundary title="burn total">
       <BurnGroupBase
-        backgroundClassName="flex flex-col gap-y-4 h-[32rem] lg:h-full"
+        backgroundClassName="flex flex-col gap-y-4 h-[472px] lg:h-full"
         onClickTimeFrame={onClickTimeFrame}
         title="burn leaderboard"
         timeFrame={timeFrame}
@@ -333,4 +333,5 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
   );
 };
 
+// TODO: document why we memo here.
 export default memo(BurnLeaderboard);
