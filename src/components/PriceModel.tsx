@@ -15,23 +15,29 @@ import { BaseText } from "./Texts";
 import BodyText from "./TextsNext/BodyText";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
+type MaybeMarker = {
+  alt?: string;
+  icon: string;
+  peRatio: number | null;
+  symbol?: string;
+};
+
 type MarkerProps = {
   alt?: string;
   icon: string;
   peRatio: number;
-  ratio: number;
   symbol?: string;
 };
 
 // Markers are positioned absolutely, manipulating their 'left' relatively to the full width bar which should be positioned relatively as their parent. Marker width
-const Marker: FC<MarkerProps> = ({ alt, icon, peRatio, ratio, symbol }) => {
+const Marker: FC<MarkerProps> = ({ alt, icon, peRatio, symbol }) => {
   const [isHovering, setIsHovering] = useState(false);
 
   return (
     <div
       className="pointer-events-none absolute flex w-full flex-col"
       style={{
-        transform: `translateX(${ratio * 100}%)`,
+        transform: `translateX(${linearFromLog(peRatio) * 100}%)`,
       }}
     >
       <div className="mb-3 w-3 -translate-x-1/2 bg-slateus-400 [min-height:3px]"></div>
@@ -87,95 +93,87 @@ const MarkerText: FC<{ children: ReactNode; ratio: number }> = ({
   </div>
 );
 
+const getIsValidMarker = (marker: unknown): marker is MarkerProps =>
+  typeof (marker as { peRatio: number | null }).peRatio === "number";
+
 const CompanyMarkers: FC<{ peRatios: PeRatios & { ETH: number } }> = ({
   peRatios,
 }) => {
-  const markerList: MarkerProps[] = [
+  const markers: MaybeMarker[] = [
     {
       alt: "ethereum logo",
       icon: "eth",
       peRatio: peRatios.ETH,
-      ratio: peRatios.ETH,
       symbol: "ETH",
     },
     {
       alt: "apple logo",
       icon: "apple",
       peRatio: peRatios.AAPL,
-      ratio: peRatios.AAPL,
       symbol: "AAPL",
     },
     {
       alt: "amazon logo",
       icon: "amazon",
       peRatio: peRatios.AMZN,
-      ratio: peRatios.AMZN,
       symbol: "AMZN",
     },
     {
       alt: "tesla logo",
       icon: "tesla",
       peRatio: peRatios.TSLA,
-      ratio: peRatios.TSLA,
       symbol: "TSLA",
     },
     {
       alt: "disney logo",
       icon: "disney",
       peRatio: peRatios.DIS,
-      ratio: peRatios.DIS,
       symbol: "DIS",
     },
     {
       alt: "google logo",
       icon: "google",
       peRatio: peRatios.GOOGL,
-      ratio: peRatios.GOOGL,
       symbol: "GOOGL",
     },
     {
       alt: "netflix logo",
       icon: "netflix",
       peRatio: peRatios.NFLX,
-      ratio: peRatios.NFLX,
       symbol: "NFLX",
     },
     {
       alt: "intel logo",
       icon: "intel",
       peRatio: peRatios.INTC,
-      ratio: peRatios.INTC,
       symbol: "INTC",
     },
   ];
 
-  const shownList = markerList.reduce((list: Array<MarkerProps>, marker) => {
-    if (marker?.peRatio === null) return list;
+  const shownList = markers
+    .filter(getIsValidMarker)
+    .reduce((list: MarkerProps[], marker) => {
+      const someConflict = list.some(
+        (shownMarker) => Math.abs(shownMarker.peRatio - marker.peRatio) < 4,
+      );
 
-    const someConflict = list.some(
-      (shownMarker) => Math.abs(shownMarker.peRatio - marker.peRatio) < 4,
-    );
+      if (someConflict) {
+        return list;
+      }
 
-    if (someConflict) {
-      return list;
-    }
-
-    return [...list, marker];
-  }, []);
+      return [...list, marker];
+    }, []);
 
   return (
     <>
-      {shownList.map((marker) => {
-        return (
-          <Marker
-            key={marker.symbol}
-            icon={marker.icon}
-            peRatio={marker.peRatio}
-            ratio={linearFromLog(marker.peRatio)}
-            symbol={marker.symbol}
-          />
-        );
-      })}
+      {shownList.map((marker) => (
+        <Marker
+          key={marker.symbol}
+          icon={marker.icon}
+          peRatio={marker.peRatio}
+          symbol={marker.symbol}
+        />
+      ))}
     </>
   );
 };
