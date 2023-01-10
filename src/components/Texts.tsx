@@ -7,13 +7,11 @@ export const LabelUnitText: FC<{
   className?: string;
 }> = ({ children, className = "" }) => (
   <BaseText
+    className={`uppercase tracking-widest ${className}`}
+    color="text-slateus-200"
     font="font-roboto"
-    className={`
-      text-xs
-      font-light uppercase
-      tracking-widest text-slateus-200
-      ${className}
-    `}
+    size="text-sm"
+    weight="font-light"
   >
     {children}
   </BaseText>
@@ -24,9 +22,10 @@ export const UnitText: FC<{ children: string; className?: string }> = ({
   children,
 }) => (
   <BaseText
+    className={className}
+    color="text-slateus-200"
     font="font-roboto"
     weight="font-extralight"
-    className={`font-extralight text-slateus-200 ${className}`}
   >
     {children}
   </BaseText>
