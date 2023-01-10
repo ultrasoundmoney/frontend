@@ -33,6 +33,24 @@ export const Button: FC<{
   </button>
 );
 
+export const LondonHardForkTooltip: FC<{
+  children: ReactNode;
+  zLevel?: string;
+  timeFrame: TimeFrameNext;
+}> = ({ children, timeFrame, zLevel }) => (
+  <HoverTooltip
+    customAlign="-left-16"
+    text={
+      timeFrame === "since_burn"
+        ? "since the London hard fork where EIP-1559 was activated"
+        : undefined
+    }
+    zLevel={zLevel}
+  >
+    {children}
+  </HoverTooltip>
+);
+
 type Props = {
   onSetTimeFrame: (timeframe: TimeFrameNext) => void;
   selectedTimeframe: TimeFrameNext;
@@ -42,15 +60,7 @@ type Props = {
 const TimeFrameControl: FC<Props> = ({ selectedTimeframe, onSetTimeFrame }) => (
   <div className="flex flex-row items-center lg:gap-x-1">
     {timeFramesNext.map((timeFrame) => (
-      <HoverTooltip
-        key={timeFrame}
-        customAlign="-left-16"
-        text={
-          timeFrame === "since_burn"
-            ? "since the London hard fork where EIP-1559 was activated"
-            : undefined
-        }
-      >
+      <LondonHardForkTooltip key={timeFrame} timeFrame={timeFrame}>
         <Button
           isActive={selectedTimeframe === timeFrame}
           onClick={() => onSetTimeFrame(timeFrame)}
@@ -67,7 +77,7 @@ const TimeFrameControl: FC<Props> = ({ selectedTimeframe, onSetTimeFrame }) => (
                   className={
                     selectedTimeframe === "since_burn" ? "hidden" : "block"
                   }
-                  alt="flame emoji symbolizing time span since london hark fork when EIP-1559 was activated"
+                  alt="flame emoji symbolizing time span since london hard fork when EIP-1559 was activated"
                   src={fireSlateusSvg as StaticImageData}
                   width={16}
                   height={16}
@@ -80,7 +90,7 @@ const TimeFrameControl: FC<Props> = ({ selectedTimeframe, onSetTimeFrame }) => (
                 `}
               >
                 <Image
-                  alt="flame emoji symbolizing time span since london hark fork when EIP-1559 was activated"
+                  alt="flame emoji symbolizing time span since london hard fork when EIP-1559 was activated"
                   src={fireOwnSvg as StaticImageData}
                   width={16}
                   height={16}
@@ -91,7 +101,7 @@ const TimeFrameControl: FC<Props> = ({ selectedTimeframe, onSetTimeFrame }) => (
             displayLimitedTimeFrameMap[timeFrame]
           )}
         </Button>
-      </HoverTooltip>
+      </LondonHardForkTooltip>
     ))}
   </div>
 );

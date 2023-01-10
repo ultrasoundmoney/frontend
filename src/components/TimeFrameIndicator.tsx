@@ -6,7 +6,7 @@ import { millisFromHours } from "../duration";
 import type { TimeFrameNext } from "../time-frames";
 import { displayLimitedTimeFrameMap } from "../time-frames";
 import LabelText from "./TextsNext/LabelText";
-import HoverTooltip from "./HoverTooltip";
+import { LondonHardForkTooltip } from "./TimeFrameControl";
 
 const getFormattedDays = (now: Date) => {
   const daysCount = differenceInDays(now, londonHardFork);
@@ -37,14 +37,7 @@ const TimeFrameIndicator: FC<Props> = ({
   }, []);
 
   return (
-    <HoverTooltip
-      zLevel="z-30"
-      text={
-        timeFrame === "since_burn"
-          ? "since London hark fork where EIP-1559 was activated"
-          : undefined
-      }
-    >
+    <LondonHardForkTooltip zLevel="z-30" timeFrame={timeFrame}>
       <button
         className={`flex items-baseline gap-x-2 ${className}`}
         onClick={onClickTimeFrame}
@@ -58,7 +51,7 @@ const TimeFrameIndicator: FC<Props> = ({
             : displayLimitedTimeFrameMap[timeFrame]}
         </p>
       </button>
-    </HoverTooltip>
+    </LondonHardForkTooltip>
   );
 };
 
