@@ -73,7 +73,11 @@ const BurnSection: FC = () => {
               />
             </div>
             <div className="lg:row-start-2">
-              <LatestBlocks unit={unit} />
+              <LatestBlocks 
+                onClickTimeFrame={handleClickTimeFrame}
+                timeFrame={timeFrame}
+                unit={unit}
+              />
             </div>
             <div className="lg:row-end-4">
               <BurnRecords

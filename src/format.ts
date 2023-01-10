@@ -216,4 +216,4 @@ export const formatDistance = (currentDateTime: Date, dt: Date) => {
 };
 
 export const formatBlockNumber = (number: unknown) =>
-  typeof number === "number" ? `#${formatZeroDecimals(number)}` : undefined;
+  typeof number === "number" ? `${formatZeroDecimals(number)}` : undefined;
