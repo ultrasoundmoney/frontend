@@ -9,6 +9,7 @@ import {
   useGroupedAnalysis1,
 } from "../../api/grouped-analysis-1";
 import type { Unit } from "../../denomination";
+import type { BaseFeePerGasStatsTimeFrame } from "../../api/base-fee-per-gas-stats"
 import { useBaseFeePerGasStats } from "../../api/base-fee-per-gas-stats";
 import { WEI_PER_GWEI } from "../../eth-units";
 import * as Format from "../../format";
@@ -18,9 +19,9 @@ import { BaseText, LabelUnitText } from "../Texts";
 import BodyTextV2 from "../TextsNext/BodyTextV2";
 import LabelText from "../TextsNext/LabelText";
 import SkeletonText from "../TextsNext/SkeletonText";
-import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
+import { BurnGroupBase } from "../WidgetSubcomponents";
 import _first from "lodash/first";
-import type { TimeFrameNext } from "src/time-frames";
+import type { TimeFrameNext } from "../../time-frames";
 
 const maxBlocks = 20;
 
@@ -100,25 +101,24 @@ const LatestBlockAge: FC = () => {
   );
 };
 
-type Props = {
-  onClickTimeFrame: () => void;
-  timeFrame: TimeFrameNext;
-};
-
 const LatestBlockComponent: FC<{
   number: number | undefined;
   baseFeePerGas: number | undefined;
   fees: number | undefined;
   feesUsd: number | undefined;
   unit: Unit;
-  Props;
+  onClickTimeFrame: () => void;
+  timeFrame: TimeFrameNext;
 }> = ({ number, baseFeePerGas, fees, feesUsd, unit, onClickTimeFrame, timeFrame }) => {
   const baseFeePerGasStats = useBaseFeePerGasStats();
   const barrier = baseFeePerGasStats.barrier * WEI_PER_GWEI;
-
+  const baseFeePerGasStatsTimeFrame =
+    baseFeePerGasStats?.[timeFrame] ??
+    (undefined as BaseFeePerGasStatsTimeFrame | undefined);
   const gradientCss = 
     baseFeePerGasStats !== undefined &&
-    BaseFeePerGasStatsTimeFrame.average / WEI_PER_GWEI > barrier
+    baseFeePerGasStatsTimeFrame !== undefined &&
+    baseFeePerGasStatsTimeFrame.average / WEI_PER_GWEI > barrier
       ? "from-orange-400 to-yellow-300"
       : "from-cyan-300 to-indigo-500";
 
@@ -161,22 +161,24 @@ const LatestBlockComponent: FC<{
   );
 };
 
-type Props = { unit: Unit };
+type Props = { 
+  unit: Unit;
+  onClickTimeFrame: () => void;
+  timeFrame: TimeFrameNext;
+};
 
-const LatestBlocks: FC<Props> = ({ unit }) => {
+const LatestBlocks: FC<Props> = ({ unit, onClickTimeFrame, timeFrame }) => {
   const groupedAnalysis1F = useGroupedAnalysis1();
   const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysis1F);
   const latestBlockFees = groupedAnalysis1?.latestBlockFees;
   const blockLag = useBlockLag()?.blockLag;
 
   return (
-    <WidgetBackground>
-      <div className="flex flex-col gap-y-4">
-        <div className="grid grid-cols-3">
-          <WidgetTitle>block</WidgetTitle>
-          <WidgetTitle className="text-right">gas</WidgetTitle>
-          <WidgetTitle className="-mr-1 text-right">burn</WidgetTitle>
-        </div>
+    <BurnGroupBase
+      onClickTimeFrame={onClickTimeFrame}
+      timeFrame={timeFrame}
+      title="latest blocks"
+    >
         <ul
           className={`
             -mr-3 flex max-h-[184px]
@@ -197,6 +199,8 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
               feesUsd={feesUsd}
               baseFeePerGas={baseFeePerGas}
               unit={unit}
+              onClickTimeFrame={onClickTimeFrame}
+              timeFrame={timeFrame}
             />
           ))}
         </ul>
@@ -209,8 +213,7 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
             <LabelText color="text-slateus-400">block lag</LabelText>
           </div>
         </div>
-      </div>
-    </WidgetBackground>
+    </BurnGroupBase>
   );
 };
 
