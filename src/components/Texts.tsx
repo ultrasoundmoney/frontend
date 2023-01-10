@@ -5,7 +5,7 @@ import BodyText from "./TextsNext/BodyText";
 export const LabelUnitText: FC<{
   children: ReactNode;
   className?: string;
-}> = ({ children, className }) => (
+}> = ({ children, className = "" }) => (
   <BaseText
     font="font-roboto"
     className={`
