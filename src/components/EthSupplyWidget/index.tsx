@@ -643,27 +643,27 @@ const SupplySinceMergeWidget: FC<Props> = ({
   return (
     <WidgetErrorBoundary title="eth supply">
       <WidgetBackground className="relative flex w-full flex-col">
-        <div className="absolute left-0 right-0 top-0 bottom-0 overflow-hidden">
+        <div className="pointer-events-none absolute left-0 right-0 top-0 bottom-0 overflow-hidden">
           <div
             // will-change-transform is critical for mobile performance of
             // rendering the chart overlayed on this element.
             className={`
-            pointer-events-none absolute
-            -left-[64px] -top-[64px]
-            h-full
-            w-full opacity-[0.20]
-            blur-[120px]
-            will-change-transform
-            md:-left-[128px]
-          `}
+              absolute
+              -left-[64px] -top-[64px]
+              h-full
+              w-full opacity-[0.20]
+              blur-[120px]
+              will-change-transform
+              md:-left-[128px]
+            `}
           >
             <div
               className={`
-            pointer-events-none absolute h-3/5
-            w-4/5 rounded-[35%] bg-[#0037FA]
-            lg:bottom-[3.0rem]
-            lg:-right-[1.0rem]
-          `}
+                absolute h-3/5
+                w-4/5 rounded-[35%] bg-[#0037FA]
+                lg:bottom-[3.0rem]
+                lg:-right-[1.0rem]
+              `}
             ></div>
           </div>
         </div>

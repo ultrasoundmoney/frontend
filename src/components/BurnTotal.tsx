@@ -117,46 +117,46 @@ const BurnTotal: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
 
   return (
     <WidgetErrorBoundary title="burn total">
-      <WidgetBackground className="relative overflow-hidden">
-        <div
-          className={`
-            top-15 pointer-events-none
-            absolute -left-20 h-full
-            w-full opacity-[0.13]
-            blur-[50px]
-            will-change-transform
-            md:top-20
-            md:blur-[70px]
-          `}
-        >
+      <WidgetBackground className="relative">
+        <div className="pointer-events-none absolute left-0 right-0 top-0 bottom-0 overflow-hidden">
           <div
             className={`
-              pointer-events-none
-              absolute h-4/5 w-4/5 rounded-[35%] bg-[#243AFF]
-              md:h-3/5
-              md:w-3/5
+              top-15
+              absolute -left-20 h-full
+              w-full opacity-[0.13]
+              blur-[50px]
+              will-change-transform
+              md:top-20
+              md:blur-[70px]
             `}
-          ></div>
-        </div>
-        <div
-          className={`
-            pointer-events-none absolute
-            top-0 -left-20 h-full
-            w-full opacity-[0.25]
-            blur-[50px]
-            will-change-transform md:top-5
-            md:blur-[70px]
-          `}
-        >
+          >
+            <div
+              className={`
+                absolute h-4/5 w-4/5 rounded-[35%] bg-[#243AFF]
+                md:h-3/5
+                md:w-3/5
+              `}
+            ></div>
+          </div>
           <div
             className={`
-              pointer-events-none
-              absolute -left-5
-              h-4/5 w-full rounded-[35%] bg-[#FF8D24] md:left-0
-              md:h-3/5
-              md:w-4/5
+              absolute
+              top-0 -left-20 h-full
+              w-full opacity-[0.25]
+              blur-[50px]
+              will-change-transform md:top-5
+              md:blur-[70px]
             `}
-          ></div>
+          >
+            <div
+              className={`
+                absolute -left-5
+                h-4/5 w-full rounded-[35%] bg-[#FF8D24] md:left-0
+                md:h-3/5
+                md:w-4/5
+              `}
+            ></div>
+          </div>
         </div>
         <div className="flex items-baseline justify-between">
           <WidgetTitle>burn total</WidgetTitle>
