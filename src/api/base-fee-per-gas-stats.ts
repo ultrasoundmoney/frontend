@@ -7,8 +7,10 @@ import { fetchJsonSwr } from "./fetchers";
 
 export type BaseFeePerGasStatsTimeFrame = {
   average: WeiNumber;
+  max_block_number: number;
   max: WeiNumber;
   min: WeiNumber;
+  min_block_number: number;
 };
 
 export type BaseFeePerGasStats = {
