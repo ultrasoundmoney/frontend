@@ -20,7 +20,7 @@
   "landing_faq_link": "FAQ",
   "landing_hero_title_1": "Ultra Sound Money",
   "landing_before_genesis_title": "Before we get into Ultra Sound Money, let’s talk about how we got here",
-  "landing_before_genesis_text": "Section for brief historical events and and current ETH state to set the scene for Ultrasound money. Graphics, Light data and simple carts",
+  "landing_before_genesis_text": "Section for brief historical events and current ETH state to set the scene for Ultrasound money. Graphics, Light data and simple carts",
 
   "landing_genesis_date": "block 0, Jul 31, 2015",
   "landing_genesis_title": "Ethereum  Genesis",
@@ -35,7 +35,7 @@
 
   "landing_byzantium_date": "block 4,370,000, Oct 16, 2017",
   "landing_byzantium_title": "EIP Byzantium",
-  "landing_byzantium_text": "<span class=\"text-white\">EIP (Ethereum Imprevement Proposal)</span> is open access to digital money and data-friendly services for everyone – no matter your background or location. It's a community-built technology behind the cryptocurrency ether (ETH)",
+  "landing_byzantium_text": "<span class=\"text-white\">EIP (Ethereum Improvement Proposal)</span> is open access to digital money and data-friendly services for everyone – no matter your background or location. It's a community-built technology behind the cryptocurrency ether (ETH)",
   "landing_byzantium_card_name": "Oct 16, 2017",
   "landing_byzantium_card_title": "inflationary",
   "landing_byzantium_card2_name": "ETH supply",
@@ -46,7 +46,7 @@
 
   "landing_constantinopole_date": "block 4,370,000, Oct 16, 2017",
   "landing_constantinopole_title": "EIP Constantinopole",
-  "landing_constantinopole_text": "<span class=\"text-white\">EIP (Ethereum Imprevement Proposal)</span> is open access to digital money and data-friendly services for everyone – no matter your background or location. It's a community-built technology behind the cryptocurrency ether (ETH)",
+  "landing_constantinopole_text": "<span class=\"text-white\">EIP (Ethereum Improvement Proposal)</span> is open access to digital money and data-friendly services for everyone – no matter your background or location. It's a community-built technology behind the cryptocurrency ether (ETH)",
   "landing_constantinopole_card_name": "Oct 16, 2017",
   "landing_constantinopole_card_title": "inflationary",
   "landing_constantinopole_card2_name": "ETH supply",
@@ -138,7 +138,7 @@
   "time_range_7d": "7d",
   "time_range_1d": "1d",
   "title_nft_drop": "nft drop",
-  "description_nft_drop": "The activation of EIP-1559 institutes a big change. A change met with excitement by an ever growing number of people. What better way to celebrate this milestone than with a laugh, a cheer, and a gorgeous NFT.",
+  "description_nft_drop": "The activation of EIP-1559 institutes a big change. A change met with excitement by an ever-growing number of people. What better way to celebrate this milestone than with a laugh, a cheer, and a gorgeous NFT.",
 
   "faq_question_1": "What is ultra sound money?",
   "faq_answer_1": "Ultra sound money is an Ethereum meme focusing on the likely decrease of the ETH supply.\n\nIf capped-supply gold is sound, decreasing-supply ether is ultra sound.",
