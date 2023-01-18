@@ -128,7 +128,7 @@ const LatestBlockRow: FC<LatestBlockComponentProps> = ({
       rel="noreferrer"
     >
       <li className="grid grid-cols-3 hover:opacity-60">
-        <QuantifyText color="text-slateus-400">
+        <QuantifyText color="text-slateus-400" size="text-lg">
           <SkeletonText width="7rem">
             {number === undefined
               ? undefined
@@ -143,21 +143,19 @@ const LatestBlockRow: FC<LatestBlockComponentProps> = ({
               ? "text-orange-400"
               : "text-blue-400"
           }
-          size="text-base"
+          size="text-lg"
         >
           <SkeletonText width="1rem">{formatGas(baseFeePerGas)}</SkeletonText>
         </QuantifyText>
-        <div className="text-right">
-          <BaseText font="font-roboto">
-            <SkeletonText width="2rem">
-              {formatFees(unit, fees, feesUsd)}
-            </SkeletonText>
-          </BaseText>
-          <AmountUnitSpace />
-          <span className="font-roboto font-extralight text-slateus-200">
-            {unit === "eth" ? "ETH" : "USD"}
-          </span>
-        </div>
+        <QuantifyText
+          className="text-right"
+          unitPostfix={unit.toUpperCase()}
+          size="text-lg"
+        >
+          <SkeletonText width="2rem">
+            {formatFees(unit, fees, feesUsd)}
+          </SkeletonText>
+        </QuantifyText>
       </li>
     </a>
   </div>
@@ -182,7 +180,7 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
         </div>
         <ul
           className={`
-            -mr-3 flex max-h-[182px]
+            -mr-3 flex max-h-[200px]
             flex-col gap-y-4 overflow-y-auto
             pr-1
             ${scrollbarStyles["styled-scrollbar-vertical"]}
@@ -195,7 +193,7 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
           ).map(({ number, fees, feesUsd, baseFeePerGas }, index) => (
             <LatestBlockRow
               barrier={barrier}
-              baseFeePerGas={baseFeePerGas}
+              baseFeePerGas={index === 0 ? 17 * WEI_PER_GWEI : baseFeePerGas}
               fees={fees}
               feesUsd={feesUsd}
               key={number || index}
