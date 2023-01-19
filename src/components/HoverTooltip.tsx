@@ -1,5 +1,7 @@
 import type { FC, ReactNode } from "react";
+import { useContext } from "react";
 import { useState } from "react";
+import { FeatureFlagsContext } from "../feature-flags";
 import { BaseText } from "./Texts";
 
 const Text = ({ children }: { children: ReactNode }) => (
@@ -24,8 +26,9 @@ const HoverTooltip: FC<{
   zLevel = "z-20",
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
+  const featureFlags = useContext(FeatureFlagsContext);
 
-  if (text === undefined) {
+  if (text === undefined || !featureFlags.showTooltips) {
     return <>{children}</>;
   }
 

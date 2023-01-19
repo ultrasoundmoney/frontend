@@ -5,6 +5,7 @@ export const flags = [
   "showCategoryCounts",
   "showCategorySlugs",
   "showMetadataTools",
+  "showTooltips",
   "simulateDeflationary",
   "useWebSockets",
 ] as const;
@@ -17,6 +18,7 @@ export const defaults: FeatureFlags = {
   showCategoryCounts: false,
   showCategorySlugs: false,
   showMetadataTools: false,
+  showTooltips: false,
   simulateDeflationary: false,
   useWebSockets: false,
 };
@@ -26,6 +28,7 @@ export const displayFlagMap: Record<Flag, string> = {
   showCategoryCounts: "show category counts",
   showCategorySlugs: "show category slugs",
   showMetadataTools: "show metadata tools",
+  showTooltips: "show tooltips",
   simulateDeflationary: "simulate deflationary",
   useWebSockets: "use websockets",
 };
