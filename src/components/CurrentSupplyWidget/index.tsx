@@ -31,7 +31,7 @@ const EthSupplyWidget: FC = () => {
             <WidgetTitle>current supply</WidgetTitle>
             <HoverTooltip
               customAlign="-left-16"
-              text="learn how the current supply is calculated"
+              text="Show how the current supply is calculated."
             >
               <Nerd />
             </HoverTooltip>

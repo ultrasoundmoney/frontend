@@ -699,7 +699,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
           <SimulateProofOfWork
             checked={simulateProofOfWork}
             onToggle={onSimulateProofOfWork}
-            tooltipText="simulate what the ETH supply would look like under proof-of-work issuance"
+            tooltipText="Simulate the ETH supply with proof-of-work issuance."
           />
         </div>
       </WidgetBackground>

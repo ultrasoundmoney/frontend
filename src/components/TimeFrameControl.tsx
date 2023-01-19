@@ -42,7 +42,7 @@ export const LondonHardForkTooltip: FC<{
     customAlign="-left-16"
     text={
       timeFrame === "since_burn"
-        ? "since the London hard fork where EIP-1559 was activated"
+        ? "Since-burn time frame. Starting from the london hard fork where EIP-1559 was activated."
         : undefined
     }
     zLevel={zLevel}

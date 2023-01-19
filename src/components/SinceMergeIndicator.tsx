@@ -44,7 +44,7 @@ const SinceMergeIndicator: FC<{
     <HoverTooltip
       text={
         timeFrame === "since_merge"
-          ? "since the merge where proof-of-stake was activated"
+          ? "Since the merge, when proof-of-stake was activated."
           : undefined
       }
     >
