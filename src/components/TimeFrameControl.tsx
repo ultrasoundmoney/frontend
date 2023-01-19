@@ -39,7 +39,7 @@ export const LondonHardForkTooltip: FC<{
   timeFrame: TimeFrameNext;
 }> = ({ children, timeFrame, zLevel }) => (
   <HoverTooltip
-    customAlign="-left-16"
+    customAlign="-left-32"
     text={
       timeFrame === "since_burn"
         ? "Since-burn time frame. Starting from the london hard fork where EIP-1559 was activated."
