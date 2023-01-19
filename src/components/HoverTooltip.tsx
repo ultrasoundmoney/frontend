@@ -5,7 +5,7 @@ import { FeatureFlagsContext } from "../feature-flags";
 import { BaseText } from "./Texts";
 
 const Text = ({ children }: { children: ReactNode }) => (
-  <BaseText font="font-roboto" color="text-slateus-300" size="text-xs">
+  <BaseText font="font-inter" color="text-slateus-300" size="text-xs">
     {children}
   </BaseText>
 );
