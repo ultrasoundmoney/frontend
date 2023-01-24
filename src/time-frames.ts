@@ -10,6 +10,7 @@ export const timeFramesNext = [
   "d1",
   "d7",
   "d30",
+  "since_merge",
   "since_burn",
 ] as const;
 export type TimeFrameNext = typeof timeFramesNext[number];
@@ -18,7 +19,7 @@ export const nextFromTimeFrame = (timeFrame: TimeFrame): TimeFrameNext =>
   timeFrame === "all" ? "since_burn" : timeFrame;
 
 export const timeFrameFromNext = (timeFrame: TimeFrameNext): TimeFrame =>
-  timeFrame === "since_burn" ? "all" : timeFrame;
+  (timeFrame === "since_burn" || timeFrame === "since_merge") ? "all" : timeFrame;
 
 export const displayLimitedTimeFrameMap: Record<LimitedTimeFrame, string> = {
   m5: "5m",
