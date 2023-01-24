@@ -48,7 +48,10 @@ const SinceMergeIndicator: FC<{
           : undefined
       }
     >
-      <button className="flex items-baseline gap-x-2" onClick={onClick}>
+      <button
+        className="flex items-baseline gap-x-2 hover:brightness-90 active:brightness-75"
+        onClick={onClick}
+      >
         {timeFrame === "since_merge" ? (
           <>
             <WidgetTitle>since merge</WidgetTitle>

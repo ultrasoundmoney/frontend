@@ -39,7 +39,7 @@ const TimeFrameIndicator: FC<Props> = ({
   return (
     <LondonHardForkTooltip zLevel="z-30" timeFrame={timeFrame}>
       <button
-        className={`flex items-baseline gap-x-2 ${className}`}
+        className={`flex items-baseline gap-x-2 hover:brightness-90 active:brightness-75 ${className}`}
         onClick={onClickTimeFrame}
       >
         <LabelText>
