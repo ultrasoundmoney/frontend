@@ -193,7 +193,7 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
           ).map(({ number, fees, feesUsd, baseFeePerGas }, index) => (
             <LatestBlockRow
               barrier={barrier}
-              baseFeePerGas={index === 0 ? 17 * WEI_PER_GWEI : baseFeePerGas}
+              baseFeePerGas={baseFeePerGas}
               fees={fees}
               feesUsd={feesUsd}
               key={number || index}
