@@ -4,6 +4,10 @@
         "answer": "The ultra sound relay is a credibly-neutral and permissionless relay—a public good from the ultrasound.money team."
     },
     {
+        "question": "What software is the ultra sound relay running on?",
+        "answer": "<a href=\"https://github.com/flashbots/mev-boost-relay\" target=\"_blank\" rel=\"noreferrer\">flashbots/mev-boost-relay</a> v0.15.0 \n <a href=\"https://github.com/flashbots/prio-load-balancer\" target=\"_blank\" rel=\"noreferrer\">flashbots/prio-load-balancer</a> v0.4 \n <a href=\"https://github.com/flashbots/sync-proxy\" target=\"_blank\" rel=\"noreferrer\">flashbots/sync-proxy</a> 09dfd27 \n <a href=\"https://github.com/prysmaticlabs/prysm\" target=\"_blank\" rel=\"noreferrer\">prysmaticlabs/prysm</a> v3.2.0 \n <a href=\"https://github.com/relayooor/go-ethereum\" target=\"_blank\" rel=\"noreferrer\">relayooor/go-ethereum</a> 1762f96"
+    },
+    {
         "question": "What is a credibly-neutral relay?",
         "answer": "A credibly-neutral relay only validates blocks against consensus rules as in enshrined proposer-builder separation."
     },
