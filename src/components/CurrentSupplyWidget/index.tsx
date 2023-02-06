@@ -54,9 +54,7 @@ const EthSupplyWidget: FC = () => {
           <div className="flex flex-col gap-y-4 transition-colors">
             <PreciseEth amount={ethSupply} />
             <UpdatedAgo
-              updatedAt={dateTimeFromSlot(
-                ethSupplyParts.beaconDepositsSum.slot,
-              ).toISOString()}
+              updatedAt={dateTimeFromSlot(ethSupplyParts.slot).toISOString()}
             />
           </div>
         </div>

@@ -2,9 +2,10 @@ import * as DateFns from "date-fns";
 import JSBI from "jsbi";
 import { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
+import type { Slot } from "../beacon-units";
 import { getDomain } from "../config";
 import * as Duration from "../duration";
-import type { EthNumber } from "../eth-units";
+import type { EthNumber, GweiString, WeiJSBI } from "../eth-units";
 import { WEI_PER_ETH } from "../eth-units";
 import { WEI_PER_GWEI_JSBI } from "../eth-units";
 import type { ApiResult } from "./fetchers";
@@ -12,66 +13,50 @@ import { fetchApiJson, fetchJsonSwr } from "./fetchers";
 
 export type SupplyPartsF = {
   beaconBalancesSum: {
-    balancesSum: string;
+    balancesSum: GweiString;
     slot: number;
   };
+  beaconBalancesSumNext: GweiString;
   beaconDepositsSum: {
-    depositsSum: string;
+    depositsSum: GweiString;
     slot: number;
   };
+  beaconDepositsSumNext: GweiString;
   executionBalancesSum: {
-    balancesSum: string;
+    balancesSum: GweiString;
     blockNumber: number;
   };
+  executionBalancesSumNext: GweiString;
+  slot: Slot;
 };
 
 export type SupplyParts = {
-  beaconBalancesSum: {
-    balancesSum: JSBI;
-    slot: number;
-  };
-  beaconDepositsSum: {
-    depositsSum: JSBI;
-    slot: number;
-  };
-  executionBalancesSum: {
-    balancesSum: JSBI;
-    blockNumber: number;
-  };
+  beaconBalancesSum: WeiJSBI;
+  beaconDepositsSum: WeiJSBI;
+  executionBalancesSum: WeiJSBI;
+  slot: number;
 };
 
 export const decodeEthSupply = (supplyParts: SupplyPartsF): SupplyParts => ({
-  beaconDepositsSum: {
-    slot: supplyParts.beaconDepositsSum.slot,
-    depositsSum: JSBI.multiply(
-      JSBI.BigInt(supplyParts.beaconDepositsSum.depositsSum),
-      WEI_PER_GWEI_JSBI,
-    ),
-  },
-  beaconBalancesSum: {
-    slot: supplyParts.beaconBalancesSum.slot,
-    balancesSum: JSBI.multiply(
-      JSBI.BigInt(supplyParts.beaconBalancesSum.balancesSum),
-      WEI_PER_GWEI_JSBI,
-    ),
-  },
-  executionBalancesSum: {
-    balancesSum: JSBI.BigInt(supplyParts.executionBalancesSum.balancesSum),
-    blockNumber: supplyParts.executionBalancesSum.blockNumber,
-  },
+  beaconBalancesSum: JSBI.multiply(
+    JSBI.BigInt(supplyParts.beaconBalancesSum.balancesSum),
+    WEI_PER_GWEI_JSBI,
+  ),
+  beaconDepositsSum: JSBI.multiply(
+    JSBI.BigInt(supplyParts.beaconDepositsSum.depositsSum),
+    WEI_PER_GWEI_JSBI,
+  ),
+  executionBalancesSum: JSBI.BigInt(
+    supplyParts.executionBalancesSum.balancesSum,
+  ),
+  slot: supplyParts.slot,
 });
 
-export const ethSupplyFromParts = (supplyParts: SupplyParts): JSBI => {
-  const ethSupplySum = JSBI.subtract(
-    JSBI.add(
-      supplyParts.executionBalancesSum.balancesSum,
-      supplyParts.beaconBalancesSum.balancesSum,
-    ),
-    supplyParts.beaconDepositsSum.depositsSum,
+export const ethSupplyFromParts = (supplyParts: SupplyParts): WeiJSBI =>
+  JSBI.subtract(
+    JSBI.add(supplyParts.executionBalancesSum, supplyParts.beaconBalancesSum),
+    supplyParts.beaconDepositsSum,
   );
-
-  return ethSupplySum;
-};
 
 export const impreciseEthSupplyFromParts = (
   ethSupplyParts: SupplyParts,
@@ -119,13 +104,10 @@ export const useImpreciseEthSupply = (): EthNumber | undefined => {
   return lastEthSupply;
 };
 
-export const getEthSupplyImprecise = (ethSupply: SupplyParts): number =>
+export const getEthSupplyImprecise = (ethSupply: SupplyParts): EthNumber =>
   JSBI.toNumber(
     JSBI.subtract(
-      JSBI.add(
-        ethSupply.executionBalancesSum.balancesSum,
-        ethSupply.beaconBalancesSum.balancesSum,
-      ),
-      ethSupply.beaconDepositsSum.depositsSum,
+      JSBI.add(ethSupply.executionBalancesSum, ethSupply.beaconBalancesSum),
+      ethSupply.beaconDepositsSum,
     ),
   ) / 1e18;
