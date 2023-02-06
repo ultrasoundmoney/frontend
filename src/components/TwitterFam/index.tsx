@@ -1,5 +1,5 @@
-import { FC, RefObject } from "react";
-import { useCallback, useRef, useState } from "react";
+import { FC, RefObject, useEffect } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { usePopper } from "react-popper";
 import { ReactZoomPanPinchRef, TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
@@ -16,6 +16,8 @@ import BasicErrorBoundary from "../BasicErrorBoundary";
 import SectionDivider from "../SectionDivider";
 import ClickAwayListener from "react-click-away-listener";
 import ImageWithOnClickTooltip from "../ImageWithOnClickTooltip";
+import imageWithOnClickStyles from "../ImageWithOnClickTooltip.module.scss";
+import followingYouStyles from "../FollowingYou/FollowingYou.module.scss";
 
 // See if merging with leaderboards tooltip makes sense after making it more generic.
 export const useTooltip = () => {
@@ -53,21 +55,19 @@ export const useTooltip = () => {
           setShowTooltip(false);
           setSelectedItem(undefined);
         }
-      }, 100);
+      }, 50);
 
       return () => window.clearTimeout(id);
     },
-    [showTooltip, setShowTooltip, setSelectedItem, setRefEl, onImage, onTooltip],
+    [showTooltip, setShowTooltip, setSelectedItem, setRefEl, onTooltip],
   );
 
   const handleClickAway = useCallback(() => {
     onImage.current = false;
 
     if (!onImage.current && !onTooltip.current) {
-      window.setTimeout(() => {
-        setShowTooltip(false);
-        setSelectedItem(undefined);
-      }, 75);
+      setShowTooltip(false);
+      setSelectedItem(undefined);
     }
   }, [onImage, onTooltip]);
 
@@ -84,22 +84,10 @@ export const useTooltip = () => {
         setShowTooltip(false);
         setSelectedItem(undefined);
       }
-    }, 100);
+    }, 200);
 
     return () => window.clearTimeout(id);
   }, [onImage, onTooltip]);
-
-  // todo: I think I can remove this now
-  // const handleClickImage = useCallback(
-  //   (ranking: FamProfile | undefined) => {
-  //     if (md) {
-  //       return;
-  //     }
-
-  //     setSelectedItem(ranking);
-  //   },
-  //   [md, setSelectedItem],
-  // );
 
   return {
     attributes,
@@ -122,6 +110,7 @@ const TwitterFam: FC = () => {
   const fullScreenHandle = useFullScreenHandle();
 
   // Copy batsound feedback
+  const [searchValue, setSearchValue] = useState("");
   const [isCopiedFeedbackVisible, setIsCopiedFeedbackVisible] = useState(false);
   const onBatSoundCopied = () => {
     setIsCopiedFeedbackVisible(true);
@@ -151,7 +140,30 @@ const TwitterFam: FC = () => {
 
   const panZoomRef = useRef<ReactZoomPanPinchRef>(null);
 
-  console.log('scale:', panZoomRef.current?.state?.scale)
+  // useEffect(() => {
+  //   const filteredPros = profiles?.filter((profile) => {
+  //     if (profile === undefined) {
+  //       return false;
+  //     }
+  //     return profile.name.toLowerCase().includes(searchValue.toLowerCase());
+  //   });
+  //   setFilteredProfiles(filteredPros);
+  // }, [profiles, searchValue]);
+  
+  const filteredProfiles = useMemo(() => {
+    if (searchValue === "") {
+      return profiles;
+    }
+    return profiles?.filter((profile) => {
+      if (profile === undefined) {
+        return false;
+      }
+      const lcSearchValue = searchValue.toLowerCase();
+      return profile.name.toLowerCase().includes(lcSearchValue) || profile.handle.toLowerCase().includes(lcSearchValue);
+    });
+  }, [profiles, searchValue]);
+  
+  console.log('filteredProfiles:', filteredProfiles);
 
   return (
     <>
@@ -166,7 +178,7 @@ const TwitterFam: FC = () => {
               <div className="mt-4 flex flex-col gap-y-4">
                 <div className="h-1"></div>
                 <h1 className="mb-4 text-2xl font-light text-white md:text-3xl xl:text-41xl">
-                  {profiles?.length?.toLocaleString("en-US")} <span className="text-blue-spindle font-extralight text-2xl md:text-2xl xl:text-4xl">members</span>
+                  {profiles?.length?.toLocaleString("en-US")} <span className="text-slateus-400 font-extralight text-2xl md:text-2xl xl:text-4xl">members</span>
                 </h1>
               </div>
             </WidgetBackground>
@@ -199,127 +211,189 @@ const TwitterFam: FC = () => {
         </div>
       </BasicErrorBoundary>
       <div className="h-12"></div>
-      <FullScreen
-        handle={fullScreenHandle}
-        className="bg-blue-midnightexpress"
-      >
-        <div className="flex flex-wrap justify-center w-screen">
-          <TransformWrapper
-            ref={panZoomRef}
-            initialScale={2}
-            initialPositionX={0}
-            initialPositionY={0}
-            wheel={{ wheelDisabled: true }}
-            // onZoomStop={handleOnZoomStop}
+      <BasicErrorBoundary>
+        <WidgetBackground className="w-full">
+          <div className="flex justify-between">
+          <WidgetTitle>FAM EXPLORER</WidgetTitle>
+          <WidgetTitle className="lowercase text-emerald-400" >{filteredProfiles?.length} matches</WidgetTitle>
+          </div>
+          <FullScreen
+            handle={fullScreenHandle}
+            className="bg-slateus-700"
           >
-            {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
-              <>
-                <div
-                  className="flex justify-center my-4"
-                >
-                  <button
-                    className={`
-                      ml-4 flex
-                      select-none items-center rounded
-                      border border-transparent
-                      bg-blue-tangaroa
-                      px-2 py-1
-                    `}
-                    onClick={() => zoomIn()}
-                  >
-                    <img
-                      style={{ color: 'white' }}
-                      src={`/magnifying-glass-plus.svg`}
-                      alt="magnifying-glass-plus"
-                      width={15}
-                      height={15}
-                    />
-                  </button>
-                  <button
-                    className={`
-                      ml-4 flex
-                      select-none items-center rounded
-                      border border-transparent
-                      bg-blue-tangaroa
-                      px-2 py-1
-                    `}
-                    onClick={() => zoomOut()}
-                  >
-                    <img
-                      style={{ color: 'white' }}
-                      src={`/magnifying-glass-minus.svg`}
-                      alt="magnifying-glass-minus"
-                      width={15}
-                      height={15}
-                    />
-                  </button>
-                  <button
-                    className={`
-                      ml-4 flex
-                      select-none items-center rounded
-                      border border-transparent
-                      bg-blue-tangaroa
-                      px-2 py-1
-                    `}
-                    onClick={() => resetTransform()}
-                  >
-                      <img
-                        style={{ color: 'white' }}
-                        src={`/rotate-right.svg`}
-                        alt="rotate-right"
-                        width={15}
-                        height={15}
-                      />
-                  </button>
-                  <button
-                    className={`
-                      ml-4 flex
-                      select-none items-center rounded
-                      border border-transparent
-                      bg-blue-tangaroa
-                      px-2 py-1
-                    `}
-                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                    // todo: reset the zoom and position on exit
-                    onClick={fullScreenHandle.active ? fullScreenHandle.exit : fullScreenHandle.enter}
-                  >
-                    <img
-                      style={{ color: 'white' }}
-                      src={fullScreenHandle.active ? `/compress.svg` : `/expand.svg`}
-                      alt="expand"
-                      width={15}
-                      height={15}
-                    />
-                  </button>
-                </div>
-                <TransformComponent
-                  wrapperStyle={{ height: fullScreenHandle.active ? '100%' : 500, cursor: "move" }}
-                >
-                  {currentProfiles.map((profile, index) => (
-                    <ClickAwayListener onClickAway={handleClickAway}>
-                      <ImageWithOnClickTooltip
-                        key={profile?.profileUrl ?? index}
-                        className="m-1 h-3 w-3 select-none"
-                        imageUrl={profile?.profileImageUrl}
-                        isDoneLoading={profile !== undefined}
-                        skeletonDiameter="20px"
-                        onClick={(ref) =>
-                          !md || profile === undefined
-                            ? () => undefined
-                            : handleImageClick(profile, ref)
-                        }
-                        height={20}
-                        width={20}
-                        currentScale={panZoomRef.current?.state?.scale}
-                      />
-                    </ClickAwayListener>
-                  ))}
-                </TransformComponent>
-              </>
-            )}
-          </TransformWrapper>
-        </div>
-      </FullScreen>
+            <div
+              className={`
+                flex
+                flex-wrap
+                justify-center
+              `}
+            >
+              <TransformWrapper
+                ref={panZoomRef}
+                initialScale={2}
+                initialPositionX={0}
+                initialPositionY={0}
+                wheel={{ wheelDisabled: true }}
+                panning={{ excluded: [`${imageWithOnClickStyles["fam-image-sprite"]}`] }}
+                // onZoomStop={handleOnZoomStop}
+              >
+                {({ zoomIn, zoomOut, resetTransform, zoomToElement, ...rest }) => (
+                  <>
+                    <div
+                      className="grid gap-3 grid-cols-4 my-4"
+                    >
+                      <button
+                        className={`
+                          flex
+                          select-none items-center
+                          border rounded-lg
+                          border-slateus-400
+                          bg-slateus-600
+                          px-2 py-2
+                        `}
+                        onClick={() => zoomIn()}
+                      >
+                        <span
+                          className="w-3 h-3 leading-[9px]"
+                        >
+                          +
+                        </span>
+                      </button>
+                      <button
+                        className={`
+                          flex
+                          select-none items-center
+                          border rounded-lg
+                          border-slateus-400
+                          bg-slateus-600
+                          px-2 py-1
+                        `}
+                        onClick={() => zoomOut()}
+                      >
+                        <span
+                          className="w-3 h-3 leading-[9px]"
+                        >
+                          -
+                        </span>
+                      </button>
+                      <button
+                        className={`
+                          flex
+                          select-none items-center
+                          border rounded-lg
+                          border-slateus-400
+                          bg-slateus-600
+                          px-2 py-1
+                        `}
+                        onClick={() => resetTransform()}
+                      >
+                          <img
+                            src={`/rotate-right.svg`}
+                            alt="rotate-right"
+                            width={12}
+                            height={12}
+                          />
+                      </button>
+                      <button
+                        className={`
+                          flex
+                          select-none items-center
+                          border rounded-lg
+                          border-slateus-400
+                          bg-slateus-600
+                          px-2 py-1
+                        `}
+                        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                        // todo: reset the zoom and position on exit
+                        onClick={fullScreenHandle.active ? fullScreenHandle.exit : fullScreenHandle.enter}
+                      >
+                        <img
+                          src={fullScreenHandle.active ? `/compress.svg` : `/expand.svg`}
+                          alt="expand"
+                          width={12}
+                          height={12}
+                        />
+                      </button>
+                    </div>
+                    <TransformComponent
+                      wrapperStyle={{ height: fullScreenHandle.active ? '100%' : 500, cursor: "move", width: '100%' }}
+                    >
+                      {profiles?.map((profile, index) => (
+                        <ClickAwayListener onClickAway={handleClickAway} key={profile?.profileUrl ?? index}>
+                          <ImageWithOnClickTooltip
+                            className={`m-1 h-3 w-3 select-none
+                              ${filteredProfiles?.findIndex((p) => p.name === profile.name) === -1 && '!brightness-[0.25]'}
+                            `}
+                            imageUrl={profile?.profileImageUrl}
+                            handle={profile?.handle}
+                            isDoneLoading={profile !== undefined}
+                            skeletonDiameter="20px"
+                            onClick={(ref) =>
+                              !md || profile === undefined
+                                ? () => undefined
+                                : handleImageClick(profile, ref)
+                            }
+                            height={20}
+                            width={20}
+                            currentScale={panZoomRef.current?.state?.scale}
+                          />
+                        </ClickAwayListener>
+                      ))}
+                    </TransformComponent>
+                    {/* Search for your profile form */}
+                    <div
+                      className={`
+                        mt-6
+                        ${fullScreenHandle.active ? 'absolute -top-2 right-4 bg-slateus-700 rounded-full' : ''}
+                      `}
+                    >
+                      <form
+                        className={`
+                          flex
+                          justify-center
+                        `}
+                        onSubmit={(event) => {
+                          console.log('event:', event);
+                          event.preventDefault();
+                          // zoomToElement(`.${imageWithOnClickStyles["fam-image-sprite"]}`, 3);
+                          // zoomToElement(document.getElementById('https://pbs.twimg.com/profile_images/1537478481096781825/J1BDruLr.png') || '');
+                          zoomToElement(document.getElementById(searchValue.toLowerCase()) || '', 3);
+                        }}
+                      >
+                        <input
+                          className="rounded-full border border-gray-500 bg-transparent p-4 pr-32 text-xs text-white md:w-96"
+                          type="text"
+                          placeholder="@vitalikbuterin"
+                          value={searchValue}
+                          spellCheck="false"
+                          // onChange={(event) => setSearchValue(event.target.value)}
+                          onChange={(event) => {
+                            setSearchValue(event.target.value);
+                          }}
+                        />
+                        <button
+                          className={`
+                            ${followingYouStyles.showMe}
+                            -ml-28 select-none rounded-full
+                            border border-white
+                            bg-transparent px-5
+                            text-xs text-white
+                            hover:bg-gray-700
+                            md:w-32
+                          `}
+                          type="submit"
+                        >
+                          show me →
+                        </button>
+                      </form>
+                    </div>
+                  </>
+                )}
+              </TransformWrapper>
+            </div>
+          </FullScreen>
+        </WidgetBackground>
+      </BasicErrorBoundary>
       <>
         <div
           ref={setPopperEl}
@@ -337,6 +411,7 @@ const TwitterFam: FC = () => {
             famFollowerCount={selectedItem?.famFollowerCount}
             followerCount={selectedItem?.followersCount}
             imageUrl={selectedItem?.profileImageUrl}
+            onClickClose={() => handleClickAway()}
             links={selectedItem?.links}
             title={selectedItem?.name}
             twitterUrl={selectedItem?.profileUrl}
@@ -344,7 +419,7 @@ const TwitterFam: FC = () => {
           />
         </div>
         <Modal
-          onClickBackground={() => setSelectedItem(undefined)}
+          onClickBackground={() => handleClickAway()}
           show={!md && selectedItem !== undefined}
         >
           {!md && selectedItem !== undefined && (

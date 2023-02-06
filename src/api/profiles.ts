@@ -34,6 +34,7 @@ export type FamProfile = {
   name: string;
   profileImageUrl: string;
   profileUrl: string;
+  handle: string;
 };
 
 type ProfilesResponse = {

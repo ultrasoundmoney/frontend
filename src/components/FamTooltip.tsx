@@ -1,5 +1,6 @@
 import type { FC, ReactEventHandler } from "react";
 import { useCallback, useState } from "react";
+import { XMarkIcon } from '@heroicons/react/24/solid'
 import type { Linkables } from "../api/profiles";
 import * as Format from "../format";
 import scrollbarStyles from "../styles/Scrollbar.module.scss";
@@ -25,13 +26,14 @@ export const ExternalLink: FC<ExternalLinkProps> = ({
   const [isHovering, setIsHovering] = useState(false);
 
   return (
-    <a
-      className={`relative ${className}`}
-      href={href}
+    <div
+      className={`relative cursor-pointer ${className}`}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
-      rel="noreferrer"
-      target="_blank"
+      onClick={(e) => {
+        e.stopPropagation();
+        window.open(href, "_blank");
+      }}
     >
       <img src={`/round-${icon}-coloroff.svg`} alt={alt} className={`w-12`} />
       <img
@@ -39,7 +41,7 @@ export const ExternalLink: FC<ExternalLinkProps> = ({
         src={`/round-${icon}-coloron.svg`}
         alt={alt}
       />
-    </a>
+    </div>
   );
 };
 
@@ -91,11 +93,16 @@ const Tooltip: FC<TooltipProps> = ({
         ${width}
       `}
     >
-      <img
+      {/* <img
         alt="a close button, circular with an x in the middle"
         className="absolute right-5 top-5 w-6 cursor-pointer select-none hover:brightness-90 active:brightness-110 md:hidden"
         onClick={onClickClose}
-        src="/close.svg"
+        // src="/close.svg"
+        src={close}
+      /> */}
+      <XMarkIcon
+        className="absolute right-5 top-5 w-6 cursor-pointer select-none hover:brightness-90 active:brightness-110"
+        onClick={onClickClose}
       />
       <img
         alt=""
