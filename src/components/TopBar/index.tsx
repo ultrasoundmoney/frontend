@@ -27,7 +27,11 @@ const TopBar: FC = () => {
   const dialogRef = useRef<HTMLDivElement>(null);
   const alarmButtonRef = useRef<HTMLButtonElement>(null);
 
-  const isAlarmActive = gasAlarmActive || ethAlarmActive;
+  // Always start false, to avoid SSR mismatch.
+  const [isAlarmActive, setIsAlarmActive] = useState(false);
+  useEffect(() => {
+    setIsAlarmActive(gasAlarmActive || ethAlarmActive);
+  }, [ethAlarmActive, gasAlarmActive]);
 
   const checkIfClickedOutside = useCallback(
     (e: MouseEvent) => {
