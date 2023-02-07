@@ -66,11 +66,11 @@ export const impreciseEthSupplyFromParts = (
 };
 
 export const fetchSupplyParts = (): Promise<ApiResult<SupplyPartsF>> =>
-  fetchApiJson(`${getDomain()}/api/v2/fees/eth-supply-parts`);
+  fetchApiJson(`${getDomain()}/api/v2/fees/supply-parts`);
 
 export const useSupplyParts = (): SupplyParts => {
   const { data } = useSWR<SupplyPartsF>(
-    "/api/v2/fees/eth-supply-parts",
+    "/api/v2/fees/supply-parts",
     fetchJsonSwr,
     {
       refreshInterval: Duration.millisFromSeconds(4),
