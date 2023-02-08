@@ -12,20 +12,8 @@ import type { ApiResult } from "./fetchers";
 import { fetchApiJson, fetchJsonSwr } from "./fetchers";
 
 export type SupplyPartsF = {
-  beaconBalancesSum: {
-    balancesSum: GweiString;
-    slot: number;
-  };
   beaconBalancesSumNext: GweiString;
-  beaconDepositsSum: {
-    depositsSum: GweiString;
-    slot: number;
-  };
   beaconDepositsSumNext: GweiString;
-  executionBalancesSum: {
-    balancesSum: GweiString;
-    blockNumber: number;
-  };
   executionBalancesSumNext: GweiString;
   slot: Slot;
 };
@@ -39,16 +27,14 @@ export type SupplyParts = {
 
 export const decodeEthSupply = (supplyParts: SupplyPartsF): SupplyParts => ({
   beaconBalancesSum: JSBI.multiply(
-    JSBI.BigInt(supplyParts.beaconBalancesSum.balancesSum),
+    JSBI.BigInt(supplyParts.beaconBalancesSumNext),
     WEI_PER_GWEI_JSBI,
   ),
   beaconDepositsSum: JSBI.multiply(
-    JSBI.BigInt(supplyParts.beaconDepositsSum.depositsSum),
+    JSBI.BigInt(supplyParts.beaconDepositsSumNext),
     WEI_PER_GWEI_JSBI,
   ),
-  executionBalancesSum: JSBI.BigInt(
-    supplyParts.executionBalancesSum.balancesSum,
-  ),
+  executionBalancesSum: JSBI.BigInt(supplyParts.executionBalancesSumNext),
   slot: supplyParts.slot,
 });
 
