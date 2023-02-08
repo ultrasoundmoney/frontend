@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { useState } from "react";
-import { ethSupplyFromParts, useSupplyParts } from "../../api/eth-supply";
+import { ethSupplyFromParts, useSupplyParts } from "../../api/supply-parts";
 import { dateTimeFromSlot } from "../../beacon-time";
 import Nerd from "../Nerd";
 import HoverTooltip from "../HoverTooltip";
