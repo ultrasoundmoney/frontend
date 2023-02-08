@@ -1,5 +1,5 @@
 import type { FC, ReactNode } from "react";
-import type { SupplyParts } from "../../api/eth-supply";
+import type { SupplyParts } from "../../api/supply-parts";
 import { BaseText, TooltipTitle } from "../Texts";
 import LabelText from "../TextsNext/LabelText";
 import PreciseEth from "./PreciseEth";

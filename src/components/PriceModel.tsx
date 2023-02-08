@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useAverageEthPrice } from "../api/average-eth-price";
 import { useBurnRates } from "../api/burn-rates";
 import { useEthPriceStats } from "../api/eth-price-stats";
-import { useImpreciseEthSupply } from "../api/eth-supply";
+import { useImpreciseEthSupply } from "../api/supply-parts";
 import type { PeRatios } from "../api/pe-ratios";
 import { usePeRatios } from "../api/pe-ratios";
 import { usePosIssuanceYear } from "../eth-units";

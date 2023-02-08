@@ -5,7 +5,7 @@ import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { useBurnRates } from "../../api/burn-rates";
 import { useEffectiveBalanceSum } from "../../api/effective-balance-sum";
-import { useImpreciseEthSupply } from "../../api/eth-supply";
+import { useImpreciseEthSupply } from "../../api/supply-parts";
 import { useSupplyProjectionInputs } from "../../api/supply-projection";
 import type { Eth, Gwei } from "../../eth-units";
 import { GWEI_PER_ETH, WEI_PER_ETH } from "../../eth-units";
