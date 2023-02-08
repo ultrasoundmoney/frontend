@@ -27,7 +27,7 @@ type StaticProps = {
     "/api/v2/fees/base-fee-per-gas": BaseFeePerGas;
     "/api/v2/fees/base-fee-per-gas-stats": BaseFeePerGasStats;
     "/api/v2/fees/eth-price-stats": EthPriceStats;
-    "/api/v2/fees/eth-supply-parts": SupplyPartsF;
+    "/api/v2/fees/supply-parts": SupplyPartsF;
     "/api/v2/fees/issuance-estimate": IssuanceEstimate;
     "/api/v2/fees/supply-changes": SupplyChanges;
   };
