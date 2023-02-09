@@ -1,4 +1,4 @@
-import { FC, RefObject, useEffect } from "react";
+import { FC, RefObject } from "react";
 import { useCallback, useMemo, useRef, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { usePopper } from "react-popper";
@@ -7,7 +7,6 @@ import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import type { FamProfile } from "../../api/profiles";
 import { useProfiles } from "../../api/profiles";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
-import ImageWithTooltip from "../ImageWithTooltip";
 import Modal from "../Modal";
 import FamTooltip from "../FamTooltip";
 import Twemoji from "../Twemoji";
@@ -18,6 +17,8 @@ import ClickAwayListener from "react-click-away-listener";
 import ImageWithOnClickTooltip from "../ImageWithOnClickTooltip";
 import imageWithOnClickStyles from "../ImageWithOnClickTooltip.module.scss";
 import followingYouStyles from "../FollowingYou/FollowingYou.module.scss";
+import coordinates from '../../../public/sprite/coordinates.json'
+import properties from '../../../public/sprite/properties.json'
 
 // See if merging with leaderboards tooltip makes sense after making it more generic.
 export const useTooltip = () => {
@@ -140,30 +141,55 @@ const TwitterFam: FC = () => {
 
   const panZoomRef = useRef<ReactZoomPanPinchRef>(null);
 
-  // useEffect(() => {
-  //   const filteredPros = profiles?.filter((profile) => {
-  //     if (profile === undefined) {
-  //       return false;
-  //     }
-  //     return profile.name.toLowerCase().includes(searchValue.toLowerCase());
-  //   });
-  //   setFilteredProfiles(filteredPros);
-  // }, [profiles, searchValue]);
+  const generateImageKeyfromUrl = (url: string | undefined) => {
+    // i.e. https://pbs.twimg.com/profile_images/1537478481096781825/J1BDruLr.png
+    if (url?.includes('default_profile_images')) {
+      return 'default_profile-images.png';
+    }
+    const userId = url?.split('profile_images')?.[1]?.split('/')[1]; // i.e. 1579896394919383051
+    const fileName = `${userId}-::-${url?.split('profile_images')?.[1]?.split('/')[2]}`; // i.e. 1579896394919383051-::-ahIN3HUB.jpg
+    return `profile_images/${fileName}`;
+  }
+
+  const getXAndY = (imageUrl: string | undefined, sizeFactor: number) => {
+    if (imageUrl !== undefined) {
+      const key = generateImageKeyfromUrl(imageUrl);
+      let x = coordinates?.[key as keyof typeof coordinates]?.x / sizeFactor;
+      let y = coordinates?.[key as keyof typeof coordinates]?.y / sizeFactor;
+      // x is going right to left not left to right
+      x = properties?.width / sizeFactor - x;
+      // y is going bottom to top not top to bottom
+      y = properties?.height / sizeFactor - y;
+      if (Number.isNaN(x)) {
+        x = coordinates?.['profile_images/default_profile-images.png' as keyof typeof coordinates ]?.x / sizeFactor;
+        y = coordinates?.['profile_images/default_profile-images.png' as keyof typeof coordinates ]?.y / sizeFactor;
+      }
+      return { x, y };
+    }
+    return { x: null, y: null };
+  }
   
   const filteredProfiles = useMemo(() => {
-    if (searchValue === "") {
+    // remove an @ if user started with it
+    let cleanSearchValue = searchValue;
+    if (searchValue.startsWith("@")) {
+      cleanSearchValue = searchValue.slice(1);
+    }
+    // return all profiles if search is empty
+    if (cleanSearchValue === "") {
       return profiles;
     }
+    // filter profiles
     return profiles?.filter((profile) => {
       if (profile === undefined) {
         return false;
       }
-      const lcSearchValue = searchValue.toLowerCase();
+      // search by name or handle (case insensitive)
+      const lcSearchValue = cleanSearchValue.toLowerCase();
       return profile.name.toLowerCase().includes(lcSearchValue) || profile.handle.toLowerCase().includes(lcSearchValue);
     });
   }, [profiles, searchValue]);
-  
-  console.log('filteredProfiles:', filteredProfiles);
+  const filteredProfilesCount = filteredProfiles?.length;
 
   return (
     <>
@@ -215,7 +241,9 @@ const TwitterFam: FC = () => {
         <WidgetBackground className="w-full">
           <div className="flex justify-between">
           <WidgetTitle>FAM EXPLORER</WidgetTitle>
-          <WidgetTitle className="lowercase text-emerald-400" >{filteredProfiles?.length} matches</WidgetTitle>
+          {searchValue && (
+            <WidgetTitle className="lowercase text-emerald-400" >{filteredProfilesCount} matches</WidgetTitle>
+          )}
           </div>
           <FullScreen
             handle={fullScreenHandle}
@@ -336,6 +364,7 @@ const TwitterFam: FC = () => {
                             height={20}
                             width={20}
                             currentScale={panZoomRef.current?.state?.scale}
+                            getXAndY={getXAndY}
                           />
                         </ClickAwayListener>
                       ))}
@@ -355,9 +384,9 @@ const TwitterFam: FC = () => {
                         onSubmit={(event) => {
                           console.log('event:', event);
                           event.preventDefault();
-                          // zoomToElement(`.${imageWithOnClickStyles["fam-image-sprite"]}`, 3);
-                          // zoomToElement(document.getElementById('https://pbs.twimg.com/profile_images/1537478481096781825/J1BDruLr.png') || '');
-                          zoomToElement(document.getElementById(searchValue.toLowerCase()) || '', 3);
+                          if (filteredProfiles?.[0]) {
+                            zoomToElement(document.getElementById(filteredProfiles[0].handle.toLowerCase()) || '', 3);
+                          }
                         }}
                       >
                         <input
@@ -380,8 +409,10 @@ const TwitterFam: FC = () => {
                             text-xs text-white
                             hover:bg-gray-700
                             md:w-32
+                            disabled:opacity-50
                           `}
                           type="submit"
+                          disabled={filteredProfilesCount !== 1}
                         >
                           show me →
                         </button>
@@ -416,6 +447,7 @@ const TwitterFam: FC = () => {
             title={selectedItem?.name}
             twitterUrl={selectedItem?.profileUrl}
             width="min-w-[20rem] max-w-sm"
+            getXAndY={getXAndY}
           />
         </div>
         <Modal
@@ -433,6 +465,7 @@ const TwitterFam: FC = () => {
               title={selectedItem.name}
               twitterUrl={selectedItem.profileUrl}
               width="min-w-[18rem] max-w-md"
+              getXAndY={getXAndY}
             />
           )}
         </Modal>

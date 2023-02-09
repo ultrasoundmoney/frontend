@@ -1,4 +1,4 @@
-import type { FC, ReactEventHandler } from "react";
+import { FC, ReactEventHandler, useEffect } from "react";
 import { useCallback, useState } from "react";
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import type { Linkables } from "../api/profiles";
@@ -9,6 +9,10 @@ import BodyText from "./TextsNext/BodyText";
 import Twemoji from "./Twemoji";
 import BioWithLinks from "./Twitter/BioWithLinks";
 import { WidgetTitle } from "./WidgetSubcomponents";
+import properties from '../../public/sprite/properties.json'
+import styles from "./ImageWithOnClickTooltip.module.scss";
+
+const sizeFactor = 1.2; // (from 96px to 80px)
 
 type ExternalLinkProps = {
   alt: string;
@@ -58,6 +62,7 @@ export type TooltipProps = {
   title: string | undefined;
   twitterUrl?: string;
   width?: string;
+  getXAndY: (imageKey: string | undefined, sizeFactor: number) => { x: number | null, y: number | null };
 };
 
 const Tooltip: FC<TooltipProps> = ({
@@ -73,11 +78,22 @@ const Tooltip: FC<TooltipProps> = ({
   title,
   twitterUrl,
   width = "22rem",
+  getXAndY,
 }) => {
   const onImageError = useCallback<ReactEventHandler<HTMLImageElement>>((e) => {
     (e.target as HTMLImageElement).src =
       "/leaderboard-images/question-mark-v2.svg";
   }, []);
+  const [posX, setPosX] = useState<number | null>(null);
+  const [posY, setPosY] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (imageUrl !== undefined && getXAndY) {
+      const { x, y } = getXAndY(imageUrl, sizeFactor);
+      setPosX(x);
+      setPosY(y);
+    }
+  }, [getXAndY, imageUrl]);
 
   return (
     <div
@@ -93,22 +109,17 @@ const Tooltip: FC<TooltipProps> = ({
         ${width}
       `}
     >
-      {/* <img
-        alt="a close button, circular with an x in the middle"
-        className="absolute right-5 top-5 w-6 cursor-pointer select-none hover:brightness-90 active:brightness-110 md:hidden"
-        onClick={onClickClose}
-        // src="/close.svg"
-        src={close}
-      /> */}
       <XMarkIcon
         className="absolute right-5 top-5 w-6 cursor-pointer select-none hover:brightness-90 active:brightness-110"
         onClick={onClickClose}
       />
-      <img
-        alt=""
-        className="mx-auto h-20 w-20 select-none rounded-full"
-        onError={onImageError}
-        src={imageUrl ?? "/leaderboard-images/question-mark-v2.svg"}
+      <div
+        className={`${styles["fam-image-sprite"]} mx-auto h-20 w-20 select-none rounded-full`}
+        style={{
+          backgroundPositionX: `${posX}px`,
+          backgroundPositionY: `${posY}px`,
+          backgroundSize: `${properties?.width / sizeFactor}px ${properties?.height / sizeFactor}px`,
+        }}
       />
       <BodyText className="font-semibold">
         <Twemoji imageClassName="inline-block align-middle h-5 ml-1" wrapper>

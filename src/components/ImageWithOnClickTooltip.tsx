@@ -5,7 +5,6 @@ import Skeleton from "react-loading-skeleton";
 import questionMarkSvg from "../assets/question-mark-v2.svg";
 import { FeatureFlagsContext } from "../feature-flags";
 import styles from "./ImageWithOnClickTooltip.module.scss";
-import coordinates from '../../public/sprite/coordinates.json'
 import properties from '../../public/sprite/properties.json'
 
 const sizeFactor = 8; // (from 96px to 12px)
@@ -20,6 +19,7 @@ type ImageWithOnClickTooltipProps = {
   skeletonDiameter?: string;
   width: number;
   currentScale: number | undefined;
+  getXAndY: (imageKey: string | undefined, sizeFactor: number) => { x: number | null, y: number | null };
 };
 
 const ImageWithOnClickTooltip: FC<ImageWithOnClickTooltipProps> = ({
@@ -31,6 +31,7 @@ const ImageWithOnClickTooltip: FC<ImageWithOnClickTooltipProps> = ({
   onClick,
   width,
   currentScale,
+  getXAndY,
 }) => {
   const imageRef = useRef<HTMLImageElement>(null);
   const { previewSkeletons } = useContext(FeatureFlagsContext);
@@ -39,43 +40,18 @@ const ImageWithOnClickTooltip: FC<ImageWithOnClickTooltipProps> = ({
   );
   const [posX, setPosX] = useState<number | null>(null);
   const [posY, setPosY] = useState<number | null>(null);
-  // const [posX] = useState<number>(Math.floor(Math.random() * 101));
-  // const [posY] = useState<number>(Math.floor(Math.random() * 101));
 
   const onImageError = useCallback(() => {
     setImgSrc(questionMarkSvg as StaticImageData);
   }, []);
 
-  const generateImageKeyfromUrl = (url: string | undefined) => {
-    // i.e. https://pbs.twimg.com/profile_images/1537478481096781825/J1BDruLr.png
-    if (url?.includes('default_profile_images')) {
-      return 'default_profile-images.png';
-    }
-    const userId = url?.split('profile_images')?.[1]?.split('/')[1]; // i.e. 1579896394919383051
-    const fileName = `${userId}-::-${url?.split('profile_images')?.[1]?.split('/')[2]}`; // i.e. 1579896394919383051-::-ahIN3HUB.jpg
-    return `profile_images/${fileName}`;
-  }
-
   useEffect(() => {
-    if (imageUrl !== undefined) {
-      const key = generateImageKeyfromUrl(imageUrl);
-      let x = coordinates?.[key as keyof typeof coordinates]?.x / sizeFactor;
-      let y = coordinates?.[key as keyof typeof coordinates]?.y / sizeFactor;
-      // x is going right to left not left to right
-      x = properties?.width / sizeFactor - x;
-      // y is going bottom to top not top to bottom
-      y = properties?.height / sizeFactor - y;
-      if (Number.isNaN(x)) {
-        x = coordinates?.['profile_images/default_profile-images.png' as keyof typeof coordinates ]?.x / sizeFactor;
-        y = coordinates?.['profile_images/default_profile-images.png' as keyof typeof coordinates ]?.y / sizeFactor;
-      }
+    if (imageUrl !== undefined && getXAndY) {
+      const { x, y } = getXAndY(imageUrl, sizeFactor);
       setPosX(x);
       setPosY(y);
     }
-  }, []);
-
-  // const posX = getPositionX();
-  // const posY = getPositionY();
+  }, [getXAndY, imageUrl]);
 
   return (
     <>
