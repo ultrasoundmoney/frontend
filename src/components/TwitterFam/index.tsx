@@ -177,17 +177,20 @@ const TwitterFam: FC = () => {
     }
     // return all profiles if search is empty
     if (cleanSearchValue === "") {
-      return profiles;
+      return profiles || [];
     }
     // filter profiles
-    return profiles?.filter((profile) => {
-      if (profile === undefined) {
-        return false;
-      }
-      // search by name or handle (case insensitive)
-      const lcSearchValue = cleanSearchValue.toLowerCase();
-      return profile.name.toLowerCase().includes(lcSearchValue) || profile.handle.toLowerCase().includes(lcSearchValue);
-    });
+    if (profiles) {
+      return profiles?.filter((profile) => {
+        if (profile === undefined) {
+          return false;
+        }
+        // search by name or handle (case insensitive)
+        const lcSearchValue = cleanSearchValue.toLowerCase();
+        return profile.name.toLowerCase().includes(lcSearchValue) || profile.handle.toLowerCase().includes(lcSearchValue);
+      });
+    }
+    return [];
   }, [profiles, searchValue]);
   const filteredProfilesCount = filteredProfiles?.length;
 
@@ -262,7 +265,8 @@ const TwitterFam: FC = () => {
                 initialPositionX={0}
                 initialPositionY={0}
                 wheel={{ wheelDisabled: true }}
-                panning={{ excluded: [`${imageWithOnClickStyles["fam-image-sprite"]}`] }}
+                // panning={{ excluded: [`${imageWithOnClickStyles["fam-image-sprite"]}`] }}
+                panning={{ excluded: [...filteredProfiles.map((profile) => `handle-className-${profile.handle.toLowerCase()}`)] }}
                 // onZoomStop={handleOnZoomStop}
               >
                 {({ zoomIn, zoomOut, resetTransform, zoomToElement, ...rest }) => (
@@ -349,9 +353,7 @@ const TwitterFam: FC = () => {
                       {profiles?.map((profile, index) => (
                         <ClickAwayListener onClickAway={handleClickAway} key={profile?.profileUrl ?? index}>
                           <ImageWithOnClickTooltip
-                            className={`m-1 h-3 w-3 select-none
-                              ${filteredProfiles?.findIndex((p) => p.name === profile.name) === -1 && '!brightness-[0.25]'}
-                            `}
+                            className={`m-1 h-3 w-3 select-none`}
                             imageUrl={profile?.profileImageUrl}
                             handle={profile?.handle}
                             isDoneLoading={profile !== undefined}
@@ -365,6 +367,7 @@ const TwitterFam: FC = () => {
                             width={20}
                             currentScale={panZoomRef.current?.state?.scale}
                             getXAndY={getXAndY}
+                            excluded={filteredProfiles?.findIndex((p) => p.name === profile.name) === -1}
                           />
                         </ClickAwayListener>
                       ))}

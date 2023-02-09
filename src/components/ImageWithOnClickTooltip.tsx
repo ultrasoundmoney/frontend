@@ -20,6 +20,7 @@ type ImageWithOnClickTooltipProps = {
   width: number;
   currentScale: number | undefined;
   getXAndY: (imageKey: string | undefined, sizeFactor: number) => { x: number | null, y: number | null };
+  excluded?: boolean;
 };
 
 const ImageWithOnClickTooltip: FC<ImageWithOnClickTooltipProps> = ({
@@ -32,6 +33,7 @@ const ImageWithOnClickTooltip: FC<ImageWithOnClickTooltipProps> = ({
   width,
   currentScale,
   getXAndY,
+  excluded = false,
 }) => {
   const imageRef = useRef<HTMLImageElement>(null);
   const { previewSkeletons } = useContext(FeatureFlagsContext);
@@ -68,15 +70,16 @@ const ImageWithOnClickTooltip: FC<ImageWithOnClickTooltipProps> = ({
         <div
           id={handle?.toLowerCase()}
           ref={imageRef}
-          onClick={onClick === undefined ? undefined : () => onClick(imageRef)}
+          onClick={(onClick === undefined || excluded) ? undefined : () => onClick(imageRef)}
           // className={className}
           className={`
             ${styles["fam-image-sprite"]}
-            cursor-pointer
+            ${excluded ? "cursor-move !brightness-[0.25]" : "cursor-pointer"}
             relative
             rounded-full
             md:hover:brightness-125
             ${className}
+            handle-className-${handle?.toLowerCase()}
           `}
           style={{
             backgroundPositionX: `${posX}px`,
