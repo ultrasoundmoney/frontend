@@ -1,6 +1,7 @@
 import { FC, ReactEventHandler, useEffect } from "react";
 import { useCallback, useState } from "react";
 import { XMarkIcon } from '@heroicons/react/24/solid'
+import Image from 'next/image'
 import type { Linkables } from "../api/profiles";
 import * as Format from "../format";
 import scrollbarStyles from "../styles/Scrollbar.module.scss";
@@ -62,7 +63,7 @@ export type TooltipProps = {
   title: string | undefined;
   twitterUrl?: string;
   width?: string;
-  getXAndY: (imageKey: string | undefined, sizeFactor: number) => { x: number | null, y: number | null };
+  getXAndY?: (imageKey: string | undefined, sizeFactor: number) => { x: number | null, y: number | null };
 };
 
 const Tooltip: FC<TooltipProps> = ({
@@ -113,14 +114,27 @@ const Tooltip: FC<TooltipProps> = ({
         className="absolute right-5 top-5 w-6 cursor-pointer select-none hover:brightness-90 active:brightness-110"
         onClick={onClickClose}
       />
-      <div
-        className={`${styles["fam-image-sprite"]} mx-auto h-20 w-20 select-none rounded-full`}
-        style={{
-          backgroundPositionX: `${posX}px`,
-          backgroundPositionY: `${posY}px`,
-          backgroundSize: `${properties?.width / sizeFactor}px ${properties?.height / sizeFactor}px`,
-        }}
-      />
+      {getXAndY
+        ? (
+          <div
+            className={`${styles["fam-image-sprite"]} mx-auto h-20 w-20 select-none rounded-full`}
+            style={{
+              backgroundPositionX: `${posX}px`,
+              backgroundPositionY: `${posY}px`,
+              backgroundSize: `${properties?.width / sizeFactor}px ${properties?.height / sizeFactor}px`,
+            }}
+          />
+        )
+        : (
+          <Image
+            src={imageUrl ?? "/leaderboard-images/question-mark-v2.svg"}
+            alt="Fam image"
+            width={96}
+            height={96}
+            className="mx-auto h-20 w-20 select-none rounded-full"
+          />
+        )
+      }
       <BodyText className="font-semibold">
         <Twemoji imageClassName="inline-block align-middle h-5 ml-1" wrapper>
           {title}
