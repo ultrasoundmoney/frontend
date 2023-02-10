@@ -117,34 +117,6 @@ const TopBar: FC = () => {
       </div>
       <div className="flex gap-x-8">
         <a
-          className="align-center hidden select-none gap-x-2 rounded-3xl px-4 py-1 font-medium text-white hover:underline hover:brightness-90 active:brightness-75 md:flex"
-          href="https://ceremony.ethereum.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          KZG ceremony
-          <div className="flex gap-x-1 md:hidden lg:flex">
-            <Image
-              alt="emoji of a bat, first-part of signifying ultra sound kzg-ceremony"
-              src={batSvg as StaticImageData}
-              width={15}
-              height={15}
-            />
-            <Image
-              alt="emoji of a speaker, second-part of signifying ultra sound kzg-ceremony"
-              src={speakerSvg as StaticImageData}
-              width={15}
-              height={15}
-            />
-            <Image
-              alt="emoji of a candle, third-part of signifying ultra sound kzg-ceremony"
-              src={candleSvg as StaticImageData}
-              width={15}
-              height={15}
-            />
-          </div>
-        </a>
-        <a
           className="hidden select-none font-medium hover:brightness-90 active:brightness-75 md:block"
           href="#fam"
         >
