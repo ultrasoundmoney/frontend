@@ -1,6 +1,9 @@
 import type { FC } from "react";
+import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Script from "next/script";
+import { minutesToSeconds } from "date-fns";
+
 import * as Api from "../relay/api";
 import type { ApiPayload, ApiPayloadStats, ApiValidator } from "../relay/api";
 import {
@@ -14,7 +17,16 @@ import {
 import BasicErrorBoundary from "../components/BasicErrorBoundary";
 import RelayDashboard from "../relay/components/RelayDashboard";
 
-export const getServerSideProps = async () => {
+type StaticProps = {
+  payloadStats: ApiPayloadStats;
+  payloads: Array<ApiPayload>;
+  topPayloads: Array<ApiPayload>;
+  validatorStats: ValidatorStats;
+  validators: Array<ApiValidator>;
+  topBuilders: Array<Builder>;
+};
+
+export const getStaticProps: GetStaticProps<StaticProps> = async () => {
   const [
     payloads,
     topPayloads,
@@ -40,19 +52,11 @@ export const getServerSideProps = async () => {
       validatorStats,
       topBuilders,
     },
+    revalidate: minutesToSeconds(2),
   };
 };
 
-type RelayPageProps = {
-  payloadStats: ApiPayloadStats;
-  payloads: Array<ApiPayload>;
-  topPayloads: Array<ApiPayload>;
-  validatorStats: ValidatorStats;
-  validators: Array<ApiValidator>;
-  topBuilders: Array<Builder>;
-};
-
-const RelayIndexPage: FC<RelayPageProps> = ({
+const RelayIndexPage: NextPage<StaticProps> = ({
   payloadStats,
   payloads,
   topPayloads,
