@@ -39,7 +39,7 @@ ${gasStr} Gwei`;
 };
 
 const getBlockPageLink = (u: number | undefined): string | undefined =>
-  typeof u === undefined ? undefined : `https://etherscan.io/block/${u}`;
+  typeof u === "undefined" ? undefined : `https://etherscan.io/block/${u}`;
 
 type MarkerProps = {
   barrier: number;

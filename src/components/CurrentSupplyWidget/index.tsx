@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { useState } from "react";
-import { ethSupplyFromParts, useSupplyParts } from "../../api/eth-supply";
+import { ethSupplyFromParts, useSupplyParts } from "../../api/supply-parts";
 import { dateTimeFromSlot } from "../../beacon-time";
 import Nerd from "../Nerd";
 import HoverTooltip from "../HoverTooltip";
@@ -54,9 +54,7 @@ const EthSupplyWidget: FC = () => {
           <div className="flex flex-col gap-y-4 transition-colors">
             <PreciseEth amount={ethSupply} />
             <UpdatedAgo
-              updatedAt={dateTimeFromSlot(
-                ethSupplyParts.beaconDepositsSum.slot,
-              ).toISOString()}
+              updatedAt={dateTimeFromSlot(ethSupplyParts.slot).toISOString()}
             />
           </div>
         </div>

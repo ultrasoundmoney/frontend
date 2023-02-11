@@ -2,8 +2,12 @@ import type { StaticImageData } from "next/legacy/image";
 import Image from "next/legacy/image";
 import type { FC } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import batSvg from "../../assets/bat-own.svg";
+import candleSvg from "../../assets/candle-own.svg";
+import speakerSvg from "../../assets/speaker-own.svg";
 import { useLocalStorage } from "../../hooks/use-local-storage";
 import useNotification from "../../hooks/use-notification";
+import { BaseText } from "../Texts";
 import { WidgetTitle } from "../WidgetSubcomponents";
 import AlarmInput from "./AlarmInput";
 import bellSvg from "./bell-slateus.svg";
@@ -23,7 +27,11 @@ const TopBar: FC = () => {
   const dialogRef = useRef<HTMLDivElement>(null);
   const alarmButtonRef = useRef<HTMLButtonElement>(null);
 
-  const isAlarmActive = gasAlarmActive || ethAlarmActive;
+  // Always start false, to avoid SSR mismatch.
+  const [isAlarmActive, setIsAlarmActive] = useState(false);
+  useEffect(() => {
+    setIsAlarmActive(gasAlarmActive || ethAlarmActive);
+  }, [ethAlarmActive, gasAlarmActive]);
 
   const checkIfClickedOutside = useCallback(
     (e: MouseEvent) => {
@@ -107,12 +115,46 @@ const TopBar: FC = () => {
             )}
         </div>
       </div>
-      <a
-        className="hidden select-none rounded-3xl border-2 border-solid border-white px-4 py-1 font-medium text-white hover:border-slateus-400 hover:text-blue-shipcove md:block"
-        href="#fam"
-      >
-        join the fam
-      </a>
+      <div className="flex gap-x-8">
+        <a
+          className="align-center hidden select-none gap-x-2 rounded-3xl px-4 py-1 font-medium text-white hover:underline hover:brightness-90 active:brightness-75 md:flex"
+          href="https://ceremony.ethereum.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          KZG ceremony
+          <div className="flex gap-x-1 md:hidden lg:flex">
+            <Image
+              alt="emoji of a bat, first-part of signifying ultra sound kzg-ceremony"
+              src={batSvg as StaticImageData}
+              width={15}
+              height={15}
+            />
+            <Image
+              alt="emoji of a speaker, second-part of signifying ultra sound kzg-ceremony"
+              src={speakerSvg as StaticImageData}
+              width={15}
+              height={15}
+            />
+            <Image
+              alt="emoji of a candle, third-part of signifying ultra sound kzg-ceremony"
+              src={candleSvg as StaticImageData}
+              width={15}
+              height={15}
+            />
+          </div>
+        </a>
+        <a
+          className="hidden select-none font-medium hover:brightness-90 active:brightness-75 md:block"
+          href="#fam"
+        >
+          <button className="rounded-3xl border-2 border-solid border-white px-4 py-1 text-white">
+            <BaseText color="" font="font-inter" weight="font-medium">
+              join the fam
+            </BaseText>
+          </button>
+        </a>
+      </div>
     </div>
   );
 };

@@ -7,7 +7,7 @@ import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useBaseFeePerGas } from "../../api/base-fee-per-gas";
 import { useEthPriceStats } from "../../api/eth-price-stats";
-import { ethSupplyFromParts, useSupplyParts } from "../../api/eth-supply";
+import { ethSupplyFromParts, useSupplyParts } from "../../api/supply-parts";
 import colors from "../../colors";
 import { WEI_PER_GWEI } from "../../eth-units";
 import { FeatureFlagsContext, useFeatureFlags } from "../../feature-flags";
