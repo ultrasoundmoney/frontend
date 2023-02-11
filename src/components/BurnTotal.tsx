@@ -118,7 +118,7 @@ const BurnTotal: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
   return (
     <WidgetErrorBoundary title="burn total">
       <WidgetBackground className="relative">
-        <div className="pointer-events-none absolute left-0 right-0 top-0 bottom-0 overflow-hidden">
+        <div className="pointer-events-none absolute left-0 right-0 top-0 bottom-0 overflow-hidden rounded-lg">
           <div
             className={`
               top-15
