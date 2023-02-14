@@ -1,22 +1,22 @@
 import { differenceInDays } from "date-fns";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
-import { londonHardFork } from "../dates";
+import { londonHardFork, mergeDateTime } from "../dates";
 import { millisFromHours } from "../duration";
-import type { TimeFrameNext } from "../time-frames";
+import type { TimeFrameNextNext } from "../time-frames";
 import { displayLimitedTimeFrameMap } from "../time-frames";
 import LabelText from "./TextsNext/LabelText";
 import { LondonHardForkTooltip } from "./TimeFrameControl";
 
-const getFormattedDays = (now: Date) => {
-  const daysCount = differenceInDays(now, londonHardFork);
+const getFormattedDays = (now: Date, fork: Date): string => {
+  const daysCount = differenceInDays(now, fork);
   return `${daysCount}d`;
 };
 
 type Props = {
   className?: string;
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrameNext;
+  timeFrame: TimeFrameNextNext;
 };
 
 const TimeFrameIndicator: FC<Props> = ({
@@ -25,12 +25,15 @@ const TimeFrameIndicator: FC<Props> = ({
   timeFrame,
 }) => {
   const [daysSinceLondon, setDaysSinceLondon] = useState<string>();
+  const [daysSinceMerge, setDaysSinceMerge] = useState<string>();
 
   useEffect(() => {
-    setDaysSinceLondon(getFormattedDays(new Date()));
+    setDaysSinceLondon(getFormattedDays(new Date(), londonHardFork));
+    setDaysSinceMerge(getFormattedDays(new Date(), mergeDateTime));
 
     const id = setTimeout(() => {
-      setDaysSinceLondon(getFormattedDays(new Date()));
+      setDaysSinceLondon(getFormattedDays(new Date(), londonHardFork));
+      setDaysSinceMerge(getFormattedDays(new Date(), mergeDateTime));
     }, millisFromHours(1));
 
     return () => clearTimeout(id);
@@ -48,6 +51,8 @@ const TimeFrameIndicator: FC<Props> = ({
         <p className="font-roboto text-xs text-white">
           {timeFrame === "since_burn"
             ? daysSinceLondon
+            : timeFrame === "since_merge"
+            ? daysSinceMerge
             : displayLimitedTimeFrameMap[timeFrame]}
         </p>
       </button>

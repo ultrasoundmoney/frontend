@@ -6,7 +6,10 @@ import { SWRConfig } from "swr";
 import SiteMetadata from "../site-metadata";
 import type { BaseFeePerGas } from "../api/base-fee-per-gas";
 import { fetchBaseFeePerGas } from "../api/base-fee-per-gas";
-import type { BaseFeePerGasStats } from "../api/base-fee-per-gas-stats";
+import type {
+  BaseFeePerGasStats,
+  BaseFeePerGasStatsEnvelope,
+} from "../api/base-fee-per-gas-stats";
 import { fetchBaseFeePerGasStats } from "../api/base-fee-per-gas-stats";
 import type { EthPriceStats } from "../api/eth-price-stats";
 import { fetchEthPriceStats } from "../api/eth-price-stats";
@@ -20,12 +23,22 @@ import type { SupplyChanges } from "../api/supply-changes";
 import { fetchSupplyChanges } from "../api/supply-changes";
 import type { IssuanceEstimate } from "../api/issuance-estimate";
 import { fetchIssuanceEstimate } from "../api/issuance-estimate";
+import type { BaseFeePerGasBarrier } from "../api/barrier";
+import { fetchBaseFeePerGasBarrier } from "../api/barrier";
 
 type StaticProps = {
   fallback: {
     "/api/fees/scarcity": ScarcityF;
     "/api/v2/fees/base-fee-per-gas": BaseFeePerGas;
-    "/api/v2/fees/base-fee-per-gas-stats": BaseFeePerGasStats;
+    "/api/v2/fees/base-fee-per-gas-barrier": BaseFeePerGasBarrier;
+    "/api/v2/fees/base-fee-per-gas-stats": BaseFeePerGasStatsEnvelope;
+    "/api/v2/fees/base-fee-per-gas-stats?time_frame=m5": BaseFeePerGasStats;
+    "/api/v2/fees/base-fee-per-gas-stats?time_frame=h1": BaseFeePerGasStats;
+    "/api/v2/fees/base-fee-per-gas-stats?time_frame=d1": BaseFeePerGasStats;
+    "/api/v2/fees/base-fee-per-gas-stats?time_frame=d7": BaseFeePerGasStats;
+    "/api/v2/fees/base-fee-per-gas-stats?time_frame=d30": BaseFeePerGasStats;
+    "/api/v2/fees/base-fee-per-gas-stats?time_frame=since_merge": BaseFeePerGasStats;
+    "/api/v2/fees/base-fee-per-gas-stats?time_frame=since_burn": BaseFeePerGasStats;
     "/api/v2/fees/eth-price-stats": EthPriceStats;
     "/api/v2/fees/supply-parts": SupplyPartsF;
     "/api/v2/fees/issuance-estimate": IssuanceEstimate;
@@ -36,6 +49,7 @@ type StaticProps = {
 export const getStaticProps: GetStaticProps<StaticProps> = async () => {
   const [
     baseFeePerGas,
+    baseFeePerGasBarrier,
     baseFeePerGasStats,
     ethPriceStats,
     ethSupplyF,
@@ -44,6 +58,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
     supplyChanges,
   ] = await Promise.all([
     fetchBaseFeePerGas(),
+    fetchBaseFeePerGasBarrier(),
     fetchBaseFeePerGasStats(),
     fetchEthPriceStats(),
     fetchSupplyParts(),
@@ -80,12 +95,32 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
     throw issuanceEstimate.error;
   }
 
+  if ("error" in baseFeePerGasBarrier) {
+    throw baseFeePerGasBarrier.error;
+  }
+
   return {
     props: {
       fallback: {
         "/api/fees/scarcity": scarcityF.data,
         "/api/v2/fees/base-fee-per-gas": baseFeePerGas.data,
+        "/api/v2/fees/base-fee-per-gas-barrier": baseFeePerGasBarrier.data,
         "/api/v2/fees/base-fee-per-gas-stats": baseFeePerGasStats.data,
+        "/api/v2/fees/base-fee-per-gas-stats?time_frame=m5":
+          baseFeePerGasStats.data.base_fee_per_gas_stats.m5,
+        "/api/v2/fees/base-fee-per-gas-stats?time_frame=h1":
+          baseFeePerGasStats.data.base_fee_per_gas_stats.h1,
+        "/api/v2/fees/base-fee-per-gas-stats?time_frame=d1":
+          baseFeePerGasStats.data.base_fee_per_gas_stats.d1,
+        "/api/v2/fees/base-fee-per-gas-stats?time_frame=d7":
+          baseFeePerGasStats.data.base_fee_per_gas_stats.d7,
+        "/api/v2/fees/base-fee-per-gas-stats?time_frame=d30":
+          baseFeePerGasStats.data.base_fee_per_gas_stats.d30,
+        // Until the API is updated to include these, we'll just return null.
+        "/api/v2/fees/base-fee-per-gas-stats?time_frame=since_merge":
+          baseFeePerGasStats.data.base_fee_per_gas_stats.since_merge ?? null,
+        "/api/v2/fees/base-fee-per-gas-stats?time_frame=since_burn":
+          baseFeePerGasStats.data.base_fee_per_gas_stats.since_burn ?? null,
         "/api/v2/fees/eth-price-stats": ethPriceStats.data,
         "/api/v2/fees/supply-parts": ethSupplyF.data,
         "/api/v2/fees/issuance-estimate": issuanceEstimate.data,
