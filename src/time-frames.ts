@@ -49,3 +49,6 @@ export const getNextTimeFrameNext = (
 
 export const timeFramesWithMerge = [...timeFrames, "since_merge"] as const;
 export type TimeFrameWithMerge = typeof timeFramesWithMerge[number];
+
+export const timeFramesNextNext = [...timeFramesNext, "since_merge"] as const;
+export type TimeFrameNextNext = typeof timeFramesNextNext[number];

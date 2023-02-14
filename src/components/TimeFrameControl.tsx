@@ -3,7 +3,7 @@ import Image from "next/legacy/image";
 import type { FC, ReactNode } from "react";
 import fireOwnSvg from "../assets/fire-own.svg";
 import fireSlateusSvg from "../assets/fire-slateus.svg";
-import type { TimeFrameNext } from "../time-frames";
+import type { TimeFrameNext, TimeFrameNextNext } from "../time-frames";
 import { displayLimitedTimeFrameMap, timeFramesNext } from "../time-frames";
 import HoverTooltip from "./HoverTooltip";
 
@@ -36,7 +36,7 @@ export const Button: FC<{
 export const LondonHardForkTooltip: FC<{
   children: ReactNode;
   zLevel?: string;
-  timeFrame: TimeFrameNext;
+  timeFrame: TimeFrameNextNext;
 }> = ({ children, timeFrame, zLevel }) => (
   <HoverTooltip
     customAlign="-left-32"
