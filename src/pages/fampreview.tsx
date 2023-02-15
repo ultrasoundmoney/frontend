@@ -15,24 +15,33 @@ import { fetchFamCount } from "../api/fam-count";
 import BasicErrorBoundary from "../components/BasicErrorBoundary";
 import FamPage from "../components/FamPage";
 import * as Duration from "../duration";
+import type { BaseFeePerGasBarrier } from "../api/barrier";
+import { fetchBaseFeePerGasBarrier } from "../api/barrier";
 
 type StaticProps = {
   fallback: {
     "/api/v2/fam/count": FamCount;
     "/api/v2/fees/base-fee-per-gas": BaseFeePerGas;
+    "/api/v2/fees/base-fee-per-gas-barrier": BaseFeePerGasBarrier;
     "/api/v2/fees/base-fee-per-gas-stats": BaseFeePerGasStatsEnvelope;
     "/api/v2/fees/eth-price-stats": EthPriceStats;
   };
 };
 
 export const getStaticProps: GetStaticProps<StaticProps> = async () => {
-  const [baseFeePerGas, ethPriceStats, famCount, baseFeePerGasStats] =
-    await Promise.all([
-      fetchBaseFeePerGas(),
-      fetchEthPriceStats(),
-      fetchFamCount(),
-      fetchBaseFeePerGasStats(),
-    ]);
+  const [
+    baseFeePerGas,
+    baseFeePerGasBarrier,
+    baseFeePerGasStats,
+    ethPriceStats,
+    famCount,
+  ] = await Promise.all([
+    fetchBaseFeePerGas(),
+    fetchBaseFeePerGasBarrier(),
+    fetchBaseFeePerGasStats(),
+    fetchEthPriceStats(),
+    fetchFamCount(),
+  ]);
 
   if ("error" in famCount) {
     throw famCount.error;
@@ -50,11 +59,16 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
     throw baseFeePerGasStats.error;
   }
 
+  if ("error" in baseFeePerGasBarrier) {
+    throw baseFeePerGasBarrier.error;
+  }
+
   return {
     props: {
       fallback: {
         "/api/v2/fam/count": famCount.data,
         "/api/v2/fees/base-fee-per-gas": baseFeePerGas.data,
+        "/api/v2/fees/base-fee-per-gas-barrier": baseFeePerGasBarrier.data,
         "/api/v2/fees/base-fee-per-gas-stats": baseFeePerGasStats.data,
         "/api/v2/fees/eth-price-stats": ethPriceStats.data,
       },

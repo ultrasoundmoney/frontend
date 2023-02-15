@@ -7,6 +7,7 @@ import { fetchJsonSwr } from "./fetchers";
 import type { BlockNumber } from "./supply-over-time";
 
 export type BaseFeePerGasBarrier = {
+  // In Gwei/gas.
   barrier: number;
   block_number: BlockNumber;
   timestamp: DateTimeString;

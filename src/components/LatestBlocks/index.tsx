@@ -1,7 +1,7 @@
 import * as DateFns from "date-fns";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
-import { useBaseFeePerGasStats } from "../../api/base-fee-per-gas-stats";
+import { useBaseFeePerGasBarrier } from "../../api/barrier";
 import { useBlockLag } from "../../api/block-lag";
 import type { LatestBlock } from "../../api/grouped-analysis-1";
 import {
@@ -13,8 +13,7 @@ import type { GweiNumber, WeiNumber } from "../../eth-units";
 import { WEI_PER_GWEI } from "../../eth-units";
 import * as Format from "../../format";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
-import { AmountUnitSpace } from "../Spacing";
-import { BaseText, LabelUnitText } from "../Texts";
+import { LabelUnitText } from "../Texts";
 import BodyTextV2 from "../TextsNext/BodyTextV2";
 import LabelText from "../TextsNext/LabelText";
 import QuantifyText from "../TextsNext/QuantifyText";
@@ -168,7 +167,7 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
   const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysis1F);
   const latestBlockFees = groupedAnalysis1?.latestBlockFees;
   const blockLag = useBlockLag()?.blockLag;
-  const barrier = useBaseFeePerGasStats().barrier;
+  const barrier = useBaseFeePerGasBarrier().barrier;
 
   return (
     <WidgetBackground>

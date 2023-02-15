@@ -33,14 +33,14 @@ export const fetchBaseFeePerGasStats = (): Promise<
   ApiResult<BaseFeePerGasStatsEnvelope>
 > => fetchApiJson<BaseFeePerGasStatsEnvelope>(url);
 
-export const useBaseFeePerGasStats = (): BaseFeePerGasStatsEnvelope => {
+export const useBaseFeePerGasStats = ():
+  | BaseFeePerGasStatsEnvelope
+  | undefined => {
   const { data } = useSWR<BaseFeePerGasStatsEnvelope>(url, fetchJsonSwr, {
     refreshInterval: secondsToMilliseconds(4),
   });
 
-  // We use an SWRConfig with fallback data for this hook.
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return data!;
+  return data;
 };
 
 export const fetchBaseFeePerGasStatsTimeFrame = (
