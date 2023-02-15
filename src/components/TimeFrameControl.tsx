@@ -3,8 +3,8 @@ import Image from "next/legacy/image";
 import type { FC, ReactNode } from "react";
 import fireOwnSvg from "../assets/fire-own.svg";
 import fireSlateusSvg from "../assets/fire-slateus.svg";
-import type { TimeFrameNext, TimeFrameNextNext } from "../time-frames";
-import { displayLimitedTimeFrameMap, timeFramesNext } from "../time-frames";
+import type { TimeFrameNoMerge, TimeFrame } from "../time-frames";
+import { displayLimitedTimeFrameMap, timeFramesNoMerge } from "../time-frames";
 import HoverTooltip from "./HoverTooltip";
 
 export const Button: FC<{
@@ -36,7 +36,7 @@ export const Button: FC<{
 export const LondonHardForkTooltip: FC<{
   children: ReactNode;
   zLevel?: string;
-  timeFrame: TimeFrameNextNext;
+  timeFrame: TimeFrame;
 }> = ({ children, timeFrame, zLevel }) => (
   <HoverTooltip
     customAlign="-left-32"
@@ -52,14 +52,14 @@ export const LondonHardForkTooltip: FC<{
 );
 
 type Props = {
-  onSetTimeFrame: (timeframe: TimeFrameNext) => void;
-  selectedTimeframe: TimeFrameNext;
+  onSetTimeFrame: (timeframe: TimeFrameNoMerge) => void;
+  selectedTimeframe: TimeFrameNoMerge;
   topCornersRounded?: boolean;
 };
 
 const TimeFrameControl: FC<Props> = ({ selectedTimeframe, onSetTimeFrame }) => (
   <div className="flex flex-row items-center lg:gap-x-1">
-    {timeFramesNext.map((timeFrame) => (
+    {timeFramesNoMerge.map((timeFrame) => (
       <LondonHardForkTooltip key={timeFrame} timeFrame={timeFrame}>
         <Button
           isActive={selectedTimeframe === timeFrame}

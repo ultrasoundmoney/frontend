@@ -4,13 +4,13 @@ import colors from "../../colors";
 import type { Unit } from "../../denomination";
 import { usePosIssuancePerDay } from "../../eth-units";
 import * as StaticEtherData from "../../static-ether-data";
-import type { TimeFrameNext } from "../../time-frames";
-import { timeFrameFromNext } from "../../time-frames";
+import type { TimeFrameNoMerge } from "../../time-frames";
+import { toOldTimeFrame } from "../../time-frames";
 import BaseGauge from "./IssuanceBurnBaseGauge";
 
 type Props = {
   simulateProofOfWork: boolean;
-  timeFrame: TimeFrameNext;
+  timeFrame: TimeFrameNoMerge;
   unit: Unit;
 };
 

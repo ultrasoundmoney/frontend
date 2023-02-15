@@ -15,7 +15,7 @@ import type { Unit } from "../denomination";
 import * as Duration from "../duration";
 import { usePosIssuancePerDay } from "../eth-units";
 import * as Format from "../format";
-import type { LimitedTimeFrame, TimeFrameNext } from "../time-frames";
+import type { LimitedTimeFrame, TimeFrameNoMerge } from "../time-frames";
 import { AmountAnimatedShell } from "./Amount";
 import { BaseText } from "./Texts";
 import TimeFrameIndicator from "./TimeFrameIndicator";
@@ -23,7 +23,7 @@ import WidgetErrorBoundary from "./WidgetErrorBoundary";
 import { WidgetBackground, WidgetTitle } from "./WidgetSubcomponents";
 
 const timeframeFeesBurnedMap: Record<
-  TimeFrameNext,
+  TimeFrameNoMerge,
   { eth: keyof FeesBurned; usd: keyof FeesBurned }
 > = {
   m5: { eth: "feesBurned5m", usd: "feesBurned5mUsd" },
@@ -35,7 +35,7 @@ const timeframeFeesBurnedMap: Record<
 };
 
 export const timeframeBurnRateMap: Record<
-  TimeFrameNext,
+  TimeFrameNoMerge,
   { eth: keyof BurnRates; usd: keyof BurnRates }
 > = {
   m5: { eth: "burnRate5m", usd: "burnRate5mUsd" },
@@ -56,7 +56,7 @@ const timeFrameMillisecondsMap: Record<LimitedTimeFrame, number> = {
 
 type Props = {
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrameNext;
+  timeFrame: TimeFrameNoMerge;
   unit: Unit;
 };
 

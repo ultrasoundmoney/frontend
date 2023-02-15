@@ -15,8 +15,8 @@ import { formatZeroDecimals } from "../../format";
 import { PARIS_SUPPLY } from "../../hardforks/paris";
 import useAuthFromSection from "../../hooks/use-auth-from-section";
 import { useTwitterAuthStatus } from "../../hooks/use-twitter-auth";
-import type { TimeFrameNext } from "../../time-frames";
-import { getNextTimeFrameNext } from "../../time-frames";
+import type { TimeFrameNoMerge } from "../../time-frames";
+import { getNextTimeFrameNoMerge } from "../../time-frames";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import ContactSection from "../ContactSection";
 import PoapSection from "../FamPage/PoapSection";
@@ -137,14 +137,14 @@ const Dashboard: FC = () => {
   useScrollOnLoad();
   const { featureFlags, setFlag } = useFeatureFlags();
   const [twitterAuthStatus, setTwitterAuthStatus] = useTwitterAuthStatus();
-  const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
+  const [timeFrame, setTimeFrame] = useState<TimeFrameNoMerge>("d1");
   const isDeflationary = useIsDeflationary();
   const videoEl = useRef<HTMLVideoElement>(null);
   const { simulateDeflationary } = featureFlags;
   const showVideo = isDeflationary || simulateDeflationary;
 
   const handleClickTimeFrame = useCallback(() => {
-    setTimeFrame((timeFrame) => getNextTimeFrameNext(timeFrame));
+    setTimeFrame((timeFrame) => getNextTimeFrameNoMerge(timeFrame));
   }, []);
 
   const handleSetTimeFrame = useCallback(setTimeFrame, [setTimeFrame]);

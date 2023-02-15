@@ -6,7 +6,7 @@ import {
 import useSWR from "swr";
 import type { GweiNumber, WeiNumber } from "../eth-units";
 import type { DateTimeString } from "../time";
-import type { TimeFrameNextNext } from "../time-frames";
+import type { TimeFrame } from "../time-frames";
 import type { ApiResult } from "./fetchers";
 import { fetchApiJson } from "./fetchers";
 import { fetchJsonSwr } from "./fetchers";
@@ -22,7 +22,7 @@ export type BaseFeePerGasStats = {
 
 export type BaseFeePerGasStatsEnvelope = {
   barrier: GweiNumber;
-  base_fee_per_gas_stats: Record<TimeFrameNextNext, BaseFeePerGasStats>;
+  base_fee_per_gas_stats: Record<TimeFrame, BaseFeePerGasStats>;
   block_number: BlockNumber;
   timestamp: DateTimeString;
 };
@@ -44,11 +44,11 @@ export const useBaseFeePerGasStats = (): BaseFeePerGasStatsEnvelope => {
 };
 
 export const fetchBaseFeePerGasStatsTimeFrame = (
-  timeFrame: TimeFrameNextNext,
+  timeFrame: TimeFrame,
 ): Promise<ApiResult<BaseFeePerGasStats>> =>
   fetchApiJson<BaseFeePerGasStats>(`${url}?time_frame=${timeFrame}`);
 
-const refreshIntervalMap: Record<TimeFrameNextNext, number> = {
+const refreshIntervalMap: Record<TimeFrame, number> = {
   m5: secondsToMilliseconds(4),
   h1: secondsToMilliseconds(4),
   d1: minutesToMilliseconds(1),
@@ -59,7 +59,7 @@ const refreshIntervalMap: Record<TimeFrameNextNext, number> = {
 };
 
 export const useBaseFeePerGasStatsTimeFrame = (
-  timeFrame: TimeFrameNextNext,
+  timeFrame: TimeFrame,
 ): BaseFeePerGasStats => {
   const { data } = useSWR<BaseFeePerGasStats>(
     `${url}?time_frame=${timeFrame}`,

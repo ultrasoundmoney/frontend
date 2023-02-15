@@ -7,7 +7,7 @@ import type { FC } from "react";
 import { useEffect, useMemo } from "react";
 import colors from "../colors";
 import type { Gwei } from "../eth-units";
-import type { TimeFrameNext } from "../time-frames";
+import type { TimeFrameNoMerge } from "../time-frames";
 import type { BaseFeePoint } from "./Dashboard/GasSection";
 import LabelText from "./TextsNext/LabelText";
 import TimeFrameIndicator from "./TimeFrameIndicator";
@@ -180,7 +180,7 @@ type Props = {
   baseFeesSeries: BaseFeePoint[] | undefined;
   max: number | undefined;
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrameNext;
+  timeFrame: TimeFrameNoMerge;
 };
 
 const BaseFeesWidget: FC<Props> = ({

@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { useCallback, useState } from "react";
 import type { Unit } from "../denomination";
-import type { TimeFrameNext } from "../time-frames";
+import type { TimeFrameNoMerge } from "../time-frames";
 import CurrencyControl from "./CurrencyControl";
 import BurnGauge from "./Gauges/BurnGauge";
 import IssuanceGauge from "./Gauges/IssuanceGauge";
@@ -12,8 +12,8 @@ import ToggleSwitch from "./ToggleSwitch";
 import { WidgetTitle } from "./WidgetSubcomponents";
 
 type Props = {
-  timeFrame: TimeFrameNext;
-  onSetTimeFrame: (timeFrame: TimeFrameNext) => void;
+  timeFrame: TimeFrameNoMerge;
+  onSetTimeFrame: (timeFrame: TimeFrameNoMerge) => void;
   simulateProofOfWork: boolean;
   onSimulateProofOfWork: () => void;
   unit: Unit;
@@ -63,10 +63,10 @@ const Controls: FC<Props> = ({
 
 const GaugeWidget: FC<{
   onClickTimeFrame: () => void;
-  onSetTimeFrame: (timeFrame: TimeFrameNext) => void;
+  onSetTimeFrame: (timeFrame: TimeFrameNoMerge) => void;
   onSimulateProofOfWork: () => void;
   simulateProofOfWork: boolean;
-  timeFrame: TimeFrameNext;
+  timeFrame: TimeFrameNoMerge;
 }> = ({
   onClickTimeFrame,
   onSetTimeFrame,

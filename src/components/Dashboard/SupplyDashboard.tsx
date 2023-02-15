@@ -6,7 +6,7 @@ import BasicErrorBoundary from "../BasicErrorBoundary";
 import { EthNumber, usePosIssuancePerDay } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
 import CurrentSupplyWidget from "../CurrentSupplyWidget";
-import type { TimeFrameNext } from "../../time-frames";
+import type { TimeFrameNoMerge } from "../../time-frames";
 import { useIssuanceEstimate } from "../../api/issuance-estimate";
 export type SupplyPoint = [JsTimestamp, EthNumber];
 
@@ -38,8 +38,8 @@ const getNextTimeFrame = (
 
 type Props = {
   onClickTimeFrame: () => void;
-  onSetTimeFrame: (timeFrame: TimeFrameNext) => void;
-  timeFrame: TimeFrameNext;
+  onSetTimeFrame: (timeFrame: TimeFrameNoMerge) => void;
+  timeFrame: TimeFrameNoMerge;
 };
 
 const SupplyDashboard: FC<Props> = ({

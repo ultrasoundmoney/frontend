@@ -1,10 +1,10 @@
 export const limitedTimeFrames = ["m5", "h1", "d1", "d7", "d30"] as const;
 export type LimitedTimeFrame = typeof limitedTimeFrames[number];
 
-export const timeFrames = ["m5", "h1", "d1", "d7", "d30", "all"] as const;
-export type TimeFrame = typeof timeFrames[number];
+export const timeFramesOld = ["m5", "h1", "d1", "d7", "d30", "all"] as const;
+export type TimeFrameOld = typeof timeFramesOld[number];
 
-export const timeFramesNext = [
+export const timeFramesNoMerge = [
   "m5",
   "h1",
   "d1",
@@ -12,12 +12,12 @@ export const timeFramesNext = [
   "d30",
   "since_burn",
 ] as const;
-export type TimeFrameNext = typeof timeFramesNext[number];
+export type TimeFrameNoMerge = typeof timeFramesNoMerge[number];
 
-export const nextFromTimeFrame = (timeFrame: TimeFrame): TimeFrameNext =>
+export const fromOldTimeFrame = (timeFrame: TimeFrameOld): TimeFrameNoMerge =>
   timeFrame === "all" ? "since_burn" : timeFrame;
 
-export const timeFrameFromNext = (timeFrame: TimeFrameNext): TimeFrame =>
+export const toOldTimeFrame = (timeFrame: TimeFrameNoMerge): TimeFrameOld =>
   timeFrame === "since_burn" ? "all" : timeFrame;
 
 export const displayLimitedTimeFrameMap: Record<LimitedTimeFrame, string> = {
@@ -28,27 +28,25 @@ export const displayLimitedTimeFrameMap: Record<LimitedTimeFrame, string> = {
   d30: "30d",
 };
 
-export const getNextTimeFrame = (timeFrame: TimeFrame): TimeFrame => {
-  const nextIndex = (timeFrames.indexOf(timeFrame) + 1) % timeFrames.length;
-
-  // Index is checked above.
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return timeFrames[nextIndex]!;
-};
-
-export const getNextTimeFrameNext = (
-  timeFrame: TimeFrameNext,
-): TimeFrameNext => {
+export const getNextTimeFrameOld = (timeFrame: TimeFrameOld): TimeFrameOld => {
   const nextIndex =
-    (timeFramesNext.indexOf(timeFrame) + 1) % timeFramesNext.length;
+    (timeFramesOld.indexOf(timeFrame) + 1) % timeFramesOld.length;
 
   // Index is checked above.
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return timeFramesNext[nextIndex]!;
+  return timeFramesOld[nextIndex]!;
 };
 
-export const timeFramesWithMerge = [...timeFrames, "since_merge"] as const;
-export type TimeFrameWithMerge = typeof timeFramesWithMerge[number];
+export const getNextTimeFrameNoMerge = (
+  timeFrame: TimeFrameNoMerge,
+): TimeFrameNoMerge => {
+  const nextIndex =
+    (timeFramesNoMerge.indexOf(timeFrame) + 1) % timeFramesNoMerge.length;
 
-export const timeFramesNextNext = [...timeFramesNext, "since_merge"] as const;
-export type TimeFrameNextNext = typeof timeFramesNextNext[number];
+  // Index is checked above.
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return timeFramesNoMerge[nextIndex]!;
+};
+
+export const timeFrames = [...timeFramesNoMerge, "since_merge"] as const;
+export type TimeFrame = typeof timeFrames[number];
