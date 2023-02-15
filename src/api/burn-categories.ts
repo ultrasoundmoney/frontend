@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import type { TimeFrame } from "../time-frames";
+import type { TimeFrameOld } from "../time-frames";
 import { fetchJsonSwr } from "./fetchers";
 
 const category = [
@@ -38,7 +38,7 @@ export type BurnCategory = {
   percentOfTotalBurnUsd: number;
 };
 
-export type BurnCategories = Record<TimeFrame, BurnCategory[]>;
+export type BurnCategories = Record<TimeFrameOld, BurnCategory[]>;
 
 export const useBurnCategories = () => {
   const { data } = useSWR<BurnCategories>(

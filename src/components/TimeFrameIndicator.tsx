@@ -3,7 +3,7 @@ import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { londonHardFork, mergeDateTime } from "../dates";
 import { millisFromHours } from "../duration";
-import type { TimeFrameNextNext } from "../time-frames";
+import type { TimeFrame } from "../time-frames";
 import { displayLimitedTimeFrameMap } from "../time-frames";
 import LabelText from "./TextsNext/LabelText";
 import { LondonHardForkTooltip } from "./TimeFrameControl";
@@ -16,7 +16,7 @@ const getFormattedDays = (now: Date, fork: Date): string => {
 type Props = {
   className?: string;
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrameNextNext;
+  timeFrame: TimeFrame;
 };
 
 const TimeFrameIndicator: FC<Props> = ({

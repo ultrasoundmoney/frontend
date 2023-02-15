@@ -12,7 +12,7 @@ import Image from "next/legacy/image";
 import batSvg from "../assets/bat-own.svg";
 import speakerSvg from "../assets/speaker-own.svg";
 import barrierSvg from "../assets/barrier-own.svg";
-import type { TimeFrameNextNext } from "../time-frames";
+import type { TimeFrame } from "../time-frames";
 import { animated, useSpring } from "react-spring";
 import CountUp from "react-countup";
 import { useBaseFeePerGasBarrier } from "../api/barrier";
@@ -178,7 +178,7 @@ const Marker: FC<MarkerProps> = ({
 
 type Props = {
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrameNextNext;
+  timeFrame: TimeFrame;
 };
 
 const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
