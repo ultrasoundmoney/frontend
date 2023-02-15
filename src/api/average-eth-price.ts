@@ -1,9 +1,9 @@
 import useSWR from "swr";
 import * as Duration from "../duration";
-import type { TimeFrameOld } from "../time-frames";
+import type { TimeFrameNoMerge } from "../time-frames";
 import { fetchJsonSwr } from "./fetchers";
 
-export type AverageEthPrice = Record<TimeFrameOld, number>;
+export type AverageEthPrice = Record<TimeFrameNoMerge, number>;
 
 export const useAverageEthPrice = (): AverageEthPrice | undefined => {
   const { data } = useSWR<AverageEthPrice>(

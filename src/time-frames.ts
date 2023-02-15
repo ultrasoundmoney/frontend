@@ -48,5 +48,11 @@ export const getNextTimeFrameNoMerge = (
   return timeFramesNoMerge[nextIndex]!;
 };
 
-export const timeFrames = [...timeFramesNoMerge, "since_merge"] as const;
+// We care about the order here. since_merge first then since_burn, therefore
+// we cannot extend the timeFramesNoMerge array.
+export const timeFrames = [
+  ...limitedTimeFrames,
+  "since_merge",
+  "since_burn",
+] as const;
 export type TimeFrame = typeof timeFrames[number];

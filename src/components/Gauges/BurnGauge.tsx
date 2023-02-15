@@ -1,29 +1,28 @@
 import type { FC } from "react";
-import { useBurnRates } from "../../api/burn-rates";
+import type { GaugeRates } from "../../api/gauge-rates";
+import { useGaugeRates } from "../../api/gauge-rates";
 import colors from "../../colors";
 import type { Unit } from "../../denomination";
-import * as Format from "../../format";
-import { timeframeBurnRateMap } from "../BurnTotal";
-import type { TimeFrameNoMerge } from "../../time-frames";
+import type { TimeFrame } from "../../time-frames";
 import IssuanceBurnBaseGauge from "./IssuanceBurnBaseGauge";
 
 type BurnGaugeProps = {
-  timeFrame: TimeFrameNoMerge;
+  timeFrame: TimeFrame;
   unit: Unit;
 };
 
+const getBurnRate = (
+  gaugeRates: GaugeRates,
+  timeFrame: TimeFrame,
+  unit: Unit,
+) =>
+  gaugeRates === undefined
+    ? undefined
+    : gaugeRates[timeFrame].burn_rate_yearly[unit];
+
 const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame, unit }) => {
-  const burnRates = useBurnRates();
-  const preBurnRate =
-    burnRates === undefined
-      ? undefined
-      : burnRates[timeframeBurnRateMap[timeFrame][unit]];
-  const burnRate =
-    preBurnRate === undefined
-      ? undefined
-      : unit === "eth"
-      ? Format.ethFromWei(preBurnRate * 60 * 24 * 365.25) / 10 ** 3
-      : (preBurnRate * 60 * 24 * 365.25) / 10 ** 9;
+  const gaugeRates = useGaugeRates();
+  const selectedRate = getBurnRate(gaugeRates, timeFrame, unit);
 
   return (
     <div
@@ -41,7 +40,7 @@ const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame, unit }) => {
         needleColor={colors.orange400}
         title="burn"
         unit={unit}
-        value={burnRate}
+        value={selectedRate}
         valueUnit={unit === "eth" ? "ETH/year" : "USD/year"}
       />
     </div>

@@ -3,7 +3,10 @@ import Image from "next/legacy/image";
 import type { FC, ReactNode } from "react";
 import fireOwnSvg from "../assets/fire-own.svg";
 import fireSlateusSvg from "../assets/fire-slateus.svg";
-import type { TimeFrameNoMerge, TimeFrame } from "../time-frames";
+import pandaOwnSvg from "../assets/panda-own.svg";
+import pandaSlateusSvg from "../assets/panda-slateus.svg";
+import type { TimeFrame } from "../time-frames";
+import { timeFrames } from "../time-frames";
 import { displayLimitedTimeFrameMap, timeFramesNoMerge } from "../time-frames";
 import HoverTooltip from "./HoverTooltip";
 
@@ -51,52 +54,97 @@ export const LondonHardForkTooltip: FC<{
   </HoverTooltip>
 );
 
+const FireImage: FC<{ selectedTimeframe: TimeFrame }> = ({
+  selectedTimeframe,
+}) => (
+  <>
+    <div
+      className={`
+        h-4 w-4
+        ${selectedTimeframe === "since_burn" ? "hidden" : "block"}
+      `}
+    >
+      <Image
+        className={selectedTimeframe === "since_burn" ? "hidden" : "block"}
+        alt="flame emoji symbolizing time span since london hard fork when EIP-1559 was activated"
+        src={fireSlateusSvg as StaticImageData}
+        width={16}
+        height={16}
+      />
+    </div>
+    <div
+      className={`
+        h-4 w-4
+        ${selectedTimeframe === "since_burn" ? "block" : "hidden"}
+      `}
+    >
+      <Image
+        alt="flame emoji symbolizing time span since london hard fork when EIP-1559 was activated"
+        src={fireOwnSvg as StaticImageData}
+        width={16}
+        height={16}
+      />
+    </div>
+  </>
+);
+
+const PandaImage: FC<{ selectedTimeframe: TimeFrame }> = ({
+  selectedTimeframe,
+}) => (
+  <>
+    <div
+      className={`
+        h-4 w-4
+        ${selectedTimeframe === "since_merge" ? "hidden" : "block"}
+      `}
+    >
+      <Image
+        className={selectedTimeframe === "since_merge" ? "hidden" : "block"}
+        alt="panda emoji symbolizing the time span since the merge happened"
+        src={pandaSlateusSvg as StaticImageData}
+        width={16}
+        height={16}
+      />
+    </div>
+    <div
+      className={`
+        h-4 w-4
+        ${selectedTimeframe === "since_merge" ? "block" : "hidden"}
+      `}
+    >
+      <Image
+        alt="panda emoji symbolizing the time span since the merge happened"
+        src={pandaOwnSvg as StaticImageData}
+        width={16}
+        height={16}
+      />
+    </div>
+  </>
+);
+
 type Props = {
-  onSetTimeFrame: (timeframe: TimeFrameNoMerge) => void;
-  selectedTimeframe: TimeFrameNoMerge;
+  mergeEnabled?: boolean;
+  onSetTimeFrame: (timeframe: TimeFrame) => void;
+  selectedTimeframe: TimeFrame;
   topCornersRounded?: boolean;
 };
 
-const TimeFrameControl: FC<Props> = ({ selectedTimeframe, onSetTimeFrame }) => (
+const TimeFrameControl: FC<Props> = ({
+  selectedTimeframe,
+  onSetTimeFrame,
+  mergeEnabled = false,
+}) => (
   <div className="flex flex-row items-center lg:gap-x-1">
-    {timeFramesNoMerge.map((timeFrame) => (
+    {(mergeEnabled ? timeFrames : timeFramesNoMerge).map((timeFrame) => (
       <LondonHardForkTooltip key={timeFrame} timeFrame={timeFrame}>
         <Button
           isActive={selectedTimeframe === timeFrame}
           onClick={() => onSetTimeFrame(timeFrame)}
         >
-          {timeFrame === "since_burn" ? (
-            <>
-              <div
-                className={`
-                  h-4 w-4
-                  ${selectedTimeframe === "since_burn" ? "hidden" : "block"}
-                `}
-              >
-                <Image
-                  className={
-                    selectedTimeframe === "since_burn" ? "hidden" : "block"
-                  }
-                  alt="flame emoji symbolizing time span since london hard fork when EIP-1559 was activated"
-                  src={fireSlateusSvg as StaticImageData}
-                  width={16}
-                  height={16}
-                />
-              </div>
-              <div
-                className={`
-                  h-4 w-4
-                  ${selectedTimeframe === "since_burn" ? "block" : "hidden"}
-                `}
-              >
-                <Image
-                  alt="flame emoji symbolizing time span since london hard fork when EIP-1559 was activated"
-                  src={fireOwnSvg as StaticImageData}
-                  width={16}
-                  height={16}
-                />
-              </div>
-            </>
+          {timeFrame === "since_merge" ? (
+            <PandaImage selectedTimeframe={selectedTimeframe} />
+          ) : timeFrame === "since_burn" ? (
+            <FireImage selectedTimeframe={selectedTimeframe} />
           ) : (
             displayLimitedTimeFrameMap[timeFrame]
           )}
