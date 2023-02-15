@@ -6,7 +6,7 @@ import { SWRConfig } from "swr";
 import SiteMetadata from "../site-metadata";
 import type { BaseFeePerGas } from "../api/base-fee-per-gas";
 import { fetchBaseFeePerGas } from "../api/base-fee-per-gas";
-import type { BaseFeePerGasStats } from "../api/base-fee-per-gas-stats";
+import type { BaseFeePerGasStatsEnvelope } from "../api/base-fee-per-gas-stats";
 import { fetchBaseFeePerGasStats } from "../api/base-fee-per-gas-stats";
 import type { EthPriceStats } from "../api/eth-price-stats";
 import { fetchEthPriceStats } from "../api/eth-price-stats";
@@ -20,7 +20,7 @@ type StaticProps = {
   fallback: {
     "/api/v2/fam/count": FamCount;
     "/api/v2/fees/base-fee-per-gas": BaseFeePerGas;
-    "/api/v2/fees/base-fee-per-gas-stats": BaseFeePerGasStats;
+    "/api/v2/fees/base-fee-per-gas-stats": BaseFeePerGasStatsEnvelope;
     "/api/v2/fees/eth-price-stats": EthPriceStats;
   };
 };
