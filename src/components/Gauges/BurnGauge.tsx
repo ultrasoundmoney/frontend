@@ -11,18 +11,14 @@ type BurnGaugeProps = {
   unit: Unit;
 };
 
-const getBurnRate = (
-  gaugeRates: GaugeRates,
-  timeFrame: TimeFrame,
-  unit: Unit,
-) =>
+const getRate = (gaugeRates: GaugeRates, timeFrame: TimeFrame, unit: Unit) =>
   gaugeRates === undefined
     ? undefined
     : gaugeRates[timeFrame].burn_rate_yearly[unit];
 
 const BurnGauge: FC<BurnGaugeProps> = ({ timeFrame, unit }) => {
   const gaugeRates = useGaugeRates();
-  const selectedRate = getBurnRate(gaugeRates, timeFrame, unit);
+  const selectedRate = getRate(gaugeRates, timeFrame, unit);
 
   return (
     <div

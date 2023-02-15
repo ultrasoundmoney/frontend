@@ -3,10 +3,10 @@ import type { FC } from "react";
 import { useCallback, useState } from "react";
 import SupplyChange from "../SupplyChangeWidget";
 import BasicErrorBoundary from "../BasicErrorBoundary";
-import { EthNumber, usePosIssuancePerDay } from "../../eth-units";
+import type { EthNumber } from "../../eth-units";
+import { usePosIssuancePerDay } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
 import CurrentSupplyWidget from "../CurrentSupplyWidget";
-import { useIssuanceEstimate } from "../../api/issuance-estimate";
 import type { TimeFrame } from "../../time-frames";
 export type SupplyPoint = [JsTimestamp, EthNumber];
 

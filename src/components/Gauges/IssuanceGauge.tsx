@@ -12,7 +12,7 @@ type Props = {
   unit: Unit;
 };
 
-const getIssuanceRate = (
+const getRate = (
   gaugeRates: GaugeRates,
   simulateProofOfWork: boolean,
   timeFrame: TimeFrame,
@@ -30,13 +30,7 @@ const IssuanceGauge: FC<Props> = ({
   unit,
 }) => {
   const gaugeRates = useGaugeRates();
-
-  const issuance = getIssuanceRate(
-    gaugeRates,
-    simulateProofOfWork,
-    timeFrame,
-    unit,
-  );
+  const issuance = getRate(gaugeRates, simulateProofOfWork, timeFrame, unit);
 
   return (
     <div
