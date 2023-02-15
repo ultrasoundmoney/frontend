@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { useCallback, useState } from "react";
 import type { Unit } from "../../denomination";
-import type { TimeFrameNoMerge } from "../../time-frames";
+import type { TimeFrame, TimeFrameNoMerge } from "../../time-frames";
 import { getNextTimeFrameNoMerge } from "../../time-frames";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import BurnCategoryWidget from "../BurnCategoryWidget";
@@ -18,7 +18,14 @@ const BurnSection: FC = () => {
   const [timeFrame, setTimeFrame] = useState<TimeFrameNoMerge>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
 
-  const handleSetTimeFrame = useCallback(setTimeFrame, [setTimeFrame]);
+  const handleSetTimeFrame = useCallback(
+    (timeFrame: TimeFrame) => {
+      timeFrame === "since_merge"
+        ? setTimeFrame("since_burn")
+        : setTimeFrame(timeFrame);
+    },
+    [setTimeFrame],
+  );
 
   const onSetUnit = useCallback(setUnit, [setUnit]);
 

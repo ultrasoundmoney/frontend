@@ -56,3 +56,11 @@ export const timeFrames = [
   "since_burn",
 ] as const;
 export type TimeFrame = typeof timeFrames[number];
+
+export const getNextTimeFrame = (timeFrame: TimeFrame): TimeFrame => {
+  const nextIndex = (timeFrames.indexOf(timeFrame) + 1) % timeFrames.length;
+
+  // Index is checked above.
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return timeFrames[nextIndex]!;
+};

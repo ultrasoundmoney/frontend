@@ -8,7 +8,7 @@ import { useBaseFeeOverTime } from "../../api/base-fee-over-time";
 import type { Gwei } from "../../eth-units";
 import { WEI_PER_GWEI } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
-import type { TimeFrameNoMerge } from "../../time-frames";
+import type { TimeFrame } from "../../time-frames";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import SectionDivider from "../SectionDivider";
 
@@ -33,7 +33,7 @@ const pointsFromBaseFeesOverTime = (
   );
 
 const GasSection: FC<{
-  timeFrame: TimeFrameNoMerge;
+  timeFrame: TimeFrame;
   onClickTimeFrame: () => void;
 }> = ({ timeFrame, onClickTimeFrame }) => {
   const baseFeesOverTime = useBaseFeeOverTime();

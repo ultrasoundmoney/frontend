@@ -6,8 +6,8 @@ import BasicErrorBoundary from "../BasicErrorBoundary";
 import { EthNumber, usePosIssuancePerDay } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
 import CurrentSupplyWidget from "../CurrentSupplyWidget";
-import type { TimeFrameNoMerge } from "../../time-frames";
 import { useIssuanceEstimate } from "../../api/issuance-estimate";
+import type { TimeFrame } from "../../time-frames";
 export type SupplyPoint = [JsTimestamp, EthNumber];
 
 const EthSupplyWidget = dynamic(() => import("../EthSupplyWidget"));
@@ -38,8 +38,8 @@ const getNextTimeFrame = (
 
 type Props = {
   onClickTimeFrame: () => void;
-  onSetTimeFrame: (timeFrame: TimeFrameNoMerge) => void;
-  timeFrame: TimeFrameNoMerge;
+  onSetTimeFrame: (timeFrame: TimeFrame) => void;
+  timeFrame: TimeFrame;
 };
 
 const SupplyDashboard: FC<Props> = ({
