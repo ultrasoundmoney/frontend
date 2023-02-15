@@ -407,7 +407,10 @@ const SupplySinceMergeWidget: FC<Props> = ({
           },
           {
             id: "bitcoin-issuance",
-            value: lastPointBtc === undefined ? undefined : lastPointBtc[1],
+            value:
+              !simulateProofOfWork || lastPointBtc === undefined
+                ? undefined
+                : lastPointBtc[1],
             width: 0,
             label: {
               style: {
@@ -449,7 +452,10 @@ const SupplySinceMergeWidget: FC<Props> = ({
           },
           {
             id: "eth-issuance-pow",
-            value: lastPointPow === undefined ? undefined : lastPointPow[1],
+            value:
+              !simulateProofOfWork || lastPointPow === undefined
+                ? undefined
+                : lastPointPow[1],
             width: 0,
             label: {
               style: {
