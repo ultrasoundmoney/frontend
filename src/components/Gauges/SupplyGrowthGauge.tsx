@@ -1,74 +1,32 @@
 import clamp from "lodash/clamp";
 import type { FC } from "react";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { animated, config, useSpring } from "react-spring";
-import { useBurnRates } from "../../api/burn-rates";
-import type { BurnRates } from "../../api/grouped-analysis-1";
-import { useScarcity } from "../../api/scarcity";
-import { usePosIssuanceYear } from "../../eth-units";
+import type { GaugeRates } from "../../api/gauge-rates";
+import { useGaugeRates } from "../../api/gauge-rates";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
-import * as StaticEtherData from "../../static-ether-data";
-import type { TimeFrameNoMerge } from "../../time-frames";
-import { timeframeBurnRateMap } from "../BurnTotal";
+import type { TimeFrame } from "../../time-frames";
 import TimeFrameIndicator from "../TimeFrameIndicator";
 import { WidgetTitle } from "../WidgetSubcomponents";
 import SplitGaugeSvg from "./SplitGaugeSvg";
 
-const useGrowthRate = (
-  burnRates: BurnRates | undefined,
+const getRate = (
+  gaugeRates: GaugeRates,
   simulateProofOfWork: boolean,
-  timeFrame: TimeFrameNoMerge,
-): number | undefined => {
-  const scarcity = useScarcity();
-  const [growthRate, setGrowthRate] = useState<number>();
-  const posIssuanceYear = usePosIssuanceYear();
-
-  useEffect(() => {
-    if (scarcity === undefined || burnRates === undefined) {
-      return;
-    }
-
-    const selectedBurnRate = burnRates[timeframeBurnRateMap[timeFrame]["eth"]];
-
-    // Convert burn rate from eth/min to eth/year.
-    const feeBurnYear = Format.ethFromWei(selectedBurnRate) * 60 * 24 * 365.25;
-
-    const issuanceRate = simulateProofOfWork
-      ? StaticEtherData.powIssuanceYear
-      : posIssuanceYear;
-
-    const nextGrowthRate =
-      scarcity.ethSupply === undefined
-        ? undefined
-        : (issuanceRate - feeBurnYear) /
-          Format.ethFromWeiBIUnsafe(scarcity.ethSupply);
-
-    const rateRounded =
-      nextGrowthRate === undefined
-        ? undefined
-        : Math.round(nextGrowthRate * 10000) / 10000;
-
-    if (rateRounded !== undefined && rateRounded !== nextGrowthRate) {
-      setGrowthRate(rateRounded);
-    }
-  }, [
-    burnRates,
-    growthRate,
-    posIssuanceYear,
-    scarcity,
-    simulateProofOfWork,
-    timeFrame,
-  ]);
-
-  return growthRate;
-};
+  timeFrame: TimeFrame,
+) =>
+  gaugeRates === undefined
+    ? undefined
+    : simulateProofOfWork
+    ? gaugeRates[timeFrame].supply_growth_rate_yearly_pow
+    : gaugeRates[timeFrame].supply_growth_rate_yearly;
 
 type Props = {
   onClickTimeFrame: () => void;
   simulateProofOfWork: boolean;
-  timeFrame: TimeFrameNoMerge;
+  timeFrame: TimeFrame;
 };
 
 const SupplyGrowthGauge: FC<Props> = ({
@@ -76,8 +34,8 @@ const SupplyGrowthGauge: FC<Props> = ({
   simulateProofOfWork,
   timeFrame,
 }) => {
-  const burnRates = useBurnRates();
-  const growthRate = useGrowthRate(burnRates, simulateProofOfWork, timeFrame);
+  const gaugeRates = useGaugeRates();
+  const growthRate = getRate(gaugeRates, simulateProofOfWork, timeFrame);
   const toPercentTwoDigitSigned = useCallback<(n: number) => string>(
     (n) => Format.formatPercentTwoDecimalSigned(n),
     [],

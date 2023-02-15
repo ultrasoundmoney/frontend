@@ -25,6 +25,8 @@ import type { IssuanceEstimate } from "../api/issuance-estimate";
 import { fetchIssuanceEstimate } from "../api/issuance-estimate";
 import type { BaseFeePerGasBarrier } from "../api/barrier";
 import { fetchBaseFeePerGasBarrier } from "../api/barrier";
+import type { GaugeRates } from "../api/gauge-rates";
+import { fetchGaugeRates } from "../api/gauge-rates";
 
 type StaticProps = {
   fallback: {
@@ -40,6 +42,7 @@ type StaticProps = {
     "/api/v2/fees/base-fee-per-gas-stats?time_frame=since_merge": BaseFeePerGasStats;
     "/api/v2/fees/base-fee-per-gas-stats?time_frame=since_burn": BaseFeePerGasStats;
     "/api/v2/fees/eth-price-stats": EthPriceStats;
+    "/api/v2/fees/gauge-rates": GaugeRates;
     "/api/v2/fees/supply-parts": SupplyPartsF;
     "/api/v2/fees/issuance-estimate": IssuanceEstimate;
     "/api/v2/fees/supply-changes": SupplyChanges;
@@ -52,6 +55,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
     baseFeePerGasBarrier,
     baseFeePerGasStats,
     ethPriceStats,
+    gaugeRates,
     ethSupplyF,
     issuanceEstimate,
     scarcityF,
@@ -61,6 +65,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
     fetchBaseFeePerGasBarrier(),
     fetchBaseFeePerGasStats(),
     fetchEthPriceStats(),
+    fetchGaugeRates(),
     fetchSupplyParts(),
     fetchIssuanceEstimate(),
     fetchScarcity(),
@@ -99,6 +104,10 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
     throw baseFeePerGasBarrier.error;
   }
 
+  if ("error" in gaugeRates) {
+    throw gaugeRates.error;
+  }
+
   return {
     props: {
       fallback: {
@@ -122,6 +131,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
         "/api/v2/fees/base-fee-per-gas-stats?time_frame=since_burn":
           baseFeePerGasStats.data.base_fee_per_gas_stats.since_burn ?? null,
         "/api/v2/fees/eth-price-stats": ethPriceStats.data,
+        "/api/v2/fees/gauge-rates": gaugeRates.data,
         "/api/v2/fees/supply-parts": ethSupplyF.data,
         "/api/v2/fees/issuance-estimate": issuanceEstimate.data,
         "/api/v2/fees/supply-changes": supplyChanges.data,

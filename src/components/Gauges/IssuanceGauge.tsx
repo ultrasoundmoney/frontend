@@ -1,40 +1,42 @@
 import type { FC } from "react";
-import { useAverageEthPrice } from "../../api/average-eth-price";
+import type { GaugeRates } from "../../api/gauge-rates";
+import { useGaugeRates } from "../../api/gauge-rates";
 import colors from "../../colors";
 import type { Unit } from "../../denomination";
-import { usePosIssuancePerDay } from "../../eth-units";
-import * as StaticEtherData from "../../static-ether-data";
-import type { TimeFrameNoMerge } from "../../time-frames";
-import { toOldTimeFrame } from "../../time-frames";
+import type { TimeFrame } from "../../time-frames";
 import BaseGauge from "./IssuanceBurnBaseGauge";
 
 type Props = {
   simulateProofOfWork: boolean;
-  timeFrame: TimeFrameNoMerge;
+  timeFrame: TimeFrame;
   unit: Unit;
 };
+
+const getIssuanceRate = (
+  gaugeRates: GaugeRates,
+  simulateProofOfWork: boolean,
+  timeFrame: TimeFrame,
+  unit: Unit,
+) =>
+  gaugeRates === undefined
+    ? undefined
+    : simulateProofOfWork
+    ? gaugeRates[timeFrame].issuance_rate_yearly_pow[unit]
+    : gaugeRates[timeFrame].issuance_rate_yearly[unit];
 
 const IssuanceGauge: FC<Props> = ({
   simulateProofOfWork: simulateProofOfWork,
   timeFrame,
   unit,
 }) => {
-  const averageEthPrice = useAverageEthPrice();
-  const posIssuancePerDay = usePosIssuancePerDay();
+  const gaugeRates = useGaugeRates();
 
-  const selectedAverageEthPrice =
-    averageEthPrice?.[timeFrameFromNext(timeFrame)];
-
-  const issuancePerDay = simulateProofOfWork
-    ? StaticEtherData.powIssuancePerDay
-    : posIssuancePerDay;
-
-  const issuance =
-    selectedAverageEthPrice === undefined
-      ? undefined
-      : unit === "eth"
-      ? (issuancePerDay * 365.25) / 1_000
-      : (issuancePerDay * 365.25 * selectedAverageEthPrice) / 1_000_000_000;
+  const issuance = getIssuanceRate(
+    gaugeRates,
+    simulateProofOfWork,
+    timeFrame,
+    unit,
+  );
 
   return (
     <div
@@ -48,7 +50,7 @@ const IssuanceGauge: FC<Props> = ({
         emoji="droplet"
         gaugeUnit={unit === "eth" ? "K" : "B"}
         gradientFill="blue"
-        needleColor={colors.drop}
+        needleColor={colors.blue400}
         title="issuance"
         unit={unit}
         value={issuance}
