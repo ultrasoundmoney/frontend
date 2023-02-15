@@ -6,10 +6,7 @@ import { SWRConfig } from "swr";
 import SiteMetadata from "../site-metadata";
 import type { BaseFeePerGas } from "../api/base-fee-per-gas";
 import { fetchBaseFeePerGas } from "../api/base-fee-per-gas";
-import type {
-  BaseFeePerGasStats,
-  BaseFeePerGasStatsEnvelope,
-} from "../api/base-fee-per-gas-stats";
+import type { BaseFeePerGasStats } from "../api/base-fee-per-gas-stats";
 import { fetchBaseFeePerGasStats } from "../api/base-fee-per-gas-stats";
 import type { EthPriceStats } from "../api/eth-price-stats";
 import { fetchEthPriceStats } from "../api/eth-price-stats";
@@ -33,7 +30,6 @@ type StaticProps = {
     "/api/fees/scarcity": ScarcityF;
     "/api/v2/fees/base-fee-per-gas": BaseFeePerGas;
     "/api/v2/fees/base-fee-per-gas-barrier": BaseFeePerGasBarrier;
-    "/api/v2/fees/base-fee-per-gas-stats": BaseFeePerGasStatsEnvelope;
     "/api/v2/fees/base-fee-per-gas-stats?time_frame=m5": BaseFeePerGasStats;
     "/api/v2/fees/base-fee-per-gas-stats?time_frame=h1": BaseFeePerGasStats;
     "/api/v2/fees/base-fee-per-gas-stats?time_frame=d1": BaseFeePerGasStats;
@@ -125,11 +121,10 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
           baseFeePerGasStats.data.base_fee_per_gas_stats.d7,
         "/api/v2/fees/base-fee-per-gas-stats?time_frame=d30":
           baseFeePerGasStats.data.base_fee_per_gas_stats.d30,
-        // Until the API is updated to include these, we'll just return null.
         "/api/v2/fees/base-fee-per-gas-stats?time_frame=since_merge":
-          baseFeePerGasStats.data.base_fee_per_gas_stats.since_merge ?? null,
+          baseFeePerGasStats.data.base_fee_per_gas_stats.since_merge,
         "/api/v2/fees/base-fee-per-gas-stats?time_frame=since_burn":
-          baseFeePerGasStats.data.base_fee_per_gas_stats.since_burn ?? null,
+          baseFeePerGasStats.data.base_fee_per_gas_stats.since_burn,
         "/api/v2/fees/eth-price-stats": ethPriceStats.data,
         "/api/v2/fees/gauge-rates": gaugeRates.data,
         "/api/v2/fees/supply-parts": ethSupplyF.data,
