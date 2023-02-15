@@ -254,7 +254,7 @@ const PriceModel: FC = () => {
   const [peRatioPosition, setPeRatioPosition] = useState<number>(0);
   const [monetaryPremium, setMonetaryPremium] = useState(1);
   const [initialPeSet, setInitialPeSet] = useState(false);
-  const averageEthPrice = useAverageEthPrice()?.all;
+  const averageEthPrice = useAverageEthPrice()?.since_burn;
   const [ethPeRatio, setEthPeRatio] = useState<number>();
   const posIssuanceYear = usePosIssuanceYear();
 
