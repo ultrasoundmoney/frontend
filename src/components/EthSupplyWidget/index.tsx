@@ -26,13 +26,11 @@ import {
 } from "../../format";
 import { PARIS_BLOCK_NUMBER, PARIS_TIMESTAMP } from "../../hardforks/paris";
 import { powIssuancePerDay } from "../../static-ether-data";
-import type {
-  LimitedTimeFrameWithMerge,
-  SupplyPoint,
-} from "../Dashboard/SupplyDashboard";
+import type { TimeFrame } from "../../time-frames";
+import type { SupplyPoint } from "../Dashboard/SupplyDashboard";
 import SimulateProofOfWork from "../SimulateProofOfWork";
-import SinceMergeIndicator from "../SinceMergeIndicator";
 import LabelText from "../TextsNext/LabelText";
+import TimeFrameIndicator from "../TimeFrameIndicator";
 import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
@@ -338,10 +336,10 @@ type Props = {
   onClickTimeFrame: () => void;
   onSimulateProofOfWork: () => void;
   simulateProofOfWork: boolean;
-  timeFrame: LimitedTimeFrameWithMerge;
+  timeFrame: TimeFrame;
 };
 
-const SupplySinceMergeWidget: FC<Props> = ({
+const EthSupplyWidget: FC<Props> = ({
   onClickTimeFrame,
   onSimulateProofOfWork,
   simulateProofOfWork,
@@ -675,8 +673,8 @@ const SupplySinceMergeWidget: FC<Props> = ({
         </div>
         <div className="z-10 flex justify-between">
           <LabelText className="flex items-center">eth supply</LabelText>
-          <SinceMergeIndicator
-            onClick={onClickTimeFrame}
+          <TimeFrameIndicator
+            onClickTimeFrame={onClickTimeFrame}
             timeFrame={timeFrame}
           />
         </div>
@@ -713,4 +711,4 @@ const SupplySinceMergeWidget: FC<Props> = ({
   );
 };
 
-export default SupplySinceMergeWidget;
+export default EthSupplyWidget;

@@ -2,9 +2,7 @@ import type { FC } from "react";
 import CountUp from "react-countup";
 import { formatTwoDigitsSigned } from "../../format";
 import { powIssuancePerDay } from "../../static-ether-data";
-import type { LimitedTimeFrameWithMerge } from "../Dashboard/SupplyDashboard";
 import SimulateProofOfWork from "../SimulateProofOfWork";
-import SinceMergeIndicator from "../SinceMergeIndicator";
 import { BaseText } from "../Texts";
 import LabelText from "../TextsNext/LabelText";
 import SkeletonText from "../TextsNext/SkeletonText";
@@ -14,23 +12,25 @@ import { WidgetBackground } from "../WidgetSubcomponents";
 import { useSupplyChanges } from "../../api/supply-changes";
 import JSBI from "jsbi";
 import { WEI_PER_ETH } from "../../eth-units";
+import type { TimeFrame } from "../../time-frames";
+import TimeFrameIndicator from "../TimeFrameIndicator";
 
 type Props = {
   onClickTimeFrame: () => void;
   onSimulateProofOfWork: () => void;
-  simulateProofOfWork: boolean;
-  timeFrame: LimitedTimeFrameWithMerge;
   posIssuancePerDay: number;
+  simulateProofOfWork: boolean;
+  timeFrame: TimeFrame;
 };
 
 const SLOTS_PER_DAY = 24 * 60 * 5;
 
 const SupplyChange: FC<Props> = ({
-  timeFrame,
-  simulateProofOfWork,
   onClickTimeFrame,
   onSimulateProofOfWork,
   posIssuancePerDay,
+  simulateProofOfWork,
+  timeFrame,
 }) => {
   // To compare proof of stake issuance to proof of work issuance we offer a
   // "simulate proof of work" toggle. However, we only have a supply series under
@@ -74,8 +74,8 @@ const SupplyChange: FC<Props> = ({
         <div className="relative flex flex-col gap-x-2 gap-y-4">
           <div className="flex justify-between">
             <LabelText>supply change</LabelText>
-            <SinceMergeIndicator
-              onClick={onClickTimeFrame}
+            <TimeFrameIndicator
+              onClickTimeFrame={onClickTimeFrame}
               timeFrame={timeFrame}
             />
           </div>

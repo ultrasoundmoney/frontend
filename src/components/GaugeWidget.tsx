@@ -23,7 +23,7 @@ type Props = {
 const Controls: FC<Props> = ({
   onSetTimeFrame,
   onSetUnit,
-  onSimulateProofOfWork: onToggleSimulateProofOfWork,
+  onSimulateProofOfWork,
   simulateProofOfWork,
   timeFrame,
   unit,
@@ -54,7 +54,7 @@ const Controls: FC<Props> = ({
         <div className="flex h-[34px] items-center self-start md:self-end">
           <ToggleSwitch
             checked={simulateProofOfWork}
-            onToggle={onToggleSimulateProofOfWork}
+            onToggle={onSimulateProofOfWork}
           />
         </div>
       </div>

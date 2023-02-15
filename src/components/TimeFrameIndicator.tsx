@@ -46,7 +46,11 @@ const TimeFrameIndicator: FC<Props> = ({
         onClick={onClickTimeFrame}
       >
         <LabelText>
-          {timeFrame === "since_burn" ? "since burn" : "time frame"}
+          {timeFrame === "since_burn"
+            ? "since burn"
+            : timeFrame === "since_merge"
+            ? "since merge"
+            : "time frame"}
         </LabelText>
         <p className="font-roboto text-xs text-white">
           {timeFrame === "since_burn"
