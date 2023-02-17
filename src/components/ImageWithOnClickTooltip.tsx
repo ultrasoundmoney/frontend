@@ -1,5 +1,5 @@
 import type { StaticImageData } from "next/image";
-import { FC, MouseEventHandler, RefObject, useEffect } from "react";
+import { FC, RefObject, useEffect } from "react";
 import { useCallback, useContext, useRef, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import questionMarkSvg from "../assets/question-mark-v2.svg";
@@ -70,7 +70,25 @@ const ImageWithOnClickTooltip: FC<ImageWithOnClickTooltipProps> = ({
         <div
           id={handle?.toLowerCase()}
           ref={imageRef}
-          onClick={(onClick === undefined || excluded) ? undefined : () => onClick(imageRef)}
+          // measure distance mouse moved since click if more than 10px, don't trigger onClick
+          onMouseDown={(e) => {
+            if (onClick === undefined || excluded) return;
+            const { clientX, clientY } = e;
+            let distanceMoved = 0;
+            const onMouseMove = (e: MouseEvent) => {
+              const { clientX: newClientX, clientY: newClientY } = e;
+              distanceMoved += Math.abs(clientX - newClientX) + Math.abs(clientY - newClientY);
+            };
+            const onMouseUp = () => {
+              if (distanceMoved < 10) {
+                onClick(imageRef);
+              }
+              window.removeEventListener("mousemove", onMouseMove);
+              window.removeEventListener("mouseup", onMouseUp);
+            };
+            window.addEventListener("mousemove", onMouseMove);
+            window.addEventListener("mouseup", onMouseUp);
+          }}
           // className={className}
           className={`
             ${styles["fam-image-sprite"]}

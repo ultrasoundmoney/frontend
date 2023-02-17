@@ -267,8 +267,7 @@ const TwitterFam: FC = () => {
                 initialPositionX={0}
                 initialPositionY={0}
                 wheel={{ wheelDisabled: true }}
-                // panning={{ excluded: [`${imageWithOnClickStyles["fam-image-sprite"]}`] }}
-                panning={{ excluded: [...filteredProfiles.map((profile) => `handle-className-${profile.handle.toLowerCase()}`)] }}
+                // panning={{ excluded: [...filteredProfiles.map((profile) => `handle-className-${profile.handle.toLowerCase()}`)] }}
                 // onZoomStop={handleOnZoomStop}
               >
                 {({ zoomIn, zoomOut, resetTransform, zoomToElement, ...rest }) => (
@@ -355,7 +354,7 @@ const TwitterFam: FC = () => {
                       {profiles?.map((profile, index) => (
                         <ClickAwayListener onClickAway={handleClickAway} key={profile?.profileUrl ?? index}>
                           <ImageWithOnClickTooltip
-                            className={`m-1 h-3 w-3 select-none`}
+                            className={`m-[2px] h-3 w-3 select-none`}
                             imageUrl={profile?.profileImageUrl}
                             handle={profile?.handle}
                             isDoneLoading={profile !== undefined}
