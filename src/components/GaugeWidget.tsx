@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { useCallback, useState } from "react";
 import type { Unit } from "../denomination";
-import type { TimeFrameNext } from "../time-frames";
+import type { TimeFrame } from "../time-frames";
 import CurrencyControl from "./CurrencyControl";
 import BurnGauge from "./Gauges/BurnGauge";
 import IssuanceGauge from "./Gauges/IssuanceGauge";
@@ -12,36 +12,37 @@ import ToggleSwitch from "./ToggleSwitch";
 import { WidgetTitle } from "./WidgetSubcomponents";
 
 type Props = {
-  timeFrame: TimeFrameNext;
-  onSetTimeFrame: (timeFrame: TimeFrameNext) => void;
-  simulateProofOfWork: boolean;
-  onSimulateProofOfWork: () => void;
-  unit: Unit;
+  onSetTimeFrame: (timeFrame: TimeFrame) => void;
   onSetUnit: (unit: Unit) => void;
+  onSimulateProofOfWork: () => void;
+  simulateProofOfWork: boolean;
+  timeFrame: TimeFrame;
+  unit: Unit;
 };
 
 const Controls: FC<Props> = ({
   onSetTimeFrame,
   onSetUnit,
-  onSimulateProofOfWork: onToggleSimulateProofOfWork,
+  onSimulateProofOfWork,
   simulateProofOfWork,
   timeFrame,
   unit,
 }) => (
   <div className={`rounded-bl-lg rounded-br-lg bg-slateus-700 px-8 pb-8`}>
-    <div className="grid grid-cols-2 flex-col gap-y-8 md:flex md:flex-row md:justify-between lg:gap-y-0 ">
-      <div className="row-start-1 flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-x-4">
+    <div className="flex flex-col gap-y-8 md:flex-row md:justify-between lg:gap-y-0 ">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-x-4">
         <WidgetTitle>time frame</WidgetTitle>
         <TimeFrameControl
           selectedTimeframe={timeFrame}
           onSetTimeFrame={onSetTimeFrame}
+          mergeEnabled
         />
       </div>
-      <div className="row-start-2 hidden flex-col gap-y-4 md:row-start-1 md:flex lg:flex-row lg:items-center lg:gap-x-4">
+      <div className="hidden flex-col gap-y-4 md:flex lg:flex-row lg:items-center lg:gap-x-4">
         <WidgetTitle>currency</WidgetTitle>
         <CurrencyControl selectedUnit={unit} onSetUnit={onSetUnit} />
       </div>
-      <div className="col-span-2 row-start-2 flex items-center gap-4 text-left md:row-start-1 md:flex-col md:text-right lg:flex-row">
+      <div className="flex items-center gap-4 text-left md:flex-col md:text-right lg:flex-row">
         <BaseText
           font="font-inter"
           color="text-slateus-200"
@@ -53,7 +54,7 @@ const Controls: FC<Props> = ({
         <div className="flex h-[34px] items-center self-start md:self-end">
           <ToggleSwitch
             checked={simulateProofOfWork}
-            onToggle={onToggleSimulateProofOfWork}
+            onToggle={onSimulateProofOfWork}
           />
         </div>
       </div>
@@ -63,10 +64,10 @@ const Controls: FC<Props> = ({
 
 const GaugeWidget: FC<{
   onClickTimeFrame: () => void;
-  onSetTimeFrame: (timeFrame: TimeFrameNext) => void;
+  onSetTimeFrame: (timeFrame: TimeFrame) => void;
   onSimulateProofOfWork: () => void;
   simulateProofOfWork: boolean;
-  timeFrame: TimeFrameNext;
+  timeFrame: TimeFrame;
 }> = ({
   onClickTimeFrame,
   onSetTimeFrame,

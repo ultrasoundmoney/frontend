@@ -44,7 +44,7 @@ jobs:
         uses: steebchen/kubectl@v2.0.0
         with:
           config: ${{ secrets.KUBE_CONFIG_DATA_STAG }}
-          command: set image deployment/serve-frontend serve-frontend=rg.fr-par.scw.cloud/ultrasoundmoney/serve-frontend:${{ steps.vars.outputs.sha_short }}
+          command: set image deployment/serve-frontend serve-frontend=rg.fr-par.scw.cloud/ultrasoundmoney/frontend:${{ steps.vars.outputs.sha_short }}
       - name: Verify deployment
         uses: steebchen/kubectl@v2.0.0
         with:

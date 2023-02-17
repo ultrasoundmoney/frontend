@@ -1,0 +1,8 @@
+/* Fix for Safari bug when lazy loading images. */
+/* Safari bug: https://github.com/WebKit/WebKit/commit/7d844a4e948d225ba2f0504fa4a264b03bd9d8c8 */
+/* NextJS issue: https://github.com/vercel/next.js/issues/40615 */
+@supports (font: -apple-system-body) and (-webkit-appearance: none) {
+  img[loading="lazy"] {
+    clip-path: inset(0.6px);
+  }
+}

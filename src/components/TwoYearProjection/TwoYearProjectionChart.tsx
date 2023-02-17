@@ -21,7 +21,6 @@ import { useOnResize } from "../../utils/use-on-resize";
 import styles from "./TwoYearProjectionChart.module.scss";
 import colors from "../../colors";
 import { LONDON_TIMESTAMP } from "../../hardforks/london";
-import { PARIS_TIMESTAMP } from "../../hardforks/paris";
 import _first from "lodash/first";
 
 if (typeof window !== "undefined") {
@@ -196,17 +195,8 @@ const SupplyChart: React.FC<Props> = ({
     let lastInContractsIterValue: number | undefined = undefined;
 
     // Glassnode is currently overcounting ETH after the Paris hardfork as Etherscan was too. Etherscan fixed it. Glassnode not yet, here we manually correct their mistake.
-    supplyData.forEach(({ t: timestamp, v: vMiscounted }, i) => {
+    supplyData.forEach(({ t: timestamp, v }, i) => {
       const dateTime = DateFns.fromUnixTime(timestamp);
-
-      // Glassnode overcounting per day
-      const GLASSNODE_OVERCOUNTING_ETH = ((24 * 60 * 60) / 12) * 2 * 0.99;
-      const daysSinceMerge =
-        DateFns.differenceInDays(dateTime, PARIS_TIMESTAMP) + 1;
-
-      const v = DateFns.isAfter(dateTime, PARIS_TIMESTAMP)
-        ? vMiscounted - GLASSNODE_OVERCOUNTING_ETH * daysSinceMerge
-        : vMiscounted;
 
       // Calculate peak supply
       if (v > (maxSupply || 0)) {
@@ -217,9 +207,7 @@ const SupplyChart: React.FC<Props> = ({
         if (lastPoint === undefined) {
           throw new Error("cannot calculate peak supply without supply points");
         }
-        const value =
-          lastPoint.v - (daysSinceMerge - 1) * GLASSNODE_OVERCOUNTING_ETH;
-        peakSupply = [lastPoint.t, value];
+        peakSupply = [lastPoint.t, lastPoint.v];
       }
 
       // Only render every Nth point for chart performance

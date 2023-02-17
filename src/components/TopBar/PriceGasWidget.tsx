@@ -3,8 +3,8 @@ import type { StaticImageData } from "next/legacy/image";
 import Image from "next/legacy/image";
 import type { FC, ReactNode } from "react";
 import CountUp from "react-countup";
+import { useBaseFeePerGasBarrier } from "../../api/barrier";
 import { useBaseFeePerGas } from "../../api/base-fee-per-gas";
-import { useBaseFeePerGasStats } from "../../api/base-fee-per-gas-stats";
 import { useEthPriceStats } from "../../api/eth-price-stats";
 import { WEI_PER_GWEI } from "../../eth-units";
 import * as Format from "../../format";
@@ -34,8 +34,7 @@ const PriceGasBoundary: FC<{ children: ReactNode }> = ({ children }) => (
 
 const PriceGasWidget: FC = () => {
   const baseFeePerGas = useBaseFeePerGas();
-  const baseFeePerGasStats = useBaseFeePerGasStats();
-  const barrier = baseFeePerGasStats.barrier * WEI_PER_GWEI;
+  const barrier = useBaseFeePerGasBarrier().barrier * WEI_PER_GWEI;
   const ethPriceStats = useEthPriceStats();
   const ethUsd24hChange =
     ethPriceStats === undefined
@@ -50,9 +49,7 @@ const PriceGasWidget: FC = () => {
       : "text-green-400";
 
   const gweiColor =
-    baseFeePerGasStats !== undefined && baseFeePerGas.wei > barrier
-      ? "text-orange-400"
-      : "text-blue-400";
+    baseFeePerGas.wei > barrier ? "text-orange-400" : "text-blue-400";
 
   return (
     <PriceGasBoundary>

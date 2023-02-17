@@ -3,8 +3,12 @@ import Image from "next/legacy/image";
 import type { FC, ReactNode } from "react";
 import fireOwnSvg from "../assets/fire-own.svg";
 import fireSlateusSvg from "../assets/fire-slateus.svg";
-import type { TimeFrameNext } from "../time-frames";
-import { displayLimitedTimeFrameMap, timeFramesNext } from "../time-frames";
+import pandaOwnSvg from "../assets/panda-own.svg";
+import pandaSlateusSvg from "../assets/panda-slateus.svg";
+import type { TimeFrame } from "../time-frames";
+import { timeFrames } from "../time-frames";
+import { displayLimitedTimeFrameMap, timeFramesNoMerge } from "../time-frames";
+import HoverTooltip from "./HoverTooltip";
 
 export const Button: FC<{
   children: ReactNode;
@@ -32,61 +36,120 @@ export const Button: FC<{
   </button>
 );
 
+export const LondonHardForkTooltip: FC<{
+  children: ReactNode;
+  zLevel?: string;
+  timeFrame: TimeFrame;
+}> = ({ children, timeFrame, zLevel }) => (
+  <HoverTooltip
+    customAlign="-left-32"
+    text={
+      timeFrame === "since_burn"
+        ? "Since-burn time frame. Starting from the london hard fork where EIP-1559 was activated."
+        : undefined
+    }
+    zLevel={zLevel}
+  >
+    {children}
+  </HoverTooltip>
+);
+
+const FireImage: FC<{ selectedTimeframe: TimeFrame }> = ({
+  selectedTimeframe,
+}) => (
+  <>
+    <div
+      className={`
+        h-4 w-4
+        ${selectedTimeframe === "since_burn" ? "hidden" : "block"}
+      `}
+    >
+      <Image
+        className={selectedTimeframe === "since_burn" ? "hidden" : "block"}
+        alt="flame emoji symbolizing time span since london hard fork when EIP-1559 was activated"
+        src={fireSlateusSvg as StaticImageData}
+        width={16}
+        height={16}
+      />
+    </div>
+    <div
+      className={`
+        h-4 w-4
+        ${selectedTimeframe === "since_burn" ? "block" : "hidden"}
+      `}
+    >
+      <Image
+        alt="flame emoji symbolizing time span since london hard fork when EIP-1559 was activated"
+        src={fireOwnSvg as StaticImageData}
+        width={16}
+        height={16}
+      />
+    </div>
+  </>
+);
+
+const PandaImage: FC<{ selectedTimeframe: TimeFrame }> = ({
+  selectedTimeframe,
+}) => (
+  <>
+    <div
+      className={`
+        h-4 w-4
+        ${selectedTimeframe === "since_merge" ? "hidden" : "block"}
+      `}
+    >
+      <Image
+        className={selectedTimeframe === "since_merge" ? "hidden" : "block"}
+        alt="panda emoji symbolizing the time span since the merge happened"
+        src={pandaSlateusSvg as StaticImageData}
+        width={16}
+        height={16}
+      />
+    </div>
+    <div
+      className={`
+        h-4 w-4
+        ${selectedTimeframe === "since_merge" ? "block" : "hidden"}
+      `}
+    >
+      <Image
+        alt="panda emoji symbolizing the time span since the merge happened"
+        src={pandaOwnSvg as StaticImageData}
+        width={16}
+        height={16}
+      />
+    </div>
+  </>
+);
+
 type Props = {
-  onSetTimeFrame: (timeframe: TimeFrameNext) => void;
-  selectedTimeframe: TimeFrameNext;
+  mergeEnabled?: boolean;
+  onSetTimeFrame: (timeframe: TimeFrame) => void;
+  selectedTimeframe: TimeFrame;
   topCornersRounded?: boolean;
 };
 
-const TimeFrameControl: FC<Props> = ({ selectedTimeframe, onSetTimeFrame }) => (
+const TimeFrameControl: FC<Props> = ({
+  selectedTimeframe,
+  onSetTimeFrame,
+  mergeEnabled = false,
+}) => (
   <div className="flex flex-row items-center lg:gap-x-1">
-    {timeFramesNext.map((timeFrame) => (
-      <Button
-        key={timeFrame}
-        isActive={selectedTimeframe === timeFrame}
-        onClick={() => onSetTimeFrame(timeFrame)}
-        title={
-          timeFrame === "since_burn"
-            ? "since London hark fork where EIP-1559 was activated"
-            : undefined
-        }
-      >
-        {timeFrame === "since_burn" ? (
-          <>
-            <div
-              className={`
-                h-4 w-4
-                ${selectedTimeframe === "since_burn" ? "hidden" : "block"}
-              `}
-            >
-              <Image
-                className={
-                  selectedTimeframe === "since_burn" ? "hidden" : "block"
-                }
-                alt="flame emoji symbolizing time span since london hark fork when EIP-1559 was activated"
-                src={fireSlateusSvg as StaticImageData}
-                width={16}
-                height={16}
-              />
-            </div>
-            <div
-              className={`
-                h-4 w-4
-                ${selectedTimeframe === "since_burn" ? "block" : "hidden"}
-              `}
-            >
-              <Image
-                alt="flame emoji symbolizing time span since london hark fork when EIP-1559 was activated"
-                src={fireOwnSvg as StaticImageData}
-                width={16}
-                height={16}
-              />
-            </div>
-          </>
-        ) : (
-          displayLimitedTimeFrameMap[timeFrame]
-        )}
-      </Button>
+    {(mergeEnabled ? timeFrames : timeFramesNoMerge).map((timeFrame) => (
+      <LondonHardForkTooltip key={timeFrame} timeFrame={timeFrame}>
+        <Button
+          isActive={selectedTimeframe === timeFrame}
+          onClick={() => onSetTimeFrame(timeFrame)}
+        >
+          {timeFrame === "since_merge" ? (
+            <PandaImage selectedTimeframe={selectedTimeframe} />
+          ) : timeFrame === "since_burn" ? (
+            <FireImage selectedTimeframe={selectedTimeframe} />
+          ) : (
+            displayLimitedTimeFrameMap[timeFrame]
+          )}
+        </Button>
+      </LondonHardForkTooltip>
     ))}
   </div>
 );

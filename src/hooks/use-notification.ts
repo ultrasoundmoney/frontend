@@ -11,13 +11,27 @@ export type NotificationState =
       showNotification: (title: string, body?: string) => void;
     };
 
+const getIsMobile = (): boolean => {
+  if (typeof navigator === "undefined") {
+    return false;
+  }
+
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent,
+  );
+};
+
 const useNotification = (): NotificationState => {
   const [isNotificationSupported, setIsNotificationSupported] =
     useState<boolean>();
   const [permission, setPermission] = useState<NotificationPermission>();
 
   useEffect(() => {
-    if (typeof window === "undefined" || !("Notification" in window)) {
+    if (
+      typeof window === "undefined" ||
+      !("Notification" in window) ||
+      getIsMobile()
+    ) {
       setIsNotificationSupported(false);
       return undefined;
     }

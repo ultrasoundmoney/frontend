@@ -1,6 +1,6 @@
 import * as DateFns from "date-fns";
 import mapValues from "lodash/mapValues";
-import type { TimeFrame } from "../time-frames";
+import type { TimeFrameOld } from "../time-frames";
 
 export type BurnRecord = {
   blockNumber: number;
@@ -10,7 +10,7 @@ export type BurnRecord = {
 
 export type BurnRecords = {
   number: number;
-  records: Record<TimeFrame, BurnRecord[]>;
+  records: Record<TimeFrameOld, BurnRecord[]>;
 };
 
 type BurnRecordF = {
@@ -21,7 +21,7 @@ type BurnRecordF = {
 
 export type BurnRecordsF = {
   number: number;
-  records: Record<TimeFrame, BurnRecordF[]>;
+  records: Record<TimeFrameOld, BurnRecordF[]>;
 };
 
 export const decodeBurnRecords = (

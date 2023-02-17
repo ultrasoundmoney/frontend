@@ -1,8 +1,9 @@
 import type { FC } from "react";
 import { useState } from "react";
-import { ethSupplyFromParts, useEthSupplyParts } from "../../api/eth-supply";
+import { ethSupplyFromParts, useSupplyParts } from "../../api/supply-parts";
 import { dateTimeFromSlot } from "../../beacon-time";
 import Nerd from "../Nerd";
+import HoverTooltip from "../HoverTooltip";
 import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
@@ -10,7 +11,7 @@ import CurrentSupplyTooltip from "./CurrentSupplyTooltip";
 import PreciseEth from "./PreciseEth";
 
 const EthSupplyWidget: FC = () => {
-  const ethSupplyParts = useEthSupplyParts();
+  const ethSupplyParts = useSupplyParts();
   const ethSupply = ethSupplyFromParts(ethSupplyParts);
   const [showNerdTooltip, setShowNerdTooltip] = useState(false);
 
@@ -28,7 +29,12 @@ const EthSupplyWidget: FC = () => {
             onClick={() => setShowNerdTooltip(true)}
           >
             <WidgetTitle>current supply</WidgetTitle>
-            <Nerd />
+            <HoverTooltip
+              customAlign="-left-16"
+              text="Show how the current supply is calculated."
+            >
+              <Nerd />
+            </HoverTooltip>
           </div>
           <div
             className={`
@@ -48,9 +54,7 @@ const EthSupplyWidget: FC = () => {
           <div className="flex flex-col gap-y-4 transition-colors">
             <PreciseEth amount={ethSupply} />
             <UpdatedAgo
-              updatedAt={dateTimeFromSlot(
-                ethSupplyParts.beaconDepositsSum.slot,
-              ).toISOString()}
+              updatedAt={dateTimeFromSlot(ethSupplyParts.slot).toISOString()}
             />
           </div>
         </div>

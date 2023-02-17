@@ -11,7 +11,7 @@ import type { LeaderboardEntry, Leaderboards } from "../../api/leaderboards";
 import type { Unit } from "../../denomination";
 import { useAdminToken } from "../../hooks/use-admin-token";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
-import type { TimeFrameNext } from "../../time-frames";
+import type { TimeFrameNoMerge } from "../../time-frames";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import Modal from "../Modal";
 import FamTooltip from "../FamTooltip";
@@ -19,7 +19,7 @@ import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { BurnGroupBase } from "../WidgetSubcomponents";
 import LeaderboardRow from "./LeaderboardRow";
 
-const feePeriodToUpdateMap: Record<TimeFrameNext, keyof Leaderboards> = {
+const feePeriodToUpdateMap: Record<TimeFrameNoMerge, keyof Leaderboards> = {
   m5: "leaderboard5m",
   h1: "leaderboard1h",
   d1: "leaderboard24h",
@@ -187,7 +187,7 @@ const useTooltip = () => {
 
 type Props = {
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrameNext;
+  timeFrame: TimeFrameNoMerge;
   unit: Unit;
 };
 
@@ -226,7 +226,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
   return (
     <WidgetErrorBoundary title="burn total">
       <BurnGroupBase
-        backgroundClassName="flex flex-col gap-y-4 h-[32rem] lg:h-full"
+        backgroundClassName="flex flex-col gap-y-4 h-[485px] lg:h-full"
         onClickTimeFrame={onClickTimeFrame}
         title="burn leaderboard"
         timeFrame={timeFrame}
@@ -333,4 +333,5 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
   );
 };
 
+// TODO: document why we memo here.
 export default memo(BurnLeaderboard);

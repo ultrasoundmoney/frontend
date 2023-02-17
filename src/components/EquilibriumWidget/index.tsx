@@ -5,7 +5,7 @@ import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { useBurnRates } from "../../api/burn-rates";
 import { useEffectiveBalanceSum } from "../../api/effective-balance-sum";
-import { useImpreciseEthSupply } from "../../api/eth-supply";
+import { useImpreciseEthSupply } from "../../api/supply-parts";
 import { useSupplyProjectionInputs } from "../../api/supply-projection";
 import type { Eth, Gwei } from "../../eth-units";
 import { GWEI_PER_ETH, WEI_PER_ETH } from "../../eth-units";
@@ -104,19 +104,17 @@ const BurnMarkers: FC<{ burnMarkers?: BurnMarkers }> = ({ burnMarkers }) => {
         ]
       : [];
 
-  const shownList = markerList
-    .reduce((list: BurnMarker[], marker) => {
-      const someConflict = list.some(
-        (shownMarker) => Math.abs(shownMarker.value - marker.value) < 0.0017,
-      );
+  const shownList = markerList.reduce((list: BurnMarker[], marker) => {
+    const someConflict = list.some(
+      (shownMarker) => Math.abs(shownMarker.value - marker.value) < 0.0017,
+    );
 
-      if (someConflict) {
-        return list;
-      }
+    if (someConflict) {
+      return list;
+    }
 
-      return [...list, marker];
-    }, [])
-    .sort((m1, m2) => m1.value - m2.value);
+    return [...list, marker];
+  }, []);
 
   return (
     <>
@@ -356,11 +354,11 @@ const EquilibriumWidget = () => {
         >
           <div
             className={`
-            pointer-events-none absolute h-3/5
-            w-4/5 rounded-[35%] bg-[#0037FA]
-            lg:bottom-[3.0rem]
-            lg:-right-[1.0rem]
-          `}
+              pointer-events-none absolute h-3/5
+              w-4/5 rounded-[35%] bg-[#0037FA]
+              lg:bottom-[3.0rem]
+              lg:-right-[1.0rem]
+            `}
           ></div>
         </div>
         <div className="grid grid-cols-1 gap-y-8 gap-x-8 p-8 lg:grid-cols-2">

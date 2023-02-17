@@ -1,5 +1,4 @@
-import type { BaseFeePerGasStatsTimeFrame } from "../api/base-fee-per-gas-stats";
-import { useBaseFeePerGasStats } from "../api/base-fee-per-gas-stats";
+import { useBaseFeePerGasStatsTimeFrame } from "../api/base-fee-per-gas-stats";
 import WidgetErrorBoundary from "./WidgetErrorBoundary";
 import { WidgetBackground } from "./WidgetSubcomponents";
 import LabelText from "./TextsNext/LabelText";
@@ -13,9 +12,10 @@ import Image from "next/legacy/image";
 import batSvg from "../assets/bat-own.svg";
 import speakerSvg from "../assets/speaker-own.svg";
 import barrierSvg from "../assets/barrier-own.svg";
-import type { TimeFrameNext } from "../time-frames";
+import type { TimeFrame } from "../time-frames";
 import { animated, useSpring } from "react-spring";
 import CountUp from "react-countup";
+import { useBaseFeePerGasBarrier } from "../api/barrier";
 
 const getPercentage = (
   highest: number,
@@ -38,8 +38,12 @@ const formatGasTooltip = (
 ${gasStr} Gwei`;
 };
 
+const getBlockPageLink = (u: number | undefined): string | undefined =>
+  typeof u === "undefined" ? undefined : `https://etherscan.io/block/${u}`;
+
 type MarkerProps = {
   barrier: number;
+  blockNumber?: number;
   description?: string;
   emphasize?: boolean;
   gas: number;
@@ -53,6 +57,7 @@ type MarkerProps = {
 
 const Marker: FC<MarkerProps> = ({
   barrier,
+  blockNumber,
   description,
   emphasize = false,
   gas,
@@ -149,14 +154,20 @@ const Marker: FC<MarkerProps> = ({
         size="text-sm"
         unitPostfix={vertical === "top" ? "Gwei" : undefined}
       >
-        <CountUp
-          end={gas / WEI_PER_GWEI}
-          preserveValue
-          formattingFn={formatOneDecimal}
-          duration={1}
-          useEasing
-          decimals={1}
-        />
+        <a
+          href={getBlockPageLink(blockNumber)}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <CountUp
+            end={gas / WEI_PER_GWEI}
+            preserveValue
+            formattingFn={formatOneDecimal}
+            duration={1}
+            useEasing
+            decimals={1}
+          />
+        </a>
       </QuantifyText>
       {vertical === "top" && (
         <div className={`mt-2 h-12 w-px rounded-t-full ${markerColor}`}></div>
@@ -167,26 +178,22 @@ const Marker: FC<MarkerProps> = ({
 
 type Props = {
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrameNext;
+  timeFrame: TimeFrame;
 };
 
 const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
-  const baseFeePerGasStats = useBaseFeePerGasStats();
-  const barrier = baseFeePerGasStats.barrier * WEI_PER_GWEI;
-  const baseFeePerGasStatsTimeFrame =
-    baseFeePerGasStats?.[timeFrame] ??
-    (undefined as BaseFeePerGasStatsTimeFrame | undefined);
+  const baseFeePerGasStatsTimeFrame = useBaseFeePerGasStatsTimeFrame(timeFrame);
+  const barrier = useBaseFeePerGasBarrier().barrier;
   const barPaddingFactor = 0.08;
+
   const lowest =
-    baseFeePerGasStatsTimeFrame === undefined ||
-    baseFeePerGasStats === undefined
+    baseFeePerGasStatsTimeFrame === undefined || barrier === undefined
       ? undefined
       : Math.min(barrier, baseFeePerGasStatsTimeFrame.min) -
         Math.max(baseFeePerGasStatsTimeFrame.max, barrier) * barPaddingFactor;
 
   const highest =
-    baseFeePerGasStatsTimeFrame === undefined ||
-    baseFeePerGasStats === undefined
+    baseFeePerGasStatsTimeFrame === undefined || barrier === undefined
       ? undefined
       : Math.max(baseFeePerGasStatsTimeFrame.max, barrier) *
         (1 + barPaddingFactor);
@@ -205,7 +212,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
 
   const barrierPercent =
     baseFeePerGasStatsTimeFrame === undefined ||
-    baseFeePerGasStats === undefined ||
+    barrier === undefined ||
     gasRange === undefined ||
     lowest === undefined
       ? undefined
@@ -217,7 +224,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
       : undefined;
 
   const isDataAvailable =
-    baseFeePerGasStats !== undefined &&
+    barrier !== undefined &&
     baseFeePerGasStatsTimeFrame !== undefined &&
     highest !== undefined &&
     lowest !== undefined &&
@@ -243,7 +250,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
             onClickTimeFrame={onClickTimeFrame}
           />
         </div>
-        {baseFeePerGasStatsTimeFrame === undefined ? (
+        {!isDataAvailable ? (
           <div className="flex h-[96px] items-center justify-center">
             <LabelText color="text-slateus-300">
               data not yet available
@@ -261,68 +268,68 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
               bg-slateus-600
             `}
           >
-            {isDataAvailable && (
-              <>
-                <Marker
-                  barrier={barrier}
-                  description="minimum gas price"
-                  gas={baseFeePerGasStatsTimeFrame.min}
-                  highest={highest}
-                  horizontal="left"
-                  label="min"
-                  lowest={lowest}
-                  markerColor="bg-slateus-400"
-                  vertical="bottom"
-                />
-                <Marker
-                  barrier={barrier}
-                  description="maximum gas price"
-                  gas={baseFeePerGasStatsTimeFrame.max}
-                  highest={highest}
-                  horizontal="right"
-                  label="max"
-                  lowest={lowest}
-                  markerColor="bg-slateus-400"
-                  vertical="bottom"
-                />
-                <Marker
-                  barrier={barrier}
-                  description="average gas price"
-                  emphasize
-                  gas={baseFeePerGasStatsTimeFrame.average}
-                  highest={highest}
-                  horizontal={
-                    baseFeePerGasStatsTimeFrame.average > barrier
-                      ? "right"
-                      : "left"
-                  }
-                  label="average"
-                  lowest={lowest}
-                  markerColor={
-                    deltaPercent >= 0 ? "bg-orange-400" : "bg-blue-400"
-                  }
-                  vertical="top"
-                />
-                <Marker
-                  barrier={barrier}
-                  description="ultra sound barrier"
-                  emphasize
-                  gas={barrier}
-                  highest={highest}
-                  horizontal={
-                    barrier <= baseFeePerGasStatsTimeFrame.average
-                      ? "left"
-                      : "right"
-                  }
-                  label="barrier"
-                  lowest={lowest}
-                  markerColor={
-                    deltaPercent >= 0 ? "bg-orange-400" : "bg-blue-400"
-                  }
-                  vertical="top"
-                />
-              </>
-            )}
+            <>
+              <Marker
+                barrier={barrier}
+                blockNumber={baseFeePerGasStatsTimeFrame.min_block_number}
+                description="minimum gas price"
+                gas={baseFeePerGasStatsTimeFrame.min}
+                highest={highest}
+                horizontal="left"
+                label="min"
+                lowest={lowest}
+                markerColor="bg-slateus-400"
+                vertical="bottom"
+              />
+              <Marker
+                barrier={barrier}
+                blockNumber={baseFeePerGasStatsTimeFrame.max_block_number}
+                description="maximum gas price"
+                gas={baseFeePerGasStatsTimeFrame.max}
+                highest={highest}
+                horizontal="right"
+                label="max"
+                lowest={lowest}
+                markerColor="bg-slateus-400"
+                vertical="bottom"
+              />
+              <Marker
+                barrier={barrier}
+                description="average gas price"
+                emphasize
+                gas={baseFeePerGasStatsTimeFrame.average}
+                highest={highest}
+                horizontal={
+                  baseFeePerGasStatsTimeFrame.average > barrier
+                    ? "right"
+                    : "left"
+                }
+                label="average"
+                lowest={lowest}
+                markerColor={
+                  deltaPercent >= 0 ? "bg-orange-400" : "bg-blue-400"
+                }
+                vertical="top"
+              />
+              <Marker
+                barrier={barrier}
+                description="ultra sound barrier"
+                emphasize
+                gas={barrier}
+                highest={highest}
+                horizontal={
+                  barrier <= baseFeePerGasStatsTimeFrame.average
+                    ? "left"
+                    : "right"
+                }
+                label="barrier"
+                lowest={lowest}
+                markerColor={
+                  deltaPercent >= 0 ? "bg-orange-400" : "bg-blue-400"
+                }
+                vertical="top"
+              />
+            </>
             {deltaPercent !== undefined && (
               <div
                 className={`

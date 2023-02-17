@@ -7,7 +7,7 @@ import type { FC } from "react";
 import { useEffect, useMemo } from "react";
 import colors from "../colors";
 import type { Gwei } from "../eth-units";
-import type { TimeFrameNext } from "../time-frames";
+import type { TimeFrame } from "../time-frames";
 import type { BaseFeePoint } from "./Dashboard/GasSection";
 import LabelText from "./TextsNext/LabelText";
 import TimeFrameIndicator from "./TimeFrameIndicator";
@@ -180,7 +180,7 @@ type Props = {
   baseFeesSeries: BaseFeePoint[] | undefined;
   max: number | undefined;
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrameNext;
+  timeFrame: TimeFrame;
 };
 
 const BaseFeesWidget: FC<Props> = ({
@@ -263,26 +263,28 @@ const BaseFeesWidget: FC<Props> = ({
 
   return (
     <WidgetErrorBoundary title="base fees">
-      <WidgetBackground className="relative flex h-[381px] w-full flex-col overflow-hidden">
-        <div
-          // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
-          className={`
-            pointer-events-none absolute -top-40
-            -left-56 h-full
-            w-full
-            opacity-[0.25]
-            blur-[110px]
-            will-change-transform
-          `}
-        >
+      <WidgetBackground className="relative flex h-[381px] w-full flex-col">
+        <div className="pointer-events-none absolute left-0 right-0 top-0 bottom-0 overflow-hidden rounded-lg">
           <div
+            // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
             className={`
-            pointer-events-none absolute bottom-[3.0rem]
-            -right-[1.0rem] h-2/5 w-3/5
-            rounded-[35%]
-            bg-[#0037FA]
-          `}
-          ></div>
+              absolute -top-40
+              -left-56 h-full
+              w-full
+              opacity-[0.25]
+              blur-[110px]
+              will-change-transform
+            `}
+          >
+            <div
+              className={`
+                absolute bottom-[3.0rem]
+                -right-[1.0rem] h-2/5 w-3/5
+                rounded-[35%]
+                bg-[#0037FA]
+              `}
+            ></div>
+          </div>
         </div>
         <div className="flex items-baseline justify-between">
           <LabelText className="flex min-h-[21px] items-center">

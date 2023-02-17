@@ -1,74 +1,72 @@
-import { differenceInSeconds } from "date-fns";
 import type { FC } from "react";
 import CountUp from "react-countup";
-import {
-  impreciseEthSupplyFromParts,
-  useEthSupplyParts,
-} from "../../api/eth-supply";
-import { useSupplyOverTime } from "../../api/supply-over-time";
-import { dateTimeFromSlot } from "../../beacon-time";
 import { formatTwoDigitsSigned } from "../../format";
-import { posIssuancePerDay, powIssuancePerDay } from "../../static-ether-data";
-import type { LimitedTimeFrameWithMerge } from "../Dashboard/SupplySection";
+import { powIssuancePerDay } from "../../static-ether-data";
 import SimulateProofOfWork from "../SimulateProofOfWork";
-import SinceMergeIndicator from "../SinceMergeIndicator";
 import { BaseText } from "../Texts";
 import LabelText from "../TextsNext/LabelText";
 import SkeletonText from "../TextsNext/SkeletonText";
 import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
-import _first from "lodash/first";
-import { PARIS_SUPPLY, PARIS_TIMESTAMP } from "../../hardforks/paris";
+import { useSupplyChanges } from "../../api/supply-changes";
+import JSBI from "jsbi";
+import { WEI_PER_ETH } from "../../eth-units";
+import type { TimeFrame } from "../../time-frames";
+import TimeFrameIndicator from "../TimeFrameIndicator";
 
 type Props = {
   onClickTimeFrame: () => void;
   onSimulateProofOfWork: () => void;
+  posIssuancePerDay: number;
   simulateProofOfWork: boolean;
-  timeFrame: LimitedTimeFrameWithMerge;
+  timeFrame: TimeFrame;
 };
 
-const POW_ISSUANCE_PER_DAY = powIssuancePerDay - posIssuancePerDay;
 const SLOTS_PER_DAY = 24 * 60 * 5;
 
 const SupplyChange: FC<Props> = ({
-  timeFrame,
-  simulateProofOfWork,
   onClickTimeFrame,
   onSimulateProofOfWork,
+  posIssuancePerDay,
+  simulateProofOfWork,
+  timeFrame,
 }) => {
-  const supplyOverTime = useSupplyOverTime();
-  const ethSupplyParts = useEthSupplyParts();
-  const currentSupply = impreciseEthSupplyFromParts(ethSupplyParts);
-  const supplyOverTimeTimeFrame = supplyOverTime?.[timeFrame];
-
-  const firstPoint =
-    timeFrame === "since_merge"
-      ? { timestamp: PARIS_TIMESTAMP, supply: PARIS_SUPPLY }
-      : _first(supplyOverTimeTimeFrame);
-  const lastPoint = currentSupply;
-
-  const slotsSinceStart =
-    firstPoint === undefined
-      ? undefined
-      : differenceInSeconds(
-          dateTimeFromSlot(ethSupplyParts.beaconBalancesSum.slot),
-          new Date(firstPoint.timestamp),
-        ) / 12;
+  // To compare proof of stake issuance to proof of work issuance we offer a
+  // "simulate proof of work" toggle. However, we only have a supply series under
+  // proof of stake. Already including proof of stake issuance. Adding proof of
+  // work issuance would mean "simulated proof of work" is really what supply
+  // would look like if there was both proof of work _and_ proof of stake
+  // issuance. To make the comparison apples to apples we subtract an estimated
+  // proof of stake issuance to show the supply as if there were _only_ proof of
+  // work issuance. A possible improvement would be to drop this ad-hoc solution
+  // and have the backend return separate series.
+  const powMinPosIssuancePerDay = powIssuancePerDay - posIssuancePerDay;
+  const supplyChanges = useSupplyChanges();
+  const supplyChangesTimeFrame = supplyChanges[timeFrame] ?? undefined;
 
   const simulatedPowIssuanceSinceMerge =
-    slotsSinceStart === undefined
+    supplyChangesTimeFrame === undefined
       ? undefined
-      : (slotsSinceStart * POW_ISSUANCE_PER_DAY) / SLOTS_PER_DAY;
+      : ((supplyChangesTimeFrame.to_slot - supplyChangesTimeFrame.from_slot) *
+          powMinPosIssuancePerDay) /
+        SLOTS_PER_DAY;
+
+  const supplyChange =
+    supplyChangesTimeFrame === undefined
+      ? undefined
+      : JSBI.subtract(
+          JSBI.BigInt(supplyChangesTimeFrame.to_supply),
+          JSBI.BigInt(supplyChangesTimeFrame.from_supply),
+        );
 
   const supplyDelta =
-    lastPoint === undefined ||
-    firstPoint === undefined ||
-    simulatedPowIssuanceSinceMerge === undefined
+    supplyChange === undefined || simulatedPowIssuanceSinceMerge === undefined
       ? undefined
       : simulateProofOfWork
-      ? currentSupply - firstPoint.supply + simulatedPowIssuanceSinceMerge
-      : currentSupply - firstPoint.supply;
+      ? JSBI.toNumber(supplyChange) / WEI_PER_ETH +
+        simulatedPowIssuanceSinceMerge
+      : JSBI.toNumber(supplyChange) / WEI_PER_ETH;
 
   return (
     <WidgetErrorBoundary title="supply change">
@@ -76,8 +74,8 @@ const SupplyChange: FC<Props> = ({
         <div className="relative flex flex-col gap-x-2 gap-y-4">
           <div className="flex justify-between">
             <LabelText>supply change</LabelText>
-            <SinceMergeIndicator
-              onClick={onClickTimeFrame}
+            <TimeFrameIndicator
+              onClickTimeFrame={onClickTimeFrame}
               timeFrame={timeFrame}
             />
           </div>
@@ -114,10 +112,11 @@ const SupplyChange: FC<Props> = ({
             </span>
           </div>
           <div className="flex flex-wrap justify-between gap-x-4 gap-y-4">
-            <UpdatedAgo updatedAt={supplyOverTime?.timestamp} />
+            <UpdatedAgo updatedAt={supplyChanges.timestamp} />
             <SimulateProofOfWork
               checked={simulateProofOfWork}
               onToggle={onSimulateProofOfWork}
+              tooltipText="Simulate the supply change with proof-of-work issuance."
             />
           </div>
         </div>
