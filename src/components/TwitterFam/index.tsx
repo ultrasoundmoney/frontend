@@ -19,6 +19,7 @@ import imageWithOnClickStyles from "../ImageWithOnClickTooltip.module.scss";
 import followingYouStyles from "../FollowingYou/FollowingYou.module.scss";
 import coordinates from '../../../public/sprite/coordinates.json'
 import properties from '../../../public/sprite/properties.json'
+import Button from '../../components/BlueButton'
 
 // See if merging with leaderboards tooltip makes sense after making it more generic.
 export const useTooltip = () => {
@@ -115,7 +116,7 @@ const TwitterFam: FC = () => {
   const [isCopiedFeedbackVisible, setIsCopiedFeedbackVisible] = useState(false);
   const onBatSoundCopied = () => {
     setIsCopiedFeedbackVisible(true);
-    setTimeout(() => setIsCopiedFeedbackVisible(false), 400);
+    setTimeout(() => setIsCopiedFeedbackVisible(false), 800);
   };
 
   // Support profile skeletons.
@@ -229,11 +230,11 @@ const TwitterFam: FC = () => {
                 <div className="mt-4 flex flex-col gap-y-4">
                   <div className="h-1"></div>
                   <CopyToClipboard text={"🦇🔊"} onCopy={onBatSoundCopied}>
-                  <button type="button" className="bg-gradient-to-r from-[#00FFFB] via-[#54C4F4] via-[#5487F4] to-[#6A54F4] rounded-full p-px">
-                    <button className="rounded-full px-5 py-1 pb-2 text-base font-light text-white bg-slateus-700">
-                      {isCopiedFeedbackVisible ? 'copied!' : 'copy'}
-                    </button>
-                  </button>
+                    <div>
+                      <Button>
+                        {isCopiedFeedbackVisible ? 'copied!' : 'copy'}
+                      </Button>
+                    </div>
                   </CopyToClipboard>
                 </div>
               </div>
