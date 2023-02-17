@@ -162,7 +162,9 @@ const TwitterFam: FC = () => {
       y = properties?.height / sizeFactor - y;
       if (Number.isNaN(x)) {
         x = coordinates?.['profile_images/default_profile-images.png' as keyof typeof coordinates ]?.x / sizeFactor;
+        x = properties?.width / sizeFactor - x;
         y = coordinates?.['profile_images/default_profile-images.png' as keyof typeof coordinates ]?.y / sizeFactor;
+        y = properties?.height / sizeFactor - y;
       }
       return { x, y };
     }
