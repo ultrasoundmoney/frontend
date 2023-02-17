@@ -35,20 +35,31 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
   value,
   valueUnit,
 }) => {
+  // We scale the thousands of ETH down to hundreds, and the billions of USD to
+  // thousands to make the animation distance small when toggling between them.
+  // This prevents the number overshooting by the millions when it tries to
+  // animate from some number of billions to some number of thousands. Because
+  // USD is in billions and we divide by a million we get thousands, but we'd
+  // like to display in single decimals billions. We therefore divide by a
+  // thousand again, during formatting, after animation has happened.
+  const valueScaled =
+    value === undefined
+      ? undefined
+      : unit === "eth"
+      ? value / 1000
+      : value / 1_000_000;
+
   const { valueA } = useSpring({
     from: { valueA: 0 },
-    to: { valueA: value },
+    to: {
+      valueA: valueScaled,
+    },
     delay: 200,
     config: config.gentle,
   });
 
   const min = 0;
-  const max =
-    unit === "eth"
-      ? // thousands of ETH
-        6000
-      : // Billions of USD
-        10;
+  const max = unit === "eth" ? 6000000 : 10_000_000_000;
 
   const progress = clamp(value ?? 0, min, max) / (max - min);
 
@@ -57,7 +68,7 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
   return (
     <>
       <WidgetTitle>{title}</WidgetTitle>
-      <div className="mt-8 scale-90 lg:scale-100">
+      <div className="mt-6 scale-90 lg:scale-100">
         <GaugeSvg
           gradientFill={gradientFill}
           needleColor={needleColor}
@@ -77,7 +88,7 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
           ) : (
             <animated.p
               className={`
-              -mb-2 bg-gradient-to-r bg-clip-text 
+              -mb-2 bg-gradient-to-r bg-clip-text
               text-transparent
               ${
                 title === "burn"
@@ -91,7 +102,8 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
                   `${
                     unit === "eth"
                       ? Format.formatZeroDecimals(n)
-                      : Format.formatOneDecimal(n)
+                      : // See the comment at valueScaled for why we divide by 1000 here.
+                        Format.formatOneDecimal(n / 1000)
                   }${gaugeUnit}`,
               )}
             </animated.p>

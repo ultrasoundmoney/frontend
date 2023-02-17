@@ -9,8 +9,8 @@ import {
 } from "../api/grouped-analysis-1";
 import * as Format from "../format";
 import scrollbarStyles from "../styles/Scrollbar.module.scss";
-import type { TimeFrameNext } from "../time-frames";
-import { timeFrameFromNext } from "../time-frames";
+import type { TimeFrameNoMerge } from "../time-frames";
+import { toOldTimeFrame } from "../time-frames";
 import { MoneyAmountAnimated } from "./Amount";
 import SpanMoji from "./SpanMoji";
 import { BaseText } from "./Texts";
@@ -22,7 +22,7 @@ const formatBlockNumber = (u: unknown): string | undefined =>
     ? undefined
     : flow(Format.formatZeroDecimals, (str) => `#${str}`)(u);
 
-const getBlockPageLink = (u: unknown): string | undefined =>
+const getBlockPageLink = (u: number | undefined): string | undefined =>
   typeof u === undefined ? undefined : `https://etherscan.io/block/${u}`;
 
 const emojiMap = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
@@ -61,7 +61,7 @@ const Age: FC<{ minedAt: Date | undefined }> = ({ minedAt }) => {
 
 type Props = {
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrameNext;
+  timeFrame: TimeFrameNoMerge;
 };
 
 const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
@@ -71,7 +71,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const timeFrameRecords =
     burnRecords === undefined
       ? (new Array(10).fill({}) as Partial<BurnRecord>[])
-      : burnRecords[timeFrameFromNext(timeFrame)];
+      : burnRecords[toOldTimeFrame(timeFrame)];
 
   return (
     <BurnGroupBase

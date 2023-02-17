@@ -15,6 +15,8 @@ import { useMemo } from "react";
 import type { SupplyAtTime } from "../../api/supply-over-time";
 import { useSupplyOverTime } from "../../api/supply-over-time";
 import colors from "../../colors";
+import type { EthNumber } from "../../eth-units";
+import { usePosIssuancePerDay } from "../../eth-units";
 import {
   formatPercentFiveDecimalsSigned,
   formatPercentThreeDecimalsSigned,
@@ -23,14 +25,12 @@ import {
   formatZeroDecimals,
 } from "../../format";
 import { PARIS_BLOCK_NUMBER, PARIS_TIMESTAMP } from "../../hardforks/paris";
-import { posIssuancePerDay, powIssuancePerDay } from "../../static-ether-data";
-import type {
-  LimitedTimeFrameWithMerge,
-  SupplyPoint,
-} from "../Dashboard/SupplySection";
+import { powIssuancePerDay } from "../../static-ether-data";
+import type { TimeFrame } from "../../time-frames";
+import type { SupplyPoint } from "../Dashboard/SupplyDashboard";
 import SimulateProofOfWork from "../SimulateProofOfWork";
-import SinceMergeIndicator from "../SinceMergeIndicator";
 import LabelText from "../TextsNext/LabelText";
+import TimeFrameIndicator from "../TimeFrameIndicator";
 import UpdatedAgo from "../UpdatedAgo";
 import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import { WidgetBackground } from "../WidgetSubcomponents";
@@ -50,16 +50,6 @@ const BITCOIN_ISSUANCE_PER_TEN_MINUTES = 6.25;
 const BITCOIN_ISSUANCE_PER_SECOND =
   BITCOIN_ISSUANCE_PER_TEN_MINUTES / (60 * 10);
 
-// To compare proof of stake issuance to proof of work issuance we offer a
-// "simulate proof of work" toggle. However, we only have a supply series under
-// proof of stake. Already including proof of stake issuance. Adding proof of
-// work issuance would mean "simulated proof of work" is really what supply
-// would look like if there was both proof of work _and_ proof of stake
-// issuance. To make the comparison apples to apples we subtract an estimated
-// proof of stake issuance to show the supply as if there were _only_ proof of
-// work issuance. A possible improvement would be to drop this ad-hoc solution
-// and have the backend return separate series.
-const POW_MIN_POS_ISSUANCE_PER_DAY = powIssuancePerDay - posIssuancePerDay;
 const SLOTS_PER_DAY = 24 * 60 * 5;
 
 const baseOptions: Highcharts.Options = {
@@ -264,12 +254,9 @@ const getSupplyChangeLabel = (
     );
 
     return `
-      <div class="flex flex-row items-center gap-x-2 select-text">
-        <div class="w-2 h-2 rounded-full"></div>
-        <div class="font-roboto font-normal text-slateus-400 text-xs">
-          <span class="text-white">${yearlySupplyDeltaPercent}</span>/y
-        </div>
-      </div>
+      <span class="font-roboto font-normal text-slateus-400 text-xs">
+        <span class="text-white">${yearlySupplyDeltaPercent}</span>/y
+      </span>
     `;
   };
 
@@ -313,6 +300,7 @@ const getBitcoinSeries = (
 
 const getEthPowSeries = (
   ethPosSeries: SupplyPoint[] | undefined,
+  powMinPosIssuancePerDay: EthNumber,
 ): SupplyPoint[] | undefined =>
   ethPosSeries === undefined
     ? undefined
@@ -325,7 +313,7 @@ const getEthPowSeries = (
           differenceInSeconds(new Date(timestamp), firstPointTimestamp) / 12;
 
         const simulatedPowIssuanceSinceStart =
-          (slotsSinceStart / SLOTS_PER_DAY) * POW_MIN_POS_ISSUANCE_PER_DAY;
+          (slotsSinceStart / SLOTS_PER_DAY) * powMinPosIssuancePerDay;
 
         const nextSupply = supply + simulatedPowIssuanceSinceStart;
         const nextPoint: SupplyPoint = [timestamp, nextSupply];
@@ -348,10 +336,10 @@ type Props = {
   onClickTimeFrame: () => void;
   onSimulateProofOfWork: () => void;
   simulateProofOfWork: boolean;
-  timeFrame: LimitedTimeFrameWithMerge;
+  timeFrame: TimeFrame;
 };
 
-const SupplySinceMergeWidget: FC<Props> = ({
+const EthSupplyWidget: FC<Props> = ({
   onClickTimeFrame,
   onSimulateProofOfWork,
   simulateProofOfWork,
@@ -361,6 +349,17 @@ const SupplySinceMergeWidget: FC<Props> = ({
   const supplyOverTimeTimeFrame = supplyOverTime?.[timeFrame];
   const isTimeFrameAvailable =
     supplyOverTimeTimeFrame !== undefined && supplyOverTimeTimeFrame.length > 0;
+  const posIssuancePerDay = usePosIssuancePerDay();
+  // To compare proof of stake issuance to proof of work issuance we offer a
+  // "simulate proof of work" toggle. However, we only have a supply series under
+  // proof of stake. Already including proof of stake issuance. Adding proof of
+  // work issuance would mean "simulated proof of work" is really what supply
+  // would look like if there was both proof of work _and_ proof of stake
+  // issuance. To make the comparison apples to apples we subtract an estimated
+  // proof of stake issuance to show the supply as if there were _only_ proof of
+  // work issuance. A possible improvement would be to drop this ad-hoc solution
+  // and have the backend return separate series.
+  const powMinPosIssuancePerDay = powIssuancePerDay - posIssuancePerDay;
 
   const options = useMemo((): Highcharts.Options => {
     if (!isTimeFrameAvailable) {
@@ -370,7 +369,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
     const ethPosSeries = getEthPosSeries(supplyOverTimeTimeFrame);
     const [bitcoinSupplySeries, bitcoinSupplySeriesScaled] =
       getBitcoinSeries(ethPosSeries);
-    const ethPowSeries = getEthPowSeries(ethPosSeries);
+    const ethPowSeries = getEthPowSeries(ethPosSeries, powMinPosIssuancePerDay);
     const lastPointPos = _last(ethPosSeries);
     const lastPointBtc = _last(bitcoinSupplySeriesScaled);
     const lastPointPow = _last(ethPowSeries);
@@ -406,7 +405,10 @@ const SupplySinceMergeWidget: FC<Props> = ({
           },
           {
             id: "bitcoin-issuance",
-            value: lastPointBtc === undefined ? undefined : lastPointBtc[1],
+            value:
+              !simulateProofOfWork || lastPointBtc === undefined
+                ? undefined
+                : lastPointBtc[1],
             width: 0,
             label: {
               style: {
@@ -448,7 +450,10 @@ const SupplySinceMergeWidget: FC<Props> = ({
           },
           {
             id: "eth-issuance-pow",
-            value: lastPointPow === undefined ? undefined : lastPointPow[1],
+            value:
+              !simulateProofOfWork || lastPointPow === undefined
+                ? undefined
+                : lastPointPow[1],
             width: 0,
             label: {
               style: {
@@ -502,7 +507,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
       series: [
         {
           id: SUPPLY_SINCE_MERGE_SERIES_ID,
-          type: "line",
+          type: "spline",
           name: "ETH",
           data:
             lastPointPos !== undefined && ethPosSeries !== undefined
@@ -548,7 +553,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
           visible: simulateProofOfWork,
           enableMouseTracking: simulateProofOfWork,
           id: BITCOIN_SUPPLY_ID,
-          type: "line",
+          type: "spline",
           shadow: {
             color: "#FF891D33",
             width: 15,
@@ -585,7 +590,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
           id: SUPPLY_SINCE_MERGE_POW_SERIES_ID,
           name: "ETH (PoW)",
           showInLegend: simulateProofOfWork,
-          type: "line",
+          type: "spline",
           data:
             ethPowSeries === undefined
               ? undefined
@@ -612,7 +617,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
         {
           color: "transparent",
           visible: simulateProofOfWork,
-          type: "line",
+          type: "spline",
           data: ethPowSeries,
           enableMouseTracking: false,
           showInLegend: false,
@@ -632,37 +637,44 @@ const SupplySinceMergeWidget: FC<Props> = ({
     };
 
     return _merge({}, baseOptions, dynamicOptions);
-  }, [isTimeFrameAvailable, simulateProofOfWork, supplyOverTimeTimeFrame]);
+  }, [
+    isTimeFrameAvailable,
+    powMinPosIssuancePerDay,
+    simulateProofOfWork,
+    supplyOverTimeTimeFrame,
+  ]);
 
   return (
     <WidgetErrorBoundary title="eth supply">
-      <WidgetBackground className="relative flex w-full flex-col overflow-hidden">
-        <div
-          // will-change-transform is critical for mobile performance of
-          // rendering the chart overlayed on this element.
-          className={`
-            pointer-events-none absolute
-            -left-[64px] -top-[64px]
-            h-full
-            w-full opacity-[0.20]
-            blur-[120px]
-            will-change-transform
-            md:-left-[128px]
-          `}
-        >
+      <WidgetBackground className="relative flex w-full flex-col">
+        <div className="pointer-events-none absolute left-0 right-0 top-0 bottom-0 overflow-hidden rounded-lg">
           <div
+            // will-change-transform is critical for mobile performance of
+            // rendering the chart overlayed on this element.
             className={`
-            pointer-events-none absolute h-3/5
-            w-4/5 rounded-[35%] bg-[#0037FA]
-            lg:bottom-[3.0rem]
-            lg:-right-[1.0rem]
-          `}
-          ></div>
+              absolute
+              -left-[64px] -top-[64px]
+              h-full
+              w-full opacity-[0.20]
+              blur-[120px]
+              will-change-transform
+              md:-left-[128px]
+            `}
+          >
+            <div
+              className={`
+                absolute h-3/5
+                w-4/5 rounded-[35%] bg-[#0037FA]
+                lg:bottom-[3.0rem]
+                lg:-right-[1.0rem]
+              `}
+            ></div>
+          </div>
         </div>
-        <div className="flex justify-between">
+        <div className="z-10 flex justify-between">
           <LabelText className="flex items-center">eth supply</LabelText>
-          <SinceMergeIndicator
-            onClick={onClickTimeFrame}
+          <TimeFrameIndicator
+            onClickTimeFrame={onClickTimeFrame}
             timeFrame={timeFrame}
           />
         </div>
@@ -691,6 +703,7 @@ const SupplySinceMergeWidget: FC<Props> = ({
           <SimulateProofOfWork
             checked={simulateProofOfWork}
             onToggle={onSimulateProofOfWork}
+            tooltipText="Simulate the ETH supply with proof-of-work issuance."
           />
         </div>
       </WidgetBackground>
@@ -698,4 +711,4 @@ const SupplySinceMergeWidget: FC<Props> = ({
   );
 };
 
-export default SupplySinceMergeWidget;
+export default EthSupplyWidget;

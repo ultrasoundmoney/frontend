@@ -7,7 +7,7 @@ import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useBaseFeePerGas } from "../../api/base-fee-per-gas";
 import { useEthPriceStats } from "../../api/eth-price-stats";
-import { ethSupplyFromParts, useEthSupplyParts } from "../../api/eth-supply";
+import { ethSupplyFromParts, useSupplyParts } from "../../api/supply-parts";
 import colors from "../../colors";
 import { WEI_PER_GWEI } from "../../eth-units";
 import { FeatureFlagsContext, useFeatureFlags } from "../../feature-flags";
@@ -15,8 +15,8 @@ import { formatZeroDecimals } from "../../format";
 import { PARIS_SUPPLY } from "../../hardforks/paris";
 import useAuthFromSection from "../../hooks/use-auth-from-section";
 import { useTwitterAuthStatus } from "../../hooks/use-twitter-auth";
-import type { TimeFrameNext } from "../../time-frames";
-import { getNextTimeFrameNext } from "../../time-frames";
+import type { TimeFrame } from "../../time-frames";
+import { getNextTimeFrame } from "../../time-frames";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import ContactSection from "../ContactSection";
 import PoapSection from "../FamPage/PoapSection";
@@ -26,14 +26,15 @@ import MainTitle from "../MainTitle";
 import TopBar from "../TopBar";
 import FamSection from "./FamSection";
 import JoinDiscordSection from "./JoinDiscordSection";
-import SupplySection from "./SupplySection";
+import SupplyDashboard from "./SupplyDashboard";
+import GasSection from "./GasSection";
 
 const AdminTools = dynamic(() => import("../AdminTools"), { ssr: false });
 // We get hydration errors in production.
 // It's hard to tell what component causes them due to minification.
 // We stop SSR on all components, and slowly turn them back on one-by-one to see which cause hydration issues.
 // On: MergeSection, JoinDiscordSection
-// Off: SupplySection, BurnSection, MonetaryPremiumSection, FamSection, TotalValueSecuredSection.
+// Off: SupplyDashboard, BurnSection, MonetaryPremiumSection, FamSection, TotalValueSecuredSection.
 const TotalValueSecuredSection = dynamic(
   () => import("./TotalValueSecuredSection"),
   { ssr: false },
@@ -46,9 +47,6 @@ const SupplyProjectionsSection = dynamic(
   () => import("./SupplyProjectionsSection"),
   { ssr: false },
 );
-const GasSection = dynamic(() => import("./GasSection"), {
-  ssr: false,
-});
 // Likely culprit.
 const BurnSection = dynamic(() => import("./BurnSection"), {
   ssr: false,
@@ -117,7 +115,7 @@ const GasPriceTitle = () => {
 };
 
 const useIsDeflationary = () => {
-  const ethSupplyParts = useEthSupplyParts();
+  const ethSupplyParts = useSupplyParts();
   const ethSupply = JSBI.toNumber(ethSupplyFromParts(ethSupplyParts)) / 1e18;
   const [isDeflationary, setIsDeflationary] = useState(false);
   const { simulateDeflationary } = useContext(FeatureFlagsContext);
@@ -139,14 +137,14 @@ const Dashboard: FC = () => {
   useScrollOnLoad();
   const { featureFlags, setFlag } = useFeatureFlags();
   const [twitterAuthStatus, setTwitterAuthStatus] = useTwitterAuthStatus();
-  const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
+  const [timeFrame, setTimeFrame] = useState<TimeFrame>("d1");
   const isDeflationary = useIsDeflationary();
   const videoEl = useRef<HTMLVideoElement>(null);
   const { simulateDeflationary } = featureFlags;
   const showVideo = isDeflationary || simulateDeflationary;
 
   const handleClickTimeFrame = useCallback(() => {
-    setTimeFrame((timeFrame) => getNextTimeFrameNext(timeFrame));
+    setTimeFrame(getNextTimeFrame);
   }, []);
 
   const handleSetTimeFrame = useCallback(setTimeFrame, [setTimeFrame]);
@@ -197,7 +195,7 @@ const Dashboard: FC = () => {
             </video>
           )}
           <MainTitle onClick={handleToggleBatLoop}>ultra sound money</MainTitle>
-          <SupplySection
+          <SupplyDashboard
             timeFrame={timeFrame}
             onSetTimeFrame={handleSetTimeFrame}
             onClickTimeFrame={handleClickTimeFrame}

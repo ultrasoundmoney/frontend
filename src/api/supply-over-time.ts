@@ -24,6 +24,7 @@ export type SupplyOverTime = {
   h1: SupplyAtTime[];
   m5: SupplyAtTime[];
   since_merge: SupplyAtTime[];
+  since_burn: SupplyAtTime[];
   slot: Slot;
   timestamp: DateTimeString;
 };

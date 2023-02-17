@@ -1,8 +1,8 @@
 import type { FC } from "react";
 import { useCallback, useState } from "react";
 import type { Unit } from "../../denomination";
-import type { TimeFrameNext } from "../../time-frames";
-import { getNextTimeFrameNext } from "../../time-frames";
+import type { TimeFrame, TimeFrameNoMerge } from "../../time-frames";
+import { getNextTimeFrameNoMerge } from "../../time-frames";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import BurnCategoryWidget from "../BurnCategoryWidget";
 import BurnLeaderboard from "../BurnLeaderboard";
@@ -15,15 +15,22 @@ import TimeFrameControl from "../TimeFrameControl";
 import { WidgetTitle } from "../WidgetSubcomponents";
 
 const BurnSection: FC = () => {
-  const [timeFrame, setTimeFrame] = useState<TimeFrameNext>("d1");
+  const [timeFrame, setTimeFrame] = useState<TimeFrameNoMerge>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
 
-  const handleSetTimeFrame = useCallback(setTimeFrame, [setTimeFrame]);
+  const handleSetTimeFrame = useCallback(
+    (timeFrame: TimeFrame) => {
+      timeFrame === "since_merge"
+        ? setTimeFrame("since_burn")
+        : setTimeFrame(timeFrame);
+    },
+    [setTimeFrame],
+  );
 
   const onSetUnit = useCallback(setUnit, [setUnit]);
 
   const handleClickTimeFrame = useCallback(() => {
-    setTimeFrame((timeFrame) => getNextTimeFrameNext(timeFrame));
+    setTimeFrame((timeFrame) => getNextTimeFrameNoMerge(timeFrame));
   }, []);
 
   return (
@@ -31,7 +38,7 @@ const BurnSection: FC = () => {
       <SectionDivider
         link="burn"
         subtitle="it's getting hot in here"
-        title="the burn"
+        title="burn"
       />
       <BasicErrorBoundary>
         <div className="flex flex-col gap-4 xs:px-4 md:px-16 ">
@@ -61,7 +68,7 @@ const BurnSection: FC = () => {
               timeFrame={timeFrame}
               unit={unit}
             />
-            <div className="flex flex-col gap-y-4 lg:col-start-2 lg:row-start-1 lg:row-end-4 lg:h-[520px] xl:h-[532px]">
+            <div className="flex flex-col gap-y-4 lg:col-start-2 lg:row-start-1 lg:row-end-4 lg:max-h-[509px] xl:max-h-[521px] 2xl:h-[532px]">
               <BurnLeaderboard
                 onClickTimeFrame={handleClickTimeFrame}
                 timeFrame={timeFrame}

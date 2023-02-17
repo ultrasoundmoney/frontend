@@ -43,6 +43,7 @@ export const formatOneDecimal = (num: number): string => oneDecimal.format(num);
 const usdZeroDecimals = new Intl.NumberFormat("en-US", {
   currency: "usd",
   style: "currency",
+  minimumFractionDigits: 0,
   maximumFractionDigits: 0,
 });
 

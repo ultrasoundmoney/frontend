@@ -1,7 +1,11 @@
-import type { FC } from "react";
+import type { FC, ReactNode } from "react";
 import BodyTextV2 from "./TextsNext/BodyTextV2";
 
-const BlueButton: FC = () => (
+type Props = {
+  children: ReactNode;
+};
+
+const BlueButton: FC<Props> = ({ children }) => (
   <button
     className={`
       group
@@ -17,7 +21,7 @@ const BlueButton: FC = () => (
       md:py-1.5
     `}
   >
-    <BodyTextV2 className="z-10">copy</BodyTextV2>
+    <BodyTextV2 className="z-10">{children}</BodyTextV2>
     <div
       className={`
         absolute left-[1px] right-[1px] top-[1px] bottom-[1px]
