@@ -24,7 +24,8 @@ import {
   formatTwoDigitsSigned,
   formatZeroDecimals,
 } from "../../format";
-import { PARIS_BLOCK_NUMBER, PARIS_TIMESTAMP } from "../../hardforks/paris";
+import { LONDON_TIMESTAMP } from "../../hardforks/london";
+import { MERGE_BLOCK_NUMBER, MERGE_TIMESTAMP } from "../../hardforks/paris";
 import { powIssuancePerDay } from "../../static-ether-data";
 import type { TimeFrame } from "../../time-frames";
 import type { SupplyPoint } from "../Dashboard/SupplyDashboard";
@@ -274,7 +275,7 @@ const getBitcoinSeries = (
 
   const parisToTimeFrameSeconds = differenceInSeconds(
     ethPosFirstPoint[0],
-    PARIS_TIMESTAMP,
+    MERGE_TIMESTAMP,
   );
   const firstPointBitcoinSupply =
     BITCOIN_SUPPLY_AT_MERGE +
@@ -301,24 +302,31 @@ const getBitcoinSeries = (
 const getEthPowSeries = (
   ethPosSeries: SupplyPoint[] | undefined,
   powMinPosIssuancePerDay: EthNumber,
+  timeFrame: TimeFrame,
 ): SupplyPoint[] | undefined =>
   ethPosSeries === undefined
     ? undefined
-    : ethPosSeries.map(([timestamp, supply]) => {
-        const firstPoint = _first(ethPosSeries);
-        // Map can only be called for points that are not undefined.
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const firstPointTimestamp = new Date(firstPoint![0]);
-        const slotsSinceStart =
-          differenceInSeconds(new Date(timestamp), firstPointTimestamp) / 12;
+    : ethPosSeries
+        .filter(([timestamp]) => new Date(timestamp) >= MERGE_TIMESTAMP)
+        .map(([timestamp, supply]) => {
+          const firstPoint = _first(ethPosSeries);
+          // Map can only be called for points that are not undefined.
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          const firstPointTimestamp = new Date(firstPoint![0]);
+          const slotsSinceStart =
+            differenceInSeconds(new Date(timestamp), firstPointTimestamp) / 12;
+          const slotsSinceMerge =
+            differenceInSeconds(new Date(timestamp), MERGE_TIMESTAMP) / 12;
+          const slotCount =
+            timeFrame === "since_burn" ? slotsSinceMerge : slotsSinceStart;
 
-        const simulatedPowIssuanceSinceStart =
-          (slotsSinceStart / SLOTS_PER_DAY) * powMinPosIssuancePerDay;
+          const simulatedPowIssuanceSinceStart =
+            (slotCount / SLOTS_PER_DAY) * powMinPosIssuancePerDay;
 
-        const nextSupply = supply + simulatedPowIssuanceSinceStart;
-        const nextPoint: SupplyPoint = [timestamp, nextSupply];
-        return nextPoint;
-      });
+          const nextSupply = supply + simulatedPowIssuanceSinceStart;
+          const nextPoint: SupplyPoint = [timestamp, nextSupply];
+          return nextPoint;
+        });
 
 const getEthPosSeries = (
   supplyOverTimeTimeFrame: SupplyAtTime[] | undefined,
@@ -369,7 +377,11 @@ const EthSupplyWidget: FC<Props> = ({
     const ethPosSeries = getEthPosSeries(supplyOverTimeTimeFrame);
     const [bitcoinSupplySeries, bitcoinSupplySeriesScaled] =
       getBitcoinSeries(ethPosSeries);
-    const ethPowSeries = getEthPowSeries(ethPosSeries, powMinPosIssuancePerDay);
+    const ethPowSeries = getEthPowSeries(
+      ethPosSeries,
+      powMinPosIssuancePerDay,
+      timeFrame,
+    );
     const lastPointPos = _last(ethPosSeries);
     const lastPointBtc = _last(bitcoinSupplySeriesScaled);
     const lastPointPow = _last(ethPowSeries);
@@ -419,7 +431,7 @@ const EthSupplyWidget: FC<Props> = ({
               },
               align: "right",
               x: 72,
-              y: 2,
+              y: timeFrame === "since_burn" ? 12 : 2,
               useHTML: true,
               formatter:
                 bitcoinSupplySeries === undefined
@@ -478,7 +490,7 @@ const EthSupplyWidget: FC<Props> = ({
         plotLines: [
           {
             id: "merge-plotline",
-            value: PARIS_TIMESTAMP.getTime(),
+            value: MERGE_TIMESTAMP.getTime(),
             color: colors.slateus400,
             width: 1,
             label: {
@@ -489,14 +501,40 @@ const EthSupplyWidget: FC<Props> = ({
               useHTML: true,
               formatter: () => `
                 <div class="flex">
-                  <a class="hover:underline" href="https://etherscan.io/block/15537393" target="_blank">
+                  <a class="hover:underline" href="https://etherscan.io/block/15537394" target="_blank">
                     <div class="font-roboto font-light text-slateus-300">
-                    #${formatZeroDecimals(PARIS_BLOCK_NUMBER)}
+                    #${formatZeroDecimals(MERGE_BLOCK_NUMBER)}
                     </div>
                   </a>
                   <img
                     class="w-4 h-4 ml-2"
                     src="/panda-own.svg"
+                  />
+                </div>
+              `,
+            },
+          },
+          {
+            id: "burn-plotline",
+            value: LONDON_TIMESTAMP.getTime(),
+            color: colors.slateus400,
+            width: 1,
+            label: {
+              x: 10,
+              y: 54,
+              style: { color: colors.slateus400 },
+              align: "center",
+              useHTML: true,
+              formatter: () => `
+                <div class="flex">
+                  <a class="hover:underline" href="https://etherscan.io/block/12965000" target="_blank">
+                    <div class="font-roboto font-light text-slateus-300">
+                    #${formatZeroDecimals(12965000)}
+                    </div>
+                  </a>
+                  <img
+                    class="w-4 h-4 ml-2"
+                    src="/fire-own.svg"
                   />
                 </div>
               `,
@@ -642,6 +680,7 @@ const EthSupplyWidget: FC<Props> = ({
     powMinPosIssuancePerDay,
     simulateProofOfWork,
     supplyOverTimeTimeFrame,
+    timeFrame,
   ]);
 
   return (

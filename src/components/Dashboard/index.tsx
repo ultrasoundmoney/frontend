@@ -12,7 +12,7 @@ import colors from "../../colors";
 import { WEI_PER_GWEI } from "../../eth-units";
 import { FeatureFlagsContext, useFeatureFlags } from "../../feature-flags";
 import { formatZeroDecimals } from "../../format";
-import { PARIS_SUPPLY } from "../../hardforks/paris";
+import { MERGE_SUPPLY } from "../../hardforks/paris";
 import useAuthFromSection from "../../hooks/use-auth-from-section";
 import { useTwitterAuthStatus } from "../../hooks/use-twitter-auth";
 import type { TimeFrame } from "../../time-frames";
@@ -121,7 +121,7 @@ const useIsDeflationary = () => {
   const { simulateDeflationary } = useContext(FeatureFlagsContext);
 
   useEffect(() => {
-    if (ethSupply > PARIS_SUPPLY) {
+    if (ethSupply > MERGE_SUPPLY) {
       setIsDeflationary(false);
       return;
     }
