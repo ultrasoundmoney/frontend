@@ -8,11 +8,10 @@ import { usePosIssuancePerDay } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
 import CurrentSupplyWidget from "../CurrentSupplyWidget";
 import type { TimeFrame } from "../../time-frames";
+import GaugeWidget from "../GaugeWidget";
 export type SupplyPoint = [JsTimestamp, EthNumber];
 
 const EthSupplyWidget = dynamic(() => import("../EthSupplyWidget"));
-// On Safari SSR rendering the animated SVG gauge paths causes a hydration error.
-const GaugeWidget = dynamic(() => import("../GaugeWidget"), { ssr: false });
 
 type Props = {
   onClickTimeFrame: () => void;

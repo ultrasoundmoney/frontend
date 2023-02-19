@@ -1,3 +1,5 @@
+// Rendering the D3 arc paths on the server vs the safari client results in a different path. We ignore the hydration warning.
+
 import type { FC } from "react";
 import { useCallback, useState } from "react";
 import type { Unit } from "../denomination";

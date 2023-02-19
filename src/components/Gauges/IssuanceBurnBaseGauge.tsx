@@ -25,6 +25,16 @@ type BaseGuageProps = {
   valueUnit: string;
 };
 
+const formatValue = (unit: Unit, gaugeUnit: string, value: number): string => {
+  const num =
+    unit === "eth"
+      ? Format.formatZeroDecimals(value)
+      : // See the comment at valueScaled for why we divide by 1000 here.
+        Format.formatOneDecimal(value / 1000);
+
+  return `${num}${gaugeUnit}`;
+};
+
 const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
   emoji,
   gaugeUnit,
@@ -49,10 +59,10 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
       ? value / 1000
       : value / 1_000_000;
 
-  const { valueA } = useSpring({
-    from: { valueA: 0 },
+  const { valueSpring } = useSpring({
+    from: { valueSpring: 0 },
     to: {
-      valueA: valueScaled,
+      valueSpring: valueScaled,
     },
     delay: 200,
     config: config.gentle,
@@ -97,15 +107,7 @@ const IssuanceBurnBaseGauge: FC<BaseGuageProps> = ({
               }
               `}
             >
-              {valueA.to(
-                (n) =>
-                  `${
-                    unit === "eth"
-                      ? Format.formatZeroDecimals(n)
-                      : // See the comment at valueScaled for why we divide by 1000 here.
-                        Format.formatOneDecimal(n / 1000)
-                  }${gaugeUnit}`,
-              )}
+              {valueSpring.to(formatValue.bind(null, unit, gaugeUnit))}
             </animated.p>
           )}
         </div>
