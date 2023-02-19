@@ -13,7 +13,7 @@ import batSvg from "../assets/bat-own.svg";
 import speakerSvg from "../assets/speaker-own.svg";
 import barrierSvg from "../assets/barrier-own.svg";
 import type { TimeFrame } from "../time-frames";
-import { animated, useSpring } from "react-spring";
+import { animated, useSpring } from "@react-spring/web";
 import CountUp from "react-countup";
 import { useBaseFeePerGasBarrier } from "../api/barrier";
 

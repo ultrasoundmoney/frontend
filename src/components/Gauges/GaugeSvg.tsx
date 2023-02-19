@@ -1,6 +1,6 @@
 import * as d3 from "d3-shape";
 import type { FC } from "react";
-import { animated, config, useSpring } from "react-spring";
+import { animated, config, useSpring } from "@react-spring/web";
 import colors from "../../colors";
 
 export type GaugeGradientFill = "orange" | "blue";

@@ -2,7 +2,7 @@ import clamp from "lodash/clamp";
 import type { FC } from "react";
 import { useState } from "react";
 import CountUp from "react-countup";
-import { animated, useSpring } from "react-spring";
+import { animated, useSpring } from "@react-spring/web";
 import { useMarketCaps } from "../api/market-caps";
 import colors from "../colors";
 import { BaseText } from "./Texts";

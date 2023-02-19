@@ -2,7 +2,7 @@ import clamp from "lodash/clamp";
 import type { FC } from "react";
 import { useCallback, useContext, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import { animated, config, useSpring } from "react-spring";
+import { animated, config, useSpring } from "@react-spring/web";
 import type { GaugeRates } from "../../api/gauge-rates";
 import { useGaugeRates } from "../../api/gauge-rates";
 import { FeatureFlagsContext } from "../../feature-flags";
