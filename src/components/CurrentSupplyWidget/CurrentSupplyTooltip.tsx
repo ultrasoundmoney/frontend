@@ -1,5 +1,8 @@
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
 import type { FC, ReactNode } from "react";
 import type { SupplyParts } from "../../api/supply-parts";
+import roundNerdLarge from "../../assets/round-nerd-large.svg";
 import { BaseText, TooltipTitle } from "../Texts";
 import LabelText from "../TextsNext/LabelText";
 import PreciseEth from "./PreciseEth";
@@ -38,10 +41,10 @@ const CurrentSupplyTooltip: FC<{
       onClick={onClickClose}
       src="/close.svg"
     />
-    <img
+    <Image
       alt=""
       className="mx-auto h-20 w-20 select-none rounded-full"
-      src={"/round-nerd-large.svg"}
+      src={roundNerdLarge as StaticImageData}
     />
     <TooltipTitle>ETH supply breakdown</TooltipTitle>
     <LabelText>formula</LabelText>

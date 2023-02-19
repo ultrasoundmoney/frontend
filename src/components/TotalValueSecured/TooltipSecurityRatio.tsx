@@ -1,5 +1,7 @@
 import JSBI from "jsbi";
 import flow from "lodash/flow";
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
 import type { FC } from "react";
 import { useContext } from "react";
 import Skeleton from "react-loading-skeleton";
@@ -8,6 +10,7 @@ import { useEthPriceStats } from "../../api/eth-price-stats";
 import type { Scarcity } from "../../api/scarcity";
 import { useScarcity } from "../../api/scarcity";
 import { useTotalValueSecured } from "../../api/total-value-secured";
+import roundNerdLarge from "../../assets/round-nerd-large.svg";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
 import { AmountUnitSpace } from "../Spacing";
@@ -59,10 +62,10 @@ const TooltipSecurityRatio: FC<{
         onClick={onClickClose}
         src="/close.svg"
       />
-      <img
+      <Image
         alt=""
         className="mx-auto h-20 w-20 select-none rounded-full"
-        src={"/round-nerd-large.svg"}
+        src={roundNerdLarge as StaticImageData}
       />
       <BodyText className="font-semibold">security ratio</BodyText>
       <div>
