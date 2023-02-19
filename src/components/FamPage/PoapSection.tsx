@@ -23,6 +23,7 @@ import logoTwitterWhite from "../../assets/logo-twitter-white.svg";
 import questionMarkSvg from "../../assets/question-mark-v2.svg";
 import sobSvg from "../../assets/sob-own.svg";
 import { getDomain } from "../../config";
+import * as Format from "../../format";
 import { formatDistance } from "../../format";
 import withBasicErrorBoundary from "../../higher-order-components/WithBasicErrorBoundary";
 import type { AuthFromSection } from "../../hooks/use-auth-from-section";
@@ -947,7 +948,11 @@ const PoapSection: FC<{
           <div className="flex flex-col gap-y-4">
             <LabelText>claims</LabelText>
             <QuantifyText className="text-3xl">
-              <SkeletonText width="4rem">{poapsClaimed?.count}</SkeletonText>
+              <SkeletonText width="4rem">
+                {poapsClaimed === undefined
+                  ? undefined
+                  : Format.formatZeroDecimals(poapsClaimed.count)}
+              </SkeletonText>
               <span className="text-slateus-200">/1,559</span>
             </QuantifyText>
           </div>
