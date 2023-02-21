@@ -1,4 +1,3 @@
-import Link from "next/link";
 import type { FC, ReactNode } from "react";
 import { WhiteEmoji } from "../Emoji";
 
@@ -21,9 +20,13 @@ export const SectionTitle: FC<Props> = ({
 }) => (
   <>
     <div className={`flex items-center justify-center gap-x-4 ${className}`}>
-      <Link
-        className="flex items-center gap-x-4 text-white hover:brightness-90 active:brightness-75"
-        href={`#${link}`}
+      <a
+        className={`
+          flex items-center gap-x-4 text-white
+          ${
+            link === undefined ? "" : "hover:brightness-90 active:brightness-75"
+          }`}
+        href={link === undefined ? undefined : `#${link}`}
       >
         <h2
           className={`
@@ -59,7 +62,7 @@ export const SectionTitle: FC<Props> = ({
             />
           </div>
         )}
-      </Link>
+      </a>
     </div>
     {subtitle !== undefined && (
       <p
