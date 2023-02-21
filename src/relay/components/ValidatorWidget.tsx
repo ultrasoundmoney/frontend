@@ -1,14 +1,15 @@
 import type { FC } from "react";
+import { useEffect, useState } from "react";
 
-import * as Format from "../../format";
-import scrollbarStyles from "../../styles/Scrollbar.module.scss";
+import { BaseText } from "../../components/Texts";
 import LabelText from "../../components/TextsNext/LabelText";
 import SkeletonText from "../../components/TextsNext/SkeletonText";
-import { BaseText } from "../../components/Texts";
 import {
   WidgetBackground,
   WidgetTitle,
 } from "../../components/WidgetSubcomponents";
+import * as Format from "../../format";
+import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import { getBeaconchainUrl } from "../config";
 
 const beaconChainUrl = getBeaconchainUrl();
@@ -19,7 +20,16 @@ type Validator = {
 };
 
 const ValidatorRow = ({ insertedAt, index }: Validator) => {
-  const registeredAgo = `${Format.formatDistance(new Date(), insertedAt)} ago`;
+  const [registeredAgo, setRegisteredAgo] = useState<string | undefined>(
+    undefined,
+  );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRegisteredAgo(`${Format.formatDistance(new Date(), insertedAt)} ago`);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [insertedAt]);
 
   return (
     <a
