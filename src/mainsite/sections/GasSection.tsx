@@ -7,9 +7,8 @@ import type { BaseFeeAtTime } from "../api/base-fee-over-time";
 import { useBaseFeeOverTime } from "../api/base-fee-over-time";
 import { WEI_PER_GWEI } from "../../eth-units";
 import type { TimeFrame } from "../time-frames";
-import BasicErrorBoundary from "../../components/BasicErrorBoundary";
-import SectionDivider from "../../components/SectionDivider";
 import type { BaseFeePoint } from "../components/BaseFeesWidget";
+import Section from "../../components/Section";
 
 const BaseFeesWidget = dynamic(() => import("../components/BaseFeesWidget"), {
   ssr: false,
@@ -57,32 +56,27 @@ const GasSection: FC<{
       : Object.fromEntries(new Map(baseFeesSeries).entries());
 
   return (
-    <BasicErrorBoundary>
-      <div id="gas" className="mt-16">
-        <SectionDivider link="gas" subtitle="gas is the new oil" title="gas" />
-        <div className="flex flex-col gap-4 xs:px-4 md:px-16">
-          <div className="flex flex-col gap-y-4 gap-x-4 lg:flex-row">
-            <div className="w-full lg:w-1/2">
-              <BaseFeesWidget
-                barrier={baseFeesOverTime?.barrier}
-                baseFeesSeries={baseFeesSeries}
-                baseFeesMap={baseFeesMap ?? {}}
-                max={max?.[1]}
-                timeFrame={timeFrame}
-                onClickTimeFrame={onClickTimeFrame}
-              />
-            </div>
-            <div className="flex h-min w-full flex-col gap-y-4 lg:w-1/2">
-              <GasMarketWidget
-                timeFrame={timeFrame}
-                onClickTimeFrame={onClickTimeFrame}
-              />
-              <GasStreakWidget />
-            </div>
-          </div>
+    <Section link="gas" subtitle="gas is the new oil" title="gas">
+      <div className="flex w-full flex-col gap-y-4 gap-x-4 lg:flex-row">
+        <div className="w-full lg:w-1/2">
+          <BaseFeesWidget
+            barrier={baseFeesOverTime?.barrier}
+            baseFeesSeries={baseFeesSeries}
+            baseFeesMap={baseFeesMap ?? {}}
+            max={max?.[1]}
+            timeFrame={timeFrame}
+            onClickTimeFrame={onClickTimeFrame}
+          />
+        </div>
+        <div className="flex w-full flex-col gap-y-4 lg:w-1/2">
+          <GasMarketWidget
+            timeFrame={timeFrame}
+            onClickTimeFrame={onClickTimeFrame}
+          />
+          <GasStreakWidget />
         </div>
       </div>
-    </BasicErrorBoundary>
+    </Section>
   );
 };
 

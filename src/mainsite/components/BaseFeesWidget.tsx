@@ -265,7 +265,9 @@ const BaseFeesWidget: FC<Props> = ({
 
   return (
     <WidgetErrorBoundary title="base fees">
-      <WidgetBackground className="relative flex h-[381px] w-full flex-col">
+      {/* We use the h-0 min-h-full trick to adopt the height of our sibling
+      element. */}
+      <WidgetBackground className="relative flex h-full min-h-full w-full flex-col lg:h-0">
         <div className="pointer-events-none absolute left-0 right-0 top-0 bottom-0 overflow-hidden rounded-lg">
           <div
             // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.

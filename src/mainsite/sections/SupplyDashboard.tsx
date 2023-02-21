@@ -33,10 +33,7 @@ const SupplyDashboard: FC<Props> = ({
 
   return (
     <BasicErrorBoundary>
-      <div
-        className="mt-16 mb-32 flex flex-col gap-y-4 xs:px-4 md:px-16"
-        id="merge"
-      >
+      <div className="mt-16 flex flex-col gap-y-4 xs:px-4 md:px-16" id="merge">
         <div className="mt-16 flex flex-col gap-x-4 gap-y-4 lg:flex-row">
           <div className="flex lg:w-1/2">
             <EthSupplyWidget

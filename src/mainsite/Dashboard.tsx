@@ -207,11 +207,8 @@ const Dashboard: FC = () => {
             onClickTimeFrame={handleClickTimeFrame}
           />
           <SupplyProjectionsSection />
-          <div className="h-16"></div>
           <BurnSection />
-          <div className="h-16"></div>
           <TotalValueSecuredSection />
-          <div className="h-16"></div>
           <MonetaryPremiumSection />
           <FamSection />
           <PoapSection
