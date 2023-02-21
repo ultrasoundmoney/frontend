@@ -21,7 +21,7 @@ import BasicErrorBoundary from "../BasicErrorBoundary";
 import ContactSection from "../ContactSection";
 import PoapSection from "../FamPage/PoapSection";
 import HeaderGlow from "../HeaderGlow";
-import FaqBlock from "../Landing/faq";
+import FaqBlock from "../Faq";
 import MainTitle from "../MainTitle";
 import TopBar from "../TopBar";
 import FamSection from "./FamSection";
