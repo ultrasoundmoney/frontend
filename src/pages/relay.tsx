@@ -1,21 +1,17 @@
-import type { FC } from "react";
+import { minutesToSeconds } from "date-fns";
 import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Script from "next/script";
-import { minutesToSeconds } from "date-fns";
-
-import * as Api from "../relay/api";
-import type { ApiPayload, ApiPayloadStats, ApiValidator } from "../relay/api";
-import {
-  Payload,
-  Builder,
-  ValidatorStats,
-  parsePayload,
-  parseValidator,
-  parsePayloadStats,
-} from "../relay/types";
 import BasicErrorBoundary from "../components/BasicErrorBoundary";
+import type { ApiPayload, ApiPayloadStats, ApiValidator } from "../relay/api";
+import * as Api from "../relay/api";
 import RelayDashboard from "../relay/components/RelayDashboard";
+import type { Builder, ValidatorStats } from "../relay/types";
+import {
+  parsePayload,
+  parsePayloadStats,
+  parseValidator,
+} from "../relay/types";
 
 type StaticProps = {
   payloadStats: ApiPayloadStats;
