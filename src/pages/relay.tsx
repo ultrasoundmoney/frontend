@@ -6,7 +6,7 @@ import BasicErrorBoundary from "../components/BasicErrorBoundary";
 import { pipe, T, TAlt } from "../fp";
 import type { ApiPayload, ApiPayloadStats, ApiValidator } from "../relay/api";
 import * as Api from "../relay/api";
-import RelayDashboard from "../relay/components/RelayDashboard";
+import RelayDashboard from "../relay/RelayDashboard";
 import type { Builder, ValidatorStats } from "../relay/types";
 import {
   parsePayload,
