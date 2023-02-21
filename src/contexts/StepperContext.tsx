@@ -28,12 +28,12 @@ const SteppersProvider: FC<{ children: ReactNode }> = ({ children }) => {
   ) => {
     if (newElementRef && newElementRef.current) {
       const rect = newElementRef.current?.getBoundingClientRect();
-      setStepperElements((prevState: { [key: string]: StepperPoint }): any => ({
+      setStepperElements((prevState: { [key: string]: StepperPoint }) => ({
         ...prevState,
         [elementName]: {
           offsetY: Math.round(window.scrollY + rect.top),
           name: elementName,
-          height: newElementRef?.current?.clientHeight,
+          height: newElementRef?.current?.clientHeight ?? 0,
         },
       }));
     }

@@ -194,12 +194,13 @@ const TvsLeaderboard: FC<TvsLeaderboardProps> = ({
               {adminToken !== undefined &&
                 row !== undefined &&
                 freshnessMap !== undefined &&
-                showMetadataTools && (
+                showMetadataTools &&
+                row.contractAddresses[0] !== undefined && (
                   <AdminControls
-                    address={row.contractAddresses[0]!}
+                    address={row.contractAddresses[0]}
                     freshness={
                       row !== undefined
-                        ? freshnessMap[row.contractAddresses[0]!]
+                        ? freshnessMap[row.contractAddresses[0]]
                         : undefined
                     }
                   />
