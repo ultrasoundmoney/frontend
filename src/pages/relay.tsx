@@ -3,6 +3,7 @@ import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Script from "next/script";
 import BasicErrorBoundary from "../components/BasicErrorBoundary";
+import { pipe, T, TAlt } from "../fp";
 import type { ApiPayload, ApiPayloadStats, ApiValidator } from "../relay/api";
 import * as Api from "../relay/api";
 import RelayDashboard from "../relay/components/RelayDashboard";
@@ -22,35 +23,20 @@ type StaticProps = {
   topBuilders: Array<Builder>;
 };
 
-export const getStaticProps: GetStaticProps<StaticProps> = async () => {
-  const [
-    payloads,
-    topPayloads,
-    payloadStats,
-    validators,
-    validatorStats,
-    topBuilders,
-  ] = await Promise.all([
-    Api.fetchPayloads(),
-    Api.fetchTopPayloads(),
-    Api.fetchPayloadStats(),
-    Api.fetchValidators(),
-    Api.fetchValidatorStats(),
-    Api.fetchTopBuilders(),
-  ]);
-
-  return {
-    props: {
-      payloads,
-      topPayloads,
-      payloadStats,
-      validators,
-      validatorStats,
-      topBuilders,
-    },
+export const getStaticProps: GetStaticProps<StaticProps> = pipe(
+  TAlt.sequenceStruct({
+    payloads: Api.fetchPayloads,
+    topPayloads: Api.fetchTopPayloads,
+    payloadStats: Api.fetchPayloadStats,
+    validators: Api.fetchValidators,
+    validatorStats: Api.fetchValidatorStats,
+    topBuilders: Api.fetchTopBuilders,
+  }),
+  T.map((props) => ({
+    props,
     revalidate: minutesToSeconds(2),
-  };
-};
+  })),
+);
 
 const RelayIndexPage: NextPage<StaticProps> = ({
   payloadStats,
