@@ -38,7 +38,7 @@ const SpanningAge: FC<SpanningAgeProps> = ({ isLoading, count, startedOn }) => {
   const formattedUnit = formattedDistance?.split(" ")[1];
 
   return (
-    <div className="flex items-baseline gap-x-1 truncate">
+    <div className="flex items-baseline gap-x-1">
       <QuantifyText size="text-4xl">
         <SkeletonText width="2rem">
           {isLoading ? undefined : formattedNumber}
@@ -64,13 +64,11 @@ const GasStreakWidget: FC = () => {
         <div className="flex items-center gap-x-2">
           <WidgetTitle>gas streak</WidgetTitle>
         </div>
-        <span className="font-inter text-xs font-extralight text-slateus-200 md:text-sm">
-          <SpanningAge
-            isLoading={deflationaryStreak === undefined}
-            startedOn={deflationaryStreak?.startedOn ?? undefined}
-            count={deflationaryStreak?.count ?? undefined}
-          />
-        </span>
+        <SpanningAge
+          isLoading={deflationaryStreak === undefined}
+          startedOn={deflationaryStreak?.startedOn ?? undefined}
+          count={deflationaryStreak?.count ?? undefined}
+        />
         <div className="flex items-center gap-x-1">
           <LabelUnitText className="mt-1">
             <SkeletonText width="3rem">
