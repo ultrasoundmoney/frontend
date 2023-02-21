@@ -712,7 +712,7 @@ const EthSupplyWidget: FC<Props> = ({
             ></div>
           </div>
         </div>
-        <div className="z-10 flex justify-between">
+        <div className="flex justify-between">
           <LabelText className="flex items-center">eth supply</LabelText>
           <TimeFrameIndicator
             onClickTimeFrame={onClickTimeFrame}
