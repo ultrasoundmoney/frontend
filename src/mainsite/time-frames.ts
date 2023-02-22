@@ -1,7 +1,9 @@
 export const limitedTimeFrames = ["m5", "h1", "d1", "d7", "d30"] as const;
 export type LimitedTimeFrame = typeof limitedTimeFrames[number];
 
+/** @deprecated use timeFrames instead, with an API map to convert to/from legacy time frames. */
 export const timeFramesOld = ["m5", "h1", "d1", "d7", "d30", "all"] as const;
+/** @deprecated use TimeFrame instead, with an API map to convert to/from legacy time frames. */
 export type TimeFrameOld = typeof timeFramesOld[number];
 
 export const timeFramesNoMerge = [
