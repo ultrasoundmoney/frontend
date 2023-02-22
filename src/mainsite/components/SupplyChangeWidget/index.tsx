@@ -1,20 +1,20 @@
+import JSBI from "jsbi";
 import type { FC } from "react";
 import CountUp from "react-countup";
-import { formatTwoDigitsSigned } from "../../../format";
-import { powIssuancePerDay } from "../../static-ether-data";
-import SimulateProofOfWork from "../SimulateProofOfWork";
 import { BaseText } from "../../../components/Texts";
 import LabelText from "../../../components/TextsNext/LabelText";
 import SkeletonText from "../../../components/TextsNext/SkeletonText";
-import UpdatedAgo from "../UpdatedAgo";
-import WidgetErrorBoundary from "../WidgetErrorBoundary";
+import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../../components/WidgetSubcomponents";
-import { useSupplyChanges } from "../../api/supply-changes";
-import JSBI from "jsbi";
 import { WEI_PER_ETH } from "../../../eth-units";
-import type { TimeFrame } from "../../time-frames";
-import TimeFrameIndicator from "../TimeFrameIndicator";
+import { formatTwoDigitsSigned } from "../../../format";
 import { SLOTS_PER_DAY } from "../../../time";
+import { useSupplyChanges } from "../../api/supply-changes";
+import { powIssuancePerDay } from "../../static-ether-data";
+import type { TimeFrame } from "../../time-frames";
+import SimulateProofOfWork from "../SimulateProofOfWork";
+import TimeFrameIndicator from "../TimeFrameIndicator";
+import UpdatedAgo from "../UpdatedAgo";
 
 type Props = {
   onClickTimeFrame: () => void;

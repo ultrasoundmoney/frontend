@@ -3,19 +3,19 @@ import type { StaticImageData } from "next/legacy/image";
 import Image from "next/legacy/image";
 import type { FC } from "react";
 import CountUp from "react-countup";
+import barrierSvg from "../../assets/barrier-own.svg";
+import batSvg from "../../assets/bat-own.svg";
+import speakerSvg from "../../assets/speaker-own.svg";
 import LabelText from "../../components/TextsNext/LabelText";
 import QuantifyText from "../../components/TextsNext/QuantifyText";
+import WidgetErrorBoundary from "../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../components/WidgetSubcomponents";
 import { WEI_PER_GWEI } from "../../eth-units";
 import { formatOneDecimal, formatTwoDigit } from "../../format";
 import { useBaseFeePerGasBarrier } from "../api/barrier";
 import { useBaseFeePerGasStatsTimeFrame } from "../api/base-fee-per-gas-stats";
-import barrierSvg from "../../assets/barrier-own.svg";
-import batSvg from "../../assets/bat-own.svg";
-import speakerSvg from "../../assets/speaker-own.svg";
 import type { TimeFrame } from "../time-frames";
 import TimeFrameIndicator from "./TimeFrameIndicator";
-import WidgetErrorBoundary from "./WidgetErrorBoundary";
 
 const getPercentage = (
   highest: number,

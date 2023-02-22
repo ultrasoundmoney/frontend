@@ -14,6 +14,7 @@ import type { FC } from "react";
 import { useMemo } from "react";
 import colors from "../../../colors";
 import LabelText from "../../../components/TextsNext/LabelText";
+import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../../components/WidgetSubcomponents";
 import type { EthNumber } from "../../../eth-units";
 import {
@@ -34,7 +35,6 @@ import type { TimeFrame } from "../../time-frames";
 import SimulateProofOfWork from "../SimulateProofOfWork";
 import TimeFrameIndicator from "../TimeFrameIndicator";
 import UpdatedAgo from "../UpdatedAgo";
-import WidgetErrorBoundary from "../WidgetErrorBoundary";
 
 // Somehow resolves an error thrown by the annotation lib
 if (typeof window !== "undefined") {

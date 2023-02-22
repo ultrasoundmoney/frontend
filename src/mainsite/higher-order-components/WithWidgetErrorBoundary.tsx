@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import WidgetErrorBoundary from "../components/WidgetErrorBoundary";
+import WidgetErrorBoundary from "../../components/WidgetErrorBoundary";
 
 const withWidgetErrorBoundary = function <A extends Record<string, unknown>>(
   title: string,

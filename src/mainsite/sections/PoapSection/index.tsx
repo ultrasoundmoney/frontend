@@ -15,6 +15,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { FixedSizeList } from "react-window";
 import useSWR from "swr";
+import closeSvg from "../../../assets/close.svg";
+import flexSvg from "../../../assets/flex-own.svg";
+import logoTwitterWhite from "../../../assets/logo-twitter-white.svg";
+import questionMarkSvg from "../../../assets/question-mark-v2.svg";
+import sobSvg from "../../../assets/sob-own.svg";
 import { BaseText, TooltipTitle } from "../../../components/Texts";
 import BodyTextV2 from "../../../components/TextsNext/BodyTextV2";
 import LabelText from "../../../components/TextsNext/LabelText";
@@ -22,17 +27,15 @@ import LinkText from "../../../components/TextsNext/LinkText";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
 import { SectionTitle } from "../../../components/TextsNext/SectionTitle";
 import SkeletonText from "../../../components/TextsNext/SkeletonText";
+import Twemoji from "../../../components/Twemoji";
+import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../../components/WidgetSubcomponents";
 import { getDomain } from "../../../config";
 import * as Format from "../../../format";
+import scrollbarStyles from "../../../styles/Scrollbar.module.scss";
 import type { DateTimeString } from "../../../time";
 import { fetchJsonSwr } from "../../api/fetchers";
 import type { Linkables } from "../../api/profiles";
-import closeSvg from "../../../assets/close.svg";
-import flexSvg from "../../../assets/flex-own.svg";
-import logoTwitterWhite from "../../../assets/logo-twitter-white.svg";
-import questionMarkSvg from "../../../assets/question-mark-v2.svg";
-import sobSvg from "../../../assets/sob-own.svg";
 import FamTooltip from "../../components/FamTooltip";
 import Nerd from "../../components/Nerd";
 import {
@@ -41,15 +44,12 @@ import {
   NegativeText,
   PositiveText,
 } from "../../components/StatusText";
-import Twemoji from "../../../components/Twemoji";
 import TwitterStatusText from "../../components/TwitterStatusText";
-import WidgetErrorBoundary from "../../components/WidgetErrorBoundary";
 import withBasicErrorBoundary from "../../higher-order-components/WithBasicErrorBoundary";
 import type { AuthFromSection } from "../../hooks/use-auth-from-section";
 import useAuthFromSection from "../../hooks/use-auth-from-section";
 import useFuseSearch from "../../hooks/use-fuse-search";
 import type { TwitterAuthStatus } from "../../hooks/use-twitter-auth";
-import scrollbarStyles from "../../../styles/Scrollbar.module.scss";
 import hearNoEvilSvg from "./hear-no-evil-own.svg";
 import logoPoapSvg from "./logo-poap-slateus.svg";
 import magnifyingGlassSvg from "./magnifying-glass-own.svg";

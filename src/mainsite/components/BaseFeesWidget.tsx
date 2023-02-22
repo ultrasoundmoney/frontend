@@ -1,4 +1,3 @@
-import type { JsTimestamp } from "../../time";
 import { format } from "date-fns";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
@@ -7,12 +6,13 @@ import _merge from "lodash/merge";
 import type { FC } from "react";
 import { useEffect, useMemo } from "react";
 import colors from "../../colors";
-import type { Gwei } from "../../eth-units";
-import type { TimeFrame } from "../time-frames";
 import LabelText from "../../components/TextsNext/LabelText";
-import TimeFrameIndicator from "../components/TimeFrameIndicator";
-import WidgetErrorBoundary from "../components/WidgetErrorBoundary";
+import WidgetErrorBoundary from "../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../components/WidgetSubcomponents";
+import type { Gwei } from "../../eth-units";
+import type { JsTimestamp } from "../../time";
+import TimeFrameIndicator from "../components/TimeFrameIndicator";
+import type { TimeFrame } from "../time-frames";
 
 export type BaseFeePoint = [JsTimestamp, Gwei];
 

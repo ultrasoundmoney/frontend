@@ -3,23 +3,23 @@ import _last from "lodash/last";
 import dynamic from "next/dynamic";
 import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
-import { useBurnRates } from "../../api/burn-rates";
-import { useEffectiveBalanceSum } from "../../api/effective-balance-sum";
-import { useImpreciseEthSupply } from "../../api/supply-parts";
-import { useSupplyProjectionInputs } from "../../api/supply-projection";
-import type { Eth, Gwei } from "../../../eth-units";
-import { GWEI_PER_ETH, WEI_PER_ETH } from "../../../eth-units";
-import * as Format from "../../../format";
-import { MoneyAmount, PercentAmount } from "../Amount";
-import Slider2 from "../Slider2";
 import { TimeFrameText } from "../../../components/Texts";
 import BodyText from "../../../components/TextsNext/BodyText";
 import Twemoji from "../../../components/Twemoji";
-import WidgetErrorBoundary from "../WidgetErrorBoundary";
+import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
 import {
   WidgetBackground,
   WidgetTitle,
 } from "../../../components/WidgetSubcomponents";
+import type { Eth, Gwei } from "../../../eth-units";
+import { GWEI_PER_ETH, WEI_PER_ETH } from "../../../eth-units";
+import * as Format from "../../../format";
+import { useBurnRates } from "../../api/burn-rates";
+import { useEffectiveBalanceSum } from "../../api/effective-balance-sum";
+import { useImpreciseEthSupply } from "../../api/supply-parts";
+import { useSupplyProjectionInputs } from "../../api/supply-projection";
+import { MoneyAmount, PercentAmount } from "../Amount";
+import Slider2 from "../Slider2";
 const EquilibriumGraph = dynamic(() => import("./EquilibriumGraph"));
 
 type UnixTimestamp = number;

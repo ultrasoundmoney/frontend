@@ -1,15 +1,15 @@
 import type { FC } from "react";
 import { useState } from "react";
-import { ethSupplyFromParts, useSupplyParts } from "../../api/supply-parts";
-import { dateTimeFromSlot } from "../../../time";
-import Nerd from "../Nerd";
-import HoverTooltip from "../HoverTooltip";
-import UpdatedAgo from "../UpdatedAgo";
-import WidgetErrorBoundary from "../WidgetErrorBoundary";
+import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
 import {
   WidgetBackground,
   WidgetTitle,
 } from "../../../components/WidgetSubcomponents";
+import { dateTimeFromSlot } from "../../../time";
+import { ethSupplyFromParts, useSupplyParts } from "../../api/supply-parts";
+import HoverTooltip from "../HoverTooltip";
+import Nerd from "../Nerd";
+import UpdatedAgo from "../UpdatedAgo";
 import CurrentSupplyTooltip from "./CurrentSupplyTooltip";
 import PreciseEth from "./PreciseEth";
 

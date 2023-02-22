@@ -2,6 +2,7 @@ import range from "lodash/range";
 import type { FC, RefObject } from "react";
 import { memo, useCallback, useRef, useState } from "react";
 import { usePopper } from "react-popper";
+import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
 import type { Unit } from "../../../denomination";
 import { useAdminToken } from "../../../hooks/use-admin-token";
 import scrollbarStyles from "../../../styles/Scrollbar.module.scss";
@@ -16,7 +17,6 @@ import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import BurnGroupBase from "../BurnGroupBase";
 import FamTooltip from "../FamTooltip";
 import Modal from "../Modal";
-import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import LeaderboardRow from "./LeaderboardRow";
 
 const feePeriodToUpdateMap: Record<TimeFrameNoMerge, keyof Leaderboards> = {

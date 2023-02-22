@@ -5,10 +5,10 @@ import { useCallback, useRef, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import BodyTextV2 from "../../../components/TextsNext/BodyTextV2";
 import LabelText from "../../../components/TextsNext/LabelText";
+import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
 import { millisFromSeconds } from "../../../duration";
 import batSvg from "../../assets/bat-own.svg";
 import speakerSvg from "../../assets/speaker-own.svg";
-import WidgetErrorBoundary from "../WidgetErrorBoundary";
 import BatSignalTooltip from "./BatSignalTooltip";
 
 type Timeout = ReturnType<typeof setTimeout>;

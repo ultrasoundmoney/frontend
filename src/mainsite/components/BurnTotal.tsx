@@ -4,26 +4,26 @@ import Image from "next/legacy/image";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 import CountUp from "react-countup";
+import fireSvg from "../../assets/fire-own.svg";
+import { BaseText } from "../../components/Texts";
+import WidgetErrorBoundary from "../../components/WidgetErrorBoundary";
+import {
+  WidgetBackground,
+  WidgetTitle,
+} from "../../components/WidgetSubcomponents";
+import { londonHardFork } from "../../dates";
+import type { Unit } from "../../denomination";
+import * as Duration from "../../duration";
+import * as Format from "../../format";
 import type { BurnRates, FeesBurned } from "../api/grouped-analysis-1";
 import {
   decodeGroupedAnalysis1,
   useGroupedAnalysis1,
 } from "../api/grouped-analysis-1";
-import fireSvg from "../../assets/fire-own.svg";
-import { londonHardFork } from "../../dates";
-import type { Unit } from "../../denomination";
-import * as Duration from "../../duration";
-import * as Format from "../../format";
+import { usePosIssuancePerDay } from "../hooks/use-pos-issuance-day";
 import type { LimitedTimeFrame, TimeFrameNoMerge } from "../time-frames";
 import { AmountAnimatedShell } from "./Amount";
-import { BaseText } from "../../components/Texts";
 import TimeFrameIndicator from "./TimeFrameIndicator";
-import WidgetErrorBoundary from "./WidgetErrorBoundary";
-import {
-  WidgetBackground,
-  WidgetTitle,
-} from "../../components/WidgetSubcomponents";
-import { usePosIssuancePerDay } from "../hooks/use-pos-issuance-day";
 
 const timeframeFeesBurnedMap: Record<
   TimeFrameNoMerge,
