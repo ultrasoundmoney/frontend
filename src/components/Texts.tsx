@@ -49,7 +49,7 @@ type BaseTextProps = {
   children: ReactNode;
   font: "font-roboto" | "font-inter";
   className?: string;
-  color?: "text-white" | "text-slateus-200" | string;
+  color?: string;
   inline?: boolean;
   size?: string;
   style?: CSSProperties;
