@@ -15,7 +15,7 @@ const getFormattedDays = (now: Date, fork: Date): string => {
 
 type Props = {
   className?: string;
-  onClickTimeFrame: () => void;
+  onClickTimeFrame?: () => void;
   timeFrame: TimeFrame;
 };
 
@@ -39,10 +39,20 @@ const TimeFrameIndicator: FC<Props> = ({
     return () => clearTimeout(id);
   }, []);
 
+  const ContainerElement = onClickTimeFrame === undefined ? "div" : "button";
+
   return (
     <LondonHardForkTooltip zLevel="z-30" timeFrame={timeFrame}>
-      <button
-        className={`flex items-baseline gap-x-2 hover:brightness-90 active:brightness-75 ${className}`}
+      <ContainerElement
+        className={`
+          flex items-baseline gap-x-2
+          ${
+            onClickTimeFrame === undefined
+              ? ""
+              : "select-none hover:brightness-90 active:brightness-75"
+          }
+          ${className}
+        `}
         onClick={onClickTimeFrame}
       >
         <LabelText>
@@ -59,7 +69,7 @@ const TimeFrameIndicator: FC<Props> = ({
             ? daysSinceMerge
             : displayLimitedTimeFrameMap[timeFrame]}
         </p>
-      </button>
+      </ContainerElement>
     </LondonHardForkTooltip>
   );
 };
