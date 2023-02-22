@@ -17,7 +17,7 @@ const LeaderboardSection: FC<Props> = ({
   topPayloads,
 }) => {
   return (
-    <section className="flex w-full flex-col items-center pb-40 xs:px-4 md:px-16">
+    <section className="flex w-full flex-col items-center xs:px-4 md:px-16">
       <SectionDivider title="leaderboards" subtitle="ultra wow" />
       <div className="flex w-full flex-col gap-x-4 gap-y-4 lg:flex-row">
         <div className="flex flex-col lg:w-1/2">

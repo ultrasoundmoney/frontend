@@ -49,9 +49,10 @@ const TopBuildersWidget: FC<Props> = ({ payloadCount, topBuilders }) => {
             mt-4 -mr-3 flex
             h-60 flex-col
             gap-y-6
-            overflow-y-auto md:h-64
-            ${scrollbarStyles["styled-scrollbar-vertical"]}
+            overflow-y-auto overflow-x-hidden
+            md:h-64
             ${scrollbarStyles["styled-scrollbar"]}
+            ${scrollbarStyles["styled-scrollbar-vertical"]}
           `}
         >
           {builders.map(({ extraData, blockCount }, index) => {

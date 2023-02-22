@@ -32,6 +32,7 @@ const FaqBlock: React.FC = () => {
 
   return (
     <section
+      className="mt-64"
       ref={faqSection}
       data-aos="fade-up"
       data-aos-anchor-placement="top-center"

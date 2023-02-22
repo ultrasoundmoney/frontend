@@ -1,8 +1,11 @@
+import dynamic from "next/dynamic";
 import type { FC } from "react";
+import BasicErrorBoundary from "../components/BasicErrorBoundary";
 
 import HeaderGlow from "../components/HeaderGlow";
 import MainTitle from "../components/MainTitle";
 import { getEnv } from "../config";
+import { FeatureFlagsContext, useFeatureFlags } from "../feature-flags";
 import ContactSection from "../sections/ContactSection";
 import AddressWidget from "./components/AddressWidget";
 import CheckRegistrationWidget from "./components/CheckRegistrationWidget";
@@ -28,6 +31,10 @@ export type RelayDashboardProps = {
   topBuilders: Array<Builder>;
 };
 
+const AdminTools = dynamic(() => import("../components/AdminTools"), {
+  ssr: false,
+});
+
 const env = getEnv();
 
 const RelayDashboard: FC<RelayDashboardProps> = ({
@@ -38,10 +45,15 @@ const RelayDashboard: FC<RelayDashboardProps> = ({
   topBuilders,
   topPayloads,
 }) => {
+  const { featureFlags, setFlag } = useFeatureFlags();
+
   return (
-    <>
+    <FeatureFlagsContext.Provider value={featureFlags}>
       <HeaderGlow />
       <div className="container mx-auto">
+        <BasicErrorBoundary>
+          <AdminTools setFlag={setFlag} />
+        </BasicErrorBoundary>
         <div className="h-[48.5px] md:h-[68px]"></div>
         <MainTitle>ultra sound relay</MainTitle>
         {env === "stag" ? (
@@ -83,11 +95,11 @@ const RelayDashboard: FC<RelayDashboardProps> = ({
           topPayloads={topPayloads}
           topBuilders={topBuilders}
         />
+        {featureFlags.showCensorshipSection ? <CensorshipSection /> : null}
         <FaqSection />
         <ContactSection />
-        <CensorshipSection />
       </div>
-    </>
+    </FeatureFlagsContext.Provider>
   );
 };
 
