@@ -13,7 +13,6 @@ import InclusionsWidget from "./components/InclusionsWidget";
 import ValidatorWidget from "./components/ValidatorWidget";
 import CensorshipSection from "./sections/CensorshipSection";
 import FaqSection from "./sections/FaqSection";
-import LeaderboardSection from "./sections/LeaderboardSection";
 import type {
   Builder,
   Payload,
@@ -42,8 +41,6 @@ const RelayDashboard: FC<RelayDashboardProps> = ({
   payloads,
   validatorStats,
   validators,
-  topBuilders,
-  topPayloads,
 }) => {
   const { featureFlags, setFlag } = useFeatureFlags();
 
@@ -90,11 +87,6 @@ const RelayDashboard: FC<RelayDashboardProps> = ({
             </div>
           </div>
         </div>
-        <LeaderboardSection
-          payloadCount={payloadStats.count}
-          topPayloads={topPayloads}
-          topBuilders={topBuilders}
-        />
         {featureFlags.showCensorshipSection ? <CensorshipSection /> : null}
         <FaqSection />
         <ContactSection />
