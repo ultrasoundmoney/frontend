@@ -3,7 +3,7 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { usePopper } from "react-popper";
 import { ReactZoomPanPinchRef, TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
-import { FullScreen, useFullScreenHandle } from "react-full-screen";
+import { FullScreen, FullScreenHandle, useFullScreenHandle } from "react-full-screen";
 import type { FamProfile } from "../../api/profiles";
 import { useProfiles } from "../../api/profiles";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
@@ -20,6 +20,7 @@ import followingYouStyles from "../FollowingYou/FollowingYou.module.scss";
 import coordinates from '../../../public/sprite/coordinates.json'
 import properties from '../../../public/sprite/properties.json'
 import Button from '../../components/BlueButton'
+import ControlButtons from "./ControlButtons";
 
 // See if merging with leaderboards tooltip makes sense after making it more generic.
 export const useTooltip = () => {
@@ -114,6 +115,7 @@ const TwitterFam: FC = () => {
   // Copy batsound feedback
   const [searchValue, setSearchValue] = useState("");
   const [isCopiedFeedbackVisible, setIsCopiedFeedbackVisible] = useState(false);
+  const [currentProfileShow, setCurrentProfileShow] = useState<number>(0);
   const onBatSoundCopied = () => {
     setIsCopiedFeedbackVisible(true);
     setTimeout(() => setIsCopiedFeedbackVisible(false), 800);
@@ -243,191 +245,144 @@ const TwitterFam: FC = () => {
           </div>
         </div>
       </BasicErrorBoundary>
-      <div className="h-12"></div>
+      <div className="h-12" />
       <BasicErrorBoundary>
-        <WidgetBackground className="w-full">
-          <div className="flex justify-between">
-          <WidgetTitle>FAM EXPLORER</WidgetTitle>
-          {searchValue && (
-            <WidgetTitle className="lowercase text-emerald-400" >{filteredProfilesCount} matches</WidgetTitle>
-          )}
-          </div>
-          <FullScreen
-            handle={fullScreenHandle}
-            className="bg-slateus-700"
-          >
-            <div
-              className={`
-                flex
-                flex-wrap
-                justify-center
-              `}
-            >
-              <TransformWrapper
-                ref={panZoomRef}
-                initialScale={2}
-                initialPositionX={0}
-                initialPositionY={0}
-                wheel={{ wheelDisabled: true }}
-                // panning={{ excluded: [...filteredProfiles.map((profile) => `handle-className-${profile.handle.toLowerCase()}`)] }}
-                // onZoomStop={handleOnZoomStop}
-              >
-                {({ zoomIn, zoomOut, resetTransform, zoomToElement, ...rest }) => (
-                  <>
-                    <div
-                      className="grid gap-3 grid-cols-4 my-4"
-                    >
-                      <button
-                        className={`
-                          flex
-                          select-none items-center
-                          border rounded-lg
-                          border-slateus-400
-                          bg-slateus-600
-                          px-2 py-2
-                        `}
-                        onClick={() => zoomIn()}
-                      >
-                        <span
-                          className="w-3 h-3 leading-[9px]"
-                        >
-                          +
-                        </span>
-                      </button>
-                      <button
-                        className={`
-                          flex
-                          select-none items-center
-                          border rounded-lg
-                          border-slateus-400
-                          bg-slateus-600
-                          px-2 py-1
-                        `}
-                        onClick={() => zoomOut()}
-                      >
-                        <span
-                          className="w-3 h-3 leading-[9px]"
-                        >
-                          -
-                        </span>
-                      </button>
-                      <button
-                        className={`
-                          flex
-                          select-none items-center
-                          border rounded-lg
-                          border-slateus-400
-                          bg-slateus-600
-                          px-2 py-1
-                        `}
-                        onClick={() => resetTransform()}
-                      >
-                          <img
-                            src={`/rotate-right.svg`}
-                            alt="rotate-right"
-                            width={12}
-                            height={12}
-                          />
-                      </button>
-                      <button
-                        className={`
-                          flex
-                          select-none items-center
-                          border rounded-lg
-                          border-slateus-400
-                          bg-slateus-600
-                          px-2 py-1
-                        `}
-                        // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                        // todo: reset the zoom and position on exit
-                        onClick={fullScreenHandle.active ? fullScreenHandle.exit : fullScreenHandle.enter}
-                      >
-                        <img
-                          src={fullScreenHandle.active ? `/compress.svg` : `/expand.svg`}
-                          alt="expand"
-                          width={12}
-                          height={12}
-                        />
-                      </button>
+        <TransformWrapper
+          ref={panZoomRef}
+          initialScale={3}
+          initialPositionX={0}
+          initialPositionY={0}
+          wheel={{ wheelDisabled: true }}
+          // panning={{ excluded: [...filteredProfiles.map((profile) => `handle-className-${profile.handle.toLowerCase()}`)] }}
+          // onZoomStop={handleOnZoomStop}
+        >
+          {({ zoomIn, zoomOut, resetTransform, zoomToElement, ...rest }) => {
+
+            const reportScreenChange = (state: boolean, handle: FullScreenHandle) => {
+              if (handle === fullScreenHandle && !state) {
+                console.log('full screen off')
+                resetTransform();
+              }
+            };
+
+            return (
+              <>
+                <FullScreen
+                  handle={fullScreenHandle}
+                  className="bg-slateus-700"
+                  onChange={reportScreenChange}
+                >
+                  <WidgetBackground className="w-full">
+                    <div className="flex justify-between">
+                      <WidgetTitle className="self-center">FAM EXPLORER</WidgetTitle>
+                      <ControlButtons
+                        zoomIn={zoomIn}
+                        zoomOut={zoomOut}
+                        resetTransform={resetTransform}
+                        fullScreenHandle={fullScreenHandle}
+                      />
+                      {/* {searchValue && (
+                        <WidgetTitle className="lowercase text-emerald-400">{filteredProfilesCount} matches</WidgetTitle>
+                      )} */}
                     </div>
-                    <TransformComponent
-                      wrapperStyle={{ height: fullScreenHandle.active ? '100%' : 500, cursor: "move", width: '100%' }}
-                    >
-                      {currentProfiles?.map((profile, index) => (
-                        <ClickAwayListener onClickAway={handleClickAway} key={profile?.profileUrl ?? index}>
-                          <ImageWithOnClickTooltip
-                            className={`m-[2px] h-3 w-3 select-none`}
-                            imageUrl={profile?.profileImageUrl}
-                            handle={profile?.handle}
-                            isDoneLoading={profile !== undefined}
-                            skeletonDiameter="20px"
-                            onClick={(ref) =>
-                              !md || profile === undefined
-                                ? () => undefined
-                                : handleImageClick(profile, ref)
-                            }
-                            currentScale={panZoomRef.current?.state?.scale}
-                            getXAndY={getXAndY}
-                            excluded={filteredProfiles?.findIndex((p) => p.name === profile?.name) === -1}
-                          />
-                        </ClickAwayListener>
-                      ))}
-                    </TransformComponent>
-                    {/* Search for your profile form */}
                     <div
                       className={`
-                        mt-6
-                        ${fullScreenHandle.active ? 'absolute -top-2 right-4 bg-slateus-700 rounded-full' : ''}
+                        flex
+                        flex-wrap
+                        justify-center
+                        my-5
                       `}
                     >
-                      <form
-                        className={`
-                          flex
-                          justify-center
-                        `}
-                        onSubmit={(event) => {
-                          console.log('event:', event);
-                          event.preventDefault();
-                          if (filteredProfiles?.[0]) {
-                            zoomToElement(document.getElementById(filteredProfiles[0].handle.toLowerCase()) || '', 3);
-                          }
-                        }}
+                      <TransformComponent
+                        wrapperStyle={{ height: fullScreenHandle.active ? 'calc(100vh - 175px)' : 500, cursor: "move", width: '100%' }}
                       >
-                        <input
-                          className="rounded-full border border-gray-500 bg-transparent p-4 pr-32 text-xs text-white md:w-96"
-                          type="text"
-                          placeholder="@vitalikbuterin"
-                          value={searchValue}
-                          spellCheck="false"
-                          // onChange={(event) => setSearchValue(event.target.value)}
-                          onChange={(event) => {
-                            setSearchValue(event.target.value);
-                          }}
-                        />
-                        <button
+                        {currentProfiles?.map((profile, index) => (
+                          <ClickAwayListener onClickAway={handleClickAway} key={profile?.profileUrl ?? index}>
+                            <ImageWithOnClickTooltip
+                              className={`m-[2px] h-3 w-3 select-none`}
+                              imageUrl={profile?.profileImageUrl}
+                              handle={profile?.handle}
+                              isDoneLoading={profile !== undefined}
+                              skeletonDiameter="20px"
+                              onClick={(ref) =>
+                                !md || profile === undefined
+                                  ? () => undefined
+                                  : handleImageClick(profile, ref)
+                              }
+                              currentScale={panZoomRef.current?.state?.scale}
+                              getXAndY={getXAndY}
+                              excluded={filteredProfiles?.findIndex((p) => p.name === profile?.name) === -1}
+                            />
+                          </ClickAwayListener>
+                        ))}
+                      </TransformComponent>
+                      {/* Search for your profile form */}
+                      <div
+                        className={`
+                          mt-6
+                        `}
+                      >
+                        <form
                           className={`
-                            ${followingYouStyles.showMe}
-                            -ml-28 select-none rounded-full
-                            border border-white
-                            bg-transparent px-5
-                            text-xs text-white
-                            hover:bg-gray-700
-                            md:w-32
-                            disabled:opacity-50
+                            flex
+                            justify-center
                           `}
-                          type="submit"
-                          disabled={filteredProfilesCount !== 1}
+                          onSubmit={(event) => {
+                            console.log('event:', event);
+                            event.preventDefault();
+                            const el = filteredProfiles?.[currentProfileShow]?.handle.toLowerCase()
+                            if (el) {
+                              zoomToElement(document.getElementById(el) || '', 3);
+                              setCurrentProfileShow((prev: number) => {
+                                if (prev === filteredProfilesCount - 1) {
+                                  return 0;
+                                }
+                                return prev+1
+                              });
+                            }
+                          }}
                         >
-                          show me →
-                        </button>
-                      </form>
+                          <input
+                            className="rounded-full border border-gray-500 bg-transparent p-4 pr-32 text-xs text-white md:w-96"
+                            type="text"
+                            placeholder="@vitalikbuterin"
+                            value={searchValue}
+                            spellCheck="false"
+                            // onChange={(event) => setSearchValue(event.target.value)}
+                            onChange={(event) => {
+                              setSearchValue(event.target.value);
+                              setCurrentProfileShow(0);
+                            }}
+                          />
+                          <button
+                            className={`
+                              ${followingYouStyles.showMe}
+                              ${searchValue && filteredProfilesCount > 0 ? `!-ml-[182px]` : `!-ml-[134px]`}
+                              select-none rounded-full
+                              border border-white
+                              bg-transparent px-5
+                              text-xs text-white
+                              hover:bg-gray-700
+                              ${searchValue && filteredProfilesCount > 0 ? `md:w-44` : `md:w-32`}
+                              disabled:opacity-50
+                            `}
+                            type="submit"
+                            disabled={!searchValue || (searchValue.length > 0 && filteredProfilesCount === 0)}
+                          >
+                          {searchValue && filteredProfilesCount > 0
+                            ? `show me ${currentProfileShow+1} of ${filteredProfilesCount} →`
+                            : `show me →`
+                          }
+                          </button>
+                        </form>
+                      </div>
                     </div>
-                  </>
-                )}
-              </TransformWrapper>
-            </div>
-          </FullScreen>
-        </WidgetBackground>
+                  </WidgetBackground>
+                </FullScreen>
+              </>
+            )}
+          }
+        </TransformWrapper>
       </BasicErrorBoundary>
       <>
         <div
