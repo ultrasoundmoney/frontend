@@ -121,10 +121,11 @@ const TwitterFam: FC = () => {
 
   // Support profile skeletons.
   const currentProfiles =
-    profiles === undefined
-      ? (new Array(120).fill(undefined) as undefined[])
+    // eslint-disable-next-line no-constant-condition
+    (profiles === undefined)
+      ? (new Array(1000).fill(undefined) as undefined[])
       : profiles;
-  // const currentProfiles = new Array(120).fill(undefined) as undefined[]
+  // const currentProfiles = new Array(1000).fill(undefined) as undefined[]
 
   const {
     attributes,
@@ -352,7 +353,7 @@ const TwitterFam: FC = () => {
                     <TransformComponent
                       wrapperStyle={{ height: fullScreenHandle.active ? '100%' : 500, cursor: "move", width: '100%' }}
                     >
-                      {profiles?.map((profile, index) => (
+                      {currentProfiles?.map((profile, index) => (
                         <ClickAwayListener onClickAway={handleClickAway} key={profile?.profileUrl ?? index}>
                           <ImageWithOnClickTooltip
                             className={`m-[2px] h-3 w-3 select-none`}
@@ -365,11 +366,9 @@ const TwitterFam: FC = () => {
                                 ? () => undefined
                                 : handleImageClick(profile, ref)
                             }
-                            height={20}
-                            width={20}
                             currentScale={panZoomRef.current?.state?.scale}
                             getXAndY={getXAndY}
-                            excluded={filteredProfiles?.findIndex((p) => p.name === profile.name) === -1}
+                            excluded={filteredProfiles?.findIndex((p) => p.name === profile?.name) === -1}
                           />
                         </ClickAwayListener>
                       ))}

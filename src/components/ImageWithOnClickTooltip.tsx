@@ -11,13 +11,11 @@ const sizeFactor = 8; // (from 96px to 12px)
 
 type ImageWithOnClickTooltipProps = {
   className?: HTMLImageElement["className"];
-  height: number;
   imageUrl: string | undefined;
   handle: string | undefined;
   isDoneLoading?: boolean;
   onClick: (ref: RefObject<HTMLImageElement>) => void;
   skeletonDiameter?: string;
-  width: number;
   currentScale: number | undefined;
   getXAndY: (imageKey: string | undefined, sizeFactor: number) => { x: number | null, y: number | null };
   excluded?: boolean;
@@ -25,12 +23,10 @@ type ImageWithOnClickTooltipProps = {
 
 const ImageWithOnClickTooltip: FC<ImageWithOnClickTooltipProps> = ({
   className = "",
-  height,
   imageUrl,
   handle,
   isDoneLoading = true,
   onClick,
-  width,
   currentScale,
   getXAndY,
   excluded = false,
@@ -57,14 +53,13 @@ const ImageWithOnClickTooltip: FC<ImageWithOnClickTooltipProps> = ({
 
   return (
     <>
-      {!isDoneLoading || previewSkeletons ? (
-        <div className="m-2 leading-4">
-          <Skeleton
-            circle={true}
-            height={`${height}px`}
-            width={`${width}px`}
-            inline
-          />
+      {!isDoneLoading || previewSkeletons || posX === null || posY === null ? (
+        <div className={`relative rounded-full ${className}`}>
+        <Skeleton
+          circle
+          inline
+          className="!leading-3 flex"
+        />
         </div>
       ) : (
         <div
