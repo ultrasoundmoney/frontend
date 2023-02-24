@@ -1,5 +1,6 @@
-import { FC, ReactEventHandler, useEffect } from "react";
-import { useCallback, useState } from "react";
+import type { FC } from "react";
+import { useEffect } from "react";
+import { useState } from "react";
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import Image from 'next/image'
 import type { Linkables } from "../api/profiles";
@@ -81,10 +82,6 @@ const Tooltip: FC<TooltipProps> = ({
   width = "22rem",
   getXAndY,
 }) => {
-  const onImageError = useCallback<ReactEventHandler<HTMLImageElement>>((e) => {
-    (e.target as HTMLImageElement).src =
-      "/leaderboard-images/question-mark-v2.svg";
-  }, []);
   const [posX, setPosX] = useState<number | null>(null);
   const [posY, setPosY] = useState<number | null>(null);
 

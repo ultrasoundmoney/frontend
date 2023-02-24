@@ -1,9 +1,11 @@
-import { FC, RefObject } from "react";
+import type { FC, RefObject } from "react";
 import { useCallback, useMemo, useRef, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { usePopper } from "react-popper";
-import { ReactZoomPanPinchRef, TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
-import { FullScreen, FullScreenHandle, useFullScreenHandle } from "react-full-screen";
+import type { ReactZoomPanPinchRef} from "react-zoom-pan-pinch";
+import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
+import type { FullScreenHandle} from "react-full-screen";
+import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import type { FamProfile } from "../../api/profiles";
 import { useProfiles } from "../../api/profiles";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
@@ -14,8 +16,7 @@ import { WidgetBackground, WidgetTitle } from "../WidgetSubcomponents";
 import BasicErrorBoundary from "../BasicErrorBoundary";
 import SectionDivider from "../SectionDivider";
 import ClickAwayListener from "react-click-away-listener";
-import ImageWithOnClickTooltip from "../ImageWithOnClickTooltip";
-import imageWithOnClickStyles from "../ImageWithOnClickTooltip.module.scss";
+import SpriteWithOnClickTooltip from "../SpriteWithOnClickTooltip";
 import followingYouStyles from "../FollowingYou/FollowingYou.module.scss";
 import coordinates from '../../../public/sprite/coordinates.json'
 import properties from '../../../public/sprite/properties.json'
@@ -134,8 +135,6 @@ const TwitterFam: FC = () => {
     // handleClickImage,
     handleImageClick,
     handleClickAway,
-    handleTooltipEnter,
-    handleTooltipLeave,
     popperStyles,
     selectedItem,
     setPopperEl,
@@ -256,7 +255,7 @@ const TwitterFam: FC = () => {
           // panning={{ excluded: [...filteredProfiles.map((profile) => `handle-className-${profile.handle.toLowerCase()}`)] }}
           // onZoomStop={handleOnZoomStop}
         >
-          {({ zoomIn, zoomOut, resetTransform, zoomToElement, ...rest }) => {
+          {({ zoomIn, zoomOut, resetTransform, zoomToElement }) => {
 
             const reportScreenChange = (state: boolean, handle: FullScreenHandle) => {
               if (handle === fullScreenHandle && !state) {
@@ -298,7 +297,7 @@ const TwitterFam: FC = () => {
                       >
                         {currentProfiles?.map((profile, index) => (
                           <ClickAwayListener onClickAway={handleClickAway} key={profile?.profileUrl ?? index}>
-                            <ImageWithOnClickTooltip
+                            <SpriteWithOnClickTooltip
                               className={`m-[2px] h-3 w-3 select-none`}
                               imageUrl={profile?.profileImageUrl}
                               handle={profile?.handle}
