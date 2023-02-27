@@ -4,7 +4,9 @@ export const flags = [
   "previewSkeletons",
   "showCategoryCounts",
   "showCategorySlugs",
+  "showCensorshipSection",
   "showMetadataTools",
+  "showTooltips",
   "simulateDeflationary",
   "useWebSockets",
 ] as const;
@@ -16,7 +18,9 @@ export const defaults: FeatureFlags = {
   previewSkeletons: false,
   showCategoryCounts: false,
   showCategorySlugs: false,
+  showCensorshipSection: false,
   showMetadataTools: false,
+  showTooltips: false,
   simulateDeflationary: false,
   useWebSockets: false,
 };
@@ -25,7 +29,9 @@ export const displayFlagMap: Record<Flag, string> = {
   previewSkeletons: "preview skeletons",
   showCategoryCounts: "show category counts",
   showCategorySlugs: "show category slugs",
+  showCensorshipSection: "show censorship section",
   showMetadataTools: "show metadata tools",
+  showTooltips: "show tooltips",
   simulateDeflationary: "simulate deflationary",
   useWebSockets: "use websockets",
 };

@@ -1,23 +1,33 @@
-import type { FC } from "react";
 import * as D from "date-fns";
+import type { FC } from "react";
+import { useEffect, useState } from "react";
 
-import type { Payload } from "../types";
-import * as Format from "../../format";
-import { getEtherscanUrl } from "../config";
-import scrollbarStyles from "../../styles/Scrollbar.module.scss";
+import { BaseText } from "../../components/Texts";
 import LabelText from "../../components/TextsNext/LabelText";
 import SkeletonText from "../../components/TextsNext/SkeletonText";
-import { BaseText } from "../../components/Texts";
 import {
   WidgetBackground,
   WidgetTitle,
 } from "../../components/WidgetSubcomponents";
+import * as Format from "../../format";
+import scrollbarStyles from "../../styles/Scrollbar.module.scss";
+import { getEtherscanUrl } from "../config";
+import type { Payload } from "../types";
 
 const etherscanUrl = getEtherscanUrl();
 
 const PayloadRow = ({ blockNumber, insertedAt, value }: Payload) => {
-  const inclusionAgo = `${Format.formatDistance(new Date(), insertedAt)} ago`;
+  const [inclusionAgo, setInclusionAgo] = useState<string | undefined>(
+    undefined,
+  );
   const truncatedValue = value.toString().substring(0, 4);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setInclusionAgo(Format.formatDistance(new Date(), insertedAt));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [insertedAt]);
 
   return (
     <a

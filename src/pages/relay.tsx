@@ -1,49 +1,20 @@
-import type { FC } from "react";
+import { minutesToSeconds } from "date-fns";
+import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Script from "next/script";
-import * as Api from "../relay/api";
-import type { ApiPayload, ApiPayloadStats, ApiValidator } from "../relay/api";
-import {
-  Payload,
-  Builder,
-  ValidatorStats,
-  parsePayload,
-  parseValidator,
-  parsePayloadStats,
-} from "../relay/types";
 import BasicErrorBoundary from "../components/BasicErrorBoundary";
-import RelayDashboard from "../relay/components/RelayDashboard";
+import { pipe, T, TAlt } from "../fp";
+import type { ApiPayload, ApiPayloadStats, ApiValidator } from "../relay/api";
+import * as Api from "../relay/api";
+import RelayDashboard from "../relay/RelayDashboard";
+import type { Builder, ValidatorStats } from "../relay/types";
+import {
+  parsePayload,
+  parsePayloadStats,
+  parseValidator,
+} from "../relay/types";
 
-export const getServerSideProps = async () => {
-  const [
-    payloads,
-    topPayloads,
-    payloadStats,
-    validators,
-    validatorStats,
-    topBuilders,
-  ] = await Promise.all([
-    Api.fetchPayloads(),
-    Api.fetchTopPayloads(),
-    Api.fetchPayloadStats(),
-    Api.fetchValidators(),
-    Api.fetchValidatorStats(),
-    Api.fetchTopBuilders(),
-  ]);
-
-  return {
-    props: {
-      payloads,
-      topPayloads,
-      payloadStats,
-      validators,
-      validatorStats,
-      topBuilders,
-    },
-  };
-};
-
-type RelayPageProps = {
+type StaticProps = {
   payloadStats: ApiPayloadStats;
   payloads: Array<ApiPayload>;
   topPayloads: Array<ApiPayload>;
@@ -52,7 +23,22 @@ type RelayPageProps = {
   topBuilders: Array<Builder>;
 };
 
-const RelayIndexPage: FC<RelayPageProps> = ({
+export const getStaticProps: GetStaticProps<StaticProps> = pipe(
+  TAlt.sequenceStruct({
+    payloads: Api.fetchPayloads,
+    topPayloads: Api.fetchTopPayloads,
+    payloadStats: Api.fetchPayloadStats,
+    validators: Api.fetchValidators,
+    validatorStats: Api.fetchValidatorStats,
+    topBuilders: Api.fetchTopBuilders,
+  }),
+  T.map((props) => ({
+    props,
+    revalidate: minutesToSeconds(2),
+  })),
+);
+
+const RelayIndexPage: NextPage<StaticProps> = ({
   payloadStats,
   payloads,
   topPayloads,

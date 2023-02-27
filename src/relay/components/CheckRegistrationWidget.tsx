@@ -1,4 +1,5 @@
-import { type FC, useState } from "react";
+import type { FC } from "react";
+import { useState } from "react";
 
 import { getApiUrl } from "../config";
 import { WidgetBackground } from "../../components/WidgetSubcomponents";

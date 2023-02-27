@@ -8,7 +8,7 @@ type Props = {
   inline?: boolean;
 };
 
-const BodyTextV2: FC<Props> = ({ color, children, className = "", inline }) => (
+const BodyTextV2: FC<Props> = ({ color, children, className, inline }) => (
   <BaseText
     className={className}
     color={color}

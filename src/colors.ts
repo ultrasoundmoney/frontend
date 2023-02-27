@@ -12,9 +12,9 @@ const colors = {
   slateus400: "#8991ad",
   slateus450: "#8888af",
   slateus500: "#464b6f",
-  slateus800: "#131827",
   slateus600: "#2d344a",
   slateus700: "#1b2236",
+  slateus800: "#131827",
   white: "#ffffff",
 };
 

@@ -40,12 +40,16 @@ export const TextInterLink: FC<{
   </BodyText>
 );
 
-export type FontWeight = "font-normal" | "font-light" | "font-extralight";
+export type FontWeight =
+  | "font-normal"
+  | "font-light"
+  | "font-extralight"
+  | "font-medium";
 type BaseTextProps = {
   children: ReactNode;
   font: "font-roboto" | "font-inter";
   className?: string;
-  color?: "text-white" | "text-slateus-200" | string;
+  color?: string;
   inline?: boolean;
   size?: string;
   style?: CSSProperties;
