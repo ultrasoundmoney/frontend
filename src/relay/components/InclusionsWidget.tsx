@@ -24,7 +24,7 @@ const PayloadRow = ({ blockNumber, insertedAt, value }: Payload) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setInclusionAgo(Format.formatDistance(new Date(), insertedAt));
+      setInclusionAgo(Format.formatTimeDistance(new Date(), insertedAt));
     }, 1000);
     return () => clearInterval(interval);
   }, [insertedAt]);

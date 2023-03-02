@@ -545,11 +545,11 @@ const Claimed: FC<{
     const now = new Date();
 
     // Set the current age immediately.
-    setAge(Format.formatDistance(now, new Date(claimedOn)));
+    setAge(Format.formatTimeDistance(now, new Date(claimedOn)));
 
     // And update it every 5 seconds.
     const intervalId = window.setInterval(() => {
-      setAge(Format.formatDistance(now, new Date(claimedOn)));
+      setAge(Format.formatTimeDistance(now, new Date(claimedOn)));
     }, 5000);
 
     return () => {

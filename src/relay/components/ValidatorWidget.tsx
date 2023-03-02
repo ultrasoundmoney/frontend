@@ -26,7 +26,9 @@ const ValidatorRow = ({ insertedAt, index }: Validator) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setRegisteredAgo(`${Format.formatDistance(new Date(), insertedAt)} ago`);
+      setRegisteredAgo(
+        `${Format.formatTimeDistance(new Date(), insertedAt)} ago`,
+      );
     }, 1000);
     return () => clearInterval(interval);
   }, [insertedAt]);
