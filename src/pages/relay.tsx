@@ -6,7 +6,7 @@ import BasicErrorBoundary from "../components/BasicErrorBoundary";
 import { pipe, T, TAlt } from "../fp";
 import type { ApiPayload, ApiPayloadStats, ApiValidator } from "../relay/api";
 import * as Api from "../relay/api";
-import RelayDashboard from "../relay/RelayDashboard";
+import RelayDashboards from "../relay/RelayDashboards";
 import type { Builder, ValidatorStats } from "../relay/types";
 import {
   parsePayload,
@@ -79,7 +79,7 @@ const RelayIndexPage: NextPage<StaticProps> = ({
         data-domain="relay.ultrasound.money"
         src="https://plausible.io/js/script.js"
       />
-      <RelayDashboard {...props} />
+      <RelayDashboards {...props} />
     </BasicErrorBoundary>
   );
 };

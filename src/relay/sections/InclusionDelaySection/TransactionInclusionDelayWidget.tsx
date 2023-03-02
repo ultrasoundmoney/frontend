@@ -1,4 +1,5 @@
-import { FC, useEffect, useState } from "react";
+import type { FC } from "react";
+import { useEffect, useState } from "react";
 import {
   WidgetBackground,
   WidgetTitle,
@@ -7,19 +8,48 @@ import type { DateTimeString } from "../../../time";
 import scrollbarStyles from "../../../styles/Scrollbar.module.scss";
 import BodyTextV2 from "../../../components/TextsNext/BodyTextV2";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
-import { formatDistance } from "../../../format";
+import { formatTimeDistance } from "../../../format";
 import SkeletonText from "../../../components/TextsNext/SkeletonText";
 
-type Props = {
-  transactions: Array<{
-    category: string;
-    hash: string;
-    inclusion: DateTimeString | undefined;
-    took: number;
-  }>;
+type Transaction = {
+  category: string;
+  hash: string;
+  inclusion: DateTimeString | undefined;
+  took: number;
 };
 
-const CensoredTransactionsWidget: FC<Props> = ({ transactions }) => {
+type Api = { transactions: Transaction[] };
+
+const api: Api = {
+  transactions: [
+    {
+      category: "OFAC",
+      hash: "0xf450",
+      inclusion: "2023-02-22T07:00:00Z",
+      took: 32,
+    },
+    {
+      category: "congestion",
+      hash: "0xa2d0",
+      inclusion: "2023-02-22T06:00:00Z",
+      took: 46,
+    },
+    {
+      category: "unknown",
+      hash: "0x2ba2",
+      inclusion: "2023-02-22T05:00:00Z",
+      took: 103,
+    },
+    {
+      category: "OFAC",
+      hash: "0x55bf",
+      inclusion: "2023-02-22T04:00:00Z",
+      took: 37,
+    },
+  ],
+};
+
+const TransactionInclusionDelayWidget: FC = () => {
   const [now, setNow] = useState<Date | undefined>();
 
   useEffect(() => {
@@ -29,6 +59,8 @@ const CensoredTransactionsWidget: FC<Props> = ({ transactions }) => {
 
     return () => clearInterval(interval);
   }, []);
+
+  const transactions = api.transactions;
 
   return (
     <WidgetBackground>
@@ -66,7 +98,7 @@ const CensoredTransactionsWidget: FC<Props> = ({ transactions }) => {
                       ? undefined
                       : inclusion === undefined
                       ? "pending"
-                      : formatDistance(now, new Date(inclusion))}
+                      : formatTimeDistance(now, new Date(inclusion))}
                   </SkeletonText>
                 </QuantifyText>
               </li>
@@ -78,4 +110,4 @@ const CensoredTransactionsWidget: FC<Props> = ({ transactions }) => {
   );
 };
 
-export default CensoredTransactionsWidget;
+export default TransactionInclusionDelayWidget;

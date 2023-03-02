@@ -1,37 +1,81 @@
 import type { FC } from "react";
-import { LabelUnitText } from "../../../components/Texts";
-import LabelText from "../../../components/TextsNext/LabelText";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
 import SkeletonText from "../../../components/TextsNext/SkeletonText";
 import {
   WidgetBackground,
   WidgetTitle,
 } from "../../../components/WidgetSubcomponents";
+import { formatZeroDecimals } from "../../../format";
 import TimeFrameIndicator from "../../../mainsite/components/TimeFrameIndicator";
+import TinyStatus from "../../components/TinyStatus";
 
-const TransactionCensorshipWidget: FC = () => {
+type Api =
+  | {
+      relay_censorship_per_time_frame: Record<
+        "d1",
+        { count: number; average_inclusion_time: number }
+      >;
+    }
+  | undefined;
+
+const api: Api = {
+  relay_censorship_per_time_frame: {
+    d1: {
+      count: 22,
+      average_inclusion_time: 33,
+    },
+  },
+};
+
+const getShortTimeDistancePostfix = (seconds: number) => {
+  if (seconds < 60) {
+    return `sec`;
+  } else if (seconds < 60 * 60) {
+    return `min`;
+  } else if (seconds < 60 * 60 * 24) {
+    return `hr`;
+  } else {
+    return `d`;
+  }
+};
+
+type Props = {
+  timeFrame: "d1";
+};
+
+const TransactionCensorshipWidget: FC<Props> = ({ timeFrame }) => {
+  const transactionCensorship = api?.relay_censorship_per_time_frame[timeFrame];
+  const dominance =
+    transactionCensorship === undefined
+      ? undefined
+      : formatZeroDecimals(transactionCensorship.count);
+  const averageInclusionTime =
+    transactionCensorship === undefined
+      ? undefined
+      : String(transactionCensorship.average_inclusion_time);
+
   return (
-    <WidgetBackground className="flex w-full flex-col gap-y-4">
-      <div className="flex items-center justify-between gap-x-2">
-        <WidgetTitle>transaction censorship</WidgetTitle>
-        <TimeFrameIndicator timeFrame="d1" onClickTimeFrame={() => undefined} />
-      </div>
-      <div className="flex items-baseline gap-x-1">
-        <QuantifyText size="text-4xl">
-          <SkeletonText width="2rem">22</SkeletonText>
+    <WidgetBackground className="w-full">
+      <div className="flex flex-col gap-y-4">
+        <div className="flex items-center justify-between gap-x-2">
+          <WidgetTitle>transaction censorship</WidgetTitle>
+          <TimeFrameIndicator timeFrame="d1" />
+        </div>
+        <QuantifyText
+          size="text-2xl md:text-4xl"
+          unitPostfix="transactions"
+          unitPostfixColor="text-slateus-200"
+          unitPostfixMargin="ml-4"
+        >
+          <SkeletonText>{dominance}</SkeletonText>
         </QuantifyText>
-        <QuantifyText color="text-slateus-200" className="ml-1" size="text-4xl">
-          <SkeletonText width="8rem">transactions</SkeletonText>
-        </QuantifyText>
-      </div>
-      <div className="flex items-center gap-x-1">
-        <LabelUnitText className="mt-1">
-          <SkeletonText width="3rem">33</SkeletonText>
-        </LabelUnitText>
-        <LabelText className="mt-1">sec</LabelText>
-        <LabelText className="mt-1" color="text-slateus-400">
-          average inclusion time
-        </LabelText>
+        <TinyStatus
+          value={averageInclusionTime}
+          unitPostfix={getShortTimeDistancePostfix(
+            transactionCensorship.average_inclusion_time,
+          )}
+          postText="average inclusion time"
+        />
       </div>
     </WidgetBackground>
   );

@@ -10,7 +10,7 @@ export const LabelUnitText: FC<{
     className={`uppercase tracking-widest ${className}`}
     color="text-slateus-200"
     font="font-roboto"
-    size="text-sm"
+    size="text-xs"
     weight="font-light"
   >
     {children}

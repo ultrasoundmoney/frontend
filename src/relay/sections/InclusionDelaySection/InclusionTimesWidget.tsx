@@ -179,7 +179,10 @@ const CategoryBar: FC<{
             {...category}
           />
           {index !== categories.length - 1 && (
-            <div className="z-10 h-2 w-1 bg-slateus-500"></div>
+            <div
+              className="z-10 h-2 w-1 bg-slateus-500"
+              key={`separator-${index}`}
+            ></div>
           )}
         </>
       ))}

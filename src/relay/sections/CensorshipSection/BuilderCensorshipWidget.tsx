@@ -11,17 +11,17 @@ import { formatPercentOneDecimal } from "../../../format";
 import TimeFrameIndicator from "../../../mainsite/components/TimeFrameIndicator";
 
 type Api = {
-  relay_censorship_per_time_frame: Record<
+  builder_censorship_per_time_frame: Record<
     "d1",
     { dominance: number; blocks_censored: number }
   >;
 };
 
 const api: Api = {
-  relay_censorship_per_time_frame: {
+  builder_censorship_per_time_frame: {
     d1: {
-      dominance: 0.681,
-      blocks_censored: 0.551,
+      dominance: 0.425,
+      blocks_censored: 0.521,
     },
   },
 };
@@ -30,22 +30,22 @@ type Props = {
   timeFrame: "d1";
 };
 
-const RelayCensorshipWidget: FC<Props> = ({ timeFrame }) => {
-  const relayCensorship = api?.relay_censorship_per_time_frame[timeFrame];
+const BuilderCensorshipWidget: FC<Props> = ({ timeFrame }) => {
+  const builderCensorship = api?.builder_censorship_per_time_frame[timeFrame];
   const dominance =
-    relayCensorship === undefined
+    builderCensorship === undefined
       ? undefined
-      : formatPercentOneDecimal(relayCensorship.dominance);
+      : formatPercentOneDecimal(builderCensorship.dominance);
   const blocksCensored =
-    relayCensorship === undefined
+    builderCensorship === undefined
       ? undefined
-      : formatPercentOneDecimal(relayCensorship.blocks_censored);
+      : formatPercentOneDecimal(builderCensorship.blocks_censored);
 
   return (
     <WidgetBackground className="w-full">
       <div className="flex flex-col gap-y-4">
         <div className="flex items-center justify-between gap-x-2">
-          <WidgetTitle>relay censorship</WidgetTitle>
+          <WidgetTitle>builder censorship</WidgetTitle>
           <TimeFrameIndicator timeFrame="d1" />
         </div>
         <QuantifyText
@@ -69,4 +69,4 @@ const RelayCensorshipWidget: FC<Props> = ({ timeFrame }) => {
   );
 };
 
-export default RelayCensorshipWidget;
+export default BuilderCensorshipWidget;
