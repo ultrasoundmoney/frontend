@@ -22,7 +22,7 @@ import type { SupplyChanges } from "../mainsite/api/supply-changes";
 import { fetchSupplyChanges } from "../mainsite/api/supply-changes";
 import type { SupplyPartsF } from "../mainsite/api/supply-parts";
 import { fetchSupplyParts } from "../mainsite/api/supply-parts";
-import Dashboard from "../mainsite/Dashboard";
+import Dashboards from "../mainsite/Dashboards";
 import SiteMetadata from "../site-metadata";
 
 type StaticProps = {
@@ -124,7 +124,7 @@ const IndexPage: NextPage<StaticProps> = ({ fallback }) => (
         fallback,
       }}
     >
-      <Dashboard />
+      <Dashboards />
     </SWRConfig>
   </BasicErrorBoundary>
 );

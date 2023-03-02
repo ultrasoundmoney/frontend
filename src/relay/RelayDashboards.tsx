@@ -87,7 +87,7 @@ const RelayDashboard: FC<RelayDashboardProps> = ({
             </div>
           </div>
         </div>
-        {featureFlags.showCensorshipSection ? <CensorshipSection /> : null}
+        <CensorshipSection />
         <FaqSection />
         <ContactSection />
       </div>
