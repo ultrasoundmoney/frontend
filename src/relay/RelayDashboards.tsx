@@ -4,6 +4,7 @@ import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 import colors from "../colors";
+import AdminTools from "../components/AdminTools";
 import BasicErrorBoundary from "../components/BasicErrorBoundary";
 import HeaderGlow from "../components/HeaderGlow";
 import MainTitle from "../components/MainTitle";
@@ -33,10 +34,6 @@ export type RelayDashboardProps = {
   validators: Array<Validator>;
   topBuilders: Array<Builder>;
 };
-
-const AdminTools = dynamic(() => import("../components/AdminTools"), {
-  ssr: false,
-});
 
 const env = getEnv();
 
