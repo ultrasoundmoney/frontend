@@ -21,7 +21,7 @@ const LidoOperatorList: FC<Props> = ({ lidoOperatorCensorship }) => (
         <WidgetTitle className="">operator</WidgetTitle>
         <WidgetTitle className="text-right">censors</WidgetTitle>
         <WidgetTitle className="hidden text-right md:inline">
-          non-censoring relays
+          non-censoring relays connected
         </WidgetTitle>
         <WidgetTitle className="text-right">dominance</WidgetTitle>
       </div>
@@ -34,7 +34,7 @@ const LidoOperatorList: FC<Props> = ({ lidoOperatorCensorship }) => (
             dominance,
             description,
             non_censoring_relays_connected_count,
-            url
+            url,
           }) => (
             <li
               key={id}
