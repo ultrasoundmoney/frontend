@@ -6,30 +6,34 @@ import TimeFrameControl from "../../../components/TimeFrameControl";
 import type { BuilderCensorshipPerTimeFrame } from "../../censorship-data/builder_censorship";
 import type { LidoOperatorCensorshipPerTimeFrame } from "../../censorship-data/lido_operator_censorship";
 import type { RelayCensorshipPerTimeFrame } from "../../censorship-data/relay_censorship";
+import type { TransactionCensorshipPerTimeFrame } from "../../censorship-data/transaction_censorship";
 import BuilderCensorshipWidget from "./BuilderCensorshipWidget";
 import BuilderListWidget from "./BuilderListWidget";
 import LidoOperatorCensorship from "./LidoOperatorCensorship";
 import LidoOperatorList from "./LidoOperatorList";
 import RelayCensorshipWidget from "./RelayCensorshipWidget";
 import RelayListWidget from "./RelayListWidget";
-// import TransactionCensorshipList from "./TransactionCensorshipList";
-// import TransactionCensorshipWidget from "./TransactionCensorshipWidget";
+import TransactionCensorshipList from "./TransactionCensorshipList";
+import TransactionCensorshipWidget from "./TransactionCensorshipWidget";
 
 type Props = {
   builderCensorshipPerTimeFrame: BuilderCensorshipPerTimeFrame;
   lidoOperatorCensorshipPerTimeFrame: LidoOperatorCensorshipPerTimeFrame;
   relayCensorshipPerTimeFrame: RelayCensorshipPerTimeFrame;
+  transactionCensorshipPerTimeFrame: TransactionCensorshipPerTimeFrame;
 };
 
 const CensorshipSection: FC<Props> = ({
   builderCensorshipPerTimeFrame,
   lidoOperatorCensorshipPerTimeFrame,
   relayCensorshipPerTimeFrame,
+  transactionCensorshipPerTimeFrame,
 }) => {
   const [timeFrame, setTimeFrame] = useState<"d7" | "d30">("d7");
   const builderCensorship = builderCensorshipPerTimeFrame[timeFrame];
   const relayCensorship = relayCensorshipPerTimeFrame[timeFrame];
   const lidoOperatorCensorship = lidoOperatorCensorshipPerTimeFrame[timeFrame];
+  const transactionCencorship = transactionCensorshipPerTimeFrame[timeFrame];
 
   return (
     <Section
@@ -74,10 +78,16 @@ const CensorshipSection: FC<Props> = ({
           />
           <BuilderListWidget builders={builderCensorship.builders} />
         </div>
-        {/* <div className="flex flex-col gap-4"> */}
-        {/*   <TransactionCensorshipWidget timeFrame="d1" /> */}
-        {/*   <TransactionCensorshipList timeFrame="d1" /> */}
-        {/* </div> */}
+        <div className="flex flex-col gap-4">
+          <TransactionCensorshipWidget
+            transactionCensorship={transactionCencorship}
+            timeFrame={timeFrame}
+          />
+          <TransactionCensorshipList
+            transactions={transactionCencorship.transactions}
+            timeFrame={timeFrame}
+          />
+        </div>
       </div>
     </Section>
   );

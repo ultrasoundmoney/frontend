@@ -4,77 +4,20 @@ import {
   WidgetBackground,
   WidgetTitle,
 } from "../../../components/WidgetSubcomponents";
-import type { DateTimeString } from "../../../time";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
 import { formatTimeDistance } from "../../../format";
 import SkeletonText from "../../../components/TextsNext/SkeletonText";
 import StyledList from "../../components/StyledList";
 import BodyTextV3 from "../../../components/TextsNext/BodyTextV3";
-
-type Transaction = {
-  block_count: number;
-  category: string;
-  hash: string;
-  inclusion: DateTimeString | undefined;
-  took: number;
-};
-
-type Api = { transactions_per_time_frame: Record<"d1", Transaction[]> };
-
-const api: Api = {
-  transactions_per_time_frame: {
-    d1: [
-      {
-        hash: "0x123",
-        category: "OFAC",
-        block_count: 3,
-        inclusion: undefined,
-        took: 32,
-      },
-      {
-        hash: "0x456",
-        category: "congestion",
-        block_count: 5,
-        inclusion: "2023-02-22T06:00:00Z",
-        took: 46,
-      },
-      {
-        hash: "0x789",
-        category: "unknown",
-        block_count: 8,
-        inclusion: "2023-02-22T05:00:00Z",
-        took: 103,
-      },
-      {
-        hash: "0xabc",
-        category: "OFAC",
-        block_count: 3,
-        inclusion: "2023-02-22T04:00:00Z",
-        took: 37,
-      },
-      {
-        hash: "0xdef",
-        category: "congestion",
-        block_count: 1,
-        inclusion: "2023-02-22T03:00:00Z",
-        took: 12,
-      },
-      {
-        hash: "0xghi",
-        category: "unknown",
-        block_count: 2,
-        inclusion: "2023-02-22T02:00:00Z",
-        took: 23,
-      },
-    ],
-  },
-};
+import type { TimeFrame } from "../../../mainsite/time-frames";
+import type { CensoredTransaction } from "../../censorship-data/transaction_censorship";
 
 type Props = {
-  timeFrame: "d1";
+  transactions: CensoredTransaction[];
+  timeFrame: TimeFrame;
 };
 
-const TransactionCensorshipList: FC<Props> = ({ timeFrame }) => {
+const TransactionCensorshipList: FC<Props> = ({ transactions }) => {
   const [now, setNow] = useState<Date | undefined>();
 
   useEffect(() => {
@@ -84,8 +27,6 @@ const TransactionCensorshipList: FC<Props> = ({ timeFrame }) => {
 
     return () => clearInterval(interval);
   }, []);
-
-  const transactions = api.transactions_per_time_frame[timeFrame];
 
   return (
     <WidgetBackground>
@@ -102,8 +43,19 @@ const TransactionCensorshipList: FC<Props> = ({ timeFrame }) => {
         </div>
         <StyledList height="h-[182px]">
           {transactions.map(
-            ({ hash, block_count, inclusion, category, took }) => (
-              <a key={hash} target="_blank" rel="noreferrer" href={undefined}>
+            ({
+              inclusion,
+              sanction_list,
+              took,
+              transaction_delay,
+              transaction_hash,
+            }) => (
+              <a
+                key={transaction_hash}
+                target="_blank"
+                rel="noreferrer"
+                href={`https://etherscan.io/tx/${transaction_hash}`}
+              >
                 <li className="grid grid-cols-4 items-baseline hover:opacity-60">
                   <QuantifyText
                     color="text-white"
@@ -111,7 +63,7 @@ const TransactionCensorshipList: FC<Props> = ({ timeFrame }) => {
                     unitPostfixColor="text-slateus-100"
                     size="text-sm md:text-base"
                   >
-                    {block_count}
+                    {transaction_delay}
                   </QuantifyText>
                   <QuantifyText
                     className="mr-1 text-right"
@@ -120,7 +72,7 @@ const TransactionCensorshipList: FC<Props> = ({ timeFrame }) => {
                     {took}s
                   </QuantifyText>
                   <BodyTextV3 className="text-right" color="text-slateus-100">
-                    {category}
+                    {sanction_list}
                   </BodyTextV3>
                   <QuantifyText
                     className="text-right"

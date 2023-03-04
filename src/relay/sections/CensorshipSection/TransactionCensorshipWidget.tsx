@@ -1,65 +1,31 @@
 import type { FC } from "react";
+import { LabelUnitText } from "../../../components/Texts";
+import LabelText from "../../../components/TextsNext/LabelText";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
 import SkeletonText from "../../../components/TextsNext/SkeletonText";
 import {
   WidgetBackground,
   WidgetTitle,
 } from "../../../components/WidgetSubcomponents";
-import { formatZeroDecimals } from "../../../format";
 import TimeFrameIndicator from "../../../mainsite/components/TimeFrameIndicator";
-import TinyStatus from "../../components/TinyStatus";
-
-type Api =
-  | {
-      relay_censorship_per_time_frame: Record<
-        "d1",
-        { count: number; average_inclusion_time: number }
-      >;
-    }
-  | undefined;
-
-const api: Api = {
-  relay_censorship_per_time_frame: {
-    d1: {
-      count: 22,
-      average_inclusion_time: 33,
-    },
-  },
-};
-
-const getShortTimeDistancePostfix = (seconds: number) => {
-  if (seconds < 60) {
-    return `sec`;
-  } else if (seconds < 60 * 60) {
-    return `min`;
-  } else if (seconds < 60 * 60 * 24) {
-    return `hr`;
-  } else {
-    return `d`;
-  }
-};
+import type { TimeFrame } from "../../../mainsite/time-frames";
+import type { TransactionCensorship } from "../../censorship-data/transaction_censorship";
 
 type Props = {
-  timeFrame: "d1";
+  transactionCensorship: TransactionCensorship;
+  timeFrame: TimeFrame;
 };
 
-const TransactionCensorshipWidget: FC<Props> = ({ timeFrame }) => {
-  const transactionCensorship = api?.relay_censorship_per_time_frame[timeFrame];
-  const dominance =
-    transactionCensorship === undefined
-      ? undefined
-      : formatZeroDecimals(transactionCensorship.count);
-  const averageInclusionTime =
-    transactionCensorship === undefined
-      ? undefined
-      : String(transactionCensorship.average_inclusion_time);
-
+const TransactionCensorshipWidget: FC<Props> = ({
+  transactionCensorship,
+  timeFrame,
+}) => {
   return (
     <WidgetBackground className="w-full">
       <div className="flex flex-col gap-y-4">
         <div className="flex items-center justify-between gap-x-2">
           <WidgetTitle>transaction censorship</WidgetTitle>
-          <TimeFrameIndicator timeFrame="d1" />
+          <TimeFrameIndicator timeFrame={timeFrame} />
         </div>
         <QuantifyText
           size="text-2xl md:text-4xl"
@@ -67,15 +33,16 @@ const TransactionCensorshipWidget: FC<Props> = ({ timeFrame }) => {
           unitPostfixColor="text-slateus-200"
           unitPostfixMargin="ml-4"
         >
-          <SkeletonText>{dominance}</SkeletonText>
+          <SkeletonText>{transactionCensorship.count}</SkeletonText>
         </QuantifyText>
-        <TinyStatus
-          value={averageInclusionTime}
-          unitPostfix={getShortTimeDistancePostfix(
-            transactionCensorship.average_inclusion_time,
-          )}
-          postText="average inclusion time"
-        />
+        <div className="flex items-baseline gap-x-1">
+          <LabelText color="text-slateus-400">{""}</LabelText>
+          <LabelUnitText className="invisible">
+            <SkeletonText>{"0.3%"}</SkeletonText>
+          </LabelUnitText>
+          <LabelText color="text-slateus-200">{""}</LabelText>
+          <LabelText color="text-slateus-400">{""}</LabelText>
+        </div>
       </div>
     </WidgetBackground>
   );

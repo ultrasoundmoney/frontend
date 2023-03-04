@@ -7,7 +7,7 @@ import {
 } from "../../../components/WidgetSubcomponents";
 import { formatPercentOneDecimal } from "../../../format";
 import TimeFrameIndicator from "../../../mainsite/components/TimeFrameIndicator";
-import { TimeFrame } from "../../../mainsite/time-frames";
+import type { TimeFrame } from "../../../mainsite/time-frames";
 import TinyStatus from "../../components/TinyStatus";
 
 export type Operator = {

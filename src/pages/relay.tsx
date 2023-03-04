@@ -14,6 +14,8 @@ import type { LidoOperatorCensorshipPerTimeFrame } from "../relay/censorship-dat
 import { lidoOperatorCensorshipPerTimeFrame as lidoOperatorCensorshipPerTimeFrameData } from "../relay/censorship-data/lido_operator_censorship";
 import type { RelayCensorshipPerTimeFrame } from "../relay/censorship-data/relay_censorship";
 import { relayCensorshipPerTimeFrame as relayCensorshipPerTimeFrameData } from "../relay/censorship-data/relay_censorship";
+import type { TransactionCensorshipPerTimeFrame } from "../relay/censorship-data/transaction_censorship";
+import { transactionCensorshipPerTimeFrame as transactionCensorshipPerTimeFrameData } from "../relay/censorship-data/transaction_censorship";
 import RelayDashboards from "../relay/RelayDashboards";
 import type { Builder, ValidatorStats } from "../relay/types";
 import {
@@ -29,6 +31,7 @@ type StaticProps = {
   payloadStats: ApiPayloadStats;
   payloads: Array<ApiPayload>;
   relayCensorshipPerTimeFrame: RelayCensorshipPerTimeFrame;
+  transactionCensorshipPerTimeFrame: TransactionCensorshipPerTimeFrame;
   topBuilders: Array<Builder>;
   topPayloads: Array<ApiPayload>;
   validatorStats: ValidatorStats;
@@ -48,9 +51,10 @@ export const getStaticProps: GetStaticProps<StaticProps> = pipe(
     props: {
       builderCensorshipPerTimeFrame: builderCensorshipPerTimeFrameData,
       inclusionTimesPerTimeFrame: inclusionTimesPerTimeFrameData,
-      relayCensorshipPerTimeFrame: relayCensorshipPerTimeFrameData,
       lidoOperatorCensorshipPerTimeFrame:
         lidoOperatorCensorshipPerTimeFrameData,
+      relayCensorshipPerTimeFrame: relayCensorshipPerTimeFrameData,
+      transactionCensorshipPerTimeFrame: transactionCensorshipPerTimeFrameData,
       ...props,
     },
     revalidate: minutesToSeconds(2),
@@ -66,6 +70,7 @@ const RelayIndexPage: NextPage<StaticProps> = ({
   relayCensorshipPerTimeFrame,
   topBuilders,
   topPayloads,
+  transactionCensorshipPerTimeFrame,
   validatorStats,
   validators,
 }) => {
@@ -78,6 +83,7 @@ const RelayIndexPage: NextPage<StaticProps> = ({
     relayCensorshipPerTimeFrame,
     topBuilders,
     topPayloads: topPayloads.map(parsePayload),
+    transactionCensorshipPerTimeFrame,
     validatorStats,
     validators: validators.map(parseValidator),
   };

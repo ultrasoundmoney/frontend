@@ -4,9 +4,7 @@
     "block_number": 16748503,
     "mined": "2023-03-03T14:14:11+00:00",
     "delay": 18,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -14,9 +12,7 @@
     "block_number": 16748360,
     "mined": "2023-03-03T13:45:23+00:00",
     "delay": 17,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -24,9 +20,7 @@
     "block_number": 16748346,
     "mined": "2023-03-03T13:42:35+00:00",
     "delay": 17,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -34,9 +28,7 @@
     "block_number": 16748305,
     "mined": "2023-03-03T13:34:23+00:00",
     "delay": 22,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -44,9 +36,7 @@
     "block_number": 16747816,
     "mined": "2023-03-03T11:54:35+00:00",
     "delay": 34,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -54,9 +44,7 @@
     "block_number": 16747786,
     "mined": "2023-03-03T11:48:35+00:00",
     "delay": 30,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -64,9 +52,7 @@
     "block_number": 16747639,
     "mined": "2023-03-03T11:18:35+00:00",
     "delay": 22,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -74,9 +60,7 @@
     "block_number": 16747592,
     "mined": "2023-03-03T11:09:11+00:00",
     "delay": 21,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -84,9 +68,7 @@
     "block_number": 16747568,
     "mined": "2023-03-03T11:04:23+00:00",
     "delay": 69,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 5
   },
   {
@@ -94,9 +76,7 @@
     "block_number": 16747291,
     "mined": "2023-03-03T10:07:47+00:00",
     "delay": 36,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -104,9 +84,7 @@
     "block_number": 16747283,
     "mined": "2023-03-03T10:06:11+00:00",
     "delay": 23,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -114,9 +92,7 @@
     "block_number": 16747279,
     "mined": "2023-03-03T10:05:23+00:00",
     "delay": 22,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -124,9 +100,7 @@
     "block_number": 16747269,
     "mined": "2023-03-03T10:03:23+00:00",
     "delay": 22,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -134,9 +108,7 @@
     "block_number": 16747259,
     "mined": "2023-03-03T10:01:23+00:00",
     "delay": 36,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -144,9 +116,7 @@
     "block_number": 16747259,
     "mined": "2023-03-03T10:01:23+00:00",
     "delay": 17,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -154,9 +124,7 @@
     "block_number": 16747251,
     "mined": "2023-03-03T09:59:47+00:00",
     "delay": 12,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -164,9 +132,7 @@
     "block_number": 16747242,
     "mined": "2023-03-03T09:57:59+00:00",
     "delay": 45,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -174,9 +140,7 @@
     "block_number": 16747238,
     "mined": "2023-03-03T09:57:11+00:00",
     "delay": 18,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -184,9 +148,7 @@
     "block_number": 16747222,
     "mined": "2023-03-03T09:53:59+00:00",
     "delay": 13,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -194,9 +156,7 @@
     "block_number": 16747216,
     "mined": "2023-03-03T09:52:47+00:00",
     "delay": 24,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -204,9 +164,7 @@
     "block_number": 16747209,
     "mined": "2023-03-03T09:51:23+00:00",
     "delay": 27,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -214,9 +172,7 @@
     "block_number": 16747040,
     "mined": "2023-03-03T09:17:23+00:00",
     "delay": 30,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -224,9 +180,7 @@
     "block_number": 16746831,
     "mined": "2023-03-03T08:35:35+00:00",
     "delay": 23,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -234,9 +188,7 @@
     "block_number": 16746720,
     "mined": "2023-03-03T08:13:23+00:00",
     "delay": 45,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -244,9 +196,7 @@
     "block_number": 16746643,
     "mined": "2023-03-03T07:57:47+00:00",
     "delay": 13,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -254,9 +204,7 @@
     "block_number": 16746628,
     "mined": "2023-03-03T07:54:47+00:00",
     "delay": 87,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 7
   },
   {
@@ -264,9 +212,7 @@
     "block_number": 16746509,
     "mined": "2023-03-03T07:30:35+00:00",
     "delay": 14,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -274,9 +220,7 @@
     "block_number": 16746415,
     "mined": "2023-03-03T07:11:23+00:00",
     "delay": 33,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -284,9 +228,7 @@
     "block_number": 16746226,
     "mined": "2023-03-03T06:33:11+00:00",
     "delay": 19,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -294,9 +236,7 @@
     "block_number": 16746218,
     "mined": "2023-03-03T06:31:35+00:00",
     "delay": 72,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 5
   },
   {
@@ -304,9 +244,7 @@
     "block_number": 16745944,
     "mined": "2023-03-03T05:36:11+00:00",
     "delay": 45,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -314,9 +252,7 @@
     "block_number": 16745878,
     "mined": "2023-03-03T05:22:59+00:00",
     "delay": 23,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -324,9 +260,7 @@
     "block_number": 16745855,
     "mined": "2023-03-03T05:18:23+00:00",
     "delay": 27,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -334,9 +268,7 @@
     "block_number": 16745838,
     "mined": "2023-03-03T05:14:59+00:00",
     "delay": 47,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -344,9 +276,7 @@
     "block_number": 16745828,
     "mined": "2023-03-03T05:12:59+00:00",
     "delay": 17,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -354,9 +284,7 @@
     "block_number": 16745819,
     "mined": "2023-03-03T05:11:11+00:00",
     "delay": 17,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -364,9 +292,7 @@
     "block_number": 16745784,
     "mined": "2023-03-03T05:04:11+00:00",
     "delay": 13,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -374,9 +300,7 @@
     "block_number": 16745771,
     "mined": "2023-03-03T05:01:35+00:00",
     "delay": 18,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -384,9 +308,7 @@
     "block_number": 16745745,
     "mined": "2023-03-03T04:56:23+00:00",
     "delay": 31,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -394,9 +316,7 @@
     "block_number": 16745388,
     "mined": "2023-03-03T03:44:47+00:00",
     "delay": 15,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -404,9 +324,7 @@
     "block_number": 16745362,
     "mined": "2023-03-03T03:39:35+00:00",
     "delay": 32,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -414,9 +332,7 @@
     "block_number": 16745131,
     "mined": "2023-03-03T02:52:47+00:00",
     "delay": 18,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -424,9 +340,7 @@
     "block_number": 16745045,
     "mined": "2023-03-03T02:35:23+00:00",
     "delay": 19,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -434,9 +348,7 @@
     "block_number": 16744770,
     "mined": "2023-03-03T01:39:11+00:00",
     "delay": 61,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 4
   },
   {
@@ -444,9 +356,7 @@
     "block_number": 16744652,
     "mined": "2023-03-03T01:14:35+00:00",
     "delay": 38,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -454,9 +364,7 @@
     "block_number": 16744554,
     "mined": "2023-03-03T00:54:47+00:00",
     "delay": 43,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -464,9 +372,7 @@
     "block_number": 16744363,
     "mined": "2023-03-03T00:14:59+00:00",
     "delay": 27,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -474,9 +380,7 @@
     "block_number": 16744348,
     "mined": "2023-03-03T00:11:59+00:00",
     "delay": 27,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -484,9 +388,7 @@
     "block_number": 16744273,
     "mined": "2023-03-02T23:56:59+00:00",
     "delay": 22,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -494,9 +396,7 @@
     "block_number": 16743606,
     "mined": "2023-03-02T21:42:23+00:00",
     "delay": 28,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -504,9 +404,7 @@
     "block_number": 16743587,
     "mined": "2023-03-02T21:38:35+00:00",
     "delay": 16,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -514,9 +412,7 @@
     "block_number": 16743543,
     "mined": "2023-03-02T21:29:35+00:00",
     "delay": 23,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -524,9 +420,7 @@
     "block_number": 16743273,
     "mined": "2023-03-02T20:35:23+00:00",
     "delay": 15,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -534,9 +428,7 @@
     "block_number": 16743226,
     "mined": "2023-03-02T20:25:59+00:00",
     "delay": 61,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 5
   },
   {
@@ -544,9 +436,7 @@
     "block_number": 16742931,
     "mined": "2023-03-02T19:25:59+00:00",
     "delay": 24,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -554,9 +444,7 @@
     "block_number": 16742519,
     "mined": "2023-03-02T18:02:35+00:00",
     "delay": 20,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -564,9 +452,7 @@
     "block_number": 16742501,
     "mined": "2023-03-02T17:58:59+00:00",
     "delay": 44,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -574,9 +460,7 @@
     "block_number": 16742476,
     "mined": "2023-03-02T17:53:59+00:00",
     "delay": 56,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 4
   },
   {
@@ -584,9 +468,7 @@
     "block_number": 16742461,
     "mined": "2023-03-02T17:50:59+00:00",
     "delay": 54,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -594,9 +476,7 @@
     "block_number": 16742439,
     "mined": "2023-03-02T17:46:23+00:00",
     "delay": 16,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -604,9 +484,7 @@
     "block_number": 16741996,
     "mined": "2023-03-02T16:14:59+00:00",
     "delay": 27,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -614,9 +492,7 @@
     "block_number": 16741605,
     "mined": "2023-03-02T14:55:47+00:00",
     "delay": 35,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -624,9 +500,7 @@
     "block_number": 16741590,
     "mined": "2023-03-02T14:52:47+00:00",
     "delay": 46,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -634,9 +508,7 @@
     "block_number": 16741482,
     "mined": "2023-03-02T14:30:47+00:00",
     "delay": 23,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -644,9 +516,7 @@
     "block_number": 16741351,
     "mined": "2023-03-02T14:04:11+00:00",
     "delay": 68,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 5
   },
   {
@@ -654,9 +524,7 @@
     "block_number": 16741178,
     "mined": "2023-03-02T13:28:47+00:00",
     "delay": 19,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -664,9 +532,7 @@
     "block_number": 16741167,
     "mined": "2023-03-02T13:26:35+00:00",
     "delay": 31,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -674,9 +540,7 @@
     "block_number": 16741140,
     "mined": "2023-03-02T13:21:11+00:00",
     "delay": 23,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -684,9 +548,7 @@
     "block_number": 16740884,
     "mined": "2023-03-02T12:28:23+00:00",
     "delay": 19,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -694,9 +556,7 @@
     "block_number": 16740601,
     "mined": "2023-03-02T11:31:23+00:00",
     "delay": 56,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 4
   },
   {
@@ -704,9 +564,7 @@
     "block_number": 16740521,
     "mined": "2023-03-02T11:15:11+00:00",
     "delay": 68,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 5
   },
   {
@@ -714,9 +572,7 @@
     "block_number": 16740515,
     "mined": "2023-03-02T11:13:59+00:00",
     "delay": 21,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -724,9 +580,7 @@
     "block_number": 16740111,
     "mined": "2023-03-02T09:52:23+00:00",
     "delay": 31,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -734,9 +588,7 @@
     "block_number": 16740020,
     "mined": "2023-03-02T09:33:59+00:00",
     "delay": 54,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 4
   },
   {
@@ -744,9 +596,7 @@
     "block_number": 16739998,
     "mined": "2023-03-02T09:29:35+00:00",
     "delay": 46,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -754,9 +604,7 @@
     "block_number": 16739965,
     "mined": "2023-03-02T09:22:59+00:00",
     "delay": 15,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -764,9 +612,7 @@
     "block_number": 16739959,
     "mined": "2023-03-02T09:21:35+00:00",
     "delay": 32,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -774,9 +620,7 @@
     "block_number": 16739912,
     "mined": "2023-03-02T09:12:11+00:00",
     "delay": 55,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 4
   },
   {
@@ -784,9 +628,7 @@
     "block_number": 16739897,
     "mined": "2023-03-02T09:09:11+00:00",
     "delay": 17,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -794,9 +636,7 @@
     "block_number": 16739888,
     "mined": "2023-03-02T09:07:23+00:00",
     "delay": 21,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -804,9 +644,7 @@
     "block_number": 16739849,
     "mined": "2023-03-02T08:59:35+00:00",
     "delay": 17,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -814,9 +652,7 @@
     "block_number": 16739842,
     "mined": "2023-03-02T08:58:11+00:00",
     "delay": 31,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -824,9 +660,7 @@
     "block_number": 16739790,
     "mined": "2023-03-02T08:47:23+00:00",
     "delay": 34,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -834,9 +668,7 @@
     "block_number": 16739780,
     "mined": "2023-03-02T08:45:23+00:00",
     "delay": 29,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -844,9 +676,7 @@
     "block_number": 16739768,
     "mined": "2023-03-02T08:42:59+00:00",
     "delay": 33,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -854,9 +684,7 @@
     "block_number": 16739758,
     "mined": "2023-03-02T08:40:59+00:00",
     "delay": 42,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -864,9 +692,7 @@
     "block_number": 16739738,
     "mined": "2023-03-02T08:36:59+00:00",
     "delay": 19,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -874,9 +700,7 @@
     "block_number": 16739735,
     "mined": "2023-03-02T08:36:23+00:00",
     "delay": 24,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -884,9 +708,7 @@
     "block_number": 16739731,
     "mined": "2023-03-02T08:35:35+00:00",
     "delay": 30,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -894,9 +716,7 @@
     "block_number": 16739711,
     "mined": "2023-03-02T08:31:35+00:00",
     "delay": 48,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -904,9 +724,7 @@
     "block_number": 16739692,
     "mined": "2023-03-02T08:27:47+00:00",
     "delay": 21,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -914,9 +732,7 @@
     "block_number": 16739634,
     "mined": "2023-03-02T08:16:11+00:00",
     "delay": 35,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -924,9 +740,7 @@
     "block_number": 16739626,
     "mined": "2023-03-02T08:14:35+00:00",
     "delay": 14,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -934,9 +748,7 @@
     "block_number": 16739591,
     "mined": "2023-03-02T08:07:35+00:00",
     "delay": 32,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -944,9 +756,7 @@
     "block_number": 16739542,
     "mined": "2023-03-02T07:57:47+00:00",
     "delay": 22,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -954,9 +764,7 @@
     "block_number": 16739542,
     "mined": "2023-03-02T07:57:47+00:00",
     "delay": 23,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -964,9 +772,7 @@
     "block_number": 16739503,
     "mined": "2023-03-02T07:49:35+00:00",
     "delay": 96,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 7
   },
   {
@@ -974,9 +780,7 @@
     "block_number": 16739503,
     "mined": "2023-03-02T07:49:35+00:00",
     "delay": 96,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 7
   },
   {
@@ -984,9 +788,7 @@
     "block_number": 16739456,
     "mined": "2023-03-02T07:39:47+00:00",
     "delay": 14,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -994,9 +796,7 @@
     "block_number": 16739454,
     "mined": "2023-03-02T07:39:23+00:00",
     "delay": 28,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1004,9 +804,7 @@
     "block_number": 16739396,
     "mined": "2023-03-02T07:27:47+00:00",
     "delay": 17,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1014,9 +812,7 @@
     "block_number": 16739345,
     "mined": "2023-03-02T07:17:11+00:00",
     "delay": 39,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -1024,9 +820,7 @@
     "block_number": 16739263,
     "mined": "2023-03-02T07:00:47+00:00",
     "delay": 51,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 4
   },
   {
@@ -1034,9 +828,7 @@
     "block_number": 16739239,
     "mined": "2023-03-02T06:55:59+00:00",
     "delay": 14,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1044,9 +836,7 @@
     "block_number": 16739232,
     "mined": "2023-03-02T06:54:35+00:00",
     "delay": 22,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1054,9 +844,7 @@
     "block_number": 16739227,
     "mined": "2023-03-02T06:53:35+00:00",
     "delay": 13,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1064,9 +852,7 @@
     "block_number": 16739227,
     "mined": "2023-03-02T06:53:35+00:00",
     "delay": 16,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1074,9 +860,7 @@
     "block_number": 16739225,
     "mined": "2023-03-02T06:53:11+00:00",
     "delay": 17,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1084,9 +868,7 @@
     "block_number": 16739220,
     "mined": "2023-03-02T06:52:11+00:00",
     "delay": 16,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1094,9 +876,7 @@
     "block_number": 16739217,
     "mined": "2023-03-02T06:51:35+00:00",
     "delay": 23,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1104,9 +884,7 @@
     "block_number": 16739214,
     "mined": "2023-03-02T06:50:59+00:00",
     "delay": 25,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1114,9 +892,7 @@
     "block_number": 16739117,
     "mined": "2023-03-02T06:30:59+00:00",
     "delay": 25,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1124,9 +900,7 @@
     "block_number": 16738538,
     "mined": "2023-03-02T04:33:47+00:00",
     "delay": 43,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -1134,9 +908,7 @@
     "block_number": 16738286,
     "mined": "2023-03-02T03:42:23+00:00",
     "delay": 24,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1144,9 +916,7 @@
     "block_number": 16738104,
     "mined": "2023-03-02T03:05:47+00:00",
     "delay": 18,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1154,9 +924,7 @@
     "block_number": 16738104,
     "mined": "2023-03-02T03:05:47+00:00",
     "delay": 14,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1164,9 +932,7 @@
     "block_number": 16737657,
     "mined": "2023-03-02T01:35:59+00:00",
     "delay": 19,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1174,9 +940,7 @@
     "block_number": 16737548,
     "mined": "2023-03-02T01:13:35+00:00",
     "delay": 55,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 4
   },
   {
@@ -1184,9 +948,7 @@
     "block_number": 16737502,
     "mined": "2023-03-02T01:04:23+00:00",
     "delay": 34,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1194,9 +956,7 @@
     "block_number": 16736906,
     "mined": "2023-03-01T23:02:47+00:00",
     "delay": 24,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1204,9 +964,7 @@
     "block_number": 16736892,
     "mined": "2023-03-01T22:59:59+00:00",
     "delay": 97,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 8
   },
   {
@@ -1214,9 +972,7 @@
     "block_number": 16736798,
     "mined": "2023-03-01T22:40:59+00:00",
     "delay": 31,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1224,9 +980,7 @@
     "block_number": 16736738,
     "mined": "2023-03-01T22:28:47+00:00",
     "delay": 39,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1234,9 +988,7 @@
     "block_number": 16736035,
     "mined": "2023-03-01T20:06:35+00:00",
     "delay": 34,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1244,9 +996,7 @@
     "block_number": 16736027,
     "mined": "2023-03-01T20:04:59+00:00",
     "delay": 13,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1254,9 +1004,7 @@
     "block_number": 16735736,
     "mined": "2023-03-01T19:06:11+00:00",
     "delay": 53,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 4
   },
   {
@@ -1264,9 +1012,7 @@
     "block_number": 16735719,
     "mined": "2023-03-01T19:02:47+00:00",
     "delay": 72,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 5
   },
   {
@@ -1274,9 +1020,7 @@
     "block_number": 16734803,
     "mined": "2023-03-01T15:57:35+00:00",
     "delay": 46,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -1284,9 +1028,7 @@
     "block_number": 16734312,
     "mined": "2023-03-01T14:18:11+00:00",
     "delay": 22,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1294,9 +1036,7 @@
     "block_number": 16734136,
     "mined": "2023-03-01T13:42:11+00:00",
     "delay": 27,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1304,9 +1044,7 @@
     "block_number": 16734099,
     "mined": "2023-03-01T13:34:47+00:00",
     "delay": 108,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 8
   },
   {
@@ -1314,9 +1052,7 @@
     "block_number": 16733656,
     "mined": "2023-03-01T12:05:11+00:00",
     "delay": 141,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 10
   },
   {
@@ -1324,9 +1060,7 @@
     "block_number": 16733184,
     "mined": "2023-03-01T10:29:23+00:00",
     "delay": 20,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1334,9 +1068,7 @@
     "block_number": 16733046,
     "mined": "2023-03-01T10:01:35+00:00",
     "delay": 19,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1344,9 +1076,7 @@
     "block_number": 16733032,
     "mined": "2023-03-01T09:58:47+00:00",
     "delay": 47,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -1354,9 +1084,7 @@
     "block_number": 16732745,
     "mined": "2023-03-01T09:00:35+00:00",
     "delay": 15,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1364,9 +1092,7 @@
     "block_number": 16732668,
     "mined": "2023-03-01T08:45:11+00:00",
     "delay": 31,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1374,9 +1100,7 @@
     "block_number": 16732431,
     "mined": "2023-03-01T07:57:35+00:00",
     "delay": 58,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 4
   },
   {
@@ -1384,9 +1108,7 @@
     "block_number": 16732379,
     "mined": "2023-03-01T07:46:59+00:00",
     "delay": 56,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 4
   },
   {
@@ -1394,9 +1116,7 @@
     "block_number": 16731756,
     "mined": "2023-03-01T05:41:11+00:00",
     "delay": 25,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1404,9 +1124,7 @@
     "block_number": 16731517,
     "mined": "2023-03-01T04:52:59+00:00",
     "delay": 54.5,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 4
   },
   {
@@ -1414,9 +1132,7 @@
     "block_number": 16730981,
     "mined": "2023-03-01T03:04:11+00:00",
     "delay": 24,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1424,9 +1140,7 @@
     "block_number": 16730470,
     "mined": "2023-03-01T01:20:59+00:00",
     "delay": 23,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1434,9 +1148,7 @@
     "block_number": 16729754,
     "mined": "2023-02-28T22:55:35+00:00",
     "delay": 34,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1444,9 +1156,7 @@
     "block_number": 16729742,
     "mined": "2023-02-28T22:53:11+00:00",
     "delay": 32,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1454,9 +1164,7 @@
     "block_number": 16729531,
     "mined": "2023-02-28T22:10:23+00:00",
     "delay": 21,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1464,9 +1172,7 @@
     "block_number": 16729509,
     "mined": "2023-02-28T22:05:59+00:00",
     "delay": 32,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1474,9 +1180,7 @@
     "block_number": 16729476,
     "mined": "2023-02-28T21:59:23+00:00",
     "delay": 31,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1484,9 +1188,7 @@
     "block_number": 16729465,
     "mined": "2023-02-28T21:57:11+00:00",
     "delay": 34,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1494,9 +1196,7 @@
     "block_number": 16729399,
     "mined": "2023-02-28T21:43:47+00:00",
     "delay": 48,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -1504,9 +1204,7 @@
     "block_number": 16729316,
     "mined": "2023-02-28T21:26:59+00:00",
     "delay": 22,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1514,9 +1212,7 @@
     "block_number": 16729297,
     "mined": "2023-02-28T21:23:11+00:00",
     "delay": 24,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1524,9 +1220,7 @@
     "block_number": 16729069,
     "mined": "2023-02-28T20:36:35+00:00",
     "delay": 94,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 7
   },
   {
@@ -1534,9 +1228,7 @@
     "block_number": 16729052,
     "mined": "2023-02-28T20:32:59+00:00",
     "delay": 75,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 6
   },
   {
@@ -1544,9 +1236,7 @@
     "block_number": 16728339,
     "mined": "2023-02-28T18:08:23+00:00",
     "delay": 31,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1554,9 +1244,7 @@
     "block_number": 16728312,
     "mined": "2023-02-28T18:02:47+00:00",
     "delay": 48,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -1564,9 +1252,7 @@
     "block_number": 16728163,
     "mined": "2023-02-28T17:32:47+00:00",
     "delay": 36,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -1574,9 +1260,7 @@
     "block_number": 16728119,
     "mined": "2023-02-28T17:23:59+00:00",
     "delay": 65,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 4
   },
   {
@@ -1584,9 +1268,7 @@
     "block_number": 16727967,
     "mined": "2023-02-28T16:52:47+00:00",
     "delay": 44,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -1594,9 +1276,7 @@
     "block_number": 16727953,
     "mined": "2023-02-28T16:49:59+00:00",
     "delay": 33,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1604,9 +1284,7 @@
     "block_number": 16727942,
     "mined": "2023-02-28T16:47:47+00:00",
     "delay": 35,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1614,9 +1292,7 @@
     "block_number": 16727932,
     "mined": "2023-02-28T16:45:47+00:00",
     "delay": 20,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1624,9 +1300,7 @@
     "block_number": 16727870,
     "mined": "2023-02-28T16:33:23+00:00",
     "delay": 32,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1634,9 +1308,7 @@
     "block_number": 16727866,
     "mined": "2023-02-28T16:32:35+00:00",
     "delay": 26,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1644,9 +1316,7 @@
     "block_number": 16727836,
     "mined": "2023-02-28T16:26:23+00:00",
     "delay": 16,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1654,9 +1324,7 @@
     "block_number": 16727671,
     "mined": "2023-02-28T15:53:11+00:00",
     "delay": 37,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -1664,9 +1332,7 @@
     "block_number": 16727365,
     "mined": "2023-02-28T14:51:11+00:00",
     "delay": 31,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1674,9 +1340,7 @@
     "block_number": 16727290,
     "mined": "2023-02-28T14:36:11+00:00",
     "delay": 78,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 6
   },
   {
@@ -1684,9 +1348,7 @@
     "block_number": 16727047,
     "mined": "2023-02-28T13:47:11+00:00",
     "delay": 15,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1694,9 +1356,7 @@
     "block_number": 16726878,
     "mined": "2023-02-28T13:12:59+00:00",
     "delay": 31,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1704,9 +1364,7 @@
     "block_number": 16726811,
     "mined": "2023-02-28T12:59:35+00:00",
     "delay": 43,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -1714,9 +1372,7 @@
     "block_number": 16726641,
     "mined": "2023-02-28T12:25:11+00:00",
     "delay": 61,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 5
   },
   {
@@ -1724,9 +1380,7 @@
     "block_number": 16726459,
     "mined": "2023-02-28T11:48:11+00:00",
     "delay": 46,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -1734,9 +1388,7 @@
     "block_number": 16726446,
     "mined": "2023-02-28T11:45:35+00:00",
     "delay": 23,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1744,9 +1396,7 @@
     "block_number": 16726201,
     "mined": "2023-02-28T10:55:59+00:00",
     "delay": 16,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1754,9 +1404,7 @@
     "block_number": 16726162,
     "mined": "2023-02-28T10:47:59+00:00",
     "delay": 21,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1764,9 +1412,7 @@
     "block_number": 16725913,
     "mined": "2023-02-28T09:57:35+00:00",
     "delay": 22,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1774,9 +1420,7 @@
     "block_number": 16725883,
     "mined": "2023-02-28T09:51:23+00:00",
     "delay": 16,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1784,9 +1428,7 @@
     "block_number": 16725700,
     "mined": "2023-02-28T09:14:35+00:00",
     "delay": 34,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1794,9 +1436,7 @@
     "block_number": 16725694,
     "mined": "2023-02-28T09:13:23+00:00",
     "delay": 35,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1804,9 +1444,7 @@
     "block_number": 16725682,
     "mined": "2023-02-28T09:10:59+00:00",
     "delay": 31,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1814,9 +1452,7 @@
     "block_number": 16725559,
     "mined": "2023-02-28T08:46:23+00:00",
     "delay": 22,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1824,9 +1460,7 @@
     "block_number": 16725531,
     "mined": "2023-02-28T08:40:47+00:00",
     "delay": 16,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1834,9 +1468,7 @@
     "block_number": 16725510,
     "mined": "2023-02-28T08:36:35+00:00",
     "delay": 27,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1844,9 +1476,7 @@
     "block_number": 16725479,
     "mined": "2023-02-28T08:30:11+00:00",
     "delay": 19,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1854,9 +1484,7 @@
     "block_number": 16725465,
     "mined": "2023-02-28T08:27:23+00:00",
     "delay": 24,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1864,9 +1492,7 @@
     "block_number": 16725454,
     "mined": "2023-02-28T08:25:11+00:00",
     "delay": 23,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1874,9 +1500,7 @@
     "block_number": 16725251,
     "mined": "2023-02-28T07:43:59+00:00",
     "delay": 16,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1884,9 +1508,7 @@
     "block_number": 16725244,
     "mined": "2023-02-28T07:42:35+00:00",
     "delay": 42,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -1894,9 +1516,7 @@
     "block_number": 16725203,
     "mined": "2023-02-28T07:34:23+00:00",
     "delay": 25,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1904,9 +1524,7 @@
     "block_number": 16725203,
     "mined": "2023-02-28T07:34:23+00:00",
     "delay": 24,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1914,9 +1532,7 @@
     "block_number": 16725170,
     "mined": "2023-02-28T07:27:23+00:00",
     "delay": 20,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1924,9 +1540,7 @@
     "block_number": 16725122,
     "mined": "2023-02-28T07:17:47+00:00",
     "delay": 27,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1934,9 +1548,7 @@
     "block_number": 16724991,
     "mined": "2023-02-28T06:50:59+00:00",
     "delay": 78,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 6
   },
   {
@@ -1944,9 +1556,7 @@
     "block_number": 16724950,
     "mined": "2023-02-28T06:42:47+00:00",
     "delay": 15,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1954,9 +1564,7 @@
     "block_number": 16724763,
     "mined": "2023-02-28T06:05:11+00:00",
     "delay": 13,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   },
   {
@@ -1964,9 +1572,7 @@
     "block_number": 16724306,
     "mined": "2023-02-28T04:31:59+00:00",
     "delay": 58,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 4
   },
   {
@@ -1974,9 +1580,7 @@
     "block_number": 16723951,
     "mined": "2023-02-28T03:20:23+00:00",
     "delay": 46,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 3
   },
   {
@@ -1984,9 +1588,7 @@
     "block_number": 16723947,
     "mined": "2023-02-28T03:19:35+00:00",
     "delay": 35,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 2
   },
   {
@@ -1994,9 +1596,8 @@
     "block_number": 16723700,
     "mined": "2023-02-28T02:29:35+00:00",
     "delay": 19,
-    "blacklist": [
-      "ofac"
-    ],
+    "blacklist": ["ofac"],
     "blocksdelay": 1
   }
 ]
+
