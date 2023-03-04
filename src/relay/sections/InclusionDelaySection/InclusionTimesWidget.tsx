@@ -1,4 +1,4 @@
-import type { FC, ReactNode } from "react";
+import type { FC } from "react";
 import { useReducer } from "react";
 import Skeleton from "react-loading-skeleton";
 import type { TimeFrame } from "../../../mainsite/time-frames";
@@ -14,15 +14,10 @@ import sleuthSvg from "../../../assets/sleuth-own.svg";
 import colors from "../../../colors";
 import { BaseText } from "../../../components/Texts";
 import { formatOneDecimal, formatZeroDecimals } from "../../../format";
-import {
-  WidgetBackground,
-  WidgetTitle,
-} from "../../../components/WidgetSubcomponents";
-import TimeFrameIndicator from "../../../mainsite/components/TimeFrameIndicator";
-import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
 import LabelText from "../../../components/TextsNext/LabelText";
 import Image from "next/image";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
+import WidgetBase from "../../components/WidgetBase";
 
 type StaticDetails = {
   imgAlt: string;
@@ -220,27 +215,6 @@ const reducer = (state: CategoryHighlights, action: HighlightAction) => {
       throw new Error("Invalid action type");
   }
 };
-
-const WidgetBase: FC<{
-  className?: string;
-  children: ReactNode;
-  onClickTimeFrame?: () => void;
-  timeFrame: TimeFrame;
-  title: string;
-}> = ({ className = "", children, timeFrame, title, onClickTimeFrame }) => (
-  <WidgetErrorBoundary title={title}>
-    <WidgetBackground className={className}>
-      <div className="flex items-baseline justify-between">
-        <WidgetTitle>{title}</WidgetTitle>
-        <TimeFrameIndicator
-          onClickTimeFrame={onClickTimeFrame}
-          timeFrame={timeFrame}
-        />
-      </div>
-      {children}
-    </WidgetBackground>
-  </WidgetErrorBoundary>
-);
 
 export type Category =
   | "optimal"
