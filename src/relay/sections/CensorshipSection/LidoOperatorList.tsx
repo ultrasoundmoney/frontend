@@ -6,8 +6,8 @@ import {
   WidgetTitle,
 } from "../../../components/WidgetSubcomponents";
 import { formatPercentOneDecimal } from "../../../format";
-import type { LidoOperatorCensorship } from "../../censorship-data/lido_operator_censorship";
 import StyledList from "../../components/StyledList";
+import type { LidoOperatorCensorship } from "./LidoOperatorCensorship";
 
 type Props = {
   lidoOperatorCensorship: LidoOperatorCensorship;

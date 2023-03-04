@@ -2,6 +2,10 @@ import { A, Monoid, N, OrdM, pipe } from "../../fp";
 import operators_7d from "./operators_7d.json";
 import operators_30d from "./operators_30d.json";
 import { getRelayCensorship } from "./relay_censorship";
+import type {
+  LidoOperatorCensorship,
+  Operator,
+} from "../sections/CensorshipSection/LidoOperatorCensorship";
 
 type RelayId = string;
 
@@ -26,23 +30,6 @@ const rawData: RawData = {
   d30: {
     operators: operators_30d,
   },
-};
-
-export type Operator = {
-  censors: boolean;
-  description?: string;
-  dominance: number;
-  id: string;
-  name: string;
-  non_censoring_relays_connected_count: number;
-};
-
-export type LidoOperatorCensorship = {
-  censoring_operator_count: number;
-  dominance: number;
-  non_censoring_relays_count: number;
-  operator_count: number;
-  operators: Operator[];
 };
 
 export type LidoOperatorCensorshipPerTimeFrame = Record<

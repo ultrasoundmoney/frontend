@@ -7,12 +7,29 @@ import {
 } from "../../../components/WidgetSubcomponents";
 import { formatPercentOneDecimal } from "../../../format";
 import TimeFrameIndicator from "../../../mainsite/components/TimeFrameIndicator";
-import { LidoOperatorCensorship } from "../../censorship-data/lido_operator_censorship";
+import { TimeFrame } from "../../../mainsite/time-frames";
 import TinyStatus from "../../components/TinyStatus";
+
+export type Operator = {
+  censors: boolean;
+  description?: string;
+  dominance: number;
+  id: string;
+  name: string;
+  non_censoring_relays_connected_count: number;
+};
+
+export type LidoOperatorCensorship = {
+  censoring_operator_count: number;
+  dominance: number;
+  non_censoring_relays_count: number;
+  operator_count: number;
+  operators: Operator[];
+};
 
 type Props = {
   lidoOperatorCensorship: LidoOperatorCensorship;
-  timeFrame: "d7";
+  timeFrame: TimeFrame;
 };
 
 const LidoOperatorCensorship: FC<Props> = ({

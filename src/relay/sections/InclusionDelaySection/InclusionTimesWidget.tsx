@@ -23,10 +23,6 @@ import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
 import LabelText from "../../../components/TextsNext/LabelText";
 import Image from "next/image";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
-import type {
-  Category,
-  InclusionTime,
-} from "../../censorship-data/inclusion_times";
 
 type StaticDetails = {
   imgAlt: string;
@@ -245,6 +241,24 @@ const WidgetBase: FC<{
     </WidgetBackground>
   </WidgetErrorBoundary>
 );
+
+export type Category =
+  | "optimal"
+  | "congestion"
+  | "unknown"
+  | "private"
+  | "low_base_fee"
+  | "low_tip"
+  | "sanctions_us"
+  | "sanctions_uk";
+
+export type InclusionTime = {
+  average_time: number;
+  description?: string;
+  id: Category;
+  percent: number;
+  transaction_count: number;
+};
 
 type Props = {
   inclusionTimes: InclusionTime[];

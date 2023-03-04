@@ -10,6 +10,7 @@ import MainTitle from "../components/MainTitle";
 import { getEnv } from "../config";
 import { FeatureFlagsContext, useFeatureFlags } from "../feature-flags";
 import ContactSection from "../sections/ContactSection";
+import type { BuilderCensorshipPerTimeFrame } from "./censorship-data/builder_censorship";
 import type { InclusionTimesPerTimeFrame } from "./censorship-data/inclusion_times";
 import type { LidoOperatorCensorshipPerTimeFrame } from "./censorship-data/lido_operator_censorship";
 import AddressWidget from "./components/AddressWidget";
@@ -29,6 +30,7 @@ import type {
 } from "./types";
 
 export type RelayDashboardProps = {
+  builderCensorshipPerTimeFrame: BuilderCensorshipPerTimeFrame;
   inclusionTimesPerTimeFrame: InclusionTimesPerTimeFrame;
   lidoOperatorCensorshipPerTimeFrame: LidoOperatorCensorshipPerTimeFrame;
   payloadStats: PayloadStats;
@@ -43,6 +45,7 @@ export type RelayDashboardProps = {
 const env = getEnv();
 
 const RelayDashboard: FC<RelayDashboardProps> = ({
+  builderCensorshipPerTimeFrame,
   inclusionTimesPerTimeFrame,
   lidoOperatorCensorshipPerTimeFrame,
   payloadStats,
@@ -102,6 +105,7 @@ const RelayDashboard: FC<RelayDashboardProps> = ({
             </div>
           </div>
           <CensorshipSection
+            builderCensorshipPerTimeFrame={builderCensorshipPerTimeFrame}
             lidoOperatorCensorshipPerTimeFrame={
               lidoOperatorCensorshipPerTimeFrame
             }

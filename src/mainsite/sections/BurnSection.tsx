@@ -1,17 +1,17 @@
 import type { FC } from "react";
 import { useCallback, useState } from "react";
+import Section from "../../components/Section";
+import TimeFrameControl from "../../components/TimeFrameControl";
+import { WidgetTitle } from "../../components/WidgetSubcomponents";
+import type { Unit } from "../../denomination";
 import BurnCategoryWidget from "../components/BurnCategoryWidget";
 import BurnLeaderboard from "../components/BurnLeaderboard";
 import BurnRecords from "../components/BurnRecords";
 import BurnTotal from "../components/BurnTotal";
 import CurrencyControl from "../components/CurrencyControl";
 import LatestBlocks from "../components/LatestBlocks";
-import TimeFrameControl from "../components/TimeFrameControl";
-import { WidgetTitle } from "../../components/WidgetSubcomponents";
-import type { Unit } from "../../denomination";
 import type { TimeFrame, TimeFrameNoMerge } from "../time-frames";
 import { getNextTimeFrameNoMerge } from "../time-frames";
-import Section from "../../components/Section";
 
 const BurnSection: FC = () => {
   const [timeFrame, setTimeFrame] = useState<TimeFrameNoMerge>("d1");
@@ -41,6 +41,7 @@ const BurnSection: FC = () => {
             <TimeFrameControl
               selectedTimeframe={timeFrame}
               onSetTimeFrame={handleSetTimeFrame}
+              version="no_merge"
             />
           </div>
           <div className="row-start-2 flex flex-col gap-y-4 md:row-start-1 lg:flex-row lg:items-center lg:gap-x-4">

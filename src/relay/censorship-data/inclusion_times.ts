@@ -1,6 +1,10 @@
 import inclusion_delay_d7 from "./inclusion_delay_7d.json";
 import inclusion_delay_d30 from "./inclusion_delay_30d.json";
 import { A, N, OrdM, pipe } from "../../fp";
+import type {
+  Category,
+  InclusionTime,
+} from "../sections/InclusionDelaySection/InclusionTimesWidget";
 
 type InclusionTimeRaw = {
   avg_delay: number;
@@ -14,16 +18,6 @@ const rawData: Record<"d7" | "d30", InclusionTimeRaw[]> = {
   d30: inclusion_delay_d30,
 };
 
-export type Category =
-  | "optimal"
-  | "congestion"
-  | "unknown"
-  | "private"
-  | "low_base_fee"
-  | "low_tip"
-  | "sanctions_us"
-  | "sanctions_uk";
-
 const rawCategoryMap: Record<string, Category> = {
   congested: "congestion",
   low_base_fee: "low_base_fee",
@@ -33,14 +27,6 @@ const rawCategoryMap: Record<string, Category> = {
   ofac: "sanctions_us",
   ofac_delayed: "sanctions_us",
   unknown: "unknown",
-};
-
-export type InclusionTime = {
-  average_time: number;
-  description?: string;
-  id: Category;
-  percent: number;
-  transaction_count: number;
 };
 
 export type InclusionTimesPerTimeFrame = Record<"d7" | "d30", InclusionTime[]>;

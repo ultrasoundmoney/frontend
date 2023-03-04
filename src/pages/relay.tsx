@@ -6,6 +6,8 @@ import BasicErrorBoundary from "../components/BasicErrorBoundary";
 import { pipe, T, TAlt } from "../fp";
 import type { ApiPayload, ApiPayloadStats, ApiValidator } from "../relay/api";
 import * as Api from "../relay/api";
+import type { BuilderCensorshipPerTimeFrame } from "../relay/censorship-data/builder_censorship";
+import { builderCensorshipPerTimeFrame as builderCensorshipPerTimeFrameData } from "../relay/censorship-data/builder_censorship";
 import type { InclusionTimesPerTimeFrame } from "../relay/censorship-data/inclusion_times";
 import { inclusionTimesPerTimeFrame as inclusionTimesPerTimeFrameData } from "../relay/censorship-data/inclusion_times";
 import type { LidoOperatorCensorshipPerTimeFrame } from "../relay/censorship-data/lido_operator_censorship";
@@ -21,6 +23,7 @@ import {
 } from "../relay/types";
 
 type StaticProps = {
+  builderCensorshipPerTimeFrame: BuilderCensorshipPerTimeFrame;
   inclusionTimesPerTimeFrame: InclusionTimesPerTimeFrame;
   lidoOperatorCensorshipPerTimeFrame: LidoOperatorCensorshipPerTimeFrame;
   payloadStats: ApiPayloadStats;
@@ -43,6 +46,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = pipe(
   }),
   T.map((props) => ({
     props: {
+      builderCensorshipPerTimeFrame: builderCensorshipPerTimeFrameData,
       inclusionTimesPerTimeFrame: inclusionTimesPerTimeFrameData,
       relayCensorshipPerTimeFrame: relayCensorshipPerTimeFrameData,
       lidoOperatorCensorshipPerTimeFrame:
@@ -54,6 +58,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = pipe(
 );
 
 const RelayIndexPage: NextPage<StaticProps> = ({
+  builderCensorshipPerTimeFrame,
   inclusionTimesPerTimeFrame,
   lidoOperatorCensorshipPerTimeFrame,
   payloadStats,
@@ -65,6 +70,7 @@ const RelayIndexPage: NextPage<StaticProps> = ({
   validators,
 }) => {
   const props = {
+    builderCensorshipPerTimeFrame,
     inclusionTimesPerTimeFrame,
     lidoOperatorCensorshipPerTimeFrame,
     payloadStats: parsePayloadStats(payloadStats),

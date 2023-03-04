@@ -7,6 +7,7 @@ import {
 } from "../../../components/WidgetSubcomponents";
 import { formatPercentOneDecimal } from "../../../format";
 import TimeFrameIndicator from "../../../mainsite/components/TimeFrameIndicator";
+import type { TimeFrame } from "../../../mainsite/time-frames";
 import TinyStatus from "../../components/TinyStatus";
 
 export type Relay = {
@@ -26,7 +27,7 @@ export type RelayCensorship = {
 };
 
 type Props = {
-  timeFrame: "d7";
+  timeFrame: TimeFrame;
   relayCensorship: RelayCensorship;
 };
 
