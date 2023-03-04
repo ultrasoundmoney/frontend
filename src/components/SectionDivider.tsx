@@ -8,6 +8,9 @@ const SectionDivider: FC<{
 }> = ({ link, title, subtitle }) => (
   <>
     <div className="h-16"></div>
+    <SectionTitle link={link} subtitle={subtitle}>
+      {title}
+    </SectionTitle>
     <div className="h-16"></div>
   </>
 );
