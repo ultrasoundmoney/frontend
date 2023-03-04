@@ -6,6 +6,12 @@ import type {
   LidoOperatorCensorship,
   Operator,
 } from "../sections/CensorshipSection/LidoOperatorCensorship";
+import lidoOperatorDetailsMapSource from "./lido_operators_details_map.json";
+
+const lidoOperatorDetailsMap = lidoOperatorDetailsMapSource as Record<
+  string,
+  { name: string; website: string }
+>;
 
 type RelayId = string;
 
@@ -107,14 +113,20 @@ const getOperatorCensorship = (
         // filtered above
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         id: operator.operator_id!,
+        name:
         // filtered above
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        name: operator.operator_id!,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-non-null-assertion
+          lidoOperatorDetailsMap[operator.operator_id!]?.name ??
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-non-null-assertion
+          operator.operator_id!,
         non_censoring_relays_connected_count: pipe(
           operator.array_agg,
           A.filter((id) => nonConsoringRelays.has(id)),
           A.size,
         ),
+
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-non-null-assertion
+        url: lidoOperatorDetailsMap[operator.operator_id!]?.website ?? null,
       }),
     ),
     A.sort(byDominanceDesc),
@@ -130,7 +142,7 @@ const getOperatorCensorship = (
 };
 
 export const lidoOperatorCensorshipPerTimeFrame: LidoOperatorCensorshipPerTimeFrame =
-  {
-    d7: getOperatorCensorship("d7"),
-    d30: getOperatorCensorship("d30"),
-  };
+{
+  d7: getOperatorCensorship("d7"),
+  d30: getOperatorCensorship("d30"),
+};

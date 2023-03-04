@@ -1,4 +1,5 @@
 import type { FC } from "react";
+import DefaultLink from "../../../components/DefaultLink";
 import BodyTextV3 from "../../../components/TextsNext/BodyTextV3";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
 import {
@@ -33,12 +34,13 @@ const LidoOperatorList: FC<Props> = ({ lidoOperatorCensorship }) => (
             dominance,
             description,
             non_censoring_relays_connected_count,
+            url
           }) => (
             <li
               key={id}
               className="grid grid-cols-3 hover:opacity-60 md:grid-cols-4"
             >
-              <div>
+              <DefaultLink href={url ?? undefined}>
                 <BodyTextV3>{name}</BodyTextV3>
                 {description !== undefined && (
                   <BodyTextV3
@@ -49,7 +51,7 @@ const LidoOperatorList: FC<Props> = ({ lidoOperatorCensorship }) => (
                     {description}
                   </BodyTextV3>
                 )}
-              </div>
+              </DefaultLink>
               <BodyTextV3
                 className="text-right"
                 color={censors ? "text-red-400" : "text-green-400"}

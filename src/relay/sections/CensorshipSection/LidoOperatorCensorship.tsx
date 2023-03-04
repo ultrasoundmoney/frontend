@@ -17,6 +17,7 @@ export type Operator = {
   id: string;
   name: string;
   non_censoring_relays_connected_count: number;
+  url: string | null;
 };
 
 export type LidoOperatorCensorship = {
