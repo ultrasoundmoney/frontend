@@ -289,14 +289,14 @@ const InclusionTimesWidget: FC<Props> = ({ inclusionTimes, timeFrame }) => {
         }))}
       />
       <ul className="flex flex-col gap-y-4">
-        <div className="grid grid-cols-4 gap-y-2">
-          <LabelText className="col-span-2">category</LabelText>
+        <div className="grid grid-cols-3 gap-y-2">
+          <LabelText className="">category</LabelText>
           <LabelText className="text-right">average</LabelText>
           <LabelText className="text-right">txs</LabelText>
         </div>
         {inclusionTimes.map((category) => (
           <li
-            className={`grid grid-cols-4 gap-y-2 ${
+            className={`grid grid-cols-3 gap-y-2 ${
               highlights[category.id] ? "brightness-75" : ""
             }`}
             key={category.id}
@@ -315,25 +315,30 @@ const InclusionTimesWidget: FC<Props> = ({ inclusionTimes, timeFrame }) => {
               });
             }}
           >
-            <div className="col-span-2 truncate">
-              <BaseText className="" font="font-inter">
+            <div className="truncate">
+              <BaseText
+                className=""
+                font="font-inter"
+                size="text-sm md:text-base"
+              >
                 {category.id}
               </BaseText>
               <BaseText
                 className="hidden md:inline"
                 font="font-inter"
                 color="text-slateus-200"
+                size="text-sm md:text-base"
               >
                 {" "}
                 {category.description}
               </BaseText>
             </div>
-            <QuantifyText className="text-right">
+            <QuantifyText className="text-right" size="text-sm md:text-base">
               {category.transaction_count === 0
                 ? "-"
                 : `${formatOneDecimal(category.average_time)}s`}
             </QuantifyText>
-            <QuantifyText className="text-right">
+            <QuantifyText className="text-right" size="text-sm md:text-base">
               {formatZeroDecimals(category.transaction_count)}
             </QuantifyText>
           </li>
