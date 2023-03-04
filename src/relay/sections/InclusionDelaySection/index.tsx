@@ -4,16 +4,23 @@ import Section from "../../../components/Section";
 import LabelText from "../../../components/TextsNext/LabelText";
 import TimeFrameControl from "../../../components/TimeFrameControl";
 import type { InclusionTimesPerTimeFrame } from "../../censorship-data/inclusion_times";
+import type { SuboptimalInclusionsPerTimeFrame } from "../../censorship-data/suboptimal_inclusions";
 import InclusionTimesWidget from "./InclusionTimesWidget";
+import SuboptimalInclusions from "./SuboptimalInclusions";
 // import TransactionInclusionDelayWidget from "./TransactionInclusionDelayWidget";
 
 type Props = {
   inclusionTimesPerTimeFrame: InclusionTimesPerTimeFrame;
+  suboptimalInclusionsPerTimeFrame: SuboptimalInclusionsPerTimeFrame;
 };
 
-const InclusionDelaySection: FC<Props> = ({ inclusionTimesPerTimeFrame }) => {
+const InclusionDelaySection: FC<Props> = ({
+  inclusionTimesPerTimeFrame,
+  suboptimalInclusionsPerTimeFrame,
+}) => {
   const [timeFrame, setTimeFrame] = useState<"d7" | "d30">("d7");
   const inclusionTimes = inclusionTimesPerTimeFrame[timeFrame];
+  const suboptimalInclusions = suboptimalInclusionsPerTimeFrame[timeFrame];
 
   return (
     <Section
@@ -33,10 +40,14 @@ const InclusionDelaySection: FC<Props> = ({ inclusionTimesPerTimeFrame }) => {
           />
         </div>
       </div>
-      <div className="grid w-full grid-cols-1 gap-4 ">
-        {/* <TransactionInclusionDelayWidget /> */}
+      <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
         <InclusionTimesWidget
           inclusionTimes={inclusionTimes}
+          timeFrame={timeFrame}
+        />
+        {/* <TransactionInclusionDelayWidget /> */}
+        <SuboptimalInclusions
+          suboptimalInclusions={suboptimalInclusions}
           timeFrame={timeFrame}
         />
       </div>

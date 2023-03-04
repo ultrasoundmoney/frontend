@@ -96,7 +96,7 @@ const getInclusionTimesPerTimeFrame = (
   return inclusionTimes;
 };
 
-export const inclusionTimesPerTimeFrame = {
+export const suboptimalInclusionsPerTimeFrame = {
   d7: getInclusionTimesPerTimeFrame("d7"),
   d30: getInclusionTimesPerTimeFrame("d30"),
 };

@@ -9,13 +9,15 @@ import * as Api from "../relay/api";
 import type { BuilderCensorshipPerTimeFrame } from "../relay/censorship-data/builder_censorship";
 import { builderCensorshipPerTimeFrame as builderCensorshipPerTimeFrameData } from "../relay/censorship-data/builder_censorship";
 import type { InclusionTimesPerTimeFrame } from "../relay/censorship-data/inclusion_times";
-import { inclusionTimesPerTimeFrame as inclusionTimesPerTimeFrameData } from "../relay/censorship-data/inclusion_times";
+import { suboptimalInclusionsPerTimeFrame as inclusionTimesPerTimeFrameData } from "../relay/censorship-data/inclusion_times";
 import type { LidoOperatorCensorshipPerTimeFrame } from "../relay/censorship-data/lido_operator_censorship";
 import { lidoOperatorCensorshipPerTimeFrame as lidoOperatorCensorshipPerTimeFrameData } from "../relay/censorship-data/lido_operator_censorship";
 import type { RelayCensorshipPerTimeFrame } from "../relay/censorship-data/relay_censorship";
 import { relayCensorshipPerTimeFrame as relayCensorshipPerTimeFrameData } from "../relay/censorship-data/relay_censorship";
 import type { SanctionsDelayPerTimeFrame } from "../relay/censorship-data/sanctions_delay";
 import { sanctionsDelayPerTimeFrame as sanctionsDelayPerTimeFrameData } from "../relay/censorship-data/sanctions_delay";
+import type { SuboptimalInclusionsPerTimeFrame } from "../relay/censorship-data/suboptimal_inclusions";
+import { suboptimalInclusionsPerTimeFrame as suboptimalInclusionsPerTimeFrameData } from "../relay/censorship-data/suboptimal_inclusions";
 import type { TransactionCensorshipPerTimeFrame } from "../relay/censorship-data/transaction_censorship";
 import { transactionCensorshipPerTimeFrame as transactionCensorshipPerTimeFrameData } from "../relay/censorship-data/transaction_censorship";
 import RelayDashboards from "../relay/RelayDashboards";
@@ -34,6 +36,7 @@ type StaticProps = {
   payloads: Array<ApiPayload>;
   relayCensorshipPerTimeFrame: RelayCensorshipPerTimeFrame;
   sanctionsDelayPerTimeFrame: SanctionsDelayPerTimeFrame;
+  suboptimalInclusionsPerTimeFrame: SuboptimalInclusionsPerTimeFrame;
   transactionCensorshipPerTimeFrame: TransactionCensorshipPerTimeFrame;
   topBuilders: Array<Builder>;
   topPayloads: Array<ApiPayload>;
@@ -58,6 +61,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = pipe(
         lidoOperatorCensorshipPerTimeFrameData,
       relayCensorshipPerTimeFrame: relayCensorshipPerTimeFrameData,
       sanctionsDelayPerTimeFrame: sanctionsDelayPerTimeFrameData,
+      suboptimalInclusionsPerTimeFrame: suboptimalInclusionsPerTimeFrameData,
       transactionCensorshipPerTimeFrame: transactionCensorshipPerTimeFrameData,
       ...props,
     },
@@ -73,6 +77,7 @@ const RelayIndexPage: NextPage<StaticProps> = ({
   payloads,
   relayCensorshipPerTimeFrame,
   sanctionsDelayPerTimeFrame,
+  suboptimalInclusionsPerTimeFrame,
   topBuilders,
   topPayloads,
   transactionCensorshipPerTimeFrame,
@@ -87,6 +92,7 @@ const RelayIndexPage: NextPage<StaticProps> = ({
     payloads: payloads.map(parsePayload),
     relayCensorshipPerTimeFrame,
     sanctionsDelayPerTimeFrame,
+    suboptimalInclusionsPerTimeFrame,
     topBuilders,
     topPayloads: topPayloads.map(parsePayload),
     transactionCensorshipPerTimeFrame,
