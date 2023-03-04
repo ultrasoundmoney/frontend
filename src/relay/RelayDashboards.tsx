@@ -13,6 +13,7 @@ import ContactSection from "../sections/ContactSection";
 import type { BuilderCensorshipPerTimeFrame } from "./censorship-data/builder_censorship";
 import type { InclusionTimesPerTimeFrame } from "./censorship-data/inclusion_times";
 import type { LidoOperatorCensorshipPerTimeFrame } from "./censorship-data/lido_operator_censorship";
+import { SanctionsDelayPerTimeFrame } from "./censorship-data/sanctions_delay";
 import type { TransactionCensorshipPerTimeFrame } from "./censorship-data/transaction_censorship";
 import AddressWidget from "./components/AddressWidget";
 import CheckRegistrationWidget from "./components/CheckRegistrationWidget";
@@ -37,6 +38,7 @@ export type RelayDashboardProps = {
   payloadStats: PayloadStats;
   payloads: Array<Payload>;
   relayCensorshipPerTimeFrame: Record<"d7" | "d30", RelayCensorship>;
+  sanctionsDelayPerTimeFrame: SanctionsDelayPerTimeFrame;
   topBuilders: Array<Builder>;
   topPayloads: Array<Payload>;
   transactionCensorshipPerTimeFrame: TransactionCensorshipPerTimeFrame;
@@ -52,6 +54,7 @@ const RelayDashboard: FC<RelayDashboardProps> = ({
   lidoOperatorCensorshipPerTimeFrame,
   payloadStats,
   payloads,
+  sanctionsDelayPerTimeFrame,
   relayCensorshipPerTimeFrame,
   transactionCensorshipPerTimeFrame,
   validatorStats,
@@ -113,6 +116,7 @@ const RelayDashboard: FC<RelayDashboardProps> = ({
               lidoOperatorCensorshipPerTimeFrame
             }
             relayCensorshipPerTimeFrame={relayCensorshipPerTimeFrame}
+            sanctionsDelayPerTimeFrame={sanctionsDelayPerTimeFrame}
             transactionCensorshipPerTimeFrame={
               transactionCensorshipPerTimeFrame
             }

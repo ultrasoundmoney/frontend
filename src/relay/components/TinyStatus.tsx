@@ -4,6 +4,7 @@ import LabelText from "../../components/TextsNext/LabelText";
 import SkeletonText from "../../components/TextsNext/SkeletonText";
 
 type Props = {
+  mobilePostText?: string;
   postText: string;
   preText?: string;
   skeletonWidth?: string;
@@ -12,6 +13,7 @@ type Props = {
 };
 
 const TinyStatus: FC<Props> = ({
+  mobilePostText,
   postText,
   preText,
   skeletonWidth,
@@ -24,7 +26,14 @@ const TinyStatus: FC<Props> = ({
       <SkeletonText width={skeletonWidth}>{value}</SkeletonText>
     </LabelUnitText>
     <LabelText color="text-slateus-200">{unitPostfix}</LabelText>
-    <LabelText color="text-slateus-400">{postText}</LabelText>
+    {mobilePostText !== undefined ? (
+      <>
+        <LabelText className="hidden md:inline" color="text-slateus-400">{postText}</LabelText>
+        <LabelText className="inline md:hidden" color="text-slateus-400">{mobilePostText}</LabelText>
+      </>
+    ) : (
+      <LabelText color="text-slateus-400">{postText}</LabelText>
+    )}
   </div>
 );
 

@@ -14,6 +14,8 @@ import type { LidoOperatorCensorshipPerTimeFrame } from "../relay/censorship-dat
 import { lidoOperatorCensorshipPerTimeFrame as lidoOperatorCensorshipPerTimeFrameData } from "../relay/censorship-data/lido_operator_censorship";
 import type { RelayCensorshipPerTimeFrame } from "../relay/censorship-data/relay_censorship";
 import { relayCensorshipPerTimeFrame as relayCensorshipPerTimeFrameData } from "../relay/censorship-data/relay_censorship";
+import type { SanctionsDelayPerTimeFrame } from "../relay/censorship-data/sanctions_delay";
+import { sanctionsDelayPerTimeFrame as sanctionsDelayPerTimeFrameData } from "../relay/censorship-data/sanctions_delay";
 import type { TransactionCensorshipPerTimeFrame } from "../relay/censorship-data/transaction_censorship";
 import { transactionCensorshipPerTimeFrame as transactionCensorshipPerTimeFrameData } from "../relay/censorship-data/transaction_censorship";
 import RelayDashboards from "../relay/RelayDashboards";
@@ -31,6 +33,7 @@ type StaticProps = {
   payloadStats: ApiPayloadStats;
   payloads: Array<ApiPayload>;
   relayCensorshipPerTimeFrame: RelayCensorshipPerTimeFrame;
+  sanctionsDelayPerTimeFrame: SanctionsDelayPerTimeFrame;
   transactionCensorshipPerTimeFrame: TransactionCensorshipPerTimeFrame;
   topBuilders: Array<Builder>;
   topPayloads: Array<ApiPayload>;
@@ -54,6 +57,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = pipe(
       lidoOperatorCensorshipPerTimeFrame:
         lidoOperatorCensorshipPerTimeFrameData,
       relayCensorshipPerTimeFrame: relayCensorshipPerTimeFrameData,
+      sanctionsDelayPerTimeFrame: sanctionsDelayPerTimeFrameData,
       transactionCensorshipPerTimeFrame: transactionCensorshipPerTimeFrameData,
       ...props,
     },
@@ -68,6 +72,7 @@ const RelayIndexPage: NextPage<StaticProps> = ({
   payloadStats,
   payloads,
   relayCensorshipPerTimeFrame,
+  sanctionsDelayPerTimeFrame,
   topBuilders,
   topPayloads,
   transactionCensorshipPerTimeFrame,
@@ -81,6 +86,7 @@ const RelayIndexPage: NextPage<StaticProps> = ({
     payloadStats: parsePayloadStats(payloadStats),
     payloads: payloads.map(parsePayload),
     relayCensorshipPerTimeFrame,
+    sanctionsDelayPerTimeFrame,
     topBuilders,
     topPayloads: topPayloads.map(parsePayload),
     transactionCensorshipPerTimeFrame,

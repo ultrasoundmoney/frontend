@@ -6,6 +6,7 @@ import TimeFrameControl from "../../../components/TimeFrameControl";
 import type { BuilderCensorshipPerTimeFrame } from "../../censorship-data/builder_censorship";
 import type { LidoOperatorCensorshipPerTimeFrame } from "../../censorship-data/lido_operator_censorship";
 import type { RelayCensorshipPerTimeFrame } from "../../censorship-data/relay_censorship";
+import type { SanctionsDelayPerTimeFrame } from "../../censorship-data/sanctions_delay";
 import type { TransactionCensorshipPerTimeFrame } from "../../censorship-data/transaction_censorship";
 import BuilderCensorshipWidget from "./BuilderCensorshipWidget";
 import BuilderListWidget from "./BuilderListWidget";
@@ -13,6 +14,7 @@ import LidoOperatorCensorship from "./LidoOperatorCensorship";
 import LidoOperatorList from "./LidoOperatorList";
 import RelayCensorshipWidget from "./RelayCensorshipWidget";
 import RelayListWidget from "./RelayListWidget";
+import SanctionsDelayWidget from "./SanctionsDelayWidget";
 import TransactionCensorshipList from "./TransactionCensorshipList";
 import TransactionCensorshipWidget from "./TransactionCensorshipWidget";
 
@@ -20,6 +22,7 @@ type Props = {
   builderCensorshipPerTimeFrame: BuilderCensorshipPerTimeFrame;
   lidoOperatorCensorshipPerTimeFrame: LidoOperatorCensorshipPerTimeFrame;
   relayCensorshipPerTimeFrame: RelayCensorshipPerTimeFrame;
+  sanctionsDelayPerTimeFrame: SanctionsDelayPerTimeFrame;
   transactionCensorshipPerTimeFrame: TransactionCensorshipPerTimeFrame;
 };
 
@@ -27,6 +30,7 @@ const CensorshipSection: FC<Props> = ({
   builderCensorshipPerTimeFrame,
   lidoOperatorCensorshipPerTimeFrame,
   relayCensorshipPerTimeFrame,
+  sanctionsDelayPerTimeFrame,
   transactionCensorshipPerTimeFrame,
 }) => {
   const [timeFrame, setTimeFrame] = useState<"d7" | "d30">("d7");
@@ -34,6 +38,7 @@ const CensorshipSection: FC<Props> = ({
   const relayCensorship = relayCensorshipPerTimeFrame[timeFrame];
   const lidoOperatorCensorship = lidoOperatorCensorshipPerTimeFrame[timeFrame];
   const transactionCencorship = transactionCensorshipPerTimeFrame[timeFrame];
+  const sanctionsDelay = sanctionsDelayPerTimeFrame[timeFrame];
 
   return (
     <Section
@@ -88,6 +93,7 @@ const CensorshipSection: FC<Props> = ({
             timeFrame={timeFrame}
           />
         </div>
+        <SanctionsDelayWidget sanctionsDelay={sanctionsDelay} timeFrame={timeFrame} />
       </div>
     </Section>
   );
