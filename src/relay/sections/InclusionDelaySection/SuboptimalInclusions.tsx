@@ -206,7 +206,7 @@ const SuboptimalInclusions: FC<Props> = ({
         {
           id: SANCTIONED_ENTITY_SERIES_ID,
           type: "column",
-          name: "WITH SANCTIONED ENTITY",
+          name: "SANCTIONED",
           data: seriesCensored,
           color: {
             linearGradient: {
@@ -224,7 +224,7 @@ const SuboptimalInclusions: FC<Props> = ({
         {
           id: UNSANCTIONED_ENTITY_SERIES_ID,
           type: "column",
-          name: "WITHOUT SANCTIONED ENTITY",
+          name: "UNSANCTIONED",
           data: seriesUncensored,
           color: {
             linearGradient: {
