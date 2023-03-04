@@ -6,6 +6,12 @@ import BasicErrorBoundary from "../components/BasicErrorBoundary";
 import { pipe, T, TAlt } from "../fp";
 import type { ApiPayload, ApiPayloadStats, ApiValidator } from "../relay/api";
 import * as Api from "../relay/api";
+import type { InclusionTimesPerTimeFrame } from "../relay/censorship-data/inclusion_times";
+import { inclusionTimesPerTimeFrame as inclusionTimesPerTimeFrameData } from "../relay/censorship-data/inclusion_times";
+import type { LidoOperatorCensorshipPerTimeFrame } from "../relay/censorship-data/lido_operator_censorship";
+import { lidoOperatorCensorshipPerTimeFrame as lidoOperatorCensorshipPerTimeFrameData } from "../relay/censorship-data/lido_operator_censorship";
+import type { RelayCensorshipPerTimeFrame } from "../relay/censorship-data/relay_censorship";
+import { relayCensorshipPerTimeFrame as relayCensorshipPerTimeFrameData } from "../relay/censorship-data/relay_censorship";
 import RelayDashboards from "../relay/RelayDashboards";
 import type { Builder, ValidatorStats } from "../relay/types";
 import {
@@ -15,44 +21,59 @@ import {
 } from "../relay/types";
 
 type StaticProps = {
+  inclusionTimesPerTimeFrame: InclusionTimesPerTimeFrame;
+  lidoOperatorCensorshipPerTimeFrame: LidoOperatorCensorshipPerTimeFrame;
   payloadStats: ApiPayloadStats;
   payloads: Array<ApiPayload>;
+  relayCensorshipPerTimeFrame: RelayCensorshipPerTimeFrame;
+  topBuilders: Array<Builder>;
   topPayloads: Array<ApiPayload>;
   validatorStats: ValidatorStats;
   validators: Array<ApiValidator>;
-  topBuilders: Array<Builder>;
 };
 
 export const getStaticProps: GetStaticProps<StaticProps> = pipe(
   TAlt.sequenceStruct({
-    payloads: Api.fetchPayloads,
-    topPayloads: Api.fetchTopPayloads,
     payloadStats: Api.fetchPayloadStats,
-    validators: Api.fetchValidators,
-    validatorStats: Api.fetchValidatorStats,
+    payloads: Api.fetchPayloads,
     topBuilders: Api.fetchTopBuilders,
+    topPayloads: Api.fetchTopPayloads,
+    validatorStats: Api.fetchValidatorStats,
+    validators: Api.fetchValidators,
   }),
   T.map((props) => ({
-    props,
+    props: {
+      inclusionTimesPerTimeFrame: inclusionTimesPerTimeFrameData,
+      relayCensorshipPerTimeFrame: relayCensorshipPerTimeFrameData,
+      lidoOperatorCensorshipPerTimeFrame:
+        lidoOperatorCensorshipPerTimeFrameData,
+      ...props,
+    },
     revalidate: minutesToSeconds(2),
   })),
 );
 
 const RelayIndexPage: NextPage<StaticProps> = ({
+  inclusionTimesPerTimeFrame,
+  lidoOperatorCensorshipPerTimeFrame,
   payloadStats,
   payloads,
+  relayCensorshipPerTimeFrame,
+  topBuilders,
   topPayloads,
   validatorStats,
   validators,
-  topBuilders,
 }) => {
   const props = {
+    inclusionTimesPerTimeFrame,
+    lidoOperatorCensorshipPerTimeFrame,
     payloadStats: parsePayloadStats(payloadStats),
     payloads: payloads.map(parsePayload),
+    relayCensorshipPerTimeFrame,
+    topBuilders,
     topPayloads: topPayloads.map(parsePayload),
     validatorStats,
     validators: validators.map(parseValidator),
-    topBuilders,
   };
 
   return (

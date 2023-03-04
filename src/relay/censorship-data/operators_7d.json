@@ -1,0 +1,405 @@
+[
+    {
+        "operator_id": "Allnodes",
+        "sum": 145039,
+        "array_agg": [
+            "blxr-regulated",
+            "eden",
+            "aestus",
+            "agnostic",
+            "ultrasound",
+            "blxr-max-profit",
+            "flashbots",
+            "blocknative",
+            "blxr-ethical"
+        ]
+    },
+    {
+        "operator_id": "Anyblock Analytics",
+        "sum": 35033,
+        "array_agg": [
+            "flashbots"
+        ]
+    },
+    {
+        "operator_id": "Attestant (BVI) Limited",
+        "sum": 52298,
+        "array_agg": [
+            "blxr-max-profit",
+            "blocknative",
+            "blxr-ethical",
+            "blxr-regulated",
+            "flashbots",
+            "eden"
+        ]
+    },
+    {
+        "operator_id": "Blockdaemon",
+        "sum": 54491,
+        "array_agg": [
+            "flashbots",
+            "blxr-regulated",
+            "blocknative",
+            "eden"
+        ]
+    },
+    {
+        "operator_id": "Blockscape",
+        "sum": 109242,
+        "array_agg": [
+            "blxr-ethical",
+            "aestus",
+            "ultrasound",
+            "flashbots",
+            "blxr-max-profit",
+            "blxr-regulated",
+            "eden",
+            "manifold",
+            "blocknative",
+            "agnostic"
+        ]
+    },
+    {
+        "operator_id": "BridgeTower",
+        "sum": 119399,
+        "array_agg": [
+            "flashbots",
+            "blocknative",
+            "manifold",
+            "blxr-max-profit"
+        ]
+    },
+    {
+        "operator_id": "Certus One",
+        "sum": 12666,
+        "array_agg": [
+            "flashbots",
+            "blocknative",
+            "eden",
+            "blxr-regulated"
+        ]
+    },
+    {
+        "operator_id": "ChainLayer",
+        "sum": 129670,
+        "array_agg": [
+            "blocknative",
+            "blxr-max-profit",
+            "flashbots",
+            "ultrasound",
+            "eden"
+        ]
+    },
+    {
+        "operator_id": "ChainSafe",
+        "sum": 73175,
+        "array_agg": [
+            "agnostic",
+            "ultrasound",
+            "blxr-max-profit",
+            "blxr-ethical",
+            "aestus"
+        ]
+    },
+    {
+        "operator_id": "Chorus One",
+        "sum": 152929,
+        "array_agg": [
+            "agnostic",
+            "blocknative",
+            "ultrasound",
+            "eden",
+            "flashbots"
+        ]
+    },
+    {
+        "operator_id": "ConsenSys Codefi",
+        "sum": 74944,
+        "array_agg": [
+            "ultrasound",
+            "blxr-ethical",
+            "flashbots",
+            "agnostic",
+            "blxr-max-profit",
+            "blocknative",
+            "eden",
+            "aestus"
+        ]
+    },
+    {
+        "operator_id": "CryptoManufaktur",
+        "sum": 72421,
+        "array_agg": [
+            "flashbots",
+            "blocknative",
+            "eden",
+            "aestus",
+            "agnostic",
+            "blxr-max-profit",
+            "ultrasound"
+        ]
+    },
+    {
+        "operator_id": "DSRV",
+        "sum": 153516,
+        "array_agg": [
+            "manifold",
+            "blxr-regulated",
+            "agnostic",
+            "blocknative",
+            "aestus",
+            "ultrasound",
+            "eden",
+            "blxr-ethical",
+            "blxr-max-profit",
+            "flashbots"
+        ]
+    },
+    {
+        "operator_id": "Everstake",
+        "sum": 124842,
+        "array_agg": [
+            "manifold",
+            "aestus",
+            "blxr-max-profit",
+            "ultrasound",
+            "eden",
+            "flashbots",
+            "blocknative",
+            "blxr-regulated",
+            "agnostic",
+            "blxr-ethical"
+        ]
+    },
+    {
+        "operator_id": "Figment",
+        "sum": 104913,
+        "array_agg": [
+            "flashbots"
+        ]
+    },
+    {
+        "operator_id": "HashQuark",
+        "sum": 57135,
+        "array_agg": [
+            "eden",
+            "blocknative",
+            "blxr-regulated",
+            "flashbots"
+        ]
+    },
+    {
+        "operator_id": "InfStones",
+        "sum": 120839,
+        "array_agg": [
+            "manifold",
+            "aestus",
+            "ultrasound",
+            "flashbots",
+            "eden",
+            "blxr-regulated",
+            "blocknative",
+            "blxr-ethical",
+            "agnostic",
+            "blxr-max-profit"
+        ]
+    },
+    {
+        "operator_id": "Kukis Global",
+        "sum": 70844,
+        "array_agg": [
+            "eden",
+            "manifold",
+            "aestus",
+            "flashbots",
+            "ultrasound",
+            "blocknative",
+            "blxr-max-profit",
+            "agnostic"
+        ]
+    },
+    {
+        "operator_id": "Nethermind",
+        "sum": 75768,
+        "array_agg": [
+            "aestus",
+            "eden",
+            "blocknative",
+            "blxr-ethical",
+            "ultrasound",
+            "blxr-regulated",
+            "agnostic",
+            "flashbots",
+            "blxr-max-profit"
+        ]
+    },
+    {
+        "operator_id": "P2P.ORG - P2P Validator",
+        "sum": 120908,
+        "array_agg": [
+            "agnostic",
+            "aestus",
+            "blxr-ethical",
+            "ultrasound",
+            "blxr-max-profit",
+            "eden",
+            "blocknative",
+            "flashbots",
+            "blxr-regulated"
+        ]
+    },
+    {
+        "operator_id": "Prysmatic Labs",
+        "sum": 35929,
+        "array_agg": [
+            "ultrasound",
+            "manifold",
+            "blxr-max-profit"
+        ]
+    },
+    {
+        "operator_id": "RockLogic GmbH",
+        "sum": 71774,
+        "array_agg": [
+            "blxr-max-profit",
+            "blxr-ethical",
+            "flashbots",
+            "aestus",
+            "ultrasound",
+            "manifold",
+            "eden",
+            "blxr-regulated",
+            "agnostic",
+            "blocknative"
+        ]
+    },
+    {
+        "operator_id": "RockX",
+        "sum": 110299,
+        "array_agg": [
+            "flashbots",
+            "blocknative",
+            "eden",
+            "blxr-ethical"
+        ]
+    },
+    {
+        "operator_id": "Sigma Prime",
+        "sum": 21762,
+        "array_agg": [
+            "blxr-regulated",
+            "flashbots",
+            "aestus",
+            "ultrasound",
+            "agnostic",
+            "blocknative",
+            "blxr-max-profit",
+            "blxr-ethical"
+        ]
+    },
+    {
+        "operator_id": "Simply Staking",
+        "sum": 102837,
+        "array_agg": [
+            "blocknative",
+            "blxr-max-profit",
+            "blxr-regulated",
+            "flashbots",
+            "manifold",
+            "eden",
+            "blxr-ethical"
+        ]
+    },
+    {
+        "operator_id": "SkillZ",
+        "sum": 135180,
+        "array_agg": [
+            "blxr-ethical",
+            "ultrasound",
+            "eden",
+            "flashbots",
+            "blxr-regulated",
+            "blxr-max-profit",
+            "blocknative"
+        ]
+    },
+    {
+        "operator_id": "stakefish",
+        "sum": 51056,
+        "array_agg": [
+            "agnostic",
+            "blocknative",
+            "eden",
+            "blxr-max-profit",
+            "ultrasound",
+            "blxr-regulated",
+            "blxr-ethical",
+            "flashbots"
+        ]
+    },
+    {
+        "operator_id": "Stakely",
+        "sum": 104624,
+        "array_agg": [
+            "blxr-max-profit",
+            "blocknative",
+            "ultrasound",
+            "eden",
+            "flashbots",
+            "blxr-regulated",
+            "aestus",
+            "manifold",
+            "blxr-ethical",
+            "agnostic"
+        ]
+    },
+    {
+        "operator_id": "Stakin",
+        "sum": 109707,
+        "array_agg": [
+            "aestus",
+            "flashbots",
+            "agnostic",
+            "blxr-max-profit",
+            "eden",
+            "ultrasound",
+            "blxr-regulated",
+            "blxr-ethical",
+            "manifold",
+            "blocknative"
+        ]
+    },
+    {
+        "operator_id": "Staking Facilities",
+        "sum": 109487,
+        "array_agg": [
+            "aestus",
+            "ultrasound",
+            "blxr-regulated",
+            "blxr-max-profit",
+            "manifold",
+            "eden",
+            "flashbots",
+            "agnostic",
+            "blxr-ethical",
+            "blocknative"
+        ]
+    },
+    {
+        "operator_id": null,
+        "sum": 5360352,
+        "array_agg": [
+            "agnostic",
+            "relayoor",
+            "manifold",
+            "aestus",
+            "flashbots",
+            "blocknative",
+            "eden",
+            "blxr-ethical",
+            "ultrasound",
+            "blxr-max-profit",
+            "blxr-regulated"
+        ]
+    }
+]

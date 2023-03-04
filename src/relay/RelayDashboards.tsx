@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import type { FC } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -11,11 +10,14 @@ import MainTitle from "../components/MainTitle";
 import { getEnv } from "../config";
 import { FeatureFlagsContext, useFeatureFlags } from "../feature-flags";
 import ContactSection from "../sections/ContactSection";
+import type { InclusionTimesPerTimeFrame } from "./censorship-data/inclusion_times";
+import type { LidoOperatorCensorshipPerTimeFrame } from "./censorship-data/lido_operator_censorship";
 import AddressWidget from "./components/AddressWidget";
 import CheckRegistrationWidget from "./components/CheckRegistrationWidget";
 import InclusionsWidget from "./components/InclusionsWidget";
 import ValidatorWidget from "./components/ValidatorWidget";
 import CensorshipSection from "./sections/CensorshipSection";
+import type { RelayCensorship } from "./sections/CensorshipSection/RelayCensorshipWidget";
 import FaqSection from "./sections/FaqSection";
 import InclusionDelaySection from "./sections/InclusionDelaySection";
 import type {
@@ -27,19 +29,25 @@ import type {
 } from "./types";
 
 export type RelayDashboardProps = {
+  inclusionTimesPerTimeFrame: InclusionTimesPerTimeFrame;
+  lidoOperatorCensorshipPerTimeFrame: LidoOperatorCensorshipPerTimeFrame;
   payloadStats: PayloadStats;
   payloads: Array<Payload>;
+  relayCensorshipPerTimeFrame: Record<"d7" | "d30", RelayCensorship>;
+  topBuilders: Array<Builder>;
   topPayloads: Array<Payload>;
   validatorStats: ValidatorStats;
   validators: Array<Validator>;
-  topBuilders: Array<Builder>;
 };
 
 const env = getEnv();
 
 const RelayDashboard: FC<RelayDashboardProps> = ({
+  inclusionTimesPerTimeFrame,
+  lidoOperatorCensorshipPerTimeFrame,
   payloadStats,
   payloads,
+  relayCensorshipPerTimeFrame,
   validatorStats,
   validators,
 }) => {
@@ -93,8 +101,15 @@ const RelayDashboard: FC<RelayDashboardProps> = ({
               </div>
             </div>
           </div>
-          <CensorshipSection />
-          <InclusionDelaySection />
+          <CensorshipSection
+            lidoOperatorCensorshipPerTimeFrame={
+              lidoOperatorCensorshipPerTimeFrame
+            }
+            relayCensorshipPerTimeFrame={relayCensorshipPerTimeFrame}
+          />
+          <InclusionDelaySection
+            inclusionTimesPerTimeFrame={inclusionTimesPerTimeFrame}
+          />
           <FaqSection />
           <ContactSection />
         </div>

@@ -8,9 +8,12 @@ import handPinchingSvg from "../../../assets/hand-pinching-own.svg";
 import sneezingOwnSvg from "../../../assets/sneezing-own.svg";
 import flagUsSvg from "../../../assets/flag-us-own.svg";
 import flagUkSvg from "../../../assets/flag-uk-own.svg";
+import handPinchedSvg from "../../../assets/hand-pinched-own.svg";
+import questionMarkSvg from "../../../assets/question-mark-own.svg";
+import sleuthSvg from "../../../assets/sleuth-own.svg";
 import colors from "../../../colors";
 import { BaseText } from "../../../components/Texts";
-import { formatZeroDecimals } from "../../../format";
+import { formatOneDecimal, formatZeroDecimals } from "../../../format";
 import {
   WidgetBackground,
   WidgetTitle,
@@ -20,41 +23,48 @@ import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
 import LabelText from "../../../components/TextsNext/LabelText";
 import Image from "next/image";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
-
-const categoryNames = [
-  "optimal",
-  "low_tip",
-  "congestion",
-  "us_sanctions",
-  "uk_sanctions",
-] as const;
-type CategoryId = typeof categoryNames[number];
+import type {
+  Category,
+  InclusionTime,
+} from "../../censorship-data/inclusion_times";
 
 type StaticDetails = {
   imgAlt: string;
   imgSrc: StaticImageData;
 };
 
-const categoryIconMap: Record<CategoryId, StaticDetails> = {
-  optimal: {
-    imgAlt: "ok hand symbol symbolizing optimal inclusion time",
-    imgSrc: handOkOwnSvg as StaticImageData,
-  },
-  low_tip: {
-    imgAlt: "pinching hand symbol symbolizing low tip",
-    imgSrc: handPinchingSvg as StaticImageData,
-  },
+const categoryIconMap: Record<Category, StaticDetails> = {
   congestion: {
     imgAlt: "sneezing face symbolizing congestion of transactions",
     imgSrc: sneezingOwnSvg as StaticImageData,
   },
-  us_sanctions: {
+  low_base_fee: {
+    imgAlt: "pinching hand symbolizing low base fee",
+    imgSrc: handPinchedSvg as StaticImageData,
+  },
+  low_tip: {
+    imgAlt: "pinched hand symbol symbolizing low tip",
+    imgSrc: handPinchingSvg as StaticImageData,
+  },
+  optimal: {
+    imgAlt: "ok hand symbol symbolizing optimal inclusion time",
+    imgSrc: handOkOwnSvg as StaticImageData,
+  },
+  private: {
+    imgAlt: "sleuth or spy symbolizing private transactions",
+    imgSrc: sleuthSvg as StaticImageData,
+  },
+  sanctions_uk: {
+    imgAlt: "UK flag symbolizing inclusion delay from UK influence",
+    imgSrc: flagUkSvg as StaticImageData,
+  },
+  sanctions_us: {
     imgAlt: "US flag symbolizing inclusion delay from US influence",
     imgSrc: flagUsSvg as StaticImageData,
   },
-  uk_sanctions: {
-    imgAlt: "UK flag symbolizing inclusion delay from UK influence",
-    imgSrc: flagUkSvg as StaticImageData,
+  unknown: {
+    imgAlt: "question mark symbolizing unknown inclusion delay",
+    imgSrc: questionMarkSvg as StaticImageData,
   },
 };
 
@@ -190,31 +200,20 @@ const CategoryBar: FC<{
   </div>
 );
 
-type InclusionTimeCategories = Record<"d1", InclusionTimeCategory[]>;
-
-type Props = {
-  inclusionTimeCategories: InclusionTimeCategories;
-};
-
-type InclusionTimeCategory = {
-  averageInclusionTime: number;
-  description?: string;
-  id: CategoryId;
-  name: string;
-  transactionCount: number;
-};
-
-type CategoryHighlights = Record<CategoryId, boolean>;
+type CategoryHighlights = Record<Category, boolean>;
 const categoryHighlights: CategoryHighlights = {
   congestion: false,
+  low_base_fee: false,
   low_tip: false,
   optimal: false,
-  uk_sanctions: false,
-  us_sanctions: false,
+  private: false,
+  sanctions_uk: false,
+  sanctions_us: false,
+  unknown: false,
 };
 type HighlightAction = {
   type: "highlight";
-  id: CategoryId;
+  id: Category;
   highlight: boolean;
 };
 const reducer = (state: CategoryHighlights, action: HighlightAction) => {
@@ -224,44 +223,6 @@ const reducer = (state: CategoryHighlights, action: HighlightAction) => {
     default:
       throw new Error("Invalid action type");
   }
-};
-
-const inclusionTimeCategories: Props["inclusionTimeCategories"] = {
-  d1: [
-    {
-      averageInclusionTime: 7,
-      description: "next block",
-      id: "optimal",
-      name: "optimal",
-      transactionCount: 908102,
-    },
-    {
-      averageInclusionTime: 20,
-      description: "blocks full",
-      id: "congestion",
-      name: "congestion",
-      transactionCount: 1000,
-    },
-    {
-      averageInclusionTime: 103,
-      id: "low_tip",
-      name: "low tip",
-      transactionCount: 104,
-    },
-    {
-      averageInclusionTime: 32,
-      description: "OFAC",
-      id: "us_sanctions",
-      name: "US sanctions",
-      transactionCount: 21,
-    },
-    {
-      averageInclusionTime: 20,
-      id: "uk_sanctions",
-      name: "UK sanctions",
-      transactionCount: 1,
-    },
-  ],
 };
 
 const WidgetBase: FC<{
@@ -285,30 +246,32 @@ const WidgetBase: FC<{
   </WidgetErrorBoundary>
 );
 
-const InclusionTimesWidget: FC = () => {
+type Props = {
+  inclusionTimes: InclusionTime[];
+  timeFrame: TimeFrame;
+};
+
+const InclusionTimesWidget: FC<Props> = ({ inclusionTimes, timeFrame }) => {
   const [highlights, dispatchHighlight] = useReducer(
     reducer,
     categoryHighlights,
   );
 
-  const timeFrame: TimeFrame = "d1";
-  const activeCategories = inclusionTimeCategories[timeFrame];
-
   return (
     <WidgetBase
       onClickTimeFrame={undefined}
       title="inclusion times"
-      timeFrame={"d1"}
+      timeFrame={timeFrame}
     >
       <CategoryBar
         className="my-4"
-        categories={activeCategories.map((category) => ({
+        categories={inclusionTimes.map((category) => ({
           highlight: highlights[category.id],
           imgAlt: categoryIconMap[category.id].imgAlt,
           imgSrc: categoryIconMap[category.id].imgSrc,
-          name: category.name,
+          name: category.id,
           description: category.description,
-          percentage: category.averageInclusionTime / 60,
+          percentage: category.percent,
           onMouseEnter: () => {
             dispatchHighlight({
               type: "highlight",
@@ -331,7 +294,7 @@ const InclusionTimesWidget: FC = () => {
           <LabelText className="text-right">average</LabelText>
           <LabelText className="text-right">txs</LabelText>
         </div>
-        {activeCategories.map((category) => (
+        {inclusionTimes.map((category) => (
           <li
             className={`grid grid-cols-4 gap-y-2 ${
               highlights[category.id] ? "brightness-75" : ""
@@ -354,7 +317,7 @@ const InclusionTimesWidget: FC = () => {
           >
             <div className="col-span-2 truncate">
               <BaseText className="" font="font-inter">
-                {category.name}
+                {category.id}
               </BaseText>
               <BaseText
                 className="hidden md:inline"
@@ -366,10 +329,12 @@ const InclusionTimesWidget: FC = () => {
               </BaseText>
             </div>
             <QuantifyText className="text-right">
-              {category.averageInclusionTime}s
+              {category.transaction_count === 0
+                ? "-"
+                : `${formatOneDecimal(category.average_time)}s`}
             </QuantifyText>
             <QuantifyText className="text-right">
-              {formatZeroDecimals(category.transactionCount)}
+              {formatZeroDecimals(category.transaction_count)}
             </QuantifyText>
           </li>
         ))}

@@ -1,0 +1,57 @@
+[
+    {
+        "r": "aestus",
+        "count": 588,
+        "censoring": false
+    },
+    {
+        "r": "agnostic",
+        "count": 15556,
+        "censoring": false
+    },
+    {
+        "r": "blocknative",
+        "count": 13514,
+        "censoring": true
+    },
+    {
+        "r": "blxr-ethical",
+        "count": 2056,
+        "censoring": false
+    },
+    {
+        "r": "blxr-max-profit",
+        "count": 43673,
+        "censoring": false
+    },
+    {
+        "r": "blxr-regulated",
+        "count": 3919,
+        "censoring": true
+    },
+    {
+        "r": "eden",
+        "count": 2380,
+        "censoring": true
+    },
+    {
+        "r": "flashbots",
+        "count": 96106,
+        "censoring": true
+    },
+    {
+        "r": "manifold",
+        "count": 348,
+        "censoring": false
+    },
+    {
+        "r": "relayoor",
+        "count": 879,
+        "censoring": false
+    },
+    {
+        "r": "ultrasound",
+        "count": 32835,
+        "censoring": false
+    }
+]

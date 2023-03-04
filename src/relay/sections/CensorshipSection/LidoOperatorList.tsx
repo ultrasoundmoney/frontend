@@ -6,93 +6,44 @@ import {
   WidgetTitle,
 } from "../../../components/WidgetSubcomponents";
 import { formatPercentOneDecimal } from "../../../format";
+import type { LidoOperatorCensorship } from "../../censorship-data/lido_operator_censorship";
 import StyledList from "../../components/StyledList";
 
-type LidoOperator = {
-  censoring: boolean;
-  description?: string;
-  dominance: number;
-  name: string;
-};
-
-type Api = {
-  lido_operators_per_time_frame: Record<"d1", LidoOperator[]>;
-};
-
-const api: Api = {
-  lido_operators_per_time_frame: {
-    d1: [
-      {
-        censoring: false,
-        dominance: 0.042,
-        name: "p2p.org",
-      },
-      {
-        censoring: false,
-        dominance: 0.04,
-        name: "Blockscape",
-      },
-      {
-        censoring: false,
-        dominance: 0.039,
-        name: "Staking Facilities",
-      },
-      {
-        censoring: true,
-        dominance: 0.03,
-        name: "Stakefish",
-      },
-      {
-        censoring: false,
-        dominance: 0.021,
-        name: "DSRV",
-      },
-      {
-        censoring: false,
-        dominance: 0.04,
-        name: "loperator 1",
-      },
-      {
-        censoring: true,
-        dominance: 0.04,
-        name: "loperator 2",
-      },
-      {
-        censoring: false,
-        dominance: 0.04,
-        name: "loperator 3",
-      },
-    ],
-  },
-};
-
 type Props = {
-  timeFrame: "d1";
+  lidoOperatorCensorship: LidoOperatorCensorship;
 };
 
-const LidoOperatorList: FC<Props> = ({ timeFrame }) => {
-  const operators = api.lido_operators_per_time_frame[timeFrame];
-
-  return (
-    <WidgetBackground>
-      <div className="flex flex-col gap-y-4">
-        <div className="grid grid-cols-3 md:grid-cols-4">
-          <WidgetTitle className="md:col-span-2">operator</WidgetTitle>
-          <WidgetTitle className="text-right">censoring</WidgetTitle>
-          <WidgetTitle className="text-right">dominance</WidgetTitle>
-        </div>
-        <StyledList height="h-[182px]">
-          {operators.map(({ name, censoring, dominance, description }) => (
+const LidoOperatorList: FC<Props> = ({ lidoOperatorCensorship }) => (
+  <WidgetBackground>
+    <div className="flex flex-col gap-y-4">
+      <div className="grid grid-cols-3 md:grid-cols-4">
+        <WidgetTitle className="">operator</WidgetTitle>
+        <WidgetTitle className="text-right">censors</WidgetTitle>
+        <WidgetTitle className="hidden text-right md:inline">
+          non-censoring relays
+        </WidgetTitle>
+        <WidgetTitle className="text-right">dominance</WidgetTitle>
+      </div>
+      <StyledList height="h-[182px]">
+        {lidoOperatorCensorship.operators.map(
+          ({
+            name,
+            id,
+            censors,
+            dominance,
+            description,
+            non_censoring_relays_connected_count,
+          }) => (
             <li
-              key={`${name}${description ?? ""}`}
+              key={id}
               className="grid grid-cols-3 hover:opacity-60 md:grid-cols-4"
             >
-              <div className="col-span-1 md:col-span-2">
+              <div>
                 <BodyTextV3>{name}</BodyTextV3>
                 {description !== undefined && (
                   <BodyTextV3
                     className="hidden md:inline"
-                    color="text-slateus-400"
+                    color="text-slateus-200"
                   >
                     {" "}
                     {description}
@@ -101,19 +52,24 @@ const LidoOperatorList: FC<Props> = ({ timeFrame }) => {
               </div>
               <BodyTextV3
                 className="text-right"
-                color={censoring ? "text-white" : "text-emerald-400"}
+                color={censors ? "text-red-400" : "text-green-400"}
               >
-                {censoring ? "yes" : "no"}
+                {censors ? "yes" : "no"}
               </BodyTextV3>
+              <QuantifyText
+                className="hidden text-right md:inline"
+                unitPostfix="relays"
+                unitPostfixColor="text-slateus-200"
+              >{`${non_censoring_relays_connected_count}/${lidoOperatorCensorship.non_censoring_relays_count}`}</QuantifyText>
               <QuantifyText className="text-right" size="text-sm md:text-base">
                 {formatPercentOneDecimal(dominance)}
               </QuantifyText>
             </li>
-          ))}
-        </StyledList>
-      </div>
-    </WidgetBackground>
-  );
-};
+          ),
+        )}
+      </StyledList>
+    </div>
+  </WidgetBackground>
+);
 
 export default LidoOperatorList;

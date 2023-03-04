@@ -49,12 +49,7 @@ const BurnSection: FC = () => {
           </div>
         </div>
       </div>
-      <div
-        className={`
-                grid grid-cols-1 gap-y-4
-                md:gap-x-4 lg:grid-cols-2
-              `}
-      >
+      <div className="grid w-full grid-cols-1 gap-y-4 md:gap-x-4 lg:grid-cols-2">
         <BurnTotal
           onClickTimeFrame={handleClickTimeFrame}
           timeFrame={timeFrame}

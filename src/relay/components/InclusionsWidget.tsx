@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import { BaseText } from "../../components/Texts";
 import LabelText from "../../components/TextsNext/LabelText";
+import QuantifyText from "../../components/TextsNext/QuantifyText";
 import SkeletonText from "../../components/TextsNext/SkeletonText";
 import {
   WidgetBackground,
@@ -37,11 +38,11 @@ const PayloadRow = ({ blockNumber, insertedAt, value }: Payload) => {
       href={`${etherscanUrl}/block/${blockNumber}`}
     >
       <li className="grid grid-cols-3 hover:opacity-60">
-        <span className="font-roboto text-white">
+        <QuantifyText color="text-slateus-100">
           <SkeletonText width="7rem">
             {Format.formatBlockNumber(blockNumber)}
           </SkeletonText>
-        </span>
+        </QuantifyText>
         <div className="mr-1 text-right">
           <BaseText font="font-roboto">
             <SkeletonText width="1rem">{truncatedValue}</SkeletonText>
@@ -54,9 +55,9 @@ const PayloadRow = ({ blockNumber, insertedAt, value }: Payload) => {
           </div>
         </div>
         <div className="text-right">
-          <BaseText font="font-roboto">
+          <QuantifyText unitPostfix="ago" unitPostfixColor="text-slateus-100">
             <SkeletonText width="2rem">{inclusionAgo}</SkeletonText>
-          </BaseText>
+          </QuantifyText>
         </div>
       </li>
     </a>

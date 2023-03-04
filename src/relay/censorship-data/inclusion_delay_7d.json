@@ -1,0 +1,50 @@
+[
+    {
+        "avg_delay": 7.0018604800990856,
+        "avg_block_delay": 0.07361180112463655808,
+        "n": 7050989,
+        "t_type": "congested"
+    },
+    {
+        "avg_delay": 283.1261598455825438,
+        "avg_block_delay": 27.5434886979355483,
+        "n": 102061,
+        "t_type": "unknown"
+    },
+    {
+        "avg_delay": 33.7500000000000000,
+        "avg_block_delay": 2.2441860465116279,
+        "n": 430,
+        "t_type": "ofac_delayed"
+    },
+    {
+        "avg_delay": 85.9819932898883570,
+        "avg_block_delay": 6.5583335312216949,
+        "n": 294779,
+        "t_type": "low_base_fee"
+    },
+    {
+        "avg_delay": 19.2549889135254989,
+        "avg_block_delay": 1.0698447893569845,
+        "n": 902,
+        "t_type": "ofac"
+    },
+    {
+        "avg_delay": 7.0018604800990856,
+        "avg_block_delay": 0.07361180112463655808,
+        "n": 7050989,
+        "t_type": "normal"
+    },
+    {
+        "avg_delay": 0,
+        "avg_block_delay": 0,
+        "n": 378108,
+        "t_type": "miner"
+    },
+    {
+        "avg_delay": 19.1826642335766423,
+        "avg_block_delay": 1.17935928629359286294,
+        "n": 24660,
+        "t_type": "low_tip"
+    }
+]
