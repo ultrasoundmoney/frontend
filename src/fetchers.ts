@@ -46,7 +46,6 @@ export const fetchApiJson = async <A>(
   url: string,
 ): Promise<ApiResult<A>> => {
   const absoluteUrl = absoluteUrlFromUrl(apiDomain, url);
-  console.debug(`fetching ${absoluteUrl}`);
   const safeRes = await fetchSafe(absoluteUrl);
   if (safeRes.type === "FetchError") {
     return safeRes;
