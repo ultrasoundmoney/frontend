@@ -17,7 +17,7 @@ type InclusionTimeRaw = {
 type RawData = Record<RelayApiTimeFrames, InclusionTimeRaw[]>;
 
 const rawCategoryMap: Record<string, Category> = {
-  borderline: "low_balance",
+  borderline: "optimal",
   congested: "congestion",
   likely_insufficient_balance: "low_balance",
   low_base_fee: "low_base_fee",

@@ -163,8 +163,10 @@ const SuboptimalInclusions: FC<Props> = ({
       const y = tx.blockDelay;
       if (tx.reason === "unknown") {
         seriesUncensored.push([x, y] as [number, number]);
-      } else {
+      } else if (tx.reason === "ofac") {
         seriesCensored.push([x, y] as [number, number]);
+      } else {
+        console.log("unrecognized delayed: ", tx.reason);
       }
       transactionsMap[x] = tx;
     }
