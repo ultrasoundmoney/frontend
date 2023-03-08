@@ -6,7 +6,8 @@ import type { ReactZoomPanPinchRef} from "react-zoom-pan-pinch";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import type { FullScreenHandle} from "react-full-screen";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
-import type { FamProfile } from "../../api/profiles";
+import type { FamProfile} from "../../api/profiles";
+import { useSpriteSheet } from "../../api/profiles";
 import { useProfiles } from "../../api/profiles";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import Modal from "../Modal";
@@ -18,8 +19,6 @@ import SectionDivider from "../SectionDivider";
 import ClickAwayListener from "react-click-away-listener";
 import SpriteWithOnClickTooltip from "../SpriteWithOnClickTooltip";
 import followingYouStyles from "../FollowingYou/FollowingYou.module.scss";
-import coordinates from '../../../public/sprite/coordinates.json'
-import properties from '../../../public/sprite/properties.json'
 import Button from '../../components/BlueButton'
 import ControlButtons from "./ControlButtons";
 
@@ -110,6 +109,9 @@ export const useTooltip = () => {
 
 const TwitterFam: FC = () => {
   const profiles = useProfiles()?.profiles;
+  const spriteData = useSpriteSheet();
+  const { coordinates, properties } = spriteData || {};
+
   const { md } = useActiveBreakpoint();
   const fullScreenHandle = useFullScreenHandle();
 
@@ -151,22 +153,22 @@ const TwitterFam: FC = () => {
     }
     const userId = url?.split('profile_images')?.[1]?.split('/')[1]; // i.e. 1579896394919383051
     const fileName = `${userId}-::-${url?.split('profile_images')?.[1]?.split('/')[2]}`; // i.e. 1579896394919383051-::-ahIN3HUB.jpg
-    return `profile_images/${fileName}`;
+    return `/sprite-sheet-images/source_images/${fileName}`;
   }
 
   const getXAndY = (imageUrl: string | undefined, sizeFactor: number) => {
-    if (imageUrl !== undefined) {
+    if (imageUrl !== undefined && coordinates && properties) {
       const key = generateImageKeyfromUrl(imageUrl);
-      let x = coordinates?.[key as keyof typeof coordinates]?.x / sizeFactor;
-      let y = coordinates?.[key as keyof typeof coordinates]?.y / sizeFactor;
+      let x = (coordinates?.[key as keyof typeof coordinates]?.x || 0) / sizeFactor;
+      let y = (coordinates?.[key as keyof typeof coordinates]?.y || 0) / sizeFactor;
       // x is going right to left not left to right
       x = properties?.width / sizeFactor - x;
       // y is going bottom to top not top to bottom
       y = properties?.height / sizeFactor - y;
       if (Number.isNaN(x)) {
-        x = coordinates?.['profile_images/default_profile-images.png' as keyof typeof coordinates ]?.x / sizeFactor;
+        x = (coordinates?.['/sprite-sheet-images/source_images/default_profile-images.png' as keyof typeof coordinates ]?.x || 0) / sizeFactor;
         x = properties?.width / sizeFactor - x;
-        y = coordinates?.['profile_images/default_profile-images.png' as keyof typeof coordinates ]?.y / sizeFactor;
+        y = (coordinates?.['/sprite-sheet-images/source_images/default_profile-images.png' as keyof typeof coordinates ]?.y || 0) / sizeFactor;
         y = properties?.height / sizeFactor - y;
       }
       return { x, y };
@@ -311,6 +313,7 @@ const TwitterFam: FC = () => {
                               currentScale={panZoomRef.current?.state?.scale}
                               getXAndY={getXAndY}
                               excluded={filteredProfiles?.findIndex((p) => p.name === profile?.name) === -1}
+                              properties={properties ?? { width: 0, height: 0 }}
                             />
                           </ClickAwayListener>
                         ))}
@@ -406,6 +409,7 @@ const TwitterFam: FC = () => {
             twitterUrl={selectedItem?.profileUrl}
             width="min-w-[20rem] max-w-sm"
             getXAndY={getXAndY}
+            properties={properties ?? { width: 0, height: 0 }}
           />
         </div>
         <Modal
@@ -424,6 +428,7 @@ const TwitterFam: FC = () => {
               twitterUrl={selectedItem.profileUrl}
               width="min-w-[18rem] max-w-md"
               getXAndY={getXAndY}
+              properties={properties ?? { width: 0, height: 0 }}
             />
           )}
         </Modal>

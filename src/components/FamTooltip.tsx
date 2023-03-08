@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import Image from 'next/image'
-import type { Linkables } from "../api/profiles";
+import type { Linkables, SpriteSheetResponse } from "../api/profiles";
 import * as Format from "../format";
 import scrollbarStyles from "../styles/Scrollbar.module.scss";
 import { BaseText } from "./Texts";
@@ -11,7 +11,6 @@ import BodyText from "./TextsNext/BodyText";
 import Twemoji from "./Twemoji";
 import BioWithLinks from "./Twitter/BioWithLinks";
 import { WidgetTitle } from "./WidgetSubcomponents";
-import properties from '../../public/sprite/properties.json'
 import styles from "./ImageWithOnClickTooltip.module.scss";
 
 const sizeFactor = 1.2; // (from 96px to 80px)
@@ -65,6 +64,7 @@ export type TooltipProps = {
   twitterUrl?: string;
   width?: string;
   getXAndY?: (imageKey: string | undefined, sizeFactor: number) => { x: number | null, y: number | null };
+  properties: SpriteSheetResponse["properties"];
 };
 
 const Tooltip: FC<TooltipProps> = ({
@@ -81,6 +81,7 @@ const Tooltip: FC<TooltipProps> = ({
   twitterUrl,
   width = "22rem",
   getXAndY,
+  properties,
 }) => {
   const [posX, setPosX] = useState<number | null>(null);
   const [posY, setPosY] = useState<number | null>(null);

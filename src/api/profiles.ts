@@ -48,3 +48,15 @@ export const useProfiles = () => {
 
   return data;
 };
+
+export type SpriteSheetResponse = {
+  coordinates: { [key: string]: { x: number, y: number, width: number, height: number } };
+  properties: { width: number, height: number };
+  spriteSheet: string;
+};
+
+export const useSpriteSheet = () => {
+  const { data } = useSWR<SpriteSheetResponse>("/api/fam/sprite-sheet-meta", fetchJsonSwr);
+
+  return data;
+};
