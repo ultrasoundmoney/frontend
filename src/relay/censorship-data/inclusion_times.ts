@@ -1,31 +1,30 @@
-import inclusion_delay_d7 from "./inclusion_delay_7d.json";
-import inclusion_delay_d30 from "./inclusion_delay_30d.json";
-import { A, N, OrdM, pipe } from "../../fp";
+import { A, E, N, OrdM, pipe, T, TEAlt } from "../../fp";
 import type {
   Category,
   InclusionTime,
 } from "../sections/InclusionDelaySection/InclusionTimesWidget";
+import type { RelayApiTimeFrames } from "./time_frames";
+import { timeFrameMap } from "./time_frames";
+import { fetchApiJson } from "../fetchers";
 
 type InclusionTimeRaw = {
-  avg_delay: number;
-  avg_block_delay: number;
-  n: number;
-  t_type: string;
+  avgBlockDelay: number;
+  avgDelay: number;
+  delayType: string;
+  txCount: number;
 };
 
-const rawData: Record<"d7" | "d30", InclusionTimeRaw[]> = {
-  d7: inclusion_delay_d7,
-  d30: inclusion_delay_d30,
-};
+type RawData = Record<RelayApiTimeFrames, InclusionTimeRaw[]>;
 
 const rawCategoryMap: Record<string, Category> = {
+  borderline: "low_balance",
   congested: "congestion",
+  likely_insufficient_balance: "low_balance",
   low_base_fee: "low_base_fee",
   low_tip: "low_tip",
   miner: "private",
-  normal: "optimal",
-  ofac: "sanctions_us",
   ofac_delayed: "sanctions_us",
+  optimal: "optimal",
   unknown: "unknown",
 };
 
@@ -37,48 +36,24 @@ const byTransactionCountDesc = pipe(
   OrdM.contramap((d: InclusionTime) => d.transaction_count),
 );
 
-const getInclusionTimesPerTimeFrame = (
+const getInclusionTimes = (
+  rawData: RawData,
   timeFrame: "d7" | "d30",
 ): InclusionTime[] => {
-  // The congested category looks wrong, so we filter it out.
-  const raw_inclusion_times = rawData[timeFrame].filter(
-    (d) => d.t_type !== "congested",
-  );
+  const raw_inclusion_times = rawData[timeFrameMap[timeFrame]];
   const totalTransactions = raw_inclusion_times.reduce(
-    (acc, cur) => acc + cur.n,
+    (acc, cur) => acc + cur.txCount,
     0,
   );
-  const inclusion_times = raw_inclusion_times.map((d) => ({
-    id: rawCategoryMap[d.t_type] ?? "unknown",
-    transaction_count: d.n,
-    average_time: d.avg_delay,
-    percent: d.n / totalTransactions,
-  }));
-
-  // Since ofac and ofac_delayed map to the same category, we have sanctions-us twice. We merge them.
-  const { left: uniqueInclusionTimes, right: sanctionsUs } = pipe(
-    inclusion_times,
-    A.partition((d) => d.id === "sanctions_us"),
-  );
-  const sanctionsUsTotal = sanctionsUs.reduce(
-    (acc, cur) => acc + cur.transaction_count,
-    0,
-  );
-  const sanctionsUsAverageDelay =
-    sanctionsUs.reduce(
-      (acc, cur) => acc + cur.average_time * cur.transaction_count,
-      0,
-    ) / sanctionsUsTotal;
-  const sanctionsUsPercent = sanctionsUs.reduce(
-    (acc, cur) => acc + cur.percent,
-    0,
-  );
-  const mergedSanctionsUs: InclusionTime = {
-    average_time: sanctionsUsAverageDelay,
-    id: "sanctions_us",
-    percent: sanctionsUsPercent,
-    transaction_count: sanctionsUsTotal,
-  };
+  const inclusion_times = raw_inclusion_times
+    // We don't want to show the borderline category
+    .filter((transaction) => transaction.delayType !== "borderline")
+    .map((d) => ({
+      id: rawCategoryMap[d.delayType] ?? "unknown",
+      transaction_count: d.txCount,
+      average_time: d.avgDelay,
+      percent: d.txCount / totalTransactions,
+    }));
 
   // Sanctions UK is not included in the data, so we add it manually
   const sanctionsUk: InclusionTime = {
@@ -89,14 +64,22 @@ const getInclusionTimesPerTimeFrame = (
   };
 
   const inclusionTimes = pipe(
-    [...uniqueInclusionTimes, mergedSanctionsUs, sanctionsUk],
+    [...inclusion_times, sanctionsUk],
     A.sort(byTransactionCountDesc),
   );
 
   return inclusionTimes;
 };
 
-export const suboptimalInclusionsPerTimeFrame = {
-  d7: getInclusionTimesPerTimeFrame("d7"),
-  d30: getInclusionTimesPerTimeFrame("d30"),
-};
+export const getInclusionTimesPerTimeFrame = pipe(
+  () => fetchApiJson<RawData>("/api/censorship/delay-categories"),
+  T.map((body) =>
+    "error" in body
+      ? E.left(body.error)
+      : E.right({
+          d7: getInclusionTimes(body.data, "d7"),
+          d30: getInclusionTimes(body.data, "d30"),
+        }),
+  ),
+  TEAlt.getOrThrow,
+);

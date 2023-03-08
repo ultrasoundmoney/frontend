@@ -3,7 +3,7 @@ import useSWR from "swr";
 import type { Slot } from "../../beacon-units";
 import type { EthNumber } from "../../eth-units";
 import type { DateTimeString } from "../../time";
-import type { ApiResult } from "./fetchers";
+import type { ApiResult } from "../../fetchers";
 import { fetchApiJson, fetchJsonSwr } from "./fetchers";
 
 export type SupplyAtTime = {

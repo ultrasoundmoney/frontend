@@ -33,8 +33,8 @@ const BuilderListWidget: FC<Props> = ({ builders }) => {
               censors,
               dominance,
               description,
-              censoring_pub_key_count,
-              pub_key_count,
+              censoringPubkeys,
+              totalPubkeys,
             }) => (
               <li
                 key={id}
@@ -68,7 +68,7 @@ const BuilderListWidget: FC<Props> = ({ builders }) => {
                   className="hidden text-right md:inline"
                   size="text-sm md:text-base"
                 >
-                  {`${censoring_pub_key_count}/${pub_key_count}`}
+                  {`${censoringPubkeys}/${totalPubkeys}`}
                 </QuantifyText>
                 <QuantifyText
                   className="text-right"

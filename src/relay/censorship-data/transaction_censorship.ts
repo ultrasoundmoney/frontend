@@ -1,21 +1,15 @@
-import censored_transactions_7d_last_200 from "./censored_transactions_7d_last_200.json";
-// import censored_transactions_30d_last_200 from "./censored_transactions_30d_last_200.json";
-import censored_transactions_30d from "./censored_transactions_30d.json";
 import type { DateTimeString } from "../../time";
+import { pipe } from "fp-ts/lib/function";
+import { A, E, T, TEAlt } from "../../fp";
+import { fetchApiJson } from "../fetchers";
 
 type TransactionRaw = {
-  transaction_hash: string;
-  block_number: number;
+  transactionHash: string;
+  blockNumber: number;
   mined: DateTimeString;
   delay: number;
   blacklist: string[];
-  blocksdelay: number;
-};
-
-const rawData: Record<"d7" | "d30", TransactionRaw[]> = {
-  d7: censored_transactions_7d_last_200,
-  // d30: censored_transactions_30d_last_200,
-  d30: censored_transactions_30d,
+  blockDelay: number;
 };
 
 export type CensoredTransaction = {
@@ -38,24 +32,21 @@ export type TransactionCensorshipPerTimeFrame = Record<
   TransactionCensorship
 >;
 
-const d7Length = rawData.d30.filter((d) => d.block_number > 16699807).length;
-
 const getTransactionsPerTimeFrame = (
-  timeFrame: "d7" | "d30",
+  rawData: TransactionRaw[],
 ): TransactionCensorship => {
-  const raw_transactions = rawData[timeFrame].sort(
+  const raw_transactions = rawData.sort(
     (a, b) => new Date(b.mined).getTime() - new Date(a.mined).getTime(),
   );
-  const totalTransactions =
-    timeFrame === "d7" ? d7Length : raw_transactions.length;
+  const totalTransactions = raw_transactions.length;
   // ???
   const totalBlocksCensored = 0;
   const transactions = raw_transactions.slice(0, 1000).map((d) => ({
     inclusion: d.mined,
     sanction_list: d.blacklist.join(", "),
     took: d.delay,
-    transaction_delay: d.blocksdelay,
-    transaction_hash: d.transaction_hash,
+    transaction_delay: d.blockDelay,
+    transaction_hash: d.transactionHash,
   }));
 
   return {
@@ -66,8 +57,24 @@ const getTransactionsPerTimeFrame = (
   };
 };
 
-export const transactionCensorshipPerTimeFrame: TransactionCensorshipPerTimeFrame =
-  {
-    d7: getTransactionsPerTimeFrame("d7"),
-    d30: getTransactionsPerTimeFrame("d30"),
-  };
+export const getTransactionCensorshipPerTimeFrame: T.Task<TransactionCensorshipPerTimeFrame> =
+  pipe(
+    () => fetchApiJson<TransactionRaw[]>("/api/censorship/censored-txs"),
+    T.map((body) =>
+      "error" in body
+        ? E.left(body.error)
+        : E.right({
+            d7: pipe(
+              body.data,
+              A.filter(
+                (transactionRaw) =>
+                  new Date(transactionRaw.mined).getTime() >
+                  new Date().getTime() - 7 * 24 * 60 * 60 * 1000,
+              ),
+              getTransactionsPerTimeFrame,
+            ),
+            d30: getTransactionsPerTimeFrame(body.data),
+          }),
+    ),
+    TEAlt.getOrThrow,
+  );

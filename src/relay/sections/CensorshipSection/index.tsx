@@ -93,7 +93,10 @@ const CensorshipSection: FC<Props> = ({
             timeFrame={timeFrame}
           />
         </div>
-        <SanctionsDelayWidget sanctionsDelay={sanctionsDelay} timeFrame={timeFrame} />
+        <SanctionsDelayWidget
+          sanctionsDelay={sanctionsDelay}
+          timeFrame={timeFrame}
+        />
       </div>
     </Section>
   );

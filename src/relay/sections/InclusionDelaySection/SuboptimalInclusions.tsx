@@ -1,4 +1,4 @@
-import { FC, useEffect, useLayoutEffect, useRef, useState } from "react";
+import type { FC } from "react";
 import { useMemo } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
@@ -9,7 +9,6 @@ import WidgetBase from "../../components/WidgetBase";
 import colors from "../../../colors";
 import _merge from "lodash/merge";
 import * as DateFns from "date-fns";
-import useWindowSize from "../../../hooks/use-window-size";
 
 // Somehow resolves an error thrown by the annotation lib
 if (typeof window !== "undefined") {
@@ -94,11 +93,11 @@ const baseOptions: Highcharts.Options = {
 };
 
 export type SuboptimalTransaction = {
-  blocksdelay: number;
+  blockDelay: number;
   delay: number;
   mined: DateTimeString;
   reason: string;
-  transaction_hash: string;
+  transactionHash: string;
 };
 
 const SANCTIONED_ENTITY_SERIES_ID = "sanctioned-entity";
@@ -125,10 +124,10 @@ const getTooltipFormatter = (
     const formattedTime = DateFns.format(dt, "HH:mm:ss");
     const formattedTimeZone = DateFns.format(dt, "'UTC'x");
 
-    const shortHash = `${transaction.transaction_hash.slice(
+    const shortHash = `${transaction.transactionHash.slice(
       0,
       5,
-    )}...${transaction.transaction_hash.slice(-3)}`;
+    )}...${transaction.transactionHash.slice(-3)}`;
 
     return `
       <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-400">
@@ -138,7 +137,7 @@ const getTooltipFormatter = (
           <span class="text-white">${formattedTime} </span>
           <span class="text-slateus-200">${formattedTimeZone}</span>
         </div>
-          <div class="text-white mt-2 text-right">${transaction.blocksdelay} <span class="text-slateus-200">blocks delay</span></div>
+          <div class="text-white mt-2 text-right">${transaction.blockDelay} <span class="text-slateus-200">blocks delay</span></div>
           <div class="text-white text-right">${transaction.delay} <span class="text-slateus-200">seconds delay</span></div>
           <div class="text-white text-right">sanctions <span class="text-slateus-200">${transaction.reason} </span></div>
         </div>
@@ -161,7 +160,7 @@ const SuboptimalInclusions: FC<Props> = ({
     const transactionsMap: TransactionMap = {};
     for (const tx of suboptimalInclusions) {
       const x = new Date(tx.mined).getTime();
-      const y = tx.blocksdelay;
+      const y = tx.blockDelay;
       if (tx.reason === "unknown") {
         seriesUncensored.push([x, y] as [number, number]);
       } else {

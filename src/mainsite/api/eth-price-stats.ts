@@ -1,7 +1,7 @@
 import { secondsToMilliseconds } from "date-fns";
 import useSWR from "swr";
 import type { DateTimeString } from "../../time";
-import type { ApiResult } from "./fetchers";
+import type { ApiResult } from "../../fetchers";
 import { fetchApiJson, fetchJsonSwr } from "./fetchers";
 
 export type EthPriceStats = {

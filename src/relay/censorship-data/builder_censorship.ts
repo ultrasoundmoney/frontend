@@ -1,123 +1,95 @@
-import builders_7d from "./builders_7d.json";
-import builders_30d from "./builders_30d.json";
-import { A, N, OrdM, pipe } from "../../fp";
+import { A, E, Monoid, N, OrdM, pipe, T, TEAlt } from "../../fp";
+import { fetchApiJson } from "../fetchers";
 import type {
   Builder,
   BuilderCensorship,
 } from "../sections/CensorshipSection/BuilderCensorshipWidget";
+import type { RelayApiTimeFrames } from "./time_frames";
+import { timeFrameMap } from "./time_frames";
 
 type BuilderRaw = {
-  pubkey: string | null;
-  builder_id: string | null;
-  censoring: string;
-  count: number;
+  blockCount: number;
+  builderId: string;
+  censoringPubkeys: number;
+  totalPubkeys: number;
 };
 
-type RawData = Record<"d7" | "d30", BuilderRaw[]>;
-
-const rawData: RawData = {
-  d7: builders_7d,
-  d30: builders_30d,
-};
+type RawData = Record<RelayApiTimeFrames, BuilderRaw[]>;
 
 export type BuilderCensorshipPerTimeFrame = Record<
   "d7" | "d30",
   BuilderCensorship
 >;
 
+const byDominanceDesc = pipe(
+  N.Ord,
+  OrdM.reverse,
+  OrdM.contramap((builder: Builder) => builder.dominance),
+);
+
 export const getBuilderCensorship = (
-  timeFrame: "d7" | "d30",
+  buildersRaw: BuilderRaw[],
 ): BuilderCensorship => {
-  const builders = rawData[timeFrame].filter(
-    (builder) => builder.builder_id !== null && builder.pubkey !== null,
-  );
-  const blockCountBuilder = pipe(
-    builders,
-    A.reduce(new Map<string, number>(), (acc, builder) => {
-      // filtered above
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const id = builder.builder_id!;
-      const count = builder.count;
-      const oldCount = acc.get(id) ?? 0;
-      return acc.set(id, oldCount + count);
-    }),
-  );
-  const censoringKeyCountBuilder = pipe(
-    builders,
-    A.filter((builder) => builder.censoring === "yes"),
-    A.reduce(new Map<string, number>(), (acc, builder) => {
-      // filtered above
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const id = builder.builder_id!;
-      const oldCount = acc.get(id) ?? 0;
-      return acc.set(id, oldCount + 1);
-    }),
-  );
-  const pubKeyCountBuilder = pipe(
-    builders,
-    A.reduce(new Map<string, number>(), (acc, builder) => {
-      // filtered above
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const id = builder.builder_id!;
-      const oldCount = acc.get(id) ?? 0;
-      return acc.set(id, oldCount + 1);
-    }),
-  );
   const blockCountAll = pipe(
-    builders,
-    A.reduce(0, (acc, builder) => acc + builder.count),
+    buildersRaw,
+    A.reduce(0, (acc, builder) => acc + builder.blockCount),
   );
   const blockCountCensoringKeys = pipe(
+    buildersRaw,
+    A.filter((builder) => builder.censoringPubkeys > 0),
+    A.reduce(0, (acc, builder) => acc + builder.blockCount),
+  );
+
+  const builders = pipe(
+    buildersRaw,
+    A.map(
+      (builder): Builder => ({
+        censoringPubkeys: builder.censoringPubkeys,
+        censors:
+          builder.censoringPubkeys === 0
+            ? "no"
+            : builder.censoringPubkeys === builder.totalPubkeys
+            ? "fully"
+            : "partially",
+        dominance: builder.blockCount / blockCountAll,
+        id: builder.builderId,
+        name: builder.builderId,
+        totalPubkeys: builder.totalPubkeys,
+      }),
+    ),
+    A.sort(byDominanceDesc),
+  );
+
+  const censoringPubkeys = pipe(
+    buildersRaw,
+    A.map((builder) => builder.censoringPubkeys),
+    Monoid.concatAll(N.MonoidSum),
+  );
+
+  const totalPubkeys = pipe(
+    buildersRaw,
+    A.map((builder) => builder.totalPubkeys),
+    Monoid.concatAll(N.MonoidSum),
+  );
+
+  return {
     builders,
-    A.filter((builder) => builder.censoring === "yes"),
-    A.reduce(0, (acc, builder) => acc + builder.count),
-  );
-
-  const byDominanceDesc = pipe(
-    N.Ord,
-    OrdM.reverse,
-    OrdM.contramap((builder: Builder) => builder.dominance),
-  );
-
-  const builderCensorship: BuilderCensorship = {
-    builders: pipe(
-      builders,
-      A.map((builder) => builder.builder_id),
-      // filtered above
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      A.reduce(new Set<string>(), (acc, id) => acc.add(id!)),
-      (set) => Array.from(set),
-      A.map(
-        (builder): Builder => ({
-          censoring_pub_key_count: censoringKeyCountBuilder.get(builder) ?? 0,
-          censors:
-            censoringKeyCountBuilder.get(builder) === undefined
-              ? "no"
-              : censoringKeyCountBuilder.get(builder) ===
-                pubKeyCountBuilder.get(builder)
-              ? "fully"
-              : "partially",
-          dominance: (blockCountBuilder.get(builder) ?? 0) / blockCountAll,
-          id: builder,
-          name: builder,
-          pub_key_count: pubKeyCountBuilder.get(builder) ?? 0,
-        }),
-      ),
-      A.sort(byDominanceDesc),
-    ),
-    censoring_pub_key_count: pipe(
-      builders,
-      A.filter((builder) => builder.censoring === "yes"),
-      A.size,
-    ),
+    censoringPubkeys,
     dominance: blockCountCensoringKeys / blockCountAll,
-    pub_key_count: pipe(builders, A.size),
+    totalPubkeys,
   };
-
-  return builderCensorship;
 };
 
-export const builderCensorshipPerTimeFrame: BuilderCensorshipPerTimeFrame = {
-  d7: getBuilderCensorship("d7"),
-  d30: getBuilderCensorship("d30"),
-};
+export const getBuilderCensorshipPerTimeFrame: T.Task<BuilderCensorshipPerTimeFrame> =
+  pipe(
+    () => fetchApiJson<RawData>("/api/censorship/builders"),
+    T.map((body) =>
+      "error" in body
+        ? E.left(body.error)
+        : E.right({
+            d7: getBuilderCensorship(body.data[timeFrameMap["d7"]]),
+            d30: getBuilderCensorship(body.data[timeFrameMap["d30"]]),
+          }),
+    ),
+    TEAlt.getOrThrow,
+  );

@@ -7,7 +7,7 @@ import useSWR from "swr";
 import type { GweiNumber, WeiNumber } from "../../eth-units";
 import type { DateTimeString } from "../../time";
 import type { TimeFrame } from "../time-frames";
-import type { ApiResult } from "./fetchers";
+import type { ApiResult } from "../../fetchers";
 import { fetchApiJson } from "./fetchers";
 import { fetchJsonSwr } from "./fetchers";
 import type { BlockNumber } from "./supply-over-time";

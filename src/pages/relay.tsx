@@ -7,19 +7,19 @@ import { pipe, T, TAlt } from "../fp";
 import type { ApiPayload, ApiPayloadStats, ApiValidator } from "../relay/api";
 import * as Api from "../relay/api";
 import type { BuilderCensorshipPerTimeFrame } from "../relay/censorship-data/builder_censorship";
-import { builderCensorshipPerTimeFrame as builderCensorshipPerTimeFrameData } from "../relay/censorship-data/builder_censorship";
+import { getBuilderCensorshipPerTimeFrame } from "../relay/censorship-data/builder_censorship";
 import type { InclusionTimesPerTimeFrame } from "../relay/censorship-data/inclusion_times";
-import { suboptimalInclusionsPerTimeFrame as inclusionTimesPerTimeFrameData } from "../relay/censorship-data/inclusion_times";
+import { getInclusionTimesPerTimeFrame } from "../relay/censorship-data/inclusion_times";
 import type { LidoOperatorCensorshipPerTimeFrame } from "../relay/censorship-data/lido_operator_censorship";
-import { lidoOperatorCensorshipPerTimeFrame as lidoOperatorCensorshipPerTimeFrameData } from "../relay/censorship-data/lido_operator_censorship";
+import { getLidoOperatorCensorshipPerTimeFrame } from "../relay/censorship-data/lido_operator_censorship";
 import type { RelayCensorshipPerTimeFrame } from "../relay/censorship-data/relay_censorship";
-import { relayCensorshipPerTimeFrame as relayCensorshipPerTimeFrameData } from "../relay/censorship-data/relay_censorship";
+import { getRelayCensorshipPerTimeFrame } from "../relay/censorship-data/relay_censorship";
 import type { SanctionsDelayPerTimeFrame } from "../relay/censorship-data/sanctions_delay";
-import { sanctionsDelayPerTimeFrame as sanctionsDelayPerTimeFrameData } from "../relay/censorship-data/sanctions_delay";
+import { getSanctionsDelayPerTimeFrame } from "../relay/censorship-data/sanctions_delay";
 import type { SuboptimalInclusionsPerTimeFrame } from "../relay/censorship-data/suboptimal_inclusions";
-import { suboptimalInclusionsPerTimeFrame as suboptimalInclusionsPerTimeFrameData } from "../relay/censorship-data/suboptimal_inclusions";
+import { getSuboptimalInclusionsPerTimeFrame } from "../relay/censorship-data/suboptimal_inclusions";
 import type { TransactionCensorshipPerTimeFrame } from "../relay/censorship-data/transaction_censorship";
-import { transactionCensorshipPerTimeFrame as transactionCensorshipPerTimeFrameData } from "../relay/censorship-data/transaction_censorship";
+import { getTransactionCensorshipPerTimeFrame } from "../relay/censorship-data/transaction_censorship";
 import RelayDashboards from "../relay/RelayDashboards";
 import type { Builder, ValidatorStats } from "../relay/types";
 import {
@@ -46,25 +46,22 @@ type StaticProps = {
 
 export const getStaticProps: GetStaticProps<StaticProps> = pipe(
   TAlt.sequenceStruct({
+    builderCensorshipPerTimeFrame: getBuilderCensorshipPerTimeFrame,
+    inclusionTimesPerTimeFrame: getInclusionTimesPerTimeFrame,
+    lidoOperatorCensorshipPerTimeFrame: getLidoOperatorCensorshipPerTimeFrame,
     payloadStats: Api.fetchPayloadStats,
     payloads: Api.fetchPayloads,
+    relayCensorshipPerTimeFrame: getRelayCensorshipPerTimeFrame,
+    sanctionsDelayPerTimeFrame: getSanctionsDelayPerTimeFrame,
+    suboptimalInclusionsPerTimeFrame: getSuboptimalInclusionsPerTimeFrame,
     topBuilders: Api.fetchTopBuilders,
     topPayloads: Api.fetchTopPayloads,
+    transactionCensorshipPerTimeFrame: getTransactionCensorshipPerTimeFrame,
     validatorStats: Api.fetchValidatorStats,
     validators: Api.fetchValidators,
   }),
   T.map((props) => ({
-    props: {
-      builderCensorshipPerTimeFrame: builderCensorshipPerTimeFrameData,
-      inclusionTimesPerTimeFrame: inclusionTimesPerTimeFrameData,
-      lidoOperatorCensorshipPerTimeFrame:
-        lidoOperatorCensorshipPerTimeFrameData,
-      relayCensorshipPerTimeFrame: relayCensorshipPerTimeFrameData,
-      sanctionsDelayPerTimeFrame: sanctionsDelayPerTimeFrameData,
-      suboptimalInclusionsPerTimeFrame: suboptimalInclusionsPerTimeFrameData,
-      transactionCensorshipPerTimeFrame: transactionCensorshipPerTimeFrameData,
-      ...props,
-    },
+    props,
     revalidate: minutesToSeconds(2),
   })),
 );

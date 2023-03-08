@@ -2,7 +2,7 @@ import { secondsToMilliseconds } from "date-fns";
 import useSWR from "swr";
 import type { WeiNumber } from "../../eth-units";
 import type { DateTimeString } from "../../time";
-import type { ApiResult } from "./fetchers";
+import type { ApiResult } from "../../fetchers";
 import { fetchApiJson } from "./fetchers";
 import { fetchJsonSwr } from "./fetchers";
 

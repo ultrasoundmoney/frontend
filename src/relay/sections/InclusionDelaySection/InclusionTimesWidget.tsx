@@ -29,6 +29,10 @@ const categoryIconMap: Record<Category, StaticDetails> = {
     imgAlt: "sneezing face symbolizing congestion of transactions",
     imgSrc: sneezingOwnSvg as StaticImageData,
   },
+  low_balance: {
+    imgAlt: "question mark symbolizing missing icon",
+    imgSrc: questionMarkSvg as StaticImageData,
+  },
   low_base_fee: {
     imgAlt: "pinching hand symbolizing low base fee",
     imgSrc: handPinchedSvg as StaticImageData,
@@ -194,6 +198,7 @@ const CategoryBar: FC<{
 type CategoryHighlights = Record<Category, boolean>;
 const categoryHighlights: CategoryHighlights = {
   congestion: false,
+  low_balance: false,
   low_base_fee: false,
   low_tip: false,
   optimal: false,
@@ -221,6 +226,7 @@ export type Category =
   | "congestion"
   | "unknown"
   | "private"
+  | "low_balance"
   | "low_base_fee"
   | "low_tip"
   | "sanctions_us"

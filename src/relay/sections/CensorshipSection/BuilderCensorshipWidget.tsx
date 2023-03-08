@@ -7,20 +7,20 @@ import TinyStatus from "../../components/TinyStatus";
 import WidgetBase from "../../components/WidgetBase";
 
 export type Builder = {
-  censoring_pub_key_count: number;
+  censoringPubkeys: number;
   censors: "partially" | "fully" | "no";
   description?: string;
   dominance: number;
   id: string;
   name: string;
-  pub_key_count: number;
+  totalPubkeys: number;
 };
 
 export type BuilderCensorship = {
   builders: Builder[];
-  censoring_pub_key_count: number;
+  censoringPubkeys: number;
   dominance: number;
-  pub_key_count: number;
+  totalPubkeys: number;
 };
 
 type Props = {
@@ -48,7 +48,7 @@ const BuilderCensorshipWidget: FC<Props> = ({
       </SkeletonText>
     </QuantifyText>
     <TinyStatus
-      value={`${builderCensorship.censoring_pub_key_count}/${builderCensorship.pub_key_count}`}
+      value={`${builderCensorship.censoringPubkeys}/${builderCensorship.totalPubkeys}`}
       postText="censoring builder pubkeys"
       skeletonWidth="3.05rem"
     />

@@ -1,15 +1,12 @@
-import sanctions_delay_7d from "./sanctions_delay_7d.json";
-import sanctions_delay_30d from "./sanctions_delay_30d.json";
+import { pipe } from "fp-ts/lib/function";
+import { fetchApiJson } from "../fetchers";
+import type { RelayApiTimeFrames } from "./time_frames";
+import { E, T, TEAlt } from "../../fp";
 
 type SanctionsDelayRaw = {
-  avg: number;
-  t: "uncensored" | "censored";
-  c: number;
-};
-
-const rawData: Record<"d7" | "d30", SanctionsDelayRaw[]> = {
-  d7: sanctions_delay_7d as SanctionsDelayRaw[],
-  d30: sanctions_delay_30d as SanctionsDelayRaw[],
+  avgDelay: number;
+  txType: "uncensored" | "censored";
+  txCount: number;
 };
 
 export type SanctionsDelay = {
@@ -20,21 +17,32 @@ export type SanctionsDelay = {
 
 export type SanctionsDelayPerTimeFrame = Record<"d7" | "d30", SanctionsDelay>;
 
-const getSanctionsDelay = (timeFrame: "d7" | "d30") => {
-  const data = rawData[timeFrame];
-  const uncensored = data.filter((d) => d.t === "uncensored")[0];
-  const censored = data.filter((d) => d.t === "censored")[0];
+const getSanctionsDelay = (rawDelays: SanctionsDelayRaw[]) => {
+  const data = rawDelays;
+  const uncensored = data.filter((d) => d.txType === "uncensored")[0];
+  const censored = data.filter((d) => d.txType === "censored")[0];
 
   if (!uncensored || !censored) throw new Error("Invalid data");
 
   return {
-    average_censored_delay: censored.avg - uncensored.avg,
-    censored_count: censored.c,
-    count: uncensored.c + censored.c,
+    average_censored_delay: censored.avgDelay - uncensored.avgDelay,
+    censored_count: censored.txCount,
+    count: uncensored.txCount + censored.txCount,
   };
 };
 
-export const sanctionsDelayPerTimeFrame: SanctionsDelayPerTimeFrame = {
-  d7: getSanctionsDelay("d7"),
-  d30: getSanctionsDelay("d30"),
-};
+type RawData = Record<RelayApiTimeFrames, SanctionsDelayRaw[]>;
+
+export const getSanctionsDelayPerTimeFrame: T.Task<SanctionsDelayPerTimeFrame> =
+  pipe(
+    () => fetchApiJson<RawData>("/api/censorship/censorship-categories"),
+    T.map((body) =>
+      "error" in body
+        ? E.left(body.error)
+        : E.right({
+            d7: getSanctionsDelay(body.data["sevenDays"]),
+            d30: getSanctionsDelay(body.data["thirtyDays"]),
+          }),
+    ),
+    TEAlt.getOrThrow,
+  );

@@ -1,9 +1,9 @@
-import { getUsmDomain } from "../../config";
-import type { ApiResult } from "../../fetchers";
-import { fetchApiJson as fetchApiJsonShared } from "../../fetchers";
+import type { ApiResult } from "../fetchers";
+import { fetchApiJson as fetchApiJsonShared } from "../fetchers";
+import * as RelayConfig from "./config";
 
-export const fetchApiJson = <A>(url: string): Promise<ApiResult<A>> =>
-  fetchApiJsonShared(getUsmDomain(), url);
+export const fetchApiJson = async <A>(url: string): Promise<ApiResult<A>> =>
+  fetchApiJsonShared(RelayConfig.getDomain(), url);
 
 // Swr wants us to throw, but we don't like throwing, so we write code that
 // doesn't throw, and add a wrapper for swr which does.

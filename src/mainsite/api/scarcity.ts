@@ -1,7 +1,7 @@
 import JSBI from "jsbi";
 import useSWR from "swr";
 import * as Duration from "../../duration";
-import type { ApiResult } from "./fetchers";
+import type { ApiResult } from "../../fetchers";
 import { fetchApiJson, fetchJsonSwr } from "./fetchers";
 
 export type Scarcity = {

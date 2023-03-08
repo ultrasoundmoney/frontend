@@ -13,7 +13,7 @@ import type { BaseFeePerGasStats } from "../mainsite/api/base-fee-per-gas-stats"
 import { fetchBaseFeePerGasStats } from "../mainsite/api/base-fee-per-gas-stats";
 import type { EthPriceStats } from "../mainsite/api/eth-price-stats";
 import { fetchEthPriceStats } from "../mainsite/api/eth-price-stats";
-import type { ApiResult } from "../mainsite/api/fetchers";
+import type { ApiResult } from "../fetchers";
 import type { GaugeRates } from "../mainsite/api/gauge-rates";
 import { fetchGaugeRates } from "../mainsite/api/gauge-rates";
 import type { ScarcityF } from "../mainsite/api/scarcity";
