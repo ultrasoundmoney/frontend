@@ -203,33 +203,26 @@ const SuboptimalInclusions: FC<Props> = ({
       },
       series: [
         {
-          id: SANCTIONED_ENTITY_SERIES_ID,
-          type: "column",
-          name: "SANCTIONED",
-          data: seriesCensored,
+          borderWidth: 0,
           color: {
-            linearGradient: {
-              x1: 1,
-              y1: 0,
-              x2: 0.9,
-              y2: 1,
-            },
+            linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
             stops: [
               [0, colors.red400],
               [1, "#1B2236"],
             ],
           },
+          data: seriesCensored,
+          id: SANCTIONED_ENTITY_SERIES_ID,
+          name: "SANCTIONED",
+          type: "column",
         },
         {
-          id: UNSANCTIONED_ENTITY_SERIES_ID,
-          type: "column",
-          name: "UNSANCTIONED",
-          data: seriesUncensored,
+          borderWidth: 0,
           color: {
             linearGradient: {
-              x1: 1,
+              x1: 0,
               y1: 0,
-              x2: 0.9,
+              x2: 0,
               y2: 1,
             },
             stops: [
@@ -237,6 +230,10 @@ const SuboptimalInclusions: FC<Props> = ({
               [1, "#1B2236"],
             ],
           },
+          data: seriesUncensored,
+          id: UNSANCTIONED_ENTITY_SERIES_ID,
+          name: "UNSANCTIONED",
+          type: "column",
         },
       ],
       tooltip: {
