@@ -21,6 +21,7 @@ const InclusionDelaySection: FC<Props> = ({
   const [timeFrame, setTimeFrame] = useState<"d7" | "d30">("d7");
   const inclusionTimes = inclusionTimesPerTimeFrame[timeFrame];
   const suboptimalInclusions = suboptimalInclusionsPerTimeFrame[timeFrame];
+  // const transactions = suboptimalInclusionsPerTimeFrame[timeFrame];
 
   return (
     <Section
@@ -45,11 +46,11 @@ const InclusionDelaySection: FC<Props> = ({
           inclusionTimes={inclusionTimes}
           timeFrame={timeFrame}
         />
-        {/* <TransactionInclusionDelayWidget /> */}
         <SuboptimalInclusions
           suboptimalInclusions={suboptimalInclusions}
           timeFrame={timeFrame}
         />
+        {/* <TransactionInclusionDelayWidget transactions={transactions} /> */}
       </div>
     </Section>
   );
