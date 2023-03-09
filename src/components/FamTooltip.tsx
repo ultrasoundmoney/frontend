@@ -64,7 +64,7 @@ export type TooltipProps = {
   twitterUrl?: string;
   width?: string;
   getXAndY?: (imageKey: string | undefined, sizeFactor: number) => { x: number | null, y: number | null };
-  properties: SpriteSheetResponse["properties"];
+  properties?: SpriteSheetResponse["properties"];
 };
 
 const Tooltip: FC<TooltipProps> = ({
@@ -112,7 +112,7 @@ const Tooltip: FC<TooltipProps> = ({
         className="absolute right-5 top-5 w-6 cursor-pointer select-none hover:brightness-90 active:brightness-110"
         onClick={onClickClose}
       />
-      {getXAndY
+      {(getXAndY && properties)
         ? (
           <div
             className={`${styles["fam-image-sprite"]} mx-auto h-20 w-20 select-none rounded-full`}
