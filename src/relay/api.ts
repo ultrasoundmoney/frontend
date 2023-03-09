@@ -1,4 +1,4 @@
-import { getApiUrl } from "./config";
+import { getDomain } from "./config";
 import type { Builder, ValidatorStats } from "./types";
 
 // Next cannot serialize dates, these types represent domain objects before parsing
@@ -22,7 +22,7 @@ export type ApiValidator = {
 };
 
 export const fetchPayloads = (): Promise<Array<ApiPayload>> =>
-  fetch(`${getApiUrl()}/api/payloads`)
+  fetch(`${getDomain()}/api/payloads`)
     .then((res) => res.json())
     .then(({ payloads }) => payloads as Array<ApiPayload>)
     .catch((err) => {
@@ -31,7 +31,7 @@ export const fetchPayloads = (): Promise<Array<ApiPayload>> =>
     });
 
 export const fetchTopPayloads = (): Promise<Array<ApiPayload>> =>
-  fetch(`${getApiUrl()}/api/payloads/top`)
+  fetch(`${getDomain()}/api/payloads/top`)
     .then((res) => res.json())
     .then(({ payloads }) => payloads as Array<ApiPayload>)
     .catch((err) => {
@@ -40,7 +40,7 @@ export const fetchTopPayloads = (): Promise<Array<ApiPayload>> =>
     });
 
 export const fetchPayloadStats = (): Promise<ApiPayloadStats> =>
-  fetch(`${getApiUrl()}/api/payloads/stats`)
+  fetch(`${getDomain()}/api/payloads/stats`)
     .then((res) => res.json() as Promise<ApiPayloadStats>)
     .then(
       ({ count, totalValue, firstPayloadAt }) =>
@@ -60,7 +60,7 @@ export const fetchPayloadStats = (): Promise<ApiPayloadStats> =>
     });
 
 export const fetchValidators = (): Promise<Array<ApiValidator>> =>
-  fetch(`${getApiUrl()}/api/validators`)
+  fetch(`${getDomain()}/api/validators`)
     .then((res) => res.json())
     .then(({ validators }) => validators as Array<ApiValidator>)
     .catch((err) => {
@@ -69,7 +69,7 @@ export const fetchValidators = (): Promise<Array<ApiValidator>> =>
     });
 
 export const fetchValidatorStats = (): Promise<ValidatorStats> =>
-  fetch(`${getApiUrl()}/api/validators/stats`)
+  fetch(`${getDomain()}/api/validators/stats`)
     .then((res) => res.json() as Promise<ValidatorStats>)
     .then(
       ({ validatorCount, knownValidatorCount, recipientCount }) =>
@@ -89,7 +89,7 @@ export const fetchValidatorStats = (): Promise<ValidatorStats> =>
     });
 
 export const fetchTopBuilders = (): Promise<Array<Builder>> =>
-  fetch(`${getApiUrl()}/api/builders/top`)
+  fetch(`${getDomain()}/api/builders/top`)
     .then((res) => res.json())
     .then(({ builders }) => builders as Array<Builder>)
     .catch((err) => {

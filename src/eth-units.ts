@@ -1,5 +1,4 @@
 import JSBI from "jsbi";
-import { useIssuanceEstimate } from "./api/issuance-estimate";
 
 export const WEI_PER_GWEI_JSBI = JSBI.exponentiate(
   JSBI.BigInt(10),
@@ -28,27 +27,3 @@ export type WeiNumber = number;
 export type GweiNumber = number;
 
 export type EthNumber = number;
-
-const SLOTS_PER_MINUTE = 5;
-const MINUTES_PER_HOUR = 60;
-const HOURS_PER_DAY = 24;
-const DAYS_PER_YEAR = 365.25;
-const SLOTS_PER_YEAR =
-  DAYS_PER_YEAR * HOURS_PER_DAY * MINUTES_PER_HOUR * SLOTS_PER_MINUTE;
-
-// WARNING: uses useIssuanceEstimate which expects only to be called inside of a tree with a SWRConfig which fetched the issuanceEstimate server side.
-export const usePosIssuanceYear = (): EthNumber => {
-  const issuanceEstimate = useIssuanceEstimate();
-  return (
-    (SLOTS_PER_YEAR * issuanceEstimate.issuance_per_slot_gwei) / GWEI_PER_ETH
-  );
-};
-
-const SLOTS_PER_DAY = SLOTS_PER_MINUTE * MINUTES_PER_HOUR * HOURS_PER_DAY;
-
-export const usePosIssuancePerDay = (): EthNumber => {
-  const issuanceEstimate = useIssuanceEstimate();
-  return (
-    (issuanceEstimate.issuance_per_slot_gwei * SLOTS_PER_DAY) / GWEI_PER_ETH
-  );
-};

@@ -8,6 +8,8 @@ type Props = {
   color?: string;
   size?: string;
   unitPostfix?: string;
+  unitPostfixColor?: string;
+  unitPostfixMargin?: string;
 };
 
 const QuantifyText: FC<Props> = ({
@@ -15,24 +17,26 @@ const QuantifyText: FC<Props> = ({
   children,
   className,
   color,
-  unitPostfix,
   size,
+  unitPostfix,
+  unitPostfixColor = "text-slateus-400",
+  unitPostfixMargin = "ml-1",
 }) => (
   <div className={className}>
     <BaseText font="font-roboto" color={color} size={size}>
       {children}
-      {amountPostfix === undefined ? undefined : amountPostfix}
+      {amountPostfix}
+      {unitPostfix && (
+        <BaseText
+          font="font-roboto"
+          color={unitPostfixColor}
+          className={unitPostfixMargin}
+          size={size}
+        >
+          {unitPostfix}
+        </BaseText>
+      )}
     </BaseText>
-    {unitPostfix && (
-      <BaseText
-        font="font-roboto"
-        color="text-slateus-400"
-        className="ml-1"
-        size={size}
-      >
-        {unitPostfix}
-      </BaseText>
-    )}
   </div>
 );
 

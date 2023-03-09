@@ -1,23 +1,34 @@
-import type { FC } from "react";
 import * as D from "date-fns";
+import type { FC } from "react";
+import { useEffect, useState } from "react";
 
-import type { Payload } from "../types";
-import * as Format from "../../format";
-import { getEtherscanUrl } from "../config";
-import scrollbarStyles from "../../styles/Scrollbar.module.scss";
-import LabelText from "../../components/TextsNext/LabelText";
-import SkeletonText from "../../components/TextsNext/SkeletonText";
 import { BaseText } from "../../components/Texts";
+import LabelText from "../../components/TextsNext/LabelText";
+import QuantifyText from "../../components/TextsNext/QuantifyText";
+import SkeletonText from "../../components/TextsNext/SkeletonText";
 import {
   WidgetBackground,
   WidgetTitle,
 } from "../../components/WidgetSubcomponents";
+import * as Format from "../../format";
+import scrollbarStyles from "../../styles/Scrollbar.module.scss";
+import { getEtherscanUrl } from "../config";
+import type { Payload } from "../types";
 
 const etherscanUrl = getEtherscanUrl();
 
 const PayloadRow = ({ blockNumber, insertedAt, value }: Payload) => {
-  const inclusionAgo = `${Format.formatDistance(new Date(), insertedAt)} ago`;
+  const [inclusionAgo, setInclusionAgo] = useState<string | undefined>(
+    undefined,
+  );
   const truncatedValue = value.toString().substring(0, 4);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setInclusionAgo(Format.formatTimeDistance(new Date(), insertedAt));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [insertedAt]);
 
   return (
     <a
@@ -27,11 +38,11 @@ const PayloadRow = ({ blockNumber, insertedAt, value }: Payload) => {
       href={`${etherscanUrl}/block/${blockNumber}`}
     >
       <li className="grid grid-cols-3 hover:opacity-60">
-        <span className="font-roboto text-white">
+        <QuantifyText color="text-slateus-100">
           <SkeletonText width="7rem">
             {Format.formatBlockNumber(blockNumber)}
           </SkeletonText>
-        </span>
+        </QuantifyText>
         <div className="mr-1 text-right">
           <BaseText font="font-roboto">
             <SkeletonText width="1rem">{truncatedValue}</SkeletonText>
@@ -44,9 +55,9 @@ const PayloadRow = ({ blockNumber, insertedAt, value }: Payload) => {
           </div>
         </div>
         <div className="text-right">
-          <BaseText font="font-roboto">
+          <QuantifyText unitPostfix="ago" unitPostfixColor="text-slateus-100">
             <SkeletonText width="2rem">{inclusionAgo}</SkeletonText>
-          </BaseText>
+          </QuantifyText>
         </div>
       </li>
     </a>
