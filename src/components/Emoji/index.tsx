@@ -30,6 +30,7 @@ const whiteMap: Record<SupportedWhiteEmoji, StaticImageData> = {
 
 type WhiteEmojiProps = {
   alt: ImageProps["alt"];
+  className?: string;
   layout?: ImageProps["layout"];
   name: SupportedWhiteEmoji;
   width?: ImageProps["width"];
@@ -37,11 +38,12 @@ type WhiteEmojiProps = {
 
 export const WhiteEmoji: FC<WhiteEmojiProps> = ({
   alt,
+  className = "",
   layout,
   name,
   width,
 }) => (
-  <span className="flex select-none">
+  <span className={`flex select-none ${className}`}>
     <Image
       alt={alt}
       layout={layout}

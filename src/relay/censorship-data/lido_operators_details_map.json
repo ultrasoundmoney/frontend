@@ -1,0 +1,122 @@
+{
+	"DSRV": {
+		"name": "DSRV",
+		"website": "https://www.dsrvlabs.com"
+	},
+	"Kukis Global": {
+		"name": "Kukis Global",
+		"website": "https://www.kukis-global.com"
+	},
+	"Nethermind": {
+		"name": "Nethermind",
+		"website": "https://nethermind.io"
+	},
+	"HashQuark": {
+		"name": "HashQuark",
+		"website": "https://www.hashquark.io"
+	},
+	"ConsenSys Codefi": {
+		"name": "ConsenSys Codefi",
+		"website": "https://consensys.net/codefi"
+	},
+	"Chorus One": {
+		"name": "Chorus One",
+		"website": "https://chorus.one"
+	},
+	"SkillZ": {
+		"name": "Kiln",
+		"website": "https://www.kiln.fi"
+	},
+	"RockLogic GmbH": {
+		"name": "RockLogic",
+		"website": "https://stereum.net"
+	},
+	"Certus One": {
+		"name": "Jump Crypto",
+		"website": "https://jumpcrypto.com"
+	},
+	"InfStones": {
+		"name": "InfStones",
+		"website": "https://infstones.com"
+	},
+	"ChainSafe": {
+		"name": "ChainSafe",
+		"website": "https://chainsafe.io"
+	},
+	"CryptoManufaktur": {
+		"name": "CryptoManufaktur",
+		"website": "https://cryptomanufaktur.io"
+	},
+	"Stakely": {
+		"name": "Stakely",
+		"website": "https://stakely.io"
+	},
+	"Figment": {
+		"name": "Figment",
+		"website": "https://www.figment.io"
+	},
+	"Stakin": {
+		"name": "Stakin",
+		"website": "https://stakin.com"
+	},
+	"Everstake": {
+		"name": "Everstake",
+		"website": "https://everstake.one"
+	},
+	"Staking Facilities": {
+		"name": "Staking Facilities",
+		"website": "https://stakingfacilities.com"
+	},
+	"BridgeTower": {
+		"name": "BridgeTower",
+		"website": "https://www.bridgetowercapital.com"
+	},
+	"Simply Staking": {
+		"name": "Simply Staking",
+		"website": "https://simply-vc.com.mt"
+	},
+	"Blockdaemon": {
+		"name": "Blockdaemon",
+		"website": "https://blockdaemon.com"
+	},
+	"ChainLayer": {
+		"name": "ChainLayer",
+		"website": "https://www.chainlayer.io"
+	},
+	"Blockscape": {
+		"name": "Blockscape",
+		"website": "https://blockscape.network"
+	},
+	"stakefish": {
+		"name": "stakefish",
+		"website": "https://stake.fish"
+	},
+	"Anyblock Analytics": {
+		"name": "Anyblock",
+		"website": "https://blockdaemon.com"
+	},
+	"Prysmatic Labs": {
+		"name": "Prysmatic Labs",
+		"website": "https://prysmaticlabs.com"
+	},
+	"Sigma Prime": {
+		"name": "Sigma Prime",
+		"website": "https://sigmaprime.io"
+	},
+	"RockX": {
+		"name": "RockX",
+		"website": "https://www.rockx.com"
+	},
+	"Allnodes": {
+		"name": "Allnodes",
+		"website": "https://www.allnodes.com"
+	},
+	"P2P.ORG - P2P Validator": {
+		"name": "P2P",
+		"website": "https://p2p.org"
+	},
+	"Attestant (BVI) Limited": {
+		"name": "Attestant (BVI)",
+		"website": "https://www.attestant.io"
+	}
+}

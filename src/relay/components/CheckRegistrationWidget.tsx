@@ -1,6 +1,7 @@
-import { type FC, useState } from "react";
+import type { FC } from "react";
+import { useState } from "react";
 
-import { getApiUrl } from "../config";
+import { getDomain } from "../config";
 import { WidgetBackground } from "../../components/WidgetSubcomponents";
 import Button from "../../components/BlueButton";
 import LabelText from "../../components/TextsNext/LabelText";
@@ -12,7 +13,7 @@ const CheckRegistrationWidget: FC = () => {
   const [registrationStatus, setRegistrationStatus] =
     useState<Status>("initial");
 
-  const apiUrl = getApiUrl();
+  const apiUrl = getDomain();
 
   const fetchRegistrationStatus = () => {
     if (addr.length > 0) {

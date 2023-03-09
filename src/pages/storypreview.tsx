@@ -3,15 +3,15 @@ import Head from "next/head";
 import Script from "next/script";
 import SiteMetadata from "../site-metadata";
 import { SWRConfig } from "swr";
-import type { BaseFeePerGas } from "../api/base-fee-per-gas";
-import { fetchBaseFeePerGas } from "../api/base-fee-per-gas";
-import type { BaseFeePerGasStats } from "../api/base-fee-per-gas-stats";
-import type { EthPriceStats } from "../api/eth-price-stats";
-import { fetchEthPriceStats } from "../api/eth-price-stats";
-import Story from "../components/Landing";
+import type { BaseFeePerGas } from "../mainsite/api/base-fee-per-gas";
+import { fetchBaseFeePerGas } from "../mainsite/api/base-fee-per-gas";
+import type { BaseFeePerGasStats } from "../mainsite/api/base-fee-per-gas-stats";
+import type { EthPriceStats } from "../mainsite/api/eth-price-stats";
+import { fetchEthPriceStats } from "../mainsite/api/eth-price-stats";
+// import Story from "../components/Landing";
 import * as Duration from "../duration";
-import type { BaseFeePerGasBarrier } from "../api/barrier";
-import { fetchBaseFeePerGasBarrier } from "../api/barrier";
+import type { BaseFeePerGasBarrier } from "../mainsite/api/barrier";
+import { fetchBaseFeePerGasBarrier } from "../mainsite/api/barrier";
 
 type StaticProps = {
   fallback: {
@@ -93,7 +93,11 @@ const StoryPreview: NextPage<StaticProps> = ({ fallback }) => (
         fallback,
       }}
     >
-      <Story />
+      <div>
+        story code has been moved to root/archive, move from there to root/src
+        as needed
+      </div>
+      {/* <Story /> */}
     </SWRConfig>
   </>
 );

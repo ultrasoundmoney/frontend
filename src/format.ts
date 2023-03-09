@@ -181,7 +181,7 @@ export const capitalize = (str: unknown) =>
     ? `${str[0]?.toUpperCase()}${str.slice(1)}`
     : undefined;
 
-export const formatDistance = (currentDateTime: Date, dt: Date) => {
+export const formatTimeDistance = (currentDateTime: Date, dt: Date) => {
   const monthsDelta = DateFns.differenceInMonths(currentDateTime, dt);
   const weeksDelta = DateFns.differenceInWeeks(currentDateTime, dt);
   const daysDelta = DateFns.differenceInDays(currentDateTime, dt);
