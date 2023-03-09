@@ -14,6 +14,7 @@
     "start:prod": "node standalone-prod/server.js"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.14",
     "@popperjs/core": "^2.11.6",
     "@react-hook/media-query": "^1.1.1",
     "@react-spring/web": "^9.6.1",
@@ -33,6 +34,7 @@
     "ndjson": "^2.0.0",
     "next": "^13.0.1",
     "react": "^18.2.0",
+    "react-click-away-listener": "^2.2.2",
     "react-copy-to-clipboard": "^5.1.0",
     "react-countup": "^6.3.1",
     "react-dom": "^18.2.0",

@@ -34,6 +34,7 @@ export type FamProfile = {
   name: string;
   profileImageUrl: string;
   profileUrl: string;
+  handle: string;
 };
 
 type ProfilesResponse = {
@@ -44,6 +45,18 @@ type ProfilesResponse = {
 export const useProfiles = () => {
   // const { data } = useSWR<ProfilesResponse>("/api/fam/profiles", fetchJsonSwr);
   const { data } = useSWR<ProfilesResponse>("/api/fam/all-profiles", fetchJsonSwr);
+
+  return data;
+};
+
+export type SpriteSheetResponse = {
+  coordinates: { [key: string]: { x: number, y: number, width: number, height: number } };
+  properties: { width: number, height: number };
+  spriteSheet: string;
+};
+
+export const useSpriteSheet = () => {
+  const { data } = useSWR<SpriteSheetResponse>("/api/fam/sprite-sheet-meta", fetchJsonSwr);
 
   return data;
 };
