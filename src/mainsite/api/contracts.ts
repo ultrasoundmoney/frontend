@@ -132,7 +132,7 @@ export const useContractsFreshness = (
 
   const { data } = useSWR(
     shouldFetch
-      ? `${getUsmDomain()}/api/fees/contracts/metadata-freshness?token=${token}`
+      ? `${getUsmDomain()}/api/contracts/metadata-freshness?token=${token}`
       : null,
     fetcher,
   );
