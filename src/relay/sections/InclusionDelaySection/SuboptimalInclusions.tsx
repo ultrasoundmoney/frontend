@@ -1,4 +1,5 @@
-import { FC, useRef } from "react";
+import type { FC } from "react";
+import { useRef } from "react";
 import { useMemo } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
@@ -10,6 +11,7 @@ import colors from "../../../colors";
 import _merge from "lodash/merge";
 import * as DateFns from "date-fns";
 import useWindowSize from "../../../hooks/use-window-size";
+import { useDebounce } from "../../../mainsite/utils/use-debounce";
 
 // Somehow resolves an error thrown by the annotation lib
 if (typeof window !== "undefined") {
@@ -156,7 +158,6 @@ const SuboptimalInclusions: FC<Props> = ({
   timeFrame,
 }) => {
   const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
-  const windowSize = useWindowSize();
   const [seriesCensored, seriesUncensored, transactionMap] = useMemo(() => {
     const seriesCensored: [number, number][] = [];
     const seriesUncensored: [number, number][] = [];
@@ -176,16 +177,6 @@ const SuboptimalInclusions: FC<Props> = ({
 
     return [seriesCensored, seriesUncensored, transactionsMap];
   }, [suboptimalInclusions]);
-
-  // const { width } = useWindowSize();
-
-  // useLayoutEffect(() => {
-  //   if (chartRef.current === null) {
-  //     return;
-  //   }
-
-  //   console.log(chartRef.current);
-  // }, [width]);
 
   const options = useMemo((): Highcharts.Options => {
     const dynamicOptions: Highcharts.Options = {
@@ -247,7 +238,7 @@ const SuboptimalInclusions: FC<Props> = ({
     };
 
     return _merge({}, baseOptions, dynamicOptions);
-  }, [seriesCensored, seriesUncensored, transactionMap, windowSize]);
+  }, [seriesCensored, seriesUncensored, transactionMap]);
 
   return (
     <WidgetBase title="suboptimal inclusions (in blocks)" timeFrame={timeFrame}>

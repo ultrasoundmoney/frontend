@@ -18,8 +18,7 @@ const Button: FC<{
   disabled?: boolean;
   isActive: boolean;
   onClick: () => void;
-  title?: string;
-}> = ({ children, isActive, onClick, title, disabled }) => (
+}> = ({ children, isActive, onClick, disabled }) => (
   <button
     className={`
       select-none rounded-sm

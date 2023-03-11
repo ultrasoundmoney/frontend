@@ -13,12 +13,7 @@ import questionMarkSvg from "../../../assets/question-mark-own.svg";
 import sleuthSvg from "../../../assets/sleuth-own.svg";
 import colors from "../../../colors";
 import { BaseText } from "../../../components/Texts";
-import {
-  formatOneDecimal,
-  formatTimeDistance,
-  formatTimeDistanceToNow,
-  formatZeroDecimals,
-} from "../../../format";
+import { formatTimeDistance, formatZeroDecimals } from "../../../format";
 import LabelText from "../../../components/TextsNext/LabelText";
 import Image from "next/image";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
