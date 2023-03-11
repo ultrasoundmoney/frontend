@@ -10,8 +10,6 @@ import WidgetBase from "../../components/WidgetBase";
 import colors from "../../../colors";
 import _merge from "lodash/merge";
 import * as DateFns from "date-fns";
-import useWindowSize from "../../../hooks/use-window-size";
-import { useDebounce } from "../../../mainsite/utils/use-debounce";
 
 // Somehow resolves an error thrown by the annotation lib
 if (typeof window !== "undefined") {
