@@ -21,18 +21,38 @@ const TinyStatus: FC<Props> = ({
   value,
 }) => (
   <div className="flex items-baseline gap-x-1">
-    <LabelText color="text-slateus-400">{preText}</LabelText>
+    <LabelText
+      className={`${preText === undefined ? "hidden" : "block"}`}
+      color="text-slateus-400"
+    >
+      {preText}
+    </LabelText>
     <LabelUnitText>
       <SkeletonText width={skeletonWidth}>{value}</SkeletonText>
     </LabelUnitText>
-    <LabelText color="text-slateus-200">{unitPostfix}</LabelText>
+    <LabelText
+      className={`${unitPostfix === undefined ? "hidden" : "block"}`}
+      color="text-slateus-200"
+    >
+      {unitPostfix}
+    </LabelText>
     {mobilePostText !== undefined ? (
       <>
-        <LabelText className="hidden md:inline" color="text-slateus-400">{postText}</LabelText>
-        <LabelText className="inline md:hidden" color="text-slateus-400">{mobilePostText}</LabelText>
+        <LabelText
+          className="hidden truncate md:inline"
+          color="text-slateus-400"
+        >
+          {postText}
+        </LabelText>
+        <LabelText
+          className="inline truncate md:hidden"
+          color="text-slateus-400"
+        >
+          {mobilePostText}
+        </LabelText>
       </>
     ) : (
-      <LabelText color="text-slateus-400">{postText}</LabelText>
+      <LabelText color="truncate text-slateus-400">{postText}</LabelText>
     )}
   </div>
 );

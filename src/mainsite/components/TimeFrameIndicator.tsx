@@ -15,12 +15,14 @@ const getFormattedDays = (now: Date, fork: Date): string => {
 
 type Props = {
   className?: string;
+  hideTimeFrameLabel?: boolean;
   onClickTimeFrame?: () => void;
   timeFrame: TimeFrame;
 };
 
 const TimeFrameIndicator: FC<Props> = ({
   className = "",
+  hideTimeFrameLabel,
   onClickTimeFrame,
   timeFrame,
 }) => {
@@ -55,7 +57,7 @@ const TimeFrameIndicator: FC<Props> = ({
         `}
         onClick={onClickTimeFrame}
       >
-        <LabelText>
+        <LabelText className={hideTimeFrameLabel ? "hidden sm:block" : "block"}>
           {timeFrame === "since_burn"
             ? "since burn"
             : timeFrame === "since_merge"

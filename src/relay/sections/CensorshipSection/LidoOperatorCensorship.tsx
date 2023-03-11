@@ -33,9 +33,13 @@ const LidoOperatorCensorship: FC<Props> = ({
   lidoOperatorCensorship,
   timeFrame,
 }) => (
-  <WidgetBase title="lido operator censorship" timeFrame={timeFrame}>
+  <WidgetBase
+    title="lido operator censorship"
+    timeFrame={timeFrame}
+    hideTimeFrameLabel
+  >
     <QuantifyText
-      size="text-2xl md:text-4xl"
+      size="text-2xl sm:text-3xl xl:text-4xl"
       unitPostfix="dominance"
       unitPostfixColor="text-slateus-200"
       unitPostfixMargin="ml-4"

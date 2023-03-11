@@ -34,11 +34,12 @@ const BuilderCensorshipWidget: FC<Props> = ({
 }) => (
   <WidgetBase
     className="w-full"
-    title="builder censorship"
+    hideTimeFrameLabel
     timeFrame={timeFrame}
+    title="builder censorship"
   >
     <QuantifyText
-      size="text-2xl md:text-4xl"
+      size="text-2xl sm:text-3xl xl:text-4xl"
       unitPostfix="dominance"
       unitPostfixColor="text-slateus-200"
       unitPostfixMargin="ml-4"
@@ -49,7 +50,7 @@ const BuilderCensorshipWidget: FC<Props> = ({
     </QuantifyText>
     <TinyStatus
       value={`${builderCensorship.censoringPubkeys}/${builderCensorship.totalPubkeys}`}
-      postText="censoring builder pubkeys"
+      postText="censoring pubkeys"
       skeletonWidth="3.05rem"
     />
   </WidgetBase>

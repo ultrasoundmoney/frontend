@@ -13,9 +13,9 @@ type Props = {
 };
 
 const SanctionsDelayWidget: FC<Props> = ({ sanctionsDelay, timeFrame }) => (
-  <WidgetBase title="sanctions delay" timeFrame={timeFrame}>
+  <WidgetBase title="sanctions delay" timeFrame={timeFrame} hideTimeFrameLabel>
     <QuantifyText
-      size="text-2xl md:text-4xl"
+      size="text-2xl sm:text-3xl xl:text-4xl"
       unitPostfix="seconds"
       unitPostfixColor="text-slateus-200"
       unitPostfixMargin="ml-4"
@@ -27,7 +27,7 @@ const SanctionsDelayWidget: FC<Props> = ({ sanctionsDelay, timeFrame }) => (
     <TinyStatus
       value={`${sanctionsDelay.censored_count}/${sanctionsDelay.count}`}
       postText="censored OFAC transactions"
-      mobilePostText="censored OFAC tx"
+      mobilePostText="censored OFAC transactions"
       skeletonWidth="3.05rem"
     />
   </WidgetBase>

@@ -35,7 +35,7 @@ const Controls: FC<Props> = ({
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-x-4">
         <WidgetTitle>time frame</WidgetTitle>
         <TimeFrameControl
-          selectedTimeframe={timeFrame}
+          selectedTimeFrame={timeFrame}
           onSetTimeFrame={onSetTimeFrame}
         />
       </div>

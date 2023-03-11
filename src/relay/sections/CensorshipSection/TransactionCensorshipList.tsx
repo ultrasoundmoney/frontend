@@ -5,9 +5,9 @@ import {
   WidgetTitle,
 } from "../../../components/WidgetSubcomponents";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
-import { formatTimeDistance } from "../../../format";
+import { formatTimeDistanceToNow, formatZeroDecimals } from "../../../format";
 import SkeletonText from "../../../components/TextsNext/SkeletonText";
-import StyledList from "../../components/StyledList";
+import StyledOverflowList from "../../components/StyledOverflowList";
 import BodyTextV3 from "../../../components/TextsNext/BodyTextV3";
 import type { TimeFrame } from "../../../mainsite/time-frames";
 import type { CensoredTransaction } from "../../censorship-data/transaction_censorship";
@@ -16,6 +16,13 @@ type Props = {
   transactions: CensoredTransaction[];
   timeFrame: TimeFrame;
 };
+
+const gridSpacing = `
+  grid
+  grid-cols-[80px_80px_90px]
+  sm:grid-cols-[90px_70px_120px_88px]
+  justify-between
+`;
 
 const TransactionCensorshipList: FC<Props> = ({ transactions }) => {
   const [now, setNow] = useState<Date | undefined>();
@@ -31,21 +38,21 @@ const TransactionCensorshipList: FC<Props> = ({ transactions }) => {
   return (
     <WidgetBackground>
       <div className="flex flex-col gap-y-4">
-        <div className="grid grid-cols-4 gap-x-1">
+        <div className={gridSpacing}>
           <WidgetTitle>tx delay</WidgetTitle>
-          <WidgetTitle className="truncate text-right">took</WidgetTitle>
-          <WidgetTitle className="-mr-1 truncate text-right">
-            category
+          <WidgetTitle className="hidden text-right md:block">took</WidgetTitle>
+          <WidgetTitle className="-mr-1 text-right truncate">
+            sanctions list
           </WidgetTitle>
-          <WidgetTitle className="-mr-1 truncate text-right">
+          <WidgetTitle className="-mr-1 text-right truncate">
             inclusion
           </WidgetTitle>
         </div>
-        <StyledList height="h-[182px]">
+        <StyledOverflowList height="h-[182px]">
           {transactions.map(
             ({
               inclusion,
-              sanction_list,
+              sanctionsListName,
               took,
               transaction_delay,
               transaction_hash,
@@ -56,7 +63,7 @@ const TransactionCensorshipList: FC<Props> = ({ transactions }) => {
                 rel="noreferrer"
                 href={`https://etherscan.io/tx/${transaction_hash}`}
               >
-                <li className="grid grid-cols-4 items-baseline hover:opacity-60">
+                <li className={`hover:brightness-75 ${gridSpacing}`}>
                   <QuantifyText
                     color="text-white"
                     unitPostfix="block"
@@ -66,13 +73,13 @@ const TransactionCensorshipList: FC<Props> = ({ transactions }) => {
                     {transaction_delay}
                   </QuantifyText>
                   <QuantifyText
-                    className="mr-1 text-right"
+                    className="hidden text-right md:block"
                     size="text-sm md:text-base"
                   >
-                    {took}s
+                    {formatZeroDecimals(took)}s
                   </QuantifyText>
                   <BodyTextV3 className="text-right" color="text-slateus-100">
-                    {sanction_list}
+                    {sanctionsListName}
                   </BodyTextV3>
                   <QuantifyText
                     className="text-right"
@@ -85,14 +92,14 @@ const TransactionCensorshipList: FC<Props> = ({ transactions }) => {
                         ? undefined
                         : inclusion === undefined
                         ? ""
-                        : formatTimeDistance(now, new Date(inclusion))}
+                        : formatTimeDistanceToNow(now, new Date(inclusion))}
                     </SkeletonText>
                   </QuantifyText>
                 </li>
               </a>
             ),
           )}
-        </StyledList>
+        </StyledOverflowList>
       </div>
     </WidgetBackground>
   );

@@ -37,7 +37,7 @@ const Age: FC<{ minedAt: Date | undefined }> = ({ minedAt }) => {
 
     const now = new Date();
     const intervalId = window.setInterval(() => {
-      setAge(Format.formatTimeDistance(now, minedAt) ?? "??");
+      setAge(Format.formatTimeDistanceToNow(now, minedAt) ?? "??");
     }, 500);
 
     return () => {

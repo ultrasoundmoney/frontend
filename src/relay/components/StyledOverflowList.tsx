@@ -6,7 +6,7 @@ type Props = {
   height: string;
 };
 
-const StyledList: FC<Props> = ({ children, height }) => (
+const StyledOverflowList: FC<Props> = ({ children, height }) => (
   <ul
     className={`
       -mr-3 flex
@@ -14,6 +14,7 @@ const StyledList: FC<Props> = ({ children, height }) => (
       overflow-y-auto pr-2
       ${height}
       ${scrollbarStyles["styled-scrollbar-vertical"]}
+      ${scrollbarStyles["styled-scrollbar-horizontal"]}
       ${scrollbarStyles["styled-scrollbar"]}
     `}
   >
@@ -21,4 +22,4 @@ const StyledList: FC<Props> = ({ children, height }) => (
   </ul>
 );
 
-export default StyledList;
+export default StyledOverflowList;

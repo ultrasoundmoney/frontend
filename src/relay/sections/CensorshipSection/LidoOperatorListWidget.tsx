@@ -1,3 +1,5 @@
+// List of lido operators and how much they censor.
+// Table columns have been fine-tuned to show max content across screen sizes.
 import type { FC } from "react";
 import DefaultLink from "../../../components/DefaultLink";
 import BodyTextV3 from "../../../components/TextsNext/BodyTextV3";
@@ -7,25 +9,36 @@ import {
   WidgetTitle,
 } from "../../../components/WidgetSubcomponents";
 import { formatPercentOneDecimal } from "../../../format";
-import StyledList from "../../components/StyledList";
+import StyledOverflowList from "../../components/StyledOverflowList";
 import type { LidoOperatorCensorship } from "./LidoOperatorCensorship";
 
 type Props = {
   lidoOperatorCensorship: LidoOperatorCensorship;
 };
 
+const gridSpacing = `
+  grid
+  grid-cols-[auto_70px_90px]
+  sm:grid-cols-[auto_70px_120px_88px]
+  gap-x-1
+  sm:gap-x-8
+  lg:gap-x-1
+  xl:gap-x-2
+  2xl:gap-x-8
+`;
+
 const LidoOperatorList: FC<Props> = ({ lidoOperatorCensorship }) => (
   <WidgetBackground>
     <div className="flex flex-col gap-y-4">
-      <div className="grid grid-cols-3 md:grid-cols-4">
+      <div className={gridSpacing}>
         <WidgetTitle className="">operator</WidgetTitle>
         <WidgetTitle className="text-right">censors</WidgetTitle>
-        <WidgetTitle className="hidden text-right md:inline">
-          non-censoring relays connected
+        <WidgetTitle className="hidden text-right sm:block">
+          non-censoring
         </WidgetTitle>
         <WidgetTitle className="text-right">dominance</WidgetTitle>
       </div>
-      <StyledList height="h-[182px]">
+      <StyledOverflowList height="h-[182px]">
         {lidoOperatorCensorship.operators.map(
           ({
             name,
@@ -36,21 +49,19 @@ const LidoOperatorList: FC<Props> = ({ lidoOperatorCensorship }) => (
             non_censoring_relays_connected_count,
             url,
           }) => (
-            <li
-              key={id}
-              className="grid grid-cols-3 hover:opacity-60 md:grid-cols-4"
-            >
-              <DefaultLink href={url ?? undefined}>
+            <li key={id} className={`hover:brightness-75 ${gridSpacing}`}>
+              <DefaultLink className="truncate" href={url ?? undefined}>
                 <BodyTextV3>{name}</BodyTextV3>
-                {description !== undefined && (
-                  <BodyTextV3
-                    className="hidden md:inline"
-                    color="text-slateus-200"
-                  >
-                    {" "}
-                    {description}
-                  </BodyTextV3>
-                )}
+                <BodyTextV3
+                  className={`
+                    hidden
+                    ${description !== undefined ? "sm:inline" : ""}
+                  `}
+                  color="text-slateus-200"
+                >
+                  {" "}
+                  {description}
+                </BodyTextV3>
               </DefaultLink>
               <BodyTextV3
                 className="text-right"
@@ -59,17 +70,17 @@ const LidoOperatorList: FC<Props> = ({ lidoOperatorCensorship }) => (
                 {censors ? "yes" : "no"}
               </BodyTextV3>
               <QuantifyText
-                className="hidden text-right md:inline"
+                className="hidden text-right sm:inline"
                 unitPostfix="relays"
                 unitPostfixColor="text-slateus-200"
               >{`${non_censoring_relays_connected_count}/${lidoOperatorCensorship.non_censoring_relays_count}`}</QuantifyText>
-              <QuantifyText className="text-right" size="text-sm md:text-base">
+              <QuantifyText className="text-right" size="text-sm sm:text-base">
                 {formatPercentOneDecimal(dominance)}
               </QuantifyText>
             </li>
           ),
         )}
-      </StyledList>
+      </StyledOverflowList>
     </div>
   </WidgetBackground>
 );

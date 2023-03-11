@@ -10,22 +10,34 @@ import { fetchApiJson } from "../fetchers";
 type InclusionTimeRaw = {
   avgBlockDelay: number;
   avgDelay: number;
-  delayType: string;
+  delayType: Category;
   txCount: number;
 };
 
 type RawData = Record<RelayApiTimeFrames, InclusionTimeRaw[]>;
 
-const rawCategoryMap: Record<string, Category> = {
-  borderline: "optimal",
+const categoryNameMap: Record<Category, string> = {
+  borderline: "boundary",
   congested: "congestion",
   likely_insufficient_balance: "low_balance",
-  low_base_fee: "low_base_fee",
-  low_tip: "low_tip",
+  low_base_fee: "low fee",
+  low_tip: "low fee",
   miner: "private",
-  ofac_delayed: "sanctions_us",
+  ofac_delayed: "sanctions",
   optimal: "optimal",
   unknown: "unknown",
+  sanctions_uk: "sanctions",
+};
+
+const categoryDescriptionMap: Partial<Record<Category, string>> = {
+  borderline: "network latency",
+  congested: "Congestion",
+  low_base_fee: "base fee",
+  low_tip: "tip",
+  miner: "outside mempool",
+  unknown: "not categorised",
+  ofac_delayed: "OFAC (US)",
+  sanctions_uk: "UK",
 };
 
 export type InclusionTimesPerTimeFrame = Record<"d7" | "d30", InclusionTime[]>;
@@ -48,17 +60,24 @@ const getInclusionTimes = (
   const inclusion_times = raw_inclusion_times
     // We don't want to show the borderline category
     .filter((transaction) => transaction.delayType !== "borderline")
-    .map((d) => ({
-      id: rawCategoryMap[d.delayType] ?? "unknown",
-      transaction_count: d.txCount,
-      average_time: d.avgDelay,
-      percent: d.txCount / totalTransactions,
-    }));
+    .map((d): InclusionTime => {
+      const description = categoryDescriptionMap[d.delayType];
+      return {
+        ...(description && { description }),
+        average_time: d.avgDelay,
+        id: d.delayType ?? "unknown",
+        name: categoryNameMap[d.delayType] ?? "unknown?",
+        percent: d.txCount / totalTransactions,
+        transaction_count: d.txCount,
+      };
+    });
 
   // Sanctions UK is not included in the data, so we add it manually
   const sanctionsUk: InclusionTime = {
     average_time: 0,
+    description: "UK",
     id: "sanctions_uk",
+    name: "sanctions",
     percent: 0,
     transaction_count: 0,
   };

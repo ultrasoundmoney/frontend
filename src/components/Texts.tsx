@@ -7,7 +7,7 @@ export const LabelUnitText: FC<{
   className?: string;
 }> = ({ children, className = "" }) => (
   <BaseText
-    className={`uppercase tracking-widest ${className}`}
+    className={`tracking-widest ${className}`}
     color="text-slateus-200"
     font="font-roboto"
     size="text-xs"

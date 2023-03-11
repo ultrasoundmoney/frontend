@@ -33,7 +33,7 @@ const InclusionDelaySection: FC<Props> = ({
         <div className="flex items-center gap-4">
           <LabelText>time frame</LabelText>
           <TimeFrameControl
-            selectedTimeframe={timeFrame}
+            selectedTimeFrame={timeFrame}
             onSetTimeFrame={() =>
               setTimeFrame((timeFrame) => (timeFrame === "d7" ? "d30" : "d7"))
             }
@@ -41,7 +41,7 @@ const InclusionDelaySection: FC<Props> = ({
           />
         </div>
       </div>
-      <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
+      <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-2">
         <InclusionTimesWidget
           inclusionTimes={inclusionTimes}
           timeFrame={timeFrame}

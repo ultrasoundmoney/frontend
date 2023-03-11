@@ -1,3 +1,5 @@
+// List of builders and how much they censor.
+// Table columns have been fine-tuned to show max content across screen sizes.
 import type { FC } from "react";
 import BodyTextV3 from "../../../components/TextsNext/BodyTextV3";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
@@ -6,26 +8,37 @@ import {
   WidgetTitle,
 } from "../../../components/WidgetSubcomponents";
 import { formatPercentOneDecimal } from "../../../format";
-import StyledList from "../../components/StyledList";
+import StyledOverflowList from "../../components/StyledOverflowList";
 import type { Builder } from "./BuilderCensorshipWidget";
 
 type Props = {
   builders: Builder[];
 };
 
+const gridSpacing = `
+  grid
+  grid-cols-[auto_70px_90px]
+  sm:grid-cols-[auto_70px_70px_88px]
+  gap-x-1
+  sm:gap-x-8
+  lg:gap-x-1
+  xl:gap-x-2
+  2xl:gap-x-8
+`;
+
 const BuilderListWidget: FC<Props> = ({ builders }) => {
   return (
     <WidgetBackground>
       <div className="flex flex-col gap-y-4">
-        <div className="grid grid-cols-3 md:grid-cols-4">
+        <div className={gridSpacing}>
           <WidgetTitle>builder</WidgetTitle>
-          <WidgetTitle className="text-right">censoring</WidgetTitle>
-          <WidgetTitle className="hidden text-right md:inline">
+          <WidgetTitle className="text-right">censors</WidgetTitle>
+          <WidgetTitle className="hidden text-right sm:inline">
             pubkeys
           </WidgetTitle>
           <WidgetTitle className="text-right">dominance</WidgetTitle>
         </div>
-        <StyledList height="h-[182px]">
+        <StyledOverflowList height="h-[182px]">
           {builders.map(
             ({
               id,
@@ -36,21 +49,19 @@ const BuilderListWidget: FC<Props> = ({ builders }) => {
               censoringPubkeys,
               totalPubkeys,
             }) => (
-              <li
-                key={id}
-                className="grid grid-cols-3 hover:opacity-60 md:grid-cols-4"
-              >
-                <div className="">
+              <li key={id} className={`hover:brightness-75 ${gridSpacing}`}>
+                <div className="truncate">
                   <BodyTextV3>{name}</BodyTextV3>
-                  {description !== undefined && (
-                    <BodyTextV3
-                      className="hidden md:inline"
-                      color="text-slateus-400"
-                    >
-                      {" "}
-                      {description}
-                    </BodyTextV3>
-                  )}
+                  <BodyTextV3
+                    className={`
+                      hidden
+                      ${description !== undefined ? "sm:inline" : ""}
+                    `}
+                    color="text-slateus-400"
+                  >
+                    {" "}
+                    {description}
+                  </BodyTextV3>
                 </div>
                 <BodyTextV3
                   className="text-right"
@@ -65,21 +76,21 @@ const BuilderListWidget: FC<Props> = ({ builders }) => {
                   {censors}
                 </BodyTextV3>
                 <QuantifyText
-                  className="hidden text-right md:inline"
-                  size="text-sm md:text-base"
+                  className="hidden text-right sm:inline"
+                  size="text-sm sm:text-base"
                 >
                   {`${censoringPubkeys}/${totalPubkeys}`}
                 </QuantifyText>
                 <QuantifyText
                   className="text-right"
-                  size="text-sm md:text-base"
+                  size="text-sm sm:text-base"
                 >
                   {formatPercentOneDecimal(dominance)}
                 </QuantifyText>
               </li>
             ),
           )}
-        </StyledList>
+        </StyledOverflowList>
       </div>
     </WidgetBackground>
   );

@@ -20,18 +20,19 @@ type Validator = {
 };
 
 const ValidatorRow = ({ insertedAt, index }: Validator) => {
-  const [registeredAgo, setRegisteredAgo] = useState<string | undefined>(
-    undefined,
-  );
+  const [now, setNow] = useState<Date | undefined>();
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setRegisteredAgo(
-        `${Format.formatTimeDistance(new Date(), insertedAt)} ago`,
-      );
+      setNow(new Date());
     }, 1000);
     return () => clearInterval(interval);
   }, [insertedAt]);
+
+  const registeredAgo =
+    now === undefined
+      ? undefined
+      : `${Format.formatTimeDistanceToNow(now, insertedAt)} ago`;
 
   return (
     <a
@@ -80,7 +81,7 @@ const ValidatorWidget: FC<Props> = ({
       <WidgetBackground>
         <LabelText>registrations</LabelText>
         <p className="mt-4 text-3xl font-extralight tracking-wide">
-          <span className="font-inter text-white">
+          <span className="text-white font-inter">
             {Format.formatZeroDecimals(validatorCount)}
           </span>
           <span> </span>

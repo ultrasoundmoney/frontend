@@ -13,27 +13,30 @@ import {
 } from "../mainsite/time-frames";
 import HoverTooltip from "../mainsite/components/HoverTooltip";
 
-export const Button: FC<{
+const Button: FC<{
   children: ReactNode;
+  disabled?: boolean;
   isActive: boolean;
   onClick: () => void;
   title?: string;
-}> = ({ children, isActive, onClick, title }) => (
+}> = ({ children, isActive, onClick, title, disabled }) => (
   <button
     className={`
-      select-none
-      rounded-sm border
-      px-[10px] py-2
-      font-roboto text-xs font-normal
-      tracking-widest 
+      select-none rounded-sm
+      border px-[10px] py-2
+      font-roboto 
+      text-xs
+      font-normal
+      tracking-widest
+      ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}
       ${
-        isActive
+        isActive && !disabled
           ? "border-slateus-400 bg-slateus-600 text-white"
           : "border-transparent text-slateus-200"
       }
     `}
-    onClick={onClick}
-    title={title}
+    onClick={disabled ? undefined : onClick}
+    title={disabled ? "not yet available" : undefined}
   >
     {children}
   </button>
@@ -125,35 +128,20 @@ const PandaImage: FC<{ selectedTimeframe: TimeFrame }> = ({
   </>
 );
 
-type Props = {
-  mergeEnabled?: boolean;
-  onSetTimeFrame: (timeframe: TimeFrame) => void;
-  selectedTimeframe: TimeFrame;
-  topCornersRounded?: boolean;
-  version?: "all" | "censorship" | "no_merge";
-};
-
-const TimeFrameControl: FC<Props> = ({
-  selectedTimeframe,
-  onSetTimeFrame,
-  version = "all",
-}) => (
+const TimeFrameControlCensorship: FC<{
+  selectedTimeFrame: TimeFrame;
+  onSetTimeFrame: (timeFrame: TimeFrame) => void;
+}> = ({ selectedTimeFrame, onSetTimeFrame }) => (
   <div className="flex flex-row items-center lg:gap-x-1">
-    {(version === "all"
-      ? timeFrames
-      : version === "no_merge"
-      ? timeFramesNoMerge
-      : (["d7", "d30"] as const)
-    ).map((timeFrame) => (
+    {(["d1", "d7", "d30", "since_merge"] as const).map((timeFrame) => (
       <LondonHardForkTooltip key={timeFrame} timeFrame={timeFrame}>
         <Button
-          isActive={selectedTimeframe === timeFrame}
+          isActive={selectedTimeFrame === timeFrame}
           onClick={() => onSetTimeFrame(timeFrame)}
+          disabled={timeFrame === "since_merge" || timeFrame === "d1"}
         >
           {timeFrame === "since_merge" ? (
-            <PandaImage selectedTimeframe={selectedTimeframe} />
-          ) : timeFrame === "since_burn" ? (
-            <FireImage selectedTimeframe={selectedTimeframe} />
+            <PandaImage selectedTimeframe={selectedTimeFrame} />
           ) : (
             displayLimitedTimeFrameMap[timeFrame]
           )}
@@ -162,5 +150,49 @@ const TimeFrameControl: FC<Props> = ({
     ))}
   </div>
 );
+
+type Props = {
+  mergeEnabled?: boolean;
+  onSetTimeFrame: (timeframe: TimeFrame) => void;
+  selectedTimeFrame: TimeFrame;
+  topCornersRounded?: boolean;
+  version?: "all" | "censorship" | "no_merge";
+};
+
+const TimeFrameControl: FC<Props> = ({
+  selectedTimeFrame: selectedTimeframe,
+  onSetTimeFrame,
+  version = "all",
+}) =>
+  version === "censorship" ? (
+    <TimeFrameControlCensorship
+      selectedTimeFrame={selectedTimeframe}
+      onSetTimeFrame={onSetTimeFrame}
+    />
+  ) : (
+    <div className="flex flex-row items-center lg:gap-x-1">
+      {(version === "all"
+        ? timeFrames
+        : version === "no_merge"
+        ? timeFramesNoMerge
+        : (undefined as never)
+      ).map((timeFrame) => (
+        <LondonHardForkTooltip key={timeFrame} timeFrame={timeFrame}>
+          <Button
+            isActive={selectedTimeframe === timeFrame}
+            onClick={() => onSetTimeFrame(timeFrame)}
+          >
+            {timeFrame === "since_merge" ? (
+              <PandaImage selectedTimeframe={selectedTimeframe} />
+            ) : timeFrame === "since_burn" ? (
+              <FireImage selectedTimeframe={selectedTimeframe} />
+            ) : (
+              displayLimitedTimeFrameMap[timeFrame]
+            )}
+          </Button>
+        </LondonHardForkTooltip>
+      ))}
+    </div>
+  );
 
 export default TimeFrameControl;

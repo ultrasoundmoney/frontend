@@ -7,7 +7,7 @@ import {
 import scrollbarStyles from "../../../styles/Scrollbar.module.scss";
 import BodyTextV2 from "../../../components/TextsNext/BodyTextV2";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
-import { formatTimeDistance } from "../../../format";
+import { formatTimeDistanceToNow } from "../../../format";
 import SkeletonText from "../../../components/TextsNext/SkeletonText";
 import type { SuboptimalTransaction } from "./SuboptimalInclusions";
 
@@ -70,7 +70,7 @@ const TransactionInclusionDelayWidget: FC<{
                         ? undefined
                         : mined === undefined
                         ? "pending"
-                        : formatTimeDistance(now, new Date(mined))}
+                        : formatTimeDistanceToNow(now, new Date(mined))}
                     </SkeletonText>
                   </QuantifyText>
                 </li>

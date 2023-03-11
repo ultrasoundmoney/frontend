@@ -6,10 +6,40 @@ import type {
 import { fetchApiJson } from "../fetchers";
 import type { RelayApiTimeFrames } from "./time_frames";
 
+type RelayId = string;
+
+// These maps are meant to be temporary until the backend provides the data. The frontend will already try to do so.
+const nameMap: Record<RelayId, string> = {
+  "blxr-ethical": "bloXroute",
+  "blxr-max-profit": "bloXroute",
+  "blxr-regulated": "bloXroute",
+  aestus: "Aestus",
+  agnostic: "Agnostic",
+  blocknative: "Blocknative",
+  eden: "Eden",
+  flashbots: "Flashbots",
+  manifold: "Manifold",
+  relayoor: "Relayoor",
+  ultrasound: "ultra sound",
+};
+
+const descriptionMap: Record<RelayId, string> = {
+  "blxr-ethical": "ethical",
+  "blxr-max-profit": "max profit",
+  "blxr-regulated": "regulated",
+};
+
+const urlMap: Record<RelayId, string> = {
+  eden: "https://relay.edennetwork.io/info",
+};
+
 type RelayRaw = {
-  relayId: string;
+  relayId: RelayId;
   totalBlocks: number;
   uncensoredBlocks: number;
+  description?: string;
+  name?: string;
+  url?: string;
 };
 
 type RawData = Record<RelayApiTimeFrames, RelayRaw[]>;
@@ -43,15 +73,19 @@ export const getRelayCensorship = (rawRelays: RelayRaw[]): RelayCensorship => {
   );
   const relays = pipe(
     rawRelays,
-    A.map(
-      (relay): Relay => ({
+    A.map((relay): Relay => {
+      const description = relay.description ?? descriptionMap[relay.relayId];
+      const url = relay.url ?? urlMap[relay.relayId];
+      return {
+        ...(description && { description }),
+        ...(url && { url }),
         blocks_with_sanctioned_entity: relay.uncensoredBlocks,
         censors: relay.uncensoredBlocks === 0,
         dominance: relay.totalBlocks / countAll,
         id: relay.relayId,
-        name: relay.relayId,
-      }),
-    ),
+        name: relay.name ?? nameMap[relay.relayId] ?? relay.relayId,
+      };
+    }),
     A.sort(byDominanceDesc),
   );
 

@@ -13,7 +13,12 @@ import questionMarkSvg from "../../../assets/question-mark-own.svg";
 import sleuthSvg from "../../../assets/sleuth-own.svg";
 import colors from "../../../colors";
 import { BaseText } from "../../../components/Texts";
-import { formatOneDecimal, formatZeroDecimals } from "../../../format";
+import {
+  formatOneDecimal,
+  formatTimeDistance,
+  formatTimeDistanceToNow,
+  formatZeroDecimals,
+} from "../../../format";
 import LabelText from "../../../components/TextsNext/LabelText";
 import Image from "next/image";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
@@ -25,11 +30,15 @@ type StaticDetails = {
 };
 
 const categoryIconMap: Record<Category, StaticDetails> = {
-  congestion: {
+  borderline: {
+    imgAlt: "question mark symbolizing missing icon",
+    imgSrc: questionMarkSvg as StaticImageData,
+  },
+  congested: {
     imgAlt: "sneezing face symbolizing congestion of transactions",
     imgSrc: sneezingOwnSvg as StaticImageData,
   },
-  low_balance: {
+  likely_insufficient_balance: {
     imgAlt: "question mark symbolizing missing icon",
     imgSrc: questionMarkSvg as StaticImageData,
   },
@@ -41,19 +50,19 @@ const categoryIconMap: Record<Category, StaticDetails> = {
     imgAlt: "pinched hand symbol symbolizing low tip",
     imgSrc: handPinchingSvg as StaticImageData,
   },
+  miner: {
+    imgAlt: "sleuth or spy symbolizing private transactions",
+    imgSrc: sleuthSvg as StaticImageData,
+  },
   optimal: {
     imgAlt: "ok hand symbol symbolizing optimal inclusion time",
     imgSrc: handOkOwnSvg as StaticImageData,
-  },
-  private: {
-    imgAlt: "sleuth or spy symbolizing private transactions",
-    imgSrc: sleuthSvg as StaticImageData,
   },
   sanctions_uk: {
     imgAlt: "UK flag symbolizing inclusion delay from UK influence",
     imgSrc: flagUkSvg as StaticImageData,
   },
-  sanctions_us: {
+  ofac_delayed: {
     imgAlt: "US flag symbolizing inclusion delay from US influence",
     imgSrc: flagUsSvg as StaticImageData,
   },
@@ -88,7 +97,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
   highlight,
 }) => (
   <div
-    className="flex select-none flex-col items-center"
+    className="flex flex-col items-center select-none"
     style={{
       width: `calc(${(percentage ?? 0.1) * 100}% - ${
         separatorWidth * separatorCount
@@ -168,8 +177,8 @@ const CategoryBar: FC<{
   className?: string;
 }> = ({ categories, className = "" }) => (
   <div className={`${className} relative flex items-center py-4`}>
-    <div className="color-animation absolute h-2 w-full rounded-full bg-slateus-600"></div>
-    <div className="top-0 left-0 z-10 flex w-full flex-row items-center">
+    <div className="absolute w-full h-2 rounded-full color-animation bg-slateus-600"></div>
+    <div className="flex top-0 left-0 z-10 flex-row items-center w-full">
       {categories.map((category, index) => (
         <>
           <CategorySegment
@@ -185,7 +194,7 @@ const CategoryBar: FC<{
           />
           {index !== categories.length - 1 && (
             <div
-              className="z-10 h-2 w-1 bg-slateus-500"
+              className="z-10 w-1 h-2 bg-slateus-500"
               key={`separator-${index}`}
             ></div>
           )}
@@ -197,14 +206,15 @@ const CategoryBar: FC<{
 
 type CategoryHighlights = Record<Category, boolean>;
 const categoryHighlights: CategoryHighlights = {
-  congestion: false,
-  low_balance: false,
+  borderline: false,
+  congested: false,
+  likely_insufficient_balance: false,
   low_base_fee: false,
   low_tip: false,
+  miner: false,
+  ofac_delayed: false,
   optimal: false,
-  private: false,
   sanctions_uk: false,
-  sanctions_us: false,
   unknown: false,
 };
 type HighlightAction = {
@@ -222,20 +232,22 @@ const reducer = (state: CategoryHighlights, action: HighlightAction) => {
 };
 
 export type Category =
-  | "optimal"
-  | "congestion"
-  | "unknown"
-  | "private"
-  | "low_balance"
+  | "borderline"
+  | "congested"
+  | "likely_insufficient_balance"
   | "low_base_fee"
   | "low_tip"
-  | "sanctions_us"
-  | "sanctions_uk";
+  | "miner"
+  | "ofac_delayed"
+  | "optimal"
+  | "sanctions_uk"
+  | "unknown";
 
 export type InclusionTime = {
   average_time: number;
   description?: string;
   id: Category;
+  name: string;
   percent: number;
   transaction_count: number;
 };
@@ -282,62 +294,82 @@ const InclusionTimesWidget: FC<Props> = ({ inclusionTimes, timeFrame }) => {
           },
         }))}
       />
-      <ul className="flex flex-col gap-y-4">
-        <div className="grid grid-cols-3 gap-y-2">
-          <LabelText className="">category</LabelText>
-          <LabelText className="text-right">average</LabelText>
-          <LabelText className="text-right">txs</LabelText>
-        </div>
-        {inclusionTimes.map((category) => (
-          <li
-            className={`grid grid-cols-3 gap-y-2 ${
-              highlights[category.id] ? "brightness-75" : ""
-            }`}
-            key={category.id}
-            onMouseEnter={() => {
-              dispatchHighlight({
-                type: "highlight",
-                id: category.id,
-                highlight: true,
-              });
-            }}
-            onMouseLeave={() => {
-              dispatchHighlight({
-                type: "highlight",
-                id: category.id,
-                highlight: false,
-              });
-            }}
-          >
-            <div className="truncate">
-              <BaseText
-                className=""
-                font="font-inter"
-                size="text-sm md:text-base"
-              >
-                {category.id}
-              </BaseText>
-              <BaseText
-                className="hidden md:inline"
-                font="font-inter"
-                color="text-slateus-200"
-                size="text-sm md:text-base"
-              >
-                {" "}
-                {category.description}
-              </BaseText>
-            </div>
-            <QuantifyText className="text-right" size="text-sm md:text-base">
-              {category.transaction_count === 0
-                ? "-"
-                : `${formatOneDecimal(category.average_time)}s`}
-            </QuantifyText>
-            <QuantifyText className="text-right" size="text-sm md:text-base">
-              {formatZeroDecimals(category.transaction_count)}
-            </QuantifyText>
-          </li>
-        ))}
-      </ul>
+      <table className="w-full border-separate table-auto border-spacing-y-4">
+        <thead>
+          <tr>
+            <th className="text-left">
+              <LabelText>category</LabelText>
+            </th>
+            <th className="text-right">
+              <LabelText>average</LabelText>
+            </th>
+            <th className="text-right">
+              <LabelText>txs</LabelText>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {inclusionTimes.map((category) => (
+            <tr
+              key={category.id}
+              className={`${highlights[category.id] ? "brightness-75" : ""}`}
+              onMouseEnter={() => {
+                dispatchHighlight({
+                  type: "highlight",
+                  id: category.id,
+                  highlight: true,
+                });
+              }}
+              onMouseLeave={() => {
+                dispatchHighlight({
+                  type: "highlight",
+                  id: category.id,
+                  highlight: false,
+                });
+              }}
+            >
+              <td className="p-0 text-left">
+                <div className="leading-none truncate">
+                  <BaseText
+                    className=""
+                    font="font-inter"
+                    size="text-sm md:text-base"
+                  >
+                    {category.name}
+                  </BaseText>
+                  <BaseText
+                    className="hidden md:inline"
+                    font="font-inter"
+                    color="text-slateus-200"
+                    size="text-sm md:text-base"
+                  >
+                    {" "}
+                    {category.description}
+                  </BaseText>
+                </div>
+              </td>
+              <td className="p-0 text-right">
+                <QuantifyText
+                  className="box-content text-right overflow-none -py-1"
+                  size="text-sm md:text-base"
+                >
+                  {category.transaction_count === 0
+                    ? "-"
+                    : `${formatTimeDistance(category.average_time)}`}
+                </QuantifyText>
+              </td>
+              <td className="p-0 text-right">
+                <QuantifyText
+                  className="box-content text-right overflow-none -py-1"
+                  size="text-sm md:text-base"
+                >
+                  {formatZeroDecimals(category.transaction_count)}
+                </QuantifyText>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </WidgetBase>
   );
 };

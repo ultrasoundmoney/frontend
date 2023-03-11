@@ -7,9 +7,20 @@ import type {
 import type { RelayApiTimeFrames } from "./time_frames";
 import { timeFrameMap } from "./time_frames";
 
+type BuilderId = string;
+
+const nameMap: Record<BuilderId, string> = {
+  "0x69": "builder0x69",
+  beaver: "beaverbuild",
+  bloxroute: "bloXroute",
+  flashbots: "Flashbots",
+  manifold: "Manifold",
+  rsync: "rsync-builder",
+};
+
 type BuilderRaw = {
   blockCount: number;
-  builderId: string;
+  builderId: BuilderId;
   censoringPubkeys: number;
   totalPubkeys: number;
 };
@@ -53,7 +64,7 @@ export const getBuilderCensorship = (
             : "partially",
         dominance: builder.blockCount / blockCountAll,
         id: builder.builderId,
-        name: builder.builderId,
+        name: nameMap[builder.builderId] ?? builder.builderId,
         totalPubkeys: builder.totalPubkeys,
       }),
     ),

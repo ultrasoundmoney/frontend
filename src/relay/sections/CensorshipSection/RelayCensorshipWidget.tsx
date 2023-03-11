@@ -13,6 +13,7 @@ export type Relay = {
   dominance: number;
   id: string;
   name: string;
+  url?: string;
 };
 
 export type RelayCensorship = {
@@ -28,9 +29,9 @@ type Props = {
 };
 
 const RelayCensorshipWidget: FC<Props> = ({ relayCensorship, timeFrame }) => (
-  <WidgetBase title="relay censorship" timeFrame={timeFrame}>
+  <WidgetBase title="relay censorship" timeFrame={timeFrame} hideTimeFrameLabel>
     <QuantifyText
-      size="text-2xl md:text-4xl"
+      size="text-2xl sm:text-3xl xl:text-4xl"
       unitPostfix="dominance"
       unitPostfixColor="text-slateus-200"
       unitPostfixMargin="ml-4"

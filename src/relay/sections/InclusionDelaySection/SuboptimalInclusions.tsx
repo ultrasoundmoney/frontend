@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { FC, useRef } from "react";
 import { useMemo } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
@@ -9,6 +9,7 @@ import WidgetBase from "../../components/WidgetBase";
 import colors from "../../../colors";
 import _merge from "lodash/merge";
 import * as DateFns from "date-fns";
+import useWindowSize from "../../../hooks/use-window-size";
 
 // Somehow resolves an error thrown by the annotation lib
 if (typeof window !== "undefined") {
@@ -130,16 +131,16 @@ const getTooltipFormatter = (
     )}...${transaction.transactionHash.slice(-3)}`;
 
     return `
-      <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-400">
-        <div class="font-roboto text-slateus-200 text-right">${shortHash}</div>
-        <div class="text-slateus-200 text-right">${formattedDate}</div>
+      <div class="p-4 rounded-lg border-2 font-roboto bg-slateus-700 border-slateus-400">
+        <div class="text-right font-roboto text-slateus-200">${shortHash}</div>
+        <div class="text-right text-slateus-200">${formattedDate}</div>
         <div class="text-right">
           <span class="text-white">${formattedTime} </span>
           <span class="text-slateus-200">${formattedTimeZone}</span>
         </div>
-          <div class="text-white mt-2 text-right">${transaction.blockDelay} <span class="text-slateus-200">blocks delay</span></div>
-          <div class="text-white text-right">${transaction.delay} <span class="text-slateus-200">seconds delay</span></div>
-          <div class="text-white text-right">sanctions <span class="text-slateus-200">${transaction.reason} </span></div>
+          <div class="mt-2 text-right text-white">${transaction.blockDelay} <span class="text-slateus-200">blocks delay</span></div>
+          <div class="text-right text-white">${transaction.delay} <span class="text-slateus-200">seconds delay</span></div>
+          <div class="text-right text-white">sanctions <span class="text-slateus-200">${transaction.reason} </span></div>
         </div>
       </div>
     `;
@@ -154,6 +155,8 @@ const SuboptimalInclusions: FC<Props> = ({
   suboptimalInclusions,
   timeFrame,
 }) => {
+  const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
+  const windowSize = useWindowSize();
   const [seriesCensored, seriesUncensored, transactionMap] = useMemo(() => {
     const seriesCensored: [number, number][] = [];
     const seriesUncensored: [number, number][] = [];
@@ -194,9 +197,9 @@ const SuboptimalInclusions: FC<Props> = ({
         labelFormatter: function () {
           const color = this.index === 0 ? `bg-blue-400` : `bg-red-400`;
           return `
-            <div class="font-inter flex flex-row items-center gap-x-2 ml-2">
+            <div class="flex flex-row gap-x-2 items-center ml-2 font-inter">
               <!-- <div class="w-3 h-3 ${color} rounded-sm"></div> -->
-              <div class="font-inter text-xs font-light uppercase tracking-widest text-slateus-200">
+              <div class="text-xs font-light tracking-widest uppercase font-inter text-slateus-200">
                 ${this.name}
               </div>
             </div>
@@ -244,18 +247,16 @@ const SuboptimalInclusions: FC<Props> = ({
     };
 
     return _merge({}, baseOptions, dynamicOptions);
-  }, [seriesCensored, seriesUncensored, transactionMap]);
+  }, [seriesCensored, seriesUncensored, transactionMap, windowSize]);
 
   return (
     <WidgetBase title="suboptimal inclusions (in blocks)" timeFrame={timeFrame}>
-      <div
-        className={`
-            mt-4 flex h-full
-            w-full
-          `}
-      >
-        <HighchartsReact highcharts={Highcharts} options={options} />
-      </div>
+      <HighchartsReact
+        containerProps={{ className: "w-full h-full" }}
+        highcharts={Highcharts}
+        options={options}
+        ref={chartComponentRef}
+      />
     </WidgetBase>
   );
 };

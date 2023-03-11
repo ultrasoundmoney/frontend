@@ -107,24 +107,24 @@ const ClaimPoapTooltip: FC<ClaimPoapTooltipProps> = ({
         width={24}
       />
     </button>
-    <div className="flex select-none justify-center">
+    <div className="flex justify-center select-none">
       <Image
         alt="the Proof of Attendance (POAP) logo"
-        className="h-20 w-20 cursor-pointer select-none rounded-full"
+        className="w-20 h-20 rounded-full cursor-pointer select-none"
         src={logoPoapSvg as StaticImageData}
         height={64}
         width={64}
       />
     </div>
     <TooltipTitle>ultra sound POAP</TooltipTitle>
-    <div className="flex flex-col gap-y-4 overflow-y-scroll">
+    <div className="flex overflow-y-scroll flex-col gap-y-4">
       <TooltipText>
         The ultra sound money meme spreads at L0, via humans. This exclusive
         POAP is a small reward for early meme spreaders.
       </TooltipText>
       <LabelText>eligibility</LabelText>
       <TooltipText inline={true}>
-        <ul className="list-inside list-decimal">
+        <ul className="list-decimal list-inside">
           <li>Part of the fam pre-merge.</li>
           <li>Had 8+ fam followers in a recent snapshot.</li>
           <li>One of the first 1,559 to claim.</li>
@@ -287,11 +287,11 @@ const ClaimPoap: FC<{
   }, []);
 
   const NotEligible = () => (
-    <div className="flex min-h-[82px] flex-col gap-y-4">
-      <LabelText className="flex min-h-[24px] items-center">
+    <div className="flex flex-col gap-y-4 min-h-[82px]">
+      <LabelText className="flex items-center min-h-[24px]">
         status: not eligible
       </LabelText>
-      <div className="flex select-none justify-center">
+      <div className="flex justify-center select-none">
         <Image
           alt="a sobbing emoji signifying sadness at not being eligible"
           className="select-none"
@@ -307,11 +307,11 @@ const ClaimPoap: FC<{
   );
 
   const Claimed: FC = () => (
-    <div className="flex min-h-[82px] flex-col gap-y-4">
-      <LabelText className="flex min-h-[24px] items-center">
+    <div className="flex flex-col gap-y-4 min-h-[82px]">
+      <LabelText className="flex items-center min-h-[24px]">
         status: claimed
       </LabelText>
-      <div className="flex select-none justify-center">
+      <div className="flex justify-center select-none">
         <Image
           alt="a sobbing emoji signifying sadness at not being eligible"
           className="select-none"
@@ -331,9 +331,9 @@ const ClaimPoap: FC<{
           ${className}
         `}
       >
-        <div className="relative flex items-start justify-between">
+        <div className="flex relative justify-between items-start">
           <div
-            className="flex cursor-pointer items-center"
+            className="flex items-center cursor-pointer"
             onClick={handleClickNerd}
           >
             <LabelText>claim poap</LabelText>
@@ -361,7 +361,7 @@ const ClaimPoap: FC<{
         </div>
         <div className="flex flex-col gap-y-8">
           <div className="flex flex-col gap-y-4">
-            <div className="flex items-baseline justify-between">
+            <div className="flex justify-between items-baseline">
               <LabelText>your twitter</LabelText>
               <TwitterStatusText status={twitterAuthStatus} />
             </div>
@@ -437,7 +437,7 @@ const ClaimPoap: FC<{
                 }
               `}
             >
-              <div className="flex items-baseline justify-between gap-x-1">
+              <div className="flex gap-x-1 justify-between items-baseline">
                 <LabelText>your wallet address</LabelText>
                 <ClaimStatusText status={claimStatus} />
               </div>
@@ -535,21 +535,15 @@ const Claimed: FC<{
   isLoading: boolean;
   monkey: StaticImageData;
 }> = ({ claimedOn, isLoading, monkey }) => {
-  const [age, setAge] = useState<string>();
+  const [now, setNow] = useState<Date | undefined>();
 
   useEffect(() => {
-    if (claimedOn === undefined) {
+    if (claimedOn === undefined || typeof window === undefined) {
       return;
     }
 
-    const now = new Date();
-
-    // Set the current age immediately.
-    setAge(Format.formatTimeDistance(now, new Date(claimedOn)));
-
-    // And update it every 5 seconds.
     const intervalId = window.setInterval(() => {
-      setAge(Format.formatTimeDistance(now, new Date(claimedOn)));
+      setNow(new Date());
     }, 5000);
 
     return () => {
@@ -557,12 +551,20 @@ const Claimed: FC<{
     };
   }, [claimedOn]);
 
+  const age = useMemo(() => {
+    if (claimedOn === undefined || now === undefined) {
+      return undefined;
+    }
+
+    return Format.formatTimeDistanceToNow(now, new Date(claimedOn));
+  }, [claimedOn, now]);
+
   return (
-    <div className="flex items-baseline justify-end">
+    <div className="flex justify-end items-baseline">
       <QuantifyText>
         <SkeletonText width="4rem">
           {isLoading || monkey === undefined ? undefined : age === undefined ? (
-            <div className="h-8 w-8 select-none">
+            <div className="w-8 h-8 select-none">
               <Image
                 title="not claimed"
                 alt="random emoji monkey covering one of its senses to indicate empathetic embarassment at not claiming a POAP"
@@ -648,7 +650,7 @@ const Row: FC<RowProps> = ({ data, style = {}, index, className = "" }) => {
       className={`flex h-16 w-full items-center justify-between gap-x-4 pr-1 ${className}`}
       key={fam.twitter_id}
     >
-      <div className="flex items-center overflow-x-hidden">
+      <div className="flex overflow-x-hidden items-center">
         <ImageWithFallback
           handle={fam.handle}
           onMouseEnter={() => fam.onEnterImage(fam.handle)}
@@ -656,13 +658,13 @@ const Row: FC<RowProps> = ({ data, style = {}, index, className = "" }) => {
           src={fam.profile_image_url}
         />
         <a
-          className="cursor-pointer overflow-x-hidden hover:brightness-90 active:brightness-75"
+          className="overflow-x-hidden cursor-pointer hover:brightness-90 active:brightness-75"
           href={`https://twitter.com/${fam.handle}`}
           rel="noreferrer"
           target="_blank"
         >
           <Twemoji imageClassName="inline-block align-middle h-4 ml-1">
-            <div className="ml-4 flex h-full flex-col items-start overflow-x-hidden">
+            <div className="flex overflow-x-hidden flex-col items-start ml-4 h-full">
               <BodyTextV2 className="w-full truncate">{fam.name}</BodyTextV2>
               <BodyTextV2 className="truncate text-slateus-400">
                 @{fam.handle}
@@ -749,12 +751,12 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
           />
         )}
       </div>
-      <div className="mb-4 flex justify-between">
+      <div className="flex justify-between mb-4">
         <LabelText>Eligible Accounts</LabelText>
         <LabelText className="text-right">claimed?</LabelText>
       </div>
       {dataWithHandlers === undefined ? (
-        <div className="flex h-full items-center justify-center">
+        <div className="flex justify-center items-center h-full">
           <Spinner />
         </div>
       ) : searchResults === undefined ||
@@ -770,7 +772,7 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
           {Row}
         </FixedSizeList>
       ) : searchResults.length === 0 ? (
-        <div className="flex h-full w-full items-center justify-center">
+        <div className="flex justify-center items-center w-full h-full">
           <BodyTextV2 color="text-slateus-200">no search results</BodyTextV2>
         </div>
       ) : (
@@ -924,10 +926,10 @@ const PoapSection: FC<{
 
   return (
     <section className="px-4 md:px-16" id={id}>
-      <SectionTitle className="mt-16 pt-16" link="poap" subtitle="only 1,559">
+      <SectionTitle className="pt-16 mt-16" link="poap" subtitle="only 1,559">
         ultra sound POAP
       </SectionTitle>
-      <div className="my-12 flex justify-center">
+      <div className="flex justify-center my-12">
         <div
           className="flex cursor-pointer select-none"
           ref={ref}
@@ -943,7 +945,7 @@ const PoapSection: FC<{
         </div>
       </div>
       <div className="grid auto-rows-min gap-4 lg:grid-cols-2">
-        <WidgetBackground className="flex flex-col gap-y-8 overflow-hidden">
+        <WidgetBackground className="flex overflow-hidden flex-col gap-y-8">
           <div className="flex flex-col gap-y-4">
             <LabelText>claims</LabelText>
             <QuantifyText className="text-3xl">

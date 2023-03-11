@@ -1,12 +1,12 @@
+/// Shows a list of relays and how much they censor..
 import type { FC } from "react";
+import DefaultLink from "../../../components/DefaultLink";
 import BodyTextV3 from "../../../components/TextsNext/BodyTextV3";
+import LabelText from "../../../components/TextsNext/LabelText";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
-import {
-  WidgetBackground,
-  WidgetTitle,
-} from "../../../components/WidgetSubcomponents";
+import { WidgetBackground } from "../../../components/WidgetSubcomponents";
 import { formatPercentOneDecimal } from "../../../format";
-import StyledList from "../../components/StyledList";
+import StyledOverflowList from "../../components/StyledOverflowList";
 import type { Relay } from "./RelayCensorshipWidget";
 
 type Props = {
@@ -17,60 +17,79 @@ type Props = {
 const RelayListWidget: FC<Props> = ({ relays }) => (
   <WidgetBackground>
     <div className="flex flex-col gap-y-4">
-      <div className="grid grid-cols-3 md:grid-cols-4">
-        <WidgetTitle>relay</WidgetTitle>
-        <WidgetTitle className="text-right">censors</WidgetTitle>
-        <WidgetTitle className="hidden text-right md:inline">
-          blocks with sanctioned entity
-        </WidgetTitle>
-        <WidgetTitle className="text-right">dominance</WidgetTitle>
-      </div>
-      <StyledList height="h-[182px]">
-        {relays.map(
-          ({
-            blocks_with_sanctioned_entity,
-            censors,
-            description,
-            dominance,
-            id,
-            name,
-          }) => (
-            <li
-              key={id}
-              className="grid grid-cols-3 hover:opacity-60 md:grid-cols-4"
-            >
-              <div>
-                <BodyTextV3>{name}</BodyTextV3>
-                {description !== undefined && (
-                  <BodyTextV3
-                    className="hidden md:inline"
-                    color="text-slateus-200"
-                  >
-                    {" "}
-                    {description}
-                  </BodyTextV3>
-                )}
-              </div>
-              <BodyTextV3
-                className="text-right"
-                color={censors ? "text-red-400" : "text-green-400"}
-              >
-                {censors ? "yes" : "no"}
-              </BodyTextV3>
-              <QuantifyText
-                className="hidden text-right md:inline"
-                unitPostfix="blocks"
-                unitPostfixColor="text-slateus-200"
-              >
-                {blocks_with_sanctioned_entity}
-              </QuantifyText>
-              <QuantifyText className="text-right" size="text-sm md:text-base">
-                {formatPercentOneDecimal(dominance)}
-              </QuantifyText>
-            </li>
-          ),
-        )}
-      </StyledList>
+      <StyledOverflowList height="h-[214px]">
+        <table className="w-full table-auto">
+          <thead className="sticky top-0 border-b-4 border-transparent bg-slateus-700">
+            <tr>
+              <th className="p-0 text-left">
+                <LabelText>relay</LabelText>
+              </th>
+              <th className="p-0 text-right">
+                <LabelText>censors</LabelText>
+              </th>
+              <th className="hidden p-0 text-right sm:table-cell">
+                <LabelText>sanctioned</LabelText>
+              </th>
+              <th className="p-0 text-right">
+                <LabelText>dominance</LabelText>
+              </th>
+            </tr>
+          </thead>
+          <tbody className="w-full">
+            {relays.map(
+              ({
+                blocks_with_sanctioned_entity,
+                censors,
+                description,
+                dominance,
+                id,
+                name,
+                url,
+              }) => (
+                <tr
+                  className={`border-t-[16px] border-transparent first:border-t-0 last:pb-0 hover:brightness-75`}
+                  key={id}
+                >
+                  <td className="p-0 max-w-[70px] truncate xs:max-w-[85px]">
+                    <DefaultLink className="truncate" href={url}>
+                      <BodyTextV3>{name}</BodyTextV3>
+                      <BodyTextV3
+                        className={`${
+                          description === undefined ? "hidden" : "inline"
+                        }`}
+                        color="text-slateus-200"
+                      >
+                        {" "}
+                        {description}
+                      </BodyTextV3>
+                    </DefaultLink>
+                  </td>
+                  <td className="p-0 text-right max-w-[70px] xs:max-w-[85px]">
+                    <BodyTextV3
+                      color={censors ? "text-red-400" : "text-green-400"}
+                    >
+                      {censors ? "yes" : "no"}
+                    </BodyTextV3>
+                  </td>
+                  <td className="hidden p-0 text-right sm:table-cell xs-w-sm[70px] xs:max-w-[85px]">
+                    <QuantifyText
+                      unitPostfix="blocks"
+                      unitPostfixColor="text-slateus-200"
+                    >
+                      {blocks_with_sanctioned_entity}
+                    </QuantifyText>
+                  </td>
+                  <td className="p-0 text-right max-w-[70px] xs:max-w-[85px]">
+                    <QuantifyText size="text-sm sm:text-base">
+                      {formatPercentOneDecimal(dominance)}
+                    </QuantifyText>
+                  </td>
+                </tr>
+              ),
+            )}
+          </tbody>
+        </table>
+      </StyledOverflowList>
     </div>
   </WidgetBackground>
 );

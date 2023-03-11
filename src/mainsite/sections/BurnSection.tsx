@@ -39,7 +39,7 @@ const BurnSection: FC = () => {
           <div className="row-start-1 flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-x-4">
             <WidgetTitle>time frame</WidgetTitle>
             <TimeFrameControl
-              selectedTimeframe={timeFrame}
+              selectedTimeFrame={timeFrame}
               onSetTimeFrame={handleSetTimeFrame}
               version="no_merge"
             />

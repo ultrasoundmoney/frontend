@@ -11,7 +11,7 @@ import type { TransactionCensorshipPerTimeFrame } from "../../censorship-data/tr
 import BuilderCensorshipWidget from "./BuilderCensorshipWidget";
 import BuilderListWidget from "./BuilderListWidget";
 import LidoOperatorCensorship from "./LidoOperatorCensorship";
-import LidoOperatorList from "./LidoOperatorList";
+import LidoOperatorListWidget from "./LidoOperatorListWidget";
 import RelayCensorshipWidget from "./RelayCensorshipWidget";
 import RelayListWidget from "./RelayListWidget";
 import SanctionsDelayWidget from "./SanctionsDelayWidget";
@@ -50,9 +50,10 @@ const CensorshipSection: FC<Props> = ({
         <div className="flex items-center gap-4">
           <LabelText>time frame</LabelText>
           <TimeFrameControl
-            selectedTimeframe={timeFrame}
-            onSetTimeFrame={() =>
-              setTimeFrame((timeFrame) => (timeFrame === "d7" ? "d30" : "d7"))
+            selectedTimeFrame={timeFrame}
+            onSetTimeFrame={(timeFrame) =>
+              // Tricky to type, but in version "censorship" only "d7" and "d30" are set.
+              setTimeFrame(timeFrame as "d7" | "d30")
             }
             version="censorship"
           />
@@ -68,22 +69,24 @@ const CensorshipSection: FC<Props> = ({
             relays={relayCensorship.relays}
             timeFrame={timeFrame}
           />
+          <BuilderCensorshipWidget
+            builderCensorship={builderCensorship}
+            timeFrame="d7"
+          />
+          <BuilderListWidget builders={builderCensorship.builders} />
+          <SanctionsDelayWidget
+            sanctionsDelay={sanctionsDelay}
+            timeFrame={timeFrame}
+          />
         </div>
         <div className="flex flex-col gap-4">
           <LidoOperatorCensorship
             lidoOperatorCensorship={lidoOperatorCensorship}
             timeFrame={timeFrame}
           />
-          <LidoOperatorList lidoOperatorCensorship={lidoOperatorCensorship} />
-        </div>
-        <div className="flex flex-col gap-4">
-          <BuilderCensorshipWidget
-            builderCensorship={builderCensorship}
-            timeFrame="d7"
+          <LidoOperatorListWidget
+            lidoOperatorCensorship={lidoOperatorCensorship}
           />
-          <BuilderListWidget builders={builderCensorship.builders} />
-        </div>
-        <div className="flex flex-col gap-4">
           <TransactionCensorshipWidget
             transactionCensorship={transactionCencorship}
             timeFrame={timeFrame}
@@ -93,10 +96,6 @@ const CensorshipSection: FC<Props> = ({
             timeFrame={timeFrame}
           />
         </div>
-        <SanctionsDelayWidget
-          sanctionsDelay={sanctionsDelay}
-          timeFrame={timeFrame}
-        />
       </div>
     </Section>
   );

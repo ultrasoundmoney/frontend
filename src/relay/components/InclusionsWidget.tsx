@@ -18,17 +18,20 @@ import type { Payload } from "../types";
 const etherscanUrl = getEtherscanUrl();
 
 const PayloadRow = ({ blockNumber, insertedAt, value }: Payload) => {
-  const [inclusionAgo, setInclusionAgo] = useState<string | undefined>(
-    undefined,
-  );
+  const [now, setNow] = useState<Date | undefined>();
   const truncatedValue = value.toString().substring(0, 4);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setInclusionAgo(Format.formatTimeDistance(new Date(), insertedAt));
+      setNow(new Date());
     }, 1000);
     return () => clearInterval(interval);
   }, [insertedAt]);
+
+  const inclusionAgo =
+    now === undefined
+      ? undefined
+      : `${Format.formatTimeDistanceToNow(now, insertedAt)} ago`;
 
   return (
     <a
@@ -49,7 +52,7 @@ const PayloadRow = ({ blockNumber, insertedAt, value }: Payload) => {
           </BaseText>
           <div className="hidden md:inline">
             <span className="font-inter">&thinsp;</span>
-            <span className="font-roboto font-extralight text-slateus-200">
+            <span className="font-extralight font-roboto text-slateus-200">
               ETH
             </span>
           </div>
@@ -97,7 +100,7 @@ const InclusionsWidget: FC<Props> = ({
       <WidgetBackground>
         <LabelText>inclusions</LabelText>
         <p className="mt-4 text-3xl font-extralight tracking-wide">
-          <span className="font-inter text-white">
+          <span className="text-white font-inter">
             {Format.formatZeroDecimals(payloadCount)}
           </span>
           <span> </span>

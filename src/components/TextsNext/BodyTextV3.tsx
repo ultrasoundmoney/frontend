@@ -10,7 +10,7 @@ const BodyTextV3: FC<{
     className={className}
     font="font-inter"
     color={color}
-    size="text-sm md:text-base"
+    size="text-sm sm:text-base"
   >
     {children}
   </BaseText>
