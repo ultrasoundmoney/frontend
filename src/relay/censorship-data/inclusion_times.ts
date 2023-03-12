@@ -19,7 +19,7 @@ type RawData = Record<RelayApiTimeFrames, InclusionTimeRaw[]>;
 const categoryNameMap: Record<Category, string> = {
   borderline: "boundary",
   congested: "congestion",
-  likely_insufficient_balance: "low_balance",
+  likely_insufficient_balance: "low balance",
   low_base_fee: "low fee",
   low_tip: "low fee",
   miner: "private",
@@ -31,13 +31,15 @@ const categoryNameMap: Record<Category, string> = {
 
 const categoryDescriptionMap: Partial<Record<Category, string>> = {
   borderline: "network latency",
-  congested: "Congestion",
+  congested: "blocks full",
+  likely_insufficient_balance: "cannot pay fee",
   low_base_fee: "base fee",
   low_tip: "tip",
   miner: "outside mempool",
-  unknown: "not categorised",
   ofac_delayed: "OFAC (US)",
+  optimal: "next block",
   sanctions_uk: "UK",
+  unknown: "not categorised",
 };
 
 export type InclusionTimesPerTimeFrame = Record<"d7" | "d30", InclusionTime[]>;
