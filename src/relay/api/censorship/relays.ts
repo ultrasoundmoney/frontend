@@ -19,7 +19,7 @@ const nameMap: Record<RelayId, string> = {
   eden: "Eden",
   flashbots: "Flashbots",
   manifold: "Manifold",
-  relayoor: "Relayoor",
+  relayoor: "Relayooor",
   ultrasound: "ultra sound",
 };
 
