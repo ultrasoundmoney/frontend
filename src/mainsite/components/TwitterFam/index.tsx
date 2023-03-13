@@ -26,7 +26,6 @@ const sizeFactor = 8; // (from 96px to 12px)
 
 // See if merging with leaderboards tooltip makes sense after making it more generic.
 export const useTooltip = () => {
-  const { md } = useActiveBreakpoint();
   const [refEl, setRefEl] = useState<HTMLImageElement | null>(null);
   const [popperEl, setPopperEl] = useState<HTMLDivElement | null>(null);
   const { styles, attributes } = usePopper(refEl, popperEl, {

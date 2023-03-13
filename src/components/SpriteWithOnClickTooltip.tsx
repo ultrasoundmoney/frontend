@@ -42,7 +42,7 @@ const ImageWithOnClickTooltip: FC<ImageWithOnClickTooltipProps> = ({
       setPosX(x);
       setPosY(y);
     }
-  }, [getXAndY, imageUrl]);
+  }, [getXAndY, imageUrl, sizeFactor]);
 
   return (
     <>

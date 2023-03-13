@@ -1,6 +1,6 @@
 
-import type { FC, ReactEventHandler } from "react";
-import { useCallback, useState, useEffect } from "react";
+import type { FC } from "react";
+import { useState, useEffect } from "react";
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import Image from 'next/image'
 import type { Linkables, SpriteSheetResponse } from "../api/profiles";

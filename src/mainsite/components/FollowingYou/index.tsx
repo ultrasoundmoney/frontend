@@ -3,7 +3,6 @@ import { useState } from "react";
 import type { FamProfile } from "../../api/profiles";
 import { formatZeroDecimals } from "../../../format";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
-import ImageWithTooltip from "../ImageWithTooltip";
 import Modal from "../Modal";
 import { SectionTitle } from "../../../components/TextsNext/SectionTitle";
 import FamTooltip from "../FamTooltip";
