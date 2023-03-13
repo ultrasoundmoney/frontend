@@ -8,7 +8,6 @@ import type { TimeFrame } from "../../../mainsite/time-frames";
 import type { DateTimeString } from "../../../time";
 import WidgetBase from "../../components/WidgetBase";
 import colors from "../../../colors";
-import _merge from "lodash/merge";
 import * as DateFns from "date-fns";
 
 // Somehow resolves an error thrown by the annotation lib
@@ -17,80 +16,62 @@ if (typeof window !== "undefined") {
   highchartsAnnotations(Highcharts);
 }
 
+const highchartsTooltipTheme = {
+  backgroundColor: "transparent",
+  borderWidth: 0,
+  hideDelay: 1000,
+  shadow: false,
+  stickOnContact: true,
+  useHTML: true,
+};
+
+const highchartsZoomTheme = {
+  fill: colors.slateus600,
+  style: {
+    opacity: 0.8,
+    fontSize: "12",
+    fontFamily: "Inter",
+    fontWeight: "300",
+    color: colors.white,
+    textTransform: "lowercase",
+    border: `1px solid ${colors.slateus400}`,
+  },
+  r: 4,
+  zIndex: 20,
+  states: { hover: { fill: "#343C56" } },
+};
+
+const highchartsLabelStyle = {
+  color: colors.slateus400,
+  fontFamily: "Roboto Mono",
+  fontSize: "12px",
+  fontWeight: "300",
+};
+
 const baseOptions: Highcharts.Options = {
   accessibility: { enabled: false },
   chart: {
     zooming: {
       type: "x",
-      resetButton: {
-        position: {
-          x: 0,
-          y: 10,
-        },
-        theme: {
-          fill: colors.slateus600,
-          style: {
-            opacity: 0.8,
-            fontSize: "12",
-            fontFamily: "Inter",
-            fontWeight: "300",
-            color: colors.white,
-            textTransform: "lowercase",
-            border: `1px solid ${colors.slateus400}`,
-          },
-          r: 4,
-          zIndex: 20,
-          states: { hover: { fill: "#343C56" } },
-        },
-      },
+      resetButton: { position: { x: 0, y: 10 }, theme: highchartsZoomTheme },
     },
     backgroundColor: "transparent",
     showAxes: false,
-    marginRight: 84,
-    marginLeft: 40,
-    marginTop: 14,
   },
   title: undefined,
   xAxis: {
     type: "datetime",
     lineWidth: 0,
-    labels: { enabled: false, style: { color: colors.slateus400 } },
+    labels: { enabled: true, style: highchartsLabelStyle },
     tickWidth: 0,
   },
   yAxis: {
-    endOnTick: false,
     gridLineWidth: 0,
-    labels: {
-      style: {
-        color: colors.slateus400,
-        fontFamily: "Roboto Mono",
-        fontSize: "12px",
-        fontWeight: "300",
-      },
-    },
+    labels: { style: highchartsLabelStyle },
     title: undefined,
   },
-  tooltip: {
-    backgroundColor: "transparent",
-    borderWidth: 0,
-    shadow: false,
-    useHTML: true,
-  },
-
+  tooltip: highchartsTooltipTheme,
   credits: { enabled: false },
-  plotOptions: {
-    series: {
-      animation: {
-        duration: 300,
-      },
-      marker: {
-        enabled: true,
-        lineColor: "white",
-        radius: 0.4,
-        symbol: "circle",
-      },
-    },
-  },
 };
 
 export type SuboptimalTransaction = {
@@ -125,14 +106,20 @@ const getTooltipFormatter = (
     const formattedTime = DateFns.format(dt, "HH:mm:ss");
     const formattedTimeZone = DateFns.format(dt, "'UTC'x");
 
-    const shortHash = `${transaction.transactionHash.slice(
+    const transactionHash = transaction.transactionHash;
+    const shortHash = `${transactionHash.slice(
       0,
       5,
     )}...${transaction.transactionHash.slice(-3)}`;
 
     return `
       <div class="p-4 rounded-lg border-2 font-roboto bg-slateus-700 border-slateus-400">
-        <div class="text-right font-roboto text-slateus-200">${shortHash}</div>
+        <a
+          class="block text-right font-roboto text-slateus-200"
+          href="https://etherscan.com/tx/${transactionHash}"
+        >
+          ${shortHash}
+        </a>
         <div class="text-right text-slateus-200">${formattedDate}</div>
         <div class="text-right">
           <span class="text-white">${formattedTime} </span>
@@ -147,11 +134,13 @@ const getTooltipFormatter = (
   };
 
 type Props = {
+  onClickTimeFrame: () => void;
   suboptimalInclusions: SuboptimalTransaction[];
   timeFrame: TimeFrame;
 };
 
 const SuboptimalInclusions: FC<Props> = ({
+  onClickTimeFrame,
   suboptimalInclusions,
   timeFrame,
 }) => {
@@ -235,11 +224,15 @@ const SuboptimalInclusions: FC<Props> = ({
       },
     };
 
-    return _merge({}, baseOptions, dynamicOptions);
+    return Object.assign({}, baseOptions, dynamicOptions);
   }, [seriesCensored, seriesUncensored, transactionMap]);
 
   return (
-    <WidgetBase title="suboptimal inclusions (in blocks)" timeFrame={timeFrame}>
+    <WidgetBase
+      title="suboptimal inclusions (in blocks)"
+      timeFrame={timeFrame}
+      onClickTimeFrame={onClickTimeFrame}
+    >
       <HighchartsReact
         containerProps={{ className: "w-full h-full" }}
         highcharts={Highcharts}

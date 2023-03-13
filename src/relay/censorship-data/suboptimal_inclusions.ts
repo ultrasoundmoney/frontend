@@ -1,4 +1,4 @@
-import type { SuboptimalTransaction } from "../sections/InclusionDelaySection/SuboptimalInclusions";
+import type { SuboptimalTransaction } from "../sections/InclusionDelaySection/SuboptimalInclusionsGraph";
 import { E, pipe, T, TEAlt } from "../../fp";
 import { fetchApiJson } from "../fetchers";
 
