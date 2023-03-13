@@ -7,8 +7,8 @@ import type { InclusionTimesPerTimeFrame } from "../../censorship-data/inclusion
 import type { RecentDelayedTransactionsPerTimeFrame } from "../../censorship-data/recent_delayed_transactions";
 import type { SuboptimalInclusionsPerTimeFrame } from "../../censorship-data/suboptimal_inclusions";
 import InclusionTimesWidget from "./InclusionTimesWidget";
-import SuboptimalInclusions from "./SuboptimalInclusionsGraph";
-import TransactionInclusionDelayWidget from "./TransactionInclusionDelayWidget";
+import SuboptimalInclusionsWidget from "./SuboptimalInclusionsWidget";
+import InclusionDelayListWidget from "./InclusionDelayListWidget";
 
 type Props = {
   inclusionTimesPerTimeFrame: InclusionTimesPerTimeFrame;
@@ -49,17 +49,17 @@ const InclusionDelaySection: FC<Props> = ({
         </div>
       </div>
       <div className="grid grid-cols-1 gap-4 w-full lg:grid-cols-2">
+        <SuboptimalInclusionsWidget
+          suboptimalInclusions={suboptimalInclusions}
+          timeFrame={timeFrame}
+          onClickTimeFrame={handleClickTimeFrame}
+        />
         <InclusionTimesWidget
           inclusionTimes={inclusionTimes}
           timeFrame={timeFrame}
           onClickTimeFrame={handleClickTimeFrame}
         />
-        <SuboptimalInclusions
-          suboptimalInclusions={suboptimalInclusions}
-          timeFrame={timeFrame}
-          onClickTimeFrame={handleClickTimeFrame}
-        />
-        <TransactionInclusionDelayWidget transactions={transactions} />
+        <InclusionDelayListWidget transactions={transactions} />
       </div>
     </Section>
   );

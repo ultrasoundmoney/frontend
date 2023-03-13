@@ -11,12 +11,12 @@ import type { SanctionsDelayPerTimeFrame } from "../../censorship-data/sanctions
 import type { TransactionCensorshipPerTimeFrame } from "../../censorship-data/transaction_censorship";
 import BuilderCensorshipWidget from "./BuilderCensorshipWidget";
 import BuilderListWidget from "./BuilderListWidget";
-import LidoOperatorCensorship from "./LidoOperatorCensorship";
+import LidoOperatorCensorshipWidget from "./LidoOperatorCensorshipWidget";
 import LidoOperatorListWidget from "./LidoOperatorListWidget";
 import RelayCensorshipWidget from "./RelayCensorshipWidget";
 import RelayListWidget from "./RelayListWidget";
 import SanctionsDelayWidget from "./SanctionsDelayWidget";
-import TransactionCensorshipList from "./TransactionCensorshipList";
+import TransactionCensorshipListWidget from "./TransactionCensorshipListWidget";
 import TransactionCensorshipWidget from "./TransactionCensorshipWidget";
 
 type Props = {
@@ -88,7 +88,7 @@ const CensorshipSection: FC<Props> = ({
           />
         </div>
         <div className="flex flex-col gap-4">
-          <LidoOperatorCensorship
+          <LidoOperatorCensorshipWidget
             lidoOperatorCensorship={lidoOperatorCensorship}
             onClickTimeFrame={handleClickTimeFrame}
             timeFrame={timeFrame}
@@ -101,7 +101,7 @@ const CensorshipSection: FC<Props> = ({
             transactionCensorship={transactionCencorship}
             timeFrame={timeFrame}
           />
-          <TransactionCensorshipList
+          <TransactionCensorshipListWidget
             onClickTimeFrame={handleClickTimeFrame}
             transactions={transactionCencorship.transactions}
             timeFrame={timeFrame}
