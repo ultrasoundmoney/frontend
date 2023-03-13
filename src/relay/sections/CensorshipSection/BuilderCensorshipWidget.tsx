@@ -31,11 +31,13 @@ type Props = {
 
 const BuilderCensorshipWidget: FC<Props> = ({
   builderCensorship,
+  onClickTimeFrame,
   timeFrame,
 }) => (
   <WidgetBase
     className="w-full"
     hideTimeFrameLabel
+    onClickTimeFrame={onClickTimeFrame}
     timeFrame={timeFrame}
     title="builder censorship"
   >

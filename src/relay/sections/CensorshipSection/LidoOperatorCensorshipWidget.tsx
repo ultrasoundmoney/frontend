@@ -32,9 +32,11 @@ type Props = {
 
 const LidoOperatorCensorshipWidget: FC<Props> = ({
   lidoOperatorCensorship,
+  onClickTimeFrame,
   timeFrame,
 }) => (
   <WidgetBase
+    onClickTimeFrame={onClickTimeFrame}
     title="lido operator censorship"
     timeFrame={timeFrame}
     hideTimeFrameLabel

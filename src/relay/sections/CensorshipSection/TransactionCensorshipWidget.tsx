@@ -30,11 +30,13 @@ type Props = {
 };
 
 const TransactionCensorshipWidget: FC<Props> = ({
+  onClickTimeFrame,
   transactionCensorship,
   timeFrame,
 }) => {
   return (
     <WidgetBase
+      onClickTimeFrame={onClickTimeFrame}
       title="transaction censorship"
       timeFrame={timeFrame}
       hideTimeFrameLabel

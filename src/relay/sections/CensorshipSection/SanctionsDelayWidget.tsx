@@ -18,8 +18,17 @@ type Props = {
   timeFrame: TimeFrame;
 };
 
-const SanctionsDelayWidget: FC<Props> = ({ sanctionsDelay, timeFrame }) => (
-  <WidgetBase title="sanctions delay" timeFrame={timeFrame} hideTimeFrameLabel>
+const SanctionsDelayWidget: FC<Props> = ({
+  onClickTimeFrame,
+  sanctionsDelay,
+  timeFrame,
+}) => (
+  <WidgetBase
+    hideTimeFrameLabel
+    onClickTimeFrame={onClickTimeFrame}
+    timeFrame={timeFrame}
+    title="sanctions delay"
+  >
     <QuantifyText
       size="text-2xl sm:text-3xl xl:text-4xl"
       unitPostfix="seconds"
