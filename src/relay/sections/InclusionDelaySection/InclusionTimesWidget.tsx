@@ -253,7 +253,11 @@ type Props = {
   timeFrame: TimeFrame;
 };
 
-const InclusionTimesWidget: FC<Props> = ({ inclusionTimes, timeFrame }) => {
+const InclusionTimesWidget: FC<Props> = ({
+  inclusionTimes,
+  onClickTimeFrame,
+  timeFrame,
+}) => {
   const [highlights, dispatchHighlight] = useReducer(
     reducer,
     categoryHighlights,
@@ -261,7 +265,7 @@ const InclusionTimesWidget: FC<Props> = ({ inclusionTimes, timeFrame }) => {
 
   return (
     <WidgetBase
-      onClickTimeFrame={undefined}
+      onClickTimeFrame={onClickTimeFrame}
       title="inclusion times"
       timeFrame={timeFrame}
     >
