@@ -68,7 +68,7 @@ export const BaseText: FC<BaseTextProps> = ({
   color = "text-white",
   font,
   inline = true,
-  lineHeight = "leading-none",
+  lineHeight = "leading-normal",
   size = "",
   style,
   tooltip,
