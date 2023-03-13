@@ -22,6 +22,8 @@ import followingYouStyles from "../FollowingYou/FollowingYou.module.scss";
 import Button from '../../../components/BlueButton'
 import ControlButtons from "./ControlButtons";
 
+const sizeFactor = 8; // (from 96px to 12px)
+
 // See if merging with leaderboards tooltip makes sense after making it more generic.
 export const useTooltip = () => {
   const { md } = useActiveBreakpoint();
@@ -109,8 +111,7 @@ export const useTooltip = () => {
 
 const TwitterFam: FC = () => {
   const profiles = useProfiles()?.profiles;
-  const spriteData = useSpriteSheet();
-  const { coordinates, properties } = spriteData || {};
+  const { coordinates, properties } = useSpriteSheet() || {};
 
   const { md } = useActiveBreakpoint();
   const fullScreenHandle = useFullScreenHandle();
@@ -291,7 +292,8 @@ const TwitterFam: FC = () => {
                         flex
                         flex-wrap
                         justify-center
-                        my-5
+                        ${fullScreenHandle.active ? 'my-5' : 'mt-5'}
+
                       `}
                     >
                       <TransformComponent
@@ -310,10 +312,10 @@ const TwitterFam: FC = () => {
                                   ? () => undefined
                                   : handleImageClick(profile, ref)
                               }
-                              currentScale={panZoomRef.current?.state?.scale}
                               getXAndY={getXAndY}
                               excluded={filteredProfiles?.findIndex((p) => p.name === profile?.name) === -1}
                               properties={properties ?? { width: 0, height: 0 }}
+                              sizeFactor={sizeFactor}
                             />
                           </ClickAwayListener>
                         ))}
@@ -321,7 +323,7 @@ const TwitterFam: FC = () => {
                       {/* Search for your profile form */}
                       <div
                         className={`
-                          mt-6
+                          mt-8
                         `}
                       >
                         <form
