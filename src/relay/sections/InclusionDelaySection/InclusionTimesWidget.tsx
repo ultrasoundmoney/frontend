@@ -87,7 +87,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
   imgSrc,
   onMouseEnter,
   onMouseLeave,
-  percentage: percentage,
+  percentage,
   rounded,
   highlight,
 }) => (
