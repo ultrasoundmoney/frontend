@@ -233,6 +233,7 @@ const SuboptimalInclusions: FC<Props> = ({
   return (
     <WidgetBase
       className={className}
+      hideTimeFrameLabel
       onClickTimeFrame={onClickTimeFrame}
       timeFrame={timeFrame}
       title="suboptimal inclusions (in blocks)"
