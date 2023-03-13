@@ -18,7 +18,8 @@ const Button: FC<{
   disabled?: boolean;
   isActive: boolean;
   onClick: () => void;
-}> = ({ children, isActive, onClick, disabled }) => (
+  title?: string;
+}> = ({ children, isActive, onClick, disabled, title }) => (
   <button
     className={`
       select-none rounded-sm
@@ -35,7 +36,7 @@ const Button: FC<{
       }
     `}
     onClick={disabled ? undefined : onClick}
-    title={disabled ? "not yet available" : undefined}
+    title={title ? title : undefined}
   >
     {children}
   </button>
@@ -138,6 +139,7 @@ const TimeFrameControlCensorship: FC<{
           isActive={selectedTimeFrame === timeFrame}
           onClick={() => onSetTimeFrame(timeFrame)}
           disabled={timeFrame === "since_merge" || timeFrame === "d1"}
+          title="coming soon"
         >
           {timeFrame === "since_merge" ? (
             <PandaImage selectedTimeframe={selectedTimeFrame} />
