@@ -134,12 +134,14 @@ const getTooltipFormatter = (
   };
 
 type Props = {
+  className?: string;
   onClickTimeFrame: () => void;
   suboptimalInclusions: SuboptimalTransaction[];
   timeFrame: TimeFrame;
 };
 
 const SuboptimalInclusions: FC<Props> = ({
+  className,
   onClickTimeFrame,
   suboptimalInclusions,
   timeFrame,
@@ -229,9 +231,10 @@ const SuboptimalInclusions: FC<Props> = ({
 
   return (
     <WidgetBase
-      title="suboptimal inclusions (in blocks)"
-      timeFrame={timeFrame}
+      className={className}
       onClickTimeFrame={onClickTimeFrame}
+      timeFrame={timeFrame}
+      title="suboptimal inclusions (in blocks)"
     >
       <HighchartsReact
         containerProps={{ className: "w-full h-full" }}

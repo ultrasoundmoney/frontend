@@ -49,13 +49,14 @@ const InclusionDelaySection: FC<Props> = ({
         </div>
       </div>
       <div className="grid grid-cols-1 gap-4 w-full lg:grid-cols-2">
-        <SuboptimalInclusionsWidget
-          suboptimalInclusions={suboptimalInclusions}
+        <InclusionTimesWidget
+          inclusionTimes={inclusionTimes}
           timeFrame={timeFrame}
           onClickTimeFrame={handleClickTimeFrame}
         />
-        <InclusionTimesWidget
-          inclusionTimes={inclusionTimes}
+        <SuboptimalInclusionsWidget
+          className="row-start-3 lg:row-start-auto"
+          suboptimalInclusions={suboptimalInclusions}
           timeFrame={timeFrame}
           onClickTimeFrame={handleClickTimeFrame}
         />
