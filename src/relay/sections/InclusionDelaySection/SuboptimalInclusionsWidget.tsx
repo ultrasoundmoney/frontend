@@ -9,6 +9,7 @@ import type { DateTimeString } from "../../../time";
 import WidgetBase from "../../components/WidgetBase";
 import colors from "../../../colors";
 import * as DateFns from "date-fns";
+import _merge from "lodash/merge";
 
 // Somehow resolves an error thrown by the annotation lib
 if (typeof window !== "undefined") {
@@ -226,7 +227,7 @@ const SuboptimalInclusions: FC<Props> = ({
       },
     };
 
-    return Object.assign({}, baseOptions, dynamicOptions);
+    return _merge({}, baseOptions, dynamicOptions);
   }, [seriesCensored, seriesUncensored, transactionMap]);
 
   return (
