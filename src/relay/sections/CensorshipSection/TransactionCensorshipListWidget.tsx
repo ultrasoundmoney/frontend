@@ -10,7 +10,7 @@ import SkeletonText from "../../../components/TextsNext/SkeletonText";
 import StyledOverflowList from "../../components/StyledOverflowList";
 import BodyTextV3 from "../../../components/TextsNext/BodyTextV3";
 import type { TimeFrame } from "../../../mainsite/time-frames";
-import type { CensoredTransaction } from "../../censorship-data/transaction_censorship";
+import type { CensoredTransaction } from "./TransactionCensorshipWidget";
 
 type Props = {
   onClickTimeFrame: () => void;

@@ -1,18 +1,13 @@
 import { pipe } from "fp-ts/lib/function";
-import { fetchApiJson } from "../fetchers";
-import type { RelayApiTimeFrames } from "./time_frames";
-import { E, T, TEAlt } from "../../fp";
+import { fetchApiJson } from "../../fetchers";
+import type { RelayApiTimeFrames } from "../time_frames";
+import { E, T, TEAlt } from "../../../fp";
+import type { SanctionsDelay } from "../../sections/CensorshipSection/SanctionsDelayWidget";
 
 type SanctionsDelayRaw = {
   avgDelay: number;
   txType: "uncensored" | "censored";
   txCount: number;
-};
-
-export type SanctionsDelay = {
-  count: number;
-  censored_count: number;
-  average_censored_delay: number;
 };
 
 export type SanctionsDelayPerTimeFrame = Record<"d7" | "d30", SanctionsDelay>;
@@ -33,7 +28,7 @@ const getSanctionsDelay = (rawDelays: SanctionsDelayRaw[]) => {
 
 type RawData = Record<RelayApiTimeFrames, SanctionsDelayRaw[]>;
 
-export const getSanctionsDelayPerTimeFrame: T.Task<SanctionsDelayPerTimeFrame> =
+export const fetchSanctionsDelayPerTimeFrame: T.Task<SanctionsDelayPerTimeFrame> =
   pipe(
     () => fetchApiJson<RawData>("/api/censorship/censorship-categories"),
     T.map((body) =>

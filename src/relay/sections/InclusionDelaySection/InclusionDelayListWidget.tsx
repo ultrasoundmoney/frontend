@@ -9,7 +9,7 @@ import BodyTextV2 from "../../../components/TextsNext/BodyTextV2";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
 import { formatTimeDistanceToNow } from "../../../format";
 import SkeletonText from "../../../components/TextsNext/SkeletonText";
-import type { SuboptimalTransaction } from "./SuboptimalInclusionsGraph";
+import type { SuboptimalTransaction } from "./SuboptimalInclusionsWidget";
 
 const reasonNameMap: Record<string, string> = {
   lowbasefee: "low fee",

@@ -3,9 +3,14 @@ import QuantifyText from "../../../components/TextsNext/QuantifyText";
 import SkeletonText from "../../../components/TextsNext/SkeletonText";
 import { formatOneDecimal } from "../../../format";
 import type { TimeFrame } from "../../../mainsite/time-frames";
-import type { SanctionsDelay } from "../../censorship-data/sanctions_delay";
 import TinyStatus from "../../components/TinyStatus";
 import WidgetBase from "../../components/WidgetBase";
+
+export type SanctionsDelay = {
+  count: number;
+  censored_count: number;
+  average_censored_delay: number;
+};
 
 type Props = {
   onClickTimeFrame: () => void;

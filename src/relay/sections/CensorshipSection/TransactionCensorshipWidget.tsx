@@ -3,9 +3,25 @@ import QuantifyText from "../../../components/TextsNext/QuantifyText";
 import SkeletonText from "../../../components/TextsNext/SkeletonText";
 import { formatPercentOneDecimal, formatZeroDecimals } from "../../../format";
 import type { TimeFrame } from "../../../mainsite/time-frames";
-import type { TransactionCensorship } from "../../censorship-data/transaction_censorship";
+import type { DateTimeString } from "../../../time";
 import TinyStatus from "../../components/TinyStatus";
 import WidgetBase from "../../components/WidgetBase";
+
+export type CensoredTransaction = {
+  inclusion: DateTimeString;
+  sanctionListIds: string[];
+  sanctionsListName: string;
+  took: number;
+  transaction_delay: number;
+  transaction_hash: string;
+};
+
+export type TransactionCensorship = {
+  averageInclusionTime: number;
+  blocksCensoredPercent: number;
+  count: number;
+  transactions: CensoredTransaction[];
+};
 
 type Props = {
   onClickTimeFrame: () => void;

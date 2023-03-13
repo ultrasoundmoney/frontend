@@ -1,11 +1,11 @@
-import { A, E, N, OrdM, pipe, T, TEAlt } from "../../fp";
+import { A, E, N, OrdM, pipe, T, TEAlt } from "../../../fp";
 import type {
   Category,
   InclusionTime,
-} from "../sections/InclusionDelaySection/InclusionTimesWidget";
-import type { RelayApiTimeFrames } from "./time_frames";
-import { timeFrameMap } from "./time_frames";
-import { fetchApiJson } from "../fetchers";
+} from "../../sections/InclusionDelaySection/InclusionTimesWidget";
+import type { RelayApiTimeFrames } from "../time_frames";
+import { timeFrameMap } from "../time_frames";
+import { fetchApiJson } from "../../fetchers";
 
 type InclusionTimeRaw = {
   avgBlockDelay: number;
@@ -92,7 +92,7 @@ const getInclusionTimes = (
   return inclusionTimes;
 };
 
-export const getInclusionTimesPerTimeFrame = pipe(
+export const fetchInclusionTimesPerTimeFrame = pipe(
   () => fetchApiJson<RawData>("/api/censorship/delay-categories"),
   T.map((body) =>
     "error" in body

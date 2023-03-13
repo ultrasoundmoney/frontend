@@ -1,12 +1,12 @@
-import { A, E, Monoid, N, OrdM, pipe, T, TEAlt } from "../../fp";
+import { A, E, Monoid, N, OrdM, pipe, T, TEAlt } from "../../../fp";
 import type {
   LidoOperatorCensorship,
   Operator,
-} from "../sections/CensorshipSection/LidoOperatorCensorship";
+} from "../../sections/CensorshipSection/LidoOperatorCensorshipWidget";
 import lidoOperatorDetailsMapSource from "./lido_operators_details_map.json";
-import { fetchApiJson } from "../fetchers";
-import { getRelayCensorshipPerTimeFrame } from "./relay_censorship";
-import type { RelayCensorship } from "../sections/CensorshipSection/RelayCensorshipWidget";
+import { fetchApiJson } from "../../fetchers";
+import { fetchRelayCensorshipPerTimeFrame } from "./relays";
+import type { RelayCensorship } from "../../sections/CensorshipSection/RelayCensorshipWidget";
 
 const lidoOperatorDetailsMap = lidoOperatorDetailsMapSource as Record<
   string,
@@ -120,10 +120,10 @@ const getLidoOperatorCensorship = (
   };
 };
 
-export const getLidoOperatorCensorshipPerTimeFrame: T.Task<LidoOperatorCensorshipPerTimeFrame> =
+export const fetchLidoOperatorCensorshipPerTimeFrame: T.Task<LidoOperatorCensorshipPerTimeFrame> =
   pipe(
     T.Do,
-    T.apS("relays", getRelayCensorshipPerTimeFrame),
+    T.apS("relays", fetchRelayCensorshipPerTimeFrame),
     T.apS(
       "lidoOperatorRaws",
       pipe(

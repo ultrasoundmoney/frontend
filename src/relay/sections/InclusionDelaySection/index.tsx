@@ -3,12 +3,12 @@ import { useCallback, useState } from "react";
 import Section from "../../../components/Section";
 import LabelText from "../../../components/TextsNext/LabelText";
 import TimeFrameControl from "../../../components/TimeFrameControl";
-import type { InclusionTimesPerTimeFrame } from "../../censorship-data/inclusion_times";
-import type { RecentDelayedTransactionsPerTimeFrame } from "../../censorship-data/recent_delayed_transactions";
-import type { SuboptimalInclusionsPerTimeFrame } from "../../censorship-data/suboptimal_inclusions";
 import InclusionTimesWidget from "./InclusionTimesWidget";
 import SuboptimalInclusionsWidget from "./SuboptimalInclusionsWidget";
 import InclusionDelayListWidget from "./InclusionDelayListWidget";
+import type { InclusionTimesPerTimeFrame } from "../../api/censorship/inclusion_times";
+import type { RecentDelayedTransactionsPerTimeFrame } from "../../api/inclusion-delays/recent_delayed_transactions";
+import type { SuboptimalInclusionsPerTimeFrame } from "../../api/inclusion-delays/suboptimal_inclusions";
 
 type Props = {
   inclusionTimesPerTimeFrame: InclusionTimesPerTimeFrame;

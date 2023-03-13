@@ -1,5 +1,5 @@
-import { getDomain } from "./config";
-import type { Builder, ValidatorStats } from "./types";
+import { getDomain } from "../config";
+import type { Builder, ValidatorStats } from "../types";
 
 // Next cannot serialize dates, these types represent domain objects before parsing
 

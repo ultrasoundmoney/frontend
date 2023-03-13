@@ -1,10 +1,10 @@
-import { A, E, Monoid, N, OrdM, pipe, T, TEAlt } from "../../fp";
+import { A, E, Monoid, N, OrdM, pipe, T, TEAlt } from "../../../fp";
 import type {
   Relay,
   RelayCensorship,
-} from "../sections/CensorshipSection/RelayCensorshipWidget";
-import { fetchApiJson } from "../fetchers";
-import type { RelayApiTimeFrames } from "./time_frames";
+} from "../../sections/CensorshipSection/RelayCensorshipWidget";
+import { fetchApiJson } from "../../fetchers";
+import type { RelayApiTimeFrames } from "../time_frames";
 
 type RelayId = string;
 
@@ -97,7 +97,7 @@ export const getRelayCensorship = (rawRelays: RelayRaw[]): RelayCensorship => {
   };
 };
 
-export const getRelayCensorshipPerTimeFrame: T.Task<RelayCensorshipPerTimeFrame> =
+export const fetchRelayCensorshipPerTimeFrame: T.Task<RelayCensorshipPerTimeFrame> =
   pipe(
     () => fetchApiJson<RawData>("/api/censorship/relays"),
     T.map((body) =>

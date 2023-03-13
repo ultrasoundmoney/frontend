@@ -10,7 +10,7 @@ import {
 } from "../../../components/WidgetSubcomponents";
 import { formatPercentOneDecimal } from "../../../format";
 import StyledOverflowList from "../../components/StyledOverflowList";
-import type { LidoOperatorCensorship } from "./LidoOperatorCensorship";
+import type { LidoOperatorCensorship } from "./LidoOperatorCensorshipWidget";
 
 type Props = {
   lidoOperatorCensorship: LidoOperatorCensorship;
@@ -27,7 +27,7 @@ const gridSpacing = `
   2xl:gap-x-8
 `;
 
-const LidoOperatorList: FC<Props> = ({ lidoOperatorCensorship }) => (
+const LidoOperatorListWidget: FC<Props> = ({ lidoOperatorCensorship }) => (
   <WidgetBackground>
     <div className="flex flex-col gap-y-4">
       <div className={gridSpacing}>
@@ -85,4 +85,4 @@ const LidoOperatorList: FC<Props> = ({ lidoOperatorCensorship }) => (
   </WidgetBackground>
 );
 
-export default LidoOperatorList;
+export default LidoOperatorListWidget;

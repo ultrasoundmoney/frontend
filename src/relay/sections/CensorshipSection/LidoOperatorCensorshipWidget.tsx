@@ -30,7 +30,7 @@ type Props = {
   timeFrame: TimeFrame;
 };
 
-const LidoOperatorCensorship: FC<Props> = ({
+const LidoOperatorCensorshipWidget: FC<Props> = ({
   lidoOperatorCensorship,
   timeFrame,
 }) => (
@@ -56,4 +56,4 @@ const LidoOperatorCensorship: FC<Props> = ({
     />
   </WidgetBase>
 );
-export default LidoOperatorCensorship;
+export default LidoOperatorCensorshipWidget;

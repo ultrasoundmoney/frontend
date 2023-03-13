@@ -1,11 +1,11 @@
-import { A, E, Monoid, N, OrdM, pipe, T, TEAlt } from "../../fp";
-import { fetchApiJson } from "../fetchers";
+import { A, E, Monoid, N, OrdM, pipe, T, TEAlt } from "../../../fp";
+import { fetchApiJson } from "../../fetchers";
 import type {
   Builder,
   BuilderCensorship,
-} from "../sections/CensorshipSection/BuilderCensorshipWidget";
-import type { RelayApiTimeFrames } from "./time_frames";
-import { timeFrameMap } from "./time_frames";
+} from "../../sections/CensorshipSection/BuilderCensorshipWidget";
+import type { RelayApiTimeFrames } from "../time_frames";
+import { timeFrameMap } from "../time_frames";
 
 type BuilderId = string;
 
@@ -91,7 +91,7 @@ export const getBuilderCensorship = (
   };
 };
 
-export const getBuilderCensorshipPerTimeFrame: T.Task<BuilderCensorshipPerTimeFrame> =
+export const fetchBuilderCensorshipPerTimeFrame: T.Task<BuilderCensorshipPerTimeFrame> =
   pipe(
     () => fetchApiJson<BuilderCensorshipResponse>("/api/censorship/builders"),
     T.map((body) =>

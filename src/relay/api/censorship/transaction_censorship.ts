@@ -1,8 +1,10 @@
-import type { DateTimeString } from "../../time";
-import { pipe } from "fp-ts/lib/function";
-import { A, E, N, T, TEAlt } from "../../fp";
-import { fetchApiJson } from "../fetchers";
-import type { TimeFrame } from "../../mainsite/time-frames";
+import type { DateTimeString } from "../../../time";
+import { A, E, N, pipe, T, TEAlt } from "../../../fp";
+import { fetchApiJson } from "../../fetchers";
+import type {
+  CensoredTransaction,
+  TransactionCensorship,
+} from "../../sections/CensorshipSection/TransactionCensorshipWidget";
 
 type TransactionRaw = {
   transactionHash: string;
@@ -11,22 +13,6 @@ type TransactionRaw = {
   delay: number;
   blacklist: string[];
   blockDelay: number;
-};
-
-export type CensoredTransaction = {
-  inclusion: DateTimeString;
-  sanctionListIds: string[];
-  sanctionsListName: string;
-  took: number;
-  transaction_delay: number;
-  transaction_hash: string;
-};
-
-export type TransactionCensorship = {
-  averageInclusionTime: number;
-  blocksCensoredPercent: number;
-  count: number;
-  transactions: CensoredTransaction[];
 };
 
 export type TransactionCensorshipPerTimeFrame = Record<
@@ -38,9 +24,9 @@ const sanctionListNameMap: Record<string, string> = {
   ofac: "OFAC (US)",
 };
 
-const getTransactionsPerTimeFrame = (
+const fetchTransactionsPerTimeFrame = (
   rawData: TransactionRaw[],
-  timeFrame: TimeFrame,
+  timeFrame: "d7" | "d30",
 ): TransactionCensorship => {
   const raw_transactions = rawData.sort(
     (a, b) => new Date(b.mined).getTime() - new Date(a.mined).getTime(),
@@ -89,7 +75,7 @@ const getTransactionsPerTimeFrame = (
   };
 };
 
-export const getTransactionCensorshipPerTimeFrame: T.Task<TransactionCensorshipPerTimeFrame> =
+export const fetchTransactionCensorshipPerTimeFrame: T.Task<TransactionCensorshipPerTimeFrame> =
   pipe(
     () => fetchApiJson<TransactionRaw[]>("/api/censorship/censored-txs"),
     T.map((body) =>
@@ -103,9 +89,10 @@ export const getTransactionCensorshipPerTimeFrame: T.Task<TransactionCensorshipP
                   new Date(transactionRaw.mined).getTime() >
                   new Date().getTime() - 7 * 24 * 60 * 60 * 1000,
               ),
-              (transactions) => getTransactionsPerTimeFrame(transactions, "d7"),
+              (transactions) =>
+                fetchTransactionsPerTimeFrame(transactions, "d7"),
             ),
-            d30: getTransactionsPerTimeFrame(body.data, "d30"),
+            d30: fetchTransactionsPerTimeFrame(body.data, "d30"),
           }),
     ),
     TEAlt.getOrThrow,

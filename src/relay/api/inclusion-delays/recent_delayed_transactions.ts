@@ -1,13 +1,13 @@
-import type { SuboptimalTransaction } from "../sections/InclusionDelaySection/SuboptimalInclusionsGraph";
-import { E, pipe, T, TEAlt } from "../../fp";
-import { fetchApiJson } from "../fetchers";
+import type { SuboptimalTransaction } from "../../sections/InclusionDelaySection/SuboptimalInclusionsWidget";
+import { E, pipe, T, TEAlt } from "../../../fp";
+import { fetchApiJson } from "../../fetchers";
 
 export type RecentDelayedTransactionsPerTimeFrame = Record<
   "d7" | "d30",
   SuboptimalTransaction[]
 >;
 
-export const getRecentDelayedTransactionsPerTimeFrame: T.Task<RecentDelayedTransactionsPerTimeFrame> =
+export const fetchRecentDelayedTransactionsPerTimeFrame: T.Task<RecentDelayedTransactionsPerTimeFrame> =
   pipe(
     () =>
       fetchApiJson<SuboptimalTransaction[]>(
