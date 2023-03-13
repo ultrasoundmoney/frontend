@@ -10,7 +10,7 @@ export const LabelUnitText: FC<{
     className={`uppercase tracking-widest ${className}`}
     color="text-slateus-200"
     font="font-roboto"
-    size="text-sm"
+    size="text-xs"
     weight="font-light"
   >
     {children}
@@ -49,7 +49,7 @@ type BaseTextProps = {
   children: ReactNode;
   font: "font-roboto" | "font-inter";
   className?: string;
-  color?: "text-white" | "text-slateus-200" | string;
+  color?: string;
   inline?: boolean;
   size?: string;
   style?: CSSProperties;

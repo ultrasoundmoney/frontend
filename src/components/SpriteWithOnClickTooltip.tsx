@@ -2,11 +2,9 @@ import type { FC, RefObject} from "react";
 import { useEffect } from "react";
 import { useContext, useRef, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import type { SpriteSheetResponse } from "../api/profiles";
+import type { SpriteSheetResponse } from "../mainsite/api/profiles";
 import { FeatureFlagsContext } from "../feature-flags";
-import styles from "./ImageWithOnClickTooltip.module.scss";
-
-const sizeFactor = 8; // (from 96px to 12px)
+import styles from "../mainsite/components/ImageWithOnClickTooltip.module.scss";
 
 type ImageWithOnClickTooltipProps = {
   className?: HTMLImageElement["className"];
@@ -15,10 +13,10 @@ type ImageWithOnClickTooltipProps = {
   isDoneLoading?: boolean;
   onClick: (ref: RefObject<HTMLImageElement>) => void;
   skeletonDiameter?: string;
-  currentScale: number | undefined;
   getXAndY: (imageKey: string | undefined, sizeFactor: number) => { x: number | null, y: number | null };
   excluded?: boolean;
   properties: SpriteSheetResponse["properties"];
+  sizeFactor?: number;
 };
 
 const ImageWithOnClickTooltip: FC<ImageWithOnClickTooltipProps> = ({
@@ -30,6 +28,7 @@ const ImageWithOnClickTooltip: FC<ImageWithOnClickTooltipProps> = ({
   getXAndY,
   excluded = false,
   properties,
+  sizeFactor,
 }) => {
   const imageRef = useRef<HTMLImageElement>(null);
   const { previewSkeletons } = useContext(FeatureFlagsContext);

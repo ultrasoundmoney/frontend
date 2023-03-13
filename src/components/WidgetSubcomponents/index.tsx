@@ -1,6 +1,4 @@
 import type { FC, HTMLAttributes, ReactNode } from "react";
-import type { TimeFrameNoMerge } from "../../time-frames";
-import TimeFrameIndicator from "../TimeFrameIndicator";
 
 type BackgroundProps = {
   children: ReactNode;
@@ -25,7 +23,7 @@ export const WidgetTitle: FC<{
   children: ReactNode;
   className?: string;
 }> = ({ className, children }) => (
-  <p
+  <span
     className={`
       font-inter text-xs
       font-light uppercase
@@ -34,32 +32,5 @@ export const WidgetTitle: FC<{
     `}
   >
     {children}
-  </p>
-);
-
-type Group1BaseProps = {
-  backgroundClassName?: HTMLAttributes<HTMLDivElement>["className"];
-  children: ReactNode;
-  onClickTimeFrame: () => void;
-  timeFrame: TimeFrameNoMerge;
-  title: string;
-};
-
-export const BurnGroupBase: FC<Group1BaseProps> = ({
-  backgroundClassName,
-  children,
-  onClickTimeFrame,
-  timeFrame,
-  title,
-}) => (
-  <WidgetBackground className={backgroundClassName}>
-    <div className="flex items-baseline justify-between">
-      <WidgetTitle>{title}</WidgetTitle>
-      <TimeFrameIndicator
-        onClickTimeFrame={onClickTimeFrame}
-        timeFrame={timeFrame}
-      />
-    </div>
-    {children}
-  </WidgetBackground>
+  </span>
 );

@@ -5,10 +5,13 @@ import fireOwnSvg from "../assets/fire-own.svg";
 import fireSlateusSvg from "../assets/fire-slateus.svg";
 import pandaOwnSvg from "../assets/panda-own.svg";
 import pandaSlateusSvg from "../assets/panda-slateus.svg";
-import type { TimeFrame } from "../time-frames";
-import { timeFrames } from "../time-frames";
-import { displayLimitedTimeFrameMap, timeFramesNoMerge } from "../time-frames";
-import HoverTooltip from "./HoverTooltip";
+import type { TimeFrame } from "../mainsite/time-frames";
+import {
+  displayLimitedTimeFrameMap,
+  timeFrames,
+  timeFramesNoMerge,
+} from "../mainsite/time-frames";
+import HoverTooltip from "../mainsite/components/HoverTooltip";
 
 export const Button: FC<{
   children: ReactNode;
@@ -127,15 +130,21 @@ type Props = {
   onSetTimeFrame: (timeframe: TimeFrame) => void;
   selectedTimeframe: TimeFrame;
   topCornersRounded?: boolean;
+  version?: "all" | "censorship" | "no_merge";
 };
 
 const TimeFrameControl: FC<Props> = ({
   selectedTimeframe,
   onSetTimeFrame,
-  mergeEnabled = false,
+  version = "all",
 }) => (
   <div className="flex flex-row items-center lg:gap-x-1">
-    {(mergeEnabled ? timeFrames : timeFramesNoMerge).map((timeFrame) => (
+    {(version === "all"
+      ? timeFrames
+      : version === "no_merge"
+      ? timeFramesNoMerge
+      : (["d7", "d30"] as const)
+    ).map((timeFrame) => (
       <LondonHardForkTooltip key={timeFrame} timeFrame={timeFrame}>
         <Button
           isActive={selectedTimeframe === timeFrame}

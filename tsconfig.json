@@ -17,6 +17,6 @@
     "strict": true,
     "target": "es5"
   },
-  "exclude": ["node_modules", "locales/**/*.json"],
+  "exclude": ["node_modules", "locales/**/*.json", "archive"],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }
