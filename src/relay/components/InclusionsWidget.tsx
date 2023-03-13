@@ -31,7 +31,7 @@ const PayloadRow = ({ blockNumber, insertedAt, value }: Payload) => {
   const inclusionAgo =
     now === undefined
       ? undefined
-      : `${Format.formatTimeDistanceToNow(now, insertedAt)} ago`;
+      : Format.formatTimeDistanceToNow(now, insertedAt);
 
   return (
     <a
