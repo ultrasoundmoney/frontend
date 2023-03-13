@@ -4,24 +4,27 @@ import Section from "../../../components/Section";
 import LabelText from "../../../components/TextsNext/LabelText";
 import TimeFrameControl from "../../../components/TimeFrameControl";
 import type { InclusionTimesPerTimeFrame } from "../../censorship-data/inclusion_times";
+import type { RecentDelayedTransactionsPerTimeFrame } from "../../censorship-data/recent_delayed_transactions";
 import type { SuboptimalInclusionsPerTimeFrame } from "../../censorship-data/suboptimal_inclusions";
 import InclusionTimesWidget from "./InclusionTimesWidget";
-import SuboptimalInclusions from "./SuboptimalInclusions";
-// import TransactionInclusionDelayWidget from "./TransactionInclusionDelayWidget";
+import SuboptimalInclusions from "./SuboptimalInclusionsGraph";
+import TransactionInclusionDelayWidget from "./TransactionInclusionDelayWidget";
 
 type Props = {
   inclusionTimesPerTimeFrame: InclusionTimesPerTimeFrame;
+  recentDelayedTransactionsPerTimeFrame: RecentDelayedTransactionsPerTimeFrame;
   suboptimalInclusionsPerTimeFrame: SuboptimalInclusionsPerTimeFrame;
 };
 
 const InclusionDelaySection: FC<Props> = ({
   inclusionTimesPerTimeFrame,
+  recentDelayedTransactionsPerTimeFrame,
   suboptimalInclusionsPerTimeFrame,
 }) => {
   const [timeFrame, setTimeFrame] = useState<"d7" | "d30">("d7");
   const inclusionTimes = inclusionTimesPerTimeFrame[timeFrame];
   const suboptimalInclusions = suboptimalInclusionsPerTimeFrame[timeFrame];
-  // const transactions = suboptimalInclusionsPerTimeFrame[timeFrame];
+  const transactions = recentDelayedTransactionsPerTimeFrame[timeFrame];
 
   const handleClickTimeFrame = useCallback(() => {
     setTimeFrame((timeFrame) => (timeFrame === "d7" ? "d30" : "d7"));
@@ -56,7 +59,7 @@ const InclusionDelaySection: FC<Props> = ({
           timeFrame={timeFrame}
           onClickTimeFrame={handleClickTimeFrame}
         />
-        {/* <TransactionInclusionDelayWidget transactions={transactions} /> */}
+        <TransactionInclusionDelayWidget transactions={transactions} />
       </div>
     </Section>
   );

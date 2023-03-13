@@ -13,6 +13,7 @@ import ContactSection from "../sections/ContactSection";
 import type { BuilderCensorshipPerTimeFrame } from "./censorship-data/builder_censorship";
 import type { InclusionTimesPerTimeFrame } from "./censorship-data/inclusion_times";
 import type { LidoOperatorCensorshipPerTimeFrame } from "./censorship-data/lido_operator_censorship";
+import type { RecentDelayedTransactionsPerTimeFrame } from "./censorship-data/recent_delayed_transactions";
 import type { SanctionsDelayPerTimeFrame } from "./censorship-data/sanctions_delay";
 import type { SuboptimalInclusionsPerTimeFrame } from "./censorship-data/suboptimal_inclusions";
 import type { TransactionCensorshipPerTimeFrame } from "./censorship-data/transaction_censorship";
@@ -38,6 +39,7 @@ export type RelayDashboardProps = {
   lidoOperatorCensorshipPerTimeFrame: LidoOperatorCensorshipPerTimeFrame;
   payloadStats: PayloadStats;
   payloads: Array<Payload>;
+  recentDelayedTransactionsPerTimeFrame: RecentDelayedTransactionsPerTimeFrame;
   relayCensorshipPerTimeFrame: Record<"d7" | "d30", RelayCensorship>;
   sanctionsDelayPerTimeFrame: SanctionsDelayPerTimeFrame;
   suboptimalInclusionsPerTimeFrame: SuboptimalInclusionsPerTimeFrame;
@@ -56,6 +58,7 @@ const RelayDashboard: FC<RelayDashboardProps> = ({
   lidoOperatorCensorshipPerTimeFrame,
   payloadStats,
   payloads,
+  recentDelayedTransactionsPerTimeFrame,
   relayCensorshipPerTimeFrame,
   sanctionsDelayPerTimeFrame,
   suboptimalInclusionsPerTimeFrame,
@@ -126,6 +129,9 @@ const RelayDashboard: FC<RelayDashboardProps> = ({
           />
           <InclusionDelaySection
             inclusionTimesPerTimeFrame={inclusionTimesPerTimeFrame}
+            recentDelayedTransactionsPerTimeFrame={
+              recentDelayedTransactionsPerTimeFrame
+            }
             suboptimalInclusionsPerTimeFrame={suboptimalInclusionsPerTimeFrame}
           />
           <FaqSection />

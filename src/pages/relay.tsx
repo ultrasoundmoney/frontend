@@ -12,6 +12,8 @@ import type { InclusionTimesPerTimeFrame } from "../relay/censorship-data/inclus
 import { getInclusionTimesPerTimeFrame } from "../relay/censorship-data/inclusion_times";
 import type { LidoOperatorCensorshipPerTimeFrame } from "../relay/censorship-data/lido_operator_censorship";
 import { getLidoOperatorCensorshipPerTimeFrame } from "../relay/censorship-data/lido_operator_censorship";
+import type { RecentDelayedTransactionsPerTimeFrame } from "../relay/censorship-data/recent_delayed_transactions";
+import { getRecentDelayedTransactionsPerTimeFrame } from "../relay/censorship-data/recent_delayed_transactions";
 import type { RelayCensorshipPerTimeFrame } from "../relay/censorship-data/relay_censorship";
 import { getRelayCensorshipPerTimeFrame } from "../relay/censorship-data/relay_censorship";
 import type { SanctionsDelayPerTimeFrame } from "../relay/censorship-data/sanctions_delay";
@@ -34,6 +36,7 @@ type StaticProps = {
   lidoOperatorCensorshipPerTimeFrame: LidoOperatorCensorshipPerTimeFrame;
   payloadStats: ApiPayloadStats;
   payloads: Array<ApiPayload>;
+  recentDelayedTransactionsPerTimeFrame: RecentDelayedTransactionsPerTimeFrame;
   relayCensorshipPerTimeFrame: RelayCensorshipPerTimeFrame;
   sanctionsDelayPerTimeFrame: SanctionsDelayPerTimeFrame;
   suboptimalInclusionsPerTimeFrame: SuboptimalInclusionsPerTimeFrame;
@@ -51,6 +54,8 @@ export const getStaticProps: GetStaticProps<StaticProps> = pipe(
     lidoOperatorCensorshipPerTimeFrame: getLidoOperatorCensorshipPerTimeFrame,
     payloadStats: Api.fetchPayloadStats,
     payloads: Api.fetchPayloads,
+    recentDelayedTransactionsPerTimeFrame:
+      getRecentDelayedTransactionsPerTimeFrame,
     relayCensorshipPerTimeFrame: getRelayCensorshipPerTimeFrame,
     sanctionsDelayPerTimeFrame: getSanctionsDelayPerTimeFrame,
     suboptimalInclusionsPerTimeFrame: getSuboptimalInclusionsPerTimeFrame,
@@ -72,6 +77,7 @@ const RelayIndexPage: NextPage<StaticProps> = ({
   lidoOperatorCensorshipPerTimeFrame,
   payloadStats,
   payloads,
+  recentDelayedTransactionsPerTimeFrame,
   relayCensorshipPerTimeFrame,
   sanctionsDelayPerTimeFrame,
   suboptimalInclusionsPerTimeFrame,
@@ -87,6 +93,7 @@ const RelayIndexPage: NextPage<StaticProps> = ({
     lidoOperatorCensorshipPerTimeFrame,
     payloadStats: parsePayloadStats(payloadStats),
     payloads: payloads.map(parsePayload),
+    recentDelayedTransactionsPerTimeFrame,
     relayCensorshipPerTimeFrame,
     sanctionsDelayPerTimeFrame,
     suboptimalInclusionsPerTimeFrame,
