@@ -249,6 +249,7 @@ export type InclusionTime = {
 
 type Props = {
   inclusionTimes: InclusionTime[];
+  onClickTimeFrame?: () => void;
   timeFrame: TimeFrame;
 };
 

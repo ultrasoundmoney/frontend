@@ -8,6 +8,7 @@ import TinyStatus from "../../components/TinyStatus";
 import WidgetBase from "../../components/WidgetBase";
 
 type Props = {
+  onClickTimeFrame: () => void;
   transactionCensorship: TransactionCensorship;
   timeFrame: TimeFrame;
 };

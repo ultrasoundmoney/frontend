@@ -26,6 +26,7 @@ export type LidoOperatorCensorship = {
 
 type Props = {
   lidoOperatorCensorship: LidoOperatorCensorship;
+  onClickTimeFrame: () => void;
   timeFrame: TimeFrame;
 };
 

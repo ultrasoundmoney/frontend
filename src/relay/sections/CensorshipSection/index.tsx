@@ -1,4 +1,5 @@
 import type { FC } from "react";
+import { useCallback } from "react";
 import { useState } from "react";
 import Section from "../../../components/Section";
 import LabelText from "../../../components/TextsNext/LabelText";
@@ -40,14 +41,18 @@ const CensorshipSection: FC<Props> = ({
   const transactionCencorship = transactionCensorshipPerTimeFrame[timeFrame];
   const sanctionsDelay = sanctionsDelayPerTimeFrame[timeFrame];
 
+  const handleClickTimeFrame = useCallback(() => {
+    setTimeFrame((timeFrame) => (timeFrame === "d7" ? "d30" : "d7"));
+  }, []);
+
   return (
     <Section
       title="sanctions censorship"
       subtitle="not ultra sound"
       link="sanctions-censorship"
     >
-      <div className="flex w-full justify-center rounded-lg bg-slateus-700 p-8">
-        <div className="flex items-center gap-4">
+      <div className="flex justify-center p-8 w-full rounded-lg bg-slateus-700">
+        <div className="flex gap-4 items-center">
           <LabelText>time frame</LabelText>
           <TimeFrameControl
             selectedTimeFrame={timeFrame}
@@ -59,9 +64,10 @@ const CensorshipSection: FC<Props> = ({
           />
         </div>
       </div>
-      <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 w-full lg:grid-cols-2">
         <div className="flex flex-col gap-4">
           <RelayCensorshipWidget
+            onClickTimeFrame={handleClickTimeFrame}
             relayCensorship={relayCensorship}
             timeFrame={timeFrame}
           />
@@ -72,9 +78,11 @@ const CensorshipSection: FC<Props> = ({
           <BuilderCensorshipWidget
             builderCensorship={builderCensorship}
             timeFrame="d7"
+            onClickTimeFrame={handleClickTimeFrame}
           />
           <BuilderListWidget builders={builderCensorship.builders} />
           <SanctionsDelayWidget
+            onClickTimeFrame={handleClickTimeFrame}
             sanctionsDelay={sanctionsDelay}
             timeFrame={timeFrame}
           />
@@ -82,16 +90,19 @@ const CensorshipSection: FC<Props> = ({
         <div className="flex flex-col gap-4">
           <LidoOperatorCensorship
             lidoOperatorCensorship={lidoOperatorCensorship}
+            onClickTimeFrame={handleClickTimeFrame}
             timeFrame={timeFrame}
           />
           <LidoOperatorListWidget
             lidoOperatorCensorship={lidoOperatorCensorship}
           />
           <TransactionCensorshipWidget
+            onClickTimeFrame={handleClickTimeFrame}
             transactionCensorship={transactionCencorship}
             timeFrame={timeFrame}
           />
           <TransactionCensorshipList
+            onClickTimeFrame={handleClickTimeFrame}
             transactions={transactionCencorship.transactions}
             timeFrame={timeFrame}
           />

@@ -25,6 +25,7 @@ export type BuilderCensorship = {
 
 type Props = {
   builderCensorship: BuilderCensorship;
+  onClickTimeFrame: () => void;
   timeFrame: TimeFrame;
 };
 

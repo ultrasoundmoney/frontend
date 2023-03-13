@@ -24,12 +24,22 @@ export type RelayCensorship = {
 };
 
 type Props = {
-  timeFrame: TimeFrame;
+  onClickTimeFrame: () => void;
   relayCensorship: RelayCensorship;
+  timeFrame: TimeFrame;
 };
 
-const RelayCensorshipWidget: FC<Props> = ({ relayCensorship, timeFrame }) => (
-  <WidgetBase title="relay censorship" timeFrame={timeFrame} hideTimeFrameLabel>
+const RelayCensorshipWidget: FC<Props> = ({
+  onClickTimeFrame,
+  relayCensorship,
+  timeFrame,
+}) => (
+  <WidgetBase
+    hideTimeFrameLabel
+    onClickTimeFrame={onClickTimeFrame}
+    timeFrame={timeFrame}
+    title="relay censorship"
+  >
     <QuantifyText
       size="text-2xl sm:text-3xl xl:text-4xl"
       unitPostfix="dominance"

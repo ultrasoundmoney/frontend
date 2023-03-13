@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Section from "../../../components/Section";
 import LabelText from "../../../components/TextsNext/LabelText";
 import TimeFrameControl from "../../../components/TimeFrameControl";
@@ -23,6 +23,10 @@ const InclusionDelaySection: FC<Props> = ({
   const suboptimalInclusions = suboptimalInclusionsPerTimeFrame[timeFrame];
   // const transactions = suboptimalInclusionsPerTimeFrame[timeFrame];
 
+  const handleClickTimeFrame = useCallback(() => {
+    setTimeFrame((timeFrame) => (timeFrame === "d7" ? "d30" : "d7"));
+  }, []);
+
   return (
     <Section
       title="inclusion delay"
@@ -45,10 +49,12 @@ const InclusionDelaySection: FC<Props> = ({
         <InclusionTimesWidget
           inclusionTimes={inclusionTimes}
           timeFrame={timeFrame}
+          onClickTimeFrame={handleClickTimeFrame}
         />
         <SuboptimalInclusions
           suboptimalInclusions={suboptimalInclusions}
           timeFrame={timeFrame}
+          onClickTimeFrame={handleClickTimeFrame}
         />
         {/* <TransactionInclusionDelayWidget transactions={transactions} /> */}
       </div>

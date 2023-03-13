@@ -13,6 +13,7 @@ import type { TimeFrame } from "../../../mainsite/time-frames";
 import type { CensoredTransaction } from "../../censorship-data/transaction_censorship";
 
 type Props = {
+  onClickTimeFrame: () => void;
   transactions: CensoredTransaction[];
   timeFrame: TimeFrame;
 };
