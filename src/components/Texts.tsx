@@ -45,12 +45,14 @@ export type FontWeight =
   | "font-light"
   | "font-extralight"
   | "font-medium";
+
 type BaseTextProps = {
   children: ReactNode;
-  font: "font-roboto" | "font-inter";
   className?: string;
   color?: string;
+  font: "font-roboto" | "font-inter";
   inline?: boolean;
+  lineHeight?: string;
   size?: string;
   style?: CSSProperties;
   tooltip?: string;
@@ -66,6 +68,7 @@ export const BaseText: FC<BaseTextProps> = ({
   color = "text-white",
   font,
   inline = true,
+  lineHeight = "leading-none",
   size = "",
   style,
   tooltip,
@@ -74,7 +77,7 @@ export const BaseText: FC<BaseTextProps> = ({
   createElement(
     inline ? "span" : "p",
     {
-      className: `${font} ${className} ${color} ${weight} ${size}`,
+      className: `${font} ${className} ${color} ${weight} ${size} ${lineHeight}`,
       style: style,
       title: tooltip,
     },

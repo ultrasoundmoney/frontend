@@ -1,16 +1,21 @@
 import type { FC, ReactNode } from "react";
 import { BaseText } from "../Texts";
 
-const BodyTextV3: FC<{
+type Props = {
   children: ReactNode;
   className?: string;
   color?: string;
-}> = ({ children, className, color }) => (
+  inline?: boolean;
+};
+
+const BodyTextV3: FC<Props> = ({ children, className, color, inline }) => (
   <BaseText
     className={className}
-    font="font-inter"
     color={color}
+    font="font-inter"
+    inline={inline}
     size="text-sm sm:text-base"
+    lineHeight="leading-[18px] sm:leading-[21px]"
   >
     {children}
   </BaseText>

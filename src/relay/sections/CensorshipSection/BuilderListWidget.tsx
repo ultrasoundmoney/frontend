@@ -49,7 +49,10 @@ const BuilderListWidget: FC<Props> = ({ builders }) => {
               censoringPubkeys,
               totalPubkeys,
             }) => (
-              <li key={id} className={`hover:brightness-75 ${gridSpacing}`}>
+              <li
+                key={id}
+                className={`items-baseline hover:brightness-75 ${gridSpacing}`}
+              >
                 <div className="truncate">
                   <BodyTextV3>{name}</BodyTextV3>
                   <BodyTextV3

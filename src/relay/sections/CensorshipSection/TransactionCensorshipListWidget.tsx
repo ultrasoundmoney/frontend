@@ -64,17 +64,24 @@ const TransactionCensorshipList: FC<Props> = ({ transactions }) => {
                 rel="noreferrer"
                 href={`https://etherscan.io/tx/${transaction_hash}`}
               >
-                <li className={`hover:brightness-75 ${gridSpacing}`}>
+                <li
+                  className={`
+                    items-baseline hover:brightness-75
+                    ${gridSpacing}
+                  `}
+                >
                   <QuantifyText
                     color="text-white"
+                    lineHeight="leading-[24px]"
+                    size="text-sm md:text-base"
                     unitPostfix="block"
                     unitPostfixColor="text-slateus-100"
-                    size="text-sm md:text-base"
                   >
                     {transaction_delay}
                   </QuantifyText>
                   <QuantifyText
                     className="hidden text-right md:block"
+                    lineHeight="leading-[24px]"
                     size="text-sm md:text-base"
                   >
                     {formatZeroDecimals(took)}s
@@ -84,11 +91,12 @@ const TransactionCensorshipList: FC<Props> = ({ transactions }) => {
                   </BodyTextV3>
                   <QuantifyText
                     className="text-right"
+                    lineHeight="leading-[24px]"
+                    size="text-sm md:text-base"
                     unitPostfix={inclusion === undefined ? "pending" : "ago"}
                     unitPostfixColor="text-slateus-100"
-                    size="text-sm md:text-base"
                   >
-                    <SkeletonText>
+                    <SkeletonText inline>
                       {now === undefined
                         ? undefined
                         : inclusion === undefined
