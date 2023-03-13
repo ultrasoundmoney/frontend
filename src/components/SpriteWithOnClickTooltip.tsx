@@ -16,7 +16,7 @@ type ImageWithOnClickTooltipProps = {
   getXAndY: (imageKey: string | undefined, sizeFactor: number) => { x: number | null, y: number | null };
   excluded?: boolean;
   properties: SpriteSheetResponse["properties"];
-  sizeFactor?: number;
+  sizeFactor: number;
 };
 
 const ImageWithOnClickTooltip: FC<ImageWithOnClickTooltipProps> = ({
