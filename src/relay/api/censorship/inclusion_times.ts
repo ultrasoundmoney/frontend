@@ -50,16 +50,9 @@ const byTransactionCountDesc = pipe(
   OrdM.contramap((d: InclusionTime) => d.transaction_count),
 );
 
-const getInclusionTimes = (
-  rawData: RawData,
-  timeFrame: "d7" | "d30",
-): InclusionTime[] => {
-  const raw_inclusion_times = rawData[timeFrameMap[timeFrame]];
-  const totalTransactions = raw_inclusion_times.reduce(
-    (acc, cur) => acc + cur.txCount,
-    0,
-  );
-  const inclusion_times = raw_inclusion_times
+const getInclusionTimes = (rawData: InclusionTimeRaw[]): InclusionTime[] => {
+  const totalTransactions = rawData.reduce((acc, cur) => acc + cur.txCount, 0);
+  const inclusion_times = rawData
     // We don't want to show the borderline category
     .filter((transaction) => transaction.delayType !== "borderline")
     .map((d): InclusionTime => {
@@ -98,8 +91,8 @@ export const fetchInclusionTimesPerTimeFrame = pipe(
     "error" in body
       ? E.left(body.error)
       : E.right({
-          d7: getInclusionTimes(body.data, "d7"),
-          d30: getInclusionTimes(body.data, "d30"),
+          d7: getInclusionTimes(body.data.sevenDays),
+          d30: getInclusionTimes(body.data.thirtyDays),
         }),
   ),
   TEAlt.getOrThrow,
