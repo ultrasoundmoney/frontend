@@ -9,11 +9,18 @@ import BodyTextV2 from "../../../components/TextsNext/BodyTextV2";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
 import { formatTimeDistanceToNow } from "../../../format";
 import SkeletonText from "../../../components/TextsNext/SkeletonText";
-import type { SuboptimalTransaction } from "./SuboptimalInclusions";
+import type { SuboptimalTransaction } from "./SuboptimalInclusionsGraph";
 
-const TransactionInclusionDelayWidget: FC<{
+const reasonNameMap: Record<string, string> = {
+  lowbasefee: "low fee",
+  likely_insufficient_balance: "low balance",
+};
+
+type Props = {
   transactions: SuboptimalTransaction[];
-}> = ({ transactions }) => {
+};
+
+const TransactionInclusionDelayWidget: FC<Props> = ({ transactions }) => {
   const [now, setNow] = useState<Date | undefined>();
 
   useEffect(() => {
@@ -58,7 +65,7 @@ const TransactionInclusionDelayWidget: FC<{
                     {delay}s
                   </QuantifyText>
                   <BodyTextV2 className="text-right" color="text-slateus-100">
-                    {reason}
+                    {reasonNameMap[reason] ?? reason}
                   </BodyTextV2>
                   <QuantifyText
                     className="text-right"
