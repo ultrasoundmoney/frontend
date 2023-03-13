@@ -25,7 +25,7 @@ type BuilderRaw = {
   totalPubkeys: number;
 };
 
-type RawData = Record<RelayApiTimeFrames, BuilderRaw[]>;
+type BuilderCensorshipResponse = Record<RelayApiTimeFrames, BuilderRaw[]>;
 
 export type BuilderCensorshipPerTimeFrame = Record<
   "d7" | "d30",
@@ -93,7 +93,7 @@ export const getBuilderCensorship = (
 
 export const getBuilderCensorshipPerTimeFrame: T.Task<BuilderCensorshipPerTimeFrame> =
   pipe(
-    () => fetchApiJson<RawData>("/api/censorship/builders"),
+    () => fetchApiJson<BuilderCensorshipResponse>("/api/censorship/builders"),
     T.map((body) =>
       "error" in body
         ? E.left(body.error)
