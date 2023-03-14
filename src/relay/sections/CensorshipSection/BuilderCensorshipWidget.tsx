@@ -2,14 +2,24 @@ import type { FC } from "react";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
 import SkeletonText from "../../../components/TextsNext/SkeletonText";
 import { formatPercentOneDecimal } from "../../../format";
+import type { O, RNEA } from "../../../fp";
 import type { TimeFrame } from "../../../mainsite/time-frames";
 import TinyStatus from "../../components/TinyStatus";
 import WidgetBase from "../../components/WidgetBase";
 
-export type Builder = {
+export type BuilderUnit = {
+  pubkey: string;
+  totalBlocks: number;
+  uncensoredBlocks: number;
+};
+
+export type Censors = "no" | "partially" | "fully";
+
+export type BuilderGroup = {
+  builderUnits: RNEA.ReadonlyNonEmptyArray<BuilderUnit>;
   censoringPubkeys: number;
-  censors: "partially" | "fully" | "no";
-  description?: string;
+  censors: Censors;
+  description: O.Option<string>;
   dominance: number;
   id: string;
   name: string;
@@ -17,7 +27,7 @@ export type Builder = {
 };
 
 export type BuilderCensorship = {
-  builders: Builder[];
+  builderGroups: RNEA.ReadonlyNonEmptyArray<BuilderGroup>;
   censoringPubkeys: number;
   dominance: number;
   totalPubkeys: number;

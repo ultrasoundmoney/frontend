@@ -8,11 +8,13 @@ import {
   WidgetTitle,
 } from "../../../components/WidgetSubcomponents";
 import { formatPercentOneDecimal } from "../../../format";
+import type { RNEA } from "../../../fp";
+import { O } from "../../../fp";
 import StyledOverflowList from "../../components/StyledOverflowList";
-import type { Builder } from "./BuilderCensorshipWidget";
+import type { BuilderGroup } from "./BuilderCensorshipWidget";
 
 type Props = {
-  builders: Builder[];
+  builderGroups: RNEA.ReadonlyNonEmptyArray<BuilderGroup>;
 };
 
 const gridSpacing = `
@@ -26,77 +28,71 @@ const gridSpacing = `
   2xl:gap-x-8
 `;
 
-const BuilderListWidget: FC<Props> = ({ builders }) => {
-  return (
-    <WidgetBackground>
-      <div className="flex flex-col gap-y-4">
-        <div className={gridSpacing}>
-          <WidgetTitle>builder</WidgetTitle>
-          <WidgetTitle className="text-right">censors</WidgetTitle>
-          <WidgetTitle className="hidden text-right sm:inline">
-            pubkeys
-          </WidgetTitle>
-          <WidgetTitle className="text-right">dominance</WidgetTitle>
-        </div>
-        <StyledOverflowList height="h-[182px]">
-          {builders.map(
-            ({
-              id,
-              name,
-              censors,
-              dominance,
-              description,
-              censoringPubkeys,
-              totalPubkeys,
-            }) => (
-              <li
-                key={id}
-                className={`items-baseline hover:brightness-75 ${gridSpacing}`}
-              >
-                <div className="truncate">
-                  <BodyTextV3>{name}</BodyTextV3>
-                  <BodyTextV3
-                    className={`
-                      hidden
-                      ${description !== undefined ? "sm:inline" : ""}
-                    `}
-                    color="text-slateus-400"
-                  >
-                    {" "}
-                    {description}
-                  </BodyTextV3>
-                </div>
-                <BodyTextV3
-                  className="text-right"
-                  color={
-                    censors === "partially"
-                      ? "text-blue-400"
-                      : censors === "fully"
-                      ? "text-red-400"
-                      : "text-green-400"
-                  }
-                >
-                  {censors}
-                </BodyTextV3>
-                <QuantifyText
-                  className="hidden text-right sm:inline"
-                  size="text-sm sm:text-base"
-                >
-                  {`${censoringPubkeys}/${totalPubkeys}`}
-                </QuantifyText>
-                <QuantifyText
-                  className="text-right"
-                  size="text-sm sm:text-base"
-                >
-                  {formatPercentOneDecimal(dominance)}
-                </QuantifyText>
-              </li>
-            ),
-          )}
-        </StyledOverflowList>
+const BuilderListWidget: FC<Props> = ({ builderGroups }) => (
+  <WidgetBackground>
+    <div className="flex flex-col gap-y-4">
+      <div className={gridSpacing}>
+        <WidgetTitle>builder</WidgetTitle>
+        <WidgetTitle className="text-right">censors</WidgetTitle>
+        <WidgetTitle className="hidden text-right sm:inline">
+          pubkeys
+        </WidgetTitle>
+        <WidgetTitle className="text-right">dominance</WidgetTitle>
       </div>
-    </WidgetBackground>
-  );
-};
+      <StyledOverflowList height="h-[182px]">
+        {builderGroups.map(
+          ({
+            id,
+            name,
+            censors,
+            dominance,
+            description,
+            censoringPubkeys,
+            totalPubkeys,
+          }) => (
+            <li
+              key={id}
+              className={`items-baseline hover:brightness-75 ${gridSpacing}`}
+            >
+              <div className="truncate">
+                <BodyTextV3>{name}</BodyTextV3>
+                <BodyTextV3
+                  className={`
+                    hidden
+                    ${O.isSome(description) ? "sm:inline" : ""}
+                  `}
+                  color="text-slateus-400"
+                >
+                  <> {O.getOrElse(() => "")(description)}</>
+                </BodyTextV3>
+              </div>
+              <BodyTextV3
+                className="text-right"
+                color={
+                  censors === "partially"
+                    ? "text-blue-400"
+                    : censors === "fully"
+                    ? "text-red-400"
+                    : "text-green-400"
+                }
+              >
+                {censors}
+              </BodyTextV3>
+              <QuantifyText
+                className="hidden text-right sm:inline"
+                size="text-sm sm:text-base"
+              >
+                {`${censoringPubkeys}/${totalPubkeys}`}
+              </QuantifyText>
+              <QuantifyText className="text-right" size="text-sm sm:text-base">
+                {formatPercentOneDecimal(dominance)}
+              </QuantifyText>
+            </li>
+          ),
+        )}
+      </StyledOverflowList>
+    </div>
+  </WidgetBackground>
+);
 
 export default BuilderListWidget;

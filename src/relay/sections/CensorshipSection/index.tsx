@@ -80,7 +80,7 @@ const CensorshipSection: FC<Props> = ({
             onClickTimeFrame={handleClickTimeFrame}
             timeFrame={timeFrame}
           />
-          <BuilderListWidget builders={builderCensorship.builders} />
+          <BuilderListWidget builderGroups={builderCensorship.builderGroups} />
           <SanctionsDelayWidget
             onClickTimeFrame={handleClickTimeFrame}
             sanctionsDelay={sanctionsDelay}

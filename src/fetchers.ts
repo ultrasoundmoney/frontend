@@ -1,3 +1,6 @@
+import type { TE } from "./fp";
+import { E, pipe, T } from "./fp";
+
 export type SiteEnv = "usm" | "relay";
 
 export type FetchError = {
@@ -88,3 +91,14 @@ export const fetchApiJson = async <A>(
     return { error, type: "ApiError" };
   }
 };
+
+export const fetchApiJsonTE = <A>(
+  apiDomain: string,
+  url: string,
+): TE.TaskEither<FetchError | ApiError, A> =>
+  pipe(
+    () => fetchApiJson<A>(apiDomain, url),
+    T.map((apiResult) =>
+      "data" in apiResult ? E.right(apiResult.data) : E.left(apiResult),
+    ),
+  );

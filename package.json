@@ -28,6 +28,7 @@
     "fuse.js": "^6.6.2",
     "highcharts": "^10.2.1",
     "highcharts-react-official": "^3.1.0",
+    "io-ts": "^2.2.20",
     "jsbi": "^4.3.0",
     "lodash": "^4.17.21",
     "ndjson": "^2.0.0",
