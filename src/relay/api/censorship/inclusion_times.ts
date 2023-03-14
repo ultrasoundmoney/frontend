@@ -1,11 +1,10 @@
-import { A, E, N, OrdM, pipe, T, TEAlt } from "../../../fp";
+import { A, N, OrdM, pipe, T, TEAlt } from "../../../fp";
 import type {
   Category,
   InclusionTime,
 } from "../../sections/InclusionDelaySection/InclusionTimesWidget";
 import type { RelayApiTimeFrames } from "../time_frames";
-import { timeFrameMap } from "../time_frames";
-import { fetchApiJson } from "../../fetchers";
+import { fetchApiJsonTE } from "../../fetchers";
 
 type InclusionTimeRaw = {
   avgBlockDelay: number;
@@ -14,7 +13,7 @@ type InclusionTimeRaw = {
   txCount: number;
 };
 
-type RawData = Record<RelayApiTimeFrames, InclusionTimeRaw[]>;
+type DelayCategoriesRaw = Record<RelayApiTimeFrames, InclusionTimeRaw[]>;
 
 const categoryNameMap: Record<Category, string> = {
   borderline: "boundary",
@@ -86,14 +85,10 @@ const getInclusionTimes = (rawData: InclusionTimeRaw[]): InclusionTime[] => {
 };
 
 export const fetchInclusionTimesPerTimeFrame = pipe(
-  () => fetchApiJson<RawData>("/api/censorship/delay-categories"),
-  T.map((body) =>
-    "error" in body
-      ? E.left(body.error)
-      : E.right({
-          d7: getInclusionTimes(body.data.sevenDays),
-          d30: getInclusionTimes(body.data.thirtyDays),
-        }),
-  ),
-  TEAlt.getOrThrow,
+  fetchApiJsonTE<DelayCategoriesRaw>("/api/censorship/delay-categories"),
+  TEAlt.unwrap,
+  T.map((body) => ({
+    d7: getInclusionTimes(body.sevenDays),
+    d30: getInclusionTimes(body.thirtyDays),
+  })),
 );

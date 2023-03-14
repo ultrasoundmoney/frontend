@@ -1,9 +1,9 @@
-import { A, E, Monoid, N, OrdM, pipe, T, TEAlt } from "../../../fp";
+import { A, Monoid, N, OrdM, pipe, T, TEAlt } from "../../../fp";
 import type {
   Relay,
   RelayCensorship,
 } from "../../sections/CensorshipSection/RelayCensorshipWidget";
-import { fetchApiJson } from "../../fetchers";
+import { fetchApiJsonTE } from "../../fetchers";
 import type { RelayApiTimeFrames } from "../time_frames";
 
 type RelayId = string;
@@ -99,14 +99,10 @@ export const getRelayCensorship = (rawRelays: RelayRaw[]): RelayCensorship => {
 
 export const fetchRelayCensorshipPerTimeFrame: T.Task<RelayCensorshipPerTimeFrame> =
   pipe(
-    () => fetchApiJson<RawData>("/api/censorship/relays"),
-    T.map((body) =>
-      "error" in body
-        ? E.left(body.error)
-        : E.right({
-            d7: getRelayCensorship(body.data["sevenDays"]),
-            d30: getRelayCensorship(body.data["thirtyDays"]),
-          }),
-    ),
-    TEAlt.getOrThrow,
+    fetchApiJsonTE<RawData>("/api/censorship/relays"),
+    TEAlt.unwrap,
+    T.map((body) => ({
+      d7: getRelayCensorship(body.sevenDays),
+      d30: getRelayCensorship(body.thirtyDays),
+    })),
   );

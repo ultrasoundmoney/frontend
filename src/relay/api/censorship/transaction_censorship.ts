@@ -1,10 +1,11 @@
 import type { DateTimeString } from "../../../time";
-import { A, E, N, pipe, T, TEAlt } from "../../../fp";
-import { fetchApiJson } from "../../fetchers";
+import { A, N, pipe, T, TEAlt } from "../../../fp";
+import { fetchApiJsonTE } from "../../fetchers";
 import type {
   CensoredTransaction,
   TransactionCensorship,
 } from "../../sections/CensorshipSection/TransactionCensorshipWidget";
+import * as DateFns from "date-fns";
 
 type TransactionRaw = {
   transactionHash: string;
@@ -75,25 +76,19 @@ const fetchTransactionsPerTimeFrame = (
   };
 };
 
+const isTransactionLessThanSevenDaysOld = (transaction: TransactionRaw) =>
+  DateFns.isBefore(new Date(transaction.mined), DateFns.subDays(new Date(), 7));
+
 export const fetchTransactionCensorshipPerTimeFrame: T.Task<TransactionCensorshipPerTimeFrame> =
   pipe(
-    () => fetchApiJson<TransactionRaw[]>("/api/censorship/censored-txs"),
-    T.map((body) =>
-      "error" in body
-        ? E.left(body.error)
-        : E.right({
-            d7: pipe(
-              body.data,
-              A.filter(
-                (transactionRaw) =>
-                  new Date(transactionRaw.mined).getTime() >
-                  new Date().getTime() - 7 * 24 * 60 * 60 * 1000,
-              ),
-              (transactions) =>
-                fetchTransactionsPerTimeFrame(transactions, "d7"),
-            ),
-            d30: fetchTransactionsPerTimeFrame(body.data, "d30"),
-          }),
-    ),
-    TEAlt.getOrThrow,
+    fetchApiJsonTE<TransactionRaw[]>("/api/censorship/censored-txs"),
+    TEAlt.unwrap,
+    T.map((body) => ({
+      d7: pipe(
+        body,
+        A.filter(isTransactionLessThanSevenDaysOld),
+        (transactions) => fetchTransactionsPerTimeFrame(transactions, "d7"),
+      ),
+      d30: fetchTransactionsPerTimeFrame(body, "d30"),
+    })),
   );

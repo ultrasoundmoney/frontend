@@ -4,7 +4,7 @@ import type {
   Operator,
 } from "../../sections/CensorshipSection/LidoOperatorCensorshipWidget";
 import lidoOperatorDetailsMapSource from "./lido_operators_details_map.json";
-import { fetchApiJson } from "../../fetchers";
+import { fetchApiJson, fetchApiJsonTE } from "../../fetchers";
 import { fetchRelayCensorshipPerTimeFrame } from "./relays";
 import type { RelayCensorship } from "../../sections/CensorshipSection/RelayCensorshipWidget";
 
@@ -22,8 +22,6 @@ type OperatorRaw = {
   relays: RelayId[];
 };
 
-type RawData = OperatorRaw[];
-
 export type LidoOperatorCensorshipPerTimeFrame = Record<
   "d7" | "d30",
   LidoOperatorCensorship
@@ -35,7 +33,7 @@ const byDominanceDesc = pipe(
   OrdM.contramap((operator: Operator) => operator.dominance),
 );
 
-const getLidoOperatorCensorship = (
+const lidoOperatorCensorshipFrom = (
   operators: OperatorRaw[],
   relayCensorship: RelayCensorship,
 ): LidoOperatorCensorship => {
@@ -127,18 +125,12 @@ export const fetchLidoOperatorCensorshipPerTimeFrame: T.Task<LidoOperatorCensors
     T.apS(
       "lidoOperatorRaws",
       pipe(
-        () => fetchApiJson<RawData>("/api/censorship/operators"),
-        T.map((data) =>
-          "error" in data ? E.left(data.error) : E.right(data.data),
-        ),
-        TEAlt.getOrThrow,
+        fetchApiJsonTE<OperatorRaw[]>("/api/censorship/operators"),
+        TEAlt.unwrap,
       ),
     ),
-    T.map(({ relays, lidoOperatorRaws }) =>
-      E.right({
-        d7: getLidoOperatorCensorship(lidoOperatorRaws, relays.d7),
-        d30: getLidoOperatorCensorship(lidoOperatorRaws, relays.d30),
-      }),
-    ),
-    TEAlt.getOrThrow,
+    T.map(({ relays, lidoOperatorRaws }) => ({
+      d7: lidoOperatorCensorshipFrom(lidoOperatorRaws, relays.d7),
+      d30: lidoOperatorCensorshipFrom(lidoOperatorRaws, relays.d30),
+    })),
   );

@@ -1,7 +1,7 @@
 import { pipe } from "fp-ts/lib/function";
-import { fetchApiJson } from "../../fetchers";
+import { fetchApiJsonTE } from "../../fetchers";
 import type { RelayApiTimeFrames } from "../time_frames";
-import { E, T, TEAlt } from "../../../fp";
+import { T, TEAlt } from "../../../fp";
 import type { SanctionsDelay } from "../../sections/CensorshipSection/SanctionsDelayWidget";
 
 type SanctionsDelayRaw = {
@@ -12,7 +12,7 @@ type SanctionsDelayRaw = {
 
 export type SanctionsDelayPerTimeFrame = Record<"d7" | "d30", SanctionsDelay>;
 
-const getSanctionsDelay = (rawDelays: SanctionsDelayRaw[]) => {
+const sanctionsDelayFromRaws = (rawDelays: SanctionsDelayRaw[]) => {
   const data = rawDelays;
   const uncensored = data.filter((d) => d.txType === "uncensored")[0];
   const censored = data.filter((d) => d.txType === "censored")[0];
@@ -30,14 +30,10 @@ type RawData = Record<RelayApiTimeFrames, SanctionsDelayRaw[]>;
 
 export const fetchSanctionsDelayPerTimeFrame: T.Task<SanctionsDelayPerTimeFrame> =
   pipe(
-    () => fetchApiJson<RawData>("/api/censorship/censorship-categories"),
-    T.map((body) =>
-      "error" in body
-        ? E.left(body.error)
-        : E.right({
-            d7: getSanctionsDelay(body.data["sevenDays"]),
-            d30: getSanctionsDelay(body.data["thirtyDays"]),
-          }),
-    ),
-    TEAlt.getOrThrow,
+    fetchApiJsonTE<RawData>("/api/censorship/censorship-categories"),
+    TEAlt.unwrap,
+    T.map((body) => ({
+      d7: sanctionsDelayFromRaws(body.sevenDays),
+      d30: sanctionsDelayFromRaws(body.thirtyDays),
+    })),
   );
