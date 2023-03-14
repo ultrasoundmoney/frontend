@@ -41,7 +41,7 @@ const SanctionsDelayWidget: FC<Props> = ({
     </QuantifyText>
     <TinyStatus
       value={`${sanctionsDelay.censored_count}/${sanctionsDelay.count}`}
-      postText="censored OFAC transactions"
+      postText="OFAC censored"
       mobilePostText="censored OFAC transactions"
       skeletonWidth="3.05rem"
     />
