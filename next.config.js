@@ -34,7 +34,10 @@ const nextConfig = withSentryConfig(
     rewrites: async () => [
       {
         source: "/api/:path*",
-        has: [{ type: "host", value: "localhost" }],
+        has: [
+          { type: "host", value: "localhost" },
+          { type: "host", value: "vermillion-flan-21df5f.netlify.app" },
+        ],
         destination:
           process.env["NEXT_PUBLIC_ENV"] === "stag"
             ? "https://usm-i7x0.ultrasound.money/api/:path*"
