@@ -15,6 +15,7 @@ const nextConfig = withSentryConfig(
         process.env.NEXT_PUBLIC_ENV !== "stag" &&
         process.env.NEXT_PUBLIC_ENV !== "prod",
     },
+    staticPageGenerationTimeout: 60 * 4,
     output: "standalone",
     reactStrictMode: true,
     swcMinify: true,

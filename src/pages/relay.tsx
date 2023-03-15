@@ -48,7 +48,7 @@ type StaticProps = {
 };
 
 export const getStaticProps: GetStaticProps<StaticProps> = pipe(
-  TAlt.sequenceStruct({
+  TAlt.sequenceStructSeq({
     builderCensorshipPerTimeFrame: fetchBuilderCensorshipPerTimeFrame,
     inclusionTimesPerTimeFrame: fetchInclusionTimesPerTimeFrame,
     lidoOperatorCensorshipPerTimeFrame: fetchLidoOperatorCensorshipPerTimeFrame,
