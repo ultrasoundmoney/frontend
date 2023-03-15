@@ -51,7 +51,7 @@ const TopSanctionsDelaysWidget: FC<Props> = ({
       timeFrame={timeFrame}
       hideTimeFrameLabel
     >
-      <StyledOverflowList height="h-[199px] sm:h-[206px] xl:h-[218px]">
+      <StyledOverflowList height="h-[199px] sm:h-[206px]">
         {topTransactionDelays.map((transaction, index) => {
           const durationFormatted = formatDuration(
             transaction.tookSeconds,
@@ -64,7 +64,7 @@ const TopSanctionsDelaysWidget: FC<Props> = ({
               <div className="flex justify-between items-center w-full">
                 <QuantifyText
                   className=""
-                  size="text-2xl sm:text-3xl xl:text-4xl"
+                  size="text-2xl sm:text-3xl"
                   unitPostfix={durationUnit}
                   unitPostfixColor="text-slateus-200"
                   unitPostfixMargin="ml-4"
