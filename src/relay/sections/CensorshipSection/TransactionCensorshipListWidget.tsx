@@ -41,7 +41,7 @@ const TransactionCensorshipList: FC<Props> = ({ transactions }) => {
       <div className="flex flex-col gap-y-4">
         <div className={gridSpacing}>
           <WidgetTitle>tx delay</WidgetTitle>
-          <WidgetTitle className="hidden text-right md:block">took</WidgetTitle>
+          <WidgetTitle className="hidden text-right sm:block">took</WidgetTitle>
           <WidgetTitle className="-mr-1 text-right truncate">
             sanctions list
           </WidgetTitle>
@@ -80,7 +80,7 @@ const TransactionCensorshipList: FC<Props> = ({ transactions }) => {
                     {delayBlocks}
                   </QuantifyText>
                   <QuantifyText
-                    className="hidden text-right md:block"
+                    className="hidden text-right sm:block"
                     lineHeight="leading-[24px]"
                     size="text-sm md:text-base"
                   >

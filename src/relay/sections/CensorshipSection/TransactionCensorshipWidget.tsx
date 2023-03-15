@@ -48,7 +48,7 @@ const TransactionCensorshipWidget: FC<Props> = ({
     >
       <SkeletonText>{transactionCensorship.count}</SkeletonText>
     </QuantifyText>
-    <div className="flex flex-col gap-x-2 gap-y-4 justify-between md:flex-row lg:flex-row">
+    <div className="flex flex-col gap-x-2 gap-y-4 justify-between sm:flex-row lg:flex-row">
       <TinyStatus
         value={formatPercentOneDecimal(
           transactionCensorship.blocksCensoredPercent,
