@@ -21,6 +21,7 @@ import AddressWidget from "./components/AddressWidget";
 import CheckRegistrationWidget from "./components/CheckRegistrationWidget";
 import InclusionsWidget from "./components/InclusionsWidget";
 import ValidatorWidget from "./components/ValidatorWidget";
+import LeaderboardSection from "./sections/LeaderboardSection";
 import CensorshipSection from "./sections/CensorshipSection";
 import type { RelayCensorship } from "./sections/CensorshipSection/RelayCensorshipWidget";
 import FaqSection from "./sections/FaqSection";
@@ -62,6 +63,8 @@ const RelayDashboard: FC<RelayDashboardProps> = ({
   relayCensorshipPerTimeFrame,
   sanctionsDelayPerTimeFrame,
   suboptimalInclusionsPerTimeFrame,
+  topBuilders,
+  topPayloads,
   transactionCensorshipPerTimeFrame,
   validatorStats,
   validators,
@@ -93,8 +96,8 @@ const RelayDashboard: FC<RelayDashboardProps> = ({
               goerli testnet
             </div>
           ) : null}
-          <div className="flex flex-col gap-y-4 mt-16 mb-32 md:px-16 xs:px-4">
-            <div className="flex flex-col gap-x-4 gap-y-4 mt-16 lg:flex-row">
+          <div className="mt-16 mb-32 flex flex-col gap-y-4 xs:px-4 md:px-16">
+            <div className="mt-16 flex flex-col gap-x-4 gap-y-4 lg:flex-row">
               <div className="flex lg:w-1/2">
                 <AddressWidget />
               </div>
@@ -116,6 +119,11 @@ const RelayDashboard: FC<RelayDashboardProps> = ({
               </div>
             </div>
           </div>
+          <LeaderboardSection
+            payloadCount={payloadStats.count}
+            topBuilders={topBuilders}
+            topPayloads={topPayloads}
+          />
           <CensorshipSection
             builderCensorshipPerTimeFrame={builderCensorshipPerTimeFrame}
             lidoOperatorCensorshipPerTimeFrame={
