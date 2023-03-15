@@ -4,6 +4,7 @@ import { useState } from "react";
 import Section from "../../../components/Section";
 import LabelText from "../../../components/TextsNext/LabelText";
 import TimeFrameControl from "../../../components/TimeFrameControl";
+import { A, flow, N, OrdM, pipe } from "../../../fp";
 import type { BuilderCensorshipPerTimeFrame } from "../../api/censorship/builders";
 import type { LidoOperatorCensorshipPerTimeFrame } from "../../api/censorship/lido_operators";
 import type { RelayCensorshipPerTimeFrame } from "../../api/censorship/relays";
@@ -16,8 +17,21 @@ import LidoOperatorListWidget from "./LidoOperatorListWidget";
 import RelayCensorshipWidget from "./RelayCensorshipWidget";
 import RelayListWidget from "./RelayListWidget";
 import SanctionsDelayWidget from "./SanctionsDelayWidget";
+import TopSanctionsDelaysWidget from "./TopSanctionsDelaysWidget";
 import TransactionCensorshipListWidget from "./TransactionCensorshipListWidget";
+import type { CensoredTransaction } from "./TransactionCensorshipWidget";
 import TransactionCensorshipWidget from "./TransactionCensorshipWidget";
+
+const byTookSecondsDesc = pipe(
+  N.Ord,
+  OrdM.reverse,
+  OrdM.contramap((transaction: CensoredTransaction) => transaction.delayBlocks),
+);
+
+const topDelaysFromTransactions = flow(
+  A.sort(byTookSecondsDesc),
+  A.takeLeft(10),
+);
 
 type Props = {
   builderCensorshipPerTimeFrame: BuilderCensorshipPerTimeFrame;
@@ -38,8 +52,11 @@ const CensorshipSection: FC<Props> = ({
   const builderCensorship = builderCensorshipPerTimeFrame[timeFrame];
   const relayCensorship = relayCensorshipPerTimeFrame[timeFrame];
   const lidoOperatorCensorship = lidoOperatorCensorshipPerTimeFrame[timeFrame];
-  const transactionCencorship = transactionCensorshipPerTimeFrame[timeFrame];
+  const transactionCensorship = transactionCensorshipPerTimeFrame[timeFrame];
   const sanctionsDelay = sanctionsDelayPerTimeFrame[timeFrame];
+  const topDelays = topDelaysFromTransactions(
+    transactionCensorship.transactions,
+  );
 
   const handleClickTimeFrame = useCallback(() => {
     setTimeFrame((timeFrame) => (timeFrame === "d7" ? "d30" : "d7"));
@@ -98,12 +115,17 @@ const CensorshipSection: FC<Props> = ({
           />
           <TransactionCensorshipWidget
             onClickTimeFrame={handleClickTimeFrame}
-            transactionCensorship={transactionCencorship}
+            transactionCensorship={transactionCensorship}
             timeFrame={timeFrame}
           />
           <TransactionCensorshipListWidget
             onClickTimeFrame={handleClickTimeFrame}
-            transactions={transactionCencorship.transactions}
+            transactions={transactionCensorship.transactions}
+            timeFrame={timeFrame}
+          />
+          <TopSanctionsDelaysWidget
+            onClickTimeFrame={handleClickTimeFrame}
+            topDelays={topDelays}
             timeFrame={timeFrame}
           />
         </div>

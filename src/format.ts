@@ -187,30 +187,30 @@ const SECONDS_PER_DAY = 24 * SECONDS_PER_HOUR;
 const SECONDS_PER_WEEK = 7 * SECONDS_PER_DAY;
 
 /** Formats a distance in time using the smallest possible whole unit, but no smaller than seconds. */
-export const formatDuration = (seconds: number): string => {
+export const formatDuration = (seconds: number, long = false): string => {
   const weeksDelta = Math.floor(seconds / SECONDS_PER_WEEK);
   if (weeksDelta > 0) {
-    return `${weeksDelta}w`;
+    return long ? `${weeksDelta} weeks` : `${weeksDelta}w`;
   }
 
   const daysDelta = Math.floor((seconds % SECONDS_PER_WEEK) / SECONDS_PER_DAY);
   if (daysDelta > 0) {
-    return `${daysDelta}d`;
+    return long ? `${daysDelta} days` : `${daysDelta}d`;
   }
 
   const hoursDelta = Math.floor((seconds % SECONDS_PER_DAY) / SECONDS_PER_HOUR);
   if (hoursDelta > 0) {
-    return `${hoursDelta}h`;
+    return long ? `${hoursDelta} hours` : `${hoursDelta}h`;
   }
 
   const minutesDelta = Math.floor(
     (seconds % SECONDS_PER_HOUR) / SECONDS_PER_MINUTE,
   );
   if (minutesDelta > 0) {
-    return `${minutesDelta}m`;
+    return long ? `${minutesDelta} minutes` : `${minutesDelta}m`;
   }
 
-  return `${seconds.toFixed(1)}s`;
+  return long ? `${seconds.toFixed(1)} seconds` : `${seconds.toFixed(1)}s`;
 };
 
 export const formatDurationToNow = (now: Date, dt: Date) => {
