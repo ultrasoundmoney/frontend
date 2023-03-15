@@ -61,7 +61,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = pipe(
   T.Do,
   T.apS(
     "fetches",
-    TAlt.sequencyArrayPar({
+    TAlt.sequenceStructPar({
       "/api/fees/scarcity": fetchOrThrow(fetchScarcity),
       "/api/v2/fees/base-fee-per-gas": fetchOrThrow(fetchBaseFeePerGas),
       "/api/v2/fees/base-fee-per-gas-barrier": fetchOrThrow(
