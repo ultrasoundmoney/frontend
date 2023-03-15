@@ -15,7 +15,7 @@ import {
   T,
   TEAlt,
 } from "../../../fp";
-import { fetchApiJson, fetchApiJsonTE } from "../../fetchers";
+import { fetchApiJsonTE } from "../../fetchers";
 import type {
   BuilderCensorship,
   BuilderGroup,
@@ -23,15 +23,6 @@ import type {
   Censors,
 } from "../../sections/CensorshipSection/BuilderCensorshipWidget";
 import type { RelayApiTimeFrames } from "../time_frames";
-
-// const nameMap: Record<BuilderName, string> = {
-//   "0x69": "builder0x69",
-//   beaver: "beaverbuild",
-//   bloxroute: "bloXroute",
-//   flashbots: "Flashbots",
-//   manifold: "Manifold",
-//   rsync: "rsync-builder",
-// };
 
 /**
  * A single entity which builds blocks known by its pubkey.
@@ -95,43 +86,49 @@ const getCensors = (
         : "partially",
   );
 
-const builderUnitFromApi = (builder: BuilderRaw): BuilderUnit => ({
+const builderUnitFromRaw = (builder: BuilderRaw): BuilderUnit => ({
   pubkey: builder.builderPubkey,
   totalBlocks: builder.totalBlocks,
   uncensoredBlocks: builder.uncensoredBlocks,
 });
 
-const builderGroupsFromApi = (
+const builderGroupFromUnits = (
+  blockCount: number,
+  id: string,
+  builderRaws: RNEA.ReadonlyNonEmptyArray<BuilderRaw>,
+): BuilderGroup => ({
+  builderUnits: pipe(builderRaws, RNEA.map(builderUnitFromRaw)),
+  censoringPubkeys: pipe(
+    builderRaws,
+    RA.filter(isCensoringBuilderUnit),
+    RA.size,
+  ),
+  censors: getCensors(builderRaws),
+  description: pipe(
+    builderRaws,
+    RNEA.head,
+    O.fromNullableK((builder) => builder.builderDescription),
+  ),
+  dominance: pipe(
+    builderRaws,
+    RA.map((builder) => builder.totalBlocks),
+    Monoid.concatAll(N.MonoidSum),
+    (builderGroupBlocks) => builderGroupBlocks / blockCount,
+  ),
+  id,
+  name: getName(builderRaws),
+  totalPubkeys: RA.size(builderRaws),
+});
+
+const builderGroupsFromRaws = (
   builderRaws: RNEA.ReadonlyNonEmptyArray<BuilderRaw>,
 ): RNEA.ReadonlyNonEmptyArray<BuilderGroup> => {
   const blockCount = blockCountFromBuilderRaws(builderRaws);
   return pipe(
     builderRaws,
     RNEA.groupBy((builder) => builder.builderName ?? builder.builderPubkey),
-    R.mapWithIndex(
-      (id, builderUnits): BuilderGroup => ({
-        builderUnits: pipe(builderUnits, RNEA.map(builderUnitFromApi)),
-        censoringPubkeys: pipe(
-          builderUnits,
-          RA.filter(isCensoringBuilderUnit),
-          RA.size,
-        ),
-        censors: getCensors(builderUnits),
-        description: pipe(
-          builderUnits,
-          RNEA.head,
-          O.fromNullableK((builder) => builder.builderDescription),
-        ),
-        dominance: pipe(
-          builderUnits,
-          RA.map((builder) => builder.totalBlocks),
-          Monoid.concatAll(N.MonoidSum),
-          (builderGroupBlocks) => builderGroupBlocks / blockCount,
-        ),
-        id,
-        name: getName(builderUnits),
-        totalPubkeys: RA.size(builderUnits),
-      }),
+    R.mapWithIndex((id, builderUnits) =>
+      builderGroupFromUnits(blockCount, id, builderUnits),
     ),
     (record) => Object.values(record),
     RNEA.fromReadonlyArray,
@@ -202,7 +199,7 @@ const builderCensorshipFromRaws = flow(
   EAlt.unwrap,
   RNEA.fromReadonlyArray,
   OAlt.expect("expect API to return at least one builder"),
-  builderGroupsFromApi,
+  builderGroupsFromRaws,
   builderCensorshipFromBuilderGroups,
 );
 
