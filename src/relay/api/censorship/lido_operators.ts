@@ -1,10 +1,10 @@
-import { A, E, Monoid, N, OrdM, pipe, T, TEAlt } from "../../../fp";
+import { A, Monoid, N, OrdM, pipe, T, TEAlt } from "../../../fp";
 import type {
   LidoOperatorCensorship,
   Operator,
 } from "../../sections/CensorshipSection/LidoOperatorCensorshipWidget";
 import lidoOperatorDetailsMapSource from "./lido_operators_details_map.json";
-import { fetchApiJson, fetchApiJsonTE } from "../../fetchers";
+import { fetchApiJsonTE } from "../../fetchers";
 import { fetchRelayCensorshipPerTimeFrame } from "./relays";
 import type { RelayCensorship } from "../../sections/CensorshipSection/RelayCensorshipWidget";
 
