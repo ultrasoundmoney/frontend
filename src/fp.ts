@@ -29,8 +29,9 @@ import { pipe } from "fp-ts/lib/function";
 import { sequenceS } from "fp-ts/lib/Apply";
 
 export const TAlt = {
-  sequenceStruct: sequenceS(T.ApplyPar),
   sequenceArraySeq: sequenceS(T.ApplySeq),
+  sequenceStructPar: sequenceS(T.ApplyPar),
+  sequenceStructSeq: sequenceS(T.ApplySeq),
   sequencyArrayPar: sequenceS(T.ApplyPar),
 };
 
