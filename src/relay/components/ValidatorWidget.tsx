@@ -32,7 +32,7 @@ const ValidatorRow = ({ insertedAt, index }: Validator) => {
   const registeredAgo =
     now === undefined
       ? undefined
-      : `${Format.formatTimeDistanceToNow(now, insertedAt)} ago`;
+      : `${Format.formatDurationToNow(now, insertedAt)} ago`;
 
   return (
     <a

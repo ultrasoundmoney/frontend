@@ -33,7 +33,7 @@ const TopBlocksWidget: FC<Props> = ({ topBlocks }) => {
           `}
         >
           {topBlocks.map(({ insertedAt, blockNumber, value }, index) => {
-            const age = Format.formatTimeDistanceToNow(new Date(), insertedAt);
+            const age = Format.formatDurationToNow(new Date(), insertedAt);
             const blockUrl = `${etherscanUrl}/block/${blockNumber}`;
 
             return (

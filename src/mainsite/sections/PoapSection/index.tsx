@@ -556,7 +556,7 @@ const Claimed: FC<{
       return undefined;
     }
 
-    return Format.formatTimeDistanceToNow(now, new Date(claimedOn));
+    return Format.formatDurationToNow(now, new Date(claimedOn));
   }, [claimedOn, now]);
 
   return (

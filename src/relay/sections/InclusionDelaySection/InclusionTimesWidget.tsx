@@ -13,7 +13,7 @@ import questionMarkSvg from "../../../assets/question-mark-own.svg";
 import sleuthSvg from "../../../assets/sleuth-own.svg";
 import colors from "../../../colors";
 import { BaseText } from "../../../components/Texts";
-import { formatTimeDistance, formatZeroDecimals } from "../../../format";
+import { formatDuration, formatZeroDecimals } from "../../../format";
 import LabelText from "../../../components/TextsNext/LabelText";
 import Image from "next/image";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
@@ -355,7 +355,7 @@ const InclusionTimesWidget: FC<Props> = ({
                 >
                   {category.transaction_count === 0
                     ? "-"
-                    : `${formatTimeDistance(category.average_time)}`}
+                    : `${formatDuration(category.average_time)}`}
                 </QuantifyText>
               </td>
               <td className="p-0 text-right">

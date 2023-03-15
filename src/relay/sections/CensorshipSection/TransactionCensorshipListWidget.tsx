@@ -5,7 +5,7 @@ import {
   WidgetTitle,
 } from "../../../components/WidgetSubcomponents";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
-import { formatTimeDistanceToNow, formatZeroDecimals } from "../../../format";
+import { formatDurationToNow, formatZeroDecimals } from "../../../format";
 import SkeletonText from "../../../components/TextsNext/SkeletonText";
 import StyledOverflowList from "../../components/StyledOverflowList";
 import BodyTextV3 from "../../../components/TextsNext/BodyTextV3";
@@ -101,7 +101,7 @@ const TransactionCensorshipList: FC<Props> = ({ transactions }) => {
                         ? undefined
                         : inclusion === undefined
                         ? ""
-                        : formatTimeDistanceToNow(now, new Date(inclusion))}
+                        : formatDurationToNow(now, new Date(inclusion))}
                     </SkeletonText>
                   </QuantifyText>
                 </li>

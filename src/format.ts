@@ -187,7 +187,7 @@ const SECONDS_PER_DAY = 24 * SECONDS_PER_HOUR;
 const SECONDS_PER_WEEK = 7 * SECONDS_PER_DAY;
 
 /** Formats a distance in time using the smallest possible whole unit, but no smaller than seconds. */
-export const formatTimeDistance = (seconds: number): string => {
+export const formatDuration = (seconds: number): string => {
   const weeksDelta = Math.floor(seconds / SECONDS_PER_WEEK);
   if (weeksDelta > 0) {
     return `${weeksDelta}w`;
@@ -213,9 +213,9 @@ export const formatTimeDistance = (seconds: number): string => {
   return `${seconds.toFixed(1)}s`;
 };
 
-export const formatTimeDistanceToNow = (now: Date, dt: Date) => {
+export const formatDurationToNow = (now: Date, dt: Date) => {
   const distance = DateFns.differenceInSeconds(now, dt);
-  return formatTimeDistance(distance);
+  return formatDuration(distance);
 };
 
 export const formatBlockNumber = (number: unknown) =>

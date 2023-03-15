@@ -5,7 +5,7 @@ import {
   WidgetTitle,
 } from "../../../components/WidgetSubcomponents";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
-import { formatTimeDistanceToNow } from "../../../format";
+import { formatDurationToNow } from "../../../format";
 import SkeletonText from "../../../components/TextsNext/SkeletonText";
 import type { SuboptimalTransaction } from "./SuboptimalInclusionsWidget";
 import BodyTextV3 from "../../../components/TextsNext/BodyTextV3";
@@ -87,7 +87,7 @@ const TransactionInclusionDelayWidget: FC<Props> = ({ transactions }) => {
                         ? undefined
                         : mined === undefined
                         ? "pending"
-                        : formatTimeDistanceToNow(now, new Date(mined))}
+                        : formatDurationToNow(now, new Date(mined))}
                     </SkeletonText>
                   </QuantifyText>
                 </li>
