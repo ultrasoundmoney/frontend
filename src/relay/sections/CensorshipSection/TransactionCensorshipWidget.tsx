@@ -8,12 +8,12 @@ import TinyStatus from "../../components/TinyStatus";
 import WidgetBase from "../../components/WidgetBase";
 
 export type CensoredTransaction = {
+  delayBlocks: number;
+  hash: string;
   inclusion: DateTimeString;
   sanctionListIds: string[];
   sanctionsListName: string;
-  took: number;
-  transaction_delay: number;
-  transaction_hash: string;
+  tookSeconds: number;
 };
 
 export type TransactionCensorship = {
@@ -33,38 +33,36 @@ const TransactionCensorshipWidget: FC<Props> = ({
   onClickTimeFrame,
   transactionCensorship,
   timeFrame,
-}) => {
-  return (
-    <WidgetBase
-      onClickTimeFrame={onClickTimeFrame}
-      title="transaction censorship"
-      timeFrame={timeFrame}
-      hideTimeFrameLabel
+}) => (
+  <WidgetBase
+    onClickTimeFrame={onClickTimeFrame}
+    title="transaction censorship"
+    timeFrame={timeFrame}
+    hideTimeFrameLabel
+  >
+    <QuantifyText
+      size="text-2xl sm:text-3xl xl:text-4xl"
+      unitPostfix="transactions"
+      unitPostfixColor="text-slateus-200"
+      unitPostfixMargin="ml-4"
     >
-      <QuantifyText
-        size="text-2xl sm:text-3xl xl:text-4xl"
-        unitPostfix="transactions"
-        unitPostfixColor="text-slateus-200"
-        unitPostfixMargin="ml-4"
-      >
-        <SkeletonText>{transactionCensorship.count}</SkeletonText>
-      </QuantifyText>
-      <div className="flex flex-col gap-x-2 gap-y-4 justify-between md:flex-row lg:flex-row">
-        <TinyStatus
-          value={formatPercentOneDecimal(
-            transactionCensorship.blocksCensoredPercent,
-          )}
-          postText="blocks censored"
-        />
-        <TinyStatus
-          value={
-            formatZeroDecimals(transactionCensorship.averageInclusionTime) + "s"
-          }
-          postText="average inclusion time"
-        />
-      </div>
-    </WidgetBase>
-  );
-};
+      <SkeletonText>{transactionCensorship.count}</SkeletonText>
+    </QuantifyText>
+    <div className="flex flex-col gap-x-2 gap-y-4 justify-between md:flex-row lg:flex-row">
+      <TinyStatus
+        value={formatPercentOneDecimal(
+          transactionCensorship.blocksCensoredPercent,
+        )}
+        postText="blocks censored"
+      />
+      <TinyStatus
+        value={
+          formatZeroDecimals(transactionCensorship.averageInclusionTime) + "s"
+        }
+        postText="average inclusion time"
+      />
+    </div>
+  </WidgetBase>
+);
 
 export default TransactionCensorshipWidget;

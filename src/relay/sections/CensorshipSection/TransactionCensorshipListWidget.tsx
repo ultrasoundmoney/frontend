@@ -52,17 +52,17 @@ const TransactionCensorshipList: FC<Props> = ({ transactions }) => {
         <StyledOverflowList height="h-[182px]">
           {transactions.map(
             ({
+              delayBlocks,
+              hash,
               inclusion,
               sanctionsListName,
-              took,
-              transaction_delay,
-              transaction_hash,
+              tookSeconds,
             }) => (
               <a
-                key={transaction_hash}
+                key={hash}
                 target="_blank"
                 rel="noreferrer"
-                href={`https://etherscan.io/tx/${transaction_hash}`}
+                href={`https://etherscan.io/tx/${hash}`}
               >
                 <li
                   className={`
@@ -77,14 +77,14 @@ const TransactionCensorshipList: FC<Props> = ({ transactions }) => {
                     unitPostfix="block"
                     unitPostfixColor="text-slateus-100"
                   >
-                    {transaction_delay}
+                    {delayBlocks}
                   </QuantifyText>
                   <QuantifyText
                     className="hidden text-right md:block"
                     lineHeight="leading-[24px]"
                     size="text-sm md:text-base"
                   >
-                    {formatZeroDecimals(took)}s
+                    {formatZeroDecimals(tookSeconds)}s
                   </QuantifyText>
                   <BodyTextV3 className="text-right" color="text-slateus-100">
                     {sanctionsListName}

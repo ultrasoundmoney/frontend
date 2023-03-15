@@ -62,9 +62,9 @@ const fetchTransactionsPerTimeFrame = (
       sanctionsListName:
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         sanctionListNameMap[d.blacklist[0]!] ?? d.blacklist.join(", "),
-      took: d.delay,
-      transaction_delay: d.blockDelay,
-      transaction_hash: d.transactionHash,
+      tookSeconds: d.delay,
+      delayBlocks: d.blockDelay,
+      hash: d.transactionHash,
     }),
   );
 
