@@ -16,7 +16,7 @@ const AdminTools: FC<{
   const featureFlags = useContext(FeatureFlagsContext);
 
   const handleMinimize = useCallback(() => {
-    setMinimized((minimized) => !minimized)
+    setMinimized((minimized) => !minimized);
   }, []);
 
   if (adminToken === undefined) {
@@ -30,11 +30,11 @@ const AdminTools: FC<{
         z-20 rounded-lg
         border-2 border-slate-600
         bg-slateus-700 p-4
-      transition-transform
+        transition-transform
         ${minimized ? "translate-y-[88%]" : ""}
       `}
     >
-      <div className="flex items-center justify-between">
+      <div className="flex justify-between items-center">
         <WidgetTitle>feature flags</WidgetTitle>
         <div onClick={handleMinimize}>
           <BaseText
@@ -54,7 +54,7 @@ const AdminTools: FC<{
       {flags.map((flag) => (
         <div
           key={flag}
-          className="mt-4 flex items-center justify-between gap-x-4"
+          className="flex gap-x-4 justify-between items-center mt-4"
         >
           <span className="mr-4 text-white">{displayFlagMap[flag]}</span>
           <ToggleSwitch
