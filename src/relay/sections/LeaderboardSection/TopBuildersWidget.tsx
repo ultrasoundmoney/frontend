@@ -10,42 +10,26 @@ import {
 } from "../../../components/WidgetSubcomponents";
 import SpanMoji from "../../../components/SpanMoji";
 
-import builderAliases from "./builders";
-
-const aggregateBuilderBlockCounts = (
-  builders: Array<Builder>,
-): Array<Builder> => {
-  const aggregatedCounts = builders.reduce(
-    (acc: Record<string, number>, b: Builder) => {
-      const key = b.extraData as keyof typeof builderAliases;
-      const alias: string | undefined = builderAliases[key];
-      return alias
-        ? { ...acc, [alias]: (acc[alias] || 0) + b.blockCount }
-        : { ...acc, [b.extraData]: (acc[b.extraData] || 0) + b.blockCount };
-    },
-    {},
-  );
-
-  return Object.entries(aggregatedCounts).map(
-    ([k, v]): Builder => ({ extraData: k, blockCount: v }),
-  );
-};
-
 const emojiMap = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
 
 type Props = { payloadCount: number; topBuilders: Array<Builder> };
 
-const TopBuildersWidget: FC<Props> = ({ payloadCount, topBuilders }) => {
-  const builders = aggregateBuilderBlockCounts(topBuilders).sort(
-    (a, b) => b.blockCount - a.blockCount,
-  );
+const sortBuilders = (a: Builder, b: Builder) => {
+  if (a.blockCount < b.blockCount) {
+    return 1;
+  }
+  if (a.blockCount > b.blockCount) {
+    return -1;
+  }
+  return 0;
+};
 
-  return (
-    <WidgetBackground>
-      <div className="flex flex-col justify-between">
-        <WidgetTitle>top builders</WidgetTitle>
-        <div
-          className={`
+const TopBuildersWidget: FC<Props> = ({ payloadCount, topBuilders }) => (
+  <WidgetBackground>
+    <div className="flex flex-col justify-between">
+      <WidgetTitle>top builders</WidgetTitle>
+      <div
+        className={`
             mt-4 -mr-3 flex
             h-60 flex-col
             gap-y-6
@@ -54,8 +38,10 @@ const TopBuildersWidget: FC<Props> = ({ payloadCount, topBuilders }) => {
             ${scrollbarStyles["styled-scrollbar"]}
             ${scrollbarStyles["styled-scrollbar-vertical"]}
           `}
-        >
-          {builders.map(({ extraData, blockCount }, index) => {
+      >
+        {topBuilders
+          .sort(sortBuilders)
+          .map(({ builderName, blockCount }, index) => {
             const blockPercentage = Format.formatPercentOneDecimal(
               blockCount / payloadCount,
             );
@@ -64,7 +50,7 @@ const TopBuildersWidget: FC<Props> = ({ payloadCount, topBuilders }) => {
               <div key={index} className="flex flex-col gap-y-1 pr-2">
                 <div className="flex w-full justify-between font-light">
                   <span className="font-roboto text-xl text-white lg:text-2xl">
-                    {extraData === "" ? `""` : extraData}
+                    {builderName}
                   </span>
                   <SpanMoji
                     className="select-none text-2xl md:text-3xl"
@@ -94,10 +80,9 @@ const TopBuildersWidget: FC<Props> = ({ payloadCount, topBuilders }) => {
               </div>
             );
           })}
-        </div>
       </div>
-    </WidgetBackground>
-  );
-};
+    </div>
+  </WidgetBackground>
+);
 
 export default TopBuildersWidget;
