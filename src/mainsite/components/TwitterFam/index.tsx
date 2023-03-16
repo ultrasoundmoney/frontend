@@ -346,7 +346,7 @@ const TwitterFam: FC = () => {
                           }}
                         >
                           <input
-                            className="rounded-full border border-gray-500 bg-transparent p-4 pr-32 text-xs text-white md:w-96"
+                            className="rounded-full border border-gray-500 bg-transparent p-4 pr-32 text-xs text-white w-full md:w-96"
                             type="text"
                             placeholder="@vitalikbuterin"
                             value={searchValue}
@@ -360,7 +360,7 @@ const TwitterFam: FC = () => {
                           <button
                             className={`
                               ${followingYouStyles.showMe}
-                              ${searchValue && filteredProfilesCount > 0 ? `!-ml-[182px]` : `!-ml-[134px]`}
+                              ${searchValue && filteredProfilesCount > 0 ? `!-ml-[145px] md:!-ml-[182px]` : `!-ml-[111px] md:!-ml-[134px]`}
                               select-none rounded-full
                               border border-white
                               bg-transparent px-5
