@@ -77,7 +77,7 @@ const fetchTransactionsPerTimeFrame = (
 };
 
 const isTransactionLessThanSevenDaysOld = (transaction: TransactionRaw) =>
-  DateFns.isBefore(new Date(transaction.mined), DateFns.subDays(new Date(), 7));
+  DateFns.isAfter(new Date(transaction.mined), DateFns.subDays(new Date(), 7));
 
 export const fetchTransactionCensorshipPerTimeFrame: T.Task<TransactionCensorshipPerTimeFrame> =
   pipe(
