@@ -15,7 +15,7 @@ const ControlButtons = ({
 }: ControlButtonsProps) => {
   return (
     <div
-      className="grid gap-3 grid-cols-4"
+      className="grid gap-3 grid-cols-3 sm:grid-cols-4"
     >
       <button
         className={`
@@ -71,7 +71,8 @@ const ControlButtons = ({
       </button>
       <button
         className={`
-          flex
+          hidden
+          sm:flex
           select-none items-center
           border rounded-lg
           border-slateus-400
