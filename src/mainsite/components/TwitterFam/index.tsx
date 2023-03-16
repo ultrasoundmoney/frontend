@@ -360,13 +360,13 @@ const TwitterFam: FC = () => {
                           <button
                             className={`
                               ${followingYouStyles.showMe}
-                              ${searchValue && filteredProfilesCount > 0 ? `!-ml-[145px] md:!-ml-[182px]` : `!-ml-[111px] md:!-ml-[134px]`}
+                              ${searchValue && filteredProfilesCount > 0 ? `!-ml-[165px] md:!-ml-[197px]` : `!-ml-[103px] md:!-ml-[134px]`}
                               select-none rounded-full
                               border border-white
-                              bg-transparent px-5
+                              bg-transparent px-4 md:px-5
                               text-xs text-white
                               hover:bg-gray-700
-                              ${searchValue && filteredProfilesCount > 0 ? `md:w-44` : `md:w-32`}
+                              ${searchValue && filteredProfilesCount > 0 ? `w-40 md:w-48` : `md:w-32`}
                               disabled:opacity-50
                             `}
                             type="submit"
