@@ -307,7 +307,7 @@ const TwitterFam: FC = () => {
                               isDoneLoading={profile !== undefined}
                               skeletonDiameter="20px"
                               onClick={(ref) =>
-                                !md || profile === undefined
+                                profile === undefined
                                   ? () => undefined
                                   : handleImageClick(profile, ref)
                               }
