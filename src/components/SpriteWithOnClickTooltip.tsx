@@ -77,34 +77,6 @@ const ImageWithOnClickTooltip: FC<ImageWithOnClickTooltipProps> = ({
             window.addEventListener("pointermove", onPointerMove);
             window.addEventListener("pointerup", onPointerUp);
           }}
-          // onTouchStart={(e) => {
-          //   console.log("touch start");
-          //   if (onClick === undefined || excluded) return;
-          //   const touch = e.touches[0];
-          //   console.log(touch);
-          //   const { pageX, pageY } = touch || {};
-          //   let distanceMoved = 0;
-          //   const onTouchMove = (e: TouchEvent) => {
-          //     console.log("touch move");
-          //     const touch = e?.touches[0];
-          //     const { pageX: newPageX, pageY: newPageY } = touch || {};
-          //     if (pageX && pageY && newPageX && newPageY) {
-          //       distanceMoved += Math.abs(pageX - newPageX) + Math.abs(pageY - newPageY);
-          //     }
-          //   };
-          //   const onTouchend = () => {
-          //     console.log("touch end");
-          //     if (distanceMoved < 10) {
-          //       console.log("touch end - distance moved < 10");
-          //       onClick(imageRef);
-          //     }
-          //     window.removeEventListener("touchmove", onTouchMove);
-          //     window.removeEventListener("touchend", onTouchend);
-          //   };
-          //   console.log('adding event listeners');
-          //   window.addEventListener("touchmove", onTouchMove);
-          //   window.addEventListener("touchend", onTouchend);
-          // }}
           // className={className}
           className={`
             ${styles["fam-image-sprite"]}
