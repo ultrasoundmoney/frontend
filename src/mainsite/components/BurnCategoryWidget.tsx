@@ -416,14 +416,14 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
         >
           5 minute time frame unavailable
         </div>
-      ) : timeFrame === "since_burn" ? (
+      ) : timeFrame === "since_burn"  || timeFrame == "since_merge" ? (
         <div
           className={`
             flex min-h-[324px] w-full items-center justify-center
             text-center text-lg text-slateus-200
           `}
         >
-          all time frame unavailable, data sync in progress...
+          time frame unavailable, data sync in progress...
         </div>
       ) : (
         <div className="flex flex-col gap-y-3">
