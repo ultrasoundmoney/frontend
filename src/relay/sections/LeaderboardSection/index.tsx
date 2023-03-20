@@ -1,7 +1,7 @@
 import type { FC } from "react";
 
 import type { Payload, Builder } from "../../types";
-import SectionDivider from "../../../components/SectionDivider";
+import Section from "../../../components/Section";
 import TopBuildersWidget from "./TopBuildersWidget";
 import TopBlocksWidget from "./TopBlocksWidget";
 
@@ -17,8 +17,7 @@ const LeaderboardSection: FC<Props> = ({
   topPayloads,
 }) => {
   return (
-    <section className="flex w-full flex-col items-center xs:px-4 md:px-16">
-      <SectionDivider title="leaderboards" subtitle="ultra wow" />
+    <Section title="leaderboards" subtitle="ultra wow" link="leaderboards">
       <div className="flex w-full flex-col gap-x-4 gap-y-4 lg:flex-row">
         <div className="flex flex-col lg:w-1/2">
           <TopBuildersWidget
@@ -30,7 +29,7 @@ const LeaderboardSection: FC<Props> = ({
           <TopBlocksWidget topBlocks={topPayloads} />
         </div>
       </div>
-    </section>
+    </Section>
   );
 };
 

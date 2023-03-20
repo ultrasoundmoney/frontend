@@ -17,7 +17,10 @@ const DefaultTextLink: FC<Props> = ({
   onMouseLeave,
 }) => (
   <DefaultLink
-    className={`hover:underline ${className}`}
+    className={`
+      ${href !== undefined ? "hover:underline" : ""}
+      ${className}
+    `}
     href={href}
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}

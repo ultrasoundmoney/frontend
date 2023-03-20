@@ -3,12 +3,11 @@ import JSBI from "jsbi";
 import { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import type { Slot } from "../../beacon-units";
-import { getDomain } from "../../config";
 import * as Duration from "../../duration";
 import type { EthNumber, GweiString, WeiJSBI } from "../../eth-units";
 import { WEI_PER_ETH } from "../../eth-units";
 import { WEI_PER_GWEI_JSBI } from "../../eth-units";
-import type { ApiResult } from "./fetchers";
+import type { ApiResult } from "../../fetchers";
 import { fetchApiJson, fetchJsonSwr } from "./fetchers";
 
 export type SupplyPartsF = {
@@ -52,7 +51,7 @@ export const impreciseEthSupplyFromParts = (
 };
 
 export const fetchSupplyParts = (): Promise<ApiResult<SupplyPartsF>> =>
-  fetchApiJson(`${getDomain()}/api/v2/fees/supply-parts`);
+  fetchApiJson("/api/v2/fees/supply-parts");
 
 export const useSupplyParts = (): SupplyParts => {
   const { data } = useSWR<SupplyPartsF>(

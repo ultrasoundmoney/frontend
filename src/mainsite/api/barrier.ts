@@ -1,7 +1,7 @@
 import { secondsToMilliseconds } from "date-fns";
 import useSWR from "swr";
+import type { ApiResult } from "../../fetchers";
 import type { DateTimeString } from "../../time";
-import type { ApiResult } from "./fetchers";
 import { fetchApiJson } from "./fetchers";
 import { fetchJsonSwr } from "./fetchers";
 import type { BlockNumber } from "./supply-over-time";

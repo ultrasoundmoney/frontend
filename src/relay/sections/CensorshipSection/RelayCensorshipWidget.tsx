@@ -1,48 +1,61 @@
 import type { FC } from "react";
-import { LabelUnitText } from "../../../components/Texts";
-import LabelText from "../../../components/TextsNext/LabelText";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
 import SkeletonText from "../../../components/TextsNext/SkeletonText";
-import {
-  WidgetBackground,
-  WidgetTitle,
-} from "../../../components/WidgetSubcomponents";
-import TimeFrameIndicator from "../../../mainsite/components/TimeFrameIndicator";
+import { formatPercentOneDecimal } from "../../../format";
+import type { TimeFrame } from "../../../mainsite/time-frames";
+import TinyStatus from "../../components/TinyStatus";
+import WidgetBase from "../../components/WidgetBase";
 
-const RelayCensorshipWidget: FC = () => {
-  return (
-    <WidgetBackground className="w-full">
-      <div className="flex flex-col gap-y-4">
-        <div className="flex items-center justify-between gap-x-2">
-          <WidgetTitle>relay censorship</WidgetTitle>
-          <TimeFrameIndicator
-            timeFrame="d1"
-            onClickTimeFrame={() => undefined}
-          />
-        </div>
-        <div className="flex items-baseline gap-x-1">
-          <QuantifyText size="text-4xl">
-            <SkeletonText width="2rem">68.1%</SkeletonText>
-          </QuantifyText>
-          <QuantifyText
-            color="text-slateus-200"
-            className="ml-1"
-            size="text-4xl"
-          >
-            <SkeletonText width="8rem">{"dominance"}</SkeletonText>
-          </QuantifyText>
-        </div>
-        <div className="flex items-center gap-x-1">
-          <LabelUnitText className="mt-1">
-            <SkeletonText width="3rem">55.1%</SkeletonText>
-          </LabelUnitText>
-          <LabelText className="mt-1" color="text-slateus-400">
-            of blocks censored
-          </LabelText>
-        </div>
-      </div>
-    </WidgetBackground>
-  );
+export type Relay = {
+  blocks_with_sanctioned_entity: number;
+  censors: boolean;
+  description?: string;
+  dominance: number;
+  id: string;
+  name: string;
+  url?: string;
 };
+
+export type RelayCensorship = {
+  dominance: number;
+  censoring_relay_count: number;
+  relay_count: number;
+  relays: Relay[];
+};
+
+type Props = {
+  onClickTimeFrame: () => void;
+  relayCensorship: RelayCensorship;
+  timeFrame: TimeFrame;
+};
+
+const RelayCensorshipWidget: FC<Props> = ({
+  onClickTimeFrame,
+  relayCensorship,
+  timeFrame,
+}) => (
+  <WidgetBase
+    hideTimeFrameLabel
+    onClickTimeFrame={onClickTimeFrame}
+    timeFrame={timeFrame}
+    title="relay censorship"
+  >
+    <QuantifyText
+      size="text-2xl sm:text-3xl xl:text-4xl"
+      unitPostfix="dominance"
+      unitPostfixColor="text-slateus-200"
+      unitPostfixMargin="ml-4"
+    >
+      <SkeletonText>
+        {formatPercentOneDecimal(relayCensorship.dominance)}
+      </SkeletonText>
+    </QuantifyText>
+    <TinyStatus
+      value={`${relayCensorship.censoring_relay_count}/${relayCensorship.relay_count}`}
+      postText="censoring relays"
+      skeletonWidth="3.05rem"
+    />
+  </WidgetBase>
+);
 
 export default RelayCensorshipWidget;

@@ -1,15 +1,15 @@
-import { getEnv } from "../config";
-
-export const getApiUrl = () => {
-  const env = getEnv();
-  return env === "stag"
-    ? "https://relay-stag.ultrasound.money"
-    : "https://relay.ultrasound.money";
-};
+import { getEnv, getApiEnv } from "../config";
 
 export const getDomain = () => {
-  const env = getEnv();
-  return env === "dev" ? "http://relay.localhost:3000" : getApiUrl();
+  const apiEnv = getApiEnv();
+  switch (apiEnv) {
+    case "dev":
+      return "http://relay.localhost:3000";
+    case "stag":
+      return "https://relay-stag.ultrasound.money";
+    case "prod":
+      return "https://relay.ultrasound.money";
+  }
 };
 
 export const getRelayUrl = () => {

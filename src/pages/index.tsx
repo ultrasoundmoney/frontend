@@ -13,7 +13,7 @@ import type { BaseFeePerGasStats } from "../mainsite/api/base-fee-per-gas-stats"
 import { fetchBaseFeePerGasStats } from "../mainsite/api/base-fee-per-gas-stats";
 import type { EthPriceStats } from "../mainsite/api/eth-price-stats";
 import { fetchEthPriceStats } from "../mainsite/api/eth-price-stats";
-import type { ApiResult } from "../mainsite/api/fetchers";
+import type { ApiResult } from "../fetchers";
 import type { GaugeRates } from "../mainsite/api/gauge-rates";
 import { fetchGaugeRates } from "../mainsite/api/gauge-rates";
 import type { ScarcityF } from "../mainsite/api/scarcity";
@@ -22,7 +22,7 @@ import type { SupplyChanges } from "../mainsite/api/supply-changes";
 import { fetchSupplyChanges } from "../mainsite/api/supply-changes";
 import type { SupplyPartsF } from "../mainsite/api/supply-parts";
 import { fetchSupplyParts } from "../mainsite/api/supply-parts";
-import Dashboard from "../mainsite/Dashboard";
+import Dashboards from "../mainsite/Dashboards";
 import SiteMetadata from "../site-metadata";
 
 type StaticProps = {
@@ -61,7 +61,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = pipe(
   T.Do,
   T.apS(
     "fetches",
-    TAlt.sequencyArrayPar({
+    TAlt.sequenceStructPar({
       "/api/fees/scarcity": fetchOrThrow(fetchScarcity),
       "/api/v2/fees/base-fee-per-gas": fetchOrThrow(fetchBaseFeePerGas),
       "/api/v2/fees/base-fee-per-gas-barrier": fetchOrThrow(
@@ -124,7 +124,7 @@ const IndexPage: NextPage<StaticProps> = ({ fallback }) => (
         fallback,
       }}
     >
-      <Dashboard />
+      <Dashboards />
     </SWRConfig>
   </BasicErrorBoundary>
 );

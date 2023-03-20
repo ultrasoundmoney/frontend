@@ -9,7 +9,7 @@ import BurnGauge from "./Gauges/BurnGauge";
 import IssuanceGauge from "./Gauges/IssuanceGauge";
 import SupplyGrowthGauge from "./Gauges/SupplyGrowthGauge";
 import { BaseText } from "../../components/Texts";
-import TimeFrameControl from "./TimeFrameControl";
+import TimeFrameControl from "../../components/TimeFrameControl";
 import ToggleSwitch from "../../components/ToggleSwitch";
 import { WidgetTitle } from "../../components/WidgetSubcomponents";
 
@@ -35,9 +35,8 @@ const Controls: FC<Props> = ({
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-x-4">
         <WidgetTitle>time frame</WidgetTitle>
         <TimeFrameControl
-          selectedTimeframe={timeFrame}
+          selectedTimeFrame={timeFrame}
           onSetTimeFrame={onSetTimeFrame}
-          mergeEnabled
         />
       </div>
       <div className="hidden flex-col gap-y-4 md:flex lg:flex-row lg:items-center lg:gap-x-4">

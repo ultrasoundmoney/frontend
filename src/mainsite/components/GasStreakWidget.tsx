@@ -70,21 +70,23 @@ const GasStreakWidget: FC = () => {
           count={deflationaryStreak?.count ?? undefined}
         />
         <div className="flex items-center gap-x-1">
-          <LabelUnitText className="mt-1">
-            <SkeletonText width="3rem">
-              {deflationaryStreak === undefined
-                ? undefined
-                : deflationaryStreak === null
-                ? 0
-                : formatZeroDecimals(deflationaryStreak.count)}
-            </SkeletonText>
-          </LabelUnitText>
-          <LabelText className="mt-1">
-            {deflationaryStreak?.count === 1 ? " block" : " blocks"}
-          </LabelText>
-          <LabelText className="mt-1" color="text-slateus-400">
-            above
-          </LabelText>
+          <div className="flex items-baseline gap-x-1">
+            <LabelUnitText className="mt-1">
+              <SkeletonText width="3rem">
+                {deflationaryStreak === undefined
+                  ? undefined
+                  : deflationaryStreak === null
+                  ? 0
+                  : formatZeroDecimals(deflationaryStreak.count)}
+              </SkeletonText>
+            </LabelUnitText>
+            <LabelText className="mt-1">
+              {deflationaryStreak?.count === 1 ? " block" : " blocks"}
+            </LabelText>
+            <LabelText className="mt-1" color="text-slateus-400">
+              above
+            </LabelText>
+          </div>
           <UltraSoundBarrier />
         </div>
       </div>

@@ -41,13 +41,14 @@ export const getApiEnv = (): Env => {
   }
 };
 
-export const getDomain = (): string => {
+export const getUsmDomain = (): string => {
   const apiEnv = getApiEnv();
-  return apiEnv === "dev"
-    ? "http://localhost"
-    : apiEnv === "stag"
-    ? "https://usm-i7x0.ultrasound.money"
-    : apiEnv === "prod"
-    ? "https://ultrasound.money"
-    : (undefined as never);
+  switch (apiEnv) {
+    case "dev":
+      return "http://localhost:3000";
+    case "stag":
+      return "https://usm-i7x0.ultrasound.money";
+    case "prod":
+      return "https://ultrasound.money";
+  }
 };

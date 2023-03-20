@@ -28,10 +28,8 @@ import GasSection from "./sections/GasSection";
 import JoinDiscordSection from "./sections/JoinDiscordSection";
 import PoapSection from "./sections/PoapSection";
 import SupplyDashboard from "./sections/SupplyDashboard";
+import AdminTools from "../components/AdminTools";
 
-const AdminTools = dynamic(() => import("../components/AdminTools"), {
-  ssr: false,
-});
 // We get hydration errors in production.
 // It's hard to tell what component causes them due to minification.
 // We stop SSR on all components, and slowly turn them back on one-by-one to see which cause hydration issues.

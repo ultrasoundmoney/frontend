@@ -1,17 +1,17 @@
 import type { FC } from "react";
 import { useCallback, useState } from "react";
+import Section from "../../components/Section";
+import TimeFrameControl from "../../components/TimeFrameControl";
+import { WidgetTitle } from "../../components/WidgetSubcomponents";
+import type { Unit } from "../../denomination";
 import BurnCategoryWidget from "../components/BurnCategoryWidget";
 import BurnLeaderboard from "../components/BurnLeaderboard";
 import BurnRecords from "../components/BurnRecords";
 import BurnTotal from "../components/BurnTotal";
 import CurrencyControl from "../components/CurrencyControl";
 import LatestBlocks from "../components/LatestBlocks";
-import TimeFrameControl from "../components/TimeFrameControl";
-import { WidgetTitle } from "../../components/WidgetSubcomponents";
-import type { Unit } from "../../denomination";
 import type { TimeFrame, TimeFrameNoMerge } from "../time-frames";
 import { getNextTimeFrameNoMerge } from "../time-frames";
-import Section from "../../components/Section";
 
 const BurnSection: FC = () => {
   const [timeFrame, setTimeFrame] = useState<TimeFrameNoMerge>("d1");
@@ -39,8 +39,9 @@ const BurnSection: FC = () => {
           <div className="row-start-1 flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-x-4">
             <WidgetTitle>time frame</WidgetTitle>
             <TimeFrameControl
-              selectedTimeframe={timeFrame}
+              selectedTimeFrame={timeFrame}
               onSetTimeFrame={handleSetTimeFrame}
+              version="no_merge"
             />
           </div>
           <div className="row-start-2 flex flex-col gap-y-4 md:row-start-1 lg:flex-row lg:items-center lg:gap-x-4">
@@ -49,12 +50,7 @@ const BurnSection: FC = () => {
           </div>
         </div>
       </div>
-      <div
-        className={`
-                grid grid-cols-1 gap-y-4
-                md:gap-x-4 lg:grid-cols-2
-              `}
-      >
+      <div className="grid w-full grid-cols-1 gap-y-4 md:gap-x-4 lg:grid-cols-2">
         <BurnTotal
           onClickTimeFrame={handleClickTimeFrame}
           timeFrame={timeFrame}

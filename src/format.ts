@@ -181,39 +181,41 @@ export const capitalize = (str: unknown) =>
     ? `${str[0]?.toUpperCase()}${str.slice(1)}`
     : undefined;
 
-export const formatDistance = (currentDateTime: Date, dt: Date) => {
-  const monthsDelta = DateFns.differenceInMonths(currentDateTime, dt);
-  const weeksDelta = DateFns.differenceInWeeks(currentDateTime, dt);
-  const daysDelta = DateFns.differenceInDays(currentDateTime, dt);
-  const hoursDelta = DateFns.differenceInHours(currentDateTime, dt);
-  const minutesDelta = DateFns.differenceInMinutes(currentDateTime, dt);
-  const secondsDelta = DateFns.differenceInSeconds(currentDateTime, dt);
+const SECONDS_PER_MINUTE = 60;
+const SECONDS_PER_HOUR = 60 * SECONDS_PER_MINUTE;
+const SECONDS_PER_DAY = 24 * SECONDS_PER_HOUR;
+const SECONDS_PER_WEEK = 7 * SECONDS_PER_DAY;
 
-  if (monthsDelta > 0) {
-    return `${monthsDelta}M`;
-  }
-
+/** Formats a distance in time using the smallest possible whole unit, but no smaller than seconds. */
+export const formatDuration = (seconds: number, long = false): string => {
+  const weeksDelta = Math.floor(seconds / SECONDS_PER_WEEK);
   if (weeksDelta > 0) {
-    return `${weeksDelta}w`;
+    return long ? `${weeksDelta} weeks` : `${weeksDelta}w`;
   }
 
+  const daysDelta = Math.floor((seconds % SECONDS_PER_WEEK) / SECONDS_PER_DAY);
   if (daysDelta > 0) {
-    return `${daysDelta}d`;
+    return long ? `${daysDelta} days` : `${daysDelta}d`;
   }
 
+  const hoursDelta = Math.floor((seconds % SECONDS_PER_DAY) / SECONDS_PER_HOUR);
   if (hoursDelta > 0) {
-    return `${hoursDelta}h`;
+    return long ? `${hoursDelta} hours` : `${hoursDelta}h`;
   }
 
+  const minutesDelta = Math.floor(
+    (seconds % SECONDS_PER_HOUR) / SECONDS_PER_MINUTE,
+  );
   if (minutesDelta > 0) {
-    return `${minutesDelta}m`;
+    return long ? `${minutesDelta} minutes` : `${minutesDelta}m`;
   }
 
-  if (secondsDelta > 0) {
-    return `${secondsDelta}s`;
-  }
+  return long ? `${seconds.toFixed(1)} seconds` : `${seconds.toFixed(1)}s`;
+};
 
-  return undefined;
+export const formatDurationToNow = (now: Date, dt: Date) => {
+  const distance = DateFns.differenceInSeconds(now, dt);
+  return formatDuration(distance);
 };
 
 export const formatBlockNumber = (number: unknown) =>

@@ -183,7 +183,8 @@ type Props = {
 
 const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const baseFeePerGasStatsTimeFrame = useBaseFeePerGasStatsTimeFrame(timeFrame);
-  const barrier = useBaseFeePerGasBarrier().barrier;
+  // Although the barrier is Gwei, the others are Wei.
+  const barrier = useBaseFeePerGasBarrier().barrier * WEI_PER_GWEI;
   const barPaddingFactor = 0.08;
 
   const lowest =

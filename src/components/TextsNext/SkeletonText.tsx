@@ -19,7 +19,7 @@ const SkeletonText: FC<Props> = ({
   children,
   className = "",
   inline = true,
-  width = "3rem",
+  width = 100,
 }) => {
   const { previewSkeletons } = useContext(FeatureFlagsContext);
 

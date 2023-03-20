@@ -26,7 +26,7 @@ export type ValidatorStats = {
 };
 
 export type Builder = {
-  extraData: string;
+  builderName: string;
   blockCount: number;
 };
 

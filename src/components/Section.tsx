@@ -39,7 +39,7 @@ const Title: FC<{
   >
     <h2
       className={`
-      flex
+        flex
         text-center font-inter
         text-2xl font-extralight text-white md:text-3xl xl:text-4xl
       `}

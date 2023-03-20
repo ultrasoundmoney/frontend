@@ -1,57 +1,134 @@
 import type { FC } from "react";
+import { useCallback } from "react";
+import { useState } from "react";
 import Section from "../../../components/Section";
-import CensoredTransactionsWidget from "./CensoredTransactionsWidget";
-import InclusionTimesWidget from "./InclusionTimesWidget";
+import LabelText from "../../../components/TextsNext/LabelText";
+import TimeFrameControl from "../../../components/TimeFrameControl";
+import { A, flow, N, OrdM, pipe } from "../../../fp";
+import type { BuilderCensorshipPerTimeFrame } from "../../api/censorship/builders";
+import type { LidoOperatorCensorshipPerTimeFrame } from "../../api/censorship/lido_operators";
+import type { RelayCensorshipPerTimeFrame } from "../../api/censorship/relays";
+import type { SanctionsDelayPerTimeFrame } from "../../api/censorship/sanctions_delay";
+import type { TransactionCensorshipPerTimeFrame } from "../../api/censorship/transaction_censorship";
+import BuilderCensorshipWidget from "./BuilderCensorshipWidget";
+import BuilderListWidget from "./BuilderListWidget";
+import LidoOperatorCensorshipWidget from "./LidoOperatorCensorshipWidget";
+import LidoOperatorListWidget from "./LidoOperatorListWidget";
 import RelayCensorshipWidget from "./RelayCensorshipWidget";
-import RelaysWidget from "./RelaysWidget";
+import RelayListWidget from "./RelayListWidget";
+import SanctionsDelayWidget from "./SanctionsDelayWidget";
+import TopSanctionsDelaysWidget from "./TopSanctionsDelaysWidget";
+import TransactionCensorshipListWidget from "./TransactionCensorshipListWidget";
+import type { CensoredTransaction } from "./TransactionCensorshipWidget";
 import TransactionCensorshipWidget from "./TransactionCensorshipWidget";
 
-const CensorshipSection: FC = () => {
+const byTookSecondsDesc = pipe(
+  N.Ord,
+  OrdM.reverse,
+  OrdM.contramap((transaction: CensoredTransaction) => transaction.delayBlocks),
+);
+
+const topDelaysFromTransactions = flow(
+  A.sort(byTookSecondsDesc),
+  A.takeLeft(10),
+);
+
+type Props = {
+  builderCensorshipPerTimeFrame: BuilderCensorshipPerTimeFrame;
+  lidoOperatorCensorshipPerTimeFrame: LidoOperatorCensorshipPerTimeFrame;
+  relayCensorshipPerTimeFrame: RelayCensorshipPerTimeFrame;
+  sanctionsDelayPerTimeFrame: SanctionsDelayPerTimeFrame;
+  transactionCensorshipPerTimeFrame: TransactionCensorshipPerTimeFrame;
+};
+
+const CensorshipSection: FC<Props> = ({
+  builderCensorshipPerTimeFrame,
+  lidoOperatorCensorshipPerTimeFrame,
+  relayCensorshipPerTimeFrame,
+  sanctionsDelayPerTimeFrame,
+  transactionCensorshipPerTimeFrame,
+}) => {
+  const [timeFrame, setTimeFrame] = useState<"d7" | "d30">("d7");
+  const builderCensorship = builderCensorshipPerTimeFrame[timeFrame];
+  const relayCensorship = relayCensorshipPerTimeFrame[timeFrame];
+  const lidoOperatorCensorship = lidoOperatorCensorshipPerTimeFrame[timeFrame];
+  const transactionCensorship = transactionCensorshipPerTimeFrame[timeFrame];
+  const sanctionsDelay = sanctionsDelayPerTimeFrame[timeFrame];
+  const topDelays = topDelaysFromTransactions(
+    transactionCensorship.transactions,
+  );
+
+  const handleClickTimeFrame = useCallback(() => {
+    setTimeFrame((timeFrame) => (timeFrame === "d7" ? "d30" : "d7"));
+  }, []);
+
   return (
-    <Section title="censorship" subtitle="not ultra sound" link="censorship">
-      <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-2">
-        <RelayCensorshipWidget />
-        <TransactionCensorshipWidget />
-        <RelaysWidget
-          relays={[
-            { name: "Flashbots", censoring: true, dominance: 0.603 },
-            {
-              name: "bloXroute",
-              description: "max profit",
-              dominance: 0.397,
-              censoring: false,
-            },
-          ]}
-        />
-        <CensoredTransactionsWidget
-          transactions={[
-            {
-              category: "OFAC",
-              hash: "0xf450",
-              inclusion: "2023-02-22T07:00:00Z",
-              took: 32,
-            },
-            {
-              category: "congestion",
-              hash: "0xa2d0",
-              inclusion: "2023-02-22T06:00:00Z",
-              took: 46,
-            },
-            {
-              category: "unknown",
-              hash: "0x2ba2",
-              inclusion: "2023-02-22T05:00:00Z",
-              took: 103,
-            },
-            {
-              category: "OFAC",
-              hash: "0x55bf",
-              inclusion: "2023-02-22T04:00:00Z",
-              took: 37,
-            },
-          ]}
-        />
-        <InclusionTimesWidget />
+    <Section
+      title="sanctions censorship"
+      subtitle="not ultra sound"
+      link="sanctions-censorship"
+    >
+      <div className="flex justify-center p-8 w-full rounded-lg bg-slateus-700">
+        <div className="flex gap-4 items-center">
+          <LabelText>time frame</LabelText>
+          <TimeFrameControl
+            selectedTimeFrame={timeFrame}
+            onSetTimeFrame={(timeFrame) =>
+              // Tricky to type, but in version "censorship" only "d7" and "d30" are set.
+              setTimeFrame(timeFrame as "d7" | "d30")
+            }
+            version="censorship"
+          />
+        </div>
+      </div>
+      <div className="grid grid-cols-1 gap-4 w-full lg:grid-cols-2">
+        <div className="flex flex-col gap-4">
+          <RelayCensorshipWidget
+            onClickTimeFrame={handleClickTimeFrame}
+            relayCensorship={relayCensorship}
+            timeFrame={timeFrame}
+          />
+          <RelayListWidget
+            relays={relayCensorship.relays}
+            timeFrame={timeFrame}
+          />
+          <BuilderCensorshipWidget
+            builderCensorship={builderCensorship}
+            onClickTimeFrame={handleClickTimeFrame}
+            timeFrame={timeFrame}
+          />
+          <BuilderListWidget builderGroups={builderCensorship.builderGroups} />
+          <SanctionsDelayWidget
+            onClickTimeFrame={handleClickTimeFrame}
+            sanctionsDelay={sanctionsDelay}
+            timeFrame={timeFrame}
+          />
+        </div>
+        <div className="flex flex-col gap-4">
+          <LidoOperatorCensorshipWidget
+            lidoOperatorCensorship={lidoOperatorCensorship}
+            onClickTimeFrame={handleClickTimeFrame}
+            timeFrame={timeFrame}
+          />
+          <LidoOperatorListWidget
+            lidoOperatorCensorship={lidoOperatorCensorship}
+          />
+          <TransactionCensorshipWidget
+            onClickTimeFrame={handleClickTimeFrame}
+            transactionCensorship={transactionCensorship}
+            timeFrame={timeFrame}
+          />
+          <TransactionCensorshipListWidget
+            onClickTimeFrame={handleClickTimeFrame}
+            transactions={transactionCensorship.transactions}
+            timeFrame={timeFrame}
+          />
+          <TopSanctionsDelaysWidget
+            onClickTimeFrame={handleClickTimeFrame}
+            topDelays={topDelays}
+            timeFrame={timeFrame}
+          />
+        </div>
       </div>
     </Section>
   );

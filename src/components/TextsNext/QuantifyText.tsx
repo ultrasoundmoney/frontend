@@ -6,9 +6,11 @@ type Props = {
   children: ReactNode;
   className?: string;
   color?: string;
+  lineHeight?: string;
   size?: string;
   unitPostfix?: string;
   unitPostfixColor?: string;
+  unitPostfixMargin?: string;
 };
 
 const QuantifyText: FC<Props> = ({
@@ -16,26 +18,32 @@ const QuantifyText: FC<Props> = ({
   children,
   className,
   color,
+  lineHeight,
+  size,
   unitPostfix,
   unitPostfixColor = "text-slateus-400",
-  size,
+  unitPostfixMargin = "ml-1",
 }) => (
-  <div className={className}>
-    <BaseText font="font-roboto" color={color} size={size}>
-      {children}
-      {amountPostfix === undefined ? undefined : amountPostfix}
-      {unitPostfix && (
-        <BaseText
-          font="font-roboto"
-          color={unitPostfixColor}
-          className="ml-1"
-          size={size}
-        >
-          {unitPostfix}
-        </BaseText>
-      )}
-    </BaseText>
-  </div>
+  <BaseText
+    className={className}
+    color={color}
+    font="font-roboto"
+    lineHeight={lineHeight}
+    size={size}
+  >
+    {children}
+    {amountPostfix}
+    {unitPostfix && (
+      <BaseText
+        font="font-roboto"
+        color={unitPostfixColor}
+        className={unitPostfixMargin}
+        size={size}
+      >
+        {unitPostfix}
+      </BaseText>
+    )}
+  </BaseText>
 );
 
 export default QuantifyText;

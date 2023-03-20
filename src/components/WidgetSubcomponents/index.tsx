@@ -23,7 +23,7 @@ export const WidgetTitle: FC<{
   children: ReactNode;
   className?: string;
 }> = ({ className, children }) => (
-  <p
+  <span
     className={`
       font-inter text-xs
       font-light uppercase
@@ -32,5 +32,5 @@ export const WidgetTitle: FC<{
     `}
   >
     {children}
-  </p>
+  </span>
 );

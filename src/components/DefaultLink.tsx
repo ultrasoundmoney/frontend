@@ -3,7 +3,6 @@ import type { FC, ReactNode } from "react";
 type Props = {
   children: ReactNode;
   className?: string;
-  enableHover?: boolean;
   href: string | undefined;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
@@ -12,15 +11,14 @@ type Props = {
 const DefaultLink: FC<Props> = ({
   children,
   className = "",
-  enableHover = true,
   href,
   onMouseEnter,
   onMouseLeave,
 }) => (
   <a
     className={`
-      active:brightness-75
-      ${enableHover ? "hover:brightness-90" : ""}
+      ${href !== undefined ? "active:brightness-75" : ""}
+      ${href !== undefined ? "hover:brightness-[85%]" : ""}
       ${className}
     `}
     href={href}
