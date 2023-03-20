@@ -15,7 +15,8 @@ import type { TimeFrame} from "../time-frames";
 const BurnSection: FC<{
   timeFrame: TimeFrame;
   onClickTimeFrame: () => void;
-}> = ({ timeFrame, onClickTimeFrame }) => {
+  onSetTimeFrame: (timeFrame: TimeFrame) => void;
+}> = ({ timeFrame, onClickTimeFrame, onSetTimeFrame }) => {
   const [unit, setUnit] = useState<Unit>("eth");
 
   const onSetUnit = useCallback(setUnit, [setUnit]);
@@ -28,7 +29,7 @@ const BurnSection: FC<{
             <WidgetTitle>time frame</WidgetTitle>
             <TimeFrameControl
               selectedTimeFrame={timeFrame}
-              onSetTimeFrame={onClickTimeFrame}
+              onSetTimeFrame={onSetTimeFrame}
             />
           </div>
           <div className="row-start-2 flex flex-col gap-y-4 md:row-start-1 lg:flex-row lg:items-center lg:gap-x-4">
