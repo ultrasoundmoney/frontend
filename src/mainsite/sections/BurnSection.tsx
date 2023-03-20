@@ -10,26 +10,22 @@ import BurnRecords from "../components/BurnRecords";
 import BurnTotal from "../components/BurnTotal";
 import CurrencyControl from "../components/CurrencyControl";
 import LatestBlocks from "../components/LatestBlocks";
-import type { TimeFrame, TimeFrameNoMerge } from "../time-frames";
-import { getNextTimeFrameNoMerge } from "../time-frames";
+import type { TimeFrame} from "../time-frames";
+import { getNextTimeFrame } from "../time-frames";
 
 const BurnSection: FC = () => {
-  const [timeFrame, setTimeFrame] = useState<TimeFrameNoMerge>("d1");
+  const [timeFrame, setTimeFrame] = useState<TimeFrame>("d1");
   const [unit, setUnit] = useState<Unit>("eth");
 
   const handleSetTimeFrame = useCallback(
-    (timeFrame: TimeFrame) => {
-      timeFrame === "since_merge"
-        ? setTimeFrame("since_burn")
-        : setTimeFrame(timeFrame);
-    },
+    setTimeFrame,
     [setTimeFrame],
   );
 
   const onSetUnit = useCallback(setUnit, [setUnit]);
 
   const handleClickTimeFrame = useCallback(() => {
-    setTimeFrame((timeFrame) => getNextTimeFrameNoMerge(timeFrame));
+    setTimeFrame((timeFrame) => getNextTimeFrame(timeFrame));
   }, []);
 
   return (
@@ -41,7 +37,6 @@ const BurnSection: FC = () => {
             <TimeFrameControl
               selectedTimeFrame={timeFrame}
               onSetTimeFrame={handleSetTimeFrame}
-              version="no_merge"
             />
           </div>
           <div className="row-start-2 flex flex-col gap-y-4 md:row-start-1 lg:flex-row lg:items-center lg:gap-x-4">

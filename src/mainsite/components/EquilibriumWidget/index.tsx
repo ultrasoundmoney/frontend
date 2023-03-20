@@ -190,10 +190,10 @@ const EquilibriumWidget = () => {
     setStakingAprFraction(initialStakingApr);
     setNowMarker(initialStakingApr);
     setNonStakingBurnFraction(
-      burnAsFraction(nonStakedSupply, burnRates.burnRateAll),
+      burnAsFraction(nonStakedSupply, burnRates.burnRateSinceBurn),
     );
     setBurnMarkers({
-      all: burnAsFraction(nonStakedSupply, burnRates.burnRateAll),
+      all: burnAsFraction(nonStakedSupply, burnRates.burnRateSinceBurn),
       d1: burnAsFraction(nonStakedSupply, burnRates.burnRate24h),
       d30: burnAsFraction(nonStakedSupply, burnRates.burnRate30d),
       d7: burnAsFraction(nonStakedSupply, burnRates.burnRate7d),

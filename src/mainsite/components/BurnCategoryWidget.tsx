@@ -8,8 +8,7 @@ import Colors from "../../colors";
 import { WEI_PER_ETH } from "../../eth-units";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
-import type { TimeFrameNoMerge } from "../time-frames";
-import { toOldTimeFrame } from "../time-frames";
+import type { TimeFrame } from "../time-frames";
 import { MoneyAmount } from "../components/Amount";
 import { BaseText } from "../../components/Texts";
 import BodyText from "../../components/TextsNext/BodyText";
@@ -309,7 +308,7 @@ const buildMiscCategory = (
 
 type Props = {
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrameNoMerge;
+  timeFrame: TimeFrame;
 };
 
 const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
@@ -321,7 +320,9 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const [hoveringMisc, setHoveringMisc] = useState(false);
   const { showCategoryCounts } = useContext(FeatureFlagsContext);
 
-  const selectedBurnCategories = burnCategories?.[toOldTimeFrame(timeFrame)];
+  // TODO: Remove workaround when "since_merge" is added to the burnCategories
+  const selectedBurnCategories =
+    burnCategories?.[timeFrame == "since_merge" ? "since_burn" : timeFrame];
 
   const nft = selectedBurnCategories?.find(
     ({ category }) => category === "nft",

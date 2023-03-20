@@ -3,14 +3,14 @@ import {
   WidgetBackground,
   WidgetTitle,
 } from "../../components/WidgetSubcomponents";
-import type { TimeFrameNoMerge } from "../time-frames";
+import type { TimeFrame } from "../time-frames";
 import TimeFrameIndicator from "./TimeFrameIndicator";
 
 type Group1BaseProps = {
   backgroundClassName?: HTMLAttributes<HTMLDivElement>["className"];
   children: ReactNode;
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrameNoMerge;
+  timeFrame: TimeFrame;
   title: string;
 };
 

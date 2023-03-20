@@ -12,20 +12,21 @@ import {
   useGroupedAnalysis1,
 } from "../../api/grouped-analysis-1";
 import type { LeaderboardEntry, Leaderboards } from "../../api/leaderboards";
-import type { TimeFrameNoMerge } from "../../time-frames";
+import type { TimeFrame } from "../../time-frames";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import BurnGroupBase from "../BurnGroupBase";
 import FamTooltip from "../FamTooltip";
 import Modal from "../Modal";
 import LeaderboardRow from "./LeaderboardRow";
 
-const feePeriodToUpdateMap: Record<TimeFrameNoMerge, keyof Leaderboards> = {
+const feePeriodToUpdateMap: Record<TimeFrame, keyof Leaderboards> = {
   m5: "leaderboard5m",
   h1: "leaderboard1h",
   d1: "leaderboard24h",
   d7: "leaderboard7d",
   d30: "leaderboard30d",
-  since_burn: "leaderboardAll",
+  since_merge: "leaderboardSinceMerge",
+  since_burn: "leaderboardSinceBurn",
 };
 
 const formatName = (rawName: unknown, address: unknown) => {
@@ -187,7 +188,7 @@ const useTooltip = () => {
 
 type Props = {
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrameNoMerge;
+  timeFrame: TimeFrame;
   unit: Unit;
 };
 

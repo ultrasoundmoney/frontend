@@ -19,8 +19,10 @@ export type BurnRates = {
   burnRate30dUsd: number;
   burnRate7d: WeiPerMinute;
   burnRate7dUsd: number;
-  burnRateAll: WeiPerMinute;
-  burnRateAllUsd: number;
+  burnRateSinceMerge: WeiPerMinute;
+  burnRateSinceMergeUsd: number;
+  burnRateSinceBurn: WeiPerMinute;
+  burnRateSinceBurnUsd: number;
 };
 
 export type FeesBurned = {
@@ -34,8 +36,10 @@ export type FeesBurned = {
   feesBurned7dUsd: number;
   feesBurned30d: WeiNumber;
   feesBurned30dUsd: number;
-  feesBurnedAll: WeiNumber;
-  feesBurnedAllUsd: number;
+  feesBurnedSinceMerge: WeiNumber;
+  feesBurnedSinceMergeUsd: number;
+  feesBurnedSinceBurn: WeiNumber;
+  feesBurnedSinceBurnUsd: number;
 };
 
 export type LatestBlock = {

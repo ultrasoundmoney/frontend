@@ -5,7 +5,7 @@ import type { DateTimeString } from "../../time";
 import type { ApiResult } from "../../fetchers";
 import { fetchApiJson } from "./fetchers";
 import { fetchJsonSwr } from "./fetchers";
-import { PARIS_TIMESTAMP } from "../hardforks/paris.ts";
+import { MERGE_TIMESTAMP } from "../hardforks/paris";
 
 export type BaseFeeAtTime = {
   block_number: number | null;
@@ -31,16 +31,16 @@ export const fetchBaseFeeOverTime = (): Promise<ApiResult<BaseFeeOverTime>> =>
   fetchApiJson<BaseFeeOverTime>(url);
 
 const filterDaysSinceMerge = (input: BaseFeeAtTime[]): BaseFeeAtTime[] => {
-    return input.filter((item) => {
-        return isAfter(Date.parse(item.timestamp), PARIS_TIMESTAMP);
-    })
-}
+  return input.filter((item) => {
+    return isAfter(Date.parse(item.timestamp), MERGE_TIMESTAMP);
+  });
+};
 
 export const useBaseFeeOverTime = (): BaseFeeOverTime | undefined => {
   const { data } = useSWR<BaseFeeOverTime>(url, fetchJsonSwr, {
     refreshInterval: secondsToMilliseconds(4),
   });
-  if(data != null && data.since_merge === null) {
+  if (data != null && data.since_merge === null) {
     data.since_merge = filterDaysSinceMerge(data.since_burn);
   }
 
