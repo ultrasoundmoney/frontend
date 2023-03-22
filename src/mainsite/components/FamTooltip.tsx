@@ -112,7 +112,14 @@ const Tooltip: FC<TooltipProps> = ({
         className="absolute right-5 top-5 w-6 cursor-pointer select-none hover:brightness-90 active:brightness-110"
         onClick={onClickClose}
       />
-      {(getXAndY && properties)
+      <Image
+        src={imageUrl ?? "/leaderboard-images/question-mark-v2.svg"}
+        alt="Fam image"
+        width={96}
+        height={96}
+        className="mx-auto h-20 w-20 select-none rounded-full"
+      />
+      {/* {(getXAndY && properties)
         ? (
           <div
             className={`${styles["fam-image-sprite"]} mx-auto h-20 w-20 select-none rounded-full`}
@@ -132,7 +139,7 @@ const Tooltip: FC<TooltipProps> = ({
             className="mx-auto h-20 w-20 select-none rounded-full"
           />
         )
-      }
+      } */}
       <BodyText className="font-semibold">
         <Twemoji imageClassName="inline-block align-middle h-5 ml-1" wrapper>
           {title}
