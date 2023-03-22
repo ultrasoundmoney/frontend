@@ -83,7 +83,7 @@ const ImageWithOnClickTooltip: FC<ImageWithOnClickTooltipProps> = ({
             ${excluded ? "cursor-move !brightness-[0.25]" : "cursor-pointer"}
             relative
             rounded-full
-            md:hover:brightness-125
+            hover:brightness-125
             ${className}
             handle-className-${handle?.toLowerCase()}
           `}

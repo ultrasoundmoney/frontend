@@ -390,10 +390,10 @@ const TwitterFam: FC = () => {
       <>
         <div
           ref={setPopperEl}
-          className="z-10 p-4 block"
+          className="z-10 hidden p-4 md:block"
           style={{
             ...popperStyles.popper,
-            visibility: showTooltip ? "visible" : "hidden",
+            visibility: showTooltip && md ? "visible" : "hidden",
           }}
           {...attributes.popper}
           // onMouseEnter={handleTooltipEnter}
@@ -408,13 +408,12 @@ const TwitterFam: FC = () => {
             links={selectedItem?.links}
             title={selectedItem?.name}
             twitterUrl={selectedItem?.profileUrl}
-            // width="min-w-[20rem] max-w-sm"
-            width="md:min-w-[20rem] md:max-w-sm min-w-[18rem] max-w-md"
+            width="min-w-[20rem] max-w-sm"
             getXAndY={getXAndY}
             properties={properties ?? { width: 0, height: 0 }}
           />
         </div>
-        {/* <Modal
+        <Modal
           onClickBackground={() => handleClickAway()}
           show={!md && selectedItem !== undefined}
         >
@@ -433,7 +432,7 @@ const TwitterFam: FC = () => {
               properties={properties ?? { width: 0, height: 0 }}
             />
           )}
-        </Modal> */}
+        </Modal>
       </>
     </>
   );
