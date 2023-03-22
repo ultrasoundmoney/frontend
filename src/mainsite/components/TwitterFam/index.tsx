@@ -250,7 +250,7 @@ const TwitterFam: FC = () => {
       <BasicErrorBoundary>
         <TransformWrapper
           ref={panZoomRef}
-          initialScale={4.8}
+          initialScale={md ? 4.8 : 3}
           initialPositionX={0}
           initialPositionY={0}
           wheel={{ wheelDisabled: true }}
@@ -335,7 +335,7 @@ const TwitterFam: FC = () => {
                             event.preventDefault();
                             const el = filteredProfiles?.[currentProfileShow]?.handle.toLowerCase()
                             if (el) {
-                              zoomToElement(document.getElementById(el) || '', 4.8);
+                              zoomToElement(document.getElementById(el) || '', md ? 4.8 : 3);
                               setCurrentProfileShow((prev: number) => {
                                 if (prev === filteredProfilesCount - 1) {
                                   return 0;
