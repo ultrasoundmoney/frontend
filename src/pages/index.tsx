@@ -18,8 +18,6 @@ import type { GaugeRates } from "../mainsite/api/gauge-rates";
 import { fetchGaugeRates } from "../mainsite/api/gauge-rates";
 import type { ScarcityF } from "../mainsite/api/scarcity";
 import { fetchScarcity } from "../mainsite/api/scarcity";
-import type { SupplyChanges } from "../mainsite/api/supply-changes";
-import { fetchSupplyChanges } from "../mainsite/api/supply-changes";
 import type { SupplyPartsF } from "../mainsite/api/supply-parts";
 import { fetchSupplyParts } from "../mainsite/api/supply-parts";
 import Dashboards from "../mainsite/Dashboards";
@@ -40,7 +38,6 @@ type StaticProps = {
     "/api/v2/fees/eth-price-stats": EthPriceStats;
     "/api/v2/fees/gauge-rates": GaugeRates;
     "/api/v2/fees/supply-parts": SupplyPartsF;
-    "/api/v2/fees/supply-changes": SupplyChanges;
   };
 };
 
@@ -70,7 +67,6 @@ export const getStaticProps: GetStaticProps<StaticProps> = pipe(
       "/api/v2/fees/eth-price-stats": fetchOrThrow(fetchEthPriceStats),
       "/api/v2/fees/gauge-rates": fetchOrThrow(fetchGaugeRates),
       "/api/v2/fees/supply-parts": fetchOrThrow(fetchSupplyParts),
-      "/api/v2/fees/supply-changes": fetchOrThrow(fetchSupplyChanges),
     }),
   ),
   T.apS("baseFeePerGasStats", fetchOrThrow(fetchBaseFeePerGasStats)),
