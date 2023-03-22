@@ -360,7 +360,7 @@ const TwitterFam: FC = () => {
                           <button
                             className={`
                               ${followingYouStyles.showMe}
-                              ${searchValue && filteredProfilesCount > 0 ? `!-ml-[165px] md:!-ml-[197px]` : `!-ml-[103px] md:!-ml-[134px]`}
+                              ${searchValue && filteredProfilesCount > 0 ? `!-ml-[165px] md:!-ml-[197px]` : `!-ml-[103px] md:!-ml-[133px]`}
                               select-none rounded-full
                               border border-white
                               bg-transparent px-4 md:px-5
