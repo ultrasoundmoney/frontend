@@ -59,7 +59,7 @@ export const useTooltip = () => {
           setShowTooltip(false);
           setSelectedItem(undefined);
         }
-      }, 150);
+      }, 50);
 
       return () => window.clearTimeout(id);
     },
@@ -250,7 +250,7 @@ const TwitterFam: FC = () => {
       <BasicErrorBoundary>
         <TransformWrapper
           ref={panZoomRef}
-          initialScale={md ? 4.8 : 3.5}
+          initialScale={4.5}
           initialPositionX={0}
           initialPositionY={0}
           wheel={{ wheelDisabled: true }}
@@ -335,7 +335,7 @@ const TwitterFam: FC = () => {
                             event.preventDefault();
                             const el = filteredProfiles?.[currentProfileShow]?.handle.toLowerCase()
                             if (el) {
-                              zoomToElement(document.getElementById(el) || '', md ? 4.8 : 3.5);
+                              zoomToElement(document.getElementById(el) || '', 4.5);
                               setCurrentProfileShow((prev: number) => {
                                 if (prev === filteredProfilesCount - 1) {
                                   return 0;
