@@ -171,7 +171,7 @@ const TimeFrameControl: FC<Props> = ({
       onSetTimeFrame={onSetTimeFrame}
     />
   ) : (
-    <div className="flex flex-row items-center lg:gap-x-1">
+    <div className="flex flex-row flex-wrap items-center lg:gap-x-1">
       {(version === "all"
         ? timeFrames
         : version === "no_merge"
