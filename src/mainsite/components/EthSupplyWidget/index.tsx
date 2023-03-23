@@ -11,11 +11,13 @@ import _first from "lodash/first";
 import _last from "lodash/last";
 import _merge from "lodash/merge";
 import type { FC } from "react";
+import { useContext, useState } from "react";
 import { useMemo } from "react";
 import colors from "../../../colors";
 import LabelText from "../../../components/TextsNext/LabelText";
 import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../../components/WidgetSubcomponents";
+import { FeatureFlagsContext } from "../../../feature-flags";
 import {
   formatPercentFiveDecimalsSigned,
   formatPercentThreeDecimalsSigned,
@@ -105,7 +107,9 @@ const baseOptions: Highcharts.Options = {
     symbolWidth: 0,
     labelFormatter: function () {
       const color =
-        this.index === 0
+        this.visible === false
+          ? "bg-slateus-400 opacity-60"
+          : this.index === 0
           ? "bg-[#62A2F3]"
           : this.index === 1
           ? "bg-[#FF891D]"
@@ -113,7 +117,10 @@ const baseOptions: Highcharts.Options = {
       return `
         <div class="flex flex-row gap-x-2 items-center">
           <div class="w-2 h-2 ${color} rounded-full"></div>
-          <div class="text-xs font-normal font-roboto text-slateus-400">
+          <div class="
+            text-xs font-normal font-roboto text-slateus-200
+            ${this.visible ? "" : "opacity-60"}
+          ">
             ${this.name}
           </div>
         </div>
@@ -129,11 +136,6 @@ const baseOptions: Highcharts.Options = {
   credits: { enabled: false },
   plotOptions: {
     series: {
-      events: {
-        legendItemClick: function () {
-          return false;
-        },
-      },
       marker: {
         lineColor: "white",
         radius: 3,
@@ -266,6 +268,13 @@ const optionsFromSupplySeriesCollection = (
   supplySeriesCollection: SupplySeriesCollection,
   simulateProofOfWork: boolean,
   timeFrame: TimeFrame,
+  enableSupplyLegendClick: boolean,
+  posVisible: boolean,
+  powVisible: boolean,
+  btcVisible: boolean,
+  onPosVisibilityChange: (visible: boolean) => void,
+  onPowVisibilityChange: (visible: boolean) => void,
+  onBtcVisibilityChange: (visible: boolean) => void,
 ): Highcharts.Options => {
   const { posSeries, powSeries, btcSeriesScaled, btcSeries } =
     supplySeriesCollection;
@@ -313,14 +322,17 @@ const optionsFromSupplySeriesCollection = (
             y: timeFrame === "since_burn" ? -6 : 2,
             useHTML: true,
             formatter:
-              btcSeries === undefined
+              btcSeries === undefined || !btcVisible
                 ? undefined
                 : getSupplyChangeLabel(btcSeries),
           },
         },
         {
           id: "eth-issuance-pos",
-          value: lastPointPos === undefined ? undefined : lastPointPos[1],
+          value:
+            lastPointPos === undefined || !posVisible
+              ? undefined
+              : lastPointPos[1],
           width: 0,
           label: {
             style: deltaLegendLableStyle,
@@ -416,6 +428,15 @@ const optionsFromSupplySeriesCollection = (
         id: SUPPLY_SINCE_MERGE_SERIES_ID,
         type: "spline",
         name: "ETH",
+        visible: posVisible,
+        events: {
+          legendItemClick: function () {
+            if (!enableSupplyLegendClick) {
+              return false;
+            }
+            onPosVisibilityChange(this.visible);
+          },
+        },
         data:
           lastPointPos !== undefined && posSeries !== undefined
             ? [
@@ -457,13 +478,21 @@ const optionsFromSupplySeriesCollection = (
       },
       {
         color: "#FF891D",
-        visible: simulateProofOfWork,
+        visible: btcVisible && simulateProofOfWork,
         enableMouseTracking: simulateProofOfWork,
         id: BITCOIN_SUPPLY_ID,
         type: "spline",
         shadow: {
           color: "#FF891D33",
           width: 15,
+        },
+        events: {
+          legendItemClick: function () {
+            if (!enableSupplyLegendClick) {
+              return false;
+            }
+            onBtcVisibilityChange(this.visible);
+          },
         },
         data:
           btcSeriesScaled === undefined
@@ -492,12 +521,20 @@ const optionsFromSupplySeriesCollection = (
       },
       {
         color: colors.slateus100,
-        visible: simulateProofOfWork,
+        visible: powVisible && simulateProofOfWork,
         enableMouseTracking: simulateProofOfWork,
         id: SUPPLY_SINCE_MERGE_POW_SERIES_ID,
         name: "ETH (PoW)",
         showInLegend: simulateProofOfWork,
         type: "spline",
+        events: {
+          legendItemClick: function () {
+            if (!enableSupplyLegendClick) {
+              return false;
+            }
+            onPowVisibilityChange(this.visible);
+          },
+        },
         data:
           powSeries === undefined
             ? undefined
@@ -523,7 +560,7 @@ const optionsFromSupplySeriesCollection = (
       },
       {
         color: "transparent",
-        visible: simulateProofOfWork,
+        visible: simulateProofOfWork && powVisible,
         type: "spline",
         data: powSeries,
         enableMouseTracking: false,
@@ -571,6 +608,12 @@ const EthSupplyWidget: FC<Props> = ({
   simulateProofOfWork,
   timeFrame,
 }) => {
+  const [posVisible, setPosVisible] = useState(true);
+  const [powVisible, setPowVisible] = useState(true);
+  const [btcVisible, setBtcVisible] = useState(true);
+  const { enableSupplyLegendClick } = useContext(FeatureFlagsContext);
+  console.log(posVisible, powVisible, btcVisible);
+
   const supplySeriesCollections = useSupplySeriesCollections();
 
   const options = useMemo(
@@ -583,11 +626,26 @@ const EthSupplyWidget: FC<Props> = ({
             supplySeriesCollections,
             simulateProofOfWork,
             timeFrame,
+            enableSupplyLegendClick,
+            posVisible,
+            powVisible,
+            btcVisible,
+            setPosVisible,
+            setPowVisible,
+            setBtcVisible,
           ),
         ),
         O.getOrElse(() => baseOptions),
       ),
-    [simulateProofOfWork, supplySeriesCollections, timeFrame],
+    [
+      btcVisible,
+      enableSupplyLegendClick,
+      posVisible,
+      powVisible,
+      simulateProofOfWork,
+      supplySeriesCollections,
+      timeFrame,
+    ],
   );
 
   return (

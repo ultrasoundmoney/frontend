@@ -27,3 +27,9 @@ export type WeiNumber = number;
 export type GweiNumber = number;
 
 export type EthNumber = number;
+
+// When a number is available in both ETH and USD.
+export type EthUsdAmount = {
+  eth: EthNumber;
+  usd: number;
+};

@@ -66,7 +66,7 @@ const Digits: FC<{ children: JSBI }> = ({ children }) => {
   );
 
   return (
-    <div className="relative -mr-1 w-[26px] [@media(min-width:375px)]:w-9">
+    <div className="relative -mr-1 w-[30px] md:mt-[1px] md:w-[38px]">
       <div
         // We need whitespace-normal to counteract the whitespace-nowrap from our parent.
         className={`
@@ -74,10 +74,11 @@ const Digits: FC<{ children: JSBI }> = ({ children }) => {
           h-2 w-3
           overflow-hidden
           whitespace-normal break-all
-          text-[6px]
-          leading-[0.4rem]
+          text-[7px]
+          leading-[6px]
           text-white
-          [@media(min-width:375px)]:text-[8px] [@media(min-width:375px)]:leading-[0.5rem]
+          md:text-[9px]
+          md:leading-[8px]
         `}
       >
         {ethFirstTwoDecimals(children) === 0 ? (
@@ -98,10 +99,10 @@ const Digits: FC<{ children: JSBI }> = ({ children }) => {
         className={`
           left-0 block
           whitespace-normal break-all
-          text-[6px]
-          leading-[0.4rem] text-slateus-200
-          [@media(min-width:375px)]:text-[8px]
-          [@media(min-width:375px)]:leading-[0.5rem]
+          text-[7px]
+          leading-[6px] text-slateus-200
+          md:text-[9px]
+          md:leading-[8px]
         `}
       >
         &nbsp;&nbsp;
@@ -174,7 +175,7 @@ const PreciseEth: FC<Props> = ({ amount, justify }) => {
       ${blinkBlue ? "animate-flash-blue" : ""}
       ${blinkOrange ? "animate-flash-orange" : ""}
     `}
-      size="text-[1.30rem] [@media(min-width:375px)]:text-[1.70rem]"
+      size="text-2xl md:text-3xl"
       skeletonWidth={"3rem"}
       unitText={"ETH"}
     >

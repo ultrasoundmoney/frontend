@@ -1,15 +1,17 @@
 import type { FC } from "react";
 import { useMemo } from "react";
 import CountUp from "react-countup";
-import { BaseText } from "../../../components/Texts";
 import LabelText from "../../../components/TextsNext/LabelText";
+import QuantifyText from "../../../components/TextsNext/QuantifyText";
 import SkeletonText from "../../../components/TextsNext/SkeletonText";
 import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../../components/WidgetSubcomponents";
-import type { EthNumber } from "../../../eth-units";
-import { formatTwoDigitsSigned } from "../../../format";
+import type { Unit } from "../../../denomination";
+import { formatTwoDigitsSigned, formatZeroDigitsSigned } from "../../../format";
 import { O, pipe } from "../../../fp";
 import type { DateTimeString } from "../../../time";
+import { useAverageEthPrice } from "../../api/average-eth-price";
+import { useBurnSums } from "../../api/burn-sums";
 import type { SupplyChangesPerTimeFrame } from "../../api/supply-changes";
 import { supplyChangesFromCollections } from "../../api/supply-changes";
 import { useSupplySeriesCollections } from "../../api/supply-over-time";
@@ -22,12 +24,21 @@ const deltaFromChanges = (
   supplyChanges: O.Option<SupplyChangesPerTimeFrame>,
   timeFrame: TimeFrame,
   simulateProofOfWork: boolean,
-): O.Option<EthNumber> =>
+  unit: Unit,
+): O.Option<number> =>
   pipe(
     supplyChanges,
     O.map((supplyChanges) =>
-      pipe(supplyChanges[timeFrame], (delta) =>
-        simulateProofOfWork ? delta.powDelta : delta.posDelta,
+      pipe(
+        supplyChanges[timeFrame],
+        (supplyChange) =>
+          simulateProofOfWork ? supplyChange.delta.pow : supplyChange.delta.pos,
+        (delta) =>
+          unit === "eth"
+            ? delta.eth
+            : unit === "usd"
+            ? delta.usd
+            : (undefined as never),
       ),
     ),
   );
@@ -59,6 +70,7 @@ type Props = {
   onSimulateProofOfWork: () => void;
   simulateProofOfWork: boolean;
   timeFrame: TimeFrame;
+  unit: Unit;
 };
 
 const SupplyChange: FC<Props> = ({
@@ -66,13 +78,32 @@ const SupplyChange: FC<Props> = ({
   onSimulateProofOfWork,
   simulateProofOfWork,
   timeFrame,
+  unit,
 }) => {
+  const burnSums = useBurnSums();
   const supplySeriesCollections = useSupplySeriesCollections();
+  const averageEthPrice = useAverageEthPrice();
   const supplyChanges = useMemo(
-    () => pipe(supplySeriesCollections, O.map(supplyChangesFromCollections)),
-    [supplySeriesCollections],
+    () =>
+      pipe(
+        supplySeriesCollections,
+        O.map((collection) =>
+          supplyChangesFromCollections(
+            collection,
+            averageEthPrice[timeFrame],
+            burnSums[timeFrame].sum[unit],
+            timeFrame,
+          ),
+        ),
+      ),
+    [averageEthPrice, burnSums, supplySeriesCollections, timeFrame, unit],
   );
-  const delta = deltaFromChanges(supplyChanges, timeFrame, simulateProofOfWork);
+  const delta = deltaFromChanges(
+    supplyChanges,
+    timeFrame,
+    simulateProofOfWork,
+    unit,
+  );
 
   return (
     <WidgetErrorBoundary title="supply change">
@@ -86,13 +117,15 @@ const SupplyChange: FC<Props> = ({
             />
           </div>
           <div className="flex">
-            <BaseText
-              font="font-roboto"
-              className={`
-                bg-gradient-to-r bg-clip-text
-                text-3xl text-transparent
+            <QuantifyText
+              color={`
+                text-transparent bg-gradient-to-r bg-clip-text
                 ${gradientFromDelta(delta)}
               `}
+              size="text-2xl md:text-3xl"
+              unitPostfix={unit === "eth" ? "ETH" : "USD"}
+              unitPostfixColor="text-slateus-200"
+              unitPostfixMargin="ml-1 md:ml-2"
             >
               <SkeletonText width="7rem">
                 {pipe(
@@ -106,16 +139,19 @@ const SupplyChange: FC<Props> = ({
                         separator=","
                         decimals={2}
                         duration={0.8}
-                        formattingFn={formatTwoDigitsSigned}
+                        formattingFn={
+                          unit === "eth"
+                            ? formatTwoDigitsSigned
+                            : unit === "usd"
+                            ? formatZeroDigitsSigned
+                            : (undefined as never)
+                        }
                       />
                     ),
                   ),
                 )}
               </SkeletonText>
-            </BaseText>
-            <span className="ml-2 text-3xl font-light font-roboto text-slateus-400">
-              ETH
-            </span>
+            </QuantifyText>
           </div>
           <div className="flex flex-wrap gap-x-4 gap-y-4 justify-between">
             <UpdatedAgo

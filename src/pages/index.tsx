@@ -22,19 +22,28 @@ import type { SupplyPartsF } from "../mainsite/api/supply-parts";
 import { fetchSupplyParts } from "../mainsite/api/supply-parts";
 import Dashboards from "../mainsite/Dashboards";
 import SiteMetadata from "../site-metadata";
+import type { BurnSums } from "../mainsite/api/burn-sums";
+import { fetchBurnSums } from "../mainsite/api/burn-sums";
+import type { BurnRates } from "../mainsite/api/burn-rates";
+import { fetchBurnRates } from "../mainsite/api/burn-rates";
+import type { AverageEthPrice } from "../mainsite/api/average-eth-price";
+import { fetchAverageEthPrice } from "../mainsite/api/average-eth-price";
 
 type StaticProps = {
   fallback: {
     "/api/fees/scarcity": ScarcityF;
+    "/api/v2/fees/average-eth-prices": AverageEthPrice;
     "/api/v2/fees/base-fee-per-gas": BaseFeePerGas;
     "/api/v2/fees/base-fee-per-gas-barrier": BaseFeePerGasBarrier;
-    "/api/v2/fees/base-fee-per-gas-stats?time_frame=m5": BaseFeePerGasStats;
-    "/api/v2/fees/base-fee-per-gas-stats?time_frame=h1": BaseFeePerGasStats;
     "/api/v2/fees/base-fee-per-gas-stats?time_frame=d1": BaseFeePerGasStats;
-    "/api/v2/fees/base-fee-per-gas-stats?time_frame=d7": BaseFeePerGasStats;
     "/api/v2/fees/base-fee-per-gas-stats?time_frame=d30": BaseFeePerGasStats;
-    "/api/v2/fees/base-fee-per-gas-stats?time_frame=since_merge": BaseFeePerGasStats;
+    "/api/v2/fees/base-fee-per-gas-stats?time_frame=d7": BaseFeePerGasStats;
+    "/api/v2/fees/base-fee-per-gas-stats?time_frame=h1": BaseFeePerGasStats;
+    "/api/v2/fees/base-fee-per-gas-stats?time_frame=m5": BaseFeePerGasStats;
     "/api/v2/fees/base-fee-per-gas-stats?time_frame=since_burn": BaseFeePerGasStats;
+    "/api/v2/fees/base-fee-per-gas-stats?time_frame=since_merge": BaseFeePerGasStats;
+    "/api/v2/fees/burn-sums": BurnSums;
+    "/api/v2/fees/burn-rates": BurnRates;
     "/api/v2/fees/eth-price-stats": EthPriceStats;
     "/api/v2/fees/gauge-rates": GaugeRates;
     "/api/v2/fees/supply-parts": SupplyPartsF;
@@ -60,10 +69,13 @@ export const getStaticProps: GetStaticProps<StaticProps> = pipe(
     "fetches",
     TAlt.sequenceStructPar({
       "/api/fees/scarcity": fetchOrThrow(fetchScarcity),
+      "/api/v2/fees/average-eth-prices": fetchOrThrow(fetchAverageEthPrice),
       "/api/v2/fees/base-fee-per-gas": fetchOrThrow(fetchBaseFeePerGas),
       "/api/v2/fees/base-fee-per-gas-barrier": fetchOrThrow(
         fetchBaseFeePerGasBarrier,
       ),
+      "/api/v2/fees/burn-rates": fetchOrThrow(fetchBurnRates),
+      "/api/v2/fees/burn-sums": fetchOrThrow(fetchBurnSums),
       "/api/v2/fees/eth-price-stats": fetchOrThrow(fetchEthPriceStats),
       "/api/v2/fees/gauge-rates": fetchOrThrow(fetchGaugeRates),
       "/api/v2/fees/supply-parts": fetchOrThrow(fetchSupplyParts),
