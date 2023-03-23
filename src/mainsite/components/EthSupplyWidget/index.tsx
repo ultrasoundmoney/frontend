@@ -612,7 +612,6 @@ const EthSupplyWidget: FC<Props> = ({
   const [powVisible, setPowVisible] = useState(true);
   const [btcVisible, setBtcVisible] = useState(true);
   const { enableSupplyLegendClick } = useContext(FeatureFlagsContext);
-  console.log(posVisible, powVisible, btcVisible);
 
   const supplySeriesCollections = useSupplySeriesCollections();
 
