@@ -31,8 +31,8 @@ const Controls: FC<Props> = ({
   unit,
 }) => (
   <div className={`rounded-bl-lg rounded-br-lg bg-slateus-700 px-8 pb-8`}>
-    <div className="flex flex-col gap-y-8 md:flex-row md:justify-between lg:gap-y-0 ">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-x-4">
+    <div className="flex flex-col gap-y-8 md:flex-row md:justify-between lg:gap-y-0">
+      <div className="flex flex-col gap-4 lg:flex-row lg:gap-x-4 lg:items-center">
         <WidgetTitle>time frame</WidgetTitle>
         <TimeFrameControl
           selectedTimeFrame={timeFrame}
@@ -43,7 +43,7 @@ const Controls: FC<Props> = ({
         <WidgetTitle>currency</WidgetTitle>
         <CurrencyControl selectedUnit={unit} onSetUnit={onSetUnit} />
       </div>
-      <div className="flex items-center gap-4 text-left md:flex-col md:text-right lg:flex-row">
+      <div className="flex gap-4 items-center text-left md:flex-col md:text-right lg:flex-row">
         <BaseText
           font="font-inter"
           color="text-slateus-200"
@@ -52,7 +52,7 @@ const Controls: FC<Props> = ({
           SIMULATE PoW
         </BaseText>
         {/* On tablet the vertical alignment looks off without aligning the toggle with the neighboring controls */}
-        <div className="flex h-[34px] items-center self-start md:self-end">
+        <div className="flex items-center self-start md:self-end h-[34px]">
           <ToggleSwitch
             checked={simulateProofOfWork}
             onToggle={onSimulateProofOfWork}
