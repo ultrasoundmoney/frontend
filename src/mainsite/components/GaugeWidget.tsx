@@ -39,7 +39,7 @@ const Controls: FC<Props> = ({
           onSetTimeFrame={onSetTimeFrame}
         />
       </div>
-      <div className="hidden flex-col gap-y-4 md:flex lg:flex-row lg:items-center lg:gap-x-4">
+      <div className="flex flex-col gap-y-4 lg:flex-row lg:gap-x-4 lg:items-center">
         <WidgetTitle>currency</WidgetTitle>
         <CurrencyControl selectedUnit={unit} onSetUnit={onSetUnit} />
       </div>
