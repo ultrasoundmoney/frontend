@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import type { FC } from "react";
 import { useCallback, useState } from "react";
 import BasicErrorBoundary from "../../components/BasicErrorBoundary";
+import type { Unit } from "../../denomination";
 import type { EthNumber } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
 import CurrentSupplyWidget from "../components/CurrentSupplyWidget";
@@ -25,9 +26,14 @@ const SupplyDashboard: FC<Props> = ({
   onSetTimeFrame,
 }) => {
   const [simulateProofOfWork, setSimulateProofOfWork] = useState(false);
+  const [unit, setUnit] = useState<Unit>("eth");
 
   const handleSimulateProofOfWork = useCallback(() => {
     setSimulateProofOfWork((simulateProofOfWork) => !simulateProofOfWork);
+  }, []);
+
+  const handleSetUnit = useCallback((unit: Unit) => {
+    setUnit(unit);
   }, []);
 
   return (
@@ -48,6 +54,7 @@ const SupplyDashboard: FC<Props> = ({
               onSimulateProofOfWork={handleSimulateProofOfWork}
               onClickTimeFrame={onClickTimeFrame}
               timeFrame={timeFrame}
+              unit={unit}
             />
             <CurrentSupplyWidget />
           </div>
@@ -58,6 +65,8 @@ const SupplyDashboard: FC<Props> = ({
           onSetTimeFrame={onSetTimeFrame}
           simulateProofOfWork={simulateProofOfWork}
           timeFrame={timeFrame}
+          onSetUnit={handleSetUnit}
+          unit={unit}
         />
       </div>
     </BasicErrorBoundary>
