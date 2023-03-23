@@ -29,21 +29,21 @@ const CurrentSupplyTooltip: FC<{
   <div
     className={`
       relative
-      flex w-[22rem] flex-col
-      gap-y-4 rounded-lg border
-      border-slateus-400 bg-slateus-700
-      p-8
+      flex w-[22rem] flex-col gap-y-4
+      rounded-lg border border-slateus-400
+      bg-slateus-700 p-8
+      md:w-[23rem]
     `}
   >
     <img
       alt="a close button, circular with an x in the middle"
-      className="absolute right-5 top-5 w-6 cursor-pointer select-none hover:brightness-90 active:brightness-110"
+      className="absolute top-5 right-5 w-6 cursor-pointer select-none hover:brightness-90 active:brightness-110"
       onClick={onClickClose}
       src="/close.svg"
     />
     <Image
       alt=""
-      className="mx-auto h-20 w-20 select-none rounded-full"
+      className="mx-auto w-20 h-20 rounded-full select-none"
       src={roundNerdLarge as StaticImageData}
     />
     <TooltipTitle>ETH supply breakdown</TooltipTitle>

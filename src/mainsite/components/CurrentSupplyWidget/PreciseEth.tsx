@@ -6,7 +6,8 @@ import type { FC } from "react";
 import { useEffect, useRef, useState } from "react";
 import { useCallback } from "react";
 import CountUp from "react-countup";
-import { AmountAnimatedShell, defaultMoneyAnimationDuration } from "../Amount";
+import QuantifyText from "../../../components/TextsNext/QuantifyText";
+import { defaultMoneyAnimationDuration } from "../Amount";
 
 // For a wei number 119,144,277,858,326,743,920,488,300 we want to display the
 // full number, and animate it. For display we could use strings, but for
@@ -168,7 +169,7 @@ const PreciseEth: FC<Props> = ({ amount, justify }) => {
   }, [amount, handleBlinkBlue, handleBlinkOrange]);
 
   return (
-    <AmountAnimatedShell
+    <QuantifyText
       className={`
       flex items-center tracking-tight
       ${justify !== undefined ? justify : ""}
@@ -176,8 +177,8 @@ const PreciseEth: FC<Props> = ({ amount, justify }) => {
       ${blinkOrange ? "animate-flash-orange" : ""}
     `}
       size="text-2xl md:text-3xl"
-      skeletonWidth={"3rem"}
-      unitText={"ETH"}
+      unitPostfix="ETH"
+      unitPostfixMargin="ml-2"
     >
       {amount && (
         <>
@@ -191,7 +192,7 @@ const PreciseEth: FC<Props> = ({ amount, justify }) => {
           .<Digits>{amount}</Digits>
         </>
       )}
-    </AmountAnimatedShell>
+    </QuantifyText>
   );
 };
 

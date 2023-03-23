@@ -69,18 +69,18 @@ export const supplyChangesFromCollections = (
         const timestamp = supplySeries.timestamp;
         const issued = {
           pos: {
-            eth: delta.pos.eth - burned,
-            usd: delta.pos.usd - burned * ethUsdPrice,
+            eth: delta.pos.eth + burned,
+            usd: delta.pos.usd + burned,
           },
           pow: {
-            eth: delta.pow.eth - burned,
-            usd: delta.pow.usd - burned * ethUsdPrice,
+            eth: delta.pow.eth + burned,
+            usd: delta.pow.usd + burned,
           },
         };
         return {
           burned: {
             eth: burned,
-            usd: burned * ethUsdPrice,
+            usd: burned,
           },
           delta,
           issued,

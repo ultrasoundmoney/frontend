@@ -19,6 +19,10 @@ import type { TimeFrame } from "../../time-frames";
 import SimulateProofOfWork from "../SimulateProofOfWork";
 import TimeFrameIndicator from "../TimeFrameIndicator";
 import UpdatedAgo from "../UpdatedAgo";
+import dropSvg from "../../../assets/droplet-own.svg";
+import fireSvg from "../../../assets/fire-own.svg";
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
 
 const deltaFromChanges = (
   supplyChanges: O.Option<SupplyChangesPerTimeFrame>,
@@ -116,13 +120,14 @@ const SupplyChange: FC<Props> = ({
               timeFrame={timeFrame}
             />
           </div>
-          <div className="flex">
+          <div className="flex flex-col gap-y-4 justify-between md:flex-row lg:flex-col xl:flex-row">
             <QuantifyText
               color={`
                 text-transparent bg-gradient-to-r bg-clip-text
                 ${gradientFromDelta(delta)}
               `}
               size="text-2xl md:text-3xl"
+              lineHeight="leading-8"
               unitPostfix={unit === "eth" ? "ETH" : "USD"}
               unitPostfixColor="text-slateus-200"
               unitPostfixMargin="ml-1 md:ml-2"
@@ -152,6 +157,64 @@ const SupplyChange: FC<Props> = ({
                 )}
               </SkeletonText>
             </QuantifyText>
+            <div className="flex flex-col items-start md:items-end lg:items-start xl:items-end w-fit">
+              <div className="flex gap-x-2">
+                <Image
+                  className=""
+                  src={dropSvg as StaticImageData}
+                  width={15}
+                  height={15}
+                  alt="drop icon"
+                />
+                <QuantifyText size="text-xs" unitPostfix={unit.toUpperCase()}>
+                  <SkeletonText width="7rem">
+                    <CountUp
+                      preserveValue
+                      end={pipe(
+                        supplyChanges,
+                        O.map(
+                          (supplyChanges) =>
+                            supplyChanges[timeFrame].issued[
+                              simulateProofOfWork ? "pow" : "pos"
+                            ][unit],
+                        ),
+                        O.getOrElse(() => 0),
+                      )}
+                      separator=","
+                      decimals={2}
+                      duration={0.8}
+                    />
+                  </SkeletonText>
+                </QuantifyText>
+              </div>
+              <div className="flex gap-x-2 justify-between w-full">
+                <Image
+                  className=""
+                  src={fireSvg as StaticImageData}
+                  width={15}
+                  height={15}
+                  alt="drop icon"
+                />
+                <QuantifyText size="text-xs" unitPostfix={unit.toUpperCase()}>
+                  <SkeletonText width="7rem">
+                    <CountUp
+                      preserveValue
+                      end={pipe(
+                        supplyChanges,
+                        O.map(
+                          (supplyChanges) =>
+                            supplyChanges[timeFrame].burned[unit],
+                        ),
+                        O.getOrElse(() => 0),
+                      )}
+                      separator=","
+                      decimals={2}
+                      duration={0.8}
+                    />
+                  </SkeletonText>
+                </QuantifyText>
+              </div>
+            </div>
           </div>
           <div className="flex flex-wrap gap-x-4 gap-y-4 justify-between">
             <UpdatedAgo

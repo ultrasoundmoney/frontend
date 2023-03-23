@@ -21,7 +21,7 @@ const EthSupplyWidget: FC = () => {
   return (
     <WidgetErrorBoundary title="current supply">
       <WidgetBackground className="flex">
-        <div className="relative flex flex-col gap-y-4">
+        <div className="flex relative flex-col gap-y-4">
           <div
             className={`
                 flex cursor-pointer
