@@ -26,12 +26,14 @@ export type TransactionCensorship = {
 type Props = {
   onClickTimeFrame: () => void;
   transactionCensorship: TransactionCensorship;
+  transactionCount: number;
   timeFrame: TimeFrame;
 };
 
 const TransactionCensorshipWidget: FC<Props> = ({
   onClickTimeFrame,
   transactionCensorship,
+  transactionCount,
   timeFrame,
 }) => (
   <WidgetBase
@@ -46,7 +48,7 @@ const TransactionCensorshipWidget: FC<Props> = ({
       unitPostfixColor="text-slateus-200"
       unitPostfixMargin="ml-4"
     >
-      <SkeletonText>{transactionCensorship.count}</SkeletonText>
+      <SkeletonText>{transactionCount}</SkeletonText>
     </QuantifyText>
     <div className="flex flex-col gap-x-2 gap-y-4 justify-between sm:flex-row lg:flex-row">
       <TinyStatus
