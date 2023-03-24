@@ -98,8 +98,8 @@ const baseOptions: Highcharts.Options = {
       enabled: false,
     },
     tickWidth: 0,
-    minPadding: 0.04,
-    maxPadding: 0.04,
+    minPadding: 0.06,
+    maxPadding: 0.06,
   },
   legend: {
     enabled: true,
