@@ -114,7 +114,7 @@ const baseOptions: Highcharts.Options = {
           ? "bg-[#FF891D]"
           : "bg-[#DEE2F1]";
       return `
-        <div class="flex flex-row gap-x-2 items-center">
+        <div class="flex flex-row gap-x-2 items-center cursor-default">
           <div class="w-2 h-2 ${color} rounded-full"></div>
           <div class="
             text-xs font-normal font-roboto text-slateus-200
@@ -472,6 +472,7 @@ const optionsFromSupplySeriesCollection = (
             simulateProofOfWork,
           ),
         },
+        zIndex: 2,
       },
       {
         color: "#FF891D",
@@ -515,6 +516,7 @@ const optionsFromSupplySeriesCollection = (
             simulateProofOfWork,
           ),
         },
+        zIndex: 1,
       },
       {
         color: colors.slateus100,
@@ -554,15 +556,7 @@ const optionsFromSupplySeriesCollection = (
             simulateProofOfWork,
           ),
         },
-      },
-      {
-        color: "transparent",
-        visible: simulateProofOfWork && powVisible,
-        type: "spline",
-        data: powSeries,
-        enableMouseTracking: false,
-        showInLegend: false,
-        states: { hover: { enabled: false } },
+        zIndex: 0,
         shadow: {
           color: "#DEE2F133",
           width: 15,
