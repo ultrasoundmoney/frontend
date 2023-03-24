@@ -181,6 +181,7 @@ const PreciseEth: FC<Props> = ({ amount, justify }) => {
       size="text-2xl md:text-3xl"
       unitPostfix="ETH"
       unitPostfixMargin="ml-2"
+      unitPostfixColor="text-slateus-200"
     >
       <>
         <CountUp

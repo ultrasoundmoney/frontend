@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import * as React from "react";
 import Highcharts from "highcharts";
 import highchartsAnnotations from "highcharts/modules/annotations";
