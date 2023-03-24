@@ -60,8 +60,14 @@ const TopSanctionsDelaysWidget: FC<Props> = ({
           const durationNum = Number(durationFormatted.split(" ")[0]);
           const durationUnit = durationFormatted.split(" ")[1];
           return (
-            <div key={transaction.hash} className="flex flex-col">
-              <div className="flex justify-between items-center w-full">
+            <a
+              key={transaction.hash}
+              target="_blank"
+              rel="noreferrer"
+              href={`https://etherscan.io/tx/${transaction.hash}`}
+              className="flex flex-col hover:brightness-75"
+            >
+              <div className="flex w-full items-center justify-between">
                 <QuantifyText
                   className=""
                   size="text-2xl sm:text-3xl"
@@ -79,7 +85,7 @@ const TopSanctionsDelaysWidget: FC<Props> = ({
                   height={30}
                 />
               </div>
-              <div className="flex flex-row justify-between items-center">
+              <div className="flex flex-row items-center justify-between">
                 <div className="mr-2 text-xs text-gray-500">
                   <QuantifyText
                     className=""
@@ -95,7 +101,7 @@ const TopSanctionsDelaysWidget: FC<Props> = ({
                   {transaction.sanctionsListName}
                 </BodyTextV3>
               </div>
-            </div>
+            </a>
           );
         })}
       </StyledOverflowList>
