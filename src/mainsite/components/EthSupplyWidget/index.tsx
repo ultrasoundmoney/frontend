@@ -382,7 +382,7 @@ const optionsFromSupplySeriesCollection = (
             formatter: () => `
                 <div class="flex gap-x-2">
                   <img
-                    class="w-4 h-4"
+                    class="w-4 h-4 -rotate-90"
                     src="/panda-own.svg"
                   />
                   <a class="rounded-sm hover:underline" href="https://etherscan.io/block/15537394" target="_blank">
@@ -407,7 +407,7 @@ const optionsFromSupplySeriesCollection = (
             formatter: () => `
                 <div class="flex gap-x-2">
                   <img
-                    class="w-4 h-4"
+                    class="w-4 h-4 -rotate-90"
                     src="/fire-own.svg"
                   />
                   <a class="hover:underline" href="https://etherscan.io/block/12965000" target="_blank">
