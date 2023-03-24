@@ -205,12 +205,12 @@ const getTooltip = (
             ? ""
             : `<div class="mb-2 text-slateus-200">${title}</div>`
         }
-        <div class="text-right text-slateus-400">${formattedDate}</div>
-        <div class="text-right text-slateus-400">${formattedTime}</div>
+        <div class="text-right text-slateus-200">${formattedDate}</div>
+        <div class="text-right text-slateus-200">${formattedTime}</div>
         <div class="flex flex-col items-end mt-2">
           <div class="text-white">
             ${formatTwoDigit(total)}
-            <span class="text-slateus-400"> ${unit}</span>
+            <span class="text-slateus-200"> ${unit}</span>
           </div>
           <div class="
             text-transparent bg-clip-text bg-gradient-to-r
@@ -218,7 +218,7 @@ const getTooltip = (
             ${supplyDelta === undefined ? "hidden" : ""}
           ">
             ${supplyDeltaFormatted}
-            <span class="text-slateus-400"> ${unit}</span>
+            <span class="text-slateus-200"> ${unit}</span>
           </div>
           <div class="
             text-transparent bg-clip-text bg-gradient-to-r
@@ -376,21 +376,20 @@ const optionsFromSupplySeriesCollection = (
           width: 1,
           label: {
             x: 10,
-            y: 54,
+            y: 4,
             style: { color: colors.slateus400 },
-            align: "center",
             useHTML: true,
             formatter: () => `
-                <div class="flex">
-                  <a class="hover:underline" href="https://etherscan.io/block/15537394" target="_blank">
-                    <div class="font-light font-roboto text-slateus-300">
-                    #${formatZeroDecimals(MERGE_BLOCK_NUMBER)}
-                    </div>
-                  </a>
+                <div class="flex gap-x-2">
                   <img
-                    class="ml-2 w-4 h-4"
+                    class="w-4 h-4"
                     src="/panda-own.svg"
                   />
+                  <a class="rounded-sm hover:underline" href="https://etherscan.io/block/15537394" target="_blank">
+                    <div class="text-xs font-light tracking-widest uppercase font-inter text-slateus-400">
+                      merge
+                    </div>
+                  </a>
                 </div>
               `,
           },
@@ -402,21 +401,20 @@ const optionsFromSupplySeriesCollection = (
           width: 1,
           label: {
             x: 10,
-            y: 54,
+            y: 4,
             style: { color: colors.slateus400 },
-            align: "center",
             useHTML: true,
             formatter: () => `
-                <div class="flex">
-                  <a class="hover:underline" href="https://etherscan.io/block/12965000" target="_blank">
-                    <div class="font-light font-roboto text-slateus-300">
-                    #${formatZeroDecimals(12965000)}
-                    </div>
-                  </a>
+                <div class="flex gap-x-2">
                   <img
-                    class="ml-2 w-4 h-4"
+                    class="w-4 h-4"
                     src="/fire-own.svg"
                   />
+                  <a class="hover:underline" href="https://etherscan.io/block/12965000" target="_blank">
+                    <div class="text-xs font-light tracking-widest uppercase font-inter text-slateus-400">
+                      burn
+                    </div>
+                  </a>
                 </div>
               `,
           },

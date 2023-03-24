@@ -1,6 +1,10 @@
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
 import type { FC } from "react";
 import { useMemo } from "react";
 import CountUp from "react-countup";
+import dropSvg from "../../../assets/droplet-own.svg";
+import fireSvg from "../../../assets/fire-own.svg";
 import LabelText from "../../../components/TextsNext/LabelText";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
 import SkeletonText from "../../../components/TextsNext/SkeletonText";
@@ -19,11 +23,6 @@ import type { TimeFrame } from "../../time-frames";
 import SimulateProofOfWork from "../SimulateProofOfWork";
 import TimeFrameIndicator from "../TimeFrameIndicator";
 import UpdatedAgo from "../UpdatedAgo";
-import dropSvg from "../../../assets/droplet-own.svg";
-import fireSvg from "../../../assets/fire-own.svg";
-import type { StaticImageData } from "next/image";
-import Image from "next/image";
-import Skeleton from "react-loading-skeleton";
 
 const deltaFromChanges = (
   supplyChanges: O.Option<SupplyChangesPerTimeFrame>,
@@ -121,17 +120,17 @@ const SupplyChange: FC<Props> = ({
               timeFrame={timeFrame}
             />
           </div>
-          <div className="flex flex-col gap-y-4 justify-between md:flex-row lg:flex-col xl:flex-row">
+          <div className="flex flex-row flex-wrap gap-x-4 gap-y-4 justify-between">
             <QuantifyText
               color={`
                 text-transparent bg-gradient-to-r bg-clip-text
                 ${gradientFromDelta(delta)}
               `}
-              size="text-2xl md:text-3xl"
+              size="text-2xl sm:text-3xl"
               lineHeight="leading-8"
               unitPostfix={unit === "eth" ? "ETH" : "USD"}
               unitPostfixColor="text-slateus-200"
-              unitPostfixMargin="ml-1 md:ml-2"
+              unitPostfixMargin="ml-1 sm:ml-2"
             >
               {pipe(
                 delta,
@@ -166,7 +165,11 @@ const SupplyChange: FC<Props> = ({
                   src={dropSvg as StaticImageData}
                   width={15}
                 />
-                <QuantifyText size="text-xs" unitPostfix={unit.toUpperCase()}>
+                <QuantifyText
+                  size="text-xs"
+                  unitPostfix={unit.toUpperCase()}
+                  unitPostfixColor="text-slateus-200"
+                >
                   {pipe(
                     supplyChanges,
                     O.match(
@@ -201,7 +204,11 @@ const SupplyChange: FC<Props> = ({
                   src={fireSvg as StaticImageData}
                   width={15}
                 />
-                <QuantifyText size="text-xs" unitPostfix={unit.toUpperCase()}>
+                <QuantifyText
+                  size="text-xs"
+                  unitPostfix={unit.toUpperCase()}
+                  unitPostfixColor="text-slateus-200"
+                >
                   {pipe(
                     supplyChanges,
                     O.match(
