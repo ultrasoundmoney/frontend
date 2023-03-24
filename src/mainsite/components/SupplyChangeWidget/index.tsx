@@ -23,6 +23,7 @@ import dropSvg from "../../../assets/droplet-own.svg";
 import fireSvg from "../../../assets/fire-own.svg";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
+import Skeleton from "react-loading-skeleton";
 
 const deltaFromChanges = (
   supplyChanges: O.Option<SupplyChangesPerTimeFrame>,
@@ -132,86 +133,91 @@ const SupplyChange: FC<Props> = ({
               unitPostfixColor="text-slateus-200"
               unitPostfixMargin="ml-1 md:ml-2"
             >
-              <SkeletonText width="7rem">
-                {pipe(
-                  delta,
-                  O.match(
-                    () => undefined,
-                    (delta) => (
-                      <CountUp
-                        preserveValue
-                        end={delta}
-                        separator=","
-                        decimals={2}
-                        duration={0.8}
-                        formattingFn={
-                          unit === "eth"
-                            ? formatTwoDigitsSigned
-                            : unit === "usd"
-                            ? formatZeroDigitsSigned
-                            : (undefined as never)
-                        }
-                      />
-                    ),
+              {pipe(
+                delta,
+                O.match(
+                  () => <SkeletonText width="7rem" />,
+                  (delta) => (
+                    <CountUp
+                      decimals={2}
+                      duration={0.8}
+                      end={delta}
+                      preserveValue
+                      separator=","
+                      start={delta}
+                      formattingFn={
+                        unit === "eth"
+                          ? formatTwoDigitsSigned
+                          : unit === "usd"
+                          ? formatZeroDigitsSigned
+                          : (undefined as never)
+                      }
+                    />
                   ),
-                )}
-              </SkeletonText>
+                ),
+              )}
             </QuantifyText>
             <div className="flex flex-col items-start md:items-end lg:items-start xl:items-end w-fit">
               <div className="flex gap-x-2">
                 <Image
-                  className=""
+                  alt="drop icon signifying issued ETH"
+                  height={15}
+                  priority
                   src={dropSvg as StaticImageData}
                   width={15}
-                  height={15}
-                  alt="drop icon"
                 />
                 <QuantifyText size="text-xs" unitPostfix={unit.toUpperCase()}>
-                  <SkeletonText width="7rem">
-                    <CountUp
-                      preserveValue
-                      end={pipe(
-                        supplyChanges,
-                        O.map(
-                          (supplyChanges) =>
+                  {pipe(
+                    supplyChanges,
+                    O.match(
+                      () => <SkeletonText width="4rem" />,
+                      (supplyChanges) => (
+                        <CountUp
+                          decimals={2}
+                          duration={0.8}
+                          end={
                             supplyChanges[timeFrame].issued[
                               simulateProofOfWork ? "pow" : "pos"
-                            ][unit],
-                        ),
-                        O.getOrElse(() => 0),
-                      )}
-                      separator=","
-                      decimals={2}
-                      duration={0.8}
-                    />
-                  </SkeletonText>
+                            ][unit]
+                          }
+                          preserveValue
+                          separator=","
+                          start={
+                            supplyChanges[timeFrame].issued[
+                              simulateProofOfWork ? "pow" : "pos"
+                            ][unit]
+                          }
+                        />
+                      ),
+                    ),
+                  )}
                 </QuantifyText>
               </div>
               <div className="flex gap-x-2 justify-between w-full">
                 <Image
-                  className=""
+                  alt="fire icon signifying burned ETH"
+                  height={15}
+                  priority
                   src={fireSvg as StaticImageData}
                   width={15}
-                  height={15}
-                  alt="drop icon"
                 />
                 <QuantifyText size="text-xs" unitPostfix={unit.toUpperCase()}>
-                  <SkeletonText width="7rem">
-                    <CountUp
-                      preserveValue
-                      end={pipe(
-                        supplyChanges,
-                        O.map(
-                          (supplyChanges) =>
-                            supplyChanges[timeFrame].burned[unit],
-                        ),
-                        O.getOrElse(() => 0),
-                      )}
-                      separator=","
-                      decimals={2}
-                      duration={0.8}
-                    />
-                  </SkeletonText>
+                  {pipe(
+                    supplyChanges,
+                    O.match(
+                      () => <SkeletonText width="4rem" />,
+                      (supplyChanges) => (
+                        <CountUp
+                          decimals={2}
+                          duration={0.8}
+                          end={supplyChanges[timeFrame].burned[unit]}
+                          separator=","
+                          start={supplyChanges[timeFrame].burned[unit]}
+                          preserveValue
+                        />
+                      ),
+                    ),
+                  )}
                 </QuantifyText>
               </div>
             </div>
