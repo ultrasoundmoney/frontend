@@ -86,12 +86,13 @@ const Digits: FC<{ children: JSBI }> = ({ children }) => {
           <span>00</span>
         ) : (
           <CountUp
-            separator=","
+            duration={0.5}
             end={ethFirstTwoDecimals(children)}
             formattingFn={padTwoDecimals}
             preserveValue={true}
+            separator=","
+            start={ethFirstTwoDecimals(children)}
             useEasing={false}
-            duration={0.5}
           />
         )}
       </div>
@@ -111,10 +112,11 @@ const Digits: FC<{ children: JSBI }> = ({ children }) => {
           <span>0,000,000,000,000,000</span>
         ) : (
           <CountUp
-            separator=","
             end={ethLastSixteenDecimals(children)}
             formattingFn={padSixteenDecimals}
             preserveValue={true}
+            separator=","
+            start={ethLastSixteenDecimals(children)}
             useEasing={false}
           />
         )}
@@ -180,18 +182,17 @@ const PreciseEth: FC<Props> = ({ amount, justify }) => {
       unitPostfix="ETH"
       unitPostfixMargin="ml-2"
     >
-      {amount && (
-        <>
-          <CountUp
-            decimals={0}
-            duration={defaultMoneyAnimationDuration}
-            end={ethNoDecimals(amount)}
-            preserveValue={true}
-            separator=","
-          />
-          .<Digits>{amount}</Digits>
-        </>
-      )}
+      <>
+        <CountUp
+          decimals={0}
+          duration={defaultMoneyAnimationDuration}
+          end={ethNoDecimals(amount)}
+          preserveValue={true}
+          separator=","
+          start={ethNoDecimals(lastAmount.current)}
+        />
+        .<Digits>{amount}</Digits>
+      </>
     </QuantifyText>
   );
 };
