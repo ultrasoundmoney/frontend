@@ -240,7 +240,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
           />
         </div>
         {!isDataAvailable ? (
-          <div className="flex h-[96px] items-center justify-center">
+          <div className="flex justify-center items-center h-[96px]">
             <LabelText color="text-slateus-300">
               data not yet available
             </LabelText>
