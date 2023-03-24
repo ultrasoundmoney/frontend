@@ -23,7 +23,6 @@ import {
   formatPercentThreeDecimalsSigned,
   formatTwoDigit,
   formatTwoDigitsSigned,
-  formatZeroDecimals,
 } from "../../../format";
 import { O, pipe } from "../../../fp";
 import type { DateTimeString } from "../../../time";
@@ -33,7 +32,7 @@ import type {
 } from "../../api/supply-over-time";
 import { useSupplySeriesCollections } from "../../api/supply-over-time";
 import { LONDON_TIMESTAMP } from "../../hardforks/london";
-import { MERGE_BLOCK_NUMBER, MERGE_TIMESTAMP } from "../../hardforks/paris";
+import { MERGE_TIMESTAMP } from "../../hardforks/paris";
 import type { SupplyPoint } from "../../sections/SupplyDashboard";
 import type { TimeFrame } from "../../time-frames";
 import SimulateProofOfWork from "../SimulateProofOfWork";
