@@ -23,7 +23,6 @@ import {
   formatPercentThreeDecimalsSigned,
   formatTwoDigit,
   formatTwoDecimalsSigned,
-  formatZeroDecimals,
   formatZeroDecimalsSigned,
 } from "../../../format";
 import { O, pipe } from "../../../fp";
@@ -178,23 +177,26 @@ const getTooltip = (
     if (total === undefined) {
       return "";
     }
-    const totalUsd = total * ethPrice;
+    // const totalUsd = total * ethPrice;
 
-    const totalFormatted =
-      type === "bitcoin"
-        ? formatTwoDigit(total)
-        : unit === "eth"
-        ? formatTwoDigit(total)
-        : unit === "usd"
-        ? formatZeroDecimals(totalUsd)
-        : (undefined as never);
+    // const totalFormatted =
+    //   type === "bitcoin"
+    //     ? formatTwoDigit(total)
+    //     : unit === "eth"
+    //     ? formatTwoDigit(total)
+    //     : unit === "usd"
+    //     ? formatZeroDecimals(total)
+    //     : (undefined as never);
+
+    const totalFormatted = formatTwoDigit(total);
+    const formattedTotalUnit = type === "bitcoin" ? "BTC" : "ETH";
 
     const dt = new Date(x);
     const formattedDate = format(dt, "iii MMM dd");
     const formattedTime = format(dt, "HH:mm:ss 'UTC'x");
 
     const title = type === "pos" ? "ETH" : type === "pow" ? "ETH (PoW)" : "BTC";
-    const formattedUnit =
+    const formattedDeltaUnit =
       type === "bitcoin"
         ? "BTC"
         : unit === "eth"
@@ -222,12 +224,16 @@ const getTooltip = (
         ? "from-orange-400 to-yellow-300"
         : "from-cyan-300 to-indigo-500";
 
-    const supplyDeltaPercent =
-      nativeDelta === undefined || totalUsd === undefined
-        ? undefined
-        : type !== "bitcoin" && unit === "usd"
-        ? formatPercentFiveDecimalsSigned(deltaUsd / totalUsd)
-        : formatPercentFiveDecimalsSigned(nativeDelta / total);
+    // const supplyDeltaPercent =
+    //   nativeDelta === undefined
+    //     ? undefined
+    //     : type !== "bitcoin" && unit === "usd"
+    //     ? formatPercentFiveDecimalsSigned(deltaUsd / totalUsd)
+    //     : formatPercentFiveDecimalsSigned(nativeDelta / total);
+
+    const supplyDeltaPercent = formatPercentFiveDecimalsSigned(
+      nativeDelta / total,
+    );
 
     // z-10 does not work without adjusting position to !static.
     return `
@@ -242,7 +248,7 @@ const getTooltip = (
         <div class="flex flex-col items-end mt-2">
           <div class="text-white">
             ${totalFormatted}
-            <span class="text-slateus-200"> ${formattedUnit}</span>
+            <span class="text-slateus-200"> ${formattedTotalUnit}</span>
           </div>
           <div class="
             text-transparent bg-clip-text bg-gradient-to-r
@@ -250,7 +256,7 @@ const getTooltip = (
             ${nativeDelta === undefined ? "hidden" : ""}
           ">
             ${supplyDeltaFormatted}
-            <span class="text-slateus-200"> ${formattedUnit}</span>
+            <span class="text-slateus-200"> ${formattedDeltaUnit}</span>
           </div>
           <div class="
             text-transparent bg-clip-text bg-gradient-to-r
