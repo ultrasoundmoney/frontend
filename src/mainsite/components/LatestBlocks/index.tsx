@@ -14,7 +14,6 @@ import { WEI_PER_GWEI } from "../../../eth-units";
 import * as Format from "../../../format";
 import scrollbarStyles from "../../../styles/Scrollbar.module.scss";
 import { LabelUnitText } from "../../../components/Texts";
-import BodyTextV2 from "../../../components/TextsNext/BodyTextV2";
 import LabelText from "../../../components/TextsNext/LabelText";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
 import SkeletonText from "../../../components/TextsNext/SkeletonText";
@@ -46,9 +45,9 @@ const latestBlockFeesSkeletons = new Array(maxBlocks).fill(
 ) as Partial<LatestBlock>[];
 
 const Resyncing = () => (
-  <BodyTextV2 className="animate-slow-pulse text-red-400 md:text-sm">
-    node error, busy resyncing...
-  </BodyTextV2>
+  <LabelText className="animate-slow-pulse text-slateus-200">
+    waiting for next analysis...
+  </LabelText>
 );
 
 const LatestBlockAge: FC = () => {
