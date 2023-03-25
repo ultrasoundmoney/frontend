@@ -130,7 +130,7 @@ const makeBarrier = (barrier: number) => ({
         <div class="font-light text-white font-roboto">
           ${barrier?.toFixed(1)}
         </div>
-        <div class="ml-1 font-light font-roboto text-slateus-400">
+        <div class="ml-1 font-light font-roboto text-slateus-200">
           Gwei
         </div>
       </div>
