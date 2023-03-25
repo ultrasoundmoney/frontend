@@ -6,24 +6,24 @@ import { fetchApiJson } from "./fetchers";
 import { fetchJsonSwr } from "./fetchers";
 import type { TimeFrame } from "../time-frames";
 
-export type BurnRate = {
+export type BurnSum = {
   block_number: number;
-  rate: {
-    eth_per_minute: number;
-    usd_per_minute: number;
+  sum: {
+    eth: number;
+    usd: number;
   };
   timestamp: DateTimeString;
 };
 
-export type BurnRates = Record<TimeFrame, BurnRate>;
+export type BurnSums = Record<TimeFrame, BurnSum>;
 
-const url = "/api/v2/fees/burn-rates";
+const url = "/api/v2/fees/burn-sums";
 
-export const fetchBurnRates = (): Promise<ApiResult<BurnRates>> =>
-  fetchApiJson<BurnRates>(url);
+export const fetchBurnSums = (): Promise<ApiResult<BurnSums>> =>
+  fetchApiJson<BurnSums>(url);
 
-export const useBurnRates = (): BurnRates => {
-  const { data } = useSWR<BurnRates>(url, fetchJsonSwr, {
+export const useBurnSums = (): BurnSums => {
+  const { data } = useSWR<BurnSums>(url, fetchJsonSwr, {
     refreshInterval: secondsToMilliseconds(4),
   });
 

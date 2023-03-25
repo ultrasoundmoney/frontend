@@ -1,9 +1,19 @@
+import * as DateFns from "date-fns";
 import { secondsToMilliseconds } from "date-fns";
+import _first from "lodash/first";
+import { useMemo } from "react";
 import useSWR from "swr";
 import type { Slot } from "../../beacon-units";
 import type { EthNumber } from "../../eth-units";
-import type { DateTimeString } from "../../time";
 import type { ApiResult } from "../../fetchers";
+import { A, O, OAlt, pipe, R, RA } from "../../fp";
+import type { DateTimeString } from "../../time";
+import { MERGE_TIMESTAMP } from "../hardforks/paris";
+import { usePosIssuancePerDay } from "../hooks/use-pos-issuance-day";
+import type { SupplyPoint } from "../sections/SupplyDashboard";
+import { powIssuancePerDay } from "../static-ether-data";
+import type { TimeFrame } from "../time-frames";
+import { timeFrames } from "../time-frames";
 import { fetchApiJson, fetchJsonSwr } from "./fetchers";
 
 export type SupplyAtTime = {
@@ -38,3 +48,154 @@ export const useSupplyOverTime = (): SupplyOverTime | undefined =>
   useSWR<SupplyOverTime>(url, fetchJsonSwr, {
     refreshInterval: secondsToMilliseconds(4),
   }).data;
+
+const BITCOIN_SUPPLY_AT_MERGE = 19_152_350;
+const BITCOIN_ISSUANCE_PER_TEN_MINUTES = 6.25;
+const BITCOIN_ISSUANCE_PER_SECOND =
+  BITCOIN_ISSUANCE_PER_TEN_MINUTES / (60 * 10);
+
+const SLOTS_PER_DAY = 24 * 60 * 5;
+
+const btcSeriesFromPos = (
+  ethPosSeries: SupplyPoint[],
+): [SupplyPoint[], SupplyPoint[]] => {
+  const ethPosFirstPoint = pipe(
+    ethPosSeries,
+    A.head,
+    OAlt.expect("ethPosSeries should have at least one point"),
+  );
+  const parisToTimeFrameSeconds = DateFns.differenceInSeconds(
+    ethPosFirstPoint[0],
+    MERGE_TIMESTAMP,
+  );
+  const firstPointBitcoinSupply =
+    BITCOIN_SUPPLY_AT_MERGE +
+    BITCOIN_ISSUANCE_PER_SECOND * parisToTimeFrameSeconds;
+  const points = ethPosSeries.map(([timestamp]) => {
+    const secondsDelta =
+      ethPosFirstPoint[0] === undefined
+        ? 0
+        : DateFns.differenceInSeconds(timestamp, ethPosFirstPoint[0]);
+    const bitcoinIssued = secondsDelta * BITCOIN_ISSUANCE_PER_SECOND;
+    const nextPoint = [
+      timestamp,
+      firstPointBitcoinSupply + bitcoinIssued,
+    ] as SupplyPoint;
+    return nextPoint;
+  });
+  const scalingConstant = ethPosFirstPoint[1] / firstPointBitcoinSupply;
+  const pointsScaled = points.map(([timestamp, bitcoinSupply]) => {
+    return [timestamp, bitcoinSupply * scalingConstant] as SupplyPoint;
+  });
+  return [points, pointsScaled];
+};
+
+const powSeriesFromPos = (
+  ethPosSeries: SupplyPoint[],
+  powMinPosIssuancePerDay: EthNumber,
+  timeFrame: TimeFrame,
+): SupplyPoint[] =>
+  pipe(
+    ethPosSeries,
+    A.filter(([timestamp]) => new Date(timestamp) >= MERGE_TIMESTAMP),
+    A.map(([timestamp, supply]) => {
+      const firstPoint = _first(ethPosSeries);
+      // Map can only be called for points that are not undefined.
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const firstPointTimestamp = new Date(firstPoint![0]);
+      const slotsSinceStart =
+        DateFns.differenceInSeconds(new Date(timestamp), firstPointTimestamp) /
+        12;
+      const slotsSinceMerge =
+        DateFns.differenceInSeconds(new Date(timestamp), MERGE_TIMESTAMP) / 12;
+      const slotCount =
+        timeFrame === "since_burn" ? slotsSinceMerge : slotsSinceStart;
+
+      const simulatedPowIssuanceSinceStart =
+        (slotCount / SLOTS_PER_DAY) * powMinPosIssuancePerDay;
+
+      const nextSupply = supply + simulatedPowIssuanceSinceStart;
+      const nextPoint: SupplyPoint = [timestamp, nextSupply];
+      return nextPoint;
+    }),
+  );
+
+const supplyPointFromSupplyAtTime = (supplyAtTime: SupplyAtTime): SupplyPoint =>
+  [
+    new Date(supplyAtTime.timestamp).getTime(),
+    supplyAtTime.supply,
+  ] as SupplyPoint;
+
+export type SupplySeriesCollection = {
+  btcSeries: SupplyPoint[];
+  btcSeriesScaled: SupplyPoint[];
+  posSeries: SupplyPoint[];
+  powSeries: SupplyPoint[];
+  timestamp: DateTimeString;
+};
+
+export type SupplySeriesCollections = Record<TimeFrame, SupplySeriesCollection>;
+
+// We use four series to show supply over time. Three of which are derivatives
+// of the first. As the response is currently rather large, containing an
+// update for all time frames every block, even though 99% of the data is the
+// same. We derive the other series from the first.
+export const useSupplySeriesCollections =
+  (): O.Option<SupplySeriesCollections> => {
+    const supplyOverTimePerTimeFrame = useSupplyOverTime();
+    const posIssuancePerDay = usePosIssuancePerDay();
+    // To compare proof of stake issuance to proof of work issuance we offer a
+    // "simulate proof of work" toggle. However, we only have a supply series under
+    // proof of stake. Already including proof of stake issuance. Adding proof of
+    // work issuance would mean "simulated proof of work" is really what supply
+    // would look like if there was both proof of work _and_ proof of stake
+    // issuance. To make the comparison apples to apples we subtract an estimated
+    // proof of stake issuance to show the supply as if there were _only_ proof of
+    // work issuance. A possible improvement would be to drop this ad-hoc solution
+    // and have the backend return separate series.
+    const powMinPosIssuancePerDay = powIssuancePerDay - posIssuancePerDay;
+
+    return useMemo(
+      () =>
+        pipe(
+          supplyOverTimePerTimeFrame,
+          O.fromNullable,
+          O.map((supplyOverTimePerTimeFrame) =>
+            pipe(
+              // If only supply over time was a proper hashmap, we wouldn't need a complex zip here.
+              timeFrames,
+              RA.map(
+                (timeFrame) =>
+                  [timeFrame, supplyOverTimePerTimeFrame[timeFrame]] as const,
+              ),
+              RA.map(([timeFrame, supplyOverTime]) => {
+                const posSeries = pipe(
+                  supplyOverTime,
+                  A.map(supplyPointFromSupplyAtTime),
+                );
+                const powSeries = powSeriesFromPos(
+                  posSeries,
+                  powMinPosIssuancePerDay,
+                  timeFrame,
+                );
+                const [btcSeries, btcSeriesScaled] =
+                  btcSeriesFromPos(posSeries);
+                return [
+                  timeFrame,
+                  {
+                    btcSeries,
+                    btcSeriesScaled,
+                    posSeries,
+                    powSeries,
+                    timestamp: supplyOverTimePerTimeFrame.timestamp,
+                  },
+                ] as [TimeFrame, SupplySeriesCollection];
+              }),
+              (entries) => entries as [TimeFrame, SupplySeriesCollection][],
+              (entries) => R.fromEntries(entries) as SupplySeriesCollections,
+            ),
+          ),
+        ),
+      [powMinPosIssuancePerDay, supplyOverTimePerTimeFrame],
+    );
+  };

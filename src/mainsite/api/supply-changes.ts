@@ -1,41 +1,91 @@
-import { secondsToMilliseconds } from "date-fns";
-import useSWR from "swr";
-import type { Slot } from "../../beacon-units";
-import type { WeiString } from "../../eth-units";
+import type { EthNumber, EthUsdAmount } from "../../eth-units";
+import { A, flow, OAlt, pipe, R } from "../../fp";
 import type { DateTimeString } from "../../time";
-import type { ApiResult } from "../../fetchers";
-import { fetchApiJson, fetchJsonSwr } from "./fetchers";
-
-export type SupplyChange = {
-  from_slot: Slot;
-  from_timestamp: DateTimeString;
-  from_supply: WeiString;
-  to_slot: Slot;
-  to_timestamp: DateTimeString;
-  to_supply: WeiString;
-  change: WeiString;
-};
+import type { SupplyPoint } from "../sections/SupplyDashboard";
+import type { TimeFrame } from "../time-frames";
+import type { SupplySeriesCollections } from "./supply-over-time";
 
 export type SupplyChanges = {
-  d1: SupplyChange | null;
-  d30: SupplyChange | null;
-  d7: SupplyChange | null;
-  h1: SupplyChange | null;
-  m5: SupplyChange | null;
-  since_burn: SupplyChange | null;
-  since_merge: SupplyChange | null;
-  slot: Slot;
   timestamp: DateTimeString;
+  burned: EthUsdAmount;
+  issued: {
+    pos: EthUsdAmount;
+    pow: EthUsdAmount;
+  };
+  delta: {
+    pos: EthUsdAmount;
+    pow: EthUsdAmount;
+  };
 };
 
-const url = "/api/v2/fees/supply-changes";
+export type SupplyChangesPerTimeFrame = Record<TimeFrame, SupplyChanges>;
 
-export const fetchSupplyChanges = (): Promise<ApiResult<SupplyChanges>> =>
-  fetchApiJson<SupplyChanges>(url);
+const deltaFromSeries = (
+  series: SupplyPoint[],
+  ethUsdPrice: number,
+): EthUsdAmount =>
+  pipe(
+    { first: A.head(series), last: A.last(series) },
+    OAlt.sequenceStruct,
+    OAlt.expect("series should have at least two points"),
+    ({ first, last }) => last[1] - first[1],
+    (delta) => ({
+      eth: delta,
+      usd: delta * ethUsdPrice,
+    }),
+  );
 
-export const useSupplyChanges = (): SupplyChanges =>
-  // We use an SWRConfig with fallback data for this hook.
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  useSWR<SupplyChanges>(url, fetchJsonSwr, {
-    refreshInterval: secondsToMilliseconds(4),
-  }).data!;
+export const supplyChangesFromCollections = (
+  supplySeriesCollections: SupplySeriesCollections,
+  ethUsdPrice: EthNumber,
+  burned: EthNumber,
+  timeFrame: TimeFrame,
+): SupplyChangesPerTimeFrame =>
+  pipe(
+    supplySeriesCollections,
+    flow(
+      R.map((supplySeries) => {
+        const delta = {
+          pos: deltaFromSeries(supplySeries.posSeries, ethUsdPrice),
+          pow:
+            // Since burn is a special case. Simulating added proof-of-work
+            // from the London hardfork doesn't make sense. It only makes sense
+            // to simulate from the merge. This means that the first point in the
+            // proof-of-work series is not the point to calculate the delta
+            // against. Instead, in that one case, we should use the first point
+            // in the proof-of-stake series.
+            timeFrame === "since_burn"
+              ? deltaFromSeries(
+                  [
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    supplySeries.posSeries[0]!,
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    supplySeries.powSeries[supplySeries.powSeries.length - 1]!,
+                  ],
+                  ethUsdPrice,
+                )
+              : deltaFromSeries(supplySeries.powSeries, ethUsdPrice),
+        };
+        const timestamp = supplySeries.timestamp;
+        const issued = {
+          pos: {
+            eth: delta.pos.eth + burned,
+            usd: delta.pos.usd + burned,
+          },
+          pow: {
+            eth: delta.pow.eth + burned,
+            usd: delta.pow.usd + burned,
+          },
+        };
+        return {
+          burned: {
+            eth: burned,
+            usd: burned,
+          },
+          delta,
+          issued,
+          timestamp,
+        };
+      }),
+    ),
+  );

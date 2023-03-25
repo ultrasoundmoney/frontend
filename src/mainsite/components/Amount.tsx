@@ -144,6 +144,7 @@ export const MoneyAmountAnimated: FC<MoneyAmountAnimatedProps> = ({
 type AmountAnimatedShellProps = {
   children: ReactNode;
   className?: string;
+  color?: string;
   size?: string;
   skeletonWidth?: string;
   textClassName?: string;
@@ -153,6 +154,7 @@ type AmountAnimatedShellProps = {
 export const AmountAnimatedShell: FC<AmountAnimatedShellProps> = ({
   children,
   className = "",
+  color,
   size,
   skeletonWidth = "3rem",
   textClassName = "",
@@ -162,6 +164,7 @@ export const AmountAnimatedShell: FC<AmountAnimatedShellProps> = ({
   const { previewSkeletons } = useContext(FeatureFlagsContext);
   return (
     <BaseText
+      color={color}
       font="font-roboto"
       size={size ?? "text-base md:text-lg"}
       className={`whitespace-nowrap ${textClassName} ${className}`}

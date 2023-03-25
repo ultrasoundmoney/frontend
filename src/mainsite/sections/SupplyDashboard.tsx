@@ -1,14 +1,15 @@
 import dynamic from "next/dynamic";
 import type { FC } from "react";
 import { useCallback, useState } from "react";
-import SupplyChange from "../components/SupplyChangeWidget";
 import BasicErrorBoundary from "../../components/BasicErrorBoundary";
+import type { Unit } from "../../denomination";
 import type { EthNumber } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
 import CurrentSupplyWidget from "../components/CurrentSupplyWidget";
-import type { TimeFrame } from "../time-frames";
 import GaugeWidget from "../components/GaugeWidget";
-import { usePosIssuancePerDay } from "../hooks/use-pos-issuance-day";
+import SupplyChange from "../components/SupplyChangeWidget";
+import type { TimeFrame } from "../time-frames";
+
 export type SupplyPoint = [JsTimestamp, EthNumber];
 
 const EthSupplyWidget = dynamic(() => import("../components/EthSupplyWidget"));
@@ -24,22 +25,26 @@ const SupplyDashboard: FC<Props> = ({
   onClickTimeFrame,
   onSetTimeFrame,
 }) => {
-  const posIssuancePerDay = usePosIssuancePerDay();
   const [simulateProofOfWork, setSimulateProofOfWork] = useState(false);
+  const [unit, setUnit] = useState<Unit>("eth");
 
   const handleSimulateProofOfWork = useCallback(() => {
     setSimulateProofOfWork((simulateProofOfWork) => !simulateProofOfWork);
   }, []);
 
+  const handleSetUnit = useCallback((unit: Unit) => {
+    setUnit(unit);
+  }, []);
+
   return (
     <BasicErrorBoundary>
-      <div className="mt-16 flex flex-col gap-y-4 xs:px-4 md:px-16" id="merge">
-        <div className="mt-16 flex flex-col gap-x-4 gap-y-4 lg:flex-row">
+      <div className="flex flex-col gap-y-4 mt-16 md:px-16 xs:px-4" id="merge">
+        <div className="flex flex-col gap-x-4 gap-y-4 mt-16 lg:flex-row">
           <div className="flex lg:w-1/2">
             <EthSupplyWidget
-              simulateProofOfWork={simulateProofOfWork}
-              onSimulateProofOfWork={handleSimulateProofOfWork}
               onClickTimeFrame={onClickTimeFrame}
+              onSimulateProofOfWork={handleSimulateProofOfWork}
+              simulateProofOfWork={simulateProofOfWork}
               timeFrame={timeFrame}
             />
           </div>
@@ -49,7 +54,7 @@ const SupplyDashboard: FC<Props> = ({
               onSimulateProofOfWork={handleSimulateProofOfWork}
               onClickTimeFrame={onClickTimeFrame}
               timeFrame={timeFrame}
-              posIssuancePerDay={posIssuancePerDay}
+              unit={unit}
             />
             <CurrentSupplyWidget />
           </div>
@@ -60,6 +65,8 @@ const SupplyDashboard: FC<Props> = ({
           onSetTimeFrame={onSetTimeFrame}
           simulateProofOfWork={simulateProofOfWork}
           timeFrame={timeFrame}
+          onSetUnit={handleSetUnit}
+          unit={unit}
         />
       </div>
     </BasicErrorBoundary>

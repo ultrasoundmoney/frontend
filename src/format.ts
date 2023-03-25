@@ -30,6 +30,15 @@ const zeroDecimals = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 0,
 });
 
+const zeroDigitSigned = new Intl.NumberFormat("en-US", {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0,
+  signDisplay: "always",
+});
+
+export const formatZeroDigitsSigned = (num: number): string =>
+  zeroDigitSigned.format(num);
+
 export const formatZeroDecimals = (num: number): string =>
   zeroDecimals.format(num);
 

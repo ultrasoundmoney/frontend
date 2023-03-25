@@ -1,76 +1,118 @@
-import JSBI from "jsbi";
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
 import type { FC } from "react";
+import { useMemo } from "react";
 import CountUp from "react-countup";
-import { BaseText } from "../../../components/Texts";
+import dropSvg from "../../../assets/droplet-own.svg";
+import fireSvg from "../../../assets/fire-own.svg";
 import LabelText from "../../../components/TextsNext/LabelText";
+import QuantifyText from "../../../components/TextsNext/QuantifyText";
 import SkeletonText from "../../../components/TextsNext/SkeletonText";
 import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../../components/WidgetSubcomponents";
-import { WEI_PER_ETH } from "../../../eth-units";
-import { formatTwoDigitsSigned } from "../../../format";
-import { SLOTS_PER_DAY } from "../../../time";
-import { useSupplyChanges } from "../../api/supply-changes";
-import { powIssuancePerDay } from "../../static-ether-data";
+import type { Unit } from "../../../denomination";
+import { formatTwoDigitsSigned, formatZeroDigitsSigned } from "../../../format";
+import { O, pipe } from "../../../fp";
+import type { DateTimeString } from "../../../time";
+import { useAverageEthPrice } from "../../api/average-eth-price";
+import { useBurnSums } from "../../api/burn-sums";
+import type { SupplyChangesPerTimeFrame } from "../../api/supply-changes";
+import { supplyChangesFromCollections } from "../../api/supply-changes";
+import { useSupplySeriesCollections } from "../../api/supply-over-time";
 import type { TimeFrame } from "../../time-frames";
 import SimulateProofOfWork from "../SimulateProofOfWork";
 import TimeFrameIndicator from "../TimeFrameIndicator";
 import UpdatedAgo from "../UpdatedAgo";
 
+const deltaFromChanges = (
+  supplyChanges: O.Option<SupplyChangesPerTimeFrame>,
+  timeFrame: TimeFrame,
+  simulateProofOfWork: boolean,
+  unit: Unit,
+): O.Option<number> =>
+  pipe(
+    supplyChanges,
+    O.map((supplyChanges) =>
+      pipe(
+        supplyChanges[timeFrame],
+        (supplyChange) =>
+          simulateProofOfWork ? supplyChange.delta.pow : supplyChange.delta.pos,
+        (delta) =>
+          unit === "eth"
+            ? delta.eth
+            : unit === "usd"
+            ? delta.usd
+            : (undefined as never),
+      ),
+    ),
+  );
+
+const gradientFromDelta = (delta: O.Option<number>): string =>
+  pipe(
+    delta,
+    O.map((delta) => delta >= 0),
+    O.getOrElse(() => false),
+    (isPositiveSupplyDelta) =>
+      isPositiveSupplyDelta
+        ? "from-cyan-300 to-indigo-500"
+        : "from-orange-400 to-yellow-300",
+  );
+
+const timestampFromChanges = (
+  supplyChangesPerTimeFrame: O.Option<SupplyChangesPerTimeFrame>,
+  timeFrame: TimeFrame,
+): DateTimeString | undefined =>
+  pipe(
+    supplyChangesPerTimeFrame,
+    O.map((supplyChanges) => supplyChanges[timeFrame]),
+    O.map((supplyChanges) => supplyChanges.timestamp),
+    O.toUndefined,
+  );
+
 type Props = {
   onClickTimeFrame: () => void;
   onSimulateProofOfWork: () => void;
-  posIssuancePerDay: number;
   simulateProofOfWork: boolean;
   timeFrame: TimeFrame;
+  unit: Unit;
 };
 
 const SupplyChange: FC<Props> = ({
   onClickTimeFrame,
   onSimulateProofOfWork,
-  posIssuancePerDay,
   simulateProofOfWork,
   timeFrame,
+  unit,
 }) => {
-  // To compare proof of stake issuance to proof of work issuance we offer a
-  // "simulate proof of work" toggle. However, we only have a supply series under
-  // proof of stake. Already including proof of stake issuance. Adding proof of
-  // work issuance would mean "simulated proof of work" is really what supply
-  // would look like if there was both proof of work _and_ proof of stake
-  // issuance. To make the comparison apples to apples we subtract an estimated
-  // proof of stake issuance to show the supply as if there were _only_ proof of
-  // work issuance. A possible improvement would be to drop this ad-hoc solution
-  // and have the backend return separate series.
-  const powMinPosIssuancePerDay = powIssuancePerDay - posIssuancePerDay;
-  const supplyChanges = useSupplyChanges();
-  const supplyChangesTimeFrame = supplyChanges[timeFrame] ?? undefined;
-
-  const simulatedPowIssuanceSinceMerge =
-    supplyChangesTimeFrame === undefined
-      ? undefined
-      : ((supplyChangesTimeFrame.to_slot - supplyChangesTimeFrame.from_slot) *
-          powMinPosIssuancePerDay) /
-        SLOTS_PER_DAY;
-
-  const supplyChange =
-    supplyChangesTimeFrame === undefined
-      ? undefined
-      : JSBI.subtract(
-          JSBI.BigInt(supplyChangesTimeFrame.to_supply),
-          JSBI.BigInt(supplyChangesTimeFrame.from_supply),
-        );
-
-  const supplyDelta =
-    supplyChange === undefined || simulatedPowIssuanceSinceMerge === undefined
-      ? undefined
-      : simulateProofOfWork
-      ? JSBI.toNumber(supplyChange) / WEI_PER_ETH +
-        simulatedPowIssuanceSinceMerge
-      : JSBI.toNumber(supplyChange) / WEI_PER_ETH;
+  const burnSums = useBurnSums();
+  const supplySeriesCollections = useSupplySeriesCollections();
+  const averageEthPrice = useAverageEthPrice();
+  const supplyChanges = useMemo(
+    () =>
+      pipe(
+        supplySeriesCollections,
+        O.map((collection) =>
+          supplyChangesFromCollections(
+            collection,
+            averageEthPrice[timeFrame],
+            burnSums[timeFrame].sum[unit],
+            timeFrame,
+          ),
+        ),
+      ),
+    [averageEthPrice, burnSums, supplySeriesCollections, timeFrame, unit],
+  );
+  const delta = deltaFromChanges(
+    supplyChanges,
+    timeFrame,
+    simulateProofOfWork,
+    unit,
+  );
 
   return (
     <WidgetErrorBoundary title="supply change">
       <WidgetBackground>
-        <div className="relative flex flex-col gap-x-2 gap-y-4">
+        <div className="flex relative flex-col gap-x-2 gap-y-4">
           <div className="flex justify-between">
             <LabelText>supply change</LabelText>
             <TimeFrameIndicator
@@ -78,40 +120,119 @@ const SupplyChange: FC<Props> = ({
               timeFrame={timeFrame}
             />
           </div>
-          <div className="flex">
-            <BaseText
-              font="font-roboto"
-              className={`
-                bg-gradient-to-r bg-clip-text
-                text-3xl text-transparent
-                ${
-                  supplyDelta !== undefined && supplyDelta >= 0
-                    ? "from-cyan-300 to-indigo-500"
-                    : "from-orange-400 to-yellow-300"
-                }
+          <div className="flex flex-row flex-wrap gap-x-4 gap-y-4 justify-between">
+            <QuantifyText
+              color={`
+                text-transparent bg-gradient-to-r bg-clip-text
+                ${gradientFromDelta(delta)}
               `}
+              size="text-2xl sm:text-3xl"
+              lineHeight="leading-8"
+              unitPostfix={unit === "eth" ? "ETH" : "USD"}
+              unitPostfixColor="text-slateus-200"
+              unitPostfixMargin="ml-1 sm:ml-2"
             >
-              <SkeletonText width="7rem">
-                {supplyDelta === undefined ? undefined : (
-                  <>
+              {pipe(
+                delta,
+                O.match(
+                  () => <SkeletonText width="7rem" />,
+                  (delta) => (
                     <CountUp
-                      preserveValue
-                      end={supplyDelta ?? 0}
-                      separator=","
                       decimals={2}
                       duration={0.8}
-                      formattingFn={formatTwoDigitsSigned}
+                      end={delta}
+                      preserveValue
+                      separator=","
+                      start={delta}
+                      formattingFn={
+                        unit === "eth"
+                          ? formatTwoDigitsSigned
+                          : unit === "usd"
+                          ? formatZeroDigitsSigned
+                          : (undefined as never)
+                      }
                     />
-                  </>
-                )}
-              </SkeletonText>
-            </BaseText>
-            <span className="ml-2 font-roboto text-3xl font-light text-slateus-400">
-              ETH
-            </span>
+                  ),
+                ),
+              )}
+            </QuantifyText>
+            <div className="flex flex-col items-start md:items-end lg:items-start xl:items-end w-fit">
+              <div className="flex gap-x-2">
+                <Image
+                  alt="drop icon signifying issued ETH"
+                  height={15}
+                  priority
+                  src={dropSvg as StaticImageData}
+                  width={15}
+                />
+                <QuantifyText
+                  size="text-xs"
+                  unitPostfix={unit.toUpperCase()}
+                  unitPostfixColor="text-slateus-200"
+                >
+                  {pipe(
+                    supplyChanges,
+                    O.match(
+                      () => <SkeletonText width="4rem" />,
+                      (supplyChanges) => (
+                        <CountUp
+                          decimals={2}
+                          duration={0.8}
+                          end={
+                            supplyChanges[timeFrame].issued[
+                              simulateProofOfWork ? "pow" : "pos"
+                            ][unit]
+                          }
+                          preserveValue
+                          separator=","
+                          start={
+                            supplyChanges[timeFrame].issued[
+                              simulateProofOfWork ? "pow" : "pos"
+                            ][unit]
+                          }
+                        />
+                      ),
+                    ),
+                  )}
+                </QuantifyText>
+              </div>
+              <div className="flex gap-x-2 justify-between w-full">
+                <Image
+                  alt="fire icon signifying burned ETH"
+                  height={15}
+                  priority
+                  src={fireSvg as StaticImageData}
+                  width={15}
+                />
+                <QuantifyText
+                  size="text-xs"
+                  unitPostfix={unit.toUpperCase()}
+                  unitPostfixColor="text-slateus-200"
+                >
+                  {pipe(
+                    supplyChanges,
+                    O.match(
+                      () => <SkeletonText width="4rem" />,
+                      (supplyChanges) => (
+                        <CountUp
+                          decimals={2}
+                          duration={0.8}
+                          end={supplyChanges[timeFrame].burned[unit]}
+                          separator=","
+                          start={supplyChanges[timeFrame].burned[unit]}
+                          preserveValue
+                        />
+                      ),
+                    ),
+                  )}
+                </QuantifyText>
+              </div>
+            </div>
           </div>
-          <div className="flex flex-wrap justify-between gap-x-4 gap-y-4">
-            <UpdatedAgo updatedAt={supplyChanges.timestamp} />
+          <div className="flex flex-wrap gap-x-4 gap-y-4 justify-between">
+            <UpdatedAgo
+              updatedAt={timestampFromChanges(supplyChanges, timeFrame)}
+            />
             <SimulateProofOfWork
               checked={simulateProofOfWork}
               onToggle={onSimulateProofOfWork}

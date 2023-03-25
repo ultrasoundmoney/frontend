@@ -11,26 +11,29 @@ import _first from "lodash/first";
 import _last from "lodash/last";
 import _merge from "lodash/merge";
 import type { FC } from "react";
+import { useContext, useState } from "react";
 import { useMemo } from "react";
 import colors from "../../../colors";
 import LabelText from "../../../components/TextsNext/LabelText";
 import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../../components/WidgetSubcomponents";
-import type { EthNumber } from "../../../eth-units";
+import { FeatureFlagsContext } from "../../../feature-flags";
 import {
   formatPercentFiveDecimalsSigned,
   formatPercentThreeDecimalsSigned,
   formatTwoDigit,
   formatTwoDigitsSigned,
-  formatZeroDecimals,
 } from "../../../format";
-import type { SupplyAtTime } from "../../api/supply-over-time";
-import { useSupplyOverTime } from "../../api/supply-over-time";
+import { O, pipe } from "../../../fp";
+import type { DateTimeString } from "../../../time";
+import type {
+  SupplySeriesCollection,
+  SupplySeriesCollections,
+} from "../../api/supply-over-time";
+import { useSupplySeriesCollections } from "../../api/supply-over-time";
 import { LONDON_TIMESTAMP } from "../../hardforks/london";
-import { MERGE_BLOCK_NUMBER, MERGE_TIMESTAMP } from "../../hardforks/paris";
-import { usePosIssuancePerDay } from "../../hooks/use-pos-issuance-day";
+import { MERGE_TIMESTAMP } from "../../hardforks/paris";
 import type { SupplyPoint } from "../../sections/SupplyDashboard";
-import { powIssuancePerDay } from "../../static-ether-data";
 import type { TimeFrame } from "../../time-frames";
 import SimulateProofOfWork from "../SimulateProofOfWork";
 import TimeFrameIndicator from "../TimeFrameIndicator";
@@ -45,13 +48,6 @@ if (typeof window !== "undefined") {
 const SUPPLY_SINCE_MERGE_SERIES_ID = "supply-since-merge-series";
 const SUPPLY_SINCE_MERGE_POW_SERIES_ID = "supply-since-merge-pow-series";
 const BITCOIN_SUPPLY_ID = "bitcoin-supply-since-merge-series";
-
-const BITCOIN_SUPPLY_AT_MERGE = 19_152_350;
-const BITCOIN_ISSUANCE_PER_TEN_MINUTES = 6.25;
-const BITCOIN_ISSUANCE_PER_SECOND =
-  BITCOIN_ISSUANCE_PER_TEN_MINUTES / (60 * 10);
-
-const SLOTS_PER_DAY = 24 * 60 * 5;
 
 const baseOptions: Highcharts.Options = {
   accessibility: { enabled: false },
@@ -101,8 +97,8 @@ const baseOptions: Highcharts.Options = {
       enabled: false,
     },
     tickWidth: 0,
-    minPadding: 0.04,
-    maxPadding: 0.04,
+    minPadding: 0.06,
+    maxPadding: 0.06,
   },
   legend: {
     enabled: true,
@@ -110,15 +106,20 @@ const baseOptions: Highcharts.Options = {
     symbolWidth: 0,
     labelFormatter: function () {
       const color =
-        this.index === 0
+        this.visible === false
+          ? "bg-slateus-400 opacity-60"
+          : this.index === 0
           ? "bg-[#62A2F3]"
           : this.index === 1
           ? "bg-[#FF891D]"
           : "bg-[#DEE2F1]";
       return `
-        <div class="flex flex-row items-center gap-x-2">
+        <div class="flex flex-row gap-x-2 items-center">
           <div class="w-2 h-2 ${color} rounded-full"></div>
-          <div class="font-roboto font-normal text-slateus-400 text-xs">
+          <div class="
+            text-xs font-normal font-roboto text-slateus-200
+            ${this.visible ? "" : "opacity-60"}
+          ">
             ${this.name}
           </div>
         </div>
@@ -134,11 +135,6 @@ const baseOptions: Highcharts.Options = {
   credits: { enabled: false },
   plotOptions: {
     series: {
-      events: {
-        legendItemClick: function () {
-          return false;
-        },
-      },
       marker: {
         lineColor: "white",
         radius: 3,
@@ -202,18 +198,18 @@ const getTooltip = (
 
     // z-10 does not work without adjusting position to !static.
     return `
-      <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-400 relative z-10">
+      <div class="relative z-10 p-4 rounded-lg border-2 font-roboto bg-slateus-700 border-slateus-400">
         ${
           !simulateProofOfWork
             ? ""
             : `<div class="mb-2 text-slateus-200">${title}</div>`
         }
-        <div class="text-slateus-400 text-right">${formattedDate}</div>
-        <div class="text-slateus-400 text-right">${formattedTime}</div>
+        <div class="text-right text-slateus-200">${formattedDate}</div>
+        <div class="text-right text-slateus-200">${formattedTime}</div>
         <div class="flex flex-col items-end mt-2">
           <div class="text-white">
             ${formatTwoDigit(total)}
-            <span class="text-slateus-400"> ${unit}</span>
+            <span class="text-slateus-200"> ${unit}</span>
           </div>
           <div class="
             text-transparent bg-clip-text bg-gradient-to-r
@@ -221,7 +217,7 @@ const getTooltip = (
             ${supplyDelta === undefined ? "hidden" : ""}
           ">
             ${supplyDeltaFormatted}
-            <span class="text-slateus-400"> ${unit}</span>
+            <span class="text-slateus-200"> ${unit}</span>
           </div>
           <div class="
             text-transparent bg-clip-text bg-gradient-to-r
@@ -255,90 +251,346 @@ const getSupplyChangeLabel = (
     );
 
     return `
-      <span class="font-roboto font-normal text-slateus-400 text-xs">
+      <span class="text-xs font-normal font-roboto text-slateus-400">
         <span class="text-white">${yearlySupplyDeltaPercent}</span>/y
       </span>
     `;
   };
-
-const getBitcoinSeries = (
-  ethPosSeries: SupplyPoint[] | undefined,
-): [SupplyPoint[] | undefined, SupplyPoint[] | undefined] => {
-  if (ethPosSeries === undefined) {
-    return [undefined, undefined];
-  }
-
-  const ethPosFirstPoint = _first(ethPosSeries);
-  if (ethPosFirstPoint === undefined) {
-    return [undefined, undefined];
-  }
-
-  const parisToTimeFrameSeconds = differenceInSeconds(
-    ethPosFirstPoint[0],
-    MERGE_TIMESTAMP,
-  );
-  const firstPointBitcoinSupply =
-    BITCOIN_SUPPLY_AT_MERGE +
-    BITCOIN_ISSUANCE_PER_SECOND * parisToTimeFrameSeconds;
-  const points = ethPosSeries.map(([timestamp]) => {
-    const secondsDelta =
-      ethPosFirstPoint[0] === undefined
-        ? 0
-        : differenceInSeconds(timestamp, ethPosFirstPoint[0]);
-    const bitcoinIssued = secondsDelta * BITCOIN_ISSUANCE_PER_SECOND;
-    const nextPoint = [
-      timestamp,
-      firstPointBitcoinSupply + bitcoinIssued,
-    ] as SupplyPoint;
-    return nextPoint;
-  });
-  const scalingConstant = ethPosFirstPoint[1] / firstPointBitcoinSupply;
-  const pointsScaled = points.map(([timestamp, bitcoinSupply]) => {
-    return [timestamp, bitcoinSupply * scalingConstant] as SupplyPoint;
-  });
-  return [points, pointsScaled];
+const deltaLegendLableStyle = {
+  fontSize: "12",
+  fontFamily: "Roboto mono",
+  fontWeight: "300",
+  color: colors.slateus400,
 };
 
-const getEthPowSeries = (
-  ethPosSeries: SupplyPoint[] | undefined,
-  powMinPosIssuancePerDay: EthNumber,
+const optionsFromSupplySeriesCollection = (
+  supplySeriesCollection: SupplySeriesCollection,
+  simulateProofOfWork: boolean,
   timeFrame: TimeFrame,
-): SupplyPoint[] | undefined =>
-  ethPosSeries === undefined
-    ? undefined
-    : ethPosSeries
-        .filter(([timestamp]) => new Date(timestamp) >= MERGE_TIMESTAMP)
-        .map(([timestamp, supply]) => {
-          const firstPoint = _first(ethPosSeries);
-          // Map can only be called for points that are not undefined.
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          const firstPointTimestamp = new Date(firstPoint![0]);
-          const slotsSinceStart =
-            differenceInSeconds(new Date(timestamp), firstPointTimestamp) / 12;
-          const slotsSinceMerge =
-            differenceInSeconds(new Date(timestamp), MERGE_TIMESTAMP) / 12;
-          const slotCount =
-            timeFrame === "since_burn" ? slotsSinceMerge : slotsSinceStart;
+  enableSupplyLegendClick: boolean,
+  posVisible: boolean,
+  powVisible: boolean,
+  btcVisible: boolean,
+  onPosVisibilityChange: (visible: boolean) => void,
+  onPowVisibilityChange: (visible: boolean) => void,
+  onBtcVisibilityChange: (visible: boolean) => void,
+): Highcharts.Options => {
+  const { posSeries, powSeries, btcSeriesScaled, btcSeries } =
+    supplySeriesCollection;
 
-          const simulatedPowIssuanceSinceStart =
-            (slotCount / SLOTS_PER_DAY) * powMinPosIssuancePerDay;
+  const lastPointPos = _last(posSeries);
+  const lastPointPow = _last(powSeries);
+  const lastPointBtc = _last(btcSeriesScaled);
 
-          const nextSupply = supply + simulatedPowIssuanceSinceStart;
-          const nextPoint: SupplyPoint = [timestamp, nextSupply];
-          return nextPoint;
-        });
+  const ethPosPointMap = Object.fromEntries(new Map(posSeries ?? []).entries());
 
-const getEthPosSeries = (
-  supplyOverTimeTimeFrame: SupplyAtTime[] | undefined,
-): SupplyPoint[] | undefined =>
-  supplyOverTimeTimeFrame === undefined
-    ? undefined
-    : supplyOverTimeTimeFrame.map(
-        (point): SupplyPoint => [
-          new Date(point.timestamp).getTime(),
-          point.supply,
-        ],
-      );
+  const ethPowPointMap = Object.fromEntries(new Map(powSeries ?? []).entries());
+
+  const bitcoinPointMap = Object.fromEntries(
+    new Map(btcSeries ?? []).entries(),
+  );
+
+  const dynamicOptions: Highcharts.Options = {
+    legend: {
+      enabled: simulateProofOfWork,
+    },
+    yAxis: {
+      plotLines: [
+        {
+          id: "supply-at-start",
+          value: posSeries?.[0]?.[1],
+          color: colors.slateus400,
+          width: 1,
+          label: {
+            x: 32,
+            y: 4,
+            style: { color: colors.slateus400 },
+          },
+        },
+        {
+          id: "bitcoin-issuance",
+          value:
+            !simulateProofOfWork || lastPointBtc === undefined
+              ? undefined
+              : lastPointBtc[1],
+          width: 0,
+          label: {
+            style: deltaLegendLableStyle,
+            align: "right",
+            x: 72,
+            y: timeFrame === "since_burn" ? -6 : 2,
+            useHTML: true,
+            formatter:
+              btcSeries === undefined || !btcVisible
+                ? undefined
+                : getSupplyChangeLabel(btcSeries),
+          },
+        },
+        {
+          id: "eth-issuance-pos",
+          value:
+            lastPointPos === undefined || !posVisible
+              ? undefined
+              : lastPointPos[1],
+          width: 0,
+          label: {
+            style: deltaLegendLableStyle,
+            align: "right",
+            x: 72,
+            y: timeFrame === "since_burn" ? 8 : 2,
+            useHTML: true,
+            formatter:
+              posSeries === undefined
+                ? undefined
+                : getSupplyChangeLabel(posSeries),
+          },
+        },
+        {
+          id: "eth-issuance-pow",
+          value:
+            !simulateProofOfWork || lastPointPow === undefined
+              ? undefined
+              : lastPointPow[1],
+          width: 0,
+          label: {
+            style: deltaLegendLableStyle,
+            align: "right",
+            x: 72,
+            y: 2,
+            useHTML: true,
+            formatter:
+              powSeries === undefined
+                ? undefined
+                : getSupplyChangeLabel(powSeries),
+          },
+        },
+      ],
+    },
+    xAxis: {
+      plotLines: [
+        {
+          id: "merge-plotline",
+          value: MERGE_TIMESTAMP.getTime(),
+          color: colors.slateus400,
+          width: 1,
+          label: {
+            x: 10,
+            y: 4,
+            style: { color: colors.slateus400 },
+            useHTML: true,
+            formatter: () => `
+                <div class="flex gap-x-2">
+                  <img
+                    class="w-4 h-4 -rotate-90"
+                    src="/panda-own.svg"
+                  />
+                  <a class="rounded-sm hover:underline" href="https://etherscan.io/block/15537394" target="_blank">
+                    <div class="text-xs font-light tracking-widest uppercase font-inter text-slateus-400">
+                      merge
+                    </div>
+                  </a>
+                </div>
+              `,
+          },
+        },
+        {
+          id: "burn-plotline",
+          value: LONDON_TIMESTAMP.getTime(),
+          color: colors.slateus400,
+          width: 1,
+          label: {
+            x: 10,
+            y: 4,
+            style: { color: colors.slateus400 },
+            useHTML: true,
+            formatter: () => `
+                <div class="flex gap-x-2">
+                  <img
+                    class="w-4 h-4 -rotate-90"
+                    src="/fire-own.svg"
+                  />
+                  <a class="hover:underline" href="https://etherscan.io/block/12965000" target="_blank">
+                    <div class="text-xs font-light tracking-widest uppercase font-inter text-slateus-400">
+                      burn
+                    </div>
+                  </a>
+                </div>
+              `,
+          },
+        },
+      ],
+    },
+    series: [
+      {
+        id: SUPPLY_SINCE_MERGE_SERIES_ID,
+        type: "spline",
+        name: "ETH",
+        visible: posVisible,
+        events: {
+          legendItemClick: function () {
+            if (!enableSupplyLegendClick) {
+              return false;
+            }
+            onPosVisibilityChange(this.visible);
+          },
+        },
+        data:
+          lastPointPos !== undefined && posSeries !== undefined
+            ? [
+                ...posSeries,
+                {
+                  x: lastPointPos?.[0],
+                  y: lastPointPos?.[1],
+                  marker: {
+                    symbol: `url(/graph-dot-blue.svg)`,
+                    enabled: true,
+                  },
+                },
+              ]
+            : undefined,
+        shadow: {
+          color: "rgba(75, 144, 219, 0.2)",
+          width: 15,
+        },
+        color: {
+          linearGradient: {
+            x1: 0,
+            y1: 0,
+            x2: 1,
+            y2: 0,
+          },
+          stops: [
+            [0, "#00FFFB"],
+            [1, "#5487F4"],
+          ],
+        },
+        tooltip: {
+          pointFormatter: getTooltip(
+            "pos",
+            posSeries,
+            ethPosPointMap,
+            simulateProofOfWork,
+          ),
+        },
+      },
+      {
+        color: "#FF891D",
+        visible: btcVisible && simulateProofOfWork,
+        enableMouseTracking: simulateProofOfWork,
+        id: BITCOIN_SUPPLY_ID,
+        type: "spline",
+        shadow: {
+          color: "#FF891D33",
+          width: 15,
+        },
+        events: {
+          legendItemClick: function () {
+            if (!enableSupplyLegendClick) {
+              return false;
+            }
+            onBtcVisibilityChange(this.visible);
+          },
+        },
+        data:
+          btcSeriesScaled === undefined
+            ? undefined
+            : [
+                ...btcSeriesScaled,
+                {
+                  x: lastPointBtc?.[0],
+                  y: lastPointBtc?.[1],
+                  marker: {
+                    symbol: `url(/graph-dot-bitcoin.svg)`,
+                    enabled: true,
+                  },
+                },
+              ],
+        name: "BTC",
+        showInLegend: simulateProofOfWork,
+        tooltip: {
+          pointFormatter: getTooltip(
+            "bitcoin",
+            btcSeries,
+            bitcoinPointMap,
+            simulateProofOfWork,
+          ),
+        },
+      },
+      {
+        color: colors.slateus100,
+        visible: powVisible && simulateProofOfWork,
+        enableMouseTracking: simulateProofOfWork,
+        id: SUPPLY_SINCE_MERGE_POW_SERIES_ID,
+        name: "ETH (PoW)",
+        showInLegend: simulateProofOfWork,
+        type: "spline",
+        events: {
+          legendItemClick: function () {
+            if (!enableSupplyLegendClick) {
+              return false;
+            }
+            onPowVisibilityChange(this.visible);
+          },
+        },
+        data:
+          powSeries === undefined
+            ? undefined
+            : [
+                ...powSeries,
+                {
+                  x: lastPointPow?.[0],
+                  y: lastPointPow?.[1],
+                  marker: {
+                    symbol: `url(/graph-dot-white.svg)`,
+                    enabled: true,
+                  },
+                },
+              ],
+        tooltip: {
+          pointFormatter: getTooltip(
+            "pow",
+            powSeries,
+            ethPowPointMap,
+            simulateProofOfWork,
+          ),
+        },
+      },
+      {
+        color: "transparent",
+        visible: simulateProofOfWork && powVisible,
+        type: "spline",
+        data: powSeries,
+        enableMouseTracking: false,
+        showInLegend: false,
+        states: { hover: { enabled: false } },
+        shadow: {
+          color: "#DEE2F133",
+          width: 15,
+        },
+      },
+    ],
+    tooltip: {
+      backgroundColor: "transparent",
+      borderWidth: 0,
+      shadow: false,
+      headerFormat: "",
+    },
+  };
+
+  return _merge({}, baseOptions, dynamicOptions);
+};
+
+const updatedAtFromSupplySeriesCollection = (
+  supplySeriesCollections: O.Option<SupplySeriesCollections>,
+  timeFrame: TimeFrame,
+): DateTimeString | undefined =>
+  pipe(
+    supplySeriesCollections,
+    O.map(
+      (supplySeriesCollections) => supplySeriesCollections[timeFrame].timestamp,
+    ),
+    O.toUndefined,
+  );
 
 type Props = {
   onClickTimeFrame: () => void;
@@ -353,342 +605,51 @@ const EthSupplyWidget: FC<Props> = ({
   simulateProofOfWork,
   timeFrame,
 }) => {
-  const supplyOverTime = useSupplyOverTime();
-  const supplyOverTimeTimeFrame = supplyOverTime?.[timeFrame];
-  const isTimeFrameAvailable =
-    supplyOverTimeTimeFrame !== undefined && supplyOverTimeTimeFrame.length > 0;
-  const posIssuancePerDay = usePosIssuancePerDay();
-  // To compare proof of stake issuance to proof of work issuance we offer a
-  // "simulate proof of work" toggle. However, we only have a supply series under
-  // proof of stake. Already including proof of stake issuance. Adding proof of
-  // work issuance would mean "simulated proof of work" is really what supply
-  // would look like if there was both proof of work _and_ proof of stake
-  // issuance. To make the comparison apples to apples we subtract an estimated
-  // proof of stake issuance to show the supply as if there were _only_ proof of
-  // work issuance. A possible improvement would be to drop this ad-hoc solution
-  // and have the backend return separate series.
-  const powMinPosIssuancePerDay = powIssuancePerDay - posIssuancePerDay;
+  const [posVisible, setPosVisible] = useState(true);
+  const [powVisible, setPowVisible] = useState(true);
+  const [btcVisible, setBtcVisible] = useState(true);
+  const { enableSupplyLegendClick } = useContext(FeatureFlagsContext);
 
-  const options = useMemo((): Highcharts.Options => {
-    if (!isTimeFrameAvailable) {
-      return baseOptions;
-    }
+  const supplySeriesCollections = useSupplySeriesCollections();
 
-    const ethPosSeries = getEthPosSeries(supplyOverTimeTimeFrame);
-    const [bitcoinSupplySeries, bitcoinSupplySeriesScaled] =
-      getBitcoinSeries(ethPosSeries);
-    const ethPowSeries = getEthPowSeries(
-      ethPosSeries,
-      powMinPosIssuancePerDay,
+  const options = useMemo(
+    (): Highcharts.Options =>
+      pipe(
+        supplySeriesCollections,
+        O.map((supplySeriesCollections) => supplySeriesCollections[timeFrame]),
+        O.map((supplySeriesCollections) =>
+          optionsFromSupplySeriesCollection(
+            supplySeriesCollections,
+            simulateProofOfWork,
+            timeFrame,
+            enableSupplyLegendClick,
+            posVisible,
+            powVisible,
+            btcVisible,
+            setPosVisible,
+            setPowVisible,
+            setBtcVisible,
+          ),
+        ),
+        O.getOrElse(() => baseOptions),
+      ),
+    [
+      btcVisible,
+      enableSupplyLegendClick,
+      posVisible,
+      powVisible,
+      simulateProofOfWork,
+      supplySeriesCollections,
       timeFrame,
-    );
-    const lastPointPos = _last(ethPosSeries);
-    const lastPointBtc = _last(bitcoinSupplySeriesScaled);
-    const lastPointPow = _last(ethPowSeries);
-
-    const ethPosPointMap = Object.fromEntries(
-      new Map(ethPosSeries ?? []).entries(),
-    );
-
-    const ethPowPointMap = Object.fromEntries(
-      new Map(ethPowSeries ?? []).entries(),
-    );
-
-    const bitcoinPointMap = Object.fromEntries(
-      new Map(bitcoinSupplySeries ?? []).entries(),
-    );
-
-    const dynamicOptions: Highcharts.Options = {
-      legend: {
-        enabled: simulateProofOfWork,
-      },
-      yAxis: {
-        plotLines: [
-          {
-            id: "supply-at-start",
-            value: ethPosSeries?.[0]?.[1],
-            color: colors.slateus400,
-            width: 1,
-            label: {
-              x: 32,
-              y: 4,
-              style: { color: colors.slateus400 },
-            },
-          },
-          {
-            id: "bitcoin-issuance",
-            value:
-              !simulateProofOfWork || lastPointBtc === undefined
-                ? undefined
-                : lastPointBtc[1],
-            width: 0,
-            label: {
-              style: {
-                fontSize: "12",
-                fontFamily: "Roboto mono",
-                fontWeight: "300",
-                color: colors.slateus400,
-              },
-              align: "right",
-              x: 72,
-              y: timeFrame === "since_burn" ? 12 : 2,
-              useHTML: true,
-              formatter:
-                bitcoinSupplySeries === undefined
-                  ? undefined
-                  : getSupplyChangeLabel(bitcoinSupplySeries),
-            },
-          },
-          {
-            id: "eth-issuance-pos",
-            value: lastPointPos === undefined ? undefined : lastPointPos[1],
-            width: 0,
-            label: {
-              style: {
-                fontSize: "12",
-                fontFamily: "Roboto mono",
-                fontWeight: "300",
-                color: colors.slateus400,
-              },
-              align: "right",
-              x: 72,
-              y: 2,
-              useHTML: true,
-              formatter:
-                ethPosSeries === undefined
-                  ? undefined
-                  : getSupplyChangeLabel(ethPosSeries),
-            },
-          },
-          {
-            id: "eth-issuance-pow",
-            value:
-              !simulateProofOfWork || lastPointPow === undefined
-                ? undefined
-                : lastPointPow[1],
-            width: 0,
-            label: {
-              style: {
-                fontSize: "12",
-                fontFamily: "Roboto mono",
-                fontWeight: "300",
-                color: colors.slateus400,
-              },
-              align: "right",
-              x: 72,
-              y: 2,
-              useHTML: true,
-              formatter:
-                ethPowSeries === undefined
-                  ? undefined
-                  : getSupplyChangeLabel(ethPowSeries),
-            },
-          },
-        ],
-      },
-      xAxis: {
-        plotLines: [
-          {
-            id: "merge-plotline",
-            value: MERGE_TIMESTAMP.getTime(),
-            color: colors.slateus400,
-            width: 1,
-            label: {
-              x: 10,
-              y: 54,
-              style: { color: colors.slateus400 },
-              align: "center",
-              useHTML: true,
-              formatter: () => `
-                <div class="flex">
-                  <a class="hover:underline" href="https://etherscan.io/block/15537394" target="_blank">
-                    <div class="font-roboto font-light text-slateus-300">
-                    #${formatZeroDecimals(MERGE_BLOCK_NUMBER)}
-                    </div>
-                  </a>
-                  <img
-                    class="w-4 h-4 ml-2"
-                    src="/panda-own.svg"
-                  />
-                </div>
-              `,
-            },
-          },
-          {
-            id: "burn-plotline",
-            value: LONDON_TIMESTAMP.getTime(),
-            color: colors.slateus400,
-            width: 1,
-            label: {
-              x: 10,
-              y: 54,
-              style: { color: colors.slateus400 },
-              align: "center",
-              useHTML: true,
-              formatter: () => `
-                <div class="flex">
-                  <a class="hover:underline" href="https://etherscan.io/block/12965000" target="_blank">
-                    <div class="font-roboto font-light text-slateus-300">
-                    #${formatZeroDecimals(12965000)}
-                    </div>
-                  </a>
-                  <img
-                    class="w-4 h-4 ml-2"
-                    src="/fire-own.svg"
-                  />
-                </div>
-              `,
-            },
-          },
-        ],
-      },
-      series: [
-        {
-          id: SUPPLY_SINCE_MERGE_SERIES_ID,
-          type: "spline",
-          name: "ETH",
-          data:
-            lastPointPos !== undefined && ethPosSeries !== undefined
-              ? [
-                  ...ethPosSeries,
-                  {
-                    x: lastPointPos?.[0],
-                    y: lastPointPos?.[1],
-                    marker: {
-                      symbol: `url(/graph-dot-blue.svg)`,
-                      enabled: true,
-                    },
-                  },
-                ]
-              : undefined,
-          shadow: {
-            color: "rgba(75, 144, 219, 0.2)",
-            width: 15,
-          },
-          color: {
-            linearGradient: {
-              x1: 0,
-              y1: 0,
-              x2: 1,
-              y2: 0,
-            },
-            stops: [
-              [0, "#00FFFB"],
-              [1, "#5487F4"],
-            ],
-          },
-          tooltip: {
-            pointFormatter: getTooltip(
-              "pos",
-              ethPosSeries,
-              ethPosPointMap,
-              simulateProofOfWork,
-            ),
-          },
-        },
-        {
-          color: "#FF891D",
-          visible: simulateProofOfWork,
-          enableMouseTracking: simulateProofOfWork,
-          id: BITCOIN_SUPPLY_ID,
-          type: "spline",
-          shadow: {
-            color: "#FF891D33",
-            width: 15,
-          },
-          data:
-            bitcoinSupplySeriesScaled === undefined
-              ? undefined
-              : [
-                  ...bitcoinSupplySeriesScaled,
-                  {
-                    x: lastPointBtc?.[0],
-                    y: lastPointBtc?.[1],
-                    marker: {
-                      symbol: `url(/graph-dot-bitcoin.svg)`,
-                      enabled: true,
-                    },
-                  },
-                ],
-          name: "BTC",
-          showInLegend: simulateProofOfWork,
-          tooltip: {
-            pointFormatter: getTooltip(
-              "bitcoin",
-              bitcoinSupplySeries,
-              bitcoinPointMap,
-              simulateProofOfWork,
-            ),
-          },
-        },
-        {
-          color: colors.slateus100,
-          visible: simulateProofOfWork,
-          enableMouseTracking: simulateProofOfWork,
-          id: SUPPLY_SINCE_MERGE_POW_SERIES_ID,
-          name: "ETH (PoW)",
-          showInLegend: simulateProofOfWork,
-          type: "spline",
-          data:
-            ethPowSeries === undefined
-              ? undefined
-              : [
-                  ...ethPowSeries,
-                  {
-                    x: lastPointPow?.[0],
-                    y: lastPointPow?.[1],
-                    marker: {
-                      symbol: `url(/graph-dot-white.svg)`,
-                      enabled: true,
-                    },
-                  },
-                ],
-          tooltip: {
-            pointFormatter: getTooltip(
-              "pow",
-              ethPowSeries,
-              ethPowPointMap,
-              simulateProofOfWork,
-            ),
-          },
-        },
-        {
-          color: "transparent",
-          visible: simulateProofOfWork,
-          type: "spline",
-          data: ethPowSeries,
-          enableMouseTracking: false,
-          showInLegend: false,
-          states: { hover: { enabled: false } },
-          shadow: {
-            color: "#DEE2F133",
-            width: 15,
-          },
-        },
-      ],
-      tooltip: {
-        backgroundColor: "transparent",
-        borderWidth: 0,
-        shadow: false,
-        headerFormat: "",
-      },
-    };
-
-    return _merge({}, baseOptions, dynamicOptions);
-  }, [
-    isTimeFrameAvailable,
-    powMinPosIssuancePerDay,
-    simulateProofOfWork,
-    supplyOverTimeTimeFrame,
-    timeFrame,
-  ]);
+    ],
+  );
 
   return (
     <WidgetErrorBoundary title="eth supply">
       {/* We use the h-0 min-h-full trick to adopt the height of our sibling
       element. */}
-      <WidgetBackground className="relative flex h-full min-h-full w-full flex-col lg:h-0">
-        <div className="pointer-events-none absolute left-0 right-0 top-0 bottom-0 overflow-hidden rounded-lg">
+      <WidgetBackground className="flex relative flex-col w-full h-full min-h-full lg:h-0">
+        <div className="overflow-hidden absolute top-0 right-0 bottom-0 left-0 rounded-lg pointer-events-none">
           <div
             // will-change-transform is critical for mobile performance of
             // rendering the chart overlayed on this element.
@@ -729,18 +690,27 @@ const EthSupplyWidget: FC<Props> = ({
             [&>div]:flex-grow
           `}
         >
-          {isTimeFrameAvailable ? (
-            <HighchartsReact highcharts={Highcharts} options={options} />
-          ) : (
-            <div className="flex h-full min-h-[400px] items-center justify-center text-center lg:min-h-[auto]">
-              <LabelText color="text-slateus-300">
-                currently unavailable
-              </LabelText>
-            </div>
+          {pipe(
+            supplySeriesCollections,
+            O.match(
+              () => (
+                <div className="flex justify-center items-center h-full text-center min-h-[400px] lg:min-h-[auto]">
+                  <LabelText color="text-slateus-300">loading...</LabelText>
+                </div>
+              ),
+              () => (
+                <HighchartsReact highcharts={Highcharts} options={options} />
+              ),
+            ),
           )}
         </div>
-        <div className="flex flex-wrap justify-between gap-x-4 gap-y-4">
-          <UpdatedAgo updatedAt={supplyOverTime?.timestamp} />
+        <div className="flex flex-wrap gap-x-4 gap-y-4 justify-between">
+          <UpdatedAgo
+            updatedAt={updatedAtFromSupplySeriesCollection(
+              supplySeriesCollections,
+              timeFrame,
+            )}
+          />
           <SimulateProofOfWork
             checked={simulateProofOfWork}
             onToggle={onSimulateProofOfWork}

@@ -99,5 +99,6 @@ export const OAlt = {
           throw new Error(message);
         }),
       ),
+  sequenceStruct: sequenceS(O.Apply),
   unwrap: <A>(o: O.Option<A>): A => pipe(o, OAlt.expect("unwrap on none")),
 };

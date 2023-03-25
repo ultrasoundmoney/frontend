@@ -12,7 +12,7 @@ import {
   WidgetTitle,
 } from "../../../components/WidgetSubcomponents";
 import type { Eth, Gwei } from "../../../eth-units";
-import { GWEI_PER_ETH, WEI_PER_ETH } from "../../../eth-units";
+import { GWEI_PER_ETH } from "../../../eth-units";
 import * as Format from "../../../format";
 import { useBurnRates } from "../../api/burn-rates";
 import { useEffectiveBalanceSum } from "../../api/effective-balance-sum";
@@ -25,10 +25,10 @@ const EquilibriumGraph = dynamic(() => import("./EquilibriumGraph"));
 type UnixTimestamp = number;
 type Point = [UnixTimestamp, number];
 
-const YEAR_IN_MINUTES = 365.25 * 24 * 60;
+const MINUTES_PER_YEAR = 365.25 * 24 * 60;
 
-const burnAsFraction = (nonStakingSupply: number, weiBurnPerMinute: number) =>
-  ((weiBurnPerMinute / WEI_PER_ETH) * YEAR_IN_MINUTES) / nonStakingSupply;
+const burnAsFraction = (nonStakingSupply: number, ethBurnPerMinute: number) =>
+  (ethBurnPerMinute * MINUTES_PER_YEAR) / nonStakingSupply;
 
 const MAX_EFFECTIVE_BALANCE: number = 32 * GWEI_PER_ETH;
 const SECONDS_PER_SLOT = 12;
@@ -190,13 +190,16 @@ const EquilibriumWidget = () => {
     setStakingAprFraction(initialStakingApr);
     setNowMarker(initialStakingApr);
     setNonStakingBurnFraction(
-      burnAsFraction(nonStakedSupply, burnRates.burnRateSinceBurn),
+      burnAsFraction(nonStakedSupply, burnRates.since_burn.rate.eth_per_minute),
     );
     setBurnMarkers({
-      all: burnAsFraction(nonStakedSupply, burnRates.burnRateSinceBurn),
-      d1: burnAsFraction(nonStakedSupply, burnRates.burnRate24h),
-      d30: burnAsFraction(nonStakedSupply, burnRates.burnRate30d),
-      d7: burnAsFraction(nonStakedSupply, burnRates.burnRate7d),
+      all: burnAsFraction(
+        nonStakedSupply,
+        burnRates.since_burn.rate.eth_per_minute,
+      ),
+      d1: burnAsFraction(nonStakedSupply, burnRates.d1.rate.eth_per_minute),
+      d30: burnAsFraction(nonStakedSupply, burnRates.d30.rate.eth_per_minute),
+      d7: burnAsFraction(nonStakedSupply, burnRates.d7.rate.eth_per_minute),
       ultrasound: getIssuancePerYear(staked) / nonStakedSupply,
     });
   }, [
@@ -364,7 +367,7 @@ const EquilibriumWidget = () => {
             `}
           ></div>
         </div>
-        <div className="grid grid-cols-1 gap-y-8 gap-x-8 p-8 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-x-8 gap-y-8 p-8 lg:grid-cols-2">
           <div className="flex justify-between">
             <div className="flex flex-col gap-y-4">
               <WidgetTitle className="hidden md:inline">
@@ -419,7 +422,7 @@ const EquilibriumWidget = () => {
           </div>
           <div className="flex flex-col gap-y-7">
             <div>
-              <div className="flex items-baseline justify-between">
+              <div className="flex justify-between items-baseline">
                 <div className="flex items-center truncate">
                   <WidgetTitle>issuance rewards</WidgetTitle>
                   <BodyText className="invisible text-xs md:text-xs lg:visible">
@@ -462,7 +465,7 @@ const EquilibriumWidget = () => {
                     }px)`,
                   }}
                 >
-                  <div className="-mt-0.5 h-2 w-0.5 rounded-b-full bg-slateus-200"></div>
+                  <div className="-mt-0.5 w-0.5 h-2 rounded-b-full bg-slateus-200"></div>
                   <TimeFrameText className="mt-0.5 text-slateus-200">
                     now
                   </TimeFrameText>
@@ -470,7 +473,7 @@ const EquilibriumWidget = () => {
               </div>
             </div>
             <div>
-              <div className="flex items-baseline justify-between">
+              <div className="flex justify-between items-baseline">
                 <div className="flex items-center truncate">
                   <WidgetTitle>burn rate</WidgetTitle>
                   <BodyText className="text-xs md:text-xs">
@@ -500,7 +503,7 @@ const EquilibriumWidget = () => {
             </div>
           </div>
 
-          <div className="mt-2 -mb-2 flex w-full flex-col items-baseline justify-between md:flex-row">
+          <div className="flex flex-col justify-between items-baseline mt-2 -mb-2 w-full md:flex-row">
             <WidgetTitle>issuance and burn at equilibrium</WidgetTitle>
             <MoneyAmount amountPostfix="K" unitText="ETH/year">
               {equilibriums !== undefined
