@@ -11,13 +11,12 @@ import _first from "lodash/first";
 import _last from "lodash/last";
 import _merge from "lodash/merge";
 import type { FC } from "react";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useMemo } from "react";
 import colors from "../../../colors";
 import LabelText from "../../../components/TextsNext/LabelText";
 import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../../components/WidgetSubcomponents";
-import { FeatureFlagsContext } from "../../../feature-flags";
 import {
   formatPercentFiveDecimalsSigned,
   formatPercentThreeDecimalsSigned,
@@ -114,7 +113,7 @@ const baseOptions: Highcharts.Options = {
           ? "bg-[#FF891D]"
           : "bg-[#DEE2F1]";
       return `
-        <div class="flex flex-row gap-x-2 items-center cursor-default">
+        <div class="flex flex-row gap-x-2 items-center">
           <div class="w-2 h-2 ${color} rounded-full"></div>
           <div class="
             text-xs font-normal font-roboto text-slateus-200
@@ -267,13 +266,12 @@ const optionsFromSupplySeriesCollection = (
   supplySeriesCollection: SupplySeriesCollection,
   simulateProofOfWork: boolean,
   timeFrame: TimeFrame,
-  enableSupplyLegendClick: boolean,
   posVisible: boolean,
   powVisible: boolean,
   btcVisible: boolean,
-  onPosVisibilityChange: (visible: boolean) => void,
-  onPowVisibilityChange: (visible: boolean) => void,
-  onBtcVisibilityChange: (visible: boolean) => void,
+  onPosVisibilityChange: (setFn: (visible: boolean) => boolean) => void,
+  onPowVisibilityChange: (setFn: (visible: boolean) => boolean) => void,
+  onBtcVisibilityChange: (setFn: (visible: boolean) => boolean) => void,
 ): Highcharts.Options => {
   const { posSeries, powSeries, btcSeriesScaled, btcSeries } =
     supplySeriesCollection;
@@ -428,10 +426,7 @@ const optionsFromSupplySeriesCollection = (
         visible: posVisible,
         events: {
           legendItemClick: function () {
-            if (!enableSupplyLegendClick) {
-              return false;
-            }
-            onPosVisibilityChange(this.visible);
+            onPosVisibilityChange((visible) => !visible);
           },
         },
         data:
@@ -486,10 +481,7 @@ const optionsFromSupplySeriesCollection = (
         },
         events: {
           legendItemClick: function () {
-            if (!enableSupplyLegendClick) {
-              return false;
-            }
-            onBtcVisibilityChange(this.visible);
+            onBtcVisibilityChange((visible) => !visible);
           },
         },
         data:
@@ -528,10 +520,7 @@ const optionsFromSupplySeriesCollection = (
         type: "spline",
         events: {
           legendItemClick: function () {
-            if (!enableSupplyLegendClick) {
-              return false;
-            }
-            onPowVisibilityChange(this.visible);
+            onPowVisibilityChange((visible) => !visible);
           },
         },
         data:
@@ -602,7 +591,6 @@ const EthSupplyWidget: FC<Props> = ({
   const [posVisible, setPosVisible] = useState(true);
   const [powVisible, setPowVisible] = useState(true);
   const [btcVisible, setBtcVisible] = useState(true);
-  const { enableSupplyLegendClick } = useContext(FeatureFlagsContext);
 
   const supplySeriesCollections = useSupplySeriesCollections();
 
@@ -616,7 +604,6 @@ const EthSupplyWidget: FC<Props> = ({
             supplySeriesCollections,
             simulateProofOfWork,
             timeFrame,
-            enableSupplyLegendClick,
             posVisible,
             powVisible,
             btcVisible,
@@ -629,7 +616,6 @@ const EthSupplyWidget: FC<Props> = ({
       ),
     [
       btcVisible,
-      enableSupplyLegendClick,
       posVisible,
       powVisible,
       simulateProofOfWork,
