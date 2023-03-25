@@ -205,7 +205,7 @@ const CompanyMarkers: FC<{ peRatios: PeRatios & { ETH: number } }> = ({
     .filter(getIsValidMarker)
     .reduce((list: MarkerProps[], marker) => {
       const someConflict = list.some(
-        (shownMarker) => Math.abs(shownMarker.peRatio - marker.peRatio) < 4,
+        (shownMarker) => Math.abs(shownMarker.peRatio - marker.peRatio) < 6.7,
       );
 
       if (someConflict) {
