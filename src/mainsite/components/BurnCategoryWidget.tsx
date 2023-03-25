@@ -320,9 +320,7 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const [hoveringMisc, setHoveringMisc] = useState(false);
   const { showCategoryCounts } = useContext(FeatureFlagsContext);
 
-  // TODO: Remove workaround when "since_merge" is added to the burnCategories
-  const selectedBurnCategories =
-    burnCategories?.[timeFrame == "since_merge" ? "since_burn" : timeFrame];
+  const selectedBurnCategories = burnCategories?.[timeFrame];
 
   const nft = selectedBurnCategories?.find(
     ({ category }) => category === "nft",
@@ -416,7 +414,7 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
         >
           5 minute time frame unavailable
         </div>
-      ) : timeFrame === "since_burn"  || timeFrame == "since_merge" ? (
+      ) : timeFrame === "since_burn" || timeFrame == "since_merge" ? (
         <div
           className={`
             flex min-h-[324px] w-full items-center justify-center
