@@ -392,7 +392,9 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
     >
       <div
         className={`${
-          timeFrame === "m5" || timeFrame === "since_burn"
+          timeFrame === "m5" ||
+          timeFrame === "since_burn" ||
+          timeFrame == "since_merge"
             ? "hidden"
             : "visible"
         }`}
