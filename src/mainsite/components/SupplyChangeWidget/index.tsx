@@ -12,7 +12,10 @@ import SkeletonText from "../../../components/TextsNext/SkeletonText";
 import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../../components/WidgetSubcomponents";
 import type { Unit } from "../../../denomination";
-import { formatTwoDigitsSigned, formatZeroDigitsSigned } from "../../../format";
+import {
+  formatTwoDecimalsSigned,
+  formatZeroDecimalsSigned,
+} from "../../../format";
 import { O, OAlt, pipe } from "../../../fp";
 import type { DateTimeString } from "../../../time";
 import { useAverageEthPrice } from "../../api/average-eth-price";
@@ -157,9 +160,9 @@ const SupplyChange: FC<Props> = ({
                       end={delta}
                       formattingFn={
                         unit === "eth"
-                          ? formatTwoDigitsSigned
+                          ? formatTwoDecimalsSigned
                           : unit === "usd"
-                          ? formatZeroDigitsSigned
+                          ? formatZeroDecimalsSigned
                           : (undefined as never)
                       }
                       preserveValue
@@ -190,7 +193,13 @@ const SupplyChange: FC<Props> = ({
                       () => <SkeletonText width="4rem" />,
                       (supplyChanges) => (
                         <CountUp
-                          decimals={2}
+                          decimals={
+                            unit === "eth"
+                              ? 2
+                              : unit === "usd"
+                              ? 0
+                              : (undefined as never)
+                          }
                           duration={0.8}
                           end={
                             supplyChanges[timeFrame].issued[
@@ -224,7 +233,13 @@ const SupplyChange: FC<Props> = ({
                       () => <SkeletonText width="4rem" />,
                       (supplyChanges) => (
                         <CountUp
-                          decimals={2}
+                          decimals={
+                            unit === "eth"
+                              ? 2
+                              : unit === "usd"
+                              ? 0
+                              : (undefined as never)
+                          }
                           duration={0.8}
                           end={supplyChanges[timeFrame].burned[unit]}
                           preserveValue

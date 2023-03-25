@@ -17,14 +17,19 @@ import colors from "../../../colors";
 import LabelText from "../../../components/TextsNext/LabelText";
 import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../../components/WidgetSubcomponents";
+import type { Unit } from "../../../denomination";
 import {
   formatPercentFiveDecimalsSigned,
   formatPercentThreeDecimalsSigned,
   formatTwoDigit,
-  formatTwoDigitsSigned,
+  formatTwoDecimalsSigned,
+  formatZeroDecimals,
+  formatZeroDecimalsSigned,
 } from "../../../format";
 import { O, pipe } from "../../../fp";
 import type { DateTimeString } from "../../../time";
+import type { AverageEthPrice } from "../../api/average-eth-price";
+import { useAverageEthPrice } from "../../api/average-eth-price";
 import type {
   SupplySeriesCollection,
   SupplySeriesCollections,
@@ -150,7 +155,10 @@ const getTooltip = (
   series: SupplyPoint[] | undefined,
   pointMap: PointMap | undefined,
   simulateProofOfWork: boolean,
+  unit: Unit,
+  ethPrice: number,
 ): FormatterCallbackFunction<Point> =>
+  // This part is a mess, feel free to refactor heavily.
   function () {
     if (series === undefined || pointMap === undefined) {
       return "";
@@ -170,30 +178,56 @@ const getTooltip = (
     if (total === undefined) {
       return "";
     }
+    const totalUsd = total * ethPrice;
+
+    const totalFormatted =
+      type === "bitcoin"
+        ? formatTwoDigit(total)
+        : unit === "eth"
+        ? formatTwoDigit(total)
+        : unit === "usd"
+        ? formatZeroDecimals(totalUsd)
+        : (undefined as never);
 
     const dt = new Date(x);
     const formattedDate = format(dt, "iii MMM dd");
     const formattedTime = format(dt, "HH:mm:ss 'UTC'x");
 
-    const supplyDelta = total - firstSupply;
+    const title = type === "pos" ? "ETH" : type === "pow" ? "ETH (PoW)" : "BTC";
+    const formattedUnit =
+      type === "bitcoin"
+        ? "BTC"
+        : unit === "eth"
+        ? "ETH"
+        : unit === "usd"
+        ? "USD"
+        : (undefined as never);
+
+    const nativeDelta = total - firstSupply;
+    const deltaUsd = nativeDelta * ethPrice;
 
     const supplyDeltaFormatted =
-      supplyDelta !== undefined
-        ? formatTwoDigitsSigned(supplyDelta)
-        : undefined;
+      nativeDelta === undefined || deltaUsd === undefined
+        ? undefined
+        : type === "bitcoin"
+        ? formatTwoDecimalsSigned(nativeDelta)
+        : unit === "eth"
+        ? formatTwoDecimalsSigned(nativeDelta)
+        : unit === "usd"
+        ? formatZeroDecimalsSigned(deltaUsd)
+        : (undefined as never);
 
     const gradientCss =
-      supplyDelta !== undefined && supplyDelta <= 0
+      nativeDelta !== undefined && nativeDelta <= 0
         ? "from-orange-400 to-yellow-300"
         : "from-cyan-300 to-indigo-500";
 
-    const title = type === "pos" ? "ETH" : type === "pow" ? "ETH (PoW)" : "BTC";
-    const unit = type === "bitcoin" ? "BTC" : "ETH";
-
     const supplyDeltaPercent =
-      supplyDelta === undefined
+      nativeDelta === undefined || totalUsd === undefined
         ? undefined
-        : formatPercentFiveDecimalsSigned(supplyDelta / total);
+        : type !== "bitcoin" && unit === "usd"
+        ? formatPercentFiveDecimalsSigned(deltaUsd / totalUsd)
+        : formatPercentFiveDecimalsSigned(nativeDelta / total);
 
     // z-10 does not work without adjusting position to !static.
     return `
@@ -207,16 +241,16 @@ const getTooltip = (
         <div class="text-right text-slateus-200">${formattedTime}</div>
         <div class="flex flex-col items-end mt-2">
           <div class="text-white">
-            ${formatTwoDigit(total)}
-            <span class="text-slateus-200"> ${unit}</span>
+            ${totalFormatted}
+            <span class="text-slateus-200"> ${formattedUnit}</span>
           </div>
           <div class="
             text-transparent bg-clip-text bg-gradient-to-r
             ${gradientCss}
-            ${supplyDelta === undefined ? "hidden" : ""}
+            ${nativeDelta === undefined ? "hidden" : ""}
           ">
             ${supplyDeltaFormatted}
-            <span class="text-slateus-200"> ${unit}</span>
+            <span class="text-slateus-200"> ${formattedUnit}</span>
           </div>
           <div class="
             text-transparent bg-clip-text bg-gradient-to-r
@@ -272,6 +306,8 @@ const optionsFromSupplySeriesCollection = (
   onPosVisibilityChange: (setFn: (visible: boolean) => boolean) => void,
   onPowVisibilityChange: (setFn: (visible: boolean) => boolean) => void,
   onBtcVisibilityChange: (setFn: (visible: boolean) => boolean) => void,
+  unit: Unit,
+  ethPrices: AverageEthPrice,
 ): Highcharts.Options => {
   const { posSeries, powSeries, btcSeriesScaled, btcSeries } =
     supplySeriesCollection;
@@ -465,6 +501,8 @@ const optionsFromSupplySeriesCollection = (
             posSeries,
             ethPosPointMap,
             simulateProofOfWork,
+            unit,
+            ethPrices[timeFrame],
           ),
         },
         zIndex: 2,
@@ -506,6 +544,8 @@ const optionsFromSupplySeriesCollection = (
             btcSeries,
             bitcoinPointMap,
             simulateProofOfWork,
+            unit,
+            ethPrices[timeFrame],
           ),
         },
         zIndex: 1,
@@ -543,6 +583,8 @@ const optionsFromSupplySeriesCollection = (
             powSeries,
             ethPowPointMap,
             simulateProofOfWork,
+            unit,
+            ethPrices[timeFrame],
           ),
         },
         zIndex: 0,
@@ -580,6 +622,7 @@ type Props = {
   onSimulateProofOfWork: () => void;
   simulateProofOfWork: boolean;
   timeFrame: TimeFrame;
+  unit: Unit;
 };
 
 const EthSupplyWidget: FC<Props> = ({
@@ -587,7 +630,9 @@ const EthSupplyWidget: FC<Props> = ({
   onSimulateProofOfWork,
   simulateProofOfWork,
   timeFrame,
+  unit,
 }) => {
+  const ethPrices = useAverageEthPrice();
   const [posVisible, setPosVisible] = useState(true);
   const [powVisible, setPowVisible] = useState(true);
   const [btcVisible, setBtcVisible] = useState(true);
@@ -610,17 +655,21 @@ const EthSupplyWidget: FC<Props> = ({
             setPosVisible,
             setPowVisible,
             setBtcVisible,
+            unit,
+            ethPrices,
           ),
         ),
         O.getOrElse(() => baseOptions),
       ),
     [
       btcVisible,
+      ethPrices,
       posVisible,
       powVisible,
       simulateProofOfWork,
       supplySeriesCollections,
       timeFrame,
+      unit,
     ],
   );
 
