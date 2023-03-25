@@ -580,7 +580,16 @@ const optionsFromSupplySeriesCollection = (
         tooltip: {
           pointFormatter: getTooltip(
             "pow",
-            powSeries,
+            // Since burn is a special case. Simulating added proof-of-work
+            // from the London hardfork doesn't make sense. It only makes sense
+            // to simulate from the merge. This means that the first point in the
+            // proof-of-work series is not the point to calculate the delta
+            // against. Instead, in that one case, we should use the first point
+            // in the proof-of-stake series.
+            timeFrame === "since_burn"
+              ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                [posSeries[0]!, ...powSeries]
+              : powSeries,
             ethPowPointMap,
             simulateProofOfWork,
             unit,
