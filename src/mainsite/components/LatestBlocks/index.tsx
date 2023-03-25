@@ -86,7 +86,7 @@ const LatestBlockAge: FC = () => {
   }
 
   return (
-    <div className="flex items-baseline gap-x-2 truncate">
+    <div className="flex gap-x-2 items-baseline truncate">
       <LabelText color="text-slateus-400" className="whitespace-nowrap">
         latest block
       </LabelText>
@@ -118,7 +118,7 @@ const LatestBlockRow: FC<LatestBlockComponentProps> = ({
   number,
   unit,
 }) => (
-  <div className="animate-fade-in transition-opacity duration-700">
+  <div className="transition-opacity duration-700 animate-fade-in">
     <a
       href={
         number === undefined
@@ -203,9 +203,9 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
             />
           ))}
         </ul>
-        <div className="flex flex-wrap justify-between gap-y-2">
+        <div className="flex flex-wrap gap-y-2 justify-between">
           <LatestBlockAge />
-          <div className="flex items-baseline gap-x-2">
+          <div className="flex gap-x-2 items-baseline">
             <LabelUnitText>
               <SkeletonText width="0.5rem">{blockLag}</SkeletonText>
             </LabelUnitText>
