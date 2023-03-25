@@ -1,6 +1,7 @@
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import type { FC } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMemo } from "react";
 import CountUp from "react-countup";
 import dropSvg from "../../../assets/droplet-own.svg";
@@ -12,7 +13,7 @@ import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../../components/WidgetSubcomponents";
 import type { Unit } from "../../../denomination";
 import { formatTwoDigitsSigned, formatZeroDigitsSigned } from "../../../format";
-import { O, pipe } from "../../../fp";
+import { O, OAlt, pipe } from "../../../fp";
 import type { DateTimeString } from "../../../time";
 import { useAverageEthPrice } from "../../api/average-eth-price";
 import { useBurnSums } from "../../api/burn-sums";
@@ -87,6 +88,9 @@ const SupplyChange: FC<Props> = ({
   const burnSums = useBurnSums();
   const supplySeriesCollections = useSupplySeriesCollections();
   const averageEthPrice = useAverageEthPrice();
+  const [initialDelta, setInitialDelta] = useState<O.Option<number>>(O.none);
+  const initialSet = useRef(false);
+
   const supplyChanges = useMemo(
     () =>
       pipe(
@@ -102,12 +106,22 @@ const SupplyChange: FC<Props> = ({
       ),
     [averageEthPrice, burnSums, supplySeriesCollections, timeFrame, unit],
   );
+
   const delta = deltaFromChanges(
     supplyChanges,
     timeFrame,
     simulateProofOfWork,
     unit,
   );
+
+  useEffect(() => {
+    if (initialSet.current || O.isNone(delta)) {
+      return;
+    }
+
+    initialSet.current = true;
+    setInitialDelta(delta);
+  }, [delta]);
 
   return (
     <WidgetErrorBoundary title="supply change">
@@ -133,17 +147,14 @@ const SupplyChange: FC<Props> = ({
               unitPostfixMargin="ml-1 sm:ml-2"
             >
               {pipe(
-                delta,
+                OAlt.sequenceTuple(initialDelta, delta),
                 O.match(
                   () => <SkeletonText width="7rem" />,
-                  (delta) => (
+                  ([initialDelta, delta]) => (
                     <CountUp
                       decimals={2}
                       duration={0.8}
                       end={delta}
-                      preserveValue
-                      separator=","
-                      start={delta}
                       formattingFn={
                         unit === "eth"
                           ? formatTwoDigitsSigned
@@ -151,6 +162,9 @@ const SupplyChange: FC<Props> = ({
                           ? formatZeroDigitsSigned
                           : (undefined as never)
                       }
+                      preserveValue
+                      separator=","
+                      start={initialDelta}
                     />
                   ),
                 ),
@@ -185,11 +199,6 @@ const SupplyChange: FC<Props> = ({
                           }
                           preserveValue
                           separator=","
-                          start={
-                            supplyChanges[timeFrame].issued[
-                              simulateProofOfWork ? "pow" : "pos"
-                            ][unit]
-                          }
                         />
                       ),
                     ),
@@ -218,9 +227,8 @@ const SupplyChange: FC<Props> = ({
                           decimals={2}
                           duration={0.8}
                           end={supplyChanges[timeFrame].burned[unit]}
-                          separator=","
-                          start={supplyChanges[timeFrame].burned[unit]}
                           preserveValue
+                          separator=","
                         />
                       ),
                     ),
