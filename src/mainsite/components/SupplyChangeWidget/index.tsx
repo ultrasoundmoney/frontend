@@ -137,7 +137,7 @@ const SupplyChange: FC<Props> = ({
               timeFrame={timeFrame}
             />
           </div>
-          <div className="flex flex-row flex-wrap gap-x-4 gap-y-4 justify-between">
+          <div className="flex flex-col gap-x-4 gap-y-4 justify-between sm:flex-row md:flex-col xl:flex-row">
             <QuantifyText
               color={`
                 text-transparent bg-gradient-to-r bg-clip-text
