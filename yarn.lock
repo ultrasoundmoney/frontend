@@ -2805,10 +2805,10 @@ react-window@^1.8.7:
     "@babel/runtime" "^7.0.0"
     memoize-one ">=3.1.1 <6"
 
-react-zoom-pan-pinch@^3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/react-zoom-pan-pinch/-/react-zoom-pan-pinch-3.0.4.tgz#c771fb1f3da549616dd64cd275c57c11638f2020"
-  integrity sha512-HsGEUQY0g8A3SfQLgZT09rI9e01ywUp08XQj23FLUyA/ZIBXVyztmvTkXTwzwug1ZfH/fLCgeMh2urzi0J8RWw==
+react-zoom-pan-pinch@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/react-zoom-pan-pinch/-/react-zoom-pan-pinch-3.0.5.tgz#d8af1a8da78c086574da66322a4584dc521db26e"
+  integrity sha512-LhzWCrtIPzgifMrKOUjCzN5zGiZmGa/hzJF7F/Aw8DUXPCq7B/USaX6ICkjeHcsWTzrPWCYvtPJevl95EmDWOQ==
 
 react@^18.2.0:
   version "18.2.0"

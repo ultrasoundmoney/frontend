@@ -35,6 +35,7 @@ const ImageWithOnClickTooltip: FC<ImageWithOnClickTooltipProps> = ({
   const [posX, setPosX] = useState<number | null>(null);
   const [posY, setPosY] = useState<number | null>(null);
 
+  const smallScreen = window.innerWidth < 768;
 
   useEffect(() => {
     if (imageUrl !== undefined && getXAndY) {
@@ -51,7 +52,7 @@ const ImageWithOnClickTooltip: FC<ImageWithOnClickTooltipProps> = ({
         <Skeleton
           circle
           inline
-          className="!leading-3 flex"
+          className={`${smallScreen ? '!leading-[48px]' : '!leading-3'} flex`}
         />
         </div>
       ) : (

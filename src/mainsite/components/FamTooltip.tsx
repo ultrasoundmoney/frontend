@@ -86,13 +86,13 @@ const Tooltip: FC<TooltipProps> = ({
   const [posX, setPosX] = useState<number | null>(null);
   const [posY, setPosY] = useState<number | null>(null);
 
-  useEffect(() => {
-    if (imageUrl !== undefined && getXAndY) {
-      const { x, y } = getXAndY(imageUrl, sizeFactor);
-      setPosX(x);
-      setPosY(y);
-    }
-  }, [getXAndY, imageUrl]);
+  // useEffect(() => {
+  //   if (imageUrl !== undefined && getXAndY) {
+  //     const { x, y } = getXAndY(imageUrl, sizeFactor);
+  //     setPosX(x);
+  //     setPosY(y);
+  //   }
+  // }, [getXAndY, imageUrl]);
 
   return (
     <div

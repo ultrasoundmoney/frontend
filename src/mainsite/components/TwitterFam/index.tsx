@@ -22,8 +22,6 @@ import followingYouStyles from "../FollowingYou/FollowingYou.module.scss";
 import Button from '../../../components/BlueButton'
 import ControlButtons from "./ControlButtons";
 
-const sizeFactor = 8; // (from 96px to 12px)
-
 // See if merging with leaderboards tooltip makes sense after making it more generic.
 export const useTooltip = () => {
   const [refEl, setRefEl] = useState<HTMLImageElement | null>(null);
@@ -201,6 +199,9 @@ const TwitterFam: FC = () => {
   }, [profiles, searchValue]);
   const filteredProfilesCount = filteredProfiles?.length;
 
+  const smallScreen = window.innerWidth < 768;
+  const sizeFactor = smallScreen ? 2 : 8; // (from 96px to 48px) or (from 96px to 12px)
+
   return (
     <>
       <SectionDivider
@@ -250,7 +251,7 @@ const TwitterFam: FC = () => {
       <BasicErrorBoundary>
         <TransformWrapper
           ref={panZoomRef}
-          initialScale={4.5}
+          initialScale={smallScreen ? 1 : 4.5}
           initialPositionX={0}
           initialPositionY={0}
           wheel={{ wheelDisabled: true }}
@@ -301,7 +302,7 @@ const TwitterFam: FC = () => {
                         {currentProfiles?.map((profile, index) => (
                           <ClickAwayListener onClickAway={handleClickAway} key={profile?.profileUrl ?? index}>
                             <SpriteWithOnClickTooltip
-                              className={`m-[2px] h-3 w-3 select-none`}
+                              className={smallScreen ? `m-[6px] h-12 w-12 select-none` : `m-[2px] h-3 w-3 select-none`}
                               imageUrl={profile?.profileImageUrl}
                               handle={profile?.handle}
                               isDoneLoading={profile !== undefined}
@@ -335,7 +336,7 @@ const TwitterFam: FC = () => {
                             event.preventDefault();
                             const el = filteredProfiles?.[currentProfileShow]?.handle.toLowerCase()
                             if (el) {
-                              zoomToElement(document.getElementById(el) || '', 4.5);
+                              zoomToElement(document.getElementById(el) || '', smallScreen ? 1 : 4.5);
                               setCurrentProfileShow((prev: number) => {
                                 if (prev === filteredProfilesCount - 1) {
                                   return 0;
