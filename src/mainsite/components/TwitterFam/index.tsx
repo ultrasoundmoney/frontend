@@ -336,7 +336,7 @@ const TwitterFam: FC = () => {
                             event.preventDefault();
                             const el = filteredProfiles?.[currentProfileShow]?.handle.toLowerCase()
                             if (el) {
-                              zoomToElement(document.getElementById(el) || '', smallScreen ? 1 : 4.5);
+                              zoomToElement(document.getElementById(el) || '', smallScreen ? 1 : 4.5, 300, "linear");
                               setCurrentProfileShow((prev: number) => {
                                 if (prev === filteredProfilesCount - 1) {
                                   return 0;
