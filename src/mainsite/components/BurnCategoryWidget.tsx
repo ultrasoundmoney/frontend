@@ -423,7 +423,7 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
             text-center text-lg text-slateus-200
           `}
         >
-          time frame unavailable, data sync in progress...
+          time frame unavailable
         </div>
       ) : (
         <div className="flex flex-col gap-y-3">
