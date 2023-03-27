@@ -19,7 +19,10 @@ import FamTooltip from "../FamTooltip";
 import Modal from "../Modal";
 import LeaderboardRow from "./LeaderboardRow";
 
-const feePeriodToUpdateMap: Record<TimeFrameNoMerge, keyof Leaderboards> = {
+export const leaderboardKeyFromTimeFrame: Record<
+  TimeFrameNoMerge,
+  keyof Leaderboards
+> = {
   m5: "leaderboard5m",
   h1: "leaderboard1h",
   d1: "leaderboard24h",
@@ -198,7 +201,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
   const selectedLeaderboard =
     leaderboards === undefined
       ? undefined
-      : leaderboards[feePeriodToUpdateMap[timeFrame]];
+      : leaderboards[leaderboardKeyFromTimeFrame[timeFrame]];
 
   const adminToken = useAdminToken();
   const addresses =
