@@ -289,7 +289,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
       <>
         <div
           ref={setPopperEl}
-          className="z-20 hidden p-4 md:block"
+          className="hidden z-20 p-4 md:block"
           style={{
             ...popperStyles.popper,
             visibility: showTooltip && md ? "visible" : "hidden",

@@ -58,7 +58,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
   showHighlight,
 }) => (
   <div
-    className="flex select-none flex-col items-center"
+    className="flex flex-col items-center select-none"
     style={{
       width: `${(percentOfTotalBurn ?? skeletonLoadingWidth) * 100}%`,
     }}
@@ -139,9 +139,9 @@ const CategorySegment: FC<CategorySegmentProps> = ({
 );
 
 const CategoryBar: FC<CategoryBarProps> = ({ nft, defi, mev, l2, misc }) => (
-  <div className="relative flex items-center py-4">
-    <div className="color-animation absolute h-2 w-full rounded-full bg-slateus-600"></div>
-    <div className="top-0 left-0 z-10 flex w-full flex-row items-center">
+  <div className="flex relative items-center py-4">
+    <div className="absolute w-full h-2 rounded-full color-animation bg-slateus-600"></div>
+    <div className="flex top-0 left-0 z-10 flex-row items-center w-full">
       {nft && (
         <CategorySegment
           imgAlt={nft.imgAlt}
@@ -152,7 +152,7 @@ const CategoryBar: FC<CategoryBarProps> = ({ nft, defi, mev, l2, misc }) => (
           showHighlight={nft.showHighlight}
         />
       )}
-      <div className="h-2 w-0.5 bg-slateus-500"></div>
+      <div className="w-0.5 h-2 bg-slateus-500"></div>
       {defi && (
         <CategorySegment
           imgAlt={defi.imgAlt}
@@ -162,7 +162,7 @@ const CategoryBar: FC<CategoryBarProps> = ({ nft, defi, mev, l2, misc }) => (
           showHighlight={defi.showHighlight}
         />
       )}
-      <div className="h-2 w-0.5 bg-slateus-500"></div>
+      <div className="w-0.5 h-2 bg-slateus-500"></div>
       {mev && (
         <CategorySegment
           imgAlt={mev.imgAlt}
@@ -172,7 +172,7 @@ const CategoryBar: FC<CategoryBarProps> = ({ nft, defi, mev, l2, misc }) => (
           showHighlight={mev.showHighlight}
         />
       )}
-      <div className="h-2 w-0.5 bg-slateus-500"></div>
+      <div className="w-0.5 h-2 bg-slateus-500"></div>
       {l2 && (
         <CategorySegment
           imgAlt={l2.imgAlt}
@@ -182,7 +182,7 @@ const CategoryBar: FC<CategoryBarProps> = ({ nft, defi, mev, l2, misc }) => (
           showHighlight={l2.showHighlight}
         />
       )}
-      <div className="h-2 w-0.5 bg-slateus-500"></div>
+      <div className="w-0.5 h-2 bg-slateus-500"></div>
       {misc && (
         <CategorySegment
           imgAlt={misc.imgAlt}
