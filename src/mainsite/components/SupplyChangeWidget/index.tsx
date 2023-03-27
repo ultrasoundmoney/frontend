@@ -1,7 +1,6 @@
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import type { FC } from "react";
-import { useEffect, useRef, useState } from "react";
 import { useMemo } from "react";
 import CountUp from "react-countup";
 import dropSvg from "../../../assets/droplet-own.svg";
@@ -16,7 +15,7 @@ import {
   formatTwoDecimalsSigned,
   formatZeroDecimalsSigned,
 } from "../../../format";
-import { O, OAlt, pipe } from "../../../fp";
+import { O, pipe } from "../../../fp";
 import type { DateTimeString } from "../../../time";
 import { useAverageEthPrice } from "../../api/average-eth-price";
 import { useBurnSums } from "../../api/burn-sums";
@@ -91,8 +90,6 @@ const SupplyChange: FC<Props> = ({
   const burnSums = useBurnSums();
   const supplySeriesCollections = useSupplySeriesCollections();
   const averageEthPrice = useAverageEthPrice();
-  const [initialDelta, setInitialDelta] = useState<O.Option<number>>(O.none);
-  const initialSet = useRef(false);
 
   const supplyChanges = useMemo(
     () =>
@@ -116,15 +113,6 @@ const SupplyChange: FC<Props> = ({
     simulateProofOfWork,
     unit,
   );
-
-  useEffect(() => {
-    if (initialSet.current || O.isNone(delta)) {
-      return;
-    }
-
-    initialSet.current = true;
-    setInitialDelta(delta);
-  }, [delta]);
 
   return (
     <WidgetErrorBoundary title="supply change">
@@ -150,10 +138,10 @@ const SupplyChange: FC<Props> = ({
               unitPostfixMargin="ml-1 sm:ml-2"
             >
               {pipe(
-                OAlt.sequenceTuple(initialDelta, delta),
+                delta,
                 O.match(
                   () => <SkeletonText width="7rem" />,
-                  ([initialDelta, delta]) => (
+                  (delta) => (
                     <CountUp
                       decimals={2}
                       duration={0.8}
@@ -167,7 +155,6 @@ const SupplyChange: FC<Props> = ({
                       }
                       preserveValue
                       separator=","
-                      start={initialDelta}
                     />
                   ),
                 ),
