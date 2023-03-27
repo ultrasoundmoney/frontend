@@ -5,6 +5,7 @@ import type { SupplyPoint } from "../sections/SupplyDashboard";
 import type { TimeFrame } from "../time-frames";
 import type { SupplySeriesCollections } from "./supply-over-time";
 
+// USD amounts exist, but we're unhappy with using average USD prices over time frames to calculate USD amounts and will wait until the backend can provide the amounts instead.
 export type SupplyChanges = {
   timestamp: DateTimeString;
   burned: EthUsdAmount;

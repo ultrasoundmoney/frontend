@@ -11,10 +11,7 @@ import SkeletonText from "../../../components/TextsNext/SkeletonText";
 import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../../components/WidgetSubcomponents";
 import type { Unit } from "../../../denomination";
-import {
-  formatTwoDecimalsSigned,
-  formatZeroDecimalsSigned,
-} from "../../../format";
+import { formatTwoDecimalsSigned } from "../../../format";
 import { O, pipe } from "../../../fp";
 import type { DateTimeString } from "../../../time";
 import { useAverageEthPrice } from "../../api/average-eth-price";
@@ -31,7 +28,6 @@ const deltaFromChanges = (
   supplyChanges: O.Option<SupplyChangesPerTimeFrame>,
   timeFrame: TimeFrame,
   simulateProofOfWork: boolean,
-  unit: Unit,
 ): O.Option<number> =>
   pipe(
     supplyChanges,
@@ -40,12 +36,7 @@ const deltaFromChanges = (
         supplyChanges[timeFrame],
         (supplyChange) =>
           simulateProofOfWork ? supplyChange.delta.pow : supplyChange.delta.pos,
-        (delta) =>
-          unit === "eth"
-            ? delta.eth
-            : unit === "usd"
-            ? delta.usd
-            : (undefined as never),
+        (delta) => delta.eth,
       ),
     ),
   );
@@ -85,7 +76,6 @@ const SupplyChange: FC<Props> = ({
   onSimulateProofOfWork,
   simulateProofOfWork,
   timeFrame,
-  unit,
 }) => {
   const burnSums = useBurnSums();
   const supplySeriesCollections = useSupplySeriesCollections();
@@ -99,20 +89,15 @@ const SupplyChange: FC<Props> = ({
           supplyChangesFromCollections(
             collection,
             averageEthPrice[timeFrame],
-            burnSums[timeFrame].sum[unit],
+            burnSums[timeFrame].sum.eth,
             timeFrame,
           ),
         ),
       ),
-    [averageEthPrice, burnSums, supplySeriesCollections, timeFrame, unit],
+    [averageEthPrice, burnSums, supplySeriesCollections, timeFrame],
   );
 
-  const delta = deltaFromChanges(
-    supplyChanges,
-    timeFrame,
-    simulateProofOfWork,
-    unit,
-  );
+  const delta = deltaFromChanges(supplyChanges, timeFrame, simulateProofOfWork);
 
   return (
     <WidgetErrorBoundary title="supply change">
@@ -133,7 +118,7 @@ const SupplyChange: FC<Props> = ({
               `}
               size="text-2xl sm:text-3xl"
               lineHeight="leading-8"
-              unitPostfix={unit === "eth" ? "ETH" : "USD"}
+              unitPostfix="ETH"
               unitPostfixColor="text-slateus-200"
               unitPostfixMargin="ml-1 sm:ml-2"
             >
@@ -146,13 +131,7 @@ const SupplyChange: FC<Props> = ({
                       decimals={2}
                       duration={0.8}
                       end={delta}
-                      formattingFn={
-                        unit === "eth"
-                          ? formatTwoDecimalsSigned
-                          : unit === "usd"
-                          ? formatZeroDecimalsSigned
-                          : (undefined as never)
-                      }
+                      formattingFn={formatTwoDecimalsSigned}
                       preserveValue
                       separator=","
                     />
@@ -171,7 +150,7 @@ const SupplyChange: FC<Props> = ({
                 />
                 <QuantifyText
                   size="text-xs"
-                  unitPostfix={unit.toUpperCase()}
+                  unitPostfix={"ETH"}
                   unitPostfixColor="text-slateus-200"
                 >
                   {pipe(
@@ -180,18 +159,12 @@ const SupplyChange: FC<Props> = ({
                       () => <SkeletonText width="4rem" />,
                       (supplyChanges) => (
                         <CountUp
-                          decimals={
-                            unit === "eth"
-                              ? 2
-                              : unit === "usd"
-                              ? 0
-                              : (undefined as never)
-                          }
+                          decimals={2}
                           duration={0.8}
                           end={
                             supplyChanges[timeFrame].issued[
                               simulateProofOfWork ? "pow" : "pos"
-                            ][unit]
+                            ].eth
                           }
                           preserveValue
                           separator=","
@@ -211,7 +184,7 @@ const SupplyChange: FC<Props> = ({
                 />
                 <QuantifyText
                   size="text-xs"
-                  unitPostfix={unit.toUpperCase()}
+                  unitPostfix="ETH"
                   unitPostfixColor="text-slateus-200"
                 >
                   {pipe(
@@ -220,15 +193,9 @@ const SupplyChange: FC<Props> = ({
                       () => <SkeletonText width="4rem" />,
                       (supplyChanges) => (
                         <CountUp
-                          decimals={
-                            unit === "eth"
-                              ? 2
-                              : unit === "usd"
-                              ? 0
-                              : (undefined as never)
-                          }
+                          decimals={2}
                           duration={0.8}
-                          end={supplyChanges[timeFrame].burned[unit]}
+                          end={supplyChanges[timeFrame].burned.eth}
                           preserveValue
                           separator=","
                         />

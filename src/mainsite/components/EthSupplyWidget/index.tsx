@@ -17,18 +17,14 @@ import colors from "../../../colors";
 import LabelText from "../../../components/TextsNext/LabelText";
 import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../../components/WidgetSubcomponents";
-import type { Unit } from "../../../denomination";
 import {
   formatPercentFiveDecimalsSigned,
   formatPercentThreeDecimalsSigned,
   formatTwoDigit,
   formatTwoDecimalsSigned,
-  formatZeroDecimalsSigned,
 } from "../../../format";
 import { O, pipe } from "../../../fp";
 import type { DateTimeString } from "../../../time";
-import type { AverageEthPrice } from "../../api/average-eth-price";
-import { useAverageEthPrice } from "../../api/average-eth-price";
 import type {
   SupplySeriesCollection,
   SupplySeriesCollections,
@@ -154,8 +150,6 @@ const getTooltip = (
   series: SupplyPoint[] | undefined,
   pointMap: PointMap | undefined,
   simulateProofOfWork: boolean,
-  unit: Unit,
-  ethPrice: number,
 ): FormatterCallbackFunction<Point> =>
   // This part is a mess, feel free to refactor heavily.
   function () {
@@ -196,28 +190,14 @@ const getTooltip = (
     const formattedTime = format(dt, "HH:mm:ss 'UTC'x");
 
     const title = type === "pos" ? "ETH" : type === "pow" ? "ETH (PoW)" : "BTC";
-    const formattedDeltaUnit =
-      type === "bitcoin"
-        ? "BTC"
-        : unit === "eth"
-        ? "ETH"
-        : unit === "usd"
-        ? "USD"
-        : (undefined as never);
+    const formattedDeltaUnit = type === "bitcoin" ? "BTC" : "ETH";
 
     const nativeDelta = total - firstSupply;
-    const deltaUsd = nativeDelta * ethPrice;
 
     const supplyDeltaFormatted =
-      nativeDelta === undefined || deltaUsd === undefined
+      nativeDelta === undefined
         ? undefined
-        : type === "bitcoin"
-        ? formatTwoDecimalsSigned(nativeDelta)
-        : unit === "eth"
-        ? formatTwoDecimalsSigned(nativeDelta)
-        : unit === "usd"
-        ? formatZeroDecimalsSigned(deltaUsd)
-        : (undefined as never);
+        : formatTwoDecimalsSigned(nativeDelta);
 
     const gradientCss =
       nativeDelta !== undefined && nativeDelta <= 0
@@ -312,8 +292,6 @@ const optionsFromSupplySeriesCollection = (
   onPosVisibilityChange: (setFn: (visible: boolean) => boolean) => void,
   onPowVisibilityChange: (setFn: (visible: boolean) => boolean) => void,
   onBtcVisibilityChange: (setFn: (visible: boolean) => boolean) => void,
-  unit: Unit,
-  ethPrices: AverageEthPrice,
 ): Highcharts.Options => {
   const { posSeries, powSeries, btcSeriesScaled, btcSeries } =
     supplySeriesCollection;
@@ -507,8 +485,6 @@ const optionsFromSupplySeriesCollection = (
             posSeries,
             ethPosPointMap,
             simulateProofOfWork,
-            unit,
-            ethPrices[timeFrame],
           ),
         },
         zIndex: 2,
@@ -550,8 +526,6 @@ const optionsFromSupplySeriesCollection = (
             btcSeries,
             bitcoinPointMap,
             simulateProofOfWork,
-            unit,
-            ethPrices[timeFrame],
           ),
         },
         zIndex: 1,
@@ -598,8 +572,6 @@ const optionsFromSupplySeriesCollection = (
               : powSeries,
             ethPowPointMap,
             simulateProofOfWork,
-            unit,
-            ethPrices[timeFrame],
           ),
         },
         zIndex: 0,
@@ -637,7 +609,6 @@ type Props = {
   onSimulateProofOfWork: () => void;
   simulateProofOfWork: boolean;
   timeFrame: TimeFrame;
-  unit: Unit;
 };
 
 const EthSupplyWidget: FC<Props> = ({
@@ -645,9 +616,7 @@ const EthSupplyWidget: FC<Props> = ({
   onSimulateProofOfWork,
   simulateProofOfWork,
   timeFrame,
-  unit,
 }) => {
-  const ethPrices = useAverageEthPrice();
   const [posVisible, setPosVisible] = useState(true);
   const [powVisible, setPowVisible] = useState(true);
   const [btcVisible, setBtcVisible] = useState(true);
@@ -670,21 +639,17 @@ const EthSupplyWidget: FC<Props> = ({
             setPosVisible,
             setPowVisible,
             setBtcVisible,
-            unit,
-            ethPrices,
           ),
         ),
         O.getOrElse(() => baseOptions),
       ),
     [
       btcVisible,
-      ethPrices,
       posVisible,
       powVisible,
       simulateProofOfWork,
       supplySeriesCollections,
       timeFrame,
-      unit,
     ],
   );
 
