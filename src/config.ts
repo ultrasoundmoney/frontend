@@ -57,7 +57,6 @@ export const usmDomainFromEnv = (): string => {
 export const versionFromEnv = (): string => {
   const tags = process.env.NEXT_PUBLIC_TAGS;
   const commit = process.env.NEXT_PUBLIC_COMMIT;
-  console.log("version", tags, commit);
 
   const shortTagVersion =
     typeof tags !== "string" ? undefined : tags.split("-")[1];
