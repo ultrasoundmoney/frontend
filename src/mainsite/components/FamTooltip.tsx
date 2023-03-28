@@ -1,6 +1,6 @@
 
 import type { FC } from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import Image from 'next/image'
 import type { Linkables, SpriteSheetResponse } from "../api/profiles";
@@ -11,9 +11,7 @@ import BodyText from "../../components/TextsNext/BodyText";
 import Twemoji from "../../components/Twemoji";
 import BioWithLinks from "./Twitter/BioWithLinks";
 import { WidgetTitle } from "../../components/WidgetSubcomponents";
-import styles from "./ImageWithOnClickTooltip.module.scss";
-
-const sizeFactor = 1.2; // (from 96px to 80px)
+// import styles from "./ImageWithOnClickTooltip.module.scss";
 
 type ExternalLinkProps = {
   alt: string;
@@ -80,11 +78,11 @@ const Tooltip: FC<TooltipProps> = ({
   title,
   twitterUrl,
   width = "22rem",
-  getXAndY,
-  properties,
+  // getXAndY,
+  // properties,
 }) => {
-  const [posX, setPosX] = useState<number | null>(null);
-  const [posY, setPosY] = useState<number | null>(null);
+  // const [posX, setPosX] = useState<number | null>(null);
+  // const [posY, setPosY] = useState<number | null>(null);
 
   // useEffect(() => {
   //   if (imageUrl !== undefined && getXAndY) {
