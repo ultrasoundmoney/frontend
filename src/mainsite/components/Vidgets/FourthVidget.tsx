@@ -21,7 +21,7 @@ const FouthVidget: React.FC<VidgetProps> = ({ name }) => {
   );
 
   const feeBurnedinEth =
-    feesBurned !== undefined ? weiToEth(feesBurned.feesBurnedAll) : undefined;
+    feesBurned !== undefined ? weiToEth(feesBurned.feesBurnedSinceBurn) : undefined;
 
   const getFeeBurdedinEthToUsd =
     feeBurnedinEth !== undefined &&

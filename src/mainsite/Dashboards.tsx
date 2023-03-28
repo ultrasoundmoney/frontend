@@ -208,7 +208,11 @@ const Dashboard: FC = () => {
             onClickTimeFrame={handleClickTimeFrame}
           />
           <SupplyProjectionsSection />
-          <BurnSection />
+          <BurnSection
+            timeFrame={timeFrame}
+            onClickTimeFrame={handleClickTimeFrame}
+            onSetTimeFrame={handleSetTimeFrame}
+          />
           <TotalValueSecuredSection />
           <MonetaryPremiumSection />
           <FamSection />

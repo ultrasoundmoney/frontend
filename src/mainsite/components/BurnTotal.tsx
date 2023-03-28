@@ -11,7 +11,7 @@ import {
   WidgetBackground,
   WidgetTitle,
 } from "../../components/WidgetSubcomponents";
-import { londonHardFork } from "../../dates";
+import { londonHardFork, parisHardFork } from "../../dates";
 import type { Unit } from "../../denomination";
 import * as Duration from "../../duration";
 import * as Format from "../../format";
@@ -21,12 +21,12 @@ import {
   useGroupedAnalysis1,
 } from "../api/grouped-analysis-1";
 import { usePosIssuancePerDay } from "../hooks/use-pos-issuance-day";
-import type { LimitedTimeFrame, TimeFrameNoMerge } from "../time-frames";
+import type { LimitedTimeFrame, TimeFrame } from "../time-frames";
 import { AmountAnimatedShell } from "./Amount";
 import TimeFrameIndicator from "./TimeFrameIndicator";
 
 const timeframeFeesBurnedMap: Record<
-  TimeFrameNoMerge,
+  TimeFrame,
   { eth: keyof FeesBurned; usd: keyof FeesBurned }
 > = {
   m5: { eth: "feesBurned5m", usd: "feesBurned5mUsd" },
@@ -34,11 +34,12 @@ const timeframeFeesBurnedMap: Record<
   d1: { eth: "feesBurned24h", usd: "feesBurned24hUsd" },
   d7: { eth: "feesBurned7d", usd: "feesBurned7dUsd" },
   d30: { eth: "feesBurned30d", usd: "feesBurned30dUsd" },
-  since_burn: { eth: "feesBurnedAll", usd: "feesBurnedAllUsd" },
+  since_merge: { eth: "feesBurnedSinceMerge", usd: "feesBurnedSinceMergeUsd" },
+  since_burn: { eth: "feesBurnedSinceBurn", usd: "feesBurnedSinceBurnUsd" },
 };
 
 export const timeframeBurnRateMap: Record<
-  TimeFrameNoMerge,
+  TimeFrame,
   { eth: keyof BurnRates; usd: keyof BurnRates }
 > = {
   m5: { eth: "burnRate5m", usd: "burnRate5mUsd" },
@@ -46,7 +47,8 @@ export const timeframeBurnRateMap: Record<
   d1: { eth: "burnRate24h", usd: "burnRate24hUsd" },
   d7: { eth: "burnRate7d", usd: "burnRate7dUsd" },
   d30: { eth: "burnRate30d", usd: "burnRate30dUsd" },
-  since_burn: { eth: "burnRateAll", usd: "burnRateAllUsd" },
+  since_merge: { eth: "burnRateSinceMerge", usd: "burnRateSinceMergeUsd" },
+  since_burn: { eth: "burnRateSinceBurn", usd: "burnRateSinceBurnUsd" },
 };
 
 const timeFrameMillisecondsMap: Record<LimitedTimeFrame, number> = {
@@ -59,7 +61,7 @@ const timeFrameMillisecondsMap: Record<LimitedTimeFrame, number> = {
 
 type Props = {
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrameNoMerge;
+  timeFrame: TimeFrame;
   unit: Unit;
 };
 
@@ -72,6 +74,8 @@ const BurnTotal: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
   const burnRates = groupedAnalysis1?.burnRates;
   const feesBurned = groupedAnalysis1?.feesBurned;
   const [millisecondsSinceLondonHardFork, setMillisecondsSinceLondonHardfork] =
+    useState<number>();
+  const [millisecondsSinceMerge, setMillisecondsSinceMerge] =
     useState<number>();
   const posIssuancePerDay = usePosIssuancePerDay();
 
@@ -102,14 +106,19 @@ const BurnTotal: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
     setMillisecondsSinceLondonHardfork(
       DateFns.differenceInMilliseconds(new Date(), londonHardFork),
     );
+    setMillisecondsSinceMerge(
+      DateFns.differenceInMilliseconds(new Date(), parisHardFork),
+    );
   }, []);
 
   // In ETH.
   const selectedIssuance =
-    millisecondsSinceLondonHardFork === undefined
+    millisecondsSinceLondonHardFork === undefined || millisecondsSinceMerge === undefined
       ? undefined
       : timeFrame === "since_burn"
       ? issuancePerMillisecond * millisecondsSinceLondonHardFork
+      : timeFrame === "since_merge"
+      ? issuancePerMillisecond * millisecondsSinceMerge
       : issuancePerMillisecond * timeFrameMillisecondsMap[timeFrame];
 
   // Fraction.

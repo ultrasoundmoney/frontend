@@ -8,8 +8,7 @@ import Colors from "../../colors";
 import { WEI_PER_ETH } from "../../eth-units";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
-import type { TimeFrameNoMerge } from "../time-frames";
-import { toOldTimeFrame } from "../time-frames";
+import type { TimeFrame } from "../time-frames";
 import { MoneyAmount } from "../components/Amount";
 import { BaseText } from "../../components/Texts";
 import BodyText from "../../components/TextsNext/BodyText";
@@ -309,7 +308,7 @@ const buildMiscCategory = (
 
 type Props = {
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrameNoMerge;
+  timeFrame: TimeFrame;
 };
 
 const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
@@ -321,7 +320,7 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const [hoveringMisc, setHoveringMisc] = useState(false);
   const { showCategoryCounts } = useContext(FeatureFlagsContext);
 
-  const selectedBurnCategories = burnCategories?.[toOldTimeFrame(timeFrame)];
+  const selectedBurnCategories = burnCategories?.[timeFrame];
 
   const nft = selectedBurnCategories?.find(
     ({ category }) => category === "nft",
@@ -393,7 +392,9 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
     >
       <div
         className={`${
-          timeFrame === "m5" || timeFrame === "since_burn"
+          timeFrame === "m5" ||
+          timeFrame === "since_burn" ||
+          timeFrame == "since_merge"
             ? "hidden"
             : "visible"
         }`}
@@ -415,14 +416,14 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
         >
           5 minute time frame unavailable
         </div>
-      ) : timeFrame === "since_burn" ? (
+      ) : timeFrame === "since_burn" || timeFrame == "since_merge" ? (
         <div
           className={`
             flex min-h-[324px] w-full items-center justify-center
             text-center text-lg text-slateus-200
           `}
         >
-          all time frame unavailable, data sync in progress...
+          time frame unavailable
         </div>
       ) : (
         <div className="flex flex-col gap-y-3">

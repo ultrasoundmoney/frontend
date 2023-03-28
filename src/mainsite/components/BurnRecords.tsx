@@ -9,8 +9,7 @@ import {
 } from "../api/grouped-analysis-1";
 import * as Format from "../../format";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
-import type { TimeFrameNoMerge } from "../time-frames";
-import { toOldTimeFrame } from "../time-frames";
+import type { TimeFrame } from "../time-frames";
 import { MoneyAmountAnimated } from "./Amount";
 import SpanMoji from "../../components/SpanMoji";
 import { BaseText } from "../../components/Texts";
@@ -61,17 +60,17 @@ const Age: FC<{ minedAt: Date | undefined }> = ({ minedAt }) => {
 
 type Props = {
   onClickTimeFrame: () => void;
-  timeFrame: TimeFrameNoMerge;
+  timeFrame: TimeFrame;
 };
 
-const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
+const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame}) => {
   const groupedAnalysis1F = useGroupedAnalysis1();
   const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysis1F);
   const burnRecords = groupedAnalysis1?.burnRecords;
   const timeFrameRecords =
     burnRecords === undefined
       ? (new Array(10).fill({}) as Partial<BurnRecord>[])
-      : burnRecords[toOldTimeFrame(timeFrame)];
+      : burnRecords[timeFrame];
 
   return (
     <BurnGroupBase

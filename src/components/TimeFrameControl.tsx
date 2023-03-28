@@ -9,7 +9,6 @@ import type { TimeFrame } from "../mainsite/time-frames";
 import {
   displayLimitedTimeFrameMap,
   timeFrames,
-  timeFramesNoMerge,
 } from "../mainsite/time-frames";
 import HoverTooltip from "../mainsite/components/HoverTooltip";
 
@@ -157,7 +156,7 @@ type Props = {
   onSetTimeFrame: (timeframe: TimeFrame) => void;
   selectedTimeFrame: TimeFrame;
   topCornersRounded?: boolean;
-  version?: "all" | "censorship" | "no_merge";
+  version?: "all" | "censorship";
 };
 
 const TimeFrameControl: FC<Props> = ({
@@ -172,12 +171,7 @@ const TimeFrameControl: FC<Props> = ({
     />
   ) : (
     <div className="flex flex-row flex-wrap items-center lg:gap-x-1">
-      {(version === "all"
-        ? timeFrames
-        : version === "no_merge"
-        ? timeFramesNoMerge
-        : (undefined as never)
-      ).map((timeFrame) => (
+      {timeFrames.map((timeFrame) => (
         <LondonHardForkTooltip key={timeFrame} timeFrame={timeFrame}>
           <Button
             isActive={selectedTimeframe === timeFrame}

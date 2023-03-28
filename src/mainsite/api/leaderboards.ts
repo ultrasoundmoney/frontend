@@ -58,5 +58,6 @@ export type Leaderboards = {
   leaderboard24h: LeaderboardEntry[];
   leaderboard7d: LeaderboardEntry[];
   leaderboard30d: LeaderboardEntry[];
-  leaderboardAll: LeaderboardEntry[];
+  leaderboardSinceMerge: LeaderboardEntry[];
+  leaderboardSinceBurn: LeaderboardEntry[];
 };
