@@ -531,33 +531,15 @@ const monkeySvgs = [
 ];
 
 const Claimed: FC<{
+  now: Date | undefined;
   claimedOn: DateTimeString | undefined;
   isLoading: boolean;
   monkey: StaticImageData;
-}> = ({ claimedOn, isLoading, monkey }) => {
-  const [now, setNow] = useState<Date | undefined>();
-
-  useEffect(() => {
-    if (claimedOn === undefined || typeof window === undefined) {
-      return;
-    }
-
-    const intervalId = window.setInterval(() => {
-      setNow(new Date());
-    }, 5000);
-
-    return () => {
-      window.clearInterval(intervalId);
-    };
-  }, [claimedOn]);
-
-  const age = useMemo(() => {
-    if (claimedOn === undefined || now === undefined) {
-      return undefined;
-    }
-
-    return Format.formatDurationToNow(now, new Date(claimedOn));
-  }, [claimedOn, now]);
+}> = ({ claimedOn, isLoading, monkey, now }) => {
+  const age =
+    now === undefined || claimedOn === undefined
+      ? undefined
+      : Format.formatDurationToNow(now, new Date(claimedOn));
 
   return (
     <div className="flex justify-end items-baseline">
@@ -632,14 +614,14 @@ const ImageWithFallback: FC<{
 };
 
 type RowProps = {
-  data: EligibleFam[];
+  data: { eligibleFam: EligibleFam[]; now: Date | undefined };
   index: number;
   style: CSSProperties;
   className?: string;
 };
 
 const Row: FC<RowProps> = ({ data, style = {}, index, className = "" }) => {
-  const fam = data[index];
+  const fam = data.eligibleFam[index];
   if (fam === undefined) {
     return <div>row unavailable</div>;
   }
@@ -674,6 +656,7 @@ const Row: FC<RowProps> = ({ data, style = {}, index, className = "" }) => {
         </a>
       </div>
       <Claimed
+        now={data.now}
         isLoading={false}
         claimedOn={fam.claimed_on ?? undefined}
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -690,6 +673,19 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
   );
   const [searchHandle, setSearchHandle] = useState("");
   const [tooltipActiveHandle, setTooltipActiveHandle] = useState<string>();
+  const [now, setNow] = useState<Date>();
+
+  useEffect(() => {
+    setNow(new Date());
+
+    const intervalId = window.setInterval(() => {
+      setNow(new Date());
+    }, 5000);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, []);
 
   const handleOnEnterImage = useCallback((handle: string) => {
     setTooltipActiveHandle(handle);
@@ -701,6 +697,7 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
 
   const dataWithHandlers = data?.map((item) => ({
     ...item,
+    now,
     onEnterImage: handleOnEnterImage,
     onLeaveImage: handleOnLeaveImage,
   }));
@@ -766,7 +763,7 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
           itemCount={dataWithHandlers.length}
           itemSize={64}
           width="100%"
-          itemData={dataWithHandlers}
+          itemData={{ eligibleFam: dataWithHandlers, now }}
           className={`${scrollbarStyles["styled-scrollbar-vertical"]} ${scrollbarStyles["styled-scrollbar"]}`}
         >
           {Row}
@@ -781,7 +778,10 @@ const EligibleHandles: FC<{ className?: string }> = ({ className }) => {
           itemCount={searchResults.length}
           itemSize={64}
           width="100%"
-          itemData={searchResults.map((result) => result.item)}
+          itemData={{
+            eligibleFam: searchResults.map((result) => result.item),
+            now,
+          }}
           className={`${scrollbarStyles["styled-scrollbar-vertical"]} ${scrollbarStyles["styled-scrollbar"]}`}
         >
           {Row}
