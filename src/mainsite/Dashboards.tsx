@@ -29,6 +29,7 @@ import JoinDiscordSection from "./sections/JoinDiscordSection";
 import PoapSection from "./sections/PoapSection";
 import SupplyDashboard from "./sections/SupplyDashboard";
 import AdminTools from "../components/AdminTools";
+import * as SharedConfig from "../config";
 
 // We get hydration errors in production.
 // It's hard to tell what component causes them due to minification.
@@ -158,6 +159,8 @@ const Dashboard: FC = () => {
       ? videoEl.current.play().catch(console.error)
       : videoEl.current.pause();
   }, []);
+
+  SharedConfig.versionFromEnv();
 
   return (
     <FeatureFlagsContext.Provider value={featureFlags}>

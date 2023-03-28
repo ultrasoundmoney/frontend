@@ -43,3 +43,5 @@ jobs:
           cache-to: type=inline
           secrets: |
             "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}"
+            "NEXT_PUBLIC_TAGS=${{ github.ref_name }}"
+            "NEXT_PUBLIC_COMMIT=${{ github.sha }}"
