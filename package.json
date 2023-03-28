@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "author": "Ultra Sound Money <ultrasoundmoney0@gmail.com",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "build": "next build",
     "check-types": "yarn tsc --noEmit",
