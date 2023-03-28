@@ -141,13 +141,16 @@ const SupplyChange: FC<Props> = ({
             </QuantifyText>
             <div className="flex flex-col items-start md:items-end lg:items-start xl:items-end w-fit">
               <div className="flex gap-x-2">
-                <Image
-                  alt="drop icon signifying issued ETH"
-                  height={15}
-                  priority
-                  src={dropSvg as StaticImageData}
-                  width={15}
-                />
+                {/* Image component complains that its height doesn't match its width when it's not wrapped in a div */}
+                <div>
+                  <Image
+                    alt="drop icon signifying issued ETH"
+                    height={15}
+                    priority
+                    src={dropSvg as StaticImageData}
+                    width={15}
+                  />
+                </div>
                 <QuantifyText
                   size="text-xs"
                   unitPostfix={"ETH"}
@@ -175,13 +178,16 @@ const SupplyChange: FC<Props> = ({
                 </QuantifyText>
               </div>
               <div className="flex gap-x-2 justify-between w-full">
-                <Image
-                  alt="fire icon signifying burned ETH"
-                  height={15}
-                  priority
-                  src={fireSvg as StaticImageData}
-                  width={15}
-                />
+                {/* Image component complains that its height doesn't match its width when it's not wrapped in a div */}
+                <div>
+                  <Image
+                    alt="fire icon signifying burned ETH"
+                    height={15}
+                    priority
+                    src={fireSvg as StaticImageData}
+                    width={15}
+                  />
+                </div>
                 <QuantifyText
                   size="text-xs"
                   unitPostfix="ETH"
