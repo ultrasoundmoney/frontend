@@ -30,7 +30,7 @@ import SkeletonText from "../../../components/TextsNext/SkeletonText";
 import Twemoji from "../../../components/Twemoji";
 import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../../components/WidgetSubcomponents";
-import { getUsmDomain } from "../../../config";
+import * as SharedConfig from "../../../config";
 import * as Format from "../../../format";
 import scrollbarStyles from "../../../styles/Scrollbar.module.scss";
 import type { DateTimeString } from "../../../time";
@@ -886,7 +886,7 @@ const PoapSection: FC<{
   twitterAuthStatus: TwitterAuthStatus;
 }> = ({ setTwitterAuthStatus, twitterAuthStatus }) => {
   const { data: poapsClaimed, mutate } = useSWR<PoapsClaimed, Error>(
-    `${getUsmDomain()}/api/v2/fam/poap/claimed`,
+    `${SharedConfig.usmDomainFromEnv()}/api/v2/fam/poap/claimed`,
     fetchJsonSwr,
   );
   const { ref, inView } = useInView({ threshold: 1 });

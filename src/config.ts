@@ -1,6 +1,6 @@
 type Env = "dev" | "prod" | "stag";
 
-export const getEnv = (): Env => {
+export const envFromEnv = (): Env => {
   const rawEnv = process.env.NEXT_PUBLIC_ENV;
 
   switch (rawEnv) {
@@ -18,13 +18,13 @@ export const getEnv = (): Env => {
   }
 };
 
-export const getApiEnv = (): Env => {
+export const apiEnvFromEnv = (): Env => {
   const apiEnv = process.env.NEXT_PUBLIC_API_ENV;
 
   // If API_ENV is undefined, we decide based on ENV
   if (apiEnv === undefined) {
     // Use production by default, unless we're running on staging, then use staging.
-    return getEnv() === "stag" ? "stag" : "prod";
+    return envFromEnv() === "stag" ? "stag" : "prod";
   }
 
   switch (apiEnv) {
@@ -41,8 +41,8 @@ export const getApiEnv = (): Env => {
   }
 };
 
-export const getUsmDomain = (): string => {
-  const apiEnv = getApiEnv();
+export const usmDomainFromEnv = (): string => {
+  const apiEnv = apiEnvFromEnv();
   switch (apiEnv) {
     case "dev":
       return "http://localhost:3000";

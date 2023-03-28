@@ -7,7 +7,7 @@ import AdminTools from "../components/AdminTools";
 import BasicErrorBoundary from "../components/BasicErrorBoundary";
 import HeaderGlow from "../components/HeaderGlow";
 import MainTitle from "../components/MainTitle";
-import { getEnv } from "../config";
+import * as SharedConfig from "../config";
 import { FeatureFlagsContext, useFeatureFlags } from "../feature-flags";
 import ContactSection from "../sections/ContactSection";
 import type { BuilderCensorshipPerTimeFrame } from "./api/censorship/builders";
@@ -51,7 +51,7 @@ export type RelayDashboardProps = {
   validators: Array<Validator>;
 };
 
-const env = getEnv();
+const env = SharedConfig.envFromEnv();
 
 const RelayDashboard: FC<RelayDashboardProps> = ({
   builderCensorshipPerTimeFrame,
