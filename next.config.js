@@ -6,9 +6,6 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 /** @type {import('next').NextConfig} */
 const nextConfig = withSentryConfig(
   withBundleAnalyzer({
-    eslint: {
-      ignoreDuringBuilds: true,
-    },
     productionBrowserSourceMaps: true,
     sentry: {
       disableServerWebpackPlugin:
