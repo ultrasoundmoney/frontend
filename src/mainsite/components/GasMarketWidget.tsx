@@ -46,7 +46,6 @@ type MarkerProps = {
 const Marker: FC<MarkerProps> = ({
   barrier,
   blockNumber,
-  description,
   emphasize = false,
   gas,
   highest,
