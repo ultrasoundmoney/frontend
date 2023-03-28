@@ -30,6 +30,7 @@ const ControlButtons = ({
       >
         <span
           className="w-3 h-3 leading-[9px]"
+          title="Zoom in"
         >
           +
         </span>
@@ -47,6 +48,7 @@ const ControlButtons = ({
       >
         <span
           className="w-3 h-3 leading-[9px]"
+          title="Zoom out"
         >
           -
         </span>
@@ -67,6 +69,7 @@ const ControlButtons = ({
             alt="rotate-right"
             width={12}
             height={12}
+            title="Reset explorer"
           />
       </button>
       <button
@@ -89,6 +92,7 @@ const ControlButtons = ({
           alt="expand"
           width={12}
           height={12}
+          title={fullScreenHandle.active ? "Exit full screen" : "Enter full screen"}
         />
       </button>
     </div>
