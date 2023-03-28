@@ -160,7 +160,7 @@ const Dashboard: FC = () => {
       : videoEl.current.pause();
   }, []);
 
-  SharedConfig.versionFromEnv();
+  const version = SharedConfig.versionFromEnv();
 
   return (
     <FeatureFlagsContext.Provider value={featureFlags}>
@@ -226,6 +226,9 @@ const Dashboard: FC = () => {
             </div>
           </div>
           <ContactSection />
+        </div>
+        <div className="flex justify-center w-full text-slateus-600">
+          version {version}
         </div>
       </SkeletonTheme>
     </FeatureFlagsContext.Provider>
