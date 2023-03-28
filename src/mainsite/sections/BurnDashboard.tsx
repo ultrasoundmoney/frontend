@@ -10,9 +10,9 @@ import BurnRecords from "../components/BurnRecords";
 import BurnTotal from "../components/BurnTotal";
 import CurrencyControl from "../components/CurrencyControl";
 import LatestBlocks from "../components/LatestBlocks";
-import type { TimeFrame} from "../time-frames";
+import type { TimeFrame } from "../time-frames";
 
-const BurnSection: FC<{
+const BurnDashboard: FC<{
   timeFrame: TimeFrame;
   onClickTimeFrame: () => void;
   onSetTimeFrame: (timeFrame: TimeFrame) => void;
@@ -69,4 +69,4 @@ const BurnSection: FC<{
   );
 };
 
-export default BurnSection;
+export default BurnDashboard;

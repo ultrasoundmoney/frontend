@@ -35,7 +35,7 @@ import * as SharedConfig from "../config";
 // It's hard to tell what component causes them due to minification.
 // We stop SSR on all components, and slowly turn them back on one-by-one to see which cause hydration issues.
 // On: MergeSection, JoinDiscordSection
-// Off: SupplyDashboard, BurnSection, MonetaryPremiumSection, FamSection, TotalValueSecuredSection.
+// Off: SupplyDashboard, BurnDashboard, MonetaryPremiumSection, FamSection, TotalValueSecuredSection.
 const TotalValueSecuredSection = dynamic(
   () => import("./sections/TotalValueSecuredSection"),
   { ssr: false },
@@ -49,7 +49,7 @@ const SupplyProjectionsSection = dynamic(
   { ssr: false },
 );
 // Likely culprit.
-const BurnSection = dynamic(() => import("./sections/BurnSection"), {
+const BurnDashboard = dynamic(() => import("./sections/BurnDashboard"), {
   ssr: false,
 });
 
@@ -208,7 +208,7 @@ const Dashboard: FC = () => {
             onClickTimeFrame={handleClickTimeFrame}
           />
           <SupplyProjectionsSection />
-          <BurnSection
+          <BurnDashboard
             timeFrame={timeFrame}
             onClickTimeFrame={handleClickTimeFrame}
             onSetTimeFrame={handleSetTimeFrame}
