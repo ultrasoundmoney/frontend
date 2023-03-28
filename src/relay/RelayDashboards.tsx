@@ -96,8 +96,8 @@ const RelayDashboard: FC<RelayDashboardProps> = ({
               goerli testnet
             </div>
           ) : null}
-          <div className="mt-16 mb-32 flex flex-col gap-y-4 xs:px-4 md:px-16">
-            <div className="mt-16 flex flex-col gap-x-4 gap-y-4 lg:flex-row">
+          <div className="flex flex-col gap-y-4 mt-16 mb-32 md:px-16 xs:px-4">
+            <div className="flex flex-col gap-x-4 gap-y-4 mt-16 lg:flex-row">
               <div className="flex lg:w-1/2">
                 <AddressWidget />
               </div>
