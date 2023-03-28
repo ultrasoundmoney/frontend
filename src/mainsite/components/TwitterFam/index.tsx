@@ -49,7 +49,7 @@ export const useTooltip = () => {
       // onImage.current = true;
       // wait for the click-a-way event to fire before showing the tooltip
       const id = window.setTimeout(() => {
-        if (!showTooltip && !onTooltip.current) {
+        if (selectedItem?.handle !== profile?.handle) {
           setRefEl(ref.current);
           setSelectedItem(profile);
           setShowTooltip(true);
@@ -57,11 +57,11 @@ export const useTooltip = () => {
           setShowTooltip(false);
           setSelectedItem(undefined);
         }
-      }, 50);
+      }, 25);
 
       return () => window.clearTimeout(id);
     },
-    [showTooltip, setShowTooltip, setSelectedItem, setRefEl, onTooltip],
+    [setShowTooltip, setSelectedItem, setRefEl, selectedItem?.handle],
   );
 
   const handleClickAway = useCallback(() => {
