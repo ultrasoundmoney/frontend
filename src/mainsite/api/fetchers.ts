@@ -1,9 +1,9 @@
-import { getUsmDomain } from "../../config";
+import * as SharedConfig from "../../config";
 import type { ApiResult } from "../../fetchers";
 import { fetchApiJson as fetchApiJsonShared } from "../../fetchers";
 
 export const fetchApiJson = <A>(url: string): Promise<ApiResult<A>> =>
-  fetchApiJsonShared(getUsmDomain(), url);
+  fetchApiJsonShared(SharedConfig.usmDomainFromEnv(), url);
 
 // Swr wants us to throw, but we don't like throwing, so we write code that
 // doesn't throw, and add a wrapper for swr which does.

@@ -11,7 +11,7 @@ import SkeletonText from "../../../components/TextsNext/SkeletonText";
 import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../../components/WidgetSubcomponents";
 import type { Unit } from "../../../denomination";
-import { formatTwoDigitsSigned, formatZeroDigitsSigned } from "../../../format";
+import { formatTwoDecimalsSigned } from "../../../format";
 import { O, pipe } from "../../../fp";
 import type { DateTimeString } from "../../../time";
 import { useAverageEthPrice } from "../../api/average-eth-price";
@@ -28,7 +28,6 @@ const deltaFromChanges = (
   supplyChanges: O.Option<SupplyChangesPerTimeFrame>,
   timeFrame: TimeFrame,
   simulateProofOfWork: boolean,
-  unit: Unit,
 ): O.Option<number> =>
   pipe(
     supplyChanges,
@@ -37,12 +36,7 @@ const deltaFromChanges = (
         supplyChanges[timeFrame],
         (supplyChange) =>
           simulateProofOfWork ? supplyChange.delta.pow : supplyChange.delta.pos,
-        (delta) =>
-          unit === "eth"
-            ? delta.eth
-            : unit === "usd"
-            ? delta.usd
-            : (undefined as never),
+        (delta) => delta.eth,
       ),
     ),
   );
@@ -82,11 +76,11 @@ const SupplyChange: FC<Props> = ({
   onSimulateProofOfWork,
   simulateProofOfWork,
   timeFrame,
-  unit,
 }) => {
   const burnSums = useBurnSums();
   const supplySeriesCollections = useSupplySeriesCollections();
   const averageEthPrice = useAverageEthPrice();
+
   const supplyChanges = useMemo(
     () =>
       pipe(
@@ -95,19 +89,15 @@ const SupplyChange: FC<Props> = ({
           supplyChangesFromCollections(
             collection,
             averageEthPrice[timeFrame],
-            burnSums[timeFrame].sum[unit],
+            burnSums[timeFrame].sum.eth,
             timeFrame,
           ),
         ),
       ),
-    [averageEthPrice, burnSums, supplySeriesCollections, timeFrame, unit],
+    [averageEthPrice, burnSums, supplySeriesCollections, timeFrame],
   );
-  const delta = deltaFromChanges(
-    supplyChanges,
-    timeFrame,
-    simulateProofOfWork,
-    unit,
-  );
+
+  const delta = deltaFromChanges(supplyChanges, timeFrame, simulateProofOfWork);
 
   return (
     <WidgetErrorBoundary title="supply change">
@@ -120,7 +110,7 @@ const SupplyChange: FC<Props> = ({
               timeFrame={timeFrame}
             />
           </div>
-          <div className="flex flex-row flex-wrap gap-x-4 gap-y-4 justify-between">
+          <div className="flex flex-col gap-x-4 gap-y-4 justify-between sm:flex-row md:flex-col xl:flex-row">
             <QuantifyText
               color={`
                 text-transparent bg-gradient-to-r bg-clip-text
@@ -128,7 +118,7 @@ const SupplyChange: FC<Props> = ({
               `}
               size="text-2xl sm:text-3xl"
               lineHeight="leading-8"
-              unitPostfix={unit === "eth" ? "ETH" : "USD"}
+              unitPostfix="ETH"
               unitPostfixColor="text-slateus-200"
               unitPostfixMargin="ml-1 sm:ml-2"
             >
@@ -141,16 +131,9 @@ const SupplyChange: FC<Props> = ({
                       decimals={2}
                       duration={0.8}
                       end={delta}
+                      formattingFn={formatTwoDecimalsSigned}
                       preserveValue
                       separator=","
-                      start={delta}
-                      formattingFn={
-                        unit === "eth"
-                          ? formatTwoDigitsSigned
-                          : unit === "usd"
-                          ? formatZeroDigitsSigned
-                          : (undefined as never)
-                      }
                     />
                   ),
                 ),
@@ -158,16 +141,19 @@ const SupplyChange: FC<Props> = ({
             </QuantifyText>
             <div className="flex flex-col items-start md:items-end lg:items-start xl:items-end w-fit">
               <div className="flex gap-x-2">
-                <Image
-                  alt="drop icon signifying issued ETH"
-                  height={15}
-                  priority
-                  src={dropSvg as StaticImageData}
-                  width={15}
-                />
+                {/* Image component complains that its height doesn't match its width when it's not wrapped in a div */}
+                <div>
+                  <Image
+                    alt="drop icon signifying issued ETH"
+                    height={15}
+                    priority
+                    src={dropSvg as StaticImageData}
+                    width={15}
+                  />
+                </div>
                 <QuantifyText
                   size="text-xs"
-                  unitPostfix={unit.toUpperCase()}
+                  unitPostfix={"ETH"}
                   unitPostfixColor="text-slateus-200"
                 >
                   {pipe(
@@ -181,15 +167,10 @@ const SupplyChange: FC<Props> = ({
                           end={
                             supplyChanges[timeFrame].issued[
                               simulateProofOfWork ? "pow" : "pos"
-                            ][unit]
+                            ].eth
                           }
                           preserveValue
                           separator=","
-                          start={
-                            supplyChanges[timeFrame].issued[
-                              simulateProofOfWork ? "pow" : "pos"
-                            ][unit]
-                          }
                         />
                       ),
                     ),
@@ -197,16 +178,19 @@ const SupplyChange: FC<Props> = ({
                 </QuantifyText>
               </div>
               <div className="flex gap-x-2 justify-between w-full">
-                <Image
-                  alt="fire icon signifying burned ETH"
-                  height={15}
-                  priority
-                  src={fireSvg as StaticImageData}
-                  width={15}
-                />
+                {/* Image component complains that its height doesn't match its width when it's not wrapped in a div */}
+                <div>
+                  <Image
+                    alt="fire icon signifying burned ETH"
+                    height={15}
+                    priority
+                    src={fireSvg as StaticImageData}
+                    width={15}
+                  />
+                </div>
                 <QuantifyText
                   size="text-xs"
-                  unitPostfix={unit.toUpperCase()}
+                  unitPostfix="ETH"
                   unitPostfixColor="text-slateus-200"
                 >
                   {pipe(
@@ -217,10 +201,9 @@ const SupplyChange: FC<Props> = ({
                         <CountUp
                           decimals={2}
                           duration={0.8}
-                          end={supplyChanges[timeFrame].burned[unit]}
-                          separator=","
-                          start={supplyChanges[timeFrame].burned[unit]}
+                          end={supplyChanges[timeFrame].burned.eth}
                           preserveValue
+                          separator=","
                         />
                       ),
                     ),

@@ -26,7 +26,7 @@ import * as S from "fp-ts/lib/string";
 import * as T from "fp-ts/lib/Task";
 import type * as TE from "fp-ts/lib/TaskEither";
 import { pipe } from "fp-ts/lib/function";
-import { sequenceS } from "fp-ts/lib/Apply";
+import { sequenceS, sequenceT } from "fp-ts/lib/Apply";
 
 export const TAlt = {
   sequenceArraySeq: sequenceS(T.ApplySeq),
@@ -100,5 +100,6 @@ export const OAlt = {
         }),
       ),
   sequenceStruct: sequenceS(O.Apply),
+  sequenceTuple: sequenceT(O.Apply),
   unwrap: <A>(o: O.Option<A>): A => pipe(o, OAlt.expect("unwrap on none")),
 };

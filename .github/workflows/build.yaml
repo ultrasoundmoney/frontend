@@ -34,7 +34,7 @@ jobs:
           wait-interval: 10
       - name: Build and push
         id: docker_build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
@@ -43,3 +43,5 @@ jobs:
           cache-to: type=inline
           secrets: |
             "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}"
+            "NEXT_PUBLIC_TAGS=${{ github.ref_name }}"
+            "NEXT_PUBLIC_COMMIT=${{ github.sha }}"

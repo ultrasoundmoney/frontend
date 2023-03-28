@@ -29,6 +29,7 @@ import JoinDiscordSection from "./sections/JoinDiscordSection";
 import PoapSection from "./sections/PoapSection";
 import SupplyDashboard from "./sections/SupplyDashboard";
 import AdminTools from "../components/AdminTools";
+import * as SharedConfig from "../config";
 
 // We get hydration errors in production.
 // It's hard to tell what component causes them due to minification.
@@ -137,7 +138,7 @@ const Dashboard: FC = () => {
   useScrollOnLoad();
   const { featureFlags, setFlag } = useFeatureFlags();
   const [twitterAuthStatus, setTwitterAuthStatus] = useTwitterAuthStatus();
-  const [timeFrame, setTimeFrame] = useState<TimeFrame>("d1");
+  const [timeFrame, setTimeFrame] = useState<TimeFrame>("d7");
   const isDeflationary = useIsDeflationary();
   const videoEl = useRef<HTMLVideoElement>(null);
   const { simulateDeflationary } = featureFlags;
@@ -158,6 +159,8 @@ const Dashboard: FC = () => {
       ? videoEl.current.play().catch(console.error)
       : videoEl.current.pause();
   }, []);
+
+  const version = SharedConfig.versionFromEnv();
 
   return (
     <FeatureFlagsContext.Provider value={featureFlags}>
@@ -221,12 +224,15 @@ const Dashboard: FC = () => {
             setTwitterAuthStatus={setTwitterAuthStatus}
             twitterAuthStatus={twitterAuthStatus}
           />
-          <div className="mt-32 flex px-4 md:px-0">
+          <div className="flex px-4 mt-32 md:px-0">
             <div className="relative w-full md:m-auto lg:w-2/3">
               <FaqBlock />
             </div>
           </div>
           <ContactSection />
+        </div>
+        <div className="flex justify-center w-full text-slateus-600">
+          version {version}
         </div>
       </SkeletonTheme>
     </FeatureFlagsContext.Provider>

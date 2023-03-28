@@ -51,8 +51,8 @@ module.exports = {
       animation: {
         "fade-in": "fade-in 1s ease-in 0s",
         "slow-pulse": "pulse 4s ease-in-out infinite",
-        "flash-orange": "to-orange-400 0.5s",
-        "flash-blue": "to-blue-400 0.5s",
+        "flash-orange": "to-orange-400 0.8s",
+        "flash-blue": "to-blue-400 0.8s",
       },
       keyframes: {
         "fade-in": {

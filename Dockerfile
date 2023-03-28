@@ -17,13 +17,21 @@ COPY src/ src
 COPY public/ public
 ENV NEXT_PUBLIC_ENV=stag
 RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN \
+   --mount=type=secret,id=NEXT_PUBLIC_TAGS \
+   --mount=type=secret,id=NEXT_PUBLIC_COMMIT \
    export SENTRY_AUTH_TOKEN=$(cat /run/secrets/SENTRY_AUTH_TOKEN) && \
+   export NEXT_PUBLIC_TAGS=$(cat /run/secrets/NEXT_PUBLIC_TAGS) && \
+   export NEXT_PUBLIC_COMMIT=$(cat /run/secrets/NEXT_PUBLIC_COMMIT) && \
    yarn build
 RUN ["cp", "-r", ".next/standalone", "/standalone-stag"]
 RUN ["cp", "-r", ".next/static", "/static-stag"]
 ENV NEXT_PUBLIC_ENV=prod
 RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN \
+   --mount=type=secret,id=NEXT_PUBLIC_TAGS \
+   --mount=type=secret,id=NEXT_PUBLIC_COMMIT \
    export SENTRY_AUTH_TOKEN=$(cat /run/secrets/SENTRY_AUTH_TOKEN) && \
+   export NEXT_PUBLIC_TAGS=$(cat /run/secrets/NEXT_PUBLIC_TAGS) && \
+   export NEXT_PUBLIC_COMMIT=$(cat /run/secrets/NEXT_PUBLIC_COMMIT) && \
    yarn build
 RUN ["cp", "-r", ".next/standalone", "/standalone-prod"]
 RUN ["cp", "-r", ".next/static", "/static-prod"]

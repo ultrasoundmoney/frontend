@@ -57,6 +57,7 @@ const CensorshipSection: FC<Props> = ({
   const topDelays = topDelaysFromTransactions(
     transactionCensorship.transactions,
   );
+  const sanctionedTransactionCount = sanctionsDelay.censored_count;
 
   const handleClickTimeFrame = useCallback(() => {
     setTimeFrame((timeFrame) => (timeFrame === "d7" ? "d30" : "d7"));
@@ -116,6 +117,7 @@ const CensorshipSection: FC<Props> = ({
           <TransactionCensorshipWidget
             onClickTimeFrame={handleClickTimeFrame}
             transactionCensorship={transactionCensorship}
+            transactionCount={sanctionedTransactionCount}
             timeFrame={timeFrame}
           />
           <TransactionCensorshipListWidget

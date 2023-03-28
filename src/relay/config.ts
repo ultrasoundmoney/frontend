@@ -1,7 +1,7 @@
-import { getEnv, getApiEnv } from "../config";
+import * as SharedConfig from "../config";
 
 export const getDomain = () => {
-  const apiEnv = getApiEnv();
+  const apiEnv = SharedConfig.apiEnvFromEnv();
   switch (apiEnv) {
     case "dev":
       return "http://relay.localhost:3000";
@@ -13,7 +13,7 @@ export const getDomain = () => {
 };
 
 export const getRelayUrl = () => {
-  const env = getEnv();
+  const env = SharedConfig.envFromEnv();
   switch (env) {
     case "dev":
       return "http://0xc1559cee7b5ba3127485bbbb090362d9f497ba64e177ee2c8e7db74746306efad687f2cf8574e38d70067d40ef136dc@relay.localhost:3000";
@@ -25,7 +25,7 @@ export const getRelayUrl = () => {
 };
 
 export const getRelayDisplayUrl = () => {
-  const env = getEnv();
+  const env = SharedConfig.envFromEnv();
   switch (env) {
     case "dev":
       return {
@@ -47,14 +47,14 @@ export const getRelayDisplayUrl = () => {
 };
 
 export const getEtherscanUrl = () => {
-  const env = getEnv();
+  const env = SharedConfig.envFromEnv();
   return env === "stag"
     ? "https://goerli.etherscan.io"
     : "https://etherscan.io";
 };
 
 export const getBeaconchainUrl = () => {
-  const env = getEnv();
+  const env = SharedConfig.envFromEnv();
   return env === "stag"
     ? "https://goerli.beaconcha.in"
     : "https://beaconcha.in";

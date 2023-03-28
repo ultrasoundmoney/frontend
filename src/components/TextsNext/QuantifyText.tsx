@@ -21,7 +21,7 @@ const QuantifyText: FC<Props> = ({
   lineHeight,
   size,
   unitPostfix,
-  unitPostfixColor = "text-slateus-400",
+  unitPostfixColor = "text-slateus-200",
   unitPostfixMargin = "ml-1",
 }) => (
   <BaseText

@@ -11,18 +11,17 @@ import _first from "lodash/first";
 import _last from "lodash/last";
 import _merge from "lodash/merge";
 import type { FC } from "react";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useMemo } from "react";
 import colors from "../../../colors";
 import LabelText from "../../../components/TextsNext/LabelText";
 import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../../components/WidgetSubcomponents";
-import { FeatureFlagsContext } from "../../../feature-flags";
 import {
   formatPercentFiveDecimalsSigned,
   formatPercentThreeDecimalsSigned,
   formatTwoDigit,
-  formatTwoDigitsSigned,
+  formatTwoDecimalsSigned,
 } from "../../../format";
 import { O, pipe } from "../../../fp";
 import type { DateTimeString } from "../../../time";
@@ -152,6 +151,7 @@ const getTooltip = (
   pointMap: PointMap | undefined,
   simulateProofOfWork: boolean,
 ): FormatterCallbackFunction<Point> =>
+  // This part is a mess, feel free to refactor heavily.
   function () {
     if (series === undefined || pointMap === undefined) {
       return "";
@@ -171,30 +171,49 @@ const getTooltip = (
     if (total === undefined) {
       return "";
     }
+    // const totalUsd = total * ethPrice;
+
+    // const totalFormatted =
+    //   type === "bitcoin"
+    //     ? formatTwoDigit(total)
+    //     : unit === "eth"
+    //     ? formatTwoDigit(total)
+    //     : unit === "usd"
+    //     ? formatZeroDecimals(total)
+    //     : (undefined as never);
+
+    const totalFormatted = formatTwoDigit(total);
+    const formattedTotalUnit = type === "bitcoin" ? "BTC" : "ETH";
 
     const dt = new Date(x);
     const formattedDate = format(dt, "iii MMM dd");
     const formattedTime = format(dt, "HH:mm:ss 'UTC'x");
 
-    const supplyDelta = total - firstSupply;
+    const title = type === "pos" ? "ETH" : type === "pow" ? "ETH (PoW)" : "BTC";
+    const formattedDeltaUnit = type === "bitcoin" ? "BTC" : "ETH";
+
+    const nativeDelta = total - firstSupply;
 
     const supplyDeltaFormatted =
-      supplyDelta !== undefined
-        ? formatTwoDigitsSigned(supplyDelta)
-        : undefined;
+      nativeDelta === undefined
+        ? undefined
+        : formatTwoDecimalsSigned(nativeDelta);
 
     const gradientCss =
-      supplyDelta !== undefined && supplyDelta <= 0
+      nativeDelta !== undefined && nativeDelta <= 0
         ? "from-orange-400 to-yellow-300"
         : "from-cyan-300 to-indigo-500";
 
-    const title = type === "pos" ? "ETH" : type === "pow" ? "ETH (PoW)" : "BTC";
-    const unit = type === "bitcoin" ? "BTC" : "ETH";
+    // const supplyDeltaPercent =
+    //   nativeDelta === undefined
+    //     ? undefined
+    //     : type !== "bitcoin" && unit === "usd"
+    //     ? formatPercentFiveDecimalsSigned(deltaUsd / totalUsd)
+    //     : formatPercentFiveDecimalsSigned(nativeDelta / total);
 
-    const supplyDeltaPercent =
-      supplyDelta === undefined
-        ? undefined
-        : formatPercentFiveDecimalsSigned(supplyDelta / total);
+    const supplyDeltaPercent = formatPercentFiveDecimalsSigned(
+      nativeDelta / total,
+    );
 
     // z-10 does not work without adjusting position to !static.
     return `
@@ -208,16 +227,16 @@ const getTooltip = (
         <div class="text-right text-slateus-200">${formattedTime}</div>
         <div class="flex flex-col items-end mt-2">
           <div class="text-white">
-            ${formatTwoDigit(total)}
-            <span class="text-slateus-200"> ${unit}</span>
+            ${totalFormatted}
+            <span class="text-slateus-200"> ${formattedTotalUnit}</span>
           </div>
           <div class="
             text-transparent bg-clip-text bg-gradient-to-r
             ${gradientCss}
-            ${supplyDelta === undefined ? "hidden" : ""}
+            ${nativeDelta === undefined ? "hidden" : ""}
           ">
             ${supplyDeltaFormatted}
-            <span class="text-slateus-200"> ${unit}</span>
+            <span class="text-slateus-200"> ${formattedDeltaUnit}</span>
           </div>
           <div class="
             text-transparent bg-clip-text bg-gradient-to-r
@@ -267,13 +286,12 @@ const optionsFromSupplySeriesCollection = (
   supplySeriesCollection: SupplySeriesCollection,
   simulateProofOfWork: boolean,
   timeFrame: TimeFrame,
-  enableSupplyLegendClick: boolean,
   posVisible: boolean,
   powVisible: boolean,
   btcVisible: boolean,
-  onPosVisibilityChange: (visible: boolean) => void,
-  onPowVisibilityChange: (visible: boolean) => void,
-  onBtcVisibilityChange: (visible: boolean) => void,
+  onPosVisibilityChange: (setFn: (visible: boolean) => boolean) => void,
+  onPowVisibilityChange: (setFn: (visible: boolean) => boolean) => void,
+  onBtcVisibilityChange: (setFn: (visible: boolean) => boolean) => void,
 ): Highcharts.Options => {
   const { posSeries, powSeries, btcSeriesScaled, btcSeries } =
     supplySeriesCollection;
@@ -428,10 +446,7 @@ const optionsFromSupplySeriesCollection = (
         visible: posVisible,
         events: {
           legendItemClick: function () {
-            if (!enableSupplyLegendClick) {
-              return false;
-            }
-            onPosVisibilityChange(this.visible);
+            onPosVisibilityChange((visible) => !visible);
           },
         },
         data:
@@ -472,6 +487,7 @@ const optionsFromSupplySeriesCollection = (
             simulateProofOfWork,
           ),
         },
+        zIndex: 2,
       },
       {
         color: "#FF891D",
@@ -485,10 +501,7 @@ const optionsFromSupplySeriesCollection = (
         },
         events: {
           legendItemClick: function () {
-            if (!enableSupplyLegendClick) {
-              return false;
-            }
-            onBtcVisibilityChange(this.visible);
+            onBtcVisibilityChange((visible) => !visible);
           },
         },
         data:
@@ -515,6 +528,7 @@ const optionsFromSupplySeriesCollection = (
             simulateProofOfWork,
           ),
         },
+        zIndex: 1,
       },
       {
         color: colors.slateus100,
@@ -526,10 +540,7 @@ const optionsFromSupplySeriesCollection = (
         type: "spline",
         events: {
           legendItemClick: function () {
-            if (!enableSupplyLegendClick) {
-              return false;
-            }
-            onPowVisibilityChange(this.visible);
+            onPowVisibilityChange((visible) => !visible);
           },
         },
         data:
@@ -549,20 +560,21 @@ const optionsFromSupplySeriesCollection = (
         tooltip: {
           pointFormatter: getTooltip(
             "pow",
-            powSeries,
+            // Since burn is a special case. Simulating added proof-of-work
+            // from the London hardfork doesn't make sense. It only makes sense
+            // to simulate from the merge. This means that the first point in the
+            // proof-of-work series is not the point to calculate the delta
+            // against. Instead, in that one case, we should use the first point
+            // in the proof-of-stake series.
+            timeFrame === "since_burn"
+              ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                [posSeries[0]!, ...powSeries]
+              : powSeries,
             ethPowPointMap,
             simulateProofOfWork,
           ),
         },
-      },
-      {
-        color: "transparent",
-        visible: simulateProofOfWork && powVisible,
-        type: "spline",
-        data: powSeries,
-        enableMouseTracking: false,
-        showInLegend: false,
-        states: { hover: { enabled: false } },
+        zIndex: 0,
         shadow: {
           color: "#DEE2F133",
           width: 15,
@@ -608,7 +620,6 @@ const EthSupplyWidget: FC<Props> = ({
   const [posVisible, setPosVisible] = useState(true);
   const [powVisible, setPowVisible] = useState(true);
   const [btcVisible, setBtcVisible] = useState(true);
-  const { enableSupplyLegendClick } = useContext(FeatureFlagsContext);
 
   const supplySeriesCollections = useSupplySeriesCollections();
 
@@ -622,7 +633,6 @@ const EthSupplyWidget: FC<Props> = ({
             supplySeriesCollections,
             simulateProofOfWork,
             timeFrame,
-            enableSupplyLegendClick,
             posVisible,
             powVisible,
             btcVisible,
@@ -635,7 +645,6 @@ const EthSupplyWidget: FC<Props> = ({
       ),
     [
       btcVisible,
-      enableSupplyLegendClick,
       posVisible,
       powVisible,
       simulateProofOfWork,

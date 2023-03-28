@@ -17,27 +17,27 @@ export const formatWeiTwoDigit = (wei: number): string =>
 
 export const formatTwoDigit = (num: number): string => twoDigit.format(num);
 
-const twoDigitSigned = new Intl.NumberFormat("en-US", {
+const twoDecimalsSigned = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
   signDisplay: "always",
 });
 
-export const formatTwoDigitsSigned = (num: number): string =>
-  twoDigitSigned.format(num);
+export const formatTwoDecimalsSigned = (num: number): string =>
+  twoDecimalsSigned.format(num);
 
 const zeroDecimals = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 0,
 });
 
-const zeroDigitSigned = new Intl.NumberFormat("en-US", {
+const zeroDecimalsSigned = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 0,
   maximumFractionDigits: 0,
   signDisplay: "always",
 });
 
-export const formatZeroDigitsSigned = (num: number): string =>
-  zeroDigitSigned.format(num);
+export const formatZeroDecimalsSigned = (num: number): string =>
+  zeroDecimalsSigned.format(num);
 
 export const formatZeroDecimals = (num: number): string =>
   zeroDecimals.format(num);

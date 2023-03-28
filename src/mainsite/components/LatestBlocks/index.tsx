@@ -14,7 +14,6 @@ import { WEI_PER_GWEI } from "../../../eth-units";
 import * as Format from "../../../format";
 import scrollbarStyles from "../../../styles/Scrollbar.module.scss";
 import { LabelUnitText } from "../../../components/Texts";
-import BodyTextV2 from "../../../components/TextsNext/BodyTextV2";
 import LabelText from "../../../components/TextsNext/LabelText";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
 import SkeletonText from "../../../components/TextsNext/SkeletonText";
@@ -46,9 +45,9 @@ const latestBlockFeesSkeletons = new Array(maxBlocks).fill(
 ) as Partial<LatestBlock>[];
 
 const Resyncing = () => (
-  <BodyTextV2 className="animate-slow-pulse text-red-400 md:text-sm">
-    node error, busy resyncing...
-  </BodyTextV2>
+  <LabelText className="animate-slow-pulse text-slateus-200">
+    waiting for next analysis...
+  </LabelText>
 );
 
 const LatestBlockAge: FC = () => {
@@ -87,7 +86,7 @@ const LatestBlockAge: FC = () => {
   }
 
   return (
-    <div className="flex items-baseline gap-x-2 truncate">
+    <div className="flex gap-x-2 items-baseline truncate">
       <LabelText color="text-slateus-400" className="whitespace-nowrap">
         latest block
       </LabelText>
@@ -119,7 +118,7 @@ const LatestBlockRow: FC<LatestBlockComponentProps> = ({
   number,
   unit,
 }) => (
-  <div className="animate-fade-in transition-opacity duration-700">
+  <div className="transition-opacity duration-700 animate-fade-in">
     <a
       href={
         number === undefined
@@ -204,9 +203,9 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
             />
           ))}
         </ul>
-        <div className="flex flex-wrap justify-between gap-y-2">
+        <div className="flex flex-wrap gap-y-2 justify-between">
           <LatestBlockAge />
-          <div className="flex items-baseline gap-x-2">
+          <div className="flex gap-x-2 items-baseline">
             <LabelUnitText>
               <SkeletonText width="0.5rem">{blockLag}</SkeletonText>
             </LabelUnitText>

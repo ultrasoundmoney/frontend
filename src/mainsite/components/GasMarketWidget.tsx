@@ -11,7 +11,7 @@ import QuantifyText from "../../components/TextsNext/QuantifyText";
 import WidgetErrorBoundary from "../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../components/WidgetSubcomponents";
 import { WEI_PER_GWEI } from "../../eth-units";
-import { formatOneDecimal, formatTwoDigit } from "../../format";
+import { formatOneDecimal } from "../../format";
 import { useBaseFeePerGasBarrier } from "../api/barrier";
 import { useBaseFeePerGasStatsTimeFrame } from "../api/base-fee-per-gas-stats";
 import type { TimeFrame } from "../time-frames";
@@ -24,18 +24,6 @@ const getPercentage = (
 ): number => {
   const range = highest - lowest;
   return (gas - lowest) / range;
-};
-
-const formatGasTooltip = (
-  description: string | undefined,
-  gas: number,
-): string | undefined => {
-  if (description === undefined) {
-    return undefined;
-  }
-  const gasStr = formatTwoDigit(gas);
-  return `${description}
-${gasStr} Gwei`;
 };
 
 const getBlockPageLink = (u: number | undefined): string | undefined =>
@@ -58,7 +46,6 @@ type MarkerProps = {
 const Marker: FC<MarkerProps> = ({
   barrier,
   blockNumber,
-  description,
   emphasize = false,
   gas,
   highest,
@@ -81,7 +68,7 @@ const Marker: FC<MarkerProps> = ({
         ${vertical === "top" ? "-top-[48px]" : "-bottom-[40px]"}
       `}
       style={styles}
-      title={formatGasTooltip(description, gas / WEI_PER_GWEI)}
+      title="ultra sound barrier"
     >
       {vertical === "bottom" && (
         <div
@@ -252,7 +239,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
           />
         </div>
         {!isDataAvailable ? (
-          <div className="flex h-[96px] items-center justify-center">
+          <div className="flex justify-center items-center h-[96px]">
             <LabelText color="text-slateus-300">
               data not yet available
             </LabelText>

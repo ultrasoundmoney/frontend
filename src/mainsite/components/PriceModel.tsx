@@ -1,31 +1,57 @@
-import flow from "lodash/flow";
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
 import type { FC, ReactNode } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import logoAmazonOwn from "../../assets/logos/amazon-own.svg";
+import logoAmazonSlateus from "../../assets/logos/amazon-slateus.svg";
+import logoAppleOwn from "../../assets/logos/apple-own.svg";
+import logoAppleSlateus from "../../assets/logos/apple-slateus.svg";
+import logoDisneyOwn from "../../assets/logos/disney-own.svg";
+import logoDisneySlateus from "../../assets/logos/disney-slateus.svg";
+import logoEthereumOwn from "../../assets/logos/ethereum-own.svg";
+import logoEthereumSlateus from "../../assets/logos/ethereum-slateus.svg";
+import logoGoogleOwn from "../../assets/logos/google-own.svg";
+import logoGoogleSlateus from "../../assets/logos/google-slateus.svg";
+import logoIntelOwn from "../../assets/logos/intel-own.svg";
+import logoIntelSlateus from "../../assets/logos/intel-slateus.svg";
+import logoNetflixOwn from "../../assets/logos/netflix-own.svg";
+import logoNetflixSlateus from "../../assets/logos/netflix-slateus.svg";
+import logoTeslaOwn from "../../assets/logos/tesla-own.svg";
+import logoTeslaSlateus from "../../assets/logos/tesla-slateus.svg";
+import { BaseText } from "../../components/Texts";
+import BodyTextV3 from "../../components/TextsNext/BodyTextV3";
+import QuantifyText from "../../components/TextsNext/QuantifyText";
+import SkeletonText from "../../components/TextsNext/SkeletonText";
+import * as Format from "../../format";
+import { flow } from "../../fp";
 import { useEthPriceStats } from "../api/eth-price-stats";
-import { useImpreciseEthSupply } from "../api/supply-parts";
+import { useGaugeRates } from "../api/gauge-rates";
 import type { PeRatios } from "../api/pe-ratios";
 import { usePeRatios } from "../api/pe-ratios";
-import * as Format from "../../format";
-import { MoneyAmount } from "./Amount";
-import Slider2 from "./Slider2";
-import { BaseText } from "../../components/Texts";
-import BodyText from "../../components/TextsNext/BodyText";
+import { useImpreciseEthSupply } from "../api/supply-parts";
 import {
   WidgetBackground,
   WidgetTitle,
 } from "./../../components/WidgetSubcomponents";
-import { useGaugeRates } from "../api/gauge-rates";
+import { MoneyAmount } from "./Amount";
+import Slider2 from "./Slider2";
 
 type MaybeMarker = {
   alt?: string;
-  icon: string;
+  icon: {
+    coloroff: StaticImageData;
+    coloron: StaticImageData;
+  };
   peRatio: number | null;
   symbol?: string;
 };
 
 type MarkerProps = {
   alt?: string;
-  icon: string;
+  icon: {
+    coloroff: StaticImageData;
+    coloron: StaticImageData;
+  };
   peRatio: number;
   symbol?: string;
 };
@@ -36,7 +62,7 @@ const Marker: FC<MarkerProps> = ({ alt, icon, peRatio, symbol }) => {
 
   return (
     <div
-      className="pointer-events-none absolute flex w-full flex-col"
+      className="flex absolute flex-col w-full pointer-events-none"
       style={{
         transform: `translateX(${linearFromLog(peRatio) * 100}%)`,
       }}
@@ -44,7 +70,7 @@ const Marker: FC<MarkerProps> = ({ alt, icon, peRatio, symbol }) => {
       <div className="mb-3 w-3 -translate-x-1/2 bg-slateus-400 [min-height:3px]"></div>
       <a
         title={`${peRatio?.toFixed(1) ?? "-"} P/E`}
-        className="pointer-events-auto absolute top-4 -translate-x-1/2"
+        className="absolute top-4 -translate-x-1/2 pointer-events-auto"
         href={
           symbol === undefined
             ? undefined
@@ -58,15 +84,15 @@ const Marker: FC<MarkerProps> = ({ alt, icon, peRatio, symbol }) => {
         onMouseLeave={() => setIsHovering(false)}
       >
         <>
-          <img
-            src={`/${icon}-coloroff.svg`}
-            alt={alt}
+          <Image
+            src={icon.coloroff}
+            alt={alt ?? "missing company PE icon"}
             className={`relative ${isHovering ? "invisible" : "visible"}`}
           />
-          <img
+          <Image
             className={`absolute top-0 ${isHovering ? "visible" : "invisible"}`}
-            src={`/${icon}-coloron.svg`}
-            alt={alt}
+            src={icon.coloron}
+            alt={alt ?? "missing company PE icon"}
           />
         </>
       </a>
@@ -79,7 +105,7 @@ const MarkerText: FC<{ children: ReactNode; ratio: number }> = ({
   children,
 }) => (
   <div
-    className="pointer-events-none absolute flex w-full flex-col"
+    className="flex absolute flex-col w-full pointer-events-none"
     // For unclear reasons the left 89% position for TSLA is closer to notch 91 on the actual slider. We manually adjust.
     style={{ transform: `translateX(${ratio * 100}%)` }}
   >
@@ -103,49 +129,73 @@ const CompanyMarkers: FC<{ peRatios: PeRatios & { ETH: number } }> = ({
   const markers: MaybeMarker[] = [
     {
       alt: "ethereum logo",
-      icon: "eth",
+      icon: {
+        coloroff: logoEthereumSlateus as StaticImageData,
+        coloron: logoEthereumOwn as StaticImageData,
+      },
       peRatio: peRatios.ETH,
       symbol: "ETH",
     },
     {
       alt: "apple logo",
-      icon: "apple",
+      icon: {
+        coloroff: logoAppleSlateus as StaticImageData,
+        coloron: logoAppleOwn as StaticImageData,
+      },
       peRatio: peRatios.AAPL,
       symbol: "AAPL",
     },
     {
       alt: "amazon logo",
-      icon: "amazon",
+      icon: {
+        coloroff: logoAmazonSlateus as StaticImageData,
+        coloron: logoAmazonOwn as StaticImageData,
+      },
       peRatio: peRatios.AMZN,
       symbol: "AMZN",
     },
     {
       alt: "tesla logo",
-      icon: "tesla",
+      icon: {
+        coloroff: logoTeslaSlateus as StaticImageData,
+        coloron: logoTeslaOwn as StaticImageData,
+      },
       peRatio: peRatios.TSLA,
       symbol: "TSLA",
     },
     {
       alt: "disney logo",
-      icon: "disney",
+      icon: {
+        coloroff: logoDisneySlateus as StaticImageData,
+        coloron: logoDisneyOwn as StaticImageData,
+      },
       peRatio: peRatios.DIS,
       symbol: "DIS",
     },
     {
       alt: "google logo",
-      icon: "google",
+      icon: {
+        coloroff: logoGoogleSlateus as StaticImageData,
+        coloron: logoGoogleOwn as StaticImageData,
+      },
       peRatio: peRatios.GOOGL,
       symbol: "GOOGL",
     },
     {
       alt: "netflix logo",
-      icon: "netflix",
+      icon: {
+        coloroff: logoNetflixSlateus as StaticImageData,
+        coloron: logoNetflixOwn as StaticImageData,
+      },
       peRatio: peRatios.NFLX,
       symbol: "NFLX",
     },
     {
       alt: "intel logo",
-      icon: "intel",
+      icon: {
+        coloroff: logoIntelSlateus as StaticImageData,
+        coloron: logoIntelOwn as StaticImageData,
+      },
       peRatio: peRatios.INTC,
       symbol: "INTC",
     },
@@ -155,7 +205,7 @@ const CompanyMarkers: FC<{ peRatios: PeRatios & { ETH: number } }> = ({
     .filter(getIsValidMarker)
     .reduce((list: MarkerProps[], marker) => {
       const someConflict = list.some(
-        (shownMarker) => Math.abs(shownMarker.peRatio - marker.peRatio) < 4,
+        (shownMarker) => Math.abs(shownMarker.peRatio - marker.peRatio) < 6.7,
       );
 
       if (someConflict) {
@@ -249,12 +299,10 @@ const PriceModel: FC = () => {
   const ethPriceStats = useEthPriceStats();
   const ethPrice = ethPriceStats.usd;
   const ethSupply = useImpreciseEthSupply();
-  const [peRatio, setPeRatio] = useState<number>();
-  const [peRatioPosition, setPeRatioPosition] = useState<number>(0);
+  const [peRatioPosition, setPeRatioPosition] = useState<number>();
   const [monetaryPremium, setMonetaryPremium] = useState(1);
-  const [initialPeSet, setInitialPeSet] = useState(false);
-  const [ethPeRatio, setEthPeRatio] = useState<number>();
   const gaugeRates = useGaugeRates();
+  const initialPeRatioSet = useRef<boolean>(false);
 
   const annualizedRevenue = gaugeRates.since_burn.burn_rate_yearly.usd;
   const annualizedCosts = gaugeRates.d7.issuance_rate_yearly.usd;
@@ -263,36 +311,13 @@ const PriceModel: FC = () => {
       ? undefined
       : annualizedRevenue - annualizedCosts;
 
-  useEffect(() => {
-    if (
-      initialPeSet ||
-      annualizedEarnings === undefined ||
-      ethPrice === undefined
-    ) {
-      return;
-    }
+  const earningsPerShare = calcEarningsPerShare(annualizedEarnings, ethSupply);
 
-    setInitialPeSet(true);
+  const ethPeRatio =
+    earningsPerShare === undefined ? undefined : ethPrice / earningsPerShare;
 
-    const earningsPerShare = calcEarningsPerShare(
-      annualizedEarnings,
-      ethSupply,
-    );
-    if (earningsPerShare === undefined) {
-      return;
-    }
-
-    const ethPeRatio = ethPrice / earningsPerShare;
-
-    setEthPeRatio(ethPeRatio);
-    setPeRatioPosition(linearFromLog(ethPeRatio));
-  }, [
-    annualizedEarnings,
-    ethPrice,
-    ethSupply,
-    initialPeSet,
-    setPeRatioPosition,
-  ]);
+  const peRatio =
+    peRatioPosition === undefined ? undefined : logFromLinear(peRatioPosition);
 
   const projectedPrice = calcProjectedPrice(
     annualizedEarnings,
@@ -301,31 +326,40 @@ const PriceModel: FC = () => {
     peRatio,
   );
 
+  // We only run this once, the first time, peRatio becomes available.
   useEffect(() => {
-    if (peRatioPosition === undefined) {
-      return undefined;
+    if (initialPeRatioSet.current || ethPeRatio === undefined) {
+      return;
     }
 
-    setPeRatio(logFromLinear(peRatioPosition));
-  }, [peRatioPosition]);
+    initialPeRatioSet.current = true;
+
+    setPeRatioPosition(linearFromLog(ethPeRatio));
+  }, [ethPeRatio]);
 
   return (
     <WidgetBackground>
       <WidgetTitle>price model</WidgetTitle>
-      <div className="mt-4 flex flex-col gap-y-4 overflow-hidden">
+      <div className="flex overflow-hidden flex-col gap-y-4 mt-4">
         <div className="flex justify-between">
-          <BodyText>annualized profits</BodyText>
-          <MoneyAmount amountPostfix="B" unitText="USD" skeletonWidth="2rem">
-            {annualizedEarnings === undefined
-              ? undefined
-              : Format.formatOneDecimal(annualizedEarnings / 1e9)}
-          </MoneyAmount>
+          <BodyTextV3 size="text-lg">annualized profits</BodyTextV3>
+          <QuantifyText
+            amountPostfix="B"
+            unitPostfix="USD"
+            unitPostfixColor="text-slateus-200"
+          >
+            <SkeletonText width="2rem">
+              {annualizedEarnings === undefined
+                ? undefined
+                : Format.formatOneDecimal(annualizedEarnings / 1e9)}
+            </SkeletonText>
+          </QuantifyText>
         </div>
         <div className="flex flex-col gap-y-2">
           <div className="flex justify-between">
-            <BodyText>growth profile</BodyText>
+            <BodyTextV3>growth profile</BodyTextV3>
             <MoneyAmount unitText="P/E" skeletonWidth="3rem">
-              {peRatio !== undefined && initialPeSet
+              {peRatio !== undefined
                 ? Format.formatOneDecimal(peRatio)
                 : undefined}
             </MoneyAmount>
@@ -338,8 +372,8 @@ const PriceModel: FC = () => {
               onChange={(event) =>
                 setPeRatioPosition(Number(event.target.value))
               }
-              thumbVisible={initialPeSet}
-              value={peRatioPosition}
+              thumbVisible={initialPeRatioSet.current}
+              value={peRatioPosition ?? 0}
             />
             <div className="absolute top-3 w-full select-none">
               {peRatios !== undefined && ethPeRatio !== undefined && (
@@ -351,10 +385,10 @@ const PriceModel: FC = () => {
         </div>
         <div className="flex flex-col gap-y-2">
           <div className="flex justify-between">
-            <BodyText>monetary premium</BodyText>
-            <BaseText font="font-roboto">{`${Format.formatOneDecimal(
+            <BodyTextV3 size="text-lg">monetary premium</BodyTextV3>
+            <QuantifyText size="text-lg">{`${Format.formatOneDecimal(
               monetaryPremium,
-            )}x`}</BaseText>
+            )}x`}</QuantifyText>
           </div>
           <div className="relative mb-10">
             <Slider2
@@ -367,7 +401,7 @@ const PriceModel: FC = () => {
               value={monetaryPremium}
             />
             {/* Because a slider range is not exactly the visual width of the element positioning using absolute children with a left is not exactly right. we add small amounts to try fudge them into the right place. */}
-            <div className="pointer-events-none absolute top-3 flex w-full">
+            <div className="flex absolute top-3 w-full pointer-events-none">
               <MarkerText
                 ratio={(2 + 0.3 - monetaryPremiumMin) / monetaryPremiumRange}
               >
@@ -384,13 +418,13 @@ const PriceModel: FC = () => {
                 8x
               </MarkerText>
               <div
-                className="pointer-events-none absolute flex w-full flex-col"
+                className="flex absolute flex-col w-full pointer-events-none"
                 style={{
                   transform: `translateX(47.5%)`,
                 }}
               >
                 <div className="mb-3 w-3 -translate-x-1/2 bg-slateus-400 [min-height:3px]"></div>
-                <div className="pointer-events-auto absolute top-4 -translate-x-1/2">
+                <div className="absolute top-4 -translate-x-1/2 pointer-events-auto">
                   <img
                     title="gold"
                     src={`/gold-icon.svg`}

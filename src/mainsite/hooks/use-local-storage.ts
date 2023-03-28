@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export type LocalStorageKeys =
+export type LocalStorageKey =
   | "auth-from-section"
   | "eth-alarm-enabled"
   | "eth-threshold"
@@ -9,7 +9,7 @@ export type LocalStorageKeys =
   | "gas-threshold"
   | "gas-threshold-type";
 
-export const useLocalStorage = <T>(key: LocalStorageKeys, initialValue: T) => {
+export const useLocalStorage = <T>(key: LocalStorageKey, initialValue: T) => {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState<T>(() => {

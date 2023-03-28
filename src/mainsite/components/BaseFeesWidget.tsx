@@ -118,19 +118,19 @@ const makeBarrier = (barrier: number) => ({
           src="/bat-own.svg"
         />
         <img
-          class="w-[15px] h-[15px] ml-1"
+          class="ml-1 w-[15px] h-[15px]"
           src="/speaker-own.svg"
         />
         <img
-          class="w-[15px] h-[15px] ml-1"
+          class="ml-1 w-[15px] h-[15px]"
           src="/barrier-own.svg"
         />
       </div>
       <div class="flex text-sm">
-        <div class="font-roboto font-light text-white">
+        <div class="font-light text-white font-roboto">
           ${barrier?.toFixed(1)}
         </div>
-        <div class="font-roboto font-light text-slateus-400 ml-1">
+        <div class="ml-1 font-light font-roboto text-slateus-200">
           Gwei
         </div>
       </div>
@@ -163,14 +163,14 @@ const getTooltipFormatter = (
         : "from-cyan-300 to-indigo-500";
 
     return `
-      <div class="font-roboto bg-slateus-700 p-4 rounded-lg border-2 border-slateus-400">
-        <div class="text-slateus-400 text-right">${formattedDate}</div>
-        <div class="text-slateus-400 text-right">${formattedTime}</div>
+      <div class="p-4 rounded-lg border-2 font-roboto bg-slateus-700 border-slateus-400">
+        <div class="text-right text-slateus-400">${formattedDate}</div>
+        <div class="text-right text-slateus-400">${formattedTime}</div>
         <div class="flex justify-end mt-2">
           <div class="bg-gradient-to-r bg-clip-text text-transparent ${gradientCss}">${total.toFixed(
       2,
     )}</div>
-          <div class="font-roboto text-slateus-400 ml-1">Gwei</div>
+          <div class="ml-1 font-roboto text-slateus-400">Gwei</div>
         </div>
       </div>
     `;
@@ -267,8 +267,8 @@ const BaseFeesWidget: FC<Props> = ({
     <WidgetErrorBoundary title="base fees">
       {/* We use the h-0 min-h-full trick to adopt the height of our sibling
       element. */}
-      <WidgetBackground className="relative flex h-full min-h-full w-full flex-col lg:h-0">
-        <div className="pointer-events-none absolute left-0 right-0 top-0 bottom-0 overflow-hidden rounded-lg">
+      <WidgetBackground className="flex relative flex-col w-full h-full min-h-full lg:h-0">
+        <div className="overflow-hidden absolute top-0 right-0 bottom-0 left-0 rounded-lg pointer-events-none">
           <div
             // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
             className={`
@@ -290,8 +290,8 @@ const BaseFeesWidget: FC<Props> = ({
             ></div>
           </div>
         </div>
-        <div className="flex items-baseline justify-between">
-          <LabelText className="flex min-h-[21px] items-center">
+        <div className="flex justify-between items-baseline">
+          <LabelText className="flex items-center min-h-[21px]">
             base fees
           </LabelText>
           <TimeFrameIndicator
@@ -310,7 +310,7 @@ const BaseFeesWidget: FC<Props> = ({
           `}
         >
           {baseFeesSeries === undefined ? (
-            <div className="flex h-full items-center justify-center">
+            <div className="flex justify-center items-center h-full">
               <LabelText color="text-slateus-300">
                 data not yet available
               </LabelText>

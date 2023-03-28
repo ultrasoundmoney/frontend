@@ -27,6 +27,16 @@ const gridSpacing = `
   2xl:gap-x-8
 `;
 
+const nonCensoringRelays = [
+  "ultra sound",
+  "agnostic",
+  "aestus",
+  "bloXroute max profit",
+  "bloXroute ethical",
+  "relayooor",
+  "manifold",
+].join(", ");
+
 const LidoOperatorListWidget: FC<Props> = ({ lidoOperatorCensorship }) => (
   <WidgetBackground>
     <div className="flex flex-col gap-y-4">
@@ -34,7 +44,7 @@ const LidoOperatorListWidget: FC<Props> = ({ lidoOperatorCensorship }) => (
         <WidgetTitle className="">operator</WidgetTitle>
         <WidgetTitle className="text-right">censors</WidgetTitle>
         <WidgetTitle className="hidden text-right sm:block">
-          non-censoring
+          <span title={nonCensoringRelays}>non-censoring</span>
         </WidgetTitle>
         <WidgetTitle className="text-right">dominance</WidgetTitle>
       </div>
