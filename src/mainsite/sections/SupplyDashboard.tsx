@@ -46,7 +46,6 @@ const SupplyDashboard: FC<Props> = ({
               onSimulateProofOfWork={handleSimulateProofOfWork}
               simulateProofOfWork={simulateProofOfWork}
               timeFrame={timeFrame}
-              unit={unit}
             />
           </div>
           <div className="flex flex-col gap-y-4 lg:w-1/2">
