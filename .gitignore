@@ -1,6 +1,5 @@
 **/.DS_Store
 .DS_Store
-.env
 .env*.local
 .idea
 .next
