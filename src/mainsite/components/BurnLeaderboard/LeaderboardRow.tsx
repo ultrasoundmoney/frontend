@@ -11,7 +11,7 @@ import type { LeaderboardEntry } from "../../api/leaderboards";
 import type { Unit } from "../../../denomination";
 import { FeatureFlagsContext } from "../../../feature-flags";
 import * as Format from "../../../format";
-import { MoneyAmountAnimated } from "../Amount";
+import { QuantifyTextAnimated } from "../Amount";
 import ImageWithTooltip from "../ImageWithTooltip";
 import AdminControls from "../AdminControls";
 
@@ -136,12 +136,12 @@ const LeaderboardRow: FC<Props> = ({
               {fees === undefined ? (
                 <Skeleton inline={true} width="4rem" />
               ) : (
-                <MoneyAmountAnimated
+                <QuantifyTextAnimated
                   unit={unit || "eth"}
                   unitText={unit === "eth" ? "ETH" : "USD"}
                 >
                   {fees}
-                </MoneyAmountAnimated>
+                </QuantifyTextAnimated>
               )}
             </p>
           </a>

@@ -10,7 +10,7 @@ import {
 import * as Format from "../../format";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import type { TimeFrame } from "../time-frames";
-import { MoneyAmountAnimated } from "./Amount";
+import { QuantifyTextAnimated } from "./Amount";
 import SpanMoji from "../../components/SpanMoji";
 import { BaseText } from "../../components/Texts";
 import SkeletonText from "../../components/TextsNext/SkeletonText";
@@ -94,14 +94,14 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame}) => {
             key={record.blockNumber || index}
           >
             <div className="flex w-full justify-between">
-              <MoneyAmountAnimated
+              <QuantifyTextAnimated
                 size="text-2xl md:text-3xl"
                 skeletonWidth="4rem"
                 unit="eth"
                 unitText="ETH"
               >
                 {record.baseFeeSum}
-              </MoneyAmountAnimated>
+              </QuantifyTextAnimated>
               <SpanMoji
                 className="select-none text-2xl md:text-3xl"
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

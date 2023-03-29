@@ -7,6 +7,7 @@ import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
 import { AmountUnitSpace } from "./Spacing";
 import { BaseText, UnitText } from "./../../components/Texts";
+import QuantifyText from "../../components/TextsNext/QuantifyText";
 
 type AmountProps = {
   amountPostfix?: string;
@@ -114,7 +115,7 @@ type MoneyAmountAnimatedProps = {
   unitText: string;
 };
 
-export const MoneyAmountAnimated: FC<MoneyAmountAnimatedProps> = ({
+export const QuantifyTextAnimated: FC<MoneyAmountAnimatedProps> = ({
   children,
   decimals = 2,
   size,
@@ -163,9 +164,8 @@ export const AmountAnimatedShell: FC<AmountAnimatedShellProps> = ({
 }) => {
   const { previewSkeletons } = useContext(FeatureFlagsContext);
   return (
-    <BaseText
+    <QuantifyText
       color={color}
-      font="font-roboto"
       size={size ?? "text-base md:text-lg"}
       className={`whitespace-nowrap ${textClassName} ${className}`}
       tooltip={tooltip}
@@ -181,7 +181,7 @@ export const AmountAnimatedShell: FC<AmountAnimatedShellProps> = ({
           <UnitText>{unitText}</UnitText>
         </>
       )}
-    </BaseText>
+    </QuantifyText>
   );
 };
 
