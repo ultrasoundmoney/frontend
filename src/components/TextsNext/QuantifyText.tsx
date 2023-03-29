@@ -8,6 +8,7 @@ type Props = {
   color?: string;
   lineHeight?: string;
   size?: string;
+  tooltip?: string;
   unitPostfix?: string;
   unitPostfixColor?: string;
   unitPostfixMargin?: string;
@@ -20,6 +21,7 @@ const QuantifyText: FC<Props> = ({
   color,
   lineHeight,
   size,
+  tooltip,
   unitPostfix,
   unitPostfixColor = "text-slateus-200",
   unitPostfixMargin = "ml-1",
@@ -30,6 +32,7 @@ const QuantifyText: FC<Props> = ({
     font="font-roboto"
     lineHeight={lineHeight}
     size={size}
+    tooltip={tooltip}
   >
     {children}
     {amountPostfix}
