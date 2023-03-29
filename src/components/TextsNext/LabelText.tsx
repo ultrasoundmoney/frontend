@@ -14,12 +14,9 @@ const LabelText: FC<Props> = ({
 }) => (
   <BaseText
     font="font-inter"
+    size="text-xs"
+    className={`uppercase tracking-widest ${className}`}
     color={color}
-    className={`
-      text-xs
-      uppercase tracking-widest
-      ${className}
-    `}
   >
     {children}
   </BaseText>
