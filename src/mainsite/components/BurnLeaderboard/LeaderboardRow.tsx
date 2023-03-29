@@ -67,13 +67,13 @@ const LeaderboardRow: FC<Props> = ({
 
   return (
     <>
-      <div className="pt-2.5 pb-2.5 pr-2">
+      <div className="pt-2.5 pr-2 pb-2.5">
         <div className="flex text-white">
           <ImageWithTooltip
             onMouseEnter={isBot ? undefined : onMouseEnterImage}
             onMouseLeave={onMouseLeaveImage}
             onClick={onClickImage}
-            className="flex select-none items-center rounded-full"
+            className="flex items-center rounded-full select-none"
             isDoneLoading={isDoneLoading}
             imageUrl={imgSrc}
             width={32}
@@ -96,7 +96,7 @@ const LeaderboardRow: FC<Props> = ({
             target="_blank"
             rel="noreferrer"
           >
-            <p className="truncate pl-4">
+            <p className="pl-4 truncate">
               {typeof name === "string" ? (
                 name
               ) : typeof address === "string" ? (
@@ -128,11 +128,11 @@ const LeaderboardRow: FC<Props> = ({
                 : Format.capitalize(category)}
             </p>
             {detail && (
-              <p className="hidden truncate pl-2 font-extralight text-slateus-400 md:block lg:hidden xl:block">
+              <p className="hidden pl-2 font-extralight md:block lg:hidden xl:block truncate text-slateus-400">
                 {detail}
               </p>
             )}
-            <p className="ml-auto whitespace-nowrap pl-4">
+            <p className="pl-4 ml-auto whitespace-nowrap">
               {fees === undefined ? (
                 <Skeleton inline={true} width="4rem" />
               ) : (

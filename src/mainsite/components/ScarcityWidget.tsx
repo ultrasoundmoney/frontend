@@ -55,9 +55,9 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
 
   return (
     <div className="relative select-none">
-      <div className="flex h-28 items-center">
+      <div className="flex items-center h-28">
         <div
-          className="color-animation absolute h-2 w-full rounded-full bg-fire"
+          className="absolute w-full h-2 rounded-full color-animation bg-fire"
           style={{
             backgroundColor: hoveringBurned
               ? Colors.fireHighlight
@@ -72,7 +72,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
         ></div>
       </div>
       <div
-        className="absolute top-0 left-0 flex h-28 flex-row items-center"
+        className="flex absolute top-0 left-0 flex-row items-center h-28"
         style={{
           width: `${(supply / totalIssued) * 100}%`,
         }}
@@ -106,7 +106,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
             }}
           />
           <div
-            className="color-animation h-2 w-full rounded-l-full bg-slateus-200"
+            className="w-full h-2 rounded-l-full color-animation bg-slateus-200"
             style={{
               backgroundColor: hoveringStaked
                 ? Colors.white
@@ -115,7 +115,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
           ></div>
           <BaseText
             font="font-roboto"
-            className="color-animation mt-[12px] text-sm md:mt-[9px] md:text-base"
+            className="text-sm md:text-base color-animation mt-[12px] md:mt-[9px]"
             style={{
               color: hoveringStaked ? Colors.white : Colors.slateus200,
             }}
@@ -124,7 +124,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
           </BaseText>
         </div>
         <div
-          className="absolute z-10 h-2 w-0.5 bg-slateus-500"
+          className="absolute z-10 w-0.5 h-2 bg-slateus-500"
           style={{
             left: `${stakedPercent}%`,
           }}
@@ -158,7 +158,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
             }}
           />
           <div
-            className="color-animation h-2 w-full rounded-r-full bg-slateus-200"
+            className="w-full h-2 rounded-r-full color-animation bg-slateus-200"
             style={{
               backgroundColor: hoveringLocked
                 ? Colors.white
@@ -178,7 +178,7 @@ const ScarcityBar: FC<ScarcityBarProps> = ({
         </div>
       </div>
       <div
-        className="absolute top-5 -right-1"
+        className="absolute -right-1 top-5"
         style={
           {
             // Use this when the burn is big enough
@@ -253,7 +253,7 @@ const EngineRow: FC<EngineRowProps> = ({
   now,
 }) => (
   <a
-    className="link-animation grid grid-cols-3"
+    className="grid grid-cols-3 link-animation"
     onMouseEnter={() => setHovering(true)}
     onMouseLeave={() => setHovering(false)}
     style={{ opacity: hovering ? 0.6 : 1 }}
@@ -289,7 +289,7 @@ const ScarcityWidget: FC = () => {
       <WidgetTitle>scarcity</WidgetTitle>
       {scarcity === undefined ? (
         <div className="relative py-16">
-          <div className="absolute h-2 w-full rounded-full bg-slateus-500"></div>
+          <div className="absolute w-full h-2 rounded-full bg-slateus-500"></div>
         </div>
       ) : (
         <ScarcityBar
