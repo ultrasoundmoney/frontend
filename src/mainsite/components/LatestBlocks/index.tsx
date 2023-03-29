@@ -13,7 +13,6 @@ import type { GweiNumber, WeiNumber } from "../../../eth-units";
 import { WEI_PER_GWEI } from "../../../eth-units";
 import * as Format from "../../../format";
 import scrollbarStyles from "../../../styles/Scrollbar.module.scss";
-import { LabelUnitText } from "../../../components/Texts";
 import LabelText from "../../../components/TextsNext/LabelText";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
 import SkeletonText from "../../../components/TextsNext/SkeletonText";
@@ -21,6 +20,7 @@ import {
   WidgetBackground,
   WidgetTitle,
 } from "../../../components/WidgetSubcomponents";
+import { LabelUnitText } from "../../../components/TextsNext/LabelUnitText";
 
 const maxBlocks = 20;
 

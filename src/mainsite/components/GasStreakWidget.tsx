@@ -1,22 +1,22 @@
+import * as DateFns from "date-fns";
 import type { FC } from "react";
-import {
-  decodeGroupedAnalysis1,
-  useGroupedAnalysis1,
-} from "../api/grouped-analysis-1";
-import { formatZeroDecimals } from "../../format";
-import type { DateTimeString } from "../../time";
-import { SECONDS_PER_SLOT } from "../../time";
-import { LabelUnitText } from "../../components/Texts";
 import LabelText from "../../components/TextsNext/LabelText";
+import { LabelUnitText } from "../../components/TextsNext/LabelUnitText";
 import QuantifyText from "../../components/TextsNext/QuantifyText";
 import SkeletonText from "../../components/TextsNext/SkeletonText";
-import UltraSoundBarrier from "./UltraSoundBarrier";
 import {
   WidgetBackground,
   WidgetTitle,
 } from "../../components/WidgetSubcomponents";
-import * as DateFns from "date-fns";
+import { formatZeroDecimals } from "../../format";
 import { O, OAlt, pipe } from "../../fp";
+import type { DateTimeString } from "../../time";
+import { SECONDS_PER_SLOT } from "../../time";
+import {
+  decodeGroupedAnalysis1,
+  useGroupedAnalysis1,
+} from "../api/grouped-analysis-1";
+import UltraSoundBarrier from "./UltraSoundBarrier";
 
 type SpanningAgeProps = {
   isLoading: boolean;

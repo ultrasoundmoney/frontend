@@ -1,6 +1,6 @@
 import type { FC } from "react";
-import { LabelUnitText } from "../../components/Texts";
 import LabelText from "../../components/TextsNext/LabelText";
+import { LabelUnitText } from "../../components/TextsNext/LabelUnitText";
 import SkeletonText from "../../components/TextsNext/SkeletonText";
 
 type Props = {

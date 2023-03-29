@@ -2,21 +2,6 @@ import type { CSSProperties, FC, ReactNode } from "react";
 import { createElement } from "react";
 import BodyText from "./TextsNext/BodyText";
 
-export const LabelUnitText: FC<{
-  children: ReactNode;
-  className?: string;
-}> = ({ children, className = "" }) => (
-  <BaseText
-    className={`tracking-widest ${className}`}
-    color="text-slateus-200"
-    font="font-roboto"
-    size="text-xs"
-    weight="font-light"
-  >
-    {children}
-  </BaseText>
-);
-
 export const UnitText: FC<{ children: string; className?: string }> = ({
   className = "",
   children,

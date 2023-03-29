@@ -4,9 +4,9 @@ import { useContext } from "react";
 import { useEffect, useState } from "react";
 import { FeatureFlagsContext } from "../../feature-flags";
 import type { DateTimeString } from "../../time";
-import { LabelUnitText } from "../../components/Texts";
 import LabelText from "../../components/TextsNext/LabelText";
 import SkeletonText from "../../components/TextsNext/SkeletonText";
+import { LabelUnitText } from "../../components/TextsNext/LabelUnitText";
 
 const UpdatedAge: FC<{ updatedAt: DateTimeString | undefined }> = ({
   updatedAt,
@@ -54,7 +54,7 @@ const UpdatedAge: FC<{ updatedAt: DateTimeString | undefined }> = ({
       : "seconds";
 
   return (
-    <div className="flex items-baseline gap-x-1 truncate">
+    <div className="flex gap-x-1 items-baseline truncate">
       <LabelText color="text-slateus-400">updated</LabelText>
       <LabelUnitText className="-mr-1">
         <SkeletonText width="4.5rem">{secsOrMins}</SkeletonText>
