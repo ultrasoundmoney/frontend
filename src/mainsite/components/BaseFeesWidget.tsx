@@ -267,7 +267,7 @@ const BaseFeesWidget: FC<Props> = ({
     <WidgetErrorBoundary title="base fees">
       {/* We use the h-0 min-h-full trick to adopt the height of our sibling
       element. */}
-      <WidgetBackground className="flex relative flex-col w-full h-full min-h-full lg:h-0">
+      <WidgetBackground className="flex relative flex-col w-full h-full lg:h-0 min-h-[398px]">
         <div className="overflow-hidden absolute top-0 right-0 bottom-0 left-0 rounded-lg pointer-events-none">
           <div
             // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
@@ -310,7 +310,7 @@ const BaseFeesWidget: FC<Props> = ({
           `}
         >
           {baseFeesSeries === undefined ? (
-            <div className="flex justify-center items-center h-full">
+            <div className="flex justify-center items-center lg:h-full h-[400px]">
               <LabelText color="text-slateus-300">
                 data not yet available
               </LabelText>
