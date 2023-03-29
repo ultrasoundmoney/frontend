@@ -11,6 +11,7 @@ export const LabelUnitText: FC<{
     font="font-roboto"
     size="text-xs"
     weight="font-light"
+    lineHeight="leading-[14px]"
   >
     {children}
   </BaseText>
