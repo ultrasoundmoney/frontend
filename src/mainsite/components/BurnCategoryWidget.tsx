@@ -9,13 +9,9 @@ import { WEI_PER_ETH } from "../../eth-units";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
 import type { TimeFrame } from "../time-frames";
-import { MoneyAmount } from "../components/Amount";
 import { BaseText } from "../../components/Texts";
-import BodyText from "../../components/TextsNext/BodyText";
 import LabelText from "../../components/TextsNext/LabelText";
-import { WidgetTitle } from "../../components/WidgetSubcomponents";
 import BurnGroupBase from "./BurnGroupBase";
-import BodyTextV3 from "../../components/TextsNext/BodyTextV3";
 import QuantifyText from "../../components/TextsNext/QuantifyText";
 import SkeletonText from "../../components/TextsNext/SkeletonText";
 
@@ -219,27 +215,27 @@ const CategoryRow: FC<CategoryRowProps> = ({
 }) => (
   <div
     className={`
-      grid grid-cols-2 ${showCategoryCounts ? "md:grid-cols-3" : ""}
+      grid
+      grid-cols-2
+      ${showCategoryCounts ? "md:grid-cols-3" : ""}
     `}
     onMouseEnter={() => setHovering(true)}
     onMouseLeave={() => setHovering(false)}
     style={{ opacity: hovering ? 0.6 : 1 }}
   >
-    <BodyText>{name}</BodyText>
-    <div
-      className={`
-        col-span-1
-        text-right md:col-span-1
-        ${showCategoryCounts ? "md:mr-8" : ""}
-      `}
+    <BaseText font="font-inter" size="text-base md:text-lg">
+      {name}
+    </BaseText>
+    <QuantifyText
+      className="text-right"
+      size="text-base md:text-lg"
+      unitPostfix="ETH"
     >
-      {amountFormatted === undefined ? (
-        <Skeleton width="4rem" />
-      ) : (
-        <MoneyAmount>{amountFormatted}</MoneyAmount>
-      )}
-    </div>
-    <div
+      <SkeletonText className="text-right" width="4rem">
+        {amountFormatted}
+      </SkeletonText>
+    </QuantifyText>
+    <QuantifyText
       className={`
         hidden
         text-right ${showCategoryCounts ? "md:block" : ""}
@@ -252,7 +248,7 @@ const CategoryRow: FC<CategoryRowProps> = ({
           {countFormatted}
         </BaseText>
       )}
-    </div>
+    </QuantifyText>
   </div>
 );
 
@@ -387,21 +383,27 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
     },
   };
 
+  const hiddenFromTimeFrame =
+    timeFrame === "m5" ||
+    timeFrame === "since_burn" ||
+    timeFrame == "since_merge"
+      ? "hidden"
+      : "";
+
+  const visibleFromTimeFrame =
+    timeFrame === "m5" ||
+    timeFrame === "since_burn" ||
+    timeFrame == "since_merge"
+      ? ""
+      : "hidden";
+
   return (
     <BurnGroupBase
       onClickTimeFrame={onClickTimeFrame}
       title="burn categories"
       timeFrame={timeFrame}
     >
-      <div
-        className={`${
-          timeFrame === "m5" ||
-          timeFrame === "since_burn" ||
-          timeFrame == "since_merge"
-            ? "hidden"
-            : "visible"
-        }`}
-      >
+      <div className={`${hiddenFromTimeFrame}`}>
         <CategoryBar
           nft={burnCategoryParts?.nft}
           defi={burnCategoryParts?.defi}
@@ -410,103 +412,80 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
           misc={misc}
         />
       </div>
-      {timeFrame === "m5" ? (
-        <div
-          className={`
-            flex min-h-[324px] w-full items-center justify-center
+      <div
+        className={`
+            flex h-[350px] w-full items-center justify-center
             text-center text-lg text-slateus-200
+            ${visibleFromTimeFrame}
           `}
-        >
-          5 minute time frame unavailable
-        </div>
-      ) : timeFrame === "since_burn" || timeFrame == "since_merge" ? (
+      >
+        time frame unavailable
+      </div>
+      <div className={`flex flex-col gap-y-4 ${hiddenFromTimeFrame}`}>
         <div
-          className={`
-            flex min-h-[324px] w-full items-center justify-center
-            text-center text-lg text-slateus-200
-          `}
+          className={`grid items-center ${
+            showCategoryCounts ? "md:grid-cols-3" : "grid-cols-2"
+          }`}
         >
-          time frame unavailable
-        </div>
-      ) : (
-        <div className="flex flex-col gap-y-3">
+          <LabelText>category</LabelText>
           <div
-            className={`grid ${
-              showCategoryCounts ? "md:grid-cols-3" : "grid-cols-2"
-            }`}
-          >
-            <WidgetTitle>category</WidgetTitle>
-            <div
-              className={`
+            className={`
                   text-right
                   ${showCategoryCounts ? "col-span-1" : "col-span-1"}
                   ${showCategoryCounts ? "md:mr-8" : ""}
                 `}
-            >
-              <WidgetTitle>burn</WidgetTitle>
-            </div>
-            <LabelText
-              className={`hidden text-right ${
-                showCategoryCounts ? "md:block" : ""
-              }`}
-            >
-              transactions
-            </LabelText>
+          >
+            <LabelText>burn</LabelText>
           </div>
-          {
-            <>
-              <CategoryRow
-                amountFormatted={formatFees(burnCategoryParts.nft.fees)}
-                countFormatted={formatCount(
-                  burnCategoryParts?.nft.transactionCount,
-                )}
-                hovering={hoveringNft}
-                name="NFT"
-                setHovering={setHoveringNft}
-                showCategoryCounts={showCategoryCounts}
-              />
-              <CategoryRow
-                amountFormatted={formatFees(burnCategoryParts?.defi.fees)}
-                countFormatted={formatCount(
-                  burnCategoryParts?.defi.transactionCount,
-                )}
-                hovering={hoveringDefi}
-                name="defi"
-                setHovering={setHoveringDefi}
-                showCategoryCounts={showCategoryCounts}
-              />
-              <CategoryRow
-                amountFormatted={formatFees(burnCategoryParts?.mev.fees)}
-                countFormatted={formatCount(
-                  burnCategoryParts?.mev.transactionCount,
-                )}
-                hovering={hoveringMev}
-                name="MEV"
-                setHovering={setHoveringMev}
-                showCategoryCounts={showCategoryCounts}
-              />
-              <CategoryRow
-                amountFormatted={formatFees(burnCategoryParts?.l2.fees)}
-                countFormatted={formatCount(
-                  burnCategoryParts?.l2.transactionCount,
-                )}
-                hovering={hoveringL2}
-                name="L2"
-                setHovering={setHoveringL2}
-                showCategoryCounts={showCategoryCounts}
-              />
-              <CategoryRow
-                amountFormatted={formatFees(misc?.fees)}
-                countFormatted={formatCount(misc?.transactionCount)}
-                hovering={hoveringMisc}
-                name="misc"
-                setHovering={setHoveringMisc}
-                showCategoryCounts={showCategoryCounts}
-              />
-            </>
-          }
+          <LabelText
+            className={`hidden text-right ${
+              showCategoryCounts ? "md:block" : ""
+            }`}
+          >
+            transactions
+          </LabelText>
         </div>
-      )}
+        <CategoryRow
+          amountFormatted={formatFees(burnCategoryParts.nft.fees)}
+          countFormatted={formatCount(burnCategoryParts?.nft.transactionCount)}
+          hovering={hoveringNft}
+          name="NFT"
+          setHovering={setHoveringNft}
+          showCategoryCounts={showCategoryCounts}
+        />
+        <CategoryRow
+          amountFormatted={formatFees(burnCategoryParts?.defi.fees)}
+          countFormatted={formatCount(burnCategoryParts?.defi.transactionCount)}
+          hovering={hoveringDefi}
+          name="defi"
+          setHovering={setHoveringDefi}
+          showCategoryCounts={showCategoryCounts}
+        />
+        <CategoryRow
+          amountFormatted={formatFees(burnCategoryParts?.mev.fees)}
+          countFormatted={formatCount(burnCategoryParts?.mev.transactionCount)}
+          hovering={hoveringMev}
+          name="MEV"
+          setHovering={setHoveringMev}
+          showCategoryCounts={showCategoryCounts}
+        />
+        <CategoryRow
+          amountFormatted={formatFees(burnCategoryParts?.l2.fees)}
+          countFormatted={formatCount(burnCategoryParts?.l2.transactionCount)}
+          hovering={hoveringL2}
+          name="L2"
+          setHovering={setHoveringL2}
+          showCategoryCounts={showCategoryCounts}
+        />
+        <CategoryRow
+          amountFormatted={formatFees(misc?.fees)}
+          countFormatted={formatCount(misc?.transactionCount)}
+          hovering={hoveringMisc}
+          name="misc"
+          setHovering={setHoveringMisc}
+          showCategoryCounts={showCategoryCounts}
+        />
+      </div>
     </BurnGroupBase>
   );
 };

@@ -129,7 +129,7 @@ const LatestBlockRow: FC<LatestBlockComponentProps> = ({
       rel="noreferrer"
     >
       <li className="grid grid-cols-3 hover:opacity-60">
-        <QuantifyText color="text-slateus-400" size="text-lg">
+        <QuantifyText color="text-slateus-400" size="text-base md:text-lg">
           <SkeletonText width="7rem">
             {number === undefined
               ? undefined
@@ -144,14 +144,14 @@ const LatestBlockRow: FC<LatestBlockComponentProps> = ({
               ? "text-orange-400"
               : "text-blue-400"
           }
-          size="text-lg"
+          size="text-base md:text-lg"
         >
           <SkeletonText width="1rem">{formatGas(baseFeePerGas)}</SkeletonText>
         </QuantifyText>
         <QuantifyText
           className="text-right"
           unitPostfix={unit.toUpperCase()}
-          size="text-lg"
+          size="text-base md:text-lg"
         >
           <SkeletonText width="2rem">
             {formatFees(unit, fees, feesUsd)}
