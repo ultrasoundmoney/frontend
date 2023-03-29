@@ -2,12 +2,11 @@ import * as DateFns from "date-fns";
 import JSBI from "jsbi";
 import flow from "lodash/flow";
 import type { FC } from "react";
-import { useEffect } from "react";
-import { useState } from "react";
-import { useScarcity } from "../api/scarcity";
+import { useEffect, useState } from "react";
 import Colors from "../../colors";
+import QuantifyText from "../../components/TextsNext/QuantifyText";
 import * as Format from "../../format";
-import { Amount, MoneyAmount } from "./Amount";
+import { useScarcity } from "../api/scarcity";
 import { BaseText } from "./../../components/Texts";
 import BodyText from "./../../components/TextsNext/BodyText";
 import LabelText from "./../../components/TextsNext/LabelText";
@@ -15,6 +14,7 @@ import {
   WidgetBackground,
   WidgetTitle,
 } from "./../../components/WidgetSubcomponents";
+import { MoneyAmount } from "./Amount";
 
 type ScarcityBarProps = {
   staked: number;
@@ -262,14 +262,18 @@ const EngineRow: FC<EngineRowProps> = ({
     rel="noreferrer"
   >
     <BodyText>{name}</BodyText>
-    <MoneyAmount className="text-right font-light" amountPostfix="M">
+    <MoneyAmount className="font-light text-right" amountPostfix="M">
       {amountFormatted}
     </MoneyAmount>
-    <Amount className="text-right" unitPostfix="years">
+    <QuantifyText
+      className="text-right"
+      unitPostfix="years"
+      size="text-base md:text-lg"
+    >
       {Format.formatOneDecimal(
         DateFns.differenceInDays(now, startedOn) / 365.25,
       )}
-    </Amount>
+    </QuantifyText>
   </a>
 );
 

@@ -6,38 +6,9 @@ import type { Unit } from "../../denomination";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
 import { AmountUnitSpace } from "./Spacing";
-import { BaseText, UnitText } from "./../../components/Texts";
+import { UnitText } from "./../../components/Texts";
 import QuantifyText from "../../components/TextsNext/QuantifyText";
-
-type AmountProps = {
-  amountPostfix?: string;
-  children: ReactNode;
-  className?: string;
-  textSizeClass?: string;
-  unitPostfix?: string;
-};
-
-export const Amount: FC<AmountProps> = ({
-  amountPostfix = "",
-  children,
-  className,
-  textSizeClass,
-  unitPostfix,
-}) => (
-  <BaseText
-    font="font-roboto"
-    className={`${className ?? ""} ${textSizeClass ?? "text-base md:text-lg"}`}
-  >
-    {children}
-    {amountPostfix}
-    {unitPostfix && (
-      <>
-        <AmountUnitSpace />
-        <UnitText className={textSizeClass}>{unitPostfix}</UnitText>
-      </>
-    )}
-  </BaseText>
-);
+import SkeletonText from "../../components/TextsNext/SkeletonText";
 
 type PercentAmountProps = {
   amountPostfix?: string;
@@ -53,22 +24,15 @@ export const PercentAmount: FC<PercentAmountProps> = ({
   className,
   skeletonWidth = "3rem",
   textSizeClass,
-}) => {
-  const { previewSkeletons } = useContext(FeatureFlagsContext);
-  return (
-    <Amount
-      amountPostfix={amountPostfix}
-      className={className}
-      textSizeClass={textSizeClass}
-    >
-      {children === undefined || previewSkeletons ? (
-        <Skeleton inline={true} width={skeletonWidth} />
-      ) : (
-        children
-      )}
-    </Amount>
-  );
-};
+}) => (
+  <QuantifyText
+    amountPostfix={amountPostfix}
+    className={className}
+    size={textSizeClass ?? "text-base md:text-lg"}
+  >
+    <SkeletonText width={skeletonWidth}>{children}</SkeletonText>
+  </QuantifyText>
+);
 
 type MoneyAmountProps = {
   amountPostfix?: string;
@@ -86,23 +50,16 @@ export const MoneyAmount: FC<MoneyAmountProps> = ({
   skeletonWidth = "3rem",
   textSizeClass,
   unitText = "ETH",
-}) => {
-  const { previewSkeletons } = useContext(FeatureFlagsContext);
-  return (
-    <Amount
-      amountPostfix={amountPostfix}
-      className={className}
-      unitPostfix={unitText}
-      textSizeClass={textSizeClass}
-    >
-      {children === undefined || previewSkeletons ? (
-        <Skeleton inline={true} width={skeletonWidth} />
-      ) : (
-        children
-      )}
-    </Amount>
-  );
-};
+}) => (
+  <QuantifyText
+    amountPostfix={amountPostfix}
+    className={className}
+    unitPostfix={unitText}
+    size={textSizeClass ?? "text-base md:text-lg"}
+  >
+    <SkeletonText width={skeletonWidth}>{children}</SkeletonText>
+  </QuantifyText>
+);
 
 export const defaultMoneyAnimationDuration = 0.8;
 type MoneyAmountAnimatedProps = {

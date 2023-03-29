@@ -15,6 +15,9 @@ import BodyText from "../../components/TextsNext/BodyText";
 import LabelText from "../../components/TextsNext/LabelText";
 import { WidgetTitle } from "../../components/WidgetSubcomponents";
 import BurnGroupBase from "./BurnGroupBase";
+import BodyTextV3 from "../../components/TextsNext/BodyTextV3";
+import QuantifyText from "../../components/TextsNext/QuantifyText";
+import SkeletonText from "../../components/TextsNext/SkeletonText";
 
 type CategoryProps = {
   fees: number | undefined;
