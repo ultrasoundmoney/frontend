@@ -4,8 +4,8 @@ import type { FC } from "react";
 import nerdColorOff from "./nerd-coloroff.svg";
 import nerdColorOn from "./nerd-coloron.svg";
 
-const Nerd: FC = () => (
-  <div className="relative">
+const Nerd: FC<{ onClick?: () => void }> = ({ onClick }) => (
+  <div className="relative" onClick={onClick}>
     <div
       className={`
         gray-nerd
@@ -23,7 +23,7 @@ const Nerd: FC = () => (
         width={21}
       />
     </div>
-    <div className="color-nerd absolute top-0 ml-2 select-none">
+    <div className="absolute top-0 ml-2 select-none color-nerd">
       <Image
         alt="a colored nerd emoji offering deeper explanation of a nearby metric"
         height={21}
