@@ -1,7 +1,7 @@
 import type { FC, RefObject } from "react";
 import { useContext } from "react";
 import Skeleton from "react-loading-skeleton";
-import type { Category } from "../../api/burn-categories";
+import type { CategoryId } from "../../api/burn-categories";
 import {
   categoryDisplayMap,
   getIsKnownCategory,
@@ -18,7 +18,7 @@ import AdminControls from "../AdminControls";
 type Props = {
   address?: string;
   adminToken?: string;
-  category?: Category | string | undefined;
+  category?: CategoryId | string | undefined;
   detail?: string;
   fees?: number;
   freshness?: Contracts.MetadataFreshness;

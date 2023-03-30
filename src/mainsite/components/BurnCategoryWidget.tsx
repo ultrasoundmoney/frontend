@@ -1,8 +1,8 @@
-import flow from "lodash/flow";
-import type { FC } from "react";
-import { useContext, useState } from "react";
+import type { Dispatch, FC } from "react";
+import { useReducer } from "react";
+import { useContext } from "react";
 import Skeleton from "react-loading-skeleton";
-import type { BurnCategory } from "../api/burn-categories";
+import type { BurnCategory, CategoryId } from "../api/burn-categories";
 import { useBurnCategories } from "../api/burn-categories";
 import Colors from "../../colors";
 import { WEI_PER_ETH } from "../../eth-units";
@@ -14,37 +14,65 @@ import LabelText from "../../components/TextsNext/LabelText";
 import BurnGroupBase from "./BurnGroupBase";
 import QuantifyText from "../../components/TextsNext/QuantifyText";
 import SkeletonText from "../../components/TextsNext/SkeletonText";
+import { useBurnSums } from "../api/burn-sums";
+import { A, flow, N, O, OAlt, OrdM, pipe } from "../../fp";
+import { useGroupedAnalysis1 } from "../api/grouped-analysis-1";
+import { leaderboardKeyFromTimeFrame } from "./BurnLeaderboard";
+import questionMarkSlateus from "../../assets/question-mark-slateus.svg";
+import questionMarkOwn from "../../assets/question-mark-own.svg";
+import paletteSlateus from "../../assets/palette-slateus.svg";
+import paletteOwn from "../../assets/palette-own.svg";
+import robotSlateus from "../../assets/robot-slateus.svg";
+import robotOwn from "../../assets/robot-own.svg";
+import moneyWingsSlateus from "../../assets/money-wings-slateus.svg";
+import moneyWingsOwn from "../../assets/money-wings-own.svg";
+import dotsSlateus from "../../assets/dots-slateus.svg";
+import dotsOwn from "../../assets/dots-own.svg";
+import transfersSlateus from "../../assets/transfers-slateus.svg";
+import transfersOwn from "../../assets/transfers-own.svg";
+import chainsSlateus from "../../assets/chains-slateus.svg";
+import chainsOwn from "../../assets/chains-own.svg";
+import bridgeSlateus from "../../assets/bridge-slateus.svg";
+import bridgeOwn from "../../assets/bridge-own.svg";
+import chartSlateus from "../../assets/chart-slateus.svg";
+import chartOwn from "../../assets/chart-own.svg";
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
 
 type CategoryProps = {
+  id: CategoryId;
   fees: number | undefined;
   feesUsd: number | undefined;
   transactionCount: number | undefined;
   percentOfTotalBurn: number | undefined;
   percentOfTotalBurnUsd: number | undefined;
   imgAlt: string;
-  imgName: string;
+  imgName: { coloron: StaticImageData; coloroff: StaticImageData };
   onHoverCategory: (hovering: boolean) => void;
   showHighlight: boolean;
 };
 
-type CategoryBarProps = {
-  nft: CategoryProps | undefined;
-  defi: CategoryProps | undefined;
-  mev: CategoryProps | undefined;
-  l2: CategoryProps | undefined;
-  misc: CategoryProps | undefined;
-};
-
 type CategorySegmentProps = {
   imgAlt: string;
-  imgName: string;
+  imgName: { coloron: StaticImageData; coloroff: StaticImageData };
   onHoverCategory: (hovering: boolean) => void;
   percentOfTotalBurn: number | undefined;
   rounded?: "left" | "right";
   showHighlight: boolean;
 };
 
+const activeCategories: CategoryId[] = [
+  "nft",
+  "l2",
+  "mev",
+  "defi",
+  "transfers",
+];
+
 const alwaysShowImgPercentThreshold = 0.08;
+const separatorWidth = 1;
+// -1 because separators are in between items, +1 because we add misc.
+const separatorCount = activeCategories.length - 1 + 1;
 const skeletonLoadingWidth = 0.1;
 
 const CategorySegment: FC<CategorySegmentProps> = ({
@@ -58,47 +86,47 @@ const CategorySegment: FC<CategorySegmentProps> = ({
   <div
     className="flex flex-col items-center select-none"
     style={{
-      width: `${(percentOfTotalBurn ?? skeletonLoadingWidth) * 100}%`,
+      width: `calc(${(percentOfTotalBurn ?? 0.1) * 100}% - ${
+        separatorWidth * separatorCount
+      }px)`,
     }}
     onMouseEnter={() => onHoverCategory(true)}
     onMouseLeave={() => onHoverCategory(false)}
   >
-    {imgName === undefined ? (
-      <Skeleton height="16px" width="1.4rem" className="mb-3" />
-    ) : (
-      <>
-        <img
-          className="relative w-6"
-          src={`/${imgName}-coloroff.svg`}
-          alt={imgAlt}
-          style={{
-            height: "21px",
-            marginBottom: "12px",
-            visibility:
-              percentOfTotalBurn === undefined
-                ? "hidden"
-                : percentOfTotalBurn < alwaysShowImgPercentThreshold
-                ? "hidden"
-                : "visible",
-          }}
-        />
-        <img
-          className="absolute w-6"
-          src={`/${imgName}-coloron.svg`}
-          alt="colored ice crystal, signifying staked ETH"
-          style={{
-            height: "21px",
-            marginBottom: "12px",
-            visibility:
-              percentOfTotalBurn === undefined
-                ? "hidden"
-                : showHighlight
-                ? "visible"
-                : "hidden",
-          }}
-        />
-      </>
-    )}
+    <Image
+      className="relative w-6"
+      height={21}
+      width={21}
+      src={imgName.coloroff}
+      alt={imgAlt}
+      style={{
+        height: "21px",
+        marginBottom: "12px",
+        visibility:
+          percentOfTotalBurn === undefined
+            ? "hidden"
+            : percentOfTotalBurn < alwaysShowImgPercentThreshold
+            ? "hidden"
+            : "visible",
+      }}
+    />
+    <Image
+      className="absolute w-6"
+      height={21}
+      width={21}
+      src={imgName.coloron}
+      alt="colored ice crystal, signifying staked ETH"
+      style={{
+        height: "21px",
+        marginBottom: "12px",
+        visibility:
+          percentOfTotalBurn === undefined
+            ? "hidden"
+            : showHighlight
+            ? "visible"
+            : "hidden",
+      }}
+    />
     <div
       className={`color-animation h-2 w-full bg-slateus-200 ${
         rounded === "left"
@@ -136,72 +164,14 @@ const CategorySegment: FC<CategorySegmentProps> = ({
   </div>
 );
 
-const CategoryBar: FC<CategoryBarProps> = ({ nft, defi, mev, l2, misc }) => (
-  <div className="flex relative items-center py-4">
-    <div className="absolute w-full h-2 rounded-full color-animation bg-slateus-600"></div>
-    <div className="flex top-0 left-0 z-10 flex-row items-center w-full">
-      {nft && (
-        <CategorySegment
-          imgAlt={nft.imgAlt}
-          imgName={nft.imgName}
-          onHoverCategory={nft.onHoverCategory}
-          percentOfTotalBurn={nft.percentOfTotalBurn}
-          rounded="left"
-          showHighlight={nft.showHighlight}
-        />
-      )}
-      <div className="w-0.5 h-2 bg-slateus-500"></div>
-      {defi && (
-        <CategorySegment
-          imgAlt={defi.imgAlt}
-          imgName={defi.imgName}
-          onHoverCategory={defi.onHoverCategory}
-          percentOfTotalBurn={defi.percentOfTotalBurn}
-          showHighlight={defi.showHighlight}
-        />
-      )}
-      <div className="w-0.5 h-2 bg-slateus-500"></div>
-      {mev && (
-        <CategorySegment
-          imgAlt={mev.imgAlt}
-          imgName={mev.imgName}
-          onHoverCategory={mev.onHoverCategory}
-          percentOfTotalBurn={mev.percentOfTotalBurn}
-          showHighlight={mev.showHighlight}
-        />
-      )}
-      <div className="w-0.5 h-2 bg-slateus-500"></div>
-      {l2 && (
-        <CategorySegment
-          imgAlt={l2.imgAlt}
-          imgName={l2.imgName}
-          onHoverCategory={l2.onHoverCategory}
-          percentOfTotalBurn={l2.percentOfTotalBurn}
-          showHighlight={l2.showHighlight}
-        />
-      )}
-      <div className="w-0.5 h-2 bg-slateus-500"></div>
-      {misc && (
-        <CategorySegment
-          imgAlt={misc.imgAlt}
-          imgName={misc.imgName}
-          onHoverCategory={misc.onHoverCategory}
-          percentOfTotalBurn={misc.percentOfTotalBurn}
-          rounded="right"
-          showHighlight={misc.showHighlight}
-        />
-      )}
-    </div>
-  </div>
-);
-
 type CategoryRowProps = {
   amountFormatted: string | undefined;
   countFormatted: string | undefined;
   hovering: boolean;
+  id: CategoryId;
   link?: string;
   name: string;
-  setHovering: (hovering: boolean) => void;
+  setHovering: Dispatch<HighlightAction>;
   showCategoryCounts: boolean;
 };
 
@@ -209,6 +179,7 @@ const CategoryRow: FC<CategoryRowProps> = ({
   amountFormatted,
   countFormatted,
   hovering,
+  id,
   name,
   setHovering,
   showCategoryCounts = false,
@@ -219,8 +190,8 @@ const CategoryRow: FC<CategoryRowProps> = ({
       grid-cols-2
       ${showCategoryCounts ? "md:grid-cols-3" : ""}
     `}
-    onMouseEnter={() => setHovering(true)}
-    onMouseLeave={() => setHovering(false)}
+    onMouseEnter={() => setHovering({ type: "highlight", category: id })}
+    onMouseLeave={() => setHovering({ type: "unhighlight", category: id })}
     style={{ opacity: hovering ? 0.6 : 1 }}
   >
     <BaseText font="font-inter" size="text-base md:text-lg">
@@ -267,18 +238,15 @@ const formatCount = (num: number | undefined): string | undefined =>
 
 const buildMiscCategory = (
   burnCategories: BurnCategory[],
+  activeCategories: CategoryId[],
   setHoveringMisc: (bool: boolean) => void,
   hoveringMisc: boolean,
-) =>
+): CategoryProps =>
   burnCategories
-    .filter(
-      (category) => !["nft", "defi", "mev", "l2"].includes(category.category),
-    )
+    .filter((category) => !activeCategories.includes(category.category))
     .reduce(
       (sumCategory, category) => ({
-        imgName: "misc",
-        imgAlt:
-          "three dots, signaling the summing of other contracts that have been categorized",
+        ...sumCategory,
         fees: (sumCategory.fees ?? 0) + category.fees,
         feesUsd: (sumCategory.feesUsd ?? 0) + category.feesUsd,
         transactionCount:
@@ -292,18 +260,119 @@ const buildMiscCategory = (
         showHighlight: hoveringMisc,
       }),
       {
-        imgName: "misc",
+        id: "misc",
+        imgName: {
+          coloroff: dotsSlateus as StaticImageData,
+          coloron: dotsOwn as StaticImageData,
+        },
         imgAlt:
           "three dots, signaling the summing of other contracts that have been categorized",
-        fees: undefined,
-        feesUsd: undefined,
-        transactionCount: undefined,
-        percentOfTotalBurn: undefined,
-        percentOfTotalBurnUsd: undefined,
+        fees: 0,
+        feesUsd: 0,
+        transactionCount: 0,
+        percentOfTotalBurn: 0,
+        percentOfTotalBurnUsd: 0,
         onHoverCategory: setHoveringMisc,
         showHighlight: hoveringMisc,
       } as CategoryProps,
     );
+
+const imgAltMap: Record<CategoryId, string> = {
+  "l1-bridge": "a bridge, signaling L1 bridge fees",
+  cex: "a bridge, signaling CEX bridge fees",
+  defi: "an image of flying money, signaling DeFi",
+  gaming: "a game controller, signaling gaming",
+  l1: "a bridge, signaling L1 fees",
+  l2: "a bridge, signaling L2 fees",
+  mev: "a robot, signaling bots extracting miner-extractable-value",
+  misc: "three dots, signaling the summing of other contracts that have been categorized",
+  nft: "icon of a wooden painters palette, signaling NFTs",
+  transfers: "an image of flying money, signaling ETH transfers",
+  woof: "a dog, signaling meme tokens",
+};
+
+const imgMap: Record<
+  CategoryId,
+  { coloroff: StaticImageData; coloron: StaticImageData }
+> = {
+  cex: {
+    coloroff: chartSlateus as StaticImageData,
+    coloron: chartOwn as StaticImageData,
+  },
+  nft: {
+    coloroff: paletteSlateus as StaticImageData,
+    coloron: paletteOwn as StaticImageData,
+  },
+  defi: {
+    coloroff: moneyWingsSlateus as StaticImageData,
+    coloron: moneyWingsOwn as StaticImageData,
+  },
+  gaming: {
+    coloroff: questionMarkSlateus as StaticImageData,
+    coloron: questionMarkOwn as StaticImageData,
+  },
+  l1: {
+    coloroff: questionMarkSlateus as StaticImageData,
+    coloron: questionMarkOwn as StaticImageData,
+  },
+  "l1-bridge": {
+    coloroff: bridgeSlateus as StaticImageData,
+    coloron: bridgeOwn as StaticImageData,
+  },
+  l2: {
+    coloroff: chainsSlateus as StaticImageData,
+    coloron: chainsOwn as StaticImageData,
+  },
+  mev: {
+    coloroff: robotSlateus as StaticImageData,
+    coloron: robotOwn as StaticImageData,
+  },
+  misc: {
+    coloroff: dotsSlateus as StaticImageData,
+    coloron: dotsOwn as StaticImageData,
+  },
+  transfers: {
+    coloroff: transfersSlateus as StaticImageData,
+    coloron: transfersOwn as StaticImageData,
+  },
+  woof: {
+    coloroff: questionMarkSlateus as StaticImageData,
+    coloron: questionMarkOwn as StaticImageData,
+  },
+};
+
+const initialState: Record<CategoryId, boolean> = {
+  "l1-bridge": false,
+  cex: false,
+  defi: false,
+  gaming: false,
+  l1: false,
+  l2: false,
+  mev: false,
+  misc: false,
+  nft: false,
+  transfers: false,
+  woof: false,
+};
+
+type HighlightAction = {
+  type: "highlight" | "unhighlight";
+  category: CategoryId;
+};
+
+const hoverReducer = (
+  state: Record<string, boolean>,
+  action: HighlightAction,
+) => {
+  switch (action.type) {
+    case "highlight":
+      return { ...state, [action.category]: true };
+    case "unhighlight":
+      return { ...state, [action.category]: false };
+    default:
+      throw new Error();
+  }
+};
 
 type Props = {
   onClickTimeFrame: () => void;
@@ -312,76 +381,113 @@ type Props = {
 
 const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const burnCategories = useBurnCategories();
-  const [hoveringNft, setHoveringNft] = useState(false);
-  const [hoveringDefi, setHoveringDefi] = useState(false);
-  const [hoveringMev, setHoveringMev] = useState(false);
-  const [hoveringL2, setHoveringL2] = useState(false);
-  const [hoveringMisc, setHoveringMisc] = useState(false);
+  const leaderboard =
+    useGroupedAnalysis1()?.leaderboards?.[
+      leaderboardKeyFromTimeFrame[timeFrame]
+    ];
+  const burnSum = useBurnSums()[timeFrame];
+  const [hoverState, dispatchHover] = useReducer(hoverReducer, initialState);
   const { showCategoryCounts } = useContext(FeatureFlagsContext);
 
-  const selectedBurnCategories = burnCategories?.[timeFrame];
+  const categoryFromCategories = (category: BurnCategory): CategoryProps =>
+    pipe({
+      id: category.category,
+      imgName: imgMap[category.category] ?? {
+        coloron: questionMarkOwn as StaticImageData,
+        coloroff: questionMarkSlateus as StaticImageData,
+      },
+      imgAlt:
+        imgAltMap[category.category] ?? "question mark signaling missing image",
+      fees: category?.fees,
+      feesUsd: category?.feesUsd,
+      transactionCount: category?.transactionCount,
+      percentOfTotalBurn: category?.percentOfTotalBurn,
+      percentOfTotalBurnUsd: category?.percentOfTotalBurnUsd,
+      onHoverCategory: (hovering: boolean) =>
+        dispatchHover({
+          type: hovering ? "highlight" : "unhighlight",
+          category: category.category,
+        }),
+      showHighlight: hoverState[category.category] ?? false,
+    });
 
-  const nft = selectedBurnCategories?.find(
-    ({ category }) => category === "nft",
+  const apiBurnCategories = pipe(
+    burnCategories,
+    O.fromNullable,
+    O.map(
+      flow(
+        (categories) => categories[timeFrame],
+        A.map(categoryFromCategories),
+      ),
+    ),
   );
-  const defi = selectedBurnCategories?.find(
-    ({ category }) => category === "defi",
-  );
-  const mev = selectedBurnCategories?.find(
-    ({ category }) => category === "mev",
-  );
-  const l2 = selectedBurnCategories?.find(({ category }) => category === "l2");
-  const misc =
-    selectedBurnCategories !== undefined
-      ? buildMiscCategory(selectedBurnCategories, setHoveringMisc, hoveringMisc)
-      : undefined;
 
-  const burnCategoryParts = {
-    nft: {
-      imgName: "nft",
-      imgAlt: "icon of a wooden painters palette, signaling NFTs",
-      fees: nft?.fees,
-      feesUsd: nft?.feesUsd,
-      transactionCount: nft?.transactionCount,
-      percentOfTotalBurn: nft?.percentOfTotalBurn,
-      percentOfTotalBurnUsd: nft?.percentOfTotalBurnUsd,
-      onHoverCategory: setHoveringNft,
-      showHighlight: hoveringNft,
-    },
-    defi: {
-      imgName: "defi",
-      imgAlt: "an image of flying money, signaling DeFi",
-      fees: defi?.fees,
-      feesUsd: defi?.feesUsd,
-      transactionCount: defi?.transactionCount,
-      percentOfTotalBurn: defi?.percentOfTotalBurn,
-      percentOfTotalBurnUsd: defi?.percentOfTotalBurnUsd,
-      onHoverCategory: setHoveringDefi,
-      showHighlight: hoveringDefi,
-    },
-    mev: {
-      imgName: "mev",
-      imgAlt: "a robot, signaling bots extracting miner-extractable-value",
-      fees: mev?.fees,
-      feesUsd: mev?.feesUsd,
-      transactionCount: mev?.transactionCount,
-      percentOfTotalBurn: mev?.percentOfTotalBurn,
-      percentOfTotalBurnUsd: mev?.percentOfTotalBurnUsd,
-      onHoverCategory: setHoveringMev,
-      showHighlight: hoveringMev,
-    },
-    l2: {
-      imgName: "l2",
-      imgAlt: "chains signaling layer-2 networks",
-      fees: l2?.fees,
-      feesUsd: l2?.feesUsd,
-      transactionCount: l2?.transactionCount,
-      percentOfTotalBurn: l2?.percentOfTotalBurn,
-      percentOfTotalBurnUsd: l2?.percentOfTotalBurnUsd,
-      onHoverCategory: setHoveringL2,
-      showHighlight: hoveringL2,
-    },
-  };
+  // ethTransfers is a special case that we hack on in the frontend.
+  const ethTransfers = pipe(
+    leaderboard,
+    O.fromNullable,
+    O.map((entries) =>
+      pipe(
+        entries,
+        A.filter((entry) => entry.type === "eth-transfers"),
+        A.head,
+        O.map(
+          (transfers): CategoryProps => ({
+            imgName: imgMap.transfers,
+            id: "transfers",
+            imgAlt: "missing icon for ETH transfer fees",
+            fees: transfers.fees,
+            feesUsd: transfers.feesUsd,
+            transactionCount: undefined,
+            percentOfTotalBurn: transfers.fees / burnSum.sum.eth / 1e18,
+            percentOfTotalBurnUsd: transfers.feesUsd / burnSum.sum.usd,
+            onHoverCategory: (hovering) =>
+              dispatchHover({
+                type: hovering ? "highlight" : "unhighlight",
+                category: "transfers",
+              }),
+            showHighlight: hoverState["transfers"] ?? false,
+          }),
+        ),
+      ),
+    ),
+    O.flatten,
+  );
+
+  const miscCategory = pipe(
+    burnCategories,
+    O.fromNullable,
+    O.map((categories) =>
+      buildMiscCategory(
+        categories[timeFrame],
+        activeCategories,
+        (hovering) =>
+          dispatchHover({
+            type: hovering ? "highlight" : "unhighlight",
+            category: "misc",
+          }),
+        hoverState["misc"] ?? false,
+      ),
+    ),
+  );
+
+  const sortByFeesDesc = pipe(
+    N.Ord,
+    OrdM.reverse,
+    OrdM.contramap((category: CategoryProps) => category.fees ?? 0),
+  );
+
+  const combinedCategories = pipe(
+    OAlt.sequenceTuple(apiBurnCategories, ethTransfers, miscCategory),
+    O.map(([apiCategories, ethTransfers, miscCategory]) =>
+      pipe(
+        apiCategories,
+        A.filter((category) => activeCategories.includes(category.id)),
+        (categories) => [...categories, ethTransfers, miscCategory],
+        A.sort(sortByFeesDesc),
+      ),
+    ),
+  );
 
   const hiddenFromTimeFrame =
     timeFrame === "m5" ||
@@ -404,17 +510,46 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
       timeFrame={timeFrame}
     >
       <div className={`${hiddenFromTimeFrame}`}>
-        <CategoryBar
-          nft={burnCategoryParts?.nft}
-          defi={burnCategoryParts?.defi}
-          mev={burnCategoryParts?.mev}
-          l2={burnCategoryParts?.l2}
-          misc={misc}
-        />
+        <div className={`relative flex items-center py-4`}>
+          <div className="absolute w-full h-2 rounded-full color-animation bg-slateus-600"></div>
+          <div className="flex top-0 left-0 z-10 flex-row items-center w-full">
+            {pipe(
+              combinedCategories,
+              O.match(
+                () => null,
+                (categories) =>
+                  pipe(
+                    categories,
+                    A.mapWithIndex((index, category) => (
+                      <>
+                        <CategorySegment
+                          key={category.id}
+                          rounded={
+                            index === 0
+                              ? "left"
+                              : index === categories.length - 1
+                              ? "right"
+                              : undefined
+                          }
+                          {...category}
+                        />
+                        {index !== categories.length - 1 && (
+                          <div
+                            className="z-10 w-1 h-2 bg-slateus-500"
+                            key={`separator-${index}`}
+                          ></div>
+                        )}
+                      </>
+                    )),
+                  ),
+              ),
+            )}
+          </div>
+        </div>
       </div>
       <div
         className={`
-            flex h-[350px] w-full items-center justify-center
+            flex h-[394px] w-full items-center justify-center
             text-center text-lg text-slateus-200
             ${visibleFromTimeFrame}
           `}
@@ -445,46 +580,24 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
             transactions
           </LabelText>
         </div>
-        <CategoryRow
-          amountFormatted={formatFees(burnCategoryParts.nft.fees)}
-          countFormatted={formatCount(burnCategoryParts?.nft.transactionCount)}
-          hovering={hoveringNft}
-          name="NFT"
-          setHovering={setHoveringNft}
-          showCategoryCounts={showCategoryCounts}
-        />
-        <CategoryRow
-          amountFormatted={formatFees(burnCategoryParts?.defi.fees)}
-          countFormatted={formatCount(burnCategoryParts?.defi.transactionCount)}
-          hovering={hoveringDefi}
-          name="defi"
-          setHovering={setHoveringDefi}
-          showCategoryCounts={showCategoryCounts}
-        />
-        <CategoryRow
-          amountFormatted={formatFees(burnCategoryParts?.mev.fees)}
-          countFormatted={formatCount(burnCategoryParts?.mev.transactionCount)}
-          hovering={hoveringMev}
-          name="MEV"
-          setHovering={setHoveringMev}
-          showCategoryCounts={showCategoryCounts}
-        />
-        <CategoryRow
-          amountFormatted={formatFees(burnCategoryParts?.l2.fees)}
-          countFormatted={formatCount(burnCategoryParts?.l2.transactionCount)}
-          hovering={hoveringL2}
-          name="L2"
-          setHovering={setHoveringL2}
-          showCategoryCounts={showCategoryCounts}
-        />
-        <CategoryRow
-          amountFormatted={formatFees(misc?.fees)}
-          countFormatted={formatCount(misc?.transactionCount)}
-          hovering={hoveringMisc}
-          name="misc"
-          setHovering={setHoveringMisc}
-          showCategoryCounts={showCategoryCounts}
-        />
+        {pipe(
+          combinedCategories,
+          O.match(
+            () => null,
+            A.map((category) => (
+              <CategoryRow
+                key={category.id}
+                amountFormatted={formatFees(category.fees)}
+                id={category.id}
+                countFormatted={formatCount(category.transactionCount)}
+                hovering={hoverState[category.id] ?? false}
+                name={category.id}
+                setHovering={dispatchHover}
+                showCategoryCounts={showCategoryCounts}
+              />
+            )),
+          ),
+        )}
       </div>
     </BurnGroupBase>
   );

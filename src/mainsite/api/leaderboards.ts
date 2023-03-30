@@ -1,9 +1,9 @@
-import type { Category } from "./burn-categories";
+import type { CategoryId } from "./burn-categories";
 import type { Linkables } from "./profiles";
 
 type ContractEntry = {
   address: string;
-  category: Category | string | null | undefined;
+  category: CategoryId | string | null | undefined;
   detail: string | null | undefined;
   famFollowerCount: number | undefined;
   fees: number;
