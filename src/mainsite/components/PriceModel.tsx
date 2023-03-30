@@ -342,9 +342,12 @@ const PriceModel: FC = () => {
       <WidgetTitle>price model</WidgetTitle>
       <div className="flex overflow-hidden flex-col gap-y-4 mt-4">
         <div className="flex justify-between">
-          <BodyTextV3 size="text-lg">annualized profits</BodyTextV3>
+          <BodyTextV3 size="text-base md:text-lg">
+            annualized profits
+          </BodyTextV3>
           <QuantifyText
             amountPostfix="B"
+            size="text-base md:text-lg"
             unitPostfix="USD"
             unitPostfixColor="text-slateus-200"
           >
@@ -357,7 +360,7 @@ const PriceModel: FC = () => {
         </div>
         <div className="flex flex-col gap-y-2">
           <div className="flex justify-between">
-            <BodyTextV3>growth profile</BodyTextV3>
+            <BodyTextV3 size="text-base md:text-lg">growth profile</BodyTextV3>
             <MoneyAmount unitText="P/E" skeletonWidth="3rem">
               {peRatio !== undefined
                 ? Format.formatOneDecimal(peRatio)
@@ -385,8 +388,10 @@ const PriceModel: FC = () => {
         </div>
         <div className="flex flex-col gap-y-2">
           <div className="flex justify-between">
-            <BodyTextV3 size="text-lg">monetary premium</BodyTextV3>
-            <QuantifyText size="text-lg">{`${Format.formatOneDecimal(
+            <BodyTextV3 size="text-base md:text-lg">
+              monetary premium
+            </BodyTextV3>
+            <QuantifyText size="text-base md:text-lg">{`${Format.formatOneDecimal(
               monetaryPremium,
             )}x`}</QuantifyText>
           </div>
