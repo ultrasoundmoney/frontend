@@ -34,6 +34,8 @@ import {
   WidgetTitle,
 } from "./../../components/WidgetSubcomponents";
 import { MoneyAmount } from "./Amount";
+import { useNerdTooltip } from "./NerdTooltip";
+import PriceModelTooltip from "./PriceModelTooltip";
 import Slider2 from "./Slider2";
 
 type MaybeMarker = {
@@ -337,9 +339,18 @@ const PriceModel: FC = () => {
     setPeRatioPosition(linearFromLog(ethPeRatio));
   }, [ethPeRatio]);
 
+  const { Nerd, TooltipWrapper, BackgroundOverlay, setShowTooltip } =
+    useNerdTooltip();
+
   return (
     <WidgetBackground>
-      <WidgetTitle>price model</WidgetTitle>
+      <div className="flex items-center">
+        <WidgetTitle>price model</WidgetTitle>
+        <Nerd />
+      </div>
+      <TooltipWrapper>
+        <PriceModelTooltip onClickClose={() => setShowTooltip(false)} />
+      </TooltipWrapper>
       <div className="flex overflow-hidden flex-col gap-y-4 mt-4">
         <div className="flex justify-between">
           <BodyTextV3 size="text-base md:text-lg">
@@ -448,10 +459,7 @@ const PriceModel: FC = () => {
         </div>
         <div className="flex flex-col gap-y-2 text-center">
           <WidgetTitle>implied eth price</WidgetTitle>
-          <span
-            title={`profits = revenue (burn) - expenses (issuance)
-price = profits * P/E ratio * monetary premium`}
-          >
+          <span>
             <MoneyAmount
               amountPostfix="K"
               skeletonWidth="3rem"
@@ -465,6 +473,7 @@ price = profits * P/E ratio * monetary premium`}
           </span>
         </div>
       </div>
+      <BackgroundOverlay />
     </WidgetBackground>
   );
 };
