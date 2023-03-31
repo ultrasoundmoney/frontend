@@ -1,5 +1,5 @@
 import type { EthNumber, EthUsdAmount } from "../../eth-units";
-import { A, flow, OAlt, pipe, R } from "../../fp";
+import { A, flow, OAlt, pipe, Record } from "../../fp";
 import type { DateTimeString } from "../../time";
 import type { SupplyPoint } from "../sections/SupplyDashboard";
 import type { TimeFrame } from "../time-frames";
@@ -45,7 +45,7 @@ export const supplyChangesFromCollections = (
   pipe(
     supplySeriesCollections,
     flow(
-      R.map((supplySeries) => {
+      Record.map((supplySeries) => {
         const delta = {
           pos: deltaFromSeries(supplySeries.posSeries, ethUsdPrice),
           pow:

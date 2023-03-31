@@ -9,7 +9,7 @@ import {
   OAlt,
   OrdM,
   pipe,
-  R,
+  Record,
   RA,
   RNEA,
   T,
@@ -127,7 +127,7 @@ const builderGroupsFromRaws = (
   return pipe(
     builderRaws,
     RNEA.groupBy((builder) => builder.builderName ?? builder.builderPubkey),
-    R.mapWithIndex((id, builderUnits) =>
+    Record.mapWithIndex((id, builderUnits) =>
       builderGroupFromUnits(blockCount, id, builderUnits),
     ),
     (record) => Object.values(record),

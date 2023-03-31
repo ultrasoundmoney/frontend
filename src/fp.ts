@@ -1,6 +1,7 @@
 export * as A from "fp-ts/lib/Array";
 export * as D from "io-ts/Decoder";
 export * as E from "fp-ts/lib/Either";
+export * as Eq from "fp-ts/lib/Eq";
 export * as MapF from "fp-ts/lib/Map";
 export * as Monoid from "fp-ts/lib/Monoid";
 export * as N from "fp-ts/lib/number";
@@ -8,7 +9,7 @@ export * as NEA from "fp-ts/lib/NonEmptyArray";
 export * as O from "fp-ts/lib/Option";
 export * as OrdM from "fp-ts/lib/Ord";
 export * as Ordering from "fp-ts/lib/Ordering";
-export * as R from "fp-ts/lib/Record";
+export * as Record from "fp-ts/lib/Record";
 export * as RA from "fp-ts/lib/ReadonlyArray";
 export * as RNEA from "fp-ts/ReadonlyNonEmptyArray";
 export * as S from "fp-ts/lib/string";

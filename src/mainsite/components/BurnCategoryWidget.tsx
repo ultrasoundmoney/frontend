@@ -1,4 +1,4 @@
-import type { Dispatch, FC } from "react";
+import { Dispatch, FC, useMemo } from "react";
 import { useReducer } from "react";
 import { useContext } from "react";
 import Skeleton from "react-loading-skeleton";
@@ -8,14 +8,14 @@ import Colors from "../../colors";
 import { WEI_PER_ETH } from "../../eth-units";
 import { FeatureFlagsContext } from "../../feature-flags";
 import * as Format from "../../format";
-import type { TimeFrame } from "../time-frames";
+import { TimeFrame, timeFrames } from "../time-frames";
 import { BaseText } from "../../components/Texts";
 import LabelText from "../../components/TextsNext/LabelText";
 import BurnGroupBase from "./BurnGroupBase";
 import QuantifyText from "../../components/TextsNext/QuantifyText";
 import SkeletonText from "../../components/TextsNext/SkeletonText";
 import { useBurnSums } from "../api/burn-sums";
-import { A, flow, N, O, OAlt, OrdM, pipe } from "../../fp";
+import { A, Eq, flow, N, O, OAlt, OrdM, pipe, RA, Record, S } from "../../fp";
 import { useGroupedAnalysis1 } from "../api/grouped-analysis-1";
 import { leaderboardKeyFromTimeFrame } from "./BurnLeaderboard";
 import questionMarkSlateus from "../../assets/question-mark-slateus.svg";
@@ -389,119 +389,134 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const [hoverState, dispatchHover] = useReducer(hoverReducer, initialState);
   const { showCategoryCounts } = useContext(FeatureFlagsContext);
 
-  const categoryFromCategories = (category: BurnCategory): CategoryProps =>
-    pipe({
-      id: category.category,
-      imgName: imgMap[category.category] ?? {
-        coloron: questionMarkOwn as StaticImageData,
-        coloroff: questionMarkSlateus as StaticImageData,
-      },
-      imgAlt:
-        imgAltMap[category.category] ?? "question mark signaling missing image",
-      fees: category?.fees,
-      feesUsd: category?.feesUsd,
-      transactionCount: category?.transactionCount,
-      percentOfTotalBurn: category?.percentOfTotalBurn,
-      percentOfTotalBurnUsd: category?.percentOfTotalBurnUsd,
-      onHoverCategory: (hovering: boolean) =>
-        dispatchHover({
-          type: hovering ? "highlight" : "unhighlight",
-          category: category.category,
-        }),
-      showHighlight: hoverState[category.category] ?? false,
-    });
-
-  const apiBurnCategories = pipe(
-    burnCategories,
-    O.fromNullable,
-    O.map(
-      flow(
-        (categories) => categories[timeFrame],
-        A.map(categoryFromCategories),
-      ),
-    ),
-  );
-
-  // ethTransfers is a special case that we hack on in the frontend.
-  const ethTransfers = pipe(
-    leaderboard,
-    O.fromNullable,
-    O.map((entries) =>
-      pipe(
-        entries,
-        A.filter((entry) => entry.type === "eth-transfers"),
-        A.head,
-        O.map(
-          (transfers): CategoryProps => ({
-            imgName: imgMap.transfers,
-            id: "transfers",
-            imgAlt: "missing icon for ETH transfer fees",
-            fees: transfers.fees,
-            feesUsd: transfers.feesUsd,
-            transactionCount: undefined,
-            percentOfTotalBurn: transfers.fees / burnSum.sum.eth / 1e18,
-            percentOfTotalBurnUsd: transfers.feesUsd / burnSum.sum.usd,
-            onHoverCategory: (hovering) =>
-              dispatchHover({
-                type: hovering ? "highlight" : "unhighlight",
-                category: "transfers",
-              }),
-            showHighlight: hoverState["transfers"] ?? false,
-          }),
-        ),
-      ),
-    ),
-    O.flatten,
-  );
-
-  const miscCategory = pipe(
-    burnCategories,
-    O.fromNullable,
-    O.map((categories) =>
-      buildMiscCategory(
-        categories[timeFrame],
-        activeCategories,
-        (hovering) =>
-          dispatchHover({
-            type: hovering ? "highlight" : "unhighlight",
-            category: "misc",
-          }),
-        hoverState["misc"] ?? false,
-      ),
-    ),
-  );
-
   const sortByFeesDesc = pipe(
     N.Ord,
     OrdM.reverse,
     OrdM.contramap((category: CategoryProps) => category.fees ?? 0),
   );
 
-  const combinedCategories = pipe(
-    OAlt.sequenceTuple(apiBurnCategories, ethTransfers, miscCategory),
-    O.map(([apiCategories, ethTransfers, miscCategory]) =>
+  const combinedCategoriesPerTimeFrame: Record<
+    TimeFrame,
+    O.Option<CategoryProps[]>
+  > = useMemo(
+    () =>
       pipe(
-        apiCategories,
-        A.filter((category) => activeCategories.includes(category.id)),
-        (categories) => [...categories, ethTransfers, miscCategory],
-        A.sort(sortByFeesDesc),
+        timeFrames,
+        RA.toArray,
+        A.map((timeFrame) => {
+          // We disable a few time frames which are waiting on backend fixes.
+          // This could be done more cleanly. First gather time frame and data
+          // pairs then map the one where data is not unavailable.
+          if (["m5", "since_burn"].includes(timeFrame)) {
+            return [timeFrame, O.none] as [
+              TimeFrame,
+              O.Option<CategoryProps[]>,
+            ];
+          }
+
+          const categoryFromCategories = (
+            category: BurnCategory,
+          ): CategoryProps =>
+            pipe({
+              id: category.category,
+              imgName: imgMap[category.category] ?? {
+                coloron: questionMarkOwn as StaticImageData,
+                coloroff: questionMarkSlateus as StaticImageData,
+              },
+              imgAlt:
+                imgAltMap[category.category] ??
+                "question mark signaling missing image",
+              fees: category?.fees,
+              feesUsd: category?.feesUsd,
+              transactionCount: category?.transactionCount,
+              percentOfTotalBurn: category?.percentOfTotalBurn,
+              percentOfTotalBurnUsd: category?.percentOfTotalBurnUsd,
+              onHoverCategory: (hovering: boolean) =>
+                dispatchHover({
+                  type: hovering ? "highlight" : "unhighlight",
+                  category: category.category,
+                }),
+              showHighlight: hoverState[category.category] ?? false,
+            });
+
+          const apiBurnCategories = pipe(
+            burnCategories,
+            O.fromNullable,
+            O.chain(O.fromNullableK((categories) => categories[timeFrame])),
+            O.map(A.map(categoryFromCategories)),
+          );
+
+          // ethTransfers is a special case that we hack on in the frontend.
+          const ethTransfers = pipe(
+            leaderboard,
+            O.fromNullable,
+            O.map(A.filter((entry) => entry.type === "eth-transfers")),
+            O.chain(A.head),
+            O.map(
+              (transfers): CategoryProps => ({
+                imgName: imgMap.transfers,
+                id: "transfers",
+                imgAlt: "missing icon for ETH transfer fees",
+                fees: transfers.fees,
+                feesUsd: transfers.feesUsd,
+                transactionCount: undefined,
+                percentOfTotalBurn: transfers.fees / burnSum.sum.eth / 1e18,
+                percentOfTotalBurnUsd: transfers.feesUsd / burnSum.sum.usd,
+                onHoverCategory: (hovering) =>
+                  dispatchHover({
+                    type: hovering ? "highlight" : "unhighlight",
+                    category: "transfers",
+                  }),
+                showHighlight: hoverState["transfers"] ?? false,
+              }),
+            ),
+          );
+
+          const miscCategory = pipe(
+            burnCategories,
+            O.fromNullable,
+            O.map((categories) =>
+              buildMiscCategory(
+                categories[timeFrame],
+                activeCategories,
+                (hovering) =>
+                  dispatchHover({
+                    type: hovering ? "highlight" : "unhighlight",
+                    category: "misc",
+                  }),
+                hoverState["misc"] ?? false,
+              ),
+            ),
+          );
+
+          const combinedCategories = pipe(
+            OAlt.sequenceTuple(apiBurnCategories, ethTransfers, miscCategory),
+            O.map(([apiCategories, ethTransfers, miscCategory]) =>
+              pipe(
+                apiCategories,
+                A.filter((category) => activeCategories.includes(category.id)),
+                (categories) => [...categories, ethTransfers, miscCategory],
+                A.sort(sortByFeesDesc),
+              ),
+            ),
+          );
+
+          return [timeFrame, combinedCategories] as [
+            TimeFrame,
+            O.Option<CategoryProps[]>,
+          ];
+        }),
+        Record.fromEntries,
       ),
-    ),
+    [
+      burnCategories,
+      burnSum.sum.eth,
+      burnSum.sum.usd,
+      hoverState,
+      leaderboard,
+      sortByFeesDesc,
+    ],
   );
-
-  const hiddenFromTimeFrame =
-    timeFrame === "m5" ||
-    timeFrame === "since_burn" ||
-    timeFrame == "since_merge"
-      ? "hidden"
-      : "";
-
-  const visibleFromTimeFrame =
-    timeFrame === "m5" ||
-    timeFrame === "since_burn" ||
-    timeFrame == "since_merge"
-      ? ""
-      : "hidden";
 
   return (
     <BurnGroupBase
@@ -509,18 +524,26 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
       title="burn categories"
       timeFrame={timeFrame}
     >
-      <div className={`${hiddenFromTimeFrame}`}>
-        <div className={`relative flex items-center py-4`}>
-          <div className="absolute w-full h-2 rounded-full color-animation bg-slateus-600"></div>
-          <div className="flex top-0 left-0 z-10 flex-row items-center w-full">
-            {pipe(
-              combinedCategories,
-              O.match(
-                () => null,
-                (categories) =>
-                  pipe(
-                    categories,
-                    A.mapWithIndex((index, category) => (
+      {pipe(
+        combinedCategoriesPerTimeFrame[timeFrame],
+        O.match(
+          () => (
+            <div
+              className={`
+                flex h-[394px] w-full items-center justify-center
+                text-center text-lg text-slateus-200
+              `}
+            >
+              time frame unavailable
+            </div>
+          ),
+          (categories) => (
+            <>
+              <div>
+                <div className={`relative flex items-center py-4`}>
+                  <div className="absolute w-full h-2 rounded-full color-animation bg-slateus-600"></div>
+                  <div className="flex top-0 left-0 z-10 flex-row items-center w-full">
+                    {categories.map((category, index) => (
                       <>
                         <CategorySegment
                           key={category.id}
@@ -540,65 +563,51 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                           ></div>
                         )}
                       </>
-                    )),
-                  ),
-              ),
-            )}
-          </div>
-        </div>
-      </div>
-      <div
-        className={`
-            flex h-[394px] w-full items-center justify-center
-            text-center text-lg text-slateus-200
-            ${visibleFromTimeFrame}
-          `}
-      >
-        time frame unavailable
-      </div>
-      <div className={`flex flex-col gap-y-4 ${hiddenFromTimeFrame}`}>
-        <div
-          className={`grid items-center ${
-            showCategoryCounts ? "md:grid-cols-3" : "grid-cols-2"
-          }`}
-        >
-          <LabelText>category</LabelText>
-          <div
-            className={`
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className={`flex flex-col gap-y-4`}>
+                <div
+                  className={`grid items-center ${
+                    showCategoryCounts ? "md:grid-cols-3" : "grid-cols-2"
+                  }`}
+                >
+                  <LabelText>category</LabelText>
+                  <div
+                    className={`
                   text-right
                   ${showCategoryCounts ? "col-span-1" : "col-span-1"}
                   ${showCategoryCounts ? "md:mr-8" : ""}
                 `}
-          >
-            <LabelText>burn</LabelText>
-          </div>
-          <LabelText
-            className={`hidden text-right ${
-              showCategoryCounts ? "md:block" : ""
-            }`}
-          >
-            transactions
-          </LabelText>
-        </div>
-        {pipe(
-          combinedCategories,
-          O.match(
-            () => null,
-            A.map((category) => (
-              <CategoryRow
-                key={category.id}
-                amountFormatted={formatFees(category.fees)}
-                id={category.id}
-                countFormatted={formatCount(category.transactionCount)}
-                hovering={hoverState[category.id] ?? false}
-                name={category.id}
-                setHovering={dispatchHover}
-                showCategoryCounts={showCategoryCounts}
-              />
-            )),
+                  >
+                    <LabelText>burn</LabelText>
+                  </div>
+                  <LabelText
+                    className={`hidden text-right ${
+                      showCategoryCounts ? "md:block" : ""
+                    }`}
+                  >
+                    transactions
+                  </LabelText>
+                </div>
+                {categories.map((category) => (
+                  <CategoryRow
+                    key={category.id}
+                    amountFormatted={formatFees(category.fees)}
+                    id={category.id}
+                    countFormatted={formatCount(category.transactionCount)}
+                    hovering={hoverState[category.id] ?? false}
+                    name={category.id}
+                    setHovering={dispatchHover}
+                    showCategoryCounts={showCategoryCounts}
+                  />
+                ))}
+              </div>
+            </>
           ),
-        )}
-      </div>
+        ),
+      )}
     </BurnGroupBase>
   );
 };

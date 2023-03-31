@@ -6,7 +6,7 @@ import useSWR from "swr";
 import type { Slot } from "../../beacon-units";
 import type { EthNumber } from "../../eth-units";
 import type { ApiResult } from "../../fetchers";
-import { A, O, OAlt, pipe, R, RA } from "../../fp";
+import { A, O, OAlt, pipe, Record, RA } from "../../fp";
 import type { DateTimeString } from "../../time";
 import { MERGE_TIMESTAMP } from "../hardforks/paris";
 import { usePosIssuancePerDay } from "../hooks/use-pos-issuance-day";
@@ -164,11 +164,12 @@ export const useSupplySeriesCollections =
             pipe(
               // If only supply over time was a proper hashmap, we wouldn't need a complex zip here.
               timeFrames,
-              RA.map(
+              RA.toArray,
+              A.map(
                 (timeFrame) =>
                   [timeFrame, supplyOverTimePerTimeFrame[timeFrame]] as const,
               ),
-              RA.map(([timeFrame, supplyOverTime]) => {
+              A.map(([timeFrame, supplyOverTime]) => {
                 const posSeries = pipe(
                   supplyOverTime,
                   A.map(supplyPointFromSupplyAtTime),
@@ -191,8 +192,8 @@ export const useSupplySeriesCollections =
                   },
                 ] as [TimeFrame, SupplySeriesCollection];
               }),
-              (entries) => entries as [TimeFrame, SupplySeriesCollection][],
-              (entries) => R.fromEntries(entries) as SupplySeriesCollections,
+              (entries) =>
+                Record.fromEntries(entries) as SupplySeriesCollections,
             ),
           ),
         ),
