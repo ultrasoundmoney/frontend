@@ -44,7 +44,7 @@ const BurnDashboard: FC<{
           timeFrame={timeFrame}
           unit={unit}
         />
-        <div className="flex flex-col gap-y-4 lg:col-start-2 lg:row-start-1 lg:row-end-4 lg:max-h-[495px] xl:max-h-[522px] 2xl:h-[540px]">
+        <div className="flex flex-col gap-y-4 lg:col-start-2 lg:row-start-1 lg:row-end-4 lg:max-h-[499px] xl:max-h-[526px]">
           <BurnLeaderboard
             onClickTimeFrame={onClickTimeFrame}
             timeFrame={timeFrame}

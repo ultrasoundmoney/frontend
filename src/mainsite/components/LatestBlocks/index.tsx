@@ -181,7 +181,7 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
         </div>
         <ul
           className={`
-            -mr-3 flex max-h-[200px]
+            -mr-3 flex max-h-[248px]
             flex-col gap-y-4 overflow-y-auto
             pr-1
             ${scrollbarStyles["styled-scrollbar-vertical"]}
@@ -191,17 +191,19 @@ const LatestBlocks: FC<Props> = ({ unit }) => {
           {(latestBlockFees === undefined
             ? latestBlockFeesSkeletons
             : latestBlockFees
-          ).map(({ number, fees, feesUsd, baseFeePerGas }, index) => (
-            <LatestBlockRow
-              barrier={barrier}
-              baseFeePerGas={baseFeePerGas}
-              fees={fees}
-              feesUsd={feesUsd}
-              key={number || index}
-              number={number}
-              unit={unit}
-            />
-          ))}
+          )
+            .slice(0, 6)
+            .map(({ number, fees, feesUsd, baseFeePerGas }, index) => (
+              <LatestBlockRow
+                barrier={barrier}
+                baseFeePerGas={baseFeePerGas}
+                fees={fees}
+                feesUsd={feesUsd}
+                key={number || index}
+                number={number}
+                unit={unit}
+              />
+            ))}
         </ul>
         <div className="flex flex-wrap gap-y-2 justify-between">
           <LatestBlockAge />
