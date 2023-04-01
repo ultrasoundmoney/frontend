@@ -14,6 +14,7 @@ module.exports = {
     "@next/next/no-img-element": "off",
     "@typescript-eslint/restrict-template-expressions": "off",
     "@typescript-eslint/consistent-type-imports": "warn",
+    "@typescript-eslint/no-misused-promises": "off",
   },
   // rules: {
   //   "react-hooks/rules-of-hooks": "error",
