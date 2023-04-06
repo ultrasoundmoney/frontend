@@ -13,7 +13,7 @@ export const setContractTwitterHandle = async (
   }
 
   const res = await fetch(
-    `${SharedConfig.usmDomainFromEnv()}/api/fees/contracts/admin/set-twitter-handle?address=${address}&token=${token}&handle=${handle}`,
+    `${SharedConfig.usmDomainFromEnv()}/api/contracts/admin/set-twitter-handle?address=${address}&token=${token}&handle=${handle}`,
   );
 
   if (res.status !== 200) {
@@ -34,7 +34,7 @@ export const setContractName = async (
   }
 
   const res = await fetch(
-    `${SharedConfig.usmDomainFromEnv()}/api/fees/contracts/admin/set-name?address=${address}&token=${token}&name=${name}`,
+    `${SharedConfig.usmDomainFromEnv()}/api/contracts/admin/set-name?address=${address}&token=${token}&name=${name}`,
   );
 
   if (res.status !== 200) {
