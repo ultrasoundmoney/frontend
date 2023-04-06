@@ -82,7 +82,6 @@ const ImageWithOnClickTooltip: FC<ImageWithOnClickTooltipProps> = ({
             window.addEventListener("pointermove", onPointerMove);
             window.addEventListener("pointerup", onPointerUp);
           }}
-          // className={className}
           className={`
             ${styles["fam-image-sprite"]}
             ${excluded ? "cursor-move !brightness-[0.25]" : "cursor-pointer"}
