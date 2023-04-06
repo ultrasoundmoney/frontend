@@ -1,4 +1,4 @@
-import type { FC, RefObject} from "react";
+import type { FC, RefObject } from "react";
 import { useEffect } from "react";
 import { useContext, useRef, useState } from "react";
 import Skeleton from "react-loading-skeleton";
@@ -13,7 +13,10 @@ type ImageWithOnClickTooltipProps = {
   isDoneLoading?: boolean;
   onClick: (ref: RefObject<HTMLImageElement>) => void;
   skeletonDiameter?: string;
-  getXAndY: (imageKey: string | undefined, sizeFactor: number) => { x: number | null, y: number | null };
+  getXAndY: (
+    imageKey: string | undefined,
+    sizeFactor: number,
+  ) => { x: number | null; y: number | null };
   excluded?: boolean;
   properties: SpriteSheetResponse["properties"];
   sizeFactor: number;
@@ -49,11 +52,11 @@ const ImageWithOnClickTooltip: FC<ImageWithOnClickTooltipProps> = ({
     <>
       {!isDoneLoading || previewSkeletons || posX === null || posY === null ? (
         <div className={`relative rounded-full ${className}`}>
-        <Skeleton
-          circle
-          inline
-          className={`${smallScreen ? '!leading-[48px]' : '!leading-3'} flex`}
-        />
+          <Skeleton
+            circle
+            inline
+            className={`${smallScreen ? "!leading-[48px]" : "!leading-3"} flex`}
+          />
         </div>
       ) : (
         <div
@@ -66,7 +69,8 @@ const ImageWithOnClickTooltip: FC<ImageWithOnClickTooltipProps> = ({
             let distanceMoved = 0;
             const onPointerMove = (e: MouseEvent) => {
               const { clientX: newClientX, clientY: newClientY } = e;
-              distanceMoved += Math.abs(clientX - newClientX) + Math.abs(clientY - newClientY);
+              distanceMoved +=
+                Math.abs(clientX - newClientX) + Math.abs(clientY - newClientY);
             };
             const onPointerUp = () => {
               if (distanceMoved < 10) {
@@ -91,10 +95,11 @@ const ImageWithOnClickTooltip: FC<ImageWithOnClickTooltipProps> = ({
           style={{
             backgroundPositionX: `${posX}px`,
             backgroundPositionY: `${posY}px`,
-            backgroundSize: `${properties?.width / sizeFactor}px ${properties?.height / sizeFactor}px`,
+            backgroundSize: `${properties?.width / sizeFactor}px ${
+              properties?.height / sizeFactor
+            }px`,
           }}
-        >
-        </div>
+        ></div>
       )}
     </>
   );

@@ -2,24 +2,27 @@ import type { FC, RefObject } from "react";
 import { useCallback, useMemo, useRef, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { usePopper } from "react-popper";
-import type { ReactZoomPanPinchRef} from "react-zoom-pan-pinch";
+import type { ReactZoomPanPinchRef } from "react-zoom-pan-pinch";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
-import type { FullScreenHandle} from "react-full-screen";
+import type { FullScreenHandle } from "react-full-screen";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
-import type { FamProfile} from "../../api/profiles";
+import type { FamProfile } from "../../api/profiles";
 import { useSpriteSheet } from "../../api/profiles";
 import { useProfiles } from "../../api/profiles";
 import { useActiveBreakpoint } from "../../utils/use-active-breakpoint";
 import Modal from "../Modal";
 import FamTooltip from "../FamTooltip";
-import { WidgetBackground, WidgetTitle } from "../../../components/WidgetSubcomponents";
+import {
+  WidgetBackground,
+  WidgetTitle,
+} from "../../../components/WidgetSubcomponents";
 import BasicErrorBoundary from "../../../components/BasicErrorBoundary";
 import SectionDivider from "../../../components/SectionDivider";
 import Twemoji from "../../../components/Twemoji";
 import ClickAwayListener from "react-click-away-listener";
 import SpriteWithOnClickTooltip from "../../../components/SpriteWithOnClickTooltip";
 import followingYouStyles from "../FollowingYou/FollowingYou.module.scss";
-import Button from '../../../components/BlueButton'
+import Button from "../../../components/BlueButton";
 import ControlButtons from "./ControlButtons";
 
 // See if merging with leaderboards tooltip makes sense after making it more generic.
@@ -125,7 +128,7 @@ const TwitterFam: FC = () => {
   // Support profile skeletons.
   const currentProfiles =
     // eslint-disable-next-line no-constant-condition
-    (profiles === undefined)
+    profiles === undefined
       ? (new Array(1000).fill(undefined) as undefined[])
       : profiles;
   // const currentProfiles = new Array(1000).fill(undefined) as undefined[]
@@ -146,34 +149,44 @@ const TwitterFam: FC = () => {
 
   const generateImageKeyfromUrl = (url: string | undefined) => {
     // i.e. https://pbs.twimg.com/profile_images/1537478481096781825/J1BDruLr.png
-    if (url?.includes('default_profile_images')) {
-      return 'default_profile-images.png';
+    if (url?.includes("default_profile_images")) {
+      return "default_profile-images.png";
     }
-    const userId = url?.split('profile_images')?.[1]?.split('/')[1]; // i.e. 1579896394919383051
-    const fileName = `${userId}-::-${url?.split('profile_images')?.[1]?.split('/')[2]}`; // i.e. 1579896394919383051-::-ahIN3HUB.jpg
+    const userId = url?.split("profile_images")?.[1]?.split("/")[1]; // i.e. 1579896394919383051
+    const fileName = `${userId}-::-${
+      url?.split("profile_images")?.[1]?.split("/")[2]
+    }`; // i.e. 1579896394919383051-::-ahIN3HUB.jpg
     return `/sprite-sheet-images/source_images/${fileName}`;
-  }
+  };
 
   const getXAndY = (imageUrl: string | undefined, sizeFactor: number) => {
     if (imageUrl !== undefined && coordinates && properties) {
       const key = generateImageKeyfromUrl(imageUrl);
-      let x = (coordinates?.[key as keyof typeof coordinates]?.x || 0) / sizeFactor;
-      let y = (coordinates?.[key as keyof typeof coordinates]?.y || 0) / sizeFactor;
+      let x =
+        (coordinates?.[key as keyof typeof coordinates]?.x || 0) / sizeFactor;
+      let y =
+        (coordinates?.[key as keyof typeof coordinates]?.y || 0) / sizeFactor;
       // x is going right to left not left to right
       x = properties?.width / sizeFactor - x;
       // y is going bottom to top not top to bottom
       y = properties?.height / sizeFactor - y;
       if (Number.isNaN(x)) {
-        x = (coordinates?.['/sprite-sheet-images/source_images/default_profile-images.png' as keyof typeof coordinates ]?.x || 0) / sizeFactor;
+        x =
+          (coordinates?.[
+            "/sprite-sheet-images/source_images/default_profile-images.png" as keyof typeof coordinates
+          ]?.x || 0) / sizeFactor;
         x = properties?.width / sizeFactor - x;
-        y = (coordinates?.['/sprite-sheet-images/source_images/default_profile-images.png' as keyof typeof coordinates ]?.y || 0) / sizeFactor;
+        y =
+          (coordinates?.[
+            "/sprite-sheet-images/source_images/default_profile-images.png" as keyof typeof coordinates
+          ]?.y || 0) / sizeFactor;
         y = properties?.height / sizeFactor - y;
       }
       return { x, y };
     }
     return { x: null, y: null };
-  }
-  
+  };
+
   const filteredProfiles = useMemo(() => {
     // remove an @ if user started with it
     let cleanSearchValue = searchValue;
@@ -192,7 +205,10 @@ const TwitterFam: FC = () => {
         }
         // search by name or handle (case insensitive)
         const lcSearchValue = cleanSearchValue.toLowerCase();
-        return profile.name.toLowerCase().includes(lcSearchValue) || profile.handle.toLowerCase().includes(lcSearchValue);
+        return (
+          profile.name.toLowerCase().includes(lcSearchValue) ||
+          profile.handle.toLowerCase().includes(lcSearchValue)
+        );
       });
     }
     return [];
@@ -204,40 +220,45 @@ const TwitterFam: FC = () => {
 
   return (
     <>
-      <SectionDivider
-        title="join the fam"
-      />
+      <SectionDivider title="join the fam" />
       <BasicErrorBoundary>
-        <div className="flex flex-col gap-y-4 lg:flex-row lg:gap-x-4 w-full">
-          <div className="flex basis-1/2 flex-col gap-y-4">
+        <div className="flex flex-col gap-y-4 w-full lg:flex-row lg:gap-x-4">
+          <div className="flex flex-col gap-y-4 basis-1/2">
             <WidgetBackground>
               <WidgetTitle>FAM COUNT</WidgetTitle>
-              <div className="mt-4 flex flex-col gap-y-4">
+              <div className="flex flex-col gap-y-4 mt-4">
                 <div className="h-1"></div>
                 <h1 className="mb-4 text-2xl font-light text-white md:text-3xl xl:text-41xl">
-                  {profiles?.length?.toLocaleString("en-US")} <span className="text-slateus-400 font-extralight text-2xl md:text-2xl xl:text-4xl">members</span>
+                  {profiles?.length?.toLocaleString("en-US")}{" "}
+                  <span className="text-2xl font-extralight md:text-2xl xl:text-4xl text-slateus-400">
+                    members
+                  </span>
                 </h1>
               </div>
             </WidgetBackground>
           </div>
-          <div className="flex basis-1/2 flex-col gap-y-4">
+          <div className="flex flex-col gap-y-4 basis-1/2">
             <WidgetBackground>
               <WidgetTitle>WEAR THE BAT SIGNAL</WidgetTitle>
               <div className="flex flex-row justify-between">
-                <div className="mt-4 flex flex-col gap-y-4">
+                <div className="flex flex-col gap-y-4 mt-4">
                   <div className="h-1"></div>
-                  <h1 className="mb-2 text-center text-2xl font-light text-white md:text-3xl xl:text-41xl">
-                    <Twemoji className="flex gap-x-1" imageClassName="w-11" wrapper>
+                  <h1 className="mb-2 text-2xl font-light text-center text-white md:text-3xl xl:text-41xl">
+                    <Twemoji
+                      className="flex gap-x-1"
+                      imageClassName="w-11"
+                      wrapper
+                    >
                       🦇🔊
                     </Twemoji>
                   </h1>
                 </div>
-                <div className="mt-4 flex flex-col gap-y-4">
+                <div className="flex flex-col gap-y-4 mt-4">
                   <div className="h-1"></div>
                   <CopyToClipboard text={"🦇🔊"} onCopy={onBatSoundCopied}>
                     <div>
                       <Button>
-                        {isCopiedFeedbackVisible ? 'copied!' : 'copy'}
+                        {isCopiedFeedbackVisible ? "copied!" : "copy"}
                       </Button>
                     </div>
                   </CopyToClipboard>
@@ -259,10 +280,12 @@ const TwitterFam: FC = () => {
           // onZoomStop={handleOnZoomStop}
         >
           {({ zoomIn, zoomOut, resetTransform, zoomToElement }) => {
-
-            const reportScreenChange = (state: boolean, handle: FullScreenHandle) => {
+            const reportScreenChange = (
+              state: boolean,
+              handle: FullScreenHandle,
+            ) => {
               if (handle === fullScreenHandle && !state) {
-                console.log('full screen off')
+                console.log("full screen off");
                 resetTransform();
               }
             };
@@ -276,7 +299,9 @@ const TwitterFam: FC = () => {
                 >
                   <WidgetBackground className="w-full">
                     <div className="flex justify-between">
-                      <WidgetTitle className="self-center">FAM EXPLORER</WidgetTitle>
+                      <WidgetTitle className="self-center">
+                        fam explorer
+                      </WidgetTitle>
                       <ControlButtons
                         zoomIn={zoomIn}
                         zoomOut={zoomOut}
@@ -284,7 +309,7 @@ const TwitterFam: FC = () => {
                         fullScreenHandle={fullScreenHandle}
                       />
                       {/* {searchValue && (
-                        <WidgetTitle className="lowercase text-emerald-400">{filteredProfilesCount} matches</WidgetTitle>
+                        <WidgetTitle className="text-emerald-400 lowercase">{filteredProfilesCount} matches</WidgetTitle>
                       )} */}
                     </div>
                     <div
@@ -292,17 +317,30 @@ const TwitterFam: FC = () => {
                         flex
                         flex-wrap
                         justify-center
-                        ${fullScreenHandle.active ? 'my-5' : 'mt-5'}
+                        ${fullScreenHandle.active ? "my-5" : "mt-5"}
 
                       `}
                     >
                       <TransformComponent
-                        wrapperStyle={{ height: fullScreenHandle.active ? 'calc(100vh - 175px)' : 500, cursor: "move", width: '100%' }}
+                        wrapperStyle={{
+                          height: fullScreenHandle.active
+                            ? "calc(100vh - 175px)"
+                            : 500,
+                          cursor: "move",
+                          width: "100%",
+                        }}
                       >
                         {currentProfiles?.map((profile, index) => (
-                          <ClickAwayListener onClickAway={handleClickAway} key={profile?.profileUrl ?? index}>
+                          <ClickAwayListener
+                            onClickAway={handleClickAway}
+                            key={profile?.profileUrl ?? index}
+                          >
                             <SpriteWithOnClickTooltip
-                              className={smallScreen ? `m-[6px] h-12 w-12 select-none` : `m-[2px] h-3 w-3 select-none`}
+                              className={
+                                smallScreen
+                                  ? `m-[6px] h-12 w-12 select-none`
+                                  : `m-[2px] h-3 w-3 select-none`
+                              }
                               imageUrl={profile?.profileImageUrl}
                               handle={profile?.handle}
                               isDoneLoading={profile !== undefined}
@@ -313,7 +351,11 @@ const TwitterFam: FC = () => {
                                   : handleImageClick(profile, ref)
                               }
                               getXAndY={getXAndY}
-                              excluded={filteredProfiles?.findIndex((p) => p.name === profile?.name) === -1}
+                              excluded={
+                                filteredProfiles?.findIndex(
+                                  (p) => p.name === profile?.name,
+                                ) === -1
+                              }
                               properties={properties ?? { width: 0, height: 0 }}
                               sizeFactor={sizeFactor}
                             />
@@ -332,22 +374,30 @@ const TwitterFam: FC = () => {
                             justify-center
                           `}
                           onSubmit={(event) => {
-                            console.log('event:', event);
+                            console.log("event:", event);
                             event.preventDefault();
-                            const el = filteredProfiles?.[currentProfileShow]?.handle.toLowerCase()
+                            const el =
+                              filteredProfiles?.[
+                                currentProfileShow
+                              ]?.handle.toLowerCase();
                             if (el) {
-                              zoomToElement(document.getElementById(el) || '', smallScreen ? 1 : 4.5, 300, "linear");
+                              zoomToElement(
+                                document.getElementById(el) || "",
+                                smallScreen ? 1 : 4.5,
+                                300,
+                                "linear",
+                              );
                               setCurrentProfileShow((prev: number) => {
                                 if (prev === filteredProfilesCount - 1) {
                                   return 0;
                                 }
-                                return prev+1
+                                return prev + 1;
                               });
                             }
                           }}
                         >
                           <input
-                            className="rounded-full border border-gray-500 bg-transparent p-4 pr-32 text-xs text-white w-full md:w-96"
+                            className="p-4 pr-32 w-full text-xs text-white bg-transparent rounded-full border border-gray-500 md:w-96"
                             type="text"
                             placeholder="@vitalikbuterin"
                             value={searchValue}
@@ -361,22 +411,35 @@ const TwitterFam: FC = () => {
                           <button
                             className={`
                               ${followingYouStyles.showMe}
-                              ${searchValue && filteredProfilesCount > 0 ? `!-ml-[165px] md:!-ml-[197px]` : `!-ml-[103px] md:!-ml-[133px]`}
+                              ${
+                                searchValue && filteredProfilesCount > 0
+                                  ? `!-ml-[165px] md:!-ml-[197px]`
+                                  : `!-ml-[103px] md:!-ml-[133px]`
+                              }
                               select-none rounded-full
                               border border-white
-                              bg-transparent px-4 md:px-5
-                              text-xs text-white
-                              hover:bg-gray-700
-                              ${searchValue && filteredProfilesCount > 0 ? `w-40 md:w-48` : `md:w-32`}
+                              bg-transparent px-4 text-xs
+                              text-white hover:bg-gray-700
+                              md:px-5
+                              ${
+                                searchValue && filteredProfilesCount > 0
+                                  ? `w-40 md:w-48`
+                                  : `md:w-32`
+                              }
                               disabled:opacity-50
                             `}
                             type="submit"
-                            disabled={!searchValue || (searchValue.length > 0 && filteredProfilesCount === 0)}
+                            disabled={
+                              !searchValue ||
+                              (searchValue.length > 0 &&
+                                filteredProfilesCount === 0)
+                            }
                           >
-                          {searchValue && filteredProfilesCount > 0
-                            ? `show me ${currentProfileShow+1} of ${filteredProfilesCount} →`
-                            : `show me →`
-                          }
+                            {searchValue && filteredProfilesCount > 0
+                              ? `show me ${
+                                  currentProfileShow + 1
+                                } of ${filteredProfilesCount} →`
+                              : `show me →`}
                           </button>
                         </form>
                       </div>
@@ -384,14 +447,14 @@ const TwitterFam: FC = () => {
                   </WidgetBackground>
                 </FullScreen>
               </>
-            )}
-          }
+            );
+          }}
         </TransformWrapper>
       </BasicErrorBoundary>
       <>
         <div
           ref={setPopperEl}
-          className="z-10 hidden p-4 md:block"
+          className="hidden z-10 p-4 md:block"
           style={{
             ...popperStyles.popper,
             visibility: showTooltip && md ? "visible" : "hidden",
