@@ -1,6 +1,5 @@
 import type { FC, RefObject } from "react";
 import { useCallback, useMemo, useRef, useState } from "react";
-import CopyToClipboard from "react-copy-to-clipboard";
 import { usePopper } from "react-popper";
 import type { ReactZoomPanPinchRef } from "react-zoom-pan-pinch";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
@@ -16,13 +15,9 @@ import {
   WidgetBackground,
   WidgetTitle,
 } from "../../../components/WidgetSubcomponents";
-import BasicErrorBoundary from "../../../components/BasicErrorBoundary";
-import SectionDivider from "../../../components/SectionDivider";
-import Twemoji from "../../../components/Twemoji";
 import ClickAwayListener from "react-click-away-listener";
 import SpriteWithOnClickTooltip from "../../../components/SpriteWithOnClickTooltip";
 import followingYouStyles from "../FollowingYou/FollowingYou.module.scss";
-import Button from "../../../components/BlueButton";
 import ControlButtons from "./ControlButtons";
 
 // See if merging with leaderboards tooltip makes sense after making it more generic.
@@ -45,7 +40,7 @@ export const useTooltip = () => {
   const handleImageClick = useCallback(
     (profile: FamProfile, ref: RefObject<HTMLImageElement>) => {
       // The ranking data isn't there yet so no tooltip can be shown.
-      if (profile === undefined) {
+      if (profile === undefined || window == undefined) {
         return;
       }
 
@@ -109,22 +104,15 @@ export const useTooltip = () => {
   };
 };
 
-const TwitterFam: FC = () => {
+const FamExplorer: FC = () => {
   const profiles = useProfiles()?.profiles;
   const { coordinates, properties } = useSpriteSheet() || {};
 
   const { md } = useActiveBreakpoint();
   const fullScreenHandle = useFullScreenHandle();
 
-  // Copy batsound feedback
   const [searchValue, setSearchValue] = useState("");
-  const [isCopiedFeedbackVisible, setIsCopiedFeedbackVisible] = useState(false);
   const [currentProfileShow, setCurrentProfileShow] = useState<number>(0);
-  const onBatSoundCopied = () => {
-    setIsCopiedFeedbackVisible(true);
-    setTimeout(() => setIsCopiedFeedbackVisible(false), 800);
-  };
-
   // Support profile skeletons.
   const currentProfiles =
     // eslint-disable-next-line no-constant-condition
@@ -215,201 +203,151 @@ const TwitterFam: FC = () => {
   }, [profiles, searchValue]);
   const filteredProfilesCount = filteredProfiles?.length;
 
-  const smallScreen = window.innerWidth < 768;
+  const smallScreen =
+    typeof window !== "undefined" ? window.innerWidth < 768 : false;
   const sizeFactor = smallScreen ? 2 : 8; // (from 96px to 48px) or (from 96px to 12px)
 
   return (
     <>
-      <SectionDivider title="join the fam" />
-      <BasicErrorBoundary>
-        <div className="flex flex-col gap-y-4 w-full lg:flex-row lg:gap-x-4">
-          <div className="flex flex-col gap-y-4 basis-1/2">
-            <WidgetBackground>
-              <WidgetTitle>FAM COUNT</WidgetTitle>
-              <div className="flex flex-col gap-y-4 mt-4">
-                <div className="h-1"></div>
-                <h1 className="mb-4 text-2xl font-light text-white md:text-3xl xl:text-41xl">
-                  {profiles?.length?.toLocaleString("en-US")}{" "}
-                  <span className="text-2xl font-extralight md:text-2xl xl:text-4xl text-slateus-400">
-                    members
-                  </span>
-                </h1>
-              </div>
-            </WidgetBackground>
-          </div>
-          <div className="flex flex-col gap-y-4 basis-1/2">
-            <WidgetBackground>
-              <WidgetTitle>WEAR THE BAT SIGNAL</WidgetTitle>
-              <div className="flex flex-row justify-between">
-                <div className="flex flex-col gap-y-4 mt-4">
-                  <div className="h-1"></div>
-                  <h1 className="mb-2 text-2xl font-light text-center text-white md:text-3xl xl:text-41xl">
-                    <Twemoji
-                      className="flex gap-x-1"
-                      imageClassName="w-11"
-                      wrapper
-                    >
-                      🦇🔊
-                    </Twemoji>
-                  </h1>
-                </div>
-                <div className="flex flex-col gap-y-4 mt-4">
-                  <div className="h-1"></div>
-                  <CopyToClipboard text={"🦇🔊"} onCopy={onBatSoundCopied}>
-                    <div>
-                      <Button>
-                        {isCopiedFeedbackVisible ? "copied!" : "copy"}
-                      </Button>
-                    </div>
-                  </CopyToClipboard>
-                </div>
-              </div>
-            </WidgetBackground>
-          </div>
-        </div>
-      </BasicErrorBoundary>
-      <div className="h-12" />
-      <BasicErrorBoundary>
-        <TransformWrapper
-          ref={panZoomRef}
-          initialScale={smallScreen ? 1 : 4.5}
-          initialPositionX={0}
-          initialPositionY={0}
-          wheel={{ wheelDisabled: true }}
-          // panning={{ excluded: [...filteredProfiles.map((profile) => `handle-className-${profile.handle.toLowerCase()}`)] }}
-          // onZoomStop={handleOnZoomStop}
-        >
-          {({ zoomIn, zoomOut, resetTransform, zoomToElement }) => {
-            const reportScreenChange = (
-              state: boolean,
-              handle: FullScreenHandle,
-            ) => {
-              if (handle === fullScreenHandle && !state) {
-                console.log("full screen off");
-                resetTransform();
-              }
-            };
+      <TransformWrapper
+        ref={panZoomRef}
+        initialScale={smallScreen ? 1 : 4.5}
+        initialPositionX={0}
+        initialPositionY={0}
+        wheel={{ wheelDisabled: true }}
+        // panning={{ excluded: [...filteredProfiles.map((profile) => `handle-className-${profile.handle.toLowerCase()}`)] }}
+        // onZoomStop={handleOnZoomStop}
+      >
+        {({ zoomIn, zoomOut, resetTransform, zoomToElement }) => {
+          const reportScreenChange = (
+            state: boolean,
+            handle: FullScreenHandle,
+          ) => {
+            if (handle === fullScreenHandle && !state) {
+              console.log("full screen off");
+              resetTransform();
+            }
+          };
 
-            return (
-              <>
-                <FullScreen
-                  handle={fullScreenHandle}
-                  className="bg-slateus-700"
-                  onChange={reportScreenChange}
-                >
-                  <WidgetBackground className="w-full">
-                    <div className="flex justify-between">
-                      <WidgetTitle className="self-center">
-                        fam explorer
-                      </WidgetTitle>
-                      <ControlButtons
-                        zoomIn={zoomIn}
-                        zoomOut={zoomOut}
-                        resetTransform={resetTransform}
-                        fullScreenHandle={fullScreenHandle}
-                      />
-                      {/* {searchValue && (
+          return (
+            <>
+              <FullScreen
+                handle={fullScreenHandle}
+                className="rounded-lg bg-slateus-700"
+                onChange={reportScreenChange}
+              >
+                <WidgetBackground className="w-full">
+                  <div className="flex justify-between">
+                    <WidgetTitle className="self-center">
+                      fam explorer
+                    </WidgetTitle>
+                    <ControlButtons
+                      zoomIn={zoomIn}
+                      zoomOut={zoomOut}
+                      resetTransform={resetTransform}
+                      fullScreenHandle={fullScreenHandle}
+                    />
+                    {/* {searchValue && (
                         <WidgetTitle className="text-emerald-400 lowercase">{filteredProfilesCount} matches</WidgetTitle>
                       )} */}
-                    </div>
+                  </div>
+                  <div
+                    className={`
+                      flex
+                      flex-wrap
+                      justify-center
+                      ${fullScreenHandle.active ? "my-5" : "mt-5"}
+                    `}
+                  >
+                    <TransformComponent
+                      wrapperStyle={{
+                        height: fullScreenHandle.active
+                          ? "calc(100vh - 175px)"
+                          : 500,
+                        cursor: "move",
+                        width: "100%",
+                      }}
+                    >
+                      {currentProfiles?.map((profile, index) => (
+                        <ClickAwayListener
+                          onClickAway={handleClickAway}
+                          key={profile?.profileUrl ?? index}
+                        >
+                          <SpriteWithOnClickTooltip
+                            className={
+                              smallScreen
+                                ? `m-[6px] h-12 w-12 select-none`
+                                : `m-[2px] h-3 w-3 select-none`
+                            }
+                            imageUrl={profile?.profileImageUrl}
+                            handle={profile?.handle}
+                            isDoneLoading={profile !== undefined}
+                            skeletonDiameter="20px"
+                            onClick={(ref) =>
+                              profile === undefined
+                                ? () => undefined
+                                : handleImageClick(profile, ref)
+                            }
+                            getXAndY={getXAndY}
+                            excluded={
+                              filteredProfiles?.findIndex(
+                                (p) => p.name === profile?.name,
+                              ) === -1
+                            }
+                            properties={properties ?? { width: 0, height: 0 }}
+                            sizeFactor={sizeFactor}
+                          />
+                        </ClickAwayListener>
+                      ))}
+                    </TransformComponent>
+                    {/* Search for your profile form */}
                     <div
                       className={`
-                        flex
-                        flex-wrap
-                        justify-center
-                        ${fullScreenHandle.active ? "my-5" : "mt-5"}
-
-                      `}
-                    >
-                      <TransformComponent
-                        wrapperStyle={{
-                          height: fullScreenHandle.active
-                            ? "calc(100vh - 175px)"
-                            : 500,
-                          cursor: "move",
-                          width: "100%",
-                        }}
-                      >
-                        {currentProfiles?.map((profile, index) => (
-                          <ClickAwayListener
-                            onClickAway={handleClickAway}
-                            key={profile?.profileUrl ?? index}
-                          >
-                            <SpriteWithOnClickTooltip
-                              className={
-                                smallScreen
-                                  ? `m-[6px] h-12 w-12 select-none`
-                                  : `m-[2px] h-3 w-3 select-none`
-                              }
-                              imageUrl={profile?.profileImageUrl}
-                              handle={profile?.handle}
-                              isDoneLoading={profile !== undefined}
-                              skeletonDiameter="20px"
-                              onClick={(ref) =>
-                                profile === undefined
-                                  ? () => undefined
-                                  : handleImageClick(profile, ref)
-                              }
-                              getXAndY={getXAndY}
-                              excluded={
-                                filteredProfiles?.findIndex(
-                                  (p) => p.name === profile?.name,
-                                ) === -1
-                              }
-                              properties={properties ?? { width: 0, height: 0 }}
-                              sizeFactor={sizeFactor}
-                            />
-                          </ClickAwayListener>
-                        ))}
-                      </TransformComponent>
-                      {/* Search for your profile form */}
-                      <div
-                        className={`
                           mt-8
                         `}
-                      >
-                        <form
-                          className={`
+                    >
+                      <form
+                        className={`
                             flex
                             justify-center
                           `}
-                          onSubmit={(event) => {
-                            console.log("event:", event);
-                            event.preventDefault();
-                            const el =
-                              filteredProfiles?.[
-                                currentProfileShow
-                              ]?.handle.toLowerCase();
-                            if (el) {
-                              zoomToElement(
-                                document.getElementById(el) || "",
-                                smallScreen ? 1 : 4.5,
-                                300,
-                                "linear",
-                              );
-                              setCurrentProfileShow((prev: number) => {
-                                if (prev === filteredProfilesCount - 1) {
-                                  return 0;
-                                }
-                                return prev + 1;
-                              });
-                            }
+                        onSubmit={(event) => {
+                          console.log("event:", event);
+                          event.preventDefault();
+                          const el =
+                            filteredProfiles?.[
+                              currentProfileShow
+                            ]?.handle.toLowerCase();
+                          if (el) {
+                            zoomToElement(
+                              document.getElementById(el) || "",
+                              smallScreen ? 1 : 4.5,
+                              300,
+                              "linear",
+                            );
+                            setCurrentProfileShow((prev: number) => {
+                              if (prev === filteredProfilesCount - 1) {
+                                return 0;
+                              }
+                              return prev + 1;
+                            });
+                          }
+                        }}
+                      >
+                        <input
+                          className="p-4 pr-32 w-full text-xs text-white bg-transparent rounded-full border border-gray-500 md:w-96"
+                          type="text"
+                          placeholder="@vitalikbuterin"
+                          value={searchValue}
+                          spellCheck="false"
+                          // onChange={(event) => setSearchValue(event.target.value)}
+                          onChange={(event) => {
+                            setSearchValue(event.target.value);
+                            setCurrentProfileShow(0);
                           }}
-                        >
-                          <input
-                            className="p-4 pr-32 w-full text-xs text-white bg-transparent rounded-full border border-gray-500 md:w-96"
-                            type="text"
-                            placeholder="@vitalikbuterin"
-                            value={searchValue}
-                            spellCheck="false"
-                            // onChange={(event) => setSearchValue(event.target.value)}
-                            onChange={(event) => {
-                              setSearchValue(event.target.value);
-                              setCurrentProfileShow(0);
-                            }}
-                          />
-                          <button
-                            className={`
+                        />
+                        <button
+                          className={`
                               ${followingYouStyles.showMe}
                               ${
                                 searchValue && filteredProfilesCount > 0
@@ -428,29 +366,28 @@ const TwitterFam: FC = () => {
                               }
                               disabled:opacity-50
                             `}
-                            type="submit"
-                            disabled={
-                              !searchValue ||
-                              (searchValue.length > 0 &&
-                                filteredProfilesCount === 0)
-                            }
-                          >
-                            {searchValue && filteredProfilesCount > 0
-                              ? `show me ${
-                                  currentProfileShow + 1
-                                } of ${filteredProfilesCount} →`
-                              : `show me →`}
-                          </button>
-                        </form>
-                      </div>
+                          type="submit"
+                          disabled={
+                            !searchValue ||
+                            (searchValue.length > 0 &&
+                              filteredProfilesCount === 0)
+                          }
+                        >
+                          {searchValue && filteredProfilesCount > 0
+                            ? `show me ${
+                                currentProfileShow + 1
+                              } of ${filteredProfilesCount} →`
+                            : `show me →`}
+                        </button>
+                      </form>
                     </div>
-                  </WidgetBackground>
-                </FullScreen>
-              </>
-            );
-          }}
-        </TransformWrapper>
-      </BasicErrorBoundary>
+                  </div>
+                </WidgetBackground>
+              </FullScreen>
+            </>
+          );
+        }}
+      </TransformWrapper>
       <>
         <div
           ref={setPopperEl}
@@ -502,4 +439,4 @@ const TwitterFam: FC = () => {
   );
 };
 
-export default TwitterFam;
+export default FamExplorer;

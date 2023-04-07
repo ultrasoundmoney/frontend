@@ -64,7 +64,7 @@ const TimeFrameIndicator: FC<Props> = ({
             ? "since merge"
             : "time frame"}
         </LabelText>
-        <p className="font-roboto text-xs text-white">
+        <p className="text-xs text-white font-roboto">
           {timeFrame === "since_burn"
             ? daysSinceLondon
             : timeFrame === "since_merge"

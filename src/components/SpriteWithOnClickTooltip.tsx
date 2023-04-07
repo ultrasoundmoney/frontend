@@ -38,7 +38,8 @@ const ImageWithOnClickTooltip: FC<ImageWithOnClickTooltipProps> = ({
   const [posX, setPosX] = useState<number | null>(null);
   const [posY, setPosY] = useState<number | null>(null);
 
-  const smallScreen = window.innerWidth < 768;
+  const smallScreen =
+    typeof window !== "undefined" ? window.innerWidth < 768 : false;
 
   useEffect(() => {
     if (imageUrl !== undefined && getXAndY) {

@@ -12,7 +12,7 @@ type Props = {
   className?: string;
   hideTimeFrameLabel?: boolean;
   onClickTimeFrame?: () => void;
-  timeFrame: TimeFrame;
+  timeFrame?: TimeFrame;
   title: string;
 };
 
@@ -26,13 +26,15 @@ const WidgetBase: FC<Props> = ({
 }) => (
   <WidgetErrorBoundary title={title}>
     <WidgetBackground className={`flex flex-col gap-y-4 ${className}`}>
-      <div className="gap-2-x flex items-center justify-between">
+      <div className="flex justify-between items-center gap-2-x">
         <WidgetTitle>{title}</WidgetTitle>
-        <TimeFrameIndicator
-          hideTimeFrameLabel={hideTimeFrameLabel}
-          onClickTimeFrame={onClickTimeFrame}
-          timeFrame={timeFrame}
-        />
+        {timeFrame && (
+          <TimeFrameIndicator
+            hideTimeFrameLabel={hideTimeFrameLabel}
+            onClickTimeFrame={onClickTimeFrame}
+            timeFrame={timeFrame}
+          />
+        )}
       </div>
       {children}
     </WidgetBackground>
