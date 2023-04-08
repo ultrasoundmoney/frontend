@@ -8,7 +8,7 @@ import { SectionTitle } from "../../../components/TextsNext/SectionTitle";
 import FamTooltip from "../FamTooltip";
 import styles from "./FollowingYou.module.scss";
 import ClickAwayListener from "react-click-away-listener";
-import { useTooltip } from "../TwitterFam";
+import { useTooltip } from "../FamExplorer";
 import SpriteWithOnClickTooltip from "../../../components/SpriteWithOnClickTooltip";
 import { useSpriteSheet } from "../../api/profiles";
 
@@ -89,33 +89,43 @@ const FollowingYou: FC = () => {
 
   const generateImageKeyfromUrl = (url: string | undefined) => {
     // i.e. https://pbs.twimg.com/profile_images/1537478481096781825/J1BDruLr.png
-    if (url?.includes('default_profile_images')) {
-      return 'default_profile-images.png';
+    if (url?.includes("default_profile_images")) {
+      return "default_profile-images.png";
     }
-    const userId = url?.split('profile_images')?.[1]?.split('/')[1]; // i.e. 1579896394919383051
-    const fileName = `${userId}-::-${url?.split('profile_images')?.[1]?.split('/')[2]}`; // i.e. 1579896394919383051-::-ahIN3HUB.jpg
+    const userId = url?.split("profile_images")?.[1]?.split("/")[1]; // i.e. 1579896394919383051
+    const fileName = `${userId}-::-${
+      url?.split("profile_images")?.[1]?.split("/")[2]
+    }`; // i.e. 1579896394919383051-::-ahIN3HUB.jpg
     return `/sprite-sheet-images/source_images/${fileName}`;
-  }
+  };
 
   const getXAndY = (imageUrl: string | undefined, sizeFactor: number) => {
     if (imageUrl !== undefined && coordinates && properties) {
       const key = generateImageKeyfromUrl(imageUrl);
-      let x = (coordinates?.[key as keyof typeof coordinates]?.x || 0) / sizeFactor;
-      let y = (coordinates?.[key as keyof typeof coordinates]?.y || 0) / sizeFactor;
+      let x =
+        (coordinates?.[key as keyof typeof coordinates]?.x || 0) / sizeFactor;
+      let y =
+        (coordinates?.[key as keyof typeof coordinates]?.y || 0) / sizeFactor;
       // x is going right to left not left to right
       x = properties?.width / sizeFactor - x;
       // y is going bottom to top not top to bottom
       y = properties?.height / sizeFactor - y;
       if (Number.isNaN(x)) {
-        x = (coordinates?.['/sprite-sheet-images/source_images/default_profile-images.png' as keyof typeof coordinates ]?.x || 0) / sizeFactor;
+        x =
+          (coordinates?.[
+            "/sprite-sheet-images/source_images/default_profile-images.png" as keyof typeof coordinates
+          ]?.x || 0) / sizeFactor;
         x = properties?.width / sizeFactor - x;
-        y = (coordinates?.['/sprite-sheet-images/source_images/default_profile-images.png' as keyof typeof coordinates ]?.y || 0) / sizeFactor;
+        y =
+          (coordinates?.[
+            "/sprite-sheet-images/source_images/default_profile-images.png" as keyof typeof coordinates
+          ]?.y || 0) / sizeFactor;
         y = properties?.height / sizeFactor - y;
       }
       return { x, y };
     }
     return { x: null, y: null };
-  }
+  };
 
   return (
     <>
@@ -132,7 +142,7 @@ const FollowingYou: FC = () => {
         }}
       >
         <input
-          className="rounded-full border border-gray-500 bg-transparent p-4 pr-32 text-xs text-white md:w-96"
+          className="p-4 pr-32 text-xs text-white bg-transparent rounded-full border border-gray-500 md:w-96"
           type="text"
           placeholder="@vitalikbuterin"
           value={handle}
@@ -156,24 +166,27 @@ const FollowingYou: FC = () => {
       </form>
       {followers.type === "empty" ? null : followers.type ===
         "handleNotFound" ? (
-        <p className="p-8 text-center text-xl text-white">handle not found</p>
+        <p className="p-8 text-xl text-center text-white">handle not found</p>
       ) : followers.type === "searching" ? (
-        <p className="p-8 text-center text-xl text-white">searching...</p>
+        <p className="p-8 text-xl text-center text-white">searching...</p>
       ) : followers.type === "unknownError" ? (
-        <p className="p-8 text-center text-xl text-white">
+        <p className="p-8 text-xl text-center text-white">
           error fetching followers
         </p>
       ) : followers.type === "followers" ? (
         <div className="my-8">
           {followers.count === 0 ? (
-            <p className="p-8 text-center text-xl text-white">
+            <p className="p-8 text-xl text-center text-white">
               no fam followers found
             </p>
           ) : (
             <>
               <div className="flex flex-wrap justify-center">
                 {followers.followers.map((profile, index) => (
-                  <ClickAwayListener onClickAway={handleClickAway} key={profile?.profileUrl ?? index}>
+                  <ClickAwayListener
+                    onClickAway={handleClickAway}
+                    key={profile?.profileUrl ?? index}
+                  >
                     <SpriteWithOnClickTooltip
                       className={`m-[8px] h-10 w-10 select-none`}
                       imageUrl={profile?.profileImageUrl}
@@ -193,7 +206,7 @@ const FollowingYou: FC = () => {
                   </ClickAwayListener>
                   // <ImageWithTooltip
                   //   key={profile.profileUrl ?? index}
-                  //   className="m-2 h-10 w-10"
+                  //   className="m-2 w-10 h-10"
                   //   imageUrl={profile?.profileImageUrl}
                   //   onClick={() => handleClickImage(profile)}
                   //   onMouseEnter={(ref) => handleImageMouseEnter(profile, ref)}
@@ -204,7 +217,7 @@ const FollowingYou: FC = () => {
                 ))}
               </div>
               {followers.count > followers.followers.length && (
-                <p className="p-8 text-center text-xl text-white">{`+${formatZeroDecimals(
+                <p className="p-8 text-xl text-center text-white">{`+${formatZeroDecimals(
                   followers.count - followers.followers.length,
                 )} more!`}</p>
               )}
@@ -212,14 +225,14 @@ const FollowingYou: FC = () => {
           )}
         </div>
       ) : (
-        <p className="p-8 text-center text-xl text-white">
+        <p className="p-8 text-xl text-center text-white">
           unknown followers state
         </p>
       )}
       <>
         <div
           ref={setPopperEl}
-          className="z-20 hidden p-4 md:block"
+          className="hidden z-20 p-4 md:block"
           style={{
             ...popperStyles.popper,
             visibility: showTooltip && md ? "visible" : "hidden",
