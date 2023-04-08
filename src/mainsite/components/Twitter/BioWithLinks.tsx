@@ -90,8 +90,12 @@ const BioWithLinks: FC<{ bio: string; linkables: Linkables }> = ({
           ></span>
         ) : instruction.type === "url" ? (
           <a
-            className="text-slateus-200 hover:text-slateus-200 hover:underline"
-            href={instruction.linkable.expanded_url}
+            className="text-slateus-200 hover:text-slateus-200 hover:underline cursor-pointer"
+            // href={instruction.linkable.expanded_url}
+            onClick={(e) => {
+              e.stopPropagation();
+              window.open(instruction.linkable.expanded_url, "_blank");
+            }}
             key={index}
             rel="noreferrer"
             target="_blank"
@@ -100,8 +104,12 @@ const BioWithLinks: FC<{ bio: string; linkables: Linkables }> = ({
           </a>
         ) : instruction.type === "mention" ? (
           <a
-            className="text-slateus-200 hover:text-slateus-200 hover:underline"
-            href={`https://twitter.com/${instruction.linkable.username}`}
+            className="text-slateus-200 hover:text-slateus-200 hover:underline cursor-pointer"
+            // href={`https://twitter.com/${instruction.linkable.username}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              window.open(`https://twitter.com/${instruction.linkable.username}`, "_blank");
+            }}
             key={index}
             rel="noreferrer"
             target="_blank"
@@ -110,8 +118,12 @@ const BioWithLinks: FC<{ bio: string; linkables: Linkables }> = ({
           </a>
         ) : instruction.type === "hashtag" ? (
           <a
-            className="text-slateus-200 hover:text-slateus-200 hover:underline"
-            href={`https://twitter.com/hashtag/${instruction.linkable.tag}`}
+            className="text-slateus-200 hover:text-slateus-200 hover:underline cursor-pointer"
+            // href={`https://twitter.com/hashtag/${instruction.linkable.tag}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              window.open(`https://twitter.com/hashtag/${instruction.linkable.tag}`, "_blank");
+            }}
             key={index}
             rel="noreferrer"
             target="_blank"
@@ -120,8 +132,12 @@ const BioWithLinks: FC<{ bio: string; linkables: Linkables }> = ({
           </a>
         ) : instruction.type === "cashtag" ? (
           <a
-            className="text-slateus-200 hover:text-slateus-200 hover:underline"
-            href={`https://twitter.com/search?q=%24${instruction.linkable.tag}`}
+            className="text-slateus-200 hover:text-slateus-200 hover:underline cursor-pointer"
+            // href={`https://twitter.com/search?q=%24${instruction.linkable.tag}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              window.open(`https://twitter.com/search?q=%24${instruction.linkable.tag}`, "_blank");
+            }}
             key={index}
             rel="noreferrer"
             target="_blank"
