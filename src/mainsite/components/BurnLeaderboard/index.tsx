@@ -85,7 +85,7 @@ const getLeaderboardsAddresses = (leaderboards: Leaderboards) =>
     )
     .filter((mAddress): mAddress is string => mAddress !== undefined);
 
-const useTooltip = () => {
+export const useTooltip = () => {
   const { md } = useActiveBreakpoint();
   const [refEl, setRefEl] = useState<HTMLImageElement | null>(null);
   const [popperEl, setPopperEl] = useState<HTMLDivElement | null>(null);

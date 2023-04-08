@@ -1,6 +1,9 @@
-import type { FC, ReactEventHandler } from "react";
-import { useCallback, useState } from "react";
-import type { Linkables } from "../api/profiles";
+
+import type { FC } from "react";
+import { useState } from "react";
+import { XMarkIcon } from '@heroicons/react/24/solid'
+import Image from 'next/image'
+import type { Linkables, SpriteSheetResponse } from "../api/profiles";
 import * as Format from "../../format";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import { BaseText } from "../../components/Texts";
@@ -8,6 +11,7 @@ import BodyText from "../../components/TextsNext/BodyText";
 import Twemoji from "../../components/Twemoji";
 import BioWithLinks from "./Twitter/BioWithLinks";
 import { WidgetTitle } from "../../components/WidgetSubcomponents";
+// import styles from "./ImageWithOnClickTooltip.module.scss";
 
 type ExternalLinkProps = {
   alt: string;
@@ -25,13 +29,14 @@ export const ExternalLink: FC<ExternalLinkProps> = ({
   const [isHovering, setIsHovering] = useState(false);
 
   return (
-    <a
-      className={`relative ${className}`}
-      href={href}
+    <div
+      className={`relative cursor-pointer ${className}`}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
-      rel="noreferrer"
-      target="_blank"
+      onClick={(e) => {
+        e.stopPropagation();
+        window.open(href, "_blank");
+      }}
     >
       <img src={`/round-${icon}-coloroff.svg`} alt={alt} className={`w-12`} />
       <img
@@ -39,7 +44,7 @@ export const ExternalLink: FC<ExternalLinkProps> = ({
         src={`/round-${icon}-coloron.svg`}
         alt={alt}
       />
-    </a>
+    </div>
   );
 };
 
@@ -56,6 +61,8 @@ export type TooltipProps = {
   title: string | undefined;
   twitterUrl?: string;
   width?: string;
+  getXAndY?: (imageKey: string | undefined, sizeFactor: number) => { x: number | null, y: number | null };
+  properties?: SpriteSheetResponse["properties"];
 };
 
 const Tooltip: FC<TooltipProps> = ({
@@ -71,11 +78,19 @@ const Tooltip: FC<TooltipProps> = ({
   title,
   twitterUrl,
   width = "22rem",
+  // getXAndY,
+  // properties,
 }) => {
-  const onImageError = useCallback<ReactEventHandler<HTMLImageElement>>((e) => {
-    (e.target as HTMLImageElement).src =
-      "/leaderboard-images/question-mark-v2.svg";
-  }, []);
+  // const [posX, setPosX] = useState<number | null>(null);
+  // const [posY, setPosY] = useState<number | null>(null);
+
+  // useEffect(() => {
+  //   if (imageUrl !== undefined && getXAndY) {
+  //     const { x, y } = getXAndY(imageUrl, sizeFactor);
+  //     setPosX(x);
+  //     setPosY(y);
+  //   }
+  // }, [getXAndY, imageUrl]);
 
   return (
     <div
@@ -91,18 +106,38 @@ const Tooltip: FC<TooltipProps> = ({
         ${width}
       `}
     >
-      <img
-        alt="a close button, circular with an x in the middle"
-        className="absolute right-5 top-5 w-6 cursor-pointer select-none hover:brightness-90 active:brightness-110 md:hidden"
+      <XMarkIcon
+        className="absolute right-5 top-5 w-6 cursor-pointer select-none hover:brightness-90 active:brightness-110"
         onClick={onClickClose}
-        src="/close.svg"
       />
-      <img
-        alt=""
-        className="mx-auto h-20 w-20 select-none rounded-full"
-        onError={onImageError}
+      <Image
         src={imageUrl ?? "/leaderboard-images/question-mark-v2.svg"}
+        alt="Fam image"
+        width={96}
+        height={96}
+        className="mx-auto h-20 w-20 select-none rounded-full"
       />
+      {/* {(getXAndY && properties)
+        ? (
+          <div
+            className={`${styles["fam-image-sprite"]} mx-auto h-20 w-20 select-none rounded-full`}
+            style={{
+              backgroundPositionX: `${posX}px`,
+              backgroundPositionY: `${posY}px`,
+              backgroundSize: `${properties?.width / sizeFactor}px ${properties?.height / sizeFactor}px`,
+            }}
+          />
+        )
+        : (
+          <Image
+            src={imageUrl ?? "/leaderboard-images/question-mark-v2.svg"}
+            alt="Fam image"
+            width={96}
+            height={96}
+            className="mx-auto h-20 w-20 select-none rounded-full"
+          />
+        )
+      } */}
       <BodyText className="font-semibold">
         <Twemoji imageClassName="inline-block align-middle h-5 ml-1" wrapper>
           {title}
@@ -156,7 +191,11 @@ const Tooltip: FC<TooltipProps> = ({
         }`}
       >
         <WidgetTitle>external links</WidgetTitle>
-        <div className="flex select-none gap-x-4">
+        <div className="flex select-none gap-x-4"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+        >
           <ExternalLink
             alt="twitter logo"
             className={`${twitterUrl === undefined ? "hidden" : "block"}`}

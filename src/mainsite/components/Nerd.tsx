@@ -1,8 +1,8 @@
 import type { StaticImageData } from "next/legacy/image";
 import Image from "next/legacy/image";
 import type { FC } from "react";
-import nerdColorOff from "./nerd-coloroff.svg";
-import nerdColorOn from "./nerd-coloron.svg";
+import nerdColorOff from "../../assets/nerd-slateus.svg";
+import nerdColorOn from "../../assets/nerd-own.svg";
 
 const Nerd: FC<{ onClick?: () => void }> = ({ onClick }) => (
   <div className="relative" onClick={onClick}>
