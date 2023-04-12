@@ -51,7 +51,7 @@ const CurrentSupplyTooltip: FC<{
     <div className="flex flex-col">
       <FormulaText>supply = EVM balances +</FormulaText>
       <div className="ml-[69px] md:ml-[77px]">
-        <FormulaText inline={false}>beacon balances -</FormulaText>
+        <FormulaText inline={false}>beacon chain balances -</FormulaText>
         <FormulaText>beacon chain deposits</FormulaText>
       </div>
     </div>
