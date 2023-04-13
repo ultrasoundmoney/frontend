@@ -4,13 +4,15 @@ import type { FC } from "react";
 import type { Unit } from "../../denomination";
 import type { TimeFrame } from "../time-frames";
 import CurrencyControl from "./CurrencyControl";
-import BurnGauge from "./Gauges/BurnGauge";
-import IssuanceGauge from "./Gauges/IssuanceGauge";
-import SupplyGrowthGauge from "./Gauges/SupplyGrowthGauge";
+// import BurnGauge from "./Gauges/BurnGauge";
+// import IssuanceGauge from "./Gauges/IssuanceGauge";
+// import SupplyGrowthGauge from "./Gauges/SupplyGrowthGauge";
 import { BaseText } from "../../components/Texts";
 import TimeFrameControl from "../../components/TimeFrameControl";
 import ToggleSwitch from "../../components/ToggleSwitch";
 import { WidgetTitle } from "../../components/WidgetSubcomponents";
+import LabelText from "../../components/TextsNext/LabelText";
+import DefaultTextLink from "../../components/DefaultTextLink";
 
 type Props = {
   onSetTimeFrame: (timeFrame: TimeFrame) => void;
@@ -71,7 +73,7 @@ const GaugeWidget: FC<{
   timeFrame: TimeFrame;
   unit: Unit;
 }> = ({
-  onClickTimeFrame,
+  // onClickTimeFrame,
   onSetTimeFrame,
   onSetUnit,
   onSimulateProofOfWork,
@@ -80,24 +82,35 @@ const GaugeWidget: FC<{
   unit,
 }) => (
   <div>
-    <div className="flex flex-col w-full md:flex-row isolate">
-      <div className="hidden w-1/3 md:block">
-        <BurnGauge timeFrame={timeFrame} unit={unit} />
-      </div>
-      <div className="md:w-1/3">
-        <SupplyGrowthGauge
-          onClickTimeFrame={onClickTimeFrame}
-          simulateProofOfWork={simulateProofOfWork}
-          timeFrame={timeFrame}
-        />
-      </div>
-      <div className="hidden w-1/3 md:block">
-        <IssuanceGauge
-          simulateProofOfWork={simulateProofOfWork}
-          timeFrame={timeFrame}
-          unit={unit}
-        />
-      </div>
+    {/* <div className="flex flex-col w-full md:flex-row isolate"> */}
+    {/*   <div className="hidden w-1/3 md:block"> */}
+    {/*     <BurnGauge timeFrame={timeFrame} unit={unit} /> */}
+    {/*   </div> */}
+    {/*   <div className="md:w-1/3"> */}
+    {/*     <SupplyGrowthGauge */}
+    {/*       onClickTimeFrame={onClickTimeFrame} */}
+    {/*       simulateProofOfWork={simulateProofOfWork} */}
+    {/*       timeFrame={timeFrame} */}
+    {/*     /> */}
+    {/*   </div> */}
+    {/*   <div className="hidden w-1/3 md:block"> */}
+    {/*     <IssuanceGauge */}
+    {/*       simulateProofOfWork={simulateProofOfWork} */}
+    {/*       timeFrame={timeFrame} */}
+    {/*       unit={unit} */}
+    {/*     /> */}
+    {/*   </div> */}
+    {/* </div> */}
+    <div className="flex justify-center items-center px-8 rounded-lg min-h-[291px] bg-slateus-700">
+      <LabelText className="text-center">
+        currently unavailable, upgrading for{" "}
+        <DefaultTextLink
+          className="text-slateus-100"
+          href="https://blog.ethereum.org/2023/03/28/shapella-mainnet-announcement"
+        >
+          Shapella
+        </DefaultTextLink>
+      </LabelText>
     </div>
     <Controls
       onSetTimeFrame={onSetTimeFrame}
@@ -109,5 +122,27 @@ const GaugeWidget: FC<{
     />
   </div>
 );
+
+// const GaugeWidget: FC<{
+//   onClickTimeFrame: () => void;
+//   onSetTimeFrame: (timeFrame: TimeFrame) => void;
+//   onSetUnit: (unit: Unit) => void;
+//   onSimulateProofOfWork: () => void;
+//   simulateProofOfWork: boolean;
+//   timeFrame: TimeFrame;
+//   unit: Unit;
+// }> = () => (
+//   <div className="flex justify-center items-center px-8 rounded-lg min-h-[291px] bg-slateus-700">
+//     <LabelText className="text-center">
+//       currently unavailable, upgrading for{" "}
+//       <DefaultTextLink
+//         className="text-slateus-100"
+//         href="https://blog.ethereum.org/2023/03/28/shapella-mainnet-announcement"
+//       >
+//         Shapella
+//       </DefaultTextLink>
+//     </LabelText>
+//   </div>
+// );
 
 export default GaugeWidget;
