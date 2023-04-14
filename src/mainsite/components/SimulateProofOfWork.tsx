@@ -17,7 +17,7 @@ const SimulateProofOfWork: FC<Props> = ({
   tooltipText,
 }) => (
   <HoverTooltip position={tooltipPosition} text={tooltipText}>
-    <div className="flex items-center gap-x-2">
+    <div className="flex gap-x-2 items-center opacity-40">
       <BaseText
         font="font-inter"
         color="text-slateus-200"
@@ -25,7 +25,7 @@ const SimulateProofOfWork: FC<Props> = ({
       >
         SIMULATE PoW
       </BaseText>
-      <ToggleSwitch checked={checked} onToggle={onToggle} />
+      <ToggleSwitch disabled checked={checked} onToggle={onToggle} />
     </div>
   </HoverTooltip>
 );

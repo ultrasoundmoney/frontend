@@ -44,7 +44,7 @@ const Controls: FC<Props> = ({
         <WidgetTitle>currency</WidgetTitle>
         <CurrencyControl selectedUnit={unit} onSetUnit={onSetUnit} />
       </div>
-      <div className="flex gap-4 items-center text-left md:flex-col md:text-right lg:flex-row">
+      <div className="flex gap-4 items-center text-left opacity-40 md:flex-col md:text-right lg:flex-row">
         <BaseText
           font="font-inter"
           color="text-slateus-200"
@@ -56,6 +56,7 @@ const Controls: FC<Props> = ({
         <div className="flex items-center self-start md:self-end h-[34px]">
           <ToggleSwitch
             checked={simulateProofOfWork}
+            disabled
             onToggle={onSimulateProofOfWork}
           />
         </div>
