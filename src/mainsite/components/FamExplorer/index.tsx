@@ -154,11 +154,7 @@ const FamExplorer: FC = () => {
         (coordinates?.[key as keyof typeof coordinates]?.x || 0) / sizeFactor;
       let y =
         (coordinates?.[key as keyof typeof coordinates]?.y || 0) / sizeFactor;
-      // x is going right to left not left to right
-      x = properties?.width / sizeFactor - x;
-      // y is going bottom to top not top to bottom
-      y = properties?.height / sizeFactor - y;
-      if (Number.isNaN(x)) {
+      if (x === 0 && y === 0) {
         x =
           (coordinates?.[
             "/sprite-sheet-images/source_images/default_profile-images.png" as keyof typeof coordinates
@@ -168,6 +164,11 @@ const FamExplorer: FC = () => {
           (coordinates?.[
             "/sprite-sheet-images/source_images/default_profile-images.png" as keyof typeof coordinates
           ]?.y || 0) / sizeFactor;
+        y = properties?.height / sizeFactor - y;
+      } else {
+        // x is going right to left not left to right
+        x = properties?.width / sizeFactor - x;
+        // y is going bottom to top not top to bottom
         y = properties?.height / sizeFactor - y;
       }
       return { x, y };
