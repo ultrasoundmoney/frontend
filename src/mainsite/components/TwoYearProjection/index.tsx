@@ -1,5 +1,4 @@
 import dynamic from "next/dynamic";
-import * as React from "react";
 import TranslationsContext from "../../contexts/TranslationsContext";
 import { formatOneDecimal } from "../../../format";
 import {
@@ -10,6 +9,8 @@ import Slider from "../Slider/Slider";
 import { BaseText } from "../../../components/Texts";
 import Twemoji from "../../../components/Twemoji";
 import styles from "./TwoYearProjection.module.scss";
+import type { ChangeEvent, FC, ReactNode } from "react";
+import { useCallback, useState, useContext } from "react";
 const SupplyChart = dynamic(() => import("./TwoYearProjectionChart"));
 
 const MIN_PROJECTED_ETH_STAKING = 1e6;
@@ -22,56 +23,53 @@ const MAX_PROJECTED_BASE_GAS_PRICE = 420;
 
 const DEFAULT_PROJECTED_MERGE_DATE = new Date("2022-09-15T00:00:00Z");
 
-const TwoYearProjection: React.FC = () => {
-  const t = React.useContext(TranslationsContext);
+const TwoYearProjection: FC = () => {
+  const t = useContext(TranslationsContext);
 
   // TODO Initialize this to current amount of ETH staked
-  const [projectedStaking, setProjectedStaking] = React.useState(
+  const [projectedStaking, setProjectedStaking] = useState(
     DEFAULT_PROJECTED_ETH_STAKING,
   );
   // TODO Initialize this to current base gas price
-  const [projectedBaseGasPrice, setProjectedBaseGasPrice] = React.useState(
+  const [projectedBaseGasPrice, setProjectedBaseGasPrice] = useState(
     DEFAULT_PROJECTED_BASE_GAS_PRICE,
   );
-  const [showBreakdown, setShowBreakdown] = React.useState(false);
-  const [isPeakPresent, setIsPeakPresent] = React.useState(true);
+  const [showBreakdown, setShowBreakdown] = useState(false);
+  const [isPeakPresent, setIsPeakPresent] = useState(true);
 
-  const handleProjectedStakingChange = React.useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleProjectedStakingChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
       setProjectedStaking(parseInt(e.target.value));
     },
     [],
   );
 
-  const handleProjectedBaseGasPriceChange = React.useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleProjectedBaseGasPriceChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
       setProjectedBaseGasPrice(parseInt(e.target.value));
     },
     [],
   );
 
   const projectedMergeDate = DEFAULT_PROJECTED_MERGE_DATE;
-  const handleProjectedStakingPointerDown = React.useCallback(() => {
+  const handleProjectedStakingPointerDown = useCallback(() => {
     setShowBreakdown(true);
   }, []);
 
-  const handleProjectedStakingPointerUp = React.useCallback(() => {
+  const handleProjectedStakingPointerUp = useCallback(() => {
     setShowBreakdown(false);
   }, []);
 
-  const handleOnPeakProjectedToggle = React.useCallback(
-    (isPeakPresent: boolean) => {
-      setIsPeakPresent(isPeakPresent);
-    },
-    [],
-  );
+  const handleOnPeakProjectedToggle = useCallback((isPeakPresent: boolean) => {
+    setIsPeakPresent(isPeakPresent);
+  }, []);
 
   return (
     <>
       <div className={styles.chartHeader}>
         <BaseText
           font="font-inter"
-          className="flex items-center px-3 pb-8 text-xs uppercase tracking-widest text-slateus-200"
+          className="flex items-center px-3 pb-8 text-xs tracking-widest uppercase text-slateus-200"
           inline
         >
           ETH supply—2y projection
@@ -153,13 +151,13 @@ const TwoYearProjection: React.FC = () => {
 };
 
 interface ParamProps {
-  title: React.ReactNode;
-  value: React.ReactNode;
-  subValue: React.ReactNode;
-  children: React.ReactNode;
+  title: ReactNode;
+  value: ReactNode;
+  subValue: ReactNode;
+  children: ReactNode;
 }
 
-const Param: React.FC<ParamProps> = ({ title, value, subValue, children }) => (
+const Param: FC<ParamProps> = ({ title, value, subValue, children }) => (
   <div className={styles.param}>
     <div className={`text-slateus-200 ${styles.paramTitle}`}>{title}</div>
     <div className={styles.paramValue}>{value}</div>

@@ -22,6 +22,16 @@ import styles from "./TwoYearProjectionChart.module.scss";
 import colors from "../../../colors";
 import { LONDON_TIMESTAMP } from "../../hardforks/london";
 import _first from "lodash/first";
+import type { FC, RefObject } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  memo,
+  useMemo,
+} from "react";
 
 if (typeof window !== "undefined") {
   // Initialize highchats annotations module (only on browser, doesn't work on server)
@@ -38,7 +48,7 @@ type Props = {
 
 interface HighchartsRef {
   chart: Highcharts.Chart;
-  container: React.RefObject<HTMLDivElement>;
+  container: RefObject<HTMLDivElement>;
 }
 
 let mouseOutTimer: NodeJS.Timeout | null = null;
@@ -47,18 +57,18 @@ const NUM_DAYS_PER_POINT = 7;
 const COMPACT_MARKERS_BELOW_WIDTH = 1440;
 const COMPACT_CHART_BELOW_WIDTH = 640;
 
-const SupplyChart: React.FC<Props> = ({
+const SupplyChart: FC<Props> = ({
   projectedBaseGasPrice,
   projectedStaking,
   projectedMergeDate,
   showBreakdown: forceShowBreakdown,
   onPeakProjectedToggle,
 }) => {
-  const t = React.useContext(TranslationsContext);
-  const containerRef = React.useRef<HTMLDivElement | null>(null);
-  const chartRef = React.useRef<HighchartsRef | null>(null);
+  const t = useContext(TranslationsContext);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const chartRef = useRef<HighchartsRef | null>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (containerRef.current === null) {
       return;
     }
@@ -76,8 +86,8 @@ const SupplyChart: React.FC<Props> = ({
   }, [t]);
 
   // Show / hide supply breakdown on hover
-  const [showBreakdown, setShowBreakdown] = React.useState(false);
-  const handleChartMouseOut = React.useCallback(() => {
+  const [showBreakdown, setShowBreakdown] = useState(false);
+  const handleChartMouseOut = useCallback(() => {
     if (mouseOutTimer !== null) {
       clearTimeout(mouseOutTimer);
     }
@@ -86,7 +96,7 @@ const SupplyChart: React.FC<Props> = ({
     }, 200);
   }, []);
 
-  const handleChartMouseOver = React.useCallback(() => {
+  const handleChartMouseOver = useCallback(() => {
     if (mouseOutTimer !== null) {
       clearTimeout(mouseOutTimer);
     }
@@ -94,11 +104,11 @@ const SupplyChart: React.FC<Props> = ({
   }, []);
 
   // Responsive helpers
-  const [useCompactMarkers, setUseCompactMarkers] = React.useState(
+  const [useCompactMarkers, setUseCompactMarkers] = useState(
     typeof window !== "undefined" &&
       window.innerWidth < COMPACT_MARKERS_BELOW_WIDTH,
   );
-  const [useCompactChart, setUseCompactChart] = React.useState(
+  const [useCompactChart, setUseCompactChart] = useState(
     typeof window !== "undefined" &&
       window.innerWidth < COMPACT_CHART_BELOW_WIDTH,
   );
@@ -117,7 +127,7 @@ const SupplyChart: React.FC<Props> = ({
 
   // Collect chart settings into a object and debounce how fast it can change
   // (otherwise moving sliders feels very sluggish)
-  const _chartSettings = React.useMemo(
+  const _chartSettings = useMemo(
     () => ({
       projectedBaseGasPrice,
       projectedStaking,
@@ -139,7 +149,7 @@ const SupplyChart: React.FC<Props> = ({
   const chartSettings = useDebounce(_chartSettings, 100);
 
   // Define the event markers that we'll plot on the chart
-  const markers = React.useMemo(
+  const markers = useMemo(
     // prettier-ignore
     (): [Date | null, string, string][] => ([
       [DateFns.parseISO("2015-07-31T00:00:00Z"), t.marker_genesis, `5 ETH/${t.marker_block}`],
@@ -155,7 +165,7 @@ const SupplyChart: React.FC<Props> = ({
   const projectionsInputs = useSupplyProjectionInputs();
 
   // Transform our input data into series that we'll pass to highcharts
-  const [series, annotations, totalSupplyByDate] = React.useMemo((): [
+  const [series, annotations, totalSupplyByDate] = useMemo((): [
     Highcharts.SeriesAreaOptions[],
     Highcharts.AnnotationsLabelsOptions[],
     Record<string, number>,
@@ -494,7 +504,7 @@ const SupplyChart: React.FC<Props> = ({
   }, [chartSettings, onPeakProjectedToggle, t, projectionsInputs]);
 
   // Now build up the Highcharts configuration object
-  const options = React.useMemo((): Highcharts.Options => {
+  const options = useMemo((): Highcharts.Options => {
     // Animate only after mounting
     const animate = Boolean(chartRef.current);
 
@@ -727,4 +737,4 @@ const SupplyChart: React.FC<Props> = ({
   );
 };
 
-export default React.memo(SupplyChart);
+export default memo(SupplyChart);
