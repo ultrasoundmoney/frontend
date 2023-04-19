@@ -1,6 +1,4 @@
 import type { FC } from "react";
-import { useEffect, useState } from "react";
-
 import { BaseText } from "../../components/Texts";
 import LabelText from "../../components/TextsNext/LabelText";
 import SkeletonText from "../../components/TextsNext/SkeletonText";
@@ -9,6 +7,8 @@ import {
   WidgetTitle,
 } from "../../components/WidgetSubcomponents";
 import * as Format from "../../format";
+import { O, pipe } from "../../fp";
+import { useNow } from "../../mainsite/hooks/use-now";
 import scrollbarStyles from "../../styles/Scrollbar.module.scss";
 import { getBeaconchainUrl } from "../config";
 
@@ -20,19 +20,12 @@ type Validator = {
 };
 
 const ValidatorRow = ({ insertedAt, index }: Validator) => {
-  const [now, setNow] = useState<Date | undefined>();
+  const now = useNow();
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setNow(new Date());
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [insertedAt]);
-
-  const registeredAgo =
-    now === undefined
-      ? undefined
-      : `${Format.formatDurationToNow(now, insertedAt)} ago`;
+  const registeredAgo = pipe(
+    now,
+    O.map((now) => `${Format.formatDurationToNow(now, insertedAt)} ago`),
+  );
 
   return (
     <a
@@ -51,7 +44,9 @@ const ValidatorRow = ({ insertedAt, index }: Validator) => {
         </div>
         <div className="text-right">
           <BaseText font="font-roboto">
-            <SkeletonText width="2rem">{registeredAgo}</SkeletonText>
+            <SkeletonText width="2rem">
+              {O.toUndefined(registeredAgo)}
+            </SkeletonText>
           </BaseText>
         </div>
       </li>

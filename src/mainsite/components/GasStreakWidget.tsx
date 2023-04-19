@@ -11,11 +11,11 @@ import {
 import { formatZeroDecimals } from "../../format";
 import { O, OAlt, pipe } from "../../fp";
 import type { DateTimeString } from "../../time";
-import { SECONDS_PER_SLOT } from "../../time";
 import {
   decodeGroupedAnalysis1,
   useGroupedAnalysis1,
 } from "../api/grouped-analysis-1";
+import { useNow } from "../hooks/use-now";
 import UltraSoundBarrier from "./UltraSoundBarrier";
 
 type SpanningAgeProps = {
@@ -24,19 +24,13 @@ type SpanningAgeProps = {
   startedOn: DateTimeString | undefined;
 };
 
-const SpanningAge: FC<SpanningAgeProps> = ({ isLoading, count, startedOn }) => {
+const SpanningAge: FC<SpanningAgeProps> = ({ isLoading, startedOn }) => {
+  const now = useNow();
   const startedOnO = pipe(startedOn, O.fromNullable, O.map(DateFns.parseISO));
-  const countO = O.fromNullable(count);
-  const nowByCount = pipe(
-    OAlt.sequenceTuple(startedOnO, countO),
-    O.map(([startedOn, count]) =>
-      DateFns.addSeconds(startedOn, count * SECONDS_PER_SLOT),
-    ),
-  );
   const formattedDistance = pipe(
-    OAlt.sequenceTuple(startedOnO, nowByCount),
-    O.map(([startedOn, nowByCount]) =>
-      DateFns.formatDistanceStrict(startedOn, nowByCount, {
+    OAlt.sequenceTuple(startedOnO, now),
+    O.map(([startedOn, now]) =>
+      DateFns.formatDistanceStrict(startedOn, now, {
         roundingMethod: "floor",
       }),
     ),
