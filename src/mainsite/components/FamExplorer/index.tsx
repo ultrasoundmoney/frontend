@@ -155,16 +155,7 @@ const FamExplorer: FC = () => {
       let y =
         (coordinates?.[key as keyof typeof coordinates]?.y || 0) / sizeFactor;
       if (x === 0 && y === 0) {
-        x =
-          (coordinates?.[
-            "/sprite-sheet-images/source_images/default_profile-images.png" as keyof typeof coordinates
-          ]?.x || 0) / sizeFactor;
-        x = properties?.width / sizeFactor - x;
-        y =
-          (coordinates?.[
-            "/sprite-sheet-images/source_images/default_profile-images.png" as keyof typeof coordinates
-          ]?.y || 0) / sizeFactor;
-        y = properties?.height / sizeFactor - y;
+        return { x: null, y: null };
       } else {
         // x is going right to left not left to right
         x = properties?.width / sizeFactor - x;
