@@ -3,15 +3,16 @@ import type { StaticImageData } from "next/legacy/image";
 import Image from "next/legacy/image";
 import type { ChangeEvent, FC } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useBaseFeePerGas } from "../../api/base-fee-per-gas";
-import { useEthPriceStats } from "../../api/eth-price-stats";
+import { BaseText } from "../../../components/Texts";
+import ToggleSwitch from "../../../components/ToggleSwitch";
 import { WEI_PER_GWEI } from "../../../eth-units";
 import { formatZeroDecimals } from "../../../format";
+import { O, pipe } from "../../../fp";
+import { useBaseFeePerGas } from "../../api/base-fee-per-gas";
+import { useEthPriceStats } from "../../api/eth-price-stats";
 import { useLocalStorage } from "../../hooks/use-local-storage";
 import useNotification from "../../hooks/use-notification";
 import { AmountUnitSpace } from "../Spacing";
-import { BaseText } from "../../../components/Texts";
-import ToggleSwitch from "../../../components/ToggleSwitch";
 import styles from "./AlarmInput.module.scss";
 import ethSvg from "./eth-slateus.svg";
 import gasSvg from "./gas-slateus.svg";
@@ -93,10 +94,11 @@ const AlarmInput: FC<AlarmInputProps> = ({
   );
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const roundedGasPriceGwei =
-    baseFeePerGas === undefined
-      ? undefined
-      : Math.round(baseFeePerGas.wei / WEI_PER_GWEI);
+  const roundedGasPriceGwei = pipe(
+    baseFeePerGas,
+    O.map((baseFeePerGas) => Math.round(baseFeePerGas.wei / WEI_PER_GWEI)),
+    O.toUndefined,
+  );
 
   const roundedEthPrice =
     ethPriceStats === undefined ? undefined : Math.round(ethPriceStats.usd);

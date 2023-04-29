@@ -37,8 +37,9 @@ export const absoluteUrlFromUrl = (domain: string, url: string): string =>
     : `${domain}${url}`;
 
 export type ApiError = {
-  type: "ApiError";
+  code: number;
   error: Error;
+  type: "ApiError";
 };
 
 export type ApiResult<A> = { data: A } | FetchError | ApiError;
@@ -76,19 +77,19 @@ export const fetchApiJson = async <A>(
       const error = new Error(
         `failed to fetch ${absoluteUrl}, status: ${res.status}, message: ${message}`,
       );
-      return { error, type: "ApiError" };
+      return { error, type: "ApiError", code: res.status };
     }
 
     const error = new Error(
       `failed to fetch ${absoluteUrl}, status: ${res.status}, json body, but no message, logging body.`,
     );
     console.error(body);
-    return { error, type: "ApiError" };
+    return { error, type: "ApiError", code: res.status };
   } catch {
     const error = new Error(
       `failed to fetch ${absoluteUrl}, status: ${res.status}, no body.`,
     );
-    return { error, type: "ApiError" };
+    return { error, type: "ApiError", code: res.status };
   }
 };
 

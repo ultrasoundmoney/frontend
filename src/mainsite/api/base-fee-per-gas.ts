@@ -2,9 +2,12 @@ import { secondsToMilliseconds } from "date-fns";
 import useSWR from "swr";
 import type { WeiNumber } from "../../eth-units";
 import type { DateTimeString } from "../../time";
-import type { ApiResult } from "../../fetchers";
-import { fetchApiJson } from "./fetchers";
+import type { ApiError, FetchError } from "../../fetchers";
+import { fetchApiJsonTE } from "../../fetchers";
 import { fetchJsonSwr } from "./fetchers";
+import type { TE } from "../../fp";
+import { O } from "../../fp";
+import { usmDomainFromEnv } from "../../config";
 
 export type BaseFeePerGas = {
   timestamp: DateTimeString;
@@ -16,15 +19,15 @@ export type BaseFeePerGas = {
 
 const url = "/api/v2/fees/base-fee-per-gas";
 
-export const fetchBaseFeePerGas = (): Promise<ApiResult<BaseFeePerGas>> =>
-  fetchApiJson<BaseFeePerGas>(url);
+export const fetchBaseFeePerGas = (): TE.TaskEither<
+  FetchError | ApiError,
+  BaseFeePerGas
+> => fetchApiJsonTE<BaseFeePerGas>(usmDomainFromEnv(), url);
 
-export const useBaseFeePerGas = (): BaseFeePerGas => {
+export const useBaseFeePerGas = (): O.Option<BaseFeePerGas> => {
   const { data } = useSWR<BaseFeePerGas>(url, fetchJsonSwr, {
     refreshInterval: secondsToMilliseconds(4),
   });
 
-  // We use an SWRConfig with fallback data for this hook.
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return data!;
+  return O.fromNullable(data);
 };

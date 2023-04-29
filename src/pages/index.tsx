@@ -4,7 +4,7 @@ import Head from "next/head";
 import Script from "next/script";
 import { SWRConfig } from "swr";
 import BasicErrorBoundary from "../components/BasicErrorBoundary";
-import { pipe, T, TAlt } from "../fp";
+import { pipe, T, TAlt, TEAlt } from "../fp";
 import type { BaseFeePerGasBarrier } from "../mainsite/api/barrier";
 import { fetchBaseFeePerGasBarrier } from "../mainsite/api/barrier";
 import type { BaseFeePerGas } from "../mainsite/api/base-fee-per-gas";
@@ -70,7 +70,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = pipe(
     TAlt.sequenceStructPar({
       "/api/fees/scarcity": fetchOrThrow(fetchScarcity),
       "/api/v2/fees/average-eth-prices": fetchOrThrow(fetchAverageEthPrice),
-      "/api/v2/fees/base-fee-per-gas": fetchOrThrow(fetchBaseFeePerGas),
+      "/api/v2/fees/base-fee-per-gas": pipe(fetchBaseFeePerGas(), TEAlt.unwrap),
       "/api/v2/fees/base-fee-per-gas-barrier": fetchOrThrow(
         fetchBaseFeePerGasBarrier,
       ),

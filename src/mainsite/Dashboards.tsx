@@ -61,16 +61,29 @@ const useGasPriceTitle = (defaultTitle: string) => {
   useEffect(() => {
     if (
       typeof window === "undefined" ||
-      baseFeePerGas === undefined ||
+      O.isNone(baseFeePerGas) ||
       ethPriceStats === undefined
     ) {
       return undefined;
     }
-    const gasFormatted = (baseFeePerGas.wei / WEI_PER_GWEI).toFixed(0);
-    const newTitle = `${gasFormatted} Gwei | $${formatZeroDecimals(
-      ethPriceStats.usd,
-    )} ${defaultTitle}`;
-    setGasTitle(newTitle);
+
+    pipe(
+      baseFeePerGas,
+      O.map((baseFeePerGas) => baseFeePerGas.wei / WEI_PER_GWEI),
+      O.map((baseFeePerGas) => baseFeePerGas.toFixed(0)),
+      O.map(
+        (gasFormatted) =>
+          `${gasFormatted} Gwei | $${formatZeroDecimals(
+            ethPriceStats.usd,
+          )} ${defaultTitle}`,
+      ),
+      O.match(
+        () => undefined,
+        (title) => {
+          setGasTitle(title);
+        },
+      ),
+    );
   }, [baseFeePerGas, defaultTitle, ethPriceStats]);
 
   return gasTitle;

@@ -3,14 +3,15 @@ import type { StaticImageData } from "next/legacy/image";
 import Image from "next/legacy/image";
 import type { FC, ReactNode } from "react";
 import CountUp from "react-countup";
+import { BaseText } from "../../../components/Texts";
+import SkeletonText from "../../../components/TextsNext/SkeletonText";
+import { WEI_PER_GWEI } from "../../../eth-units";
+import * as Format from "../../../format";
+import { O, pipe } from "../../../fp";
 import { useBaseFeePerGasBarrier } from "../../api/barrier";
 import { useBaseFeePerGas } from "../../api/base-fee-per-gas";
 import { useEthPriceStats } from "../../api/eth-price-stats";
-import { WEI_PER_GWEI } from "../../../eth-units";
-import * as Format from "../../../format";
 import { AmountUnitSpace } from "../Spacing";
-import { BaseText } from "../../../components/Texts";
-import SkeletonText from "../../../components/TextsNext/SkeletonText";
 import ethSvg from "./eth-slateus.svg";
 import gasSvg from "./gas-slateus.svg";
 
@@ -48,8 +49,13 @@ const PriceGasWidget: FC = () => {
       ? "text-red-400"
       : "text-green-400";
 
-  const gweiColor =
-    baseFeePerGas.wei > barrier ? "text-orange-400" : "text-blue-400";
+  const gweiColor = pipe(
+    baseFeePerGas,
+    O.map((baseFeePerGas) =>
+      baseFeePerGas.wei > barrier ? "text-orange-400" : "text-blue-400",
+    ),
+    O.getOrElse(() => ""),
+  );
 
   return (
     <PriceGasBoundary>
@@ -73,18 +79,22 @@ const PriceGasWidget: FC = () => {
           />
         </div>
         <BaseText font="font-roboto" weight="font-normal" className="pl-1">
-          {baseFeePerGas === undefined ? (
-            <SkeletonText width="0.5rem" />
-          ) : (
-            <CountUp
-              className={gweiColor}
-              decimals={0}
-              duration={0.8}
-              end={Format.gweiFromWei(baseFeePerGas.wei)}
-              preserveValue
-              separator=","
-              start={Format.gweiFromWei(baseFeePerGas.wei)}
-            />
+          {pipe(
+            baseFeePerGas,
+            O.match(
+              () => <SkeletonText width="0.5rem" />,
+              (baseFeePerGas) => (
+                <CountUp
+                  className={gweiColor}
+                  decimals={0}
+                  duration={0.8}
+                  end={Format.gweiFromWei(baseFeePerGas.wei)}
+                  preserveValue
+                  separator=","
+                  start={Format.gweiFromWei(baseFeePerGas.wei)}
+                />
+              ),
+            ),
           )}
           <AmountUnitSpace />
           <BaseText
