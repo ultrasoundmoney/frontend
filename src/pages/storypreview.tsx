@@ -12,6 +12,7 @@ import { fetchEthPriceStats } from "../mainsite/api/eth-price-stats";
 import * as Duration from "../duration";
 import type { BaseFeePerGasBarrier } from "../mainsite/api/barrier";
 import { fetchBaseFeePerGasBarrier } from "../mainsite/api/barrier";
+import { E } from "../fp";
 
 type StaticProps = {
   fallback: {
@@ -29,22 +30,22 @@ export const getStaticProps: GetStaticProps = async () => {
     ethPriceStats,
     baseFeePerGasStats,
   ] = await Promise.all([
-    fetchBaseFeePerGas(),
+    fetchBaseFeePerGas()(),
     fetchBaseFeePerGasBarrier(),
     fetchEthPriceStats(),
-    fetchBaseFeePerGas(),
+    fetchBaseFeePerGas()(),
   ]);
 
-  if ("error" in baseFeePerGas) {
-    throw baseFeePerGas.error;
+  if (E.isLeft(baseFeePerGas)) {
+    throw baseFeePerGas.left;
   }
 
   if ("error" in ethPriceStats) {
     throw ethPriceStats.error;
   }
 
-  if ("error" in baseFeePerGasStats) {
-    throw baseFeePerGasStats.error;
+  if (E.isLeft(baseFeePerGasStats)) {
+    throw baseFeePerGasStats.left;
   }
 
   if ("error" in baseFeePerGasBarrier) {
@@ -56,9 +57,9 @@ export const getStaticProps: GetStaticProps = async () => {
       baseFeePerGas,
       ethPriceStats,
       fallback: {
-        "/api/v2/fees/base-fee-per-gas": baseFeePerGas.data,
+        "/api/v2/fees/base-fee-per-gas": baseFeePerGas.right,
         "/api/v2/fees/base-fee-per-gas-barrier": baseFeePerGasBarrier.data,
-        "/api/v2/fees/base-fee-per-gas-stats": baseFeePerGasStats.data,
+        "/api/v2/fees/base-fee-per-gas-stats": baseFeePerGasStats.right,
         "/api/v2/fees/eth-price-stats": ethPriceStats.data,
       },
     },

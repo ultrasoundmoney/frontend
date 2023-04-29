@@ -167,9 +167,9 @@ const getTooltipFormatter = (
         <div class="text-right text-slateus-400">${formattedDate}</div>
         <div class="text-right text-slateus-400">${formattedTime}</div>
         <div class="flex justify-end mt-2">
-          <div class="bg-gradient-to-r bg-clip-text text-transparent ${gradientCss}">${total.toFixed(
-      2,
-    )}</div>
+          <div class="bg-gradient-to-r bg-clip-text text-transparent ${gradientCss}">
+            ${total.toFixed(2)}
+          </div>
           <div class="ml-1 font-roboto text-slateus-400">Gwei</div>
         </div>
       </div>

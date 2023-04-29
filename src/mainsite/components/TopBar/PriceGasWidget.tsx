@@ -69,7 +69,7 @@ const PriceGasWidget: FC = () => {
           lg:text-sm
         `}
       >
-        <div className="flex select-none items-center">
+        <div className="flex items-center select-none">
           <Image
             src={gasSvg as StaticImageData}
             alt="gas pump icon"
@@ -106,7 +106,7 @@ const PriceGasWidget: FC = () => {
           </BaseText>
         </BaseText>
         <div className="mr-4"></div>
-        <div className="flex select-none items-center">
+        <div className="flex items-center select-none">
           <Image
             className="select-none"
             src={ethSvg as StaticImageData}
