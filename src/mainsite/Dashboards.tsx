@@ -26,10 +26,10 @@ import { useTwitterAuthStatus } from "./hooks/use-twitter-auth";
 import FamSection from "./sections/FamSection";
 import GasSection from "./sections/GasSection";
 import JoinDiscordSection from "./sections/JoinDiscordSection";
-import PoapSection from "./sections/PoapSection";
 import SupplyDashboard from "./sections/SupplyDashboard";
 import AdminTools from "../components/AdminTools";
 import * as SharedConfig from "../config";
+import { O, pipe } from "../fp";
 
 // We get hydration errors in production.
 // It's hard to tell what component causes them due to minification.
@@ -216,10 +216,6 @@ const Dashboard: FC = () => {
           <TotalValueSecuredSection />
           <MonetaryPremiumSection />
           <FamSection />
-          <PoapSection
-            setTwitterAuthStatus={setTwitterAuthStatus}
-            twitterAuthStatus={twitterAuthStatus}
-          />
           <JoinDiscordSection
             setTwitterAuthStatus={setTwitterAuthStatus}
             twitterAuthStatus={twitterAuthStatus}
