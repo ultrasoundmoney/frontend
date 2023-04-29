@@ -15,20 +15,20 @@ type ContactProps = {
 };
 
 const Contact: FC<ContactProps> = ({ alt, imageSrc, href, children }) => (
-  <div className="flex items-center gap-2">
+  <div className="flex gap-2 items-center">
     <div className="flex w-5">
       <Image alt={alt} src={imageSrc} />
     </div>
-    <DefaultTextLink className="flex items-center gap-x-2" href={href}>
+    <DefaultTextLink className="flex gap-x-2 items-center" href={href}>
       {children}
     </DefaultTextLink>
   </div>
 );
 
 const ContactSection: FC = () => (
-  <section className="flex w-full flex-col items-center pb-40">
+  <section className="flex flex-col items-center py-32 w-full">
     <SectionDivider title="still have questions?" />
-    <div className="flex flex-col justify-start gap-y-4">
+    <div className="flex flex-col gap-y-4 justify-start">
       <Contact
         alt="twitter logo"
         imageSrc={twitterSvg as StaticImageData}

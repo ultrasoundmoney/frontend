@@ -12,9 +12,9 @@ const JoinDiscordSection: FC<{
   const id: AuthFromSection = "discord";
 
   return (
-    <section className="mt-16 px-4 md:px-16" id={id}>
+    <section className="px-4 mt-32 md:px-16" id={id}>
       <SectionTitle
-        className="py-16"
+        className="py-32"
         link="discord"
         highlightGradient="bg-gradient-to-br from-indigo-400 to-indigo-700"
         highlightPhrase="Discord"

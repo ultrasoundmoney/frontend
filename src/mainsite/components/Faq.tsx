@@ -40,11 +40,11 @@ const FaqBlock: React.FC = () => {
       data-aos-easing="ease-in-out"
       id="faq"
     >
-      <div className="max-w-3xl md:m-auto md:px-4 lg:px-0 ">
-        <div className="block pb-8">
+      <div className="max-w-3xl md:px-4 md:m-auto lg:px-0">
+        <div className="block py-32">
           <SectionTitle>q&a</SectionTitle>
         </div>
-        <div className="w-full px-4 md:px-8 lg:px-0">
+        <div className="px-4 w-full md:px-8 lg:px-0">
           <Accordion title={t.faq_question_1} text={t.faq_answer_1} />
           <div
             className="w-full bg-slateus-400"
