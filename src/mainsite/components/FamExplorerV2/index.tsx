@@ -1,4 +1,4 @@
-import type { FC, RefObject } from "react";
+import type { FC, ReactNode, RefObject } from "react";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { usePopper } from "react-popper";
 import type { ReactZoomPanPinchRef } from "react-zoom-pan-pinch";
@@ -19,6 +19,8 @@ import ClickAwayListener from "react-click-away-listener";
 import SpriteWithOnClickTooltip from "../../../components/SpriteWithOnClickTooltip";
 import followingYouStyles from "../FollowingYou/FollowingYou.module.scss";
 import ControlButtons from "./ControlButtons";
+import WidgetBase from "../../../relay/components/WidgetBase";
+import BodyTextV3 from "../../../components/TextsNext/BodyTextV3";
 
 // See if merging with leaderboards tooltip makes sense after making it more generic.
 export const useTooltip = () => {
@@ -104,7 +106,7 @@ export const useTooltip = () => {
   };
 };
 
-const FamExplorer: FC = () => {
+const FamExplorerV2: FC = () => {
   const profiles = useProfiles()?.profiles;
   const { coordinates, properties } = useSpriteSheet() || {};
 
@@ -440,4 +442,41 @@ const FamExplorer: FC = () => {
   );
 };
 
-export default FamExplorer;
+const Button: FC<{ children: ReactNode; onClick: () => void }> = ({
+  children,
+  onClick,
+}) => (
+  <button
+    className={`
+      flex select-none gap-x-2 self-center
+      rounded-full
+      border
+      border-slateus-200 bg-slateus-600 py-1.5
+      px-3 outline-slateus-200 hover:brightness-110
+      active:brightness-90
+      md:py-2
+    `}
+    onClick={onClick}
+  >
+    <BodyTextV3>{children}</BodyTextV3>
+  </button>
+);
+
+const FamExplorerPlaceholder: FC<{ onClick: () => void }> = ({ onClick }) => (
+  <WidgetBase className="w-full min-h-[696px]" title="fam explorer">
+    <div className="flex justify-center my-auto">
+      <Button onClick={onClick}>load explorer</Button>
+    </div>
+  </WidgetBase>
+);
+
+const FamExplorerLoader = () => {
+  const [isFamExplorerRequested, setIsFamExplorerRequested] = useState(false);
+  return isFamExplorerRequested ? (
+    <FamExplorerV2 />
+  ) : (
+    <FamExplorerPlaceholder onClick={() => setIsFamExplorerRequested(true)} />
+  );
+};
+
+export default FamExplorerLoader;
