@@ -192,14 +192,30 @@ const EquilibriumWidget = () => {
     setNonStakingBurnFraction(
       burnAsFraction(nonStakedSupply, burnRates.since_burn.rate.eth_per_minute),
     );
+
+    // Ugly fix, clamp the staking apr to the range of the slider. Max only.
+    // Burn rate can't go below zero. Consider composing something with the
+    // overlap filter that happens in BurnMarkers.
+    const clampBurnRateAsFraction = (value: number) =>
+      Math.min(value, BURN_RATE_MAX);
+
     setBurnMarkers({
-      all: burnAsFraction(
-        nonStakedSupply,
-        burnRates.since_burn.rate.eth_per_minute,
+      // Let's be _really_ optimistic here. We probably don't have to clamp this.
+      all: clampBurnRateAsFraction(
+        burnAsFraction(
+          nonStakedSupply,
+          burnRates.since_burn.rate.eth_per_minute,
+        ),
       ),
-      d1: burnAsFraction(nonStakedSupply, burnRates.d1.rate.eth_per_minute),
-      d30: burnAsFraction(nonStakedSupply, burnRates.d30.rate.eth_per_minute),
-      d7: burnAsFraction(nonStakedSupply, burnRates.d7.rate.eth_per_minute),
+      d1: clampBurnRateAsFraction(
+        burnAsFraction(nonStakedSupply, burnRates.d1.rate.eth_per_minute),
+      ),
+      d30: clampBurnRateAsFraction(
+        burnAsFraction(nonStakedSupply, burnRates.d30.rate.eth_per_minute),
+      ),
+      d7: clampBurnRateAsFraction(
+        burnAsFraction(nonStakedSupply, burnRates.d7.rate.eth_per_minute),
+      ),
       ultrasound: getIssuancePerYear(staked) / nonStakedSupply,
     });
   }, [
