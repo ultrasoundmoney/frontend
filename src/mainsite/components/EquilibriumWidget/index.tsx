@@ -83,7 +83,7 @@ const STAKING_MAX = 0.05;
 const STAKING_RANGE = STAKING_MAX - STAKING_MIN;
 
 const BURN_RATE_MIN = 0.0;
-const BURN_RATE_MAX = 0.04;
+const BURN_RATE_MAX = 0.045;
 const BURN_RATE_RANGE = BURN_RATE_MAX - BURN_RATE_MIN;
 
 type BurnMarkers = {
@@ -196,6 +196,7 @@ const EquilibriumWidget = () => {
     // Ugly fix, clamp the staking apr to the range of the slider. Max only.
     // Burn rate can't go below zero. Consider composing something with the
     // overlap filter that happens in BurnMarkers.
+    // It'd be nice to visually indicate a marker has broken the max.
     const clampBurnRateAsFraction = (value: number) =>
       Math.min(value, BURN_RATE_MAX);
 
