@@ -57,14 +57,12 @@ const ValidatorRow = ({ insertedAt, index }: Validator) => {
 type Props = {
   validatorCount: number;
   knownValidatorCount: number;
-  recipientCount: number;
   validators: Array<Validator>;
 };
 
 const ValidatorWidget: FC<Props> = ({
   validatorCount,
   knownValidatorCount,
-  recipientCount,
   validators,
 }) => {
   const percentageOfValidators = Format.formatPercentTwoDecimals(
@@ -76,7 +74,7 @@ const ValidatorWidget: FC<Props> = ({
       <WidgetBackground>
         <LabelText>registrations</LabelText>
         <p className="mt-4 text-3xl font-extralight tracking-wide">
-          <span className="text-white font-inter">
+          <span className="font-inter text-white">
             {Format.formatZeroDecimals(validatorCount)}
           </span>
           <span> </span>
@@ -92,12 +90,6 @@ const ValidatorWidget: FC<Props> = ({
           <div>
             <span className="text-slateus-200">{percentageOfValidators}</span>
             <span> of&nbsp;validators</span>
-          </div>
-          <div>
-            <span className="text-slateus-200">
-              {Format.formatZeroDecimals(recipientCount)}
-            </span>
-            <span> fee&nbsp;recipients</span>
           </div>
         </div>
       </WidgetBackground>

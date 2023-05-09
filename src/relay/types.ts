@@ -22,7 +22,6 @@ export type Validator = {
 export type ValidatorStats = {
   validatorCount: number;
   knownValidatorCount: number;
-  recipientCount: number;
 };
 
 export type Builder = {

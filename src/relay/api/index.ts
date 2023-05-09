@@ -72,11 +72,10 @@ export const fetchValidatorStats = (): Promise<ValidatorStats> =>
   fetch(`${getDomain()}/api/validators/stats`)
     .then((res) => res.json() as Promise<ValidatorStats>)
     .then(
-      ({ validatorCount, knownValidatorCount, recipientCount }) =>
+      ({ validatorCount, knownValidatorCount }) =>
         ({
           validatorCount,
           knownValidatorCount,
-          recipientCount,
         } as ValidatorStats),
     )
     .catch((err) => {
@@ -84,7 +83,6 @@ export const fetchValidatorStats = (): Promise<ValidatorStats> =>
       return {
         validatorCount: 0,
         knownValidatorCount: 0,
-        recipientCount: 0,
       };
     });
 
