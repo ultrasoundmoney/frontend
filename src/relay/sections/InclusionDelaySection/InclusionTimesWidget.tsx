@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { useReducer } from "react";
+import { useReducer, Fragment } from "react";
 import Skeleton from "react-loading-skeleton";
 import type { TimeFrame } from "../../../mainsite/time-frames";
 import type { StaticImageData } from "next/image";
@@ -175,7 +175,7 @@ const CategoryBar: FC<{
     <div className="absolute w-full h-2 rounded-full color-animation bg-slateus-600"></div>
     <div className="flex top-0 left-0 z-10 flex-row items-center w-full">
       {categories.map((category, index) => (
-        <>
+        <Fragment key={category.name}>
           <CategorySegment
             key={category.name}
             rounded={
@@ -193,7 +193,7 @@ const CategoryBar: FC<{
               key={`separator-${index}`}
             ></div>
           )}
-        </>
+        </Fragment>
       ))}
     </div>
   </div>
