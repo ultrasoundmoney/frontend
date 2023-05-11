@@ -176,6 +176,9 @@ const SupplyChange: FC<Props> = ({
                     ),
                   )}
                 </QuantifyText>
+                <LabelText className="xl:text-right w-[56.32px]">
+                  issued
+                </LabelText>
               </div>
               <div className="flex gap-x-2 justify-between w-full">
                 {/* Image component complains that its height doesn't match its width when it's not wrapped in a div */}
@@ -209,6 +212,7 @@ const SupplyChange: FC<Props> = ({
                     ),
                   )}
                 </QuantifyText>
+                <LabelText>burned</LabelText>
               </div>
             </div>
           </div>
