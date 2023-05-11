@@ -1,4 +1,5 @@
 import type { FC, ReactNode } from "react";
+import type { FontWeight } from "../Texts";
 import { BaseText } from "../Texts";
 
 type Props = {
@@ -12,6 +13,7 @@ type Props = {
   unitPostfix?: string;
   unitPostfixColor?: string;
   unitPostfixMargin?: string;
+  weight?: FontWeight;
 };
 
 const QuantifyText: FC<Props> = ({
@@ -25,6 +27,7 @@ const QuantifyText: FC<Props> = ({
   unitPostfix,
   unitPostfixColor = "text-slateus-200",
   unitPostfixMargin = "ml-1",
+  weight,
 }) => (
   <BaseText
     className={className}
@@ -33,6 +36,7 @@ const QuantifyText: FC<Props> = ({
     lineHeight={lineHeight}
     size={size}
     tooltip={tooltip}
+    weight={weight || size === "text-xs" ? "font-normal" : undefined}
   >
     {children}
     {amountPostfix}
@@ -42,6 +46,7 @@ const QuantifyText: FC<Props> = ({
         color={unitPostfixColor}
         className={unitPostfixMargin}
         size={size}
+        weight={weight || size === "text-xs" ? "font-normal" : undefined}
       >
         {unitPostfix}
       </BaseText>

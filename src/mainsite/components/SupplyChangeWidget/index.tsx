@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import CountUp from "react-countup";
 import dropSvg from "../../../assets/droplet-own.svg";
 import fireSvg from "../../../assets/fire-own.svg";
+import BodyTextV3 from "../../../components/TextsNext/BodyTextV3";
 import LabelText from "../../../components/TextsNext/LabelText";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
 import SkeletonText from "../../../components/TextsNext/SkeletonText";
@@ -139,48 +140,8 @@ const SupplyChange: FC<Props> = ({
                 ),
               )}
             </QuantifyText>
-            <div className="flex flex-col items-start md:items-end lg:items-start xl:items-end w-fit">
-              <div className="flex gap-x-2">
-                {/* Image component complains that its height doesn't match its width when it's not wrapped in a div */}
-                <div>
-                  <Image
-                    alt="drop icon signifying issued ETH"
-                    height={15}
-                    priority
-                    src={dropSvg as StaticImageData}
-                    width={15}
-                  />
-                </div>
-                <QuantifyText
-                  size="text-xs"
-                  unitPostfix={"ETH"}
-                  unitPostfixColor="text-slateus-200"
-                >
-                  {pipe(
-                    supplyChanges,
-                    O.match(
-                      () => <SkeletonText width="4rem" />,
-                      (supplyChanges) => (
-                        <CountUp
-                          decimals={2}
-                          duration={0.8}
-                          end={
-                            supplyChanges[timeFrame].issued[
-                              simulateProofOfWork ? "pow" : "pos"
-                            ].eth
-                          }
-                          preserveValue
-                          separator=","
-                        />
-                      ),
-                    ),
-                  )}
-                </QuantifyText>
-                <LabelText className="xl:text-right w-[56.32px]">
-                  issued
-                </LabelText>
-              </div>
-              <div className="flex gap-x-2 justify-between w-full">
+            <div className="flex flex-col items-end w-fit">
+              <div className="flex gap-x-2 items-center">
                 {/* Image component complains that its height doesn't match its width when it's not wrapped in a div */}
                 <div>
                   <Image
@@ -193,6 +154,7 @@ const SupplyChange: FC<Props> = ({
                 </div>
                 <QuantifyText
                   size="text-xs"
+                  weight="font-medium"
                   unitPostfix="ETH"
                   unitPostfixColor="text-slateus-200"
                 >
@@ -212,7 +174,51 @@ const SupplyChange: FC<Props> = ({
                     ),
                   )}
                 </QuantifyText>
-                <LabelText>burned</LabelText>
+                <BodyTextV3 className="-ml-1" size="text-xs">
+                  burned
+                </BodyTextV3>
+              </div>
+              <div className="flex gap-x-2 justify-between items-center w-full">
+                {/* Image component complains that its height doesn't match its width when it's not wrapped in a div */}
+                <div>
+                  <Image
+                    alt="drop icon signifying issued ETH"
+                    height={15}
+                    priority
+                    src={dropSvg as StaticImageData}
+                    width={15}
+                  />
+                </div>
+                <div className="flex gap-x-2 items-baseline">
+                  <QuantifyText
+                    size="text-xs"
+                    unitPostfix={"ETH"}
+                    unitPostfixColor="text-slateus-200"
+                  >
+                    {pipe(
+                      supplyChanges,
+                      O.match(
+                        () => <SkeletonText width="4rem" />,
+                        (supplyChanges) => (
+                          <CountUp
+                            decimals={2}
+                            duration={0.8}
+                            end={
+                              supplyChanges[timeFrame].issued[
+                                simulateProofOfWork ? "pow" : "pos"
+                              ].eth
+                            }
+                            preserveValue
+                            separator=","
+                          />
+                        ),
+                      ),
+                    )}
+                  </QuantifyText>
+                  <BodyTextV3 className="-ml-1 w-[39.84px]" size="text-xs">
+                    issued
+                  </BodyTextV3>
+                </div>
               </div>
             </div>
           </div>
