@@ -51,6 +51,7 @@ type StaticProps = {
 };
 
 // Either throw or return the data contained in the ApiResult.
+// Better would be to receive a TaskEither from the fetcher.
 function fetchOrThrow<A>(fn: T.Task<ApiResult<A>>) {
   return pipe(
     fn,
