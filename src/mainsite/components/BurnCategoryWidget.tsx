@@ -409,7 +409,7 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
           // We disable a few time frames which are waiting on backend fixes.
           // This could be done more cleanly. First gather time frame and data
           // pairs then map the one where data is not unavailable.
-          if (["m5", "since_burn"].includes(timeFrame)) {
+          if (["m5"].includes(timeFrame)) {
             return [timeFrame, O.none] as [
               TimeFrame,
               O.Option<CategoryProps[]>,
