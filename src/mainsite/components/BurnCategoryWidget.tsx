@@ -578,10 +578,10 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                   <LabelText>category</LabelText>
                   <div
                     className={`
-                  text-right
-                  ${showCategoryCounts ? "col-span-1" : "col-span-1"}
-                  ${showCategoryCounts ? "md:mr-8" : ""}
-                `}
+                      text-right
+                      ${showCategoryCounts ? "col-span-1" : "col-span-1"}
+                      ${showCategoryCounts ? "md:mr-8" : ""}
+                    `}
                   >
                     <LabelText>burn</LabelText>
                   </div>
