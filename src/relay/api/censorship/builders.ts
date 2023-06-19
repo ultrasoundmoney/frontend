@@ -15,7 +15,7 @@ import {
   T,
   TEAlt,
 } from "../../../fp";
-import { fetchApiJsonTE } from "../../fetchers";
+import { fetchCensorshipApiJsonTE } from "../../fetchers";
 import type {
   BuilderCensorship,
   BuilderGroup,
@@ -205,7 +205,9 @@ const builderCensorshipFromRaws = flow(
 
 export const fetchBuilderCensorshipPerTimeFrame: T.Task<BuilderCensorshipPerTimeFrame> =
   pipe(
-    fetchApiJsonTE<BuilderCensorshipResponse>("/api/censorship/builders-v2"),
+    fetchCensorshipApiJsonTE<BuilderCensorshipResponse>(
+      "/api/censorship/builders-v2",
+    ),
     TEAlt.unwrap,
     T.map((body) => ({
       d7: builderCensorshipFromRaws(body.sevenDays),

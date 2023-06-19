@@ -12,6 +12,19 @@ export const getDomain = () => {
   }
 };
 
+// Use prod api for censorship data on staging since we don't have the data for goerli
+export const getCensorshipDomain = () => {
+  const apiEnv = SharedConfig.apiEnvFromEnv();
+  switch (apiEnv) {
+    case "dev":
+      return "http://relay.localhost:3000";
+    case "stag":
+      return "https://relay.ultrasound.money";
+    case "prod":
+      return "https://relay.ultrasound.money";
+  }
+};
+
 export const getRelayUrl = () => {
   const env = SharedConfig.envFromEnv();
   switch (env) {

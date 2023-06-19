@@ -14,6 +14,10 @@ export const fetchApiJsonTE = <A>(
 ): TE.TaskEither<FetchError | ApiError, A> =>
   fetchApiJsonTEShared<A>(RelayConfig.getDomain(), url);
 
+// We only have censorship data for mainnet, so use prod API on staging
+export const fetchCensorshipApiJsonTE = <A>(url: string) =>
+  fetchApiJsonTEShared<A>(RelayConfig.getCensorshipDomain(), url);
+
 // Swr wants us to throw, but we don't like throwing, so we write code that
 // doesn't throw, and add a wrapper for swr which does.
 export const fetchJsonSwr = async <A>(url: string): Promise<A> => {

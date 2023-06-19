@@ -4,7 +4,7 @@ import type {
   InclusionTime,
 } from "../../sections/InclusionDelaySection/InclusionTimesWidget";
 import type { RelayApiTimeFrames } from "../time_frames";
-import { fetchApiJsonTE } from "../../fetchers";
+import { fetchCensorshipApiJsonTE } from "../../fetchers";
 
 type InclusionTimeRaw = {
   avgBlockDelay: number;
@@ -85,7 +85,9 @@ const getInclusionTimes = (rawData: InclusionTimeRaw[]): InclusionTime[] => {
 };
 
 export const fetchInclusionTimesPerTimeFrame = pipe(
-  fetchApiJsonTE<DelayCategoriesRaw>("/api/censorship/delay-categories"),
+  fetchCensorshipApiJsonTE<DelayCategoriesRaw>(
+    "/api/censorship/delay-categories",
+  ),
   TEAlt.unwrap,
   T.map((body) => ({
     d7: getInclusionTimes(body.sevenDays),

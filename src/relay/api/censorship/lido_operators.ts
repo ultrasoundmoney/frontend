@@ -4,7 +4,7 @@ import type {
   Operator,
 } from "../../sections/CensorshipSection/LidoOperatorCensorshipWidget";
 import lidoOperatorDetailsMapSource from "./lido_operators_details_map.json";
-import { fetchApiJsonTE } from "../../fetchers";
+import { fetchCensorshipApiJsonTE } from "../../fetchers";
 import { fetchRelayCensorshipPerTimeFrame } from "./relays";
 import type { RelayCensorship } from "../../sections/CensorshipSection/RelayCensorshipWidget";
 
@@ -125,7 +125,7 @@ export const fetchLidoOperatorCensorshipPerTimeFrame: T.Task<LidoOperatorCensors
     T.apS(
       "lidoOperatorRaws",
       pipe(
-        fetchApiJsonTE<OperatorRaw[]>("/api/censorship/operators"),
+        fetchCensorshipApiJsonTE<OperatorRaw[]>("/api/censorship/operators"),
         TEAlt.unwrap,
       ),
     ),

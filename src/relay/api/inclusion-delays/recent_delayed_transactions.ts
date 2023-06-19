@@ -1,6 +1,6 @@
 import type { SuboptimalTransaction } from "../../sections/InclusionDelaySection/SuboptimalInclusionsWidget";
 import { A, pipe, T, TEAlt } from "../../../fp";
-import { fetchApiJsonTE } from "../../fetchers";
+import { fetchCensorshipApiJsonTE } from "../../fetchers";
 
 export type RecentDelayedTransactionsPerTimeFrame = Record<
   "d7" | "d30",
@@ -9,7 +9,7 @@ export type RecentDelayedTransactionsPerTimeFrame = Record<
 
 export const fetchRecentDelayedTransactionsPerTimeFrame: T.Task<RecentDelayedTransactionsPerTimeFrame> =
   pipe(
-    fetchApiJsonTE<SuboptimalTransaction[]>(
+    fetchCensorshipApiJsonTE<SuboptimalTransaction[]>(
       "/api/censorship/recent-delayed-txs",
     ),
     TEAlt.unwrap,

@@ -1,6 +1,6 @@
 import type { DateTimeString } from "../../../time";
 import { A, N, pipe, T, TEAlt } from "../../../fp";
-import { fetchApiJsonTE } from "../../fetchers";
+import { fetchCensorshipApiJsonTE } from "../../fetchers";
 import type {
   CensoredTransaction,
   TransactionCensorship,
@@ -81,7 +81,7 @@ const isTransactionLessThanSevenDaysOld = (transaction: TransactionRaw) =>
 
 export const fetchTransactionCensorshipPerTimeFrame: T.Task<TransactionCensorshipPerTimeFrame> =
   pipe(
-    fetchApiJsonTE<TransactionRaw[]>("/api/censorship/censored-txs"),
+    fetchCensorshipApiJsonTE<TransactionRaw[]>("/api/censorship/censored-txs"),
     TEAlt.unwrap,
     T.map((body) => ({
       d7: pipe(

@@ -3,7 +3,7 @@ import type {
   Relay,
   RelayCensorship,
 } from "../../sections/CensorshipSection/RelayCensorshipWidget";
-import { fetchApiJsonTE } from "../../fetchers";
+import { fetchCensorshipApiJsonTE } from "../../fetchers";
 import type { RelayApiTimeFrames } from "../time_frames";
 
 type RelayId = string;
@@ -99,7 +99,7 @@ export const getRelayCensorship = (rawRelays: RelayRaw[]): RelayCensorship => {
 
 export const fetchRelayCensorshipPerTimeFrame: T.Task<RelayCensorshipPerTimeFrame> =
   pipe(
-    fetchApiJsonTE<RawData>("/api/censorship/relays"),
+    fetchCensorshipApiJsonTE<RawData>("/api/censorship/relays"),
     TEAlt.unwrap,
     T.map((body) => ({
       d7: getRelayCensorship(body.sevenDays),

@@ -1,5 +1,5 @@
 import { pipe } from "fp-ts/lib/function";
-import { fetchApiJsonTE } from "../../fetchers";
+import { fetchCensorshipApiJsonTE } from "../../fetchers";
 import type { RelayApiTimeFrames } from "../time_frames";
 import { T, TEAlt } from "../../../fp";
 import type { SanctionsDelay } from "../../sections/CensorshipSection/SanctionsDelayWidget";
@@ -30,7 +30,7 @@ type RawData = Record<RelayApiTimeFrames, SanctionsDelayRaw[]>;
 
 export const fetchSanctionsDelayPerTimeFrame: T.Task<SanctionsDelayPerTimeFrame> =
   pipe(
-    fetchApiJsonTE<RawData>("/api/censorship/censorship-categories"),
+    fetchCensorshipApiJsonTE<RawData>("/api/censorship/censorship-categories"),
     TEAlt.unwrap,
     T.map((body) => ({
       d7: sanctionsDelayFromRaws(body.sevenDays),
