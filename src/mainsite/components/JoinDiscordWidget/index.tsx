@@ -21,7 +21,7 @@ import discordLogo from "./discord-logo.png";
 import logoTwitterWhite from "./logo-twitter-white.svg";
 
 const LoadingText: FC<{ children: ReactNode }> = ({ children }) => (
-  <BodyTextV2 className="animate-pulse text-white">{children}</BodyTextV2>
+  <BodyTextV2 className="text-white animate-pulse">{children}</BodyTextV2>
 );
 
 const PositiveText: FC<{ children: ReactNode }> = ({ children }) => (
@@ -29,7 +29,7 @@ const PositiveText: FC<{ children: ReactNode }> = ({ children }) => (
 );
 
 const NegativeText: FC<{ children: ReactNode }> = ({ children }) => (
-  <BodyTextV2 className="whitespace-nowrap text-red-400">{children}</BodyTextV2>
+  <BodyTextV2 className="text-red-400 whitespace-nowrap">{children}</BodyTextV2>
 );
 
 // Dummy item to fix baseline alignment between sections on md
@@ -141,19 +141,19 @@ const JoinDiscordWidget: FC<{
   }, [setTwitterAuthStatus, setDiscordUsername, setQueueStatus]);
 
   return (
-    <WidgetBackground className="flex max-w-3xl flex-col gap-y-8 md:mx-auto">
-      <div className="relative flex items-center justify-between">
+    <WidgetBackground className="flex flex-col gap-y-8 max-w-3xl md:mx-auto">
+      <div className="flex relative justify-between items-center">
         <LabelText>join discord queue</LabelText>
-        <div className="w-10 select-none md:absolute md:-right-12 md:-top-12 md:w-16">
+        <div className="w-10 select-none md:absolute md:-top-12 md:-right-12 md:w-16">
           <Image
             alt="the discord logo, a community communication app"
             src={discordLogo}
           />
         </div>
       </div>
-      <div className="flex flex-col gap-y-8 md:flex-row md:justify-between md:gap-x-8">
+      <div className="flex flex-col gap-y-8 md:flex-row md:gap-x-8 md:justify-between">
         <div className="flex flex-col gap-y-4 md:w-1/2">
-          <div className="flex items-baseline justify-between">
+          <div className="flex justify-between items-baseline">
             <LabelText>your twitter</LabelText>
             <TwitterStatusText status={twitterAuthStatus} />
           </div>
@@ -217,7 +217,7 @@ const JoinDiscordWidget: FC<{
               }
             `}
         >
-          <div className="flex items-baseline justify-between gap-x-1">
+          <div className="flex gap-x-1 justify-between items-baseline">
             <LabelText className="truncate">your discord handle</LabelText>
             <DiscordStatusText status={queueStatus} />
           </div>
