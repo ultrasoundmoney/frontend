@@ -249,7 +249,7 @@ const JoinDiscordWidget: FC<{
                   md:text-base
                 `}
               onChange={handleDiscordInputChange}
-              pattern="^\d{16}|.{2,32}#\d{4}$"
+              pattern="^\d{16}|[a-z0-9_.]{2,32}|.{2,32}#\d{4}$"
               placeholder="discord_user#1559"
               required
               spellCheck="false"
