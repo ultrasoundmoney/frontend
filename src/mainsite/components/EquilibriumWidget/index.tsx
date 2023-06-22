@@ -182,8 +182,8 @@ const EquilibriumWidget = () => {
       return;
     }
 
-    const initialStakingApr = getIssuanceApr(effectiveBalanceSum);
-    const staked = effectiveBalanceSum / 1e9;
+    const initialStakingApr = getIssuanceApr(effectiveBalanceSum.sum);
+    const staked = effectiveBalanceSum.sum / 1e9;
     const nonStakedSupply = ethSupply - staked;
 
     setInitialEquilibriumInputsSet(true);
