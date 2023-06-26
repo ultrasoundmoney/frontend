@@ -1,25 +1,19 @@
 import useSWR from "swr";
+import type { GweiNumber } from "../../eth-units";
 import type { DateTimeString } from "../../time";
 import { fetchJsonSwr } from "./fetchers";
 
-export type EffectiveBalanceSum = number;
-export type EffectiveBalanceSumNext = {
+export type EffectiveBalanceSum = {
+  slot: number;
+  sum: GweiNumber;
   timestamp: DateTimeString;
-  sum: EffectiveBalanceSum;
 };
 
-export const useEffectiveBalanceSum = ():
-  | EffectiveBalanceSumNext
-  | undefined => {
-  const { data } = useSWR<EffectiveBalanceSum | EffectiveBalanceSumNext>(
+export const useEffectiveBalanceSum = (): EffectiveBalanceSum | undefined => {
+  const { data } = useSWR<EffectiveBalanceSum>(
     `/api/fees/effective-balance-sum`,
     fetchJsonSwr,
   );
 
-  const effectiveBalanceSum =
-    typeof data === "number"
-      ? { timestamp: new Date().toISOString(), sum: data }
-      : data;
-
-  return effectiveBalanceSum;
+  return data;
 };
