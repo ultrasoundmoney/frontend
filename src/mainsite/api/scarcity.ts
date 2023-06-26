@@ -1,33 +1,34 @@
 import JSBI from "jsbi";
 import useSWR from "swr";
 import * as Duration from "../../duration";
+import type { EthNumber, WeiJSBI } from "../../eth-units";
 import type { ApiResult } from "../../fetchers";
 import { fetchApiJson, fetchJsonSwr } from "./fetchers";
 
 export type Scarcity = {
   engines: {
     burned: {
-      amount: JSBI;
+      amount: WeiJSBI;
       name: string;
       startedOn: Date;
     };
     locked: {
-      amount: number;
+      amount: EthNumber;
       name: string;
       startedOn: Date;
     };
     staked: {
-      amount: JSBI;
+      amount: WeiJSBI;
       name: string;
       startedOn: Date;
     };
   };
-  ethSupply: JSBI;
+  ethSupply: WeiJSBI;
   number: number;
 };
 
 // BigInt string that uses our server-side encoding of numbers + 'n', i.e. '7825428883900n'
-type BigIntString = string;
+type WeiString = string;
 
 const jsbiFromBigIntString = (str: string): JSBI =>
   JSBI.BigInt(str.slice(0, -1));
@@ -35,22 +36,22 @@ const jsbiFromBigIntString = (str: string): JSBI =>
 export type ScarcityF = {
   engines: {
     burned: {
-      amount: BigIntString;
+      amount: WeiString;
       name: string;
       startedOn: Date;
     };
     locked: {
-      amount: number;
+      amount: EthNumber;
       name: string;
       startedOn: Date;
     };
     staked: {
-      amount: BigIntString;
+      amount: WeiString;
       name: string;
       startedOn: Date;
     };
   };
-  ethSupply: BigIntString;
+  ethSupply: WeiString;
   number: number;
 };
 
