@@ -11,7 +11,7 @@ export type EffectiveBalanceSum = {
 
 export const useEffectiveBalanceSum = (): EffectiveBalanceSum | undefined => {
   const { data } = useSWR<EffectiveBalanceSum>(
-    `/api/fees/effective-balance-sum`,
+    `/api/v2/fees/effective-balance-sum`,
     fetchJsonSwr,
   );
 
