@@ -37,7 +37,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
   showHighlight,
 }) => (
   <div
-    className="flex select-none flex-col items-center"
+    className="flex flex-col items-center select-none"
     style={{
       width: `${(percentOfTotalRewards ?? skeletonLoadingWidth) * 100}%`,
     }}
@@ -139,7 +139,7 @@ const IssuanceRow: FC<IssuanceRowProps> = ({
   setHovering,
 }) => (
   <a
-    className="link-animation grid grid-cols-2"
+    className="grid grid-cols-2 link-animation"
     onMouseEnter={() => setHovering?.(true)}
     onMouseLeave={() => setHovering?.(false)}
     style={{ opacity: hovering ? 0.6 : 1 }}
@@ -148,7 +148,7 @@ const IssuanceRow: FC<IssuanceRowProps> = ({
     rel="noreferrer"
   >
     <BodyText>{name}</BodyText>
-    <MoneyAmount className="text-right font-light">
+    <MoneyAmount className="font-light text-right">
       {typeof amount === "number" ? millionEthFromGwei(amount) : undefined}
     </MoneyAmount>
   </a>
@@ -170,12 +170,12 @@ const IssuanceBreakdown = () => {
       <WidgetTitle>issuance breakdown</WidgetTitle>
       {issuanceBreakdown === undefined ? (
         <div className="relative py-16">
-          <div className="absolute h-2 w-full rounded-full bg-slateus-500"></div>
+          <div className="absolute w-full h-2 rounded-full bg-slateus-500"></div>
         </div>
       ) : (
-        <div className="relative flex items-center py-4">
-          <div className="color-animation absolute h-2 w-full rounded-full bg-slateus-600"></div>
-          <div className="top-0 left-0 z-10 flex w-full flex-row items-center">
+        <div className="flex relative items-center py-4">
+          <div className="absolute w-full h-2 rounded-full color-animation bg-slateus-600"></div>
+          <div className="flex top-0 left-0 z-10 flex-row items-center w-full">
             <CategorySegment
               imgAlt={"btc symbol symbolizing the bitcoin crowd sale"}
               imgName={"btc"}
@@ -187,7 +187,7 @@ const IssuanceBreakdown = () => {
               rounded="left"
               showHighlight={highlightCrowdSale}
             />
-            <div className="h-2 w-0.5 bg-slateus-500"></div>
+            <div className="w-0.5 h-2 bg-slateus-500"></div>
             <CategorySegment
               imgAlt={
                 "a pickaxe symbolizing the ETH minted using proof of work"
@@ -200,7 +200,7 @@ const IssuanceBreakdown = () => {
               )}
               showHighlight={highlightProofOfWork}
             />
-            <div className="h-2 w-0.5 bg-slateus-500"></div>
+            <div className="w-0.5 h-2 bg-slateus-500"></div>
             <CategorySegment
               imgAlt={
                 "a seedling symbolizing the gardening Ethereum Foundation"
@@ -213,7 +213,7 @@ const IssuanceBreakdown = () => {
               )}
               showHighlight={highlightEthereumFoundation}
             />
-            <div className="h-2 w-0.5 bg-slateus-500"></div>
+            <div className="w-0.5 h-2 bg-slateus-500"></div>
             <CategorySegment
               imgAlt={
                 "a unicorn symbolizing the early contributors dreaming up and building Ethereum"
@@ -226,7 +226,7 @@ const IssuanceBreakdown = () => {
               )}
               showHighlight={highlightEarlyContributors}
             />
-            <div className="h-2 w-0.5 bg-slateus-500"></div>
+            <div className="w-0.5 h-2 bg-slateus-500"></div>
             <CategorySegment
               imgAlt={
                 "a steak as workplay on stake, symbolizing the ETH minted using proof of stake"
