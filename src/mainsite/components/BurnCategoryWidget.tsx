@@ -376,6 +376,23 @@ const hoverReducer = (
   }
 };
 
+// We want to have separators in between the categories, but not at the end.
+// We use a fragment to create one mixed list of separators and categories.
+// This causes key errors, so we use a wrapper element.
+const CategorySegmentItem: FC<{
+  category: CategoryProps;
+  isFirst: boolean;
+  isLast: boolean;
+}> = ({ isLast, category, isFirst }) => (
+  <>
+    <CategorySegment
+      rounded={isFirst ? "left" : isLast ? "right" : undefined}
+      {...category}
+    />
+    {isLast && <div className="z-10 w-0.5 h-2 bg-slateus-500"></div>}
+  </>
+);
+
 type Props = {
   onClickTimeFrame: () => void;
   timeFrame: TimeFrame;
@@ -545,27 +562,16 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                 <div className={`relative flex items-center py-4`}>
                   <div className="absolute w-full h-2 rounded-full color-animation bg-slateus-600"></div>
                   <div className="flex top-0 left-0 z-10 flex-row items-center w-full">
-                    {categories.map((category, index) => (
-                      <>
-                        <CategorySegment
+                    {categories.map((category, index) => {
+                      return (
+                        <CategorySegmentItem
                           key={category.id}
-                          rounded={
-                            index === 0
-                              ? "left"
-                              : index === categories.length - 1
-                              ? "right"
-                              : undefined
-                          }
-                          {...category}
+                          isFirst={index === 0}
+                          isLast={index === categories.length - 1}
+                          category={category}
                         />
-                        {index !== categories.length - 1 && (
-                          <div
-                            className="z-10 w-1 h-2 bg-slateus-500"
-                            key={`separator-${index}`}
-                          ></div>
-                        )}
-                      </>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               </div>
