@@ -11,8 +11,7 @@ import _first from "lodash/first";
 import _last from "lodash/last";
 import _merge from "lodash/merge";
 import type { FC } from "react";
-import { useState } from "react";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import colors from "../../../colors";
 import LabelText from "../../../components/TextsNext/LabelText";
 import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
@@ -20,8 +19,8 @@ import { WidgetBackground } from "../../../components/WidgetSubcomponents";
 import {
   formatPercentFiveDecimalsSigned,
   formatPercentThreeDecimalsSigned,
-  formatTwoDigit,
   formatTwoDecimalsSigned,
+  formatTwoDigit,
 } from "../../../format";
 import { O, pipe } from "../../../fp";
 import type { DateTimeString } from "../../../time";
@@ -34,7 +33,6 @@ import { LONDON_TIMESTAMP } from "../../hardforks/london";
 import { MERGE_TIMESTAMP } from "../../hardforks/paris";
 import type { SupplyPoint } from "../../sections/SupplyDashboard";
 import type { TimeFrame } from "../../time-frames";
-import SimulateProofOfWork from "../SimulateProofOfWork";
 import TimeFrameIndicator from "../TimeFrameIndicator";
 import UpdatedAgo from "../UpdatedAgo";
 
@@ -149,7 +147,6 @@ const getTooltip = (
   type: "pos" | "pow" | "bitcoin",
   series: SupplyPoint[] | undefined,
   pointMap: PointMap | undefined,
-  simulateProofOfWork: boolean,
 ): FormatterCallbackFunction<Point> =>
   // This part is a mess, feel free to refactor heavily.
   function () {
@@ -218,11 +215,7 @@ const getTooltip = (
     // z-10 does not work without adjusting position to !static.
     return `
       <div class="relative z-10 p-4 rounded-lg border-2 font-roboto bg-slateus-700 border-slateus-400">
-        ${
-          !simulateProofOfWork
-            ? ""
-            : `<div class="mb-2 text-slateus-200">${title}</div>`
-        }
+        <div class="mb-2 text-slateus-200">${title}</div>
         <div class="text-right text-slateus-200">${formattedDate}</div>
         <div class="text-right text-slateus-200">${formattedTime}</div>
         <div class="flex flex-col items-end mt-2">
@@ -284,7 +277,6 @@ const deltaLegendLableStyle = {
 
 const optionsFromSupplySeriesCollection = (
   supplySeriesCollection: SupplySeriesCollection,
-  simulateProofOfWork: boolean,
   timeFrame: TimeFrame,
   posVisible: boolean,
   powVisible: boolean,
@@ -310,7 +302,7 @@ const optionsFromSupplySeriesCollection = (
 
   const dynamicOptions: Highcharts.Options = {
     legend: {
-      enabled: simulateProofOfWork,
+      enabled: true,
     },
     yAxis: {
       plotLines: [
@@ -327,10 +319,7 @@ const optionsFromSupplySeriesCollection = (
         },
         {
           id: "bitcoin-issuance",
-          value:
-            !simulateProofOfWork || lastPointBtc === undefined
-              ? undefined
-              : lastPointBtc[1],
+          value: lastPointBtc === undefined ? undefined : lastPointBtc[1],
           width: 0,
           label: {
             style: deltaLegendLableStyle,
@@ -365,10 +354,7 @@ const optionsFromSupplySeriesCollection = (
         },
         {
           id: "eth-issuance-pow",
-          value:
-            !simulateProofOfWork || lastPointPow === undefined
-              ? undefined
-              : lastPointPow[1],
+          value: lastPointPow === undefined ? undefined : lastPointPow[1],
           width: 0,
           label: {
             style: deltaLegendLableStyle,
@@ -480,19 +466,13 @@ const optionsFromSupplySeriesCollection = (
           ],
         },
         tooltip: {
-          pointFormatter: getTooltip(
-            "pos",
-            posSeries,
-            ethPosPointMap,
-            simulateProofOfWork,
-          ),
+          pointFormatter: getTooltip("pos", posSeries, ethPosPointMap),
         },
         zIndex: 2,
       },
       {
         color: "#FF891D",
-        visible: btcVisible && simulateProofOfWork,
-        enableMouseTracking: simulateProofOfWork,
+        visible: btcVisible,
         id: BITCOIN_SUPPLY_ID,
         type: "spline",
         shadow: {
@@ -519,24 +499,18 @@ const optionsFromSupplySeriesCollection = (
                 },
               ],
         name: "BTC",
-        showInLegend: simulateProofOfWork,
+        showInLegend: true,
         tooltip: {
-          pointFormatter: getTooltip(
-            "bitcoin",
-            btcSeries,
-            bitcoinPointMap,
-            simulateProofOfWork,
-          ),
+          pointFormatter: getTooltip("bitcoin", btcSeries, bitcoinPointMap),
         },
         zIndex: 1,
       },
       {
         color: colors.slateus100,
-        visible: powVisible && simulateProofOfWork,
-        enableMouseTracking: simulateProofOfWork,
+        visible: powVisible,
         id: SUPPLY_SINCE_MERGE_POW_SERIES_ID,
         name: "ETH (PoW)",
-        showInLegend: simulateProofOfWork,
+        showInLegend: true,
         type: "spline",
         events: {
           legendItemClick: function () {
@@ -571,7 +545,6 @@ const optionsFromSupplySeriesCollection = (
                 [posSeries[0]!, ...powSeries]
               : powSeries,
             ethPowPointMap,
-            simulateProofOfWork,
           ),
         },
         zIndex: 0,
@@ -613,15 +586,19 @@ type Props = {
 
 const EthSupplyWidget: FC<Props> = ({
   onClickTimeFrame,
-  onSimulateProofOfWork,
   simulateProofOfWork,
   timeFrame,
 }) => {
   const [posVisible, setPosVisible] = useState(true);
-  const [powVisible, setPowVisible] = useState(false);
-  const [btcVisible, setBtcVisible] = useState(true);
+  const [powVisible, setPowVisible] = useState(simulateProofOfWork);
+  const [btcVisible, setBtcVisible] = useState(false);
 
   const supplySeriesCollections = useSupplySeriesCollections();
+
+  // Override whatever the current visibility is of the ETH PoW series to make it mirror whatever the user just set the simulateProofOfWork toggle to.
+  useEffect(() => {
+    setPowVisible(simulateProofOfWork);
+  }, [simulateProofOfWork]);
 
   const options = useMemo(
     (): Highcharts.Options =>
@@ -631,7 +608,6 @@ const EthSupplyWidget: FC<Props> = ({
         O.map((supplySeriesCollections) =>
           optionsFromSupplySeriesCollection(
             supplySeriesCollections,
-            simulateProofOfWork,
             timeFrame,
             posVisible,
             powVisible,
@@ -643,14 +619,7 @@ const EthSupplyWidget: FC<Props> = ({
         ),
         O.getOrElse(() => baseOptions),
       ),
-    [
-      btcVisible,
-      posVisible,
-      powVisible,
-      simulateProofOfWork,
-      supplySeriesCollections,
-      timeFrame,
-    ],
+    [btcVisible, posVisible, powVisible, supplySeriesCollections, timeFrame],
   );
 
   return (
@@ -719,11 +688,6 @@ const EthSupplyWidget: FC<Props> = ({
               supplySeriesCollections,
               timeFrame,
             )}
-          />
-          <SimulateProofOfWork
-            checked={simulateProofOfWork}
-            onToggle={onSimulateProofOfWork}
-            tooltipText="Simulate the ETH supply with proof-of-work issuance."
           />
         </div>
       </WidgetBackground>
