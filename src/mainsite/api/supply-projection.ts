@@ -14,7 +14,7 @@ export type SupplyInputs = {
 
 export const useSupplyProjectionInputs = (): SupplyInputs | undefined => {
   const { data } = useSWR<SupplyInputs>(
-    "/api/fees/supply-projection-inputs",
+    "/api/v2/fees/supply-projection-inputs",
     fetchJsonSwr,
   );
 
