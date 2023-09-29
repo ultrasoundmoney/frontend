@@ -1,27 +1,37 @@
 import * as SharedConfig from "../config";
 
+// Inside the cluster, we need to use the k8s service name to call the api.
+// Outside the cluster, e.g. during build, we need to use the domain name.
+
 export const getDomain = () => {
   const apiEnv = SharedConfig.apiEnvFromEnv();
+  const isBuild = process.env.BUILD === "true";
+
   switch (apiEnv) {
     case "dev":
       return "http://relay.localhost:3000";
     case "stag":
-      return "https://relay-stag.ultrasound.money";
+      return isBuild
+        ? "https://relay-stag.ultrasound.money"
+        : "http://website-api";
     case "prod":
-      return "https://relay.ultrasound.money";
+      return isBuild ? "https://relay.ultrasound.money" : "http://website-api";
   }
 };
 
 // Use prod api for censorship data on staging since we don't have the data for goerli
 export const getCensorshipDomain = () => {
   const apiEnv = SharedConfig.apiEnvFromEnv();
+  const isBuild = process.env.BUILD === "true";
+
   switch (apiEnv) {
     case "dev":
       return "http://relay.localhost:3000";
+    // In this case we can't use the service name
     case "stag":
       return "https://relay.ultrasound.money";
     case "prod":
-      return "https://relay.ultrasound.money";
+      return isBuild ? "https://relay.ultrasound.money" : "http://website-api";
   }
 };
 
