@@ -6,9 +6,9 @@ export const getDomain = () => {
     case "dev":
       return "http://relay.localhost:3000";
     case "stag":
-      return "https://relay-stag.ultrasound.money";
+      return "http://website-api";
     case "prod":
-      return "https://relay.ultrasound.money";
+      return "http://website-api";
   }
 };
 
@@ -18,10 +18,11 @@ export const getCensorshipDomain = () => {
   switch (apiEnv) {
     case "dev":
       return "http://relay.localhost:3000";
+    // In this case we can't use the service name
     case "stag":
       return "https://relay.ultrasound.money";
     case "prod":
-      return "https://relay.ultrasound.money";
+      return "http://website-api";
   }
 };
 
