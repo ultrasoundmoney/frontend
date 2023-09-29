@@ -3,7 +3,7 @@ import * as SharedConfig from "../config";
 // Inside the cluster, we need to use the k8s service name to call the api.
 // Outside the cluster, e.g. during build, we need to use the domain name.
 
-export const getDomain = () => {
+export const getDomain = (isClientSide: boolean = false) => {
   const apiEnv = SharedConfig.apiEnvFromEnv();
   const isBuild = process.env.BUILD === "true";
 
@@ -11,11 +11,13 @@ export const getDomain = () => {
     case "dev":
       return "http://relay.localhost:3000";
     case "stag":
-      return isBuild
+      return isBuild || isClientSide
         ? "https://relay-stag.ultrasound.money"
         : "http://website-api";
     case "prod":
-      return isBuild ? "https://relay.ultrasound.money" : "http://website-api";
+      return isBuild || isClientSide
+        ? "https://relay.ultrasound.money"
+        : "http://website-api";
   }
 };
 
