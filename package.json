@@ -6,7 +6,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "build": "next build",
+    "build": "BUILD=true next build",
     "check-types": "yarn tsc --noEmit",
     "dev": "next dev",
     "lint": "next lint",
