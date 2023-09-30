@@ -3,7 +3,7 @@ import * as SharedConfig from "../config";
 // Inside the cluster, we need to use the k8s service name to call the api.
 // Outside the cluster, e.g. during build, we need to use the domain name.
 
-export const getDomain = (isClientSide: boolean = false) => {
+export const getDomain = (isClientSide = false) => {
   const apiEnv = SharedConfig.apiEnvFromEnv();
   const isBuild = process.env.BUILD === "true";
 
