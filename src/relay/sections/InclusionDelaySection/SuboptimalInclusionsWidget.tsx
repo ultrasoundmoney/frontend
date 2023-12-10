@@ -103,7 +103,7 @@ const getTooltipFormatter = (
     }
 
     const dt = new Date(x);
-    const formattedDate = DateFns.format(dt, "iii MMM dd");
+    const formattedDate = DateFns.format(dt, "iii MMM dd yyyy");
     const formattedTime = DateFns.format(dt, "HH:mm:ss");
     const formattedTimeZone = DateFns.format(dt, "'UTC'x");
 
