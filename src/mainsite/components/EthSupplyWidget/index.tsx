@@ -183,7 +183,7 @@ const getTooltip = (
     const formattedTotalUnit = type === "bitcoin" ? "BTC" : "ETH";
 
     const dt = new Date(x);
-    const formattedDate = format(dt, "iii MMM dd");
+    const formattedDate = format(dt, "iii MMM dd yyyy");
     const formattedTime = format(dt, "HH:mm:ss 'UTC'x");
 
     const title = type === "pos" ? "ETH" : type === "pow" ? "ETH (PoW)" : "BTC";
