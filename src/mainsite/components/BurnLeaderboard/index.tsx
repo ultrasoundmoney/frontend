@@ -228,7 +228,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
   const { md } = useActiveBreakpoint();
 
   return (
-    <WidgetErrorBoundary title="burn total">
+    <WidgetErrorBoundary title="burn leaderboard">
       <BurnGroupBase
         backgroundClassName="flex flex-col gap-y-4 h-[487px] lg:h-full"
         onClickTimeFrame={onClickTimeFrame}
