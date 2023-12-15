@@ -22,10 +22,8 @@ import FaqBlock from "./components/Faq";
 import TopBar from "./components/TopBar";
 import { MERGE_SUPPLY } from "./hardforks/paris";
 import useAuthFromSection from "./hooks/use-auth-from-section";
-import { useTwitterAuthStatus } from "./hooks/use-twitter-auth";
 import FamSection from "./sections/FamSection";
 import GasSection from "./sections/GasSection";
-import JoinDiscordSection from "./sections/JoinDiscordSection";
 import SupplyDashboard from "./sections/SupplyDashboard";
 import AdminTools from "../components/AdminTools";
 import * as SharedConfig from "../config";
@@ -150,7 +148,6 @@ const useIsDeflationary = () => {
 const Dashboard: FC = () => {
   useScrollOnLoad();
   const { featureFlags, setFlag } = useFeatureFlags();
-  const [twitterAuthStatus, setTwitterAuthStatus] = useTwitterAuthStatus();
   const [timeFrame, setTimeFrame] = useState<TimeFrame>("d7");
   const isDeflationary = useIsDeflationary();
   const videoEl = useRef<HTMLVideoElement>(null);
@@ -229,10 +226,6 @@ const Dashboard: FC = () => {
           <TotalValueSecuredSection />
           <MonetaryPremiumSection />
           <FamSection />
-          <JoinDiscordSection
-            setTwitterAuthStatus={setTwitterAuthStatus}
-            twitterAuthStatus={twitterAuthStatus}
-          />
           <div className="flex px-4 mt-32 md:px-0">
             <div className="relative w-full md:m-auto lg:w-2/3">
               <FaqBlock />
