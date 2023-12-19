@@ -354,7 +354,10 @@ const optionsFromSupplySeriesCollection = (
         },
         {
           id: "eth-issuance-pow",
-          value: lastPointPow === undefined ? undefined : lastPointPow[1],
+          value:
+            lastPointPow === undefined || !powVisible
+              ? undefined
+              : lastPointPow[1],
           width: 0,
           label: {
             style: deltaLegendLableStyle,
