@@ -41,7 +41,7 @@ const CategorySegment: FC<CategorySegmentProps> = ({
   showHighlight,
 }) => (
   <div
-    className="flex select-none flex-col items-center"
+    className="flex flex-col items-center select-none"
     style={{
       width: `${(percentOfTotalRewards ?? skeletonLoadingWidth) * 100}%`,
     }}
@@ -121,7 +121,7 @@ const RewardRow: FC<RewardRowProps> = ({
   apr,
 }) => (
   <a
-    className="link-animation grid grid-cols-3"
+    className="grid grid-cols-3 link-animation"
     onMouseEnter={() => setHovering?.(true)}
     onMouseLeave={() => setHovering?.(false)}
     style={{ opacity: hovering !== undefined && hovering ? 0.6 : 1 }}
@@ -130,7 +130,7 @@ const RewardRow: FC<RewardRowProps> = ({
     rel="noreferrer"
   >
     <BodyText>{name}</BodyText>
-    <MoneyAmount className="text-right font-light">
+    <MoneyAmount className="font-light text-right">
       {amount === undefined
         ? undefined
         : Format.formatOneDecimal(amount / GWEI_PER_ETH)}
@@ -152,12 +152,12 @@ const ValidatorRewardsWidget = () => {
       <WidgetTitle>validator rewards</WidgetTitle>
       {validatorRewards === undefined ? (
         <div className="relative py-16">
-          <div className="absolute h-2 w-full rounded-full bg-slateus-500"></div>
+          <div className="absolute w-full h-2 rounded-full bg-slateus-500"></div>
         </div>
       ) : (
-        <div className="relative flex items-center py-4">
-          <div className="color-animation absolute h-2 w-full rounded-full bg-slateus-600"></div>
-          <div className="top-0 left-0 z-10 flex w-full flex-row items-center">
+        <div className="flex relative items-center py-4">
+          <div className="absolute w-full h-2 rounded-full color-animation bg-slateus-600"></div>
+          <div className="flex top-0 left-0 z-10 flex-row items-center w-full">
             <CategorySegment
               imgAlt={
                 "a droplet symbolizing ETH issuance on the beacon chain paid to block proposers"
@@ -171,7 +171,7 @@ const ValidatorRewardsWidget = () => {
               rounded="left"
               showHighlight={highlightIssuance}
             />
-            <div className="h-2 w-0.5 bg-slateus-500"></div>
+            <div className="w-0.5 h-2 bg-slateus-500"></div>
             <CategorySegment
               imgAlt={"an ETH coin symbolizing tips paid to block proposers"}
               imgName={"coin"}
@@ -182,7 +182,7 @@ const ValidatorRewardsWidget = () => {
               )}
               showHighlight={highlightTips}
             />
-            <div className="h-2 w-0.5 bg-slateus-500"></div>
+            <div className="w-0.5 h-2 bg-slateus-500"></div>
             <CategorySegment
               imgAlt={"a robot symbolizing MEV paid to block proposers"}
               imgName={"mev"}
