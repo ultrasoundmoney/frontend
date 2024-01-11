@@ -219,7 +219,6 @@ const ValidatorRewardsWidget = () => {
             <RewardRow
               amount={getAnnualRewards(validatorRewards, "mev")}
               hovering={highlightMev}
-              link="https://explore.flashbots.net/"
               name="MEV estimate"
               setHovering={setHighlightMev}
               apr={getApr(validatorRewards, "mev")}
