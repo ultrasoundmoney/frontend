@@ -293,6 +293,7 @@ const imgAltMap: Record<CategoryId, string> = {
   misc: "three dots, signaling the summing of other contracts that have been categorized",
   nft: "icon of a wooden painters palette, signaling NFTs",
   transfers: "an image of flying money, signaling ETH transfers",
+  creations: "a copy icon, signaling contract creations",
   woof: "a dog, signaling meme tokens",
 };
 
