@@ -389,7 +389,7 @@ const CategorySegmentItem: FC<{
       rounded={isFirst ? "left" : isLast ? "right" : undefined}
       {...category}
     />
-    {isLast && <div className="z-10 w-0.5 h-2 bg-slateus-500"></div>}
+    <div className="z-10 w-0.5 h-2 bg-slateus-500"></div>
   </>
 );
 
