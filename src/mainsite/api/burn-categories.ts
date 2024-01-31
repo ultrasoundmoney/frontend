@@ -30,10 +30,10 @@ export const categoryDisplayMap: Record<CategoryId, string> = {
   l1: "L1",
   l2: "L2",
   mev: "MEV",
-  misc: "Misc (CEX, Memecoins, etc)",
+  misc: "Misc (CEX, memecoins, etc)",
   nft: "NFTs",
   transfers: "ETH Transfers",
-  creations: "Contract Creations",
+  creations: "Contract creations",
   woof: "Woof",
 };
 
