@@ -174,7 +174,7 @@ const TwoYearProjection: FC = () => {
             />
             <div
               className={`
-                  relative top-[14px] flex
+                  relative  flex
                   -translate-x-1/2 select-none flex-col
                   items-center
                   ${
@@ -222,7 +222,7 @@ const TwoYearProjection: FC = () => {
             />
             <div
               className={`
-                  relative top-[14px] flex
+                  relative flex
                   -translate-x-1/2 select-none flex-col
                   items-center
                   ${
