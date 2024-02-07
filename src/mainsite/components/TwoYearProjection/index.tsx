@@ -1,7 +1,6 @@
 import dynamic from "next/dynamic";
 import TranslationsContext from "../../contexts/TranslationsContext";
 import { formatOneDecimal } from "../../../format";
-import { GWEI_PER_ETH, Gwei } from "../../../eth-units";
 import {
   estimatedDailyFeeBurn,
   estimatedDailyIssuance,
@@ -12,6 +11,7 @@ import Twemoji from "../../../components/Twemoji";
 import styles from "./TwoYearProjection.module.scss";
 import type { ChangeEvent, FC, ReactNode } from "react";
 import { useCallback, useEffect, useState, useContext } from "react";
+import { useBaseFeeOverTime } from "../../api/base-fee-over-time";
 import { useEffectiveBalanceSum } from "../../api/effective-balance-sum";
 const SupplyChart = dynamic(() => import("./TwoYearProjectionChart"));
 
@@ -28,7 +28,6 @@ const DEFAULT_PROJECTED_MERGE_DATE = new Date("2022-09-15T00:00:00Z");
 const TwoYearProjection: FC = () => {
   const t = useContext(TranslationsContext);
 
-  // TODO Initialize this to current amount of ETH staked
   const [projectedStaking, setProjectedStaking] = useState(
     DEFAULT_PROJECTED_ETH_STAKING,
   );
@@ -66,47 +65,38 @@ const TwoYearProjection: FC = () => {
     setIsPeakPresent(isPeakPresent);
   }, []);
 
-  const [stakingAprFraction, setStakingAprFraction] = useState<number>(0);
-  const BASE_REWARD_FACTOR = 64;
-  const SECONDS_PER_SLOT = 12;
-  const SLOTS_PER_EPOCH = 32;
-  const EPOCHS_PER_DAY: number =
-    (24 * 60 * 60) / SLOTS_PER_EPOCH / SECONDS_PER_SLOT;
-  const EPOCHS_PER_YEAR: number = 365.25 * EPOCHS_PER_DAY;
-  const MAX_EFFECTIVE_BALANCE: number = 32 * GWEI_PER_ETH;
-  const BASE_REWARDS_PER_EPOCH = 4;
-
-  const getIssuanceApr = (effective_balance_sum: Gwei): number => {
-    const balance_sum_gwei = effective_balance_sum;
-    const max_issuance_per_epoch = Math.trunc(
-      (BASE_REWARD_FACTOR * balance_sum_gwei) /
-        Math.floor(Math.sqrt(balance_sum_gwei)),
-    );
-    const issuancePerYear = max_issuance_per_epoch * EPOCHS_PER_YEAR;
-    const apr = issuancePerYear / balance_sum_gwei;
-    return apr;
-  };
-
-  const getStakedFromApr = (apr: number): number => {
-    const baseReward = (apr * 32e9) / 4 / EPOCHS_PER_YEAR;
-    const active_validators =
-      ((MAX_EFFECTIVE_BALANCE * BASE_REWARD_FACTOR) /
-        BASE_REWARDS_PER_EPOCH /
-        baseReward) **
-        2 /
-      32e9;
-    return active_validators * 32;
-  };
-
   const effectiveBalanceSum = useEffectiveBalanceSum();
+  const baseFeesOverTime = useBaseFeeOverTime();
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [currentStakedEth, setCurrentStakedEth] = useState<number | undefined>(
+    undefined,
+  );
+  const [currentBaseFee, setCurrentBaseFee] = useState<number | undefined>(
+    undefined,
+  );
 
   useEffect(() => {
-    if (effectiveBalanceSum === undefined) {
+    if (
+      isInitialized ||
+      effectiveBalanceSum === undefined ||
+      baseFeesOverTime === undefined
+    ) {
       return;
     }
-    const initialStakingApr = getIssuanceApr(effectiveBalanceSum.sum);
-    setStakingAprFraction(initialStakingApr);
-  }, [effectiveBalanceSum, stakingAprFraction]);
+    const intialStakingAmount = Math.round(effectiveBalanceSum.sum / 1e9);
+    console.log("intialStakingAmount", intialStakingAmount);
+    setCurrentStakedEth(intialStakingAmount);
+    setProjectedStaking(intialStakingAmount);
+    console.log("baseFeesOverTime:", baseFeesOverTime);
+    const latestBaseFee =
+      baseFeesOverTime.m5[baseFeesOverTime.m5.length - 1]?.wei;
+    if (latestBaseFee === undefined) {
+      return;
+    }
+    setCurrentBaseFee(latestBaseFee / 1e9);
+    setProjectedBaseGasPrice(latestBaseFee / 1e9);
+    setIsInitialized(true);
+  }, [baseFeesOverTime, effectiveBalanceSum]);
 
   return (
     <>
@@ -141,7 +131,7 @@ const TwoYearProjection: FC = () => {
           title={t.eth_staked}
           value={
             <>
-              {getStakedFromApr(stakingAprFraction) / 1e6}
+              {formatOneDecimal(projectedStaking / 1e6)}
               {t.numeric_million_abbrev} ETH
             </>
           }
@@ -169,7 +159,7 @@ const TwoYearProjection: FC = () => {
 
         <Param
           title={t.base_gas_price}
-          value={<>{projectedBaseGasPrice} Gwei</>}
+          value={<>{formatOneDecimal(projectedBaseGasPrice)} Gwei</>}
           subValue={
             <>
               {t.fee_burn}
