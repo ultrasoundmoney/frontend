@@ -13,6 +13,7 @@ import type { ChangeEvent, FC, ReactNode } from "react";
 import { useCallback, useEffect, useState, useContext } from "react";
 import { useBaseFeeOverTime } from "../../api/base-fee-over-time";
 import { useEffectiveBalanceSum } from "../../api/effective-balance-sum";
+import { TimeFrameText } from "../../../components/Texts";
 const SupplyChart = dynamic(() => import("./TwoYearProjectionChart"));
 
 const MIN_PROJECTED_ETH_STAKING = 1e6;
@@ -71,6 +72,12 @@ const TwoYearProjection: FC = () => {
   const [currentStakedEth, setCurrentStakedEth] = useState<number | undefined>(
     undefined,
   );
+
+  const currentStakedEthPercent =
+    currentStakedEth !== undefined
+      ? ((currentStakedEth - MIN_PROJECTED_ETH_STAKING) / MAX_PROJECTED_ETH_STAKING) * 100
+      : undefined;
+
   const [currentBaseFee, setCurrentBaseFee] = useState<number | undefined>(
     undefined,
   );
@@ -146,15 +153,36 @@ const TwoYearProjection: FC = () => {
             </>
           }
         >
-          <Slider
-            min={MIN_PROJECTED_ETH_STAKING}
-            max={MAX_PROJECTED_ETH_STAKING}
-            value={projectedStaking}
-            step={1e6}
-            onChange={handleProjectedStakingChange}
-            onPointerDown={handleProjectedStakingPointerDown}
-            onPointerUp={handleProjectedStakingPointerUp}
-          />
+          <div className="relative z-10">
+            <Slider
+              min={MIN_PROJECTED_ETH_STAKING}
+              max={MAX_PROJECTED_ETH_STAKING}
+              value={projectedStaking}
+              step={1e6}
+              onChange={handleProjectedStakingChange}
+              onPointerDown={handleProjectedStakingPointerDown}
+              onPointerUp={handleProjectedStakingPointerUp}
+            />
+            <div
+              className={`
+                  relative top-[14px] flex
+                  -translate-x-1/2 select-none flex-col
+                  items-center
+                  ${currentStakedEthPercent === undefined ? "invisible" : "visible"}
+                `}
+              style={{
+                // Positions the marker along the track whilst compensating for the thumb width as the browser natively does. 7 being half the thumb width.
+                left: `calc(${currentStakedEthPercent}% - ${
+                  (((currentStakedEthPercent ?? 0) / 100) * 2 - 1) * 7
+                }px)`,
+              }}
+            >
+              <div className="-mt-0.5 h-2 w-0.5 rounded-b-full bg-slateus-200"></div>
+              <TimeFrameText className="mt-0.5 text-slateus-200">
+                now
+              </TimeFrameText>
+            </div>
+          </div>
         </Param>
 
         <Param
