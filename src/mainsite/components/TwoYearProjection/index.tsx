@@ -75,12 +75,21 @@ const TwoYearProjection: FC = () => {
 
   const currentStakedEthPercent =
     currentStakedEth !== undefined
-      ? ((currentStakedEth - MIN_PROJECTED_ETH_STAKING) / MAX_PROJECTED_ETH_STAKING) * 100
+      ? ((currentStakedEth - MIN_PROJECTED_ETH_STAKING) /
+          MAX_PROJECTED_ETH_STAKING) *
+        100
       : undefined;
 
   const [currentBaseFee, setCurrentBaseFee] = useState<number | undefined>(
     undefined,
   );
+
+  const currentBaseFeePercent =
+    currentBaseFee !== undefined
+      ? ((currentBaseFee - MIN_PROJECTED_BASE_GAS_PRICE) /
+          MAX_PROJECTED_BASE_GAS_PRICE) *
+        100
+      : undefined;
 
   useEffect(() => {
     if (
@@ -168,7 +177,11 @@ const TwoYearProjection: FC = () => {
                   relative top-[14px] flex
                   -translate-x-1/2 select-none flex-col
                   items-center
-                  ${currentStakedEthPercent === undefined ? "invisible" : "visible"}
+                  ${
+                    currentStakedEthPercent === undefined
+                      ? "invisible"
+                      : "visible"
+                  }
                 `}
               style={{
                 // Positions the marker along the track whilst compensating for the thumb width as the browser natively does. 7 being half the thumb width.
@@ -199,13 +212,38 @@ const TwoYearProjection: FC = () => {
             </>
           }
         >
-          <Slider
-            min={MIN_PROJECTED_BASE_GAS_PRICE}
-            max={MAX_PROJECTED_BASE_GAS_PRICE}
-            value={projectedBaseGasPrice}
-            step={1}
-            onChange={handleProjectedBaseGasPriceChange}
-          />
+          <div className="relative z-10">
+            <Slider
+              min={MIN_PROJECTED_BASE_GAS_PRICE}
+              max={MAX_PROJECTED_BASE_GAS_PRICE}
+              value={projectedBaseGasPrice}
+              step={1}
+              onChange={handleProjectedBaseGasPriceChange}
+            />
+            <div
+              className={`
+                  relative top-[14px] flex
+                  -translate-x-1/2 select-none flex-col
+                  items-center
+                  ${
+                    currentBaseFeePercent === undefined
+                      ? "invisible"
+                      : "visible"
+                  }
+                `}
+              style={{
+                // Positions the marker along the track whilst compensating for the thumb width as the browser natively does. 7 being half the thumb width.
+                left: `calc(${currentBaseFeePercent}% - ${
+                  (((currentBaseFeePercent ?? 0) / 100) * 2 - 1) * 7
+                }px)`,
+              }}
+            >
+              <div className="-mt-0.5 h-2 w-0.5 rounded-b-full bg-slateus-200"></div>
+              <TimeFrameText className="mt-0.5 text-slateus-200">
+                now
+              </TimeFrameText>
+            </div>
+          </div>
         </Param>
       </div>
     </>
