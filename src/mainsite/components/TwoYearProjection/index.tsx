@@ -32,7 +32,6 @@ const TwoYearProjection: FC = () => {
   const [projectedStaking, setProjectedStaking] = useState(
     DEFAULT_PROJECTED_ETH_STAKING,
   );
-  // TODO Initialize this to current base gas price
   const [projectedBaseGasPrice, setProjectedBaseGasPrice] = useState(
     DEFAULT_PROJECTED_BASE_GAS_PRICE,
   );
@@ -42,6 +41,7 @@ const TwoYearProjection: FC = () => {
   const handleProjectedStakingChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       setProjectedStaking(parseInt(e.target.value));
+      setUserHasAdjustedStakedEth(true);
     },
     [],
   );
@@ -49,6 +49,7 @@ const TwoYearProjection: FC = () => {
   const handleProjectedBaseGasPriceChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       setProjectedBaseGasPrice(parseInt(e.target.value));
+      setUserHasAdjustedBaseFee(true);
     },
     [],
   );
@@ -68,7 +69,9 @@ const TwoYearProjection: FC = () => {
 
   const effectiveBalanceSum = useEffectiveBalanceSum();
   const baseFeesOverTime = useBaseFeeOverTime();
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [userHasAdjustedStakedEth, setUserHasAdjustedStakedEth] =
+    useState(false);
+  const [userHasAdjustedBaseFee, setUserHasAdjustedBaseFee] = useState(false);
   const [currentStakedEth, setCurrentStakedEth] = useState<number | undefined>(
     undefined,
   );
@@ -92,17 +95,15 @@ const TwoYearProjection: FC = () => {
       : undefined;
 
   useEffect(() => {
-    if (
-      isInitialized ||
-      effectiveBalanceSum === undefined ||
-      baseFeesOverTime === undefined
-    ) {
+    if (effectiveBalanceSum === undefined || baseFeesOverTime === undefined) {
       return;
     }
     const intialStakingAmount = Math.round(effectiveBalanceSum.sum / 1e9);
     console.log("intialStakingAmount", intialStakingAmount);
     setCurrentStakedEth(intialStakingAmount);
-    setProjectedStaking(intialStakingAmount);
+    if (!userHasAdjustedStakedEth) {
+      setProjectedStaking(intialStakingAmount);
+    }
     console.log("baseFeesOverTime:", baseFeesOverTime);
     const latestBaseFee =
       baseFeesOverTime.m5[baseFeesOverTime.m5.length - 1]?.wei;
@@ -110,8 +111,9 @@ const TwoYearProjection: FC = () => {
       return;
     }
     setCurrentBaseFee(latestBaseFee / 1e9);
-    setProjectedBaseGasPrice(latestBaseFee / 1e9);
-    setIsInitialized(true);
+    if (!userHasAdjustedBaseFee) {
+      setProjectedBaseGasPrice(latestBaseFee / 1e9);
+    }
   }, [baseFeesOverTime, effectiveBalanceSum]);
 
   return (
