@@ -149,7 +149,7 @@ const TwoYearProjection: FC = () => {
           title={t.eth_staked}
           value={
             <>
-              {formatOneDecimal(projectedStaking / 1e6)}
+              {Math.round(projectedStaking / 1e6)}
               {t.numeric_million_abbrev} ETH
             </>
           }
@@ -202,7 +202,7 @@ const TwoYearProjection: FC = () => {
 
         <Param
           title={t.base_gas_price}
-          value={<>{formatOneDecimal(projectedBaseGasPrice)} Gwei</>}
+          value={<>{Math.round(projectedBaseGasPrice)} Gwei</>}
           subValue={
             <>
               {t.fee_burn}
