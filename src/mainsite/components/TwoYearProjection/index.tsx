@@ -13,7 +13,7 @@ import styles from "./TwoYearProjection.module.scss";
 import type { ChangeEvent, FC, ReactNode } from "react";
 import { useCallback, useEffect, useState, useContext } from "react";
 import { useBaseFeeOverTime } from "../../api/base-fee-over-time";
-import { useBaseFeePerGas } from "../../api/base-fee-per-gas";
+import { useBaseFeePerGasStats } from "../../api/base-fee-per-gas-stats";
 import { useEffectiveBalanceSum } from "../../api/effective-balance-sum";
 import { TimeFrameText } from "../../../components/Texts";
 const SupplyChart = dynamic(() => import("./TwoYearProjectionChart"));
@@ -24,7 +24,7 @@ const MAX_PROJECTED_ETH_STAKING = 69696969;
 
 const MIN_PROJECTED_BASE_GAS_PRICE = 0;
 const DEFAULT_PROJECTED_BASE_GAS_PRICE = 60;
-const MAX_PROJECTED_BASE_GAS_PRICE = 420;
+const MAX_PROJECTED_BASE_GAS_PRICE = 200;
 
 const DEFAULT_PROJECTED_MERGE_DATE = new Date("2022-09-15T00:00:00Z");
 
@@ -71,6 +71,7 @@ const TwoYearProjection: FC = () => {
 
   const effectiveBalanceSum = useEffectiveBalanceSum();
   const baseFeesOverTime = useBaseFeeOverTime();
+  const baseFeesPerGasStats = useBaseFeePerGasStats();
   const [userHasAdjustedStakedEth, setUserHasAdjustedStakedEth] =
     useState(false);
   const [userHasAdjustedBaseFee, setUserHasAdjustedBaseFee] = useState(false);
@@ -98,15 +99,23 @@ const TwoYearProjection: FC = () => {
     console.log("baseFeesOverTime:", baseFeesOverTime);
     const latestBaseFee =
       baseFeesOverTime.m5[baseFeesOverTime.m5.length - 1]?.wei;
-    if (latestBaseFee === undefined) {
+    if (latestBaseFee === undefined || baseFeesPerGasStats === undefined) {
       return;
     }
+    console.log("barrier", baseFeesPerGasStats.barrier);
     if (!userHasAdjustedBaseFee) {
       setProjectedBaseGasPrice(latestBaseFee / 1e9);
     }
 
-    setBaseFeeSliderMarkers([{ label: "now", value: latestBaseFee / 1e9 }]);
-  }, [baseFeesOverTime, effectiveBalanceSum]);
+      setBaseFeeSliderMarkers([
+          { label: "now", value: latestBaseFee / 1e9 },
+          { label: "🦇🔊🚧", value: baseFeesPerGasStats.barrier},
+          { label: "all", value: baseFeesPerGasStats.base_fee_per_gas_stats.since_burn.average / 1e9 },
+          { label: "30d", value: baseFeesPerGasStats.base_fee_per_gas_stats.d30.average / 1e9 },
+          { label: "7d", value: baseFeesPerGasStats.base_fee_per_gas_stats.d7.average / 1e9 },
+          { label: "1d", value: baseFeesPerGasStats.base_fee_per_gas_stats.d1.average / 1e9 },
+      ]);
+  }, [baseFeesOverTime, baseFeesPerGasStats, effectiveBalanceSum]);
 
   return (
     <>

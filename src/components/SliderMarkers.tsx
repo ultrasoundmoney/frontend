@@ -7,6 +7,9 @@ import * as Format from "../format";
 
 export type SliderMarker = { label: string; value: number };
 
+// Minimum percentage difference between markers to avoid overlap
+const MIN_PERCENTAGE_DIFFERENCE = 5;
+
 export const SliderMarkers: FC<{
   markerList: SliderMarker[];
   min: number;
@@ -15,7 +18,7 @@ export const SliderMarkers: FC<{
   const range = max - min;
   const shownList = markerList.reduce((list: SliderMarker[], marker) => {
     const someConflict = list.some(
-      (shownMarker) => Math.abs(shownMarker.value - marker.value) < 0.0017,
+      (shownMarker) => Math.abs(shownMarker.value - marker.value) < ((max - min) * MIN_PERCENTAGE_DIFFERENCE / 100),
     );
 
     if (someConflict) {
