@@ -6,12 +6,14 @@ import {
   estimatedDailyIssuance,
 } from "../../utils/metric-utils";
 import Slider from "../Slider/Slider";
+import { SliderMarker, SliderMarkers } from "../../../components/SliderMarkers";
 import { BaseText } from "../../../components/Texts";
 import Twemoji from "../../../components/Twemoji";
 import styles from "./TwoYearProjection.module.scss";
 import type { ChangeEvent, FC, ReactNode } from "react";
 import { useCallback, useEffect, useState, useContext } from "react";
 import { useBaseFeeOverTime } from "../../api/base-fee-over-time";
+import { useBaseFeePerGas } from "../../api/base-fee-per-gas";
 import { useEffectiveBalanceSum } from "../../api/effective-balance-sum";
 import { TimeFrameText } from "../../../components/Texts";
 const SupplyChart = dynamic(() => import("./TwoYearProjectionChart"));
@@ -72,35 +74,24 @@ const TwoYearProjection: FC = () => {
   const [userHasAdjustedStakedEth, setUserHasAdjustedStakedEth] =
     useState(false);
   const [userHasAdjustedBaseFee, setUserHasAdjustedBaseFee] = useState(false);
-  const [currentStakedEth, setCurrentStakedEth] = useState<number | undefined>(
-    undefined,
-  );
 
-  const currentStakedEthPercent =
-    currentStakedEth !== undefined
-      ? ((currentStakedEth - MIN_PROJECTED_ETH_STAKING) /
-          MAX_PROJECTED_ETH_STAKING) *
-        100
-      : undefined;
-
-  const [currentBaseFee, setCurrentBaseFee] = useState<number | undefined>(
-    undefined,
-  );
-
-  const currentBaseFeePercent =
-    currentBaseFee !== undefined
-      ? ((currentBaseFee - MIN_PROJECTED_BASE_GAS_PRICE) /
-          MAX_PROJECTED_BASE_GAS_PRICE) *
-        100
-      : undefined;
+  const [baseFeeSliderMarkers, setBaseFeeSliderMarkers] = useState<
+    SliderMarker[]
+  >([]);
+  const [stakedEthSliderMarkers, setStakedEthSliderMarkers] = useState<
+    SliderMarker[]
+  >([]);
 
   useEffect(() => {
+    console.log("setup twoyearprojection");
     if (effectiveBalanceSum === undefined || baseFeesOverTime === undefined) {
+      console.log("Exiting early", { effectiveBalanceSum, baseFeesOverTime });
       return;
     }
-    const intialStakingAmount = Math.round(effectiveBalanceSum.sum / 1e9);
-    console.log("intialStakingAmount", intialStakingAmount);
-    setCurrentStakedEth(intialStakingAmount);
+    const intialStakingAmount = effectiveBalanceSum.sum / 1e9;
+    setStakedEthSliderMarkers([
+      { label: "now", value: intialStakingAmount},
+    ]);
     if (!userHasAdjustedStakedEth) {
       setProjectedStaking(intialStakingAmount);
     }
@@ -110,10 +101,11 @@ const TwoYearProjection: FC = () => {
     if (latestBaseFee === undefined) {
       return;
     }
-    setCurrentBaseFee(latestBaseFee / 1e9);
     if (!userHasAdjustedBaseFee) {
       setProjectedBaseGasPrice(latestBaseFee / 1e9);
     }
+
+    setBaseFeeSliderMarkers([{ label: "now", value: latestBaseFee / 1e9 }]);
   }, [baseFeesOverTime, effectiveBalanceSum]);
 
   return (
@@ -164,7 +156,7 @@ const TwoYearProjection: FC = () => {
             </>
           }
         >
-          <div className="relative z-10">
+          <div className="relative mb-10">
             <Slider
               min={MIN_PROJECTED_ETH_STAKING}
               max={MAX_PROJECTED_ETH_STAKING}
@@ -174,29 +166,11 @@ const TwoYearProjection: FC = () => {
               onPointerDown={handleProjectedStakingPointerDown}
               onPointerUp={handleProjectedStakingPointerUp}
             />
-            <div
-              className={`
-                  relative  flex
-                  -translate-x-1/2 select-none flex-col
-                  items-center
-                  ${
-                    currentStakedEthPercent === undefined
-                      ? "invisible"
-                      : "visible"
-                  }
-                `}
-              style={{
-                // Positions the marker along the track whilst compensating for the thumb width as the browser natively does. 7 being half the thumb width.
-                left: `calc(${currentStakedEthPercent}% - ${
-                  (((currentStakedEthPercent ?? 0) / 100) * 2 - 1) * 7
-                }px)`,
-              }}
-            >
-              <div className="-mt-0.5 h-2 w-0.5 rounded-b-full bg-slateus-200"></div>
-              <TimeFrameText className="mt-0.5 text-slateus-200">
-                now
-              </TimeFrameText>
-            </div>
+            <SliderMarkers
+              markerList={stakedEthSliderMarkers}
+              min={MIN_PROJECTED_ETH_STAKING}
+              max={MAX_PROJECTED_ETH_STAKING}
+            />
           </div>
         </Param>
 
@@ -214,7 +188,7 @@ const TwoYearProjection: FC = () => {
             </>
           }
         >
-          <div className="relative z-10">
+          <div className="relative mb-10">
             <Slider
               min={MIN_PROJECTED_BASE_GAS_PRICE}
               max={MAX_PROJECTED_BASE_GAS_PRICE}
@@ -222,29 +196,11 @@ const TwoYearProjection: FC = () => {
               step={1}
               onChange={handleProjectedBaseGasPriceChange}
             />
-            <div
-              className={`
-                  relative flex
-                  -translate-x-1/2 select-none flex-col
-                  items-center
-                  ${
-                    currentBaseFeePercent === undefined
-                      ? "invisible"
-                      : "visible"
-                  }
-                `}
-              style={{
-                // Positions the marker along the track whilst compensating for the thumb width as the browser natively does. 7 being half the thumb width.
-                left: `calc(${currentBaseFeePercent}% - ${
-                  (((currentBaseFeePercent ?? 0) / 100) * 2 - 1) * 7
-                }px)`,
-              }}
-            >
-              <div className="-mt-0.5 h-2 w-0.5 rounded-b-full bg-slateus-200"></div>
-              <TimeFrameText className="mt-0.5 text-slateus-200">
-                now
-              </TimeFrameText>
-            </div>
+            <SliderMarkers
+              markerList={baseFeeSliderMarkers}
+              min={MIN_PROJECTED_BASE_GAS_PRICE}
+              max={MAX_PROJECTED_BASE_GAS_PRICE}
+            />
           </div>
         </Param>
       </div>

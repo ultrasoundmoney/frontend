@@ -5,9 +5,9 @@ import { TimeFrameText } from "./Texts";
 import Twemoji from "./Twemoji";
 import * as Format from "../format";
 
-type SliderMarker = { label: string; value: number };
+export type SliderMarker = { label: string; value: number };
 
-const SliderMarkers: FC<{
+export const SliderMarkers: FC<{
   markerList: SliderMarker[];
   min: number;
   max: number;
