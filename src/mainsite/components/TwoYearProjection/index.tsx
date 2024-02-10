@@ -6,11 +6,16 @@ import {
   estimatedDailyIssuance,
 } from "../../utils/metric-utils";
 import Slider from "../Slider/Slider";
+import { SliderMarker, SliderMarkers } from "../../../components/SliderMarkers";
 import { BaseText } from "../../../components/Texts";
 import Twemoji from "../../../components/Twemoji";
 import styles from "./TwoYearProjection.module.scss";
 import type { ChangeEvent, FC, ReactNode } from "react";
-import { useCallback, useState, useContext } from "react";
+import { useCallback, useEffect, useState, useContext } from "react";
+import { useBaseFeeOverTime } from "../../api/base-fee-over-time";
+import { useBaseFeePerGasStats } from "../../api/base-fee-per-gas-stats";
+import { useEffectiveBalanceSum } from "../../api/effective-balance-sum";
+import { TimeFrameText } from "../../../components/Texts";
 const SupplyChart = dynamic(() => import("./TwoYearProjectionChart"));
 
 const MIN_PROJECTED_ETH_STAKING = 1e6;
@@ -19,18 +24,16 @@ const MAX_PROJECTED_ETH_STAKING = 69696969;
 
 const MIN_PROJECTED_BASE_GAS_PRICE = 0;
 const DEFAULT_PROJECTED_BASE_GAS_PRICE = 60;
-const MAX_PROJECTED_BASE_GAS_PRICE = 420;
+const MAX_PROJECTED_BASE_GAS_PRICE = 200;
 
 const DEFAULT_PROJECTED_MERGE_DATE = new Date("2022-09-15T00:00:00Z");
 
 const TwoYearProjection: FC = () => {
   const t = useContext(TranslationsContext);
 
-  // TODO Initialize this to current amount of ETH staked
   const [projectedStaking, setProjectedStaking] = useState(
     DEFAULT_PROJECTED_ETH_STAKING,
   );
-  // TODO Initialize this to current base gas price
   const [projectedBaseGasPrice, setProjectedBaseGasPrice] = useState(
     DEFAULT_PROJECTED_BASE_GAS_PRICE,
   );
@@ -40,6 +43,7 @@ const TwoYearProjection: FC = () => {
   const handleProjectedStakingChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       setProjectedStaking(parseInt(e.target.value));
+      setUserHasAdjustedStakedEth(true);
     },
     [],
   );
@@ -47,6 +51,7 @@ const TwoYearProjection: FC = () => {
   const handleProjectedBaseGasPriceChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       setProjectedBaseGasPrice(parseInt(e.target.value));
+      setUserHasAdjustedBaseFee(true);
     },
     [],
   );
@@ -64,12 +69,60 @@ const TwoYearProjection: FC = () => {
     setIsPeakPresent(isPeakPresent);
   }, []);
 
+  const effectiveBalanceSum = useEffectiveBalanceSum();
+  const baseFeesOverTime = useBaseFeeOverTime();
+  const baseFeesPerGasStats = useBaseFeePerGasStats();
+  const [userHasAdjustedStakedEth, setUserHasAdjustedStakedEth] =
+    useState(false);
+  const [userHasAdjustedBaseFee, setUserHasAdjustedBaseFee] = useState(false);
+
+  const [baseFeeSliderMarkers, setBaseFeeSliderMarkers] = useState<
+    SliderMarker[]
+  >([]);
+  const [stakedEthSliderMarkers, setStakedEthSliderMarkers] = useState<
+    SliderMarker[]
+  >([]);
+
+  useEffect(() => {
+    console.log("setup twoyearprojection");
+    if (effectiveBalanceSum === undefined || baseFeesOverTime === undefined) {
+      console.log("Exiting early", { effectiveBalanceSum, baseFeesOverTime });
+      return;
+    }
+    const intialStakingAmount = effectiveBalanceSum.sum / 1e9;
+    setStakedEthSliderMarkers([
+      { label: "now", value: intialStakingAmount},
+    ]);
+    if (!userHasAdjustedStakedEth) {
+      setProjectedStaking(intialStakingAmount);
+    }
+    console.log("baseFeesOverTime:", baseFeesOverTime);
+    const latestBaseFee =
+      baseFeesOverTime.m5[baseFeesOverTime.m5.length - 1]?.wei;
+    if (latestBaseFee === undefined || baseFeesPerGasStats === undefined) {
+      return;
+    }
+    console.log("barrier", baseFeesPerGasStats.barrier);
+    if (!userHasAdjustedBaseFee) {
+      setProjectedBaseGasPrice(latestBaseFee / 1e9);
+    }
+
+      setBaseFeeSliderMarkers([
+          { label: "now", value: latestBaseFee / 1e9 },
+          { label: "🦇🔊🚧", value: baseFeesPerGasStats.barrier},
+          { label: "all", value: baseFeesPerGasStats.base_fee_per_gas_stats.since_burn.average / 1e9 },
+          { label: "30d", value: baseFeesPerGasStats.base_fee_per_gas_stats.d30.average / 1e9 },
+          { label: "7d", value: baseFeesPerGasStats.base_fee_per_gas_stats.d7.average / 1e9 },
+          { label: "1d", value: baseFeesPerGasStats.base_fee_per_gas_stats.d1.average / 1e9 },
+      ]);
+  }, [baseFeesOverTime, baseFeesPerGasStats, effectiveBalanceSum]);
+
   return (
     <>
       <div className={styles.chartHeader}>
         <BaseText
           font="font-inter"
-          className="flex items-center px-3 pb-8 text-xs tracking-widest uppercase text-slateus-200"
+          className="flex items-center px-3 pb-8 text-xs uppercase tracking-widest text-slateus-200"
           inline
         >
           ETH supply—2y projection
@@ -97,7 +150,7 @@ const TwoYearProjection: FC = () => {
           title={t.eth_staked}
           value={
             <>
-              {projectedStaking / 1e6}
+              {Math.round(projectedStaking / 1e6)}
               {t.numeric_million_abbrev} ETH
             </>
           }
@@ -112,20 +165,27 @@ const TwoYearProjection: FC = () => {
             </>
           }
         >
-          <Slider
-            min={MIN_PROJECTED_ETH_STAKING}
-            max={MAX_PROJECTED_ETH_STAKING}
-            value={projectedStaking}
-            step={1e6}
-            onChange={handleProjectedStakingChange}
-            onPointerDown={handleProjectedStakingPointerDown}
-            onPointerUp={handleProjectedStakingPointerUp}
-          />
+          <div className="relative mb-10">
+            <Slider
+              min={MIN_PROJECTED_ETH_STAKING}
+              max={MAX_PROJECTED_ETH_STAKING}
+              value={projectedStaking}
+              step={1e6}
+              onChange={handleProjectedStakingChange}
+              onPointerDown={handleProjectedStakingPointerDown}
+              onPointerUp={handleProjectedStakingPointerUp}
+            />
+            <SliderMarkers
+              markerList={stakedEthSliderMarkers}
+              min={MIN_PROJECTED_ETH_STAKING}
+              max={MAX_PROJECTED_ETH_STAKING}
+            />
+          </div>
         </Param>
 
         <Param
           title={t.base_gas_price}
-          value={<>{projectedBaseGasPrice} Gwei</>}
+          value={<>{Math.round(projectedBaseGasPrice)} Gwei</>}
           subValue={
             <>
               {t.fee_burn}
@@ -137,13 +197,20 @@ const TwoYearProjection: FC = () => {
             </>
           }
         >
-          <Slider
-            min={MIN_PROJECTED_BASE_GAS_PRICE}
-            max={MAX_PROJECTED_BASE_GAS_PRICE}
-            value={projectedBaseGasPrice}
-            step={1}
-            onChange={handleProjectedBaseGasPriceChange}
-          />
+          <div className="relative mb-10">
+            <Slider
+              min={MIN_PROJECTED_BASE_GAS_PRICE}
+              max={MAX_PROJECTED_BASE_GAS_PRICE}
+              value={projectedBaseGasPrice}
+              step={1}
+              onChange={handleProjectedBaseGasPriceChange}
+            />
+            <SliderMarkers
+              markerList={baseFeeSliderMarkers}
+              min={MIN_PROJECTED_BASE_GAS_PRICE}
+              max={MAX_PROJECTED_BASE_GAS_PRICE}
+            />
+          </div>
         </Param>
       </div>
     </>
