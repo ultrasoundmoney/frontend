@@ -5,7 +5,7 @@ import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { TimeFrameText } from "../../../components/Texts";
 import BodyText from "../../../components/TextsNext/BodyText";
-import Twemoji from "../../../components/Twemoji";
+import SliderMarkers from "../../../components/SliderMarkers";
 import WidgetErrorBoundary from "../../../components/WidgetErrorBoundary";
 import {
   WidgetBackground,
@@ -84,7 +84,6 @@ const STAKING_RANGE = STAKING_MAX - STAKING_MIN;
 
 const BURN_RATE_MIN = 0.0;
 const BURN_RATE_MAX = 0.03;
-const BURN_RATE_RANGE = BURN_RATE_MAX - BURN_RATE_MIN;
 
 type BurnMarkers = {
   all: number;
@@ -93,10 +92,8 @@ type BurnMarkers = {
   d7: number;
   d1: number;
 };
-type BurnMarker = { label: string; value: number };
-
 const BurnMarkers: FC<{ burnMarkers?: BurnMarkers }> = ({ burnMarkers }) => {
-  const markerList: BurnMarker[] =
+  const markerList =
     burnMarkers !== undefined
       ? [
           { label: "all", value: burnMarkers.all },
@@ -107,54 +104,12 @@ const BurnMarkers: FC<{ burnMarkers?: BurnMarkers }> = ({ burnMarkers }) => {
         ]
       : [];
 
-  const shownList = markerList.reduce((list: BurnMarker[], marker) => {
-    const someConflict = list.some(
-      (shownMarker) => Math.abs(shownMarker.value - marker.value) < 0.0017,
-    );
-
-    if (someConflict) {
-      return list;
-    }
-
-    return [...list, marker];
-  }, []);
-
   return (
-    <>
-      {shownList.map((marker, index) => {
-        const percent =
-          ((marker.value - BURN_RATE_MIN) / BURN_RATE_RANGE) * 100;
-        return (
-          <div
-            key={marker.label}
-            className={`
-              absolute top-[14px] flex
-              -translate-x-1/2 flex-col items-center
-            `}
-            // Positions the marker along the track whilst compensating for the thumb width as the browser natively does. 7 being half the thumb width.
-            style={{
-              left: `calc(${percent}% - ${((percent / 100) * 2 - 1) * 7}px)`,
-            }}
-          >
-            <div
-              className={`
-                -mt-0.5 w-0.5 rounded-b-full bg-slateus-200
-                ${index % 2 === 0 ? "h-2" : "h-6"}
-              `}
-            ></div>
-            <TimeFrameText className="mt-1 select-none text-slateus-200">
-              <Twemoji
-                className="flex gap-x-1"
-                imageClassName="mt-0.5 h-3"
-                wrapper
-              >
-                {marker.label}
-              </Twemoji>
-            </TimeFrameText>
-          </div>
-        );
-      })}
-    </>
+    <SliderMarkers
+      markerList={markerList}
+      min={BURN_RATE_MIN}
+      max={BURN_RATE_MAX}
+    />
   );
 };
 
@@ -439,7 +394,7 @@ const EquilibriumWidget = () => {
           </div>
           <div className="flex flex-col gap-y-7">
             <div>
-              <div className="flex justify-between items-baseline">
+              <div className="flex items-baseline justify-between">
                 <div className="flex items-center truncate">
                   <WidgetTitle>issuance rewards</WidgetTitle>
                   <BodyText className="invisible text-xs md:text-xs lg:visible">
@@ -482,7 +437,7 @@ const EquilibriumWidget = () => {
                     }px)`,
                   }}
                 >
-                  <div className="-mt-0.5 w-0.5 h-2 rounded-b-full bg-slateus-200"></div>
+                  <div className="-mt-0.5 h-2 w-0.5 rounded-b-full bg-slateus-200"></div>
                   <TimeFrameText className="mt-0.5 text-slateus-200">
                     now
                   </TimeFrameText>
@@ -490,7 +445,7 @@ const EquilibriumWidget = () => {
               </div>
             </div>
             <div>
-              <div className="flex justify-between items-baseline">
+              <div className="flex items-baseline justify-between">
                 <div className="flex items-center truncate">
                   <WidgetTitle>burn rate</WidgetTitle>
                   <BodyText className="text-xs md:text-xs">
@@ -520,7 +475,7 @@ const EquilibriumWidget = () => {
             </div>
           </div>
 
-          <div className="flex flex-col justify-between items-baseline mt-2 -mb-2 w-full md:flex-row">
+          <div className="mt-2 -mb-2 flex w-full flex-col items-baseline justify-between md:flex-row">
             <WidgetTitle>issuance and burn at equilibrium</WidgetTitle>
             <MoneyAmount amountPostfix="K" unitText="ETH/year">
               {equilibriums !== undefined
