@@ -5,6 +5,8 @@ import { fetchJsonSwr } from "./fetchers";
 export const categoryId = [
   "cex",
   "defi",
+  // Contract creations is a special case and currently injected on the frontend.
+  "creations",
   // Eth transfers is a special case and currently injected on the frontend.
   "transfers",
   "gaming",
@@ -28,9 +30,10 @@ export const categoryDisplayMap: Record<CategoryId, string> = {
   l1: "L1",
   l2: "L2",
   mev: "MEV",
-  misc: "Misc",
+  misc: "Misc (CEX, memecoins, etc)",
   nft: "NFTs",
   transfers: "ETH Transfers",
+  creations: "Contract creations",
   woof: "Woof",
 };
 

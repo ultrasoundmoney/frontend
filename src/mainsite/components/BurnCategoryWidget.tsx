@@ -4,7 +4,7 @@ import { useReducer } from "react";
 import { useContext } from "react";
 import Skeleton from "react-loading-skeleton";
 import type { BurnCategory, CategoryId } from "../api/burn-categories";
-import { useBurnCategories } from "../api/burn-categories";
+import { useBurnCategories, categoryDisplayMap } from "../api/burn-categories";
 import Colors from "../../colors";
 import { WEI_PER_ETH } from "../../eth-units";
 import { FeatureFlagsContext } from "../../feature-flags";
@@ -34,6 +34,8 @@ import transfersSlateus from "../../assets/transfers-slateus.svg";
 import transfersOwn from "../../assets/transfers-own.svg";
 import chainsSlateus from "../../assets/chains-slateus.svg";
 import chainsOwn from "../../assets/chains-own.svg";
+import copySlateus from "../../assets/copy-slateus.svg";
+import copyOwn from "../../assets/copy-own.svg";
 import bridgeSlateus from "../../assets/bridge-slateus.svg";
 import bridgeOwn from "../../assets/bridge-own.svg";
 import chartSlateus from "../../assets/chart-slateus.svg";
@@ -69,6 +71,7 @@ const activeCategories: CategoryId[] = [
   "mev",
   "defi",
   "transfers",
+  "creations",
 ];
 
 const alwaysShowImgPercentThreshold = 0.08;
@@ -290,6 +293,7 @@ const imgAltMap: Record<CategoryId, string> = {
   misc: "three dots, signaling the summing of other contracts that have been categorized",
   nft: "icon of a wooden painters palette, signaling NFTs",
   transfers: "an image of flying money, signaling ETH transfers",
+  creations: "a copy icon, signaling contract creations",
   woof: "a dog, signaling meme tokens",
 };
 
@@ -337,6 +341,10 @@ const imgMap: Record<
     coloroff: transfersSlateus as StaticImageData,
     coloron: transfersOwn as StaticImageData,
   },
+  creations: {
+    coloroff: copySlateus as StaticImageData,
+    coloron: copyOwn as StaticImageData,
+  },
   woof: {
     coloroff: questionMarkSlateus as StaticImageData,
     coloron: questionMarkOwn as StaticImageData,
@@ -354,6 +362,7 @@ const initialState: Record<CategoryId, boolean> = {
   misc: false,
   nft: false,
   transfers: false,
+  creations: false,
   woof: false,
 };
 
@@ -389,7 +398,7 @@ const CategorySegmentItem: FC<{
       rounded={isFirst ? "left" : isLast ? "right" : undefined}
       {...category}
     />
-    {isLast && <div className="z-10 w-0.5 h-2 bg-slateus-500"></div>}
+    <div className="z-10 w-0.5 h-2 bg-slateus-500"></div>
   </>
 );
 
@@ -491,6 +500,32 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
             ),
           );
 
+          // contractCreations is a special case that we hack on in the frontend.
+          const contractDeployments = pipe(
+            leaderboard,
+            O.fromNullable,
+            O.map(A.filter((entry) => entry.type === "contract-creations")),
+            O.chain(A.head),
+            O.map(
+              (transfers): CategoryProps => ({
+                imgName: imgMap.creations,
+                id: "creations",
+                imgAlt: "missing icon for contract creation fees",
+                fees: transfers.fees,
+                feesUsd: transfers.feesUsd,
+                transactionCount: undefined,
+                percentOfTotalBurn: transfers.fees / burnSum.sum.eth / 1e18,
+                percentOfTotalBurnUsd: transfers.feesUsd / burnSum.sum.usd,
+                onHoverCategory: (hovering) =>
+                  dispatchHover({
+                    type: hovering ? "highlight" : "unhighlight",
+                    category: "creations",
+                  }),
+                showHighlight: hoverState["creations"] ?? false,
+              }),
+            ),
+          );
+
           const miscCategory = pipe(
             burnCategories,
             O.fromNullable,
@@ -509,12 +544,12 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
           );
 
           const combinedCategories = pipe(
-            OAlt.sequenceTuple(apiBurnCategories, ethTransfers, miscCategory),
-            O.map(([apiCategories, ethTransfers, miscCategory]) =>
+            OAlt.sequenceTuple(apiBurnCategories, ethTransfers, contractDeployments, miscCategory),
+            O.map(([apiCategories, ethTransfers, contractDeployments, miscCategory]) =>
               pipe(
                 apiCategories,
                 A.filter((category) => activeCategories.includes(category.id)),
-                (categories) => [...categories, ethTransfers, miscCategory],
+                (categories) => [...categories, ethTransfers, contractDeployments, miscCategory],
                 A.sort(sortByFeesDesc),
               ),
             ),
@@ -606,7 +641,7 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                     id={category.id}
                     countFormatted={formatCount(category.transactionCount)}
                     hovering={hoverState[category.id] ?? false}
-                    name={category.id}
+                    name={categoryDisplayMap[category.id]}
                     setHovering={dispatchHover}
                     showCategoryCounts={showCategoryCounts}
                   />
