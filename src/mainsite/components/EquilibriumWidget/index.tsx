@@ -79,11 +79,11 @@ const getBurn = (
 ) => yearlyNonStakedBurnFraction * nonStakedSupply;
 
 const STAKING_MIN = 0.025;
-const STAKING_MAX = 0.05;
+const STAKING_MAX = 0.035;
 const STAKING_RANGE = STAKING_MAX - STAKING_MIN;
 
 const BURN_RATE_MIN = 0.0;
-const BURN_RATE_MAX = 0.045;
+const BURN_RATE_MAX = 0.03;
 const BURN_RATE_RANGE = BURN_RATE_MAX - BURN_RATE_MIN;
 
 type BurnMarkers = {
