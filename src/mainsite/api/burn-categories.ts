@@ -23,18 +23,18 @@ export const categoryId = [
 export type CategoryId = typeof categoryId[number];
 
 export const categoryDisplayMap: Record<CategoryId, string> = {
-  "l1-bridge": "L1 Bridge",
+  "l1-bridge": "L1 bridge",
   cex: "CEX",
-  defi: "DeFi",
-  gaming: "Gaming",
+  defi: "defi",
+  gaming: "gaming",
   l1: "L1",
   l2: "L2",
   mev: "MEV",
-  misc: "Misc (CEX, memecoins, etc)",
+  misc: "misc (CEX, memecoins, etc)",
   nft: "NFTs",
-  transfers: "ETH Transfers",
-  creations: "Contract creations",
-  woof: "Woof",
+  transfers: "ETH transfers",
+  creations: "contract creations",
+  woof: "woof",
 };
 
 export const getIsKnownCategory = (u: unknown): u is CategoryId =>

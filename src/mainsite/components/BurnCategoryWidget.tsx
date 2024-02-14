@@ -395,10 +395,10 @@ const CategorySegmentItem: FC<{
 }> = ({ isLast, category, isFirst }) => (
   <>
     <CategorySegment
-      rounded={isFirst ? "left" : isLast ? "right" : undefined}
+      rounded={isFirst ? "left" : undefined}
       {...category}
     />
-    <div className="z-10 w-0.5 h-2 bg-slateus-500"></div>
+    {!isLast && <div className="z-10 w-0.5 h-2 bg-slateus-500"></div>}
   </>
 );
 
@@ -574,6 +574,7 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
 
   return (
     <BurnGroupBase
+      backgroundClassName="h-[508px]"
       onClickTimeFrame={onClickTimeFrame}
       title="burn categories"
       timeFrame={timeFrame}
