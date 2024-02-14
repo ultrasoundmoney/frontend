@@ -203,19 +203,6 @@ const IssuanceBreakdown = () => {
             <div className="w-0.5 h-2 bg-slateus-500"></div>
             <CategorySegment
               imgAlt={
-                "a seedling symbolizing the gardening Ethereum Foundation"
-              }
-              imgName={"seedling"}
-              onHoverCategory={setHighlightEthereumFoundation}
-              percentOfTotalRewards={getPercentOfTotal(
-                issuanceBreakdown,
-                "ethereumFoundation",
-              )}
-              showHighlight={highlightEthereumFoundation}
-            />
-            <div className="w-0.5 h-2 bg-slateus-500"></div>
-            <CategorySegment
-              imgAlt={
                 "a unicorn symbolizing the early contributors dreaming up and building Ethereum"
               }
               imgName={"unicorn"}
@@ -225,6 +212,19 @@ const IssuanceBreakdown = () => {
                 "earlyContributors",
               )}
               showHighlight={highlightEarlyContributors}
+            />
+            <div className="w-0.5 h-2 bg-slateus-500"></div>
+            <CategorySegment
+              imgAlt={
+                "a seedling symbolizing the gardening Ethereum Foundation"
+              }
+              imgName={"seedling"}
+              onHoverCategory={setHighlightEthereumFoundation}
+              percentOfTotalRewards={getPercentOfTotal(
+                issuanceBreakdown,
+                "ethereumFoundation",
+              )}
+              showHighlight={highlightEthereumFoundation}
             />
             <div className="w-0.5 h-2 bg-slateus-500"></div>
             <CategorySegment
