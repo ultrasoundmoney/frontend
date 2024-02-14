@@ -574,6 +574,7 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
 
   return (
     <BurnGroupBase
+      backgroundClassName="h-[508px]"
       onClickTimeFrame={onClickTimeFrame}
       title="burn categories"
       timeFrame={timeFrame}
