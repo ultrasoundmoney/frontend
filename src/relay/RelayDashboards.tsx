@@ -93,7 +93,7 @@ const RelayDashboard: FC<RelayDashboardProps> = ({
               text-slateus-400 sm:mt-0
             `}
             >
-              goerli testnet
+              holesky testnet
             </div>
           ) : null}
           <div className="flex flex-col gap-y-4 mt-16 mb-32 md:px-16 xs:px-4">
