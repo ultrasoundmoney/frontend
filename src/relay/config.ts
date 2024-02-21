@@ -74,13 +74,13 @@ export const getRelayDisplayUrl = () => {
 export const getEtherscanUrl = () => {
   const env = SharedConfig.envFromEnv();
   return env === "stag"
-    ? "https://goerli.etherscan.io"
+    ? "https://holesky.etherscan.io"
     : "https://etherscan.io";
 };
 
 export const getBeaconchainUrl = () => {
   const env = SharedConfig.envFromEnv();
   return env === "stag"
-    ? "https://goerli.beaconcha.in"
+    ? "https://holesky.beaconcha.in"
     : "https://beaconcha.in";
 };
