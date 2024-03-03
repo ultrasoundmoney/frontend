@@ -78,6 +78,8 @@ const Marker: FC<MarkerProps> = ({ alt, icon, peRatio, symbol }) => {
             ? undefined
             : symbol === "DIS"
             ? "https://www.google.com/finance/quote/DIS:NYSE"
+            : symbol === "ETH
+            ? `https://www.google.com/finance/quote/ETH-USD`
             : `https://www.google.com/finance/quote/${symbol}:NASDAQ`
         }
         target="_blank"
