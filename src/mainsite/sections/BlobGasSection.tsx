@@ -27,7 +27,7 @@ const pointsFromBaseFeesOverTime = (
     ({ blob_wei, timestamp }) =>
       [
         parseISO(timestamp).getTime(),
-        blob_wei ?? 0 / WEI_PER_GWEI,
+        (blob_wei ?? 0 )/ WEI_PER_GWEI,
       ] as BaseFeePoint,
   );
 
