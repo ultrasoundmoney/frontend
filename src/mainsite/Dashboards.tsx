@@ -24,6 +24,7 @@ import { MERGE_SUPPLY } from "./hardforks/paris";
 import useAuthFromSection from "./hooks/use-auth-from-section";
 import FamSection from "./sections/FamSection";
 import GasSection from "./sections/GasSection";
+import BlobGasSection from "./sections/BlobGasSection";
 import SupplyDashboard from "./sections/SupplyDashboard";
 import AdminTools from "../components/AdminTools";
 import * as SharedConfig from "../config";
@@ -214,6 +215,10 @@ const Dashboard: FC = () => {
             onClickTimeFrame={handleClickTimeFrame}
           />
           <GasSection
+            timeFrame={timeFrame}
+            onClickTimeFrame={handleClickTimeFrame}
+          />
+          <BlobGasSection
             timeFrame={timeFrame}
             onClickTimeFrame={handleClickTimeFrame}
           />
