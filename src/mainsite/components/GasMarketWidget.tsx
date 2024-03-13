@@ -166,12 +166,16 @@ const Marker: FC<MarkerProps> = ({
 type Props = {
   onClickTimeFrame: () => void;
   timeFrame: TimeFrame;
+  blobFees?: boolean;
+  barrierGwei?: number;
 };
 
-const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
-  const baseFeePerGasStatsTimeFrame = useBaseFeePerGasStatsTimeFrame(timeFrame);
+const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame, blobFees, barrierGwei }) => {
+    console.log({ blobFees, barrierGwei});
+  const baseFeePerGasStatsTimeFrame = useBaseFeePerGasStatsTimeFrame(timeFrame, blobFees);
+  console.log("baseFeePerGasStatsTimeFrame", baseFeePerGasStatsTimeFrame);
   // Although the barrier is Gwei, the others are Wei.
-  const barrier = useBaseFeePerGasBarrier().barrier * WEI_PER_GWEI;
+  const barrier = (barrierGwei ?? useBaseFeePerGasBarrier().barrier) * WEI_PER_GWEI;
   const barPaddingFactor = 0.08;
 
   const lowest =
