@@ -183,6 +183,7 @@ type Props = {
   max: number | undefined;
   onClickTimeFrame: () => void;
   timeFrame: TimeFrame;
+  blobFees?: boolean;
 };
 
 const BaseFeesWidget: FC<Props> = ({
@@ -192,6 +193,7 @@ const BaseFeesWidget: FC<Props> = ({
   max,
   onClickTimeFrame,
   timeFrame,
+  blobFees,
 }) => {
   // Setting lang has to happen before any chart render.
   useEffect(() => {
@@ -264,11 +266,11 @@ const BaseFeesWidget: FC<Props> = ({
   }, [max, barrier, baseFeesMap, baseFeesSeries]);
 
   return (
-    <WidgetErrorBoundary title="base fees">
+    <WidgetErrorBoundary title={blobFees ? "blob fees" : "base fees"}>
       {/* We use the h-0 min-h-full trick to adopt the height of our sibling
       element. */}
-      <WidgetBackground className="flex relative flex-col w-full h-full lg:h-0 min-h-[398px]">
-        <div className="overflow-hidden absolute top-0 right-0 bottom-0 left-0 rounded-lg pointer-events-none">
+      <WidgetBackground className="relative flex h-full min-h-[398px] w-full flex-col lg:h-0">
+        <div className="pointer-events-none absolute top-0 right-0 bottom-0 left-0 overflow-hidden rounded-lg">
           <div
             // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
             className={`
@@ -290,9 +292,9 @@ const BaseFeesWidget: FC<Props> = ({
             ></div>
           </div>
         </div>
-        <div className="flex justify-between items-baseline">
-          <LabelText className="flex items-center min-h-[21px]">
-            base fees
+        <div className="flex items-baseline justify-between">
+          <LabelText className="flex min-h-[21px] items-center">
+              {blobFees ? "blob fees" : "base fees"}
           </LabelText>
           <TimeFrameIndicator
             timeFrame={timeFrame}
@@ -310,7 +312,7 @@ const BaseFeesWidget: FC<Props> = ({
           `}
         >
           {baseFeesSeries === undefined ? (
-            <div className="flex justify-center items-center lg:h-full h-[400px]">
+            <div className="flex h-[400px] items-center justify-center lg:h-full">
               <LabelText color="text-slateus-300">
                 data not yet available
               </LabelText>

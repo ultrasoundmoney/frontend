@@ -59,7 +59,7 @@ const BlobGasSection: FC<{
       : Object.fromEntries(new Map(baseFeesSeries).entries());
 
   return (
-    <Section link="gas" subtitle="gas is the new oil" title="gas">
+    <Section link="blob gas" subtitle="the blobs are here" title="blob gas">
       <div className="flex w-full flex-col gap-y-4 gap-x-4 lg:flex-row">
         <div className="w-full lg:w-1/2">
           <BaseFeesWidget
@@ -69,6 +69,7 @@ const BlobGasSection: FC<{
             max={max?.[1]}
             timeFrame={timeFrame}
             onClickTimeFrame={onClickTimeFrame}
+            blobFees={true}
           />
         </div>
         <div className="flex w-full flex-col gap-y-4 lg:w-1/2">
