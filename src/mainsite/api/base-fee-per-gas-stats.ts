@@ -28,6 +28,7 @@ export type BaseFeePerGasStatsEnvelope = {
 };
 
 const url = "/api/v2/fees/base-fee-per-gas-stats";
+const blob_url = "/api/v2/fees/blob-fee-per-gas-stats";
 
 export const fetchBaseFeePerGasStats = (): Promise<
   ApiResult<BaseFeePerGasStatsEnvelope>
@@ -60,9 +61,10 @@ const refreshIntervalMap: Record<TimeFrame, number> = {
 
 export const useBaseFeePerGasStatsTimeFrame = (
   timeFrame: TimeFrame,
+  blobFees: boolean = false,
 ): BaseFeePerGasStats => {
   const { data } = useSWR<BaseFeePerGasStats>(
-    `${url}?time_frame=${timeFrame}`,
+    `${blobFees ? blob_url : url}?time_frame=${timeFrame}`,
     fetchJsonSwr,
     {
       refreshInterval: refreshIntervalMap[timeFrame],
