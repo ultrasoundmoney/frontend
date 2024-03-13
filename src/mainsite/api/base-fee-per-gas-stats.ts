@@ -61,7 +61,7 @@ const refreshIntervalMap: Record<TimeFrame, number> = {
 
 export const useBaseFeePerGasStatsTimeFrame = (
   timeFrame: TimeFrame,
-  blobFees: boolean = false,
+  blobFees = false,
 ): BaseFeePerGasStats => {
   const { data } = useSWR<BaseFeePerGasStats>(
     `${blobFees ? blob_url : url}?time_frame=${timeFrame}`,

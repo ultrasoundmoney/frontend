@@ -170,12 +170,21 @@ type Props = {
   barrierGwei?: number;
 };
 
-const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame, blobFees, barrierGwei }) => {
-    console.log({ blobFees, barrierGwei});
-  const baseFeePerGasStatsTimeFrame = useBaseFeePerGasStatsTimeFrame(timeFrame, blobFees);
+const GasMarketWidget: FC<Props> = ({
+  onClickTimeFrame,
+  timeFrame,
+  blobFees,
+  barrierGwei,
+}) => {
+  console.log({ blobFees, barrierGwei });
+  const baseFeePerGasStatsTimeFrame = useBaseFeePerGasStatsTimeFrame(
+    timeFrame,
+    blobFees,
+  );
   console.log("baseFeePerGasStatsTimeFrame", baseFeePerGasStatsTimeFrame);
   // Although the barrier is Gwei, the others are Wei.
-  const barrier = (barrierGwei ?? useBaseFeePerGasBarrier().barrier) * WEI_PER_GWEI;
+  const baseFeePerGasBarrier = useBaseFeePerGasBarrier();
+  const barrier = (barrierGwei ?? baseFeePerGasBarrier.barrier) * WEI_PER_GWEI;
   const barPaddingFactor = 0.08;
 
   const lowest =
@@ -243,7 +252,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame, blobFees, bar
           />
         </div>
         {!isDataAvailable ? (
-          <div className="flex justify-center items-center h-[96px]">
+          <div className="flex h-[96px] items-center justify-center">
             <LabelText color="text-slateus-300">
               data not yet available
             </LabelText>
