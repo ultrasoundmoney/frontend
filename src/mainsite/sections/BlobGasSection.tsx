@@ -79,7 +79,9 @@ const BlobGasSection: FC<{
             blobFees={true}
             barrierGwei={baseFeesOverTime?.blob_barrier}
           />
-          <GasStreakWidget />
+          <GasStreakWidget
+             blobFees={true}
+          />
         </div>
       </div>
     </Section>

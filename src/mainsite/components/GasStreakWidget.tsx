@@ -60,10 +60,14 @@ const SpanningAge: FC<SpanningAgeProps> = ({ isLoading, startedOn }) => {
   );
 };
 
-const GasStreakWidget: FC = () => {
+type Props = {
+  blobFees?: boolean;
+};
+
+const GasStreakWidget: FC<Props> = ({ blobFees }) => {
   const groupedAnalysis1F = useGroupedAnalysis1();
   const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysis1F);
-  const deflationaryStreak = groupedAnalysis1?.deflationaryStreak.postMerge;
+  const deflationaryStreak = (blobFees ? groupedAnalysis1?.deflationaryBlobStreak : groupedAnalysis1?.deflationaryStreak)?.postMerge;
 
   return (
     <WidgetBackground>

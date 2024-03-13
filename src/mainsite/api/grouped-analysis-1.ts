@@ -69,6 +69,7 @@ export type GroupedAnalysis1 = {
   burnRates: BurnRates;
   burnRecords: BurnRecords["records"];
   deflationaryStreak: DeflationaryStreakState;
+  deflationaryBlobStreak: DeflationaryStreakState;
   ethPrice: EthPrice | undefined;
   feesBurned: FeesBurned;
   /** latest first */
@@ -84,6 +85,7 @@ export type GroupedAnalysis1F = {
   burnRates: BurnRates;
   burnRecords: BurnRecordsF["records"];
   deflationaryStreak: DeflationaryStreakState;
+  deflationaryBlobStreak: DeflationaryStreakState;
   ethPrice: EthPrice | undefined;
   feesBurned: FeesBurned;
   latestBlockFees: LatestBlock[];
