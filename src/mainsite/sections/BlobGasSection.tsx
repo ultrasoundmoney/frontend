@@ -12,7 +12,7 @@ import Section from "../../components/Section";
 const BlobFeesWidget = dynamic(() => import("../components/BlobFeesWidget"), {
   ssr: false,
 });
-const GasMarketWidget = dynamic(() => import("../components/GasMarketWidget"), {
+const BlobGasMarketWidget = dynamic(() => import("../components/BlobGasMarketWidget"), {
   ssr: false,
 });
 const GasStreakWidget = dynamic(() => import("../components/GasStreakWidget"), {
@@ -65,7 +65,6 @@ const BlobGasSection: FC<{
       <div className="flex w-full flex-col gap-y-4 gap-x-4 lg:flex-row">
         <div className="w-full lg:w-1/2">
           <BlobFeesWidget
-            barrier={baseFeesOverTime?.blob_barrier}
             baseFeesSeries={baseFeesSeries}
             baseFeesMap={baseFeesMap ?? {}}
             max={max?.[1]}
@@ -74,11 +73,9 @@ const BlobGasSection: FC<{
           />
         </div>
         <div className="flex w-full flex-col gap-y-4 lg:w-1/2">
-          <GasMarketWidget
+          <BlobGasMarketWidget
             timeFrame={timeFrame}
             onClickTimeFrame={onClickTimeFrame}
-            blobFees={true}
-            barrierGwei={baseFeesOverTime?.blob_barrier}
           />
           <GasStreakWidget
              blobFees={true}
