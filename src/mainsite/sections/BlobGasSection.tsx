@@ -7,10 +7,10 @@ import type { BaseFeeAtTime } from "../api/base-fee-over-time";
 import { useBaseFeeOverTime } from "../api/base-fee-over-time";
 import { WEI_PER_GWEI } from "../../eth-units";
 import type { TimeFrame } from "../time-frames";
-import type { BaseFeePoint } from "../components/BaseFeesWidget";
+import type { BaseFeePoint } from "../components/BlobFeesWidget";
 import Section from "../../components/Section";
 
-const BaseFeesWidget = dynamic(() => import("../components/BaseFeesWidget"), {
+const BlobFeesWidget = dynamic(() => import("../components/BlobFeesWidget"), {
   ssr: false,
 });
 const GasMarketWidget = dynamic(() => import("../components/GasMarketWidget"), {
@@ -58,18 +58,20 @@ const BlobGasSection: FC<{
       ? undefined
       : Object.fromEntries(new Map(baseFeesSeries).entries());
 
+    console.log("blobBaseFeesOverTime", baseFeesOverTime);
+    console.log("blobBaseFeesSeries", baseFeesSeries);
+
   return (
     <Section link="blobGas" subtitle="the blobs are here" title="blob gas">
       <div className="flex w-full flex-col gap-y-4 gap-x-4 lg:flex-row">
         <div className="w-full lg:w-1/2">
-          <BaseFeesWidget
+          <BlobFeesWidget
             barrier={baseFeesOverTime?.blob_barrier}
             baseFeesSeries={baseFeesSeries}
             baseFeesMap={baseFeesMap ?? {}}
             max={max?.[1]}
             timeFrame={timeFrame}
             onClickTimeFrame={onClickTimeFrame}
-            blobFees={true}
           />
         </div>
         <div className="flex w-full flex-col gap-y-4 lg:w-1/2">
