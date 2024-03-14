@@ -5,7 +5,6 @@ import type { FC } from "react";
 import { useMemo } from "react";
 import type { BaseFeeAtTime } from "../api/base-fee-over-time";
 import { useBaseFeeOverTime } from "../api/base-fee-over-time";
-import { WEI_PER_GWEI } from "../../eth-units";
 import type { TimeFrame } from "../time-frames";
 import type { BaseFeePoint } from "../components/BlobFeesWidget";
 import Section from "../../components/Section";
@@ -27,7 +26,7 @@ const pointsFromBaseFeesOverTime = (
     ({ blob_wei, timestamp }) =>
       [
         parseISO(timestamp).getTime(),
-        (blob_wei ?? 0 )/ WEI_PER_GWEI,
+        (blob_wei ?? 0 ),
       ] as BaseFeePoint,
   );
 

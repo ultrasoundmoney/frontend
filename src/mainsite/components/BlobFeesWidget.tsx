@@ -9,12 +9,15 @@ import colors from "../../colors";
 import LabelText from "../../components/TextsNext/LabelText";
 import WidgetErrorBoundary from "../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../components/WidgetSubcomponents";
-import type { Gwei } from "../../eth-units";
+import { gweiFromWei } from "../../format";
+import type { WeiNumber } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
 import TimeFrameIndicator from "../components/TimeFrameIndicator";
 import type { TimeFrame } from "../time-frames";
 
-export type BaseFeePoint = [JsTimestamp, Gwei];
+const GWEI_FORMATTING_THRESHOLD = 100_000_000; // Threshold in wei above which to convert to / format as Gwei
+
+export type BaseFeePoint = [JsTimestamp, WeiNumber];
 
 // Somehow resolves an error thrown by the annotation lib
 if (typeof window !== "undefined") {
@@ -118,17 +121,20 @@ const getTooltipFormatter = (
     const formattedDate = format(dt, "iii MMM dd yyyy");
     const formattedTime = format(dt, "HH:mm:ss 'UTC'x");
 
-      const gradientCss = "from-cyan-300 to-indigo-500";
+    const gradientCss = "from-cyan-300 to-indigo-500";
 
+    const displayTotal =
+      total > GWEI_FORMATTING_THRESHOLD ? gweiFromWei(total).toFixed(2) : total;
+    const displayUnit = total > GWEI_FORMATTING_THRESHOLD ? "Gwei" : "Wei";
     return `
       <div class="p-4 rounded-lg border-2 font-roboto bg-slateus-700 border-slateus-400">
         <div class="text-right text-slateus-400">${formattedDate}</div>
         <div class="text-right text-slateus-400">${formattedTime}</div>
         <div class="flex justify-end mt-2">
           <div class="bg-gradient-to-r bg-clip-text text-transparent ${gradientCss}">
-            ${total.toFixed(2)}
+            ${displayTotal}
           </div>
-          <div class="ml-1 font-roboto text-slateus-400">Gwei</div>
+          <div class="ml-1 font-roboto text-slateus-400">${displayUnit}</div>
         </div>
       </div>
     `;
@@ -178,7 +184,7 @@ const BlobFeesWidget: FC<Props> = ({
           type: "areaspline",
           threshold: 0,
           data: baseFeesSeries,
-          color: colors.blue400,
+          color: colors.orange400,
           negativeColor: colors.blue400,
           lineWidth: 0,
           states: {
@@ -247,7 +253,7 @@ const BlobFeesWidget: FC<Props> = ({
         </div>
         <div className="flex items-baseline justify-between">
           <LabelText className="flex min-h-[21px] items-center">
-              blob fees
+            blob fees
           </LabelText>
           <TimeFrameIndicator
             timeFrame={timeFrame}
