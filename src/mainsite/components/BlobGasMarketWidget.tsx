@@ -210,7 +210,6 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
           >
             <>
               <Marker
-                barrier={0}
                 blockNumber={baseFeePerGasStatsTimeFrame.min_block_number}
                 description="minimum gas price"
                 gas={baseFeePerGasStatsTimeFrame.min}
@@ -223,7 +222,6 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                 convertToGwei={convertToGwei}
               />
               <Marker
-                barrier={0}
                 blockNumber={baseFeePerGasStatsTimeFrame.max_block_number}
                 description="maximum gas price"
                 gas={baseFeePerGasStatsTimeFrame.max}
@@ -236,7 +234,6 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                 convertToGwei={convertToGwei}
               />
               <Marker
-                barrier={0}
                 description="average gas price"
                 emphasize
                 gas={baseFeePerGasStatsTimeFrame.average}

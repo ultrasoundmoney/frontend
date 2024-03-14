@@ -172,11 +172,11 @@ const BlobFeesWidget: FC<Props> = ({
       15,
     );
 
-    const startTimeStamp = baseFeesSeries[0][0];
+    const startTimeStamp = baseFeesSeries?.[0]?.[0];
 
     return _merge({}, baseOptions, {
       xAxis: {
-          min: startTimeStamp
+        min: startTimeStamp,
       },
       yAxis: {
         id: "base-fees",
@@ -188,7 +188,7 @@ const BlobFeesWidget: FC<Props> = ({
           id: "base-fees-over-area",
           type: "areaspline",
           threshold: 0,
-          data: baseFeesSeries?.filter(([_, value] ) => value > 0),
+          data: baseFeesSeries?.filter(([_, value]) => value > 0),
           color: colors.orange400,
           negativeColor: colors.orange400,
           lineWidth: 0,
