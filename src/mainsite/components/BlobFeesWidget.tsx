@@ -121,7 +121,7 @@ const getTooltipFormatter = (
     const formattedDate = format(dt, "iii MMM dd yyyy");
     const formattedTime = format(dt, "HH:mm:ss 'UTC'x");
 
-    const gradientCss = "from-cyan-300 to-indigo-500";
+    const gradientCss = "from-orange-400 to-yellow-300";
 
     const displayTotal =
       total > GWEI_FORMATTING_THRESHOLD ? gweiFromWei(total).toFixed(2) : total;
@@ -172,7 +172,12 @@ const BlobFeesWidget: FC<Props> = ({
       15,
     );
 
+    const startTimeStamp = baseFeesSeries[0][0];
+
     return _merge({}, baseOptions, {
+      xAxis: {
+          min: startTimeStamp
+      },
       yAxis: {
         id: "base-fees",
         min,
@@ -183,9 +188,9 @@ const BlobFeesWidget: FC<Props> = ({
           id: "base-fees-over-area",
           type: "areaspline",
           threshold: 0,
-          data: baseFeesSeries,
+          data: baseFeesSeries?.filter(([_, value] ) => value > 0),
           color: colors.orange400,
-          negativeColor: colors.blue400,
+          negativeColor: colors.orange400,
           lineWidth: 0,
           states: {
             hover: {
