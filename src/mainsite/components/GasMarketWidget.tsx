@@ -176,12 +176,10 @@ const GasMarketWidget: FC<Props> = ({
   blobFees,
   barrierGwei,
 }) => {
-  console.log({ blobFees, barrierGwei });
   const baseFeePerGasStatsTimeFrame = useBaseFeePerGasStatsTimeFrame(
     timeFrame,
     blobFees,
   );
-  console.log("baseFeePerGasStatsTimeFrame", baseFeePerGasStatsTimeFrame);
   // Although the barrier is Gwei, the others are Wei.
   const baseFeePerGasBarrier = useBaseFeePerGasBarrier();
   const barrier = (barrierGwei ?? baseFeePerGasBarrier.barrier) * WEI_PER_GWEI;
@@ -241,11 +239,13 @@ const GasMarketWidget: FC<Props> = ({
   const deltaWidth =
     deltaPercent === undefined ? undefined : `${Math.abs(deltaPercent)}%`;
 
+  const title = blobFees ? "blob gas market" : "gas market";
+
   return (
-    <WidgetErrorBoundary title="gas market">
+    <WidgetErrorBoundary title={title}>
       <WidgetBackground className="flex flex-col gap-y-4">
         <div className="flex justify-between">
-          <LabelText>gas market</LabelText>
+            <LabelText>{ title }</LabelText>
           <TimeFrameIndicator
             timeFrame={timeFrame}
             onClickTimeFrame={onClickTimeFrame}

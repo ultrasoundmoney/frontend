@@ -68,12 +68,13 @@ const GasStreakWidget: FC<Props> = ({ blobFees }) => {
   const groupedAnalysis1F = useGroupedAnalysis1();
   const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysis1F);
   const deflationaryStreak = (blobFees ? groupedAnalysis1?.deflationaryBlobStreak : groupedAnalysis1?.deflationaryStreak)?.postMerge;
+  const title = blobFees ? "blob gas streak" : "gas streak";
 
   return (
     <WidgetBackground>
       <div className="flex flex-col gap-y-4">
         <div className="flex gap-x-2 items-center">
-          <WidgetTitle>gas streak</WidgetTitle>
+          <WidgetTitle>{title}</WidgetTitle>
         </div>
         <SpanningAge
           isLoading={deflationaryStreak === undefined}
