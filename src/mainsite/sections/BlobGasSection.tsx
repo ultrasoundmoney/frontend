@@ -59,7 +59,7 @@ const BlobGasSection: FC<{
       : Object.fromEntries(new Map(baseFeesSeries).entries());
 
   return (
-    <Section link="blob gas" subtitle="the blobs are here" title="blob gas">
+    <Section link="blobGas" subtitle="the blobs are here" title="blob gas">
       <div className="flex w-full flex-col gap-y-4 gap-x-4 lg:flex-row">
         <div className="w-full lg:w-1/2">
           <BaseFeesWidget
