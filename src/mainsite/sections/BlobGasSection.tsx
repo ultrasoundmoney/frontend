@@ -15,7 +15,7 @@ const BlobFeesWidget = dynamic(() => import("../components/BlobFeesWidget"), {
 const BlobGasMarketWidget = dynamic(() => import("../components/BlobGasMarketWidget"), {
   ssr: false,
 });
-const GasStreakWidget = dynamic(() => import("../components/GasStreakWidget"), {
+const BlobBurnWidget = dynamic(() => import("../components/BlobBurnWidget"), {
   ssr: false,
 });
 
@@ -77,8 +77,8 @@ const BlobGasSection: FC<{
             timeFrame={timeFrame}
             onClickTimeFrame={onClickTimeFrame}
           />
-          <GasStreakWidget
-             blobFees={true}
+          <BlobBurnWidget
+              timeFrame={timeFrame}
           />
         </div>
       </div>
