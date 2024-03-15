@@ -72,7 +72,7 @@ const baseOptions: Highcharts.Options = {
       style: {
         color: colors.slateus400,
         fontFamily: "Roboto Mono",
-        fontSize: "12px",
+        fontSize: "10px",
         fontWeight: "300",
       },
     },
