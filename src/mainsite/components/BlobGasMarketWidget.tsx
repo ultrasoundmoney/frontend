@@ -3,7 +3,6 @@ import type { StaticImageData } from "next/legacy/image";
 import Image from "next/legacy/image";
 import type { FC } from "react";
 import CountUp from "react-countup";
-import barrierSvg from "../../assets/barrier-own.svg";
 import batSvg from "../../assets/bat-own.svg";
 import speakerSvg from "../../assets/speaker-own.svg";
 import LabelText from "../../components/TextsNext/LabelText";
@@ -12,10 +11,11 @@ import WidgetErrorBoundary from "../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../components/WidgetSubcomponents";
 import { WEI_PER_GWEI } from "../../eth-units";
 import { formatOneDecimal } from "../../format";
-import { useBaseFeePerGasBarrier } from "../api/barrier";
 import { useBaseFeePerGasStatsTimeFrame } from "../api/base-fee-per-gas-stats";
 import type { TimeFrame } from "../time-frames";
 import TimeFrameIndicator from "./TimeFrameIndicator";
+
+const GWEI_FORMATTING_THRESHOLD = 100_000_000; // Threshold in wei above which to convert to / format as Gwei
 
 const getPercentage = (
   highest: number,
@@ -30,7 +30,6 @@ const getBlockPageLink = (u: number | undefined): string | undefined =>
   typeof u === "undefined" ? undefined : `https://etherscan.io/block/${u}`;
 
 type MarkerProps = {
-  barrier: number;
   blockNumber?: number;
   description?: string;
   emphasize?: boolean;
@@ -41,10 +40,10 @@ type MarkerProps = {
   lowest: number;
   markerColor: string;
   vertical: "top" | "bottom";
+  convertToGwei: boolean;
 };
 
 const Marker: FC<MarkerProps> = ({
-  barrier,
   blockNumber,
   emphasize = false,
   gas,
@@ -54,11 +53,16 @@ const Marker: FC<MarkerProps> = ({
   lowest,
   markerColor,
   vertical,
+  convertToGwei,
 }) => {
   // TODO: rewrite to use translation
   const styles = useSpring({
     left: `${getPercentage(highest, lowest, gas) * 100}%`,
   });
+
+  const gasFormatted = convertToGwei ? gas / WEI_PER_GWEI : gas;
+  const unit = convertToGwei ? "Gwei" : "wei";
+  const decimals = convertToGwei ? 2 : 0;
 
   return (
     <animated.div
@@ -79,48 +83,17 @@ const Marker: FC<MarkerProps> = ({
           `}
         ></div>
       )}
-      {label === "barrier" ? (
-        <>
-          <div
-            className={`
-              absolute top-2 flex h-[15px]
-              w-[53px] select-none gap-x-1
-              ${horizontal === "right" ? "left-2" : "right-2"}
-            `}
-          >
-            <Image
-              alt="emoji of a bat, first-half of signifying ultra sound base fee per gas"
-              src={batSvg as StaticImageData}
-              width={15}
-              height={15}
-            />
-            <Image
-              alt="emoji of a speaker, second-half of signifying ultra sound base fee per gas"
-              src={speakerSvg as StaticImageData}
-              width={15}
-              height={15}
-            />
-            <Image
-              alt="emoji of a barrier, third-half of signifying ultra sound base fee per gas"
-              src={barrierSvg as StaticImageData}
-              width={15}
-              height={15}
-            />
-          </div>
-        </>
-      ) : (
-        <LabelText
-          color={emphasize ? undefined : "text-slateus-400"}
-          className={`
+      <LabelText
+        color={emphasize ? undefined : "text-slateus-400"}
+        className={`
             absolute top-2
             ${vertical === "top" ? "top-2" : "top-3"}
             ${horizontal === "right" ? "left-2" : "right-2"}
             ${emphasize ? "" : "text-slateus-400"}
           `}
-        >
-          {label}
-        </LabelText>
-      )}
+      >
+        {label}
+      </LabelText>
       <QuantifyText
         className={`
           absolute
@@ -129,17 +102,13 @@ const Marker: FC<MarkerProps> = ({
         `}
         color={
           label === "average"
-            ? `bg-gradient-to-r bg-clip-text text-transparent ${
-                gas >= barrier
-                  ? "from-orange-400 to-yellow-300"
-                  : "from-cyan-300 to-indigo-500"
-              }`
+            ? "bg-gradient-to-r bg-clip-text text-transparent from-orange-400 to-yellow-300"
             : emphasize
             ? "text-white"
             : "text-slateus-200"
         }
         size="text-sm"
-        unitPostfix={vertical === "top" ? "Gwei" : undefined}
+        unitPostfix={vertical === "top" ? unit : undefined}
       >
         <a
           href={getBlockPageLink(blockNumber)}
@@ -147,12 +116,12 @@ const Marker: FC<MarkerProps> = ({
           rel="noreferrer"
         >
           <CountUp
-            end={gas / WEI_PER_GWEI}
+            end={gasFormatted}
             preserveValue
             formattingFn={formatOneDecimal}
             duration={1}
             useEasing
-            decimals={1}
+            decimals={decimals}
           />
         </a>
       </QuantifyText>
@@ -166,36 +135,25 @@ const Marker: FC<MarkerProps> = ({
 type Props = {
   onClickTimeFrame: () => void;
   timeFrame: TimeFrame;
-  blobFees?: boolean;
-  barrierGwei?: number;
 };
 
-const GasMarketWidget: FC<Props> = ({
-  onClickTimeFrame,
-  timeFrame,
-  blobFees,
-  barrierGwei,
-}) => {
+const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const baseFeePerGasStatsTimeFrame = useBaseFeePerGasStatsTimeFrame(
     timeFrame,
-    blobFees,
+    true,
   );
-  // Although the barrier is Gwei, the others are Wei.
-  const baseFeePerGasBarrier = useBaseFeePerGasBarrier();
-  const barrier = (barrierGwei ?? baseFeePerGasBarrier.barrier) * WEI_PER_GWEI;
   const barPaddingFactor = 0.08;
 
   const lowest =
-    baseFeePerGasStatsTimeFrame === undefined || barrier === undefined
+    baseFeePerGasStatsTimeFrame === undefined
       ? undefined
-      : Math.min(barrier, baseFeePerGasStatsTimeFrame.min) -
-        Math.max(baseFeePerGasStatsTimeFrame.max, barrier) * barPaddingFactor;
+      : baseFeePerGasStatsTimeFrame.min -
+        baseFeePerGasStatsTimeFrame.max * barPaddingFactor;
 
   const highest =
-    baseFeePerGasStatsTimeFrame === undefined || barrier === undefined
+    baseFeePerGasStatsTimeFrame === undefined
       ? undefined
-      : Math.max(baseFeePerGasStatsTimeFrame.max, barrier) *
-        (1 + barPaddingFactor);
+      : baseFeePerGasStatsTimeFrame.max * (1 + barPaddingFactor);
 
   const gasRange =
     highest === undefined || lowest === undefined
@@ -209,43 +167,24 @@ const GasMarketWidget: FC<Props> = ({
       ? undefined
       : ((baseFeePerGasStatsTimeFrame.average - lowest) / gasRange) * 100;
 
-  const barrierPercent =
-    baseFeePerGasStatsTimeFrame === undefined ||
-    barrier === undefined ||
-    gasRange === undefined ||
-    lowest === undefined
-      ? undefined
-      : ((barrier - lowest) / gasRange) * 100;
-
-  const deltaPercent =
-    barrierPercent !== undefined && averagePercent !== undefined
-      ? averagePercent - barrierPercent
-      : undefined;
-
   const isDataAvailable =
-    barrier !== undefined &&
     baseFeePerGasStatsTimeFrame !== undefined &&
     highest !== undefined &&
     lowest !== undefined &&
-    deltaPercent !== undefined;
+    averagePercent !== undefined;
 
-  const deltaLeft =
-    deltaPercent === undefined
-      ? undefined
-      : deltaPercent >= 0
-      ? `${barrierPercent}%`
-      : `${averagePercent}%`;
+  const deltaLeft = `${averagePercent}%`;
 
   const deltaWidth =
-    deltaPercent === undefined ? undefined : `${Math.abs(deltaPercent)}%`;
+    averagePercent === undefined ? undefined : `${Math.abs(averagePercent)}%`;
 
-  const title = blobFees ? "blob gas market" : "gas market";
+  const convertToGwei = baseFeePerGasStatsTimeFrame !== undefined && baseFeePerGasStatsTimeFrame.max > GWEI_FORMATTING_THRESHOLD;
 
   return (
-    <WidgetErrorBoundary title={title}>
+    <WidgetErrorBoundary title="blob gas market">
       <WidgetBackground className="flex flex-col gap-y-4">
         <div className="flex justify-between">
-            <LabelText>{ title }</LabelText>
+          <LabelText>blob gas market</LabelText>
           <TimeFrameIndicator
             timeFrame={timeFrame}
             onClickTimeFrame={onClickTimeFrame}
@@ -271,7 +210,6 @@ const GasMarketWidget: FC<Props> = ({
           >
             <>
               <Marker
-                barrier={barrier}
                 blockNumber={baseFeePerGasStatsTimeFrame.min_block_number}
                 description="minimum gas price"
                 gas={baseFeePerGasStatsTimeFrame.min}
@@ -281,9 +219,9 @@ const GasMarketWidget: FC<Props> = ({
                 lowest={lowest}
                 markerColor="bg-slateus-400"
                 vertical="bottom"
+                convertToGwei={convertToGwei}
               />
               <Marker
-                barrier={barrier}
                 blockNumber={baseFeePerGasStatsTimeFrame.max_block_number}
                 description="maximum gas price"
                 gas={baseFeePerGasStatsTimeFrame.max}
@@ -293,56 +231,23 @@ const GasMarketWidget: FC<Props> = ({
                 lowest={lowest}
                 markerColor="bg-slateus-400"
                 vertical="bottom"
+                convertToGwei={convertToGwei}
               />
               <Marker
-                barrier={barrier}
                 description="average gas price"
                 emphasize
                 gas={baseFeePerGasStatsTimeFrame.average}
                 highest={highest}
-                horizontal={
-                  baseFeePerGasStatsTimeFrame.average > barrier
-                    ? "right"
-                    : "left"
-                }
+                horizontal="right"
                 label="average"
                 lowest={lowest}
                 markerColor={
-                  deltaPercent >= 0 ? "bg-orange-400" : "bg-blue-400"
+                  averagePercent >= 0 ? "bg-orange-400" : "bg-blue-400"
                 }
                 vertical="top"
-              />
-              <Marker
-                barrier={barrier}
-                description="ultra sound barrier"
-                emphasize
-                gas={barrier}
-                highest={highest}
-                horizontal={
-                  barrier <= baseFeePerGasStatsTimeFrame.average
-                    ? "left"
-                    : "right"
-                }
-                label="barrier"
-                lowest={lowest}
-                markerColor={
-                  deltaPercent >= 0 ? "bg-orange-400" : "bg-blue-400"
-                }
-                vertical="top"
+                convertToGwei={convertToGwei}
               />
             </>
-            {deltaPercent !== undefined && (
-              <div
-                className={`
-                  absolute h-2
-                  ${deltaPercent >= 0 ? "bg-orange-400" : "bg-drop"}
-                `}
-                style={{
-                  left: deltaLeft,
-                  width: deltaWidth,
-                }}
-              ></div>
-            )}
           </div>
         )}
       </WidgetBackground>

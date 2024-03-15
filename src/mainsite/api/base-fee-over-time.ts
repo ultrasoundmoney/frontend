@@ -10,10 +10,12 @@ export type BaseFeeAtTime = {
   block_number: number | null;
   timestamp: DateTimeString;
   wei: WeiNumber;
+  blob_wei: WeiNumber | null;
 };
 
 export type BaseFeeOverTime = {
   barrier: Gwei;
+  blob_barrier: Gwei;
   block_number: number;
   d1: BaseFeeAtTime[];
   d30: BaseFeeAtTime[];

@@ -9,12 +9,15 @@ import colors from "../../colors";
 import LabelText from "../../components/TextsNext/LabelText";
 import WidgetErrorBoundary from "../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../components/WidgetSubcomponents";
-import type { Gwei } from "../../eth-units";
+import { gweiFromWei } from "../../format";
+import type { WeiNumber } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
 import TimeFrameIndicator from "../components/TimeFrameIndicator";
 import type { TimeFrame } from "../time-frames";
 
-export type BaseFeePoint = [JsTimestamp, Gwei];
+const GWEI_FORMATTING_THRESHOLD = 100_000_000; // Threshold in wei above which to convert to / format as Gwei
+
+export type BaseFeePoint = [JsTimestamp, WeiNumber];
 
 // Somehow resolves an error thrown by the annotation lib
 if (typeof window !== "undefined") {
@@ -100,51 +103,12 @@ const baseOptions: Highcharts.Options = {
   },
 };
 
-const makeBarrier = (barrier: number) => ({
-  id: "barrier-plotline",
-  color: colors.slateus500,
-  width: 1,
-  value: barrier,
-  zIndex: 10,
-  label: {
-    x: 84,
-    text: `${barrier?.toFixed(2)} Gwei 🦇🔊`,
-    useHTML: true,
-    align: "right",
-    formatter: () => `
-      <div class="flex justify-end" title="ultra sound barrier">
-        <img
-          class="w-[15px] h-[15px]"
-          src="/bat-own.svg"
-        />
-        <img
-          class="ml-1 w-[15px] h-[15px]"
-          src="/speaker-own.svg"
-        />
-        <img
-          class="ml-1 w-[15px] h-[15px]"
-          src="/barrier-own.svg"
-        />
-      </div>
-      <div class="flex text-sm">
-        <div class="font-light text-white font-roboto">
-          ${barrier?.toFixed(1)}
-        </div>
-        <div class="ml-1 font-light font-roboto text-slateus-200">
-          Gwei
-        </div>
-      </div>
-    `,
-  },
-});
-
 const getTooltipFormatter = (
   baseFeesMap: Record<number, number>,
-  barrier: number | undefined,
 ): Highcharts.TooltipFormatterCallbackFunction =>
   function () {
     const x = typeof this.x === "number" ? this.x : undefined;
-    if (x === undefined || barrier === undefined) {
+    if (x === undefined) {
       return undefined;
     }
 
@@ -157,43 +121,39 @@ const getTooltipFormatter = (
     const formattedDate = format(dt, "iii MMM dd yyyy");
     const formattedTime = format(dt, "HH:mm:ss 'UTC'x");
 
-    const gradientCss =
-      total > barrier
-        ? "from-orange-400 to-yellow-300"
-        : "from-cyan-300 to-indigo-500";
+    const gradientCss = "from-orange-400 to-yellow-300";
 
+    const displayTotal =
+      total > GWEI_FORMATTING_THRESHOLD ? gweiFromWei(total).toFixed(2) : total;
+    const displayUnit = total > GWEI_FORMATTING_THRESHOLD ? "Gwei" : "wei";
     return `
       <div class="p-4 rounded-lg border-2 font-roboto bg-slateus-700 border-slateus-400">
         <div class="text-right text-slateus-400">${formattedDate}</div>
         <div class="text-right text-slateus-400">${formattedTime}</div>
         <div class="flex justify-end mt-2">
           <div class="bg-gradient-to-r bg-clip-text text-transparent ${gradientCss}">
-            ${total.toFixed(2)}
+            ${displayTotal}
           </div>
-          <div class="ml-1 font-roboto text-slateus-400">Gwei</div>
+          <div class="ml-1 font-roboto text-slateus-400">${displayUnit}</div>
         </div>
       </div>
     `;
   };
 
 type Props = {
-  barrier: Gwei | undefined;
   baseFeesMap: Record<number, number>;
   baseFeesSeries: BaseFeePoint[] | undefined;
   max: number | undefined;
   onClickTimeFrame: () => void;
   timeFrame: TimeFrame;
-  blobFees?: boolean;
 };
 
-const BaseFeesWidget: FC<Props> = ({
-  barrier,
+const BlobFeesWidget: FC<Props> = ({
   baseFeesMap,
   baseFeesSeries,
   max,
   onClickTimeFrame,
   timeFrame,
-  blobFees,
 }) => {
   // Setting lang has to happen before any chart render.
   useEffect(() => {
@@ -212,21 +172,25 @@ const BaseFeesWidget: FC<Props> = ({
       15,
     );
 
+    const startTimeStamp = baseFeesSeries?.[0]?.[0];
+
     return _merge({}, baseOptions, {
+      xAxis: {
+        min: startTimeStamp,
+      },
       yAxis: {
         id: "base-fees",
         min,
-        plotLines: [barrier !== undefined ? makeBarrier(barrier) : undefined],
       },
       series: [
         {
           animation: false,
           id: "base-fees-over-area",
           type: "areaspline",
-          threshold: barrier,
-          data: baseFeesSeries,
+          threshold: 0,
+          data: baseFeesSeries?.filter(([_, value]) => value > 0),
           color: colors.orange400,
-          negativeColor: colors.blue400,
+          negativeColor: colors.orange400,
           lineWidth: 0,
           states: {
             hover: {
@@ -253,20 +217,20 @@ const BaseFeesWidget: FC<Props> = ({
               y2: 0,
             },
             stops: [
-              [(barrier ?? 0) / (max ?? 1), "#EDDB3610"],
+              [0 / (max ?? 1), "#EDDB3610"],
               [1, "#E7980050"],
             ],
           },
         },
       ],
       tooltip: {
-        formatter: getTooltipFormatter(baseFeesMap, barrier),
+        formatter: getTooltipFormatter(baseFeesMap),
       },
     } as Highcharts.Options);
-  }, [max, barrier, baseFeesMap, baseFeesSeries]);
+  }, [max, baseFeesMap, baseFeesSeries]);
 
   return (
-    <WidgetErrorBoundary title={blobFees ? "blob fees" : "base fees"}>
+    <WidgetErrorBoundary title="blob fees">
       {/* We use the h-0 min-h-full trick to adopt the height of our sibling
       element. */}
       <WidgetBackground className="relative flex h-full min-h-[398px] w-full flex-col lg:h-0">
@@ -294,7 +258,7 @@ const BaseFeesWidget: FC<Props> = ({
         </div>
         <div className="flex items-baseline justify-between">
           <LabelText className="flex min-h-[21px] items-center">
-              {blobFees ? "blob fees" : "base fees"}
+            blob fees
           </LabelText>
           <TimeFrameIndicator
             timeFrame={timeFrame}
@@ -329,4 +293,4 @@ const BaseFeesWidget: FC<Props> = ({
   );
 };
 
-export default BaseFeesWidget;
+export default BlobFeesWidget;
