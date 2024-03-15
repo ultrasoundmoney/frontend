@@ -57,8 +57,6 @@ const BlobGasSection: FC<{
       ? undefined
       : Object.fromEntries(new Map(baseFeesSeries).entries());
 
-    console.log("blobBaseFeesOverTime", baseFeesOverTime);
-    console.log("blobBaseFeesSeries", baseFeesSeries);
 
   return (
     <Section link="blobs" subtitle="the blobs are here" title="blob gas">
