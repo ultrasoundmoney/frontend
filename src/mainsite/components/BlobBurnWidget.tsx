@@ -1,4 +1,3 @@
-import * as DateFns from "date-fns";
 import type { FC } from "react";
 import LabelText from "../../components/TextsNext/LabelText";
 import { LabelUnitText } from "../../components/TextsNext/LabelUnitText";
@@ -7,17 +6,16 @@ import SkeletonText from "../../components/TextsNext/SkeletonText";
 import type { FeesBurned } from "../api/grouped-analysis-1";
 import {
   WidgetBackground,
-  WidgetTitle,
 } from "../../components/WidgetSubcomponents";
 import {
   decodeGroupedAnalysis1,
   useGroupedAnalysis1,
 } from "../api/grouped-analysis-1";
 import type { TimeFrame } from "../../mainsite/time-frames";
+import TimeFrameIndicator from "./TimeFrameIndicator";
 
-type Props = {
-  timeFrame: TimeFrame;
-};
+const GWEI_FORMATTING_THRESHOLD = 1e15; // Threshold in wei below which to convert format as Gwei instead of ETH
+
 
 const timeframeFeesBurnedMap: Record<
   TimeFrame,
@@ -32,7 +30,7 @@ const timeframeFeesBurnedMap: Record<
   since_burn: { eth: "feesBurnedSinceBurn", usd: "feesBurnedSinceBurnUsd" },
 };
 
-const NON_ZERO_DECIMALS = 4;
+const NON_ZERO_DECIMALS = 2;
 // Should format number to the precision of the first couple of non-zero digits
 function formatNumber(num: number) {
   // Handle zero separately to avoid complications
@@ -76,7 +74,12 @@ function formatNumber(num: number) {
   return numStr;
 }
 
-const GasStreakWidget: FC<Props> = ({ timeFrame }) => {
+type Props = {
+  onClickTimeFrame: () => void;
+  timeFrame: TimeFrame;
+};
+
+const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const groupedAnalysis1F = useGroupedAnalysis1();
   const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysis1F);
   const feesBurned = groupedAnalysis1?.blobFeeBurns;
@@ -88,17 +91,28 @@ const GasStreakWidget: FC<Props> = ({ timeFrame }) => {
     feesBurned === undefined
       ? undefined
       : formatNumber(feesBurned[timeframeFeesBurnedMap[timeFrame]["usd"]]);
+
+  const formatBurnAsGwei =
+    blobFeeBurn !== undefined && blobFeeBurn < GWEI_FORMATTING_THRESHOLD;
   const formattedBurn =
-    blobFeeBurn !== undefined ? formatNumber(blobFeeBurn / 1e18) : undefined;
+    blobFeeBurn !== undefined
+      ? formatNumber(blobFeeBurn / (formatBurnAsGwei ? 1e9 : 1e18))
+      : undefined;
 
   return (
     <WidgetBackground>
       <div className="flex flex-col gap-y-4">
-        <div className="flex items-center gap-x-2">
-          <WidgetTitle>blob fee burn</WidgetTitle>
+        <div className="flex justify-between">
+          <LabelText>blob fee burn</LabelText>
+          <TimeFrameIndicator
+            timeFrame={timeFrame}
+            onClickTimeFrame={onClickTimeFrame}
+          />
         </div>
         <QuantifyText color="text-slateus-200" className="ml-1" size="text-4xl">
-          <SkeletonText width="8rem">{formattedBurn} ETH</SkeletonText>
+          <SkeletonText width="8rem">
+            {formattedBurn} {formatBurnAsGwei ? "Gwei" : "ETH"}
+          </SkeletonText>
         </QuantifyText>
         <div className="flex items-center gap-x-1">
           <div className="flex items-baseline gap-x-1">
@@ -113,4 +127,4 @@ const GasStreakWidget: FC<Props> = ({ timeFrame }) => {
   );
 };
 
-export default GasStreakWidget;
+export default BlobBurnWidget;

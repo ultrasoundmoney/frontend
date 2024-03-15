@@ -61,7 +61,7 @@ const BlobGasSection: FC<{
     console.log("blobBaseFeesSeries", baseFeesSeries);
 
   return (
-    <Section link="blobGas" subtitle="the blobs are here" title="blob gas">
+    <Section link="blobs" subtitle="the blobs are here" title="blob gas">
       <div className="flex w-full flex-col gap-y-4 gap-x-4 lg:flex-row">
         <div className="w-full lg:w-1/2">
           <BlobFeesWidget
@@ -79,6 +79,7 @@ const BlobGasSection: FC<{
           />
           <BlobBurnWidget
               timeFrame={timeFrame}
+              onClickTimeFrame={onClickTimeFrame}
           />
         </div>
       </div>

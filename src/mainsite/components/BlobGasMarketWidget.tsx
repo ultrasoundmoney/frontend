@@ -1,10 +1,6 @@
 import { animated, useSpring } from "@react-spring/web";
-import type { StaticImageData } from "next/legacy/image";
-import Image from "next/legacy/image";
 import type { FC } from "react";
 import CountUp from "react-countup";
-import batSvg from "../../assets/bat-own.svg";
-import speakerSvg from "../../assets/speaker-own.svg";
 import LabelText from "../../components/TextsNext/LabelText";
 import QuantifyText from "../../components/TextsNext/QuantifyText";
 import WidgetErrorBoundary from "../../components/WidgetErrorBoundary";
