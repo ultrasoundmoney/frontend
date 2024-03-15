@@ -61,7 +61,7 @@ const Marker: FC<MarkerProps> = ({
   });
 
   const gasFormatted = convertToGwei ? gas / WEI_PER_GWEI : gas;
-  const unit = convertToGwei ? "Gwei" : "Wei";
+  const unit = convertToGwei ? "Gwei" : "wei";
   const decimals = convertToGwei ? 2 : 0;
 
   return (
