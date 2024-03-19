@@ -124,7 +124,7 @@ const getTooltipFormatter = (
     const gradientCss = "from-orange-400 to-yellow-300";
 
     const displayTotal =
-      total > GWEI_FORMATTING_THRESHOLD ? gweiFromWei(total).toFixed(2) : total;
+      total > GWEI_FORMATTING_THRESHOLD ? gweiFromWei(total).toFixed(2) : total.toFixed(2);
     const displayUnit = total > GWEI_FORMATTING_THRESHOLD ? "Gwei" : "wei";
     return `
       <div class="p-4 rounded-lg border-2 font-roboto bg-slateus-700 border-slateus-400">
