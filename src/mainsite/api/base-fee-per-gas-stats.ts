@@ -27,12 +27,29 @@ export type BaseFeePerGasStatsEnvelope = {
   timestamp: DateTimeString;
 };
 
+export type BlobBaseFeeStatsEnvelope = {
+  barrier: GweiNumber;
+  blob_base_fee_stats: Record<TimeFrame, BaseFeePerGasStats>;
+  block_number: BlockNumber;
+  timestamp: DateTimeString;
+};
+
 const url = "/api/v2/fees/base-fee-per-gas-stats";
 const blob_url = "/api/v2/fees/blob-fee-per-gas-stats";
 
 export const fetchBaseFeePerGasStats = (): Promise<
   ApiResult<BaseFeePerGasStatsEnvelope>
 > => fetchApiJson<BaseFeePerGasStatsEnvelope>(url);
+
+export const useBlobBaseFeeStats = ():
+  | BlobBaseFeeStatsEnvelope
+  | undefined => {
+  const { data } = useSWR<BlobBaseFeeStatsEnvelope>(blob_url, fetchJsonSwr, {
+    refreshInterval: secondsToMilliseconds(4),
+  });
+
+  return data;
+};
 
 export const useBaseFeePerGasStats = ():
   | BaseFeePerGasStatsEnvelope
@@ -63,8 +80,12 @@ export const useBaseFeePerGasStatsTimeFrame = (
   timeFrame: TimeFrame,
   blobFees = false,
 ): BaseFeePerGasStats => {
+    const fullUrl = `${blobFees ? blob_url : url}?time_frame=${timeFrame}`;
+    if(blobFees) {
+    console.log("Requesting blob fees over time:", fullUrl);
+    }
   const { data } = useSWR<BaseFeePerGasStats>(
-    `${blobFees ? blob_url : url}?time_frame=${timeFrame}`,
+    fullUrl,
     fetchJsonSwr,
     {
       refreshInterval: refreshIntervalMap[timeFrame],

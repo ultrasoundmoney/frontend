@@ -7,7 +7,7 @@ import WidgetErrorBoundary from "../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../components/WidgetSubcomponents";
 import { WEI_PER_GWEI } from "../../eth-units";
 import { formatOneDecimal } from "../../format";
-import { useBaseFeePerGasStatsTimeFrame } from "../api/base-fee-per-gas-stats";
+import { useBlobBaseFeeStats } from "../api/base-fee-per-gas-stats";
 import type { TimeFrame } from "../time-frames";
 import TimeFrameIndicator from "./TimeFrameIndicator";
 
@@ -134,22 +134,21 @@ type Props = {
 };
 
 const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
-  const baseFeePerGasStatsTimeFrame = useBaseFeePerGasStatsTimeFrame(
-    timeFrame,
-    true,
-  );
+  const blobBaseFeeStats = useBlobBaseFeeStats();
+  const blobBaseFeeStatsTimeFrame =
+    blobBaseFeeStats?.blob_base_fee_stats?.[timeFrame];
   const barPaddingFactor = 0.08;
 
   const lowest =
-    baseFeePerGasStatsTimeFrame === undefined
+    blobBaseFeeStatsTimeFrame === undefined
       ? undefined
-      : baseFeePerGasStatsTimeFrame.min -
-        baseFeePerGasStatsTimeFrame.max * barPaddingFactor;
+      : blobBaseFeeStatsTimeFrame.min -
+        blobBaseFeeStatsTimeFrame.max * barPaddingFactor;
 
   const highest =
-    baseFeePerGasStatsTimeFrame === undefined
+    blobBaseFeeStatsTimeFrame === undefined
       ? undefined
-      : baseFeePerGasStatsTimeFrame.max * (1 + barPaddingFactor);
+      : blobBaseFeeStatsTimeFrame.max * (1 + barPaddingFactor);
 
   const gasRange =
     highest === undefined || lowest === undefined
@@ -157,14 +156,14 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
       : highest - lowest;
 
   const averagePercent =
-    baseFeePerGasStatsTimeFrame === undefined ||
+    blobBaseFeeStatsTimeFrame === undefined ||
     gasRange === undefined ||
     lowest === undefined
       ? undefined
-      : ((baseFeePerGasStatsTimeFrame.average - lowest) / gasRange) * 100;
+      : ((blobBaseFeeStatsTimeFrame.average - lowest) / gasRange) * 100;
 
   const isDataAvailable =
-    baseFeePerGasStatsTimeFrame !== undefined &&
+    blobBaseFeeStatsTimeFrame !== undefined &&
     highest !== undefined &&
     lowest !== undefined &&
     averagePercent !== undefined;
@@ -174,7 +173,9 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const deltaWidth =
     averagePercent === undefined ? undefined : `${Math.abs(averagePercent)}%`;
 
-  const convertToGwei = baseFeePerGasStatsTimeFrame !== undefined && baseFeePerGasStatsTimeFrame.max > GWEI_FORMATTING_THRESHOLD;
+  const convertToGwei =
+    blobBaseFeeStatsTimeFrame !== undefined &&
+    blobBaseFeeStatsTimeFrame.max > GWEI_FORMATTING_THRESHOLD;
 
   return (
     <WidgetErrorBoundary title="blob gas market">
@@ -206,9 +207,9 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
           >
             <>
               <Marker
-                blockNumber={baseFeePerGasStatsTimeFrame.min_block_number}
+                blockNumber={blobBaseFeeStatsTimeFrame.min_block_number}
                 description="minimum gas price"
-                gas={baseFeePerGasStatsTimeFrame.min}
+                gas={blobBaseFeeStatsTimeFrame.min}
                 highest={highest}
                 horizontal="left"
                 label="min"
@@ -218,9 +219,9 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                 convertToGwei={convertToGwei}
               />
               <Marker
-                blockNumber={baseFeePerGasStatsTimeFrame.max_block_number}
+                blockNumber={blobBaseFeeStatsTimeFrame.max_block_number}
                 description="maximum gas price"
-                gas={baseFeePerGasStatsTimeFrame.max}
+                gas={blobBaseFeeStatsTimeFrame.max}
                 highest={highest}
                 horizontal="right"
                 label="max"
@@ -232,7 +233,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
               <Marker
                 description="average gas price"
                 emphasize
-                gas={baseFeePerGasStatsTimeFrame.average}
+                gas={blobBaseFeeStatsTimeFrame.average}
                 highest={highest}
                 horizontal="right"
                 label="average"
