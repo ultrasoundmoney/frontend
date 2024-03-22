@@ -6,9 +6,7 @@ import SkeletonText from "../../components/TextsNext/SkeletonText";
 import CountUp from "react-countup";
 import { AmountAnimatedShell } from "./Amount";
 import type { FeesBurned } from "../api/grouped-analysis-1";
-import {
-  WidgetBackground,
-} from "../../components/WidgetSubcomponents";
+import { WidgetBackground } from "../../components/WidgetSubcomponents";
 import {
   decodeGroupedAnalysis1,
   useGroupedAnalysis1,
@@ -17,7 +15,29 @@ import type { TimeFrame } from "../../mainsite/time-frames";
 import TimeFrameIndicator from "./TimeFrameIndicator";
 
 const GWEI_FORMATTING_THRESHOLD = 1e15; // Threshold in wei below which to convert format as Gwei instead of ETH
+const ETH_BURN_DECIMALS=3;
+const USD_BURN_DECIMALS=9;
 
+function addCommas(inputNumber: number) {
+    // Convert number to string without scientific notation
+    let strNumber = inputNumber.toFixed(20).replace(/\.?0+$/, '');
+
+    // Split the number into integer and fractional parts
+    let parts = strNumber.split(".");
+    let integerPart = parts[0];
+    let fractionalPart = parts[1] || "";
+
+    // Add commas to the integer part
+    let integerWithCommas = integerPart?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    // Add commas to the fractional part
+    let fractionalWithCommas = fractionalPart.replace(/\d{3}(?=\d)/g, match => match + ',');
+
+    // Combine integer and fractional parts
+    let result = integerWithCommas + (fractionalPart ? "." + fractionalWithCommas : "");
+
+    return result;
+}
 
 const timeframeFeesBurnedMap: Record<
   TimeFrame,
@@ -92,7 +112,7 @@ const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const blobFeeBurnUSD =
     feesBurned === undefined
       ? undefined
-      : formatNumber(feesBurned[timeframeFeesBurnedMap[timeFrame]["usd"]]);
+      : addCommas(parseFloat(feesBurned[timeframeFeesBurnedMap[timeFrame]["usd"]].toFixed(USD_BURN_DECIMALS)));
 
   const formatBurnAsGwei =
     blobFeeBurn !== undefined && blobFeeBurn < GWEI_FORMATTING_THRESHOLD;
@@ -111,18 +131,30 @@ const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
             onClickTimeFrame={onClickTimeFrame}
           />
         </div>
-        <QuantifyText color="text-slateus-200" className="ml-1" size="text-4xl">
-          <SkeletonText width="8rem">
-            {formattedBurn} {formatBurnAsGwei ? "Gwei" : "ETH"}
-          </SkeletonText>
-        </QuantifyText>
-        <div className="flex items-center gap-x-1">
-          <div className="flex items-baseline gap-x-1">
-            <LabelUnitText className="mt-1">
-              <SkeletonText width="3rem">{blobFeeBurnUSD}</SkeletonText>
-            </LabelUnitText>
-            <LabelText className="mt-1">USD</LabelText>
+        <div className="flex flex-col gap-y-4 pt-4">
+          <div className="flex items-center">
+            <AmountAnimatedShell
+              skeletonWidth="9rem"
+              size="text-2xl md:text-3xl lg:text-3xl xl:text-4xl"
+              unitText={formatBurnAsGwei ? "Gwei" : "ETH"}
+            >
+              <CountUp
+                decimals={ETH_BURN_DECIMALS}
+                duration={0.8}
+                end={formattedBurn ?? 0}
+                preserveValue={true}
+                separator=","
+              />
+            </AmountAnimatedShell>
           </div>
+        </div>
+      </div>
+      <div className="flex items-center gap-x-1">
+        <div className="flex items-baseline gap-x-1">
+          <LabelUnitText className="mt-1">
+            <SkeletonText width="3rem">{blobFeeBurnUSD}</SkeletonText>
+          </LabelUnitText>
+          <LabelText className="mt-1">USD</LabelText>
         </div>
       </div>
     </WidgetBackground>
