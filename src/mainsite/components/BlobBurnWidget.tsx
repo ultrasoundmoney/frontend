@@ -17,28 +17,31 @@ import type { TimeFrame } from "../../mainsite/time-frames";
 import TimeFrameIndicator from "./TimeFrameIndicator";
 
 const GWEI_FORMATTING_THRESHOLD = 1e15; // Threshold in wei below which to convert format as Gwei instead of ETH
-const ETH_BURN_DECIMALS=3;
-const USD_BURN_DECIMALS=9;
+const ETH_BURN_DECIMALS = 3;
+const USD_BURN_DECIMALS = 9;
 
 function addCommas(inputNumber: number) {
-    // Convert number to string without scientific notation
-    const strNumber = inputNumber.toFixed(20).replace(/\.?0+$/, '');
+  // Convert number to string without scientific notation
+  const strNumber = inputNumber.toFixed(20).replace(/\.?0+$/, "");
 
-    // Split the number into integer and fractional parts
-    const parts = strNumber.split(".");
-    const integerPart = parts[0];
-    const fractionalPart = parts[1] || "";
+  // Split the number into integer and fractional parts
+  const parts = strNumber.split(".");
+  const integerPart = parts[0];
+  const fractionalPart = parts[1] || "";
 
-    // Add commas to the integer part
-    const integerWithCommas = integerPart?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  // Add commas to the integer part
+  const integerWithCommas = integerPart?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-    // Add commas to the fractional part
-    const fractionalWithCommas = fractionalPart.replace(/\d{3}(?=\d)/g, match => match + ',');
+  // Add commas to the fractional part
+  const fractionalWithCommas = fractionalPart.replace(
+    /\d{3}(?=\d)/g,
+    (match) => match + ",",
+  );
 
-    // Combine integer and fractional parts
-    const result = `${integerWithCommas}.${fractionalWithCommas}`;
+  // Combine integer and fractional parts
+  const result = `${integerWithCommas}.${fractionalWithCommas}`;
 
-    return result;
+  return result;
 }
 
 const timeframeFeesBurnedMap: Record<
@@ -70,7 +73,13 @@ const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const blobFeeBurnUSD =
     feesBurned === undefined
       ? undefined
-      : addCommas(parseFloat(feesBurned[timeframeFeesBurnedMap[timeFrame]["usd"]].toFixed(USD_BURN_DECIMALS)));
+      : addCommas(
+          parseFloat(
+            feesBurned[timeframeFeesBurnedMap[timeFrame]["usd"]].toFixed(
+              USD_BURN_DECIMALS,
+            ),
+          ),
+        );
 
   const formatBurnAsGwei =
     blobFeeBurn !== undefined && blobFeeBurn < GWEI_FORMATTING_THRESHOLD;
@@ -89,27 +98,25 @@ const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
             onClickTimeFrame={onClickTimeFrame}
           />
         </div>
-        <div className="flex flex-col gap-y-4 pt-4">
-          <div className="flex items-center">
-            <AmountAnimatedShell
-              skeletonWidth="9rem"
-              size="text-2xl md:text-3xl lg:text-3xl xl:text-4xl"
-              unitText={formatBurnAsGwei ? "Gwei" : "ETH"}
-            >
-              <CountUp
-                decimals={ETH_BURN_DECIMALS}
-                duration={0.8}
-                end={formattedBurn ?? 0}
-                preserveValue={true}
-                separator=","
-              />
-            </AmountAnimatedShell>
-            <div className="ml-4 h-6 w-6 select-none md:ml-8 lg:h-8 lg:w-8">
-              <Image
-                alt="fire emoji symbolizing ETH burned"
-                src={fireSvg as StaticImageData}
-              />
-            </div>
+        <div className="flex items-center mb-4">
+          <AmountAnimatedShell
+            skeletonWidth="9rem"
+            size="text-2xl md:text-3xl lg:text-3xl xl:text-4xl"
+            unitText={formatBurnAsGwei ? "Gwei" : "ETH"}
+          >
+            <CountUp
+              decimals={ETH_BURN_DECIMALS}
+              duration={0.8}
+              end={formattedBurn ?? 0}
+              preserveValue={true}
+              separator=","
+            />
+          </AmountAnimatedShell>
+          <div className="ml-4 h-6 w-6 select-none md:ml-8 lg:h-8 lg:w-8">
+            <Image
+              alt="fire emoji symbolizing ETH burned"
+              src={fireSvg as StaticImageData}
+            />
           </div>
         </div>
       </div>
