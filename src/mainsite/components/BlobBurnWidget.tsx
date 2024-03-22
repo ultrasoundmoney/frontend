@@ -3,6 +3,8 @@ import LabelText from "../../components/TextsNext/LabelText";
 import { LabelUnitText } from "../../components/TextsNext/LabelUnitText";
 import QuantifyText from "../../components/TextsNext/QuantifyText";
 import SkeletonText from "../../components/TextsNext/SkeletonText";
+import CountUp from "react-countup";
+import { AmountAnimatedShell } from "./Amount";
 import type { FeesBurned } from "../api/grouped-analysis-1";
 import {
   WidgetBackground,
@@ -96,7 +98,7 @@ const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
     blobFeeBurn !== undefined && blobFeeBurn < GWEI_FORMATTING_THRESHOLD;
   const formattedBurn =
     blobFeeBurn !== undefined
-      ? formatNumber(blobFeeBurn / (formatBurnAsGwei ? 1e9 : 1e18))
+      ? blobFeeBurn / (formatBurnAsGwei ? 1e9 : 1e18)
       : undefined;
 
   return (
