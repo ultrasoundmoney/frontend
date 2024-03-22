@@ -1,9 +1,11 @@
 import type { FC } from "react";
 import LabelText from "../../components/TextsNext/LabelText";
+import type { StaticImageData } from "next/legacy/image";
 import { LabelUnitText } from "../../components/TextsNext/LabelUnitText";
-import QuantifyText from "../../components/TextsNext/QuantifyText";
+import Image from "next/legacy/image";
 import SkeletonText from "../../components/TextsNext/SkeletonText";
 import CountUp from "react-countup";
+import fireSvg from "../../assets/fire-own.svg";
 import { AmountAnimatedShell } from "./Amount";
 import type { FeesBurned } from "../api/grouped-analysis-1";
 import { WidgetBackground } from "../../components/WidgetSubcomponents";
@@ -20,21 +22,21 @@ const USD_BURN_DECIMALS=9;
 
 function addCommas(inputNumber: number) {
     // Convert number to string without scientific notation
-    let strNumber = inputNumber.toFixed(20).replace(/\.?0+$/, '');
+    const strNumber = inputNumber.toFixed(20).replace(/\.?0+$/, '');
 
     // Split the number into integer and fractional parts
-    let parts = strNumber.split(".");
-    let integerPart = parts[0];
-    let fractionalPart = parts[1] || "";
+    const parts = strNumber.split(".");
+    const integerPart = parts[0];
+    const fractionalPart = parts[1] || "";
 
     // Add commas to the integer part
-    let integerWithCommas = integerPart?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const integerWithCommas = integerPart?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
     // Add commas to the fractional part
-    let fractionalWithCommas = fractionalPart.replace(/\d{3}(?=\d)/g, match => match + ',');
+    const fractionalWithCommas = fractionalPart.replace(/\d{3}(?=\d)/g, match => match + ',');
 
     // Combine integer and fractional parts
-    let result = integerWithCommas + (fractionalPart ? "." + fractionalWithCommas : "");
+    const result = `${integerWithCommas}.${fractionalWithCommas}`;
 
     return result;
 }
@@ -51,50 +53,6 @@ const timeframeFeesBurnedMap: Record<
   since_merge: { eth: "feesBurnedSinceMerge", usd: "feesBurnedSinceMergeUsd" },
   since_burn: { eth: "feesBurnedSinceBurn", usd: "feesBurnedSinceBurnUsd" },
 };
-
-const NON_ZERO_DECIMALS = 2;
-// Should format number to the precision of the first couple of non-zero digits
-function formatNumber(num: number) {
-  // Handle zero separately to avoid complications
-  if (num === 0) return "0";
-
-  // Convert to string using toFixed with enough precision
-  let numStr = num.toFixed(20);
-
-  // Check for scientific notation and convert if necessary
-  if (numStr.indexOf("e") !== -1) {
-    const [base, exponent] = num
-      .toString()
-      .split("e")
-      .map((item) => parseInt(item, 10));
-    if (exponent !== undefined && base !== undefined) {
-      numStr = (base * Math.pow(10, exponent - 20)).toFixed(20);
-    }
-  }
-
-  // Remove trailing zeros and the decimal point if not needed
-  numStr = numStr.replace(/\.?0+$/, "");
-
-  // Find the first non-zero digit after the decimal
-  const start = numStr.indexOf(".") + 1;
-  let nonZeroDecimals = 0;
-  let end = start;
-  for (let i = start; i < numStr.length; i++) {
-    if (numStr[i] !== "0" || nonZeroDecimals > 0) {
-      nonZeroDecimals++;
-    }
-    end = i + 1;
-    if (nonZeroDecimals === NON_ZERO_DECIMALS) break;
-  }
-
-  // Ensure the string is not longer than necessary to show the first NON_ZERO_DECIMALS non-zero decimals
-  numStr = numStr.slice(0, end);
-
-  // Handling very small numbers that become empty after removing trailing zeros
-  if (numStr === "" || numStr === "-") return "0";
-
-  return numStr;
-}
 
 type Props = {
   onClickTimeFrame: () => void;
@@ -146,6 +104,12 @@ const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                 separator=","
               />
             </AmountAnimatedShell>
+            <div className="ml-4 h-6 w-6 select-none md:ml-8 lg:h-8 lg:w-8">
+              <Image
+                alt="fire emoji symbolizing ETH burned"
+                src={fireSvg as StaticImageData}
+              />
+            </div>
           </div>
         </div>
       </div>
