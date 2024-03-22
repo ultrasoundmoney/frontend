@@ -167,10 +167,6 @@ const BlobFeesWidget: FC<Props> = ({
   }, []);
 
   const options = useMemo((): Highcharts.Options => {
-    const min = baseFeesSeries?.reduce(
-      (min, point) => (point[1] < min ? point[1] : min),
-      15,
-    );
 
     const startTimeStamp = baseFeesSeries?.[0]?.[0];
 
@@ -180,7 +176,7 @@ const BlobFeesWidget: FC<Props> = ({
       },
       yAxis: {
         id: "base-fees",
-        min,
+        min: 0,
       },
       series: [
         {
