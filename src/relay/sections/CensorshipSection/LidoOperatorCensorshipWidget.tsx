@@ -5,6 +5,7 @@ import { formatPercentOneDecimal } from "../../../format";
 import type { TimeFrame } from "../../../mainsite/time-frames";
 import TinyStatus from "../../components/TinyStatus";
 import WidgetBase from "../../components/WidgetBase";
+import { OnClick } from "../../../components/TimeFrameControl";
 
 export type Operator = {
   censors: boolean;
@@ -26,7 +27,7 @@ export type LidoOperatorCensorship = {
 
 type Props = {
   lidoOperatorCensorship: LidoOperatorCensorship;
-  onClickTimeFrame: () => void;
+  onClickTimeFrame: OnClick;
   timeFrame: TimeFrame;
 };
 

@@ -5,6 +5,7 @@ import { formatPercentOneDecimal } from "../../../format";
 import type { TimeFrame } from "../../../mainsite/time-frames";
 import TinyStatus from "../../components/TinyStatus";
 import WidgetBase from "../../components/WidgetBase";
+import { OnClick } from "../../../components/TimeFrameControl";
 
 export type Relay = {
   blocks_with_sanctioned_entity: number;
@@ -24,7 +25,7 @@ export type RelayCensorship = {
 };
 
 type Props = {
-  onClickTimeFrame: () => void;
+  onClickTimeFrame: OnClick;
   relayCensorship: RelayCensorship;
   timeFrame: TimeFrame;
 };

@@ -16,6 +16,7 @@ import { useBaseFeePerGasBarrier } from "../api/barrier";
 import { useBaseFeePerGasStatsTimeFrame } from "../api/base-fee-per-gas-stats";
 import type { TimeFrame } from "../time-frames";
 import TimeFrameIndicator from "./TimeFrameIndicator";
+import { OnClick } from "../../components/TimeFrameControl";
 
 const getPercentage = (
   highest: number,
@@ -164,7 +165,7 @@ const Marker: FC<MarkerProps> = ({
 };
 
 type Props = {
-  onClickTimeFrame: () => void;
+  onClickTimeFrame: OnClick;
   timeFrame: TimeFrame;
   blobFees?: boolean;
   barrierGwei?: number;

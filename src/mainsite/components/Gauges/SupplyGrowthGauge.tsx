@@ -11,6 +11,7 @@ import type { TimeFrame } from "../../time-frames";
 import TimeFrameIndicator from "../TimeFrameIndicator";
 import { WidgetTitle } from "../../../components/WidgetSubcomponents";
 import SplitGaugeSvg from "./SplitGaugeSvg";
+import { OnClick } from "../../../components/TimeFrameControl";
 
 const getRate = (
   gaugeRates: GaugeRates,
@@ -24,7 +25,7 @@ const getRate = (
     : gaugeRates[timeFrame].supply_growth_rate_yearly;
 
 type Props = {
-  onClickTimeFrame: () => void;
+  onClickTimeFrame: OnClick;
   simulateProofOfWork: boolean;
   timeFrame: TimeFrame;
 };

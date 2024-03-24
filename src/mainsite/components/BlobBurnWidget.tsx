@@ -15,6 +15,7 @@ import {
 } from "../api/grouped-analysis-1";
 import type { TimeFrame } from "../../mainsite/time-frames";
 import TimeFrameIndicator from "./TimeFrameIndicator";
+import { OnClick } from "../../components/TimeFrameControl";
 
 const GWEI_FORMATTING_THRESHOLD = 1e15; // Threshold in wei below which to convert format as Gwei instead of ETH
 const ETH_BURN_DECIMALS = 3;
@@ -58,7 +59,7 @@ const timeframeFeesBurnedMap: Record<
 };
 
 type Props = {
-  onClickTimeFrame: () => void;
+  onClickTimeFrame: OnClick;
   timeFrame: TimeFrame;
 };
 

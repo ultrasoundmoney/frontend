@@ -10,6 +10,7 @@ import WidgetBase from "../../components/WidgetBase";
 import colors from "../../../colors";
 import * as DateFns from "date-fns";
 import _merge from "lodash/merge";
+import { OnClick } from "../../../components/TimeFrameControl";
 
 // Somehow resolves an error thrown by the annotation lib
 if (typeof window !== "undefined") {
@@ -136,7 +137,7 @@ const getTooltipFormatter = (
 
 type Props = {
   className?: string;
-  onClickTimeFrame: () => void;
+  onClickTimeFrame: OnClick;
   suboptimalInclusions: SuboptimalTransaction[];
   timeFrame: TimeFrame;
 };

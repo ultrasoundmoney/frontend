@@ -18,6 +18,7 @@ import LabelText from "../../../components/TextsNext/LabelText";
 import Image from "next/image";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
 import WidgetBase from "../../components/WidgetBase";
+import { OnClick } from "../../../components/TimeFrameControl";
 
 type StaticDetails = {
   imgAlt: string;
@@ -249,7 +250,7 @@ export type InclusionTime = {
 
 type Props = {
   inclusionTimes: InclusionTime[];
-  onClickTimeFrame?: () => void;
+  onClickTimeFrame: OnClick;
   timeFrame: TimeFrame;
 };
 

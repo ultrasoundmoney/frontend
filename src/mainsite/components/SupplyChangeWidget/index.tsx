@@ -24,6 +24,7 @@ import type { TimeFrame } from "../../time-frames";
 import SimulateProofOfWork from "../SimulateProofOfWork";
 import TimeFrameIndicator from "../TimeFrameIndicator";
 import UpdatedAgo from "../UpdatedAgo";
+import { OnClick } from "../../../components/TimeFrameControl";
 
 const deltaFromChanges = (
   supplyChanges: O.Option<SupplyChangesPerTimeFrame>,
@@ -65,7 +66,7 @@ const timestampFromChanges = (
   );
 
 type Props = {
-  onClickTimeFrame: () => void;
+  onClickTimeFrame: OnClick;
   onSimulateProofOfWork: () => void;
   simulateProofOfWork: boolean;
   timeFrame: TimeFrame;

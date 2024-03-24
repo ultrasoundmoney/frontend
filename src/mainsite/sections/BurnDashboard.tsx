@@ -11,11 +11,12 @@ import BurnTotal from "../components/BurnTotal";
 import CurrencyControl from "../components/CurrencyControl";
 import LatestBlocks from "../components/LatestBlocks";
 import type { TimeFrame } from "../time-frames";
+import { OnClick, OnSetTimeFrame } from "../../components/TimeFrameControl";
 
 const BurnDashboard: FC<{
   timeFrame: TimeFrame;
-  onClickTimeFrame: () => void;
-  onSetTimeFrame: (timeFrame: TimeFrame) => void;
+  onClickTimeFrame: OnClick;
+  onSetTimeFrame: OnSetTimeFrame;
 }> = ({ timeFrame, onClickTimeFrame, onSetTimeFrame }) => {
   const [unit, setUnit] = useState<Unit>("eth");
 

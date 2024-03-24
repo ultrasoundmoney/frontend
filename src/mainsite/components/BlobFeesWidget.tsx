@@ -14,6 +14,7 @@ import type { WeiNumber } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
 import TimeFrameIndicator from "../components/TimeFrameIndicator";
 import type { TimeFrame } from "../time-frames";
+import { OnClick } from "../../components/TimeFrameControl";
 
 const GWEI_FORMATTING_THRESHOLD = 100_000_000; // Threshold in wei above which to convert to / format as Gwei
 
@@ -144,7 +145,7 @@ type Props = {
   baseFeesMap: Record<number, number>;
   baseFeesSeries: BaseFeePoint[] | undefined;
   max: number | undefined;
-  onClickTimeFrame: () => void;
+  onClickTimeFrame: OnClick;
   timeFrame: TimeFrame;
 };
 

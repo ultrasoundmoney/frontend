@@ -13,6 +13,7 @@ import type { Gwei } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
 import TimeFrameIndicator from "../components/TimeFrameIndicator";
 import type { TimeFrame } from "../time-frames";
+import { OnClick } from "../../components/TimeFrameControl";
 
 export type BaseFeePoint = [JsTimestamp, Gwei];
 
@@ -181,7 +182,7 @@ type Props = {
   baseFeesMap: Record<number, number>;
   baseFeesSeries: BaseFeePoint[] | undefined;
   max: number | undefined;
-  onClickTimeFrame: () => void;
+  onClickTimeFrame: OnClick;
   timeFrame: TimeFrame;
   blobFees?: boolean;
 };

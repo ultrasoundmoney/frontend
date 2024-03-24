@@ -6,12 +6,13 @@ import {
 } from "../../components/WidgetSubcomponents";
 import TimeFrameIndicator from "../../mainsite/components/TimeFrameIndicator";
 import type { TimeFrame } from "../../mainsite/time-frames";
+import { OnClick } from "../../components/TimeFrameControl";
 
 type Props = {
   children: ReactNode;
   className?: string;
   hideTimeFrameLabel?: boolean;
-  onClickTimeFrame?: () => void;
+  onClickTimeFrame?: OnClick;
   timeFrame?: TimeFrame;
   title: string;
 };
