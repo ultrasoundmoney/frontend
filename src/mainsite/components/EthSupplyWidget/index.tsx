@@ -35,6 +35,7 @@ import type { SupplyPoint } from "../../sections/SupplyDashboard";
 import type { TimeFrame } from "../../time-frames";
 import TimeFrameIndicator from "../TimeFrameIndicator";
 import UpdatedAgo from "../UpdatedAgo";
+import type { OnClick } from "../../../components/TimeFrameControl";
 
 // Somehow resolves an error thrown by the annotation lib
 if (typeof window !== "undefined") {
@@ -581,7 +582,7 @@ const updatedAtFromSupplySeriesCollection = (
   );
 
 type Props = {
-  onClickTimeFrame: () => void;
+  onClickTimeFrame: OnClick;
   onSimulateProofOfWork: () => void;
   simulateProofOfWork: boolean;
   timeFrame: TimeFrame;

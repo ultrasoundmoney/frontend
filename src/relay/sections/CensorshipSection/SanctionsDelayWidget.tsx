@@ -5,6 +5,7 @@ import { formatOneDecimal } from "../../../format";
 import type { TimeFrame } from "../../../mainsite/time-frames";
 import TinyStatus from "../../components/TinyStatus";
 import WidgetBase from "../../components/WidgetBase";
+import type { OnClick } from "../../../components/TimeFrameControl";
 
 export type SanctionsDelay = {
   count: number;
@@ -13,7 +14,7 @@ export type SanctionsDelay = {
 };
 
 type Props = {
-  onClickTimeFrame: () => void;
+  onClickTimeFrame: OnClick;
   sanctionsDelay: SanctionsDelay;
   timeFrame: TimeFrame;
 };

@@ -11,9 +11,10 @@ import { BaseText } from "../../components/Texts";
 import TimeFrameControl from "../../components/TimeFrameControl";
 import ToggleSwitch from "../../components/ToggleSwitch";
 import { WidgetTitle } from "../../components/WidgetSubcomponents";
+import type { OnClick, OnSetTimeFrame } from "../../components/TimeFrameControl";
 
 type Props = {
-  onSetTimeFrame: (timeFrame: TimeFrame) => void;
+  onSetTimeFrame: OnSetTimeFrame;
   onSetUnit: (unit: Unit) => void;
   onSimulateProofOfWork: () => void;
   simulateProofOfWork: boolean;
@@ -63,8 +64,8 @@ const Controls: FC<Props> = ({
 );
 
 const GaugeWidget: FC<{
-  onClickTimeFrame: () => void;
-  onSetTimeFrame: (timeFrame: TimeFrame) => void;
+  onClickTimeFrame: OnClick;
+  onSetTimeFrame: OnSetTimeFrame;
   onSetUnit: (unit: Unit) => void;
   onSimulateProofOfWork: () => void;
   simulateProofOfWork: boolean;

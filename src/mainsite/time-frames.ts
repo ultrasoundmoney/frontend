@@ -38,3 +38,13 @@ export const getNextTimeFrame = (timeFrame: TimeFrame): TimeFrame => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return timeFrames[nextIndex]!;
 };
+
+export const getPreviousTimeFrame = (timeFrame: TimeFrame): TimeFrame => {
+  const currentIndex = timeFrames.indexOf(timeFrame);
+  const previousIndex =
+    (currentIndex + timeFrames.length - 1) % timeFrames.length;
+
+  // Index is checked above.
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return timeFrames[previousIndex]!;
+};

@@ -18,6 +18,7 @@ import BurnGroupBase from "../BurnGroupBase";
 import FamTooltip from "../FamTooltip";
 import Modal from "../Modal";
 import LeaderboardRow from "./LeaderboardRow";
+import type { OnClick } from "../../../components/TimeFrameControl";
 
 export const leaderboardKeyFromTimeFrame: Record<
   TimeFrame,
@@ -190,7 +191,7 @@ export const useTooltip = () => {
 };
 
 type Props = {
-  onClickTimeFrame: () => void;
+  onClickTimeFrame: OnClick;
   timeFrame: TimeFrame;
   unit: Unit;
 };

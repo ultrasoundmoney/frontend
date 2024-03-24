@@ -9,14 +9,15 @@ import CurrentSupplyWidget from "../components/CurrentSupplyWidget";
 import GaugeWidget from "../components/GaugeWidget";
 import SupplyChange from "../components/SupplyChangeWidget";
 import type { TimeFrame } from "../time-frames";
+import type { OnClick, OnSetTimeFrame } from "../../components/TimeFrameControl";
 
 export type SupplyPoint = [JsTimestamp, EthNumber];
 
 const EthSupplyWidget = dynamic(() => import("../components/EthSupplyWidget"));
 
 type Props = {
-  onClickTimeFrame: () => void;
-  onSetTimeFrame: (timeFrame: TimeFrame) => void;
+  onClickTimeFrame: OnClick;
+  onSetTimeFrame: OnSetTimeFrame;
   timeFrame: TimeFrame;
 };
 

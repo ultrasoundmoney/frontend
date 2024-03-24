@@ -6,6 +6,7 @@ import type { O, RNEA } from "../../../fp";
 import type { TimeFrame } from "../../../mainsite/time-frames";
 import TinyStatus from "../../components/TinyStatus";
 import WidgetBase from "../../components/WidgetBase";
+import type { OnClick } from "../../../components/TimeFrameControl";
 
 export type BuilderUnit = {
   pubkey: string;
@@ -35,7 +36,7 @@ export type BuilderCensorship = {
 
 type Props = {
   builderCensorship: BuilderCensorship;
-  onClickTimeFrame: () => void;
+  onClickTimeFrame: OnClick;
   timeFrame: TimeFrame;
 };
 

@@ -7,6 +7,7 @@ import { londonHardFork, mergeDateTime } from "../../dates";
 import { millisFromHours } from "../../duration";
 import type { TimeFrame } from "../time-frames";
 import { displayLimitedTimeFrameMap } from "../time-frames";
+import type { OnClick } from "../../components/TimeFrameControl";
 
 const getFormattedDays = (now: Date, fork: Date): string => {
   const daysCount = differenceInDays(now, fork);
@@ -16,12 +17,11 @@ const getFormattedDays = (now: Date, fork: Date): string => {
 type Props = {
   className?: string;
   hideTimeFrameLabel?: boolean;
-  onClickTimeFrame?: () => void;
+  onClickTimeFrame?: OnClick;
   timeFrame: TimeFrame;
 };
 
-const TimeFrameIndicator: FC<Props> = ({
-  className = "",
+const TimeFrameIndicator: FC<Props> = ({ className = "",
   hideTimeFrameLabel,
   onClickTimeFrame,
   timeFrame,

@@ -8,6 +8,7 @@ import { useBaseFeeOverTime } from "../api/base-fee-over-time";
 import type { TimeFrame } from "../time-frames";
 import type { BaseFeePoint } from "../components/BlobFeesWidget";
 import Section from "../../components/Section";
+import type { OnClick } from "../../components/TimeFrameControl";
 
 const BlobFeesWidget = dynamic(() => import("../components/BlobFeesWidget"), {
   ssr: false,
@@ -32,7 +33,7 @@ const pointsFromBaseFeesOverTime = (
 
 const BlobGasSection: FC<{
   timeFrame: TimeFrame;
-  onClickTimeFrame: () => void;
+  onClickTimeFrame: OnClick;
 }> = ({ timeFrame, onClickTimeFrame }) => {
   const baseFeesOverTime = useBaseFeeOverTime();
 

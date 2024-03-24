@@ -1,6 +1,6 @@
 import type { StaticImageData } from "next/legacy/image";
 import Image from "next/legacy/image";
-import type { FC, ReactNode } from "react";
+import type { FC, ReactNode, MouseEvent } from "react";
 import fireOwnSvg from "../assets/fire-own.svg";
 import fireSlateusSvg from "../assets/fire-slateus.svg";
 import pandaOwnSvg from "../assets/panda-own.svg";
@@ -12,11 +12,19 @@ import {
 } from "../mainsite/time-frames";
 import HoverTooltip from "../mainsite/components/HoverTooltip";
 
+export type OnSetTimeFrame = (
+  timeFrame: TimeFrame,
+) => void;
+
+export type OnClick = (
+  e: MouseEvent<HTMLElement>
+) => void;
+
 const Button: FC<{
   children: ReactNode;
   disabled?: boolean;
   isActive: boolean;
-  onClick: () => void;
+  onClick: OnClick;
   title?: string;
 }> = ({ children, isActive, onClick, disabled, title }) => (
   <button
@@ -129,14 +137,14 @@ const PandaImage: FC<{ selectedTimeframe: TimeFrame }> = ({
 
 const TimeFrameControlCensorship: FC<{
   selectedTimeFrame: TimeFrame;
-  onSetTimeFrame: (timeFrame: TimeFrame) => void;
+  onSetTimeFrame: OnSetTimeFrame;
 }> = ({ selectedTimeFrame, onSetTimeFrame }) => (
   <div className="flex flex-row items-center lg:gap-x-1">
     {(["d1", "d7", "d30", "since_merge"] as const).map((timeFrame) => (
       <LondonHardForkTooltip key={timeFrame} timeFrame={timeFrame}>
         <Button
           isActive={selectedTimeFrame === timeFrame}
-          onClick={() => onSetTimeFrame(timeFrame)}
+          onClick={(_e) => onSetTimeFrame(timeFrame)}
           disabled={timeFrame === "since_merge" || timeFrame === "d1"}
           title="coming soon"
         >
@@ -153,7 +161,7 @@ const TimeFrameControlCensorship: FC<{
 
 type Props = {
   mergeEnabled?: boolean;
-  onSetTimeFrame: (timeframe: TimeFrame) => void;
+  onSetTimeFrame: OnSetTimeFrame;
   selectedTimeFrame: TimeFrame;
   topCornersRounded?: boolean;
   version?: "all" | "censorship";
@@ -175,7 +183,7 @@ const TimeFrameControl: FC<Props> = ({
         <LondonHardForkTooltip key={timeFrame} timeFrame={timeFrame}>
           <Button
             isActive={selectedTimeframe === timeFrame}
-            onClick={() => onSetTimeFrame(timeFrame)}
+            onClick={(_e) => onSetTimeFrame(timeFrame)}
           >
             {timeFrame === "since_merge" ? (
               <PandaImage selectedTimeframe={selectedTimeframe} />

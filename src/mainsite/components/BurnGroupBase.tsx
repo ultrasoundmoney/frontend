@@ -5,11 +5,12 @@ import {
 } from "../../components/WidgetSubcomponents";
 import type { TimeFrame } from "../time-frames";
 import TimeFrameIndicator from "./TimeFrameIndicator";
+import type { OnClick } from "../../components/TimeFrameControl";
 
 type Group1BaseProps = {
   backgroundClassName?: HTMLAttributes<HTMLDivElement>["className"];
   children: ReactNode;
-  onClickTimeFrame: () => void;
+  onClickTimeFrame: OnClick;
   timeFrame: TimeFrame;
   title: string;
 };

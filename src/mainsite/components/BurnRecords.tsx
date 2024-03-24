@@ -15,6 +15,7 @@ import SpanMoji from "../../components/SpanMoji";
 import { BaseText } from "../../components/Texts";
 import SkeletonText from "../../components/TextsNext/SkeletonText";
 import BurnGroupBase from "./BurnGroupBase";
+import type { OnClick } from "../../components/TimeFrameControl";
 
 const formatBlockNumber = (u: unknown): string | undefined =>
   typeof u !== "number"
@@ -59,7 +60,7 @@ const Age: FC<{ minedAt: Date | undefined }> = ({ minedAt }) => {
 };
 
 type Props = {
-  onClickTimeFrame: () => void;
+  onClickTimeFrame: OnClick;
   timeFrame: TimeFrame;
 };
 

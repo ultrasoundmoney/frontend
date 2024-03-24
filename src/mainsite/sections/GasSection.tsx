@@ -9,6 +9,7 @@ import { WEI_PER_GWEI } from "../../eth-units";
 import type { TimeFrame } from "../time-frames";
 import type { BaseFeePoint } from "../components/BaseFeesWidget";
 import Section from "../../components/Section";
+import type { OnClick } from "../../components/TimeFrameControl";
 
 const BaseFeesWidget = dynamic(() => import("../components/BaseFeesWidget"), {
   ssr: false,
@@ -30,7 +31,7 @@ const pointsFromBaseFeesOverTime = (
 
 const GasSection: FC<{
   timeFrame: TimeFrame;
-  onClickTimeFrame: () => void;
+  onClickTimeFrame: OnClick;
 }> = ({ timeFrame, onClickTimeFrame }) => {
   const baseFeesOverTime = useBaseFeeOverTime();
 

@@ -24,6 +24,7 @@ import { usePosIssuancePerDay } from "../hooks/use-pos-issuance-day";
 import type { LimitedTimeFrame, TimeFrame } from "../time-frames";
 import { AmountAnimatedShell } from "./Amount";
 import TimeFrameIndicator from "./TimeFrameIndicator";
+import type { OnClick } from "../../components/TimeFrameControl";
 
 const timeframeFeesBurnedMap: Record<
   TimeFrame,
@@ -60,7 +61,7 @@ const timeFrameMillisecondsMap: Record<LimitedTimeFrame, number> = {
 };
 
 type Props = {
-  onClickTimeFrame: () => void;
+  onClickTimeFrame: OnClick;
   timeFrame: TimeFrame;
   unit: Unit;
 };

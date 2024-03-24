@@ -42,6 +42,7 @@ import chartSlateus from "../../assets/chart-slateus.svg";
 import chartOwn from "../../assets/chart-own.svg";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
+import type { OnClick } from "../../components/TimeFrameControl";
 
 type CategoryProps = {
   id: CategoryId;
@@ -403,7 +404,7 @@ const CategorySegmentItem: FC<{
 );
 
 type Props = {
-  onClickTimeFrame: () => void;
+  onClickTimeFrame: OnClick;
   timeFrame: TimeFrame;
 };
 
