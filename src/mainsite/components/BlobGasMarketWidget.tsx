@@ -10,7 +10,7 @@ import { formatOneDecimal } from "../../format";
 import { useBlobBaseFeeStats } from "../api/base-fee-per-gas-stats";
 import type { TimeFrame } from "../time-frames";
 import TimeFrameIndicator from "./TimeFrameIndicator";
-import { OnClick } from "../../components/TimeFrameControl";
+import type { OnClick } from "../../components/TimeFrameControl";
 
 const GWEI_FORMATTING_THRESHOLD = 100_000_000; // Threshold in wei above which to convert to / format as Gwei
 

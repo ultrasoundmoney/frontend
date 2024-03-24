@@ -6,7 +6,7 @@ import type { TimeFrame } from "../../../mainsite/time-frames";
 import type { DateTimeString } from "../../../time";
 import TinyStatus from "../../components/TinyStatus";
 import WidgetBase from "../../components/WidgetBase";
-import { OnClick } from "../../../components/TimeFrameControl";
+import type { OnClick } from "../../../components/TimeFrameControl";
 
 export type CensoredTransaction = {
   delayBlocks: number;

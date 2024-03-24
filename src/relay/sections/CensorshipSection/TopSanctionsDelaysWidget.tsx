@@ -19,7 +19,7 @@ import { formatDuration, formatZeroDecimals } from "../../../format";
 import questionMark from "../../../assets/question-mark-own.svg";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
 import BodyTextV3 from "../../../components/TextsNext/BodyTextV3";
-import { OnClick } from "../../../components/TimeFrameControl";
+import type { OnClick } from "../../../components/TimeFrameControl";
 
 const emojiMap: StaticImageData[] = [
   medal1 as StaticImageData,

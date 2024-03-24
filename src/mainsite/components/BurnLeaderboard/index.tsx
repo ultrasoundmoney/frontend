@@ -18,7 +18,7 @@ import BurnGroupBase from "../BurnGroupBase";
 import FamTooltip from "../FamTooltip";
 import Modal from "../Modal";
 import LeaderboardRow from "./LeaderboardRow";
-import { OnClick } from "../../../components/TimeFrameControl";
+import type { OnClick } from "../../../components/TimeFrameControl";
 
 export const leaderboardKeyFromTimeFrame: Record<
   TimeFrame,

@@ -15,7 +15,7 @@ import SpanMoji from "../../components/SpanMoji";
 import { BaseText } from "../../components/Texts";
 import SkeletonText from "../../components/TextsNext/SkeletonText";
 import BurnGroupBase from "./BurnGroupBase";
-import { OnClick } from "../../components/TimeFrameControl";
+import type { OnClick } from "../../components/TimeFrameControl";
 
 const formatBlockNumber = (u: unknown): string | undefined =>
   typeof u !== "number"

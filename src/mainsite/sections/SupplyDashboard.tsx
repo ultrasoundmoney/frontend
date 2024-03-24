@@ -9,7 +9,7 @@ import CurrentSupplyWidget from "../components/CurrentSupplyWidget";
 import GaugeWidget from "../components/GaugeWidget";
 import SupplyChange from "../components/SupplyChangeWidget";
 import type { TimeFrame } from "../time-frames";
-import { OnClick, OnSetTimeFrame } from "../../components/TimeFrameControl";
+import type { OnClick, OnSetTimeFrame } from "../../components/TimeFrameControl";
 
 export type SupplyPoint = [JsTimestamp, EthNumber];
 

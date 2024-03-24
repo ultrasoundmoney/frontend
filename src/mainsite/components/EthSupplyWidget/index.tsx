@@ -35,7 +35,7 @@ import type { SupplyPoint } from "../../sections/SupplyDashboard";
 import type { TimeFrame } from "../../time-frames";
 import TimeFrameIndicator from "../TimeFrameIndicator";
 import UpdatedAgo from "../UpdatedAgo";
-import { OnClick } from "../../../components/TimeFrameControl";
+import type { OnClick } from "../../../components/TimeFrameControl";
 
 // Somehow resolves an error thrown by the annotation lib
 if (typeof window !== "undefined") {

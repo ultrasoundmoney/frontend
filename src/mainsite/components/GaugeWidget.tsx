@@ -11,7 +11,7 @@ import { BaseText } from "../../components/Texts";
 import TimeFrameControl from "../../components/TimeFrameControl";
 import ToggleSwitch from "../../components/ToggleSwitch";
 import { WidgetTitle } from "../../components/WidgetSubcomponents";
-import { OnClick, OnSetTimeFrame } from "../../components/TimeFrameControl";
+import type { OnClick, OnSetTimeFrame } from "../../components/TimeFrameControl";
 
 type Props = {
   onSetTimeFrame: OnSetTimeFrame;

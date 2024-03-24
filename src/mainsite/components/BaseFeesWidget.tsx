@@ -13,7 +13,7 @@ import type { Gwei } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
 import TimeFrameIndicator from "../components/TimeFrameIndicator";
 import type { TimeFrame } from "../time-frames";
-import { OnClick } from "../../components/TimeFrameControl";
+import type { OnClick } from "../../components/TimeFrameControl";
 
 export type BaseFeePoint = [JsTimestamp, Gwei];
 

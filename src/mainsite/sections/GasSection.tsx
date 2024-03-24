@@ -9,7 +9,7 @@ import { WEI_PER_GWEI } from "../../eth-units";
 import type { TimeFrame } from "../time-frames";
 import type { BaseFeePoint } from "../components/BaseFeesWidget";
 import Section from "../../components/Section";
-import { OnClick } from "../../components/TimeFrameControl";
+import type { OnClick } from "../../components/TimeFrameControl";
 
 const BaseFeesWidget = dynamic(() => import("../components/BaseFeesWidget"), {
   ssr: false,

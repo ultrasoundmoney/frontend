@@ -7,7 +7,7 @@ import { londonHardFork, mergeDateTime } from "../../dates";
 import { millisFromHours } from "../../duration";
 import type { TimeFrame } from "../time-frames";
 import { displayLimitedTimeFrameMap } from "../time-frames";
-import { OnClick } from "../../components/TimeFrameControl";
+import type { OnClick } from "../../components/TimeFrameControl";
 
 const getFormattedDays = (now: Date, fork: Date): string => {
   const daysCount = differenceInDays(now, fork);

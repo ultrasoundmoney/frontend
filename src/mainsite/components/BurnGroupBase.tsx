@@ -5,7 +5,7 @@ import {
 } from "../../components/WidgetSubcomponents";
 import type { TimeFrame } from "../time-frames";
 import TimeFrameIndicator from "./TimeFrameIndicator";
-import { OnClick } from "../../components/TimeFrameControl";
+import type { OnClick } from "../../components/TimeFrameControl";
 
 type Group1BaseProps = {
   backgroundClassName?: HTMLAttributes<HTMLDivElement>["className"];

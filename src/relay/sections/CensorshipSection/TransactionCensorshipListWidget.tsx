@@ -11,7 +11,7 @@ import StyledOverflowList from "../../components/StyledOverflowList";
 import BodyTextV3 from "../../../components/TextsNext/BodyTextV3";
 import type { TimeFrame } from "../../../mainsite/time-frames";
 import type { CensoredTransaction } from "./TransactionCensorshipWidget";
-import { OnClick } from "../../../components/TimeFrameControl";
+import type { OnClick } from "../../../components/TimeFrameControl";
 
 type Props = {
   onClickTimeFrame: OnClick;

@@ -24,7 +24,7 @@ import type { TimeFrame } from "../../time-frames";
 import SimulateProofOfWork from "../SimulateProofOfWork";
 import TimeFrameIndicator from "../TimeFrameIndicator";
 import UpdatedAgo from "../UpdatedAgo";
-import { OnClick } from "../../../components/TimeFrameControl";
+import type { OnClick } from "../../../components/TimeFrameControl";
 
 const deltaFromChanges = (
   supplyChanges: O.Option<SupplyChangesPerTimeFrame>,

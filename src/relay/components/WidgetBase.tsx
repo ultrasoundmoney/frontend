@@ -6,7 +6,7 @@ import {
 } from "../../components/WidgetSubcomponents";
 import TimeFrameIndicator from "../../mainsite/components/TimeFrameIndicator";
 import type { TimeFrame } from "../../mainsite/time-frames";
-import { OnClick } from "../../components/TimeFrameControl";
+import type { OnClick } from "../../components/TimeFrameControl";
 
 type Props = {
   children: ReactNode;

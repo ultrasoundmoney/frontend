@@ -18,7 +18,7 @@ import LabelText from "../../../components/TextsNext/LabelText";
 import Image from "next/image";
 import QuantifyText from "../../../components/TextsNext/QuantifyText";
 import WidgetBase from "../../components/WidgetBase";
-import { OnClick } from "../../../components/TimeFrameControl";
+import type { OnClick } from "../../../components/TimeFrameControl";
 
 type StaticDetails = {
   imgAlt: string;

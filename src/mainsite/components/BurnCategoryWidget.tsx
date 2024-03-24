@@ -42,7 +42,7 @@ import chartSlateus from "../../assets/chart-slateus.svg";
 import chartOwn from "../../assets/chart-own.svg";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
-import { OnClick } from "../../components/TimeFrameControl";
+import type { OnClick } from "../../components/TimeFrameControl";
 
 type CategoryProps = {
   id: CategoryId;

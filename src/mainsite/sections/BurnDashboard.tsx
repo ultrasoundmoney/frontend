@@ -11,7 +11,7 @@ import BurnTotal from "../components/BurnTotal";
 import CurrencyControl from "../components/CurrencyControl";
 import LatestBlocks from "../components/LatestBlocks";
 import type { TimeFrame } from "../time-frames";
-import { OnClick, OnSetTimeFrame } from "../../components/TimeFrameControl";
+import type { OnClick, OnSetTimeFrame } from "../../components/TimeFrameControl";
 
 const BurnDashboard: FC<{
   timeFrame: TimeFrame;
