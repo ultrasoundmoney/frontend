@@ -13,7 +13,6 @@ import {
 import HoverTooltip from "../mainsite/components/HoverTooltip";
 
 export type OnSetTimeFrame = (
-  e: MouseEvent<HTMLElement>,
   timeFrame: TimeFrame,
 ) => void;
 
@@ -145,7 +144,7 @@ const TimeFrameControlCensorship: FC<{
       <LondonHardForkTooltip key={timeFrame} timeFrame={timeFrame}>
         <Button
           isActive={selectedTimeFrame === timeFrame}
-          onClick={(e: MouseEvent<HTMLElement>) => onSetTimeFrame(e, timeFrame)}
+          onClick={(_e) => onSetTimeFrame(timeFrame)}
           disabled={timeFrame === "since_merge" || timeFrame === "d1"}
           title="coming soon"
         >
@@ -184,7 +183,7 @@ const TimeFrameControl: FC<Props> = ({
         <LondonHardForkTooltip key={timeFrame} timeFrame={timeFrame}>
           <Button
             isActive={selectedTimeframe === timeFrame}
-            onClick={(e) => onSetTimeFrame(e, timeFrame)}
+            onClick={(_e) => onSetTimeFrame(timeFrame)}
           >
             {timeFrame === "since_merge" ? (
               <PandaImage selectedTimeframe={selectedTimeframe} />

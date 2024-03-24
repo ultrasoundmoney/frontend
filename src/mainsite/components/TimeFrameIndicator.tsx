@@ -17,12 +17,11 @@ const getFormattedDays = (now: Date, fork: Date): string => {
 type Props = {
   className?: string;
   hideTimeFrameLabel?: boolean;
-  onClickTimeFrame: OnClick;
+  onClickTimeFrame?: OnClick;
   timeFrame: TimeFrame;
 };
 
-const TimeFrameIndicator: FC<Props> = ({
-  className = "",
+const TimeFrameIndicator: FC<Props> = ({ className = "",
   hideTimeFrameLabel,
   onClickTimeFrame,
   timeFrame,

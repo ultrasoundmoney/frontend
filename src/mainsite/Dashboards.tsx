@@ -1,7 +1,7 @@
 import JSBI from "jsbi";
 import dynamic from "next/dynamic";
 import Head from "next/head";
-import type { FC } from "react";
+import type { FC, MouseEvent } from "react";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -14,7 +14,7 @@ import { FeatureFlagsContext, useFeatureFlags } from "../feature-flags";
 import { formatZeroDecimals } from "../format";
 import ContactSection from "../sections/ContactSection";
 import type { TimeFrame } from "./time-frames";
-import { getNextTimeFrame } from "./time-frames";
+import { getNextTimeFrame, getPreviousTimeFrame } from "./time-frames";
 import { useBaseFeePerGas } from "./api/base-fee-per-gas";
 import { useEthPriceStats } from "./api/eth-price-stats";
 import { ethSupplyFromParts, useSupplyParts } from "./api/supply-parts";
@@ -155,9 +155,14 @@ const Dashboard: FC = () => {
   const { simulateDeflationary } = featureFlags;
   const showVideo = isDeflationary || simulateDeflationary;
 
-  const handleClickTimeFrame = useCallback(() => {
-    setTimeFrame(getNextTimeFrame);
-  }, []);
+  const handleClickTimeFrame = useCallback((e: MouseEvent<HTMLElement>) => {
+    if(e.shiftKey) {
+        setTimeFrame(getPreviousTimeFrame(timeFrame));
+    }
+    else {
+        setTimeFrame(getNextTimeFrame(timeFrame));
+    }
+  }, [timeFrame]);
 
   const handleSetTimeFrame = useCallback(setTimeFrame, [setTimeFrame]);
 
