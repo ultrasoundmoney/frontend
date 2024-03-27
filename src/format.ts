@@ -59,6 +59,16 @@ const usdZeroDecimals = new Intl.NumberFormat("en-US", {
 export const formatUsdZeroDecimals = (num: number): string =>
   usdZeroDecimals.format(num);
 
+const usdTwoDecimals = new Intl.NumberFormat("en-US", {
+  currency: "USD",
+  style: "currency",
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
+export const formatUsdTwoDecimals = (num: number): string =>
+  usdTwoDecimals.format(num);
+
 const percentOneDecimalSigned = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 1,
   maximumFractionDigits: 1,
@@ -178,11 +188,11 @@ export function convertToInternationalCurrencySystem(labelValue: number) {
     ? Number(Math.abs(Number(labelValue)) / 1.0e9).toFixed(2) + "B"
     : // Six Zeroes for Millions
     Math.abs(Number(labelValue)) >= 1.0e6
-    ? Number(Math.abs(Number(labelValue)) / 1.0e6).toFixed(2) + "M"
-    : // Three Zeroes for Thousands
-    Math.abs(Number(labelValue)) >= 1.0e3
-    ? Number(Math.abs(Number(labelValue)) / 1.0e3).toFixed(2) + "K"
-    : Math.abs(Number(labelValue)).toFixed(2);
+      ? Number(Math.abs(Number(labelValue)) / 1.0e6).toFixed(2) + "M"
+      : // Three Zeroes for Thousands
+      Math.abs(Number(labelValue)) >= 1.0e3
+        ? Number(Math.abs(Number(labelValue)) / 1.0e3).toFixed(2) + "K"
+        : Math.abs(Number(labelValue)).toFixed(2);
 }
 
 export const capitalize = (str: unknown) =>

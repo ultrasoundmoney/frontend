@@ -16,10 +16,10 @@ import {
 import type { TimeFrame } from "../../mainsite/time-frames";
 import TimeFrameIndicator from "./TimeFrameIndicator";
 import type { OnClick } from "../../components/TimeFrameControl";
+import { formatUsdTwoDecimals, formatUsdZeroDecimals } from "../../format";
 
 const GWEI_FORMATTING_THRESHOLD = 1e15; // Threshold in wei below which to convert format as Gwei instead of ETH
 const ETH_BURN_DECIMALS = 3;
-const USD_BURN_DECIMALS = 9;
 
 function addCommas(inputNumber: number) {
   // Convert number to string without scientific notation
@@ -74,13 +74,7 @@ const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const blobFeeBurnUSD =
     feesBurned === undefined
       ? undefined
-      : addCommas(
-          parseFloat(
-            feesBurned[timeframeFeesBurnedMap[timeFrame]["usd"]].toFixed(
-              USD_BURN_DECIMALS,
-            ),
-          ),
-        );
+      : formatUsdTwoDecimals(feesBurned[timeframeFeesBurnedMap[timeFrame]["usd"]]);
 
   const formatBurnAsGwei =
     blobFeeBurn !== undefined && blobFeeBurn < GWEI_FORMATTING_THRESHOLD;
