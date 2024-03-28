@@ -125,7 +125,9 @@ const getTooltipFormatter = (
     const gradientCss = "from-orange-400 to-yellow-300";
 
     const displayTotal =
-      total > GWEI_FORMATTING_THRESHOLD ? gweiFromWei(total).toFixed(2) : total.toFixed(2);
+      total > GWEI_FORMATTING_THRESHOLD
+        ? gweiFromWei(total).toFixed(2)
+        : total.toFixed(2);
     const displayUnit = total > GWEI_FORMATTING_THRESHOLD ? "Gwei" : "wei";
     return `
       <div class="p-4 rounded-lg border-2 font-roboto bg-slateus-700 border-slateus-400">
@@ -168,7 +170,6 @@ const BlobFeesWidget: FC<Props> = ({
   }, []);
 
   const options = useMemo((): Highcharts.Options => {
-
     const startTimeStamp = baseFeesSeries?.[0]?.[0];
 
     return _merge({}, baseOptions, {
@@ -185,7 +186,9 @@ const BlobFeesWidget: FC<Props> = ({
           id: "base-fees-over-area",
           type: "areaspline",
           threshold: 0,
-          data: baseFeesSeries?.filter(([_, value]) => value > 0),
+          data: baseFeesSeries
+            ?.filter(([_, value]) => value > 0)
+            .map(([timestamp, value]) => [timestamp, value / 1e9]),
           color: colors.orange400,
           negativeColor: colors.orange400,
           lineWidth: 0,
