@@ -1,9 +1,7 @@
 import type { FC } from "react";
 import LabelText from "../../components/TextsNext/LabelText";
 import type { StaticImageData } from "next/legacy/image";
-import { LabelUnitText } from "../../components/TextsNext/LabelUnitText";
 import Image from "next/legacy/image";
-import SkeletonText from "../../components/TextsNext/SkeletonText";
 import CountUp from "react-countup";
 import fireSvg from "../../assets/fire-own.svg";
 import { AmountAnimatedShell } from "./Amount";
@@ -77,7 +75,10 @@ const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const burnUSDDecimals =
     blobFeeBurnUSD == undefined
       ? undefined
-      : Math.max(firstNonZeroDecimalPosition(blobFeeBurnUSD), MIN_BURN_DECIMALS);
+      : Math.max(
+          firstNonZeroDecimalPosition(blobFeeBurnUSD),
+          MIN_BURN_DECIMALS,
+        );
 
   const formatBurnAsGwei =
     blobFeeBurn !== undefined && blobFeeBurn < GWEI_FORMATTING_THRESHOLD;
@@ -125,19 +126,19 @@ const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
       </div>
       <div className="flex items-center gap-x-1">
         <div className="flex items-baseline gap-x-1">
-          <LabelUnitText className="mt-1">
-            <SkeletonText width="3rem">
-              {" "}
-              <CountUp
-                decimals={burnUSDDecimals}
-                duration={0.8}
-                end={blobFeeBurnUSD ?? 0}
-                preserveValue={true}
-                separator=","
-              />
-            </SkeletonText>
-          </LabelUnitText>
-          <LabelText className="mt-1">USD</LabelText>
+          <AmountAnimatedShell
+            className="mt-1"
+            skeletonWidth="3rem"
+            unitText="USD"
+          >
+            <CountUp
+              decimals={burnUSDDecimals}
+              duration={0.8}
+              end={blobFeeBurnUSD ?? 0}
+              preserveValue={true}
+              separator=","
+            />
+          </AmountAnimatedShell>
         </div>
       </div>
     </WidgetBackground>
