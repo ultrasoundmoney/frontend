@@ -19,31 +19,7 @@ import type { OnClick } from "../../components/TimeFrameControl";
 import { formatUsdTwoDecimals, formatUsdZeroDecimals } from "../../format";
 
 const GWEI_FORMATTING_THRESHOLD = 1e15; // Threshold in wei below which to convert format as Gwei instead of ETH
-const ETH_BURN_DECIMALS = 3;
-
-function addCommas(inputNumber: number) {
-  // Convert number to string without scientific notation
-  const strNumber = inputNumber.toFixed(20).replace(/\.?0+$/, "");
-
-  // Split the number into integer and fractional parts
-  const parts = strNumber.split(".");
-  const integerPart = parts[0];
-  const fractionalPart = parts[1] || "";
-
-  // Add commas to the integer part
-  const integerWithCommas = integerPart?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-  // Add commas to the fractional part
-  const fractionalWithCommas = fractionalPart.replace(
-    /\d{3}(?=\d)/g,
-    (match) => match + ",",
-  );
-
-  // Combine integer and fractional parts
-  const result = `${integerWithCommas}.${fractionalWithCommas}`;
-
-  return result;
-}
+const BURN_DECIMALS = 2;
 
 const timeframeFeesBurnedMap: Record<
   TimeFrame,
@@ -74,7 +50,7 @@ const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const blobFeeBurnUSD =
     feesBurned === undefined
       ? undefined
-      : formatUsdTwoDecimals(feesBurned[timeframeFeesBurnedMap[timeFrame]["usd"]]);
+      : feesBurned[timeframeFeesBurnedMap[timeFrame]["usd"]];
 
   const formatBurnAsGwei =
     blobFeeBurn !== undefined && blobFeeBurn < GWEI_FORMATTING_THRESHOLD;
@@ -100,7 +76,7 @@ const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
             unitText={formatBurnAsGwei ? "Gwei" : "ETH"}
           >
             <CountUp
-              decimals={ETH_BURN_DECIMALS}
+              decimals={BURN_DECIMALS}
               duration={0.8}
               end={formattedBurn ?? 0}
               preserveValue={true}
@@ -118,7 +94,13 @@ const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
       <div className="flex items-center gap-x-1">
         <div className="flex items-baseline gap-x-1">
           <LabelUnitText className="mt-1">
-            <SkeletonText width="3rem">{blobFeeBurnUSD}</SkeletonText>
+            <SkeletonText width="3rem">            <CountUp
+              decimals={BURN_DECIMALS}
+              duration={0.8}
+              end={blobFeeBurnUSD ?? 0}
+              preserveValue={true}
+              separator=","
+            /></SkeletonText>
           </LabelUnitText>
           <LabelText className="mt-1">USD</LabelText>
         </div>
