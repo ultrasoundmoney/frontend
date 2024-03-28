@@ -127,8 +127,8 @@ const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
       <div className="flex items-center gap-x-1">
         <div className="flex items-baseline gap-x-1">
           <AmountAnimatedShell
-            className="mt-1"
-            skeletonWidth="3rem"
+            skeletonWidth="2rem"
+            size="text-m"
             unitText="USD"
           >
             <CountUp
