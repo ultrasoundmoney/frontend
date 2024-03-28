@@ -1,9 +1,7 @@
 import type { FC } from "react";
 import LabelText from "../../components/TextsNext/LabelText";
 import type { StaticImageData } from "next/legacy/image";
-import { LabelUnitText } from "../../components/TextsNext/LabelUnitText";
 import Image from "next/legacy/image";
-import SkeletonText from "../../components/TextsNext/SkeletonText";
 import CountUp from "react-countup";
 import fireSvg from "../../assets/fire-own.svg";
 import { AmountAnimatedShell } from "./Amount";
@@ -16,34 +14,9 @@ import {
 import type { TimeFrame } from "../../mainsite/time-frames";
 import TimeFrameIndicator from "./TimeFrameIndicator";
 import type { OnClick } from "../../components/TimeFrameControl";
-import { formatUsdTwoDecimals, formatUsdZeroDecimals } from "../../format";
 
 const GWEI_FORMATTING_THRESHOLD = 1e15; // Threshold in wei below which to convert format as Gwei instead of ETH
-const ETH_BURN_DECIMALS = 3;
-
-function addCommas(inputNumber: number) {
-  // Convert number to string without scientific notation
-  const strNumber = inputNumber.toFixed(20).replace(/\.?0+$/, "");
-
-  // Split the number into integer and fractional parts
-  const parts = strNumber.split(".");
-  const integerPart = parts[0];
-  const fractionalPart = parts[1] || "";
-
-  // Add commas to the integer part
-  const integerWithCommas = integerPart?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-  // Add commas to the fractional part
-  const fractionalWithCommas = fractionalPart.replace(
-    /\d{3}(?=\d)/g,
-    (match) => match + ",",
-  );
-
-  // Combine integer and fractional parts
-  const result = `${integerWithCommas}.${fractionalWithCommas}`;
-
-  return result;
-}
+const MIN_BURN_DECIMALS = 2;
 
 const timeframeFeesBurnedMap: Record<
   TimeFrame,
@@ -63,6 +36,30 @@ type Props = {
   timeFrame: TimeFrame;
 };
 
+function firstNonZeroDecimalPosition(num: number) {
+  // If the number is >= 1, return 0
+  if (num >= 1) {
+    return 0;
+  }
+
+  // Convert the number to a string to inspect its decimal part
+  const strNum = num.toFixed(20).toString();
+
+  // Extract the decimal part by removing everything up to and including the decimal point
+  const decimalPart = strNum.split(".")[1] || "";
+
+  // Find the position of the first non-zero digit in the decimal part
+  for (let i = 0; i < decimalPart.length; i++) {
+    if (decimalPart[i] !== "0") {
+      // Return the position (i + 1 because position is 1-indexed in this context)
+      return i + 1;
+    }
+  }
+
+  // If there are no non-zero decimals (or the number is 0), it means all decimals are zero
+  return decimalPart.length ? decimalPart.length : 0;
+}
+
 const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const groupedAnalysis1F = useGroupedAnalysis1();
   const groupedAnalysis1 = decodeGroupedAnalysis1(groupedAnalysis1F);
@@ -74,7 +71,14 @@ const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const blobFeeBurnUSD =
     feesBurned === undefined
       ? undefined
-      : formatUsdTwoDecimals(feesBurned[timeframeFeesBurnedMap[timeFrame]["usd"]]);
+      : feesBurned[timeframeFeesBurnedMap[timeFrame]["usd"]];
+  const burnUSDDecimals =
+    blobFeeBurnUSD == undefined
+      ? undefined
+      : Math.max(
+          firstNonZeroDecimalPosition(blobFeeBurnUSD),
+          MIN_BURN_DECIMALS,
+        );
 
   const formatBurnAsGwei =
     blobFeeBurn !== undefined && blobFeeBurn < GWEI_FORMATTING_THRESHOLD;
@@ -82,6 +86,11 @@ const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
     blobFeeBurn !== undefined
       ? blobFeeBurn / (formatBurnAsGwei ? 1e9 : 1e18)
       : undefined;
+
+  const burnDecimals =
+    formattedBurn == undefined
+      ? undefined
+      : Math.max(firstNonZeroDecimalPosition(formattedBurn), MIN_BURN_DECIMALS);
 
   return (
     <WidgetBackground>
@@ -93,14 +102,14 @@ const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
             onClickTimeFrame={onClickTimeFrame}
           />
         </div>
-        <div className="flex items-center mb-4">
+        <div className="mb-4 flex items-center">
           <AmountAnimatedShell
             skeletonWidth="9rem"
             size="text-2xl md:text-3xl lg:text-3xl xl:text-4xl"
             unitText={formatBurnAsGwei ? "Gwei" : "ETH"}
           >
             <CountUp
-              decimals={ETH_BURN_DECIMALS}
+              decimals={burnDecimals}
               duration={0.8}
               end={formattedBurn ?? 0}
               preserveValue={true}
@@ -117,10 +126,19 @@ const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
       </div>
       <div className="flex items-center gap-x-1">
         <div className="flex items-baseline gap-x-1">
-          <LabelUnitText className="mt-1">
-            <SkeletonText width="3rem">{blobFeeBurnUSD}</SkeletonText>
-          </LabelUnitText>
-          <LabelText className="mt-1">USD</LabelText>
+          <AmountAnimatedShell
+            className="mt-1"
+            skeletonWidth="3rem"
+            unitText="USD"
+          >
+            <CountUp
+              decimals={burnUSDDecimals}
+              duration={0.8}
+              end={blobFeeBurnUSD ?? 0}
+              preserveValue={true}
+              separator=","
+            />
+          </AmountAnimatedShell>
         </div>
       </div>
     </WidgetBackground>
