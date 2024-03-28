@@ -40,6 +40,8 @@ import bridgeSlateus from "../../assets/bridge-slateus.svg";
 import bridgeOwn from "../../assets/bridge-own.svg";
 import chartSlateus from "../../assets/chart-slateus.svg";
 import chartOwn from "../../assets/chart-own.svg";
+import mdBubbleChartOwn from "../../assets/md-bubble-chart-own.svg";
+import mdBubbleChartSlateus from "../../assets/md-bubble-chart-slateus.svg";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import type { OnClick } from "../../components/TimeFrameControl";
@@ -73,6 +75,7 @@ const activeCategories: CategoryId[] = [
   "defi",
   "transfers",
   "creations",
+  "blobs",
 ];
 
 const alwaysShowImgPercentThreshold = 0.08;
@@ -295,6 +298,7 @@ const imgAltMap: Record<CategoryId, string> = {
   nft: "icon of a wooden painters palette, signaling NFTs",
   transfers: "an image of flying money, signaling ETH transfers",
   creations: "a copy icon, signaling contract creations",
+  blobs: "a blob icon, signaling blob fees",
   woof: "a dog, signaling meme tokens",
 };
 
@@ -346,6 +350,10 @@ const imgMap: Record<
     coloroff: copySlateus as StaticImageData,
     coloron: copyOwn as StaticImageData,
   },
+  blobs: {
+    coloroff: mdBubbleChartSlateus as StaticImageData,
+    coloron: mdBubbleChartOwn as StaticImageData,
+  },
   woof: {
     coloroff: questionMarkSlateus as StaticImageData,
     coloron: questionMarkOwn as StaticImageData,
@@ -364,6 +372,7 @@ const initialState: Record<CategoryId, boolean> = {
   nft: false,
   transfers: false,
   creations: false,
+  blobs: false,
   woof: false,
 };
 
@@ -508,15 +517,15 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
             O.map(A.filter((entry) => entry.type === "contract-creations")),
             O.chain(A.head),
             O.map(
-              (transfers): CategoryProps => ({
+              (creations): CategoryProps => ({
                 imgName: imgMap.creations,
                 id: "creations",
                 imgAlt: "missing icon for contract creation fees",
-                fees: transfers.fees,
-                feesUsd: transfers.feesUsd,
+                fees: creations.fees,
+                feesUsd: creations.feesUsd,
                 transactionCount: undefined,
-                percentOfTotalBurn: transfers.fees / burnSum.sum.eth / 1e18,
-                percentOfTotalBurnUsd: transfers.feesUsd / burnSum.sum.usd,
+                percentOfTotalBurn: creations.fees / burnSum.sum.eth / 1e18,
+                percentOfTotalBurnUsd: creations.feesUsd / burnSum.sum.usd,
                 onHoverCategory: (hovering) =>
                   dispatchHover({
                     type: hovering ? "highlight" : "unhighlight",
@@ -526,6 +535,33 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
               }),
             ),
           );
+
+          // contractCreations is a special case that we hack on in the frontend.
+          const blobFees = pipe(
+            leaderboard,
+            O.fromNullable,
+            O.map(A.filter((entry) => entry.type === "blob-fees")),
+            O.chain(A.head),
+            O.map(
+              (blobs): CategoryProps => ({
+                imgName: imgMap.blobs,
+                id: "blobs",
+                imgAlt: "missing icon for contract blob fees",
+                fees: blobs.fees,
+                feesUsd: blobs.feesUsd,
+                transactionCount: undefined,
+                percentOfTotalBurn: blobs.fees / burnSum.sum.eth / 1e18,
+                percentOfTotalBurnUsd: blobs.feesUsd / burnSum.sum.usd,
+                onHoverCategory: (hovering) =>
+                  dispatchHover({
+                    type: hovering ? "highlight" : "unhighlight",
+                    category: "blobs",
+                  }),
+                showHighlight: hoverState["blobs"] ?? false,
+              }),
+            ),
+          );
+
 
           const miscCategory = pipe(
             burnCategories,
@@ -545,7 +581,7 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
           );
 
           const combinedCategories = pipe(
-            OAlt.sequenceTuple(apiBurnCategories, ethTransfers, contractDeployments, miscCategory),
+            OAlt.sequenceTuple(apiBurnCategories, ethTransfers, contractDeployments, blobFees, miscCategory),
             O.map(([apiCategories, ethTransfers, contractDeployments, miscCategory]) =>
               pipe(
                 apiCategories,

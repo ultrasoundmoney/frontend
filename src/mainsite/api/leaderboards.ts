@@ -46,10 +46,23 @@ type ContractCreationsEntry = {
   id: string;
 };
 
+type BlobFeesEntry = {
+  type: "blob-fees";
+  name: string;
+  fees: number;
+  feesUsd: number;
+  /**
+   * @deprecated
+   */
+  id: string;
+};
+
+
 // Name is undefined because we don't always know the name for a contract. Image is undefined because we don't always have an image for a contract. Address is undefined because base fees paid for ETH transfers are shared between many addresses.
 export type LeaderboardEntry =
   | ContractEntry
   | EthTransfersEntry
+  | BlobFeesEntry
   | ContractCreationsEntry;
 
 export type Leaderboards = {

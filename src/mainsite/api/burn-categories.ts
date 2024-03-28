@@ -7,6 +7,7 @@ export const categoryId = [
   "defi",
   // Contract creations is a special case and currently injected on the frontend.
   "creations",
+  "blobs",
   // Eth transfers is a special case and currently injected on the frontend.
   "transfers",
   "gaming",
@@ -34,6 +35,7 @@ export const categoryDisplayMap: Record<CategoryId, string> = {
   nft: "NFTs",
   transfers: "ETH transfers",
   creations: "contract creations",
+  blobs: "blob fees",
   woof: "woof",
 };
 

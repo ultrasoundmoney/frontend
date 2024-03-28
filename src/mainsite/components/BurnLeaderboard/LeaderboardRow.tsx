@@ -61,6 +61,8 @@ const LeaderboardRow: FC<Props> = ({
       ? "/leaderboard-images/bot-v2.svg"
       : type === "contract-creations"
       ? "/leaderboard-images/contract-creations.svg"
+      : type === "blob-fees"
+      ? "/leaderboard-images/blob-fees.svg"
       : undefined;
 
   const isDoneLoading = type !== undefined;
