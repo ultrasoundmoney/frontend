@@ -16,7 +16,6 @@ import {
 import type { TimeFrame } from "../../mainsite/time-frames";
 import TimeFrameIndicator from "./TimeFrameIndicator";
 import type { OnClick } from "../../components/TimeFrameControl";
-import { formatUsdTwoDecimals, formatUsdZeroDecimals } from "../../format";
 
 const GWEI_FORMATTING_THRESHOLD = 1e15; // Threshold in wei below which to convert format as Gwei instead of ETH
 const MIN_BURN_DECIMALS = 2;
@@ -78,7 +77,7 @@ const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const burnUSDDecimals =
     blobFeeBurnUSD == undefined
       ? undefined
-      : Math.max(firstNonZeroDecimalPosition(blobFeeBurnUSD) + 1, MIN_BURN_DECIMALS);
+      : Math.max(firstNonZeroDecimalPosition(blobFeeBurnUSD), MIN_BURN_DECIMALS);
 
   const formatBurnAsGwei =
     blobFeeBurn !== undefined && blobFeeBurn < GWEI_FORMATTING_THRESHOLD;
@@ -90,7 +89,7 @@ const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const burnDecimals =
     formattedBurn == undefined
       ? undefined
-      : Math.max(firstNonZeroDecimalPosition(formattedBurn) + 1, MIN_BURN_DECIMALS);
+      : Math.max(firstNonZeroDecimalPosition(formattedBurn), MIN_BURN_DECIMALS);
 
   return (
     <WidgetBackground>
