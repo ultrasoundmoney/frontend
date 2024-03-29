@@ -582,11 +582,11 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
 
           const combinedCategories = pipe(
             OAlt.sequenceTuple(apiBurnCategories, ethTransfers, contractDeployments, blobFees, miscCategory),
-            O.map(([apiCategories, ethTransfers, contractDeployments, miscCategory]) =>
+            O.map(([apiCategories, ethTransfers, contractDeployments, blobFees, miscCategory]) =>
               pipe(
                 apiCategories,
                 A.filter((category) => activeCategories.includes(category.id)),
-                (categories) => [...categories, ethTransfers, contractDeployments, miscCategory],
+                (categories) => [...categories, ethTransfers, contractDeployments, blobFees, miscCategory],
                 A.sort(sortByFeesDesc),
               ),
             ),
