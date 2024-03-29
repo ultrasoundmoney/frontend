@@ -18,7 +18,7 @@ import type { OnClick } from "../../components/TimeFrameControl";
 const GWEI_FORMATTING_THRESHOLD = 1e15; // Threshold in wei below which to convert format as Gwei instead of ETH
 const MIN_BURN_DECIMALS = 2;
 
-const timeframeFeesBurnedMap: Record<
+export const timeframeFeesBurnedMap: Record<
   TimeFrame,
   { eth: keyof FeesBurned; usd: keyof FeesBurned }
 > = {

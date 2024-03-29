@@ -45,6 +45,7 @@ import mdBubbleChartSlateus from "../../assets/md-bubble-chart-slateus.svg";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import type { OnClick } from "../../components/TimeFrameControl";
+import { timeframeFeesBurnedMap } from "./BlobBurnWidget";
 
 type CategoryProps = {
   id: CategoryId;
@@ -419,10 +420,12 @@ type Props = {
 
 const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
   const burnCategories = useBurnCategories();
+  const groupedAnalysis1 = useGroupedAnalysis1();
   const leaderboard =
-    useGroupedAnalysis1()?.leaderboards?.[
+    groupedAnalysis1?.leaderboards?.[
       leaderboardKeyFromTimeFrame[timeFrame]
     ];
+  const feesBurned = groupedAnalysis1?.blobFeeBurns;
   const burnSum = useBurnSums()[timeFrame];
   const [hoverState, dispatchHover] = useReducer(hoverReducer, initialState);
   const { showCategoryCounts } = useContext(FeatureFlagsContext);
@@ -538,20 +541,18 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
 
           // contractCreations is a special case that we hack on in the frontend.
           const blobFees = pipe(
-            leaderboard,
+            feesBurned,
             O.fromNullable,
-            O.map(A.filter((entry) => entry.type === "blob-fees")),
-            O.chain(A.head),
             O.map(
-              (blobs): CategoryProps => ({
+              (blobFees): CategoryProps => ({
                 imgName: imgMap.blobs,
                 id: "blobs",
                 imgAlt: "missing icon for contract blob fees",
-                fees: blobs.fees,
-                feesUsd: blobs.feesUsd,
+                fees: blobFees[timeframeFeesBurnedMap[timeFrame]["eth"]],
+                feesUsd: blobFees[timeframeFeesBurnedMap[timeFrame]["usd"]],
                 transactionCount: undefined,
-                percentOfTotalBurn: blobs.fees / burnSum.sum.eth / 1e18,
-                percentOfTotalBurnUsd: blobs.feesUsd / burnSum.sum.usd,
+                percentOfTotalBurn: blobFees[timeframeFeesBurnedMap[timeFrame]["eth"]] / burnSum.sum.eth / 1e18,
+                percentOfTotalBurnUsd: blobFees[timeframeFeesBurnedMap[timeFrame]["usd"]] / burnSum.sum.usd,
                 onHoverCategory: (hovering) =>
                   dispatchHover({
                     type: hovering ? "highlight" : "unhighlight",
@@ -582,11 +583,11 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
 
           const combinedCategories = pipe(
             OAlt.sequenceTuple(apiBurnCategories, ethTransfers, contractDeployments, blobFees, miscCategory),
-            O.map(([apiCategories, ethTransfers, contractDeployments, miscCategory]) =>
+            O.map(([apiCategories, ethTransfers, contractDeployments, blobFees, miscCategory]) =>
               pipe(
                 apiCategories,
                 A.filter((category) => activeCategories.includes(category.id)),
-                (categories) => [...categories, ethTransfers, contractDeployments, miscCategory],
+                (categories) => [...categories, ethTransfers, contractDeployments, blobFees, miscCategory],
                 A.sort(sortByFeesDesc),
               ),
             ),
@@ -611,7 +612,7 @@ const BurnCategoryWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
 
   return (
     <BurnGroupBase
-      backgroundClassName="h-[508px]"
+      backgroundClassName="h-[624px]"
       onClickTimeFrame={onClickTimeFrame}
       title="burn categories"
       timeFrame={timeFrame}

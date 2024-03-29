@@ -231,7 +231,7 @@ const BurnLeaderboard: FC<Props> = ({ onClickTimeFrame, timeFrame, unit }) => {
   return (
     <WidgetErrorBoundary title="burn leaderboard">
       <BurnGroupBase
-        backgroundClassName="flex flex-col gap-y-4 h-[487px] lg:h-full"
+        backgroundClassName="flex flex-col gap-y-4 h-[567px]"
         onClickTimeFrame={onClickTimeFrame}
         title="burn leaderboard"
         timeFrame={timeFrame}
