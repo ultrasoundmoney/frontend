@@ -31,7 +31,7 @@ export const categoryDisplayMap: Record<CategoryId, string> = {
   l1: "L1",
   l2: "L2",
   mev: "MEV",
-  misc: "misc (CEX, memecoins, etc)",
+  misc: "misc",
   nft: "NFTs",
   transfers: "ETH transfers",
   creations: "contract creations",
