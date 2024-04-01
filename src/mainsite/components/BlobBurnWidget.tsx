@@ -17,6 +17,7 @@ import type { OnClick } from "../../components/TimeFrameControl";
 
 const GWEI_FORMATTING_THRESHOLD = 1e15; // Threshold in wei below which to convert format as Gwei instead of ETH
 const MIN_BURN_DECIMALS = 2;
+const BURN_USD_DECIMALS = 0;
 
 export const timeframeFeesBurnedMap: Record<
   TimeFrame,
@@ -72,13 +73,6 @@ const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
     feesBurned === undefined
       ? undefined
       : feesBurned[timeframeFeesBurnedMap[timeFrame]["usd"]];
-  const burnUSDDecimals =
-    blobFeeBurnUSD == undefined
-      ? undefined
-      : Math.max(
-          firstNonZeroDecimalPosition(blobFeeBurnUSD),
-          MIN_BURN_DECIMALS,
-        );
 
   const formatBurnAsGwei =
     blobFeeBurn !== undefined && blobFeeBurn < GWEI_FORMATTING_THRESHOLD;
@@ -132,7 +126,7 @@ const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
             unitText="USD"
           >
             <CountUp
-              decimals={burnUSDDecimals}
+              decimals={BURN_USD_DECIMALS}
               duration={0.8}
               end={blobFeeBurnUSD ?? 0}
               preserveValue={true}
