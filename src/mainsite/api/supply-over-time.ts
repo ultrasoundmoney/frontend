@@ -68,7 +68,7 @@ const calculateBitcoinIssuedSinceMerge = function (startTime: number, secondsDel
     // Time frame begins after halfening just change issuance rate
     result = secondsDelta * BITCOIN_ISSUANCE_PER_SECOND_AFTER_HALVENING;
   } else {
-    // Time frame stretches across halfening, calcualte issuance before and after halfening and add up
+    // Time frame stretches across halfening, calculate issuance before and after halfening and add up
     result =
       (BITCOIN_HALVENING_SECONDS_AFTER_MERGE - startTime ) * BITCOIN_ISSUANCE_PER_SECOND +
       (secondsDelta + startTime - BITCOIN_HALVENING_SECONDS_AFTER_MERGE) *
