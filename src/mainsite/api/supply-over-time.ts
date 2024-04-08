@@ -91,7 +91,6 @@ const btcSeriesFromPos = (
   const firstPointBitcoinSupply =
     BITCOIN_SUPPLY_AT_MERGE +
     calculateBitcoinIssuedSinceMerge(0, parisToTimeFrameSeconds);
-    console.log("ethPosFirstPoint", ethPosFirstPoint);
   const points = ethPosSeries.map(([timestamp]) => {
     const secondsDelta =
       ethPosFirstPoint[0] === undefined
