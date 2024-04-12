@@ -69,8 +69,8 @@ const CensorshipSection: FC<Props> = ({
       subtitle="not ultra sound"
       link="sanctions-censorship"
     >
-      <div className="flex justify-center p-8 w-full rounded-lg bg-slateus-700">
-        <div className="flex gap-4 items-center">
+      <div className="flex w-full justify-center rounded-lg bg-slateus-700 p-8">
+        <div className="flex items-center gap-4">
           <LabelText>time frame</LabelText>
           <TimeFrameControl
             selectedTimeFrame={timeFrame}
@@ -82,7 +82,7 @@ const CensorshipSection: FC<Props> = ({
           />
         </div>
       </div>
-      <div className="grid grid-cols-1 gap-4 w-full lg:grid-cols-2">
+      <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-2">
         <div className="flex flex-col gap-4">
           {/* <RelayCensorshipWidget
             onClickTimeFrame={handleClickTimeFrame}
