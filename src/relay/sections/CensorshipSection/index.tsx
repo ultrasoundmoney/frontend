@@ -84,11 +84,11 @@ const CensorshipSection: FC<Props> = ({
       </div>
       <div className="grid grid-cols-1 gap-4 w-full lg:grid-cols-2">
         <div className="flex flex-col gap-4">
-          <RelayCensorshipWidget
+          {/* <RelayCensorshipWidget
             onClickTimeFrame={handleClickTimeFrame}
             relayCensorship={relayCensorship}
             timeFrame={timeFrame}
-          />
+          /> */}
           <RelayListWidget
             relays={relayCensorship.relays}
             timeFrame={timeFrame}

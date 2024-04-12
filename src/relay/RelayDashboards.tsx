@@ -22,10 +22,10 @@ import CheckRegistrationWidget from "./components/CheckRegistrationWidget";
 import InclusionsWidget from "./components/InclusionsWidget";
 import ValidatorWidget from "./components/ValidatorWidget";
 import LeaderboardSection from "./sections/LeaderboardSection";
-import CensorshipSection from "./sections/CensorshipSection";
+// import CensorshipSection from "./sections/CensorshipSection";
 import type { RelayCensorship } from "./sections/CensorshipSection/RelayCensorshipWidget";
 import FaqSection from "./sections/FaqSection";
-import InclusionDelaySection from "./sections/InclusionDelaySection";
+// import InclusionDelaySection from "./sections/InclusionDelaySection";
 import type {
   Builder,
   Payload,
@@ -35,18 +35,18 @@ import type {
 } from "./types";
 
 export type RelayDashboardProps = {
-  builderCensorshipPerTimeFrame: BuilderCensorshipPerTimeFrame;
-  inclusionTimesPerTimeFrame: InclusionTimesPerTimeFrame;
-  lidoOperatorCensorshipPerTimeFrame: LidoOperatorCensorshipPerTimeFrame;
+  // builderCensorshipPerTimeFrame: BuilderCensorshipPerTimeFrame;
+  // inclusionTimesPerTimeFrame: InclusionTimesPerTimeFrame;
+  // lidoOperatorCensorshipPerTimeFrame: LidoOperatorCensorshipPerTimeFrame;
   payloadStats: PayloadStats;
   payloads: Array<Payload>;
-  recentDelayedTransactionsPerTimeFrame: RecentDelayedTransactionsPerTimeFrame;
-  relayCensorshipPerTimeFrame: Record<"d7" | "d30", RelayCensorship>;
-  sanctionsDelayPerTimeFrame: SanctionsDelayPerTimeFrame;
-  suboptimalInclusionsPerTimeFrame: SuboptimalInclusionsPerTimeFrame;
+  // recentDelayedTransactionsPerTimeFrame: RecentDelayedTransactionsPerTimeFrame;
+  // relayCensorshipPerTimeFrame: Record<"d7" | "d30", RelayCensorship>;
+  // sanctionsDelayPerTimeFrame: SanctionsDelayPerTimeFrame;
+  // suboptimalInclusionsPerTimeFrame: SuboptimalInclusionsPerTimeFrame;
   topBuilders: Array<Builder>;
   topPayloads: Array<Payload>;
-  transactionCensorshipPerTimeFrame: TransactionCensorshipPerTimeFrame;
+  // transactionCensorshipPerTimeFrame: TransactionCensorshipPerTimeFrame;
   validatorStats: ValidatorStats;
   validators: Array<Validator>;
 };
@@ -54,18 +54,18 @@ export type RelayDashboardProps = {
 const env = SharedConfig.envFromEnv();
 
 const RelayDashboard: FC<RelayDashboardProps> = ({
-  builderCensorshipPerTimeFrame,
-  inclusionTimesPerTimeFrame,
-  lidoOperatorCensorshipPerTimeFrame,
+  // builderCensorshipPerTimeFrame,
+  // inclusionTimesPerTimeFrame,
+  // lidoOperatorCensorshipPerTimeFrame,
   payloadStats,
   payloads,
-  recentDelayedTransactionsPerTimeFrame,
-  relayCensorshipPerTimeFrame,
-  sanctionsDelayPerTimeFrame,
-  suboptimalInclusionsPerTimeFrame,
+  // recentDelayedTransactionsPerTimeFrame,
+  // relayCensorshipPerTimeFrame,
+  // sanctionsDelayPerTimeFrame,
+  // suboptimalInclusionsPerTimeFrame,
   topBuilders,
   topPayloads,
-  transactionCensorshipPerTimeFrame,
+  // transactionCensorshipPerTimeFrame,
   validatorStats,
   validators,
 }) => {
@@ -124,24 +124,24 @@ const RelayDashboard: FC<RelayDashboardProps> = ({
             topBuilders={topBuilders}
             topPayloads={topPayloads}
           />
-          <CensorshipSection
+          {/* <CensorshipSection
             builderCensorshipPerTimeFrame={builderCensorshipPerTimeFrame}
             lidoOperatorCensorshipPerTimeFrame={
               lidoOperatorCensorshipPerTimeFrame
             }
             relayCensorshipPerTimeFrame={relayCensorshipPerTimeFrame}
             sanctionsDelayPerTimeFrame={sanctionsDelayPerTimeFrame}
-            transactionCensorshipPerTimeFrame={
-              transactionCensorshipPerTimeFrame
-            }
-          />
-          <InclusionDelaySection
+             transactionCensorshipPerTimeFrame={
+               transactionCensorshipPerTimeFrame
+             }
+          /> */}
+          {/* <InclusionDelaySection
             inclusionTimesPerTimeFrame={inclusionTimesPerTimeFrame}
             recentDelayedTransactionsPerTimeFrame={
               recentDelayedTransactionsPerTimeFrame
             }
             suboptimalInclusionsPerTimeFrame={suboptimalInclusionsPerTimeFrame}
-          />
+          /> */}
           <FaqSection />
           <ContactSection />
         </div>
