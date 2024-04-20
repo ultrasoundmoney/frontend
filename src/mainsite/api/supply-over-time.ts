@@ -53,9 +53,29 @@ const BITCOIN_SUPPLY_AT_MERGE = 19_152_350;
 const BITCOIN_ISSUANCE_PER_TEN_MINUTES = 6.25;
 const BITCOIN_ISSUANCE_PER_SECOND =
   BITCOIN_ISSUANCE_PER_TEN_MINUTES / (60 * 10);
+const BITCOIN_HALVENING_SECONDS_AFTER_MERGE = 50347588; // Based on Halvening bitcoin block time of 2024-04-20T00:09:27
+const BITCOIN_ISSUANCE_PER_SECOND_AFTER_HALVENING =
+  BITCOIN_ISSUANCE_PER_SECOND / 2;
 
 const SLOTS_PER_DAY = 24 * 60 * 5;
 
+const calculateBitcoinIssuedSinceMerge = function (startTime: number, secondsDelta: number) {
+  let result;
+  if (startTime + secondsDelta < BITCOIN_HALVENING_SECONDS_AFTER_MERGE) {
+    // Time frame ends before halfening - same logic as before
+    result = secondsDelta * BITCOIN_ISSUANCE_PER_SECOND;
+  } else if (startTime > BITCOIN_HALVENING_SECONDS_AFTER_MERGE) {
+    // Time frame begins after halfening just change issuance rate
+    result = secondsDelta * BITCOIN_ISSUANCE_PER_SECOND_AFTER_HALVENING;
+  } else {
+    // Time frame stretches across halfening, calculate issuance before and after halfening and add up
+    result =
+      (BITCOIN_HALVENING_SECONDS_AFTER_MERGE - startTime ) * BITCOIN_ISSUANCE_PER_SECOND +
+      (secondsDelta + startTime - BITCOIN_HALVENING_SECONDS_AFTER_MERGE) *
+        BITCOIN_ISSUANCE_PER_SECOND_AFTER_HALVENING;
+  }
+  return result;
+};
 const btcSeriesFromPos = (
   ethPosSeries: SupplyPoint[],
 ): [SupplyPoint[], SupplyPoint[]] => {
@@ -70,13 +90,13 @@ const btcSeriesFromPos = (
   );
   const firstPointBitcoinSupply =
     BITCOIN_SUPPLY_AT_MERGE +
-    BITCOIN_ISSUANCE_PER_SECOND * parisToTimeFrameSeconds;
+    calculateBitcoinIssuedSinceMerge(0, parisToTimeFrameSeconds);
   const points = ethPosSeries.map(([timestamp]) => {
     const secondsDelta =
       ethPosFirstPoint[0] === undefined
         ? 0
         : DateFns.differenceInSeconds(timestamp, ethPosFirstPoint[0]);
-    const bitcoinIssued = secondsDelta * BITCOIN_ISSUANCE_PER_SECOND;
+    const bitcoinIssued = calculateBitcoinIssuedSinceMerge(parisToTimeFrameSeconds, secondsDelta);
     const nextPoint = [
       timestamp,
       firstPointBitcoinSupply + bitcoinIssued,
