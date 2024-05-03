@@ -97,14 +97,13 @@ const TwoYearProjection: FC = () => {
       setProjectedStaking(intialStakingAmount);
     }
     console.log("baseFeesOverTime:", baseFeesOverTime);
-    const latestBaseFee =
-      baseFeesOverTime.m5[baseFeesOverTime.m5.length - 1]?.wei;
+    const latestBaseFee = baseFeesPerGasStats?.base_fee_per_gas_stats.m5.average;
     if (latestBaseFee === undefined || baseFeesPerGasStats === undefined) {
       return;
     }
     console.log("barrier", baseFeesPerGasStats.barrier);
     if (!userHasAdjustedBaseFee) {
-      setProjectedBaseGasPrice(latestBaseFee / 1e9);
+      setProjectedBaseGasPrice(baseFeesPerGasStats?.base_fee_per_gas_stats.since_burn.average / 1e9);
     }
 
       setBaseFeeSliderMarkers([
