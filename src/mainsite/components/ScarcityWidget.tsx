@@ -336,7 +336,7 @@ const ScarcityWidget: FC = () => {
               link="https://dune.com/christianusm/eth-locked-in-smart-contracts"
               name="contracts"
               setHovering={setHoveringLocked}
-              startedOn={scarcity.engines.locked.startedOn}
+              startedOn={new Date("2015-08-07T00:00:00.000Z")}
               now={now}
             />
             <EngineRow
