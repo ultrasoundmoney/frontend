@@ -203,6 +203,7 @@ const SupplyChart: FC<Props> = ({
     let peakSupply: [number, number] | null = null;
 
     let lastInContractsIterValue: number | undefined = undefined;
+    let lastStakingIterValue: number | undefined = undefined;
 
     // Glassnode is currently overcounting ETH after the Paris hardfork as Etherscan was too. Etherscan fixed it. Glassnode not yet, here we manually correct their mistake.
     supplyData.forEach(({ t: timestamp, v }, i) => {
@@ -228,9 +229,10 @@ const SupplyChart: FC<Props> = ({
       const dateMillis = DateFns.getTime(dateTime);
 
       // Subtract any staking eth from total supply on that date
-      const stakingSupply = stakingByDate[timestamp];
+      const stakingSupply = stakingByDate[timestamp] || lastStakingIterValue;
 
       if (stakingSupply !== undefined) {
+        lastStakingIterValue = stakingSupply;
         stakingSeriesData.push([dateMillis, stakingSupply]);
       }
 
