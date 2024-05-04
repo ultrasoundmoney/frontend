@@ -333,8 +333,8 @@ const ScarcityWidget: FC = () => {
                 scarcity.engines.locked.amount,
               )}
               hovering={hoveringLocked}
-              link="https://defipulse.com/"
-              name="defi (stale)"
+              link="https://dune.com/christianusm/eth-locked-in-smart-contracts"
+              name="contracts"
               setHovering={setHoveringLocked}
               startedOn={scarcity.engines.locked.startedOn}
               now={now}

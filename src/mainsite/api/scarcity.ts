@@ -4,6 +4,7 @@ import * as Duration from "../../duration";
 import type { EthNumber, WeiJSBI } from "../../eth-units";
 import type { ApiResult } from "../../fetchers";
 import { fetchApiJson, fetchJsonSwr } from "./fetchers";
+import { useSupplyProjectionInputs } from "./supply-projection";
 
 export type Scarcity = {
   engines: {
@@ -64,6 +65,7 @@ export const useScarcity = (): Scarcity => {
   const { data } = useSWR<ScarcityF>(url, fetchJsonSwr, {
     refreshInterval: Duration.millisFromHours(1),
   });
+const supplyProjectionInputs = useSupplyProjectionInputs();
 
   // We use an SWRConfig with fallback data for this hook.
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -78,6 +80,7 @@ export const useScarcity = (): Scarcity => {
       },
       locked: {
         ...safeData.engines.locked,
+        amount: supplyProjectionInputs?.inContractsByDay?.[supplyProjectionInputs?.inContractsByDay.length - 1]?.v ?? 0,
         startedOn: new Date(safeData.engines.locked.startedOn),
       },
       staked: {
