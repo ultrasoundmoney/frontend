@@ -18,6 +18,7 @@ export const fetchEthPriceStats = (): Promise<ApiResult<EthPriceStats>> =>
 export const useEthPriceStats = (): EthPriceStats => {
   const { data } = useSWR<EthPriceStats>(url, fetchJsonSwr, {
     refreshInterval: secondsToMilliseconds(10),
+    refreshWhenHidden: true,
   });
 
   // We use an SWRConfig with fallback data for this hook.
