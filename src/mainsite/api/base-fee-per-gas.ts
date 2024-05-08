@@ -27,6 +27,7 @@ export const fetchBaseFeePerGas = (): TE.TaskEither<
 export const useBaseFeePerGas = (): O.Option<BaseFeePerGas> => {
   const { data } = useSWR<BaseFeePerGas>(url, fetchJsonSwr, {
     refreshInterval: secondsToMilliseconds(4),
+    refreshWhenHidden: true,
   });
 
   return O.fromNullable(data);
