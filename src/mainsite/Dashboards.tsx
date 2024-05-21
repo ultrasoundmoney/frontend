@@ -24,6 +24,7 @@ import { MERGE_SUPPLY } from "./hardforks/paris";
 import useAuthFromSection from "./hooks/use-auth-from-section";
 import FamSection from "./sections/FamSection";
 import GasSection from "./sections/GasSection";
+import FlippeningSection from "./sections/FlippeningSection";
 import BlobGasSection from "./sections/BlobGasSection";
 import SupplyDashboard from "./sections/SupplyDashboard";
 import AdminTools from "../components/AdminTools";
@@ -214,6 +215,11 @@ const Dashboard: FC = () => {
             </video>
           )}
           <MainTitle onClick={handleToggleBatLoop}>ultra sound money</MainTitle>
+          <FlippeningSection
+            timeFrame={timeFrame}
+            onSetTimeFrame={handleSetTimeFrame}
+            onClickTimeFrame={handleClickTimeFrame}
+          />
           <SupplyDashboard
             timeFrame={timeFrame}
             onSetTimeFrame={handleSetTimeFrame}
