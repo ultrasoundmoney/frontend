@@ -5,7 +5,7 @@ import type { FC } from "react";
 import { useMemo } from "react";
 import type { FlippeningDataPoint } from "../api/flippening-data";
 import { useFlippeningData } from "../api/flippening-data";
-import type { MarketcapRatioPoint } from "../components/MarketCapRatioWidget";
+import type { MarketCapRatioPoint } from "../components/MarketCapRatioWidget";
 import Section from "../../components/Section";
 
 const MarketCapRatioWidget = dynamic(
@@ -20,7 +20,7 @@ function generateExponentialGrowthData(
   startValue: number,
   endTimestamp: number,
   endValue: number,
-  targetValue: number = 1.0,
+  targetValue = 1.0,
 ): [number, number][] {
   // Calculate the number of days between the start and end dates
   const daysBetween = (endTimestamp - startTimestamp) / (1000 * 3600 * 24);
@@ -65,16 +65,22 @@ const FlippeningSection: FC = () => {
 
     let series = pointsFromMarketCapRatiosOverTime(flippeningData);
 
-    let expontentialGrowthCurve = generateExponentialGrowthData(
-      series[0][0],
-      series[0][1] / 100,
-      series[series.length - 1][0],
-      series[series.length - 1][1] / 100,
-    );
-    expontentialGrowthCurve = expontentialGrowthCurve.filter(
-      ([t, _v]) => t > series[series.length - 1][0],
-    );
-    series = series.concat(expontentialGrowthCurve);
+    if (series !== undefined && series.length > 1) {
+      const startingPoint = series[0];
+      const endPoint = series[series.length - 1];
+      if (startingPoint !== undefined && endPoint !== undefined) {
+        let expontentialGrowthCurve = generateExponentialGrowthData(
+          startingPoint[0],
+          startingPoint[1] / 100,
+          endPoint[0],
+          endPoint[1] / 100,
+        );
+        expontentialGrowthCurve = expontentialGrowthCurve.filter(
+          ([t, _v]) => t > endPoint[0] ?? Infinity,
+        );
+        series = series.concat(expontentialGrowthCurve);
+      }
+    }
     const max = _maxBy(series, (point) => point[1]);
 
     return [series, max];

@@ -9,7 +9,7 @@ export type FlippeningDataPoint = {
   ethPrice: number;
   ethMarketCap: number;
   ethSupply: number;
-  isPresalePeriod: bool;
+  isPresalePeriod: boolean;
   marketcapRatio: number;
   t: number;
 };
