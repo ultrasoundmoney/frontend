@@ -56,12 +56,15 @@ const baseOptions: Highcharts.Options = {
   xAxis: {
     type: "datetime",
     lineWidth: 0,
-    labels: { enabled: false, style: { color: colors.slateus400 } },
-    tickWidth: 0,
+    minPadding: 0,
+    maxPadding: 0.03,
+    tickInterval: 365.25 * 24 * 3600 * 1000, // always use 1 year intervals
+    tickLength: 0,
   },
   yAxis: {
     endOnTick: false,
     gridLineWidth: 0,
+    type: "logarithmic",
     labels: {
       style: {
         color: colors.slateus400,
@@ -184,7 +187,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
     }
   }, []);
 
-    const barrier = 100;
+  const barrier = 100;
 
   const options = useMemo((): Highcharts.Options => {
     const min = marketCapRatiosSeries?.reduce(
@@ -202,40 +205,14 @@ const MarketCapRatiosWidget: FC<Props> = ({
         {
           animation: false,
           id: "market-cap-ratios-over-area",
-          type: "areaspline",
+          type: "line",
           threshold: barrier,
           data: marketCapRatiosSeries,
-          color: colors.orange400,
-          negativeColor: colors.blue400,
-          lineWidth: 0,
+          lineWidth: 1,
           states: {
             hover: {
               lineWidthPlus: 0,
             },
-          },
-          negativeFillColor: {
-            linearGradient: {
-              x1: 0,
-              y1: 0,
-              x2: 0,
-              y2: 1,
-            },
-            stops: [
-              [0.2, "#5487F400"],
-              [1, "#00FFFB10"],
-            ],
-          },
-          fillColor: {
-            linearGradient: {
-              x1: 0,
-              y1: 1,
-              x2: 0,
-              y2: 0,
-            },
-            stops: [
-              [(barrier ?? 0) / (max ?? 1), "#EDDB3610"],
-              [1, "#E7980050"],
-            ],
           },
         },
       ],
@@ -274,7 +251,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
         </div>
         <div className="flex items-baseline justify-between">
           <LabelText className="flex min-h-[21px] items-center">
-              market cap ratios
+            market cap ratios
           </LabelText>
         </div>
         <div
