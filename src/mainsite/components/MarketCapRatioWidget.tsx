@@ -4,8 +4,7 @@ import HighchartsReact from "highcharts-react-official";
 import highchartsAnnotations from "highcharts/modules/annotations";
 import _merge from "lodash/merge";
 import type { FC, RefObject } from "react";
-import TranslationsContext from "../contexts/TranslationsContext";
-import { useContext, useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import colors from "../../colors";
 import LabelText from "../../components/TextsNext/LabelText";
 import WidgetErrorBoundary from "../../components/WidgetErrorBoundary";
@@ -145,8 +144,6 @@ const MarketCapRatiosWidget: FC<Props> = ({
   maxExponentialGrowthCurve,
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const chartRef = useRef<HighchartsRef | null>(null);
-  const t = useContext(TranslationsContext);
 
   // Setting lang has to happen before any chart render.
   useEffect(() => {
