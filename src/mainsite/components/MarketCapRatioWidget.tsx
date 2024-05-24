@@ -3,7 +3,7 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import highchartsAnnotations from "highcharts/modules/annotations";
 import _merge from "lodash/merge";
-import type { FC } from "react";
+import type { FC, RefObject } from "react";
 import TranslationsContext from "../contexts/TranslationsContext";
 import { useContext, useEffect, useMemo, useRef } from "react";
 import colors from "../../colors";
@@ -15,8 +15,7 @@ import _first from "lodash/first";
 import { formatDate } from "../utils/metric-utils";
 import { formatOneDecimal } from "../../format";
 import styles from "./MarketCapRatioWidget.module.scss";
-import { COLORS, defaultOptions } from "../utils/chart-defaults";
-import { warn } from "console";
+import { COLORS } from "../utils/chart-defaults";
 
 export type MarketCapRatioPoint = [JsTimestamp, number];
 
@@ -126,7 +125,7 @@ const makeBarrier = (barrier: number) => ({
 });
 
 type Props = {
-  marketCapsMap: Record<number, { ethMarketCap: number; btcMarketCap: number }>;
+  marketCapsMap: Record<number, { ethMarketcap: number; btcMarketcap: number }>;
   marketCapRatiosSeries: MarketCapRatioPoint[] | undefined;
   maxMarketCap: number | undefined;
   exponentialGrowthCurveSeries: MarketCapRatioPoint[] | undefined;
@@ -161,8 +160,12 @@ const MarketCapRatiosWidget: FC<Props> = ({
   }, []);
 
   const barrier = 1;
+  const flippeningDataPoint =
+    exponentialGrowthCurveSeries === undefined
+      ? undefined
+      : exponentialGrowthCurveSeries[exponentialGrowthCurveSeries.length - 1];
   const flippeningTimestamp =
-    exponentialGrowthCurveSeries[exponentialGrowthCurveSeries.length - 1][0];
+    flippeningDataPoint === undefined ? undefined : flippeningDataPoint[0];
 
   const options = useMemo((): Highcharts.Options => {
     const min = marketCapRatiosSeries?.reduce(
@@ -257,7 +260,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
         xDateFormat: "%Y-%m-%d",
         useHTML: true,
         formatter: function () {
-          let points = (this.points || []).slice(0);
+          const points = (this.points || []).slice(0);
 
           const firstPoint = _first(points);
 
@@ -295,9 +298,9 @@ const MarketCapRatiosWidget: FC<Props> = ({
               </tr>`,
           );
 
-          if (!isProjected) {
+          if (!isProjected && firstPoint?.x !== undefined) {
             console.log("First Point", firstPoint);
-            const marketCaps = marketCapsMap[firstPoint.x];
+            const marketCaps = marketCapsMap[firstPoint.x as number];
             console.log("Market caps Map", marketCapsMap);
             console.log("Market caps", marketCaps);
             const marketCapRows = [
@@ -392,6 +395,9 @@ const MarketCapRatiosWidget: FC<Props> = ({
             </div>
           )}
         </div>
+        <LabelText color="text-slateus-400 mt-2" className="text-right">
+          Not financial advice
+        </LabelText>
       </WidgetBackground>
     </WidgetErrorBoundary>
   );

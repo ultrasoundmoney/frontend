@@ -57,7 +57,6 @@ const pointsFromMarketCapRatiosOverTime = (
 
 const FlippeningSection: FC = () => {
   const flippeningData = useFlippeningData();
-    console.log("flippeningData", flippeningData);
 
   const [
     marketCapRatiosSeries,
@@ -69,7 +68,7 @@ const FlippeningSection: FC = () => {
       return [undefined, undefined];
     }
 
-    let series = pointsFromMarketCapRatiosOverTime(flippeningData);
+    const series = pointsFromMarketCapRatiosOverTime(flippeningData);
     const maxMarketCap = _maxBy(series, (point) => point[1]);
 
     let expontentialGrowthCurve: MarketCapRatioPoint[] = [];
@@ -94,14 +93,20 @@ const FlippeningSection: FC = () => {
   }, [flippeningData]);
 
   const marketCapSeries = flippeningData?.map(
-    ({ t, ethMarketcap, btcMarketcap }) => [t*1000, { ethMarketcap, btcMarketcap }],
+    ({ t, ethMarketcap, btcMarketcap }) => [
+      t * 1000,
+      { ethMarketcap, btcMarketcap },
+    ],
   );
-  console.log("marketCapSeries", marketCapSeries);
-  const marketCapsMap =
+  const marketCapsMap:
+    | Record<number, { ethMarketcap: number; btcMarketcap: number }>
+    | undefined =
     marketCapSeries === undefined
       ? undefined
-      : Object.fromEntries(marketCapSeries);
-
+      : (Object.fromEntries(marketCapSeries) as Record<
+          number,
+          { ethMarketcap: number; btcMarketcap: number }
+        >);
   return (
     <Section
       link="flippening"
