@@ -392,9 +392,6 @@ const MarketCapRatiosWidget: FC<Props> = ({
             </div>
           )}
         </div>
-        <LabelText color="text-slateus-400 mt-2" className="text-right">
-          live on <span className="text-slateus-200">ultrasound.money</span>
-        </LabelText>
       </WidgetBackground>
     </WidgetErrorBoundary>
   );
