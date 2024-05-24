@@ -4,12 +4,18 @@ import HighchartsReact from "highcharts-react-official";
 import highchartsAnnotations from "highcharts/modules/annotations";
 import _merge from "lodash/merge";
 import type { FC } from "react";
-import { useEffect, useMemo } from "react";
+import TranslationsContext from "../contexts/TranslationsContext";
+import { useContext, useEffect, useMemo, useRef } from "react";
 import colors from "../../colors";
 import LabelText from "../../components/TextsNext/LabelText";
 import WidgetErrorBoundary from "../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../components/WidgetSubcomponents";
 import type { JsTimestamp } from "../../time";
+import _first from "lodash/first";
+import { formatDate } from "../utils/metric-utils";
+import { formatOneDecimal } from "../../format";
+import styles from "./MarketCapRatioWidget.module.scss";
+import { COLORS, defaultOptions } from "../utils/chart-defaults";
 
 export type MarketCapRatioPoint = [JsTimestamp, number];
 
@@ -90,12 +96,6 @@ const baseOptions: Highcharts.Options = {
       animation: {
         duration: 300,
       },
-      marker: {
-        enabled: true,
-        lineColor: "white",
-        radius: 0.4,
-        symbol: "circle",
-      },
     },
   },
 };
@@ -133,30 +133,44 @@ const getTooltipFormatter = (
   barrier: number | undefined,
 ): Highcharts.TooltipFormatterCallbackFunction =>
   function () {
-    const x = typeof this.x === "number" ? this.x : undefined;
-    if (x === undefined || barrier === undefined) {
-      return undefined;
+    let points = (this.points || []).slice(0);
+
+    const firstPoint = _first(points);
+
+    if (firstPoint === undefined) {
+      return "";
     }
 
-    const marketCapRatio = marketCapRatiosMap[x];
-    const exponentialProjection = exponentialGrowthCurveMap[x];
+    const isProjected = firstPoint.series.userOptions.id?.includes(
+      "exponential-growth-series",
+    );
 
-    const dt = new Date(x);
-    const formattedDate = format(dt, "iii MMM dd yyyy");
+    const dt = new Date(this.x || 0);
+    const header = `<div class="tt-header"><div class="tt-header-date text-slateus-200">${formatDate(
+      dt,
+    )}</div>${
+      isProjected ? `<div class="tt-header-projected">(Projected)</div>` : ""
+    }</div>`;
 
-    return `
-      <div class="p-4 rounded-lg border-2 font-roboto bg-slateus-700 border-slateus-400">
-        <div class="text-right text-slateus-400">${formattedDate}</div>
-        <div class="flex-col justify-end mt-2 text-white">
-            <div>
-            MarketCap Ratio: <span class=""> ${marketCapRatio?.toFixed(2)} </span> <span class="ml-1 font-roboto">%</div>
-            </div>
-            <div class="text-white"> 
-            Exponential Projection: <span class=""> ${exponentialProjection.toFixed(2)} </span> <span class="ml-1 font-roboto">%</span>
-            </div>
-        </div>
-      </div>
-    `;
+    const rows = points.map(
+      (p) =>
+        `<tr>
+              <td>
+                <div class="tt-series">
+                  <div class="tt-series-color" style="background-color:${
+                    p.series.userOptions.color
+                  }"></div>
+                  <div class="tt-series-name">${
+                    p.series.name.split(" (")[0]
+                  }</div>
+                </div>
+              </td>
+              <td class="text-white">${formatOneDecimal(p.y || 0)} %</td>
+              </tr>`,
+    );
+
+    const table = `<table><tbody>${rows.join("")}</tbody></table>`;
+    return `<div class="tt-root">${header}${table}</div>`;
   };
 
 type Props = {
@@ -168,6 +182,11 @@ type Props = {
   maxExponentialGrowthCurve: number | undefined;
 };
 
+interface HighchartsRef {
+  chart: Highcharts.Chart;
+  container: RefObject<HTMLDivElement>;
+}
+
 const MarketCapRatiosWidget: FC<Props> = ({
   marketCapRatiosMap,
   marketCapRatiosSeries,
@@ -176,6 +195,10 @@ const MarketCapRatiosWidget: FC<Props> = ({
   exponentialGrowthCurveSeries,
   maxExponentialGrowthCurve,
 }) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const chartRef = useRef<HighchartsRef | null>(null);
+  const t = useContext(TranslationsContext);
+
   // Setting lang has to happen before any chart render.
   useEffect(() => {
     if (Highcharts) {
@@ -187,12 +210,13 @@ const MarketCapRatiosWidget: FC<Props> = ({
     }
   }, []);
 
+
   const barrier = 100;
 
   const options = useMemo((): Highcharts.Options => {
     const min = marketCapRatiosSeries?.reduce(
       (min, point) => (point[1] < min ? point[1] : min),
-      15,
+      100,
     );
 
     return _merge({}, baseOptions, {
@@ -205,8 +229,9 @@ const MarketCapRatiosWidget: FC<Props> = ({
         {
           animation: false,
           id: "market-cap-ratios-over-area",
-          name: "market-cap-ratios-over-area",
+          name: "Market Cap Ratio (ETH/BTC)",
           type: "line",
+          color: COLORS.SERIES[0],
           threshold: barrier,
           data: marketCapRatiosSeries,
           lineWidth: 3,
@@ -219,7 +244,12 @@ const MarketCapRatiosWidget: FC<Props> = ({
         {
           id: "exponential-growth-series",
           name: "exponential-growth-series",
+          name: "Exponential Projection",
+          color: COLORS.SERIES[5],
           type: "line",
+          fillOpacity: 0.25,
+          dashStyle: "Dash",
+          showInLegend: false,
           threshold: barrier,
           data: exponentialGrowthCurveSeries,
           lineWidth: 3,
@@ -237,11 +267,48 @@ const MarketCapRatiosWidget: FC<Props> = ({
         valueDecimals: 0,
         xDateFormat: "%Y-%m-%d",
         useHTML: true,
-        formatter: getTooltipFormatter(
-          marketCapRatiosMap,
-          exponentialGrowthCurveMap,
-          barrier,
-        ),
+        formatter: function () {
+          let points = (this.points || []).slice(0);
+
+          const firstPoint = _first(points);
+
+          if (firstPoint === undefined) {
+            return "";
+          }
+
+          const isProjected = firstPoint.series.userOptions.id?.includes(
+            "exponential-growth-series",
+          );
+
+          const dt = new Date(this.x || 0);
+          const header = `<div class="tt-header"><div class="tt-header-date text-slateus-200">${formatDate(
+            dt,
+          )}</div>${
+            isProjected
+              ? `<div class="tt-header-projected">(Projected)</div>`
+              : ""
+          }</div>`;
+
+          const rows = points.map(
+            (p) =>
+              `<tr>
+              <td>
+                <div class="tt-series">
+                  <div class="tt-series-color" style="background-color:${
+                    p.series.userOptions.color
+                  }"></div>
+                  <div class="tt-series-name text-white">${
+                    p.series.name.split(" (")[0]
+                  }</div>
+                </div>
+              </td>
+              <td class="text-white">${formatOneDecimal(p.y || 0)} %</td>
+              </tr>`,
+          );
+
+          const table = `<table><tbody>${rows.join("")}</tbody></table>`;
+          return `<div class="tt-root">${header}${table}</div>`;
+        },
       },
     } as Highcharts.Options);
   }, [
@@ -257,8 +324,8 @@ const MarketCapRatiosWidget: FC<Props> = ({
     <WidgetErrorBoundary title={"market cap ratios"}>
       {/* We use the h-0 min-h-full trick to adopt the height of our sibling
       element. */}
-      <WidgetBackground className="relative flex h-full min-h-[398px] w-full flex-col lg:h-0">
-        <div className="pointer-events-none absolute top-0 right-0 bottom-0 left-0 overflow-hidden rounded-lg">
+      <WidgetBackground className="relative flex h-full w-full flex-col">
+        <div className="pointer-events-none absolute top-0 right-0 bottom-0 left-0 rounded-lg">
           <div
             // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
             className={`
@@ -302,7 +369,9 @@ const MarketCapRatiosWidget: FC<Props> = ({
               </LabelText>
             </div>
           ) : (
-            <HighchartsReact highcharts={Highcharts} options={options} />
+            <div ref={containerRef} className={styles.supplyChart}>
+              <HighchartsReact highcharts={Highcharts} options={options} />
+            </div>
           )}
         </div>
         <LabelText color="text-slateus-400 mt-2" className="text-right">
