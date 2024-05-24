@@ -138,26 +138,22 @@ const getTooltipFormatter = (
       return undefined;
     }
 
-    const total =
-      this.series.name == "market-cap-ratios-over-area"
-        ? marketCapRatiosMap[x]
-        : exponentialGrowthCurveMap[x];
-    if (total === undefined) {
-      return undefined;
-    }
+    const marketCapRatio = marketCapRatiosMap[x];
+    const exponentialProjection = exponentialGrowthCurveMap[x];
 
     const dt = new Date(x);
     const formattedDate = format(dt, "iii MMM dd yyyy");
 
-
     return `
       <div class="p-4 rounded-lg border-2 font-roboto bg-slateus-700 border-slateus-400">
         <div class="text-right text-slateus-400">${formattedDate}</div>
-        <div class="flex justify-end mt-2">
-          <div class="">
-            ${total.toFixed(2)}
-          </div>
-          <div class="ml-1 font-roboto text-slateus-400">%</div>
+        <div class="flex-col justify-end mt-2 text-white">
+            <div>
+            MarketCap Ratio: <span class=""> ${marketCapRatio?.toFixed(2)} </span> <span class="ml-1 font-roboto">%</div>
+            </div>
+            <div class="text-white"> 
+            Exponential Projection: <span class=""> ${exponentialProjection.toFixed(2)} </span> <span class="ml-1 font-roboto">%</span>
+            </div>
         </div>
       </div>
     `;
@@ -227,7 +223,6 @@ const MarketCapRatiosWidget: FC<Props> = ({
           threshold: barrier,
           data: exponentialGrowthCurveSeries,
           lineWidth: 3,
-          opacity: 0.5,
           states: {
             hover: {
               lineWidthPlus: 0,
@@ -236,7 +231,17 @@ const MarketCapRatiosWidget: FC<Props> = ({
         },
       ],
       tooltip: {
-        formatter: getTooltipFormatter(marketCapRatiosMap, exponentialGrowthCurveMap, barrier),
+        shared: true,
+        backgroundColor: "transparent",
+        padding: 0,
+        valueDecimals: 0,
+        xDateFormat: "%Y-%m-%d",
+        useHTML: true,
+        formatter: getTooltipFormatter(
+          marketCapRatiosMap,
+          exponentialGrowthCurveMap,
+          barrier,
+        ),
       },
     } as Highcharts.Options);
   }, [
