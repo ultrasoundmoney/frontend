@@ -57,8 +57,14 @@ const pointsFromMarketCapRatiosOverTime = (
 
 const FlippeningSection: FC = () => {
   const flippeningData = useFlippeningData();
+    console.log("flippeningData", flippeningData);
 
-  const [marketCapRatiosSeries, exponentialGrowthCurveSeries, maxMarketCap, maxExponentialGrowthCurve] = useMemo(() => {
+  const [
+    marketCapRatiosSeries,
+    exponentialGrowthCurveSeries,
+    maxMarketCap,
+    maxExponentialGrowthCurve,
+  ] = useMemo(() => {
     if (flippeningData === undefined) {
       return [undefined, undefined];
     }
@@ -66,7 +72,7 @@ const FlippeningSection: FC = () => {
     let series = pointsFromMarketCapRatiosOverTime(flippeningData);
     const maxMarketCap = _maxBy(series, (point) => point[1]);
 
-      let expontentialGrowthCurve: MarketCapRatioPoint[] = [];
+    let expontentialGrowthCurve: MarketCapRatioPoint[] = [];
     if (series !== undefined && series.length > 1) {
       const startingPoint = series[0];
       const endPoint = series[series.length - 1];
@@ -79,20 +85,22 @@ const FlippeningSection: FC = () => {
         );
       }
     }
-    const maxExponentialCurve = _maxBy(expontentialGrowthCurve, (point) => point[1]);
+    const maxExponentialCurve = _maxBy(
+      expontentialGrowthCurve,
+      (point) => point[1],
+    );
 
     return [series, expontentialGrowthCurve, maxMarketCap, maxExponentialCurve];
   }, [flippeningData]);
 
-  const marketCapRatiosMap =
-    marketCapRatiosSeries === undefined
+  const marketCapSeries = flippeningData?.map(
+    ({ t, ethMarketcap, btcMarketcap }) => [t*1000, { ethMarketcap, btcMarketcap }],
+  );
+  console.log("marketCapSeries", marketCapSeries);
+  const marketCapsMap =
+    marketCapSeries === undefined
       ? undefined
-      : Object.fromEntries(new Map(marketCapRatiosSeries).entries());
-
-  const exponentialGrowthCurveMap =
-    exponentialGrowthCurveSeries === undefined
-      ? undefined
-      : Object.fromEntries(new Map(exponentialGrowthCurveSeries).entries());
+      : Object.fromEntries(marketCapSeries);
 
   return (
     <Section
@@ -104,10 +112,9 @@ const FlippeningSection: FC = () => {
         <div className="w-full">
           <MarketCapRatioWidget
             marketCapRatiosSeries={marketCapRatiosSeries}
-            marketCapRatiosMap={marketCapRatiosMap ?? {}}
+            marketCapsMap={marketCapsMap ?? {}}
             maxMarketCap={maxMarketCap?.[1]}
             exponentialGrowthCurveSeries={exponentialGrowthCurveSeries}
-            exponentialGrowthCurveMap={exponentialGrowthCurveMap ?? {}}
             maxExponentialGrowthCurve={maxMarketCap?.[1]}
           />
         </div>

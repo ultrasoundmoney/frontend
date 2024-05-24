@@ -125,57 +125,10 @@ const makeBarrier = (barrier: number) => ({
   },
 });
 
-const getTooltipFormatter = (
-  marketCapRatiosMap: Record<number, number>,
-  exponentialGrowthCurveMap: Record<number, number>,
-  barrier: number | undefined,
-): Highcharts.TooltipFormatterCallbackFunction =>
-  function () {
-    let points = (this.points || []).slice(0);
-
-    const firstPoint = _first(points);
-
-    if (firstPoint === undefined) {
-      return "";
-    }
-
-    const isProjected = firstPoint.series.userOptions.id?.includes(
-      "exponential-growth-series",
-    );
-
-    const dt = new Date(this.x || 0);
-    const header = `<div class="tt-header"><div class="tt-header-date text-slateus-200">${formatDate(
-      dt,
-    )}</div>${
-      isProjected ? `<div class="tt-header-projected">(Projected)</div>` : ""
-    }</div>`;
-
-    const rows = points.map(
-      (p) =>
-        `<tr>
-              <td>
-                <div class="tt-series">
-                  <div class="tt-series-color" style="background-color:${
-                    p.series.userOptions.color
-                  }"></div>
-                  <div class="tt-series-name">${
-                    p.series.name.split(" (")[0]
-                  }</div>
-                </div>
-              </td>
-              <td class="text-white">${formatOneDecimal(p.y || 0)} %</td>
-              </tr>`,
-    );
-
-    const table = `<table><tbody>${rows.join("")}</tbody></table>`;
-    return `<div class="tt-root">${header}${table}</div>`;
-  };
-
 type Props = {
-  marketCapRatiosMap: Record<number, number>;
+  marketCapsMap: Record<number, { ethMarketCap: number; btcMarketCap: number }>;
   marketCapRatiosSeries: MarketCapRatioPoint[] | undefined;
   maxMarketCap: number | undefined;
-  exponentialGrowthCurveMap: Record<number, number>;
   exponentialGrowthCurveSeries: MarketCapRatioPoint[] | undefined;
   maxExponentialGrowthCurve: number | undefined;
 };
@@ -186,10 +139,9 @@ interface HighchartsRef {
 }
 
 const MarketCapRatiosWidget: FC<Props> = ({
-  marketCapRatiosMap,
+  marketCapsMap,
   marketCapRatiosSeries,
   maxMarketCap,
-  exponentialGrowthCurveMap,
   exponentialGrowthCurveSeries,
   maxExponentialGrowthCurve,
 }) => {
@@ -326,22 +278,52 @@ const MarketCapRatiosWidget: FC<Props> = ({
               : ""
           }</div>`;
 
-          const rows = points.map(
+          let rows = points.map(
             (p) =>
               `<tr>
-              <td>
-                <div class="tt-series">
-                  <div class="tt-series-color" style="background-color:${
-                    p.series.userOptions.color
-                  }"></div>
-                  <div class="tt-series-name text-slate-300">${
-                    p.series.name.split(" (")[0]
-                  }</div>
-                </div>
-              </td>
-              <td class="text-white">${formatOneDecimal(p.y || 0)} %</td>
+                <td>
+                    <div class="tt-series">
+                    <div class="tt-series-color" style="background-color:${
+                      p.series.userOptions.color
+                    }"></div>
+                    <div class="tt-series-name text-slate-300">${
+                      p.series.name.split(" (")[0]
+                    }</div>
+                    </div>
+                </td>
+                <td class="text-white">${formatOneDecimal(p.y || 0)} %</td>
               </tr>`,
           );
+
+          if (!isProjected) {
+            console.log("First Point", firstPoint);
+            const marketCaps = marketCapsMap[firstPoint.x];
+            console.log("Market caps Map", marketCapsMap);
+            console.log("Market caps", marketCaps);
+            const marketCapRows = [
+              `<tr>
+                <td>
+                    <div class="tt-series">
+                    <div class="tt-series-name text-slate-300">ETH marketcap</div>
+                    </div>
+                </td>
+                <td class="text-white">${formatOneDecimal(
+                  (marketCaps?.ethMarketcap || 0) / 1e9,
+                )} BN</td>
+              </tr>`,
+              `<tr>
+                <td>
+                    <div class="tt-series">
+                    <div class="tt-series-name text-slate-300">BTC marketcap</div>
+                    </div>
+                </td>
+                <td class="text-white">${formatOneDecimal(
+                  (marketCaps?.btcMarketcap || 0) / 1e9,
+                )} BN</td>
+              </tr>`,
+            ];
+            rows = rows.concat(marketCapRows);
+          }
 
           const table = `<table><tbody>${rows.join("")}</tbody></table>`;
           return `<div class="tt-root">${header}${table}</div>`;
@@ -350,11 +332,10 @@ const MarketCapRatiosWidget: FC<Props> = ({
     } as Highcharts.Options);
   }, [
     maxMarketCap,
-    marketCapRatiosMap,
+    marketCapsMap,
     marketCapRatiosSeries,
     maxExponentialGrowthCurve,
     exponentialGrowthCurveSeries,
-    exponentialGrowthCurveMap,
   ]);
 
   return (
