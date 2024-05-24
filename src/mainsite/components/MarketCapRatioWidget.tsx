@@ -16,6 +16,7 @@ import { formatDate } from "../utils/metric-utils";
 import { formatOneDecimal } from "../../format";
 import styles from "./MarketCapRatioWidget.module.scss";
 import { COLORS, defaultOptions } from "../utils/chart-defaults";
+import { warn } from "console";
 
 export type MarketCapRatioPoint = [JsTimestamp, number];
 
@@ -102,25 +103,22 @@ const baseOptions: Highcharts.Options = {
 
 const makeBarrier = (barrier: number) => ({
   id: "barrier-plotline",
-  color: colors.slateus500,
+  color: COLORS.PLOT_LINE,
   width: 1,
   value: barrier,
   zIndex: 10,
   label: {
-    x: 84,
-    text: `${barrier?.toFixed(2)} Flippening`,
+    x: 50,
     useHTML: true,
     align: "right",
+    verticalAlign: "middle",
     formatter: () => `
-      <div class="flex justify-end" title="flippening">
-        <img
-          class="w-[15px] h-[15px]"
-          src="/peak-own.svg"
-        />
-      </div>
-      <div class="flex text-sm">
-        <div class="font-light text-white font-roboto">
-          ${barrier?.toFixed(0)} %
+      <div class="flex justify-start" title="flippening">
+          <div>
+            <img
+            class="w-[35px] h-[35px]"
+            src="/dolphin.svg"
+            />
         </div>
       </div>
     `,
@@ -210,8 +208,9 @@ const MarketCapRatiosWidget: FC<Props> = ({
     }
   }, []);
 
-
-  const barrier = 100;
+  const barrier = 1;
+  const flippeningTimestamp =
+    exponentialGrowthCurveSeries[exponentialGrowthCurveSeries.length - 1][0];
 
   const options = useMemo((): Highcharts.Options => {
     const min = marketCapRatiosSeries?.reduce(
@@ -219,18 +218,57 @@ const MarketCapRatiosWidget: FC<Props> = ({
       100,
     );
 
+    console.log("min:", min);
     return _merge({}, baseOptions, {
       yAxis: {
         id: "market-cap-ratios",
         min,
-        plotLines: [barrier !== undefined ? makeBarrier(barrier) : undefined],
+        plotLines: [makeBarrier(100)],
+        labels: {
+          x: -5,
+          format: "{value}%",
+        },
+      },
+      xAxis: {
+        max: flippeningTimestamp,
+        plotLines: [
+          flippeningTimestamp !== undefined
+            ? {
+                value: flippeningTimestamp,
+                color: COLORS.PLOT_LINE,
+                width: 0,
+                label: {
+                  rotation: 0,
+                  text: formatDate(new Date(flippeningTimestamp)),
+                  style: {
+                    color: colors.white,
+                    whiteSpace: "normal",
+                    fontSize: "13px",
+                    fontWeight: "bold",
+                  },
+                  verticalAlign: "top",
+                  align: "right",
+                  x: -5,
+                },
+                zIndex: 10,
+              }
+            : undefined,
+        ],
+      },
+      legend: {
+        // Usinga custom legend for more control over responsiveness
+        enabled: true,
+        itemStyle: {
+          color: colors.slateus200,
+        },
       },
       series: [
         {
           animation: false,
           id: "market-cap-ratios-over-area",
-          name: "Market Cap Ratio (ETH/BTC)",
+          name: "marketcap ratio (ETH/BTC)",
           type: "line",
+          showInLegend: true,
           color: COLORS.SERIES[0],
           threshold: barrier,
           data: marketCapRatiosSeries,
@@ -243,13 +281,12 @@ const MarketCapRatiosWidget: FC<Props> = ({
         },
         {
           id: "exponential-growth-series",
-          name: "exponential-growth-series",
-          name: "Exponential Projection",
+          name: "projection",
           color: COLORS.SERIES[5],
           type: "line",
           fillOpacity: 0.25,
           dashStyle: "Dash",
-          showInLegend: false,
+          showInLegend: true,
           threshold: barrier,
           data: exponentialGrowthCurveSeries,
           lineWidth: 3,
@@ -297,7 +334,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
                   <div class="tt-series-color" style="background-color:${
                     p.series.userOptions.color
                   }"></div>
-                  <div class="tt-series-name text-white">${
+                  <div class="tt-series-name text-slate-300">${
                     p.series.name.split(" (")[0]
                   }</div>
                 </div>
@@ -321,7 +358,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
   ]);
 
   return (
-    <WidgetErrorBoundary title={"market cap ratios"}>
+    <WidgetErrorBoundary title={"flippening progress"}>
       {/* We use the h-0 min-h-full trick to adopt the height of our sibling
       element. */}
       <WidgetBackground className="relative flex h-full w-full flex-col">
@@ -349,7 +386,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
         </div>
         <div className="flex items-baseline justify-between">
           <LabelText className="flex min-h-[21px] items-center">
-            market cap ratios
+            flippening progress
           </LabelText>
         </div>
         <div
