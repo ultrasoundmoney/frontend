@@ -58,38 +58,41 @@ const pointsFromMarketCapRatiosOverTime = (
 const FlippeningSection: FC = () => {
   const flippeningData = useFlippeningData();
 
-  const [marketCapRatiosSeries, max] = useMemo(() => {
+  const [marketCapRatiosSeries, exponentialGrowthCurveSeries, maxMarketCap, maxExponentialGrowthCurve] = useMemo(() => {
     if (flippeningData === undefined) {
       return [undefined, undefined];
     }
 
     let series = pointsFromMarketCapRatiosOverTime(flippeningData);
+    const maxMarketCap = _maxBy(series, (point) => point[1]);
 
+      let expontentialGrowthCurve: MarketCapRatioPoint[] = [];
     if (series !== undefined && series.length > 1) {
       const startingPoint = series[0];
       const endPoint = series[series.length - 1];
       if (startingPoint !== undefined && endPoint !== undefined) {
-        let expontentialGrowthCurve = generateExponentialGrowthData(
+        expontentialGrowthCurve = generateExponentialGrowthData(
           startingPoint[0],
           startingPoint[1] / 100,
           endPoint[0],
           endPoint[1] / 100,
         );
-        expontentialGrowthCurve = expontentialGrowthCurve.filter(
-          ([t, _v]) => t > endPoint[0] ?? Infinity,
-        );
-        series = series.concat(expontentialGrowthCurve);
       }
     }
-    const max = _maxBy(series, (point) => point[1]);
+    const maxExponentialCurve = _maxBy(expontentialGrowthCurve, (point) => point[1]);
 
-    return [series, max];
+    return [series, expontentialGrowthCurve, maxMarketCap, maxExponentialCurve];
   }, [flippeningData]);
 
   const marketCapRatiosMap =
     marketCapRatiosSeries === undefined
       ? undefined
       : Object.fromEntries(new Map(marketCapRatiosSeries).entries());
+
+  const exponentialGrowthCurveMap =
+    exponentialGrowthCurveSeries === undefined
+      ? undefined
+      : Object.fromEntries(new Map(exponentialGrowthCurveSeries).entries());
 
   return (
     <Section
@@ -102,7 +105,10 @@ const FlippeningSection: FC = () => {
           <MarketCapRatioWidget
             marketCapRatiosSeries={marketCapRatiosSeries}
             marketCapRatiosMap={marketCapRatiosMap ?? {}}
-            max={max?.[1]}
+            maxMarketCap={maxMarketCap?.[1]}
+            exponentialGrowthCurveSeries={exponentialGrowthCurveSeries}
+            exponentialGrowthCurveMap={exponentialGrowthCurveMap ?? {}}
+            maxExponentialGrowthCurve={maxMarketCap?.[1]}
           />
         </div>
       </div>

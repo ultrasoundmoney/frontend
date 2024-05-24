@@ -129,6 +129,7 @@ const makeBarrier = (barrier: number) => ({
 
 const getTooltipFormatter = (
   marketCapRatiosMap: Record<number, number>,
+  exponentialGrowthCurveMap: Record<number, number>,
   barrier: number | undefined,
 ): Highcharts.TooltipFormatterCallbackFunction =>
   function () {
@@ -137,26 +138,23 @@ const getTooltipFormatter = (
       return undefined;
     }
 
-    const total = marketCapRatiosMap[x];
+    const total =
+      this.series.name == "market-cap-ratios-over-area"
+        ? marketCapRatiosMap[x]
+        : exponentialGrowthCurveMap[x];
     if (total === undefined) {
       return undefined;
     }
 
     const dt = new Date(x);
     const formattedDate = format(dt, "iii MMM dd yyyy");
-    const formattedTime = format(dt, "HH:mm:ss 'UTC'x");
 
-    const gradientCss =
-      total > barrier
-        ? "from-orange-400 to-yellow-300"
-        : "from-cyan-300 to-indigo-500";
 
     return `
       <div class="p-4 rounded-lg border-2 font-roboto bg-slateus-700 border-slateus-400">
         <div class="text-right text-slateus-400">${formattedDate}</div>
-        <div class="text-right text-slateus-400">${formattedTime}</div>
         <div class="flex justify-end mt-2">
-          <div class="bg-gradient-to-r bg-clip-text text-transparent ${gradientCss}">
+          <div class="">
             ${total.toFixed(2)}
           </div>
           <div class="ml-1 font-roboto text-slateus-400">%</div>
@@ -168,13 +166,19 @@ const getTooltipFormatter = (
 type Props = {
   marketCapRatiosMap: Record<number, number>;
   marketCapRatiosSeries: MarketCapRatioPoint[] | undefined;
-  max: number | undefined;
+  maxMarketCap: number | undefined;
+  exponentialGrowthCurveMap: Record<number, number>;
+  exponentialGrowthCurveSeries: MarketCapRatioPoint[] | undefined;
+  maxExponentialGrowthCurve: number | undefined;
 };
 
 const MarketCapRatiosWidget: FC<Props> = ({
   marketCapRatiosMap,
   marketCapRatiosSeries,
-  max,
+  maxMarketCap,
+  exponentialGrowthCurveMap,
+  exponentialGrowthCurveSeries,
+  maxExponentialGrowthCurve,
 }) => {
   // Setting lang has to happen before any chart render.
   useEffect(() => {
@@ -205,10 +209,25 @@ const MarketCapRatiosWidget: FC<Props> = ({
         {
           animation: false,
           id: "market-cap-ratios-over-area",
+          name: "market-cap-ratios-over-area",
           type: "line",
           threshold: barrier,
           data: marketCapRatiosSeries,
-          lineWidth: 1,
+          lineWidth: 3,
+          states: {
+            hover: {
+              lineWidthPlus: 0,
+            },
+          },
+        },
+        {
+          id: "exponential-growth-series",
+          name: "exponential-growth-series",
+          type: "line",
+          threshold: barrier,
+          data: exponentialGrowthCurveSeries,
+          lineWidth: 3,
+          opacity: 0.5,
           states: {
             hover: {
               lineWidthPlus: 0,
@@ -217,10 +236,17 @@ const MarketCapRatiosWidget: FC<Props> = ({
         },
       ],
       tooltip: {
-        formatter: getTooltipFormatter(marketCapRatiosMap, barrier),
+        formatter: getTooltipFormatter(marketCapRatiosMap, exponentialGrowthCurveMap, barrier),
       },
     } as Highcharts.Options);
-  }, [max, marketCapRatiosMap, marketCapRatiosSeries]);
+  }, [
+    maxMarketCap,
+    marketCapRatiosMap,
+    marketCapRatiosSeries,
+    maxExponentialGrowthCurve,
+    exponentialGrowthCurveSeries,
+    exponentialGrowthCurveMap,
+  ]);
 
   return (
     <WidgetErrorBoundary title={"market cap ratios"}>
