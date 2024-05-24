@@ -227,7 +227,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
           color: COLORS.SERIES[0],
           threshold: barrier,
           data: marketCapRatiosSeries,
-          lineWidth: 3,
+          lineWidth: 2,
           states: {
             hover: {
               lineWidthPlus: 0,
@@ -244,7 +244,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
           showInLegend: true,
           threshold: barrier,
           data: exponentialGrowthCurveSeries,
-          lineWidth: 3,
+          lineWidth: 2,
           states: {
             hover: {
               lineWidthPlus: 0,
@@ -299,10 +299,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
           );
 
           if (!isProjected && firstPoint?.x !== undefined) {
-            console.log("First Point", firstPoint);
             const marketCaps = marketCapsMap[firstPoint.x as number];
-            console.log("Market caps Map", marketCapsMap);
-            console.log("Market caps", marketCaps);
             const marketCapRows = [
               `<tr>
                 <td>
@@ -390,7 +387,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
               </LabelText>
             </div>
           ) : (
-            <div ref={containerRef} className={styles.supplyChart}>
+            <div ref={containerRef} className={`${styles.supplyChart}`}>
               <HighchartsReact highcharts={Highcharts} options={options} />
             </div>
           )}
