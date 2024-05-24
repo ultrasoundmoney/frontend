@@ -101,8 +101,9 @@ const baseOptions: Highcharts.Options = {
 
 const makeBarrier = (barrier: number) => ({
   id: "barrier-plotline",
-  color: COLORS.PLOT_LINE,
-  width: 1,
+  color: COLORS.SERIES[5],
+  width: 2,
+  dashStyle: "Dash",
   value: barrier,
   zIndex: 10,
   label: {
