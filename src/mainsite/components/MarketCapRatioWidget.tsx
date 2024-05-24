@@ -14,7 +14,7 @@ import type { JsTimestamp } from "../../time";
 import _first from "lodash/first";
 import { formatDate } from "../utils/metric-utils";
 import { formatOneDecimal } from "../../format";
-import styles from "./MarketCapRatioWidget.module.scss";
+import styles from "./TwoYearProjection/TwoYearProjectionChart.module.scss";
 import { COLORS } from "../utils/chart-defaults";
 
 export type MarketCapRatioPoint = [JsTimestamp, number];
