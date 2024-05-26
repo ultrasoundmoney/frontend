@@ -449,8 +449,8 @@ const MarketCapRatiosWidget: FC<Props> = ({
               </LabelText>
             </div>
           ) : (
-            <div ref={containerRef} className={`${styles.supplyChart}`}>
-              <HighchartsReact highcharts={Highcharts} options={options} />
+            <div ref={containerRef} className={`${styles.supplyChart} w-full h-full`}>
+              <HighchartsReact highcharts={Highcharts} options={options}/>
             </div>
           )}
         </div>
