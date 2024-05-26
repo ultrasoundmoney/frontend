@@ -220,9 +220,41 @@ const MarketCapRatiosWidget: FC<Props> = ({
           name: "marketcap ratio (ETH/BTC)",
           type: "line",
           showInLegend: true,
-          color: COLORS.SERIES[0],
+          color: {
+            linearGradient: {
+              x1: 0,
+              y1: 1,
+              x2: 2,
+              y2: 0,
+            },
+            stops: [
+              [0, "#1FD0E1"],
+              [1, "#6758F3"],
+            ],
+          },
+          shadow: {
+            color: "rgba(75, 144, 219, 0.2)",
+            width: 15,
+          },
           threshold: barrier,
-          data: marketCapRatiosSeries,
+          data:
+            marketCapRatiosSeries === undefined
+              ? undefined
+              : [
+                  ...marketCapRatiosSeries,
+                  {
+                    x: marketCapRatiosSeries[
+                      marketCapRatiosSeries.length - 1
+                    ]![0],
+                    y: marketCapRatiosSeries[
+                      marketCapRatiosSeries.length - 1
+                    ]![1],
+                    marker: {
+                      symbol: `url(/dot_supply_graph.svg)`,
+                      enabled: true,
+                    },
+                  },
+                ],
           lineWidth: 2,
           states: {
             hover: {
@@ -290,7 +322,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
                     }</div>
                     </div>
                 </td>
-                <td class="text-white">${formatOneDecimal(p.y || 0)} %</td>
+                <td class="text-white">${formatOneDecimal(p.y || 0)}%</td>
               </tr>`,
           );
 
@@ -305,7 +337,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
                 </td>
                 <td class="text-white">${formatOneDecimal(
                   (marketCaps?.ethMarketcap || 0) / 1e9,
-                )} BN</td>
+                )}B USD</td>
               </tr>`,
               `<tr>
                 <td>
@@ -315,7 +347,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
                 </td>
                 <td class="text-white">${formatOneDecimal(
                   (marketCaps?.btcMarketcap || 0) / 1e9,
-                )} BN</td>
+                )}B USD</td>
               </tr>`,
             ];
             rows = rows.concat(marketCapRows);
