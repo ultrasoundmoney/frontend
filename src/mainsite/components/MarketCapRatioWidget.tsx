@@ -113,7 +113,6 @@ const makeBarrier = (barrier: number) => ({
   id: "barrier-plotline",
   color: COLORS.SERIES[5],
   width: 2,
-  dashStyle: "Dash",
   value: barrier,
   zIndex: 10,
   label: {
@@ -268,7 +267,6 @@ const MarketCapRatiosWidget: FC<Props> = ({
           color: COLORS.SERIES[5],
           type: "line",
           fillOpacity: 0.25,
-          dashStyle: "Dash",
           showInLegend: true,
           threshold: barrier,
           data: exponentialGrowthCurveSeries,
