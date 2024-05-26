@@ -75,7 +75,7 @@ const baseOptions: Highcharts.Options = {
           ? "bg-slateus-400 opacity-60"
           : this.index === 0
           ? "bg-[#2476A9]"
-          : `bg-[${this.color}]`;
+          : "bg-[#4bc0c0]";
       return `
         <div class="flex flex-row gap-x-2 items-center z-50">
           <div class="w-2 h-2 ${color} rounded-full"></div>
