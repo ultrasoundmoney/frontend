@@ -27,6 +27,12 @@ if (typeof window !== "undefined") {
 const baseOptions: Highcharts.Options = {
   accessibility: { enabled: false },
   chart: {
+    style: {
+      color: colors.slateus400,
+      fontFamily: "Roboto Mono",
+      fontSize: "12px",
+      fontWeight: "300",
+    },
     zooming: {
       type: "x",
       resetButton: {
@@ -58,6 +64,13 @@ const baseOptions: Highcharts.Options = {
     marginTop: 14,
   },
   title: undefined,
+  legend: {
+    // Usinga custom legend for more control over responsiveness
+    enabled: true,
+    itemStyle: {
+      color: colors.slateus200,
+    },
+  },
   xAxis: {
     type: "datetime",
     lineWidth: 0,
@@ -67,17 +80,14 @@ const baseOptions: Highcharts.Options = {
     tickLength: 0,
   },
   yAxis: {
+    id: "market-cap-ratios",
+    labels: {
+      x: -5,
+      format: "{value}%",
+    },
     endOnTick: false,
     gridLineWidth: 0,
     type: "logarithmic",
-    labels: {
-      style: {
-        color: colors.slateus400,
-        fontFamily: "Roboto Mono",
-        fontSize: "12px",
-        fontWeight: "300",
-      },
-    },
     title: undefined,
   },
   legend: {
@@ -174,13 +184,8 @@ const MarketCapRatiosWidget: FC<Props> = ({
     console.log("min:", min);
     return _merge({}, baseOptions, {
       yAxis: {
-        id: "market-cap-ratios",
         min,
         plotLines: [makeBarrier(100)],
-        labels: {
-          x: -5,
-          format: "{value}%",
-        },
       },
       xAxis: {
         max: flippeningTimestamp,
@@ -207,13 +212,6 @@ const MarketCapRatiosWidget: FC<Props> = ({
               }
             : undefined,
         ],
-      },
-      legend: {
-        // Usinga custom legend for more control over responsiveness
-        enabled: true,
-        itemStyle: {
-          color: colors.slateus200,
-        },
       },
       series: [
         {
@@ -390,9 +388,6 @@ const MarketCapRatiosWidget: FC<Props> = ({
             </div>
           )}
         </div>
-        <LabelText color="text-slateus-400 mt-2" className="text-right">
-          Not financial advice
-        </LabelText>
       </WidgetBackground>
     </WidgetErrorBoundary>
   );
