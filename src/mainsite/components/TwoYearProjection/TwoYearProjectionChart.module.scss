@@ -28,6 +28,11 @@ $tooltip-zindex: 2;
     stroke-dashoffset: 4px;
   }
 
+  // Legend
+  .highcharts-legend-item {
+    pointer-events: none;
+  }
+
   // Marker plotlines
   .highcharts-plot-line-label {
     font-weight: bold;
