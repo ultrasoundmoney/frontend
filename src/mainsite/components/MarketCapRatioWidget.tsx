@@ -387,7 +387,10 @@ const MarketCapRatiosWidget: FC<Props> = ({
           }
 
           const table = `<table><tbody>${rows.join("")}</tbody></table>`;
-          return `<div class="tt-root">${header}${table}</div>`;
+          return `
+                <div class="relative z-10 w-60 rounded-lg border-2 font-roboto bg-slateus-700 border-slateus-400">
+                    <div class="tt-root">${header}${table}</div>
+                </div>`;
         },
       },
     } as Highcharts.Options);
