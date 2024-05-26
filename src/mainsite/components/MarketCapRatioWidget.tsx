@@ -226,7 +226,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
                   verticalAlign: "top",
                   align: "right",
                   x: -5,
-                    y: -1,
+                  y: -1,
                 },
                 zIndex: 10,
               }
@@ -340,22 +340,20 @@ const MarketCapRatiosWidget: FC<Props> = ({
               : ""
           }</div>`;
 
-          let rows = points.map(
-            (p) =>
-              `<tr>
+          let p = points[0];
+          let rows =
+            p === undefined
+              ? []
+              : [
+                  `<tr>
                 <td>
                     <div class="tt-series">
-                    <div class="tt-series-color" style="background-color:${
-                      p.series.userOptions.color
-                    }"></div>
-                    <div class="tt-series-name text-slate-300">${
-                      p.series.name.split(" (")[0]
-                    }</div>
+                    <div class="tt-series-name text-slate-300">marketcap ratio</div>
                     </div>
                 </td>
                 <td class="text-white">${formatOneDecimal(p.y || 0)}%</td>
               </tr>`,
-          );
+                ];
 
           if (!isProjected && firstPoint?.x !== undefined) {
             const marketCaps = marketCapsMap[firstPoint.x as number];
