@@ -15,6 +15,7 @@ import { formatDate } from "../utils/metric-utils";
 import { formatOneDecimal } from "../../format";
 import styles from "./TwoYearProjection/TwoYearProjectionChart.module.scss";
 import { COLORS } from "../utils/chart-defaults";
+import ICOTimeFrameIndicator from "./ICOTimeFrameIndicator";
 
 export type MarketCapRatioPoint = [JsTimestamp, number];
 
@@ -430,6 +431,8 @@ const MarketCapRatiosWidget: FC<Props> = ({
           <LabelText className="flex min-h-[21px] items-center">
             flippening progress
           </LabelText>
+          <ICOTimeFrameIndicator
+          />
         </div>
         <div
           // flex-grow fixes bug where highcharts doesn't take full width.
