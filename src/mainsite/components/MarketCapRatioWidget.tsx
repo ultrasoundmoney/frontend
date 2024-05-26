@@ -106,9 +106,11 @@ const baseOptions: Highcharts.Options = {
       format: "{value}%",
     },
     endOnTick: false,
+    startOnTick: false,
     gridLineWidth: 0,
     type: "logarithmic",
     title: undefined,
+    min: 0.2,
   },
   tooltip: {
     backgroundColor: "transparent",
@@ -134,12 +136,13 @@ const makeBarrier = (barrier: number) => ({
   value: barrier,
   zIndex: 10,
   label: {
-    x: 30,
+    x: 15,
+    y: -15,
     useHTML: true,
     align: "right",
     verticalAlign: "middle",
     formatter: () => `
-        <div class="flex justify-start" title="flippening">
+        <div class="flex justify-start">
             <div>
                 <img
                 class="w-[30px] h-[30px] hover:animate-reverse-spin"
@@ -208,7 +211,6 @@ const MarketCapRatiosWidget: FC<Props> = ({
 
     return _merge({}, baseOptions, {
       yAxis: {
-        min,
         // Setting this to avoid change in y-axis scaling when the flippening date label comes in upon projectio visibility change
         max: 135,
         plotLines: projectionVisible ? [makeBarrier(100)] : undefined,
@@ -217,24 +219,27 @@ const MarketCapRatiosWidget: FC<Props> = ({
         max: projectionVisible
           ? flippeningTimestamp
           : lastMarketCapSeriesTimestamp,
-        plotLines: [
+        plotLines:
           flippeningTimestamp !== undefined
-            ? {
-                value: flippeningTimestamp,
-                color: COLORS.PLOT_LINE,
-                width: 0,
-                label: {
-                  rotation: 0,
-                  text: formatDate(new Date(flippeningTimestamp)),
-                  verticalAlign: "top",
-                  align: "right",
-                  x: -5,
-                  y: -1,
+            ? [
+                {
+                  value: flippeningTimestamp,
+                  color: COLORS.PLOT_LINE,
+                  width: 1,
+                  label: {
+                    rotation: 0,
+                    text: `Flippening<br><b>${formatDate(
+                      new Date(flippeningTimestamp),
+                    )}</b>`,
+                    verticalAlign: "bottom",
+                    align: "right",
+                    x: -3,
+                    y: -16,
+                  },
+                  zIndex: 10,
                 },
-                zIndex: 10,
-              }
+              ]
             : undefined,
-        ],
       },
       series: [
         {
@@ -353,7 +358,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
               `<tr>
                 <td>
                     <div class="tt-series">
-                    <div class="tt-series-name text-slate-300">marketcap ratio</div>
+                    <div class="tt-series-name text-slate-300">flippening</div>
                     </div>
                 </td>
                 <td class="text-white">${formatOneDecimal(p.y || 0)}%</td>
@@ -361,7 +366,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
               `<tr>
                 <td>
                     <div class="tt-series">
-                    <div class="tt-series-name text-slate-300">outperformance to date</div>
+                    <div class="tt-series-name text-slate-300">outperformance</div>
                     </div>
                 </td>
                 <td class="text-white">${formatOneDecimal(
@@ -371,7 +376,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
               `<tr>
                 <td>
                     <div class="tt-series">
-                    <div class="tt-series-name text-slate-300">remaining outperformance</div>
+                    <div class="tt-series-name text-slate-300">outperformance to go</div>
                     </div>
                 </td>
                 <td class="text-white">${formatOneDecimal(
