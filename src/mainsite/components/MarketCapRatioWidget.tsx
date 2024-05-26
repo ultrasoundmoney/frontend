@@ -194,6 +194,8 @@ const MarketCapRatiosWidget: FC<Props> = ({
   const flippeningTimestamp =
     flippeningDataPoint === undefined ? undefined : flippeningDataPoint[0];
 
+  const firstMarketCapRatio = marketCapRatiosSeries?.[0]?.[1];
+
   const lastMarketCapSeriesTimestamp =
     marketCapRatiosSeries?.[marketCapRatiosSeries.length - 1]?.[0];
 
@@ -341,11 +343,17 @@ const MarketCapRatiosWidget: FC<Props> = ({
           }</div>`;
 
           let p = points[0];
-          let rows =
-            p === undefined
-              ? []
-              : [
-                  `<tr>
+
+          let rows: string[] = [];
+          if (
+            p?.y != undefined &&
+            p?.y != null &&
+            firstMarketCapRatio !== undefined
+          ) {
+            let outPerformanceTodate = p.y / firstMarketCapRatio;
+            let remainingOutPerformance = 100 / p.y;
+            rows = [
+              `<tr>
                 <td>
                     <div class="tt-series">
                     <div class="tt-series-name text-slate-300">marketcap ratio</div>
@@ -353,33 +361,27 @@ const MarketCapRatiosWidget: FC<Props> = ({
                 </td>
                 <td class="text-white">${formatOneDecimal(p.y || 0)}%</td>
               </tr>`,
-                ];
-
-          if (!isProjected && firstPoint?.x !== undefined) {
-            const marketCaps = marketCapsMap[firstPoint.x as number];
-            const marketCapRows = [
               `<tr>
                 <td>
                     <div class="tt-series">
-                    <div class="tt-series-name text-slate-300">ETH marketcap</div>
+                    <div class="tt-series-name text-slate-300">outperformance to date</div>
                     </div>
                 </td>
                 <td class="text-white">${formatOneDecimal(
-                  (marketCaps?.ethMarketcap || 0) / 1e9,
-                )}B USD</td>
+                  outPerformanceTodate,
+                )}x</td>
               </tr>`,
               `<tr>
                 <td>
                     <div class="tt-series">
-                    <div class="tt-series-name text-slate-300">BTC marketcap</div>
+                    <div class="tt-series-name text-slate-300">remaining outperformance</div>
                     </div>
                 </td>
                 <td class="text-white">${formatOneDecimal(
-                  (marketCaps?.btcMarketcap || 0) / 1e9,
-                )}B USD</td>
+                  remainingOutPerformance,
+                )}x</td>
               </tr>`,
             ];
-            rows = rows.concat(marketCapRows);
           }
 
           const table = `<table><tbody>${rows.join("")}</tbody></table>`;
