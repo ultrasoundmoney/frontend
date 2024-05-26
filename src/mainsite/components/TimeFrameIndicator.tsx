@@ -5,12 +5,13 @@ import LabelText from "../../components/TextsNext/LabelText";
 import { LondonHardForkTooltip } from "../../components/TimeFrameControl";
 import { londonHardFork, mergeDateTime } from "../../dates";
 import { millisFromHours } from "../../duration";
+import { formatZeroDecimals } from "../../format";
 import type { TimeFrame } from "../time-frames";
 import { displayLimitedTimeFrameMap } from "../time-frames";
 import type { OnClick } from "../../components/TimeFrameControl";
 
 const getFormattedDays = (now: Date, fork: Date): string => {
-  const daysCount = differenceInDays(now, fork);
+  const daysCount = formatZeroDecimals(differenceInDays(now, fork));
   return `${daysCount}d`;
 };
 
