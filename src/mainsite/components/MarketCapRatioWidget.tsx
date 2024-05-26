@@ -295,7 +295,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
         },
         {
           id: "exponential-growth-series",
-          name: "projection",
+          name: "flippening wedge",
           color: WEDGE_COLOR,
           visible: projectionVisible,
           events: {
