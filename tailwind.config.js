@@ -53,6 +53,7 @@ module.exports = {
         "slow-pulse": "pulse 4s ease-in-out infinite",
         "flash-orange": "to-orange-400 0.8s",
         "flash-blue": "to-blue-400 0.8s",
+        'reverse-spin': 'reverse-spin 1s linear infinite'
       },
       keyframes: {
         "fade-in": {
@@ -61,6 +62,11 @@ module.exports = {
           },
           "100%": {
             opacity: 100,
+          },
+        },
+        'reverse-spin': {
+          from: {
+            transform: 'rotate(360deg)'
           },
         },
         "to-orange-400": {

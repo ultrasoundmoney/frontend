@@ -73,8 +73,8 @@ const baseOptions: Highcharts.Options = {
         this.visible === false
           ? "bg-slateus-400 opacity-60"
           : this.index === 0
-          ? "bg-slateus-600"
-          : "bg-[#DEE2F1]";
+          ? "bg-[#2476A9]"
+          : `bg-[${this.color}]`;
       return `
         <div class="flex flex-row gap-x-2 items-center z-50">
           <div class="w-2 h-2 ${color} rounded-full"></div>
@@ -132,20 +132,20 @@ const makeBarrier = (barrier: number, isProjectionVisible: boolean) => ({
   zIndex: 10,
   label: isProjectionVisible
     ? {
-        x: 50,
+        x: 30,
         useHTML: true,
         align: "right",
         verticalAlign: "middle",
         formatter: () => `
-      <div class="flex justify-start" title="flippening">
-          <div>
-            <img
-            class="w-[35px] h-[35px]"
-            src="/dolphin.svg"
-            />
+        <div class="flex justify-start" title="flippening">
+            <div>
+                <img
+                class="w-[30px] h-[30px] hover:animate-reverse-spin"
+                src="/dolphin.svg"
+                />
+            </div>
         </div>
-      </div>
-    `,
+        `,
       }
     : undefined,
 });
@@ -184,7 +184,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
   }, []);
 
   const [marketCapVisible, setMarketCapVisible] = useState(true);
-  const [projectionVisible, setProjectionVisible] = useState(false);
+  const [projectionVisible, setProjectionVisible] = useState(true);
 
   const barrier = 1;
   const flippeningDataPoint =
@@ -206,6 +206,8 @@ const MarketCapRatiosWidget: FC<Props> = ({
     return _merge({}, baseOptions, {
       yAxis: {
         min,
+        // Setting this to avoid change in y-axis scaling when the flippening date label comes in upon projectio visibility change
+        max: 135,
         plotLines: [makeBarrier(100, projectionVisible)],
       },
       xAxis: {
@@ -221,15 +223,10 @@ const MarketCapRatiosWidget: FC<Props> = ({
                 label: {
                   rotation: 0,
                   text: formatDate(new Date(flippeningTimestamp)),
-                  style: {
-                    color: colors.white,
-                    whiteSpace: "normal",
-                    fontSize: "13px",
-                    fontWeight: "bold",
-                  },
                   verticalAlign: "top",
                   align: "right",
                   x: -5,
+                    y: -1,
                 },
                 zIndex: 10,
               }
