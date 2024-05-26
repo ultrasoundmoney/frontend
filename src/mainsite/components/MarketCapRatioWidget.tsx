@@ -25,6 +25,8 @@ if (typeof window !== "undefined") {
   highchartsAnnotations(Highcharts);
 }
 
+const WEDGE_COLOR="#3B88C3";
+
 const baseOptions: Highcharts.Options = {
   accessibility: { enabled: false },
   chart: {
@@ -75,7 +77,7 @@ const baseOptions: Highcharts.Options = {
           ? "bg-slateus-400 opacity-60"
           : this.index === 0
           ? "bg-[#2476A9]"
-          : "bg-[#4bc0c0]";
+          : `bg-[#3B88C3]`;
       return `
         <div class="flex flex-row gap-x-2 items-center z-50">
           <div class="w-2 h-2 ${color} rounded-full"></div>
@@ -126,7 +128,7 @@ const baseOptions: Highcharts.Options = {
 
 const makeBarrier = (barrier: number, isProjectionVisible: boolean) => ({
   id: "barrier-plotline",
-  color: isProjectionVisible ? COLORS.SERIES[5] : COLORS.PLOT_LINE,
+  color: isProjectionVisible ? WEDGE_COLOR : COLORS.PLOT_LINE,
   dashStyle: isProjectionVisible ? "Solid" : "Dash",
   width: 2,
   value: barrier,
@@ -294,7 +296,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
         {
           id: "exponential-growth-series",
           name: "projection",
-          color: COLORS.SERIES[5],
+          color: WEDGE_COLOR,
           visible: projectionVisible,
           events: {
             legendItemClick: function () {
