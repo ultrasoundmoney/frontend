@@ -343,16 +343,15 @@ const MarketCapRatiosWidget: FC<Props> = ({
               : ""
           }</div>`;
 
-          let p = points[0];
+          const p = points[0];
 
           let rows: string[] = [];
           if (
-            p?.y != undefined &&
             p?.y != null &&
             firstMarketCapRatio !== undefined
           ) {
-            let outPerformanceTodate = p.y / firstMarketCapRatio;
-            let remainingOutPerformance = 100 / p.y;
+            const outPerformanceTodate = p.y / firstMarketCapRatio;
+            const remainingOutPerformance = 100 / p.y;
             rows = [
               `<tr>
                 <td>
@@ -431,8 +430,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
           <LabelText className="flex min-h-[21px] items-center">
             flippening progress
           </LabelText>
-          <ICOTimeFrameIndicator
-          />
+          <ICOTimeFrameIndicator />
         </div>
         <div
           // flex-grow fixes bug where highcharts doesn't take full width.
