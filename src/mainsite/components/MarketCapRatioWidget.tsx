@@ -25,7 +25,7 @@ if (typeof window !== "undefined") {
   highchartsAnnotations(Highcharts);
 }
 
-const WEDGE_COLOR="#3B88C3";
+const WEDGE_COLOR=COLORS.SERIES[5];
 
 const baseOptions: Highcharts.Options = {
   accessibility: { enabled: false },
@@ -77,7 +77,7 @@ const baseOptions: Highcharts.Options = {
           ? "bg-slateus-400 opacity-60"
           : this.index === 0
           ? "bg-[#2476A9]"
-          : `bg-[#3B88C3]`;
+          : "bg-[#4bc0c0]";
       return `
         <div class="flex flex-row gap-x-2 items-center z-50">
           <div class="w-2 h-2 ${color} rounded-full"></div>
