@@ -4,7 +4,7 @@ import HighchartsReact from "highcharts-react-official";
 import highchartsAnnotations from "highcharts/modules/annotations";
 import _merge from "lodash/merge";
 import type { FC, RefObject } from "react";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import colors from "../../colors";
 import LabelText from "../../components/TextsNext/LabelText";
 import WidgetErrorBoundary from "../../components/WidgetErrorBoundary";
@@ -65,10 +65,27 @@ const baseOptions: Highcharts.Options = {
   },
   title: undefined,
   legend: {
-    // Usinga custom legend for more control over responsiveness
     enabled: true,
-    itemStyle: {
-      color: colors.slateus200,
+    useHTML: true,
+    symbolWidth: 0,
+    labelFormatter: function () {
+      const color =
+        this.visible === false
+          ? "bg-slateus-400 opacity-60"
+          : this.index === 0
+          ? "bg-slateus-600"
+          : "bg-[#DEE2F1]";
+      return `
+        <div class="flex flex-row gap-x-2 items-center z-50">
+          <div class="w-2 h-2 ${color} rounded-full"></div>
+          <div class="
+            text-xs font-normal font-roboto text-slateus-200
+            ${this.visible ? "" : "opacity-60"}
+          ">
+            ${this.name}
+          </div>
+        </div>
+      `;
     },
   },
   xAxis: {
@@ -90,9 +107,6 @@ const baseOptions: Highcharts.Options = {
     type: "logarithmic",
     title: undefined,
   },
-  legend: {
-    enabled: false,
-  },
   tooltip: {
     backgroundColor: "transparent",
     borderWidth: 0,
@@ -109,18 +123,20 @@ const baseOptions: Highcharts.Options = {
   },
 };
 
-const makeBarrier = (barrier: number) => ({
+const makeBarrier = (barrier: number, isProjectionVisible: boolean) => ({
   id: "barrier-plotline",
-  color: COLORS.SERIES[5],
+  color: isProjectionVisible ? COLORS.SERIES[5] : COLORS.PLOT_LINE,
+  dashStyle: isProjectionVisible ? "Solid" : "Dash",
   width: 2,
   value: barrier,
   zIndex: 10,
-  label: {
-    x: 50,
-    useHTML: true,
-    align: "right",
-    verticalAlign: "middle",
-    formatter: () => `
+  label: isProjectionVisible
+    ? {
+        x: 50,
+        useHTML: true,
+        align: "right",
+        verticalAlign: "middle",
+        formatter: () => `
       <div class="flex justify-start" title="flippening">
           <div>
             <img
@@ -130,7 +146,8 @@ const makeBarrier = (barrier: number) => ({
         </div>
       </div>
     `,
-  },
+      }
+    : undefined,
 });
 
 type Props = {
@@ -166,6 +183,9 @@ const MarketCapRatiosWidget: FC<Props> = ({
     }
   }, []);
 
+  const [marketCapVisible, setMarketCapVisible] = useState(true);
+  const [projectionVisible, setProjectionVisible] = useState(false);
+
   const barrier = 1;
   const flippeningDataPoint =
     exponentialGrowthCurveSeries === undefined
@@ -174,20 +194,24 @@ const MarketCapRatiosWidget: FC<Props> = ({
   const flippeningTimestamp =
     flippeningDataPoint === undefined ? undefined : flippeningDataPoint[0];
 
+  const lastMarketCapSeriesTimestamp =
+    marketCapRatiosSeries?.[marketCapRatiosSeries.length - 1]?.[0];
+
   const options = useMemo((): Highcharts.Options => {
     const min = marketCapRatiosSeries?.reduce(
       (min, point) => (point[1] < min ? point[1] : min),
       100,
     );
 
-    console.log("min:", min);
     return _merge({}, baseOptions, {
       yAxis: {
         min,
-        plotLines: [makeBarrier(100)],
+        plotLines: [makeBarrier(100, projectionVisible)],
       },
       xAxis: {
-        max: flippeningTimestamp,
+        max: projectionVisible
+          ? flippeningTimestamp
+          : lastMarketCapSeriesTimestamp,
         plotLines: [
           flippeningTimestamp !== undefined
             ? {
@@ -218,6 +242,12 @@ const MarketCapRatiosWidget: FC<Props> = ({
           id: "market-cap-ratios-over-area",
           name: "marketcap ratio (ETH/BTC)",
           type: "line",
+          visible: marketCapVisible,
+          events: {
+            legendItemClick: function () {
+              setMarketCapVisible(!marketCapVisible);
+            },
+          },
           showInLegend: true,
           color: {
             linearGradient: {
@@ -265,6 +295,12 @@ const MarketCapRatiosWidget: FC<Props> = ({
           id: "exponential-growth-series",
           name: "projection",
           color: COLORS.SERIES[5],
+          visible: projectionVisible,
+          events: {
+            legendItemClick: function () {
+              setProjectionVisible(!projectionVisible);
+            },
+          },
           type: "line",
           fillOpacity: 0.25,
           showInLegend: true,
@@ -362,6 +398,8 @@ const MarketCapRatiosWidget: FC<Props> = ({
     marketCapRatiosSeries,
     maxExponentialGrowthCurve,
     exponentialGrowthCurveSeries,
+    projectionVisible,
+    marketCapVisible,
   ]);
 
   return (
