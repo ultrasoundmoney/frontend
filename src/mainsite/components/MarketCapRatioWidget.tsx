@@ -13,7 +13,7 @@ import type { JsTimestamp } from "../../time";
 import _first from "lodash/first";
 import { formatDate } from "../utils/metric-utils";
 import { formatOneDecimal } from "../../format";
-import styles from "./TwoYearProjection/TwoYearProjectionChart.module.scss";
+import styles from "./MarketCapRatioWidget.module.scss";
 import { COLORS } from "../utils/chart-defaults";
 import ICOTimeFrameIndicator from "./ICOTimeFrameIndicator";
 
@@ -25,7 +25,7 @@ if (typeof window !== "undefined") {
   highchartsAnnotations(Highcharts);
 }
 
-const WEDGE_COLOR=COLORS.SERIES[5];
+const WEDGE_COLOR = COLORS.SERIES[5];
 
 const baseOptions: Highcharts.Options = {
   accessibility: { enabled: false },
@@ -62,7 +62,7 @@ const baseOptions: Highcharts.Options = {
     },
     backgroundColor: "transparent",
     showAxes: false,
-    marginRight: 84,
+    marginRight: 15,
     marginLeft: 40,
     marginTop: 14,
   },
@@ -126,20 +126,19 @@ const baseOptions: Highcharts.Options = {
   },
 };
 
-const makeBarrier = (barrier: number, isProjectionVisible: boolean) => ({
+const makeBarrier = (barrier: number) => ({
   id: "barrier-plotline",
-  color: isProjectionVisible ? WEDGE_COLOR : COLORS.PLOT_LINE,
-  dashStyle: isProjectionVisible ? "Solid" : "Dash",
+  color: WEDGE_COLOR,
+  dashStyle: "Solid",
   width: 2,
   value: barrier,
   zIndex: 10,
-  label: isProjectionVisible
-    ? {
-        x: 30,
-        useHTML: true,
-        align: "right",
-        verticalAlign: "middle",
-        formatter: () => `
+  label: {
+    x: 30,
+    useHTML: true,
+    align: "right",
+    verticalAlign: "middle",
+    formatter: () => `
         <div class="flex justify-start" title="flippening">
             <div>
                 <img
@@ -149,8 +148,7 @@ const makeBarrier = (barrier: number, isProjectionVisible: boolean) => ({
             </div>
         </div>
         `,
-      }
-    : undefined,
+  },
 });
 
 type Props = {
@@ -213,7 +211,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
         min,
         // Setting this to avoid change in y-axis scaling when the flippening date label comes in upon projectio visibility change
         max: 135,
-        plotLines: [makeBarrier(100, projectionVisible)],
+        plotLines: projectionVisible ? [makeBarrier(100)] : undefined,
       },
       xAxis: {
         max: projectionVisible
@@ -348,10 +346,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
           const p = points[0];
 
           let rows: string[] = [];
-          if (
-            p?.y != null &&
-            firstMarketCapRatio !== undefined
-          ) {
+          if (p?.y != null && firstMarketCapRatio !== undefined) {
             const outPerformanceTodate = p.y / firstMarketCapRatio;
             const remainingOutPerformance = 100 / p.y;
             rows = [
@@ -451,8 +446,11 @@ const MarketCapRatiosWidget: FC<Props> = ({
               </LabelText>
             </div>
           ) : (
-            <div ref={containerRef} className={`${styles.supplyChart} w-full h-full`}>
-              <HighchartsReact highcharts={Highcharts} options={options}/>
+            <div
+              ref={containerRef}
+              className={`${styles.supplyChart} h-full w-full`}
+            >
+              <HighchartsReact highcharts={Highcharts} options={options} />
             </div>
           )}
         </div>
