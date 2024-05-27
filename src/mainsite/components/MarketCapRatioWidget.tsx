@@ -49,30 +49,6 @@ const baseOptions: Highcharts.Options = {
       fontSize: "12px",
       fontWeight: "300",
     },
-    zooming: {
-      type: "x",
-      resetButton: {
-        position: {
-          x: 0,
-          y: 10,
-        },
-        theme: {
-          fill: colors.slateus600,
-          style: {
-            opacity: 0.8,
-            fontSize: "12",
-            fontFamily: "Inter",
-            fontWeight: "300",
-            color: colors.white,
-            textTransform: "lowercase",
-            border: `1px solid ${colors.slateus400}`,
-          },
-          r: 4,
-          zIndex: 20,
-          states: { hover: { fill: "#343C56" } },
-        },
-      },
-    },
     backgroundColor: "transparent",
     showAxes: false,
     marginRight: 0,
