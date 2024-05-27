@@ -25,7 +25,7 @@ if (typeof window !== "undefined") {
   highchartsAnnotations(Highcharts);
 }
 
-const WEDGE_COLOR="#3B88C3";
+const WEDGE_COLOR = "#3B88C3";
 
 const baseOptions: Highcharts.Options = {
   accessibility: { enabled: false },
@@ -149,23 +149,6 @@ const makeBarrier = (barrier: number) => ({
   width: 2,
   value: barrier,
   zIndex: 10,
-  label: {
-    x: 15,
-    y: -15,
-    useHTML: true,
-    align: "right",
-    verticalAlign: "middle",
-    formatter: () => `
-        <div class="flex justify-start">
-            <div>
-                <img
-                class="w-[30px] h-[30px] hover:animate-reverse-spin"
-                src="/dolphin.svg"
-                />
-            </div>
-        </div>
-        `,
-  },
 });
 
 type Props = {
@@ -234,6 +217,29 @@ const MarketCapRatiosWidget: FC<Props> = ({
         plotLines:
           projectionVisible && flippeningTimestamp !== undefined
             ? [
+                {
+                  value: flippeningTimestamp,
+                  width: 1,
+                  label: {
+                    rotation: 0,
+                      useHTML: true,
+                    formatter: () => `
+                        <div class="flex justify-start">
+                            <div>
+                                <img
+                                class="w-[30px] h-[30px] hover:animate-reverse-spin"
+                                src="/dolphin.svg"
+                                />
+                            </div>
+                        </div>
+                    `,
+                    verticalAlign: "top",
+                    align: "right",
+                    x: -6,
+                    y: 40,
+                  },
+                  zIndex: 10,
+                },
                 {
                   value: flippeningTimestamp,
                   color: COLORS.PLOT_LINE,
