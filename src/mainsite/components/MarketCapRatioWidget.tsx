@@ -246,7 +246,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
                     verticalAlign: "bottom",
                     align: "right",
                     x: -6,
-                    y: -16,
+                    y: -20,
                   },
                   zIndex: 10,
                 },
