@@ -191,6 +191,15 @@ const MarketCapRatiosWidget: FC<Props> = ({
     exponentialGrowthCurveSeries,
   );
 
+  const lastMarketCapRatioTimestamp =
+    marketCapRatiosSeries?.[marketCapRatiosSeries?.length - 1]?.[0];
+  const futureExponentialGrowthSeries = exponentialGrowthCurveSeries?.filter(
+    (e) => e[0] > (lastMarketCapRatioTimestamp ?? 0),
+  );
+  const pastExponentialGrowthSeries = exponentialGrowthCurveSeries?.filter(
+    (e) => e[0] <= (lastMarketCapRatioTimestamp ?? 0),
+  );
+
   const options = useMemo((): Highcharts.Options => {
     return _merge({}, baseOptions, {
       yAxis: {
@@ -295,13 +304,13 @@ const MarketCapRatiosWidget: FC<Props> = ({
                 ],
           lineWidth: 2,
           states: {
-            hover: {
-              lineWidthPlus: 0,
+            inactive: {
+              enabled: false,
             },
           },
         },
         {
-          id: "exponential-growth-series",
+          id: "future-exponential-growth-series",
           name: "flippening wedge",
           color: WEDGE_COLOR,
           zIndex: -1,
@@ -315,11 +324,33 @@ const MarketCapRatiosWidget: FC<Props> = ({
           fillOpacity: 0.25,
           showInLegend: true,
           threshold: barrier,
-          data: exponentialGrowthCurveSeries,
+          data: futureExponentialGrowthSeries,
           lineWidth: 2,
           states: {
-            hover: {
-              lineWidthPlus: 0,
+            inactive: {
+              enabled: false,
+            },
+          },
+        },
+        {
+          id: "past-exponential-growth-series",
+          name: "flippening wedge",
+          color: WEDGE_COLOR,
+          zIndex: -1,
+          visible: projectionVisible,
+          marker: {
+            enabled: false,
+          },
+          type: "line",
+          fillOpacity: 0.25,
+          showInLegend: false,
+          enableMouseTracking: false,
+          threshold: barrier,
+          data: pastExponentialGrowthSeries,
+          lineWidth: 2,
+          states: {
+            inactive: {
+              enabled: false,
             },
           },
         },
@@ -413,7 +444,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
     <WidgetErrorBoundary title={"flippening"}>
       {/* We use the h-0 min-h-full trick to adopt the height of our sibling
       element. */}
-      <WidgetBackground className="relative flex h-full w-full flex-col pb-4 min-h-[698px]">
+      <WidgetBackground className="relative flex h-full min-h-[698px] w-full flex-col pb-0">
         <div className="pointer-events-none absolute top-0 right-0 bottom-0 left-0 rounded-lg">
           <div
             // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
@@ -463,7 +494,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
               ref={containerRef}
               className={`${styles.marketCapChart} h-full w-full`}
             >
-              <HighchartsReact highcharts={Highcharts} options={options}/>
+              <HighchartsReact highcharts={Highcharts} options={options} />
             </div>
           )}
         </div>
