@@ -42,6 +42,7 @@ const reduceToWeeklyData = (dailyData: MarketCapRatioPoint[] | undefined) => {
 const baseOptions: Highcharts.Options = {
   accessibility: { enabled: false },
   chart: {
+    height: 600,
     style: {
       color: colors.slateus400,
       fontFamily: "Roboto Mono",
@@ -436,7 +437,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
     <WidgetErrorBoundary title={"flippening"}>
       {/* We use the h-0 min-h-full trick to adopt the height of our sibling
       element. */}
-      <WidgetBackground className="relative flex h-full w-full flex-col">
+      <WidgetBackground className="relative flex h-full w-full flex-col pb-4 min-h-[698px]">
         <div className="pointer-events-none absolute top-0 right-0 bottom-0 left-0 rounded-lg">
           <div
             // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
@@ -486,7 +487,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
               ref={containerRef}
               className={`${styles.marketCapChart} h-full w-full`}
             >
-              <HighchartsReact highcharts={Highcharts} options={options} />
+              <HighchartsReact highcharts={Highcharts} options={options}/>
             </div>
           )}
         </div>
