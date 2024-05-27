@@ -61,6 +61,8 @@ const baseOptions: Highcharts.Options = {
     enabled: true,
     useHTML: true,
     symbolWidth: 0,
+    itemMarginBottom: 0,
+    padding: 0,
     labelFormatter: function () {
       const color =
         this.visible === false
@@ -145,7 +147,6 @@ const makeBarrier = (barrier: number) => ({
 });
 
 type Props = {
-  marketCapsMap: Record<number, { ethMarketcap: number; btcMarketcap: number }>;
   marketCapRatiosSeries: MarketCapRatioPoint[] | undefined;
   maxMarketCap: number | undefined;
   exponentialGrowthCurveSeries: MarketCapRatioPoint[] | undefined;
@@ -158,7 +159,6 @@ interface HighchartsRef {
 }
 
 const MarketCapRatiosWidget: FC<Props> = ({
-  marketCapsMap,
   marketCapRatiosSeries,
   maxMarketCap,
   exponentialGrowthCurveSeries,
@@ -448,7 +448,6 @@ const MarketCapRatiosWidget: FC<Props> = ({
     } as Highcharts.Options);
   }, [
     maxMarketCap,
-    marketCapsMap,
     marketCapRatiosSeries,
     maxExponentialGrowthCurve,
     exponentialGrowthCurveSeries,

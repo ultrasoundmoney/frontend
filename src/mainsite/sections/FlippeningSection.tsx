@@ -118,28 +118,12 @@ const FlippeningSection: FC = () => {
     return [series, expontentialGrowthCurve, maxMarketCap, maxExponentialCurve];
   }, [flippeningData]);
 
-  const marketCapSeries = flippeningData?.map(
-    ({ t, ethMarketcap, btcMarketcap }) => [
-      t * 1000,
-      { ethMarketcap, btcMarketcap },
-    ],
-  );
-  const marketCapsMap:
-    | Record<number, { ethMarketcap: number; btcMarketcap: number }>
-    | undefined =
-    marketCapSeries === undefined
-      ? undefined
-      : (Object.fromEntries(marketCapSeries) as Record<
-          number,
-          { ethMarketcap: number; btcMarketcap: number }
-        >);
   return (
     <Section link="flippening" subtitle="it's happening™" title="flippening">
       <div className="flex w-full flex-col gap-y-4 gap-x-4 lg:flex-row">
         <div className="w-full">
           <MarketCapRatioWidget
             marketCapRatiosSeries={marketCapRatiosSeries}
-            marketCapsMap={marketCapsMap ?? {}}
             maxMarketCap={maxMarketCap?.[1]}
             exponentialGrowthCurveSeries={exponentialGrowthCurveSeries}
             maxExponentialGrowthCurve={maxMarketCap?.[1]}
