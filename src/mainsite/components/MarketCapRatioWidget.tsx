@@ -225,9 +225,9 @@ const MarketCapRatiosWidget: FC<Props> = ({
                       useHTML: true,
                     formatter: () => `
                         <div class="flex justify-start">
-                            <div>
+                            <div class="relative w-[30px] h-[30px] overflow-visible">
                                 <img
-                                class="w-[30px] h-[30px] hover:animate-reverse-spin"
+                                class="w-[30px] h-[30px] hover:animate-dolphin-flip"
                                 src="/dolphin.svg"
                                 />
                             </div>

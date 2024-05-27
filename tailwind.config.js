@@ -53,7 +53,7 @@ module.exports = {
         "slow-pulse": "pulse 4s ease-in-out infinite",
         "flash-orange": "to-orange-400 0.8s",
         "flash-blue": "to-blue-400 0.8s",
-        'reverse-spin': 'reverse-spin 1s linear infinite'
+        "dolphin-flip": "dolphin-flip 1s ease-in-out infinite",
       },
       keyframes: {
         "fade-in": {
@@ -64,9 +64,15 @@ module.exports = {
             opacity: 100,
           },
         },
-        'reverse-spin': {
-          from: {
-            transform: 'rotate(360deg)'
+        "dolphin-flip": {
+          "0%": {
+            transform: "rotate(0deg)",
+          },
+          "50%": {
+            transform: "rotate(-30deg)",
+          },
+          "100%": {
+            transform: "rotate(0deg)",
           },
         },
         "to-orange-400": {
