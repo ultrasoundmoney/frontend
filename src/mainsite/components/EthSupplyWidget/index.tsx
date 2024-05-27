@@ -436,7 +436,6 @@ const optionsFromSupplySeriesCollection = (
         visible: posVisible,
         events: {
           legendItemClick: function () {
-            console.log("Legend itemClicked ETHSupply");
             onPosVisibilityChange((visible) => !visible);
           },
         },
