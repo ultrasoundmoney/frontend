@@ -10,9 +10,15 @@ import type { TimeFrame } from "../time-frames";
 import { displayLimitedTimeFrameMap } from "../time-frames";
 import type { OnClick } from "../../components/TimeFrameControl";
 
-const getFormattedDays = (now: Date, fork: Date): string => {
-  const daysCount = formatZeroDecimals(differenceInDays(now, fork));
-  return `${daysCount}d`;
+export const getFormattedDays = (now: Date, fork: Date): string => {
+  const daysCount = differenceInDays(now, fork);
+  if (daysCount <= 365) {
+    return `${formatZeroDecimals(daysCount)}d`;
+  } else {
+    const years = Math.floor(daysCount / 365);
+    const days = daysCount % 365;
+    return `${formatZeroDecimals(years)}y${formatZeroDecimals(days)}d`;
+  }
 };
 
 type Props = {
@@ -22,7 +28,8 @@ type Props = {
   timeFrame: TimeFrame;
 };
 
-const TimeFrameIndicator: FC<Props> = ({ className = "",
+const TimeFrameIndicator: FC<Props> = ({
+  className = "",
   hideTimeFrameLabel,
   onClickTimeFrame,
   timeFrame,
@@ -65,7 +72,7 @@ const TimeFrameIndicator: FC<Props> = ({ className = "",
             ? "since merge"
             : "time frame"}
         </LabelText>
-        <p className="text-xs text-white font-roboto">
+        <p className="font-roboto text-xs text-white">
           {timeFrame === "since_burn"
             ? daysSinceLondon
             : timeFrame === "since_merge"

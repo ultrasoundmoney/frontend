@@ -1,18 +1,9 @@
-import { differenceInDays } from "date-fns";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 import LabelText from "../../components/TextsNext/LabelText";
 import { ico } from "../../dates";
 import { millisFromHours } from "../../duration";
-import type { TimeFrame } from "../time-frames";
-import { displayLimitedTimeFrameMap } from "../time-frames";
-import type { OnClick } from "../../components/TimeFrameControl";
-import { formatZeroDecimals} from "../../format";
-
-const getFormattedDays = (now: Date, fork: Date): string => {
-  const daysCount = formatZeroDecimals(differenceInDays(now, fork));
-  return `${daysCount}d`;
-};
+import { getFormattedDays } from "./TimeFrameIndicator";
 
 type Props = {
   className?: string;
