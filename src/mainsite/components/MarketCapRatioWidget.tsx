@@ -148,7 +148,7 @@ const makeBarrier = (barrier: number) => ({
   dashStyle: "Solid",
   width: 2,
   value: barrier,
-  zIndex: 10,
+  zIndex: -1,
 });
 
 type Props = {
@@ -222,7 +222,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
                   width: 1,
                   label: {
                     rotation: 0,
-                      useHTML: true,
+                    useHTML: true,
                     formatter: () => `
                         <div class="flex justify-start">
                             <div class="relative w-[30px] h-[30px] overflow-visible">
@@ -318,6 +318,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
           id: "exponential-growth-series",
           name: "flippening wedge",
           color: WEDGE_COLOR,
+          zIndex: -1,
           visible: projectionVisible,
           events: {
             legendItemClick: function () {
@@ -379,7 +380,9 @@ const MarketCapRatiosWidget: FC<Props> = ({
                     <div class="tt-series-name text-slate-300">flippening</div>
                     </div>
                 </td>
-                <td class="text-white text-right">${formatOneDecimal(p.y || 0)}%</td>
+                <td class="text-white text-right">${formatOneDecimal(
+                  p.y || 0,
+                )}%</td>
               </tr>`,
               `<tr w-full>
                 <td>
@@ -404,7 +407,9 @@ const MarketCapRatiosWidget: FC<Props> = ({
             ];
           }
 
-          const table = `<table class="tooltip-table"><tbody>${rows.join("")}</tbody></table>`;
+          const table = `<table class="tooltip-table"><tbody>${rows.join(
+            "",
+          )}</tbody></table>`;
           return `
                 <div class="relative z-10 w-60 rounded-lg border-2 font-roboto bg-slateus-700 border-slateus-400">
                     <div class="tt-root w-full">${header}${table}</div>
