@@ -53,7 +53,7 @@ module.exports = {
         "slow-pulse": "pulse 4s ease-in-out infinite",
         "flash-orange": "to-orange-400 0.8s",
         "flash-blue": "to-blue-400 0.8s",
-        "dolphin-flip": "dolphin-flip 1s ease-in-out infinite",
+        "dolphin-flip": "dolphin-flip 1s ease-in-out",
       },
       keyframes: {
         "fade-in": {
