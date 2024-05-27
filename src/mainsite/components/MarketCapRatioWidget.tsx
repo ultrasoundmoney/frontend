@@ -238,7 +238,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
                     verticalAlign: "bottom",
                     align: "right",
                     x: 0,
-                    y: -50,
+                    y: -64,
                   },
                   zIndex: 10,
                 },
@@ -249,17 +249,18 @@ const MarketCapRatiosWidget: FC<Props> = ({
                   label: {
                     rotation: 0,
                     formatter: () =>
-                      `flippening in ${getFormattedDays(
+                      `flippening?<br><b>${formatDate(
+                        new Date(flippeningTimestamp),
+                      )}</b><br>
+                      <b>${getFormattedDays(
                         new Date(flippeningTimestamp),
                         new Date(),
                         false,
-                      )}?<br><b>${formatDate(
-                        new Date(flippeningTimestamp),
-                      )}</b>`,
+                      )} away</b>`,
                     verticalAlign: "bottom",
                     align: "right",
                     x: -6,
-                    y: -20,
+                    y: -34,
                   },
                   zIndex: 10,
                 },

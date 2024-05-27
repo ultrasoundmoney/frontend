@@ -17,7 +17,7 @@ export const getFormattedDays = (now: Date, fork: Date, bypassYears = false): st
   } else {
     const years = Math.floor(daysCount / 365);
     const days = daysCount % 365;
-    return `${formatZeroDecimals(years)}y${formatZeroDecimals(days)}d`;
+    return `${formatZeroDecimals(years)}y ${formatZeroDecimals(days)}d`;
   }
 };
 
