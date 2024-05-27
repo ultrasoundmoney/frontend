@@ -215,12 +215,12 @@ const Dashboard: FC = () => {
             </video>
           )}
           <MainTitle onClick={handleToggleBatLoop}>ultra sound money</MainTitle>
-          <FlippeningSection/>
           <SupplyDashboard
             timeFrame={timeFrame}
             onSetTimeFrame={handleSetTimeFrame}
             onClickTimeFrame={handleClickTimeFrame}
           />
+          <FlippeningSection/>
           <GasSection
             timeFrame={timeFrame}
             onClickTimeFrame={handleClickTimeFrame}
