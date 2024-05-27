@@ -81,6 +81,7 @@ const baseOptions: Highcharts.Options = {
     },
   },
   xAxis: {
+    showEmpty: true,
     type: "datetime",
     lineWidth: 0,
     minPadding: 0,
@@ -185,6 +186,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
     flippeningDataPoint === undefined ? undefined : flippeningDataPoint[0];
 
   const firstMarketCapRatio = marketCapRatiosSeries?.[0]?.[1];
+  const firstMarketCapTimestamp = marketCapRatiosSeries?.[0]?.[0];
 
   marketCapRatiosSeries = reduceToWeeklyData(marketCapRatiosSeries);
   exponentialGrowthCurveSeries = reduceToWeeklyData(
@@ -205,9 +207,11 @@ const MarketCapRatiosWidget: FC<Props> = ({
       yAxis: {
         // Setting this to avoid change in y-axis scaling when the flippening date label comes in upon projectio visibility change
         max: 100,
+        min: 0.3,
         plotLines: projectionVisible ? [makeBarrier(100)] : undefined,
       },
       xAxis: {
+        min: firstMarketCapTimestamp,
         max: flippeningTimestamp,
         plotLines:
           projectionVisible && flippeningTimestamp !== undefined
