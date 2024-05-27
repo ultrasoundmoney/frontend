@@ -111,7 +111,7 @@ const FlippeningSection: FC = () => {
     <Section
       link="flippening"
       subtitle="it's happening™"
-      title="flippening progress"
+      title="flippening"
     >
       <div className="flex w-full flex-col gap-y-4 gap-x-4 lg:flex-row">
         <div className="w-full">

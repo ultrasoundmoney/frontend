@@ -242,12 +242,12 @@ const MarketCapRatiosWidget: FC<Props> = ({
                   width: 1,
                   label: {
                     rotation: 0,
-                    text: `Flippening<br><b>${formatDate(
+                    text: `flippening?<br><b>${formatDate(
                       new Date(flippeningTimestamp),
                     )}</b>`,
                     verticalAlign: "bottom",
                     align: "right",
-                    x: -3,
+                    x: -6,
                     y: -16,
                   },
                   zIndex: 10,
@@ -390,7 +390,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
               `<tr>
                 <td>
                     <div class="tt-series">
-                    <div class="tt-series-name text-slate-300">outperformance to go</div>
+                    <div class="tt-series-name text-slate-300">outperformance left</div>
                     </div>
                 </td>
                 <td class="text-white">${formatOneDecimal(
@@ -419,7 +419,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
   ]);
 
   return (
-    <WidgetErrorBoundary title={"flippening progress"}>
+    <WidgetErrorBoundary title={"flippening"}>
       {/* We use the h-0 min-h-full trick to adopt the height of our sibling
       element. */}
       <WidgetBackground className="relative flex h-full w-full flex-col">
@@ -447,7 +447,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
         </div>
         <div className="flex items-baseline justify-between">
           <LabelText className="flex min-h-[21px] items-center">
-            flippening progress
+            flippening
           </LabelText>
           <ICOTimeFrameIndicator />
         </div>
