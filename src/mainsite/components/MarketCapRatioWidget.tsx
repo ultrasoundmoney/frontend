@@ -109,6 +109,8 @@ const baseOptions: Highcharts.Options = {
         fontWeight: "300",
       },
     },
+    // In 1, 10, 100 in log10
+    tickPositions: [0, 1, 2],
     endOnTick: false,
     startOnTick: false,
     gridLineWidth: 0,
