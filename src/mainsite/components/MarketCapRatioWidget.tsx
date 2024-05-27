@@ -27,6 +27,18 @@ if (typeof window !== "undefined") {
 
 const WEDGE_COLOR = "#3B88C3";
 
+const reduceToWeeklyData = (dailyData: MarketCapRatioPoint[] | undefined) => {
+  if (dailyData === undefined) {
+    return undefined;
+  }
+  const WEEKDAY = 1;
+  const dataLength = dailyData.length;
+  const weeklyProjections = dailyData.filter(
+    (e, i) => i === dataLength - 1 || new Date(e[0]).getDay() === WEEKDAY,
+  );
+  return weeklyProjections;
+};
+
 const baseOptions: Highcharts.Options = {
   accessibility: { enabled: false },
   chart: {
@@ -197,15 +209,12 @@ const MarketCapRatiosWidget: FC<Props> = ({
 
   const firstMarketCapRatio = marketCapRatiosSeries?.[0]?.[1];
 
-  const lastMarketCapSeriesTimestamp =
-    marketCapRatiosSeries?.[marketCapRatiosSeries.length - 1]?.[0];
+  marketCapRatiosSeries = reduceToWeeklyData(marketCapRatiosSeries);
+  exponentialGrowthCurveSeries = reduceToWeeklyData(
+    exponentialGrowthCurveSeries,
+  );
 
   const options = useMemo((): Highcharts.Options => {
-    const min = marketCapRatiosSeries?.reduce(
-      (min, point) => (point[1] < min ? point[1] : min),
-      100,
-    );
-
     return _merge({}, baseOptions, {
       yAxis: {
         // Setting this to avoid change in y-axis scaling when the flippening date label comes in upon projectio visibility change
@@ -346,7 +355,6 @@ const MarketCapRatiosWidget: FC<Props> = ({
         xDateFormat: "%Y-%m-%d",
         useHTML: true,
         formatter: function () {
-
           const point = this.point;
 
           if (point === undefined) {
