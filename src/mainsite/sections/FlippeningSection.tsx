@@ -5,6 +5,7 @@ import type { FC } from "react";
 import { useMemo } from "react";
 import type { FlippeningDataPoint } from "../api/flippening-data";
 import { useFlippeningData } from "../api/flippening-data";
+import { useMarketCaps } from "../api/market-caps";
 import type { MarketCapRatioPoint } from "../components/MarketCapRatioWidget";
 import Section from "../../components/Section";
 
@@ -48,15 +49,31 @@ function generateExponentialGrowthData(
 }
 
 const pointsFromMarketCapRatiosOverTime = (
-  baseFeesD1: FlippeningDataPoint[],
-): MarketCapRatioPoint[] =>
-  baseFeesD1.map(
+  marketCapRatios: FlippeningDataPoint[],
+  currentRatio: number,
+): MarketCapRatioPoint[] => {
+  const ratioSeries = marketCapRatios.map(
     ({ marketcapRatio, t }) =>
       [t * 1000, marketcapRatio * 100] as MarketCapRatioPoint,
   );
+  const now = new Date();
+  const utcYear = now.getUTCFullYear();
+  const utcMonth = now.getUTCMonth();
+  const utcDate = now.getUTCDate();
+  const todayUTC = Date.UTC(utcYear, utcMonth, utcDate);
+
+  const lastDatapoint = ratioSeries?.[ratioSeries.length - 1]?.[0];
+  if (lastDatapoint !== undefined && lastDatapoint >= todayUTC) {
+    ratioSeries.pop();
+  }
+  ratioSeries.push([todayUTC, currentRatio * 100]);
+
+  return ratioSeries;
+};
 
 const FlippeningSection: FC = () => {
   const flippeningData = useFlippeningData();
+  const marketCaps = useMarketCaps();
 
   const [
     marketCapRatiosSeries,
@@ -68,7 +85,14 @@ const FlippeningSection: FC = () => {
       return [undefined, undefined];
     }
 
-    const series = pointsFromMarketCapRatiosOverTime(flippeningData);
+    const currentRatio =
+      marketCaps === undefined
+        ? undefined
+        : marketCaps.ethMarketCap / marketCaps.btcMarketCap;
+    const series = pointsFromMarketCapRatiosOverTime(
+      flippeningData,
+      currentRatio,
+    );
     const maxMarketCap = _maxBy(series, (point) => point[1]);
 
     let expontentialGrowthCurve: MarketCapRatioPoint[] = [];
@@ -108,11 +132,7 @@ const FlippeningSection: FC = () => {
           { ethMarketcap: number; btcMarketcap: number }
         >);
   return (
-    <Section
-      link="flippening"
-      subtitle="it's happening™"
-      title="flippening"
-    >
+    <Section link="flippening" subtitle="it's happening™" title="flippening">
       <div className="flex w-full flex-col gap-y-4 gap-x-4 lg:flex-row">
         <div className="w-full">
           <MarketCapRatioWidget
