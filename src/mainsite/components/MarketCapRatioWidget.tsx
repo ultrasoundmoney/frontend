@@ -209,7 +209,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
     return _merge({}, baseOptions, {
       yAxis: {
         // Setting this to avoid change in y-axis scaling when the flippening date label comes in upon projectio visibility change
-        max: 135,
+        max: 100,
         plotLines: projectionVisible ? [makeBarrier(100)] : undefined,
       },
       xAxis: {
