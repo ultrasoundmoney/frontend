@@ -62,7 +62,7 @@ const baseOptions: Highcharts.Options = {
     },
     backgroundColor: "transparent",
     showAxes: false,
-    marginRight: 15,
+    marginRight: 0,
     marginLeft: 40,
     marginTop: 14,
   },
@@ -233,10 +233,10 @@ const MarketCapRatiosWidget: FC<Props> = ({
                             </div>
                         </div>
                     `,
-                    verticalAlign: "top",
+                    verticalAlign: "bottom",
                     align: "right",
                     x: -6,
-                    y: 40,
+                    y: -50,
                   },
                   zIndex: 10,
                 },
