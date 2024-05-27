@@ -98,12 +98,26 @@ const baseOptions: Highcharts.Options = {
     maxPadding: 0.03,
     tickInterval: 365.25 * 24 * 3600 * 1000, // always use 1 year intervals
     tickLength: 0,
+    labels: {
+      style: {
+        color: colors.slateus400,
+        fontFamily: "Roboto Mono",
+        fontSize: "12px",
+        fontWeight: "300",
+      },
+    },
   },
   yAxis: {
     id: "market-cap-ratios",
     labels: {
       x: -5,
       format: "{value}%",
+      style: {
+        color: colors.slateus400,
+        fontFamily: "Roboto Mono",
+        fontSize: "12px",
+        fontWeight: "300",
+      },
     },
     endOnTick: false,
     startOnTick: false,
