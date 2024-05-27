@@ -124,7 +124,7 @@ const baseOptions: Highcharts.Options = {
     gridLineWidth: 0,
     type: "logarithmic",
     title: undefined,
-    min: 0.2,
+    min: 0.3,
   },
   tooltip: {
     backgroundColor: "transparent",
