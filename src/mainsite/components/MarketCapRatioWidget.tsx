@@ -230,11 +230,9 @@ const MarketCapRatiosWidget: FC<Props> = ({
         plotLines: projectionVisible ? [makeBarrier(100)] : undefined,
       },
       xAxis: {
-        max: projectionVisible
-          ? flippeningTimestamp
-          : lastMarketCapSeriesTimestamp,
+        max: flippeningTimestamp,
         plotLines:
-          flippeningTimestamp !== undefined
+          projectionVisible && flippeningTimestamp !== undefined
             ? [
                 {
                   value: flippeningTimestamp,
