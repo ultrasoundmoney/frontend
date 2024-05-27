@@ -50,7 +50,7 @@ function generateExponentialGrowthData(
 
 const pointsFromMarketCapRatiosOverTime = (
   marketCapRatios: FlippeningDataPoint[],
-  currentRatio: number,
+  currentRatio: number | undefined,
 ): MarketCapRatioPoint[] => {
   const ratioSeries = marketCapRatios.map(
     ({ marketcapRatio, t }) =>
@@ -66,7 +66,9 @@ const pointsFromMarketCapRatiosOverTime = (
   if (lastDatapoint !== undefined && lastDatapoint >= todayUTC) {
     ratioSeries.pop();
   }
-  ratioSeries.push([todayUTC, currentRatio * 100]);
+  if (currentRatio !== undefined) {
+    ratioSeries.push([todayUTC, currentRatio * 100]);
+  }
 
   return ratioSeries;
 };

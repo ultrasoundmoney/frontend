@@ -9,6 +9,7 @@ import colors from "../../colors";
 import LabelText from "../../components/TextsNext/LabelText";
 import WidgetErrorBoundary from "../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../components/WidgetSubcomponents";
+import { getFormattedDays } from "./TimeFrameIndicator";
 import type { JsTimestamp } from "../../time";
 import _first from "lodash/first";
 import { formatDate } from "../utils/metric-utils";
@@ -247,9 +248,14 @@ const MarketCapRatiosWidget: FC<Props> = ({
                   width: 1,
                   label: {
                     rotation: 0,
-                    text: `flippening?<br><b>${formatDate(
-                      new Date(flippeningTimestamp),
-                    )}</b>`,
+                    formatter: () =>
+                      `flippening in ${getFormattedDays(
+                        new Date(flippeningTimestamp),
+                        new Date(),
+                        false,
+                      )}?<br><b>${formatDate(
+                        new Date(flippeningTimestamp),
+                      )}</b>`,
                     verticalAlign: "bottom",
                     align: "right",
                     x: -6,

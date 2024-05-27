@@ -10,9 +10,9 @@ import type { TimeFrame } from "../time-frames";
 import { displayLimitedTimeFrameMap } from "../time-frames";
 import type { OnClick } from "../../components/TimeFrameControl";
 
-export const getFormattedDays = (now: Date, fork: Date): string => {
+export const getFormattedDays = (now: Date, fork: Date, bypassYears = false): string => {
   const daysCount = differenceInDays(now, fork);
-  if (daysCount <= 365) {
+  if (daysCount <= 365 || bypassYears) {
     return `${formatZeroDecimals(daysCount)}d`;
   } else {
     const years = Math.floor(daysCount / 365);
