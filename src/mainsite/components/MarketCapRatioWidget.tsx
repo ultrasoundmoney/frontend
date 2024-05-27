@@ -333,6 +333,9 @@ const MarketCapRatiosWidget: FC<Props> = ({
               setProjectionVisible(!projectionVisible);
             },
           },
+          marker: {
+            symbol: "circle",
+          },
           type: "line",
           fillOpacity: 0.25,
           showInLegend: true,
