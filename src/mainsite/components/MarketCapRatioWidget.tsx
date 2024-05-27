@@ -339,22 +339,21 @@ const MarketCapRatiosWidget: FC<Props> = ({
         },
       ],
       tooltip: {
-        shared: true,
+        shared: false,
         backgroundColor: "transparent",
         padding: 0,
         valueDecimals: 0,
         xDateFormat: "%Y-%m-%d",
         useHTML: true,
         formatter: function () {
-          const points = (this.points || []).slice(0);
 
-          const firstPoint = _first(points);
+          const point = this.point;
 
-          if (firstPoint === undefined) {
+          if (point === undefined) {
             return "";
           }
 
-          const isProjected = firstPoint.series.userOptions.id?.includes(
+          const isProjected = point.series.userOptions.id?.includes(
             "exponential-growth-series",
           );
 
@@ -367,12 +366,10 @@ const MarketCapRatiosWidget: FC<Props> = ({
               : ""
           }</div>`;
 
-          const p = points[0];
-
           let rows: string[] = [];
-          if (p?.y != null && firstMarketCapRatio !== undefined) {
-            const outPerformanceTodate = p.y / firstMarketCapRatio;
-            const remainingOutPerformance = 100 / p.y;
+          if (point?.y != null && firstMarketCapRatio !== undefined) {
+            const outPerformanceTodate = point.y / firstMarketCapRatio;
+            const remainingOutPerformance = 100 / point.y;
             rows = [
               `<tr>
                 <td>
@@ -381,7 +378,7 @@ const MarketCapRatiosWidget: FC<Props> = ({
                     </div>
                 </td>
                 <td class="text-white text-right">${formatOneDecimal(
-                  p.y || 0,
+                  point.y || 0,
                 )}%</td>
               </tr>`,
               `<tr w-full>
