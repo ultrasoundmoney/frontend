@@ -5,13 +5,20 @@ import LabelText from "../../components/TextsNext/LabelText";
 import { LondonHardForkTooltip } from "../../components/TimeFrameControl";
 import { londonHardFork, mergeDateTime } from "../../dates";
 import { millisFromHours } from "../../duration";
+import { formatZeroDecimals } from "../../format";
 import type { TimeFrame } from "../time-frames";
 import { displayLimitedTimeFrameMap } from "../time-frames";
 import type { OnClick } from "../../components/TimeFrameControl";
 
-const getFormattedDays = (now: Date, fork: Date): string => {
+export const getFormattedDays = (now: Date, fork: Date, bypassYears = false): string => {
   const daysCount = differenceInDays(now, fork);
-  return `${daysCount}d`;
+  if (daysCount <= 365 || bypassYears) {
+    return `${formatZeroDecimals(daysCount)}d`;
+  } else {
+    const years = Math.floor(daysCount / 365);
+    const days = daysCount % 365;
+    return `${formatZeroDecimals(years)}y ${formatZeroDecimals(days)}d`;
+  }
 };
 
 type Props = {
@@ -21,7 +28,8 @@ type Props = {
   timeFrame: TimeFrame;
 };
 
-const TimeFrameIndicator: FC<Props> = ({ className = "",
+const TimeFrameIndicator: FC<Props> = ({
+  className = "",
   hideTimeFrameLabel,
   onClickTimeFrame,
   timeFrame,
@@ -64,7 +72,7 @@ const TimeFrameIndicator: FC<Props> = ({ className = "",
             ? "since merge"
             : "time frame"}
         </LabelText>
-        <p className="text-xs text-white font-roboto">
+        <p className="font-roboto text-xs text-white">
           {timeFrame === "since_burn"
             ? daysSinceLondon
             : timeFrame === "since_merge"

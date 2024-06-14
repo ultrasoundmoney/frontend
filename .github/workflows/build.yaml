@@ -1,11 +1,7 @@
 name: build
 
 on:
-  push:
-    tags:
-      - "stag-*"
-    branches:
-      - "main"
+  push
 
 jobs:
   build:

@@ -579,6 +579,14 @@ const SupplyChart: FC<Props> = ({
         minPadding: 0,
         maxPadding: 0,
         tickInterval: 365.25 * 24 * 3600 * 1000, // always use 1 year intervals
+        labels: {
+          style: {
+            color: colors.slateus400,
+            fontFamily: "Roboto Mono",
+            fontSize: "12px",
+            fontWeight: "300",
+          },
+        },
         plotLines: markers.map(([date, title, subtitle], i) => ({
           value: DateFns.getTime(date!),
           color: COLORS.PLOT_LINE,
@@ -603,6 +611,14 @@ const SupplyChart: FC<Props> = ({
         min: 0,
         max: 160e6,
         tickInterval: 20e6,
+        labels: {
+          style: {
+            color: colors.slateus400,
+            fontFamily: "Roboto Mono",
+            fontSize: "12px",
+            fontWeight: "300",
+          },
+        },
         title: {
           text: undefined,
         },
@@ -674,7 +690,11 @@ const SupplyChart: FC<Props> = ({
           );
 
           const table = `<table><tbody>${rows.join("")}</tbody></table>`;
-          return `<div class="tt-root">${header}${table}</div>`;
+          return `
+            <div class="relative z-10 w-60 rounded-lg border-2 font-roboto bg-slateus-700 border-slateus-400">
+                <div class="tt-root">${header}${table}</div>
+            </div>
+         `;
         },
       },
     };

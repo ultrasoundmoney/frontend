@@ -53,6 +53,7 @@ module.exports = {
         "slow-pulse": "pulse 4s ease-in-out infinite",
         "flash-orange": "to-orange-400 0.8s",
         "flash-blue": "to-blue-400 0.8s",
+        "dolphin-flip": "dolphin-flip 1s ease-in-out",
       },
       keyframes: {
         "fade-in": {
@@ -61,6 +62,17 @@ module.exports = {
           },
           "100%": {
             opacity: 100,
+          },
+        },
+        "dolphin-flip": {
+          "0%": {
+            transform: "rotate(0deg)",
+          },
+          "50%": {
+            transform: "rotate(-30deg)",
+          },
+          "100%": {
+            transform: "rotate(0deg)",
           },
         },
         "to-orange-400": {
