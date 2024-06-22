@@ -17,6 +17,7 @@ import type { TimeFrame } from "../time-frames";
 import type { OnClick } from "../../components/TimeFrameControl";
 
 const GWEI_FORMATTING_THRESHOLD = 100_000_000; // Threshold in wei above which to convert to / format as Gwei
+const Y_AXIS_MIN  = 1e-9 // Minimum value on y-axis in gwei (needed because 0 cannot be displayed in log scale)
 
 export type BaseFeePoint = [JsTimestamp, WeiNumber];
 
@@ -67,6 +68,7 @@ const baseOptions: Highcharts.Options = {
     tickWidth: 0,
   },
   yAxis: {
+    type: "logarithmic",
     endOnTick: false,
     gridLineWidth: 0,
     labels: {
@@ -178,17 +180,17 @@ const BlobFeesWidget: FC<Props> = ({
       },
       yAxis: {
         id: "base-fees",
-        min: 0,
+        min: Y_AXIS_MIN,
       },
       series: [
         {
           animation: false,
           id: "base-fees-over-area",
           type: "areaspline",
-          threshold: 0,
+          threshold: 1e-11,
           data: baseFeesSeries
             ?.filter(([_, value]) => value > 0)
-            .map(([timestamp, value]) => [timestamp, value / 1e9]),
+            .map(([timestamp, value]) => [timestamp, Math.max(1e-11, value / 1e9)]),
           color: colors.orange400,
           negativeColor: colors.orange400,
           lineWidth: 0,
