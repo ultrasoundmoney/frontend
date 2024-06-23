@@ -4,6 +4,15 @@ This is the frontend for [ultrasound.money](https://ultrasound.money/)—contrib
 
 ## Usage
 
-* clone
-* `yarn install`
-* `yarn dev`
+* Clone repo
+```
+git clone https://github.com/ultrasoundmoney/frontend.git
+```
+* Install dependencies
+```
+yarn install
+```
+* Build
+```
+yarn dev
+````
