@@ -17,7 +17,7 @@ import type { TimeFrame } from "../time-frames";
 import type { OnClick } from "../../components/TimeFrameControl";
 
 const GWEI_FORMATTING_THRESHOLD = 100_000_000; // Threshold in wei above which to convert to / format as Gwei
-const Y_AXIS_MIN  = 1e-9 // Minimum value on y-axis in gwei (needed because 0 cannot be displayed in log scale)
+const Y_AXIS_MIN = 1e-9; // Minimum value on y-axis in gwei (needed because 0 cannot be displayed in log scale)
 
 export type BaseFeePoint = [JsTimestamp, WeiNumber];
 
@@ -56,8 +56,8 @@ const baseOptions: Highcharts.Options = {
     },
     backgroundColor: "transparent",
     showAxes: false,
-    marginRight: 84,
-    marginLeft: 40,
+    marginRight: 0,
+    marginLeft: 50,
     marginTop: 14,
   },
   title: undefined,
@@ -77,6 +77,10 @@ const baseOptions: Highcharts.Options = {
         fontFamily: "Roboto Mono",
         fontSize: "10px",
         fontWeight: "300",
+      },
+      formatter: function () {
+          //@ts-ignore
+          return this.value < 1e-5 ? this.value.toExponential() : this.value;
       },
     },
     title: undefined,
@@ -190,7 +194,10 @@ const BlobFeesWidget: FC<Props> = ({
           threshold: 1e-11,
           data: baseFeesSeries
             ?.filter(([_, value]) => value > 0)
-            .map(([timestamp, value]) => [timestamp, Math.max(1e-11, value / 1e9)]),
+            .map(([timestamp, value]) => [
+              timestamp,
+              Math.max(1e-11, value / 1e9),
+            ]),
           color: colors.orange400,
           negativeColor: colors.orange400,
           lineWidth: 0,
@@ -235,7 +242,7 @@ const BlobFeesWidget: FC<Props> = ({
     <WidgetErrorBoundary title="blob fees">
       {/* We use the h-0 min-h-full trick to adopt the height of our sibling
       element. */}
-      <WidgetBackground className="relative flex h-full min-h-[398px] w-full flex-col lg:h-0">
+      <WidgetBackground className="relative flex h-full min-h-[400px] w-full flex-col lg:h-0">
         <div className="pointer-events-none absolute top-0 right-0 bottom-0 left-0 overflow-hidden rounded-lg">
           <div
             // will-change-transform is critical for mobile performance of rendering the chart overlayed on this element.
