@@ -34,10 +34,13 @@ const PriceModelTooltip: FC<{
     <BodyTextV3 className="font-semibold">price model</BodyTextV3>
     <WidgetTitle>formula</WidgetTitle>
     <BodyTextV3 className="whitespace-pre-wrap md:leading-normal">
-      profits = revenue (burn) - expenses (issuance)
+      profits* = revenue (burn) - expenses (issuance)
     </BodyTextV3>
     <BodyTextV3 className="whitespace-pre-wrap md:leading-normal">
       price = profits * P/E ratio * monetary premium
+    </BodyTextV3>
+    <BodyTextV3 className="whitespace-pre-wrap md:leading-normal">
+      * annaulized based on last 6mo
     </BodyTextV3>
   </div>
 );

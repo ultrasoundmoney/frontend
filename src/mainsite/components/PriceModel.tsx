@@ -308,8 +308,8 @@ const PriceModel: FC = () => {
   const gaugeRates = useGaugeRates();
   const initialPeRatioSet = useRef<boolean>(false);
 
-  const annualizedRevenue = gaugeRates.since_burn.burn_rate_yearly.usd;
-  const annualizedCosts = gaugeRates.d7.issuance_rate_yearly.usd;
+  const annualizedRevenue = gaugeRates.h1.burn_rate_yearly.usd;
+  const annualizedCosts = gaugeRates.h1.issuance_rate_yearly.usd;
   const annualizedEarnings =
     annualizedRevenue === undefined || annualizedCosts === undefined
       ? undefined
