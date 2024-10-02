@@ -34,9 +34,9 @@ const NoneSvg: React.FC<NoneSvgProps> = ({ setSpecificTab, cryptoType }) => {
     }
   };
 
-  // this handler we added here to provide fading out the all graphs,
+  // this handler we added here to provide fading out all graphs,
   // when mouse moves out of graph - it was noticed before,
-  // that in some cases it didn't work and some graph stayed beeing highlighted
+  // that in some cases it didn't work and some graph stayed being highlighted
   const onSvgMouseOutHandler = () => {
     if (ethPathRef.current && usdPathRef.current && btcPathRef.current) {
       onSvgMouseOut(
