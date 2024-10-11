@@ -80,7 +80,7 @@ const baseOptions: Highcharts.Options = {
       },
       formatter: function () {
         const value = Number(this.value);
-        return value < 1e-5 ? value.toExponential() : value;
+        return value < 1e-5 ? value.toExponential() : value.toString();
       },
     },
     title: undefined,
