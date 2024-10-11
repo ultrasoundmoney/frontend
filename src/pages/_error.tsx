@@ -65,9 +65,7 @@ const ErrorPage: FC<{ error?: Error; statusCode?: number }> = ({
   );
 };
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore: Unreachable code error
-ErrorPage.getInitialProps = ({ res, err }: { res: unknown; err: unknown }) => {
+(ErrorPage as FC & { getInitialProps: any }).getInitialProps = ({ res, err }: { res: unknown; err: unknown }) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const statusCode = res
     ? (res as { statusCode?: number }).statusCode

@@ -79,8 +79,8 @@ const baseOptions: Highcharts.Options = {
         fontWeight: "300",
       },
       formatter: function () {
-          //@ts-ignore
-          return this.value < 1e-5 ? this.value.toExponential() : this.value;
+        const value = Number(this.value);
+        return value < 1e-5 ? value.toExponential() : value;
       },
     },
     title: undefined,
