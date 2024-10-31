@@ -23,6 +23,7 @@ const nextConfig = withSentryConfig(
       domains: [
         "abs.twimg.com",
         "assets.coingecko.com",
+        "coin-images.coingecko.com",
         "i.seadn.io",
         "lh3.googleusercontent.com",
         "openseauserdata.com",
