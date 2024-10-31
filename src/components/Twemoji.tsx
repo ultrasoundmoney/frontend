@@ -10,6 +10,7 @@ const parseChild = (
     className: imageClassName,
     ext: ".svg",
     folder: "svg",
+    base: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/",
   });
 };
 

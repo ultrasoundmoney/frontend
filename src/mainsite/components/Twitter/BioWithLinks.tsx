@@ -72,7 +72,10 @@ const buildBioElements = (bio: string, linkables: Linkables) => {
 
 // NOTE: using twemoji in the more safe dom parsing mode together with rapidly created and destroyed content resulted in crashes where somehow nodes from destroyed content would end up in newly created content, presumably because twemoji was keeping refs and directly updating the DOM. This would cause react to run into problems when trying in turn to update the DOM that had now changed out from under it. Using twemoji's string parsing mode seems to alleviate the issue.
 const insertTwemoji = (str: string) =>
-  twemoji.parse(str, { className: "inline-block align-middle w-5 mb-1 ml-1" });
+  twemoji.parse(str, {
+    className: "inline-block align-middle w-5 mb-1 ml-1",
+    base: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/",
+  });
 
 const BioWithLinks: FC<{ bio: string; linkables: Linkables }> = ({
   bio,
