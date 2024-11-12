@@ -68,7 +68,6 @@ const baseOptions: Highcharts.Options = {
     tickWidth: 0,
   },
   yAxis: {
-    type: "logarithmic",
     endOnTick: false,
     gridLineWidth: 0,
     labels: {
