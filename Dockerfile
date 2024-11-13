@@ -16,6 +16,7 @@ COPY sentry.properties .
 COPY src/ src
 COPY public/ public
 ENV NEXT_PUBLIC_ENV=stag
+ENV NEXT_SHARP_PATH=/app/node_modules/sharp
 RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN \
    --mount=type=secret,id=NEXT_PUBLIC_TAGS \
    --mount=type=secret,id=NEXT_PUBLIC_COMMIT \
@@ -26,6 +27,7 @@ RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN \
 RUN ["cp", "-r", ".next/standalone", "/standalone-stag"]
 RUN ["cp", "-r", ".next/static", "/static-stag"]
 ENV NEXT_PUBLIC_ENV=prod
+ENV NEXT_SHARP_PATH=/app/node_modules/sharp
 RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN \
    --mount=type=secret,id=NEXT_PUBLIC_TAGS \
    --mount=type=secret,id=NEXT_PUBLIC_COMMIT \
