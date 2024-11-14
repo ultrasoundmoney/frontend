@@ -43,7 +43,7 @@ const getIssuancePerYear = (effective_balance_sum: Eth): number => {
   const balance_sum_gwei = effective_balance_sum * GWEI_PER_ETH;
   const max_issuance_per_epoch = Math.trunc(
     (BASE_REWARD_FACTOR * balance_sum_gwei) /
-    Math.floor(Math.sqrt(balance_sum_gwei)),
+      Math.floor(Math.sqrt(balance_sum_gwei)),
   );
   const issuancePerYear = max_issuance_per_epoch * EPOCHS_PER_YEAR;
   return issuancePerYear / GWEI_PER_ETH;
@@ -53,7 +53,7 @@ const getIssuanceApr = (effective_balance_sum: Gwei): number => {
   const balance_sum_gwei = effective_balance_sum;
   const max_issuance_per_epoch = Math.trunc(
     (BASE_REWARD_FACTOR * balance_sum_gwei) /
-    Math.floor(Math.sqrt(balance_sum_gwei)),
+      Math.floor(Math.sqrt(balance_sum_gwei)),
   );
   const issuancePerYear = max_issuance_per_epoch * EPOCHS_PER_YEAR;
   const apr = issuancePerYear / balance_sum_gwei;
@@ -68,7 +68,7 @@ const getStakedFromApr = (apr: number): number => {
     ((MAX_EFFECTIVE_BALANCE * BASE_REWARD_FACTOR) /
       BASE_REWARDS_PER_EPOCH /
       baseReward) **
-    2 /
+      2 /
     32e9;
   return active_validators * 32;
 };
@@ -96,12 +96,12 @@ const BurnMarkers: FC<{ burnMarkers?: BurnMarkers }> = ({ burnMarkers }) => {
   const markerList =
     burnMarkers !== undefined
       ? [
-        { label: "all", value: burnMarkers.all },
-        { label: "🦇🔊🚧", value: burnMarkers.ultrasound },
-        { label: "30d", value: burnMarkers.d30 },
-        { label: "7d", value: burnMarkers.d7 },
-        { label: "1d", value: burnMarkers.d1 },
-      ]
+          { label: "all", value: burnMarkers.all },
+          { label: "🦇🔊🚧", value: burnMarkers.ultrasound },
+          { label: "30d", value: burnMarkers.d30 },
+          { label: "7d", value: burnMarkers.d7 },
+          { label: "1d", value: burnMarkers.d1 },
+        ]
       : [];
 
   return (
@@ -197,9 +197,9 @@ const EquilibriumWidget = () => {
     setBurnMarkers((burnMarkers) =>
       burnMarkers !== undefined
         ? {
-          ...burnMarkers,
-          ultrasound: issuancePerYear / nonStakedSupply,
-        }
+            ...burnMarkers,
+            ultrasound: issuancePerYear / nonStakedSupply,
+          }
         : undefined,
     );
   }, [burnRates, effectiveBalanceSum, ethSupply, stakingAprFraction]);
@@ -237,13 +237,13 @@ const EquilibriumWidget = () => {
 
   const equilibriums = useMemo(():
     | {
-      cashFlowsEquilibrium: number;
-      nonStakedSupplyEquilibrium: number;
-      supplyEquilibrium: number;
-      supplyEquilibriumMap: Record<number, number>;
-      supplyEquilibriumSeries: Point[];
-      yearlyIssuanceFraction: number;
-    }
+        cashFlowsEquilibrium: number;
+        nonStakedSupplyEquilibrium: number;
+        supplyEquilibrium: number;
+        supplyEquilibriumMap: Record<number, number>;
+        supplyEquilibriumSeries: Point[];
+        yearlyIssuanceFraction: number;
+      }
     | undefined => {
     if (
       stakingAprFraction === undefined ||
@@ -314,9 +314,15 @@ const EquilibriumWidget = () => {
       ? ((nowMarker - STAKING_MIN) / STAKING_RANGE) * 100
       : undefined;
 
-  function getTextSizeClass(equilibriumSupply: number | undefined, ethSupply: number | undefined) {
+  function getTextSizeClass(
+    equilibriumSupply: number | undefined,
+    ethSupply: number | undefined,
+  ) {
     const baseClass = "text-2xl md:text-3xl";
-    const colorClass = (equilibriumSupply ?? 0) < (ethSupply ?? 0) ? "text-orange-200" : "text-blue-400";
+    const colorClass =
+      (equilibriumSupply ?? 0) < (ethSupply ?? 0)
+        ? "text-orange-200"
+        : "text-blue-400";
     return `${baseClass} ${colorClass}`;
   }
 
@@ -356,12 +362,15 @@ const EquilibriumWidget = () => {
               </WidgetTitle>
               <MoneyAmount
                 amountPostfix={nonStakingBurnFraction === 0 ? "" : "M"}
-                textSizeClass={getTextSizeClass(equilibriums?.supplyEquilibrium, ethSupply)}
+                textSizeClass={getTextSizeClass(
+                  equilibriums?.supplyEquilibrium,
+                  ethSupply,
+                )}
               >
                 {equilibriums !== undefined
                   ? Format.formatOneDecimal(
-                    equilibriums.supplyEquilibrium / 1e6,
-                  )
+                      equilibriums.supplyEquilibrium / 1e6,
+                    )
                   : undefined}
               </MoneyAmount>
             </div>
@@ -379,8 +388,8 @@ const EquilibriumWidget = () => {
               >
                 {stakingAprFraction !== undefined && initialEquilibriumInputsSet
                   ? Format.formatOneDecimal(
-                    getStakedFromApr(stakingAprFraction) / 1e6,
-                  )
+                      getStakedFromApr(stakingAprFraction) / 1e6,
+                    )
                   : undefined}
               </MoneyAmount>
             </div>
@@ -412,7 +421,7 @@ const EquilibriumWidget = () => {
                   className="text-base lg:text-lg"
                 >
                   {stakingAprFraction !== undefined &&
-                    initialEquilibriumInputsSet
+                  initialEquilibriumInputsSet
                     ? Format.formatPercentOneDecimal(stakingAprFraction)
                     : undefined}
                 </PercentAmount>
@@ -438,8 +447,9 @@ const EquilibriumWidget = () => {
                 `}
                   style={{
                     // Positions the marker along the track whilst compensating for the thumb width as the browser natively does. 7 being half the thumb width.
-                    left: `calc(${nowMarkerPercent}% - ${(((nowMarkerPercent ?? 0) / 100) * 2 - 1) * 7
-                      }px)`,
+                    left: `calc(${nowMarkerPercent}% - ${
+                      (((nowMarkerPercent ?? 0) / 100) * 2 - 1) * 7
+                    }px)`,
                   }}
                 >
                   <div className="-mt-0.5 h-2 w-0.5 rounded-b-full bg-slateus-200"></div>
@@ -459,7 +469,7 @@ const EquilibriumWidget = () => {
                 </div>
                 <PercentAmount amountPostfix="/year">
                   {nonStakingBurnFraction !== undefined &&
-                    initialEquilibriumInputsSet
+                  initialEquilibriumInputsSet
                     ? Format.formatPercentOneDecimal(nonStakingBurnFraction)
                     : undefined}
                 </PercentAmount>
@@ -485,8 +495,8 @@ const EquilibriumWidget = () => {
             <MoneyAmount amountPostfix="K" unitText="ETH/year">
               {equilibriums !== undefined
                 ? Format.formatZeroDecimals(
-                  equilibriums.cashFlowsEquilibrium / 1e3,
-                )
+                    equilibriums.cashFlowsEquilibrium / 1e3,
+                  )
                 : undefined}
             </MoneyAmount>
           </div>
