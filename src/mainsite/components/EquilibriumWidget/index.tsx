@@ -113,6 +113,24 @@ const BurnMarkers: FC<{ burnMarkers?: BurnMarkers }> = ({ burnMarkers }) => {
   );
 };
 
+const supplyColorClass = (
+  equilibriumSupply: number | undefined,
+  ethSupply: number | undefined,
+) => {
+  if (equilibriumSupply === undefined || ethSupply === undefined) {
+    return undefined;
+  }
+
+  const baseClass = "text-transparent bg-gradient-to-r bg-clip-text";
+
+  const colorClass =
+    equilibriumSupply < ethSupply
+      ? "from-orange-400 to-yellow-300"
+      : "from-cyan-300 to-indigo-500";
+
+  return `${baseClass} ${colorClass}`;
+};
+
 const EquilibriumWidget = () => {
   const burnRates = useBurnRates();
   const supplyProjectionInputs = useSupplyProjectionInputs();
@@ -314,18 +332,6 @@ const EquilibriumWidget = () => {
       ? ((nowMarker - STAKING_MIN) / STAKING_RANGE) * 100
       : undefined;
 
-  function getTextSizeClass(
-    equilibriumSupply: number | undefined,
-    ethSupply: number | undefined,
-  ) {
-    const baseClass = "text-2xl md:text-3xl";
-    const colorClass =
-      (equilibriumSupply ?? 0) < (ethSupply ?? 0)
-        ? "text-orange-200"
-        : "text-blue-400";
-    return `${baseClass} ${colorClass}`;
-  }
-
   return (
     <WidgetErrorBoundary title="supply equilibrium">
       <WidgetBackground
@@ -362,10 +368,11 @@ const EquilibriumWidget = () => {
               </WidgetTitle>
               <MoneyAmount
                 amountPostfix={nonStakingBurnFraction === 0 ? "" : "M"}
-                textSizeClass={getTextSizeClass(
+                className={supplyColorClass(
                   equilibriums?.supplyEquilibrium,
                   ethSupply,
                 )}
+                textSizeClass="text-2xl md:text-3xl"
               >
                 {equilibriums !== undefined
                   ? Format.formatOneDecimal(
