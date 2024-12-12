@@ -43,6 +43,10 @@ WORKDIR /app
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 
+# make sharp available to the application
+COPY --from=build /app/node_modules/sharp /app/node_modules/sharp
+ENV NEXT_SHARP_PATH=/usr/local/lib/node_modules/sharp
+
 # You only need to copy next.config.js if you are NOT using the default configuration
 COPY --from=build /app/next.config.js ./
 COPY --from=build /app/package.json ./package.json
