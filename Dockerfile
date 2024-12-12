@@ -41,6 +41,7 @@ RUN ["cp", "-r", ".next/static", "/static-prod"]
 FROM node:22-alpine as run
 WORKDIR /app
 ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
 
 # You only need to copy next.config.js if you are NOT using the default configuration
 COPY --from=build /app/next.config.js ./
