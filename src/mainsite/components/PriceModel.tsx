@@ -64,7 +64,7 @@ const Marker: FC<MarkerProps> = ({ alt, icon, peRatio, symbol }) => {
 
   return (
     <div
-      className="flex absolute flex-col w-full pointer-events-none"
+      className="pointer-events-none absolute flex w-full flex-col"
       style={{
         transform: `translateX(${linearFromLog(peRatio) * 100}%)`,
       }}
@@ -72,7 +72,7 @@ const Marker: FC<MarkerProps> = ({ alt, icon, peRatio, symbol }) => {
       <div className="mb-3 w-3 -translate-x-1/2 bg-slateus-400 [min-height:3px]"></div>
       <a
         title={`${peRatio?.toFixed(1) ?? "-"} P/E`}
-        className="absolute top-4 -translate-x-1/2 pointer-events-auto"
+        className="pointer-events-auto absolute top-4 -translate-x-1/2"
         href={
           symbol === undefined
             ? undefined
@@ -109,7 +109,7 @@ const MarkerText: FC<{ children: ReactNode; ratio: number }> = ({
   children,
 }) => (
   <div
-    className="flex absolute flex-col w-full pointer-events-none"
+    className="pointer-events-none absolute flex w-full flex-col"
     // For unclear reasons the left 89% position for TSLA is closer to notch 91 on the actual slider. We manually adjust.
     style={{ transform: `translateX(${ratio * 100}%)` }}
   >
@@ -353,7 +353,7 @@ const PriceModel: FC = () => {
       <TooltipWrapper>
         <PriceModelTooltip onClickClose={() => setShowTooltip(false)} />
       </TooltipWrapper>
-      <div className="flex overflow-hidden flex-col gap-y-4 mt-4">
+      <div className="mt-4 flex flex-col gap-y-4 overflow-hidden">
         <div className="flex justify-between">
           <BodyTextV3 size="text-base md:text-lg">
             annualized profits
@@ -419,7 +419,7 @@ const PriceModel: FC = () => {
               value={monetaryPremium}
             />
             {/* Because a slider range is not exactly the visual width of the element positioning using absolute children with a left is not exactly right. we add small amounts to try fudge them into the right place. */}
-            <div className="flex absolute top-3 w-full pointer-events-none">
+            <div className="pointer-events-none absolute top-3 flex w-full">
               <MarkerText
                 ratio={(2 + 0.3 - monetaryPremiumMin) / monetaryPremiumRange}
               >
@@ -436,13 +436,13 @@ const PriceModel: FC = () => {
                 8x
               </MarkerText>
               <div
-                className="flex absolute flex-col w-full pointer-events-none"
+                className="pointer-events-none absolute flex w-full flex-col"
                 style={{
                   transform: `translateX(47.5%)`,
                 }}
               >
                 <div className="mb-3 w-3 -translate-x-1/2 bg-slateus-400 [min-height:3px]"></div>
-                <div className="absolute top-4 -translate-x-1/2 pointer-events-auto">
+                <div className="pointer-events-auto absolute top-4 -translate-x-1/2">
                   <img
                     title="gold"
                     src={`/gold-icon.svg`}
