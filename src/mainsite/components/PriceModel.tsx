@@ -239,7 +239,7 @@ const monetaryPremiumRange = monetaryPremiumMax - monetaryPremiumMin;
 const monetaryPremiumStepSize = 0.01;
 
 const growthProfileMin = 6;
-const growthProfileMax = 250;
+const growthProfileMax = 6400;
 const growthProfileLogMin = Math.log(growthProfileMin);
 const growthProfileLogMax = Math.log(growthProfileMax);
 const logRange = growthProfileLogMax - growthProfileLogMin;
