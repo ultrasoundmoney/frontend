@@ -2,7 +2,7 @@
   "name": "website_frontend",
   "description": "frontend for ultrasound.money",
   "version": "1.0.0",
-  "author": "Ultra Sound Money <ultrasoundmoney0@gmail.com",
+  "author": "Ultra Sound Money <contact@ultrasound.money>",
   "private": true,
   "license": "MIT",
   "scripts": {
