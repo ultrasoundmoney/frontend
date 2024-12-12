@@ -1,4 +1,4 @@
-FROM node:18-alpine as build
+FROM node:22-alpine as build
 WORKDIR /app
 
 COPY package.json .
@@ -38,7 +38,7 @@ RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN \
 RUN ["cp", "-r", ".next/standalone", "/standalone-prod"]
 RUN ["cp", "-r", ".next/static", "/static-prod"]
 
-FROM node:18-alpine as run
+FROM node:22-alpine as run
 WORKDIR /app
 ENV NODE_ENV production
 
