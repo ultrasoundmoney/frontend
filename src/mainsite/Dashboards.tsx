@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import Head from "next/head";
 import type { FC, MouseEvent } from "react";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { useRouter } from "next/router"
+import { useRouter } from "next/router";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import colors from "../colors";
@@ -151,36 +151,50 @@ const useIsDeflationary = () => {
 const Dashboard: FC = () => {
   useScrollOnLoad();
   const { featureFlags, setFlag } = useFeatureFlags();
-  const router = useRouter()
-  const timeFrame = (router.query.timeFrame as TimeFrame) || "d7"
+  const router = useRouter();
+  const timeFrame = (router.query.timeFrame as TimeFrame) || "d7";
   const isDeflationary = useIsDeflationary();
   const videoEl = useRef<HTMLVideoElement>(null);
   const { simulateDeflationary } = featureFlags;
   const showVideo = isDeflationary || simulateDeflationary;
 
-  const handleClickTimeFrame = useCallback(async (e: MouseEvent<HTMLElement>) => {
-    const newTimeFrame = e.shiftKey
-      ? getPreviousTimeFrame(timeFrame)
-      : getNextTimeFrame(timeFrame);
+  const handleClickTimeFrame = useCallback(
+    async (e: MouseEvent<HTMLElement>) => {
+      const newTimeFrame = e.shiftKey
+        ? getPreviousTimeFrame(timeFrame)
+        : getNextTimeFrame(timeFrame);
 
-    await router.push({
-      pathname: router.pathname,
-      query: {
-        ...router.query,
-        timeFrame: newTimeFrame
-      }
-    }, undefined, { shallow: true });
-  }, [timeFrame, router]);
+      await router.push(
+        {
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            timeFrame: newTimeFrame,
+          },
+        },
+        undefined,
+        { shallow: true },
+      );
+    },
+    [timeFrame, router],
+  );
 
-  const handleSetTimeFrame = useCallback(async (newTimeFrame: TimeFrame) => {
-    await router.push({
-      pathname: router.pathname,
-      query: {
-        ...router.query,
-        timeFrame: newTimeFrame
-      }
-    }, undefined, { shallow: true });
-  }, [router]);
+  const handleSetTimeFrame = useCallback(
+    async (newTimeFrame: TimeFrame) => {
+      await router.push(
+        {
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            timeFrame: newTimeFrame,
+          },
+        },
+        undefined,
+        { shallow: true },
+      );
+    },
+    [router],
+  );
 
   const handleToggleBatLoop = useCallback(() => {
     if (videoEl.current === null) {
@@ -253,14 +267,14 @@ const Dashboard: FC = () => {
           <TotalValueSecuredSection />
           <MonetaryPremiumSection />
           <FamSection />
-          <div className="flex px-4 mt-32 md:px-0">
+          <div className="mt-32 flex px-4 md:px-0">
             <div className="relative w-full md:m-auto lg:w-2/3">
               <FaqBlock />
             </div>
           </div>
           <ContactSection />
         </div>
-        <div className="flex justify-center w-full text-slateus-600">
+        <div className="flex w-full justify-center text-slateus-600">
           version {version}
         </div>
       </SkeletonTheme>
