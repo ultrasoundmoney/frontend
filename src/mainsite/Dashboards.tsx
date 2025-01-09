@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import Head from "next/head";
 import type { FC, MouseEvent } from "react";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router"
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import colors from "../colors";
@@ -150,22 +151,36 @@ const useIsDeflationary = () => {
 const Dashboard: FC = () => {
   useScrollOnLoad();
   const { featureFlags, setFlag } = useFeatureFlags();
-  const [timeFrame, setTimeFrame] = useState<TimeFrame>("d7");
+  const router = useRouter()
+  const timeFrame = (router.query.timeFrame as TimeFrame) || "d7"
   const isDeflationary = useIsDeflationary();
   const videoEl = useRef<HTMLVideoElement>(null);
   const { simulateDeflationary } = featureFlags;
   const showVideo = isDeflationary || simulateDeflationary;
 
-  const handleClickTimeFrame = useCallback((e: MouseEvent<HTMLElement>) => {
-    if(e.shiftKey) {
-        setTimeFrame(getPreviousTimeFrame(timeFrame));
-    }
-    else {
-        setTimeFrame(getNextTimeFrame(timeFrame));
-    }
-  }, [timeFrame]);
+  const handleClickTimeFrame = useCallback(async (e: MouseEvent<HTMLElement>) => {
+    const newTimeFrame = e.shiftKey
+      ? getPreviousTimeFrame(timeFrame)
+      : getNextTimeFrame(timeFrame);
 
-  const handleSetTimeFrame = useCallback(setTimeFrame, [setTimeFrame]);
+    await router.push({
+      pathname: router.pathname,
+      query: {
+        ...router.query,
+        timeFrame: newTimeFrame
+      }
+    }, undefined, { shallow: true });
+  }, [timeFrame, router]);
+
+  const handleSetTimeFrame = useCallback(async (newTimeFrame: TimeFrame) => {
+    await router.push({
+      pathname: router.pathname,
+      query: {
+        ...router.query,
+        timeFrame: newTimeFrame
+      }
+    }, undefined, { shallow: true });
+  }, [router]);
 
   const handleToggleBatLoop = useCallback(() => {
     if (videoEl.current === null) {
@@ -220,7 +235,7 @@ const Dashboard: FC = () => {
             onSetTimeFrame={handleSetTimeFrame}
             onClickTimeFrame={handleClickTimeFrame}
           />
-          <FlippeningSection/>
+          <FlippeningSection />
           <GasSection
             timeFrame={timeFrame}
             onClickTimeFrame={handleClickTimeFrame}
