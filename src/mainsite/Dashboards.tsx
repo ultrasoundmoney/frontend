@@ -249,7 +249,6 @@ const Dashboard: FC = () => {
             onSetTimeFrame={handleSetTimeFrame}
             onClickTimeFrame={handleClickTimeFrame}
           />
-          <FlippeningSection />
           <GasSection
             timeFrame={timeFrame}
             onClickTimeFrame={handleClickTimeFrame}
@@ -264,6 +263,7 @@ const Dashboard: FC = () => {
             onClickTimeFrame={handleClickTimeFrame}
             onSetTimeFrame={handleSetTimeFrame}
           />
+          <FlippeningSection />
           <TotalValueSecuredSection />
           <MonetaryPremiumSection />
           <FamSection />
