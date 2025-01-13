@@ -15,7 +15,6 @@ import { useCallback, useEffect, useState, useContext } from "react";
 import { useBaseFeeOverTime } from "../../api/base-fee-over-time";
 import { useBaseFeePerGasStats } from "../../api/base-fee-per-gas-stats";
 import { useEffectiveBalanceSum } from "../../api/effective-balance-sum";
-import { TimeFrameText } from "../../../components/Texts";
 const SupplyChart = dynamic(() => import("./TwoYearProjectionChart"));
 
 const MIN_PROJECTED_ETH_STAKING = 1e6;
@@ -84,36 +83,46 @@ const TwoYearProjection: FC = () => {
   >([]);
 
   useEffect(() => {
-    console.log("setup twoyearprojection");
     if (effectiveBalanceSum === undefined || baseFeesOverTime === undefined) {
-      console.log("Exiting early", { effectiveBalanceSum, baseFeesOverTime });
       return;
     }
     const intialStakingAmount = effectiveBalanceSum.sum / 1e9;
-    setStakedEthSliderMarkers([
-      { label: "now", value: intialStakingAmount},
-    ]);
+    setStakedEthSliderMarkers([{ label: "now", value: intialStakingAmount }]);
     if (!userHasAdjustedStakedEth) {
       setProjectedStaking(intialStakingAmount);
     }
-    console.log("baseFeesOverTime:", baseFeesOverTime);
-    const latestBaseFee = baseFeesPerGasStats?.base_fee_per_gas_stats.m5.average;
+    const latestBaseFee =
+      baseFeesPerGasStats?.base_fee_per_gas_stats.m5.average;
     if (latestBaseFee === undefined || baseFeesPerGasStats === undefined) {
       return;
     }
-    console.log("barrier", baseFeesPerGasStats.barrier);
     if (!userHasAdjustedBaseFee) {
-      setProjectedBaseGasPrice(baseFeesPerGasStats?.base_fee_per_gas_stats.since_burn.average / 1e9);
+      setProjectedBaseGasPrice(
+        baseFeesPerGasStats?.base_fee_per_gas_stats.since_burn.average / 1e9,
+      );
     }
 
-      setBaseFeeSliderMarkers([
-          { label: "now", value: latestBaseFee / 1e9 },
-          { label: "🦇🔊🚧", value: baseFeesPerGasStats.barrier},
-          { label: "all", value: baseFeesPerGasStats.base_fee_per_gas_stats.since_burn.average / 1e9 },
-          { label: "30d", value: baseFeesPerGasStats.base_fee_per_gas_stats.d30.average / 1e9 },
-          { label: "7d", value: baseFeesPerGasStats.base_fee_per_gas_stats.d7.average / 1e9 },
-          { label: "1d", value: baseFeesPerGasStats.base_fee_per_gas_stats.d1.average / 1e9 },
-      ]);
+    setBaseFeeSliderMarkers([
+      { label: "now", value: latestBaseFee / 1e9 },
+      { label: "🦇🔊🚧", value: baseFeesPerGasStats.barrier },
+      {
+        label: "all",
+        value:
+          baseFeesPerGasStats.base_fee_per_gas_stats.since_burn.average / 1e9,
+      },
+      {
+        label: "30d",
+        value: baseFeesPerGasStats.base_fee_per_gas_stats.d30.average / 1e9,
+      },
+      {
+        label: "7d",
+        value: baseFeesPerGasStats.base_fee_per_gas_stats.d7.average / 1e9,
+      },
+      {
+        label: "1d",
+        value: baseFeesPerGasStats.base_fee_per_gas_stats.d1.average / 1e9,
+      },
+    ]);
   }, [baseFeesOverTime, baseFeesPerGasStats, effectiveBalanceSum]);
 
   return (
@@ -126,9 +135,8 @@ const TwoYearProjection: FC = () => {
         >
           ETH supply—2y projection
           <span
-            className={`transition-opacity ${
-              isPeakPresent ? "opacity-1" : "opacity-0"
-            }`}
+            className={`transition-opacity ${isPeakPresent ? "opacity-1" : "opacity-0"
+              }`}
           >
             <Twemoji className="flex" imageClassName="inline ml-1 h-6" wrapper>
               🦇🔊
