@@ -595,7 +595,7 @@ const EthSupplyWidget: FC<Props> = ({
 }) => {
   const [posVisible, setPosVisible] = useState(true);
   const [powVisible, setPowVisible] = useState(simulateProofOfWork);
-  const [btcVisible, setBtcVisible] = useState(false);
+  const [btcVisible, setBtcVisible] = useState(true);
 
   const supplySeriesCollections = useSupplySeriesCollections();
 
