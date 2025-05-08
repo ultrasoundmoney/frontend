@@ -4,11 +4,12 @@ import HighchartsReact from "highcharts-react-official";
 import highchartsAnnotations from "highcharts/modules/annotations";
 import _merge from "lodash/merge";
 import type { FC } from "react";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import colors from "../../colors";
 import LabelText from "../../components/TextsNext/LabelText";
 import WidgetErrorBoundary from "../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../components/WidgetSubcomponents";
+import ToggleSwitch from "../../components/ToggleSwitch";
 import type { Gwei } from "../../eth-units";
 import type { JsTimestamp } from "../../time";
 import TimeFrameIndicator from "../components/TimeFrameIndicator";
@@ -196,6 +197,8 @@ const BaseFeesWidget: FC<Props> = ({
   timeFrame,
   blobFees,
 }) => {
+  const [hideBarrier, setHideBarrier] = useState(false);
+
   // Setting lang has to happen before any chart render.
   useEffect(() => {
     if (Highcharts) {
@@ -213,11 +216,14 @@ const BaseFeesWidget: FC<Props> = ({
       15,
     );
 
+    const dynamicMax = hideBarrier ? undefined : Math.max(max ?? 0, barrier ?? 0);
+
     return _merge({}, baseOptions, {
       yAxis: {
         id: "base-fees",
         min,
-        plotLines: [barrier !== undefined ? makeBarrier(barrier) : undefined],
+        max: dynamicMax,
+        plotLines: barrier !== undefined && !hideBarrier ? [makeBarrier(barrier)] : [],
       },
       series: [
         {
@@ -264,7 +270,7 @@ const BaseFeesWidget: FC<Props> = ({
         formatter: getTooltipFormatter(baseFeesMap, barrier),
       },
     } as Highcharts.Options);
-  }, [max, barrier, baseFeesMap, baseFeesSeries]);
+  }, [max, barrier, baseFeesMap, baseFeesSeries, hideBarrier]);
 
   return (
     <WidgetErrorBoundary title={blobFees ? "blob fees" : "base fees"}>
@@ -322,9 +328,20 @@ const BaseFeesWidget: FC<Props> = ({
             <HighchartsReact highcharts={Highcharts} options={options} />
           )}
         </div>
-        <LabelText color="text-slateus-400 mt-2" className="text-right">
-          live on <span className="text-slateus-200">ultrasound.money</span>
-        </LabelText>
+        <div className="mt-2 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <ToggleSwitch
+              checked={hideBarrier}
+              onToggle={setHideBarrier}
+            />
+            <LabelText color="text-slateus-400">
+              hide barrier
+            </LabelText>
+          </div>
+          <LabelText color="text-slateus-400">
+            live on <span className="text-slateus-200">ultrasound.money</span>
+          </LabelText>
+        </div>
       </WidgetBackground>
     </WidgetErrorBoundary>
   );
