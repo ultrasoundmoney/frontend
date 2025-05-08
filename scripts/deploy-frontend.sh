@@ -63,7 +63,7 @@ echo "-> switching kubectl context to $CLUSTER"
 kubectl config use-context $CLUSTER
 
 echo "-> updating serve-frontend deployment with commit $CURRENT_COMMIT"
-kubectl set image deployment/serve-frontend serve-frontend=rg.fr-par.scw.cloud/ultrasoundmoney/frontend:$CURRENT_COMMIT
+kubectl set image deployment/serve-frontend serve-frontend=ultrasoundorg/ultrasoundmoney-frontend:$CURRENT_COMMIT
 
 # Update web-infra yaml only when deploying to staging
 if [[ "$CLUSTER" == "smith" ]]; then
@@ -92,7 +92,7 @@ if [[ "$CLUSTER" == "smith" ]]; then
 
     echo "-> updating base/serve-frontend.yaml image with commit $CURRENT_COMMIT"
     DEPLOY_FILE="/Users/alextes/code/ultra-sound/web-infra/base/serve-frontend.yaml"
-    sed -i '' "s|rg.fr-par.scw.cloud/ultrasoundmoney/frontend:[a-f0-9]\{7,40\}[-a-zA-Z0-9_]*|rg.fr-par.scw.cloud/ultrasoundmoney/frontend:$CURRENT_COMMIT|" $DEPLOY_FILE
+    sed -i '' "s|ultrasoundorg/ultrasoundmoney-frontend:[a-f0-9]\{7,40\}[-a-zA-Z0-9_]*|rg.fr-par.scw.cloud/ultrasoundmoney/frontend:$CURRENT_COMMIT|" $DEPLOY_FILE
 
     echo "-> creating commit"
     git add $DEPLOY_FILE
