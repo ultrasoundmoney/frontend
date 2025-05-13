@@ -92,7 +92,7 @@ if [[ "$CLUSTER" == "smith" ]]; then
 
     echo "-> updating base/serve-frontend.yaml image with commit $CURRENT_COMMIT"
     DEPLOY_FILE="/Users/alextes/code/ultra-sound/web-infra/base/serve-frontend.yaml"
-    sed -i '' "s|ultrasoundorg/ultrasoundmoney-frontend:[a-f0-9]\{7,40\}[-a-zA-Z0-9_]*|rg.fr-par.scw.cloud/ultrasoundmoney/frontend:$CURRENT_COMMIT|" $DEPLOY_FILE
+    sed -i '' "s|ultrasoundorg/ultrasoundmoney-frontend:[a-f0-9]\{7,40\}[-a-zA-Z0-9_]*|ultrasoundorg/ultrasoundmoney-frontend:$CURRENT_COMMIT|" $DEPLOY_FILE
 
     echo "-> creating commit"
     git add $DEPLOY_FILE
