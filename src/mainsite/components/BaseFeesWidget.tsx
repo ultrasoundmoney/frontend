@@ -143,26 +143,29 @@ const makeBarrier = (barrier: number) => ({
 const getTooltipFormatter = (
   baseFeesMap: Record<number, number>,
   barrier: number | undefined,
+  burnedIssuedMap?: Record<number, number>,
 ): Highcharts.TooltipFormatterCallbackFunction =>
   function () {
     const x = typeof this.x === "number" ? this.x : undefined;
-    if (x === undefined || barrier === undefined) {
-      return undefined;
-    }
+    if (!x || barrier === undefined) return undefined;
 
     const total = baseFeesMap[x];
-    if (total === undefined) {
-      return undefined;
-    }
+    if (total === undefined) return undefined;
+
+    const netEthChange = burnedIssuedMap?.[x] ?? 0;
+    console.log(`Timestamp: ${x}, Base Fee: ${total}, Net ETH Change: ${netEthChange}`); // Debug log
 
     const dt = new Date(x);
-    const formattedDate = format(dt, "iii MMM dd yyyy");
-    const formattedTime = format(dt, "HH:mm:ss 'UTC'x");
+    const formattedDate = format(dt, "MMM d, yyyy");
+    const formattedTime = format(dt, "HH:mm 'UTC'x");
 
     const gradientCss =
       total > barrier
         ? "from-orange-400 to-yellow-300"
         : "from-cyan-300 to-indigo-500";
+
+    const ethLabel = netEthChange > 0 ? "issued" : netEthChange < 0 ? "burned" : "no change";
+    const ethValue = Math.abs(netEthChange).toFixed(2);
 
     return `
       <div class="p-4 rounded-lg border-2 font-roboto bg-slateus-700 border-slateus-400">
@@ -173,6 +176,10 @@ const getTooltipFormatter = (
             ${total.toFixed(2)}
           </div>
           <div class="ml-1 font-roboto text-slateus-400">Gwei</div>
+        </div>
+        <div class="flex justify-end mt-1">
+          <div class="font-roboto text-white">${ethValue}</div>
+          <div class="ml-1 font-roboto text-slateus-400">ETH ${ethLabel}</div>
         </div>
       </div>
     `;
@@ -186,6 +193,7 @@ type Props = {
   onClickTimeFrame: OnClick;
   timeFrame: TimeFrame;
   blobFees?: boolean;
+  burnedIssuedMap?: Record<number, number>; // New prop for burned/issued ETH
 };
 
 const BaseFeesWidget: FC<Props> = ({
@@ -196,6 +204,7 @@ const BaseFeesWidget: FC<Props> = ({
   onClickTimeFrame,
   timeFrame,
   blobFees,
+  burnedIssuedMap,
 }) => {
   const [hideBarrier, setHideBarrier] = useState(false);
 
@@ -267,10 +276,10 @@ const BaseFeesWidget: FC<Props> = ({
         },
       ],
       tooltip: {
-        formatter: getTooltipFormatter(baseFeesMap, barrier),
+        formatter: getTooltipFormatter(baseFeesMap, barrier, burnedIssuedMap),
       },
     } as Highcharts.Options);
-  }, [max, barrier, baseFeesMap, baseFeesSeries, hideBarrier]);
+  }, [max, barrier, baseFeesMap, baseFeesSeries, hideBarrier, burnedIssuedMap]);
 
   return (
     <WidgetErrorBoundary title={blobFees ? "blob fees" : "base fees"}>

@@ -35,7 +35,7 @@ const GasSection: FC<{
 }> = ({ timeFrame, onClickTimeFrame }) => {
   const baseFeesOverTime = useBaseFeeOverTime();
 
-  const [baseFeesSeries, max] = useMemo(() => {
+  const [baseFeesSeries, max, burnedIssuedMap] = useMemo(() => {
     if (baseFeesOverTime === undefined) {
       return [undefined, undefined];
     }
@@ -47,8 +47,16 @@ const GasSection: FC<{
         : pointsFromBaseFeesOverTime(baseFeesOverTimeTimeFrame);
 
     const max = _maxBy(series, (point) => point[1]);
-
-    return [series, max];
+    const burnedIssued =
+      baseFeesOverTimeTimeFrame === undefined
+        ? undefined
+        : Object.fromEntries(
+            baseFeesOverTimeTimeFrame.map(({ timestamp, wei }) => [
+              parseISO(timestamp).getTime(),
+              wei,
+            ]),
+          );
+    return [series, max, burnedIssued];
   }, [baseFeesOverTime, timeFrame]);
 
   const baseFeesMap =
@@ -67,6 +75,7 @@ const GasSection: FC<{
             max={max?.[1]}
             timeFrame={timeFrame}
             onClickTimeFrame={onClickTimeFrame}
+            burnedIssuedMap={burnedIssuedMap}
           />
         </div>
         <div className="flex w-full flex-col gap-y-4 lg:w-1/2">
