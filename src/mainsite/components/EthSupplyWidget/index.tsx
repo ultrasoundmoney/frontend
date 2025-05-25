@@ -595,7 +595,7 @@ const EthSupplyWidget: FC<Props> = ({
 }) => {
   const [posVisible, setPosVisible] = useState(true);
   const [powVisible, setPowVisible] = useState(simulateProofOfWork);
-  const [btcVisible, setBtcVisible] = useState(true);
+  const [btcVisible, setBtcVisible] = useState(false);
 
   const supplySeriesCollections = useSupplySeriesCollections();
 
@@ -630,8 +630,8 @@ const EthSupplyWidget: FC<Props> = ({
     <WidgetErrorBoundary title="eth supply">
       {/* We use the h-0 min-h-full trick to adopt the height of our sibling
       element. */}
-      <WidgetBackground className="flex relative flex-col w-full h-full min-h-full lg:h-0">
-        <div className="overflow-hidden absolute top-0 right-0 bottom-0 left-0 rounded-lg pointer-events-none">
+      <WidgetBackground className="relative flex h-full min-h-full w-full flex-col lg:h-0">
+        <div className="pointer-events-none absolute top-0 right-0 bottom-0 left-0 overflow-hidden rounded-lg">
           <div
             // will-change-transform is critical for mobile performance of
             // rendering the chart overlayed on this element.
@@ -676,7 +676,7 @@ const EthSupplyWidget: FC<Props> = ({
             supplySeriesCollections,
             O.match(
               () => (
-                <div className="flex justify-center items-center h-full text-center min-h-[400px] lg:min-h-[auto]">
+                <div className="flex h-full min-h-[400px] items-center justify-center text-center lg:min-h-[auto]">
                   <LabelText color="text-slateus-300">loading...</LabelText>
                 </div>
               ),
@@ -686,7 +686,7 @@ const EthSupplyWidget: FC<Props> = ({
             ),
           )}
         </div>
-        <div className="flex flex-wrap gap-x-4 gap-y-4 justify-between">
+        <div className="flex flex-wrap justify-between gap-x-4 gap-y-4">
           <UpdatedAgo
             updatedAt={updatedAtFromSupplySeriesCollection(
               supplySeriesCollections,
