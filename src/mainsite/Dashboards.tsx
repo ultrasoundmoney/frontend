@@ -244,11 +244,6 @@ const Dashboard: FC = () => {
             </video>
           )}
           <MainTitle onClick={handleToggleBatLoop}>ultra sound money</MainTitle>
-          <div className="mx-4 md:mx-16 rounded-lg mt-24 mb-24 p-2 bg-[repeating-linear-gradient(45deg,theme(colors.amber.600),theme(colors.amber.500)_10px,theme(colors.neutral.800)_10px,theme(colors.neutral.800)_20px)]">
-            <div className="rounded-md bg-slateus-700 p-8 font-roboto text-base font-light text-slateus-200 text-center">
-              multiple data sources still have issues. upgrading for <a href="https://x.com/ethereum/status/1919794615827280126" target="_blank" rel="noopener noreferrer" className="text-slateus-100 hover:underline">pectra hardfork</a>.
-            </div>
-          </div>
           <SupplyDashboard
             onClickTimeFrame={handleClickTimeFrame}
             onSetTimeFrame={handleSetTimeFrame}
