@@ -3,11 +3,9 @@ import useSWR from "swr";
 import type { WeiNumber } from "../../eth-units";
 import type { DateTimeString } from "../../time";
 import type { ApiError, FetchError } from "../../fetchers";
-import { fetchApiJsonTE } from "../../fetchers";
-import { fetchJsonSwr } from "./fetchers";
+import { fetchJsonSwr, fetchApiJsonTE } from "./fetchers";
 import type { TE } from "../../fp";
 import { O } from "../../fp";
-import { usmDomainFromEnv } from "../../config";
 
 export type BaseFeePerGas = {
   timestamp: DateTimeString;
@@ -22,7 +20,7 @@ const url = "/api/v2/fees/base-fee-per-gas";
 export const fetchBaseFeePerGas = (): TE.TaskEither<
   FetchError | ApiError,
   BaseFeePerGas
-> => fetchApiJsonTE<BaseFeePerGas>(usmDomainFromEnv(), url);
+> => fetchApiJsonTE<BaseFeePerGas>(url);
 
 export const useBaseFeePerGas = (): O.Option<BaseFeePerGas> => {
   const { data } = useSWR<BaseFeePerGas>(url, fetchJsonSwr, {

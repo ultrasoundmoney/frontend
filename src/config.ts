@@ -1,54 +1,49 @@
-type Env = "dev" | "prod" | "stag";
+// ugly hack to get hoodi working.
+// would be nice to split the relay.ultrasound.money frontend out further.
+export type Network = "mainnet" | "holesky" | "hoodi";
 
-export const envFromEnv = (): Env => {
-  const rawEnv = process.env.NEXT_PUBLIC_ENV;
+export const networkFromEnv = (): Network => {
+  const rawNetwork = process.env.NEXT_PUBLIC_NETWORK;
 
-  switch (rawEnv) {
-    case "prod":
-      return "prod";
-    case "dev":
-      return "dev";
-    case "staging":
-      return "stag";
-    case "stag":
-      return "stag";
+  switch (rawNetwork) {
+    case "mainnet":
+      return "mainnet";
+    case "holesky":
+      return "holesky";
+    case "hoodi":
+      return "hoodi";
     default:
-      console.warn("no ENV in env, defaulting to dev");
-      return "dev";
+      console.warn("no NEXT_PUBLIC_NETWORK in env, defaulting to mainnet");
+      return "mainnet";
   }
 };
 
-export const apiEnvFromEnv = (): Env => {
-  const apiEnv = process.env.NEXT_PUBLIC_API_ENV;
+export const getApiDomain = (): string => {
+  const isDev = process.env.NODE_ENV === "development";
 
-  // If API_ENV is undefined, we decide based on ENV
-  if (apiEnv === undefined) {
-    // Use production by default, unless we're running on staging, then use staging.
-    return envFromEnv() === "stag" ? "stag" : "prod";
+  if (isDev) {
+    const apiEnv = process.env.NEXT_PUBLIC_API_ENV;
+    switch (apiEnv) {
+      case "dev":
+        return "http://localhost:3000";
+      case "stag":
+        return "https://usm-i7x0.ultrasound.money";
+      case "prod":
+        return "https://ultrasound.money";
+      default:
+        // In dev, default to prod API
+        return "https://ultrasound.money";
+    }
   }
 
-  switch (apiEnv) {
-    case "dev":
-      return "dev";
-    case "prod":
-    case "production":
-      return "prod";
-    case "stag":
-    case "staging":
-      return "stag";
-    default:
-      return "prod";
-  }
-};
-
-export const usmDomainFromEnv = (): string => {
-  const apiEnv = apiEnvFromEnv();
-  switch (apiEnv) {
-    case "dev":
-      return "http://localhost:3000";
-    case "stag":
+  const network = networkFromEnv();
+  switch (network) {
+    case "mainnet":
+      return "https://ultrasound.money";
+    case "holesky":
+    case "hoodi":
       return "https://usm-i7x0.ultrasound.money";
-    case "prod":
+    default:
       return "https://ultrasound.money";
   }
 };

@@ -13,7 +13,7 @@ export const setContractTwitterHandle = async (
   }
 
   const res = await fetch(
-    `${SharedConfig.usmDomainFromEnv()}/api/contracts/admin/set-twitter-handle?address=${address}&token=${token}&handle=${handle}`,
+    `${SharedConfig.getApiDomain()}/api/contracts/admin/set-twitter-handle?address=${address}&token=${token}&handle=${handle}`,
   );
 
   if (res.status !== 200) {
@@ -34,7 +34,7 @@ export const setContractName = async (
   }
 
   const res = await fetch(
-    `${SharedConfig.usmDomainFromEnv()}/api/contracts/admin/set-name?address=${address}&token=${token}&name=${name}`,
+    `${SharedConfig.getApiDomain()}/api/contracts/admin/set-name?address=${address}&token=${token}&name=${name}`,
   );
 
   if (res.status !== 200) {
@@ -55,7 +55,7 @@ export const setContractCategory = async (
   }
 
   const res = await fetch(
-    `${SharedConfig.usmDomainFromEnv()}/api/contracts/admin/set-category?address=${address}&token=${token}&category=${category}`,
+    `${SharedConfig.getApiDomain()}/api/contracts/admin/set-category?address=${address}&token=${token}&category=${category}`,
   );
 
   if (res.status !== 200) {
@@ -75,7 +75,7 @@ export const setContractLastManuallyVerified = async (
   }
 
   const res = await fetch(
-    `${SharedConfig.usmDomainFromEnv()}/api/contracts/admin/set-last-manually-verified?address=${address}&token=${token}`,
+    `${SharedConfig.getApiDomain()}/api/contracts/admin/set-last-manually-verified?address=${address}&token=${token}`,
   );
 
   if (res.status !== 200) {
@@ -132,7 +132,7 @@ export const useContractsFreshness = (
 
   const { data } = useSWR(
     shouldFetch
-      ? `${SharedConfig.usmDomainFromEnv()}/api/contracts/metadata-freshness?token=${token}`
+      ? `${SharedConfig.getApiDomain()}/api/contracts/metadata-freshness?token=${token}`
       : null,
     fetcher,
   );

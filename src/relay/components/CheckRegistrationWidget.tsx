@@ -13,7 +13,7 @@ const CheckRegistrationWidget: FC = () => {
   const [registrationStatus, setRegistrationStatus] =
     useState<Status>("initial");
 
-  const apiUrl = getDomain(true);
+  const apiUrl = getDomain();
 
   const fetchRegistrationStatus = () => {
     if (addr.length > 0) {

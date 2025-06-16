@@ -31,16 +31,8 @@ import {
 } from "../relay/types";
 
 type StaticProps = {
-  // builderCensorshipPerTimeFrame: BuilderCensorshipPerTimeFrame;
-  // inclusionTimesPerTimeFrame: InclusionTimesPerTimeFrame;
-  // lidoOperatorCensorshipPerTimeFrame: LidoOperatorCensorshipPerTimeFrame;
   payloadStats: ApiPayloadStats;
   payloads: Array<ApiPayload>;
-  // recentDelayedTransactionsPerTimeFrame: RecentDelayedTransactionsPerTimeFrame;
-  // relayCensorshipPerTimeFrame: RelayCensorshipPerTimeFrame;
-  // sanctionsDelayPerTimeFrame: SanctionsDelayPerTimeFrame;
-  // suboptimalInclusionsPerTimeFrame: SuboptimalInclusionsPerTimeFrame;
-  // transactionCensorshipPerTimeFrame: TransactionCensorshipPerTimeFrame;
   topBuilders: Array<Builder>;
   topPayloads: Array<ApiPayload>;
   validatorStats: ValidatorStats;
@@ -49,19 +41,10 @@ type StaticProps = {
 
 export const getStaticProps: GetStaticProps<StaticProps> = pipe(
   TAlt.sequenceStructPar({
-    // builderCensorshipPerTimeFrame: fetchBuilderCensorshipPerTimeFrame,
-    // inclusionTimesPerTimeFrame: fetchInclusionTimesPerTimeFrame,
-    // lidoOperatorCensorshipPerTimeFrame: fetchLidoOperatorCensorshipPerTimeFrame,
     payloadStats: Api.fetchPayloadStats,
     payloads: Api.fetchPayloads,
-    // recentDelayedTransactionsPerTimeFrame:
-    //   fetchRecentDelayedTransactionsPerTimeFrame,
-    // relayCensorshipPerTimeFrame: fetchRelayCensorshipPerTimeFrame,
-    // sanctionsDelayPerTimeFrame: fetchSanctionsDelayPerTimeFrame,
-    // suboptimalInclusionsPerTimeFrame: fetchSuboptimalInclusionsPerTimeFrame,
     topBuilders: Api.fetchTopBuilders,
     topPayloads: Api.fetchTopPayloads,
-    // transactionCensorshipPerTimeFrame: fetchTransactionCensorshipPerTimeFrame,
     validatorStats: Api.fetchValidatorStats,
     validators: Api.fetchValidators,
   }),
@@ -72,34 +55,18 @@ export const getStaticProps: GetStaticProps<StaticProps> = pipe(
 );
 
 const RelayIndexPage: NextPage<StaticProps> = ({
-  // builderCensorshipPerTimeFrame,
-  // inclusionTimesPerTimeFrame,
-  // lidoOperatorCensorshipPerTimeFrame,
   payloadStats,
   payloads,
-  // recentDelayedTransactionsPerTimeFrame,
-  // relayCensorshipPerTimeFrame,
-  // sanctionsDelayPerTimeFrame,
-  // suboptimalInclusionsPerTimeFrame,
   topBuilders,
   topPayloads,
-  // transactionCensorshipPerTimeFrame,
   validatorStats,
   validators,
 }) => {
   const props = {
-    // builderCensorshipPerTimeFrame,
-    // inclusionTimesPerTimeFrame,
-    // lidoOperatorCensorshipPerTimeFrame,
     payloadStats: parsePayloadStats(payloadStats),
     payloads: payloads.map(parsePayload),
-    // recentDelayedTransactionsPerTimeFrame,
-    // relayCensorshipPerTimeFrame,
-    // sanctionsDelayPerTimeFrame,
-    // suboptimalInclusionsPerTimeFrame,
     topBuilders,
     topPayloads: topPayloads.map(parsePayload),
-    // transactionCensorshipPerTimeFrame,
     validatorStats,
     validators: validators.map(parseValidator),
   };

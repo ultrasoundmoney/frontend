@@ -886,7 +886,7 @@ const PoapSection: FC<{
   twitterAuthStatus: TwitterAuthStatus;
 }> = ({ setTwitterAuthStatus, twitterAuthStatus }) => {
   const { data: poapsClaimed, mutate } = useSWR<PoapsClaimed, Error>(
-    `${SharedConfig.usmDomainFromEnv()}/api/v2/fam/poap/claimed`,
+    `${SharedConfig.getApiDomain()}/api/v2/fam/poap/claimed`,
     fetchJsonSwr,
   );
   const { ref, inView } = useInView({ threshold: 1 });
