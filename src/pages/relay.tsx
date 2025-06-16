@@ -6,24 +6,8 @@ import BasicErrorBoundary from "../components/BasicErrorBoundary";
 import { pipe, T, TAlt } from "../fp";
 import type { ApiPayload, ApiPayloadStats, ApiValidator } from "../relay/api";
 import * as Api from "../relay/api";
-import type { BuilderCensorshipPerTimeFrame } from "../relay/api/censorship/builders";
-// import { fetchBuilderCensorshipPerTimeFrame } from "../relay/api/censorship/builders";
-import type { InclusionTimesPerTimeFrame } from "../relay/api/censorship/inclusion_times";
-// import { fetchInclusionTimesPerTimeFrame } from "../relay/api/censorship/inclusion_times";
-import type { LidoOperatorCensorshipPerTimeFrame } from "../relay/api/censorship/lido_operators";
-// import { fetchLidoOperatorCensorshipPerTimeFrame } from "../relay/api/censorship/lido_operators";
-import type { RecentDelayedTransactionsPerTimeFrame } from "../relay/api/inclusion-delays/recent_delayed_transactions";
-// import { fetchRecentDelayedTransactionsPerTimeFrame } from "../relay/api/inclusion-delays/recent_delayed_transactions";
-import type { RelayCensorshipPerTimeFrame } from "../relay/api/censorship/relays";
-// import { fetchRelayCensorshipPerTimeFrame } from "../relay/api/censorship/relays";
-import type { SanctionsDelayPerTimeFrame } from "../relay/api/censorship/sanctions_delay";
-// import { fetchSanctionsDelayPerTimeFrame } from "../relay/api/censorship/sanctions_delay";
-// import type { SuboptimalInclusionsPerTimeFrame } from "../relay/api/inclusion-delays/suboptimal_inclusions";
-// import { fetchSuboptimalInclusionsPerTimeFrame } from "../relay/api/inclusion-delays/suboptimal_inclusions";
-// import type { TransactionCensorshipPerTimeFrame } from "../relay/api/censorship/transaction_censorship";
-// import { fetchTransactionCensorshipPerTimeFrame } from "../relay/api/censorship/transaction_censorship";
 import RelayDashboards from "../relay/RelayDashboards";
-import type { Builder, ValidatorStats } from "../relay/types";
+import type { ValidatorStats } from "../relay/types";
 import {
   parsePayload,
   parsePayloadStats,
@@ -33,8 +17,6 @@ import {
 type StaticProps = {
   payloadStats: ApiPayloadStats;
   payloads: Array<ApiPayload>;
-  topBuilders: Array<Builder>;
-  topPayloads: Array<ApiPayload>;
   validatorStats: ValidatorStats;
   validators: Array<ApiValidator>;
 };
@@ -43,8 +25,6 @@ export const getStaticProps: GetStaticProps<StaticProps> = pipe(
   TAlt.sequenceStructPar({
     payloadStats: Api.fetchPayloadStats,
     payloads: Api.fetchPayloads,
-    topBuilders: Api.fetchTopBuilders,
-    topPayloads: Api.fetchTopPayloads,
     validatorStats: Api.fetchValidatorStats,
     validators: Api.fetchValidators,
   }),
@@ -57,16 +37,12 @@ export const getStaticProps: GetStaticProps<StaticProps> = pipe(
 const RelayIndexPage: NextPage<StaticProps> = ({
   payloadStats,
   payloads,
-  topBuilders,
-  topPayloads,
   validatorStats,
   validators,
 }) => {
   const props = {
     payloadStats: parsePayloadStats(payloadStats),
     payloads: payloads.map(parsePayload),
-    topBuilders,
-    topPayloads: topPayloads.map(parsePayload),
     validatorStats,
     validators: validators.map(parseValidator),
   };
