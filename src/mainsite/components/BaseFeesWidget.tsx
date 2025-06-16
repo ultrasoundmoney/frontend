@@ -199,13 +199,6 @@ const BaseFeesWidget: FC<Props> = ({
 }) => {
   const [hideBarrier, setHideBarrier] = useState(false);
 
-  // Check if any data points are above or near the barrier
-  const shouldShowBarrier = useMemo(() => {
-    if (!barrier || !baseFeesSeries) return false;
-    const threshold = barrier * 0.8; // 20% below barrier
-    return baseFeesSeries.some(point => point[1] >= threshold);
-  }, [barrier, baseFeesSeries]);
-
   // Setting lang has to happen before any chart render.
   useEffect(() => {
     if (Highcharts) {
@@ -223,14 +216,24 @@ const BaseFeesWidget: FC<Props> = ({
       15,
     );
 
-    const dynamicMax = hideBarrier || !shouldShowBarrier ? undefined : Math.max(max ?? 0, barrier ?? 0);
+    let dynamicMax;
+    if (hideBarrier) {
+      if (baseFeesSeries && baseFeesSeries.length > 0) {
+        const maxInData = Math.max(...baseFeesSeries.map((point) => point[1]));
+        dynamicMax = Math.ceil(maxInData / 10) * 10;
+      }
+      // If no data, let highcharts decide. dynamicMax will be undefined.
+    } else {
+      dynamicMax = Math.max(max ?? 0, barrier ?? 0);
+    }
 
     return _merge({}, baseOptions, {
       yAxis: {
         id: "base-fees",
         min,
         max: dynamicMax,
-        plotLines: barrier !== undefined && !hideBarrier && shouldShowBarrier ? [makeBarrier(barrier)] : [],
+        plotLines:
+          barrier !== undefined && !hideBarrier ? [makeBarrier(barrier)] : [],
       },
       series: [
         {
@@ -277,7 +280,7 @@ const BaseFeesWidget: FC<Props> = ({
         formatter: getTooltipFormatter(baseFeesMap, barrier),
       },
     } as Highcharts.Options);
-  }, [max, barrier, baseFeesMap, baseFeesSeries, hideBarrier, shouldShowBarrier]);
+  }, [max, barrier, baseFeesMap, baseFeesSeries, hideBarrier]);
 
   return (
     <WidgetErrorBoundary title={blobFees ? "blob fees" : "base fees"}>
@@ -337,14 +340,8 @@ const BaseFeesWidget: FC<Props> = ({
         </div>
         <div className="mt-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <ToggleSwitch
-              checked={hideBarrier}
-              onToggle={setHideBarrier}
-              disabled={!shouldShowBarrier}
-            />
-            <LabelText color="text-slateus-400">
-              {shouldShowBarrier ? "hide barrier" : "barrier hidden (no data above threshold)"}
-            </LabelText>
+            <ToggleSwitch checked={hideBarrier} onToggle={setHideBarrier} />
+            <LabelText color="text-slateus-400">hide barrier</LabelText>
           </div>
           <LabelText color="text-slateus-400">
             live on <span className="text-slateus-200">ultrasound.money</span>
