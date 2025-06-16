@@ -12,7 +12,10 @@
     "lint": "next lint",
     "start": "next start",
     "start:stag": "node standalone-stag/server.js",
-    "start:prod": "node standalone-prod/server.js"
+    "start:holesky": "node standalone-holesky/server.js",
+    "start:hoodi": "node standalone-hoodi/server.js",
+    "start:prod": "node standalone-prod/server.js",
+    "start:mainnet": "node standalone-mainnet/server.js"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.14",

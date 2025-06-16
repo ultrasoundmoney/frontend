@@ -7,8 +7,6 @@ import AdminTools from "../components/AdminTools";
 import BasicErrorBoundary from "../components/BasicErrorBoundary";
 import HeaderGlow from "../components/HeaderGlow";
 import MainTitle from "../components/MainTitle";
-import * as SharedConfig from "../config";
-import type { Network } from "../config";
 import { FeatureFlagsContext, useFeatureFlags } from "../feature-flags";
 import ContactSection from "../sections/ContactSection";
 import AddressWidget from "./components/AddressWidget";
@@ -22,6 +20,7 @@ import type {
   Validator,
   ValidatorStats,
 } from "./types";
+import { networkFromEnv, type Network } from "./config";
 
 export type RelayDashboardProps = {
   payloadStats: PayloadStats;
@@ -30,7 +29,7 @@ export type RelayDashboardProps = {
   validators: Array<Validator>;
 };
 
-const network = SharedConfig.networkFromEnv();
+const network = networkFromEnv();
 
 const TestnetMarker: FC<{ network: Network }> = ({ network }) => {
   const sharedStyles = `

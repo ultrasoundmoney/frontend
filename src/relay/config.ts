@@ -1,26 +1,23 @@
-import * as SharedConfig from "../config";
+export type Network = "mainnet" | "holesky" | "hoodi";
+
+export const networkFromEnv = (): Network => {
+  const rawNetwork = process.env.NEXT_PUBLIC_NETWORK;
+
+  switch (rawNetwork) {
+    case "mainnet":
+      return "mainnet";
+    case "holesky":
+      return "holesky";
+    case "hoodi":
+      return "hoodi";
+    default:
+      console.warn("no NEXT_PUBLIC_NETWORK in env, defaulting to mainnet");
+      return "mainnet";
+  }
+};
 
 export const getDomain = () => {
-  const isDev = process.env.NODE_ENV === "development";
-
-  if (isDev) {
-    const apiEnv = process.env.NEXT_PUBLIC_API_ENV;
-    switch (apiEnv) {
-      case "dev":
-        return "http://relay.localhost:3000";
-      case "stag":
-        return "https://relay-stag.ultrasound.money";
-      case "hoodi":
-        return "https://relay-hoodi.ultrasound.money";
-      case "prod":
-        return "https://relay.ultrasound.money";
-      default:
-        // Default to prod relay for local dev
-        return "https://relay.ultrasound.money";
-    }
-  }
-
-  const network = SharedConfig.networkFromEnv();
+  const network = networkFromEnv();
   switch (network) {
     case "holesky":
       return "https://relay-stag.ultrasound.money";
@@ -32,27 +29,8 @@ export const getDomain = () => {
   }
 };
 
-// Use prod api for censorship data on staging since we don't have the data for goerli
 export const getCensorshipDomain = () => {
-  const isDev = process.env.NODE_ENV === "development";
-
-  if (isDev) {
-    const apiEnv = process.env.NEXT_PUBLIC_API_ENV;
-    switch (apiEnv) {
-      case "dev":
-        return "http://relay.localhost:3000";
-      case "stag":
-        return "https://relay.ultrasound.money";
-      case "hoodi":
-        return "https://relay-hoodi.ultrasound.money";
-      case "prod":
-        return "https://relay.ultrasound.money";
-      default:
-        return "https://relay.ultrasound.money";
-    }
-  }
-
-  const network = SharedConfig.networkFromEnv();
+  const network = networkFromEnv();
   switch (network) {
     case "holesky":
       return "https://relay.ultrasound.money";
@@ -65,7 +43,7 @@ export const getCensorshipDomain = () => {
 };
 
 export const getRelayUrl = () => {
-  const network = SharedConfig.networkFromEnv();
+  const network = networkFromEnv();
   switch (network) {
     case "holesky":
       return "https://0xb1559beef7b5ba3127485bbbb090362d9f497ba64e177ee2c8e7db74746306efad687f2cf8574e38d70067d40ef136dc@relay-stag.ultrasound.money";
@@ -77,7 +55,7 @@ export const getRelayUrl = () => {
 };
 
 export const getRelayDisplayUrl = () => {
-  const network = SharedConfig.networkFromEnv();
+  const network = networkFromEnv();
   switch (network) {
     case "holesky":
       return {
@@ -98,7 +76,7 @@ export const getRelayDisplayUrl = () => {
 };
 
 export const getEtherscanUrl = () => {
-  const network = SharedConfig.networkFromEnv();
+  const network = networkFromEnv();
   return network === "holesky"
     ? "https://holesky.etherscan.io"
     : network === "hoodi"
@@ -107,7 +85,7 @@ export const getEtherscanUrl = () => {
 };
 
 export const getBeaconchainUrl = () => {
-  const network = SharedConfig.networkFromEnv();
+  const network = networkFromEnv();
   return network === "holesky"
     ? "https://holesky.beaconcha.in"
     : network === "hoodi"
