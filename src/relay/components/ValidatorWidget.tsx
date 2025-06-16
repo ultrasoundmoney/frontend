@@ -99,17 +99,27 @@ const ValidatorWidget: FC<Props> = ({
             <WidgetTitle>validator</WidgetTitle>
             <WidgetTitle className="-mr-1 text-right">registration</WidgetTitle>
           </div>
-          <ul
-            className={`
-            -mr-3 flex max-h-[184px]
-            flex-col gap-y-4 overflow-y-auto
-            pr-1 md:max-h-[214px]
-            ${scrollbarStyles["styled-scrollbar-vertical"]}
-            ${scrollbarStyles["styled-scrollbar"]}
-          `}
-          >
-            {validators.map(ValidatorRow)}
-          </ul>
+          {validators.length > 0 ? (
+            <ul
+              className={`
+              -mr-3 flex max-h-[184px]
+              flex-col gap-y-4 overflow-y-auto
+              pr-1 md:max-h-[214px]
+              ${scrollbarStyles["styled-scrollbar-vertical"]}
+              ${scrollbarStyles["styled-scrollbar"]}
+            `}
+            >
+              {validators.map(ValidatorRow)}
+            </ul>
+          ) : (
+            <div
+              className="flex h-[184px] items-center justify-center md:h-[214px]"
+            >
+              <BaseText font="font-roboto" color="text-slateus-400">
+                registrations unavailable
+              </BaseText>
+            </div>
+          )}
         </div>
       </WidgetBackground>
     </div>
