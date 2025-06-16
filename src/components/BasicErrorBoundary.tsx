@@ -11,11 +11,11 @@ const Fallback: FC = () => (
         sending a screenshot to
         <a
           className="ml-2 cursor-pointer text-slateus-200 underline active:brightness-90"
-          href="https://twitter.com/ultrasoundmoney/"
+          href="https://t.me/smilingalex/"
           rel="noreferrer"
           target="_blank"
         >
-          @ultrasoundmoney
+          t.me/smilingalex
         </a>
         .
       </p>
