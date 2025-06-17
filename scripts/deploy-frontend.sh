@@ -65,8 +65,8 @@ kubectl config use-context $CLUSTER
 echo "-> updating serve-frontend deployment with commit $CURRENT_COMMIT"
 kubectl set image deployment/serve-frontend serve-frontend=ultrasoundorg/ultrasoundmoney-frontend:$CURRENT_COMMIT
 
-# Update web-infra yaml only when deploying to staging
-if [[ "$CLUSTER" == "smith" ]]; then
+# Update web-infra yaml
+if [[ "$CLUSTER" == "smith" || "$CLUSTER" == "kevin" ]]; then
     # Update web-infra yaml
     cd ~/code/ultra-sound/web-infra
     git diff-files --quiet || IS_DIRTY=1
@@ -90,13 +90,31 @@ if [[ "$CLUSTER" == "smith" ]]; then
     echo "-> pulling latest web-infra changes from github"
     git pull --quiet
 
-    echo "-> updating base/serve-frontend.yaml image with commit $CURRENT_COMMIT"
-    DEPLOY_FILE="/Users/alextes/code/ultra-sound/web-infra/base/serve-frontend.yaml"
-    sed -i '' "s|ultrasoundorg/ultrasoundmoney-frontend:[a-f0-9]\{7,40\}[-a-zA-Z0-9_]*|ultrasoundorg/ultrasoundmoney-frontend:$CURRENT_COMMIT|" $DEPLOY_FILE
+    if [[ "$CLUSTER" == "smith" ]]; then
+        echo "-> updating base/serve-frontend.yaml image with commit $CURRENT_COMMIT"
+        DEPLOY_FILE="/Users/alextes/code/ultra-sound/web-infra/base/serve-frontend.yaml"
+        sed -i '' "s|ultrasoundorg/ultrasoundmoney-frontend:[a-f0-9]\{7,40\}[-a-zA-Z0-9_]*|ultrasoundorg/ultrasoundmoney-frontend:$CURRENT_COMMIT|" $DEPLOY_FILE
+        git add $DEPLOY_FILE
+        git commit -m "chore(frontend): update base image to $CURRENT_COMMIT"
+    elif [[ "$CLUSTER" == "kevin" ]]; then
+        echo "-> updating overlays/prod/kustomization.yaml image with commit $CURRENT_COMMIT"
+        PROD_DEPLOY_FILE="/Users/alextes/code/ultra-sound/web-infra/overlays/prod/kustomize.yaml"
+        # Use a sed script to be safe
+        sed_script="
+/name: ultrasoundorg\/ultrasoundmoney-frontend/ {
+  :a
+  n
+  /newTag:/ {
+    s/newTag: .*/newTag: $CURRENT_COMMIT/
+  }
+  ba
+}
+"
+        sed -i '' -e "$sed_script" "$PROD_DEPLOY_FILE"
+        git add "$PROD_DEPLOY_FILE"
+        git commit -m "chore(frontend): update prod image to $CURRENT_COMMIT"
+    fi
 
-    echo "-> creating commit"
-    git add $DEPLOY_FILE
-    git commit -m "chore(frontend): update base image to $CURRENT_COMMIT"
     echo "-> pushing web-infra changes to github"
     git push --quiet
 fi
