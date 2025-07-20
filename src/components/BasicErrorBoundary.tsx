@@ -4,7 +4,7 @@ import type { FC, ReactNode } from "react";
 const Fallback: FC = () => (
   <div className="flex flex-col justify-center text-slateus-400">
     <div className="m-16 mx-auto w-5/6 rounded-lg border border-red-400 bg-slateus-700 p-8 text-center font-roboto text-base font-light text-white">
-      <p className="mb-4">An exception has occured 😱</p>
+      <p className="mb-4">An exception has occurred 😱</p>
       <p className="mb-2">
         We&apos;re sorry, this should never happen! If you&apos;ve seen this
         before, or reloading doesn&apos;t fix it, you can help debug it by

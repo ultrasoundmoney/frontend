@@ -50,7 +50,7 @@ const FeeBurnedBlock = () => {
         )
       : 0;
 
-    //cahnge visibility vidgets bar
+    //change visibility vidgets bar
     if (showVidgets) {
       setIsShow(true);
     } else {
