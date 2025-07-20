@@ -7,7 +7,7 @@ const ErrorWidget: FC<Props> = ({ title }) => (
     <p className="mb-8 font-inter text-xs font-light uppercase tracking-widest text-slateus-200">
       {title}
     </p>
-    <p className="mb-4">An exception has occured 😱</p>
+    <p className="mb-4">An exception has occurred 😱</p>
     <p className="mb-2">
       We&apos;re sorry, this should never happen! If you&apos;ve seen this
       before, or reloading doesn&apos;t fix it, you can help debug it by sending

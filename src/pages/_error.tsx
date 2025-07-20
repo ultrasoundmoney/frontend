@@ -26,7 +26,7 @@ const ErrorPage: FC<{ error?: Error; statusCode?: number }> = ({
           marginBottom: "2rem",
         }}
       >
-        A top-level exception has occured 😱
+        A top-level exception has occurred 😱
       </p>
       <p style={{ marginBottom: "2rem" }}>
         We&apos;re sorry, this should never happen! If you&apos;ve seen this

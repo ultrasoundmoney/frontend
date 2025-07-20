@@ -40,7 +40,7 @@ const useNotification = (): NotificationState => {
     setPermission(Notification.permission);
   }, []);
 
-  // Notification permission may change without this component rerendering, to catch that we periodically chcek.
+  // Notification permission may change without this component rerendering, to catch that we periodically check.
   useEffect(() => {
     if (!isNotificationSupported) {
       return undefined;

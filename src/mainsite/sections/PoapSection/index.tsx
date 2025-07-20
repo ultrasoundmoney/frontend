@@ -549,7 +549,7 @@ const Claimed: FC<{
             <div className="w-8 h-8 select-none">
               <Image
                 title="not claimed"
-                alt="random emoji monkey covering one of its senses to indicate empathetic embarassment at not claiming a POAP"
+                alt="random emoji monkey covering one of its senses to indicate empathetic embarrassment at not claiming a POAP"
                 width={32}
                 height={32}
                 src={monkey}
