@@ -98,7 +98,7 @@ if [[ "$CLUSTER" == "smith" || "$CLUSTER" == "kevin" ]]; then
         git commit -m "chore(frontend): update base image to $CURRENT_COMMIT"
     elif [[ "$CLUSTER" == "kevin" ]]; then
         echo "-> updating overlays/prod/kustomization.yaml image with commit $CURRENT_COMMIT"
-        PROD_DEPLOY_FILE="/Users/alextes/code/ultra-sound/web-infra/overlays/prod/kustomize.yaml"
+        PROD_DEPLOY_FILE="/Users/alextes/code/ultra-sound/web-infra/overlays/prod/kustomization.yaml"
         # Use a sed script to be safe
         sed_script="
 /name: ultrasoundorg\/ultrasoundmoney-frontend/ {
