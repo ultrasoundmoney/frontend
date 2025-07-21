@@ -69,7 +69,7 @@ const PriceGasWidget: FC = () => {
           lg:text-sm
         `}
       >
-        <div className="flex items-center select-none">
+        <div className="flex select-none items-center">
           <Image
             src={gasSvg as StaticImageData}
             alt="gas pump icon"
@@ -86,7 +86,7 @@ const PriceGasWidget: FC = () => {
               (baseFeePerGas) => (
                 <CountUp
                   className={gweiColor}
-                  decimals={0}
+                  decimals={1}
                   duration={0.8}
                   end={Format.gweiFromWei(baseFeePerGas.wei)}
                   preserveValue
@@ -106,7 +106,7 @@ const PriceGasWidget: FC = () => {
           </BaseText>
         </BaseText>
         <div className="mr-4"></div>
-        <div className="flex items-center select-none">
+        <div className="flex select-none items-center">
           <Image
             className="select-none"
             src={ethSvg as StaticImageData}
