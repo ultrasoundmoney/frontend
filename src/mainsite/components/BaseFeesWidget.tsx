@@ -16,6 +16,8 @@ import TimeFrameIndicator from "../components/TimeFrameIndicator";
 import type { TimeFrame } from "../time-frames";
 import type { OnClick } from "../../components/TimeFrameControl";
 
+// BaseFeesWidget component for displaying Ethereum base fee data
+
 export type BaseFeePoint = [JsTimestamp, Gwei];
 
 // Somehow resolves an error thrown by the annotation lib
