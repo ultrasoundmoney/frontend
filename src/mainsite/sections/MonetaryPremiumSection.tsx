@@ -4,6 +4,7 @@ import IssuanceBreakdown from "../components/IssuanceBreakdown";
 import PriceModel from "../components/PriceModel";
 import ScarcityWidget from "../components/ScarcityWidget";
 import ValidatorRewardsWidget from "../components/ValidatorRewards";
+import ValidatorCostsWidget from "../components/ValidatorCostsWidget";
 import Section from "../../components/Section";
 
 const MonetaryPremiumSection: FC = () => (
@@ -16,11 +17,12 @@ const MonetaryPremiumSection: FC = () => (
       <div className="flex basis-1/2 flex-col gap-y-4">
         <ScarcityWidget />
         <ValidatorRewardsWidget />
-        <Flippenings />
+        <ValidatorCostsWidget />
       </div>
       <div className="flex basis-1/2 flex-col gap-y-4">
         <PriceModel />
         <IssuanceBreakdown />
+        <Flippenings />
       </div>
     </div>
   </Section>
