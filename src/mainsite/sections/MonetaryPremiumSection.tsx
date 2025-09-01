@@ -18,11 +18,11 @@ const MonetaryPremiumSection: FC = () => (
         <ScarcityWidget />
         <ValidatorRewardsWidget />
         <ValidatorCostsWidget />
-        <Flippenings />
       </div>
       <div className="flex basis-1/2 flex-col gap-y-4">
         <PriceModel />
         <IssuanceBreakdown />
+        <Flippenings />
       </div>
     </div>
   </Section>
