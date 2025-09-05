@@ -1,7 +1,6 @@
 import type { FC } from "react";
 import Flippenings from "../components/Flippenings";
 import IssuanceBreakdown from "../components/IssuanceBreakdown";
-import PriceModel from "../components/PriceModel";
 import ScarcityWidget from "../components/ScarcityWidget";
 import ValidatorRewardsWidget from "../components/ValidatorRewards";
 import Section from "../../components/Section";
@@ -13,14 +12,13 @@ const MonetaryPremiumSection: FC = () => (
     subtitle="the race to become the most desirable money"
   >
     <div className="flex w-full flex-col gap-y-4 lg:flex-row lg:gap-x-4">
-      <div className="flex basis-1/2 flex-col gap-y-4">
+      <div className="flex basis-1/2 flex-col gap-y-4 lg:h-full">
         <ScarcityWidget />
         <ValidatorRewardsWidget />
-        <Flippenings />
       </div>
-      <div className="flex basis-1/2 flex-col gap-y-4">
-        <PriceModel />
+      <div className="flex basis-1/2 flex-col gap-y-4 lg:h-full">
         <IssuanceBreakdown />
+        <Flippenings />
       </div>
     </div>
   </Section>
