@@ -1,16 +1,27 @@
 import type { FC } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { getRelayUrl, getRelayDisplayUrl } from "../config";
 import Button from "../../components/BlueButton";
 import { WidgetBackground } from "../../components/WidgetSubcomponents";
 import LabelText from "../../components/TextsNext/LabelText";
 
-const address = getRelayUrl();
-const displayAddress = getRelayDisplayUrl();
-
 const AddressWidget: FC = () => {
   const [copyTextVisible, setCopyTextVisible] = useState<boolean>(false);
+  const [address, setAddress] = useState<string>("");
+  const [displayAddress, setDisplayAddress] = useState<{
+    pubkey: string;
+    host: string;
+  }>({
+    pubkey: "",
+    host: "",
+  });
+
+  useEffect(() => {
+    // Compute on client to reflect actual host (including filtered variants)
+    setAddress(getRelayUrl());
+    setDisplayAddress(getRelayDisplayUrl());
+  }, []);
 
   return (
     <WidgetBackground className="relative w-full overflow-hidden">

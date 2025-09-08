@@ -44,35 +44,30 @@ export const getCensorshipDomain = () => {
 
 export const getRelayUrl = () => {
   const network = networkFromEnv();
-  switch (network) {
-    case "holesky":
-      return "https://0xb1559beef7b5ba3127485bbbb090362d9f497ba64e177ee2c8e7db74746306efad687f2cf8574e38d70067d40ef136dc@relay-stag.ultrasound.money";
-    case "hoodi":
-      return "https://0xb1559beef7b5ba3127485bbbb090362d9f497ba64e177ee2c8e7db74746306efad687f2cf8574e38d70067d40ef136dc@relay-hoodi.ultrasound.money";
-    case "mainnet":
-      return "https://0xa1559ace749633b997cb3fdacffb890aeebdb0f5a3b6aaa7eeeaf1a38af0a8fe88b9e4b1f61f236d2e64d95733327a62@relay.ultrasound.money";
-  }
+  const protocol =
+    typeof window !== "undefined" ? window.location.protocol : "https:";
+  const fallbackHost = new URL(getDomain()).host;
+  const host =
+    typeof window !== "undefined" ? window.location.host : fallbackHost;
+
+  const pubkey =
+    network === "mainnet"
+      ? "0xa1559ace749633b997cb3fdacffb890aeebdb0f5a3b6aaa7eeeaf1a38af0a8fe88b9e4b1f61f236d2e64d95733327a62"
+      : "0xb1559beef7b5ba3127485bbbb090362d9f497ba64e177ee2c8e7db74746306efad687f2cf8574e38d70067d40ef136dc";
+
+  return `${protocol}//${pubkey}@${host}`;
 };
 
 export const getRelayDisplayUrl = () => {
   const network = networkFromEnv();
-  switch (network) {
-    case "holesky":
-      return {
-        pubkey: "0xb1559...",
-        host: "relay-stag.ultrasound.money",
-      };
-    case "hoodi":
-      return {
-        pubkey: "0xb1559...",
-        host: "relay-hoodi.ultrasound.money",
-      };
-    case "mainnet":
-      return {
-        pubkey: "0xa1559...",
-        host: "relay.ultrasound.money",
-      };
-  }
+  const fallbackHost = new URL(getDomain()).host;
+  const host =
+    typeof window !== "undefined" ? window.location.host : fallbackHost;
+
+  return {
+    pubkey: network === "mainnet" ? "0xa1559..." : "0xb1559...",
+    host,
+  };
 };
 
 export const getEtherscanUrl = () => {
