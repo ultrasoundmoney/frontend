@@ -1,8 +1,8 @@
 {
   "name": "website_frontend",
-  "description": "frontend for ultrasound.money",
+  "description": "frontend for ultrasonic money",
   "version": "1.0.0",
-  "author": "Ultra Sound Money <contact@ultrasound.money>",
+  "author": "Ultra Sonic Money",
   "private": true,
   "license": "MIT",
   "scripts": {

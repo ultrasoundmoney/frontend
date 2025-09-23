@@ -50,21 +50,21 @@ const RelayIndexPage: NextPage<StaticProps> = ({
   return (
     <BasicErrorBoundary>
       <Head>
-        <title>Ultra Sound Relay</title>
-        <meta property="og:title" content="Ultra Sound Relay" />
+        <title>Ultra Sonic Relay</title>
+        <meta property="og:title" content="Ultra Sonic Relay" />
         <meta
           name="description"
           content="Permissionless, neutral, and censorship free MEV relay"
         />
         <meta
           name="keywords"
-          content="ultra sound relay, ethereum, ETH, MEV, MEV Boost Relay"
+          content="ultra sonic relay, ethereum, ETH, MEV, MEV Boost Relay"
         />
         <meta
           property="og:description"
           content="Permissionless, neutral, and censorship free MEV relay"
         />
-        <meta property="og:url" content="https://relay.ultrasound.money" />
+        <meta property="og:url" content="https://relay.ultrasonic.money" />
       </Head>
       <Script
         defer

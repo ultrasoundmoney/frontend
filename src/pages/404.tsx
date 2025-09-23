@@ -10,7 +10,7 @@ const Custom404 = () => (
       alignItems: "center",
     }}
   >
-    <h1 style={{ marginBottom: "2rem" }}>404 | no ultra sound money here</h1>
+    <h1 style={{ marginBottom: "2rem" }}>404 | no ultra sonic money here</h1>
     <a
       className="cursor-pointer text-slateus-200 active:brightness-90"
       href="https://ultrasound.money/"
@@ -22,7 +22,7 @@ const Custom404 = () => (
         textDecorationLine: "underline",
       }}
     >
-      ultrasound.money
+      ultrasonic.money
     </a>
   </div>
 );
