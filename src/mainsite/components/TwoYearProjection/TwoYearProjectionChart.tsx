@@ -165,13 +165,14 @@ const SupplyChart: FC<Props> = ({
   const projectionsInputs = useSupplyProjectionInputs();
 
   // Transform our input data into series that we'll pass to highcharts
-  const [series, annotations, totalSupplyByDate] = useMemo((): [
+  const [series, annotations, totalSupplyByDate, peakSupplyValue] = useMemo((): [
     Highcharts.SeriesAreaOptions[],
     Highcharts.AnnotationsLabelsOptions[],
     Record<string, number>,
+    [number, number] | null,
   ] => {
     if (projectionsInputs === undefined) {
-      return [[], [], {}];
+      return [[], [], {}, null];
     }
 
     const {
@@ -495,13 +496,19 @@ const SupplyChart: FC<Props> = ({
         useHTML: true,
       };
       annotations.push(annotation);
+    }
+
+    return [series, annotations, supplyByDate, peakSupply];
+  }, [chartSettings, t, projectionsInputs]);
+
+  // Handle peak supply state updates in useEffect to avoid setState during render
+  useEffect(() => {
+    if (peakSupplyValue !== null) {
       onPeakProjectedToggle(true);
     } else {
       onPeakProjectedToggle(false);
     }
-
-    return [series, annotations, supplyByDate];
-  }, [chartSettings, onPeakProjectedToggle, t, projectionsInputs]);
+  }, [peakSupplyValue, onPeakProjectedToggle]);
 
   // Now build up the Highcharts configuration object
   const options = useMemo((): Highcharts.Options => {
