@@ -4,7 +4,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import Section from "../../components/Section";
 import QuantifyText from "../../components/TextsNext/QuantifyText";
 import Twemoji from "../../components/Twemoji";
-import WidgetBase from "../../relay/components/WidgetBase";
+import WidgetBase from "../../components/WidgetBase";
 import BlueButton from "../../components/BlueButton";
 import FamExplorerV2 from "../components/FamExplorerV1";
 

@@ -1,7 +1,7 @@
 import type { TE } from "./fp";
 import { E, pipe, T } from "./fp";
 
-export type SiteEnv = "usm" | "relay";
+export type SiteEnv = "usm";
 
 export type FetchError = {
   type: "FetchError";

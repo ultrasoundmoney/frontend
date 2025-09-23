@@ -19,7 +19,7 @@ import ClickAwayListener from "react-click-away-listener";
 import SpriteWithOnClickTooltip from "../../../components/SpriteWithOnClickTooltip";
 import followingYouStyles from "../FollowingYou/FollowingYou.module.scss";
 import ControlButtons from "./ControlButtons";
-import WidgetBase from "../../../relay/components/WidgetBase";
+import WidgetBase from "../../../components/WidgetBase";
 import BodyTextV3 from "../../../components/TextsNext/BodyTextV3";
 
 // See if merging with leaderboards tooltip makes sense after making it more generic.

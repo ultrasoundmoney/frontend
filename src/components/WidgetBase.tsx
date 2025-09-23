@@ -1,12 +1,12 @@
 import type { FC, ReactNode } from "react";
-import WidgetErrorBoundary from "../../components/WidgetErrorBoundary";
+import WidgetErrorBoundary from "./WidgetErrorBoundary";
 import {
   WidgetBackground,
   WidgetTitle,
-} from "../../components/WidgetSubcomponents";
-import TimeFrameIndicator from "../../mainsite/components/TimeFrameIndicator";
-import type { TimeFrame } from "../../mainsite/time-frames";
-import type { OnClick } from "../../components/TimeFrameControl";
+} from "./WidgetSubcomponents";
+import TimeFrameIndicator from "../mainsite/components/TimeFrameIndicator";
+import type { TimeFrame } from "../mainsite/time-frames";
+import type { OnClick } from "./TimeFrameControl";
 
 type Props = {
   children: ReactNode;

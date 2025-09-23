@@ -1,5 +1,4 @@
 import { type NextRequest, NextResponse } from "next/server";
-import * as RelayConfig from "./relay/config";
 
 export const config = {
   matcher: [
@@ -16,16 +15,6 @@ export const config = {
 };
 
 export default function middleware(req: NextRequest) {
-  const url = req.nextUrl;
-
-  if (url.pathname === "/relay") {
-    const newUrl = RelayConfig.getDomain();
-    return NextResponse.redirect(newUrl);
-  }
-
-  const host = req.headers.get("host") || "";
-  if (host.startsWith("relay")) {
-    url.pathname = `/relay${url.pathname}`;
-    return NextResponse.rewrite(url);
-  }
+  // Middleware functionality removed - no relay redirects needed
+  return NextResponse.next();
 }
