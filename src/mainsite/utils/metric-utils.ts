@@ -55,13 +55,12 @@ export function formatDate(date: Date): string {
     "Dec",
   ];
   return (
-    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
     (date.getDate() < 10 ? " " : "") +
-    date.getDate() +
+    date.getDate().toString() +
     " " +
-    months[date.getMonth()] +
+    (months[date.getMonth()] ?? "Unknown") +
     " " +
-    date.getFullYear()
+    date.getFullYear().toString()
   );
 }
 
