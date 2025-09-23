@@ -134,16 +134,16 @@ const Summary: FC<{ className?: string }> = ({ className = "" }) => {
               </AmountAnimatedShell>
             </div>
           </div>
-          <WidgetTitle>ethereum secures</WidgetTitle>
+          <WidgetTitle>sonic secures</WidgetTitle>
           <AssetType
             amount={totalValueSecured?.ethTotal}
             href={"https://etherscan.io/stat/supply"}
             icon="eth"
-            title="ETH"
+            title="SONIC"
           />
           <AssetType
             amount={totalValueSecured?.erc20Total}
-            href={"https://www.coingecko.com/?asset_platform_id=ethereum"}
+            href={"https://www.coingecko.com/?asset_platform_id=sonic"}
             icon="erc20"
             title="ERC20s"
           />

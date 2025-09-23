@@ -75,7 +75,7 @@ const StoryPreview: NextPage<StaticProps> = ({ fallback }) => (
       <meta name="description" content={SiteMetadata.description} />
       <meta
         name="keywords"
-        content="ultra sonic money, ethereum, ETH, sonic money, fee burn, EIP-1559"
+        content="ultra sonic money, sonic, SONIC, sonic money, fee burn, EIP-1559"
       />
       {/* When sharing the site on twitter, twitter adds our metadata, this adds little value, so we remove it. To not spend a lot of time removing our metadata from every shared link we're disabling twitter metadata for now. */}
       <meta property="og:title" content={SiteMetadata.title} />

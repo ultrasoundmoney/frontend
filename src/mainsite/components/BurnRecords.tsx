@@ -99,7 +99,7 @@ const BurnRecords: FC<Props> = ({ onClickTimeFrame, timeFrame}) => {
                 size="text-2xl md:text-3xl"
                 skeletonWidth="4rem"
                 unit="eth"
-                unitText="ETH"
+                unitText="SONIC"
               >
                 {record.baseFeeSum}
               </QuantifyTextAnimated>

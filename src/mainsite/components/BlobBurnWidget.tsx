@@ -100,7 +100,7 @@ const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
           <AmountAnimatedShell
             skeletonWidth="9rem"
             size="text-2xl md:text-3xl lg:text-3xl xl:text-4xl"
-            unitText={formatBurnAsGwei ? "Gwei" : "ETH"}
+            unitText={formatBurnAsGwei ? "Gwei" : "SONIC"}
           >
             <CountUp
               decimals={burnDecimals}
@@ -112,7 +112,7 @@ const BlobBurnWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
           </AmountAnimatedShell>
           <div className="ml-4 h-6 w-6 select-none md:ml-8 lg:h-8 lg:w-8">
             <Image
-              alt="fire emoji symbolizing ETH burned"
+              alt="fire emoji symbolizing SONIC burned"
               src={fireSvg as StaticImageData}
             />
           </div>

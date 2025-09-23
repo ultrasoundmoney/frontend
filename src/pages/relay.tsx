@@ -58,7 +58,7 @@ const RelayIndexPage: NextPage<StaticProps> = ({
         />
         <meta
           name="keywords"
-          content="ultra sonic relay, ethereum, ETH, MEV, MEV Boost Relay"
+          content="ultra sonic relay, sonic, SONIC, MEV, MEV Boost Relay"
         />
         <meta
           property="og:description"

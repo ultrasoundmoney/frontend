@@ -190,7 +190,7 @@ const IssuanceBreakdown = () => {
             <div className="w-0.5 h-2 bg-slateus-500"></div>
             <CategorySegment
               imgAlt={
-                "a pickaxe symbolizing the ETH minted using proof of work"
+                "a pickaxe symbolizing the SONIC minted using proof of work"
               }
               imgName={"pick"}
               onHoverCategory={setHighlightProofOfWork}
@@ -203,7 +203,7 @@ const IssuanceBreakdown = () => {
             <div className="w-0.5 h-2 bg-slateus-500"></div>
             <CategorySegment
               imgAlt={
-                "a unicorn symbolizing the early contributors dreaming up and building Ethereum"
+                "a unicorn symbolizing the early contributors dreaming up and building Sonic"
               }
               imgName={"unicorn"}
               onHoverCategory={setHighlightEarlyContributors}
@@ -216,7 +216,7 @@ const IssuanceBreakdown = () => {
             <div className="w-0.5 h-2 bg-slateus-500"></div>
             <CategorySegment
               imgAlt={
-                "a seedling symbolizing the gardening Ethereum Foundation"
+                "a seedling symbolizing the gardening Sonic Foundation"
               }
               imgName={"seedling"}
               onHoverCategory={setHighlightEthereumFoundation}
@@ -229,7 +229,7 @@ const IssuanceBreakdown = () => {
             <div className="w-0.5 h-2 bg-slateus-500"></div>
             <CategorySegment
               imgAlt={
-                "a steak as workplay on stake, symbolizing the ETH minted using proof of stake"
+                "a steak as workplay on stake, symbolizing the SONIC minted using proof of stake"
               }
               imgName={"steak"}
               onHoverCategory={setHighlightProofOfStake}
