@@ -1,6 +1,6 @@
 const metadata = {
-  description: "watch ETH become ultra sound money",
-  title: "Ultra Sound Money",
+  description: "watch Sonic become ultra sound money",
+  title: "Ultra Sonic Money",
   image: "https://ultrasound.money/og-image.png",
 };
 
