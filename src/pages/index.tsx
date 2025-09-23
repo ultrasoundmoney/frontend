@@ -64,47 +64,64 @@ function fetchOrThrow<A>(fn: T.Task<ApiResult<A>>) {
   );
 }
 
+// Next.js Static Site Generation (SSG) function that pre-fetches all blockchain data at build time
+// This creates a super-fast loading homepage by having all data ready before the user visits
 export const getStaticProps: GetStaticProps<StaticProps> = pipe(
+  // Start the async computation pipeline
   T.Do,
+
+  // STEP 1: Fetch all main blockchain APIs in parallel for maximum speed
+  // sequenceStructPar runs all these API calls simultaneously, not one-by-one
   T.apS(
     "fetches",
     TAlt.sequenceStructPar({
-      "/api/fees/scarcity": fetchOrThrow(fetchScarcity),
-      "/api/v2/fees/average-eth-prices": fetchOrThrow(fetchAverageEthPrice),
-      "/api/v2/fees/base-fee-per-gas": pipe(fetchBaseFeePerGas(), TEAlt.unwrap),
+      "/api/fees/scarcity": fetchOrThrow(fetchScarcity), // SONIC scarcity metrics
+      "/api/v2/fees/average-eth-prices": fetchOrThrow(fetchAverageEthPrice), // Average SONIC prices
+      "/api/v2/fees/base-fee-per-gas": pipe(fetchBaseFeePerGas(), TEAlt.unwrap), // Current gas fees
       "/api/v2/fees/base-fee-per-gas-barrier": fetchOrThrow(
+        // Fee barriers/thresholds
         fetchBaseFeePerGasBarrier,
       ),
-      "/api/v2/fees/burn-rates": fetchOrThrow(fetchBurnRates),
-      "/api/v2/fees/burn-sums": fetchOrThrow(fetchBurnSums),
-      "/api/v2/fees/eth-price-stats": fetchOrThrow(fetchEthPriceStats),
-      "/api/v2/fees/gauge-rates": fetchOrThrow(fetchGaugeRates),
-      "/api/v2/fees/supply-parts": fetchOrThrow(fetchSupplyParts),
+      "/api/v2/fees/burn-rates": fetchOrThrow(fetchBurnRates), // How fast SONIC is burning
+      "/api/v2/fees/burn-sums": fetchOrThrow(fetchBurnSums), // Total SONIC burned
+      "/api/v2/fees/eth-price-stats": fetchOrThrow(fetchEthPriceStats), // SONIC price statistics
+      "/api/v2/fees/gauge-rates": fetchOrThrow(fetchGaugeRates), // Issuance vs burn rates
+      "/api/v2/fees/supply-parts": fetchOrThrow(fetchSupplyParts), // SONIC supply breakdown
     }),
   ),
+
+  // 📊 STEP 2: Fetch detailed time-series statistics (needs to be separate)
+  // This returns nested data: { base_fee_per_gas_stats: { m5: {...}, h1: {...}, d1: {...} } }
+  // We fetch it separately so we can "unpack" it into individual SWR cache keys in STEP 3
   T.apS("baseFeePerGasStats", fetchOrThrow(fetchBaseFeePerGasStats)),
+
+  // 🔧 STEP 3: Combine all data and break down time-series stats into specific time frames
+  // This creates the final data structure that SWR will use for caching
   T.map(({ fetches, baseFeePerGasStats }) => ({
     ...fetches,
+    // Break out time-series data into individual cache keys for different dashboard widgets
     "/api/v2/fees/base-fee-per-gas-stats?time_frame=m5":
-      baseFeePerGasStats.base_fee_per_gas_stats.m5,
+      baseFeePerGasStats.base_fee_per_gas_stats.m5, // Last 5 minutes
     "/api/v2/fees/base-fee-per-gas-stats?time_frame=h1":
-      baseFeePerGasStats.base_fee_per_gas_stats.h1,
+      baseFeePerGasStats.base_fee_per_gas_stats.h1, // Last 1 hour
     "/api/v2/fees/base-fee-per-gas-stats?time_frame=d1":
-      baseFeePerGasStats.base_fee_per_gas_stats.d1,
+      baseFeePerGasStats.base_fee_per_gas_stats.d1, // Last 1 day
     "/api/v2/fees/base-fee-per-gas-stats?time_frame=d7":
-      baseFeePerGasStats.base_fee_per_gas_stats.d7,
+      baseFeePerGasStats.base_fee_per_gas_stats.d7, // Last 7 days
     "/api/v2/fees/base-fee-per-gas-stats?time_frame=d30":
-      baseFeePerGasStats.base_fee_per_gas_stats.d30,
+      baseFeePerGasStats.base_fee_per_gas_stats.d30, // Last 30 days
     "/api/v2/fees/base-fee-per-gas-stats?time_frame=since_merge":
-      baseFeePerGasStats.base_fee_per_gas_stats.since_merge,
+      baseFeePerGasStats.base_fee_per_gas_stats.since_merge, // Since PoS merge
     "/api/v2/fees/base-fee-per-gas-stats?time_frame=since_burn":
-      baseFeePerGasStats.base_fee_per_gas_stats.since_burn,
+      baseFeePerGasStats.base_fee_per_gas_stats.since_burn, // Since fee burning started
   })),
+
+  // 📦 STEP 4: Package everything for Next.js with regeneration settings
   T.map((fallback) => ({
-    props: { fallback },
+    props: { fallback }, // Pass all pre-fetched data to the React component
     // Should be the expected lifetime of the data which goes stale quickest.
     // Although base-fee-per-gas updates every block, it's good enough to update SSR every 1min.
-    revalidate: minutesToSeconds(1),
+    revalidate: minutesToSeconds(1), // Rebuild this page every 60 seconds
   })),
 );
 
