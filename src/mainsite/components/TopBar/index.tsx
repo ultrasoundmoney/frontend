@@ -117,11 +117,11 @@ const TopBar: FC = () => {
           className="hidden select-none font-medium hover:brightness-90 active:brightness-75 md:block"
           href="#fam"
         >
-          <button className="rounded-3xl border-2 border-solid border-white px-4 py-1 text-white">
+          {/* <button className="rounded-3xl border-2 border-solid border-white px-4 py-1 text-white">
             <BaseText color="" font="font-inter" weight="font-medium">
               join the fam
             </BaseText>
-          </button>
+          </button> */}
         </a>
       </div>
     </div>

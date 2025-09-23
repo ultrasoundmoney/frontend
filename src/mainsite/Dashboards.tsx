@@ -12,6 +12,7 @@ import HeaderGlow from "../components/HeaderGlow";
 import MainTitle from "../components/MainTitle";
 import { WEI_PER_GWEI } from "../eth-units";
 import { FeatureFlagsContext, useFeatureFlags } from "../feature-flags";
+import AdminTools from "../components/AdminTools";
 import { formatZeroDecimals } from "../format";
 import ContactSection from "../sections/ContactSection";
 import type { TimeFrame } from "./time-frames";
@@ -22,20 +23,18 @@ import { ethSupplyFromParts, useSupplyParts } from "./api/supply-parts";
 import FaqBlock from "./components/Faq";
 import TopBar from "./components/TopBar";
 import { MERGE_SUPPLY } from "./hardforks/paris";
-import useAuthFromSection from "./hooks/use-auth-from-section";
-import FamSection from "./sections/FamSection";
+// import FamSection from "./sections/FamSection";
 import GasSection from "./sections/GasSection";
 import FlippeningSection from "./sections/FlippeningSection";
 import BlobGasSection from "./sections/BlobGasSection";
 import SupplyDashboard from "./sections/SupplyDashboard";
-import AdminTools from "../components/AdminTools";
 import * as SharedConfig from "../config";
 import { O, pipe } from "../fp";
 
 // We get hydration errors in production.
 // It's hard to tell what component causes them due to minification.
 // We stop SSR on all components, and slowly turn them back on one-by-one to see which cause hydration issues.
-// On: MergeSection, JoinDiscordSection
+// On: MergeSection
 // Off: SupplyDashboard, BurnDashboard, MonetaryPremiumSection, FamSection, TotalValueSecuredSection.
 const TotalValueSecuredSection = dynamic(
   () => import("./sections/TotalValueSecuredSection"),
@@ -92,18 +91,9 @@ const useGasPriceTitle = (defaultTitle: string) => {
 
 // By default a browser doesn't scroll to a section with a given ID matching the # in the URL.
 const useScrollOnLoad = () => {
-  const [authFromSection, setAuthFromSection] = useAuthFromSection();
-
   useEffect(() => {
     if (typeof window === undefined || typeof document === undefined) {
       return undefined;
-    }
-
-    if (authFromSection !== "empty") {
-      document
-        .querySelector(`#${authFromSection}`)
-        ?.scrollIntoView({ behavior: "auto", block: "start" });
-      setAuthFromSection("empty");
     }
 
     if (window.location.hash.length > 0) {
@@ -111,11 +101,6 @@ const useScrollOnLoad = () => {
         .querySelector(window.location.hash.toLowerCase())
         ?.scrollIntoView({ behavior: "auto", block: "start" });
     }
-    // The useAuthFromSection deps are missing intentionally here, we only want
-    // this to run once on load. Because we disable the exhaustive deps linting
-    // rule for this reason do check anything you add above doesn't need to be
-    // in there.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };
 
@@ -218,9 +203,6 @@ const Dashboard: FC = () => {
         <GasPriceTitle />
         <HeaderGlow />
         <div className="container mx-auto">
-          <BasicErrorBoundary>
-            <AdminTools setFlag={setFlag} />
-          </BasicErrorBoundary>
           <div className="px-4 md:px-16">
             <BasicErrorBoundary>
               <TopBar />
@@ -266,7 +248,7 @@ const Dashboard: FC = () => {
           <FlippeningSection />
           <TotalValueSecuredSection />
           <MonetaryPremiumSection />
-          <FamSection />
+          {/* <FamSection /> */}
           <div className="mt-32 flex px-4 md:px-0">
             <div className="relative w-full md:m-auto lg:w-2/3">
               <FaqBlock />
@@ -277,6 +259,7 @@ const Dashboard: FC = () => {
         <div className="flex w-full justify-center text-slateus-600">
           version {version}
         </div>
+        <AdminTools setFlag={setFlag} />
       </SkeletonTheme>
     </FeatureFlagsContext.Provider>
   );

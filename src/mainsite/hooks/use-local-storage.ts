@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 export type LocalStorageKey =
-  | "auth-from-section"
   | "eth-alarm-enabled"
   | "eth-threshold"
   | "eth-threshold-type"
