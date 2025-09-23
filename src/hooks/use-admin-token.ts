@@ -1,21 +1,17 @@
 import { useEffect, useState } from "react";
 
-export const useAdminToken = () => {
+export const useAdminToken = (): string | undefined => {
   const [adminToken, setAdminToken] = useState<string>();
 
   useEffect(() => {
     if (typeof window === "undefined") {
-      return undefined;
+      return;
     }
 
-    const urlSearchParams = new URLSearchParams(window.location.search);
-    const adminToken = urlSearchParams.get("admin-token");
-
-    if (typeof adminToken !== "string" || adminToken.length === 0) {
-      return undefined;
+    const token = window.localStorage.getItem("admin-token");
+    if (typeof token === "string") {
+      setAdminToken(token);
     }
-
-    setAdminToken(adminToken);
   }, []);
 
   return adminToken;
