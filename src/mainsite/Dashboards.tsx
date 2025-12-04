@@ -248,12 +248,12 @@ const Dashboard: FC = () => {
             <div className="rounded-md bg-slateus-700 p-8 text-center font-roboto text-base font-light text-slateus-200">
               supply data currently unavailable. upgrading for{" "}
               <a
-                href="https://x.com/ethereum/status/1919794615827280126"
+                href="https://x.com/ethereum/status/1996226190399455358"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-slateus-100 hover:underline"
               >
-                pectra hardfork
+                fusaka hardfork
               </a>
               .
             </div>
