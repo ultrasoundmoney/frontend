@@ -6,7 +6,7 @@ import useSWR from "swr";
 import type { Slot } from "../../beacon-units";
 import type { EthNumber } from "../../eth-units";
 import type { ApiResult } from "../../fetchers";
-import { A, O, OAlt, pipe, Record, RA } from "../../fp";
+import { A, O, pipe, Record, RA } from "../../fp";
 import type { DateTimeString } from "../../time";
 import { MERGE_TIMESTAMP } from "../hardforks/paris";
 import { usePosIssuancePerDay } from "../hooks/use-pos-issuance-day";
@@ -79,11 +79,11 @@ const calculateBitcoinIssuedSinceMerge = function (startTime: number, secondsDel
 const btcSeriesFromPos = (
   ethPosSeries: SupplyPoint[],
 ): [SupplyPoint[], SupplyPoint[]] => {
-  const ethPosFirstPoint = pipe(
-    ethPosSeries,
-    A.head,
-    OAlt.expect("ethPosSeries should have at least one point"),
-  );
+  const ethPosFirstPointOption = pipe(ethPosSeries, A.head);
+  if (O.isNone(ethPosFirstPointOption)) {
+    return [[], []];
+  }
+  const ethPosFirstPoint = ethPosFirstPointOption.value;
   const parisToTimeFrameSeconds = DateFns.differenceInSeconds(
     ethPosFirstPoint[0],
     MERGE_TIMESTAMP,
@@ -191,7 +191,14 @@ export const useSupplySeriesCollections =
               ),
               A.map(([timeFrame, supplyOverTime]) => {
                 const posSeries = pipe(
-                  supplyOverTime,
+                  supplyOverTime ?? [],
+                  A.filter(
+                    (supplyAtTime): supplyAtTime is SupplyAtTime =>
+                      supplyAtTime !== null &&
+                      supplyAtTime !== undefined &&
+                      supplyAtTime.timestamp !== undefined &&
+                      supplyAtTime.supply !== undefined,
+                  ),
                   A.map(supplyPointFromSupplyAtTime),
                 );
                 const powSeries = powSeriesFromPos(

@@ -440,19 +440,19 @@ const optionsFromSupplySeriesCollection = (
           },
         },
         data:
-          lastPointPos !== undefined && posSeries !== undefined
-            ? [
+          lastPointPos === undefined
+            ? posSeries
+            : [
                 ...posSeries,
                 {
-                  x: lastPointPos?.[0],
-                  y: lastPointPos?.[1],
+                  x: lastPointPos[0],
+                  y: lastPointPos[1],
                   marker: {
                     symbol: `url(/graph-dot-blue.svg)`,
                     enabled: true,
                   },
                 },
-              ]
-            : undefined,
+              ],
         shadow: {
           color: "rgba(75, 144, 219, 0.2)",
           width: 15,
@@ -491,11 +491,13 @@ const optionsFromSupplySeriesCollection = (
         data:
           btcSeriesScaled === undefined
             ? undefined
+            : lastPointBtc === undefined
+            ? btcSeriesScaled
             : [
                 ...btcSeriesScaled,
                 {
-                  x: lastPointBtc?.[0],
-                  y: lastPointBtc?.[1],
+                  x: lastPointBtc[0],
+                  y: lastPointBtc[1],
                   marker: {
                     symbol: `url(/graph-dot-bitcoin.svg)`,
                     enabled: true,
@@ -524,11 +526,13 @@ const optionsFromSupplySeriesCollection = (
         data:
           powSeries === undefined
             ? undefined
+            : lastPointPow === undefined
+            ? powSeries
             : [
                 ...powSeries,
                 {
-                  x: lastPointPow?.[0],
-                  y: lastPointPow?.[1],
+                  x: lastPointPow[0],
+                  y: lastPointPow[1],
                   marker: {
                     symbol: `url(/graph-dot-white.svg)`,
                     enabled: true,
@@ -544,7 +548,7 @@ const optionsFromSupplySeriesCollection = (
             // proof-of-work series is not the point to calculate the delta
             // against. Instead, in that one case, we should use the first point
             // in the proof-of-stake series.
-            timeFrame === "since_burn"
+            timeFrame === "since_burn" && posSeries.length > 0
               ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 [posSeries[0]!, ...powSeries]
               : powSeries,
@@ -575,9 +579,10 @@ const updatedAtFromSupplySeriesCollection = (
 ): DateTimeString | undefined =>
   pipe(
     supplySeriesCollections,
-    O.map(
-      (supplySeriesCollections) => supplySeriesCollections[timeFrame].timestamp,
+    O.chain((supplySeriesCollections) =>
+      O.fromNullable(supplySeriesCollections[timeFrame]),
     ),
+    O.map((supplySeriesCollection) => supplySeriesCollection.timestamp),
     O.toUndefined,
   );
 
@@ -598,6 +603,19 @@ const EthSupplyWidget: FC<Props> = ({
   const [btcVisible, setBtcVisible] = useState(false);
 
   const supplySeriesCollections = useSupplySeriesCollections();
+  const hasSeriesData = useMemo(
+    () =>
+      pipe(
+        supplySeriesCollections,
+        O.chain((supplySeriesCollections) =>
+          O.fromNullable(supplySeriesCollections[timeFrame]),
+        ),
+        O.map((supplySeriesCollection) => supplySeriesCollection.posSeries),
+        O.map((series) => series.length > 0),
+        O.getOrElse(() => false),
+      ),
+    [supplySeriesCollections, timeFrame],
+  );
 
   // Override whatever the current visibility is of the ETH PoW series to make it mirror whatever the user just set the simulateProofOfWork toggle to.
   useEffect(() => {
@@ -608,10 +626,12 @@ const EthSupplyWidget: FC<Props> = ({
     (): Highcharts.Options =>
       pipe(
         supplySeriesCollections,
-        O.map((supplySeriesCollections) => supplySeriesCollections[timeFrame]),
-        O.map((supplySeriesCollections) =>
+        O.chain((supplySeriesCollections) =>
+          O.fromNullable(supplySeriesCollections[timeFrame]),
+        ),
+        O.map((supplySeriesCollection) =>
           optionsFromSupplySeriesCollection(
-            supplySeriesCollections,
+            supplySeriesCollection,
             timeFrame,
             posVisible,
             powVisible,
@@ -681,7 +701,15 @@ const EthSupplyWidget: FC<Props> = ({
                 </div>
               ),
               () => (
-                <HighchartsReact highcharts={Highcharts} options={options} />
+                hasSeriesData ? (
+                  <HighchartsReact highcharts={Highcharts} options={options} />
+                ) : (
+                  <div className="flex h-full min-h-[400px] items-center justify-center text-center lg:min-h-[auto]">
+                    <LabelText color="text-slateus-300">
+                      data unavailable
+                    </LabelText>
+                  </div>
+                )
               ),
             ),
           )}
