@@ -12,7 +12,7 @@ import type { TimeFrame } from "../time-frames";
 import TimeFrameIndicator from "./TimeFrameIndicator";
 import type { OnClick } from "../../components/TimeFrameControl";
 
-const GWEI_FORMATTING_THRESHOLD = 100_000_000; // Threshold in wei above which to convert to / format as Gwei
+const GWEI_FORMATTING_THRESHOLD = 1_000_000; // Threshold in wei above which to convert to / format as Gwei
 
 const getPercentage = (
   highest: number,
