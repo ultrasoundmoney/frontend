@@ -49,6 +49,14 @@ const oneDecimal = new Intl.NumberFormat("en-US", {
 
 export const formatOneDecimal = (num: number): string => oneDecimal.format(num);
 
+const threeDecimals = new Intl.NumberFormat("en-US", {
+  minimumFractionDigits: 3,
+  maximumFractionDigits: 3,
+});
+
+export const formatThreeDecimals = (num: number): string =>
+  threeDecimals.format(num);
+
 const usdZeroDecimals = new Intl.NumberFormat("en-US", {
   currency: "usd",
   style: "currency",

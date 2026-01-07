@@ -6,13 +6,18 @@ import QuantifyText from "../../components/TextsNext/QuantifyText";
 import WidgetErrorBoundary from "../../components/WidgetErrorBoundary";
 import { WidgetBackground } from "../../components/WidgetSubcomponents";
 import { WEI_PER_GWEI } from "../../eth-units";
-import { formatOneDecimal } from "../../format";
+import {
+  formatOneDecimal,
+  formatThreeDecimals,
+  formatZeroDecimals,
+} from "../../format";
 import { useBlobBaseFeeStats } from "../api/base-fee-per-gas-stats";
 import type { TimeFrame } from "../time-frames";
 import TimeFrameIndicator from "./TimeFrameIndicator";
 import type { OnClick } from "../../components/TimeFrameControl";
 
-const GWEI_FORMATTING_THRESHOLD = 100_000_000; // Threshold in wei above which to convert to / format as Gwei
+const GWEI_FORMATTING_THRESHOLD = 100_000; // Threshold in wei above which to convert to / format as Gwei
+const HIGH_GWEI_THRESHOLD = 1_000_000_000_000; // 1000 Gwei in wei, above which we reduce to 1 decimal
 
 const getPercentage = (
   highest: number,
@@ -31,6 +36,7 @@ type MarkerProps = {
   description?: string;
   emphasize?: boolean;
   gas: number;
+  gweiDecimals: number;
   highest: number;
   horizontal: "left" | "right";
   label: string;
@@ -44,6 +50,7 @@ const Marker: FC<MarkerProps> = ({
   blockNumber,
   emphasize = false,
   gas,
+  gweiDecimals,
   highest,
   horizontal,
   label,
@@ -59,7 +66,13 @@ const Marker: FC<MarkerProps> = ({
 
   const gasFormatted = convertToGwei ? gas / WEI_PER_GWEI : gas;
   const unit = convertToGwei ? "Gwei" : "wei";
-  const decimals = convertToGwei ? 2 : 0;
+  const decimals = convertToGwei ? gweiDecimals : 0;
+  const formattingFn =
+    decimals === 0
+      ? formatZeroDecimals
+      : decimals === 1
+        ? formatOneDecimal
+        : formatThreeDecimals;
 
   return (
     <animated.div
@@ -115,7 +128,7 @@ const Marker: FC<MarkerProps> = ({
           <CountUp
             end={gasFormatted}
             preserveValue
-            formattingFn={formatOneDecimal}
+            formattingFn={formattingFn}
             duration={1}
             useEasing
             decimals={decimals}
@@ -178,6 +191,12 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
     blobBaseFeeStatsTimeFrame !== undefined &&
     blobBaseFeeStatsTimeFrame.max > GWEI_FORMATTING_THRESHOLD;
 
+  const gweiDecimals =
+    blobBaseFeeStatsTimeFrame !== undefined &&
+    blobBaseFeeStatsTimeFrame.max > HIGH_GWEI_THRESHOLD
+      ? 1
+      : 3;
+
   return (
     <WidgetErrorBoundary title="blob gas market">
       <WidgetBackground className="flex flex-col gap-y-4">
@@ -211,6 +230,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                 blockNumber={blobBaseFeeStatsTimeFrame.min_block_number}
                 description="minimum gas price"
                 gas={blobBaseFeeStatsTimeFrame.min}
+                gweiDecimals={gweiDecimals}
                 highest={highest}
                 horizontal="left"
                 label="min"
@@ -223,6 +243,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                 blockNumber={blobBaseFeeStatsTimeFrame.max_block_number}
                 description="maximum gas price"
                 gas={blobBaseFeeStatsTimeFrame.max}
+                gweiDecimals={gweiDecimals}
                 highest={highest}
                 horizontal="right"
                 label="max"
@@ -235,6 +256,7 @@ const GasMarketWidget: FC<Props> = ({ onClickTimeFrame, timeFrame }) => {
                 description="average gas price"
                 emphasize
                 gas={blobBaseFeeStatsTimeFrame.average}
+                gweiDecimals={gweiDecimals}
                 highest={highest}
                 horizontal="right"
                 label="average"

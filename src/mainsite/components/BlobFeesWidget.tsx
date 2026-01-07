@@ -16,7 +16,8 @@ import TimeFrameIndicator from "../components/TimeFrameIndicator";
 import type { TimeFrame } from "../time-frames";
 import type { OnClick } from "../../components/TimeFrameControl";
 
-const GWEI_FORMATTING_THRESHOLD = 100_000_000; // Threshold in wei above which to convert to / format as Gwei
+const GWEI_FORMATTING_THRESHOLD = 100_000; // Threshold in wei above which to convert to / format as Gwei
+const HIGH_GWEI_THRESHOLD = 1_000_000_000_000; // 1000 Gwei in wei, above which we reduce to 1 decimal
 const Y_AXIS_MIN = 1e-9; // Minimum value on y-axis in gwei (needed because 0 cannot be displayed in log scale)
 
 export type BaseFeePoint = [JsTimestamp, WeiNumber];
@@ -131,11 +132,15 @@ const getTooltipFormatter = (
 
     const gradientCss = "from-orange-400 to-yellow-300";
 
-    const displayTotal =
-      total > GWEI_FORMATTING_THRESHOLD
-        ? gweiFromWei(total).toFixed(2)
-        : total.toFixed(2);
-    const displayUnit = total > GWEI_FORMATTING_THRESHOLD ? "Gwei" : "wei";
+    const useGwei = total > GWEI_FORMATTING_THRESHOLD;
+    const gweiDecimals = total > HIGH_GWEI_THRESHOLD ? 1 : 3;
+    const displayTotal = useGwei
+      ? gweiFromWei(total).toLocaleString("en-US", {
+          minimumFractionDigits: gweiDecimals,
+          maximumFractionDigits: gweiDecimals,
+        })
+      : total.toLocaleString("en-US", { maximumFractionDigits: 0 });
+    const displayUnit = useGwei ? "Gwei" : "wei";
     return `
       <div class="p-4 rounded-lg border-2 font-roboto bg-slateus-700 border-slateus-400">
         <div class="text-right text-slateus-400">${formattedDate}</div>
